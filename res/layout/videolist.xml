@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical"><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/videos"></TextView><ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
+<ListView android:id="@+id/videosLV" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+</LinearLayout>

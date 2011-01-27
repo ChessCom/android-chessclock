@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="#444">
+
+	<LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent"
+		android:orientation="vertical">
+
+		<LinearLayout android:layout_height="wrap_content"
+		              android:layout_width="fill_parent" android:orientation="vertical" android:paddingBottom="5dip">
+
+			<LinearLayout android:layout_height="wrap_content" android:id="@+id/analysis" android:layout_width="fill_parent" android:visibility="gone" android:orientation="vertical" android:layout_weight="1">
+				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/analysis"></TextView>
+				<ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
+			</LinearLayout>
+
+			<LinearLayout android:layout_height="wrap_content"
+			              android:layout_width="fill_parent" android:orientation="horizontal" android:layout_weight="1">
+				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="2dip" android:textColor="#fff" android:textStyle="bold"
+				          android:inputType="textImeMultiLine" android:id="@+id/thinking" android:text="@string/Thinking" android:gravity="center" android:visibility="gone"></TextView>
+				<TextView android:layout_height="wrap_content" android:text="Player"
+				          android:layout_width="fill_parent" android:layout_weight="1"
+				          android:padding="2dip" android:textColor="#fff" android:textStyle="bold"
+				          android:drawableLeft="@drawable/whitemove" android:drawablePadding="5dip"
+				          android:id="@+id/white" android:inputType="textImeMultiLine"></TextView>
+				<TextView android:layout_height="wrap_content" android:text="Computer"
+				          android:id="@+id/black" android:layout_width="fill_parent"
+				          android:layout_weight="1" android:padding="2dip" android:textColor="#fff"
+				          android:textStyle="bold" android:gravity="right"
+				          android:drawableRight="@drawable/blackmove" android:drawablePadding="5dip" android:inputType="textImeMultiLine"></TextView>
+				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent"
+				          android:layout_weight="1" android:padding="2dip" android:textColor="#fff"
+				          android:textStyle="bold" android:drawablePadding="5dip" android:inputType="textImeMultiLine" android:gravity="center" android:id="@+id/timer" android:visibility="gone"></TextView>
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<com.chess.views.BoardView android:id="@+id/boardview" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"/>
+		<!--
+		<ImageView android:id="@+id/boardview" android:layout_height="320px" android:layout_width="320px" android:layout_weight="1"/>
+		-->
+
+		<LinearLayout android:layout_height="wrap_content"
+		              android:layout_width="fill_parent" android:orientation="horizontal" android:paddingTop="5dip">
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#fff"
+			          android:textStyle="bold" android:id="@+id/whiteClockView" android:layout_weight="1" android:padding="2dip"
+			          android:drawableLeft="@drawable/whitemove" android:drawablePadding="5dip" android:inputType="textImeMultiLine"
+			          android:visibility="gone"></TextView>
+
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#fff"
+			          android:textStyle="bold" android:gravity="right" android:id="@+id/blackClockView" android:layout_weight="1" android:padding="2dip"
+			          android:drawableRight="@drawable/blackmove" android:drawablePadding="5dip" android:inputType="textImeMultiLine"
+			          android:visibility="gone"></TextView>
+		</LinearLayout>
+
+		<TextView android:id="@+id/endOfGameMessage" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#ffffcc" android:textStyle="bold"
+				  android:gravity="center" android:padding="2dip"></TextView>
+
+	</LinearLayout>
+
+	<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/movelist"
+	          android:textColor="#fff" android:padding="2dip" android:textSize="12dip" android:inputType="textImeMultiLine"
+	          android:gravity="right" android:ellipsize="start" android:layout_gravity="bottom"></TextView>
+
+	<LinearLayout android:layout_height="wrap_content" android:id="@+id/moveButtons" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="gone" android:paddingBottom="20dip">
+		<Button android:id="@+id/submit" android:background="@drawable/defaultbutton" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="Submit" android:layout_height="45dip"></Button>
+		<Button android:id="@+id/cancel" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="Cancel" android:layout_height="45dip"></Button>
+	</LinearLayout>
+	
+	<LinearLayout android:layout_height="wrap_content" android:id="@+id/endOfGameButtons" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="gone" android:paddingBottom="20dip">
+		<Button android:id="@+id/newGame" android:background="@drawable/defaultbutton" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="New Game" android:layout_height="45dip"></Button>
+		<Button android:id="@+id/home" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="Home" android:layout_height="45dip"></Button>
+	</LinearLayout>
+
+
+</FrameLayout>

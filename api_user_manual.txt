@@ -1,0 +1,675 @@
+*******************
+Chess.com API Manual
+Last Updated: 4/13/2009
+*******************
+
+---------------------------------------------------------------------------
+
+
+API: Register
+url: http://www.chess.com/api/register
+
+parameters:
+username
+password
+email
+country_id 
+country_code 
+app_type - optional (mobile [DEFAULT], android, iphone, pre)
+
+(either country_id or country_code must be specified. country_code is 2 character country abbreviation)
+
+success return string:
+Success+<user_token>
+
+error return string:
+Error+<error_message>
+
+Example Call:
+
+http://www.chess.com/api/register?username=jay&password=mysecretpassword&email=jay@yahoo.com&country_id=2&app_type=iphone
+
+Example Return String:
+
+Success+adsf876asdf786asdf76f6sd8s8f
+
+
+---------------------------------------------------------------------------
+
+
+API: Login
+url: http://www.chess.com/api/login
+
+parameters:
+username
+password
+apn_device_token  (optional - apple device token)
+
+success return string:
+Success+<premium_status>:<api_version>:<user_token>:<user_session_id>
+
+error return string:
+Error+<error_message>
+
+Example Call:
+
+http://www.chess.com/api/login?username=jay&password=mysecretpassword
+
+Example Return String:
+
+Success+2:2.0:HGgDAzjq7nWMAJb725QUkT0uzMFXGjrE20tAbj6gb7PuS6FoG30T1rZlJf3q+6CiVNpwBWZMx0jFv97Q+sl94g==:a46a03a50c3e31c1fef83e3848f253c3
+
+Premium Status Key:
+0 = Basic Member
+1 = Gold Member
+2 = Platinum/Diamond Member
+
+---------------------------------------------------------------------------
+
+API: Get user's move status
+url: http://www.chess.com/api/get_move_status
+
+parameters:
+id          (user token)
+
+success return string:
+Success+<is_users_turn_to_move>
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/get_move_status?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+1
+Success+0
+
+1 = its users turn to move in a game
+0 = user has no moves to make
+
+---------------------------------------------------------------------------
+
+API: Get user's vacation status
+url: http://www.chess.com/api/get_vacation_status
+
+parameters:
+id          (user token)
+
+success return string:
+Success+<is_on_vacation>
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/get_vacation_status?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+1
+Success+0
+
+1 = on vacation
+0 = not on vacation
+
+---------------------------------------------------------------------------
+
+API: Remove user from vacation status
+url: http://www.chess.com/api/vacation_leave
+
+parameters:
+id          (user token)
+
+success return string:
+Success+
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/vacation_leave?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+
+
+---------------------------------------------------------------------------
+
+API: Remove user from vacation status
+url: http://www.chess.com/api/vacation_return
+
+parameters:
+id          (user token)
+
+success return string:
+Success+
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/vacation_return?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+
+
+---------------------------------------------------------------------------
+
+API: Get Friends
+url: http://www.chess.com/api/get_friends
+
+parameters:
+id          (user token)
+
+success return string:
+Success+(|<username>)0-n
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/get_friends?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+|friend1|friend2|friend3
+
+---------------------------------------------------------------------------
+
+API: Create New Game / Challenge
+url: http://www.chess.com/api/echess_new_game
+
+parameters:
+id            (user token)
+opponent      (optional)
+timepermove   (in days)
+iplayas       (0=random , 1=white, 2=black)
+minrating     (optional)
+maxrating     (optional)
+israted     (0 or 1)
+game_type     (optional: 1 = chess (default), 2 = chess960)
+
+success return string:
+Success+<game_id>
+
+error return string:
+Error+<error_message>
+
+Example Call:
+
+http://www.chess.com/api/echess_new_game?id=asd7fs7sd9f78assd9f&timepermove=3&iplayas=0&minrating=1000&maxrating=1500
+
+Example Return String:
+
+Success+
+
+
+---------------------------------------------------------------------------
+
+API: View Open Challenge/Seeks & Accept/Decline Seek
+url: http://www.chess.com/api/echess_open_invites
+
+parameters:
+id                (user token)
+acceptinviteid    (optional)
+declineinviteid   (optional)
+
+success return string:
+Success+(:<game_seek_id>:<opponent_username>:<opponent_rating>:<opponent_win_count>:<opponent_loss_count>:<opponent_draw_count>:<playas_color>:<days_per_move>:<game_type>:<initial_setup_fen>)0-n
+
+error return string:
+Error+<error_message>
+
+game_type: 1 = standard chess , 2 = chess 960
+
+Example Call 1:
+
+http://www.chess.com/api/echess_open_invites?id=asd7fs7sd9f78assd9f
+
+Example Return String 1:
+
+Success+:57:bigchessdog:1857:0:3:128:ilovechess:1555:10:12:16:1:7:rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR b KQkq - 1 5
+
+
+Example Call 2:
+
+http://www.chess.com/api/echess_open_invites?id=asd7fs7sd9f78assd9f&acceptinviteid=57
+
+Example Return String 2:
+
+Success+128:ilovechess:1555:10:12:16:1:7:rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR b KQkq - 1 5
+
+---------------------------------------------------------------------------
+
+API: View Open Challenge/Seeks & Accept/Decline Seek (Version2)
+url: http://www.chess.com/api/v2/echess_open_invites
+
+parameters:
+id                (user token)
+acceptinviteid    (optional)
+declineinviteid   (optional)
+
+success return string:
+Success+(:<game_seek_id>:<opponent_username>:<opponent_rating>:<opponent_win_count>:<opponent_loss_count>:<opponent_draw_count>:<playas_color>:<days_per_move>:<game_type>:<rated>:<initial_setup_fen>)0-n
+
+error return string:
+Error+<error_message>
+
+game_type: 1 = standard chess , 2 = chess 960
+rated: 1 or 0
+
+Example Call 1:
+
+http://www.chess.com/api/echess_open_invites?id=asd7fs7sd9f78assd9f
+
+Example Return String 1:
+
+Success+:57:bigchessdog:1857:0:3:128:ilovechess:1555:10:12:16:1:7:1:rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR b KQkq - 1 5
+
+
+Example Call 2:
+
+http://www.chess.com/api/echess_open_invites?id=asd7fs7sd9f78assd9f&acceptinviteid=57
+
+Example Return String 2:
+
+Success+128:ilovechess:1555:10:12:16:1:7:1:rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR b KQkq - 1 5
+
+---------------------------------------------------------------------------
+
+API: View Challenges
+url: http://www.chess.com/api/echess_challenges
+
+parameters:
+id                (user token)
+
+success return string:
+Success+(:<game_seek_id>:<opponent_username>:<opponent_rating>:<opponent_win_count>:<opponent_loss_count>:<opponent_draw_count>:<playas_color>:<days_per_move>:<game_type>:<initial_setup_fen>)0-n
+
+error return string:
+Error+<error_message>
+
+game_type: 1 = standard chess , 2 = chess 960
+
+Example Call 1:
+
+http://www.chess.com/api/echess_challenges?id=asd7fs7sd9f78assd9f
+
+Example Return String 1:
+
+Success+|10925357:dshav:1323:16:5:7:0:3:1:0:
+
+---------------------------------------------------------------------------
+
+API: View Challenges (version 2)
+url: http://www.chess.com/api/v2/echess_challenges
+
+parameters:
+id                (user token)
+
+success return string:
+Success+(:<game_seek_id>:<opponent_username>:<opponent_rating>:<opponent_win_count>:<opponent_loss_count>:<opponent_draw_count>:<playas_color>:<days_per_move>:<game_type>:<rated>:<initial_setup_fen>)0-n
+
+error return string:
+Error+<error_message>
+
+game_type: 1 = standard chess , 2 = chess 960
+
+Example Call 1:
+
+http://www.chess.com/api/v2/echess_challenges?id=asd7fs7sd9f78assd9f
+
+Example Return String 1:
+
+Success+|10925357:dshav:1323:16:5:7:0:3:1:1:
+
+---------------------------------------------------------------------------
+
+API: Get Current Online Games
+url: http://www.chess.com/api/v2/get_echess_current_games
+
+parameters:
+id          (user token)
+game_type   (optional)
+all         (0 = show only games where its users turn to move , 1 = show all users games)
+
+
+success return string:
+Success+<total_games_returned>:(<game_id>:<color>:<game_type>:<username_string_length>:<opponent_username>:<opponent_rating>:<time_remaining_amount>:<time_remaining_units>:<fen_string_length>:<fen>:<timestamp>:<last_move_from_square>:<last_move_to_square>:<is_draw_offer_pending>:<is_opponent_online>:<is_my_turn>:<has_new_message>)0-n
+
+error return string:
+Error+<error_message>
+
+game_type: 1 = standard chess , 2 = chess 960
+time_remaining_units:  h = hours , d = days
+is_draw_offer_pending: p = yes , n = no
+is_opponent_online: 1 = yes , 0 = no
+is_my_turn: 1 = yes , 0 = no
+has_new_message: 1 = yes , 0 = no
+
+
+Example Call:
+
+http://www.chess.com/api/get_echess_current_games?id=asd7fs7sd9f78assd9f&all=1
+
+Example Return String:
+
+Success+:1:000000001216:w:4:erik:1849:8:h:55:r5k1/1b4pp/pq1p4/1p1P4/1P2R1B1/8/P4rPP/R2Q3K w - - 6 23:1239663157:f5:f2:Rf2:n:1:0:1
+
+---------------------------------------------------------------------------
+
+API: Get Finished Online Games (up to last 20)
+url: http://www.chess.com/api/v2/get_echess_finished_games
+
+parameters:
+id          (user token)
+game_type   (optional)
+
+
+success return string:
+Success+<total_games_returned>:(<game_id>:<color>:<game_type>:<username_string_length>:<opponent_username>:<opponent_rating>:<time_remaining_amount>:<time_remaining_units>:<fen_string_length>:<fen>:<timestamp>:<last_move_from_square>:<last_move_to_square>:<is_opponent_online>:<game_result>:)0-n
+
+error return string:
+Error+<error_message>
+
+game_type: 1 = standard chess , 2 = chess 960
+time_remaining_units:  h = hours , d = days
+is_opponent_online: 1 = yes , 0 = no
+game_result: 1 = win, 0 = loss, 2 = draw
+
+Example Call:
+
+http://www.chess.com/api/get_echess_finished_games?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+1:000000002321:b:2:08:newuser4:0000:00:h:61:b1rb1knr/qpppppQp/3N4/p7/8/1P6/P1PPPPPP/B1RBNK1R b KCkc - 1 7:1262642386:b2:g7:0:0:
+
+---------------------------------------------------------------------------
+
+API: Get Game
+url: http://www.chess.com/api/get_game
+
+parameters:
+id          (game id)
+
+
+success return string:
+Success+:<game_id>:<game_name>:<white_username>:<black_username>:<starting_fen_position>:<move_list>:<user_to_move>:<white_rating>:<black_rating>:<encoded_move_string>:<seconds_remaining>
+
+starting_fen_position   (used for thematic games only)
+user_to_move    (1 for white and 0 for black)
+
+error return string:
+Error+<error_message>
+
+Example Call:
+
+http://www.chess.com/api/get_game?id=177444
+
+Example Return String:
+
+Success+2266:Localhost San Jose Sharks vs jaytest13's group - Board 1:jaytest13:jay::1. e4 e5 2. d4 exd4 3. Qxd4 Nc6 4. Qc3 Bb4 5. Qxb4 Nxb4 6. Bd3 c5 7. Nf3 Qa5 8. O-O Nxd3 9. Bd2 Qb5 10. Nc3 Qxb2 11. Nd5 Kd8 12. Ng5 Nh6 13. Bc3 Qxc2 14. Bxg7 Rg8 15. Bxh6 Rg6 16. f4 f6 17. f5 Rg8 18. Nxf6 Rxg5 19. Bxg5 Qe2 20. e5 Nb2 21. Rae1 Qc4 22. Ne4+ Kc7 23. Nd6 Qg4 24. f6 b6 25. f7 Ba6 26. Rf2 :2:1035:1438:mC0KlBKBdB5QBs9zszQzftYIgv7GegztclGHbsHjsJ87vM!Vlsjks2?!2V!UnD1TDLU!JT!MVMkmCKtjaemATC7YCRAELTXPT16Ofn:181898
+
+---------------------------------------------------------------------------
+
+API: Get Game (version2)
+url: http://www.chess.com/api/v2/get_game
+
+parameters:
+id          (user token) - optional
+gid          (game id)
+
+
+success return string:
+Success+:<game_id>:<timestamp>:<game_name>:<white_username>:<black_username>:<starting_fen_position>:<move_list>:<user_to_move>:<white_rating>:<black_rating>:<encoded_move_string>:<has_new_message>:<seconds_remaining>
+
+starting_fen_position   (used for thematic games only)
+user_to_move    (1 for white and 0 for black)
+has_new_message    (1 if id is passed and there is a new message)
+
+error return string:
+Error+<error_message>
+
+Example Call:
+
+http://www.chess.com/api/v2/get_game?id=asdjasdjfj2324jajj3&gid=177444
+
+Example Return String:
+
+Success+2266:1239663157:Localhost San Jose Sharks vs jaytest13's group - Board 1:jaytest13:jay::1. e4 e5 2. d4 exd4 3. Qxd4 Nc6 4. Qc3 Bb4 5. Qxb4 Nxb4 6. Bd3 c5 7. Nf3 Qa5 8. O-O Nxd3 9. Bd2 Qb5 10. Nc3 Qxb2 11. Nd5 Kd8 12. Ng5 Nh6 13. Bc3 Qxc2 14. Bxg7 Rg8 15. Bxh6 Rg6 16. f4 f6 17. f5 Rg8 18. Nxf6 Rxg5 19. Bxg5 Qe2 20. e5 Nb2 21. Rae1 Qc4 22. Ne4+ Kc7 23. Nd6 Qg4 24. f6 b6 25. f7 Ba6 26. Rf2 :2:1035:1438:mC0KlBKBdB5QBs9zszQzftYIgv7GegztclGHbsHjsJ87vM!Vlsjks2?!2V!UnD1TDLU!JT!MVMkmCKtjaemATC7YCRAELTXPT16Ofn:181898
+
+---------------------------------------------------------------------------
+
+API: Get Game (version3)
+url: http://www.chess.com/api/v3/get_game
+
+parameters:
+id          (user token) - optional
+gid          (game id)
+
+
+success return string:
+Success+:<game_id>:<game_type>:<timestamp>:<game_name>:<white_username>:<black_username>:<starting_fen_position>:<move_list>:<user_to_move>:<white_rating>:<black_rating>:<encoded_move_string>:<has_new_message>:<seconds_remaining>
+
+starting_fen_position   (used for thematic games only)
+user_to_move    (1 for white and 0 for black)
+has_new_message    (1 if id is passed and there is a new message)
+game_type: 1 = standard chess , 2 = chess 960
+
+error return string:
+Error+<error_message>
+
+Example Call:
+
+http://www.chess.com/api/v2/get_game?id=asdjasdjfj2324jajj3&gid=177444
+
+Example Return String:
+
+Success+2266:1:1239663157:Localhost San Jose Sharks vs jaytest13's group - Board 1:jaytest13:jay::1. e4 e5 2. d4 exd4 3. Qxd4 Nc6 4. Qc3 Bb4 5. Qxb4 Nxb4 6. Bd3 c5 7. Nf3 Qa5 8. O-O Nxd3 9. Bd2 Qb5 10. Nc3 Qxb2 11. Nd5 Kd8 12. Ng5 Nh6 13. Bc3 Qxc2 14. Bxg7 Rg8 15. Bxh6 Rg6 16. f4 f6 17. f5 Rg8 18. Nxf6 Rxg5 19. Bxg5 Qe2 20. e5 Nb2 21. Rae1 Qc4 22. Ne4+ Kc7 23. Nd6 Qg4 24. f6 b6 25. f7 Ba6 26. Rf2 :2:1035:1438:mC0KlBKBdB5QBs9zszQzftYIgv7GegztclGHbsHjsJ87vM!Vlsjks2?!2V!UnD1TDLU!JT!MVMkmCKtjaemATC7YCRAELTXPT16Ofn:181898
+
+---------------------------------------------------------------------------
+
+API: Online Chess Actions
+url: http://www.chess.com/api/submit_echess_action
+
+parameters:
+id          (user token)
+chessid     (game id)
+command     (SUBMIT , RESIGN , OFFERDRAW , ACCEPTDRAW , CHAT)
+newmove     (only used for SUBMIT - format = b7b8=Q or e2e4)
+newmoveencoded     (only used for SUBMIT - strange encoded move format)
+timestamp   (timestamp of the game)
+message     (only used for CHAT)
+
+error return string:
+Error+<error_message>
+
+Example SUBMIT Call:
+
+http://www.chess.com/api/submit_echess_action?id=asd7fs7sd9f78assd9f&chessid=57&command=SUBMIT&newmove=b7c8%3DQ&timestamp=1239663157
+
+Example SUBMIT Return String:
+
+Success
+
+
+Example RESIGN Call:
+
+http://www.chess.com/api/submit_echess_action?id=asd7fs7sd9f78assd9f&chessid=57&command=RESIGN&timestamp=1239663157
+
+Example RESIGN Return String:
+
+Success
+
+
+Example OFFERDRAW Call:
+
+http://www.chess.com/api/submit_echess_action?id=asd7fs7sd9f78assd9f&chessid=57&command=OFFERDRAW&timestamp=1239663157
+
+Example OFFERDRAW Return String:
+
+Success
+
+Example CHAT Call 1:
+
+http://www.chess.com/api/submit_echess_action?id=asd7fs7sd9f78assd9f&chessid=57&command=CHAT&message=some_url_encoded_message&timestamp=1239663157
+
+Example CHAT Return String 1:
+
+Success+:0:this+is+a+url+encoded+message:1:this+is+a+url+encoded+message:0:some_url_encoded_message
+
+
+Example CHAT Call 2:
+
+http://www.chess.com/api/submit_echess_action?id=asd7fs7sd9f78assd9f&chessid=57&command=CHAT&timestamp=1239663157
+
+Example CHAT Return String 2:
+
+Success+:0:this is a message from me to the other user:1:this is a message to me from other user:0:some_url_encoded_message
+
+
+---------------------------------------------------------------------------
+
+API: Get Tactics Problem Batch
+url: http://www.chess.com/api/get_tactics_problem_batch
+
+parameters:
+id          (user token)
+is_install (0 or 1 - if 1 then api will return default set of 100 problems)
+
+success return string:
+Success+(|<id>:<fen>:<move_list>:<attempt_count>:<passed_count>:<rating>:<average_seconds>)0-n
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/get_tactics_problem_batch?id=asd7fs7sd9f78assd9f
+
+Example Return String:
+
+Success+|877:2kr1r2/ppp3pp/3q4/3p1p2/3P2P1/2PQ2n1/PP1N1bPP/RNB2R1K w - - 1 2:1. hxg3 Qh6# :7:4:1073:14|820:r1q2r1k/p4b2/1p3P2/3p3Q/1P1B1P2/2PB4/P6P/6RK b - - 1 1:1... Bxh5 2. f7# :4:3:720:14|865:6k1/1p2qpb1/p2R2p1/4P3/1P3P1p/2r4P/3Q2PK/8 w - - 1 2:1. Qxc3 Qxd6 2. exd6 Bxc3 3. d7 Bf6 :3:2:708:11|746:r3k2r/ppp1b2p/2n1pNp1/1Q1q4/2pp4/8/PPP2PPP/R1B1R1K1 b kq - 1 1:1... Bxf6 2. Qxd5 :2:1:1045:7|779:1r2N2k/pbp4p/1p1qp1p1/4Q3/3P4/2P5/PP4PP/5RK1 b KQkq - 1 1:1... Qxe5 2. Rf8# :3:2:773:3|835:7k/5r2/1p3q2/p1p4Q/2P3R1/4P2P/7K/8 b - - 1 1:1... Rh7 2. Qe8+ Qf8 3. Qxf8# :3:1:931:10|961:r4rk1/ppp1np1Q/3qbBp1/3pR3/8/3B4/PPP2PPP/6K1 b - - 1 1:1... Kxh7 2. Rh5+ Kg8 3. Rh8# :3:2:784:5
+
+---------------------------------------------------------------------------
+
+API: Tactics Trainer
+url: http://www.chess.com/api/tactics_trainer
+
+parameters:
+id          (user token)
+encoded_moves  (optional, 1 or 0)
+tactics_id  (optional)
+passed      (1 or 0 if tactics_id is present)
+correct_moves      (required if tactics_id is present and passed is 0)
+seconds      (required if tactics_id is present)
+
+This api will always return one tactics problem. If a tactics id and information is also passed, it will also process that tactic as completed.
+
+
+success return string:
+Success+|<score>:<user_rating_change>:<user_rating>:<problem_rating_change>:<problem_rating>(|<id>:<fen>:<move_list>:<attempt_count>:<passed_count>:<rating>:<average_seconds>)0-n
+
+score = percent (0 - 100)
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/tactics_trainer?id=6asdf6sad6fasd6fasd6fsd6&tactics_id=20776&passed=0&seconds=29&correct_moves=1
+
+Example Return String:
+
+Success+|6.6:-65:1273:78:1385|835:7k/5r2/1p3q2/p1p4Q/2P3R1/4P2P/7K/8 b - - 1 1:1... Rh7 2. Qe8+ Qf8 3. Qxf8#:3:1:931:10
+
+---------------------------------------------------------------------------
+
+API: Allow auto login to chess.com:
+url: http://www.chess.com/login.html?als=<auto_login_string>&goto=<goto_url>
+
+parameters
+id          (user token)
+goto_url    (redirect url after login)
+
+Example: http://www.chess.com/login.html?als=kFCMJsY4%2BiWfnCKH7%2F%2FG45myelPMhTDTN0UTho3j99KlppWfbj6Dz7oBtjLRM5elPYxo1Q0m2qWvY3EeQ44x6A%3D%3D&goto=%2Fhome%2Finvite_friends.html
+
+
+---------------------------------------------------------------------------
+
+API: Get Videos
+url: http://www.chess.com/api/get_videos
+
+parameters:
+id          (user token - optional)
+category    (optional)
+skill_level (optional)
+opening     (optional)
+author      (optional)
+theme       (optional)
+page        (optional - defaults to 1)
+page-size        (optional - defaults to 20)
+
+category values: amazing-games,endgames,openings,rules-basics,strategy,tactics
+skill_level values: beginner, intermediate, advanced
+
+
+This api will return videos in order of descending publish date, paginated 20 per request.
+
+success return string:
+Success+|<total_video_count_matching_filters>|(<title><-><description><-><category><-><skill_level><-><opening><-><author_username><-><author_chess_title><-><author_first_name><-><author_last_name><-><minutes><-><publish_timestamp><-><view_url><--->)0-n
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/get_videos?id=lOXwm4qMHloisAZ7M9NqmJP3oqRUCL1%2Fn5845Vja%2Bn%2BozhMl62S6RiZo8ghU63WESN9Fb6ivL6VCW9krRnVNkg%3D%3D&skill_level=beginner&category=strategy&page=1
+
+
+Example Return String:
+
+Success+|1|Test11<->test<->Strategy<->Intermediate<->Strategy<->jay<->CM Severson<->25<->http://lh.chess.com/video/player_iphone/test1/lOXwm4qMHloisAZ7M9NqmJP3oqRUCL1%2Fn5845Vja%2Bn%2BozhMl62S6RiZo8ghU63WESN9Fb6ivL6VCW9krRnVNkg%3D%3D/playme.m4v<--->
+
+
+---------------------------------------------------------------------------
+
+API: Get User Info
+url: http://www.chess.com/api/get_user_info
+
+parameters:
+username   
+
+
+success return string:
+Success+|<user_id>|<chess_title>|<username>|<online_status_image_url>|<country>|<country_image_url>|<last_login_date>|<best_rating>|<best_rating_type>|<games_in_progress_count>|<timeout_percent>|<is_friends>|<has_avatar>
+
+error return string:
+Error+<error_message>
+
+
+Example Call:
+
+http://www.chess.com/api/get_user_info?username=jay
+
+Example Return String:
+
+Success+|31|CM|jay|http://www.chess.com/images/icons/custom/antenna.gif|United States|http://www.chess.com/images/flags/us.gif|7/15/2009 5:56pm|1477|Turn-Based|14|8.49%|1|0
+

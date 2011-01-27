@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.chess.live.android</groupId>
+	<artifactId>lcc-android</artifactId>
+	<packaging>apk</packaging>
+	<name>Chess.com Android Live Chess Client</name>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>2.2.1</version>
+			<!--<version>2.1_r1</version>-->
+			<!--<version>2.1.2</version>-->
+			<scope>provided</scope>
+		</dependency>
+
+		<!--<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>-->
+
+		<dependency>
+			<groupId>com.chess.live</groupId>
+			<artifactId>game-rules</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.chess.live</groupId>
+			<artifactId>live-chess-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.cometd.java</groupId>
+					<artifactId>cometd-java-client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-util</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-android</artifactId>
+			<version>1.6.1-RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+
+		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>src</sourceDirectory>
+		<!--<testSourceDirectory>test</testSourceDirectory>-->
+		<resources>
+				<resource>
+						<directory>${basedir}/res</directory>
+						<filtering>true</filtering>
+						<targetPath>${project.build.outputDirectory}/filtered-res</targetPath>
+				</resource>
+				<resource>
+						<targetPath>${project.basedir}/target/filtered-manifest</targetPath>
+						<filtering>true</filtering>
+						<directory>${basedir}</directory>
+						<includes>
+								<include>AndroidManifest.xml</include>
+						</includes>
+				</resource>
+		</resources>
+
+		<plugins>
+
+			<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<executions>
+							<execution>
+									<phase>initialize</phase>
+									<goals>
+											<goal>resources</goal>
+									</goals>
+							</execution>
+					</executions>
+			</plugin>
+
+			<!--<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-jar-plugin</artifactId>
+			  <configuration>
+			    <excludes>
+			      <exclude>**/*LocalStrings.properties*</exclude>
+			    </excludes>
+			  </configuration>
+			</plugin>-->
+
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>maven-android-plugin</artifactId>
+				<version>2.6.0</version>
+				<configuration>
+					<sdk>
+						<platform>8</platform>
+					</sdk>
+					<emulator>
+						<avd>Android8</avd><!-- todo: should be extracted to properties-->
+					</emulator>
+
+					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+
+					<androidManifestFile>${project.build.directory}/filtered-manifest/AndroidManifest.xml</androidManifestFile>
+          <resourceDirectory>${project.build.outputDirectory}/filtered-res</resourceDirectory>
+				</configuration>
+
+				<extensions>true</extensions>
+
+				<!--<executions>
+						<execution>
+								<id>startEmulator</id>
+								<phase>initialize</phase>
+								<goals>
+										<goal>emulator-start</goal>
+								</goals>
+						</execution>
+						<execution>
+								<id>alignApk</id>
+								<phase>package</phase>
+								<goals>
+										<goal>zipalign</goal>
+								</goals>
+						</execution>
+				</executions>-->
+
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<executions>
+							<execution>
+									<id>parse-version</id>
+									<goals>
+											<goal>parse-version</goal>
+									</goals>
+							</execution>
+					</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+				<id>development</id>
+				<activation>
+						<activeByDefault>true</activeByDefault>
+				</activation>
+				<properties>
+						<deployment.stage>In Development</deployment.stage>
+				</properties>
+		</profile>
+		<profile>
+				<id>staging</id>
+				<properties>
+						<deployment.stage>In Staging/QA</deployment.stage>
+				</properties>
+		</profile>
+		<profile>
+				<id>production</id>
+				<properties>
+						<deployment.stage>In Production</deployment.stage>
+				</properties>
+		</profile>
+		<profile>
+				<id>release</id>
+				<!-- via this activation the profile is automatically used when the release is done with the maven release
+						 plugin -->
+				<activation>
+						<property>
+								<name>performRelease</name>
+								<value>true</value>
+						</property>
+				</activation>
+				<build>
+						<plugins>
+								<!-- proguard can shrink the source classes and remove unused classes and more.. -->
+								<plugin>
+										<groupId>com.pyx4me</groupId>
+										<artifactId>proguard-maven-plugin</artifactId>
+										<executions>
+												<execution>
+														<phase>process-classes</phase>
+														<goals>
+																<goal>proguard</goal>
+														</goals>
+												</execution>
+										</executions>
+										<!-- we need to override the dependency of the plugin to get a newer version of proguard -->
+										<dependencies>
+												<dependency>
+														<groupId>net.sf.proguard</groupId>
+														<artifactId>proguard</artifactId>
+														<version>4.4</version>
+														<scope>runtime</scope>
+												</dependency>
+										</dependencies>
+										<configuration>
+												<proguardVersion>4.4</proguardVersion>
+												<maxMemory>256m</maxMemory>
+												<injar>android-classes</injar>
+												<libs>
+														<lib>${rt.jar.path}</lib>
+														<lib>${jsse.jar.path}</lib>
+												</libs>
+												<skip>false</skip>
+												<obfuscate>true</obfuscate>
+												<addMavenDescriptor>false</addMavenDescriptor>
+
+												<proguardInclude>${basedir}/proguard.conf</proguardInclude>
+
+										</configuration>
+								</plugin>
+								<plugin>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-jarsigner-plugin</artifactId>
+										<executions>
+												<execution>
+														<id>signing</id>
+														<goals>
+																<goal>sign</goal>
+																<goal>verify</goal>
+														</goals>
+														<phase>package</phase>
+														<inherited>true</inherited>
+														<configuration>
+																<removeExistingSignatures>true</removeExistingSignatures>
+																<archiveDirectory/>
+																<includes>
+																		<include>${project.build.directory}/${project.artifactId}.apk</include>
+																</includes>
+																<keystore>${sign.keystore}</keystore>
+																<alias>${sign.alias}</alias>
+																<storepass>${sign.storepass}</storepass>
+																<keypass>${sign.keypass}</keypass>
+																<verbose>true</verbose>
+														</configuration>
+												</execution>
+										</executions>
+								</plugin>
+								<!-- the signed apk then needs to be zipaligned -->
+								<plugin>
+										<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+										<artifactId>maven-android-plugin</artifactId>
+										<inherited>true</inherited>
+										<configuration>
+												<sign>
+														<debug>false</debug>
+												</sign>
+												<zipalign>
+														<verbose>true</verbose>
+														<inputApk>${project.build.directory}/${project.artifactId}.apk</inputApk>
+														<outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk
+														</outputApk>
+												</zipalign>
+										</configuration>
+										<executions>
+												<execution>
+														<id>alignApk</id>
+														<phase>package</phase>
+														<goals>
+																<goal>zipalign</goal>
+														</goals>
+												</execution>
+										</executions>
+								</plugin>
+								<plugin>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>build-helper-maven-plugin</artifactId>
+										<configuration>
+												<artifacts>
+														<artifact>
+																<file>${project.build.directory}/${project.artifactId}-signed-aligned.apk</file>
+																<type>apk</type>
+																<classifier>signed-aligned</classifier>
+														</artifact>
+														<artifact>
+																<file>${project.build.directory}/proguard_map.txt</file>
+																<type>map</type>
+																<classifier>release</classifier>
+														</artifact>
+												</artifacts>
+										</configuration>
+										<executions>
+												<execution>
+														<id>attach-signed-aligned</id>
+														<phase>package</phase>
+														<goals>
+																<goal>attach-artifact</goal>
+														</goals>
+												</execution>
+										</executions>
+								</plugin>
+						</plugins>
+				</build>
+		</profile>
+		<!-- to avoid having to do symlinks to rt.jar like documented e.g. here
+		http://bruehlicke.blogspot.com/2009/11/missing-rtjar-mac-os-x-using-proguard.html
+		http://codebistro.com/2010/07/18/proguard-and-runtime-libraries-on-mac-os-x/
+		-->
+		<profile>
+				<id>linux</id>
+				<activation>
+						<os>
+								<family>unix</family>
+						</os>
+				</activation>
+				<properties>
+						<rt.jar.path>${env.JAVA_HOME}/jre/lib/rt.jar</rt.jar.path>
+						<jsse.jar.path>${env.JAVA_HOME}/jre/lib/jsse.jar</jsse.jar.path>
+				</properties>
+		</profile>
+		<!-- mac profile has to be after unix since running on mac will trigger both -->
+		<profile>
+				<id>mac</id>
+				<activation>
+						<os>
+								<family>mac</family>
+						</os>
+				</activation>
+				<properties>
+						<!-- absolute path -->
+						<!--<rt.jar.path>/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/classes.jar</rt.jar.path>-->
+						<!-- or with JAVA_HOME /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/ -->
+						<rt.jar.path>${env.JAVA_HOME}/../Classes/classes.jar</rt.jar.path>
+						<jsse.jar.path>${env.JAVA_HOME}/../Classes/jsse.jar</jsse.jar.path>
+				</properties>
+		</profile>
+		<profile>
+				<id>windows</id>
+				<activation>
+						<os>
+								<family>windows</family>
+						</os>
+				</activation>
+				<properties>
+						<rt.jar.path>${env.JAVA_HOME}/jre/lib/rt.jar</rt.jar.path>
+						<jsse.jar.path>${env.JAVA_HOME}/jre/lib/jsse.jar</jsse.jar.path>
+				</properties>
+		</profile>
+
+    </profiles>
+
+</project>

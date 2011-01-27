@@ -1,0 +1,8 @@
+local.properties
+.classpath
+.project
+*.launch
+*.iml
+*.ipr
+*.iws
+target
