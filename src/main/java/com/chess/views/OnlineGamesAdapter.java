@@ -1,0 +1,129 @@
+package com.chess.views;
+
+import java.util.ArrayList;
+
+import com.chess.R;
+import com.chess.model.GameListElement;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
+
+	public ArrayList<GameListElement> items;
+	private LayoutInflater vi;
+	private int res;
+	private Context CTX;
+  private boolean isLiveChess;
+
+    public OnlineGamesAdapter(Context context, int textViewResourceId, ArrayList<GameListElement> items, boolean isLiveChess) {
+        super(context, textViewResourceId, items);
+        this.items = items;
+        this.vi = LayoutInflater.from(context);
+        this.res = textViewResourceId;
+        this.CTX = context;
+        this.isLiveChess = isLiveChess;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+        	convertView = vi.inflate(res, null);
+        }
+        final GameListElement el = items.get(position);
+      if(el != null)
+      {
+        if(el.type == 0)
+        {
+          if (isLiveChess)
+          {
+            if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0"))
+            {
+              convertView.findViewById(R.id.directChallenge).setVisibility(View.VISIBLE);
+            }
+            else
+            {
+              convertView.findViewById(R.id.directChallenge).setVisibility(View.GONE);
+            }
+          }
+
+          TextView info = (TextView) convertView.findViewById(R.id.info);
+          TextView left = (TextView) convertView.findViewById(R.id.left);
+          /*String color = CTX.getString(R.string.random);
+          if(el.values.get("playas_color").equals("1"))
+          {
+            color = CTX.getString(R.string.white);
+          }
+          else if(el.values.get("playas_color").equals("2"))
+          {
+            color = CTX.getString(R.string.black);
+          }*/
+          final String time = isLiveChess ?
+                              el.values.get("is_rated") + ' ' + el.values.get("base_time") + ' ' + el.values.get("time_increment")
+                              : el.values.get("days_per_move") + CTX.getString(R.string.days);
+          String gametype = "";
+          if(el.values.get("game_type") != null && el.values.get("game_type").equals("2"))
+          {
+            gametype = " (960)";
+          }
+
+          final String opponentRating =
+            isLiveChess && el.values.get("is_released_by_me").equals("1") ? "" : "(" + el.values.get("opponent_rating") + ")";
+          final String prefix =
+            isLiveChess && el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("1") ?
+            "(open)" : el.values.get("opponent_username");
+          info.setText(prefix + ' ' + opponentRating + ' ' + gametype/* + ' ' + color*/);
+          left.setText(time);
+        }
+        else if(el.type == 1)
+        {
+        		TextView info = (TextView) convertView.findViewById(R.id.info);
+        		TextView left = (TextView) convertView.findViewById(R.id.left);
+        		String gametype = "";
+        		if(el.values.get("game_type") != null && el.values.get("game_type").equals("2"))
+        			gametype = " (960)";
+        		String draw = "";
+				if(el.values.get("is_draw_offer_pending").equals("p"))
+					draw = "\n"+CTX.getString(R.string.drawoffered);
+				info.setText(el.values.get("opponent_username")+gametype+draw);
+				if(el.values.get("is_my_turn").equals("1")){
+					left.setVisibility(View.VISIBLE);
+					String amount = el.values.get("time_remaining_amount");
+		        	if(el.values.get("time_remaining_amount").substring(0, 1).equals("0"))
+		        		amount = amount.substring(1);
+		        	if(el.values.get("time_remaining_units").equals("h"))
+		        		left.setText(amount+CTX.getString(R.string.hours));
+		        	else
+		        		left.setText(amount+CTX.getString(R.string.days));
+				} else{
+					left.setVisibility(View.GONE);
+					left.setText("");
+				}
+
+          } else if(el.type == 2){
+        		TextView info = (TextView) convertView.findViewById(R.id.info);
+        		TextView left = (TextView) convertView.findViewById(R.id.left);
+
+        		String gametype = "";
+        		if(el.values.get("game_type") != null && el.values.get("game_type").equals("2"))
+        			gametype = " (960)";
+
+
+				String result = CTX.getString(R.string.lost);
+				if(el.values.get("game_result").equals("1")){
+					result = CTX.getString(R.string.won);
+				} else if(el.values.get("game_result").equals("2")){
+					result = CTX.getString(R.string.draw);
+				}
+
+				info.setText(el.values.get("opponent_username")+gametype);
+				left.setText(result);
+        	}
+        }
+        return convertView;
+    }
+}
