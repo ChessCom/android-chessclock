@@ -46,20 +46,23 @@ public class LccSeekListListener implements SeekListListener
 
   public void onSeekItemAdded(SubscriptionId id, Challenge challenge)
   {
-    LccHolder.LOG.info("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
+    //LccHolder.LOG.info("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
     addSeek(challenge);
   }
 
   public void onSeekItemRemoved(SubscriptionId id, Long seekId)
   {
-    LccHolder.LOG.info("Seek item removed: user: " + lccHolder.getUser().getUsername() + ", challenge: " + seekId);
-    /*Seek seek = user.getConnection().getJinSeek(seekId);
-    if(seek == null)
+    if (lccHolder.isSeekContains(seekId))
     {
-      return;
+      LccHolder.LOG.info("Seek item removed: user: " + lccHolder.getUser().getUsername() + ", challenge: " + seekId);
+      /*Seek seek = user.getConnection().getJinSeek(seekId);
+      if(seek == null)
+      {
+        return;
+      }
+      user.getListenerManager().fireSeekEvent(new SeekEvent(user.getConnection(), null, SeekEvent.SEEK_REMOVED, seek));*/
+      lccHolder.removeSeek(seekId);
     }
-    user.getListenerManager().fireSeekEvent(new SeekEvent(user.getConnection(), null, SeekEvent.SEEK_REMOVED, seek));*/
-    lccHolder.removeSeek(seekId);
   }
 
   public void onPaginationInfoReceived(SubscriptionId id, PaginationInfo info)
@@ -73,7 +76,7 @@ public class LccSeekListListener implements SeekListListener
   {
     if (challenge.getFrom().isComputer())
     {
-      LccHolder.LOG.info("Seek received: ignore computer player");
+      //LccHolder.LOG.info("Seek received: ignore computer player");
       return;
     }
     if(lccHolder.isUserBlocked(challenge.getFrom().getUsername()))
@@ -86,13 +89,11 @@ public class LccSeekListListener implements SeekListListener
       LccHolder.LOG.info("Add seek: ignore seek, already exists");
       return;
     }
-    LccHolder.LOG.info("SEEK LIST LISTENER: add seek ");
-
-    // store only my seeks (rule for live chess android app)
-    if (challenge.getFrom().getUsername().equals(lccHolder.getUser().getUsername()))
+    /*if (challenge.getFrom().getUsername().equals(lccHolder.getUser().getUsername()))
     {
+      LccHolder.LOG.info("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
       lccHolder.putSeek(challenge);
-    }
+    }*/
   }
 
   private final LccHolder lccHolder;

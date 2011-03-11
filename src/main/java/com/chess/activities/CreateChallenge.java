@@ -133,7 +133,9 @@ public class CreateChallenge extends CoreActivity {
       iplayas = (Spinner)findViewById(R.id.iplayas);
     }
 		minrating = (Spinner)findViewById(R.id.minRating);
+    minrating.setSelection(App.sharedData.getInt("minrating", 0));
 		maxrating = (Spinner)findViewById(R.id.maxRating);
+    maxrating.setSelection(App.sharedData.getInt("maxrating", 0));
 		isRated = (CheckBox)findViewById(R.id.ratedGame);
 
 		findViewById(R.id.createchallenge).setOnClickListener(new OnClickListener() {
@@ -171,6 +173,10 @@ public class CreateChallenge extends CoreActivity {
           {
             initialTime.setText("10");
             bonusTime.setText("0");
+          }
+          if (lccHolder.getOwnSeeksCount() >= LccHolder.OWN_SEEKS_LIMIT)
+          {
+            return;
           }
           /*PieceColor color;
           switch(iplayas.getSelectedItemPosition())
@@ -260,6 +266,8 @@ public class CreateChallenge extends CoreActivity {
       {
         App.SDeditor.putString("initialTime", initialTime.getText().toString().trim());
         App.SDeditor.putString("bonusTime", bonusTime.getText().toString().trim());
+        App.SDeditor.putInt("minrating", minrating.getSelectedItemPosition());
+        App.SDeditor.putInt("maxrating", maxrating.getSelectedItemPosition());
         App.SDeditor.commit();
         App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
       }

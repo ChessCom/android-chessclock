@@ -43,7 +43,7 @@ public class MainApp extends Application {
         }).create().show();
 	}
 
-	public boolean guest = true, noInternet = false, offline = false, acceptdraw = false;
+	public boolean guest = false, noInternet = false, offline = false, acceptdraw = false;
 	public Bitmap[][] pieces;
 	public Bitmap board;
 	public ArrayList<GameListElement> GameListItems = new ArrayList<GameListElement>();

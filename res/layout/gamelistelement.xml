@@ -11,6 +11,6 @@
 	          android:textStyle="bold" android:gravity="center" android:padding="4dip" android:textSize="18dip"
 	          android:layout_width="wrap_content" android:layout_marginRight="5dip"></TextView>
 	<ImageView android:id="@+id/directChallenge" android:src="@drawable/flag_blue" android:padding="4dip" 
-			   android:layout_height="wrap_content" android:layout_width="wrap_content" android:visibility="gone"></ImageView>
+			   android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView>
 
 </LinearLayout>

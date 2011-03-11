@@ -30,14 +30,12 @@
 				android:gravity="center" android:visibility="gone"></TextView>
 			<TextView android:layout_height="wrap_content" android:text="Player"
 				android:padding="2dip" android:textColor="#fff" android:textStyle="bold"
-				android:drawableLeft="@drawable/whitemove" android:drawablePadding="5dip"
+				android:drawablePadding="5dip"
 				android:id="@+id/white" android:layout_width="wrap_content"
 				android:layout_marginRight="5dip" android:inputType="textMultiLine"></TextView>
 			<TextView android:layout_height="wrap_content" android:text="Computer"
 				android:id="@+id/black" android:padding="2dip" android:textColor="#fff"
-				android:textStyle="bold" android:gravity="right"
-				android:drawablePadding="5dip" android:layout_width="wrap_content"
-				android:drawableLeft="@drawable/blackmove"
+				android:textStyle="bold" android:drawablePadding="5dip" android:layout_width="wrap_content"
 				android:layout_marginRight="5dip" android:inputType="textMultiLine"></TextView>
 			<TextView android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:layout_weight="1"

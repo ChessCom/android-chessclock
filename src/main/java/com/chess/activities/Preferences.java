@@ -245,7 +245,7 @@ public class Preferences extends CoreActivity {
 		        }
 		        else
 		        {
-		          PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"ssb", false));
+		          PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"ssb", true));
 		        }
 				}
 		});

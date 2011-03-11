@@ -85,7 +85,7 @@ public class BoardView extends ImageView {
 	      }
 	      else
 	      {
-	        ssb = ca.App.sharedData.getBoolean(ca.App.sharedData.getString("username", "")+"ssb", false);
+	        ssb = ca.App.sharedData.getBoolean(ca.App.sharedData.getString("username", "")+"ssb", true);
 	      }
 		  if(ssb){
 				ca.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
@@ -214,17 +214,17 @@ public class BoardView extends ImageView {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
   {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    if (ca.App.isLiveChess())
-    {
+    /*if (ca.App.isLiveChess())
+    {*/
       if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
       {
-        this.setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(widthMeasureSpec));
+        this.setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(widthMeasureSpec + widthMeasureSpec/5));
       }
       else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
       {
-        this.setMeasuredDimension(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
+        this.setMeasuredDimension(MeasureSpec.getSize(heightMeasureSpec + heightMeasureSpec/5), MeasureSpec.getSize(heightMeasureSpec));
       }
-    }
+    //}
   }
 
 

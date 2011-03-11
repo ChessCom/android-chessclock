@@ -39,6 +39,7 @@ import com.chess.engine.Move;
 import com.chess.engine.PGNmoveParser;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.User;
 import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
@@ -53,7 +54,7 @@ public class Game extends CoreActivity {
 	private Timer OnlineGameUpdate = null, TacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
 	//private String gameId = "";
-	private int UPDATE_DELAY = 30000;
+	private int UPDATE_DELAY = 5000;
 
   private com.chess.model.Game OG;
 
@@ -408,10 +409,12 @@ public class Game extends CoreActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		if (App.isLiveChess() && extras.getInt("mode") == 4)
 	    {
 	      setContentView(R.layout.boardviewlive);
-	    }
+        lccHolder.getAndroid().setGameActivity(this);
+      }
 	    else
 	    {
 	      setContentView(R.layout.boardview);
@@ -431,6 +434,13 @@ public class Game extends CoreActivity {
     {
       whiteClockView.setVisibility(View.VISIBLE);
       blackClockView.setVisibility(View.VISIBLE);
+      lccHolder.getWhiteClock().paint();
+      lccHolder.getBlackClock().paint();
+      final com.chess.live.client.Game game = lccHolder.getGame(new Long(extras.getString("game_id")));
+      final User whiteUser = game.getWhitePlayer();
+      final User blackUser = game.getBlackPlayer();
+      final Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
+      lccHolder.setClockDrawPointer(isWhite);
     }
 
     endOfGameMessage = (TextView)findViewById(R.id.endOfGameMessage);
@@ -446,6 +456,7 @@ public class Game extends CoreActivity {
 			BV.board.init = true;
 			BV.board.mode = extras.getInt("mode");
 			BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+      //BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 			if(BV.board.mode < 4 && !App.sharedData.getString("saving", "").equals("")){
 				int i;
@@ -939,15 +950,15 @@ public class Game extends CoreActivity {
 						analysisLL.setVisibility(View.GONE);
 					}
 				}
-
-		        if(App.OnlineGame != null && App.OnlineGame.values.get("move_list") != null)
+            movelist.setText(BV.board.MoveListSAN());
+		        /*if(App.OnlineGame != null && App.OnlineGame.values.get("move_list") != null)
 		        {
 		          movelist.setText(App.OnlineGame.values.get("move_list"));
 		        }
 		        else
 	            {
 	              movelist.setText(BV.board.MoveListSAN());
-	            }
+	            }*/
 				BV.invalidate();
 
 				new Handler().post(new Runnable() {
@@ -963,9 +974,11 @@ public class Game extends CoreActivity {
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				BV.board.submit = false;
 
+         //String myMove = BV.board.MoveSubmit();
+
         if (App.isLiveChess() && BV.board.mode == 4)
         {
-          final String move = BV.board.MoveSubmit();
+          final String move = BV.board.convertMoveLive();
           LccHolder.LOG.info("LCC make move: " + move);
           try
           {
@@ -981,7 +994,7 @@ public class Game extends CoreActivity {
         {
           if(appService != null){
             appService.RunSingleTask(8,
-                                     "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=SUBMIT&newmove="+BV.board.MoveSubmit()+"&timestamp="+App.OnlineGame.values.get("timestamp"),
+                                     "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=SUBMIT&newmove="+BV.board.convertMoveEchess()+"&timestamp="+App.OnlineGame.values.get("timestamp"),
                                      PD = ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)
             );
           }
@@ -1180,7 +1193,7 @@ public class Game extends CoreActivity {
 									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 									BV.board.makeMove(m);
 								}
-								App.ShowMessage("Move list updated!");
+								//App.ShowMessage("Move list updated!");
 								BV.board.movesCount = Moves.length;
 								BV.invalidate();
 								Update(0);
@@ -1854,7 +1867,7 @@ public class Game extends CoreActivity {
       white.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
 			black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
 
-      endOfGameMessage.setText(intent.getExtras().getString("title") + ": " + intent.getExtras().getString("message"));
+      endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
       //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
       findViewById(R.id.moveButtons).setVisibility(View.GONE);
       findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);

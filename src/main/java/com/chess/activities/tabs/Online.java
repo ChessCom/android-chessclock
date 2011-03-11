@@ -120,8 +120,18 @@ public class Online extends CoreActivity {
     {
       currentGame.setVisibility(View.GONE);
     }
-    GamesAdapter = null;
-    App.GameListItems.clear();
+
+    /*if (GamesAdapter != null)
+    {
+      GamesAdapter.clear();
+      GamesAdapter = null;
+      App.GameListItems.clear();
+      GamesAdapter.notifyDataSetChanged();
+    }
+    else
+    {
+      App.GameListItems.clear();
+    }*/
   }
 
   @Override
@@ -571,14 +581,12 @@ public class Online extends CoreActivity {
 	}
   private enum StartNewGameButtonsEnum
   {
-    BUTTON_5_0(5, 0, "5 min"),
     BUTTON_10_0(10, 0, "10 min"),
-    BUTTON_2_12(2, 12, "2 | 12"),
+    BUTTON_5_0(5, 0, "5 min"),
     BUTTON_3_0(3, 0, "3 min"),
-    BUTTON_4_4(4, 4, "4 | 4"),
-    BUTTON_15_10(15, 10, "15 | 10"),
-    BUTTON_1_5(1, 5, "1 | 5"),
-    BUTTON_1_0(1, 0, "1 min");
+    BUTTON_30_0(30, 0, "30 min"),
+    BUTTON_2_12(2, 12, "2 | 12"),
+    BUTTON_1_5(1, 5, "1 | 5");
 
     private int min;
     private int sec;

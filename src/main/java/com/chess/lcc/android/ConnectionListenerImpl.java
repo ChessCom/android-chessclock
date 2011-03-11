@@ -33,9 +33,9 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
-    lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-    lccHolder.getClient()
-      .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());
+    //lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
+    /*lccHolder.getClient()
+      .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
 
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(true, 0);
@@ -83,7 +83,7 @@ public class ConnectionListenerImpl implements ConnectionListener
       }
     }
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(false, 0, detailsMessage);
-    lccHolder.getAndroid().showReconnectingIndicator();
+    //lccHolder.getAndroid().showReconnectingIndicator();
   }
 
   public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
@@ -106,8 +106,8 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
     lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-    lccHolder.getClient()
-      .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());
+    /*lccHolder.getClient()
+      .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
   }
 
@@ -119,8 +119,8 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
     lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-    lccHolder.getClient()
-      .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());
+    /*lccHolder.getClient()
+      .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
     lccHolder.getAndroid().closeReconnectingIndicator();
   }
@@ -131,6 +131,11 @@ public class ConnectionListenerImpl implements ConnectionListener
         "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
         clientProtocolVersion + ")");
     // todo: inforom user and show login screen
+  }
+
+  @Override
+  public void onKicked(User arg0, String arg1, String arg2) {
+  // TODO Auto-generated method stub
   }
 
 }

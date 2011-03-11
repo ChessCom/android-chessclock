@@ -38,6 +38,10 @@ public class Notifications extends Service {
 			private int inc = 0;
 			private String response = "", notification_message="", timestamp="";
 			public void run() {
+        if (App == null || App.sharedData == null)
+        {
+          return;
+        }
 				if((inc <= 5 || (inc%15 == 0 && inc <= 60) || inc%60 == 0) && !App.guest && !App.sharedData.getString("user_token", "").equals("")){
 					response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id="+App.sharedData.getString("user_token", ""), "GET", null, null);
 					if(response.trim().contains("Success+1")){

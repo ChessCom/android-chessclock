@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+	android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
 
 	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#e1e1e1">
 		<TextView android:id="@+id/tournaments" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="Tournaments" android:textSize="16px" android:textStyle="bold" android:padding="5px" android:drawableLeft="@drawable/tourny" android:drawablePadding="10px" android:gravity="center" android:textColor="#222"></TextView>

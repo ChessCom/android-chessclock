@@ -55,7 +55,7 @@ public class Board {
     public boolean init = false, chess960 = false, reside = false, submit = false, analysis = false, retry = false, tacticCanceled = false;
     public int side = LIGHT;
     public int sec = 0, left = 0;
-    public int TacticsCorrectMoves = 0;	
+    public int TacticsCorrectMoves = 0;
 	public String[] TacticMoves;
     int xside = DARK;
     int rotated = 0;
@@ -68,7 +68,7 @@ public class Board {
     int pawnRank[][] = new int [2][10];
     int pieceMat[] = new int[2];
     int pawnMat[] = new int[2];
-    
+
     int boardcolor[] =  {
     		0, 1, 0, 1, 0, 1, 0, 1,
     		1, 0, 1, 0, 1, 0, 1, 0,
@@ -79,7 +79,7 @@ public class Board {
     		0, 1, 0, 1, 0, 1, 0, 1,
     		1, 0, 1, 0, 1, 0, 1, 0
     	    };
-    
+
     public int color[] =  {
 	1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1,
@@ -90,7 +90,7 @@ public class Board {
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0
     };
-    
+
     public int piece[] =  {
 	3, 1, 2, 4, 5, 2, 1, 3,
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -101,13 +101,13 @@ public class Board {
 	0, 0, 0, 0, 0, 0, 0, 0,
 	3, 1, 2, 4, 5, 2, 1, 3
     };
-    
+
     final char pieceChar[] = { 'P', 'N', 'B', 'R', 'Q', 'K' };
-    
+
     private boolean slide[] = { false, false, true, true, true, false };
 
     private int offsets[] = { 0, 8, 4, 4, 8, 8 };
-    
+
     private int offset[][] = {
         { 0, 0, 0, 0, 0, 0, 0, 0 },
         { -21, -19, -12, -8, 8, 12, 19, 21 },
@@ -116,7 +116,7 @@ public class Board {
         { -11, -10, -9, -1, 1, 9, 10, 11 },
         { -11, -10, -9, -1, 1, 9, 10, 11 }
     };
-    
+
     int mailbox[] = {
          -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
          -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -142,18 +142,18 @@ public class Board {
         81, 82, 83, 84, 85, 86, 87, 88,
         91, 92, 93, 94, 95, 96, 97, 98
     };
-    
+
     public boolean castleMask[] = {false, false, false, false};
-    
+
     /* the values of the pieces */
     int pieceValue[] = {
             100, 300, 300, 500, 900, 0
     };
-    
+
     /* The "pcsq" arrays are piece/square tables. They're values
     added to the material value of the piece based on the
     location of the piece. */
-    
+
     int pawnPcsq[] = {
             0,   0,   0,   0,   0,   0,   0,   0,
             5,  10,  15,  20,  20,  15,  10,   5,
@@ -164,7 +164,7 @@ public class Board {
             0,   0,   0, -40, -40,   0,   0,   0,
             0,   0,   0,   0,   0,   0,   0,   0
     };
-    
+
     int knightPcsq[] = {
             -10, -10, -10, -10, -10, -10, -10, -10,
             -10,   0,   0,   0,   0,   0,   0, -10,
@@ -175,7 +175,7 @@ public class Board {
             -10,   0,   0,   0,   0,   0,   0, -10,
             -10, -30, -10, -10, -10, -10, -30, -10
     };
-    
+
     int bishopPcsq[] = {
             -10, -10, -10, -10, -10, -10, -10, -10,
             -10,   0,   0,   0,   0,   0,   0, -10,
@@ -186,7 +186,7 @@ public class Board {
             -10,   0,   0,   0,   0,   0,   0, -10,
             -10, -10, -20, -10, -10, -20, -10, -10
     };
-    
+
     int kingPcsq[] = {
             -40, -40, -40, -40, -40, -40, -40, -40,
             -40, -40, -40, -40, -40, -40, -40, -40,
@@ -197,7 +197,7 @@ public class Board {
             -20, -20, -20, -20, -20, -20, -20, -20,
               0,  20,  40, -20,   0, -20,  40,  20
     };
-    
+
     int kingEndgamePcsq[] = {
              0,  10,  20,  30,  30,  20,  10,   0,
             10,  20,  30,  40,  40,  30,  20,  10,
@@ -208,7 +208,7 @@ public class Board {
             10,  20,  30,  40,  40,  30,  20,  10,
              0,  10,  20,  30,  30,  20,  10,   0
     };
-    
+
     /* The flip array is used to calculate the piece/square
     values for DARK pieces. The piece/square value of a
     LIGHT pawn is pawnPcsq[sq] and the value of a DARK
@@ -223,56 +223,62 @@ public class Board {
             8,   9,  10,  11,  12,  13,  14,  15,
             0,   1,   2,   3,   4,   5,   6,   7
     };
-    
+
     public int mode=0;
-    public int bRook1=0;
-	public int bKing=4;
-	public int bRook2=7;
-	
-	public int wRook1=56;
-	public int wKing=60;
-	public int wRook2=63;
-	
+
+    private final int BLACK_ROOK_1_INITIAL_POS = 0;
+    private final int BLACK_ROOK_2_INITIAL_POS = 7;
+    private final int WHITE_ROOK_1_INITIAL_POS = 56;
+    private final int WHITE_ROOK_2_INITIAL_POS = 63;
+
+    public int bRook1 = BLACK_ROOK_1_INITIAL_POS;
+	  public int bKing = 4;
+	  public int bRook2 = BLACK_ROOK_2_INITIAL_POS;
+
+	  public int wRook1 = WHITE_ROOK_1_INITIAL_POS;
+	  public int wKing = 60;
+	  public int wRook2 = WHITE_ROOK_2_INITIAL_POS;
+
 	public int[] bKingMoveOO = new int[]{6};
 	public int[] bKingMoveOOO = new int[]{2};
-	
+
 	public int[] wKingMoveOO = new int[]{62};
 	public int[] wKingMoveOOO = new int[]{58};
-	
+
 	public void ResetCastlePos(){
 		bRook1=0;
 		bKing=4;
-		bRook2=7;		
+		bRook2=7;
 		wRook1=56;
 		wKing=60;
-		wRook2=63;		
+		wRook2=63;
 		bKingMoveOO = new int[]{6};
-		bKingMoveOOO = new int[]{2};		
+		bKingMoveOOO = new int[]{2};
 		wKingMoveOO = new int[]{62};
 		wKingMoveOOO = new int[]{58};
 	}
-	
+
 	public int[] GenCastlePos(String fen){
 		//rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR
 		String[] tmp = fen.split(" ");
-		
+
 		if(tmp.length > 2){ //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 			String castling = tmp[2].trim();
 			if(!castling.contains("K")){
 				castleMask[2] = true;
-			} 
+			}
 			if(!castling.contains("Q")){
 				castleMask[3] = true;
-			} 
+			}
 			if(!castling.contains("k")){
 				castleMask[0] = true;
-			} 
+			}
 			if(!castling.contains("q")){
 				castleMask[1] = true;
 			}
 			Log.i(fen, ""+castleMask[2]+castleMask[3]+castleMask[0]+castleMask[1]);
 		}
-		
+
 		String[] FEN = tmp[0].split("[/]");
 		int offset = 0, i = 0;
 		boolean found = false;
@@ -310,7 +316,7 @@ public class Board {
 				offset+=(Integer.parseInt(FEN[7].substring(i, i+1))-1);
 			}
 		}
-		
+
 		//black O-O
 		if(bKing<5){
 			//bKingMoveOO = new int[]{6,7};
@@ -326,7 +332,7 @@ public class Board {
 				}
 			} else{
 				bKingMoveOO = new int[]{7};
-			}		
+			}
 		}
 		//black O-O-O
 		if(bKing > 3){
@@ -345,10 +351,10 @@ public class Board {
 					bKingMoveOOO = new int[]{0};
 				}
 			} else if(bKing == 1){
-				bKingMoveOOO = new int[]{0};				
+				bKingMoveOOO = new int[]{0};
 			}
 		}
-		
+
 		//white O-O
 		if(wKing<61){
 			//wKingMoveOO = new int[]{62,63};
@@ -364,7 +370,7 @@ public class Board {
 				}
 			} else if(wKing == 62){
 				wKingMoveOO = new int[]{63};
-			}			
+			}
 		}
 		//white O-O-O
 		if(wKing > 59){
@@ -383,44 +389,44 @@ public class Board {
 					wKingMoveOOO = new int[]{56};
 				}
 			} else{
-				wKingMoveOOO = new int[]{56};				
+				wKingMoveOOO = new int[]{56};
 			}
 		}
-		
+
 		Log.i(fen, bRook1+" "+bKing+" "+bRook2+" "+wRook1+" "+wKing+" "+wRook2);
 		return new int[]{bRook1, bKing, bRook2, wRook1, wKing, wRook2};
 	}
-    
-    
+
+
     public int getColor(int i, int j) {
         return color[(i << 3) + j];
     }
-    
+
     public int getPiece(int i, int j) {
         return piece[(i << 3) + j];
     }
-    
+
     public boolean isWhiteToMove() {
         return (side == LIGHT);
     }
-    
+
     /* inCheck() returns true if side s is in check and false
     otherwise. It just scans the board to find side s's king
     and calls attack() to see if it's being attacked. */
 
     public boolean inCheck(int s) {
         int i;
-    
+
         for (i = 0; i < 64; ++i)
             if (piece[i] == KING && color[i] == s)
                 return attack(i, s ^ 1);
         return true;  /* shouldn't get here */
     }
-    
+
 
     /* attack() returns true if square sq is being attacked by side
     s and false otherwise. */
-    
+
     boolean attack(int sq, int s) {
 	int i, j, n;
 
@@ -465,14 +471,14 @@ public class Board {
     what squares they attack. When it finds a piece/square
     combination, it calls genPush to put the move on the "move
     stack." */
-    
+
     public TreeSet<Move> gen() {
         TreeSet<Move> ret = new TreeSet<Move>();
-        
+
 	for (int i = 0; i < 64; ++i)
             if (color[i] == side) {
                 if (piece[i] == PAWN) {
-                    if (side == LIGHT) {                    	
+                    if (side == LIGHT) {
                     	    if (COL(i) != 0 && color[i - 9] == DARK)
 	                            genPush(ret, i, i - 9, 17);
 	                        if (COL(i) != 7 && color[i - 7] == DARK)
@@ -481,7 +487,7 @@ public class Board {
 	                            genPush(ret, i, i - 8, 16);
 	                            if (i >= 48 && color[i - 16] == EMPTY)
 	                                genPush(ret, i, i - 16, 24);
-	                        }                    	                      
+	                        }
                     }
                     else {
                     	if (COL(i) != 0 && color[i + 7] == LIGHT)
@@ -492,7 +498,7 @@ public class Board {
 	                        genPush(ret, i, i + 8, 16);
 	                    if (i <= 15 && color[i + 16] == EMPTY)
 	                        genPush(ret, i, i + 16, 24);
-	                    }                    	
+	                    }
                     }
                 }
                 else if(piece[i] < offsets.length)
@@ -534,21 +540,21 @@ public class Board {
             	for(i=0;i<bKingMoveOOO.length;i++)
             		genPush(ret, bKing, bKingMoveOOO[i], 2);
             }
-	}	
-	
+	}
+
 	/* generate en passant moves */
 	if (ep != -1) {
-            if (side == LIGHT) {            	
+            if (side == LIGHT) {
             		if (COL(ep) != 0 && color[ep + 7] == LIGHT && piece[ep + 7] == PAWN)
                         genPush(ret, ep + 7, ep, 21);
                     if (COL(ep) != 7 && color[ep + 9] == LIGHT && piece[ep + 9] == PAWN)
-                        genPush(ret, ep + 9, ep, 21);            	               
+                        genPush(ret, ep + 9, ep, 21);
             }
             else {
             		if (COL(ep) != 0 && color[ep - 9] == DARK && piece[ep - 9] == PAWN)
                         genPush(ret, ep - 9, ep, 21);
                     if (COL(ep) != 7 && color[ep - 7] == DARK && piece[ep - 7] == PAWN)
-                        genPush(ret, ep - 7, ep, 21);          
+                        genPush(ret, ep - 7, ep, 21);
             }
 	}
         return ret;
@@ -622,7 +628,7 @@ public class Board {
     it uses the move's history heuristic value. Note that
     1,000,000 is added to a capture move's score, so it
     always gets ordered above a "normal" move. */
-    
+
     void genPush(TreeSet<Move> ret, int from, int to, int bits) {
 	if ((bits & 16) != 0) {
             if (side == LIGHT) {
@@ -640,7 +646,7 @@ public class Board {
 	}
 
         Move g = new Move(from, to, 0, bits);
-        
+
 	if (color[to] != EMPTY)
             g.setScore(1000000 + (piece[to] * 10) - piece[from]);
 	else
@@ -651,7 +657,7 @@ public class Board {
 
     /* genPromote() is just like genPush(), only it puts 4 moves
     on the move stack, one for each possible promotion piece */
-    
+
     void genPromote(TreeSet<Move> ret, int from, int to, int bits) {
 	for (char i = KNIGHT; i <= QUEEN; ++i) {
             Move g = new Move(from, to, i, (bits | 32));
@@ -663,9 +669,9 @@ public class Board {
     /* makemove() makes a move. If the move is illegal, it
     undoes whatever it did and returns false. Otherwise, it
     returns true. */
-    
+
     public boolean makeMove(Move m) {
-	
+
 	/* test to see if a castle move is legal and move the rook
 	   (the king is moved with the usual move code later) */
     int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
@@ -673,14 +679,14 @@ public class Board {
         int from=-1, to=-1;
 
         int[] piece_tmp = piece.clone();
-        
+
         if (inCheck(side))
             return false;
-        
+
     	int d = Math.abs(m.from-m.to);
     	int min = m.to;
-    	if(m.from < m.to)	min = m.from;	
-    	
+    	if(m.from < m.to)	min = m.from;
+
     	int i;
     	for(i=0;i < bKingMoveOO.length;i++){
     		if(bKingMoveOO[i] == m.to){
@@ -689,7 +695,7 @@ public class Board {
     			min = bRook2;
     	    	if(m.from < bRook2)	min = m.from;
     			break;
-    		}    		
+    		}
     	}
     	for(i=0;i < bKingMoveOOO.length;i++){
     		if(bKingMoveOOO[i] == m.to){
@@ -699,7 +705,7 @@ public class Board {
     	    	if(m.from < bRook1)	min = m.from;
     			break;
     		}
-    	}            	
+    	}
     	for(i=0;i < wKingMoveOO.length;i++){
     		if(wKingMoveOO[i] == m.to){
     			what = 2;
@@ -718,12 +724,12 @@ public class Board {
     			break;
     		}
     	}
-    	
+
     	if(castleMask[what]) return false;
-    	
+
     	if(what == 2){
     		if (attack(F1, xside) || attack(G1, xside))
-                return false;            		
+                return false;
     		if(color[F1] != EMPTY && piece[F1] != KING && piece[F1] != ROOK)
     			return false;
     		if(color[G1] != EMPTY && piece[G1] != KING && piece[G1] != ROOK)
@@ -732,9 +738,9 @@ public class Board {
     			return false;
     		if(piece[G1] == ROOK && G1 != wRook2)
     			return false;
-    		
-            
-    		if(d > 1){            	
+
+
+    		if(d > 1){
             	while(d != 0){
             		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
             			return false;
@@ -742,9 +748,9 @@ public class Board {
             		d--;
             	}
             }
-            
+
             from = wRook2;
-            to = F1;                   
+            to = F1;
     	} else if(what == 3){
     		if (attack(C1, xside) || attack(D1, xside))
                 return false;
@@ -756,8 +762,8 @@ public class Board {
     			return false;
     		if(piece[D1] == ROOK && D1 != wRook1)
     			return false;
-            
-    		if(d > 1){            	
+
+    		if(d > 1){
             	while(d != 0){
             		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
             			return false;
@@ -765,7 +771,7 @@ public class Board {
             		d--;
             	}
             }
-            
+
             from = wRook1;
             to = D1;
     	} else if(what == 1){
@@ -779,8 +785,8 @@ public class Board {
     			return false;
     		if(piece[D8] == ROOK && D8 != bRook1)
     			return false;
-            
-    		if(d > 1){            	
+
+    		if(d > 1){
             	while(d != 0){
             		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
             			return false;
@@ -788,7 +794,7 @@ public class Board {
             		d--;
             	}
             }
-            
+
             from = bRook1;
             to = D8;
     	} else if(what == 0){
@@ -798,13 +804,13 @@ public class Board {
     			return false;
     		if(color[G8] != EMPTY && piece[G8] != KING && piece[G8] != ROOK)
     			return false;
-    		
+
     		if(piece[F8] == ROOK && bRook2 != F8)
     			return false;
     		if(piece[G8] == ROOK && bRook2 != G8)
     			return false;
-            
-            if(d > 1){            	
+
+            if(d > 1){
             	while(d != 0){
             		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
             			return false;
@@ -812,18 +818,18 @@ public class Board {
             		d--;
             	}
             }
-            
+
             from = bRook2;
             to = F8;
     	}
-    	            	
+
     	color[to] = color[from];
         piece[to] = piece[from];
         if(to != from){
         	color[from] = EMPTY;
         	piece[from] = EMPTY;
         }
-    	
+
     	/* back up information so we can take the move back later. */
         histDat[hply] = new HistoryData();
     	histDat[hply].m = m;
@@ -864,7 +870,7 @@ public class Board {
         			castleMask[3] = true;
         	}
         }
-        
+
     	if ((m.bits & 8) != 0) {
                 if (side == LIGHT)
                     ep = m.to + 8;
@@ -882,7 +888,7 @@ public class Board {
     	int tmp_to = -1;
     	if(what == 3){
     		color[58] = side;
-        	piece[58] = piece_tmp[(int)m.from]; 
+        	piece[58] = piece_tmp[(int)m.from];
         	tmp_to = 58;
     	} else if(what == 2){
     		color[62] = side;
@@ -901,7 +907,7 @@ public class Board {
     		color[m.from] = EMPTY;
     		piece[m.from] = EMPTY;
     	}
-    	
+
     	/* switch sides and test for legality (if we can capture
     	   the other guy's king, it's an illegal position and
     	   we need to take the move back) */
@@ -921,8 +927,8 @@ public class Board {
 	histDat[hply].ep = ep;
 	histDat[hply].fifty = fifty;
 	histDat[hply].castleMask = castleMask.clone();
-	histDat[hply].what = what; 
-	histDat[hply].notation = GetMoveSAN();	
+	histDat[hply].what = what;
+	histDat[hply].notation = GetMoveSAN();
 	++hply;
 
 	/* update the castle, en passant, and
@@ -951,7 +957,24 @@ public class Board {
     			castleMask[3] = true;
     	}
     }
-	
+
+    if (m.to == BLACK_ROOK_1_INITIAL_POS && !castleMask[1]) // q (fen castle)
+    {
+      castleMask[1] = true;
+    }
+    if (m.to == BLACK_ROOK_2_INITIAL_POS && !castleMask[0]) // k (fen castle)
+    {
+      castleMask[0] = true;
+    }
+    if (m.to == WHITE_ROOK_1_INITIAL_POS && !castleMask[3]) // Q (fen castle)
+    {
+      castleMask[3] = true;
+    }
+    if (m.to == WHITE_ROOK_2_INITIAL_POS && !castleMask[2]) // K (fen castle)
+    {
+      castleMask[2] = true;
+    }
+
 	if ((m.bits & 8) != 0) {
             if (side == LIGHT)
                 ep = m.to + 8;
@@ -966,14 +989,14 @@ public class Board {
             ++fifty;
 
 	/* move the piece */
-	
+
 	color[(int)m.to] = side;
-	
+
 	if ((m.bits & 32) != 0)
         piece[(int)m.to] = m.promote;
 	else
         piece[(int)m.to] = piece[(int)m.from];
-	
+
 	color[(int)m.from] = EMPTY;
 	piece[(int)m.from] = EMPTY;
 
@@ -988,7 +1011,7 @@ public class Board {
                 piece[m.to - 8] = EMPTY;
             }
         }
-	
+
 	/* switch sides and test for legality (if we can capture
 	   the other guy's king, it's an illegal position and
 	   we need to take the move back) */
@@ -1013,11 +1036,11 @@ public class Board {
 		ep = histDat[hply].ep;
 		fifty = histDat[hply].fifty;
 		castleMask = histDat[hply].castleMask.clone();
-		
+
 		if((m.bits & 2) != 0){
-			
+
 			int[] piece_tmp = piece.clone();
-			
+
 			int i;
 	    	int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 	    	for(i=0;i < bKingMoveOO.length;i++){
@@ -1027,7 +1050,7 @@ public class Board {
 	    	for(i=0;i < bKingMoveOOO.length;i++){
 	    		if(bKingMoveOOO[i] == m.to)
 	    			what = 1;
-	    	}            	
+	    	}
 	    	for(i=0;i < wKingMoveOO.length;i++){
 	    		if(wKingMoveOO[i] == m.to)
 	    			what = 2;
@@ -1058,11 +1081,11 @@ public class Board {
 			    color[to] = EMPTY;
 			    piece[to] = EMPTY;
 		    }
-			
+
 			int from=-1;
 			if(what == 2){
 	            from = wRook2;
-	            to = F1; 
+	            to = F1;
 	    	} else if(what == 3){
 	            from = wRook1;
 	            to = D1;
@@ -1072,18 +1095,18 @@ public class Board {
 	    	} else if(what == 0){
 	            from = bRook2;
 	            to = F8;
-	    	}    	
+	    	}
 	    	color[from] = side;
 	        piece[from] = piece_tmp[to];
 	        if(to != from && piece[to] != KING){
 	        	color[to] = EMPTY;
 		    	piece[to] = EMPTY;
 	        }
-	        
+
 			return;
 		}
-		
-		
+
+
 		color[(int)m.from] = side;
 		if ((m.bits & 32) != 0)
 	            piece[(int)m.from] = PAWN;
@@ -1108,14 +1131,14 @@ public class Board {
 	            }
 		}
     }
-    
+
     public void takeNext() {
     	if(hply+1 <= movesCount){
 			Move m = histDat[hply].m;
 			makeMove(m);
     	}
     }
-    
+
     public String MoveList(){
     	String output = "";
     	int i = 0;
@@ -1126,7 +1149,7 @@ public class Board {
     		output += PGNmoveParser.positionToString(m.from);
     		output += PGNmoveParser.positionToString(m.to);
     		output += " ";
-    	}    	
+    	}
     	return output;
     }
     public String MoveListSAN(){
@@ -1134,10 +1157,10 @@ public class Board {
     	int i = 0;
     	for(i=0;i<hply;i++){
     		if(i%2 == 0)
-    			output += "\n"+(i/2+1)+". ";
+    			output += "\n "+(i/2+1)+". ";
     		output += histDat[i].notation;
     		output += " ";
-    	}    	
+    	}
     	return output;
     }
     public String GetMoveSAN(){
@@ -1146,12 +1169,12 @@ public class Board {
 		String f = "", capture = "", promotion = "";
 		if(p == 1){
 			f = "N";
-			//ambigues 
+			//ambigues
 			int[] positions = new int[]{
 				m.to-17, m.to-15, m.to-10, m.to-6,
 				m.to+17, m.to+15, m.to+10, m.to+6
 			};
-			int i;			
+			int i;
 			for(i = 0; i < 8; i++){
 				int pos = positions[i];
 				if(pos < 0 || pos > 63 || pos == m.from)
@@ -1163,20 +1186,20 @@ public class Board {
 						f += PGNmoveParser.BNToLetter(COL(m.from));
 					break;
 				}
-			}			
+			}
 		}
 		if(p == 2)
 			f = "B";
 		if(p == 3){
 			f = "R";
-			//ambigues 
+			//ambigues
 			int[] positions = new int[]{
 				m.to-8, m.to-16, m.to-24, m.to-32, m.to-40, m.to-48, m.to-56,
 				m.to+8, m.to+16, m.to+24, m.to+32, m.to+40, m.to+48, m.to+56,
 				m.to-1, m.to-2,  m.to-3,  m.to-4,  m.to-5,  m.to-6,  m.to-7,
 				m.to+1, m.to+2,  m.to+3,  m.to+4,  m.to+5,  m.to+6,  m.to+7
 			};
-			int i;			
+			int i;
 			for(i = 0; i < 28; i++){
 				int pos = positions[i];
 				if(pos < 0 || pos > 63 || pos == m.from)
@@ -1193,15 +1216,15 @@ public class Board {
 		if(p == 4)
 			f = "Q";
 		if(p == 5)
-			f = "K";    		
-		
+			f = "K";
+
 		if(histDat[hply].capture != 6){
 			if(p == 0){
     			f = PGNmoveParser.BNToLetter(COL(m.from));
     		}
 			capture = "x";
 		}
-		
+
 		if(m.promote > 0){
 			int pr = m.promote;
 			if(pr == 1)
@@ -1213,11 +1236,11 @@ public class Board {
 			if(pr == 4)
 				promotion = "=Q";
 		}
-		
+
     	return f+capture+PGNmoveParser.positionToString(m.to)+promotion;
     }
-    
-    public String MoveSubmit(){
+
+    private String convertMove(){
     	Move m = histDat[hply-1].m;
     	String output = "";
     	try {
@@ -1225,7 +1248,7 @@ public class Board {
     		if ((m.bits & 2) != 0) {
     			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
     			int what = histDat[hply-1].what;
-    			
+
     			if(what == 0){
     				if(chess960)
     					to = PGNmoveParser.positionToString(bRook2);
@@ -1253,10 +1276,58 @@ public class Board {
 		Log.i("move:", output);
     	return output;
     }
-    
+
+  public String convertMoveEchess()
+  {
+    String output = convertMove();
+    final Move m = histDat[hply - 1].m;
+    switch(m.promote)
+    {
+      case Board.KNIGHT:
+        output += (color[m.from] == 0 ? "=N" : "=n");
+        break;
+      case Board.BISHOP:
+        output += (color[m.from] == 0 ? "=B" : "=b");
+        break;
+      case Board.ROOK:
+        output += (color[m.from] == 0 ? "=R" : "=r");
+        break;
+      case Board.QUEEN:
+        output += (color[m.from] == 0 ? "=Q" : "=q");
+        break;
+      default:
+        break;
+    }
+    return output;
+  }
+
+  public String convertMoveLive()
+  {
+    String output = convertMove();
+    final Move m = histDat[hply - 1].m;
+    switch(m.promote)
+    {
+      case Board.KNIGHT:
+        output += 'n';
+        break;
+      case Board.BISHOP:
+        output += 'b';
+        break;
+      case Board.ROOK:
+        output += 'r';
+        break;
+      case Board.QUEEN:
+        output += 'q';
+        break;
+      default:
+        break;
+    }
+    return output;
+  }
+
     public String toString() {
 	int i;
-	
+
         StringBuffer sb = new StringBuffer("\n8 ");
 	for (i = 0; i < 64; ++i) {
             switch (color[i]) {
@@ -1287,7 +1358,7 @@ public class Board {
     /* reps() returns the number of times that the current
     position has been repeated. Thanks to John Stanback
     for this clever algorithm. */
-    
+
     public int reps() {
 	int b[] = new int[64];
 	int c = 0;  /* count of squares that are different from
@@ -1300,9 +1371,9 @@ public class Board {
 
 	/* loop through the reversible moves */
 	for (int i = hply - 1; i >= hply - fifty - 1; --i) {
-		
+
 		if(i < 0 || i >= histDat.length) return r;
-		
+
             if (++b[histDat[i].m.from] == 0)
                 --c;
             else
@@ -1331,7 +1402,7 @@ public class Board {
 	pieceMat[DARK] = 0;
 	pawnMat[LIGHT] = 0;
 	pawnMat[DARK] = 0;
-	
+
 	for (i = 0; i < 64; i++) {
             if (color[i] == EMPTY)
                 continue;
@@ -1597,14 +1668,14 @@ int evalDarkPawn(int sq) {
     public static int COL(int x) { return (x & 7); }
     public static int ROW(int x) { return (x >> 3); }
     public static int POS(int c, int r) { return 8*r+c ; }
-    
+
     public static int COL(int x, boolean reside) {
     	if(reside)	x = 63-x;
-    	return (x & 7); 
+    	return (x & 7);
     }
     public static int ROW(int x, boolean reside) {
     	if(reside)	x = 63-x;
-    	return (x >> 3); 
+    	return (x >> 3);
     }
     public static int POS(int c, int r, boolean reside) {
     	if(reside)

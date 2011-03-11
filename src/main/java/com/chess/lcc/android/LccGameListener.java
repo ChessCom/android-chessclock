@@ -134,6 +134,8 @@ public class LccGameListener implements GameListener
     else
     {
       lccHolder.clearOwnChallenges();
+      lccHolder.clearChallenges();
+      lccHolder.clearSeeks();
       lccHolder.getClient().unsubscribeFromSeekList(lccHolder.getSeekListSubscriptionId());
       lccHolder.setCurrentGameId(game.getId());
       if(game.getId() > latestGameId)
@@ -152,8 +154,8 @@ public class LccGameListener implements GameListener
       LOG.info("GAME LISTENER: ignore old game id=" + game.getId());
       return;
     }
-    lccHolder.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
-                                              lccHolder.getSeekListListener());
+    /*lccHolder.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
+                                              lccHolder.getSeekListListener());*/
     lccHolder.setCurrentGameId(null);
     List<Game.Result> gameResults = game.getGameResults();
     final Game.Result whitePlayerResult = gameResults.get(0);
@@ -180,37 +182,37 @@ public class LccGameListener implements GameListener
     switch(result)
     {
       case TIMEOUT:
-        message = winnerUsername + " won on time";
+        message = winnerUsername + " \nwon on time";
         break;
       case RESIGNED:
-        message = winnerUsername + " won by resignation";
+        message = winnerUsername + " \nwon by resignation";
         break;
       case CHECKMATED:
-        message = winnerUsername + " won by checkmate";
+        message = winnerUsername + " \nwon by checkmate";
         break;
       case DRAW_BY_REPETITION:
-        message = "Game drawn by repetition";
+        message = "Game drawn \nby repetition";
         break;
       case DRAW_AGREED:
-        message = "Game drawn by agreement";
+        message = "Game drawn \nby agreement";
         break;
       case STALEMATE:
-        message = "Game drawn by stalemate";
+        message = "Game drawn \nby stalemate";
         break;
       case DRAW_BY_INSUFFICIENT_MATERIAL:
-        message = "Game drawn - insufficient material";
+        message = "Game drawn - \ninsufficient material";
         break;
       case DRAW_BY_50_MOVE:
-        message = "Game drawn by 50-move rule";
+        message = "Game drawn \nby 50-move rule";
         break;
       case ABANDONED:
-        message = winnerUsername + " won - game abandoned";
+        message = winnerUsername + " won - \ngame abandoned";
         break;
       case ABORTED:
         message = "Game aborted";
         break;
     }
-    message = whiteUsername + " vs. " + blackUsername + " - " + message;
+    //message = whiteUsername + " vs. " + blackUsername + " - " + message;
     LOG.info("GAME LISTENER: GAME OVER - " + message);
     lccHolder.getWhiteClock().setRunning(false);
     lccHolder.getBlackClock().setRunning(false);

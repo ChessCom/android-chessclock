@@ -192,7 +192,7 @@
 <string name="wrongusername">Your Username must be at least 3 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 <string name="wrongemail">You will need to confirm your membership by email.</string>
 <string name="wrongretype">Wrong retyped password!</string>
-<string name="signingin">Signining in...</string>
+<string name="signingin">Signing In...</string>
 <string name="videoslistupdated">Videos list updated!</string>
 <string name="showanswer">Show answer</string>
 <string name="skipproblem">Skip problem</string>

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.chess.R;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.live.client.impl.util.DateTimeUtils;
@@ -23,6 +24,7 @@ import org.eclipse.jetty.client.HttpClient;
 
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.res.Configuration;
 
 public class LccHolder
 {
@@ -100,11 +102,11 @@ public class LccHolder
     HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     httpClient.setKeyStoreType("PKCS12");
     httpClient.setTrustStoreType("PKCS12");
-    httpClient.setKeyManagerPassword("chesscom");
+    httpClient.setKeyManagerPassword("testtest");
     httpClient.setKeyStoreInputStream(keyStoreInputStream);
-    httpClient.setKeyStorePassword("chesscom");
+    httpClient.setKeyStorePassword("testtest");
     httpClient.setTrustStoreInputStream(keyStoreInputStream);
-    httpClient.setTrustStorePassword("chesscom");
+    httpClient.setTrustStorePassword("testtest");
     _lccClient.setHttpClient(httpClient);
     _challengeListener = new LccChallengeListener(this);
     _chatListener = new ChatListenerImpl(this);
@@ -264,11 +266,11 @@ public class LccHolder
     return false;
   }
 
-  public void removeOwnChallenge(Long challengeId)
+  /*public void removeOwnChallenge(Long challengeId)
   {
     //ownSeeksCount--;
     ownChallenges.remove(challengeId);
-  }
+  }*/
 
   public int getOwnSeeksCount()
   {
@@ -328,6 +330,7 @@ public class LccHolder
   public void removeChallenge(Long challengeId)
   {
     challenges.remove(challengeId);
+    ownChallenges.remove(challengeId);
     android.updateChallengesList();
   }
 
@@ -486,11 +489,11 @@ public class LccHolder
       challengeData[4] = color;
       challengeData[5] = challenge.isRated() ? "" : "Unrated"; // is_rated
 
-      int time = challengerTimeConfig.getBaseTime() * 100;
+      /*int time = challengerTimeConfig.getBaseTime() * 100;
       int hours = time / (1000 * 60 * 60);
       time -= hours * 1000 * 60 * 60;
-      int minutes = time / (1000 * 60);
-      challengeData[6] = minutes + "min"; // base_time
+      int minutes = time / (1000 * 60);*/
+      challengeData[6] = (challengerTimeConfig.getBaseTime() / 10 / 60) + "min"; // base_time
 
       //challengeData[6] = (challengerTimeConfig.getBaseTime() / 10) + "sec"; // base_time
       challengeData[7] = challengerTimeConfig.getTimeIncrement() != 0 ?
@@ -707,6 +710,7 @@ public class LccHolder
     {
       seeks.remove(id);
     }
+    ownChallenges.remove(id);
     android.updateChallengesList();
   }
 
@@ -740,6 +744,16 @@ public class LccHolder
     latestMoveNumber = null;
     putGame(game);
     int time = game.getGameTimeConfig().getBaseTime() * 100;
+    if (whiteClock != null && game.getWhitePlayer().getUsername().equals(game.getWhitePlayer().getUsername())
+        && whiteClock.isRunning())
+    {
+      whiteClock.setRunning(false);
+    }
+    if (blackClock != null && game.getBlackPlayer().getUsername().equals(game.getBlackPlayer().getUsername())
+        && blackClock.isRunning())
+    {
+      blackClock.setRunning(false);
+    }
     setWhiteClock(new ChessClock(this, true, time));
     setBlackClock(new ChessClock(this, false, time));
     final ContextWrapper androidContext = android.getContext();
@@ -818,6 +832,7 @@ public class LccHolder
   private void doUpdateClocks(Game game, User moveMaker, int moveIndex)
   {
     // TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
+    setClockDrawPointer(!game.getWhitePlayer().getUsername().equals(moveMaker.getUsername()));
     if(game.getSeq() >= 2 && moveIndex == game.getSeq() - 1)
     {
       final boolean isOpponentMoveDone = !_user.getUsername().equals(moveMaker.getUsername());
@@ -829,31 +844,80 @@ public class LccHolder
         }
       }
       final boolean amIWhite = _user.getUsername().equals(game.getWhitePlayer().getUsername());
-      final boolean updateWhite = isOpponentMoveDone || amIWhite;
-      final boolean updateBlack = isOpponentMoveDone || !amIWhite;
+      /*final boolean updateWhite = isOpponentMoveDone || amIWhite;
+      final boolean updateBlack = isOpponentMoveDone || !amIWhite;*/
       final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
       final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
       final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
       final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
-      if(updateWhite)
-      {
+      /*if(updateWhite)
+      {*/
         final ChessClock whiteClock = getWhiteClock();
+      /*System.out.println("@@@@@@@@@@@@@@@@@@@@ whitePlayerTime " + whitePlayerTime);
+      System.out.println("@@@@@@@@@@@@@@@@@@@@ " + whiteClock.createTimeString(whitePlayerTime));*/
         whiteClock.setTime(whitePlayerTime);
         if (!game.isEnded())
         {
           whiteClock.setRunning(isBlackDone);
         }
-      }
-      if(updateBlack)
-      {
+      //}
+      /*if(updateBlack)
+      {*/
         final ChessClock blackClock = getBlackClock();
+      /*System.out.println("@@@@@@@@@@@@@@@@@@@@ blackPlayerTime " + blackPlayerTime);
+      System.out.println("@@@@@@@@@@@@@@@@@@@@ " + blackClock.createTimeString(blackPlayerTime));*/
         blackClock.setTime(blackPlayerTime);
         if (!game.isEnded())
         {
           blackClock.setRunning(isWhiteDone);
         }
-      }
+      //}
     }
+  }
+
+  public void setClockDrawPointer(final Boolean isWhite)
+  {
+    getAndroid().getGameActivity().runOnUiThread(new Runnable()
+    {
+      public void run()
+      {
+        if (isWhite == null)
+        {
+          getAndroid().getGameActivity().getWhiteClockView().
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+          getAndroid().getGameActivity().getBlackClockView().
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+          return;
+        }
+        int leftDrawableForBlack = 0;
+        int rightDrawableForBlack = 0;
+        final Configuration configuration = getAndroid().getContext().getResources().getConfiguration();
+        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+          leftDrawableForBlack = R.drawable.blackmove;
+          rightDrawableForBlack = 0;
+        }
+        else if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+          leftDrawableForBlack = 0;
+          rightDrawableForBlack = R.drawable.blackmove;
+        }
+        if(isWhite)
+        {
+          getAndroid().getGameActivity().getWhiteClockView().
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
+          getAndroid().getGameActivity().getBlackClockView().
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+        else
+        {
+	      getAndroid().getGameActivity().getWhiteClockView().
+	        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+	      getAndroid().getGameActivity().getBlackClockView().
+	        setCompoundDrawablesWithIntrinsicBounds(leftDrawableForBlack, 0, rightDrawableForBlack, 0);
+        }
+      }
+    });
   }
 
   public void setCurrentGameId(Long gameId)

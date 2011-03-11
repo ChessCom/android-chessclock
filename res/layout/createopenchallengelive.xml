@@ -37,8 +37,9 @@
 				<TextView android:layout_height="wrap_content"
 					android:layout_gravity="center" android:layout_width="120dip" android:textSize="16dip" android:textColor="#fff" android:text="@string/RatedGme" android:layout_marginLeft="10dip"></TextView>
 
-				<CheckBox android:layout_height="wrap_content" android:gravity="center"
-					android:layout_weight="1" android:layout_width="fill_parent" android:textColor="#fff" android:text="@string/onoff" android:id="@+id/ratedGame"></CheckBox>
+				<CheckBox android:layout_height="wrap_content" android:gravity="center" android:id="@+id/ratedGame"
+					android:checked="true" android:layout_weight="1" android:layout_width="fill_parent"
+					android:textColor="#fff" android:text="@string/onoff"></CheckBox>
 			</LinearLayout>
 
 			<!--

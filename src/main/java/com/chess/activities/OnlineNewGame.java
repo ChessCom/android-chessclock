@@ -178,7 +178,10 @@ public class OnlineNewGame extends CoreActivity {
     currentGame.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-        lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
+        if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null)
+        {
+          lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
+        }
 			}
 		});
 	}

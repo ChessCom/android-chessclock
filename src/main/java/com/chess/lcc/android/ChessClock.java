@@ -8,7 +8,7 @@ public class ChessClock
   public static final int TIME_DEPENDENT_DISPLAY_MODE = 3;
   private int time;
   private int secondTenthsThreshold = 10 * 1000;
-  private int minutesSecondsThreshold = 20 * 60 * 1000;
+  private int minutesSecondsThreshold = 121 * 60 * 1000;
   private long runStart = -1;
   private int displayMode = TIME_DEPENDENT_DISPLAY_MODE;
   private LccHolder lccHolder;
@@ -51,15 +51,6 @@ public class ChessClock
 
   public void setRunning(boolean isRunning)
   {
-    /*System.out.println("=================================== " + isRunning);
-    try
-    {
-      throw new Exception();
-    } catch(Exception e)
-    {
-      e.printStackTrace();
-    }*/
-
     if(isRunning == isRunning())
     {
       return;
@@ -114,10 +105,12 @@ public class ChessClock
       {
         if(isWhite)
         {
+          //System.out.println("@@@@@@@@@@@@@@@@@@@@ white " + createTimeString(getTime()));
           lccHolder.getAndroid().getGameActivity().getWhiteClockView().setText(createTimeString(getTime()));
         }
         else
         {
+          //System.out.println("@@@@@@@@@@@@@@@@@@@@ black " + createTimeString(getTime()));
           lccHolder.getAndroid().getGameActivity().getBlackClockView().setText(createTimeString(getTime()));
         }
       }
@@ -144,7 +137,7 @@ public class ChessClock
         return /*signString + */String.valueOf(hours) +
                sepString + padStart(String.valueOf(minutes), '0', 2);
       case MINUTE_SECOND_DISPLAY_MODE:
-        return /*signString + */padStart(String.valueOf(60 * hours + minutes), '0', 2) +
+        return /*signString + */String.valueOf(60 * hours + minutes)/*padStart(String.valueOf(60 * hours + minutes), '0', 2)*/ +
                ":" + padStart(String.valueOf(seconds), '0', 2);
       case SECOND_TENTHS_DISPLAY_MODE:
         return /*signString + */padStart(String.valueOf(60 * hours + minutes), '0', 2) +

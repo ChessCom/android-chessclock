@@ -2,41 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       android:versionCode="24"
       android:versionName="1.2.1" package="com.chess">
+      
+    <uses-permission android:name="android.permission.INTERNET" />
+      
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".core.MainApp" android:debuggable="false">
         <activity android:name=".core.StartActivity"
                   android:label="@string/app_name"
-                  android:screenOrientation="portrait" 
+                  android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    	<activity android:name=".core.Tabs" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	
-    	<activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+	    <activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+
+	    <activity android:name=".core.Tabs" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.Register" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.Preferences" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.Chat" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.Game" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.VideoList" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	    	
+
     	<activity android:name=".activities.tabs.Home"></activity>
     	<activity android:name=".activities.tabs.Online"></activity>
     	<activity android:name=".activities.tabs.Computer"></activity>
     	<activity android:name=".activities.tabs.Video"></activity>
-    	
+
     	<activity android:name=".activities.OnlineNewGame" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.FriendChallenge" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.CreateChallenge" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-		
+
 		<service android:name=".utilities.WebService" />
 		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
 	</application>
-    
-    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="3" />
-</manifest> 
+</manifest>

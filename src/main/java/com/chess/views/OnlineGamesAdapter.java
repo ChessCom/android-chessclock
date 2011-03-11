@@ -41,13 +41,26 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
         {
           if (isLiveChess)
           {
-            if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0"))
+            try
             {
-              convertView.findViewById(R.id.directChallenge).setVisibility(View.VISIBLE);
+
+              /*System.out.println("!!!!!!!! items = " + items);
+              System.out.println("!!!!!!!! el.values = " + el.values);
+              System.out.println("!!!!!!!! el.values.get(is_direct_challenge) = " + el.values.get("is_direct_challenge"));
+              System.out.println("!!!!!!!! el.values.get(is_released_by_me) = " + el.values.get("is_released_by_me"));*/
+              if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0"))
+              {
+                convertView.findViewById(R.id.directChallenge).setVisibility(View.VISIBLE);
+              }
+              else
+              {
+                convertView.findViewById(R.id.directChallenge).setVisibility(View.GONE);
+              }
             }
-            else
+            catch(Exception e)
             {
-              convertView.findViewById(R.id.directChallenge).setVisibility(View.GONE);
+              e.printStackTrace();
+              System.out.println(e);
             }
           }
 
@@ -63,7 +76,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
             color = CTX.getString(R.string.black);
           }*/
           final String time = isLiveChess ?
-                              el.values.get("is_rated") + ' ' + el.values.get("base_time") + ' ' + el.values.get("time_increment")
+                              el.values.get("is_rated") + ' ' + el.values.get("base_time") + el.values.get("time_increment")
                               : el.values.get("days_per_move") + CTX.getString(R.string.days);
           String gametype = "";
           if(el.values.get("game_type") != null && el.values.get("game_type").equals("2"))
@@ -76,8 +89,8 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
           final String prefix =
             isLiveChess && el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("1") ?
             "(open)" : el.values.get("opponent_username");
-          info.setText(prefix + ' ' + opponentRating + ' ' + gametype/* + ' ' + color*/);
-          left.setText(time);
+          info.setText(prefix + ' ' + opponentRating + ' ' + gametype/* + ' ' + color*/ + "  " + time);
+          //left.setText(time);
         }
         else if(el.type == 1)
         {
@@ -124,6 +137,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 				left.setText(result);
         	}
         }
+
         return convertView;
     }
 }

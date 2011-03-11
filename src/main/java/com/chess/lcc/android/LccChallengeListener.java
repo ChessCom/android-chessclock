@@ -64,6 +64,11 @@ public class LccChallengeListener implements ChallengeListener
     }
     if(challenge.isSeek())
     {
+      if (challenge.getFrom().getUsername().equals(lccHolder.getUser().getUsername()))
+      {
+        LccHolder.LOG.info("My seek added: user: " + lccHolder.getUser().getUsername() + ", seek: " + challenge);
+        lccHolder.putSeek(challenge);
+      }
       return;
     }
     if(lccHolder.isUserBlocked(challenge.getBy()))
@@ -188,11 +193,11 @@ public class LccChallengeListener implements ChallengeListener
     {
       return;
     }*/
-    Challenge challenge = lccHolder.getChallenge(challengeId.toString());
+    /*Challenge challenge = lccHolder.getChallenge(challengeId.toString());
     if(challenge != null && challenge.getFrom().getUsername().equals(lccHolder.getUser().getUsername()))
     {
       lccHolder.removeOwnChallenge(challenge.getId());
-    }
+    }*/
     lccHolder.removeChallenge(challengeId);
   }
 
