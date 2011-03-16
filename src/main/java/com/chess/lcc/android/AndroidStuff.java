@@ -207,5 +207,10 @@ public class AndroidStuff
         .putExtra("message", message)
     );
   }
+
+  public void processObsoleteProtocolVersion()
+  {
+    lccHolder.getAndroid().getContext().sendBroadcast(new Intent("com.chess.lcc.android-obsolete-protocol-version"));
+  }
 }
 

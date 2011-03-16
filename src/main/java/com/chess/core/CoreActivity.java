@@ -19,7 +19,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -104,18 +106,25 @@ public abstract class CoreActivity extends Activity {
         registerReceiver(drawOfferedMessageReceiver, new IntentFilter("com.chess.lcc.android-game-draw-offered"));
         registerReceiver(lccConnectionInfoReceiver, new IntentFilter("com.chess.lcc.android-connection-info"));
         registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
+        registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
       /*}*/
       super.onResume();
-
-      final LccHolder lccHolder = App.getLccHolder();
-
-      if (App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
+      new Handler().post(new Runnable()
+      {
+        public void run()
         {
-          //lccHolder.setConnectingInProgress(true);
-          lccHolder.getClient().connect(App.sharedData.getString("username", ""), App.sharedData.getString("password", ""), lccHolder.getConnectionListener());
-          /*appService.RunRepeatble(0, 0, 120000,
-					  PD = ProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
+          final LccHolder lccHolder = App.getLccHolder();
+          if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
+          {
+            //lccHolder.setConnectingInProgress(true);
+            lccHolder.getClient()
+              .connect(App.sharedData.getString("username", ""), App.sharedData.getString("password", ""),
+                       lccHolder.getConnectionListener());
+            /*appService.RunRepeatble(0, 0, 120000,
+            PD = ProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
+          }
         }
+      });
     }
 
     @Override
@@ -130,6 +139,7 @@ public abstract class CoreActivity extends Activity {
       unregisterReceiver(drawOfferedMessageReceiver);
       unregisterReceiver(lccConnectionInfoReceiver);
       unregisterReceiver(informAndExitReceiver);
+      unregisterReceiver(obsoleteProtocolVersionReceiver);
 
       // todo: how to logout user when he/she is switching to another activity?
       /*if (App.isLiveChess() && lccHolder.isConnected())
@@ -298,6 +308,38 @@ public abstract class CoreActivity extends Activity {
           public void onClick(DialogInterface dialog, int whichButton)
           {
             final Intent intent = new Intent(App, Singin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            App.startActivity(intent);
+          }
+        }).create().show();
+    }
+  };
+
+  public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver()
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+      new AlertDialog.Builder(context)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setCancelable(false)
+        .setTitle("Version Check")
+        .setMessage("The client version is obsolete. Please update")
+        .setPositiveButton("OK", new DialogInterface.OnClickListener()
+        {
+          public void onClick(DialogInterface dialog, int whichButton)
+          {
+            final Handler handler = new Handler();
+            handler.post(new Runnable()
+            {
+              public void run()
+              {
+                App.setLiveChess(false);
+                lccHolder.setConnected(false);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com/play/android.html")));
+              }
+            });
+            final Intent intent = new Intent(App, Tabs.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             App.startActivity(intent);
           }

@@ -130,7 +130,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     LccHolder.LOG.error(
         "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
         clientProtocolVersion + ")");
-    // todo: inforom user and show login screen
+    lccHolder.getAndroid().processObsoleteProtocolVersion();
   }
 
   @Override

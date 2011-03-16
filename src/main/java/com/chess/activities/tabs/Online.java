@@ -112,14 +112,21 @@ public class Online extends CoreActivity {
       lccHolder.logout();
     }
     super.onResume();
-    if (App.isLiveChess() && lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null)
+    currentGame.post(new Runnable()
     {
-      currentGame.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      currentGame.setVisibility(View.GONE);
-    }
+      public void run()
+      {
+        if(App.isLiveChess() && lccHolder.getCurrentGameId() != null &&
+           lccHolder.getGame(lccHolder.getCurrentGameId()) != null)
+        {
+          currentGame.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+          currentGame.setVisibility(View.GONE);
+        }
+      }
+    });
 
     /*if (GamesAdapter != null)
     {
