@@ -160,7 +160,7 @@ public class Singin extends CoreActivity {
 	public void Update(int code) {
 		if(code == 0){
 			String[] r = response.split(":");
-			App.SDeditor.putString("username", username.getText().toString().trim());
+			App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
 			App.SDeditor.putString("password", password.getText().toString().trim());
 
       App.SDeditor.putString("premium_status", r[0].split("[+]")[1]);

@@ -59,7 +59,7 @@ public class Chat extends CoreActivity {
 			if(appService != null){
 				appService.RunRepeatbleTask(0, 0, 60000,
 					"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+extras.getString("game_id")+"&command=CHAT&timestamp="+extras.getString("timestamp"),
-					PD = ProgressDialog.show(Chat.this, null, getString(R.string.gettingmessages), true)
+					null/*PD = ProgressDialog.show(Chat.this, null, getString(R.string.gettingmessages), true)*/
 				);
 			}
 		} else if(code == 0){

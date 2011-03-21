@@ -3,6 +3,7 @@ package com.chess.activities.tabs;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -68,7 +69,7 @@ public class Online extends CoreActivity {
 		                	if(appService != null){
 		            			appService.RunSingleTask(4,
 		            				"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+el.values.get("game_id")+"&command=ACCEPTDRAW&timestamp="+el.values.get("timestamp"),
-		            				PD = ProgressDialog.show(Online.this, null, getString(R.string.loading), true)
+		            				null/*PD = ProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 		            			);
 		            		}
 		                }
@@ -78,7 +79,7 @@ public class Online extends CoreActivity {
 		                	if(appService != null){
 		            			appService.RunSingleTask(4,
 		            				"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+el.values.get("game_id")+"&command=DECLINEDRAW&timestamp="+el.values.get("timestamp"),
-		            				PD = ProgressDialog.show(Online.this, null, getString(R.string.loading), true)
+		            				null/*PD = ProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 		            			);
 		            		}
 		                }
@@ -98,8 +99,22 @@ public class Online extends CoreActivity {
 		return super.onCreateDialog(id);
 	}
 
+  @Override
+  protected void onStop() {
+    GamesList.setVisibility(View.GONE);
+    super.onStop();
+  }
+
+  @Override
+  protected void onRestart() {
+    GamesList.setVisibility(View.VISIBLE);
+    super.onRestart();
+  }
+
+
   protected void onResume()
   {
+    GamesList.setVisibility(View.VISIBLE);
     App.setLiveChess(extras.getBoolean("liveChess"));
     if (App.isLiveChess())
     {
@@ -143,6 +158,7 @@ public class Online extends CoreActivity {
 
   @Override
   protected void onPause() {
+    GamesList.setVisibility(View.GONE);
     if (App.isLiveChess())
     {
       /*// if connected
@@ -310,7 +326,7 @@ public class Online extends CoreActivity {
                         } else if(result.contains("Error+")){
                           App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
                         } else{
-                          App.ShowDialog(Online.this, "Error", result);
+                          //App.ShowDialog(Online.this, "Error", result);
                         }
                     } else if(pos == 1){
 
@@ -320,7 +336,7 @@ public class Online extends CoreActivity {
                         } else if(result.contains("Error+")){
                           App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
                         } else{
-                          App.ShowDialog(Online.this, "Error", result);
+                          //App.ShowDialog(Online.this, "Error", result);
                         }
                     }
                   }
@@ -377,7 +393,7 @@ public class Online extends CoreActivity {
 			                	} else if(result.contains("Error+")){
 			                		App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
 			                	} else{
-			                		App.ShowDialog(Online.this, "Error", result);
+			                		//App.ShowDialog(Online.this, "Error", result);
 			                	}
 							} else if(pos == 2){
 								String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+el.values.get("game_id")+"&command=RESIGN&timestamp="+el.values.get("timestamp"), "GET", null, null);
@@ -386,7 +402,7 @@ public class Online extends CoreActivity {
 			                	} else if(result.contains("Error+")){
 			                		App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
 			                	} else{
-			                		App.ShowDialog(Online.this, "Error", result);
+			                		//App.ShowDialog(Online.this, "Error", result);
 			                	}
 							}
 						}
@@ -494,16 +510,17 @@ public class Online extends CoreActivity {
       }
       );
     }
-
 	}
 	@Override
 	public void LoadNext(int code) {
-		startActivity(new Intent(this, OnlineNewGame.class));
+		//GamesList.setVisibility(View.GONE);
+    finish();
+    startActivity(new Intent(this, OnlineNewGame.class));
 	}
 	@Override
 	public void LoadPrev(int code) {
 		//finish();
-		App.mTabHost.setCurrentTab(0);
+    App.mTabHost.setCurrentTab(0);
 	}
 	@Override
 	public void Update(int code) {
@@ -515,8 +532,8 @@ public class Online extends CoreActivity {
         {
           appService.RunRepeatbleTask(0, 0, UPDATE_DELAY,
                                       queries[App.sharedData.getInt("gamestype", 1)],
-                                      PD = ProgressDialog
-                                        .show(Online.this, null, getString(R.string.updatinggameslist), true));
+                                      null/*PD = ProgressDialog
+                                        .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
         }
         else
         {
@@ -529,7 +546,13 @@ public class Online extends CoreActivity {
     } else if(code == 0){
 			int t = App.sharedData.getInt("gamestype", 0);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
+      GamesList.setVisibility(View.GONE);
       App.GameListItems.clear();
+      if (GamesAdapter!=null)
+      {
+        GamesAdapter.notifyDataSetChanged();
+      }
+	    //GamesList.setVisibility(View.VISIBLE);
       if (App.isLiveChess())
       {
         tmp.addAll(lccHolder.getChallengesAndSeeksData());
@@ -549,27 +572,32 @@ public class Online extends CoreActivity {
           tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(rep_response));
         }
       }
+      //GamesList.setVisibility(View.GONE);
       App.GameListItems.addAll(tmp);
+      if (GamesAdapter!=null)
+      {
+        GamesAdapter.notifyDataSetChanged();
+      }
+	    GamesList.setVisibility(View.VISIBLE);
 			if(GamesAdapter == null){
 
         if(t == 0 || App.isLiveChess())
         {
-          GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems, App.isLiveChess());
+          GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems);
         }
 				if(t == 1 && !App.isLiveChess())
 				{
-					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems, App.isLiveChess());
+					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems);
 				}
 				if(t == 2 && !App.isLiveChess())
 				{
-					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems, App.isLiveChess());
+					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems);
         }
 				GamesList.setAdapter(GamesAdapter);
-			} else {
-	        GamesList.setVisibility(View.GONE);
+			} /*else {*/
 	        GamesAdapter.notifyDataSetChanged();
-	        GamesList.setVisibility(View.VISIBLE);
-      }
+	        //GamesList.setVisibility(View.VISIBLE);
+      /*}*/
 		} else if(code == 1){
 			onPause();
 			onResume();

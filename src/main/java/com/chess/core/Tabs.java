@@ -71,12 +71,23 @@ public class Tabs extends TabActivity {
 	    int tab = 0;
 	    try{
 		    Bundle extras = getIntent().getExtras();
-		    if(extras != null && extras.getBoolean("fromnotif")){
-		    	tab = 2;
-		    	if(App.SDeditor != null){
-			    	App.SDeditor.putInt("gamestype", 1);
-			    	App.SDeditor.commit();
-		    	}
+		    if(extras != null){
+          if (extras.getBoolean("fromnotif"))
+          {
+            tab = 2;
+            if(App.SDeditor != null){
+              App.SDeditor.putInt("gamestype", 1);
+              App.SDeditor.commit();
+            }
+          }
+          else
+          {
+            tab = extras.getInt("tab", 0);
+            if(tab != 0 && App.SDeditor != null){
+              App.SDeditor.putInt("gamestype", 1);
+              App.SDeditor.commit();
+            }
+          }
 		    }
 	    } catch (Exception e) {
 			tab = 0;

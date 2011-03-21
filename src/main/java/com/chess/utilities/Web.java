@@ -39,7 +39,7 @@ public class Web {
 	    try {
 	    	httpParameters = new BasicHttpParams();
 
-			HttpConnectionParams.setConnectionTimeout(httpParameters, Integer.MAX_VALUE);
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 			HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
 			httpclient = new DefaultHttpClient(httpParameters);
@@ -87,13 +87,16 @@ public class Web {
 			Log.i("SERVER RESPONSE: ", responseBody);
       i = 5;
 		} catch (ClientProtocolException e) {
-			responseBody = "Sorry... No Active connection (CP)" + " code=" + i;
+			//responseBody = "Sorry... No Active connection (CP)" + " code=" + i;
+      e.printStackTrace();
       System.out.println("!!!!!!!! " + i);
 		} catch (java.net.SocketTimeoutException e) {
-			responseBody = "Sorry... No Active connection (Timeout)" + " code=" + i;
+      e.printStackTrace();
+			//responseBody = "Sorry... No Active connection (Timeout)" + " code=" + i;
       System.out.println("!!!!!!!! " + i);
 		} catch (IOException e) {
-			responseBody = "Sorry... No Active connection (IO)" + " code=" + i;
+      e.printStackTrace();
+			//responseBody = "Sorry... No Active connection (IO)" + " code=" + i;
       System.out.println("BASE: " + base.getMethod());
       System.out.println("BASE: " + base.getParams());
       System.out.println("BASE: " + base.getAllHeaders());
@@ -101,9 +104,9 @@ public class Web {
       System.out.println("BASE: " + base.getRequestLine());
       System.out.println("BASE: " + base.getURI());
       System.out.println("!!!!!!!! " + i);
-      e.printStackTrace();
 		} catch (Exception e) {
-			responseBody = "Sorry... "+e.getMessage() + " code=" + i;
+      e.printStackTrace();
+			//responseBody = "Sorry... "+e.getMessage() + " code=" + i;
       System.out.println("!!!!!!!! " + i);
 		}
 		return responseBody;

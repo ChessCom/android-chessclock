@@ -526,9 +526,9 @@ public class BoardView extends ImageView {
 				(board.mode == 4 && board.hply < board.movesCount))
 				return true;
 			if(board.mode == 4 && ca.App.OnlineGame != null){
-				if(ca.App.OnlineGame.values.get("white_username").equals(ca.App.sharedData.getString("username", "")) && board.movesCount%2 != 0 )
+				if(ca.App.OnlineGame.values.get("white_username").toLowerCase().equals(ca.App.sharedData.getString("username", "")) && board.movesCount%2 != 0 )
 					return true;
-				if(ca.App.OnlineGame.values.get("black_username").equals(ca.App.sharedData.getString("username", "")) && board.movesCount%2 == 0 )
+				if(ca.App.OnlineGame.values.get("black_username").toLowerCase().equals(ca.App.sharedData.getString("username", "")) && board.movesCount%2 == 0 )
 					return true;
 			}
 			if((board.mode == 0 && board.hply%2 != 0) || (board.mode == 1 && board.hply%2 == 0)){

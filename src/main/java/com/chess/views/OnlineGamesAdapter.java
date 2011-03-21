@@ -18,15 +18,13 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 	private LayoutInflater vi;
 	private int res;
 	private Context CTX;
-  private boolean isLiveChess;
 
-    public OnlineGamesAdapter(Context context, int textViewResourceId, ArrayList<GameListElement> items, boolean isLiveChess) {
+    public OnlineGamesAdapter(Context context, int textViewResourceId, ArrayList<GameListElement> items) {
         super(context, textViewResourceId, items);
         this.items = items;
         this.vi = LayoutInflater.from(context);
         this.res = textViewResourceId;
         this.CTX = context;
-        this.isLiveChess = isLiveChess;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
       {
         if(el.type == 0)
         {
-          if (isLiveChess)
+          if (el.isLiveChess)
           {
             try
             {
@@ -75,7 +73,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
           {
             color = CTX.getString(R.string.black);
           }*/
-          final String time = isLiveChess ?
+          final String time = el.isLiveChess ?
                               el.values.get("is_rated") + ' ' + el.values.get("base_time") + el.values.get("time_increment")
                               : el.values.get("days_per_move") + CTX.getString(R.string.days);
           String gametype = "";
@@ -84,10 +82,20 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
             gametype = " (960)";
           }
 
+          /*System.out.println("!!!!!!!! isLiveChess = " + el.isLiveChess);
+          System.out.println("!!!!!!!! el = " + el);
+          System.out.println("!!!!!!!! el.values = " + el.values);
+          System.out.println("!!!!!!!! el.values.get(\"is_released_by_me\") = " + el.values.get("is_released_by_me"));
+          if (el.values.get("is_released_by_me") != null)
+          {
+            System.out.println("!!!!!!!! el.values.get(\"is_released_by_me\").equals(\"1\") = " + el.values.get("is_released_by_me").equals("1"));
+          }
+          System.out.println("!!!!!!!! el.values.get(\"opponent_rating\") = " + el.values.get("opponent_rating"));*/
+
           final String opponentRating =
-            isLiveChess && el.values.get("is_released_by_me").equals("1") ? "" : "(" + el.values.get("opponent_rating") + ")";
+            (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) ? "" : "(" + el.values.get("opponent_rating") + ")";
           final String prefix =
-            isLiveChess && el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("1") ?
+            (el.isLiveChess && el.values.get("is_direct_challenge").equals("0")) && el.values.get("is_released_by_me").equals("1") ?
             "(open)" : el.values.get("opponent_username");
           info.setText(prefix + ' ' + opponentRating + ' ' + gametype/* + ' ' + color*/ + "  " + time);
           //left.setText(time);

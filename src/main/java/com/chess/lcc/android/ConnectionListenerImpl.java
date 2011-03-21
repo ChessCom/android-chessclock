@@ -97,6 +97,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onConnectionReestablished(User arg0)
   {
+    LccHolder.LOG.info("CONNECTION: onConnectionReestablished");
     lccHolder.clearGames();
     lccHolder.clearChallenges();
     lccHolder.clearOwnChallenges();

@@ -174,7 +174,7 @@ public abstract class CoreActivity extends Activity {
 
         if(Web.StatusCode == -1)	App.noInternet = true;
         else{
-          if(App.noInternet)	{ App.ShowMessage("Online mode!"); App.offline = false; }
+          if(App.noInternet)	{ /*App.ShowMessage("Online mode!");*/ App.offline = false; }
           App.noInternet = false;
         }
 
@@ -183,6 +183,10 @@ public abstract class CoreActivity extends Activity {
         else{
           if(App.mTabHost != null && App.mTabHost.getCurrentTab() == 3){
             Update(-2);
+            return;
+          }
+          if (resp.length()==0)
+          {
             return;
           }
           String title = getString(R.string.error);
@@ -270,6 +274,7 @@ public abstract class CoreActivity extends Activity {
               final Intent intent = new Intent(App, Singin.class);
               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
               //reconnectingIndicator.dismiss();
+              lccHolder.logout();
               App.startActivity(intent);
             }
           });

@@ -138,7 +138,7 @@ public class Register extends CoreActivity {
 			}
 		} else if(code == 1){
 			String[] r = response.split(":");
-			App.SDeditor.putString("username", RegUsername.getText().toString());
+			App.SDeditor.putString("username", RegUsername.getText().toString().toLowerCase());
 			App.SDeditor.putString("password", RegPassword.getText().toString());
 			App.SDeditor.putString("premium_status", r[0].split("[+]")[1]);
 			App.SDeditor.putString("api_version", r[1]);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.chess.R;
 import com.chess.core.CoreActivity;
+import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
@@ -140,7 +141,7 @@ public class OnlineNewGame extends CoreActivity {
                         } else if(result.contains("Error+")){
                           App.ShowDialog(OnlineNewGame.this, "Error", result.split("[+]")[1]);
                         } else{
-                          App.ShowDialog(OnlineNewGame.this, "Error", result);
+                          //App.ShowDialog(OnlineNewGame.this, "Error", result);
                         }
                     } else if(pos == 1){
 
@@ -150,7 +151,7 @@ public class OnlineNewGame extends CoreActivity {
                         } else if(result.contains("Error+")){
                           App.ShowDialog(OnlineNewGame.this, "Error", result.split("[+]")[1]);
                         } else{
-                          App.ShowDialog(OnlineNewGame.this, "Error", result);
+                          //App.ShowDialog(OnlineNewGame.this, "Error", result);
                         }
                     }
                   }
@@ -211,6 +212,7 @@ public class OnlineNewGame extends CoreActivity {
 	@Override
 	public void LoadPrev(int code) {
 		finish();
+    startActivity(new Intent(this, Tabs.class).putExtra("tab", App.isLiveChess() ? 1 : 2));
 	}
 	@Override
 	public void Update(int code) {
@@ -222,8 +224,8 @@ public class OnlineNewGame extends CoreActivity {
           appService.RunRepeatbleTask(0, 0, UPDATE_DELAY,
                                       "http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
                                       App.sharedData.getString("user_token", ""),
-                                      PD = ProgressDialog
-                                        .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true));
+                                      null/*PD = ProgressDialog
+                                        .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
         }
         else
         {
@@ -234,6 +236,7 @@ public class OnlineNewGame extends CoreActivity {
         }
       }
 		} else if(code == 0){
+      OpenChallengesLV.setVisibility(View.GONE);
 			GameListItems.clear();
       if (App.isLiveChess())
       {
@@ -244,13 +247,12 @@ public class OnlineNewGame extends CoreActivity {
         GameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(rep_response));
       }
 			if(GamesAdapter == null){
-				GamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, GameListItems, App.isLiveChess());
+				GamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, GameListItems);
 				OpenChallengesLV.setAdapter(GamesAdapter);
-			} else{
-				OpenChallengesLV.setVisibility(View.GONE);
+			} /*else{*/
 		        GamesAdapter.notifyDataSetChanged();
 		        OpenChallengesLV.setVisibility(View.VISIBLE);
-			}
+			/*}*/
 		} else if(code == 2){
 			App.ShowMessage(getString(R.string.challengeaccepted));
 			onPause();

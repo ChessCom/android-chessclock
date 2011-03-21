@@ -22,6 +22,7 @@ import com.chess.model.GameListElement;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 
+import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -756,6 +757,11 @@ public class LccHolder
     }
     setWhiteClock(new ChessClock(this, true, time));
     setBlackClock(new ChessClock(this, false, time));
+    final Activity activity = getAndroid().getGameActivity();
+    if (activity != null)
+    {
+      activity.finish();
+    }
     final ContextWrapper androidContext = android.getContext();
     final Intent intent = new Intent(androidContext, com.chess.activities.Game.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

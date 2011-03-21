@@ -54,7 +54,7 @@ public class Game extends CoreActivity {
 	private Timer OnlineGameUpdate = null, TacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
 	//private String gameId = "";
-	private int UPDATE_DELAY = 5000;
+	private int UPDATE_DELAY = 10000;
 
   private com.chess.model.Game OG;
 
@@ -74,7 +74,7 @@ public class Game extends CoreActivity {
 					if(App.OnlineGame.values.get("game_type").equals("2"))
 						BV.board.chess960 = true;
 
-					if(App.OnlineGame.values.get("black_username").equals(App.sharedData.getString("username", ""))){
+					if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", ""))){
 						BV.board.reside = true;
 					}
 					String[] Moves = {};
@@ -353,7 +353,7 @@ public class Game extends CoreActivity {
                       } else if(result.contains("Error+")){
                         App.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
                       } else{
-                        App.ShowDialog(Game.this, "Error", result);
+                        //App.ShowDialog(Game.this, "Error", result);
                       }
                     }
 	                }
@@ -390,7 +390,7 @@ public class Game extends CoreActivity {
                       } else if(result.contains("Error+")){
                         App.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
                       } else{
-                        App.ShowDialog(Game.this, "Error", result);
+                        //App.ShowDialog(Game.this, "Error", result);
                       }
                       }
 	                }
@@ -507,7 +507,7 @@ public class Game extends CoreActivity {
       if(appService != null){
 			  appService.RunSingleTask(10,
 				"http://www." + LccHolder.HOST + "/api/v3/get_game?id="+App.sharedData.getString("user_token", "")+"&gid="+game_id,
-				PD = ProgressDialog.show(this, null, getString(R.string.loading), true));
+				null/*PD = ProgressDialog.show(this, null, getString(R.string.loading), true)*/);
       }
     }
 	}
@@ -870,7 +870,7 @@ public class Game extends CoreActivity {
             {
               appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
                                           "http://www." + LccHolder.HOST + "/api/v3/get_game?id="+App.sharedData.getString("user_token", "")+"&gid="+App.gameId,
-                                          PD
+                                          null/*PD*/
               );
             }
 					}
@@ -1243,7 +1243,7 @@ public class Game extends CoreActivity {
         }
 
 				if(chat){
-					if(App.OnlineGame.values.get("black_username").equals(App.sharedData.getString("username", "")))
+					if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", "")))
 						App.SDeditor.putString("opponent", App.OnlineGame.values.get("white_username"));
 					else
 						App.SDeditor.putString("opponent", App.OnlineGame.values.get("black_username"));
@@ -1321,7 +1321,7 @@ public class Game extends CoreActivity {
           {
             appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
                                         "http://www." + LccHolder.HOST + "/api/v3/get_game?id="+App.sharedData.getString("user_token", "")+"&gid="+App.gameId,
-                                        PD
+                                        null/*PD*/
             );
           }
 				}

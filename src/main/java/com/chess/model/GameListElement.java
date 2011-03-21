@@ -5,10 +5,12 @@ import java.util.HashMap;
 public class GameListElement {
 	public int type = 0;
 	public HashMap<String, String> values;
+  public boolean isLiveChess;
 
 	public GameListElement(int type, String[] values, boolean isLiveChess){
 		this.type = type;
 		this.values = new HashMap<String, String>();
+    this.isLiveChess = isLiveChess;
 		switch (type) {
 			case 0:{	//Challenges
 				this.values.put("game_id", values[0].trim());
