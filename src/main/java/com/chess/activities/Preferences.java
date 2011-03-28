@@ -296,15 +296,6 @@ public class Preferences extends CoreActivity {
 
 		Pieces = new SelectionAdapter(Preferences.this, R.layout.selection_item, pieces);
 		Boards = new SelectionAdapter(Preferences.this, R.layout.selection_item, boards);
-
-		if(!App.guest){
-			if(appService != null){
-				appService.RunSingleTask(0,
-					"http://www." + LccHolder.HOST + "/api/get_vacation_status?id="+App.sharedData.getString("user_token", ""),
-					PD = ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)
-				);
-			}
-		}
 	}
 	@Override
 	public void LoadNext(int code) {}
@@ -314,8 +305,19 @@ public class Preferences extends CoreActivity {
 	}
 	@Override
 	public void Update(int code) {
-		if(code == 0){
-			if(!App.guest && response.trim().split("[+]")[1].equals("1")){
+    if (code == -1)
+    {
+      if(!App.guest){
+        if(appService != null){
+          appService.RunSingleTask(0,
+            "http://www." + LccHolder.HOST + "/api/get_vacation_status?id="+App.sharedData.getString("user_token", ""),
+            PD = ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)
+          );
+        }
+      }
+		}
+		else if(code == 0){
+      if(!App.guest && response.trim().split("[+]")[1].equals("1")){
 				PrefVacation.setChecked(true);
 				PrefVacation.setText(getString(R.string.vacationOn));
 			}

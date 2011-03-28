@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 
@@ -33,6 +34,7 @@ public abstract class CoreActivity extends Activity {
 	public DisplayMetrics metrics;
 	public ProgressDialog PD;
   public LccHolder lccHolder;
+  private PowerManager.WakeLock wakeLock;
 
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
@@ -351,5 +353,17 @@ public abstract class CoreActivity extends Activity {
         }).create().show();
     }
   };
+
+  protected void disableScreenLock()
+  {
+    final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "com.chess.core.CoreActivity");
+    wakeLock.acquire();
+  }
+
+  protected void enableScreenLock()
+  {
+    wakeLock.release();
+  }
 
 }

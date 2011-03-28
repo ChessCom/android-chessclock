@@ -9,26 +9,26 @@
 		<LinearLayout android:layout_height="wrap_content"
 		              android:layout_width="fill_parent" android:orientation="vertical" android:paddingBottom="5dip">
 
-			<LinearLayout android:layout_height="wrap_content" android:id="@+id/analysis" android:layout_width="fill_parent" android:visibility="gone" android:orientation="vertical" android:layout_weight="1">
+			<LinearLayout android:id="@+id/analysis" android:layout_height="wrap_content" android:layout_width="fill_parent" android:visibility="gone" android:orientation="vertical" android:layout_weight="1">
 				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/analysis"></TextView>
 				<ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
 			</LinearLayout>
 
 			<LinearLayout android:layout_height="wrap_content"
 			              android:layout_width="fill_parent" android:orientation="horizontal" android:layout_weight="1">
-				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="2dip" android:textColor="#fff" android:textStyle="bold"
-				          android:inputType="textImeMultiLine" android:id="@+id/thinking" android:text="@string/Thinking" android:gravity="center" android:visibility="gone"></TextView>
-				<TextView android:layout_height="wrap_content" android:text="Player"
+				<TextView android:id="@+id/thinking" android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="2dip" android:textColor="#fff" android:textStyle="bold"
+				          android:inputType="textImeMultiLine" android:text="@string/Thinking" android:gravity="center" android:visibility="gone"></TextView>
+				<TextView android:id="@+id/white" android:layout_height="wrap_content" android:text="Player"
 				          android:layout_width="fill_parent" android:layout_weight="1"
 				          android:padding="2dip" android:textColor="#fff" android:textSize="12dp"
-				          android:id="@+id/white" android:inputType="textImeMultiLine"></TextView>
-				<TextView android:layout_height="wrap_content" android:text="Computer"
-				          android:id="@+id/black" android:layout_width="fill_parent" android:textSize="12dp"
+				          android:inputType="textImeMultiLine"></TextView>
+				<TextView android:id="@+id/black" android:layout_height="wrap_content" android:text="Computer"
+				          android:layout_width="fill_parent" android:textSize="12dp"
 				          android:layout_weight="1" android:padding="2dip" android:textColor="#fff"
 				          android:gravity="right" android:inputType="textImeMultiLine"></TextView>
-				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent"
+				<TextView android:id="@+id/timer" android:layout_height="wrap_content" android:layout_width="fill_parent"
 				          android:layout_weight="1" android:padding="2dip" android:textColor="#fff"
-				          android:textStyle="bold" android:drawablePadding="5dip" android:inputType="textImeMultiLine" android:gravity="center" android:id="@+id/timer" android:visibility="gone"></TextView>
+				          android:textStyle="bold" android:drawablePadding="5dip" android:inputType="textImeMultiLine" android:gravity="center" android:visibility="gone"></TextView>
 			</LinearLayout>
 
 		</LinearLayout>

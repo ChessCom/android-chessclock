@@ -15,7 +15,6 @@ import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
-import com.chess.live.client.LiveChessClient;
 import com.chess.utilities.Notifications;
 import com.chess.utilities.Web;
 import com.facebook.android.Facebook;
@@ -116,6 +115,10 @@ public class Singin extends CoreActivity {
 
 	@Override
 	protected void onResume() {
+    if (App.isLiveChess())
+    {
+      App.setLiveChess(false);
+    }
 		super.onResume();
 		username.post(new Runnable() {
 			public void run() {
@@ -158,8 +161,8 @@ public class Singin extends CoreActivity {
 	}
 	@Override
 	public void Update(int code) {
-		if(code == 0){
-			String[] r = response.split(":");
+		if(code == 0 && response.length()>0){
+      String[] r = response.split(":");
 			App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
 			App.SDeditor.putString("password", password.getText().toString().trim());
 

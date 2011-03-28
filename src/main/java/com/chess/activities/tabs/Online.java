@@ -154,6 +154,7 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
+    disableScreenLock();
   }
 
   @Override
@@ -167,6 +168,7 @@ public class Online extends CoreActivity {
       unregisterReceiver(challengesListUpdateReceiver);
     }
     super.onPause();
+    enableScreenLock();
   }
 
 	@Override

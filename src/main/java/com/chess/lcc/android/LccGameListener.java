@@ -111,8 +111,13 @@ public class LccGameListener implements GameListener
       if (lccHolder.getAndroid().getGameActivity() != null)
       {
         lccHolder.getAndroid().getGameActivity().finish(); // todo: refactoring, finish or just reinitialize
+        lccHolder.getAndroid().setGameActivity(null);
       }
       //lccHolder.putGame(game);
+    }
+    if (game.isEnded())
+    {
+      return;
     }
     lccHolder.processFullGame(game);
   }
@@ -154,6 +159,7 @@ public class LccGameListener implements GameListener
       LOG.info("GAME LISTENER: ignore old game id=" + game.getId());
       return;
     }
+
     /*lccHolder.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                               lccHolder.getSeekListListener());*/
     lccHolder.setCurrentGameId(null);
@@ -214,8 +220,6 @@ public class LccGameListener implements GameListener
     }
     //message = whiteUsername + " vs. " + blackUsername + " - " + message;
     LOG.info("GAME LISTENER: GAME OVER - " + message);
-    lccHolder.getWhiteClock().setRunning(false);
-    lccHolder.getBlackClock().setRunning(false);
 
     if (lccHolder.isActivityPausedMode())
     {
@@ -223,11 +227,17 @@ public class LccGameListener implements GameListener
       gameEndedEvent.event = GameEvent.Event.EndOfGame;
       gameEndedEvent.gameEndedMessage = message;
       lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.event, gameEndedEvent);
+      if (lccHolder.getAndroid().getGameActivity() == null)
+      {
+        lccHolder.processFullGame(game);
+      }
     }
     else
     {
       lccHolder.getAndroid().processGameEnd(message);
     }
+    lccHolder.getWhiteClock().setRunning(false);
+    lccHolder.getBlackClock().setRunning(false);
   }
 
   public void onGameAborted(Game game)

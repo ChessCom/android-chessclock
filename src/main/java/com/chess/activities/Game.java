@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ import com.chess.utilities.ChessComApiParser;
 public class Game extends CoreActivity {
 	public BoardView BV;
 	private LinearLayout analysisLL;
+  private LinearLayout analysisButtons;
 	private TextView white, black, thinking, timer, movelist;
 	private Timer OnlineGameUpdate = null, TacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
@@ -421,6 +423,33 @@ public class Game extends CoreActivity {
 	    }
 
 		analysisLL = (LinearLayout)findViewById(R.id.analysis);
+    analysisButtons = (LinearLayout)findViewById(R.id.analysisButtons);
+
+    if(!App.isLiveChess())
+    {
+      findViewById(R.id.prev).setOnClickListener(new OnClickListener()
+      {
+        public void onClick(View view)
+        {
+          BV.finished = false;
+          BV.sel = false;
+          BV.board.takeBack();
+          BV.invalidate();
+          Update(0);
+          isMoveNav = true;
+        }
+      });
+      findViewById(R.id.next).setOnClickListener(new OnClickListener()
+      {
+        public void onClick(View view)
+        {
+          BV.board.takeNext();
+          BV.invalidate();
+          Update(0);
+          isMoveNav = true;
+        }
+      });
+    }
 
 		white = (TextView)findViewById(R.id.white);
 		black = (TextView)findViewById(R.id.black);
@@ -921,10 +950,18 @@ public class Game extends CoreActivity {
 							white.setVisibility(View.GONE);
 							black.setVisibility(View.GONE);
 							analysisLL.setVisibility(View.VISIBLE);
+              if (!App.isLiveChess() && analysisButtons!=null)
+              {
+                analysisButtons.setVisibility(View.VISIBLE);
+              }
 						} else{
 							white.setVisibility(View.VISIBLE);
 							black.setVisibility(View.VISIBLE);
 							analysisLL.setVisibility(View.GONE);
+              if (!App.isLiveChess() && analysisButtons!=null)
+              {
+                analysisButtons.setVisibility(View.GONE);
+              }
 						}
 
 						break;
@@ -943,11 +980,19 @@ public class Game extends CoreActivity {
 					if(BV.board.analysis){
 						timer.setVisibility(View.GONE);
 						analysisLL.setVisibility(View.VISIBLE);
+            if (!App.isLiveChess() && analysisButtons!=null)
+            {
+              analysisButtons.setVisibility(View.VISIBLE);
+            }
 					} else{
 						white.setVisibility(View.GONE);
 						black.setVisibility(View.GONE);
 						timer.setVisibility(View.VISIBLE);
 						analysisLL.setVisibility(View.GONE);
+            if (!App.isLiveChess() && analysisButtons!=null)
+            {
+              analysisButtons.setVisibility(View.GONE);
+            }
 					}
 				}
             movelist.setText(BV.board.MoveListSAN());
@@ -1768,6 +1813,7 @@ public class Game extends CoreActivity {
       }
     }
     lccHolder.setActivityPausedMode(false);
+    disableScreenLock();
 	}
 	@Override
 	protected void onPause() {
@@ -1785,6 +1831,8 @@ public class Game extends CoreActivity {
 		stopTacticsTimer();
 		if(OnlineGameUpdate != null)
 			OnlineGameUpdate.cancel();
+
+    enableScreenLock();
 	}
 
 	public void stopTacticsTimer(){
@@ -1866,7 +1914,7 @@ public class Game extends CoreActivity {
         newBlackRating.toString() : App.OnlineGame.values.get("black_rating");*/
       white.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
 			black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
-
+      BV.finished = true;
       endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
       //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
       findViewById(R.id.moveButtons).setVisibility(View.GONE);

@@ -78,7 +78,7 @@ public class LccHolder
   private ChessClock whiteClock;
   private ChessClock blackClock;
   //private boolean connectingInProgress;
-  private boolean activityPausedMode;
+  private boolean activityPausedMode = true;
   private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
   private Integer latestMoveNumber;
   private Long currentGameId;
@@ -411,18 +411,15 @@ public class LccHolder
     android.updateChallengesList();
   }
 
-  public void removeGame(Long id)
+  /*public void removeGame(Long id)
   {
-    /*if(lccGames.size() > 0)
-    {*/
     lccGames.remove(id);
-    /*}*/
-  }
+  }*/
 
-  public void clearGames()
+  /*public void clearGames()
   {
     lccGames.clear();
-  }
+  }*/
 
   public ArrayList<GameListElement> getChallengesAndSeeksData()
   {
@@ -682,9 +679,10 @@ public class LccHolder
 
   public void logout()
   {
+    LOG.info("USER LOGOUT");
     _lccClient.disconnect();
     setConnected(false);
-    clearGames();
+    //clearGames();
     clearChallenges();
     clearOwnChallenges();
     clearSeeks();
@@ -811,7 +809,7 @@ public class LccHolder
     //final String sanMove = game.getMovesInSanNotation().trim().split(" ")[moveIndex];
     // todo
 
-    if(((latestMoveNumber != null) && (moveIndex <= latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0))
+    if(((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0))
     {
       LOG.info("GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex + ", latestMoveNumber=" + latestMoveNumber + ")");
       return;

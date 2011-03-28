@@ -199,12 +199,14 @@ public class OnlineNewGame extends CoreActivity {
     {
       currentGame.setVisibility(View.VISIBLE);
     }
+    disableScreenLock();
   }
 
   @Override
   protected void onPause() {
     unregisterReceiver(challengesListUpdateReceiver);
     super.onPause();
+    enableScreenLock();
   }
 
 	@Override
