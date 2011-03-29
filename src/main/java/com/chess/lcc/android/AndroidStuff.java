@@ -190,7 +190,6 @@ public class AndroidStuff
   public void closeReconnectingIndicator()
   {
     manageProgressDialog("com.chess.lcc.android-connection-info", false, "");
-    //reconnectingIndicator.dismiss();
   }
 
   public void processOtherClientEntered()

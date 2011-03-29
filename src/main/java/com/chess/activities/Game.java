@@ -1276,6 +1276,8 @@ public class Game extends CoreActivity {
         if (App.isLiveChess() && BV.board.mode == 4)
         {
           App.OnlineGame = new com.chess.model.Game(lccHolder.getGameData(App.gameId, -1), true);
+          executePausedActivityGameEvents();
+          lccHolder.setActivityPausedMode(false);
           lccHolder.getWhiteClock().paint();
           lccHolder.getBlackClock().paint();
           /*int time = lccHolder.getGame(App.gameId).getGameTimeConfig().getBaseTime() * 100;
@@ -1321,19 +1323,27 @@ public class Game extends CoreActivity {
 				}
 
 				int i;
-				for(i=0; i < BV.board.movesCount; i++){
-					moveFT = PGNmoveParser.Parse(BV.board, Moves[i]);
-					if(moveFT.length == 4){
-						Move m;
-						if(moveFT[3]==2)
-							m = new Move(moveFT[0], moveFT[1], 0, 2);
-						else
-							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-						BV.board.makeMove(m);
-					} else {
-						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-						BV.board.makeMove(m);
-					}
+        for(i = 0; i < BV.board.movesCount; i++)
+        {
+          moveFT = PGNmoveParser.Parse(BV.board, Moves[i]);
+          if(moveFT.length == 4)
+          {
+            Move m;
+            if(moveFT[3] == 2)
+            {
+              m = new Move(moveFT[0], moveFT[1], 0, 2);
+            }
+            else
+            {
+              m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+            }
+            BV.board.makeMove(m);
+          }
+          else
+          {
+            Move m = new Move(moveFT[0], moveFT[1], 0, 0);
+            BV.board.makeMove(m);
+          }
 				}
 				Update(0);
 				BV.board.takeBack();
@@ -1772,47 +1782,7 @@ public class Game extends CoreActivity {
 		}
 
     lccHolder.getAndroid().setGameActivity(this);
-
-    if (lccHolder.isActivityPausedMode() && lccHolder.getPausedActivityGameEvents().size() > 0)
-    {
-      //boolean fullGameProcessed = false;
-      GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);
-      if (gameEvent != null &&
-          (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
-      {
-        //lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
-        //fullGameProcessed = true;
-        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-        lccHolder.getAndroid().processMove(gameEvent.gameId, gameEvent.moveIndex);
-      }
-
-      gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.DrawOffer);
-      if (gameEvent != null &&
-          (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
-      {
-        /*if (!fullGameProcessed)
-        {
-          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
-          fullGameProcessed = true;
-        }*/
-        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-        lccHolder.getAndroid().processDrawOffered(gameEvent.drawOffererUsername);
-      }
-
-      gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.EndOfGame);
-      if (gameEvent != null &&
-          (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
-      {
-        /*if (!fullGameProcessed)
-        {
-          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
-          fullGameProcessed = true;
-        }*/
-        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-        lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);
-      }
-    }
-    lccHolder.setActivityPausedMode(false);
+    executePausedActivityGameEvents();
     disableScreenLock();
 	}
 	@Override
@@ -1956,6 +1926,49 @@ public class Game extends CoreActivity {
   public TextView getBlackClockView()
   {
     return blackClockView;
+  }
+
+  private void executePausedActivityGameEvents()
+  {
+    if (lccHolder.isActivityPausedMode() && lccHolder.getPausedActivityGameEvents().size() > 0)
+    {
+      //boolean fullGameProcessed = false;
+      GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);
+      if (gameEvent != null &&
+          (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
+      {
+        //lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+        //fullGameProcessed = true;
+        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
+        lccHolder.getAndroid().processMove(gameEvent.gameId, gameEvent.moveIndex);
+      }
+
+      gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.DrawOffer);
+      if (gameEvent != null &&
+          (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
+      {
+        /*if (!fullGameProcessed)
+        {
+          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+          fullGameProcessed = true;
+        }*/
+        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
+        lccHolder.getAndroid().processDrawOffered(gameEvent.drawOffererUsername);
+      }
+
+      gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.EndOfGame);
+      if (gameEvent != null &&
+          (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
+      {
+        /*if (!fullGameProcessed)
+        {
+          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+          fullGameProcessed = true;
+        }*/
+        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
+        lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);
+      }
+    }
   }
 
 }

@@ -261,10 +261,14 @@ public abstract class CoreActivity extends Activity {
       if (App.isLiveChess())
       {
         LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-
         ProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+        boolean enable = intent.getExtras().getBoolean("enable");
 
-        if (reconnectingIndicator == null)
+        if (!enable && reconnectingIndicator != null)
+        {
+          reconnectingIndicator.dismiss();
+        }
+        else if (enable)
         {
           reconnectingIndicator = new ProgressDialog(context);
           reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
@@ -282,19 +286,8 @@ public abstract class CoreActivity extends Activity {
           });
           reconnectingIndicator.setCancelable(true);
           reconnectingIndicator.setIndeterminate(true);
+          reconnectingIndicator.show();
           lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
-        }
-
-        if (intent.getExtras().getBoolean("enable"))
-        {
-          /*if (!reconnectingIndicator.isShowing())
-          {*/
-            reconnectingIndicator.show();
-          /*}*/
-        }
-        else
-        {
-          reconnectingIndicator.hide();
         }
       }
     }
