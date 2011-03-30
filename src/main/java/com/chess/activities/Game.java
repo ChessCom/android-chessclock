@@ -1277,7 +1277,6 @@ public class Game extends CoreActivity {
         {
           App.OnlineGame = new com.chess.model.Game(lccHolder.getGameData(App.gameId, -1), true);
           executePausedActivityGameEvents();
-          lccHolder.setActivityPausedMode(false);
           lccHolder.getWhiteClock().paint();
           lccHolder.getBlackClock().paint();
           /*int time = lccHolder.getGame(App.gameId).getGameTimeConfig().getBaseTime() * 100;
@@ -1780,9 +1779,14 @@ public class Game extends CoreActivity {
 			} else
 				startTacticsTimer();
 		}
-
-    lccHolder.getAndroid().setGameActivity(this);
-    executePausedActivityGameEvents();
+    if (App.isLiveChess())
+    {
+      OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq()-1), true);
+      lccHolder.getAndroid().setGameActivity(this);
+      executePausedActivityGameEvents();
+      lccHolder.setActivityPausedMode(false);
+      lccHolder.updateClockTime(lccHolder.getGame(App.gameId));
+    }
     disableScreenLock();
 	}
 	@Override

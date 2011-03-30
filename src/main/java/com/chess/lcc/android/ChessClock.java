@@ -1,5 +1,7 @@
 package com.chess.lcc.android;
 
+import com.chess.activities.Game;
+
 public class ChessClock
 {
   public static final int HOUR_MINUTE_DISPLAY_MODE = 0;
@@ -99,19 +101,24 @@ public class ChessClock
 
   public void paint()
   {
-    lccHolder.getAndroid().getGameActivity().runOnUiThread(new Runnable()
+    final Game activity = lccHolder.getAndroid().getGameActivity();
+    if (activity == null || activity.getWhiteClockView() == null || activity.getBlackClockView() == null)
+    {
+      return;
+    }
+    activity.runOnUiThread(new Runnable()
     {
       public void run()
       {
         if(isWhite)
         {
           //System.out.println("@@@@@@@@@@@@@@@@@@@@ white " + createTimeString(getTime()));
-          lccHolder.getAndroid().getGameActivity().getWhiteClockView().setText(createTimeString(getTime()));
+          activity.getWhiteClockView().setText(createTimeString(getTime()));
         }
         else
         {
           //System.out.println("@@@@@@@@@@@@@@@@@@@@ black " + createTimeString(getTime()));
-          lccHolder.getAndroid().getGameActivity().getBlackClockView().setText(createTimeString(getTime()));
+          activity.getBlackClockView().setText(createTimeString(getTime()));
         }
       }
     });

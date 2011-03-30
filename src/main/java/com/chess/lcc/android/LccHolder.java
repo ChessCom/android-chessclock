@@ -680,6 +680,7 @@ public class LccHolder
   public void logout()
   {
     LOG.info("USER LOGOUT");
+    setCurrentGameId(null);
     _lccClient.disconnect();
     setConnected(false);
     //clearGames();
@@ -847,7 +848,7 @@ public class LccHolder
           setNextOpponentMoveStillNotMade(false);
         }
       }
-      final boolean amIWhite = _user.getUsername().equals(game.getWhitePlayer().getUsername());
+      //final boolean amIWhite = _user.getUsername().equals(game.getWhitePlayer().getUsername());
       /*final boolean updateWhite = isOpponentMoveDone || amIWhite;
       final boolean updateBlack = isOpponentMoveDone || !amIWhite;*/
       final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
@@ -856,7 +857,7 @@ public class LccHolder
       final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
       /*if(updateWhite)
       {*/
-        final ChessClock whiteClock = getWhiteClock();
+      final ChessClock whiteClock = getWhiteClock();
       /*System.out.println("@@@@@@@@@@@@@@@@@@@@ whitePlayerTime " + whitePlayerTime);
       System.out.println("@@@@@@@@@@@@@@@@@@@@ " + whiteClock.createTimeString(whitePlayerTime));*/
         whiteClock.setTime(whitePlayerTime);
@@ -867,7 +868,7 @@ public class LccHolder
       //}
       /*if(updateBlack)
       {*/
-        final ChessClock blackClock = getBlackClock();
+      final ChessClock blackClock = getBlackClock();
       /*System.out.println("@@@@@@@@@@@@@@@@@@@@ blackPlayerTime " + blackPlayerTime);
       System.out.println("@@@@@@@@@@@@@@@@@@@@ " + blackClock.createTimeString(blackPlayerTime));*/
         blackClock.setTime(blackPlayerTime);
@@ -877,6 +878,16 @@ public class LccHolder
         }
       //}
     }
+  }
+
+  public void updateClockTime(Game game)
+  {
+    final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
+    final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
+    //System.out.println("!!!!!!!!!!!!!!!!!!!! WHITE TIME " + getWhiteClock().createTimeString(whitePlayerTime));
+    //System.out.println("!!!!!!!!!!!!!!!!!!!! BLACK TIME " + getBlackClock().createTimeString(blackPlayerTime));
+    getWhiteClock().setTime(whitePlayerTime);
+    getBlackClock().setTime(blackPlayerTime);
   }
 
   public void setClockDrawPointer(final Boolean isWhite)
