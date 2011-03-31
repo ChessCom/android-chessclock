@@ -30,6 +30,7 @@ public class Singin extends CoreActivity {
 
 	private Facebook mFacebook;
   private LoginButton mLoginButton;
+  private static int SIGNIN_CALLBACK_CODE = 16;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class Singin extends CoreActivity {
 				} catch (Exception e) {}
 
 				if(appService != null){
-					appService.RunSingleTask(0,
+					appService.RunSingleTask(SIGNIN_CALLBACK_CODE,
 						query,
 						PD = ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)
 					);
@@ -94,7 +95,7 @@ public class Singin extends CoreActivity {
 
             response = Web.Request(query, "GET", null, null);
             if(response.contains("Success+")){
-            	Update(0);
+            	Update(SIGNIN_CALLBACK_CODE);
             } else if(response.contains("Error+Facebook user has no Chess.com account")){
             	App.ShowMessage("You have no Chess.com account, sign up, please.");
             	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://secure." + LccHolder.HOST + "/register.html")));
@@ -161,7 +162,7 @@ public class Singin extends CoreActivity {
 	}
 	@Override
 	public void Update(int code) {
-		if(code == 0 && response.length()>0){
+		if(code == SIGNIN_CALLBACK_CODE && response.length()>0){
       String[] r = response.split(":");
 			App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
 			App.SDeditor.putString("password", password.getText().toString().trim());

@@ -416,10 +416,10 @@ public class LccHolder
     lccGames.remove(id);
   }*/
 
-  /*public void clearGames()
+  public void clearGames()
   {
     lccGames.clear();
-  }*/
+  }
 
   public ArrayList<GameListElement> getChallengesAndSeeksData()
   {
@@ -683,7 +683,7 @@ public class LccHolder
     setCurrentGameId(null);
     _lccClient.disconnect();
     setConnected(false);
-    //clearGames();
+    clearGames();
     clearChallenges();
     clearOwnChallenges();
     clearSeeks();
@@ -882,12 +882,12 @@ public class LccHolder
 
   public void updateClockTime(Game game)
   {
-    final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
-    final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
-    //System.out.println("!!!!!!!!!!!!!!!!!!!! WHITE TIME " + getWhiteClock().createTimeString(whitePlayerTime));
-    //System.out.println("!!!!!!!!!!!!!!!!!!!! BLACK TIME " + getBlackClock().createTimeString(blackPlayerTime));
+    /*int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
+    int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
+    System.out.println("!!!!!!!!!!!!!!!!!!!! WHITE TIME " + getWhiteClock().createTimeString(whitePlayerTime));
+    System.out.println("!!!!!!!!!!!!!!!!!!!! BLACK TIME " + getBlackClock().createTimeString(blackPlayerTime));
     getWhiteClock().setTime(whitePlayerTime);
-    getBlackClock().setTime(blackPlayerTime);
+    getBlackClock().setTime(blackPlayerTime);*/
   }
 
   public void setClockDrawPointer(final Boolean isWhite)

@@ -117,6 +117,7 @@ public class LccGameListener implements GameListener
     }
     if (game.isEnded())
     {
+      lccHolder.putGame(game);
       return;
     }
     lccHolder.processFullGame(game);

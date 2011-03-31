@@ -1,5 +1,7 @@
 package com.chess.lcc.android;
 
+import java.util.TimerTask;
+
 import com.chess.activities.Game;
 
 public class ChessClock
@@ -15,6 +17,7 @@ public class ChessClock
   private int displayMode = TIME_DEPENDENT_DISPLAY_MODE;
   private LccHolder lccHolder;
   private boolean isWhite;
+  private java.util.Timer myTimer;
 
   public ChessClock(LccHolder lccHolder, boolean isWhite, int time)
   {
@@ -200,13 +203,29 @@ public class ChessClock
     /*if(mStartTime == 0L)
     {*/
     //mStartTime = System.currentTimeMillis();
-    lccHolder.getAndroid().getClockHandler().removeCallbacks(mUpdateTimeTask);
-    lccHolder.getAndroid().getClockHandler().postDelayed(mUpdateTimeTask, 0);
+    /*lccHolder.getAndroid().getClockHandler().removeCallbacks(mUpdateTimeTask);
+    lccHolder.getAndroid().getClockHandler().postDelayed(mUpdateTimeTask, 0);*/
+    myTimer = new java.util.Timer();
+    myTimer.schedule(new TimerTask()
+    {
+      @Override
+      public void run()
+      {
+        paint();
+        if(getTime() < 100)
+        {
+          stopTimer();
+          return;
+        }
+      }
+    }, 0, 100);
+
     //}
   }
 
   private void stopTimer()
   {
-    lccHolder.getAndroid().getClockHandler().removeCallbacks(mUpdateTimeTask);
+    //lccHolder.getAndroid().getClockHandler().removeCallbacks(mUpdateTimeTask);
+    myTimer.cancel();
   }
 }

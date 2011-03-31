@@ -1785,7 +1785,7 @@ public class Game extends CoreActivity {
       lccHolder.getAndroid().setGameActivity(this);
       executePausedActivityGameEvents();
       lccHolder.setActivityPausedMode(false);
-      lccHolder.updateClockTime(lccHolder.getGame(App.gameId));
+      //lccHolder.updateClockTime(lccHolder.getGame(App.gameId));
     }
     disableScreenLock();
 	}
@@ -1794,6 +1794,7 @@ public class Game extends CoreActivity {
 
     unregisterReceiver(gameMoveReceiver);
     unregisterReceiver(gameEndMessageReceiver);
+    unregisterReceiver(gameInfoMessageReceived);
 
 		super.onPause();
 

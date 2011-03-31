@@ -31,13 +31,10 @@ public class StartActivity extends CoreActivity {
 	}
 	@Override
 	public void LoadNext(int code) {
-    System.out.println("!!!!!!!!!!! StartActivity 1");
 		if(App.sharedData.getString("user_token", "").equals("")){
 			startActivity(new Intent(this, Singin.class));
-      System.out.println("!!!!!!!!!!! StartActivity 2");
       App.guest = true;
 		} else{
-      System.out.println("!!!!!!!!!!! StartActivity 3");
 			if(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"notifE", true))
 	        	startService(new Intent(this, Notifications.class));
 

@@ -264,9 +264,10 @@ public abstract class CoreActivity extends Activity {
         ProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
         boolean enable = intent.getExtras().getBoolean("enable");
 
-        if (!enable && reconnectingIndicator != null)
+        if (reconnectingIndicator != null)
         {
           reconnectingIndicator.dismiss();
+          lccHolder.getAndroid().setReconnectingIndicator(null);
         }
         else if (enable)
         {
