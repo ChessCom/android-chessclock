@@ -130,10 +130,10 @@ public class Online extends CoreActivity {
         }
       });
     }
+    registerReceiver(this.lccConnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-connecting-info"));
     if (App.isLiveChess())
     {
       registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
-      registerReceiver(this.lccConnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-connecting-info"));
     }
     else
     {
@@ -176,6 +176,7 @@ public class Online extends CoreActivity {
   @Override
   protected void onPause() {
     GamesList.setVisibility(View.GONE);
+    unregisterReceiver(this.lccConnectingInfoReceiver);
     if (App.isLiveChess())
     {
       /*// if connected

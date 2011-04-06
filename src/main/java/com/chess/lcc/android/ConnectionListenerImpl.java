@@ -146,6 +146,8 @@ public class ConnectionListenerImpl implements ConnectionListener
   @Override
   public void onKicked(User arg0, String arg1, String arg2) {
     LccHolder.LOG.info("CONNECTION: user kicked");
+    lccHolder.getAndroid().closeConnectingIndicator();
+    lccHolder.getAndroid().closeReconnectingIndicator();
     lccHolder.setCurrentGameId(null);
     lccHolder.setConnected(false);
     lccHolder.clearGames();
@@ -160,7 +162,5 @@ public class ConnectionListenerImpl implements ConnectionListener
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
-
-
 
 }
