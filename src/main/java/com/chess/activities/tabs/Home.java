@@ -72,7 +72,7 @@ public class Home extends CoreActivity {
 			findViewById(R.id.logout).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-          if (App.isLiveChess() && lccHolder.isConnected())
+          if (App.isLiveChess()/* && lccHolder.isConnected()*/)
           {
             lccHolder.logout();
           }
