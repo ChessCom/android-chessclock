@@ -282,11 +282,10 @@ public abstract class CoreActivity extends Activity {
           {
             public void onCancel(DialogInterface dialog)
             {
-
+              lccHolder.logout();
               final Intent intent = new Intent(App, Singin.class);
               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
               //reconnectingIndicator.dismiss();
-              lccHolder.logout();
               App.startActivity(intent);
             }
           });

@@ -193,10 +193,10 @@ public class AndroidStuff
     );
   }
 
-  public void showConnectingIndicator()
+  /*public void showConnectingIndicator()
   {
     manageProgressDialog("com.chess.lcc.android-connecting-info", true, "Loading Live Chess");
-  }
+  }*/
 
   public void closeConnectingIndicator()
   {
@@ -211,6 +211,11 @@ public class AndroidStuff
   public void closeReconnectingIndicator()
   {
     manageProgressDialog("com.chess.lcc.android-reconnecting-info", false, "");
+  }
+
+  public void informAndExit(String title, String message)
+  {
+    informAndExit("com.chess.lcc.android-info-exit", title, message);
   }
 
   public void processOtherClientEntered()

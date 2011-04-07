@@ -1,8 +1,8 @@
 package com.chess.lcc.android;
 
 import com.chess.R;
+import com.chess.activities.Singin;
 import com.chess.core.MainApp;
-import com.chess.core.Tabs;
 import com.chess.live.client.*;
 
 import android.content.Intent;
@@ -88,8 +88,8 @@ public class ConnectionListenerImpl implements ConnectionListener
         }
       }
     }
+    lccHolder.getAndroid().informAndExit("", detailsMessage);
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(false, 0, detailsMessage);
-    //lccHolder.getAndroid().showReconnectingIndicator();
   }
 
   public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
@@ -144,23 +144,9 @@ public class ConnectionListenerImpl implements ConnectionListener
   }
 
   @Override
-  public void onKicked(User arg0, String arg1, String arg2) {
+  public void onKicked(User user, String reason, String message) {
     LccHolder.LOG.info("CONNECTION: user kicked");
-    lccHolder.getAndroid().closeConnectingIndicator();
-    lccHolder.getAndroid().closeReconnectingIndicator();
-    lccHolder.setCurrentGameId(null);
-    lccHolder.setConnected(false);
-    lccHolder.clearGames();
-    lccHolder.clearChallenges();
-    lccHolder.clearOwnChallenges();
-    lccHolder.clearSeeks();
-    //lccHolder.getAndroid().startSigninActivity();
-    final MainApp context = lccHolder.getAndroid().getContext();
-    context.setLiveChess(false);
-    lccHolder.getClient().disconnect();
-    final Intent intent = new Intent(context, Tabs.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
+    lccHolder.getAndroid().informAndExit(reason, "You have been kicked/banned");
   }
 
 }
