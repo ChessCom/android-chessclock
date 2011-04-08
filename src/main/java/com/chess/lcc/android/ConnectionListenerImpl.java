@@ -112,6 +112,11 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
   }
 
+  public void onPublishFailed(User user, Throwable th)
+  {
+    LccHolder.LOG.info("CONNECTION: onPublishFailed");
+  }
+
   public void onConnectionRestored(User arg0)
   {
     LccHolder.LOG.info("CONNECTION: Connection Restored");
