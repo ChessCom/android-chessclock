@@ -2,15 +2,12 @@ package com.chess.lcc.android;
 
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
-import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import android.content.ContextWrapper;
-import android.content.Intent;
 
 import static com.chess.lcc.android.LccHolder.LOG;
 

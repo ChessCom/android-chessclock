@@ -16,10 +16,10 @@
 		<TextView android:id="@+id/startNewGameTitle" android:layout_height="wrap_content" android:layout_width="fill_parent"
 		          android:layout_weight="1" android:text="Start New Game:" android:textSize="16px" android:textStyle="bold"
 		          android:padding="5px" android:drawablePadding="10px"
-		          android:gravity="left" android:textColor="#fff"></TextView>
+		          android:gravity="left" android:textColor="#fff" android:visibility="gone"></TextView>
 		<Spinner android:id="@+id/gamestypes" android:layout_height="wrap_content" android:layout_width="fill_parent"
 		         android:layout_weight="1" android:entries="@array/onlineSpinner"></Spinner>
-		<Button android:id="@+id/start" android:textStyle="bold" android:textColor="#222" android:layout_height="wrap_content" android:text="Custom Challenge" android:layout_width="wrap_content" android:textSize="16dip"></Button>
+		<Button android:id="@+id/start" android:textStyle="bold" android:textColor="#222" android:layout_height="wrap_content" android:text="Custom Challenge" android:layout_width="wrap_content" android:textSize="16dip" android:visibility="gone"></Button>
 	</LinearLayout>
 	
 	<GridView 
@@ -31,13 +31,14 @@
 	    android:horizontalSpacing="10dp"
 	    android:columnWidth="90dp"
 	    android:stretchMode="columnWidth"
-	    android:gravity="center">
+	    android:gravity="center"
+	    android:visibility="gone">
 	</GridView>
 	
 	<TextView android:id="@+id/challengesListTitle" android:layout_height="wrap_content" android:layout_width="fill_parent"
 		          android:layout_weight="1" android:text="Challenges:" android:textSize="16px" android:textStyle="bold"
 		          android:padding="5px" android:drawablePadding="10px"
-		          android:gravity="left" android:textColor="#fff"></TextView>
+		          android:gravity="left" android:textColor="#fff" android:visibility="gone"></TextView>
 
 	<ListView android:id="@+id/GamesList" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1"></ListView>
 	

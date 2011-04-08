@@ -1,7 +1,11 @@
 package com.chess.lcc.android;
 
 import com.chess.R;
+import com.chess.activities.Singin;
+import com.chess.core.MainApp;
 import com.chess.live.client.*;
+
+import android.content.Intent;
 
 /**
  * Created by IntelliJ IDEA. User: Vova Date: 28.02.2010 Time: 15:50:16 To change this template use File | Settings |
@@ -40,6 +44,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(true, 0);
     lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", "" + user.getMembershipLevel());
+    lccHolder.getAndroid().closeConnectingIndicator();
 
     System.out.println("User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
   }
@@ -55,6 +60,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   {
     System.out.println("CONNECTION: User connection failure:" + message + ", details=" + details);
     lccHolder.setConnected(false);
+    lccHolder.getAndroid().closeConnectingIndicator();
     //lccHolder.setConnectingInProgress(false);
     String detailsMessage = "";
     if (details != null)
@@ -82,8 +88,8 @@ public class ConnectionListenerImpl implements ConnectionListener
         }
       }
     }
+    lccHolder.getAndroid().informAndExit("", detailsMessage);
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(false, 0, detailsMessage);
-    //lccHolder.getAndroid().showReconnectingIndicator();
   }
 
   public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
@@ -93,6 +99,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.setConnected(false);
     //lccHolder.setConnectingInProgress(false);
     lccHolder.getAndroid().showReconnectingIndicator();
+    lccHolder.getAndroid().closeConnectingIndicator();
   }
 
   public void onConnectionReestablished(User arg0)
@@ -110,6 +117,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     /*lccHolder.getClient()
       .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
+    lccHolder.getAndroid().closeConnectingIndicator();
   }
 
   public void onPublishFailed(User user, Throwable th)
@@ -129,6 +137,7 @@ public class ConnectionListenerImpl implements ConnectionListener
       .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
     lccHolder.getAndroid().closeReconnectingIndicator();
+    lccHolder.getAndroid().closeConnectingIndicator();
   }
 
   public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion)
@@ -140,8 +149,9 @@ public class ConnectionListenerImpl implements ConnectionListener
   }
 
   @Override
-  public void onKicked(User arg0, String arg1, String arg2) {
-  // TODO Auto-generated method stub
+  public void onKicked(User user, String reason, String message) {
+    LccHolder.LOG.info("CONNECTION: user kicked");
+    lccHolder.getAndroid().informAndExit(reason, "You have been kicked/banned");
   }
 
 }

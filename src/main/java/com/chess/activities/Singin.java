@@ -158,7 +158,7 @@ public class Singin extends CoreActivity {
 	}
 	@Override
 	public void LoadPrev(int code) {
-		finish();
+		//finish();
 	}
 	@Override
 	public void Update(int code) {

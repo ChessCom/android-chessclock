@@ -25,6 +25,7 @@ public class AndroidStuff
   private Game gameActivity;
   private Handler clockHandler = new Handler();
   private Handler updateBoardHandler = new Handler();
+  private ProgressDialog connectingIndicator;
   private ProgressDialog reconnectingIndicator;
 
   public AndroidStuff(LccHolder lccHolder)
@@ -163,6 +164,16 @@ public class AndroidStuff
     lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-game-end", "GAME OVER", message);
   }
 
+  public void setConnectingIndicator(ProgressDialog connectingIndicator)
+  {
+    this.connectingIndicator = connectingIndicator;
+  }
+
+  public ProgressDialog getConnectingIndicator()
+  {
+    return connectingIndicator;
+  }
+
   public void setReconnectingIndicator(ProgressDialog reconnectingIndicator)
   {
     this.reconnectingIndicator = reconnectingIndicator;
@@ -182,14 +193,29 @@ public class AndroidStuff
     );
   }
 
+  /*public void showConnectingIndicator()
+  {
+    manageProgressDialog("com.chess.lcc.android-connecting-info", true, "Loading Live Chess");
+  }*/
+
+  public void closeConnectingIndicator()
+  {
+    manageProgressDialog("com.chess.lcc.android-connecting-info", false, "");
+  }
+
   public void showReconnectingIndicator()
   {
-    manageProgressDialog("com.chess.lcc.android-connection-info", true, "Reconnecting...");
+    manageProgressDialog("com.chess.lcc.android-reconnecting-info", true, "Reconnecting...");
   }
 
   public void closeReconnectingIndicator()
   {
-    manageProgressDialog("com.chess.lcc.android-connection-info", false, "");
+    manageProgressDialog("com.chess.lcc.android-reconnecting-info", false, "");
+  }
+
+  public void informAndExit(String title, String message)
+  {
+    informAndExit("com.chess.lcc.android-info-exit", title, message);
   }
 
   public void processOtherClientEntered()
@@ -211,5 +237,15 @@ public class AndroidStuff
   {
     lccHolder.getAndroid().getContext().sendBroadcast(new Intent("com.chess.lcc.android-obsolete-protocol-version"));
   }
+
+  /*public void startSigninActivity()
+  {
+    context.SDeditor.putString("password", "");
+    context.SDeditor.putString("user_token", "");
+    context.SDeditor.commit();
+    final Intent intent = new Intent(App, Singin.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
+  }*/
 }
 

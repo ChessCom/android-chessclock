@@ -3,16 +3,17 @@ package com.chess.activities.tabs;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -49,6 +50,8 @@ public class Online extends CoreActivity {
   private TextView tournaments;
   private TextView stats;
   private Button currentGame;
+  private Button start;
+  private GridView gridview;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -111,11 +114,23 @@ public class Online extends CoreActivity {
     super.onRestart();
   }
 
-
   protected void onResume()
   {
-    GamesList.setVisibility(View.VISIBLE);
     App.setLiveChess(extras.getBoolean("liveChess"));
+    if(App.isLiveChess() && !lccHolder.isConnected())
+    {
+      new Handler().post(new Runnable()
+      {
+        public void run()
+        {
+          start.setVisibility(View.GONE);
+          gridview.setVisibility(View.GONE);
+          challengesListTitle.setVisibility(View.GONE);
+          startNewGameTitle.setVisibility(View.GONE);
+        }
+      });
+    }
+    registerReceiver(this.lccConnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-connecting-info"));
     if (App.isLiveChess())
     {
       registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
@@ -142,6 +157,7 @@ public class Online extends CoreActivity {
         }
       }
     });
+    GamesList.setVisibility(View.VISIBLE);
 
     /*if (GamesAdapter != null)
     {
@@ -160,6 +176,7 @@ public class Online extends CoreActivity {
   @Override
   protected void onPause() {
     GamesList.setVisibility(View.GONE);
+    unregisterReceiver(this.lccConnectingInfoReceiver);
     if (App.isLiveChess())
     {
       /*// if connected
@@ -187,22 +204,40 @@ public class Online extends CoreActivity {
     tournaments = (TextView)findViewById(R.id.tournaments);
     stats = (TextView)findViewById(R.id.stats);
 
+    start = (Button) findViewById(R.id.start);
+		start.setOnClickListener(new OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      {
+        LoadNext(0);
+      }
+    });
+
     App.setLiveChess(extras.getBoolean("liveChess"));
     if (App.isLiveChess())
     {
       tournaments.setVisibility(View.GONE);
       stats.setVisibility(View.GONE);
       GamesType.setVisibility(View.GONE);
-      challengesListTitle.setVisibility(View.VISIBLE);
-      startNewGameTitle.setVisibility(View.VISIBLE);
+      gridview = (GridView) findViewById(R.id.gridview);
     }
     else
     {
       tournaments.setVisibility(View.VISIBLE);
       stats.setVisibility(View.VISIBLE);
+      GamesType.setVisibility(View.VISIBLE);
+      start.setVisibility(View.VISIBLE);
       challengesListTitle.setVisibility(View.GONE);
       startNewGameTitle.setVisibility(View.GONE);
-      GamesType.setVisibility(View.VISIBLE);
+    }
+
+    if (App.isLiveChess() && lccHolder.isConnected())
+    {
+      start.setVisibility(View.VISIBLE);
+      gridview.setVisibility(View.VISIBLE);
+      challengesListTitle.setVisibility(View.VISIBLE);
+      startNewGameTitle.setVisibility(View.VISIBLE);
     }
 
 		GamesType.post(new Runnable() {
@@ -420,12 +455,6 @@ public class Online extends CoreActivity {
 				return true;
 			}
 		});
-		findViewById(R.id.start).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				LoadNext(0);
-			}
-		});
 		findViewById(R.id.tournaments).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
@@ -465,7 +494,6 @@ public class Online extends CoreActivity {
 		});
     if(App.isLiveChess())
     {
-      GridView gridview = (GridView) findViewById(R.id.gridview);
       gridview.setAdapter(new BaseAdapter()
       {
         public int getCount()
@@ -651,5 +679,20 @@ public class Online extends CoreActivity {
       return text;
     }
   }
+
+  private BroadcastReceiver lccConnectingInfoReceiver = new BroadcastReceiver()
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+      if (App.isLiveChess() && !intent.getExtras().getBoolean("enable"))
+      {
+        start.setVisibility(View.VISIBLE);
+        gridview.setVisibility(View.VISIBLE);
+        challengesListTitle.setVisibility(View.VISIBLE);
+        startNewGameTitle.setVisibility(View.VISIBLE);
+      }
+    }
+  };
 
 }

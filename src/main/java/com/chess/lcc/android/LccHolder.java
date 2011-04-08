@@ -681,6 +681,9 @@ public class LccHolder
   {
     LOG.info("USER LOGOUT");
     setCurrentGameId(null);
+    getAndroid().closeConnectingIndicator();
+    getAndroid().closeReconnectingIndicator();
+    getAndroid().getContext().setLiveChess(false);
     _lccClient.disconnect();
     setConnected(false);
     clearGames();

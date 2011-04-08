@@ -2,7 +2,6 @@ package com.chess.core;
 
 import com.chess.R;
 import com.chess.activities.Singin;
-import com.chess.activities.tabs.Home;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.Web;
 import com.chess.utilities.WebService;
@@ -99,35 +98,40 @@ public abstract class CoreActivity extends Activity {
 		}
 	};
 
-	@Override
-    protected void onResume() {
-      doBindService();
-      registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
-      /*if (App.isLiveChess())
-      {*/
-        registerReceiver(drawOfferedMessageReceiver, new IntentFilter("com.chess.lcc.android-game-draw-offered"));
-        registerReceiver(lccConnectionInfoReceiver, new IntentFilter("com.chess.lcc.android-connection-info"));
-        registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
-        registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
-      /*}*/
-      super.onResume();
+  @Override
+  protected void onResume()
+  {
+    if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
+    {
+      //lccHolder.getAndroid().showConnectingIndicator();
+      manageConnectingIndicator(true, "Loading Live Chess");
       new Handler().post(new Runnable()
       {
         public void run()
         {
           final LccHolder lccHolder = App.getLccHolder();
-          if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
-          {
-            //lccHolder.setConnectingInProgress(true);
-            lccHolder.getClient()
-              .connect(App.sharedData.getString("username", ""), App.sharedData.getString("password", ""),
-                       lccHolder.getConnectionListener());
-            /*appService.RunRepeatble(0, 0, 120000,
-            PD = ProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
-          }
+          //lccHolder.setConnectingInProgress(true);
+          lccHolder.getClient()
+            .connect(App.sharedData.getString("username", ""), App.sharedData.getString("password", ""),
+                     lccHolder.getConnectionListener());
+          /*appService.RunRepeatble(0, 0, 120000,
+          PD = ProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
         }
       });
     }
+    doBindService();
+    registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
+    /*if (App.isLiveChess())
+    {*/
+    registerReceiver(lccConnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-connecting-info"));
+    registerReceiver(lccReconnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-reconnecting-info"));
+    registerReceiver(drawOfferedMessageReceiver, new IntentFilter("com.chess.lcc.android-game-draw-offered"));
+    registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
+    registerReceiver(obsoleteProtocolVersionReceiver,
+                     new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
+    /*}*/
+    super.onResume();
+  }
 
     @Override
     protected void onPause() {
@@ -139,7 +143,8 @@ public abstract class CoreActivity extends Activity {
     	}
     	unregisterReceiver(receiver);
       unregisterReceiver(drawOfferedMessageReceiver);
-      unregisterReceiver(lccConnectionInfoReceiver);
+      unregisterReceiver(lccConnectingInfoReceiver);
+      unregisterReceiver(lccReconnectingInfoReceiver);
       unregisterReceiver(informAndExitReceiver);
       unregisterReceiver(obsoleteProtocolVersionReceiver);
 
@@ -253,7 +258,7 @@ public abstract class CoreActivity extends Activity {
     }
   };
 
-  public BroadcastReceiver lccConnectionInfoReceiver = new BroadcastReceiver()
+  public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver()
   {
     @Override
     public void onReceive(Context context, Intent intent)
@@ -277,11 +282,10 @@ public abstract class CoreActivity extends Activity {
           {
             public void onCancel(DialogInterface dialog)
             {
-
+              lccHolder.logout();
               final Intent intent = new Intent(App, Singin.class);
               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
               //reconnectingIndicator.dismiss();
-              lccHolder.logout();
               App.startActivity(intent);
             }
           });
@@ -308,6 +312,10 @@ public abstract class CoreActivity extends Activity {
         {
           public void onClick(DialogInterface dialog, int whichButton)
           {
+            if (App.isLiveChess()/* && lccHolder.isConnected()*/)
+            {
+              lccHolder.logout();
+            }
             final Intent intent = new Intent(App, Singin.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             App.startActivity(intent);
@@ -348,10 +356,55 @@ public abstract class CoreActivity extends Activity {
     }
   };
 
+  private BroadcastReceiver lccConnectingInfoReceiver = new BroadcastReceiver()
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      boolean enable = intent.getExtras().getBoolean("enable");
+      manageConnectingIndicator(enable, intent.getExtras().getString("message"));
+    }
+  };
+
+  private void manageConnectingIndicator(boolean enable, String message)
+  {
+    if(App.isLiveChess())
+    {
+      ProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
+      if(connectingIndicator != null)
+      {
+        connectingIndicator.dismiss();
+        lccHolder.getAndroid().setConnectingIndicator(null);
+      }
+      else if(enable)
+      {
+        connectingIndicator = new ProgressDialog(this);
+        connectingIndicator.setMessage(message);
+        /*connectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener()
+        {
+          public void onCancel(DialogInterface dialog)
+          {
+
+            final Intent intent = new Intent(App, Singin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //connectingIndicator.dismiss();
+            lccHolder.logout();
+            App.startActivity(intent);
+          }
+        });*/
+        connectingIndicator.setCancelable(true);
+        connectingIndicator.setIndeterminate(true);
+        connectingIndicator.show();
+        lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
+      }
+    }
+  }
+
   protected void disableScreenLock()
   {
     final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-    wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "com.chess.core.CoreActivity");
+    wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "com.chess.core.CoreActivity");
     wakeLock.acquire();
   }
 
