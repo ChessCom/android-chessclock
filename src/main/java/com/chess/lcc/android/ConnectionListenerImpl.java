@@ -120,6 +120,11 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getAndroid().closeConnectingIndicator();
   }
 
+  public void onPublishFailed(User user, Throwable th)
+  {
+    LccHolder.LOG.info("CONNECTION: onPublishFailed");
+  }
+
   public void onConnectionRestored(User arg0)
   {
     LccHolder.LOG.info("CONNECTION: Connection Restored");
