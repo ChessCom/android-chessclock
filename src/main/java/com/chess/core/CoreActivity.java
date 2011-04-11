@@ -69,12 +69,12 @@ public abstract class CoreActivity extends Activity {
         doUnbindService();
     }
 
-	public boolean isConnected(){
+	/*public boolean isConnected(){
 	    ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
 	    NetworkInfo NI = cm.getActiveNetworkInfo();
 	    if(NI == null)	return false;
 	    else			return NI.isConnectedOrConnecting();
-	}
+	}*/
 
 	public boolean mIsBound;
 	public WebService appService = null;

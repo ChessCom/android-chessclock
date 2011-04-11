@@ -219,6 +219,7 @@ public class LccGameListener implements GameListener
     //message = whiteUsername + " vs. " + blackUsername + " - " + message;
     LOG.info("GAME LISTENER: GAME OVER - " + message);
 
+    lccHolder.putGame(game);
     if (lccHolder.isActivityPausedMode())
     {
       final GameEvent gameEndedEvent = new GameEvent();

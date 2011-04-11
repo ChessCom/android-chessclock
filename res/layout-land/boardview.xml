@@ -60,7 +60,13 @@
 				android:textSize="16dip" android:textColor="#222" android:text="Cancel"
 				android:layout_height="45dip" android:layout_width="wrap_content"></Button>
 		</LinearLayout>
-
+		<LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:visibility="gone"
+			android:orientation="vertical" android:background="#444" android:layout_width="wrap_content">
+			<ImageButton android:id="@+id/prev" android:src="@drawable/prev" 
+				android:layout_height="32px" android:layout_width="wrap_content"></ImageButton>
+			<ImageButton android:id="@+id/next" android:src="@drawable/next"
+				android:layout_height="32px" android:layout_width="wrap_content"></ImageButton>
+		</LinearLayout>
 
 	</LinearLayout>
 
