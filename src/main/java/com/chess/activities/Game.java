@@ -27,7 +27,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,7 +36,7 @@ import com.chess.core.MainApp;
 import com.chess.core.Tabs;
 import com.chess.engine.Board;
 import com.chess.engine.Move;
-import com.chess.engine.PGNmoveParser;
+import com.chess.engine.MoveParser;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
@@ -88,12 +87,12 @@ public class Game extends CoreActivity {
 					String FEN = App.OnlineGame.values.get("starting_fen_position");
 					if(!FEN.equals("")){
 						BV.board.GenCastlePos(FEN);
-						PGNmoveParser.FenParse(FEN, BV.board);
+						MoveParser.FenParse(FEN, BV.board);
 					}
 
 					int i;
 					for(i=0; i < BV.board.movesCount; i++){
-						int[] moveFT = PGNmoveParser.Parse(BV.board, Moves[i]);
+						int[] moveFT = MoveParser.Parse(BV.board, Moves[i]);
 						if(moveFT.length == 4){
 							Move m;
 							if(moveFT[3]==2)
@@ -137,7 +136,7 @@ public class Game extends CoreActivity {
 						String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
 						if(!FEN.equals("")){
 							BV.board.GenCastlePos(FEN);
-							PGNmoveParser.FenParse(FEN, BV.board);
+							MoveParser.FenParse(FEN, BV.board);
 							String[] tmp = FEN.split(" ");
 							if(tmp.length > 1){
 								if(tmp[1].trim().equals("w")){
@@ -152,7 +151,7 @@ public class Game extends CoreActivity {
 						BV.board.sec = sec;
 						BV.board.left = Integer.parseInt(App.TacticsBatch.get(App.currentTacticProblem).values.get("average_seconds"))-sec;
 						startTacticsTimer();
-						int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+						int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
 						if(moveFT.length == 4){
 							Move m;
 							if(moveFT[3]==2)
@@ -193,7 +192,7 @@ public class Game extends CoreActivity {
 						String FEN = App.Tactic.values.get("fen");
 						if(!FEN.equals("")){
 							BV.board.GenCastlePos(FEN);
-							PGNmoveParser.FenParse(FEN, BV.board);
+							MoveParser.FenParse(FEN, BV.board);
 							String[] tmp2 = FEN.split(" ");
 							if(tmp2.length > 1){
 								if(tmp2[1].trim().equals("w")){
@@ -208,7 +207,7 @@ public class Game extends CoreActivity {
 						}
 						BV.board.sec = sec;
 						BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds"))-sec;
-						int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+						int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
 						if(moveFT.length == 4){
 							Move m;
 							if(moveFT[3]==2)
@@ -551,7 +550,7 @@ public class Game extends CoreActivity {
 				String FEN = App.Tactic.values.get("fen");
 				if(!FEN.equals("")){
 					BV.board.GenCastlePos(FEN);
-					PGNmoveParser.FenParse(FEN, BV.board);
+					MoveParser.FenParse(FEN, BV.board);
 					String[] tmp2 = FEN.split(" ");
 					if(tmp2.length > 1){
 						if(tmp2[1].trim().equals("w")){
@@ -567,7 +566,7 @@ public class Game extends CoreActivity {
 				BV.board.sec = 0;
 				BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds"));
 				startTacticsTimer();
-				int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
 				if(moveFT.length == 4){
 					Move m;
 					if(moveFT[3]==2)
@@ -624,7 +623,7 @@ public class Game extends CoreActivity {
 		String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
 		if(!FEN.equals("")){
 			BV.board.GenCastlePos(FEN);
-			PGNmoveParser.FenParse(FEN, BV.board);
+			MoveParser.FenParse(FEN, BV.board);
 			String[] tmp = FEN.split(" ");
 			if(tmp.length > 1){
 				if(tmp[1].trim().equals("w")){
@@ -639,7 +638,7 @@ public class Game extends CoreActivity {
 		BV.board.sec = 0;
 		BV.board.left = Integer.parseInt(App.TacticsBatch.get(App.currentTacticProblem).values.get("average_seconds"));
 		startTacticsTimer();
-		int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+		int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
 		if(moveFT.length == 4){
 			Move m;
 			if(moveFT[3]==2)
@@ -684,7 +683,7 @@ public class Game extends CoreActivity {
 			String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
 			if(!FEN.equals("")){
 				BV.board.GenCastlePos(FEN);
-				PGNmoveParser.FenParse(FEN, BV.board);
+				MoveParser.FenParse(FEN, BV.board);
 				String[] tmp = FEN.split(" ");
 				if(tmp.length > 1){
 					if(tmp[1].trim().equals("w")){
@@ -700,7 +699,7 @@ public class Game extends CoreActivity {
 			String FEN = App.Tactic.values.get("fen");
 			if(!FEN.equals("")){
 				BV.board.GenCastlePos(FEN);
-				PGNmoveParser.FenParse(FEN, BV.board);
+				MoveParser.FenParse(FEN, BV.board);
 				String[] tmp2 = FEN.split(" ");
 				if(tmp2.length > 1){
 					if(tmp2[1].trim().equals("w")){
@@ -721,7 +720,7 @@ public class Game extends CoreActivity {
 			public void run() {
         		int i;
     			for(i=0;i < BV.board.TacticMoves.length;i++){
-    				int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[i]);
+    				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[i]);
     				try {
     					Thread.sleep(1500);
     				} catch (Exception e) {}
@@ -766,12 +765,12 @@ public class Game extends CoreActivity {
 		} else if(p == 5){
 			f = "K";
 		}
-		String Moveto = PGNmoveParser.positionToString(m.to);
+		String Moveto = MoveParser.positionToString(m.to);
 		Log.i("!!!", f+" | "+Moveto+" : "+BV.board.TacticMoves[BV.board.hply-1]);
 		if(BV.board.TacticMoves[BV.board.hply-1].contains(f) && BV.board.TacticMoves[BV.board.hply-1].contains(Moveto)){
 			BV.board.TacticsCorrectMoves++;
 			if(BV.board.movesCount < BV.board.TacticMoves.length-1){
-				int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[BV.board.hply]);
+				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[BV.board.hply]);
 				if(moveFT.length == 4){
 					if(moveFT[3]==2)
 						m = new Move(moveFT[0], moveFT[1], 0, 2);
@@ -887,6 +886,7 @@ public class Game extends CoreActivity {
 				break;
 			case -1:
 				if(BV.board.init && BV.board.mode == 4 || BV.board.mode == 5){
+          //System.out.println("@@@@@@@@ POINT 1 App.gameId=" + App.gameId);
 					GetOnlineGame(App.gameId);
 					BV.board.init = false;
 				} else if(!BV.board.init){
@@ -1124,7 +1124,7 @@ public class Game extends CoreActivity {
 				String FEN = App.Tactic.values.get("fen");
 				if(!FEN.equals("")){
 					BV.board.GenCastlePos(FEN);
-					PGNmoveParser.FenParse(FEN, BV.board);
+					MoveParser.FenParse(FEN, BV.board);
 					String[] tmp2 = FEN.split(" ");
 					if(tmp2.length > 1){
 						if(tmp2[1].trim().equals("w")){
@@ -1139,7 +1139,7 @@ public class Game extends CoreActivity {
 				}
 				BV.board.sec = 0;
 				BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds"));
-				int[] moveFT = PGNmoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
 				if(moveFT.length == 4){
 					Move m;
 					if(moveFT[3]==2)
@@ -1218,6 +1218,9 @@ public class Game extends CoreActivity {
         {
           OG = ChessComApiParser.GetGameParseV3(rep_response);
         }
+        /*System.out.println("&&&&&&&& Update 9 App=" + App);
+        System.out.println("&&&&&&&& Update 9 App.OnlineGame=" + App.OnlineGame);
+        System.out.println("&&&&&&&& Update 9 OG=" + OG);*/
 				if(!App.OnlineGame.equals(OG)){
 					if(!App.OnlineGame.values.get("move_list").equals(OG.values.get("move_list"))){
 						App.OnlineGame = OG;
@@ -1225,8 +1228,16 @@ public class Game extends CoreActivity {
 						if(App.OnlineGame.values.get("move_list").contains("1.") || (App.isLiveChess() && BV.board.mode == 4)){
               int beginIndex = (App.isLiveChess() && BV.board.mode == 4) ? 0 : 1;
               Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+
               if(Moves.length - BV.board.movesCount == 1){
-                moveFT = PGNmoveParser.Parse(BV.board, Moves[Moves.length-1]);
+                if (App.isLiveChess())
+                {
+                  moveFT = MoveParser.parseCoordinate(BV.board, Moves[Moves.length - 1]);
+                }
+                else
+                {
+                  moveFT = MoveParser.Parse(BV.board, Moves[Moves.length - 1]);
+                }
 								if(moveFT.length == 4){
 									Move m;
 									if(moveFT[3]==2)
@@ -1318,13 +1329,17 @@ public class Game extends CoreActivity {
 				FEN = App.OnlineGame.values.get("starting_fen_position");
 				if(!FEN.equals("")){
 					BV.board.GenCastlePos(FEN);
-					PGNmoveParser.FenParse(FEN, BV.board);
+					MoveParser.FenParse(FEN, BV.board);
 				}
 
 				int i;
+        //System.out.println("@@@@@@@@ POINT 2 BV.board.movesCount=" + BV.board.movesCount);
+        //System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
         for(i = 0; i < BV.board.movesCount; i++)
         {
-          moveFT = PGNmoveParser.Parse(BV.board, Moves[i]);
+          //System.out.println("@@@@@@@@ POINT 4 i=" + i);
+          //System.out.println("@@@@@@@@ POINT 5 Moves[i]=" + Moves[i]);
+          moveFT = MoveParser.Parse(BV.board, Moves[i]);
           if(moveFT.length == 4)
           {
             Move m;

@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class Game implements Serializable {
-	public HashMap<String, String> values;
+
+  public static int GAME_DATA_ELEMENTS_COUNT = 14;
+
+  public HashMap<String, String> values;
 
 	public Game(String[] values, boolean isLiveChess){
 		this.values = new HashMap<String, String>();
@@ -23,5 +26,6 @@ public class Game implements Serializable {
 		this.values.put("encoded_move_string", values[11]);
 		this.values.put("has_new_message", values[12]);
 		this.values.put("seconds_remaining", values[13]);
+    //this.values.put("move_list_coordinate", values[14]);
 	}
 }

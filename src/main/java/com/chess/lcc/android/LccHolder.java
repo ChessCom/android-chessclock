@@ -100,7 +100,8 @@ public class LccHolder
     _lccClient = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST, CONFIG_PORT, CONFIG_URI);
     _lccClient.setClientInfo("Android", DateTimeUtils.fromDateTime(Utils.getClassCompileTimeStamp(LccHolder.class), "yyyyMMddhhmm"), "No-Key");
     _lccClient.setSupportedClientFeatures(false, false);
-    HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
+    //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
+    HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
     httpClient.setKeyStoreType("PKCS12");
     httpClient.setTrustStoreType("PKCS12");
     httpClient.setKeyManagerPassword("testtest");
@@ -109,6 +110,14 @@ public class LccHolder
     httpClient.setTrustStoreInputStream(keyStoreInputStream);
     httpClient.setTrustStorePassword("testtest");
     _lccClient.setHttpClient(httpClient);
+    try
+    {
+      httpClient.start();
+    }
+    catch(Exception e)
+    {
+      throw new LiveChessClientException("Unable to initialize HttpClient", e);
+    }
     _challengeListener = new LccChallengeListener(this);
     _chatListener = new ChatListenerImpl(this);
     _connectionListener = new ConnectionListenerImpl(this);
@@ -506,7 +515,7 @@ public class LccHolder
   public String[] getGameData(String gameId, int moveIndex)
   {
     final com.chess.live.client.Game lccGame = getGame(gameId);
-    final String[] gameData = new String[14];
+    final String[] gameData = new String[com.chess.model.Game.GAME_DATA_ELEMENTS_COUNT];
     gameData[0] = lccGame.getId().toString();
     gameData[1] = "1";
     gameData[2] = "" + System.currentTimeMillis(); // todo, resolve "timestamp"
@@ -544,7 +553,10 @@ public class LccHolder
       moves = "";
     }
 
-    gameData[7] = moves; // move_list
+    //gameData[7] = moves; // move_list
+    gameData[7] = lccGame.getMovesAsString(" "); // move_list
+    //gameData[14] = lccGame.getMovesAsString(" ");
+
     gameData[8] = ""; // user_to_move
 
     Integer whiteRating = 0;

@@ -1146,8 +1146,8 @@ public class Board {
     		Move m = histDat[i].m;
     		if(i%2 == 0)
     			output += "\n"+(i/2+1)+". ";
-    		output += PGNmoveParser.positionToString(m.from);
-    		output += PGNmoveParser.positionToString(m.to);
+    		output += MoveParser.positionToString(m.from);
+    		output += MoveParser.positionToString(m.to);
     		output += " ";
     	}
     	return output;
@@ -1181,9 +1181,9 @@ public class Board {
 					continue;
 				if(piece[pos] == 1 && color[pos] == side){
 					if(COL(pos) == COL(m.from))
-						f += PGNmoveParser.BNToNum(ROW(m.from));
+						f += MoveParser.BNToNum(ROW(m.from));
 					else
-						f += PGNmoveParser.BNToLetter(COL(m.from));
+						f += MoveParser.BNToLetter(COL(m.from));
 					break;
 				}
 			}
@@ -1206,9 +1206,9 @@ public class Board {
 					continue;
 				if(piece[pos] == 3 && color[pos] == side){
 					if(COL(pos) == COL(m.from))
-						f += PGNmoveParser.BNToNum(ROW(m.from));
+						f += MoveParser.BNToNum(ROW(m.from));
 					else
-						f += PGNmoveParser.BNToLetter(COL(m.from));
+						f += MoveParser.BNToLetter(COL(m.from));
 					break;
 				}
 			}
@@ -1220,7 +1220,7 @@ public class Board {
 
 		if(histDat[hply].capture != 6){
 			if(p == 0){
-    			f = PGNmoveParser.BNToLetter(COL(m.from));
+    			f = MoveParser.BNToLetter(COL(m.from));
     		}
 			capture = "x";
 		}
@@ -1237,41 +1237,41 @@ public class Board {
 				promotion = "=Q";
 		}
 
-    	return f+capture+PGNmoveParser.positionToString(m.to)+promotion;
+    	return f+capture+ MoveParser.positionToString(m.to)+promotion;
     }
 
     private String convertMove(){
     	Move m = histDat[hply-1].m;
     	String output = "";
     	try {
-    		String to = PGNmoveParser.positionToString(m.to);
+    		String to = MoveParser.positionToString(m.to);
     		if ((m.bits & 2) != 0) {
     			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
     			int what = histDat[hply-1].what;
 
     			if(what == 0){
     				if(chess960)
-    					to = PGNmoveParser.positionToString(bRook2);
+    					to = MoveParser.positionToString(bRook2);
     				else
     					to = "g8";
     			} else if(what == 1){
     				if(chess960)
-    					to = PGNmoveParser.positionToString(bRook1);
+    					to = MoveParser.positionToString(bRook1);
     				else
     					to = "c8";
     			} else if(what == 2){
     				if(chess960)
-    					to = PGNmoveParser.positionToString(wRook2);
+    					to = MoveParser.positionToString(wRook2);
     				else
     					to = "g1";
     			} else if(what == 3){
     				if(chess960)
-    					to = PGNmoveParser.positionToString(wRook1);
+    					to = MoveParser.positionToString(wRook1);
     				else
     					to = "c1";
     			}
     		}
-    		output = URLEncoder.encode(PGNmoveParser.positionToString(m.from)+to, "UTF-8");
+    		output = URLEncoder.encode(MoveParser.positionToString(m.from)+to, "UTF-8");
 		} catch (Exception e) {}
 		Log.i("move:", output);
     	return output;

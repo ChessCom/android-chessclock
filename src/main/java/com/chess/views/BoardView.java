@@ -243,9 +243,29 @@ public class BoardView extends ImageView {
 		int i,j;
 		for(i=0;i<4;i++){
 			for(j=0;j<4;j++){
-				canvas.drawBitmap(ca.App.board, null, new Rect(i*side,j*side,i*side+side,j*side+side), null);
-			}
-		}
+        /*try {
+          throw new Exception();
+        }
+        catch (Exception e)
+        {
+          e.printStackTrace();
+        }
+        System.out.println("@@@@@@@@@@@@@@@@ ca " + ca);
+        System.out.println("@@@@@@@@@@@@@@@@ ca.App " + ca.App);
+        System.out.println("@@@@@@@@@@@@@@@@ ca.App.board " + ca.App.board);*/
+        try
+        {
+          canvas.drawBitmap(ca.App.board, null, new Rect(i * side, j * side, i * side + side, j * side + side), null);
+        }
+        catch(Exception e)
+        {
+          e.printStackTrace();
+          System.out.println("@@@@@@@@@@@@@@@@ ca " + ca);
+          System.out.println("@@@@@@@@@@@@@@@@ ca.App " + ca.App);
+          System.out.println("@@@@@@@@@@@@@@@@ ca.App.board " + ca.App.board);
+        }
+      }
+    }
 
 		if(!compmoving){
 			for(i=0;i<64;i++){
