@@ -92,7 +92,8 @@ public class Game extends CoreActivity {
 
 					int i;
 					for(i=0; i < BV.board.movesCount; i++){
-						int[] moveFT = MoveParser.Parse(BV.board, Moves[i]);
+
+            int[] moveFT = App.isLiveChess() ? MoveParser.parseCoordinate(BV.board, Moves[i]) : MoveParser.Parse(BV.board, Moves[i]);
 						if(moveFT.length == 4){
 							Move m;
 							if(moveFT[3]==2)
