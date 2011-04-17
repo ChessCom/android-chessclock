@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 import com.chess.activities.Game;
 import com.chess.core.MainApp;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.WebService;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -20,13 +20,13 @@ public class AndroidStuff
   private MainApp context;
   private SharedPreferences sharedData;
   private SharedPreferences.Editor sharedDataEditor;
-  private ProgressDialog currentProgressDialog;
+  private MyProgressDialog currentProgressDialog;
   private LccHolder lccHolder;
   private Game gameActivity;
   private Handler clockHandler = new Handler();
   private Handler updateBoardHandler = new Handler();
-  private ProgressDialog connectingIndicator;
-  private ProgressDialog reconnectingIndicator;
+  private MyProgressDialog connectingIndicator;
+  private MyProgressDialog reconnectingIndicator;
 
   public AndroidStuff(LccHolder lccHolder)
   {
@@ -43,7 +43,7 @@ public class AndroidStuff
     this.context = context;
   }
 
-  public void setCurrentProgressDialog(ProgressDialog currentProgressDialog)
+  public void setCurrentProgressDialog(MyProgressDialog currentProgressDialog)
   {
     this.currentProgressDialog = currentProgressDialog;
   }
@@ -164,22 +164,22 @@ public class AndroidStuff
     lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-game-end", "GAME OVER", message);
   }
 
-  public void setConnectingIndicator(ProgressDialog connectingIndicator)
+  public void setConnectingIndicator(MyProgressDialog connectingIndicator)
   {
     this.connectingIndicator = connectingIndicator;
   }
 
-  public ProgressDialog getConnectingIndicator()
+  public MyProgressDialog getConnectingIndicator()
   {
     return connectingIndicator;
   }
 
-  public void setReconnectingIndicator(ProgressDialog reconnectingIndicator)
+  public void setReconnectingIndicator(MyProgressDialog reconnectingIndicator)
   {
     this.reconnectingIndicator = reconnectingIndicator;
   }
 
-  public ProgressDialog getReconnectingIndicator()
+  public MyProgressDialog getReconnectingIndicator()
   {
     return reconnectingIndicator;
   }

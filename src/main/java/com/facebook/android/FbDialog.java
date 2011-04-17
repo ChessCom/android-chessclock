@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -17,7 +17,6 @@
 package com.facebook.android;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chess.R;
+import com.chess.utilities.MyProgressDialog;
 import com.facebook.android.Facebook.DialogListener;
 
 public class FbDialog extends Dialog {
@@ -44,21 +44,21 @@ public class FbDialog extends Dialog {
     static final int FB_BLUE = 0xFF6D84B4;
     static final float[] DIMENSIONS_LANDSCAPE = {460, 260};
     static final float[] DIMENSIONS_PORTRAIT = {280, 420};
-    static final FrameLayout.LayoutParams FILL = 
-        new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 
+    static final FrameLayout.LayoutParams FILL =
+        new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
                          ViewGroup.LayoutParams.FILL_PARENT);
     static final int MARGIN = 4;
     static final int PADDING = 2;
     static final String DISPLAY_STRING = "touch";
     static final String FB_ICON = "icon.png";
-    
+
     private String mUrl;
     private DialogListener mListener;
-    private ProgressDialog mSpinner;
+    private MyProgressDialog mSpinner;
     private WebView mWebView;
     private LinearLayout mContent;
     private TextView mTitle;
-    
+
     public FbDialog(Context context, String url, DialogListener listener) {
         super(context);
         mUrl = url;
@@ -68,10 +68,10 @@ public class FbDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSpinner = new ProgressDialog(getContext());
+        mSpinner = new MyProgressDialog(getContext());
         mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mSpinner.setMessage("Loading...");
-        
+
         mContent = new LinearLayout(getContext());
         mContent.setOrientation(LinearLayout.VERTICAL);
         setUpTitle();
@@ -100,7 +100,7 @@ public class FbDialog extends Dialog {
                 icon, null, null, null);
         mContent.addView(mTitle);
     }
-    
+
     private void setUpWebView() {
         mWebView = new WebView(getContext());
         mWebView.setVerticalScrollBarEnabled(false);
@@ -136,7 +136,7 @@ public class FbDialog extends Dialog {
             }
             // launch non-dialog URLs in a full browser
             getContext().startActivity(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(url))); 
+                    new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             return true;
         }
 
@@ -165,8 +165,8 @@ public class FbDialog extends Dialog {
             }
             try {
             	mSpinner.dismiss();
-			} catch (Exception e) {}            
-        }   
-        
+			} catch (Exception e) {}
+        }
+
     }
 }

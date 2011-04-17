@@ -72,7 +72,7 @@ public class Online extends CoreActivity {
 		                	if(appService != null){
 		            			appService.RunSingleTask(4,
 		            				"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+el.values.get("game_id")+"&command=ACCEPTDRAW&timestamp="+el.values.get("timestamp"),
-		            				null/*PD = ProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
+		            				null/*PD = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 		            			);
 		            		}
 		                }
@@ -82,7 +82,7 @@ public class Online extends CoreActivity {
 		                	if(appService != null){
 		            			appService.RunSingleTask(4,
 		            				"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+el.values.get("game_id")+"&command=DECLINEDRAW&timestamp="+el.values.get("timestamp"),
-		            				null/*PD = ProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
+		            				null/*PD = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 		            			);
 		            		}
 		                }
@@ -562,13 +562,13 @@ public class Online extends CoreActivity {
         {
           appService.RunRepeatbleTask(0, 0, UPDATE_DELAY,
                                       queries[App.sharedData.getInt("gamestype", 1)],
-                                      null/*PD = ProgressDialog
+                                      null/*PD = MyProgressDialog
                                         .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
         }
         else
         {
           /*appService.RunRepeatble(0, 0, 2000,
-                                  PD = ProgressDialog
+                                  PD = MyProgressDialog
                                     .show(Online.this, null, getString(R.string.updatinggameslist), true));*/
           Update(0);
         }

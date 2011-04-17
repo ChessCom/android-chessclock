@@ -17,6 +17,7 @@ import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.views.VideosAdapter;
 
 public class VideoList extends CoreActivity {
@@ -50,7 +51,7 @@ public class VideoList extends CoreActivity {
 						String category = "&category="+extras.getString("category");
 						appService.RunSingleTask(0,
 							"http://www." + LccHolder.HOST + "/api/get_videos?id="+App.sharedData.getString("user_token", "")+"&page-size=20&page="+page+skill+category,
-							PD = ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true)
+							PD = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
 						);
 						update = false;
 					}
@@ -79,7 +80,7 @@ public class VideoList extends CoreActivity {
 				String category = "&category="+extras.getString("category");
 				appService.RunSingleTask(0,
 					"http://www." + LccHolder.HOST + "/api/get_videos?id="+App.sharedData.getString("user_token", "")+"&page-size=20&page="+page+skill+category,
-					PD = ProgressDialog.show(this, null, getString(R.string.loading), true)
+					PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}
 		} else if(code == 0){

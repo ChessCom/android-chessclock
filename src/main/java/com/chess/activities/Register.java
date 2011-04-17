@@ -7,6 +7,7 @@ import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
+import com.chess.utilities.MyProgressDialog;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -110,7 +111,7 @@ public class Register extends CoreActivity {
 				if(appService != null){
 					appService.RunSingleTask(0,
 						query,
-						PD = ProgressDialog.show(Register.this, null, getString(R.string.loading), true)
+						PD = new MyProgressDialog(ProgressDialog.show(Register.this, null, getString(R.string.loading), true))
 					);
 				}
 	    	}
@@ -133,7 +134,7 @@ public class Register extends CoreActivity {
 			if(appService != null){
 				appService.RunSingleTask(1,
 					query,
-					PD = ProgressDialog.show(Register.this, null, getString(R.string.loading), true)
+					PD = new MyProgressDialog(ProgressDialog.show(Register.this, null, getString(R.string.loading), true))
 				);
 			}
 		} else if(code == 1){

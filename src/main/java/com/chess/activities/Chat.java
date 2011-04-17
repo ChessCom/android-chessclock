@@ -15,6 +15,7 @@ import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.views.MessagesAdapter;
 
 public class Chat extends CoreActivity {
@@ -40,8 +41,8 @@ public class Chat extends CoreActivity {
 				if(appService != null){
     				appService.RunSingleTask(1,
     						"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+extras.getString("game_id")+"&command=CHAT&message="+message+"&timestamp="+extras.getString("timestamp"),
-    					PD = ProgressDialog.show(Chat.this, null, getString(R.string.sendingmessage), true)
-    				);
+    					PD = new MyProgressDialog(ProgressDialog.show(Chat.this, null, getString(R.string.sendingmessage), true))
+            );
     			}
 			}
 		});
@@ -59,7 +60,7 @@ public class Chat extends CoreActivity {
 			if(appService != null){
 				appService.RunRepeatbleTask(0, 0, 60000,
 					"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+extras.getString("game_id")+"&command=CHAT&timestamp="+extras.getString("timestamp"),
-					null/*PD = ProgressDialog.show(Chat.this, null, getString(R.string.gettingmessages), true)*/
+					null/*PD = MyProgressDialog.show(Chat.this, null, getString(R.string.gettingmessages), true)*/
 				);
 			}
 		} else if(code == 0){

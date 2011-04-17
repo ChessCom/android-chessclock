@@ -18,6 +18,7 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.utilities.MyProgressDialog;
 
 public class CreateChallenge extends CoreActivity {
 	private Spinner iplayas, dayspermove, minrating, maxrating;
@@ -205,7 +206,7 @@ public class CreateChallenge extends CoreActivity {
           {
             appService.RunChesscomSendChallengeTask(
               lccHolder,
-              //PD = ProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
+              //PD = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
               null,
               challenge
             );
@@ -245,7 +246,8 @@ public class CreateChallenge extends CoreActivity {
           if(appService != null){
             appService.RunSingleTask(0,
                                      query,
-                                     PD = ProgressDialog.show(CreateChallenge.this, null, getString(R.string.creating), true)
+                                     PD = new MyProgressDialog(ProgressDialog
+                                       .show(CreateChallenge.this, null, getString(R.string.creating), true))
             );
           }
         }

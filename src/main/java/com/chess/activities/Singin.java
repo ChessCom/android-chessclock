@@ -15,6 +15,7 @@ import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
 import com.chess.utilities.Web;
 import com.facebook.android.Facebook;
@@ -63,8 +64,8 @@ public class Singin extends CoreActivity {
 				if(appService != null){
 					appService.RunSingleTask(SIGNIN_CALLBACK_CODE,
 						query,
-						PD = ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)
-					);
+						PD = new MyProgressDialog(ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true))
+          );
 				}
 			}
 		});

@@ -3,12 +3,12 @@ package com.chess.core;
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
 import com.chess.utilities.WebService;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,7 +31,7 @@ public abstract class CoreActivity extends Activity {
 	public MainApp App;
 	public Bundle extras;
 	public DisplayMetrics metrics;
-	public ProgressDialog PD;
+	public MyProgressDialog PD;
   public LccHolder lccHolder;
   private PowerManager.WakeLock wakeLock;
 
@@ -101,6 +101,21 @@ public abstract class CoreActivity extends Activity {
   @Override
   protected void onResume()
   {
+	  new Handler().post(new Runnable()
+    {
+      public void run()
+      {
+        if(App.board == null)
+        {
+          App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "") + "board", 0)]);
+        }
+        if(App.pieces == null)
+        {
+          App.LoadPieces(App.res_pieces[App.sharedData.getInt(App.sharedData.getString("username", "") + "pieces", 0)]);
+        }
+      }
+    });
+
     if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
     {
       //lccHolder.getAndroid().showConnectingIndicator();
@@ -115,7 +130,7 @@ public abstract class CoreActivity extends Activity {
             .connect(App.sharedData.getString("username", ""), App.sharedData.getString("password", ""),
                      lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
-          PD = ProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
+          PD = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
         }
       });
     }
@@ -266,7 +281,7 @@ public abstract class CoreActivity extends Activity {
       if (App.isLiveChess())
       {
         LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-        ProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+        MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
         boolean enable = intent.getExtras().getBoolean("enable");
 
         if (reconnectingIndicator != null)
@@ -276,7 +291,7 @@ public abstract class CoreActivity extends Activity {
         }
         else if (enable)
         {
-          reconnectingIndicator = new ProgressDialog(context);
+          reconnectingIndicator = new MyProgressDialog(context);
           reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
           reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener()
           {
@@ -371,7 +386,7 @@ public abstract class CoreActivity extends Activity {
   {
     if(App.isLiveChess())
     {
-      ProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
+      MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
       if(connectingIndicator != null)
       {
         connectingIndicator.dismiss();
@@ -379,7 +394,7 @@ public abstract class CoreActivity extends Activity {
       }
       else if(enable)
       {
-        connectingIndicator = new ProgressDialog(this);
+        connectingIndicator = new MyProgressDialog(this);
         connectingIndicator.setMessage(message);
         /*connectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener()
         {
@@ -411,6 +426,17 @@ public abstract class CoreActivity extends Activity {
   protected void enableScreenLock()
   {
     wakeLock.release();
+  }
+
+  public void unregisterReceiver(BroadcastReceiver receiver)
+  {
+    try {
+      super.unregisterReceiver(receiver);
+    } catch (IllegalArgumentException e)
+    {
+      e.printStackTrace();
+      // hack for Android's IllegalArgumentException: Receiver not registered
+    }
   }
 
 }

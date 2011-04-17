@@ -43,6 +43,7 @@ import com.chess.live.client.User;
 import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
 import com.chess.views.BoardView;
 import com.chess.utilities.ChessComApiParser;
@@ -536,7 +537,7 @@ public class Game extends CoreActivity {
       if(appService != null){
 			  appService.RunSingleTask(10,
 				"http://www." + LccHolder.HOST + "/api/v3/get_game?id="+App.sharedData.getString("user_token", "")+"&gid="+game_id,
-				null/*PD = ProgressDialog.show(this, null, getString(R.string.loading), true)*/);
+				null/*PD = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
       }
     }
 	}
@@ -608,8 +609,8 @@ public class Game extends CoreActivity {
 		if(appService != null){
 			appService.RunSingleTask(7,
 				"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="+App.sharedData.getString("user_token", "")+"&tactics_id="+id,
-				PD = ProgressDialog.show(this, null, getString(R.string.loading), false)
-			);
+				PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
+      );
 		}
 	}
 	private void GetGuestTacticsGame(){
@@ -807,8 +808,7 @@ public class Game extends CoreActivity {
 					if(appService != null){
 						appService.RunSingleTask(6,
 								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="+App.sharedData.getString("user_token", "")+"&tactics_id="+App.Tactic.values.get("id")+"&passed="+1+"&correct_moves="+BV.board.TacticsCorrectMoves+"&seconds="+BV.board.sec,
-							PD = ProgressDialog.show(this, null, getString(R.string.loading), true)
-						);
+							PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 					}
 					stopTacticsTimer();
 				}
@@ -844,8 +844,7 @@ public class Game extends CoreActivity {
 				if(appService != null){
 					appService.RunSingleTask(5,
 						"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="+App.sharedData.getString("user_token", "")+"&tactics_id="+App.Tactic.values.get("id")+"&passed="+0+"&correct_moves="+BV.board.TacticsCorrectMoves+"&seconds="+BV.board.sec,
-						PD = ProgressDialog.show(this, null, getString(R.string.loading), true)
-					);
+						PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 				}
 				stopTacticsTimer();
 			}
@@ -858,11 +857,15 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	public void LoadPrev(int code) {
-		if(BV.board != null && BV.board.mode == 6){
-			App.mTabHost.setCurrentTab(0);
-			BV.board.tacticCanceled = true;
-		} else
-		finish();
+    if(BV.board != null && BV.board.mode == 6)
+    {
+      App.mTabHost.setCurrentTab(0);
+      BV.board.tacticCanceled = true;
+    }
+    else
+    {
+      finish();
+    }
 	}
 	@Override
 	public void Update(int code) {
@@ -1041,8 +1044,7 @@ public class Game extends CoreActivity {
           if(appService != null){
             appService.RunSingleTask(8,
                                      "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=SUBMIT&newmove="+BV.board.convertMoveEchess()+"&timestamp="+App.OnlineGame.values.get("timestamp"),
-                                     PD = ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)
-            );
+                                     PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
           }
         }
 				break;
@@ -1797,7 +1799,8 @@ public class Game extends CoreActivity {
 		}
     if (App.isLiveChess())
     {
-      OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq()-1), true);
+      /*OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq()-1), true);
+      OG.values.put("move_list", "");*/
       lccHolder.getAndroid().setGameActivity(this);
       executePausedActivityGameEvents();
       lccHolder.setActivityPausedMode(false);
@@ -1807,7 +1810,6 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onPause() {
-
     unregisterReceiver(gameMoveReceiver);
     unregisterReceiver(gameEndMessageReceiver);
     unregisterReceiver(gameInfoMessageReceived);
@@ -1991,5 +1993,12 @@ public class Game extends CoreActivity {
       }
     }
   }
+
+  /*public void onStop()
+  {
+    App.OnlineGame = null;
+    BV.board = null;
+    super.onStop();
+  }*/
 
 }

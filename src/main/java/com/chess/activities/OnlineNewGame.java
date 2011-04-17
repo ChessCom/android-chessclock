@@ -13,7 +13,6 @@ import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -226,13 +225,13 @@ public class OnlineNewGame extends CoreActivity {
           appService.RunRepeatbleTask(0, 0, UPDATE_DELAY,
                                       "http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
                                       App.sharedData.getString("user_token", ""),
-                                      null/*PD = ProgressDialog
+                                      null/*PD = MyProgressDialog
                                         .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
         }
         else
         {
           /*appService.RunRepeatble(0, 0, 2000,
-                                  PD = ProgressDialog
+                                  PD = MyProgressDialog
                                     .show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
           Update(0);
         }

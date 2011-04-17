@@ -6,7 +6,6 @@ import java.util.TimerTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 
-import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,7 +16,7 @@ public class WebService extends Service {
 
 	public Timer repeatble = null;
 	private int CODE = 0;
-	private ProgressDialog PD;
+	private MyProgressDialog PD;
 	public static final String BROADCAST_ACTION = "GetServerResponse";
 
   private LccHolder lccHolder;
@@ -36,13 +35,13 @@ public class WebService extends Service {
 		return mBinder;
 	}
 
-	public void RunSingleTask(int CODE, String query, ProgressDialog PD){
+	public void RunSingleTask(int CODE, String query, MyProgressDialog PD){
 		this.CODE = CODE;
 		this.PD = PD;
 		new SingleTask().execute(query);
 	}
 
-	public void RunRepeatbleTask(final int CODE, final int DELAY, final int INTERVAL, final String query, final ProgressDialog PD){
+	public void RunRepeatbleTask(final int CODE, final int DELAY, final int INTERVAL, final String query, final MyProgressDialog PD){
 		this.CODE = CODE;
 		this.PD = PD;
 
@@ -84,7 +83,7 @@ public class WebService extends Service {
 		}
 	}
 
-  /*public void RunChesscomConnectionTask(LccHolder lccHolder, *//*ProgressDialog PD,*//* String... credentials) {
+  /*public void RunChesscomConnectionTask(LccHolder lccHolder, *//*MyProgressDialog PD,*//* String... credentials) {
 	  	//this.CODE = CODE;
 		//this.PD = PD;
     this.lccHolder = lccHolder;
@@ -101,7 +100,7 @@ public class WebService extends Service {
     }
   }*/
 
-  public void RunChesscomSendChallengeTask(LccHolder lccHolder, ProgressDialog PD, Challenge challenge) {
+  public void RunChesscomSendChallengeTask(LccHolder lccHolder, MyProgressDialog PD, Challenge challenge) {
 		//this.CODE = CODE;
 		//this.PD = PD;
 	  this.lccHolder = lccHolder;
@@ -117,7 +116,7 @@ public class WebService extends Service {
     }
   }
 
-  public void RunRepeatble(final int CODE, final int DELAY, final int INTERVAL, final ProgressDialog PD){
+  public void RunRepeatble(final int CODE, final int DELAY, final int INTERVAL, final MyProgressDialog PD){
 		this.CODE = CODE;
 		this.PD = PD;
 

@@ -17,6 +17,7 @@ import com.chess.activities.VideoList;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
+import com.chess.utilities.MyProgressDialog;
 
 public class Video extends CoreActivity {
 	private VideoItem item;
@@ -152,7 +153,7 @@ public class Video extends CoreActivity {
 			if(appService != null){
 				appService.RunSingleTask(0,
 					"http://www." + LccHolder.HOST + "/api/get_videos?id="+App.sharedData.getString("user_token", "")+"&page-size=1",
-					PD = ProgressDialog.show(this, null, getString(R.string.loading), true)
+					PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}
 		} else if(code == 0){

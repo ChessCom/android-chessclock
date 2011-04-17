@@ -6,6 +6,7 @@ import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.Selection;
+import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
 import com.chess.views.SelectionAdapter;
 
@@ -163,8 +164,7 @@ public class Preferences extends CoreActivity {
             		if(appService != null){
         				appService.RunSingleTask(1,
         					query,
-        					PD = ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)
-        				);
+        					PD = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)));
         			}
 				}
 			});
@@ -311,7 +311,7 @@ public class Preferences extends CoreActivity {
         if(appService != null){
           appService.RunSingleTask(0,
             "http://www." + LccHolder.HOST + "/api/get_vacation_status?id="+App.sharedData.getString("user_token", ""),
-            PD = ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)
+            PD = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true))
           );
         }
       }

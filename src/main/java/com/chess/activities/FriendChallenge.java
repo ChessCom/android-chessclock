@@ -25,6 +25,7 @@ import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MyProgressDialog;
 
 public class FriendChallenge extends CoreActivity {
 	private Spinner iplayas, dayspermove, friends;
@@ -187,7 +188,7 @@ public class FriendChallenge extends CoreActivity {
           {
             appService.RunChesscomSendChallengeTask(
               lccHolder,
-              //PD = ProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
+              //PD = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
               null,
               challenge
             );
@@ -245,8 +246,8 @@ public class FriendChallenge extends CoreActivity {
           {
             appService.RunSingleTask(1,
                                      query,
-                                     PD = ProgressDialog
-                                       .show(FriendChallenge.this, null, getString(R.string.creating), true)
+                                     PD = new MyProgressDialog(ProgressDialog
+                                       .show(FriendChallenge.this, null, getString(R.string.creating), true))
             );
           }
         }
@@ -268,8 +269,8 @@ public class FriendChallenge extends CoreActivity {
 			if(appService != null){
 				appService.RunSingleTask(0,
 					"http://www." + LccHolder.HOST + "/api/get_friends?id="+App.sharedData.getString("user_token", ""),
-					PD = ProgressDialog.show(FriendChallenge.this, null, getString(R.string.gettingfriends), true)
-				);
+					PD = new MyProgressDialog(ProgressDialog.show(FriendChallenge.this, null, getString(R.string.gettingfriends), true))
+        );
 			}
 		} else if(code == 0 || (code == -1 && App.isLiveChess())){
       String[] FRIENDS;

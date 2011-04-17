@@ -78,26 +78,6 @@ public class LccGameListener implements GameListener
     return gameId < latestGameId;
   }
 
-  /**
-   * Replays all the moves in the given <code>game</code> on the GUI board. It is useful on reconnection.
-   *
-   * @param game the LCC game to be replayed
-   */
-  protected void doReplayMoves(Game game)
-  {
-    LOG.info("GAME LISTENER: replay moves,  gameId " + game.getId());
-    //final String[] sanMoves = game.getMovesInSanNotation().trim().split(" ");
-    final List<String> coordMoves = new ArrayList<String>(game.getMoves());
-    User whitePlayer = game.getWhitePlayer();
-    User blackPlayer = game.getBlackPlayer();
-    User moveMaker;
-    for(int i = 0; i < coordMoves.size(); i++)
-    {
-      moveMaker = (i % 2 == 0) ? whitePlayer : blackPlayer;
-      lccHolder.doMoveMade(game, moveMaker, coordMoves.get(i), i);
-    }
-  }
-
   public void onFullGameReceived(Game game)
   {
     LOG.info("GAME LISTENER: Full Game received: " + game);
