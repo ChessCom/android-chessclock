@@ -55,7 +55,7 @@ public class Tabs extends TabActivity {
 	    		.setContent(new Intent(this, Computer.class)));
 	    App.mTabHost.addTab(App.mTabHost.newTabSpec("tab4")
 	    		.setIndicator("Tactics", getResources().getDrawable(R.drawable.tactics))
-	    		.setContent(new Intent(this, Game.class).putExtra("mode", 6)));
+	    		.setContent(new Intent(this, Game.class).putExtra("mode", 6).putExtra("liveChess", false)));
 	    App.mTabHost.addTab(App.mTabHost.newTabSpec("tab5")
 	    		.setIndicator("Video", getResources().getDrawable(R.drawable.video))
 	    		.setContent(new Intent(this, Video.class)));

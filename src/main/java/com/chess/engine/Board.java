@@ -1683,4 +1683,19 @@ int evalDarkPawn(int sq) {
     	else
     		return (8*r+c);
     }
+
+    public void setReside(boolean reside)
+    {
+      System.out.println("!!!!!!!! reside current = " + this.reside);
+      System.out.println("!!!!!!!! reside new = " + reside);
+      try
+      {
+        throw new Exception();
+      }
+      catch(Exception e)
+      {
+        e.printStackTrace();
+      }
+      this.reside = reside;
+    }
 }

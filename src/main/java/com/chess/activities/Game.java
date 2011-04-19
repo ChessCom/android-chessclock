@@ -77,7 +77,7 @@ public class Game extends CoreActivity {
 						BV.board.chess960 = true;
 
 					if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", ""))){
-						BV.board.reside = true;
+						BV.board.setReside(true);
 					}
 					String[] Moves = {};
 					if(App.OnlineGame.values.get("move_list").contains("1.")){
@@ -142,7 +142,7 @@ public class Game extends CoreActivity {
 							String[] tmp = FEN.split(" ");
 							if(tmp.length > 1){
 								if(tmp[1].trim().equals("w")){
-									BV.board.reside = true;
+									BV.board.setReside(true);
 								}
 							}
 						}
@@ -198,7 +198,7 @@ public class Game extends CoreActivity {
 							String[] tmp2 = FEN.split(" ");
 							if(tmp2.length > 1){
 								if(tmp2[1].trim().equals("w")){
-									BV.board.reside = true;
+									BV.board.setReside(true);
 								}
 							}
 						}
@@ -500,10 +500,10 @@ public class Game extends CoreActivity {
 							Integer.parseInt(move[3])	));
 				}
 				if(BV.board.mode == 1)
-					BV.board.reside = true;
+					BV.board.setReside(true);
 			} else{
 				if(BV.board.mode == 1){
-					BV.board.reside = true;
+					BV.board.setReside(true);
 					BV.invalidate();
 					BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "")+"strength", 0)]);
 				}
@@ -518,6 +518,22 @@ public class Game extends CoreActivity {
 				return;
 			}
 		}
+
+    if (extras.containsKey("liveChess"))
+    {
+      App.setLiveChess(extras.getBoolean("liveChess"));
+      if (!App.isLiveChess())
+      {
+        new Handler().post(new Runnable()
+        {
+          public void run()
+          {
+            App.getLccHolder().logout();
+          }
+        }
+        );
+      }
+    }
 
 		Update(0);
 	}
@@ -556,7 +572,7 @@ public class Game extends CoreActivity {
 					String[] tmp2 = FEN.split(" ");
 					if(tmp2.length > 1){
 						if(tmp2[1].trim().equals("w")){
-							BV.board.reside = true;
+							BV.board.setReside(true);
 						}
 					}
 				}
@@ -629,7 +645,7 @@ public class Game extends CoreActivity {
 			String[] tmp = FEN.split(" ");
 			if(tmp.length > 1){
 				if(tmp[1].trim().equals("w")){
-					BV.board.reside = true;
+					BV.board.setReside(true);
 				}
 			}
 		}
@@ -689,7 +705,7 @@ public class Game extends CoreActivity {
 				String[] tmp = FEN.split(" ");
 				if(tmp.length > 1){
 					if(tmp[1].trim().equals("w")){
-						BV.board.reside = true;
+						BV.board.setReside(true);
 					}
 				}
 			}
@@ -705,7 +721,7 @@ public class Game extends CoreActivity {
 				String[] tmp2 = FEN.split(" ");
 				if(tmp2.length > 1){
 					if(tmp2[1].trim().equals("w")){
-						BV.board.reside = true;
+						BV.board.setReside(true);
 					}
 				}
 			}
@@ -1131,7 +1147,7 @@ public class Game extends CoreActivity {
 					String[] tmp2 = FEN.split(" ");
 					if(tmp2.length > 1){
 						if(tmp2[1].trim().equals("w")){
-							BV.board.reside = true;
+							BV.board.setReside(true);
 						}
 					}
 				}
@@ -1221,18 +1237,14 @@ public class Game extends CoreActivity {
         {
           OG = ChessComApiParser.GetGameParseV3(rep_response);
         }
-        /*System.out.println("&&&&&&&& Update 9 App=" + App);
-        System.out.println("&&&&&&&& Update 9 App.OnlineGame=" + App.OnlineGame);
-        System.out.println("&&&&&&&& Update 9 OG=" + OG);*/
-				if(!App.OnlineGame.equals(OG)){
+        if(!App.OnlineGame.equals(OG)){
 					if(!App.OnlineGame.values.get("move_list").equals(OG.values.get("move_list"))){
 						App.OnlineGame = OG;
 						String[] Moves = {};
-						if(App.OnlineGame.values.get("move_list").contains("1.") || (App.isLiveChess() && BV.board.mode == 4)){
+						if(App.OnlineGame.values.get("move_list").contains("1.") || ((App.isLiveChess() && BV.board.mode == 4))){
               int beginIndex = (App.isLiveChess() && BV.board.mode == 4) ? 0 : 1;
               Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
-
-              if(Moves.length - BV.board.movesCount == 1){
+              if (Moves.length - BV.board.movesCount == 1) {
                 if (App.isLiveChess())
                 {
                   moveFT = MoveParser.parseCoordinate(BV.board, Moves[Moves.length - 1]);
@@ -1321,7 +1333,7 @@ public class Game extends CoreActivity {
 
 
 				if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", "").toLowerCase())){
-					BV.board.reside = true;
+					BV.board.setReside(true);
 				}
 				String[] Moves = {};
 				if(App.OnlineGame.values.get("move_list").contains("1.")){
@@ -1506,7 +1518,7 @@ public class Game extends CoreActivity {
 		    	case 2:
 		    		BV.stopThinking = true;
 		    		if(!BV.compmoving){
-		    			BV.board.reside = !BV.board.reside;
+		    			BV.board.setReside(!BV.board.reside);
 		    			if(BV.board.mode < 2){
 		    				BV.board.mode ^= 1;
 		    				BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "")+"strength", 0)]);
@@ -1554,7 +1566,7 @@ public class Game extends CoreActivity {
 				case 7:{
 					BV.board = new Board();
 					BV.board.mode = 1;
-					BV.board.reside = true;
+					BV.board.setReside(true);
 					BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					BV.invalidate();
 					Update(0);
@@ -1589,7 +1601,7 @@ public class Game extends CoreActivity {
           }
           case 2:
           {
-            BV.board.reside = !BV.board.reside;
+            BV.board.setReside(!BV.board.reside);
             BV.invalidate();
             return true;
           }
@@ -1695,7 +1707,7 @@ public class Game extends CoreActivity {
 					return true;
 				}
 				case 9:{
-					BV.board.reside = !BV.board.reside;
+					BV.board.setReside(!BV.board.reside);
 			    	BV.invalidate();
 					return true;
 				}
@@ -1721,7 +1733,7 @@ public class Game extends CoreActivity {
 					}
 			        return true;
 			    case 2:
-			    	BV.board.reside = !BV.board.reside;
+			    	BV.board.setReside(!BV.board.reside);
 			    	BV.invalidate();
 			    	return true;
 		    	case 3:
@@ -1797,10 +1809,9 @@ public class Game extends CoreActivity {
 			} else
 				startTacticsTimer();
 		}
-    if (App.isLiveChess())
+    if (App.isLiveChess() && App.gameId != null && App.gameId != "" && lccHolder.getGame(App.gameId) != null)
     {
-      /*OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq()-1), true);
-      OG.values.put("move_list", "");*/
+      OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq()-1), true);
       lccHolder.getAndroid().setGameActivity(this);
       executePausedActivityGameEvents();
       lccHolder.setActivityPausedMode(false);
