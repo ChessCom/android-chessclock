@@ -2,6 +2,7 @@ package com.chess.activities.tabs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,15 +15,15 @@ import com.chess.activities.Game;
 import com.chess.core.CoreActivity;
 
 public class Computer extends CoreActivity {
-	
+
 	private Spinner Strength;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer);
-		
-		Strength = (Spinner)findViewById(R.id.PrefStrength);		
+
+		Strength = (Spinner)findViewById(R.id.PrefStrength);
 		Strength.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
@@ -36,16 +37,29 @@ public class Computer extends CoreActivity {
 			@Override
 			public void onNothingSelected(AdapterView<?> a) {}
 		});
-		
-		findViewById(R.id.start).setOnClickListener(new OnClickListener() {			
+
+		findViewById(R.id.start).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				LoadNext(0);
 			}
 		});
-		
+
+    if (App.isLiveChess())
+    {
+      App.setLiveChess(false);
+      new Handler().post(new Runnable()
+      {
+        public void run()
+        {
+          App.getLccHolder().logout();
+        }
+      }
+      );
+    }
+
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -57,7 +71,7 @@ public class Computer extends CoreActivity {
 	        });
 			if(!App.sharedData.getString("saving", "").equals("")){
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
-				findViewById(R.id.load).setOnClickListener(new OnClickListener() {				
+				findViewById(R.id.load).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						startActivity(new Intent(Computer.this, Game.class).putExtra("mode", Integer.parseInt(App.sharedData.getString("saving", "").substring(0,1))));
@@ -68,13 +82,13 @@ public class Computer extends CoreActivity {
 			}
 		}
 	}
-	
+
 	@Override
-	public void LoadNext(int code) {		
+	public void LoadNext(int code) {
 		RadioButton wh, bh;
 		wh = (RadioButton)findViewById(R.id.wHuman);
 		bh = (RadioButton)findViewById(R.id.bHuman);
-		
+
 		int mode = 0;
 		if(!wh.isChecked() && bh.isChecked())
 			mode = 1;
@@ -82,10 +96,10 @@ public class Computer extends CoreActivity {
 			mode = 2;
 		else if(!wh.isChecked() && !bh.isChecked())
 			mode = 3;
-		
+
 		App.SDeditor.putString("saving", "");
 		App.SDeditor.commit();
-		
+
 		startActivity(new Intent(this, Game.class).putExtra("mode", mode));
 	}
 	@Override
@@ -95,6 +109,6 @@ public class Computer extends CoreActivity {
 	}
 	@Override
 	public void Update(int code) {
-		
+
 	}
 }

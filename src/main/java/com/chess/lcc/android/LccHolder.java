@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -543,19 +544,22 @@ public class LccHolder
       moves = lccGame.getMovesInSanNotation();
     }*/
 
-    String [] movesArray = lccGame.getMovesInSanNotation().split(" ");
+    /*String [] movesArray = lccGame.getMovesInSanNotation().split(" ");
     for (int i=0; i<=moveIndex; i++)
     {
       moves += movesArray[i]+" ";
+    }*/
+
+    final Iterator movesIterator = lccGame.getMoves().iterator();
+    for (int i=0; i<=moveIndex; i++)
+    {
+      moves += movesIterator.next() + " ";
     }
     if (moveIndex==-1)
     {
       moves = "";
     }
-
-    //gameData[7] = moves; // move_list
-    gameData[7] = lccGame.getMovesAsString(" "); // move_list
-    //gameData[14] = lccGame.getMovesAsString(" ");
+    gameData[7] = moves; // move_list
 
     gameData[8] = ""; // user_to_move
 
