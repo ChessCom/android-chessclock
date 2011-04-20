@@ -1332,7 +1332,7 @@ public class Game extends CoreActivity {
 					BV.board.chess960 = true;
 
 
-				if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", "").toLowerCase())){
+				if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", ""))){
 					BV.board.setReside(true);
 				}
 				String[] Moves = {};

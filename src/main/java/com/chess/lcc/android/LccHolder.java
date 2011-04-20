@@ -521,8 +521,8 @@ public class LccHolder
     gameData[1] = "1";
     gameData[2] = "" + System.currentTimeMillis(); // todo, resolve "timestamp"
     gameData[3] = "";
-    gameData[4] = lccGame.getWhitePlayer().getUsername();
-    gameData[5] = lccGame.getBlackPlayer().getUsername();
+    gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
+    gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
     gameData[6] = ""; // starting_fen_position
     String moves = new String();
     /*int j = 0;
