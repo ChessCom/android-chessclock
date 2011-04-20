@@ -58,6 +58,8 @@ public class Online extends CoreActivity {
 	private int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
 
+  private static int ONLINE_CALLBACK_CODE = 32;
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 
@@ -560,20 +562,20 @@ public class Online extends CoreActivity {
       {
         if(!App.isLiveChess())
         {
-          appService.RunRepeatbleTask(0, 0, UPDATE_DELAY,
+          appService.RunRepeatbleTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
                                       queries[App.sharedData.getInt("gamestype", 1)],
                                       null/*PD = MyProgressDialog
                                         .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
         }
         else
         {
-          /*appService.RunRepeatble(0, 0, 2000,
+          /*appService.RunRepeatble(ONLINE_CALLBACK_CODE, 0, 2000,
                                   PD = MyProgressDialog
                                     .show(Online.this, null, getString(R.string.updatinggameslist), true));*/
-          Update(0);
+          Update(ONLINE_CALLBACK_CODE);
         }
       }
-    } else if(code == 0){
+    } else if(code == ONLINE_CALLBACK_CODE){
 			int t = App.sharedData.getInt("gamestype", 0);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
       GamesList.setVisibility(View.GONE);
