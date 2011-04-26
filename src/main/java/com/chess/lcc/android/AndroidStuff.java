@@ -7,6 +7,7 @@ package com.chess.lcc.android;
 import java.io.Serializable;
 
 import com.chess.activities.Game;
+import com.chess.activities.tabs.Online;
 import com.chess.core.MainApp;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.WebService;
@@ -143,7 +144,7 @@ public class AndroidStuff
 
   public void updateChallengesList()
   {
-    sendBroadcastIntent(0, "com.chess.lcc.android-challenges-list-update");
+    sendBroadcastIntent(Online.ONLINE_CALLBACK_CODE, "com.chess.lcc.android-challenges-list-update");
   }
 
   public void processMove(Long gameId, int moveIndex)
@@ -193,14 +194,14 @@ public class AndroidStuff
     );
   }
 
-  /*public void showConnectingIndicator()
+  /*public void showLoggingInIndicator()
   {
-    manageProgressDialog("com.chess.lcc.android-connecting-info", true, "Loading Live Chess");
+    manageProgressDialog("com.chess.lcc.android-logging-in-info", true, "Loading Live Chess");
   }*/
 
-  public void closeConnectingIndicator()
+  public void closeLoggingInIndicator()
   {
-    manageProgressDialog("com.chess.lcc.android-connecting-info", false, "");
+    manageProgressDialog("com.chess.lcc.android-logging-in-info", false, "");
   }
 
   public void showReconnectingIndicator()

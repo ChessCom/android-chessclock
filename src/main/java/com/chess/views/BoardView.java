@@ -247,7 +247,7 @@ public class BoardView extends ImageView {
         {
           if (ca ==null || ca.App == null || ca.App.board == null)
           {
-            throw new NullPointerException();
+            throw new Exception();
           }
           canvas.drawBitmap(ca.App.board, null, new Rect(i * side, j * side, i * side + side, j * side + side), null);
         }

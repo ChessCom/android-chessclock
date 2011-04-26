@@ -32,6 +32,8 @@ public class LccHolder
 {
   final static Config CONFIG = new Config("", "assets/my.properties", true);
 
+  //static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(3);
+
   public static final String HOST = "chess.com";
   public static final String AUTH_URL = "http://www." + HOST + "/api/login?username=%s&password=%s";
   public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
@@ -697,7 +699,7 @@ public class LccHolder
   {
     LOG.info("USER LOGOUT");
     setCurrentGameId(null);
-    getAndroid().closeConnectingIndicator();
+    getAndroid().closeLoggingInIndicator();
     getAndroid().closeReconnectingIndicator();
     getAndroid().getContext().setLiveChess(false);
     _lccClient.disconnect();

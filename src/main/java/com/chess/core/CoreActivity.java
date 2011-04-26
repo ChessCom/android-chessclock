@@ -16,8 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -138,7 +136,7 @@ public abstract class CoreActivity extends Activity {
     registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
     /*if (App.isLiveChess())
     {*/
-    registerReceiver(lccConnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-connecting-info"));
+    registerReceiver(lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
     registerReceiver(lccReconnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-reconnecting-info"));
     registerReceiver(drawOfferedMessageReceiver, new IntentFilter("com.chess.lcc.android-game-draw-offered"));
     registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
@@ -158,7 +156,7 @@ public abstract class CoreActivity extends Activity {
     	}
     	unregisterReceiver(receiver);
       unregisterReceiver(drawOfferedMessageReceiver);
-      unregisterReceiver(lccConnectingInfoReceiver);
+      unregisterReceiver(lccLoggingInInfoReceiver);
       unregisterReceiver(lccReconnectingInfoReceiver);
       unregisterReceiver(informAndExitReceiver);
       unregisterReceiver(obsoleteProtocolVersionReceiver);
@@ -289,7 +287,7 @@ public abstract class CoreActivity extends Activity {
           reconnectingIndicator.dismiss();
           lccHolder.getAndroid().setReconnectingIndicator(null);
         }
-        else if (enable)
+        /*else */if (enable)
         {
           reconnectingIndicator = new MyProgressDialog(context);
           reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
@@ -371,7 +369,7 @@ public abstract class CoreActivity extends Activity {
     }
   };
 
-  private BroadcastReceiver lccConnectingInfoReceiver = new BroadcastReceiver()
+  private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver()
   {
     @Override
     public void onReceive(Context context, Intent intent)

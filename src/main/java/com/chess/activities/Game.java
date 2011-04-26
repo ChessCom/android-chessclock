@@ -519,22 +519,6 @@ public class Game extends CoreActivity {
 			}
 		}
 
-    if (extras.containsKey("liveChess"))
-    {
-      App.setLiveChess(extras.getBoolean("liveChess"));
-      if (!App.isLiveChess())
-      {
-        new Handler().post(new Runnable()
-        {
-          public void run()
-          {
-            App.getLccHolder().logout();
-          }
-        }
-        );
-      }
-    }
-
 		Update(0);
 	}
 	private void GetOnlineGame(final String game_id){
@@ -1237,6 +1221,8 @@ public class Game extends CoreActivity {
         {
           OG = ChessComApiParser.GetGameParseV3(rep_response);
         }
+        System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
+        System.out.println("!!!!!!!! OG " + OG);
         if(!App.OnlineGame.equals(OG)){
 					if(!App.OnlineGame.values.get("move_list").equals(OG.values.get("move_list"))){
 						App.OnlineGame = OG;
@@ -1795,7 +1781,23 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		super.onResume();
+    if (extras.containsKey("liveChess"))
+    {
+      App.setLiveChess(extras.getBoolean("liveChess"));
+      if (!App.isLiveChess())
+      {
+        new Handler().post(new Runnable()
+        {
+          public void run()
+          {
+            App.getLccHolder().logout();
+          }
+        }
+        );
+      }
+    }
+
+    super.onResume();
 
     registerReceiver(gameMoveReceiver, new IntentFilter("com.chess.lcc.android-game-move"));
     registerReceiver(gameEndMessageReceiver, new IntentFilter("com.chess.lcc.android-game-end"));

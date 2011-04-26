@@ -58,7 +58,7 @@ public class Online extends CoreActivity {
 	private int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
 
-  private static int ONLINE_CALLBACK_CODE = 32;
+  public static int ONLINE_CALLBACK_CODE = 32;
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -132,7 +132,7 @@ public class Online extends CoreActivity {
         }
       });
     }
-    registerReceiver(this.lccConnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-connecting-info"));
+    registerReceiver(this.lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
     if (App.isLiveChess())
     {
       registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
@@ -178,7 +178,7 @@ public class Online extends CoreActivity {
   @Override
   protected void onPause() {
     GamesList.setVisibility(View.GONE);
-    unregisterReceiver(this.lccConnectingInfoReceiver);
+    unregisterReceiver(this.lccLoggingInInfoReceiver);
     if (App.isLiveChess())
     {
       /*// if connected
@@ -576,7 +576,7 @@ public class Online extends CoreActivity {
         }
       }
     } else if(code == ONLINE_CALLBACK_CODE){
-			int t = App.sharedData.getInt("gamestype", 0);
+			int t = App.sharedData.getInt("gamestype", 1);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
       GamesList.setVisibility(View.GONE);
       App.GameListItems.clear();
@@ -682,7 +682,7 @@ public class Online extends CoreActivity {
     }
   }
 
-  private BroadcastReceiver lccConnectingInfoReceiver = new BroadcastReceiver()
+  private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver()
   {
     @Override
     public void onReceive(Context context, Intent intent)

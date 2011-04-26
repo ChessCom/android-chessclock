@@ -3,6 +3,7 @@ package com.chess.activities;
 import java.util.ArrayList;
 
 import com.chess.R;
+import com.chess.activities.tabs.Online;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
@@ -222,7 +223,7 @@ public class OnlineNewGame extends CoreActivity {
       {
         if(!App.isLiveChess())
         {
-          appService.RunRepeatbleTask(0, 0, UPDATE_DELAY,
+          appService.RunRepeatbleTask(Online.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
                                       "http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
                                       App.sharedData.getString("user_token", ""),
                                       null/*PD = MyProgressDialog
@@ -230,13 +231,13 @@ public class OnlineNewGame extends CoreActivity {
         }
         else
         {
-          /*appService.RunRepeatble(0, 0, 2000,
+          /*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,
                                   PD = MyProgressDialog
                                     .show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
-          Update(0);
+          Update(Online.ONLINE_CALLBACK_CODE);
         }
       }
-		} else if(code == 0){
+		} else if(code == Online.ONLINE_CALLBACK_CODE){
       OpenChallengesLV.setVisibility(View.GONE);
 			GameListItems.clear();
       if (App.isLiveChess())

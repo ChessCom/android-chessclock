@@ -126,7 +126,8 @@ public class LccGameListener implements GameListener
       lccHolder.clearOwnChallenges();
       lccHolder.clearChallenges();
       lccHolder.clearSeeks();
-      lccHolder.getClient().unsubscribeFromSeekList(lccHolder.getSeekListSubscriptionId());
+
+      //lccHolder.getClient().unsubscribeFromSeekList(lccHolder.getSeekListSubscriptionId());
       lccHolder.setCurrentGameId(game.getId());
       if(game.getId() > latestGameId)
       {

@@ -44,8 +44,11 @@ public class Computer extends CoreActivity {
 				LoadNext(0);
 			}
 		});
+	}
 
-    if (App.isLiveChess())
+	@Override
+	protected void onResume() {
+		if (App.isLiveChess())
     {
       App.setLiveChess(false);
       new Handler().post(new Runnable()
@@ -57,12 +60,7 @@ public class Computer extends CoreActivity {
       }
       );
     }
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
+    super.onResume();
 		if(Strength != null && App != null && App.sharedData != null){
 			Strength.post(new Runnable() {
 	            public void run() {

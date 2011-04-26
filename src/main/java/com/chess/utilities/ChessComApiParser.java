@@ -53,6 +53,12 @@ public class ChessComApiParser {
 	}
 	public static ArrayList<GameListElement> GetCurrentOnlineGamesParse(String result){
 	    ArrayList<GameListElement> output = new ArrayList<GameListElement>();
+
+      if (result.contains("|"))
+      {
+        return output;
+      }
+
 	    String[] GamesArray = result.split(":", 2);
 
 	    int gamescount = new Integer(GamesArray[0].substring(8));

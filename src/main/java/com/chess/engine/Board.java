@@ -1686,7 +1686,7 @@ int evalDarkPawn(int sq) {
 
     public void setReside(boolean reside)
     {
-      System.out.println("!!!!!!!! reside current = " + this.reside);
+      /*System.out.println("!!!!!!!! reside current = " + this.reside);
       System.out.println("!!!!!!!! reside new = " + reside);
       try
       {
@@ -1695,7 +1695,7 @@ int evalDarkPawn(int sq) {
       catch(Exception e)
       {
         e.printStackTrace();
-      }
+      }*/
       this.reside = reside;
     }
 }
