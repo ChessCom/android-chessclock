@@ -125,8 +125,7 @@ public abstract class CoreActivity extends Activity {
           final LccHolder lccHolder = App.getLccHolder();
           //lccHolder.setConnectingInProgress(true);
           lccHolder.getClient()
-            .connect(App.sharedData.getString("username", ""), App.sharedData.getString("password", ""),
-                     lccHolder.getConnectionListener());
+            .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
           PD = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
         }

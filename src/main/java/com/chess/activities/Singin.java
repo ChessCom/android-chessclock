@@ -32,6 +32,7 @@ public class Singin extends CoreActivity {
 	private Facebook mFacebook;
   private LoginButton mLoginButton;
   private static int SIGNIN_CALLBACK_CODE = 16;
+  private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,9 @@ public class Singin extends CoreActivity {
 
 		mFacebook = new Facebook();
 
-        SessionStore.restore(mFacebook, this);
+    mFacebook = new Facebook();
+    SessionStore.restore(mFacebook, this);
+
         SessionEvents.addAuthListener(new SampleAuthListener());
         SessionEvents.addLogoutListener(new SampleLogoutListener());
         mLoginButton.init(mFacebook, new String[]{});
@@ -92,11 +95,10 @@ public class Singin extends CoreActivity {
 
 	public class SampleAuthListener implements AuthListener {
 		public void onAuthSucceed() {
-			String query = "http://www." + LccHolder.HOST + "/api/login?facebook_access_token="+mFacebook.getAccessToken();
-
+			String query = "http://www." + LccHolder.HOST + "/api/login?facebook_access_token="+mFacebook.getAccessToken()+"&return=username";
             response = Web.Request(query, "GET", null, null);
             if(response.contains("Success+")){
-            	Update(SIGNIN_CALLBACK_CODE);
+            	Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
             } else if(response.contains("Error+Facebook user has no Chess.com account")){
             	App.ShowMessage("You have no Chess.com account, sign up, please.");
             	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://secure." + LccHolder.HOST + "/register.html")));
@@ -122,16 +124,8 @@ public class Singin extends CoreActivity {
       App.setLiveChess(false);
     }
 		super.onResume();
-		username.post(new Runnable() {
-			public void run() {
-				username.setText(App.sharedData.getString("username", ""));
-			}
-		});
-		password.post(new Runnable() {
-			public void run() {
-				password.setText(App.sharedData.getString("password", ""));
-			}
-		});
+		username.setText(App.sharedData.getString("username", ""));
+    password.setText(App.sharedData.getString("password", ""));
 	}
 
 	@Override
@@ -139,7 +133,7 @@ public class Singin extends CoreActivity {
 		switch (code) {
 			case 0:{
 				if(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"notifE", true))
-		        	startService(new Intent(this, Notifications.class));
+          startService(new Intent(this, Notifications.class));
 				App.guest = false;
 				startActivity(new Intent(this, Tabs.class));
 				finish();
@@ -163,20 +157,31 @@ public class Singin extends CoreActivity {
 	}
 	@Override
 	public void Update(int code) {
-		if(code == SIGNIN_CALLBACK_CODE && response.length()>0){
-      String[] r = response.split(":");
-			App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
-			App.SDeditor.putString("password", password.getText().toString().trim());
-
-      App.SDeditor.putString("premium_status", r[0].split("[+]")[1]);
-      App.SDeditor.putString("api_version", r[1]);
-      try {
-        App.SDeditor.putString("user_token", URLEncoder.encode(r[2], "UTF-8"));
-      } catch (UnsupportedEncodingException e) {}
-      App.SDeditor.putString("user_session_id", r[3]);
-
-			App.SDeditor.commit();
-			LoadNext(0);
+		if(response.length() > 0)
+    {
+      final String[] responseArray = response.split(":");
+      if (code == SIGNIN_CALLBACK_CODE)
+      {
+        App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
+      } else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >=5)
+      {
+        App.SDeditor.putString("username", responseArray[4].trim().toLowerCase());
+      }
+      doUpdate(responseArray);
 		}
 	}
+
+  private void doUpdate(String[] response)
+  {
+    App.SDeditor.putString("password", password.getText().toString().trim());
+    App.SDeditor.putString("premium_status", response[0].split("[+]")[1]);
+    App.SDeditor.putString("api_version", response[1]);
+    try {
+      App.SDeditor.putString("user_token", URLEncoder.encode(response[2], "UTF-8"));
+    } catch (UnsupportedEncodingException e) {}
+    App.SDeditor.putString("user_session_id", response[3]);
+
+    App.SDeditor.commit();
+    LoadNext(0);
+  }
 }
