@@ -15,11 +15,11 @@ public class Search {
     public Search(Board b) {
         board = b;
     }
-   
+
     public Move getBest() {
         return pv[0][0];
     }
-    
+
     public void think(int output, int maxTime, int maxDepth) {
 	/* some code that lets us get back here and return
 	   from think() when our time is up */
@@ -41,7 +41,7 @@ public class Search {
 		followPV = true;
 		int x = search(-10000, 10000, i);
 		if (output > 0) {
-                    System.out.print(/*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x); 
+                    System.out.print(/*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
                     for (int j = 0; j < pvLength[0]; ++j)
                         System.out.print(" " + pv[0][j].toString());
                     System.out.println();
@@ -62,7 +62,7 @@ public class Search {
     }
 
     /* search() does just that, in negamax fashion */
-    
+
     int search(int alpha, int beta, int depth) throws StopSearchingException {
 	/* we're as deep as we want to be; call quiesce() to get
 	   a reasonable score and return it. */
@@ -103,7 +103,7 @@ FIXME!!! We could in principle overflow the move history stack.
         Iterator<Move> i = validMoves.iterator();
 	while (i.hasNext()) {
             Move m = (Move) i.next();
-            if (!board.makeMove(m))
+            if (!board.makeMove(m, false))
                 continue;
             foundMove = true;
             ply++;
@@ -148,7 +148,7 @@ FIXME!!! We could in principle overflow the move history stack.
     function to cut the search off (and set alpha). The idea
     is to find a position where there isn't a lot going on
     so the static evaluation function will work. */
-    
+
     int quiesce(int alpha, int beta) throws StopSearchingException {
 	++nodes;
 
@@ -179,7 +179,7 @@ FIXME!! see above */
         Iterator<Move> i = validCaptures.iterator();
 	while (i.hasNext()) {
             Move m = (Move) i.next();
-            if (!board.makeMove(m))
+            if (!board.makeMove(m, false))
                 continue;
             ply++;
             x = -quiesce(-beta, -alpha);
@@ -232,7 +232,7 @@ FIXME!! see above */
             throw new StopSearchingException();
 	}
     }
-    
+
     final static int MAX_PLY = 32;
 
     private Board board;

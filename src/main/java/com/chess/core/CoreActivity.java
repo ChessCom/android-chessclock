@@ -4,6 +4,7 @@ import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MyProgressDialog;
+import com.chess.utilities.SoundPlayer;
 import com.chess.utilities.Web;
 import com.chess.utilities.WebService;
 
@@ -32,6 +33,7 @@ public abstract class CoreActivity extends Activity {
 	public MyProgressDialog PD;
   public LccHolder lccHolder;
   private PowerManager.WakeLock wakeLock;
+  private SoundPlayer soundPlayer;
 
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
@@ -49,6 +51,7 @@ public abstract class CoreActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		App = (MainApp)getApplication();
+    soundPlayer = new SoundPlayer(App);
 		extras = getIntent().getExtras();
 
 		//get global Shared Preferences
@@ -434,6 +437,16 @@ public abstract class CoreActivity extends Activity {
       e.printStackTrace();
       // hack for Android's IllegalArgumentException: Receiver not registered
     }
+  }
+
+  public SoundPlayer getSoundPlayer()
+  {
+    return soundPlayer;
+  }
+
+  public boolean isUserColorWhite()
+  {
+    return App.OnlineGame.values.get("white_username").toLowerCase().equals(App.sharedData.getString("username", ""));
   }
 
 }

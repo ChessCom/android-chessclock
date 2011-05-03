@@ -39,7 +39,7 @@ public class Web {
 	    try {
 	    	httpParameters = new BasicHttpParams();
 
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+	    	HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 			HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
 			httpclient = new DefaultHttpClient(httpParameters);

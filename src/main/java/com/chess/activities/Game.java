@@ -69,14 +69,14 @@ public class Game extends CoreActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK){
 			if(BV.board.analysis){
 				if(BV.board.mode < 6){
-					BV.board = new Board();
+					BV.board = new Board(this);
 					BV.board.init = true;
 					BV.board.mode = extras.getInt("mode");
 
 					if(App.OnlineGame.values.get("game_type").equals("2"))
 						BV.board.chess960 = true;
 
-					if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", ""))){
+					if(!isUserColorWhite()){
 						BV.board.setReside(true);
 					}
 					String[] Moves = {};
@@ -132,7 +132,7 @@ public class Game extends CoreActivity {
 				} else if(BV.board.mode == 6){
 					int sec = BV.board.sec;
 					if(App.guest || App.noInternet){
-						BV.board = new Board();
+						BV.board = new Board(this);
 						BV.board.mode = 6;
 
 						String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
@@ -188,7 +188,7 @@ public class Game extends CoreActivity {
 							};
 						}).start();
 					} else{
-						BV.board = new Board();
+						BV.board = new Board(this);
 						BV.board.mode = 6;
 
 						String FEN = App.Tactic.values.get("fen");
@@ -482,7 +482,7 @@ public class Game extends CoreActivity {
     lccHolder = App.getLccHolder();
 
 		if(BV.board == null){
-			BV.board = new Board();
+			BV.board = new Board(this);
 			BV.board.init = true;
 			BV.board.mode = extras.getInt("mode");
 			BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -544,7 +544,7 @@ public class Game extends CoreActivity {
 	private void GetTacticsGame(final String id){
 
 		if(!App.noInternet){
-			BV.board = new Board();
+			BV.board = new Board(this);
 			BV.board.mode = 6;
 
 			if(App.Tactic != null && id.equals(App.Tactic.values.get("id"))){
@@ -619,7 +619,7 @@ public class Game extends CoreActivity {
 			return;
 		}
 
-		BV.board = new Board();
+		BV.board = new Board(this);
 		BV.board.mode = 6;
 
 		String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
@@ -677,7 +677,7 @@ public class Game extends CoreActivity {
 	}
 
 	private void ShowAnswer(){
-		BV.board = new Board();
+		BV.board = new Board(this);
 		BV.board.mode = 6;
 		BV.board.retry = true;
 
@@ -1039,13 +1039,12 @@ public class Game extends CoreActivity {
             e.printStackTrace();
           }
         }
-         else
+        else if (!App.isLiveChess() && appService != null)
         {
-          if(appService != null){
-            appService.RunSingleTask(8,
-                                     "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=SUBMIT&newmove="+BV.board.convertMoveEchess()+"&timestamp="+App.OnlineGame.values.get("timestamp"),
-                                     PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
-          }
+          appService.RunSingleTask(8,
+                                   "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=SUBMIT&newmove="+BV.board.convertMoveEchess()+"&timestamp="+App.OnlineGame.values.get("timestamp"),
+                                   PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+
         }
 				break;
 			}
@@ -1113,7 +1112,7 @@ public class Game extends CoreActivity {
 			}
 			case 7:
 
-				BV.board = new Board();
+				BV.board = new Board(this);
 				BV.board.mode = 6;
 
 				String[] tmp = response.trim().split("[|]");
@@ -1193,7 +1192,7 @@ public class Game extends CoreActivity {
 					for(i=0;i<currentGames.size();i++){
 						if(currentGames.get(i).values.get("game_id").contains(App.OnlineGame.values.get("game_id"))){
 							if(i+1 < currentGames.size()){
-								BV.board = new Board();
+								BV.board = new Board(this);
 								BV.board.analysis = false;
 								BV.board.mode = 4;
 
@@ -1223,6 +1222,12 @@ public class Game extends CoreActivity {
         }
         System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
         System.out.println("!!!!!!!! OG " + OG);
+
+        if (App.OnlineGame == null || OG == null)
+        {
+          return;
+        }
+
         if(!App.OnlineGame.equals(OG)){
 					if(!App.OnlineGame.values.get("move_list").equals(OG.values.get("move_list"))){
 						App.OnlineGame = OG;
@@ -1285,6 +1290,8 @@ public class Game extends CoreActivity {
 			case 10:
         // handle game start
 
+        getSoundPlayer().playGameStart();
+
         if (App.isLiveChess() && BV.board.mode == 4)
         {
           App.OnlineGame = new com.chess.model.Game(lccHolder.getGameData(App.gameId, -1), true);
@@ -1301,7 +1308,7 @@ public class Game extends CoreActivity {
         }
 
 				if(chat){
-					if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", "")))
+					if(!isUserColorWhite())
 						App.SDeditor.putString("opponent", App.OnlineGame.values.get("white_username"));
 					else
 						App.SDeditor.putString("opponent", App.OnlineGame.values.get("black_username"));
@@ -1318,7 +1325,7 @@ public class Game extends CoreActivity {
 					BV.board.chess960 = true;
 
 
-				if(App.OnlineGame.values.get("black_username").toLowerCase().equals(App.sharedData.getString("username", ""))){
+				if(!isUserColorWhite()){
 					BV.board.setReside(true);
 				}
 				String[] Moves = {};
@@ -1542,7 +1549,7 @@ public class Game extends CoreActivity {
 			    	}
 			    	return true;
 			    case 6:{
-					BV.board = new Board();
+					BV.board = new Board(this);
 					BV.board.mode = 0;
 					BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					BV.invalidate();
@@ -1550,7 +1557,7 @@ public class Game extends CoreActivity {
 					return true;
 				}
 				case 7:{
-					BV.board = new Board();
+					BV.board = new Board(this);
 					BV.board.mode = 1;
 					BV.board.setReside(true);
 					BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -1619,7 +1626,7 @@ public class Game extends CoreActivity {
 							if(currentGames.get(i).values.get("game_id").contains(App.OnlineGame.values.get("game_id"))){
 								if(i+1 < currentGames.size()){
 									BV.board.analysis = false;
-									BV.board = new Board();
+									BV.board = new Board(this);
 									BV.board.mode = 4;
 									GetOnlineGame(currentGames.get(i+1).values.get("game_id"));
 									return true;
@@ -1643,7 +1650,7 @@ public class Game extends CoreActivity {
 							if(currentGames.get(i).values.get("game_id").contains(App.OnlineGame.values.get("game_id"))){
 								if(i+1 < currentGames.size()){
 									BV.board.analysis = false;
-									BV.board = new Board();
+									BV.board = new Board(this);
 									BV.board.mode = 5;
 									GetOnlineGame(currentGames.get(i+1).values.get("game_id"));
 									return true;
@@ -1941,6 +1948,7 @@ public class Game extends CoreActivity {
           startActivity(new Intent(Game.this, Tabs.class));
         }
       });
+      getSoundPlayer().playGameEnd();
     }
   };
 

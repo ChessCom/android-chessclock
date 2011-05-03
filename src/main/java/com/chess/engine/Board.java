@@ -12,6 +12,9 @@ package com.chess.engine;
 import java.net.URLEncoder;
 import java.util.*;
 
+import com.chess.core.CoreActivity;
+import com.chess.utilities.SoundPlayer;
+
 import android.util.Log;
 
 public class Board {
@@ -244,6 +247,14 @@ public class Board {
 
 	public int[] wKingMoveOO = new int[]{62};
 	public int[] wKingMoveOOO = new int[]{58};
+
+  //private boolean userColorWhite;
+  private CoreActivity coreActivity;
+
+  public Board(CoreActivity coreActivity)
+  {
+    this.coreActivity = coreActivity;
+  }
 
 	public void ResetCastlePos(){
 		bRook1=0;
@@ -671,6 +682,10 @@ public class Board {
     returns true. */
 
     public boolean makeMove(Move m) {
+      return makeMove(m, true);
+    }
+
+    public boolean makeMove(Move m, boolean playSound) {
 
 	/* test to see if a castle move is legal and move the rook
 	   (the king is moved with the usual move code later) */
@@ -917,6 +932,12 @@ public class Board {
                 takeBack();
                 return false;
     	}
+
+      if (playSound)
+      {
+        getSoundPlayer().playCastle();
+      }
+
     	return true;
 	}
 
@@ -990,15 +1011,48 @@ public class Board {
 
 	/* move the piece */
 
-	color[(int)m.to] = side;
+  boolean userColorWhite = coreActivity.isUserColorWhite();
+  if(playSound)
+  {
+    if(piece[m.to] != 6)
+    {
+      getSoundPlayer().playCapture();
+    }
+    else if((userColorWhite && color[m.from] == 1) || (!userColorWhite && color[m.from] == 0))
+    {
+      if (inCheck(xside))
+      {
+        getSoundPlayer().playMoveOpponentCheck();
+      } else {
+        //getSoundPlayer().playMoveOpponent();
+      }
+    }
+    else if((userColorWhite && color[m.from] == 0) || (!userColorWhite && color[m.from] == 1))
+    {
+      if (inCheck(side))
+      {
+        getSoundPlayer().playMoveSelfCheck();
+      } else
+      {
+        //getSoundPlayer().playMoveSelf();
+      }
+    }
+  }
+
+	color[m.to] = side;
 
 	if ((m.bits & 32) != 0)
-        piece[(int)m.to] = m.promote;
+  {
+    piece[m.to] = m.promote;
+    //System.out.println("!!!!!!!! PROMOTION");
+  }
 	else
-        piece[(int)m.to] = piece[(int)m.from];
+  {
+    piece[m.to] = piece[m.from];
+  }
 
-	color[(int)m.from] = EMPTY;
-	piece[(int)m.from] = EMPTY;
+	color[m.from] = EMPTY;
+	piece[m.from] = EMPTY;
 
 	/* erase the pawn if this is an en passant move */
 	if ((m.bits & 4) != 0) {
@@ -1152,6 +1206,7 @@ public class Board {
     	}
     	return output;
     }
+
     public String MoveListSAN(){
     	String output = "";
     	int i = 0;
@@ -1163,6 +1218,7 @@ public class Board {
     	}
     	return output;
     }
+
     public String GetMoveSAN(){
     	Move m = histDat[hply].m;
 		int p = piece[m.from];
@@ -1698,4 +1754,9 @@ int evalDarkPawn(int sq) {
       }*/
       this.reside = reside;
     }
+
+  private SoundPlayer getSoundPlayer()
+  {
+    return coreActivity.getSoundPlayer();
+  }
 }

@@ -60,18 +60,23 @@ public class ChessComApiParser {
       }
 
 	    String[] GamesArray = result.split(":", 2);
+      try {
+        int gamescount = new Integer(GamesArray[0].substring(8));
+        int i, j, inc=0;
+        String[] tmp = GamesArray[1].split(":");
 
-	    int gamescount = new Integer(GamesArray[0].substring(8));
-	    int i, j, inc=0;
-	    String[] tmp = GamesArray[1].split(":");
-
-	    for(i=0; i < gamescount; i++){
-	    	String[] tmp2 = new String[17];
-	        for(j=0;j<17;j++){
-	        	tmp2[j] = tmp[inc++];
-	        }
-			output.add(new GameListElement(1, tmp2, false));
-	    }
+        for(i=0; i < gamescount; i++){
+          String[] tmp2 = new String[17];
+            for(j=0;j<17;j++){
+              tmp2[j] = tmp[inc++];
+            }
+        output.add(new GameListElement(1, tmp2, false));
+	      }
+      }
+      catch (Exception e)
+      {
+        return output;
+      }
 	    return output;
 	}
 	public static ArrayList<GameListElement> GetFinishedOnlineGamesParse(String result){

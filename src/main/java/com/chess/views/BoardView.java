@@ -133,7 +133,7 @@ public class BoardView extends ImageView {
         Iterator<Move> i = validMoves.iterator();
         boolean found = false;
         while (i.hasNext()) {
-            if (board.makeMove((Move) i.next())) {
+            if (board.makeMove((Move) i.next(), false)) {
                 board.takeBack();
                 found = true;
                 break;
