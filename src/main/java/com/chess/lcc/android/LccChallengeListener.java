@@ -145,6 +145,10 @@ public class LccChallengeListener implements ChallengeListener
                                            new ChesscomUser(receiver.getUsername()), receiverChessTitle,
                                            receiverRating, isReceiverProvisional, challengerTimeControl,
                                            receiverTimeControl, isRated, variant, ratingCategoryString, color);*/
+    if (challenge.getTo().equals(lccHolder.getUser().getUsername()))
+    {
+      lccHolder.getAndroid().getContext().getSoundPlayer().playNotify();
+    }
     lccHolder.putChallenge(challenge.getId(), challenge);
     /*if(!challenge.getTo().equals(lccHolder.getUser().getUsername()))
     {

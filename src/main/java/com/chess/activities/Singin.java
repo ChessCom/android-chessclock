@@ -156,20 +156,25 @@ public class Singin extends CoreActivity {
 		//finish();
 	}
 	@Override
-	public void Update(int code) {
-		if(response.length() > 0)
+  public void Update(int code)
+  {
+    if(response.length() > 0)
     {
       final String[] responseArray = response.split(":");
-      if (code == SIGNIN_CALLBACK_CODE)
+      if(responseArray.length >= 4)
       {
-        App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
-      } else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >=5)
-      {
-        App.SDeditor.putString("username", responseArray[4].trim().toLowerCase());
+        if(code == SIGNIN_CALLBACK_CODE)
+        {
+          App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
+        }
+        else if(code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5)
+        {
+          App.SDeditor.putString("username", responseArray[4].trim().toLowerCase());
+        }
+        doUpdate(responseArray);
       }
-      doUpdate(responseArray);
-		}
-	}
+    }
+  }
 
   private void doUpdate(String[] response)
   {

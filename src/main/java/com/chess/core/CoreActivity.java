@@ -33,7 +33,6 @@ public abstract class CoreActivity extends Activity {
 	public MyProgressDialog PD;
   public LccHolder lccHolder;
   private PowerManager.WakeLock wakeLock;
-  private SoundPlayer soundPlayer;
 
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
@@ -51,7 +50,6 @@ public abstract class CoreActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		App = (MainApp)getApplication();
-    soundPlayer = new SoundPlayer(App);
 		extras = getIntent().getExtras();
 
 		//get global Shared Preferences
@@ -439,14 +437,26 @@ public abstract class CoreActivity extends Activity {
     }
   }
 
-  public SoundPlayer getSoundPlayer()
+  public Boolean isUserColorWhite()
   {
-    return soundPlayer;
+    try
+    {
+      return App.OnlineGame.values.get("white_username").toLowerCase().equals(App.sharedData.getString("username", ""));
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
   }
 
-  public boolean isUserColorWhite()
+  public SoundPlayer getSoundPlayer()
   {
-    return App.OnlineGame.values.get("white_username").toLowerCase().equals(App.sharedData.getString("username", ""));
+	  return App.getSoundPlayer();
+  }
+
+  public LccHolder getLccHolder()
+  {
+    return lccHolder;
   }
 
 }

@@ -156,7 +156,7 @@ public class BoardView extends ImageView {
             else
                 message = "0 - 0 Stalemate";
         }
-        else if (board.reps() == 3)
+        else if (board.reps() == 3 && !ca.App.isLiveChess())
             message = "1/2 - 1/2 Draw by repetition";
         /*else if (board.fifty >= 100)
             message = "1/2 - 1/2 Draw by fifty move rule";*/

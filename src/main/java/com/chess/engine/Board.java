@@ -1011,33 +1011,8 @@ public class Board {
 
 	/* move the piece */
 
-  boolean userColorWhite = coreActivity.isUserColorWhite();
-  if(playSound)
-  {
-    if(piece[m.to] != 6)
-    {
-      getSoundPlayer().playCapture();
-    }
-    else if((userColorWhite && color[m.from] == 1) || (!userColorWhite && color[m.from] == 0))
-    {
-      if (inCheck(xside))
-      {
-        getSoundPlayer().playMoveOpponentCheck();
-      } else {
-        //getSoundPlayer().playMoveOpponent();
-      }
-    }
-    else if((userColorWhite && color[m.from] == 0) || (!userColorWhite && color[m.from] == 1))
-    {
-      if (inCheck(side))
-      {
-        getSoundPlayer().playMoveSelfCheck();
-      } else
-      {
-        //getSoundPlayer().playMoveSelf();
-      }
-    }
-  }
+  int colorFrom = color[m.from];
+  int pieceTo = piece[m.to];
 
 	color[m.to] = side;
 
@@ -1071,6 +1046,41 @@ public class Board {
 	   we need to take the move back) */
 	side ^= 1;
 	xside ^= 1;
+
+  Boolean userColorWhite = coreActivity.isUserColorWhite();
+  if(playSound && userColorWhite != null)
+  {
+    if((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0))
+    {
+      if (inCheck(side))
+      {
+        getSoundPlayer().playMoveOpponentCheck();
+      }
+      else if(pieceTo != 6)
+      {
+        getSoundPlayer().playCapture();
+      }
+      else {
+        getSoundPlayer().playMoveOpponent();
+      }
+    }
+    else if((userColorWhite && colorFrom == 0) || (!userColorWhite && colorFrom == 1))
+    {
+      if (inCheck(side))
+      {
+        getSoundPlayer().playMoveSelfCheck();
+      }
+      else if(pieceTo != 6)
+      {
+        getSoundPlayer().playCapture();
+      }
+      else
+      {
+        getSoundPlayer().playMoveSelf();
+      }
+    }
+  }
+
 	if (inCheck(xside)) {
             takeBack();
             return false;

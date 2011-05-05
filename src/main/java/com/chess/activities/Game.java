@@ -1250,10 +1250,10 @@ public class Game extends CoreActivity {
 										m = new Move(moveFT[0], moveFT[1], 0, 2);
 									else
 										m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									BV.board.makeMove(m);
+									BV.board.makeMove(m, lccHolder.getGame(App.OnlineGame.values.get("game_id")).getSeq() == Moves.length);
 								} else {
 									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-									BV.board.makeMove(m);
+									BV.board.makeMove(m, lccHolder.getGame(App.OnlineGame.values.get("game_id")).getSeq() == Moves.length);
 								}
 								//App.ShowMessage("Move list updated!");
 								BV.board.movesCount = Moves.length;

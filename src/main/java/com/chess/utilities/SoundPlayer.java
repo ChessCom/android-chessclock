@@ -19,6 +19,7 @@ public class SoundPlayer
   private MediaPlayer moveSelf;
   private MediaPlayer moveOpponentCheck;
   private MediaPlayer moveSelfCheck;
+  private MediaPlayer notify;
 
   public SoundPlayer(Context context)
   {
@@ -30,6 +31,7 @@ public class SoundPlayer
     moveSelf = MediaPlayer.create(context, R.raw.move_self);
     moveOpponentCheck = MediaPlayer.create(context, R.raw.move_opponent_check);
     moveSelfCheck = MediaPlayer.create(context, R.raw.move_self_check);
+    notify = MediaPlayer.create(context, R.raw.notify);
   }
 
   public void playCapture()
@@ -72,5 +74,9 @@ public class SoundPlayer
     moveSelfCheck.start();
   }
 
+  public void playNotify()
+  {
+    notify.start();
+  }
 }
 

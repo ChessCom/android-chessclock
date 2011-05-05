@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="27"
-      android:versionName="1.6" package="com.chess">
+      android:versionCode="28"
+      android:versionName="1.62" package="com.chess">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

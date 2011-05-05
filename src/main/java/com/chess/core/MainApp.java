@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.*;
+import com.chess.utilities.SoundPlayer;
 
 import android.app.AlertDialog;
 import android.app.Application;
@@ -28,6 +29,13 @@ public class MainApp extends Application {
 
   private LccHolder lccHolder;
   private boolean liveChess;
+
+  private SoundPlayer soundPlayer;
+
+  public void onCreate()
+  {
+    soundPlayer = new SoundPlayer(this);
+  }
 
 	public void ShowMessage(String msg){
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
@@ -119,5 +127,10 @@ public class MainApp extends Application {
   {
     LccHolder.LOG.info("INFO: Set Live Chess mode to: " + liveChess);
     this.liveChess = liveChess;
+  }
+
+  public SoundPlayer getSoundPlayer()
+  {
+	  return soundPlayer;
   }
 }
