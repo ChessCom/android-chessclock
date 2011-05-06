@@ -32,10 +32,10 @@ public class MainApp extends Application {
 
   private SoundPlayer soundPlayer;
 
-  public void onCreate()
+  /*public void onCreate()
   {
     soundPlayer = new SoundPlayer(this);
-  }
+  }*/
 
 	public void ShowMessage(String msg){
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
@@ -131,6 +131,10 @@ public class MainApp extends Application {
 
   public SoundPlayer getSoundPlayer()
   {
+    if (soundPlayer == null)
+    {
+      soundPlayer = new SoundPlayer(this);
+    }
 	  return soundPlayer;
   }
 }

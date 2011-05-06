@@ -257,6 +257,7 @@ public class BoardView extends ImageView {
           System.out.println("ca " + ca);
           System.out.println("ca.App " + ca.App);
           System.out.println("ca.App.board " + ca.App.board);
+          return;
         }
       }
     }

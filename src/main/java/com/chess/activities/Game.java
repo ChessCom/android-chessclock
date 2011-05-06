@@ -101,10 +101,10 @@ public class Game extends CoreActivity {
 								m = new Move(moveFT[0], moveFT[1], 0, 2);
 							else
 								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							BV.board.makeMove(m);
+							BV.board.makeMove(m, false);
 						} else {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							BV.board.makeMove(m);
+							BV.board.makeMove(m, false);
 						}
 					}
 					Update(0);
@@ -497,7 +497,7 @@ public class Game extends CoreActivity {
 							Integer.parseInt(move[0]),
 							Integer.parseInt(move[1]),
 							Integer.parseInt(move[2]),
-							Integer.parseInt(move[3])	));
+							Integer.parseInt(move[3])	), false);
 				}
 				if(BV.board.mode == 1)
 					BV.board.setReside(true);
@@ -1244,16 +1244,18 @@ public class Game extends CoreActivity {
                 {
                   moveFT = MoveParser.Parse(BV.board, Moves[Moves.length - 1]);
                 }
+                boolean playSound = (App.isLiveChess() && lccHolder.getGame(App.OnlineGame.values.get("game_id")).getSeq() == Moves.length)
+                  || !App.isLiveChess();
 								if(moveFT.length == 4){
 									Move m;
 									if(moveFT[3]==2)
 										m = new Move(moveFT[0], moveFT[1], 0, 2);
 									else
 										m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									BV.board.makeMove(m, lccHolder.getGame(App.OnlineGame.values.get("game_id")).getSeq() == Moves.length);
+									BV.board.makeMove(m, playSound);
 								} else {
 									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-									BV.board.makeMove(m, lccHolder.getGame(App.OnlineGame.values.get("game_id")).getSeq() == Moves.length);
+									BV.board.makeMove(m, playSound);
 								}
 								//App.ShowMessage("Move list updated!");
 								BV.board.movesCount = Moves.length;
@@ -1296,6 +1298,7 @@ public class Game extends CoreActivity {
         {
           App.OnlineGame = new com.chess.model.Game(lccHolder.getGameData(App.gameId, -1), true);
           executePausedActivityGameEvents();
+          //lccHolder.setActivityPausedMode(false);
           lccHolder.getWhiteClock().paint();
           lccHolder.getBlackClock().paint();
           /*int time = lccHolder.getGame(App.gameId).getGameTimeConfig().getBaseTime() * 100;
@@ -1359,12 +1362,12 @@ public class Game extends CoreActivity {
             {
               m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
             }
-            BV.board.makeMove(m);
+            BV.board.makeMove(m, false);
           }
           else
           {
             Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-            BV.board.makeMove(m);
+            BV.board.makeMove(m, false);
           }
 				}
 				Update(0);
@@ -1442,11 +1445,16 @@ public class Game extends CoreActivity {
         menu.add(0, 0, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
         options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
         menu.add(0, 2, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
-        if(App.OnlineGame.values.get("has_new_message").equals("1"))
-        {
-          menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
-        }
-        else
+        try {
+          if(App.OnlineGame.values.get("has_new_message").equals("1"))
+          {
+            menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+          }
+          else
+          {
+            menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+          }
+        } catch (Exception e)
         {
           menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
         }
@@ -1822,8 +1830,11 @@ public class Game extends CoreActivity {
     {
       OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq()-1), true);
       lccHolder.getAndroid().setGameActivity(this);
-      executePausedActivityGameEvents();
-      lccHolder.setActivityPausedMode(false);
+      if (lccHolder.isActivityPausedMode())
+      {
+        executePausedActivityGameEvents();
+        lccHolder.setActivityPausedMode(false);
+      }
       //lccHolder.updateClockTime(lccHolder.getGame(App.gameId));
     }
     disableScreenLock();
@@ -1974,7 +1985,7 @@ public class Game extends CoreActivity {
 
   private void executePausedActivityGameEvents()
   {
-    if (lccHolder.isActivityPausedMode() && lccHolder.getPausedActivityGameEvents().size() > 0)
+    if (/*lccHolder.isActivityPausedMode() && */lccHolder.getPausedActivityGameEvents().size() > 0)
     {
       //boolean fullGameProcessed = false;
       GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);

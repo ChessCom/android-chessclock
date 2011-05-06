@@ -7,6 +7,7 @@ package com.chess.utilities;
 import com.chess.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 
 public class SoundPlayer
@@ -20,6 +21,7 @@ public class SoundPlayer
   private MediaPlayer moveOpponentCheck;
   private MediaPlayer moveSelfCheck;
   private MediaPlayer notify;
+  private Context context;
 
   public SoundPlayer(Context context)
   {
@@ -32,51 +34,61 @@ public class SoundPlayer
     moveOpponentCheck = MediaPlayer.create(context, R.raw.move_opponent_check);
     moveSelfCheck = MediaPlayer.create(context, R.raw.move_self_check);
     notify = MediaPlayer.create(context, R.raw.notify);
+    this.context = context;
   }
 
   public void playCapture()
   {
-    capture.start();
+    playSound(capture);
   }
 
   public void playCastle()
   {
-    castle.start();
+    playSound(castle);
   }
 
   public void playGameEnd()
   {
-    gameEnd.start();
+    playSound(gameEnd);
   }
 
   public void playGameStart()
   {
-    gameStart.start();
+    playSound(gameStart);
   }
 
   public void playMoveOpponent()
   {
-    moveOpponent.start();
+    playSound(moveOpponent);
   }
 
   public void playMoveSelf()
   {
-    moveSelf.start();
+    playSound(moveSelf);
   }
 
   public void playMoveOpponentCheck()
   {
-    moveOpponentCheck.start();
+    playSound(moveOpponentCheck);
   }
 
   public void playMoveSelfCheck()
   {
-    moveSelfCheck.start();
+    playSound(moveSelfCheck);
   }
 
   public void playNotify()
   {
-    notify.start();
+    playSound(notify);
+  }
+
+  private void playSound(MediaPlayer mediaPlayer)
+  {
+    final SharedPreferences SharedPreferences = context.getSharedPreferences("sharedData", 0);
+    if (SharedPreferences.getBoolean(SharedPreferences.getString("username", "") + "enableSounds", true))
+    {
+      mediaPlayer.start();
+    }
   }
 }
 

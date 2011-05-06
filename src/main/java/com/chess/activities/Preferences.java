@@ -31,6 +31,7 @@ public class Preferences extends CoreActivity {
 	private Button PrefBoard, PrefPices, PrefInvite;
 	private Spinner AIM, /*Notif, */Strength;
 	private CheckBox PrefSSB, PrefNEnable, PrefVacation, PrefShowCoords, PrefShowHighlights;
+  private CheckBox enableSounds;
 	private SelectionAdapter Boards, Pieces;
   private TextView onlineTitle;
   private LinearLayout afterIMoveLayout;
@@ -50,6 +51,7 @@ public class Preferences extends CoreActivity {
 		//Notif =  (Spinner)findViewById(R.id.PrefNotif);
 		Strength = (Spinner)findViewById(R.id.PrefStrength);
 
+    enableSounds = (CheckBox)findViewById(R.id.enableSounds);
 		PrefSSB = (CheckBox)findViewById(R.id.PrefSSB);
 		PrefNEnable = (CheckBox)findViewById(R.id.PrefNEnable);
 		PrefVacation = (CheckBox)findViewById(R.id.PrefVacation);
@@ -108,7 +110,17 @@ public class Preferences extends CoreActivity {
 			@Override
 			public void onNothingSelected(AdapterView<?> a) {}
 		});
+
 		//checkboxes
+
+    enableSounds.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton b, boolean res) {
+        App.SDeditor.putBoolean(App.sharedData.getString("username", "")+"enableSounds", res);
+				App.SDeditor.commit();
+			}
+		});
+
 		PrefSSB.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton b, boolean res) {
@@ -235,20 +247,22 @@ public class Preferences extends CoreActivity {
 				Strength.setSelection(App.sharedData.getInt(App.sharedData.getString("username", "")+"strength", 0));
 			}
 		});
-
-		Strength.post(new Runnable() {
-			@Override
-			public void run() {
-				if (App.isLiveChess())
-		        {
-		          PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"ssblive", false));
-		        }
-		        else
-		        {
-		          PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"ssb", true));
-		        }
-				}
-		});
+    Strength.post(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        if(App.isLiveChess())
+        {
+          PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "ssblive", false));
+        }
+        else
+        {
+          PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "ssb", true));
+        }
+        enableSounds.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "enableSounds", true));
+      }
+    });
 		PrefNEnable.post(new Runnable() {
 			@Override
 			public void run() {
@@ -307,7 +321,7 @@ public class Preferences extends CoreActivity {
 	public void Update(int code) {
     if (code == -1)
     {
-      if(!App.guest){
+      if(!App.guest && !App.isLiveChess()){
         if(appService != null){
           appService.RunSingleTask(0,
             "http://www." + LccHolder.HOST + "/api/get_vacation_status?id="+App.sharedData.getString("user_token", ""),

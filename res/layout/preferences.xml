@@ -38,6 +38,11 @@
 					android:layout_width="fill_parent" android:entries="@array/Notif"></Spinner>
 			</LinearLayout-->
 
+			<CheckBox android:id="@+id/enableSounds" android:text="@string/enableSounds"
+			  android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center"
+			  android:textColor="#fff" android:textStyle="bold" android:textSize="20dip" android:layout_marginLeft="10dip"
+			  android:layout_marginRight="10dip"></CheckBox>
+
 			<CheckBox android:text="@string/ssb" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center"
 				android:textColor="#fff" android:textStyle="bold" android:id="@+id/PrefSSB"
 				android:textSize="20dip" android:layout_marginLeft="10dip"

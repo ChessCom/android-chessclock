@@ -100,20 +100,23 @@ public abstract class CoreActivity extends Activity {
   @Override
   protected void onResume()
   {
-	  new Handler().post(new Runnable()
+    if (App.board == null || App.pieces == null)
     {
-      public void run()
+      new Handler().post(new Runnable()
       {
-        if(App.board == null)
+        public void run()
         {
           App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "") + "board", 0)]);
-        }
-        if(App.pieces == null)
-        {
           App.LoadPieces(App.res_pieces[App.sharedData.getInt(App.sharedData.getString("username", "") + "pieces", 0)]);
         }
+      });
+      if (!App.sharedData.getString("username", "").equals(""))
+      {
+        final Intent intent = new Intent(App, Tabs.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.startActivity(intent);
       }
-    });
+    }
 
     if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
     {

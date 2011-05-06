@@ -117,6 +117,7 @@
 <string name="notification">Notification</string>
 <string name="notificationE">Enable notifications</string>
 <string name="ssb">Show submit button</string>
+<string name="enableSounds">Enable sounds</string>
 <string name="strength">Strength</string>
 <string name="interfaceP">Interface</string>
 <string name="board">Board</string>
