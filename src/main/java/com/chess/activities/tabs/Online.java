@@ -690,7 +690,10 @@ public class Online extends CoreActivity {
       if (App.isLiveChess() && !intent.getExtras().getBoolean("enable"))
       {
         start.setVisibility(View.VISIBLE);
+        if (gridview != null)
+        {
         gridview.setVisibility(View.VISIBLE);
+        }
         challengesListTitle.setVisibility(View.VISIBLE);
         startNewGameTitle.setVisibility(View.VISIBLE);
       }

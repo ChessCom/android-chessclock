@@ -116,6 +116,10 @@ public abstract class CoreActivity extends Activity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         App.startActivity(intent);
       }
+      else
+      {
+        startActivity(new Intent(App, Singin.class));
+      }
     }
 
     if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
@@ -151,6 +155,7 @@ public abstract class CoreActivity extends Activity {
 
     @Override
     protected void onPause() {
+    	super.onPause();
     	doUnbindService();
     	if(appService != null && appService.repeatble != null){
     		appService.stopSelf();
@@ -172,7 +177,6 @@ public abstract class CoreActivity extends Activity {
 
     	if(PD != null)
     		PD.dismiss();
-    	super.onPause();
     }
 
     public String response = "", rep_response = "";

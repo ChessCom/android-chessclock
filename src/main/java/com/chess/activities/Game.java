@@ -1018,13 +1018,12 @@ public class Game extends CoreActivity {
 				});
 				break;
 			}
-			 case 1:{
+      case 1:
+      {
         // making the move
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				BV.board.submit = false;
-
          //String myMove = BV.board.MoveSubmit();
-
         if (App.isLiveChess() && BV.board.mode == 4)
         {
           final String move = BV.board.convertMoveLive();
@@ -1041,10 +1040,45 @@ public class Game extends CoreActivity {
         }
         else if (!App.isLiveChess() && appService != null)
         {
+          if(App.OnlineGame == null)
+          {
+            if(appService.repeatble != null)
+            {
+              appService.repeatble.cancel();
+              appService.repeatble = null;
+            }
+            appService.RunSingleTask(12,
+                                     "http://www." + LccHolder.HOST + "/api/v3/get_game?id=" +
+                                     App.sharedData.getString("user_token", "") + "&gid=" + App.gameId,
+                                     null);
+          }
+          else
+          {
           appService.RunSingleTask(8,
-                                   "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=SUBMIT&newmove="+BV.board.convertMoveEchess()+"&timestamp="+App.OnlineGame.values.get("timestamp"),
-                                   PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
-
+                                     "http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
+                                     App.sharedData.getString("user_token", "") + "&chessid=" +
+                                     App.OnlineGame.values.get("game_id") + "&command=SUBMIT&newmove=" +
+                                     BV.board.convertMoveEchess() + "&timestamp=" +
+                                     App.OnlineGame.values.get("timestamp"),
+                                     PD = new MyProgressDialog(
+                                       ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+          }
+        }
+        break;
+      }
+      case 12:
+      {
+    	  App.OnlineGame = ChessComApiParser.GetGameParseV3(response);
+        if(!App.isLiveChess() && appService != null)
+        {
+          appService.RunSingleTask(8,
+                                   "http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
+                                   App.sharedData.getString("user_token", "") + "&chessid=" +
+                                   App.OnlineGame.values.get("game_id") + "&command=SUBMIT&newmove=" +
+                                   BV.board.convertMoveEchess() + "&timestamp=" +
+                                   App.OnlineGame.values.get("timestamp"),
+                                   PD = new MyProgressDialog(
+                                     ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
         }
 				break;
 			}
@@ -1336,6 +1370,10 @@ public class Game extends CoreActivity {
 					Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
 					BV.board.movesCount = Moves.length;
 				}
+        else if (!App.isLiveChess())
+        {
+          BV.board.movesCount = 0;
+        }
 
 				FEN = App.OnlineGame.values.get("starting_fen_position");
 				if(!FEN.equals("")){

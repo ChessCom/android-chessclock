@@ -12,82 +12,83 @@ import android.media.MediaPlayer;
 
 public class SoundPlayer
 {
-  private MediaPlayer capture;
-  private MediaPlayer castle;
-  private MediaPlayer gameEnd;
-  private MediaPlayer gameStart;
-  private MediaPlayer moveOpponent;
-  private MediaPlayer moveSelf;
-  private MediaPlayer moveOpponentCheck;
-  private MediaPlayer moveSelfCheck;
-  private MediaPlayer notify;
   private Context context;
 
   public SoundPlayer(Context context)
   {
-    capture = MediaPlayer.create(context, R.raw.capture);
-    castle = MediaPlayer.create(context, R.raw.castle);
-    gameEnd = MediaPlayer.create(context, R.raw.game_end);
-    gameStart = MediaPlayer.create(context, R.raw.game_start);
-    moveOpponent = MediaPlayer.create(context, R.raw.move_opponent);
-    moveSelf = MediaPlayer.create(context, R.raw.move_self);
-    moveOpponentCheck = MediaPlayer.create(context, R.raw.move_opponent_check);
-    moveSelfCheck = MediaPlayer.create(context, R.raw.move_self_check);
-    notify = MediaPlayer.create(context, R.raw.notify);
     this.context = context;
   }
 
   public void playCapture()
   {
-    playSound(capture);
+    playSound(R.raw.capture);
   }
 
   public void playCastle()
   {
-    playSound(castle);
+    playSound(R.raw.castle);
   }
 
   public void playGameEnd()
   {
-    playSound(gameEnd);
+    playSound(R.raw.game_end);
   }
 
   public void playGameStart()
   {
-    playSound(gameStart);
+    playSound(R.raw.game_start);
   }
 
   public void playMoveOpponent()
   {
-    playSound(moveOpponent);
+    playSound(R.raw.move_opponent);
   }
 
   public void playMoveSelf()
   {
-    playSound(moveSelf);
+    playSound(R.raw.move_self);
   }
 
   public void playMoveOpponentCheck()
   {
-    playSound(moveOpponentCheck);
+    playSound(R.raw.move_opponent_check);
   }
 
   public void playMoveSelfCheck()
   {
-    playSound(moveSelfCheck);
+    playSound(R.raw.move_self_check);
   }
 
   public void playNotify()
   {
-    playSound(notify);
+    playSound(R.raw.notify);
   }
 
-  private void playSound(MediaPlayer mediaPlayer)
+  private void playSound(int soundResource)
   {
     final SharedPreferences SharedPreferences = context.getSharedPreferences("sharedData", 0);
-    if (SharedPreferences.getBoolean(SharedPreferences.getString("username", "") + "enableSounds", true))
+    if(SharedPreferences.getString("username", "").equals(""))
     {
-      mediaPlayer.start();
+      System.out.println("================ USERNAME IS EMPTY!");
+    }
+    if(SharedPreferences.getBoolean(SharedPreferences.getString("username", "") + "enableSounds", true))
+    {
+      try
+      {
+        MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+        {
+          public void onCompletion(MediaPlayer mediaPlayer)
+          {
+            mediaPlayer.release();
+          }
+        });
+      }
+      catch(Exception e)
+      {
+        e.printStackTrace();
+      }
     }
   }
 }

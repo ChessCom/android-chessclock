@@ -166,12 +166,13 @@ public class Singin extends CoreActivity {
         if(code == SIGNIN_CALLBACK_CODE)
         {
           App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
+          doUpdate(responseArray);
         }
         else if(code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5)
         {
           App.SDeditor.putString("username", responseArray[4].trim().toLowerCase());
+          doUpdate(responseArray);
         }
-        doUpdate(responseArray);
       }
     }
   }
