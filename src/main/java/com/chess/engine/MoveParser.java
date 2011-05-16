@@ -58,14 +58,23 @@ public class MoveParser
       M = itr.next();
       if(M.from == from && M.to == to)
       {
-        if(currentmove.contains("q"))
-        { promotion = 4; }
-        if(currentmove.contains("r"))
-        { promotion = 3; }
-        if(currentmove.contains("b"))
-        { promotion = 2; }
-        if(currentmove.contains("n"))
-        { promotion = 1; }
+        char lastChar = currentmove.charAt(currentmove.length() - 1);
+        if(lastChar == 'q')
+        {
+          promotion = 4;
+        }
+        else if(lastChar == 'r')
+        {
+          promotion = 3;
+        }
+        else if(lastChar == 'b')
+        {
+          promotion = 2;
+        }
+        else if(lastChar == 'n')
+        {
+          promotion = 1;
+        }
         return new int[] {from, to, promotion, M.bits};
       }
     }

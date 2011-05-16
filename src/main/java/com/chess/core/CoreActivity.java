@@ -214,12 +214,23 @@ public abstract class CoreActivity extends Activity {
           }
           if (resp.length()==0)
           {
+            Update(-2);
             return;
           }
           String title = getString(R.string.error);
           String message = resp;
           if(resp.contains("Error+")){
             message = resp.split("[+]")[1];
+          }
+          else
+          {
+            Update(-2);
+            return;
+          }
+          if (message == null || message.trim().equals(""))
+          {
+            Update(-2);
+            return;
           }
           new AlertDialog.Builder(CoreActivity.this)
           .setIcon(android.R.drawable.ic_dialog_alert)
@@ -323,11 +334,16 @@ public abstract class CoreActivity extends Activity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
+      final String message = intent.getExtras().getString("message");
+      if (message == null || message.trim().equals(""))
+      {
+        return;
+      }
       new AlertDialog.Builder(context)
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setCancelable(false)
         .setTitle(intent.getExtras().getString("title"))
-        .setMessage(intent.getExtras().getString("message"))
+        .setMessage(message)
         .setPositiveButton("OK", new DialogInterface.OnClickListener()
         {
           public void onClick(DialogInterface dialog, int whichButton)

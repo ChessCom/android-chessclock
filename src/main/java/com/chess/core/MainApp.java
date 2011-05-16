@@ -41,6 +41,10 @@ public class MainApp extends Application {
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 	}
 	public void ShowDialog(Context ctx, String title, String message){
+    if (message == null || message.trim().equals(""))
+    {
+      return;
+    }
 		new AlertDialog.Builder(ctx)
 		.setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(title)
