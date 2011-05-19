@@ -956,7 +956,7 @@ public class Game extends CoreActivity {
 							analysisLL.setVisibility(View.VISIBLE);
               if (!App.isLiveChess() && analysisButtons!=null)
               {
-                analysisButtons.setVisibility(View.VISIBLE);
+                showAnalysisButtons();
               }
 						} else{
 							white.setVisibility(View.VISIBLE);
@@ -986,7 +986,7 @@ public class Game extends CoreActivity {
 						analysisLL.setVisibility(View.VISIBLE);
             if (!App.isLiveChess() && analysisButtons!=null)
             {
-              analysisButtons.setVisibility(View.VISIBLE);
+              showAnalysisButtons();
             }
 					} else{
 						white.setVisibility(View.GONE);
@@ -2071,4 +2071,14 @@ public class Game extends CoreActivity {
     super.onStop();
   }*/
 
+
+  private void showAnalysisButtons()
+  {
+    analysisButtons.setVisibility(View.VISIBLE);
+    findViewById(R.id.moveButtons).setVisibility(View.GONE);
+    /*BV.board.takeBack();
+    BV.board.movesCount--;
+    BV.invalidate();
+    BV.board.submit = false;*/
+  }
 }

@@ -7,6 +7,7 @@ import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
 import com.chess.utilities.Web;
 import com.chess.utilities.WebService;
+import com.flurry.android.FlurryAgent;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -480,6 +481,18 @@ public abstract class CoreActivity extends Activity {
   public LccHolder getLccHolder()
   {
     return lccHolder;
+  }
+  
+  @Override
+  protected void onStart() {
+	super.onStart();
+	FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+  }
+  
+  @Override
+  protected void onStop() {
+	super.onStop();
+	FlurryAgent.onEndSession(this);
   }
 
 }

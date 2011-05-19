@@ -48,7 +48,6 @@ public class LccHolder
   public static final String CONFIG_CHAT_MESSAGE =
     Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.message"), "test!");
   private static Integer MATCHED_COLOR = 1;
-  private LccChallengeListener _challengeListener;
   private ChatListenerImpl _chatListener;
   private ConnectionListenerImpl _connectionListener;
   private LccGameListener _gameListener;
@@ -121,7 +120,6 @@ public class LccHolder
     {
       throw new LiveChessClientException("Unable to initialize HttpClient", e);
     }
-    _challengeListener = new LccChallengeListener(this);
     _chatListener = new ChatListenerImpl(this);
     _connectionListener = new ConnectionListenerImpl(this);
     _gameListener = new LccGameListener(this);

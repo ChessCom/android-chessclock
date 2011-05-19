@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import com.chess.R;
 import com.chess.activities.Game;
 import com.chess.core.CoreActivity;
+import com.flurry.android.FlurryAgent;
 
 public class Computer extends CoreActivity {
 
@@ -72,6 +73,7 @@ public class Computer extends CoreActivity {
 				findViewById(R.id.load).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+            FlurryAgent.onEvent("New Game VS Computer", null);
 						startActivity(new Intent(Computer.this, Game.class).putExtra("mode", Integer.parseInt(App.sharedData.getString("saving", "").substring(0,1))));
 					}
 				});
@@ -98,6 +100,7 @@ public class Computer extends CoreActivity {
 		App.SDeditor.putString("saving", "");
 		App.SDeditor.commit();
 
+    FlurryAgent.onEvent("New Game VS Computer", null);
 		startActivity(new Intent(this, Game.class).putExtra("mode", mode));
 	}
 	@Override

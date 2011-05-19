@@ -27,6 +27,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 public class Preferences extends CoreActivity {
 	private Button PrefBoard, PrefPices, PrefInvite;
 	private Spinner AIM, /*Notif, */Strength;
@@ -221,6 +223,7 @@ public class Preferences extends CoreActivity {
 		        emailIntent.setType("plain/text");
 		        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Play Chess with me");
 		        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just signed up to play chess at Chess.com on my Android device. Download the free app here: \n http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \""+App.sharedData.getString("username", "")+"\". \n \n Sent from my Android");
+            FlurryAgent.onEvent("Invite A Friend", null);
 		        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 			}
 		});

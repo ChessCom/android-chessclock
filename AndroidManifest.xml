@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="28"
-      android:versionName="1.62" package="com.chess">
+      android:versionCode="31"
+      android:versionName="1.68" package="com.chess">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -43,5 +43,5 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
-	<uses-sdk android:minSdkVersion="3" />
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
 </manifest>
