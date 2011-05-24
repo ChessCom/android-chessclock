@@ -47,6 +47,7 @@ import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
 import com.chess.views.BoardView;
 import com.chess.utilities.ChessComApiParser;
+import com.flurry.android.FlurryAgent;
 
 public class Game extends CoreActivity {
 	public BoardView BV;
@@ -255,10 +256,12 @@ public class Game extends CoreActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 			case 0:
+        FlurryAgent.onEvent("Tactics Daily Limit Exceded", null);
 				return new AlertDialog.Builder(this)
 	            .setTitle("Daily Limit Exceeded").setMessage("You have hit your maximum number of tactics for today. Would you like to be able to do more tactics?")
 	            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int whichButton) {
+                    FlurryAgent.onEvent("Upgrade From Tactics", null);
 	                	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="+App.sharedData.getString("user_token", "")+"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
 	                }
 	            })
@@ -542,7 +545,7 @@ public class Game extends CoreActivity {
     }
 	}
 	private void GetTacticsGame(final String id){
-
+    FlurryAgent.onEvent("Tactics Session Started For Registered", null);
 		if(!App.noInternet){
 			BV.board = new Board(this);
 			BV.board.mode = 6;
@@ -614,7 +617,9 @@ public class Game extends CoreActivity {
 		}
 	}
 	private void GetGuestTacticsGame(){
-		if(App.currentTacticProblem >= App.TacticsBatch.size()){
+		FlurryAgent.onEvent("Tactics Session Started For Guest", null);
+
+    if(App.currentTacticProblem >= App.TacticsBatch.size()){
 			showDialog(2);
 			return;
 		}

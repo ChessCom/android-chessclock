@@ -24,6 +24,7 @@ import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.facebook.android.SessionEvents.AuthListener;
 import com.facebook.android.SessionEvents.LogoutListener;
+import com.flurry.android.FlurryAgent;
 
 public class Singin extends CoreActivity {
 
@@ -132,6 +133,7 @@ public class Singin extends CoreActivity {
 	public void LoadNext(int code) {
 		switch (code) {
 			case 0:{
+        FlurryAgent.onEvent("Logged In", null);
 				if(App.sharedData.getBoolean(App.sharedData.getString("username", "")+"notifE", true))
           startService(new Intent(this, Notifications.class));
 				App.guest = false;
@@ -144,7 +146,8 @@ public class Singin extends CoreActivity {
 				break;
 			}
 			case 2:{
-				App.guest = true;
+				FlurryAgent.onEvent("Guest Login", null);
+        App.guest = true;
 				startActivity(new Intent(this, Tabs.class));
 				break;
 			}
@@ -170,6 +173,7 @@ public class Singin extends CoreActivity {
         }
         else if(code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5)
         {
+          FlurryAgent.onEvent("FB Login", null);
           App.SDeditor.putString("username", responseArray[4].trim().toLowerCase());
           doUpdate(responseArray);
         }

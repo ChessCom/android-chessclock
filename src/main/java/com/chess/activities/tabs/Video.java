@@ -18,6 +18,7 @@ import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.utilities.MyProgressDialog;
+import com.flurry.android.FlurryAgent;
 
 public class Video extends CoreActivity {
 	private VideoItem item;
@@ -34,7 +35,8 @@ public class Video extends CoreActivity {
 		if( Integer.parseInt( App.sharedData.getString("premium_status", "0") ) < statusCode ){
 			Upgrade.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="+App.sharedData.getString("user_token", "")+"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
+					FlurryAgent.onEvent("Upgrade From Videos", null);
+          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="+App.sharedData.getString("user_token", "")+"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
 				}
 			});
 		} else{
@@ -164,6 +166,7 @@ public class Video extends CoreActivity {
 			findViewById(R.id.play).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+          FlurryAgent.onEvent("Video Played", null);
 					Intent i = new Intent(Intent.ACTION_VIEW);
 		            i.setDataAndType(Uri.parse(item.values.get("view_url").trim()), "video/*");
 		            startActivity(i);

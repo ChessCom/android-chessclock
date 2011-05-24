@@ -19,6 +19,7 @@ import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.utilities.MyProgressDialog;
+import com.flurry.android.FlurryAgent;
 
 public class CreateChallenge extends CoreActivity {
 	private Spinner iplayas, dayspermove, minrating, maxrating;
@@ -204,6 +205,7 @@ public class CreateChallenge extends CoreActivity {
             lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig, minRating, maxRating);
           if(appService != null)
           {
+            FlurryAgent.onEvent("Challenge Created", null);
             appService.RunChesscomSendChallengeTask(
               lccHolder,
               //PD = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),

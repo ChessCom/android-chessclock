@@ -42,6 +42,9 @@ public class Preferences extends CoreActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+    FlurryAgent.onEvent("Settings Accessed", null);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences);
 
@@ -220,7 +223,7 @@ public class Preferences extends CoreActivity {
 			@Override
 			public void onClick(View v) {
 				Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-		        emailIntent.setType("plain/text");
+		        emailIntent.setType("text/plain");
 		        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Play Chess with me");
 		        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just signed up to play chess at Chess.com on my Android device. Download the free app here: \n http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \""+App.sharedData.getString("username", "")+"\". \n \n Sent from my Android");
             FlurryAgent.onEvent("Invite A Friend", null);

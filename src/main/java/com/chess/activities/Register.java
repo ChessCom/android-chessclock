@@ -8,6 +8,7 @@ import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MyProgressDialog;
+import com.flurry.android.FlurryAgent;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -138,6 +139,7 @@ public class Register extends CoreActivity {
 				);
 			}
 		} else if(code == 1){
+      FlurryAgent.onEvent("New Account Created", null);
 			String[] r = response.split(":");
 			App.SDeditor.putString("username", RegUsername.getText().toString().toLowerCase());
 			App.SDeditor.putString("password", RegPassword.getText().toString());
