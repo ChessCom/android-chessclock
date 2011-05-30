@@ -71,6 +71,13 @@
 			<version>1.6.1</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>com.flurry</groupId>
+			<artifactId>flurryagent</artifactId>
+			<version>latest</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -84,6 +91,7 @@
 						<filtering>true</filtering>
 						<targetPath>${project.build.outputDirectory}/filtered-res</targetPath>
 				</resource>
+
 				<resource>
 						<targetPath>${project.basedir}/target/filtered-manifest</targetPath>
 						<filtering>true</filtering>

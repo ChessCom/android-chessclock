@@ -11,6 +11,7 @@ import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
+import com.mopub.mobileads.MoPubView;
 
 public class Home extends CoreActivity {
 
@@ -84,6 +85,9 @@ public class Home extends CoreActivity {
 				}
 			});
 
+    final MoPubView moPubView = (MoPubView) findViewById(R.id.adview);
+    moPubView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+    moPubView.loadAd();
 	}
 
 	@Override

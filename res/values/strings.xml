@@ -125,6 +125,7 @@
 <string name="showcoords">Show coordinates</string>
 <string name="movehighlights">Move highlights</string>
 <string name="invite">Invite a friend</string>
+<string name="contactUs">Contact Us</string>
 <string name="logout">Logout</string>
 <string name="vacationOn">On vacation</string>
 <string name="vacationOff">Not on vacation</string>
@@ -229,5 +230,8 @@
 <string name="details">Details</string>
 <string name="playvideo">Play Video</string>
 <string name="accepted">Accepted!</string>
+
+<string name="preferencesUpgrade">Upgrade My Account</string>
+<string name="videoUpgrade">Upgrade for full access to videos!</string>
 
 </resources>

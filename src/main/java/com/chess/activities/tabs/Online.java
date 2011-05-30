@@ -41,6 +41,8 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
 
+import com.mopub.mobileads.MoPubView;
+
 public class Online extends CoreActivity {
 	private ListView GamesList;
 	private Spinner GamesType;
@@ -542,6 +544,9 @@ public class Online extends CoreActivity {
       }
       );
     }
+    final MoPubView moPubView = (MoPubView) findViewById(R.id.adview);
+    moPubView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+    moPubView.loadAd();
 	}
 	@Override
 	public void LoadNext(int code) {

@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +32,7 @@ import com.flurry.android.FlurryAgent;
 
 public class Preferences extends CoreActivity {
 	private Button PrefBoard, PrefPices, PrefInvite;
+  private Button prefContactUs;
 	private Spinner AIM, /*Notif, */Strength;
 	private CheckBox PrefSSB, PrefNEnable, PrefVacation, PrefShowCoords, PrefShowHighlights;
   private CheckBox enableSounds;
@@ -51,6 +53,7 @@ public class Preferences extends CoreActivity {
 		PrefBoard = (Button)findViewById(R.id.PrefBoard);
 		PrefPices = (Button)findViewById(R.id.PrefPices);
 		PrefInvite = (Button)findViewById(R.id.PrefInvite);
+    prefContactUs = (Button)findViewById(R.id.prefContactUs);
 
 		AIM = (Spinner)findViewById(R.id.PrefAIM);
 		//Notif =  (Spinner)findViewById(R.id.PrefNotif);
@@ -230,11 +233,23 @@ public class Preferences extends CoreActivity {
 		        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 			}
 		});
+    prefContactUs.setOnClickListener(new OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      {
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"mobile@chess.com", ""});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Android Support");
+        //emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+      }
+    });
 	}
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		AIM.post(new Runnable() {
 			@Override
 			public void run() {

@@ -101,6 +101,8 @@ public abstract class CoreActivity extends Activity {
   @Override
   protected void onResume()
   {
+    super.onResume();
+
     if (App.board == null || App.pieces == null)
     {
       new Handler().post(new Runnable()
@@ -123,7 +125,7 @@ public abstract class CoreActivity extends Activity {
       }
     }
 
-    if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
+    if(App.isLiveChess() && (!lccHolder.isConnected() || lccHolder.getUser() == null)/* && !lccHolder.isConnectingInProgress()*/)
     {
       //lccHolder.getAndroid().showConnectingIndicator();
       manageConnectingIndicator(true, "Loading Live Chess");
@@ -151,7 +153,6 @@ public abstract class CoreActivity extends Activity {
     registerReceiver(obsoleteProtocolVersionReceiver,
                      new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
     /*}*/
-    super.onResume();
   }
 
     @Override
@@ -482,17 +483,17 @@ public abstract class CoreActivity extends Activity {
   {
     return lccHolder;
   }
-  
+
   @Override
   protected void onStart() {
-	super.onStart();
-	FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+	  super.onStart();
+	  FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
   }
-  
+
   @Override
   protected void onStop() {
-	super.onStop();
-	FlurryAgent.onEndSession(this);
+	  super.onStop();
+	  FlurryAgent.onEndSession(this);
   }
 
 }

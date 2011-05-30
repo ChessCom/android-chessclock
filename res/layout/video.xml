@@ -6,10 +6,12 @@
 		android:padding="5dip">
 		<TextView android:layout_height="wrap_content"
 			android:layout_width="fill_parent" android:id="@+id/Upgrade"
-			android:text="Upgrade for full access to videos!" android:background="#cae6f7"
+			android:text="@string/videoUpgrade" android:background="#ffffcd"
 			android:textColor="#0066cc" android:textStyle="bold"
 			android:drawableLeft="@drawable/star" android:padding="5px"
-			android:textSize="17px" android:gravity="center"></TextView>
+			android:drawablePadding="10dp"
+			android:textSize="16dip" android:gravity="left"></TextView>
+			
 		<LinearLayout android:layout_height="wrap_content" android:id="@+id/recent" android:layout_width="fill_parent" android:orientation="vertical" android:visibility="gone"><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="5dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:id="@+id/title" android:layout_marginLeft="30dip"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="5dip" android:textColor="#fff" android:maxLines="4" android:id="@+id/desc"></TextView><Button android:background="@drawable/defaultbutton" android:layout_gravity="center" android:textSize="16dip" android:textStyle="bold" android:textColor="#222" android:gravity="center" android:layout_height="45dip" android:layout_width="100dip" android:text="@string/play" android:id="@+id/play"></Button></LinearLayout>
 		
 		

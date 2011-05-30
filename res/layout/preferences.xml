@@ -4,14 +4,25 @@
 	android:orientation="vertical">
 
 
-<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/menuSettings"></TextView>
+	<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/menuSettings"></TextView>
 	<ImageView android:layout_width="fill_parent"
 		android:layout_height="5dip" android:background="#00bb00"></ImageView>
+
 	<ScrollView android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
+
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="fill_parent" android:orientation="vertical"
 			android:scrollbarTrackVertical="@drawable/whitemove">
+
+			<TextView android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:id="@+id/preferencesUpgrade"
+				android:text="@string/preferencesUpgrade" android:background="#ffffcd"
+				android:textColor="#0066cc" android:textStyle="bold"
+				android:drawableLeft="@drawable/star" android:padding="7dp"
+				android:drawablePadding="10dp"
+				android:textSize="17dip" android:gravity="left">
+			</TextView>
 
 			<TextView android:id="@+id/onlineTitle" android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:textStyle="bold" android:padding="5dip" android:textSize="20dip"
@@ -76,7 +87,13 @@
 				android:gravity="center" android:id="@+id/PrefCoords" android:text="@string/showcoords"></CheckBox>
 			<CheckBox android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:layout_marginLeft="10px"
-				android:gravity="center" android:id="@+id/PrefHighlights" android:text="@string/movehighlights"></CheckBox><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/PrefInvite" android:layout_marginRight="10dip" android:layout_marginLeft="10dip" android:textSize="20dip" android:text="@string/invite"></Button>
+				android:gravity="center" android:id="@+id/PrefHighlights" android:text="@string/movehighlights"></CheckBox>
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/PrefInvite"
+			  android:layout_marginRight="10dip" android:layout_marginLeft="10dip" android:textSize="20dip"
+			  android:text="@string/invite"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/prefContactUs"
+			  android:layout_marginRight="10dip" android:layout_marginLeft="10dip" android:textSize="20dip"
+			  android:text="@string/contactUs"></Button>
 
 
 
