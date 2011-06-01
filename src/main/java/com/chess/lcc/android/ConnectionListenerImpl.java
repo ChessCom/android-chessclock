@@ -44,8 +44,8 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
 
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(true, 0);
-    lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", "" + user.getMembershipLevel());
-    lccHolder.getAndroid().getSharedDataEditor().commit();
+    /*lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", "" + user.getMembershipLevel());
+    lccHolder.getAndroid().getSharedDataEditor().commit();*/
     lccHolder.getAndroid().closeLoggingInIndicator();
 
     System.out.println("User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());

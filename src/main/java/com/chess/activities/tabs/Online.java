@@ -54,6 +54,8 @@ public class Online extends CoreActivity {
   private Button currentGame;
   private Button start;
   private GridView gridview;
+  private MoPubView adview;
+  private TextView removeAds;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -174,6 +176,10 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
+    if (isShowAds())
+    {
+      showRemoveAds(adview, removeAds);
+    }
     disableScreenLock();
   }
 
@@ -207,6 +213,17 @@ public class Online extends CoreActivity {
     startNewGameTitle = (TextView)findViewById(R.id.startNewGameTitle);
     tournaments = (TextView)findViewById(R.id.tournaments);
     stats = (TextView)findViewById(R.id.stats);
+
+    removeAds = (TextView) findViewById(R.id.removeAds);
+    removeAds.setOnClickListener(new OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+      }
+    });
 
     start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener()
@@ -544,9 +561,9 @@ public class Online extends CoreActivity {
       }
       );
     }
-    final MoPubView moPubView = (MoPubView) findViewById(R.id.adview);
-    moPubView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
-    moPubView.loadAd();
+
+    adview = (MoPubView) findViewById(R.id.adview);
+    showAds(adview);
 	}
 	@Override
 	public void LoadNext(int code) {

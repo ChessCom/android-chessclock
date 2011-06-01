@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.chess.R;
 import com.chess.activities.Preferences;
@@ -15,6 +16,9 @@ import com.mopub.mobileads.MoPubView;
 
 public class Home extends CoreActivity {
 
+  private MoPubView adview;
+  private TextView removeAds;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,6 +27,17 @@ public class Home extends CoreActivity {
 			setContentView(R.layout.home_guest);
 		else
 			setContentView(R.layout.home);
+
+	removeAds = (TextView) findViewById(R.id.removeAds);
+    removeAds.setOnClickListener(new OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+      }
+    });
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
@@ -85,9 +100,9 @@ public class Home extends CoreActivity {
 				}
 			});
 
-    final MoPubView moPubView = (MoPubView) findViewById(R.id.adview);
-    moPubView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
-    moPubView.loadAd();
+
+    adview = (MoPubView) findViewById(R.id.adview);
+    showAds(adview);
 	}
 
 	@Override
@@ -102,7 +117,15 @@ public class Home extends CoreActivity {
 
 	@Override
 	public void Update(int code) {
-
 	}
 
+  @Override
+  protected void onResume()
+  {
+    super.onResume();
+    if (isShowAds())
+    {
+      showRemoveAds(adview, removeAds);
+    }
+  }
 }

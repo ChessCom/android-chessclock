@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 import com.chess.R;
 import com.chess.core.CoreActivity;
@@ -24,12 +25,25 @@ public class VideoList extends CoreActivity {
 	private ArrayList<VideoItem> Items = new ArrayList<VideoItem>();
 	private VideosAdapter VA = null;
 	private ListView videosLV;
+  private TextView videoUpgrade;
 	private int page = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
+
+    videoUpgrade = (TextView)findViewById(R.id.videoUpgrade);
+    videoUpgrade.setOnClickListener(new View.OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
+      }
+    });
+
 
 		videosLV = (ListView)findViewById(R.id.videosLV);
 		videosLV.setOnItemClickListener(new OnItemClickListener() {

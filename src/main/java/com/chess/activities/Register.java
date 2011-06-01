@@ -129,7 +129,7 @@ public class Register extends CoreActivity {
 		if(code == 0){
 			String query = "";
 			try {
-				query = "http://www." + LccHolder.HOST + "/api/login?username="+URLEncoder.encode(RegUsername.getText().toString(), "UTF-8")+"&password="+URLEncoder.encode(RegPassword.getText().toString(), "UTF-8");
+				query = "http://www." + LccHolder.HOST + "/api/v2/login?username="+URLEncoder.encode(RegUsername.getText().toString(), "UTF-8")+"&password="+URLEncoder.encode(RegPassword.getText().toString(), "UTF-8");
 			} catch (Exception e) {}
 
 			if(appService != null){

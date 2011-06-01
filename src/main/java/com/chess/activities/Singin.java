@@ -58,7 +58,7 @@ public class Singin extends CoreActivity {
 
 				String query = "";
 				try {
-					query = "http://www." + LccHolder.HOST + "/api/login?username="
+					query = "http://www." + LccHolder.HOST + "/api/v2/login?username="
                   +URLEncoder.encode(username.getText().toString(), "UTF-8")+"&password="
                   +URLEncoder.encode(password.getText().toString(), "UTF-8");
 				} catch (Exception e) {}
@@ -96,7 +96,7 @@ public class Singin extends CoreActivity {
 
 	public class SampleAuthListener implements AuthListener {
 		public void onAuthSucceed() {
-			String query = "http://www." + LccHolder.HOST + "/api/login?facebook_access_token="+mFacebook.getAccessToken()+"&return=username";
+			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="+mFacebook.getAccessToken()+"&return=username";
             response = Web.Request(query, "GET", null, null);
             if(response.contains("Success+")){
             	Update(SIGNIN_FACEBOOK_CALLBACK_CODE);

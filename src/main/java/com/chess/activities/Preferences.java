@@ -41,6 +41,7 @@ public class Preferences extends CoreActivity {
   private LinearLayout afterIMoveLayout;
   private TextView computerTitle;
   private LinearLayout prefStrengthLayout;
+  private TextView preferencesUpgrade;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,19 @@ public class Preferences extends CoreActivity {
     computerTitle = (TextView)findViewById(R.id.computerTitle);
     prefStrengthLayout = (LinearLayout)findViewById(R.id.prefStrengthLayout);
 
+    preferencesUpgrade = (TextView)findViewById(R.id.preferencesUpgrade);
+    boolean liveMembershipLevel =
+      lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+    if(liveMembershipLevel
+       || (!App.isLiveChess() && Integer.parseInt(App.sharedData.getString("premium_status", "0")) < 3))
+    {
+      preferencesUpgrade.setVisibility(View.VISIBLE);
+    }
+    else
+    {
+      preferencesUpgrade.setVisibility(View.GONE);
+    }
+
     if (App.isLiveChess())
     {
       onlineTitle.setText("Live Game");
@@ -89,6 +103,15 @@ public class Preferences extends CoreActivity {
       computerTitle.setVisibility(View.VISIBLE);
       prefStrengthLayout.setVisibility(View.VISIBLE);
     }
+    preferencesUpgrade.setOnClickListener(new OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+      }
+    });
 
 		//spiners
 		AIM.setOnItemSelectedListener(new OnItemSelectedListener() {

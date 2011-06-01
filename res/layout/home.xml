@@ -81,6 +81,16 @@
 			android:layout_width="fill_parent"
 			android:layout_height="50dp"
 		/>
+
+		<TextView android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:id="@+id/removeAds"
+			android:text="@string/removeAds" android:background="#ffffcd"
+			android:textColor="#0066cc" android:textStyle="bold"
+			android:drawableLeft="@drawable/star" android:padding="7dp"
+			android:drawablePadding="10dp" android:visibility="gone"
+			android:textSize="17dip" android:gravity="left">
+		</TextView>
+
 	</LinearLayout>
 
 </FrameLayout>

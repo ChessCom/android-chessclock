@@ -233,5 +233,6 @@
 
 <string name="preferencesUpgrade">Upgrade My Account</string>
 <string name="videoUpgrade">Upgrade for full access to videos!</string>
+<string name="removeAds">Upgrade and remove ads!</string>
 
 </resources>

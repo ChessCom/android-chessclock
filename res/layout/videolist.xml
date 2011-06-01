@@ -9,7 +9,7 @@
 	<ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
 
 	<TextView android:layout_height="wrap_content"
-			android:layout_width="fill_parent" android:id="@+id/Upgrade"
+			android:layout_width="fill_parent" android:id="@+id/videoUpgrade"
 			android:text="@string/videoUpgrade" android:background="#ffffcd"
 			android:textColor="#0066cc" android:textStyle="bold"
 			android:drawableLeft="@drawable/star" android:padding="5px"

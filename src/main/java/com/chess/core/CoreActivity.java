@@ -8,6 +8,7 @@ import com.chess.utilities.SoundPlayer;
 import com.chess.utilities.Web;
 import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
+import com.mopub.mobileads.MoPubView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,6 +26,8 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.TextView;
 
 public abstract class CoreActivity extends Activity {
 
@@ -153,6 +156,12 @@ public abstract class CoreActivity extends Activity {
     registerReceiver(obsoleteProtocolVersionReceiver,
                      new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
     /*}*/
+    if (App.sharedData.getLong("com.chess.firstTimeStart", 0) == 0)
+    {
+      App.SDeditor.putLong("com.chess.firstTimeStart", System.currentTimeMillis());
+      App.SDeditor.putInt("com.chess.adsShowCounter", 0);
+      App.SDeditor.commit();
+    }
   }
 
     @Override
@@ -494,6 +503,48 @@ public abstract class CoreActivity extends Activity {
   protected void onStop() {
 	  super.onStop();
 	  FlurryAgent.onEndSession(this);
+  }
+
+  protected boolean isShowAds()
+  {
+    boolean liveMembershipLevel =
+      lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 30) : false;
+    return ((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
+            (7 * 24 * 60 * 60 * 1000)) && (liveMembershipLevel || (!App.isLiveChess() && Integer.parseInt(
+            App.sharedData.getString("premium_status", "0")) < 1));
+  }
+
+  protected void showRemoveAds(MoPubView adview, TextView removeAds)
+  {
+    int adsShowCounter = App.sharedData.getInt("com.chess.adsShowCounter", 0);
+    if(adsShowCounter == 10)
+    {
+      adview.setVisibility(View.GONE);
+      removeAds.setVisibility(View.VISIBLE);
+      App.SDeditor.putInt("com.chess.adsShowCounter", 0);
+      App.SDeditor.commit();
+    }
+    else
+    {
+      removeAds.setVisibility(View.GONE);
+      adview.setVisibility(View.VISIBLE);
+      App.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);
+      App.SDeditor.commit();
+    }
+  }
+
+  protected void showAds(MoPubView adview)
+  {
+    if(!isShowAds())
+    {
+      adview.setVisibility(View.GONE);
+    }
+    else
+    {
+      adview.setVisibility(View.VISIBLE);
+      adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+      adview.loadAd();
+    }
   }
 
 }

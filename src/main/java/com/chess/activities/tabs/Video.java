@@ -31,12 +31,14 @@ public class Video extends CoreActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video);
 		Upgrade = (TextView)findViewById(R.id.Upgrade);
-    int statusCode = App.isLiveChess() ? 50 : 2;
-		if( Integer.parseInt( App.sharedData.getString("premium_status", "0") ) < statusCode ){
+    boolean liveMembershipLevel =
+      lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+    if(liveMembershipLevel
+       || (!App.isLiveChess() && Integer.parseInt(App.sharedData.getString("premium_status", "0") ) <3)) {
 			Upgrade.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					FlurryAgent.onEvent("Upgrade From Videos", null);
-          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="+App.sharedData.getString("user_token", "")+"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
+          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="+App.sharedData.getString("user_token", "")+"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
 				}
 			});
 		} else{
