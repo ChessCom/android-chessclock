@@ -1,6 +1,7 @@
 package com.chess.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 
 import com.chess.R;
 import com.chess.core.CoreActivity;
+import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
@@ -281,4 +283,15 @@ public class CreateChallenge extends CoreActivity {
       }
     }
 	}
+
+  @Override
+  protected void onResume()
+  {
+    super.onResume();
+    if (lccHolder.getUser() == null)
+    {
+      lccHolder.logout();
+      startActivity(new Intent(this, Tabs.class));
+    }
+  }
 }

@@ -19,6 +19,7 @@ import android.widget.AutoCompleteTextView.Validator;
 
 import com.chess.R;
 import com.chess.core.CoreActivity;
+import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
@@ -321,4 +322,15 @@ public class FriendChallenge extends CoreActivity {
       }
 		}
 	}
+
+  @Override
+  protected void onResume()
+  {
+    super.onResume();
+    if (lccHolder.getUser() == null)
+    {
+      lccHolder.logout();
+      startActivity(new Intent(this, Tabs.class));
+    }
+  }
 }

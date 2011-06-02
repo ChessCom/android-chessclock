@@ -131,7 +131,7 @@ public abstract class CoreActivity extends Activity {
       }
     }
 
-    if(App.isLiveChess() && (!lccHolder.isConnected() || lccHolder.getUser() == null)/* && !lccHolder.isConnectingInProgress()*/)
+    if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
     {
       //lccHolder.getAndroid().showConnectingIndicator();
       manageConnectingIndicator(true, "Loading Live Chess");
