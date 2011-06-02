@@ -33,8 +33,10 @@
     	<activity android:name=".activities.FriendChallenge" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     	<activity android:name=".activities.CreateChallenge" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 
-		<service android:name=".utilities.WebService" />
-		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
+	    <activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>
+
+			<service android:name=".utilities.WebService" />
+			<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
 	</application>
 
     <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

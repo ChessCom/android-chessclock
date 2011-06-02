@@ -12,7 +12,7 @@ import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
-import com.mopub.mobileads.MoPubView;
+import com.mopub.mobileads.*;
 
 public class Home extends CoreActivity {
 
@@ -126,6 +126,19 @@ public class Home extends CoreActivity {
     if (isShowAds())
     {
       showRemoveAds(adview, removeAds);
+    }
+    showFullscreenAd();
+  }
+
+  private void showFullscreenAd()
+  {
+    if(!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && isShowAds())
+    {
+      MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
+      //MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+      interstitial.showAd();
+      App.SDeditor.putBoolean("com.chess.showedFullscreenAd", true);
+      App.SDeditor.commit();
     }
   }
 }

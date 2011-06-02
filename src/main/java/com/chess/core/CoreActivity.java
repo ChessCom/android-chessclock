@@ -1,5 +1,7 @@
 package com.chess.core;
 
+import java.util.Date;
+
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
@@ -24,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
@@ -160,6 +163,13 @@ public abstract class CoreActivity extends Activity {
     {
       App.SDeditor.putLong("com.chess.firstTimeStart", System.currentTimeMillis());
       App.SDeditor.putInt("com.chess.adsShowCounter", 0);
+      App.SDeditor.commit();
+    }
+    long startDay = App.sharedData.getLong("com.chess.startDay", 0);
+    if (App.sharedData.getLong("com.chess.startDay", 0) == 0 || !DateUtils.isToday(startDay))
+    {
+      App.SDeditor.putLong("com.chess.startDay", System.currentTimeMillis());
+      App.SDeditor.putBoolean("com.chess.showedFullscreenAd", false);
       App.SDeditor.commit();
     }
   }
