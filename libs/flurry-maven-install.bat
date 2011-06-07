@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=flurryagent-latest.jar -Dversion=latest -DartifactId=flurryagent -DgroupId=com.flurry -DgeneratePom=true -Dpackaging=jar
