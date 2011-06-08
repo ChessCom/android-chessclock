@@ -327,7 +327,7 @@ public class FriendChallenge extends CoreActivity {
   protected void onResume()
   {
     super.onResume();
-    if (lccHolder.getUser() == null)
+    if (App.isLiveChess() && lccHolder.getUser() == null)
     {
       lccHolder.logout();
       startActivity(new Intent(this, Tabs.class));
