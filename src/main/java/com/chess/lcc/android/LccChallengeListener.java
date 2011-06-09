@@ -163,11 +163,12 @@ public class LccChallengeListener implements ChallengeListener
     }*/
   }
 
-  public void onChallengeAccepted(Long challengeId, String by)
+  public void onChallengeAccepted(Long challengeId, String by, String warning)
   {
+	  // TODO: Show te warning to user if it is not null
 	  LccHolder.LOG.info(
 		  "CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-	      challengeId + ", by: " + by);
+	      challengeId + ", by: " + by + ", warning: " + warning);
 	  lccHolder.removeChallenge(challengeId);
 	  /*MatchOffer matchOffer = user.getConnection().getJinChallenge(challengeId);
 	    if(matchOffer != null)
@@ -179,19 +180,21 @@ public class LccChallengeListener implements ChallengeListener
 	    }*/
   }
 
-  public void onChallengeRejected(Long challengeId, String by)
+  public void onChallengeRejected(Long challengeId, String by, String warning)
   {
+	  // TODO: Show te warning to user if it is not null
 	  LccHolder.LOG.info(
 			  "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-		      challengeId + ", by: " + by);
+		      challengeId + ", by: " + by + ", warning: " + warning);
 	  lccHolder.removeChallenge(challengeId);
   }
 
-  public void onChallengeCancelled(Long challengeId, String by)
+  public void onChallengeCancelled(Long challengeId, String by, String warning)
   {
-  LccHolder.LOG.info(
+    // TODO: Show te warning to user if it is not null
+    LccHolder.LOG.info(
       "CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-      challengeId + ", by: " + by);
+      challengeId + ", by: " + by + ", warning: " + warning);
 
     /*if(by == null) // in second onChallengeCancelled invocation the "by" field is null
     {
