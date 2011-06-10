@@ -121,11 +121,11 @@ public class Home extends CoreActivity {
     super.onResume();
     adview = (MoPubView) findViewById(R.id.adview);
     showAds(adview);
+    showFullscreenAd();
     if (isShowAds())
     {
-      showRemoveAds(adview, removeAds);
+        showRemoveAds(adview, removeAds);
     }
-    showFullscreenAd();
   }
 
   private void showFullscreenAd()
