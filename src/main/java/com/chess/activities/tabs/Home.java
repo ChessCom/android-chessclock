@@ -99,10 +99,6 @@ public class Home extends CoreActivity {
 					finish();
 				}
 			});
-
-
-    adview = (MoPubView) findViewById(R.id.adview);
-    showAds(adview);
 	}
 
 	@Override
@@ -123,6 +119,8 @@ public class Home extends CoreActivity {
   protected void onResume()
   {
     super.onResume();
+    adview = (MoPubView) findViewById(R.id.adview);
+    showAds(adview);
     if (isShowAds())
     {
       showRemoveAds(adview, removeAds);

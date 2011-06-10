@@ -176,6 +176,8 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
+    adview = (MoPubView) findViewById(R.id.adview);
+    showAds(adview);
     if (isShowAds())
     {
       showRemoveAds(adview, removeAds);
@@ -561,9 +563,6 @@ public class Online extends CoreActivity {
       }
       );
     }
-
-    adview = (MoPubView) findViewById(R.id.adview);
-    showAds(adview);
 	}
 	@Override
 	public void LoadNext(int code) {
