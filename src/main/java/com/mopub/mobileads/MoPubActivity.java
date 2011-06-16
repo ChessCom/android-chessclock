@@ -71,6 +71,7 @@ public class MoPubActivity extends Activity {
             mMoPubView.setTimeout(timeout);
         }
         if (source != null) {
+            source = sourceWithImpressionTrackingDisabled(source);
             mMoPubView.loadHtmlString(source);
         }
 
@@ -88,5 +89,10 @@ public class MoPubActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+    
+    private String sourceWithImpressionTrackingDisabled(String source) {
+        // TODO: Temporary fix. Disables impression tracking by renaming the pixel tracker's URL.
+        return source.replaceAll("http://ads.mopub.com/m/imp", "mopub://null");
     }
 }
