@@ -6,6 +6,7 @@ import com.chess.R;
 import com.chess.model.GameListElement;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
             catch(Exception e)
             {
               e.printStackTrace();
-              System.out.println(e);
+              Log.d("OnlineGamesAdapter", ""+e);
             }
           }
 

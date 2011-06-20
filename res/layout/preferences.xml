@@ -20,7 +20,7 @@
 				android:text="@string/preferencesUpgrade" android:background="#ffffcd"
 				android:textColor="#0066cc" android:textStyle="bold"
 				android:drawableLeft="@drawable/star" android:padding="7dp"
-				android:drawablePadding="10dp"
+				android:drawablePadding="10dp" android:visibility="gone"
 				android:textSize="17dip" android:gravity="left">
 			</TextView>
 

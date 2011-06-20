@@ -20,6 +20,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.Utils;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameListElement;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 
@@ -27,14 +28,16 @@ import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.util.Log;
 
 public class LccHolder
 {
   final static Config CONFIG = new Config("", "assets/my.properties", true);
 
-  //static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(3);
+  //static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
   public static final String HOST = "chess.com";
+  //public static final String AUTH_URL = "http://www." + HOST + "/api/login?username=%s&password=%s";
   public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
   public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
   //Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
@@ -87,8 +90,8 @@ public class LccHolder
 
   public LccHolder(InputStream keyStoreInputStream)
   {
-    LOG.info("Start Chess.com LCC App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    System.setProperty("java.net.preferIPv6Addresses", "false");
+    Log.d("Chess.Com", "Start Chess.Com LCC App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    //System.setProperty("java.net.preferIPv6Addresses", "false");
     LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
     /*InputStream keyStoreInputStream = null;
     try
@@ -99,18 +102,23 @@ public class LccHolder
     {
       e.printStackTrace();
     }*/
+
     _lccClient = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST, CONFIG_PORT, CONFIG_URI);
     _lccClient.setClientInfo("Android", DateTimeUtils.fromDateTime(Utils.getClassCompileTimeStamp(LccHolder.class), "yyyyMMddhhmm"), "No-Key");
     _lccClient.setSupportedClientFeatures(false, false);
     //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-    httpClient.setKeyStoreType("PKCS12");
-    httpClient.setTrustStoreType("PKCS12");
-    httpClient.setKeyManagerPassword("testtest");
-    httpClient.setKeyStoreInputStream(keyStoreInputStream);
-    httpClient.setKeyStorePassword("testtest");
-    httpClient.setTrustStoreInputStream(keyStoreInputStream);
-    httpClient.setTrustStorePassword("testtest");
+    //httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+    httpClient.setMaxConnectionsPerAddress(4);
+
+    //httpClient.setKeyStoreType("PKCS12");
+    //httpClient.setTrustStoreType("PKCS12");
+    //httpClient.setKeyManagerPassword("testtest");
+    //httpClient.setKeyStoreInputStream(keyStoreInputStream);
+    //httpClient.setKeyStorePassword("testtest");
+    //httpClient.setTrustStoreInputStream(keyStoreInputStream);
+    //httpClient.setTrustStorePassword("testtest");
+
     _lccClient.setHttpClient(httpClient);
     try
     {
@@ -120,6 +128,7 @@ public class LccHolder
     {
       throw new LiveChessClientException("Unable to initialize HttpClient", e);
     }
+
     _chatListener = new ChatListenerImpl(this);
     _connectionListener = new ConnectionListenerImpl(this);
     _gameListener = new LccGameListener(this);
@@ -786,7 +795,7 @@ public class LccHolder
     intent.putExtra("mode", 4);
     intent.putExtra("game_id", "" + game.getId());
     androidContext.startActivity(intent);
-    final Game currentGame = game;
+    /*final Game currentGame = game;
     if(game.getSeq() > 0)
     {
       android.getUpdateBoardHandler().postDelayed(new Runnable()
@@ -796,10 +805,10 @@ public class LccHolder
           doReplayMoves(currentGame);
         }
       }, 2000); // todo: remove delay, change logic to use SerializableExtra() probably, process moves replay on the Game activity
-    }
+    }*/
   }
 
-  protected void doReplayMoves(Game game)
+  public void doReplayMoves(Game game)
   {
     LOG.info("GAME LISTENER: replay moves,  gameId " + game.getId());
     //final String[] sanMoves = game.getMovesInSanNotation().trim().split(" ");

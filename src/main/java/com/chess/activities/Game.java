@@ -773,7 +773,7 @@ public class Game extends CoreActivity {
 			f = "K";
 		}
 		String Moveto = MoveParser.positionToString(m.to);
-		Log.i("!!!", f+" | "+Moveto+" : "+BV.board.TacticMoves[BV.board.hply-1]);
+		Log.d("!!!", f+" | "+Moveto+" : "+BV.board.TacticMoves[BV.board.hply-1]);
 		if(BV.board.TacticMoves[BV.board.hply-1].contains(f) && BV.board.TacticMoves[BV.board.hply-1].contains(Moveto)){
 			BV.board.TacticsCorrectMoves++;
 			if(BV.board.movesCount < BV.board.TacticMoves.length-1){
@@ -1259,8 +1259,8 @@ public class Game extends CoreActivity {
         {
           OG = ChessComApiParser.GetGameParseV3(rep_response);
         }
-        System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
-        System.out.println("!!!!!!!! OG " + OG);
+        //System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
+        //System.out.println("!!!!!!!! OG " + OG);
 
         if (App.OnlineGame == null || OG == null)
         {
@@ -1413,6 +1413,16 @@ public class Game extends CoreActivity {
             BV.board.makeMove(m, false);
           }
 				}
+
+        if (App.isLiveChess())
+        {
+          final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+          if (game != null && game.getSeq() > 0)
+          {
+            lccHolder.doReplayMoves(game);
+          }
+        }
+
 				Update(0);
 				BV.board.takeBack();
 				BV.invalidate();

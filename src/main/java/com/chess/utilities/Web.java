@@ -84,30 +84,30 @@ public class Web {
       i = 3;
 			Reason = response.getStatusLine().getReasonPhrase();
       i = 4;
-			Log.i("SERVER RESPONSE: ", responseBody);
+			Log.d("SERVER RESPONSE: ", responseBody);
       i = 5;
 		} catch (ClientProtocolException e) {
 			//responseBody = "Sorry... No Active connection (CP)" + " code=" + i;
       e.printStackTrace();
-      System.out.println("!!!!!!!! " + i);
+      Log.d("WEB", "!!!!!!!! " + i);
 		} catch (java.net.SocketTimeoutException e) {
       e.printStackTrace();
 			//responseBody = "Sorry... No Active connection (Timeout)" + " code=" + i;
-      System.out.println("!!!!!!!! " + i);
+      Log.d("WEB", "!!!!!!!! " + i);
 		} catch (IOException e) {
       e.printStackTrace();
 			//responseBody = "Sorry... No Active connection (IO)" + " code=" + i;
-      System.out.println("BASE: " + base.getMethod());
-      System.out.println("BASE: " + base.getParams());
-      System.out.println("BASE: " + base.getAllHeaders());
-      System.out.println("BASE: " + base.getProtocolVersion());
-      System.out.println("BASE: " + base.getRequestLine());
-      System.out.println("BASE: " + base.getURI());
-      System.out.println("!!!!!!!! " + i);
+      Log.d("WEB", "BASE: " + base.getMethod());
+      Log.d("WEB", "BASE: " + base.getParams());
+      Log.d("WEB", "BASE: " + base.getAllHeaders());
+      Log.d("WEB", "BASE: " + base.getProtocolVersion());
+      Log.d("WEB", "BASE: " + base.getRequestLine());
+      Log.d("WEB", "BASE: " + base.getURI());
+      Log.d("WEB", "!!!!!!!! " + i);
 		} catch (Exception e) {
       e.printStackTrace();
 			//responseBody = "Sorry... "+e.getMessage() + " code=" + i;
-      System.out.println("!!!!!!!! " + i);
+      Log.d("WEB", "!!!!!!!! " + i);
 		}
 		return responseBody;
 	}

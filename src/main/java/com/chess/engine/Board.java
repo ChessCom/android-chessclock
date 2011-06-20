@@ -287,7 +287,7 @@ public class Board {
 			if(!castling.contains("q")){
 				castleMask[1] = true;
 			}
-			Log.i(fen, ""+castleMask[2]+castleMask[3]+castleMask[0]+castleMask[1]);
+			Log.d(fen, ""+castleMask[2]+castleMask[3]+castleMask[0]+castleMask[1]);
 		}
 
 		String[] FEN = tmp[0].split("[/]");
@@ -404,7 +404,7 @@ public class Board {
 			}
 		}
 
-		Log.i(fen, bRook1+" "+bKing+" "+bRook2+" "+wRook1+" "+wKing+" "+wRook2);
+		Log.d(fen, bRook1+" "+bKing+" "+bRook2+" "+wRook1+" "+wKing+" "+wRook2);
 		return new int[]{bRook1, bKing, bRook2, wRook1, wKing, wRook2};
 	}
 
@@ -1339,7 +1339,7 @@ public class Board {
     		}
     		output = URLEncoder.encode(MoveParser.positionToString(m.from)+to, "UTF-8");
 		} catch (Exception e) {}
-		Log.i("move:", output);
+		Log.d("move:", output);
     	return output;
     }
 
@@ -1488,7 +1488,7 @@ public class Board {
 				try{
 					pieceMat[color[i]] += pieceValue[piece[i]];
 				} catch(Exception e){
-					Log.i("I!!!!!!!!:", ""+i);
+					Log.d("I!!!!!!!!:", ""+i);
 				}
 			}
 	}

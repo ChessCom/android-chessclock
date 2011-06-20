@@ -151,6 +151,11 @@ public class MoPubView extends FrameLayout {
             mAdView.loadResponseString(html);
         }
     }
+    
+    protected void trackNativeImpression() {
+        Log.d("MoPub", "Tracking impression for native adapter.");
+        mAdView.trackImpression();
+    }
 
     // Getters and Setters
 
@@ -226,6 +231,22 @@ public class MoPubView extends FrameLayout {
 
     public Activity getActivity() {
         return mActivity;
+    }
+    
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        if (mAdView == null) return;
+        
+        if (visibility == VISIBLE) {
+            Log.d("MoPub", "Ad Unit ("+mAdView.getAdUnitId()+") going visible: enabling refresh");
+            mAdView.setAutorefreshEnabled(true);
+            mAdView.scheduleRefreshTimer();
+        }
+        else {
+            Log.d("MoPub", "Ad Unit ("+mAdView.getAdUnitId()+") going invisible: disabling refresh");
+            mAdView.setAutorefreshEnabled(false);
+            mAdView.cancelRefreshTimer();
+        }
     }
 
     protected void adWillLoad(String url) {

@@ -165,7 +165,7 @@ public class LccChallengeListener implements ChallengeListener
 
   public void onChallengeAccepted(Long challengeId, String by, String warning)
   {
-	  // TODO: Show te warning to user if it is not null
+	  // TODO: Show the warning to user if it is not null
 	  LccHolder.LOG.info(
 		  "CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
 	      challengeId + ", by: " + by + ", warning: " + warning);
@@ -178,20 +178,22 @@ public class LccChallengeListener implements ChallengeListener
 	      user.getListenerManager().fireMatchOfferEvent(
 	        new MatchOfferEvent(user.getConnection(), null, MatchOfferEvent.MATCH_OFFER_WITHDRAWN, matchOffer));
 	    }*/
+    showWarning(warning);
   }
 
   public void onChallengeRejected(Long challengeId, String by, String warning)
   {
-	  // TODO: Show te warning to user if it is not null
+	  // TODO: Show the warning to user if it is not null
 	  LccHolder.LOG.info(
 			  "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
 		      challengeId + ", by: " + by + ", warning: " + warning);
 	  lccHolder.removeChallenge(challengeId);
+    showWarning(warning);
   }
 
   public void onChallengeCancelled(Long challengeId, String by, String warning)
   {
-    // TODO: Show te warning to user if it is not null
+    // TODO: Show the warning to user if it is not null
     LccHolder.LOG.info(
       "CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
       challengeId + ", by: " + by + ", warning: " + warning);
@@ -206,6 +208,15 @@ public class LccChallengeListener implements ChallengeListener
       lccHolder.removeOwnChallenge(challenge.getId());
     }*/
     lccHolder.removeChallenge(challengeId);
+    showWarning(warning);
+  }
+
+  private void showWarning(String warning)
+  {
+    if (warning != null && !warning.equals(""))
+    {
+    	lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-info", "WARNING", warning);
+    }
   }
 
   private final LccHolder lccHolder;
