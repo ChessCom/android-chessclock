@@ -108,16 +108,17 @@ public class LccHolder
     _lccClient.setSupportedClientFeatures(false, false);
     //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-    //httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+    httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
     httpClient.setMaxConnectionsPerAddress(4);
+    httpClient.setSoTimeout(5000);
 
-    //httpClient.setKeyStoreType("PKCS12");
-    //httpClient.setTrustStoreType("PKCS12");
-    //httpClient.setKeyManagerPassword("testtest");
-    //httpClient.setKeyStoreInputStream(keyStoreInputStream);
-    //httpClient.setKeyStorePassword("testtest");
-    //httpClient.setTrustStoreInputStream(keyStoreInputStream);
-    //httpClient.setTrustStorePassword("testtest");
+    /*httpClient.setKeyStoreType("PKCS12");
+    httpClient.setTrustStoreType("PKCS12");
+    httpClient.setKeyManagerPassword("testtest");
+    httpClient.setKeyStoreInputStream(keyStoreInputStream);
+    httpClient.setKeyStorePassword("testtest");
+    httpClient.setTrustStoreInputStream(keyStoreInputStream);
+    httpClient.setTrustStorePassword("testtest");*/
 
     _lccClient.setHttpClient(httpClient);
     try
