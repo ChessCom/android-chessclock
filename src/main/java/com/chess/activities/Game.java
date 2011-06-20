@@ -1386,6 +1386,15 @@ public class Game extends CoreActivity {
 					MoveParser.FenParse(FEN, BV.board);
 				}
 
+        if (App.isLiveChess())
+        {
+          final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+          if (game != null && game.getSeq() > 0)
+          {
+            lccHolder.doReplayMoves(game);
+          }
+        }
+
 				int i;
         //System.out.println("@@@@@@@@ POINT 2 BV.board.movesCount=" + BV.board.movesCount);
         //System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
@@ -1413,15 +1422,6 @@ public class Game extends CoreActivity {
             BV.board.makeMove(m, false);
           }
 				}
-
-        if (App.isLiveChess())
-        {
-          final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
-          if (game != null && game.getSeq() > 0)
-          {
-            lccHolder.doReplayMoves(game);
-          }
-        }
 
 				Update(0);
 				BV.board.takeBack();

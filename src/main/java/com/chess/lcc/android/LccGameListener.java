@@ -104,6 +104,7 @@ public class LccGameListener implements GameListener
       lccHolder.putGame(game);
       return;
     }
+    lccHolder.setCurrentGameId(game.getId());
     lccHolder.processFullGame(game);
   }
 

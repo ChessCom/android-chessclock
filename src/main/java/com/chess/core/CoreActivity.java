@@ -472,12 +472,13 @@ public abstract class CoreActivity extends Activity {
   {
     final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
     wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "com.chess.core.CoreActivity");
+    wakeLock.setReferenceCounted(false);
     wakeLock.acquire();
   }
 
   protected void enableScreenLock()
   {
-    wakeLock.release();
+	wakeLock.release();
   }
 
   public void unregisterReceiver(BroadcastReceiver receiver)
