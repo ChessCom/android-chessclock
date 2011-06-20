@@ -22,6 +22,7 @@ import android.graphics.Paint.Style;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -254,9 +255,9 @@ public class BoardView extends ImageView {
         catch(Exception e)
         {
           e.printStackTrace();
-          System.out.println("ca " + ca);
-          System.out.println("ca.App " + ca.App);
-          System.out.println("ca.App.board " + ca.App.board);
+          Log.d("BoardView", "ca " + ca);
+          Log.d("BoardView", "ca.App " + ca.App);
+          Log.d("BoardView", "ca.App.board " + ca.App.board);
           return;
         }
       }

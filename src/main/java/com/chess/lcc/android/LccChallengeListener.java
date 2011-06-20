@@ -165,7 +165,7 @@ public class LccChallengeListener implements ChallengeListener
 
   public void onChallengeAccepted(Long challengeId, String by, String warning)
   {
-	  // TODO: Show te warning to user if it is not null
+	  // TODO: Show the warning to user if it is not null
 	  LccHolder.LOG.info(
 		  "CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
 	      challengeId + ", by: " + by + ", warning: " + warning);
@@ -183,7 +183,7 @@ public class LccChallengeListener implements ChallengeListener
 
   public void onChallengeRejected(Long challengeId, String by, String warning)
   {
-	  // TODO: Show te warning to user if it is not null
+	  // TODO: Show the warning to user if it is not null
 	  LccHolder.LOG.info(
 			  "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
 		      challengeId + ", by: " + by + ", warning: " + warning);
@@ -193,7 +193,7 @@ public class LccChallengeListener implements ChallengeListener
 
   public void onChallengeCancelled(Long challengeId, String by, String warning)
   {
-    // TODO: Show te warning to user if it is not null
+    // TODO: Show the warning to user if it is not null
     LccHolder.LOG.info(
       "CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
       challengeId + ", by: " + by + ", warning: " + warning);
