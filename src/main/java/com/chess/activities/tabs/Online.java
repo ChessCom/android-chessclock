@@ -176,13 +176,16 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
-    adview = (MoPubView) findViewById(R.id.adview);
-    showAds(adview);
-    if (isShowAds())
-    {
-      showRemoveAds(adview, removeAds);
-    }
-    disableScreenLock();
+      new Handler().post(new Runnable() {
+          public void run() {
+              adview = (MoPubView) findViewById(R.id.adview);
+              showAds(adview);
+              if (isShowAds()) {
+                  showRemoveAds(adview, removeAds);
+              }
+              disableScreenLock();
+          }
+      });
   }
 
   @Override

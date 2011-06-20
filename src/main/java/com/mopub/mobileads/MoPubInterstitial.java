@@ -157,4 +157,8 @@ public class MoPubInterstitial {
             mInterstitialView.registerClick();
         }
     }
+    
+    public void destroy() {
+        mInterstitialView.destroy();
+    }
 }

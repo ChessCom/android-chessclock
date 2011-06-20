@@ -61,12 +61,10 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.*;
 
 public class AdView extends WebView {
     
@@ -97,7 +95,7 @@ public class AdView extends WebView {
 
     public AdView(Context context, MoPubView view) {
         super(context);
-
+        
         mMoPubView = view;
         mAutorefreshEnabled = true;
 
@@ -141,17 +139,78 @@ public class AdView extends WebView {
         mIsLoading = true;
         new LoadUrlTask().execute(mUrl);
     }
-
-    private class LoadUrlTask extends AsyncTask<String, Void, HttpResponse> {
-        protected HttpResponse doInBackground(String... urls) {
-            return loadAdFromNetwork(urls[0]);
+    
+    /*
+     * Stops refreshing ads.
+     */
+    protected void cleanup() {
+        setAutorefreshEnabled(false);
+    }
+    
+    private abstract interface LoadUrlTaskResult {
+        abstract void execute();
+    }
+    
+    private class PerformCustomEventTaskResult implements LoadUrlTaskResult {
+        protected Header mHeader;
+        
+        public PerformCustomEventTaskResult(Header header) {
+            mHeader = header;
         }
-        protected void onPostExecute(HttpResponse response) {
-            handleAdFromNetwork(response);
+        
+        public void execute() {
+            AdView.this.performCustomEventFromHeader(mHeader);
+        }
+    }
+    
+    private class LoadNativeAdTaskResult implements LoadUrlTaskResult {
+        protected HashMap<String, String> mParamsHash;
+        
+        public LoadNativeAdTaskResult(HashMap<String, String> hash) {
+            mParamsHash = hash;
+        }
+        
+        public void execute() {
+            mMoPubView.loadNativeSDK(mParamsHash);
+        }
+    }
+    
+    private class LoadHtmlAdTaskResult implements LoadUrlTaskResult {
+        protected String mData;
+        
+        public LoadHtmlAdTaskResult(String data) {
+            mData = data;
+        }
+        
+        public void execute() {
+            mResponseString = mData;
+            loadDataWithBaseURL("http://"+MoPubView.HOST+"/", 
+                    mData, "text/html", "utf-8", null);
+        }
+    }
+    
+    private class LoadUrlTask extends AsyncTask<String, Void, LoadUrlTaskResult> {
+    	private Exception error;
+    	
+        protected LoadUrlTaskResult doInBackground(String... urls) {
+            LoadUrlTaskResult result = null;
+        	try {
+        		result = loadAdFromNetwork(urls[0]);
+        	} catch(Exception e) {
+        		this.error = e;
+        	}
+        	return result;
+        }
+        protected void onPostExecute(LoadUrlTaskResult result) {
+        	if (error != null || result == null) {
+        		pageFailed();
+        	} else if (result != null) {
+        		result.execute();
+        	}
         }
     }
 
-    private HttpResponse loadAdFromNetwork(String url) {
+    private LoadUrlTaskResult loadAdFromNetwork(String url) throws Exception {
         HttpParams httpParameters = new BasicHttpParams();
 
         if (mTimeout > 0) {
@@ -171,39 +230,17 @@ public class AdView extends WebView {
         HttpGet httpget = new HttpGet(url);
         httpget.addHeader("User-Agent", getSettings().getUserAgentString());
         DefaultHttpClient httpclient = new DefaultHttpClient(httpParameters);
-        try {
-            return httpclient.execute(httpget);
-        } catch (ClientProtocolException e) {
-            pageFailed();
-            return null;
-        } catch (IOException e) {
-            pageFailed();
-            return null;
-        }
-    }
-
-    private void handleAdFromNetwork(HttpResponse response) {
-        mResponse = response;
-        if (mResponse == null || mResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-            pageFailed();
-            return;
-        }
-
+        mResponse = httpclient.execute(httpget);
         HttpEntity entity = mResponse.getEntity();
-        if (entity == null || entity.getContentLength() == 0) {
-            pageFailed();
-            return;
-        }
-
         // Get the various header messages
         // If there is no ad, don't bother loading the data
         Header atHeader = mResponse.getFirstHeader("X-Adtype");
-        if (atHeader == null || atHeader.getValue().equals("clear")) {
-            pageFailed();
-            return;
+        if (mResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK || 
+        		entity == null || entity.getContentLength() == 0 || atHeader == null ||
+        		atHeader.getValue().equals("clear")) {
+        	throw new Exception("Ad Failed");
         }
-
-
+        
         // If we made it this far, an ad has been loaded
         
         // Get the network header message
@@ -276,8 +313,7 @@ public class AdView extends WebView {
             Log.i("MoPub", "Performing custom event");
             Header cmHeader = mResponse.getFirstHeader("X-Customselector");
             mIsLoading = false;
-            performCustomEventFromHeader(cmHeader);
-            return;
+            return new PerformCustomEventTaskResult(cmHeader);
         }
         // Handle requests for native SDK ads
         else if (!atHeader.getValue().equals("html")) {
@@ -292,48 +328,19 @@ public class AdView extends WebView {
                 Header ftHeader = mResponse.getFirstHeader("X-Fulladtype");
                 if (ftHeader != null) paramsHash.put("X-Fulladtype", ftHeader.getValue());
                 
-                mMoPubView.loadNativeSDK(paramsHash);
-                return;
+                return new LoadNativeAdTaskResult(paramsHash);
             }
             else {
-                pageFailed();
-                return;
+                throw new Exception("Ad failed");
             }
         }
-
-        mResponseString = null;
-        StringBuilder sb = new StringBuilder();
-        InputStream is;
-        try {
-            is = entity.getContent();
-        } catch (IllegalStateException e1) {
-            pageFailed();
-            return;
-        } catch (IOException e1) {
-            pageFailed();
-            return;
+        InputStream is = entity.getContent();
+        StringBuffer out = new StringBuffer();
+        byte[] b = new byte[4096];
+        for (int n; (n = is.read(b)) != -1;) {
+            out.append(new String(b, 0, n));
         }
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            pageFailed();
-            return;
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                // Ignore since at this point we have the data we need
-            }
-        }
-        mResponseString = sb.toString();
-        loadDataWithBaseURL("http://"+MoPubView.HOST+"/",
-                mResponseString,"text/html","utf-8", null);
+        return new LoadHtmlAdTaskResult(out.toString());
     }
     
     private void performCustomEventFromHeader(Header methodHeader) {
@@ -390,13 +397,19 @@ public class AdView extends WebView {
             try {
                 mLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             } catch (SecurityException e) {
-                // Ignore since access to location may be disabled
+                Log.d("MoPub", "Failed to retrieve location: access appears to be disabled.");
+            } catch (IllegalArgumentException e) {
+                Log.d("MoPub", "Failed to retrieve location: device has no GPS provider.");
             }
+            
+            
             Location loc_network = null;
             try {
                 loc_network= lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             } catch (SecurityException e) {
-                // Ignore since access to location may be disabled
+                Log.d("MoPub", "Failed to retrieve location: access appears to be disabled.");
+            } catch (IllegalArgumentException e) {
+                Log.d("MoPub", "Failed to retrieve location: device has no network provider.");
             }
 
             if (mLocation == null) {
@@ -581,7 +594,9 @@ public class AdView extends WebView {
     
     public void setAutorefreshEnabled(boolean enabled) {
         mAutorefreshEnabled = enabled;
+        
         if (!mAutorefreshEnabled) cancelRefreshTimer();
+        else scheduleRefreshTimer();
     }
     
     public boolean getAutorefreshEnabled() {

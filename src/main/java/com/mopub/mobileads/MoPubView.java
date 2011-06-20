@@ -33,7 +33,10 @@
 package com.mopub.mobileads;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -72,6 +75,9 @@ public class MoPubView extends FrameLayout {
     protected AdView mAdView;
     private Activity mActivity;
     protected BaseAdapter mAdapter;
+    private Context mContext;
+    private BroadcastReceiver mScreenStateReceiver;
+    private boolean mIsInForeground;
 
     private OnAdWillLoadListener mOnAdWillLoadListener;
     private OnAdLoadedListener mOnAdLoadedListener;
@@ -86,6 +92,9 @@ public class MoPubView extends FrameLayout {
     public MoPubView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        mContext = context;
+        mIsInForeground = (getVisibility() == VISIBLE);
+        
         setHorizontalScrollBarEnabled(false);
         setVerticalScrollBarEnabled(false);
         
@@ -103,22 +112,63 @@ public class MoPubView extends FrameLayout {
 
         // The AdView doesn't need to be in the view hierarchy until an ad is loaded
         mAdView = new AdView(context, this);
+        
+        registerScreenStateBroadcastReceiver();
 
         mActivity = (Activity) context;
     }
 
+    private void registerScreenStateBroadcastReceiver() {
+        if (mAdView == null) return;
+        
+        mScreenStateReceiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                    if (mIsInForeground) {
+                        Log.d("MoPub", "Screen sleep with ad in foreground, disable refresh");
+                        mAdView.setAutorefreshEnabled(false);
+                    } else {
+                        Log.d("MoPub", "Screen sleep but ad in background; " + 
+                                "refresh should already be disabled");
+                    }
+                } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                    if (mIsInForeground) {
+                        Log.d("MoPub", "Screen wake / ad in foreground, enable refresh");
+                        mAdView.setAutorefreshEnabled(true);
+                    } else {
+                        Log.d("MoPub", "Screen wake but ad in background; don't enable refresh");
+                    }
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        mContext.registerReceiver(mScreenStateReceiver, filter);
+    }
+    
+    private void unregisterScreenStateBroadcastReceiver() {
+        mContext.unregisterReceiver(mScreenStateReceiver);
+    }
+    
     public void loadAd() {
-        if (mAdView == null) {
-            return;
+        if (mAdView != null) mAdView.loadAd();
+    }
+    
+    /*
+     * Tears down the ad view: no ads will be shown once this method executes. The parent
+     * Activity's onDestroy implementation must include a call to this method.
+     */
+    public void destroy() {
+        unregisterScreenStateBroadcastReceiver();
+        
+        if (mAdView != null) {
+            mAdView.cleanup();
+            mAdView = null;
         }
-        mAdView.loadAd();
     }
 
     protected void loadFailUrl() {
-        if (mAdView == null) {
-            return;
-        }
-        mAdView.loadFailUrl();
+        if (mAdView != null) mAdView.loadFailUrl();
     }
 
     protected void loadNativeSDK(HashMap<String, String> paramsHash) {
@@ -239,13 +289,13 @@ public class MoPubView extends FrameLayout {
         
         if (visibility == VISIBLE) {
             Log.d("MoPub", "Ad Unit ("+mAdView.getAdUnitId()+") going visible: enabling refresh");
+            mIsInForeground = true;
             mAdView.setAutorefreshEnabled(true);
-            mAdView.scheduleRefreshTimer();
         }
         else {
             Log.d("MoPub", "Ad Unit ("+mAdView.getAdUnitId()+") going invisible: disabling refresh");
+            mIsInForeground = false;
             mAdView.setAutorefreshEnabled(false);
-            mAdView.cancelRefreshTimer();
         }
     }
 

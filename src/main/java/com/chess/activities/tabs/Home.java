@@ -3,6 +3,7 @@ package com.chess.activities.tabs;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -116,16 +117,18 @@ public class Home extends CoreActivity {
 	}
 
   @Override
-  protected void onResume()
-  {
-    super.onResume();
-    adview = (MoPubView) findViewById(R.id.adview);
-    showAds(adview);
-    showFullscreenAd();
-    if (isShowAds())
-    {
-        showRemoveAds(adview, removeAds);
-    }
+  protected void onResume() {
+      super.onResume();
+      new Handler().post(new Runnable() {
+          public void run() {
+              adview = (MoPubView) findViewById(R.id.adview);
+              showAds(adview);
+              showFullscreenAd();
+              if (isShowAds()) {
+                  showRemoveAds(adview, removeAds);
+              }
+          }
+      });
   }
 
   private void showFullscreenAd()
