@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent">
+	<ImageView android:layout_height="fill_parent" android:layout_width="fill_parent" android:src="@drawable/bg" android:scaleType="centerCrop"></ImageView>
+
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content" android:id="@+id/settings" android:text="@string/menuSettings"
+		  android:textColor="#fff" android:textStyle="bold" android:textSize="16dip" android:layout_width="fill_parent"
+		  android:layout_weight="1" android:padding="5dip"></TextView>
+		<TextView android:layout_height="wrap_content" android:textColor="#fff" android:textStyle="bold" android:textSize="16dip"
+		  android:layout_width="fill_parent" android:layout_weight="1" android:gravity="right" android:id="@+id/site"
+		  android:text="@string/menuSite" android:padding="5dip"></TextView>
+	</LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical" android:gravity="center">
+
+		<ImageView android:src="@drawable/logo" android:layout_gravity="center_horizontal" android:scaleType="fitXY" android:layout_height="96dip" android:layout_width="235dip" android:layout_marginTop="5dip"></ImageView>
+
+		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:stretchColumns="*"
+			android:layout_marginTop="5dip">
+
+		<TableRow>
+		<Button android:textStyle="bold"
+			android:layout_width="fill_parent" android:background="@drawable/defaultbutton"
+			android:id="@+id/computer"
+			android:layout_marginLeft="10dip" android:textSize="16dip" android:text="@string/menuComp" android:textColor="#222" android:layout_height="45dip" android:layout_marginRight="3dip" android:layout_marginBottom="5dip"></Button>
+		<Button android:textStyle="bold"
+			android:layout_width="fill_parent" android:background="@drawable/defaultbutton"
+			android:id="@+id/tactics"
+			android:textSize="16dip" android:text="@string/menuTactics" android:textColor="#222" android:layout_height="45dip" android:layout_marginLeft="3dip" android:layout_marginRight="3dip" android:layout_marginBottom="5dip"></Button>
+		<Button android:textStyle="bold" android:layout_width="fill_parent"
+			android:background="@drawable/defaultbutton" android:id="@+id/video" android:layout_marginRight="10dip"
+			android:textSize="16dip" android:text="@string/menuVideo" android:textColor="#222" android:layout_height="45dip" android:layout_marginLeft="3dip" android:layout_marginBottom="5dip"></Button>
+		</TableRow>
+		<TableRow>
+		<Button android:textStyle="bold"
+			android:layout_width="fill_parent"
+			android:id="@+id/live"
+			android:layout_marginLeft="10dip" android:textSize="16dip" android:text="@string/menuLive" android:textColor="#222" android:layout_height="45dip" android:layout_marginBottom="1dip" android:layout_marginRight="3dip"></Button>
+		<Button android:textStyle="bold" android:layout_width="fill_parent"
+			android:id="@+id/online"
+			android:textSize="16dip" android:text="@string/menuOnline" android:textColor="#222" android:layout_height="45dip" android:layout_marginBottom="dip" android:layout_marginLeft="5dip" android:layout_marginRight="3dip"></Button>
+		</TableRow>
+	</TableLayout>
+
+	</LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent"
+	  android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:orientation="vertical" android:layout_gravity="bottom">
+
+		<com.mopub.mobileads.MoPubView
+		  android:id="@+id/adview"
+		  android:layout_width="fill_parent"
+		  android:layout_height="50dp"
+		/>
+
+		<TextView android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:id="@+id/removeAds"
+			android:text="@string/removeAds" android:background="#ffffcd"
+			android:textColor="#0066cc" android:textStyle="bold"
+			android:drawableLeft="@drawable/star" android:padding="7dp"
+			android:drawablePadding="10dp" android:visibility="gone"
+			android:textSize="17dip" android:gravity="left">
+		</TextView>
+
+	</LinearLayout>
+
+</FrameLayout>
+
