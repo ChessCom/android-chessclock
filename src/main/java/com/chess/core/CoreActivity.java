@@ -139,6 +139,7 @@ public abstract class CoreActivity extends Activity {
         {
           final LccHolder lccHolder = App.getLccHolder();
           //lccHolder.setConnectingInProgress(true);
+          lccHolder.getClient().disconnect();
           lccHolder.getClient()
             .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
@@ -478,7 +479,10 @@ public abstract class CoreActivity extends Activity {
 
   protected void enableScreenLock()
   {
-	wakeLock.release();
+	  if (wakeLock != null)
+    {
+      wakeLock.release();
+    }
   }
 
   public void unregisterReceiver(BroadcastReceiver receiver)
