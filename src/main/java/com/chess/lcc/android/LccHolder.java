@@ -111,7 +111,7 @@ public class LccHolder
     httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
     httpClient.setMaxConnectionsPerAddress(4);
     httpClient.setSoTimeout(7000);
-    httpClient.setConnectTimeout(7000);
+    httpClient.setConnectTimeout(10000);
 
     /*httpClient.setKeyStoreType("PKCS12");
     httpClient.setTrustStoreType("PKCS12");

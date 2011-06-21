@@ -135,6 +135,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     //lccHolder.setConnectingInProgress(false);
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
+    lccHolder.clearGames();
     //lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
     /*lccHolder.getClient()
       .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
