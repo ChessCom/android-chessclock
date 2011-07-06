@@ -50,6 +50,9 @@ public class BoardView extends ImageView {
 	private String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	private String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
+    private int viewWidth = 0;
+    private int viewHeight = 0;
+
 	public BoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		ca = (CoreActivity)context;
@@ -234,8 +237,10 @@ public class BoardView extends ImageView {
 	protected void onDraw(Canvas canvas) {
 		canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG));
 		super.onDraw(canvas);
-		W = getWidth();
-		H = getHeight();
+		/*W = getWidth();
+		H = getHeight();*/
+        W = viewWidth;
+		H = viewHeight;
 
 		side = W/4;
 		if(H < W)	side = H/4;
@@ -694,5 +699,11 @@ public class BoardView extends ImageView {
 			invalidate();
 		}
 	}
+
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld){
+       super.onSizeChanged(xNew, yNew, xOld, yOld);
+       viewWidth = xNew;
+       viewHeight = yNew;
+    }
 
 }

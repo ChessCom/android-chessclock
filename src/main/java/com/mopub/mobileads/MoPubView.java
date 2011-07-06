@@ -104,9 +104,9 @@ public class MoPubView extends FrameLayout {
         // Here, we'll work around it by trying to create a file store and then just go inert
         // if it's not accessible.
         if (WebViewDatabase.getInstance(context) == null) {
-            Log.e("MoPub", "Disabling MoPub. Local cache file is inaccessbile so MoPub will " +
+            Log.e("MoPub", "Disabling MoPub. Local cache file is inaccessible so MoPub will " +
                     "fail if we try to create a WebView. Details of this Android bug found at:" +
-            "http://code.google.com/p/android/issues/detail?id=10789");
+                    "http://code.google.com/p/android/issues/detail?id=10789");
             return;
         }
 
@@ -187,40 +187,31 @@ public class MoPubView extends FrameLayout {
     }
 
     protected void registerClick() {
-        if (mAdView == null) {
-            return;
-        }
-        mAdView.registerClick();
+        if (mAdView != null) {
+            mAdView.registerClick();
 
-        // Let any listeners know that an ad was clicked
-        adClicked();
+            // Let any listeners know that an ad was clicked
+            adClicked();
+        }
     }
     
     protected void loadHtmlString(String html) {
-        if (mAdView != null) {
-            mAdView.loadResponseString(html);
-        }
+        if (mAdView != null) mAdView.loadResponseString(html);
     }
     
     protected void trackNativeImpression() {
         Log.d("MoPub", "Tracking impression for native adapter.");
-        mAdView.trackImpression();
+        if (mAdView != null) mAdView.trackImpression();
     }
 
     // Getters and Setters
 
     public void setAdUnitId(String adUnitId) {
-        if (mAdView == null) {
-            return;
-        }
-        mAdView.setAdUnitId(adUnitId);
+        if (mAdView != null) mAdView.setAdUnitId(adUnitId);
     }
 
     public void setKeywords(String keywords) {
-        if (mAdView == null) {
-            return;
-        }
-        mAdView.setKeywords(keywords);
+        if (mAdView != null) mAdView.setKeywords(keywords);
     }
 
     public String getKeywords() {
@@ -300,14 +291,14 @@ public class MoPubView extends FrameLayout {
     }
 
     protected void adWillLoad(String url) {
-        Log.d("MoPub", "adWillLoad: "+url);
+        Log.d("MoPub", "adWillLoad: " + url);
         if (mOnAdWillLoadListener != null) {
             mOnAdWillLoadListener.OnAdWillLoad(this, url);
         }
     }
 
     protected void adLoaded() {
-        Log.d("MoPub","adLoaded");
+        Log.d("MoPub", "adLoaded");
         if (mOnAdLoadedListener != null) {
             mOnAdLoadedListener.OnAdLoaded(this);
         }
