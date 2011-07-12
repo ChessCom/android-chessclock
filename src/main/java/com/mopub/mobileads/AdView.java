@@ -148,6 +148,19 @@ public class AdView extends WebView {
                 else if (host.equals("custom")) adView.handleCustomIntentFromUri(uri);
                 return true;
             }
+            // Handle other phone intents.
+            else if (url.startsWith("tel:") || url.startsWith("voicemail:") ||
+                    url.startsWith("sms:") || url.startsWith("mailto:") ||
+                    url.startsWith("geo:") || url.startsWith("google.streetview:")) { 
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url)); 
+                try {
+                    getContext().startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Log.w("MoPub", "Could not handle intent with URI: " + url +
+                        ". Is this intent unsupported on your phone?");
+                }
+                return true;
+            }
 
             String clickthroughUrl = adView.getClickthroughUrl();
             if (clickthroughUrl != null) url = clickthroughUrl + "&r=" + Uri.encode(url);
@@ -172,7 +185,7 @@ public class AdView extends WebView {
     private void pageFinished() {
         Log.i("MoPub", "Ad successfully loaded.");
         mIsLoading = false;
-        if (mAutorefreshEnabled) scheduleRefreshTimer();
+        scheduleRefreshTimerIfEnabled();
         mMoPubView.removeAllViews();
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -186,7 +199,7 @@ public class AdView extends WebView {
     private void pageFailed() {
         Log.i("MoPub", "Ad failed to load.");
         mIsLoading = false;
-        if (mAutorefreshEnabled) scheduleRefreshTimer();
+        scheduleRefreshTimerIfEnabled();
         mMoPubView.adFailed();
     }
 
@@ -503,6 +516,7 @@ public class AdView extends WebView {
         }
         
         public void execute() {
+            mIsLoading = false;
             mMoPubView.loadNativeSDK(mParamsHash);
         }
     }
@@ -734,9 +748,9 @@ public class AdView extends WebView {
         }
     };
 
-    protected void scheduleRefreshTimer() {
+    protected void scheduleRefreshTimerIfEnabled() {
         cancelRefreshTimer();
-        if (mRefreshTimeMilliseconds <= 0) return;
+        if (!mAutorefreshEnabled || mRefreshTimeMilliseconds <= 0) return;
         mRefreshHandler.postDelayed(mRefreshRunnable, mRefreshTimeMilliseconds);
     }
 
@@ -806,7 +820,7 @@ public class AdView extends WebView {
         mAutorefreshEnabled = enabled;
         
         if (!mAutorefreshEnabled) cancelRefreshTimer();
-        else scheduleRefreshTimer();
+        else scheduleRefreshTimerIfEnabled();
     }
     
     public boolean getAutorefreshEnabled() {

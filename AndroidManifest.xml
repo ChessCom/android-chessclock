@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="41"
-      android:versionName="1.85" package="com.chess">
+      android:versionCode="42"
+      android:versionName="1.86" package="com.chess">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!--
+        <activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+        -->
+        
 	    <activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
 
 	    <activity android:name=".core.Tabs" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
@@ -36,16 +42,17 @@
 
 	    <activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>
 
-			<service android:name=".utilities.WebService" />
-			<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
+		<service android:name=".utilities.WebService" />
+		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
 	</application>
 
-    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
 
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<!-- uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />

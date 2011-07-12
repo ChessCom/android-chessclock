@@ -1,1 +1,2 @@
 mvn install:install-file -Dfile=flurryagent-latest.jar -Dversion=latest -DartifactId=flurryagent -DgroupId=com.flurry -DgeneratePom=true -Dpackaging=jar
+mvn install:install-file -Dfile=GoogleAdMobAdsSdk-4.1.0.jar -Dversion=4.1.0 -DartifactId=google-ad-mob -DgroupId=com.google.ads -DgeneratePom=true -Dpackaging=jar

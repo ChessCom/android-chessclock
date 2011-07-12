@@ -60,23 +60,30 @@
 			</exclusions>
 		</dependency>
 
-		<!--dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-android</artifactId>
 			<version>1.6.1-RC1</version>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>1.6.1</version>
 		</dependency-->
-
 
 		<dependency>
 			<groupId>com.flurry</groupId>
 			<artifactId>flurryagent</artifactId>
 			<version>latest</version>
 		</dependency>
+
+        <!-- 
+        <dependency>
+			<groupId>com.google.ads</groupId>
+			<artifactId>google-ad-mob</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+		-->
 
 	</dependencies>
 
@@ -280,10 +287,10 @@
 																<includes>
 																		<include>${project.build.directory}/${project.artifactId}.apk</include>
 																</includes>
-																<keystore>${sign.keystore}</keystore>
-																<alias>${sign.alias}</alias>
-																<storepass>${sign.storepass}</storepass>
-																<keypass>${sign.keypass}</keypass>
+																<keystore>certificate</keystore>
+																<alias>chess</alias>
+																<storepass>savage</storepass>
+																<keypass>savage</keypass>
 																<verbose>true</verbose>
 														</configuration>
 												</execution>

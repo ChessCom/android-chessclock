@@ -321,6 +321,13 @@ public class MoPubView extends FrameLayout {
             mOnAdClickedListener.OnAdClicked(this);
         }
     }
+    
+    protected void nativeAdLoaded() {
+        if (mAdView != null) {
+            mAdView.scheduleRefreshTimerIfEnabled();
+        }
+        adLoaded();
+    }
 
     public void setOnAdWillLoadListener(OnAdWillLoadListener listener) {
         mOnAdWillLoadListener = listener;

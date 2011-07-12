@@ -135,11 +135,11 @@ public class Home extends CoreActivity {
   {
     if(!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && isShowAds())
     {
-      MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
-      //MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+      //MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
+      /*MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
       interstitial.showAd();
       App.SDeditor.putBoolean("com.chess.showedFullscreenAd", true);
-      App.SDeditor.commit();
+      App.SDeditor.commit();*/
     }
   }
 }

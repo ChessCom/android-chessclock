@@ -568,6 +568,7 @@ public abstract class CoreActivity extends Activity {
     {
       adview.setVisibility(View.VISIBLE);
       adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+      //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
       adview.loadAd();
     }
   }
