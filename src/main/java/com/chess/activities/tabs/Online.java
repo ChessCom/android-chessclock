@@ -178,7 +178,6 @@ public class Online extends CoreActivity {
     }*/
       new Handler().post(new Runnable() {
           public void run() {
-              adview = (MoPubView) findViewById(R.id.adview);
               showAds(adview);
               if (isShowAds()) {
                   showRemoveAds(adview, removeAds);
@@ -229,6 +228,7 @@ public class Online extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
+    adview = (MoPubView) findViewById(R.id.adview);
 
     start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener()
