@@ -185,6 +185,14 @@ public class Online extends CoreActivity {
               disableScreenLock();
           }
       });
+    if (App.isLiveChess())
+    {
+      start.setText("Custom Challenge");
+    }
+    else
+    {
+      start.setText("Challenge");
+    }
   }
 
   @Override

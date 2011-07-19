@@ -55,20 +55,21 @@ public class Singin extends CoreActivity {
 					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validatePassword));
 					return;
 				}
-
-				String query = "";
-				try {
-					query = "http://www." + LccHolder.HOST + "/api/v2/login?username="
-                  +URLEncoder.encode(username.getText().toString(), "UTF-8")+"&password="
-                  +URLEncoder.encode(password.getText().toString(), "UTF-8");
-				} catch (Exception e) {}
-
-				if(appService != null){
-					appService.RunSingleTask(SIGNIN_CALLBACK_CODE,
-						query,
-						PD = new MyProgressDialog(ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true))
-          );
-				}
+        String query = "https://secure." + LccHolder.HOST + "/api/v2/login";
+        try
+        {
+          if(appService != null)
+          {
+            appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE,
+                                         query,
+                                         PD = new MyProgressDialog(
+                                           ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
+                                         "username", URLEncoder.encode(username.getText().toString(), "UTF-8"),
+                                         "password", URLEncoder.encode(password.getText().toString(), "UTF-8")
+            );
+          }
+        }
+        catch(Exception e) {}
 			}
 		});
 		findViewById(R.id.singup).setOnClickListener(new OnClickListener() {

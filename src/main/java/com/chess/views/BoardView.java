@@ -541,6 +541,12 @@ public class BoardView extends ImageView {
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		
+		if (square == 0)
+		{
+			return super.onTouchEvent(event);
+		}
+		
 		track = false;
 		if(!board.analysis){
 			if(	compmoving || board.mode == 5 || finished || board.submit ||

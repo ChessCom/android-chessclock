@@ -34,8 +34,8 @@
 		          android:padding="5px" android:drawablePadding="10px"
 		          android:gravity="left" android:textColor="#fff" android:visibility="gone"></TextView>
 		<Spinner android:id="@+id/gamestypes" android:layout_height="wrap_content" android:layout_width="fill_parent"
-		         android:layout_weight="1" android:entries="@array/onlineSpinner"></Spinner>
-		<Button android:id="@+id/start" android:textStyle="bold" android:textColor="#222" android:layout_height="wrap_content" android:text="Custom Challenge" android:layout_width="wrap_content" android:textSize="16dip" android:visibility="gone"></Button>
+		         android:textSize="8dip" android:layout_weight="1" android:entries="@array/onlineSpinner"></Spinner>
+		<Button android:id="@+id/start" android:textStyle="bold" android:textColor="#222" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textSize="16dip" android:visibility="gone"></Button>
 	</LinearLayout>
 
 	<GridView
