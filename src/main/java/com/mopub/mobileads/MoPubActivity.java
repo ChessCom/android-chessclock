@@ -64,17 +64,15 @@ public class MoPubActivity extends Activity {
 
         mMoPubView = new MoPubView(this);
         mMoPubView.setAdUnitId(adUnitId);
-        if (keywords != null) {
-            mMoPubView.setKeywords(keywords);
-        }
-        if (timeout > 0) {
-            mMoPubView.setTimeout(timeout);
-        }
+        
+        if (keywords != null) mMoPubView.setKeywords(keywords);
+        if (timeout > 0) mMoPubView.setTimeout(timeout);
         if (source != null) {
+            source = sourceWithImpressionTrackingDisabled(source);
             mMoPubView.loadHtmlString(source);
         }
 
-        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mLayout = new RelativeLayout(this);
 
         final RelativeLayout.LayoutParams adViewLayout = new RelativeLayout.LayoutParams(
@@ -88,5 +86,16 @@ public class MoPubActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+    
+    @Override
+    protected void onDestroy() {
+        mMoPubView.destroy();
+        super.onDestroy();
+    }
+    
+    private String sourceWithImpressionTrackingDisabled(String source) {
+        // TODO: Temporary fix. Disables impression tracking by renaming the pixel tracker's URL.
+        return source.replaceAll("http://ads.mopub.com/m/imp", "mopub://null");
     }
 }

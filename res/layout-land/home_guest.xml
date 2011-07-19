@@ -27,28 +27,24 @@
 		<TableRow>
 		<Button android:textStyle="bold"
 			android:layout_width="fill_parent" android:background="@drawable/defaultbutton"
-			android:id="@+id/live"
-			android:layout_marginLeft="10dip" android:textSize="16dip" android:text="@string/menuLive" android:textColor="#222" android:layout_height="45dip" android:layout_marginRight="3dip" android:layout_marginBottom="5dip"></Button>
-		<Button android:textStyle="bold"
-			android:layout_width="fill_parent" android:background="@drawable/defaultbutton"
-			android:id="@+id/online"
-			android:textSize="16dip" android:text="@string/menuOnline" android:textColor="#222" android:layout_height="45dip" android:layout_marginLeft="3dip" android:layout_marginRight="3dip" android:layout_marginBottom="5dip"></Button>
-		<Button android:textStyle="bold" android:layout_width="fill_parent"
-			android:background="@drawable/defaultbutton" android:id="@+id/computer" android:layout_marginRight="10dip"
-			android:textSize="16dip" android:text="@string/menuComp" android:textColor="#222" android:layout_height="45dip" android:layout_marginLeft="3dip" android:layout_marginBottom="5dip"></Button>
-		</TableRow>
-		<TableRow>
+			android:id="@+id/computer"
+			android:layout_marginLeft="10dip" android:textSize="16dip" android:text="@string/menuComp" android:textColor="#222" android:layout_height="45dip" android:layout_marginRight="3dip" android:layout_marginBottom="5dip"></Button>
 		<Button android:textStyle="bold"
 			android:layout_width="fill_parent" android:background="@drawable/defaultbutton"
 			android:id="@+id/tactics"
-			android:layout_marginLeft="10dip" android:textSize="16dip" android:text="@string/menuTactics" android:textColor="#222" android:layout_height="45dip" android:layout_marginBottom="1dip" android:layout_marginRight="3dip"></Button>
+			android:textSize="16dip" android:text="@string/menuTactics" android:textColor="#222" android:layout_height="45dip" android:layout_marginLeft="3dip" android:layout_marginRight="3dip" android:layout_marginBottom="5dip"></Button>
 		<Button android:textStyle="bold" android:layout_width="fill_parent"
-			android:background="@drawable/defaultbutton"
-			android:id="@+id/video"
-			android:textSize="16dip" android:text="@string/menuVideo" android:textColor="#222" android:layout_height="45dip" android:layout_marginBottom="dip" android:layout_marginLeft="5dip" android:layout_marginRight="3dip"></Button>
+			android:background="@drawable/defaultbutton" android:id="@+id/video" android:layout_marginRight="10dip"
+			android:textSize="16dip" android:text="@string/menuVideo" android:textColor="#222" android:layout_height="45dip" android:layout_marginLeft="3dip" android:layout_marginBottom="5dip"></Button>
+		</TableRow>
+		<TableRow>
+		<Button android:textStyle="bold"
+			android:layout_width="fill_parent"
+			android:id="@+id/live"
+			android:layout_marginLeft="10dip" android:textSize="16dip" android:text="@string/menuLive" android:textColor="#222" android:layout_height="45dip" android:layout_marginBottom="1dip" android:layout_marginRight="3dip"></Button>
 		<Button android:textStyle="bold" android:layout_width="fill_parent"
-			android:layout_marginRight="20dip"
-			android:textSize="16dip" android:textColor="#222" android:layout_height="45dip" android:id="@+id/logout" android:text="@string/logout" android:layout_marginBottom="1dip" android:layout_marginLeft="3dip"></Button>
+			android:id="@+id/online"
+			android:textSize="16dip" android:text="@string/menuOnline" android:textColor="#222" android:layout_height="45dip" android:layout_marginBottom="dip" android:layout_marginLeft="5dip" android:layout_marginRight="3dip"></Button>
 		</TableRow>
 	</TableLayout>
 
@@ -62,7 +58,6 @@
 		  android:id="@+id/adview"
 		  android:layout_width="fill_parent"
 		  android:layout_height="50dp"
-		  android:visibility="gone"
 		/>
 
 		<TextView android:layout_height="wrap_content"

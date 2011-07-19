@@ -34,16 +34,26 @@ public class VideoList extends CoreActivity {
 		setContentView(R.layout.videolist);
 
     videoUpgrade = (TextView)findViewById(R.id.videoUpgrade);
-    videoUpgrade.setOnClickListener(new View.OnClickListener()
+    boolean liveMembershipLevel =
+      lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+    if(liveMembershipLevel
+       || (!App.isLiveChess() && Integer.parseInt(App.sharedData.getString("premium_status", "0")) < 3))
     {
-      public void onClick(View v)
+      videoUpgrade.setVisibility(View.VISIBLE);
+      videoUpgrade.setOnClickListener(new View.OnClickListener()
       {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
-          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
-      }
-    });
-
+        public void onClick(View v)
+        {
+          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+            "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+            "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
+        }
+      });
+    }
+    else
+    {
+      videoUpgrade.setVisibility(View.GONE);
+    }
 
 		videosLV = (ListView)findViewById(R.id.videosLV);
 		videosLV.setOnItemClickListener(new OnItemClickListener() {

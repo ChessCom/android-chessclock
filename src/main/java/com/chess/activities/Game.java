@@ -773,7 +773,7 @@ public class Game extends CoreActivity {
 			f = "K";
 		}
 		String Moveto = MoveParser.positionToString(m.to);
-		Log.i("!!!", f+" | "+Moveto+" : "+BV.board.TacticMoves[BV.board.hply-1]);
+		Log.d("!!!", f+" | "+Moveto+" : "+BV.board.TacticMoves[BV.board.hply-1]);
 		if(BV.board.TacticMoves[BV.board.hply-1].contains(f) && BV.board.TacticMoves[BV.board.hply-1].contains(Moveto)){
 			BV.board.TacticsCorrectMoves++;
 			if(BV.board.movesCount < BV.board.TacticMoves.length-1){
@@ -1259,8 +1259,8 @@ public class Game extends CoreActivity {
         {
           OG = ChessComApiParser.GetGameParseV3(rep_response);
         }
-        System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
-        System.out.println("!!!!!!!! OG " + OG);
+        //System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
+        //System.out.println("!!!!!!!! OG " + OG);
 
         if (App.OnlineGame == null || OG == null)
         {
@@ -1371,14 +1371,20 @@ public class Game extends CoreActivity {
 					BV.board.setReside(true);
 				}
 				String[] Moves = {};
-				if(App.OnlineGame.values.get("move_list").contains("1.")){
-					Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-					BV.board.movesCount = Moves.length;
-				}
-        else if (!App.isLiveChess())
-        {
-          BV.board.movesCount = 0;
-        }
+
+
+                if (App.OnlineGame.values.get("move_list").contains("1.")) {
+                    Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+                    BV.board.movesCount = Moves.length;
+                } else if (!App.isLiveChess()) {
+                    BV.board.movesCount = 0;
+                }
+
+              final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+              if (game != null && game.getSeq() > 0)
+              {
+                lccHolder.doReplayMoves(game);
+              }
 
 				FEN = App.OnlineGame.values.get("starting_fen_position");
 				if(!FEN.equals("")){
@@ -1389,30 +1395,28 @@ public class Game extends CoreActivity {
 				int i;
         //System.out.println("@@@@@@@@ POINT 2 BV.board.movesCount=" + BV.board.movesCount);
         //System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
-        for(i = 0; i < BV.board.movesCount; i++)
-        {
-          //System.out.println("@@@@@@@@ POINT 4 i=" + i);
-          //System.out.println("@@@@@@@@ POINT 5 Moves[i]=" + Moves[i]);
-          moveFT = MoveParser.Parse(BV.board, Moves[i]);
-          if(moveFT.length == 4)
-          {
-            Move m;
-            if(moveFT[3] == 2)
+
+            if (!App.isLiveChess())
             {
-              m = new Move(moveFT[0], moveFT[1], 0, 2);
+                for (i = 0; i < BV.board.movesCount; i++) {
+                    //System.out.println("@@@@@@@@ POINT 4 i=" + i);
+                    //System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
+                    moveFT = MoveParser.Parse(BV.board, Moves[i]);
+                    if (moveFT.length == 4) {
+                        Move m;
+                        if (moveFT[3] == 2) {
+                            m = new Move(moveFT[0], moveFT[1], 0, 2);
+                        } else {
+                            m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+                        }
+                        BV.board.makeMove(m, false);
+                    } else {
+                        Move m = new Move(moveFT[0], moveFT[1], 0, 0);
+                        BV.board.makeMove(m, false);
+                    }
+                }
             }
-            else
-            {
-              m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-            }
-            BV.board.makeMove(m, false);
-          }
-          else
-          {
-            Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-            BV.board.makeMove(m, false);
-          }
-				}
+
 				Update(0);
 				BV.board.takeBack();
 				BV.invalidate();
@@ -2037,8 +2041,10 @@ public class Game extends CoreActivity {
       {
         //lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
         //fullGameProcessed = true;
-        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-        lccHolder.getAndroid().processMove(gameEvent.gameId, gameEvent.moveIndex);
+          lccHolder.getPausedActivityGameEvents().remove(gameEvent);
+          //lccHolder.getAndroid().processMove(gameEvent.gameId, gameEvent.moveIndex);
+          OG = new com.chess.model.Game(lccHolder.getGameData(gameEvent.gameId.toString(), gameEvent.moveIndex), true);
+          Update(9);
       }
 
       gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.DrawOffer);
@@ -2059,22 +2065,22 @@ public class Game extends CoreActivity {
           (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
       {
         /*if (!fullGameProcessed)
-        {
-          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
-          fullGameProcessed = true;
-        }*/
-        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-        lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);
-      }
-    }
-  }
-
-  /*public void onStop()
-  {
-    App.OnlineGame = null;
-    BV.board = null;
-    super.onStop();
-  }*/
+        {                                                                                                                                                                     
+          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));                                                                                          
+          fullGameProcessed = true;                                                                                                                                           
+        }*/                                                                                                                                                                   
+        lccHolder.getPausedActivityGameEvents().remove(gameEvent);                                                                                                            
+        lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);                                                                                                    
+      }                                                                                                                                                                       
+    }                                                                                                                                                                         
+  }                                                                                                                                                                           
+                                                                                                                                                                              
+  /*public void onStop()                                                                                                                                                      
+  {                                                                                                                                                                           
+    App.OnlineGame = null;                                                                                                                                                    
+    BV.board = null;                                                                                                                                                          
+    super.onStop();                                                                                                                                                           
+  }*/                                                                                                                                                                         
 
 
   private void showAnalysisButtons()

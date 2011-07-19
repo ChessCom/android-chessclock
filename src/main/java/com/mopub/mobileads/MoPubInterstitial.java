@@ -34,7 +34,6 @@ package com.mopub.mobileads;
 
 import java.util.HashMap;
 
-import com.mopub.mobileads.MoPubView.OnAdClickedListener;
 import com.mopub.mobileads.MoPubView.OnAdFailedListener;
 import com.mopub.mobileads.MoPubView.OnAdLoadedListener;
 
@@ -53,7 +52,6 @@ public class MoPubInterstitial {
     public interface MoPubInterstitialListener {
         public void OnInterstitialLoaded();
         public void OnInterstitialFailed();
-        public void OnInterstitialClosed();
     }
     
     public class MoPubInterstitialView extends MoPubView {
@@ -79,6 +77,11 @@ public class MoPubInterstitial {
             
             Log.i("MoPub", "Couldn't load native adapter. Trying next ad...");
             parent.interstitialFailed();
+        }
+        
+        protected void trackImpression() {
+            Log.d("MoPub", "Tracking impression for interstitial.");
+            if (mAdView != null) mAdView.trackImpression();
         }
     }
     
@@ -110,13 +113,6 @@ public class MoPubInterstitial {
                 }
             }
         });
-        mInterstitialView.setOnAdClickedListener(new OnAdClickedListener() {
-            public void OnAdClicked(MoPubView m) {
-                if (mInterstitialView != null) {
-                    mInterstitialView.registerClick();
-                }
-            }
-        });
     }
     
     public Activity getActivity() {
@@ -144,26 +140,19 @@ public class MoPubInterstitial {
     }
     
     protected void interstitialLoaded() {
-        if (mListener != null) {
-            mListener.OnInterstitialLoaded();
-        }
+        mInterstitialView.trackImpression();
+        if (mListener != null) mListener.OnInterstitialLoaded();
     }
     
     protected void interstitialFailed() {
-        if (mInterstitialView != null) {
-            mInterstitialView.loadFailUrl();
-        }
+        mInterstitialView.loadFailUrl();
     }
     
     protected void interstitialClicked() {
-        if (mInterstitialView != null) {
-            mInterstitialView.registerClick();
-        }
+        mInterstitialView.registerClick();
     }
     
-    protected void interstitialClosed() {
-        if (mListener != null) {
-            mListener.OnInterstitialClosed();
-        }
+    public void destroy() {
+        mInterstitialView.destroy();
     }
 }

@@ -11,6 +11,8 @@
 package com.chess.engine;
 import java.util.*;
 
+import android.util.Log;
+
 public class Search {
     public Search(Board b) {
         board = b;
@@ -36,15 +38,14 @@ public class Search {
                 for (int j = 0; j < 64; j++)
                     board.history[i][j] = 0;
             if (output == 1)
-		System.out.println("ply      nodes  score  pv");
+		Log.d("SEARCH", "ply      nodes  score  pv");
             for (int i = 1; i <= maxDepth; ++i) {
 		followPV = true;
 		int x = search(-10000, 10000, i);
 		if (output > 0) {
-                    System.out.print(/*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
+                    Log.d("SEARCH", /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
                     for (int j = 0; j < pvLength[0]; ++j)
-                        System.out.print(" " + pv[0][j].toString());
-                    System.out.println();
+                        Log.d("SEARCH", " " + pv[0][j].toString());
 		}
 		if (x > 9000 || x < -9000)
                     break;
@@ -57,7 +58,7 @@ public class Search {
                 --ply;
             }
         }
-        System.out.println("Nodes searched: " + nodes);
+        Log.d("SEARCH", "Nodes searched: " + nodes);
         return;
     }
 

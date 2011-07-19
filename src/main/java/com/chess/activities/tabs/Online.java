@@ -176,13 +176,16 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
-    adview = (MoPubView) findViewById(R.id.adview);
-    showAds(adview);
-    if (isShowAds())
-    {
-      showRemoveAds(adview, removeAds);
-    }
-    disableScreenLock();
+      new Handler().post(new Runnable() {
+          public void run() {
+              adview = (MoPubView) findViewById(R.id.adview);
+              showAds(adview);
+              if (isShowAds()) {
+                  showRemoveAds(adview, removeAds);
+              }
+              disableScreenLock();
+          }
+      });
   }
 
   @Override
@@ -669,12 +672,21 @@ public class Online extends CoreActivity {
 	}
   private enum StartNewGameButtonsEnum
   {
-    BUTTON_10_0(10, 0, "10 min"),
+    /*BUTTON_10_0(10, 0, "10 min"),
     BUTTON_5_0(5, 0, "5 min"),
     BUTTON_3_0(3, 0, "3 min"),
     BUTTON_30_0(30, 0, "30 min"),
     BUTTON_2_12(2, 12, "2 | 12"),
-    BUTTON_1_5(1, 5, "1 | 5");
+    BUTTON_1_5(1, 5, "1 | 5");*/
+
+    BUTTON_10_0(10, 0, "10 min"),
+    BUTTON_5_2(5, 2, "5 | 2"),
+    BUTTON_15_10(15, 10, "15 | 10"),
+    BUTTON_30_0(30, 0, "30 min"),
+    BUTTON_5_0(5, 0, "5 min"),
+    BUTTON_3_0(3, 0, "3 min"),
+    BUTTON_2_1(2, 1, "2 | 1"),
+    BUTTON_1_0(1, 0, "1 min");
 
     private int min;
     private int sec;

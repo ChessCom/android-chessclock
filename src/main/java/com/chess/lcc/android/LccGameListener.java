@@ -104,6 +104,7 @@ public class LccGameListener implements GameListener
       lccHolder.putGame(game);
       return;
     }
+    lccHolder.setCurrentGameId(game.getId());
     lccHolder.processFullGame(game);
   }
 
@@ -149,6 +150,7 @@ public class LccGameListener implements GameListener
   public void onGameEnded(Game game)
   {
     LOG.info("GAME LISTENER: Game ended: " + game);
+    lccHolder.putGame(game);
     if(isOldGame(game.getId()))
     {
       LOG.info("GAME LISTENER: ignore old game id=" + game.getId());
@@ -216,7 +218,6 @@ public class LccGameListener implements GameListener
     //message = whiteUsername + " vs. " + blackUsername + " - " + message;
     LOG.info("GAME LISTENER: GAME OVER - " + message);
 
-    lccHolder.putGame(game);
     if (lccHolder.isActivityPausedMode())
     {
       final GameEvent gameEndedEvent = new GameEvent();

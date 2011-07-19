@@ -1,7 +1,5 @@
 package com.chess.core;
 
-import java.util.Date;
-
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
@@ -141,6 +139,7 @@ public abstract class CoreActivity extends Activity {
         {
           final LccHolder lccHolder = App.getLccHolder();
           //lccHolder.setConnectingInProgress(true);
+          lccHolder.getClient().disconnect();
           lccHolder.getClient()
             .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
@@ -158,6 +157,7 @@ public abstract class CoreActivity extends Activity {
     registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
     registerReceiver(obsoleteProtocolVersionReceiver,
                      new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
+    registerReceiver(infoMessageReceiver, new IntentFilter("com.chess.lcc.android-info"));
     /*}*/
     if (App.sharedData.getLong("com.chess.firstTimeStart", 0) == 0)
     {
@@ -189,6 +189,7 @@ public abstract class CoreActivity extends Activity {
       unregisterReceiver(lccReconnectingInfoReceiver);
       unregisterReceiver(informAndExitReceiver);
       unregisterReceiver(obsoleteProtocolVersionReceiver);
+      unregisterReceiver(infoMessageReceiver);
 
       // todo: how to logout user when he/she is switching to another activity?
       /*if (App.isLiveChess() && lccHolder.isConnected())
@@ -413,6 +414,16 @@ public abstract class CoreActivity extends Activity {
     }
   };
 
+   private BroadcastReceiver infoMessageReceiver = new BroadcastReceiver()
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      App.ShowDialog(CoreActivity.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
+    }
+  };
+
   private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver()
   {
     @Override
@@ -462,12 +473,16 @@ public abstract class CoreActivity extends Activity {
   {
     final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
     wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "com.chess.core.CoreActivity");
+    wakeLock.setReferenceCounted(false);
     wakeLock.acquire();
   }
 
   protected void enableScreenLock()
   {
-    wakeLock.release();
+	  if (wakeLock != null)
+    {
+      wakeLock.release();
+    }
   }
 
   public void unregisterReceiver(BroadcastReceiver receiver)
@@ -553,6 +568,7 @@ public abstract class CoreActivity extends Activity {
     {
       adview.setVisibility(View.VISIBLE);
       adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+      //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
       adview.loadAd();
     }
   }

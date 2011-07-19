@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="34"
-      android:versionName="1.71" package="com.chess">
+      android:versionCode="42"
+      android:versionName="1.86" package="com.chess">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".core.MainApp" android:debuggable="false">
+        
         <activity android:name=".core.StartActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
-                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+                  android:theme="@style/MyTheme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-	    <activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+        
+        <!--
+        <activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+        -->
+        
+	    <activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
 
-	    <activity android:name=".core.Tabs" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.Register" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.Preferences" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.Chat" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.Game" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.VideoList" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+	    <activity android:name=".core.Tabs" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Register" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Preferences" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Chat" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Game" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.VideoList" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
 
-    	<activity android:name=".activities.tabs.Home"></activity>
-    	<activity android:name=".activities.tabs.Online"></activity>
-    	<activity android:name=".activities.tabs.Computer"></activity>
-    	<activity android:name=".activities.tabs.Video"></activity>
+    	<activity android:name=".activities.tabs.Home" android:theme="@style/MyTheme"></activity>
+    	<activity android:name=".activities.tabs.Online" android:theme="@style/MyTheme"></activity>
+    	<activity android:name=".activities.tabs.Computer" android:theme="@style/MyTheme"></activity>
+    	<activity android:name=".activities.tabs.Video" android:theme="@style/MyTheme"></activity>
 
-    	<activity android:name=".activities.OnlineNewGame" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.FriendChallenge" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-    	<activity android:name=".activities.CreateChallenge" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.OnlineNewGame" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.FriendChallenge" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.CreateChallenge" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
 
 	    <activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>
 
-			<service android:name=".utilities.WebService" />
-			<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
+		<service android:name=".utilities.WebService" />
+		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
 	</application>
 
-    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
 
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<!-- uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
-	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
 </manifest>

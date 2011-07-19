@@ -22,6 +22,7 @@ import android.graphics.Paint.Style;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,6 +49,9 @@ public class BoardView extends ImageView {
 
 	private String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	private String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
+
+    private int viewWidth = 0;
+    private int viewHeight = 0;
 
 	public BoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -233,8 +237,10 @@ public class BoardView extends ImageView {
 	protected void onDraw(Canvas canvas) {
 		canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG));
 		super.onDraw(canvas);
-		W = getWidth();
-		H = getHeight();
+		/*W = getWidth();
+		H = getHeight();*/
+        W = viewWidth;
+		H = viewHeight;
 
 		side = W/4;
 		if(H < W)	side = H/4;
@@ -254,9 +260,9 @@ public class BoardView extends ImageView {
         catch(Exception e)
         {
           e.printStackTrace();
-          System.out.println("ca " + ca);
-          System.out.println("ca.App " + ca.App);
-          System.out.println("ca.App.board " + ca.App.board);
+          Log.d("BoardView", "ca " + ca);
+          Log.d("BoardView", "ca.App " + ca.App);
+          Log.d("BoardView", "ca.App.board " + ca.App.board);
           return;
         }
       }
@@ -693,5 +699,11 @@ public class BoardView extends ImageView {
 			invalidate();
 		}
 	}
+
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld){
+       super.onSizeChanged(xNew, yNew, xOld, yOld);
+       viewWidth = (xNew == 0 ? viewWidth : xNew);
+       viewHeight = (yNew == 0 ? viewHeight : yNew);
+    }
 
 }

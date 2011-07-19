@@ -6,6 +6,7 @@ import com.chess.core.MainApp;
 import com.chess.live.client.*;
 
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * Created by IntelliJ IDEA. User: Vova Date: 28.02.2010 Time: 15:50:16 To change this template use File | Settings |
@@ -22,7 +23,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onOtherClientEntered(User user)
   {
-    System.out.println("Another client entered: user=" + user.getUsername());
+    Log.d("CONNECTION", "Another client entered: user=" + user.getUsername());
     lccHolder.getAndroid().processOtherClientEntered();
   }
 
@@ -48,7 +49,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getAndroid().getSharedDataEditor().commit();*/
     lccHolder.getAndroid().closeLoggingInIndicator();
 
-    System.out.println("User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
+    Log.d("CONNECTION", "User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
   }
 
   public void onSettingsChanged(User user, UserSettings settings)
@@ -60,7 +61,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable)
   {
-    System.out.println("CONNECTION: User connection failure:" + message + ", details=" + details);
+    Log.d("CONNECTION", "CONNECTION: User connection failure:" + message + ", details=" + details);
     lccHolder.setConnected(false);
     lccHolder.getAndroid().closeLoggingInIndicator();
     //lccHolder.setConnectingInProgress(false);
@@ -134,6 +135,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     //lccHolder.setConnectingInProgress(false);
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
+    lccHolder.clearGames();
     //lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
     /*lccHolder.getClient()
       .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/

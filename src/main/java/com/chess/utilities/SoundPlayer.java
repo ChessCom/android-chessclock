@@ -67,10 +67,6 @@ public class SoundPlayer
   private void playSound(int soundResource)
   {
     final SharedPreferences SharedPreferences = context.getSharedPreferences("sharedData", 0);
-    if(SharedPreferences.getString("username", "").equals(""))
-    {
-      System.out.println("================ USERNAME IS EMPTY!");
-    }
     if(SharedPreferences.getBoolean(SharedPreferences.getString("username", "") + "enableSounds", true))
     {
       try
