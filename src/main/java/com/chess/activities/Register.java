@@ -127,17 +127,21 @@ public class Register extends CoreActivity {
 	@Override
 	public void Update(int code) {
 		if(code == 0){
-			String query = "";
-			try {
-				query = "http://www." + LccHolder.HOST + "/api/v2/login?username="+URLEncoder.encode(RegUsername.getText().toString(), "UTF-8")+"&password="+URLEncoder.encode(RegPassword.getText().toString(), "UTF-8");
-			} catch (Exception e) {}
-
-			if(appService != null){
-				appService.RunSingleTask(1,
-					query,
-					PD = new MyProgressDialog(ProgressDialog.show(Register.this, null, getString(R.string.loading), true))
-				);
-			}
+      String query = "https://secure." + LccHolder.HOST + "/api/v2/login";
+      try
+      {
+        if(appService != null)
+        {
+          appService.RunSingleTaskPost(1,
+                                       query,
+                                       PD = new MyProgressDialog(
+                                         ProgressDialog.show(Register.this, null, getString(R.string.loading), true)),
+                                       "username", URLEncoder.encode(RegUsername.getText().toString(), "UTF-8"),
+                                       "password", URLEncoder.encode(RegPassword.getText().toString(), "UTF-8")
+          );
+        }
+      }
+      catch(Exception e) {}
 		} else if(code == 1){
       FlurryAgent.onEvent("New Account Created", null);
 			String[] r = response.split(":");
