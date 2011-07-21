@@ -84,7 +84,7 @@ public class WebService extends Service {
 		protected Void doInBackground(String... options) {
 
 	  List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-      if (options[2] != null)
+      if (options.length >= 3 && options[2] != null)
       {
         nameValuePairs.add(new BasicNameValuePair(options[2], options[3]));
         nameValuePairs.add(new BasicNameValuePair(options[4], options[5]));

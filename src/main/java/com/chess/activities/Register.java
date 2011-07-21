@@ -127,7 +127,7 @@ public class Register extends CoreActivity {
 	@Override
 	public void Update(int code) {
 		if(code == 0){
-      String query = "https://secure." + LccHolder.HOST + "/api/v2/login";
+      String query = "http://www." + LccHolder.HOST + "/api/v2/login";
       try
       {
         if(appService != null)

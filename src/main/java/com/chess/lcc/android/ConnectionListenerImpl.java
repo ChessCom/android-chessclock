@@ -120,6 +120,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     /*lccHolder.getClient()
       .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
     lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
+    lccHolder.getAndroid().closeReconnectingIndicator();
     lccHolder.getAndroid().closeLoggingInIndicator();
   }
 
@@ -135,7 +136,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     //lccHolder.setConnectingInProgress(false);
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
-    lccHolder.clearGames();
+    //lccHolder.clearGames();
     //lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
     /*lccHolder.getClient()
       .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/

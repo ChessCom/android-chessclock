@@ -55,7 +55,7 @@ public class Singin extends CoreActivity {
 					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validatePassword));
 					return;
 				}
-        String query = "https://secure." + LccHolder.HOST + "/api/v2/login";
+        String query = "http://www." + LccHolder.HOST + "/api/v2/login";
         try
         {
           if(appService != null)

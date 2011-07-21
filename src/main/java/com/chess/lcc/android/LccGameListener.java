@@ -111,7 +111,7 @@ public class LccGameListener implements GameListener
   public void onGameStarted(Game game)
   {
     LOG.info("GAME LISTENER: onGameStarted id=" + game.getId());
-    if(lccHolder.isUserPlaying())
+    if(lccHolder.isUserPlayingAnotherGame(game.getId()))
     {
       LOG.info("GAME LISTENER: onGameStarted() abort and exit second game");
       lccHolder.getClient().abortGame(game, "abort second game");

@@ -38,7 +38,7 @@ public class LccHolder
 
   public static final String HOST = "chess.com";
   //public static final String AUTH_URL = "https://www." + HOST + "/api/login?username=%s&password=%s";
-  public static final String AUTH_URL = "https://secure." + HOST + "/api/v2/login?username=%s&password=%s";
+  public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
   public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
   //Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
   public static final Integer CONFIG_PORT =
@@ -331,6 +331,18 @@ public class LccHolder
     for(com.chess.live.client.Game game : lccGames.values())
     {
       if(!game.isEnded())
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isUserPlayingAnotherGame(Long currentGameId)
+  {
+    for(com.chess.live.client.Game game : lccGames.values())
+    {
+      if(!game.getId().equals(currentGameId) && !game.isEnded())
       {
         return true;
       }
