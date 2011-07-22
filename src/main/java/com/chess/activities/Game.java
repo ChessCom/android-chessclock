@@ -463,7 +463,7 @@ public class Game extends CoreActivity {
 
     whiteClockView = (TextView)findViewById(R.id.whiteClockView);
     blackClockView = (TextView)findViewById(R.id.blackClockView);
-    if (App.isLiveChess() && extras.getInt("mode") == 4)
+    if (App.isLiveChess() && extras.getInt("mode") == 4 && lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null)
     {
       whiteClockView.setVisibility(View.VISIBLE);
       blackClockView.setVisibility(View.VISIBLE);
@@ -2065,22 +2065,22 @@ public class Game extends CoreActivity {
           (lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId)))
       {
         /*if (!fullGameProcessed)
-        {                                                                                                                                                                     
-          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));                                                                                          
-          fullGameProcessed = true;                                                                                                                                           
-        }*/                                                                                                                                                                   
-        lccHolder.getPausedActivityGameEvents().remove(gameEvent);                                                                                                            
-        lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);                                                                                                    
-      }                                                                                                                                                                       
-    }                                                                                                                                                                         
-  }                                                                                                                                                                           
-                                                                                                                                                                              
-  /*public void onStop()                                                                                                                                                      
-  {                                                                                                                                                                           
-    App.OnlineGame = null;                                                                                                                                                    
-    BV.board = null;                                                                                                                                                          
-    super.onStop();                                                                                                                                                           
-  }*/                                                                                                                                                                         
+        {
+          lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+          fullGameProcessed = true;
+        }*/
+        lccHolder.getPausedActivityGameEvents().remove(gameEvent);
+        lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);
+      }
+    }
+  }
+
+  /*public void onStop()
+  {
+    App.OnlineGame = null;
+    BV.board = null;
+    super.onStop();
+  }*/
 
 
   private void showAnalysisButtons()

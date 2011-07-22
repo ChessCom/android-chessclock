@@ -64,8 +64,8 @@ public class Singin extends CoreActivity {
                                          query,
                                          PD = new MyProgressDialog(
                                            ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
-                                         "username", URLEncoder.encode(username.getText().toString(), "UTF-8"),
-                                         "password", URLEncoder.encode(password.getText().toString(), "UTF-8")
+                                         "username", /*URLEncoder.encode(*/username.getText().toString()/*, "UTF-8")*/,
+                                         "password", /*URLEncoder.encode(*/password.getText().toString()/*, "UTF-8")*/
             );
           }
         }
@@ -103,7 +103,7 @@ public class Singin extends CoreActivity {
             	Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
             } else if(response.contains("Error+Facebook user has no Chess.com account")){
             	App.ShowMessage("You have no Chess.com account, sign up, please.");
-            	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://secure." + LccHolder.HOST + "/register.html")));
+            	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/register.html")));
             }
 		}
 		public void onAuthFail(String error) {
