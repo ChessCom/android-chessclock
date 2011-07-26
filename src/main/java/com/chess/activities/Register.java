@@ -127,7 +127,7 @@ public class Register extends CoreActivity {
 	@Override
 	public void Update(int code) {
 		if(code == 0){
-      String query = "https://secure." + LccHolder.HOST + "/api/v2/login";
+      String query = "http://www." + LccHolder.HOST + "/api/v2/login";
       try
       {
         if(appService != null)
@@ -136,8 +136,8 @@ public class Register extends CoreActivity {
                                        query,
                                        PD = new MyProgressDialog(
                                          ProgressDialog.show(Register.this, null, getString(R.string.loading), true)),
-                                       "username", URLEncoder.encode(RegUsername.getText().toString(), "UTF-8"),
-                                       "password", URLEncoder.encode(RegPassword.getText().toString(), "UTF-8")
+                                       "username", /*URLEncoder.encode(*/RegUsername.getText().toString()/*, "UTF-8")*/,
+                                       "password", /*URLEncoder.encode(*/RegPassword.getText().toString()/*, "UTF-8")*/
           );
         }
       }

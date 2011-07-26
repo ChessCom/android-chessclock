@@ -107,14 +107,14 @@ public class MainApp extends Application {
   {
     if (lccHolder == null)
     {
-      try
-      {
-        lccHolder = LccHolder.getInstance(getAssets().open("chesscom.pkcs12"));
-      }
+      /*try
+      {*/
+        lccHolder = LccHolder.getInstance(/*getAssets().open("chesscom.pkcs12")*/);
+      /*}
       catch(IOException e)
       {
         e.printStackTrace();
-      }
+      }*/
       //lccClient = lccHolder.getClient();
       lccHolder.getAndroid().setContext(this);
     }
