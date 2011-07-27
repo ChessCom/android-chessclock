@@ -139,6 +139,7 @@
 <string name="drawoffer">Offer (or Accept) a Draw</string>
 <string name="resign">Resign (or Abort)</string>
 <string name="cancel">Cancel</string>
+<string name="game">Game</string>
 <string name="newgame">New game</string>
 <string name="options">Options</string>
 <string name="reside">Flip</string>
