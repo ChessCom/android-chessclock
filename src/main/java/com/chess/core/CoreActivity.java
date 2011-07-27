@@ -26,6 +26,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -274,18 +275,22 @@ public abstract class CoreActivity extends Activity {
     {
       LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
       final com.chess.live.client.Game game = App.getLccHolder().getGame(App.gameId);
-      new AlertDialog.Builder(CoreActivity.this)
-        .setTitle(intent.getExtras().getString("title"))
+      final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
+        //.setTitle(intent.getExtras().getString("title"))
         .setMessage(intent.getExtras().getString("message"))
-        .setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-              App.getLccHolder().getClient().makeDraw(game, "");
-            }
+        .setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener()
+        {
+          public void onClick(DialogInterface dialog, int whichButton)
+          {
+            App.getLccHolder().getClient().makeDraw(game, "");
+          }
         })
-        .setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-              App.getLccHolder().getClient().rejectDraw(game, "");
-            }
+        .setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener()
+        {
+          public void onClick(DialogInterface dialog, int whichButton)
+          {
+            App.getLccHolder().getClient().rejectDraw(game, "");
+          }
         })
         /*.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -294,7 +299,17 @@ public abstract class CoreActivity extends Activity {
                 putExtra("game_id", el.values.get("game_id")));
             }
         })*/
-        .create().show();
+        .create();
+      alertDialog.setCanceledOnTouchOutside(true);
+      alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener()
+      {
+        public void onCancel(DialogInterface dialogInterface)
+        {
+          App.getLccHolder().getClient().rejectDraw(game, "");
+        }
+      });
+      alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+      alertDialog.show();
     }
   };
 

@@ -66,13 +66,12 @@ public class Online extends CoreActivity {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-
 		switch (id) {
 			case 0:{
-				if(temp_pos > 0){
+				if(temp_pos > -1){
 					final GameListElement el = App.GameListItems.get(temp_pos);
 					return new AlertDialog.Builder(this)
-		            .setTitle("Accept Draw?")
+		            .setTitle("     Accept Draw?     ")
 		            .setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int whichButton) {
 		                	if(appService != null){
@@ -93,14 +92,13 @@ public class Online extends CoreActivity {
 		            		}
 		                }
 		            })
-		            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+		            .setNegativeButton(getString(R.string.game), new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int whichButton) {
 		                	startActivity(new Intent(Online.this, Game.class).
 		    				putExtra("mode", 4).
 		    				putExtra("game_id", el.values.get("game_id")));
 		                }
-		            })
-		            .create();
+		            }).create();
 				}
 			}
 			default: break;
@@ -190,6 +188,8 @@ public class Online extends CoreActivity {
     {
       start.setText("Custom Challenge");
     }
+
+
     else
     {
       start.setText("Challenge");
