@@ -54,6 +54,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import com.mopub.mobileads.MoPubView.LocationAwareness;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -69,6 +71,7 @@ import org.apache.http.params.HttpParams;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -330,9 +333,20 @@ public class AdView extends WebView {
     
     /*
      * Returns the last known location of the device using its GPS and network location providers.
-     * May be null if location access is disabled, or if the location providers don't exist.
+     * May be null if: 
+     * - Location permissions are not requested in the Android manifest file
+     * - The location providers don't exist
+     * - Location awareness is disabled in the parent MoPubView
      */
     private Location getLastKnownLocation() {
+        LocationAwareness locationAwareness = mMoPubView.getLocationAwareness();
+        int locationPrecision = mMoPubView.getLocationPrecision();
+        Location result = null;
+        
+        if (locationAwareness == LocationAwareness.LOCATION_AWARENESS_DISABLED) {
+            return null;
+        }
+        
         LocationManager lm 
                 = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         Location gpsLocation = null;
@@ -353,13 +367,32 @@ public class AdView extends WebView {
             Log.d("MoPub", "Failed to retrieve location: device has no network provider.");
         }
         
-        if (gpsLocation != null && networkLocation != null) {
-            if (gpsLocation.getTime() > networkLocation.getTime()) return gpsLocation;
-            else return networkLocation;
+        if (gpsLocation == null && networkLocation == null) {
+            return null;
         }
-        else if (gpsLocation != null) return gpsLocation;
-        else if (networkLocation != null) return networkLocation;
-        else return null;
+        else if (gpsLocation != null && networkLocation != null) {
+            if (gpsLocation.getTime() > networkLocation.getTime()) result = gpsLocation;
+            else result = networkLocation;
+        }
+        else if (gpsLocation != null) result = gpsLocation;
+        else result = networkLocation;
+        
+        // Truncate latitude/longitude to the number of digits specified by locationPrecision.
+        if (locationAwareness == LocationAwareness.LOCATION_AWARENESS_TRUNCATED) {
+            double lat = result.getLatitude();
+            double truncatedLat = BigDecimal.valueOf(lat)
+                .setScale(locationPrecision, BigDecimal.ROUND_HALF_DOWN)
+                .doubleValue();
+            result.setLatitude(truncatedLat);
+            
+            double lon = result.getLongitude();
+            double truncatedLon = BigDecimal.valueOf(lon)
+                .setScale(locationPrecision, BigDecimal.ROUND_HALF_DOWN)
+                .doubleValue();
+            result.setLongitude(truncatedLon);
+        }
+        
+        return result;
     }
     
     private String generateAdUrl() {
@@ -367,8 +400,8 @@ public class AdView extends WebView {
         sz.append("?v=4&id=" + mAdUnitId);
         
         String udid = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-        String udidDigest = (udid == null) ? "" : sha1("mopub-" + udid);
-        sz.append("&udid=sha1:" + udidDigest);
+        String udidDigest = (udid == null) ? "" : sha1(udid);
+        sz.append("&udid=sha:" + udidDigest);
 
         if (mKeywords != null) {
             sz.append("&q=" + Uri.encode(mKeywords));
@@ -381,7 +414,7 @@ public class AdView extends WebView {
         sz.append("&z=" + getTimeZoneOffsetString());
         
         int orientation = getResources().getConfiguration().orientation;
-        String orString = "u";
+        String orString = DEVICE_ORIENTATION_UNKNOWN;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             orString = DEVICE_ORIENTATION_PORTRAIT;
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {

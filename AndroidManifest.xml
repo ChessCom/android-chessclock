@@ -17,13 +17,13 @@
             </intent-filter>
         </activity>
         
-        <!-- <activity android:name="com.google.ads.AdActivity"
+        <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation"/>
               
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
               android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.millennialmedia.android.VideoPlayer"
-              android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:configChanges="keyboardHidden|orientation|keyboard" /> -->
+              android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:configChanges="keyboardHidden|orientation|keyboard" />
         
 	    <activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
 
@@ -59,8 +59,6 @@
 	
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<!-- uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- traceview tool -->
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
