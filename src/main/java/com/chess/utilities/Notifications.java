@@ -23,6 +23,8 @@ public class Notifications extends Service {
 	public MainApp App;
 	public Timer timer = new Timer();
 
+  private static int counter = 0;
+
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return null;
@@ -35,28 +37,28 @@ public class Notifications extends Service {
 
 		timer.scheduleAtFixedRate(
 		new TimerTask() {
-			private int inc = 0;
 			private String response = "", notification_message="", timestamp="";
 			public void run() {
         if (App == null || App.sharedData == null)
         {
           return;
         }
-				if((inc <= 5 || (inc%15 == 0 && inc <= 60) || inc%60 == 0) && !App.guest && !App.sharedData.getString("user_token", "").equals("")){
+				if((counter <= 5 || (counter%15 == 0 && counter <= 60) || counter%60 == 0) && !App.guest && !App.sharedData.getString("user_token", "").equals("")){
 					response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id="+App.sharedData.getString("user_token", ""), "GET", null, null);
 					if(response.trim().contains("Success+1")){
-						String[] tmp = response.trim().split(":");
+						/*String[] tmp = response.trim().split(":");
 						notification_message = tmp[1];
 						if(!tmp[2].equals(timestamp)){
-							timestamp = tmp[2];
+							timestamp = tmp[2];*/
 							handler.sendEmptyMessage(0);
-							inc = 0;
-						}
+							//resetCounter();
+						//}
 					} else{
 						clear.sendEmptyMessage(0);
-					}
+            resetCounter();
+          }
 				}
-				inc++;
+				counter++;
 			}
 			private Handler handler = new Handler() {
 				@Override
@@ -106,4 +108,10 @@ public class Notifications extends Service {
 		super.onDestroy();
 		if (timer != null) timer.cancel();
 	}
+
+  public static void resetCounter()
+  {
+    counter = 0;
+
+  }
 }

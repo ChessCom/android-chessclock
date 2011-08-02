@@ -7,6 +7,7 @@ import com.chess.activities.tabs.Computer;
 import com.chess.activities.tabs.Home;
 import com.chess.activities.tabs.Online;
 import com.chess.activities.tabs.Video;
+import com.chess.utilities.Notifications;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -75,6 +76,7 @@ public class Tabs extends TabActivity {
           if (extras.getBoolean("fromnotif"))
           {
             tab = 2;
+            Notifications.resetCounter();
             if(App.SDeditor != null){
               App.SDeditor.putInt("gamestype", 1);
               App.SDeditor.commit();

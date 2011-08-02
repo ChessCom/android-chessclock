@@ -658,7 +658,7 @@ public class LccHolder
         if(game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
         {
           clockToBePaused.setRunning(false);
-        } // stopping our clock
+        }
         synchronized(opponentClockStartSync)
         {
           if(nextOpponentMoveStillNotMade)
@@ -684,11 +684,6 @@ public class LccHolder
     {
       //fireGameEvent(new IllegalMoveEvent(this, null, game, move, IllegalMoveEvent.ILLEGAL_MOVE));
     }
-  }
-
-  public Object getOpponentClockStartSync()
-  {
-    return opponentClockStartSync;
   }
 
   public void setNextOpponentMoveStillNotMade(boolean nextOpponentMoveStillNotMade)
@@ -885,7 +880,7 @@ public class LccHolder
       final boolean isOpponentMoveDone = !_user.getUsername().equals(moveMaker.getUsername());
       if(isOpponentMoveDone)
       {
-        synchronized(getOpponentClockStartSync())
+        synchronized(opponentClockStartSync)
         {
           setNextOpponentMoveStillNotMade(false);
         }
@@ -959,19 +954,22 @@ public class LccHolder
           leftDrawableForBlack = 0;
           rightDrawableForBlack = R.drawable.blackmove;
         }
-        if(isWhite)
+        if(getAndroid().getGameActivity() != null)
         {
-          getAndroid().getGameActivity().getWhiteClockView().
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
-          getAndroid().getGameActivity().getBlackClockView().
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
-        else
-        {
-	      getAndroid().getGameActivity().getWhiteClockView().
-	        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-	      getAndroid().getGameActivity().getBlackClockView().
-	        setCompoundDrawablesWithIntrinsicBounds(leftDrawableForBlack, 0, rightDrawableForBlack, 0);
+          if(isWhite)
+          {
+            getAndroid().getGameActivity().getWhiteClockView().
+              setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
+            getAndroid().getGameActivity().getBlackClockView().
+              setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+          }
+          else
+          {
+            getAndroid().getGameActivity().getWhiteClockView().
+              setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            getAndroid().getGameActivity().getBlackClockView().
+              setCompoundDrawablesWithIntrinsicBounds(leftDrawableForBlack, 0, rightDrawableForBlack, 0);
+          }
         }
       }
     });

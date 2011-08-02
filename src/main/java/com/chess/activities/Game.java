@@ -544,13 +544,15 @@ public class Game extends CoreActivity {
       }
     }
 	}
+
 	private void GetTacticsGame(final String id){
     FlurryAgent.onEvent("Tactics Session Started For Registered", null);
 		if(!App.noInternet){
 			BV.board = new Board(this);
 			BV.board.mode = 6;
 
-			if(App.Tactic != null && id.equals(App.Tactic.values.get("id"))){
+			if(App.Tactic != null && id.equals(App.Tactic.values.get("id")))
+      {
 				BV.board.retry = true;
 				String FEN = App.Tactic.values.get("fen");
 				if(!FEN.equals("")){
@@ -1180,6 +1182,7 @@ public class Game extends CoreActivity {
 				}
 				BV.board.sec = 0;
 				BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds"));
+        startTacticsTimer();
 				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
 				if(moveFT.length == 4){
 					Move m;

@@ -50,7 +50,12 @@
 						android:textSize="16dip" android:text="@string/menuOnline" android:textColor="#222" android:layout_height="45dip"
 						android:layout_weight="1" android:layout_width="wrap_content" android:layout_marginRight="3dip"
 						android:gravity="center" android:layout_marginLeft="15dip" android:layout_marginBottom="15dip"></Button>
-					<Button android:visibility="invisible" android:layout_height="45dip" android:layout_marginRight="15dip" android:layout_marginBottom="15dip"></Button>
+					<!-- Button android:visibility="invisible" android:layout_height="45dip" android:layout_marginRight="15dip" android:layout_marginBottom="15dip"></Button-->
+					<Button android:textStyle="bold" android:layout_width="fill_parent" android:textSize="16dip"
+						android:background="@drawable/defaultbutton"
+						android:textColor="#222" android:layout_height="45dip" android:id="@+id/logout" android:text="Login"
+						android:gravity="center" android:layout_marginRight="15dip" android:layout_weight="1"
+						android:layout_marginLeft="3dip" android:layout_marginBottom="15dip"></Button>
 				</TableRow>
 			</TableLayout>
 		</LinearLayout>
