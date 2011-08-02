@@ -77,13 +77,18 @@
 			<version>latest</version>
 		</dependency>
 
-        <!-- 
+        
         <dependency>
 			<groupId>com.google.ads</groupId>
 			<artifactId>google-ad-mob</artifactId>
 			<version>4.1.0</version>
 		</dependency>
-		-->
+		
+		<dependency>
+			<groupId>com.millennialmedia.android</groupId>
+			<artifactId>mm-ad-view</artifactId>
+			<version>4.2.5</version>
+		</dependency>
 
 	</dependencies>
 

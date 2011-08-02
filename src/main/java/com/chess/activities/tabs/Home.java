@@ -39,6 +39,7 @@ public class Home extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
+    adview = (MoPubView) findViewById(R.id.adview);
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
@@ -125,7 +126,6 @@ public class Home extends CoreActivity {
       super.onResume();
       new Handler().post(new Runnable() {
           public void run() {
-              adview = (MoPubView) findViewById(R.id.adview);
               showAds(adview);
               showFullscreenAd();
               if (isShowAds()) {

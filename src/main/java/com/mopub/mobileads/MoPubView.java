@@ -68,9 +68,14 @@ public class MoPubView extends FrameLayout {
     public interface OnAdClickedListener {
         public void OnAdClicked(MoPubView m);
     }
+    
+    public enum LocationAwareness {
+        LOCATION_AWARENESS_NORMAL, LOCATION_AWARENESS_TRUNCATED, LOCATION_AWARENESS_DISABLED
+    }
 
     public static String HOST = "ads.mopub.com";
     public static String AD_HANDLER = "/m/ad";
+    public static final int DEFAULT_LOCATION_PRECISION = 6;
 
     protected AdView mAdView;
     private Activity mActivity;
@@ -78,6 +83,8 @@ public class MoPubView extends FrameLayout {
     private Context mContext;
     private BroadcastReceiver mScreenStateReceiver;
     private boolean mIsInForeground;
+    private LocationAwareness mLocationAwareness;
+    private int mLocationPrecision;
 
     private OnAdWillLoadListener mOnAdWillLoadListener;
     private OnAdLoadedListener mOnAdLoadedListener;
@@ -94,6 +101,8 @@ public class MoPubView extends FrameLayout {
 
         mContext = context;
         mIsInForeground = (getVisibility() == VISIBLE);
+        mLocationAwareness = LocationAwareness.LOCATION_AWARENESS_NORMAL;
+        mLocationPrecision = DEFAULT_LOCATION_PRECISION;
         
         setHorizontalScrollBarEnabled(false);
         setVerticalScrollBarEnabled(false);
@@ -347,5 +356,21 @@ public class MoPubView extends FrameLayout {
 
     public void setOnAdClickedListener(OnAdClickedListener listener) {
         mOnAdClickedListener = listener;
+    }
+    
+    public void setLocationAwareness(LocationAwareness awareness) {
+        mLocationAwareness = awareness;
+    }
+
+    public LocationAwareness getLocationAwareness() {
+        return mLocationAwareness;
+    }
+
+    public void setLocationPrecision(int precision) {
+        mLocationPrecision = (precision >= 0) ? precision : 0;
+    }
+
+    public int getLocationPrecision() {
+        return mLocationPrecision;
     }
 }
