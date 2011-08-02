@@ -88,13 +88,13 @@ public class LccHolder
   private Integer latestMoveNumber;
   private Long currentGameId;
 
-  public LccHolder(/*InputStream keyStoreInputStream*/)
+  public LccHolder(InputStream keyStoreInputStream)
   {
     Log.d("Chess.Com", "Start Chess.Com LCC App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     //System.setProperty("java.net.preferIPv6Addresses", "false");
     LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
-    /*InputStream keyStoreInputStream = null;
-    try
+    //InputStream keyStoreInputStream = null;
+    /*try
     {
       keyStoreInputStream = new FileInputStream("/data/data/com.chess/chesscom.pkcs12");
     }
@@ -108,18 +108,19 @@ public class LccHolder
     _lccClient.setSupportedClientFeatures(false, false);
     //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-    httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+    httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+    //httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
     httpClient.setMaxConnectionsPerAddress(4);
     httpClient.setSoTimeout(7000);
     httpClient.setConnectTimeout(10000);
 
-    /*httpClient.setKeyStoreType("PKCS12");
+    httpClient.setKeyStoreType("PKCS12");
     httpClient.setTrustStoreType("PKCS12");
     httpClient.setKeyManagerPassword("testtest");
     httpClient.setKeyStoreInputStream(keyStoreInputStream);
     httpClient.setKeyStorePassword("testtest");
     httpClient.setTrustStoreInputStream(keyStoreInputStream);
-    httpClient.setTrustStorePassword("testtest");*/
+    httpClient.setTrustStorePassword("testtest");
 
     _lccClient.setHttpClient(httpClient);
     try
@@ -199,11 +200,11 @@ public class LccHolder
     this.connected = connected;
   }
 
-  public static LccHolder getInstance(/*InputStream keyStoreInputStream*/)
+  public static LccHolder getInstance(InputStream keyStoreInputStream)
   {
     if(INSTANCE == null)
     {
-      INSTANCE = new LccHolder(/*keyStoreInputStream*/);
+      INSTANCE = new LccHolder(keyStoreInputStream);
     }
     return INSTANCE;
   }
