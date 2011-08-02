@@ -84,22 +84,26 @@ public class Home extends CoreActivity {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com")));
 			}
 		});
-
-		if(!App.guest)
-			findViewById(R.id.logout).setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-          if (App.isLiveChess()/* && lccHolder.isConnected()*/)
+    findViewById(R.id.logout).setOnClickListener(new OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      {
+        if(!App.guest)
+        {
+          if(App.isLiveChess()/* && lccHolder.isConnected()*/)
           {
             lccHolder.logout();
           }
           App.SDeditor.putString("password", "");
-					App.SDeditor.putString("user_token", "");
-					App.SDeditor.commit();
-					startActivity(new Intent(Home.this, Singin.class));
-					finish();
-				}
-			});
+          App.SDeditor.putString("user_token", "");
+          App.SDeditor.commit();
+        }
+        startActivity(new Intent(Home.this, Singin.class));
+        finish();
+      }
+    });
+
 	}
 
 	@Override
