@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -87,6 +88,9 @@ public class LccHolder
   private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
   private Integer latestMoveNumber;
   private Long currentGameId;
+  private final Hashtable<Long, Chat> gameChats = new Hashtable<Long, Chat>();
+  private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
+    new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
 
   public LccHolder(InputStream keyStoreInputStream)
   {
@@ -984,5 +988,32 @@ public class LccHolder
   public Long getCurrentGameId()
   {
     return currentGameId;
+  }
+
+  public void putGameChat(Long gameId, Chat chat)
+  {
+    gameChats.put(gameId, chat);
+  }
+
+  public Chat getGameChat(Long gameId)
+  {
+    return gameChats.get(gameId);
+  }
+
+  public LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> getReceivedChats()
+  {
+    return receivedChatMessages;
+  }
+
+  public LinkedHashMap<Long, ChatMessage> getChatMessages(String chatId)
+  {
+    for(Chat storedChat : receivedChatMessages.keySet())
+    {
+      if(chatId.equals(storedChat.getId()))
+      {
+        return receivedChatMessages.get(storedChat);
+      }
+    }
+    return null;
   }
 }

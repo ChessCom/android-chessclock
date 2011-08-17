@@ -1359,9 +1359,9 @@ public class Game extends CoreActivity {
 						App.SDeditor.putString("opponent", App.OnlineGame.values.get("black_username"));
 					App.SDeditor.commit();
 					App.OnlineGame.values.put("has_new_message", "0");
-					startActivity(new Intent(Game.this, Chat.class).
-		        			putExtra("game_id", App.OnlineGame.values.get("game_id")).
-		        			putExtra("timestamp", App.OnlineGame.values.get("timestamp")));
+					startActivity(new Intent(Game.this, App.isLiveChess() ? ChatLive.class : Chat.class).
+            putExtra("game_id", App.OnlineGame.values.get("game_id")).
+            putExtra("timestamp", App.OnlineGame.values.get("timestamp")));
 					chat = false;
 					return;
 				}
@@ -1489,6 +1489,14 @@ public class Game extends CoreActivity {
       if(App.isLiveChess() && BV.board.mode == 4)
       {
         options = menu.addSubMenu(0, 0, 0, getString(R.string.options)).setIcon(R.drawable.options);
+        if(App.OnlineGame.values.get("has_new_message").equals("1"))
+        {
+          menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+        }
+        else
+        {
+          menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+        }
       }
       else
       {
@@ -1517,6 +1525,7 @@ public class Game extends CoreActivity {
         options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
         options.add(0, 3, 0, getString(R.string.drawoffer));
         options.add(0, 4, 0, getString(R.string.resign));
+        options.add(0, 5, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
       }
       else
       {
@@ -1666,6 +1675,13 @@ public class Game extends CoreActivity {
             showDialog(5);
             return true;
           }
+          case 5:
+          case 6:
+          {
+            chat = true;
+            GetOnlineGame(App.gameId);
+            return true;
+				  }
         }
       }
       else
@@ -1729,7 +1745,7 @@ public class Game extends CoreActivity {
 		    	case 3:
 		    		chat = true;
 		    		GetOnlineGame(App.gameId);
-			        return true;
+			      return true;
 			    case 4:
 			    	BV.finished = false;
 		    		BV.sel = false;
