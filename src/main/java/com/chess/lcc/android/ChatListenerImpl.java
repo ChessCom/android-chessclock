@@ -110,10 +110,10 @@ public class ChatListenerImpl
     {
       lccHolder.getAndroid().getContext().OnlineGame.values.put("has_new_message", "1");
     }
-    addMessage(chat, message.getAuthor(), message);
+    addMessage(chat, message.getAuthor()/*, message*/);
   }
 
-  private void addMessage(Chat chat, User author, ChatMessage chatMessage)
+  private void addMessage(Chat chat, User author/*, ChatMessage chatMessage*/)
   {
     if(lccHolder.isUserBlocked(author.getUsername()))
     {
@@ -148,10 +148,10 @@ public class ChatListenerImpl
     {
       receivedMessages.remove(messageId);
     }
-    addMessage(chat, by, null); // TODO: clear chat console
+    //addMessage(chat, by, null); // TODO: clear chat console
     for(ChatMessage message : receivedMessages.values())
     {
-      addMessage(chat, message.getAuthor(), message);
+      addMessage(chat, message.getAuthor()/*, message*/);
     }
   }
 
