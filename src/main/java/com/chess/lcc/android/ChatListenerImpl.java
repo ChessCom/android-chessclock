@@ -106,7 +106,10 @@ public class ChatListenerImpl
       receivedMessages = new LinkedHashMap();
       lccHolder.getReceivedChats().put(chat, receivedMessages);
     }
-    receivedMessages.put(message.getId(), message);
+    if (receivedMessages.put(message.getId(), message) == null)
+    {
+      lccHolder.getAndroid().getContext().OnlineGame.values.put("has_new_message", "1");
+    }
     addMessage(chat, message.getAuthor(), message);
   }
 

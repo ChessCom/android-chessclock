@@ -1555,11 +1555,12 @@ public class Game extends CoreActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if(App.OnlineGame != null && BV.board.mode < 6 && BV.board.mode > 3 && !App.isLiveChess()){
+    if(App.OnlineGame != null && BV.board.mode < 6 && BV.board.mode > 3){
+      int itemPosition = App.isLiveChess() ? 6 : 3;
 			if( App.OnlineGame.values.get("has_new_message").equals("1") )
-				menu.getItem(3).setIcon(R.drawable.chat_nm);
+				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
 			else
-				menu.getItem(3).setIcon(R.drawable.chat);
+				menu.getItem(itemPosition).setIcon(R.drawable.chat);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
