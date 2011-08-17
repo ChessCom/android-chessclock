@@ -115,6 +115,7 @@ public class ChatLive extends CoreActivity {
     public void onReceive(Context context, Intent intent)
     {
       LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      App.OnlineGame.values.put("has_new_message", "0");
       Update(0);
     }
   };
