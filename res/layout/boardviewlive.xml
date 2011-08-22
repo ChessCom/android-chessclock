@@ -55,7 +55,7 @@
 				  android:gravity="center" android:padding="2dip" android:text="end of game"></TextView>
 
 	--></LinearLayout>
-
+	
 	<RelativeLayout android:layout_height="wrap_content"
 		              android:layout_width="fill_parent" android:orientation="horizontal" android:layout_gravity="bottom" android:paddingBottom="12dip">
 			<TextView android:id="@+id/whiteClockView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#fff"
@@ -63,7 +63,7 @@
 			          android:drawablePadding="5dip" android:inputType="textImeMultiLine"
 			          android:drawableRight="@drawable/whitemove"
 			          android:visibility="visible" android:layout_alignParentLeft="true"></TextView>
-
+			
 			<TextView android:id="@+id/blackClockView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#fff"
 			          android:textStyle="bold" android:gravity="right" android:padding="2dip"
 			          android:drawablePadding="5dip" android:inputType="textImeMultiLine"
@@ -98,4 +98,20 @@
 		        android:layout_alignParentRight="true"></Button>
     </RelativeLayout>
 
-</FrameLayout>
+	<RelativeLayout android:id="@+id/chatPanel"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_gravity="bottom" android:visibility="gone"
+		android:paddingBottom="17dip">
+		<ImageButton android:id="@+id/chat" android:layout_width="64px"
+			android:layout_height="32px" android:src="@drawable/chat_nm"
+			android:layout_centerHorizontal="true" android:scaleType="center"
+			android:background="@drawable/defaultbutton">
+		</ImageButton>
+	</RelativeLayout>
+
+	<!--<LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="visible" android:background="#444">
+			<ImageButton android:id="@+id/prev" android:src="@drawable/prev" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
+			<ImageButton android:id="@+id/next" android:src="@drawable/next" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
+		</LinearLayout>
+
+--></FrameLayout>

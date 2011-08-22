@@ -37,7 +37,7 @@
 			<Button android:id="@+id/cancel" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="Cancel" android:layout_height="45dip"></Button>
 		</LinearLayout>
 		
-		<LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="gone" android:background="#444">
+		<LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="visible" android:background="#444">
 			<ImageButton android:id="@+id/prev" android:src="@drawable/prev" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
 			<ImageButton android:id="@+id/next" android:src="@drawable/next" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
 		</LinearLayout>	

@@ -27,7 +27,9 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chess.R;
@@ -53,6 +55,8 @@ public class Game extends CoreActivity {
 	public BoardView BV;
 	private LinearLayout analysisLL;
   private LinearLayout analysisButtons;
+  private RelativeLayout chatPanel;
+  private ImageButton chatButton;
 	private TextView white, black, thinking, timer, movelist;
 	private Timer OnlineGameUpdate = null, TacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
@@ -428,6 +432,20 @@ public class Game extends CoreActivity {
 
 		analysisLL = (LinearLayout)findViewById(R.id.analysis);
     analysisButtons = (LinearLayout)findViewById(R.id.analysisButtons);
+    if(App.isLiveChess())
+    {
+      chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
+      chatButton = (ImageButton) findViewById(R.id.chat);
+      chatButton.setOnClickListener(new OnClickListener()
+      {
+        public void onClick(View view)
+        {
+          chat = true;
+          GetOnlineGame(App.gameId);
+          findViewById(R.id.chatPanel).setVisibility(View.GONE);
+        }
+      });
+    }
 
     if(!App.isLiveChess())
     {
@@ -1884,6 +1902,7 @@ public class Game extends CoreActivity {
     registerReceiver(gameMoveReceiver, new IntentFilter("com.chess.lcc.android-game-move"));
     registerReceiver(gameEndMessageReceiver, new IntentFilter("com.chess.lcc.android-game-end"));
     registerReceiver(gameInfoMessageReceived, new IntentFilter("com.chess.lcc.android-game-info"));
+    registerReceiver(chatMessageReceiver, new IntentFilter("com.chess.lcc.android-game-chat-message"));
 
 		if(BV.board.mode == 6){
 			if(BV.board.tacticCanceled){
@@ -1911,6 +1930,7 @@ public class Game extends CoreActivity {
     unregisterReceiver(gameMoveReceiver);
     unregisterReceiver(gameEndMessageReceiver);
     unregisterReceiver(gameInfoMessageReceived);
+    unregisterReceiver(chatMessageReceiver);
 
 		super.onPause();
 
@@ -2010,6 +2030,7 @@ public class Game extends CoreActivity {
       //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
       findViewById(R.id.moveButtons).setVisibility(View.GONE);
       findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
+      findViewById(R.id.chatPanel).setVisibility(View.GONE);
       findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
       {
         @Override
@@ -2102,7 +2123,6 @@ public class Game extends CoreActivity {
     super.onStop();
   }*/
 
-
   private void showAnalysisButtons()
   {
     analysisButtons.setVisibility(View.VISIBLE);
@@ -2112,4 +2132,14 @@ public class Game extends CoreActivity {
     BV.invalidate();
     BV.board.submit = false;*/
   }
+
+  private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver()
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+      //LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      findViewById(R.id.chatPanel).setVisibility(View.VISIBLE);
+    }
+  };
 }
