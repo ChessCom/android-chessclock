@@ -87,7 +87,7 @@
 	 
 	 <RelativeLayout android:id="@+id/chatPanel"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_gravity="bottom" android:visibility="visible"
+		android:layout_gravity="bottom" android:visibility="gone"
 		android:paddingBottom="5dip" android:paddingRight="5dip">
 		<ImageButton android:id="@+id/chat" android:layout_width="64px"
 			android:layout_height="32px" android:src="@drawable/chat_nm"
