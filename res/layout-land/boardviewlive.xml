@@ -83,7 +83,19 @@
 			<Button android:id="@+id/newGame" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textColor="#222" android:text="New " android:layout_height="wrap_content"></Button>
 			<Button android:id="@+id/home" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textColor="#222" android:text="Home" android:layout_height="wrap_content"></Button>
 		</LinearLayout>
-
+	
+	 
+	 <RelativeLayout android:id="@+id/chatPanel"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_gravity="bottom" android:visibility="visible"
+		android:paddingBottom="5dip" android:paddingRight="5dip">
+		<ImageButton android:id="@+id/chat" android:layout_width="64px"
+			android:layout_height="32px" android:src="@drawable/chat_nm"
+			android:layout_centerHorizontal="true" android:scaleType="center"
+			android:background="@drawable/defaultbutton">
+		</ImageButton>
+	</RelativeLayout>
+	
 	</LinearLayout>
 
 </LinearLayout>

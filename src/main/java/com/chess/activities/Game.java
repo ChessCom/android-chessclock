@@ -442,7 +442,7 @@ public class Game extends CoreActivity {
         {
           chat = true;
           GetOnlineGame(App.gameId);
-          findViewById(R.id.chatPanel).setVisibility(View.GONE);
+          chatPanel.setVisibility(View.GONE);
         }
       });
     }
@@ -2030,7 +2030,7 @@ public class Game extends CoreActivity {
       //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
       findViewById(R.id.moveButtons).setVisibility(View.GONE);
       findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-      findViewById(R.id.chatPanel).setVisibility(View.GONE);
+      chatPanel.setVisibility(View.GONE);
       findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
       {
         @Override
@@ -2139,7 +2139,7 @@ public class Game extends CoreActivity {
     public void onReceive(Context context, Intent intent)
     {
       //LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-      findViewById(R.id.chatPanel).setVisibility(View.VISIBLE);
+      chatPanel.setVisibility(View.VISIBLE);
     }
   };
 }
