@@ -106,22 +106,14 @@ public class ChatListenerImpl
       receivedMessages = new LinkedHashMap();
       lccHolder.getReceivedChats().put(chat, receivedMessages);
     }
-    if (receivedMessages.put(message.getId(), message) == null)
-    {
-      lccHolder.getAndroid().getContext().OnlineGame.values.put("has_new_message", "1");
-    }
-    addMessage(chat, message.getAuthor()/*, message*/);
-  }
-
-  private void addMessage(Chat chat, User author/*, ChatMessage chatMessage*/)
-  {
-    if(lccHolder.isUserBlocked(author.getUsername()))
+    if(lccHolder.isUserBlocked(message.getAuthor().getUsername()))
     {
       LccHolder.LOG.info("CHAT LISTENER: Message received: blocked user");
       return;
     }
-    if(chat.isGameRoom())
+    if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null)
     {
+      lccHolder.getAndroid().getContext().OnlineGame.values.put("has_new_message", "1");
       lccHolder.getAndroid().sendBroadcastIntent(0, "com.chess.lcc.android-game-chat-message");
     }
   }
@@ -148,11 +140,11 @@ public class ChatListenerImpl
     {
       receivedMessages.remove(messageId);
     }
-    //addMessage(chat, by, null); // TODO: clear chat console
+    /*addMessage(chat, by, null);
     for(ChatMessage message : receivedMessages.values())
     {
-      addMessage(chat, message.getAuthor()/*, message*/);
-    }
+      addMessage(chat, message.getAuthor()*//*, message*//*);
+    }*/
   }
 
   public void onInvitedToPrivateChat(Chat chat, User by, User invited, Collection<ChatMember> members, ChatMember headMember)
