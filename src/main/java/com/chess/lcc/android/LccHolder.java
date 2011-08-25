@@ -204,6 +204,11 @@ public class LccHolder
     this.connected = connected;
   }
 
+  public long previousFGTime;
+  public long currentFGTime;
+  public long currentFGGameId;
+  public long previousFGGameId;
+
   public static LccHolder getInstance(InputStream keyStoreInputStream)
   {
     if(INSTANCE == null)
@@ -934,6 +939,13 @@ public class LccHolder
 
   public void setClockDrawPointer(final Boolean isWhite)
   {
+    if (getAndroid().getGameActivity() == null)
+    {
+      throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGGameId)/1000 + ", " +
+                                     "t2-t1=" + (previousFGTime-currentFGTime)/1000 + ", " +
+                                     "id1=" + previousFGGameId + ", " +
+                                     "id2=" + currentFGGameId);
+    }
     getAndroid().getGameActivity().runOnUiThread(new Runnable()
     {
       public void run()
