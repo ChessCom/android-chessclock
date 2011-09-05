@@ -71,9 +71,13 @@ public class ChatListenerImpl
   {
     LccHolder.LOG.info("CHAT LISTENER: Chat entered: roomId=" + chat.getId() + ", enteredUser=" + member + ", thisUser=" +
                      lccHolder.getUser().getUsername());
-    if(chat.isGameRoom() && member.getUsername().equals(lccHolder.getUser().getUsername()))
-    {
+    /*if(chat.isGameRoom() && member.getUsername().equals(lccHolder.getUser().getUsername()))
+    {*/
       lccHolder.putGameChat(chat.getGame().getId(), chat);
+    //}
+    if (chat.isGameRoom() && chat.getGame().getId().equals(lccHolder.getCurrentGameId()) && chat.getId() != null)
+    {
+      lccHolder.setCurrentGameChatId(chat.getId());
     }
   }
 

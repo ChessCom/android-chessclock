@@ -90,7 +90,10 @@ public class ChatLive extends CoreActivity {
     com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
     if (chat == null)
     {
-      throw new NullPointerException("game_id=" + currentGameId);
+      throw new NullPointerException("game_id=" + currentGameId +
+                                     " " + lccHolder.getCurrentGameId() +
+                                     " " + lccHolder.getGame(currentGameId) +
+                                     " " + lccHolder.getCurrentGameChatId());
     }
     LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
     if (chatMessages != null)

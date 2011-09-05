@@ -432,7 +432,7 @@ public class Game extends CoreActivity {
 
 		analysisLL = (LinearLayout)findViewById(R.id.analysis);
     analysisButtons = (LinearLayout)findViewById(R.id.analysisButtons);
-    if(App.isLiveChess())
+    if(App.isLiveChess() && extras.getInt("mode") != 6)
     {
       chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
       chatButton = (ImageButton) findViewById(R.id.chat);
@@ -446,7 +446,6 @@ public class Game extends CoreActivity {
         }
       });
     }
-
     if(!App.isLiveChess())
     {
       findViewById(R.id.prev).setOnClickListener(new OnClickListener()

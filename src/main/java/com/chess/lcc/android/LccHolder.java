@@ -91,6 +91,7 @@ public class LccHolder
   private final Hashtable<Long, Chat> gameChats = new Hashtable<Long, Chat>();
   private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
     new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
+  private String currentGameChatId;
 
   public LccHolder(InputStream keyStoreInputStream)
   {
@@ -941,7 +942,7 @@ public class LccHolder
   {
     if (getAndroid().getGameActivity() == null)
     {
-      throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGGameId)/1000 + ", " +
+      throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
                                      "t2-t1=" + (previousFGTime-currentFGTime)/1000 + ", " +
                                      "id1=" + previousFGGameId + ", " +
                                      "id2=" + currentFGGameId);
@@ -1000,6 +1001,16 @@ public class LccHolder
   public Long getCurrentGameId()
   {
     return currentGameId;
+  }
+
+  public void setCurrentGameChatId(String chatId)
+  {
+    currentGameChatId = chatId;
+  }
+
+  public String getCurrentGameChatId()
+  {
+    return currentGameChatId;
   }
 
   public void putGameChat(Long gameId, Chat chat)

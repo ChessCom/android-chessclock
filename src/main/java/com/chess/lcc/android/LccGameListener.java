@@ -97,10 +97,10 @@ public class LccGameListener implements GameListener
         lccHolder.getAndroid().getGameActivity().finish(); // todo: refactoring, finish or just reinitialize
 
         //
-        lccHolder.currentFGTime = System.currentTimeMillis();
         lccHolder.previousFGTime = lccHolder.currentFGTime;
-        lccHolder.currentFGGameId = game.getId().longValue();
+        lccHolder.currentFGTime = System.currentTimeMillis();
         lccHolder.previousFGGameId = lccHolder.currentFGGameId;
+        lccHolder.currentFGGameId = game.getId().longValue();
         //
 
         lccHolder.getAndroid().setGameActivity(null);
