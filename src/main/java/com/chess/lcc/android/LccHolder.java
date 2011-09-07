@@ -88,10 +88,9 @@ public class LccHolder
   private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
   private Integer latestMoveNumber;
   private Long currentGameId;
-  private final Hashtable<Long, Chat> gameChats = new Hashtable<Long, Chat>();
+  private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
   private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
     new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
-  private String currentGameChatId;
 
   public LccHolder(InputStream keyStoreInputStream)
   {
@@ -1001,16 +1000,6 @@ public class LccHolder
   public Long getCurrentGameId()
   {
     return currentGameId;
-  }
-
-  public void setCurrentGameChatId(String chatId)
-  {
-    currentGameChatId = chatId;
-  }
-
-  public String getCurrentGameChatId()
-  {
-    return currentGameChatId;
   }
 
   public void putGameChat(Long gameId, Chat chat)

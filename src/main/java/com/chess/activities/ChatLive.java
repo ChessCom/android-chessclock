@@ -88,22 +88,18 @@ public class ChatLive extends CoreActivity {
 	  ArrayList<Message> output = new ArrayList<Message>();
     Long currentGameId = new Long(App.OnlineGame.values.get("game_id"));
     com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
-    if (chat == null)
+    if (chat != null)
     {
-      throw new NullPointerException("game_id=" + currentGameId +
-                                     " " + lccHolder.getCurrentGameId() +
-                                     " " + lccHolder.getGame(currentGameId) +
-                                     " " + lccHolder.getCurrentGameChatId());
-    }
-    LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
-    if (chatMessages != null)
-    {
-      for (ChatMessage message : chatMessages.values())
+      LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
+      if (chatMessages != null)
       {
-        output.add(new Message(message.getAuthor().getUsername().equals(lccHolder.getUser().getUsername()) ? "0" : "1", message.getMessage()));
+        for (ChatMessage message : chatMessages.values())
+        {
+          output.add(new Message(message.getAuthor().getUsername().equals(lccHolder.getUser().getUsername()) ? "0" : "1", message.getMessage()));
+        }
       }
     }
-	return output;
+	  return output;
   }
 
   protected void onResume() {

@@ -26,7 +26,7 @@ public class ChatListenerImpl
 
   public void onPublicChatListReceived(Collection<? extends Chat> chats)
   {
-    String str = "CHAT LISTENER: Public Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
+    /*String str = "CHAT LISTENER: Public Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
     for(Chat chat : chats)
     {
       str += "\n  " + "Chat: roomId=" + chat.getId() + ", name=\"" + chat.getName() + "\"";
@@ -45,7 +45,7 @@ public class ChatListenerImpl
     else
     {
       LccHolder.LOG.warn("CHAT LISTENER: There is no R1 chat in the list of the public chats");
-    }
+    }*/
   }
 
   public void onSubscribedChatListReceived(Collection<? extends Chat> chats)
@@ -65,6 +65,7 @@ public class ChatListenerImpl
     LccHolder.LOG.info(
       "CHAT LISTENER: Chat opened: user=" + lccHolder.getUser().getUsername() + ", roomId=" + chat.getId() + ", name=\"" + chat.getName() +
       "\"");
+    lccHolder.putGameChat(chat.getGame().getId(), chat);
   }
 
   public void onChatEntered(Chat chat, ChatMember member)
@@ -75,10 +76,6 @@ public class ChatListenerImpl
     {*/
       lccHolder.putGameChat(chat.getGame().getId(), chat);
     //}
-    if (chat.isGameRoom() && chat.getGame().getId().equals(lccHolder.getCurrentGameId()) && chat.getId() != null)
-    {
-      lccHolder.setCurrentGameChatId(chat.getId());
-    }
   }
 
   public void onChatExited(Chat chat, ChatMember member)
