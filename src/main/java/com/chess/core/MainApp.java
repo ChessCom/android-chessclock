@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.*;
+import com.chess.utilities.BitmapLoader;
 import com.chess.utilities.SoundPlayer;
 
 import android.app.AlertDialog;
@@ -84,23 +85,25 @@ public class MainApp extends Application {
 									"maya",
 									"modern",
 									"vintage"};
+
 	public void LoadBoard(String b){
-		board = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(b, "drawable", "com.chess"));
-    }
+    board = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(b, "drawable", "com.chess"));
+  }
+
 	public void LoadPieces(String p){
 		pieces = new Bitmap[2][6];
-		pieces[0][0] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_wp", "drawable", "com.chess"));
-		pieces[0][1] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_wn", "drawable", "com.chess"));
-		pieces[0][2] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_wb", "drawable", "com.chess"));
-		pieces[0][3] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_wr", "drawable", "com.chess"));
-		pieces[0][4] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_wq", "drawable", "com.chess"));
-		pieces[0][5] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_wk", "drawable", "com.chess"));
-		pieces[1][0] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_bp", "drawable", "com.chess"));
-		pieces[1][1] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_bn", "drawable", "com.chess"));
-		pieces[1][2] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_bb", "drawable", "com.chess"));
-		pieces[1][3] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_br", "drawable", "com.chess"));
-		pieces[1][4] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_bq", "drawable", "com.chess"));
-		pieces[1][5] = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(p+"_bk", "drawable", "com.chess"));
+		pieces[0][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_wp", "drawable", "com.chess"));
+		pieces[0][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_wn", "drawable", "com.chess"));
+		pieces[0][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_wb", "drawable", "com.chess"));
+		pieces[0][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_wr", "drawable", "com.chess"));
+		pieces[0][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_wq", "drawable", "com.chess"));
+		pieces[0][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_wk", "drawable", "com.chess"));
+		pieces[1][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bp", "drawable", "com.chess"));
+		pieces[1][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bn", "drawable", "com.chess"));
+		pieces[1][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bb", "drawable", "com.chess"));
+		pieces[1][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_br", "drawable", "com.chess"));
+		pieces[1][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bq", "drawable", "com.chess"));
+		pieces[1][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bk", "drawable", "com.chess"));
   }
 
   public LccHolder getLccHolder()
