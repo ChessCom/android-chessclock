@@ -978,23 +978,27 @@ public class Game extends CoreActivity {
 							white.setVisibility(View.GONE);
 							black.setVisibility(View.GONE);
 							analysisLL.setVisibility(View.VISIBLE);
-              if (!App.isLiveChess() && analysisButtons!=null)
-              {
-                showAnalysisButtons();
-              }
+							if (!App.isLiveChess() && analysisButtons!=null)
+							{
+								showAnalysisButtons();
+							}
 						} else{
 							white.setVisibility(View.VISIBLE);
 							black.setVisibility(View.VISIBLE);
 							analysisLL.setVisibility(View.GONE);
-              if (!App.isLiveChess() && analysisButtons!=null)
-              {
-                analysisButtons.setVisibility(View.GONE);
-              }
+							if (!App.isLiveChess() && analysisButtons!=null)
+							{
+								hideAnalysisButtons();
+							}
 						}
 
 						break;
 					}
 					default: break;
+				}
+
+				if(BV.board.mode < 4) {
+					hideAnalysisButtons();
 				}
 
 				if(BV.board.mode == 4 || BV.board.mode == 5){
@@ -1008,19 +1012,19 @@ public class Game extends CoreActivity {
 					if(BV.board.analysis){
 						timer.setVisibility(View.GONE);
 						analysisLL.setVisibility(View.VISIBLE);
-            if (!App.isLiveChess() && analysisButtons!=null)
-            {
-              showAnalysisButtons();
-            }
+						if (!App.isLiveChess() && analysisButtons!=null)
+						{
+							showAnalysisButtons();
+						}
 					} else{
 						white.setVisibility(View.GONE);
 						black.setVisibility(View.GONE);
 						timer.setVisibility(View.VISIBLE);
 						analysisLL.setVisibility(View.GONE);
-            if (!App.isLiveChess() && analysisButtons!=null)
-            {
-              analysisButtons.setVisibility(View.GONE);
-            }
+						if (!App.isLiveChess() && analysisButtons!=null)
+						{
+							hideAnalysisButtons();
+						}
 					}
 				}
             movelist.setText(BV.board.MoveListSAN());
@@ -2131,6 +2135,11 @@ public class Game extends CoreActivity {
     BV.invalidate();
     BV.board.submit = false;*/
   }
+
+	private void hideAnalysisButtons()
+	{
+		analysisButtons.setVisibility(View.GONE);
+	}
 
   private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver()
   {
