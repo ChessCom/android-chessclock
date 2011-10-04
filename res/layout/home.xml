@@ -76,12 +76,20 @@
 				android:id="@+id/site" android:text="@string/menuSite" android:padding="5dip"></TextView>
 		</LinearLayout>
 
-		<com.mopub.mobileads.MoPubView
+		<!--<com.mopub.mobileads.MoPubView
 			android:id="@+id/adview"
 			android:layout_width="fill_parent"
 			android:layout_height="50dp"
-		  android:visibility="gone"
-		/>
+		    android:visibility="gone"
+		/>-->
+
+        <!--android:layout_width="fill_parent"-->
+        <com.mobclix.android.sdk.MobclixMMABannerXLAdView
+            android:id="@+id/adview"
+            android:layout_height="50dip"
+            android:layout_width="320dip"
+            android:visibility="gone"
+            android:layout_gravity="center" />
 
 		<TextView android:layout_height="wrap_content"
 			android:layout_width="fill_parent" android:id="@+id/removeAds"

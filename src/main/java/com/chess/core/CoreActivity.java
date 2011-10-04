@@ -8,7 +8,7 @@ import com.chess.utilities.SoundPlayer;
 import com.chess.utilities.Web;
 import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
-import com.mopub.mobileads.MoPubView;
+import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -554,7 +554,7 @@ public abstract class CoreActivity extends Activity {
             App.sharedData.getString("premium_status", "0")) < 1));
   }
 
-  protected void showRemoveAds(MoPubView adview, TextView removeAds)
+  protected void showRemoveAds(MobclixMMABannerXLAdView adview, TextView removeAds)
   {
     int adsShowCounter = App.sharedData.getInt("com.chess.adsShowCounter", 0);
     if(adsShowCounter == 10)
@@ -573,7 +573,7 @@ public abstract class CoreActivity extends Activity {
     }
   }
 
-  protected void showAds(MoPubView adview)
+  protected void showAds(MobclixMMABannerXLAdView adview)
   {
     if(!isShowAds())
     {
@@ -582,9 +582,9 @@ public abstract class CoreActivity extends Activity {
     else
     {
       adview.setVisibility(View.VISIBLE);
-      adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+      /*adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
       //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
-      adview.loadAd();
+      adview.loadAd();*/
     }
   }
 

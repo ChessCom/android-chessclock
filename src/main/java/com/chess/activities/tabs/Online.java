@@ -38,24 +38,27 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
+import com.mobclix.android.sdk.MobclixAdView;
+import com.mobclix.android.sdk.MobclixAdViewListener;
+import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
-import com.mopub.mobileads.MoPubView;
 
 public class Online extends CoreActivity {
 	private ListView GamesList;
 	private Spinner GamesType;
 	private OnlineGamesAdapter GamesAdapter = null;
-  private TextView challengesListTitle;
-  private TextView startNewGameTitle;
-  private TextView tournaments;
-  private TextView stats;
-  private Button currentGame;
-  private Button start;
-  private GridView gridview;
-  private MoPubView adview;
-  private TextView removeAds;
+	private TextView challengesListTitle;
+	private TextView startNewGameTitle;
+	private TextView tournaments;
+	private TextView stats;
+	private Button currentGame;
+	private Button start;
+	private GridView gridview;
+	private MobclixMMABannerXLAdView adview;
+	private TextView removeAds;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -236,7 +239,8 @@ public class Online extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
-    adview = (MoPubView) findViewById(R.id.adview);
+    adview = (MobclixMMABannerXLAdView) findViewById(R.id.adview);
+	adview.addMobclixAdViewListener(new MobclixAdViewListenerImpl());
 
     start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener()
