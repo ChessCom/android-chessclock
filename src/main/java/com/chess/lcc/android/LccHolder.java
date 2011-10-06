@@ -112,8 +112,8 @@ public class LccHolder
     _lccClient.setSupportedClientFeatures(false, false);
     //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-    httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
-    //httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+    //httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+    httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
     httpClient.setMaxConnectionsPerAddress(4);
     httpClient.setSoTimeout(7000);
     httpClient.setConnectTimeout(10000);

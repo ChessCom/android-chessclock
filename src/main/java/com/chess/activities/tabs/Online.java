@@ -177,13 +177,18 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
-      new Handler().post(new Runnable() {
-          public void run() {
+      new Handler().post(new Runnable()
+      {
+          public void run()
+          {
+            if (!App.isLiveChess())
+            {
               showAds(adview);
               if (isShowAds()) {
-                  showRemoveAds(adview, removeAds);
+                showRemoveAds(adview, removeAds);
               }
-              disableScreenLock();
+            }
+            disableScreenLock();
           }
       });
     if (App.isLiveChess())
@@ -241,6 +246,7 @@ public class Online extends CoreActivity {
     });
     adview = (MobclixMMABannerXLAdView) findViewById(R.id.adview);
 	adview.addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+	adview.setVisibility(View.GONE);
 
     start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener()
@@ -727,22 +733,27 @@ public class Online extends CoreActivity {
     }
   }
 
-  private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver()
-  {
-    @Override
-    public void onReceive(Context context, Intent intent)
-    {
-      if (App.isLiveChess() && !intent.getExtras().getBoolean("enable"))
-      {
-        start.setVisibility(View.VISIBLE);
-        if (gridview != null)
-        {
-        gridview.setVisibility(View.VISIBLE);
-        }
-        challengesListTitle.setVisibility(View.VISIBLE);
-        startNewGameTitle.setVisibility(View.VISIBLE);
-      }
-    }
-  };
+	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, final Intent intent) {
+			new Handler().post(new Runnable() {
+				public void run() {
+					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
+						showAds(adview);
+						if (isShowAds()) {
+							showRemoveAds(adview, removeAds);
+						}
+
+						start.setVisibility(View.VISIBLE);
+						if (gridview != null) {
+							gridview.setVisibility(View.VISIBLE);
+						}
+						challengesListTitle.setVisibility(View.VISIBLE);
+						startNewGameTitle.setVisibility(View.VISIBLE);
+					}
+				}
+			});
+		}
+	};
 
 }

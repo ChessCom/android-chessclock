@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.chess.utilities.Notifications;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -1090,6 +1092,10 @@ public class Game extends CoreActivity {
                                      App.OnlineGame.values.get("timestamp"),
                                      PD = new MyProgressDialog(
                                        ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+
+          NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+          mNotificationManager.cancel(1);
+          Notifications.resetCounter();
           }
         }
         break;
@@ -1107,6 +1113,9 @@ public class Game extends CoreActivity {
                                    App.OnlineGame.values.get("timestamp"),
                                    PD = new MyProgressDialog(
                                      ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.cancel(1);
+            Notifications.resetCounter();
         }
 				break;
 			}

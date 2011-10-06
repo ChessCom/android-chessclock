@@ -44,6 +44,7 @@ public class Home extends CoreActivity {
     });
     adview = (MobclixMMABannerXLAdView) findViewById(R.id.adview);
     adview.addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+	adview.setVisibility(View.GONE);
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
