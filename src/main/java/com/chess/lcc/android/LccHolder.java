@@ -114,9 +114,10 @@ public class LccHolder
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
     //httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
     httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
-    httpClient.setMaxConnectionsPerAddress(4);
+    //httpClient.setMaxConnectionsPerAddress(4);
     httpClient.setSoTimeout(7000);
     httpClient.setConnectTimeout(10000);
+    //httpClient.setTimeout(7000); //
 
     httpClient.setKeyStoreType("PKCS12");
     httpClient.setTrustStoreType("PKCS12");
@@ -941,10 +942,11 @@ public class LccHolder
   {
     if (getAndroid().getGameActivity() == null)
     {
-      throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
+      /*throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
                                      "t2-t1=" + (previousFGTime-currentFGTime)/1000 + ", " +
                                      "id1=" + previousFGGameId + ", " +
-                                     "id2=" + currentFGGameId);
+                                     "id2=" + currentFGGameId);*/
+      return;
     }
     getAndroid().getGameActivity().runOnUiThread(new Runnable()
     {

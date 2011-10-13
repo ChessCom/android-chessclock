@@ -1992,7 +1992,7 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       OG = (com.chess.model.Game) intent.getSerializableExtra("object");
       Update(9);
     }
@@ -2003,7 +2003,7 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 
       final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
       Integer newWhiteRating = null;
@@ -2068,7 +2068,7 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
     }
   };

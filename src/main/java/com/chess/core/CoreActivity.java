@@ -273,7 +273,7 @@ public abstract class CoreActivity extends Activity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       final com.chess.live.client.Game game = App.getLccHolder().getGame(App.gameId);
       final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
         //.setTitle(intent.getExtras().getString("title"))
@@ -320,7 +320,7 @@ public abstract class CoreActivity extends Activity {
     {
       if (App.isLiveChess())
       {
-        LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+        LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
         Update(intent.getExtras().getInt("code"));
       }
     }
@@ -333,7 +333,7 @@ public abstract class CoreActivity extends Activity {
     {
       if (App.isLiveChess())
       {
-        LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+        LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
         MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
         boolean enable = intent.getExtras().getBoolean("enable");
 
@@ -434,7 +434,7 @@ public abstract class CoreActivity extends Activity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       App.ShowDialog(CoreActivity.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
     }
   };
@@ -444,7 +444,7 @@ public abstract class CoreActivity extends Activity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       boolean enable = intent.getExtras().getBoolean("enable");
       manageConnectingIndicator(enable, intent.getExtras().getString("message"));
     }

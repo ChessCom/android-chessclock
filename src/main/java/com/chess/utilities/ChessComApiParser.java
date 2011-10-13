@@ -83,7 +83,14 @@ public class ChessComApiParser {
         ArrayList<GameListElement> output = new ArrayList<GameListElement>();
 
         String[] GamesArray = result.split(":", 2);
-        int gamescount = new Integer(GamesArray[0].substring(8));
+        int gamescount;
+        try
+        {
+          gamescount = Integer.parseInt(GamesArray[0].substring(8));
+        } catch(NumberFormatException e)
+        {
+          return output;
+        }
 
         int i, j, inc = 0;
         String[] tmp = GamesArray[1].split(":");

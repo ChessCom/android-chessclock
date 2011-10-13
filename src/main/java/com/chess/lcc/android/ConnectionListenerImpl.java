@@ -23,7 +23,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onOtherClientEntered(User user)
   {
-    Log.d("CONNECTION", "Another client entered: user=" + user.getUsername());
+    Log.d("", "LCCLOG CONNECTION: Another client entered: user=" + user.getUsername());
     lccHolder.getAndroid().processOtherClientEntered();
   }
 
@@ -50,7 +50,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.getAndroid().getSharedDataEditor().commit();*/
     lccHolder.getAndroid().closeLoggingInIndicator();
 
-    Log.d("CONNECTION", "User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
+    Log.d("", "LCCLOG CONNECTION: User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
   }
 
   public void onSettingsChanged(User user, UserSettings settings)
@@ -62,7 +62,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable)
   {
-    Log.d("CONNECTION", "CONNECTION: User connection failure:" + message + ", details=" + details);
+    Log.d("", "LCCLOG CONNECTION: User connection failure:" + message + ", details=" + details);
     lccHolder.setConnected(false);
     lccHolder.getAndroid().closeLoggingInIndicator();
     //lccHolder.setConnectingInProgress(false);
@@ -92,6 +92,10 @@ public class ConnectionListenerImpl implements ConnectionListener
         }
       }
     }
+    else
+    {
+      detailsMessage = "Connection/login error";
+    }
     lccHolder.getAndroid().informAndExit("", detailsMessage);
     //lccHolder.getAndroid().sendConnectionBroadcastIntent(false, 0, detailsMessage);
   }
@@ -99,7 +103,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
                                Throwable arg3)
   {
-    LccHolder.LOG.info("CONNECTION: Connection Lost");
+    LccHolder.LOG.info("LCCLOG CONNECTION: Connection Lost");
     lccHolder.setConnected(false);
     //lccHolder.setConnectingInProgress(false);
     lccHolder.getAndroid().showReconnectingIndicator();
@@ -108,7 +112,7 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onConnectionReestablished(User arg0)
   {
-    LccHolder.LOG.info("CONNECTION: onConnectionReestablished");
+    LccHolder.LOG.info("LCCLOG CONNECTION: onConnectionReestablished");
     //lccHolder.clearGames();
     lccHolder.clearChallenges();
     lccHolder.clearOwnChallenges();
@@ -128,12 +132,12 @@ public class ConnectionListenerImpl implements ConnectionListener
 
   public void onPublishFailed(User user, Throwable th)
   {
-    LccHolder.LOG.info("CONNECTION: onPublishFailed");
+    LccHolder.LOG.info("LCCLOG CONNECTION: onPublishFailed");
   }
 
   public void onConnectionRestored(User arg0)
   {
-    LccHolder.LOG.info("CONNECTION: Connection Restored");
+    LccHolder.LOG.info("LCCLOG CONNECTION: Connection Restored");
     lccHolder.setConnected(true);
     //lccHolder.setConnectingInProgress(false);
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
@@ -157,7 +161,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   }
 
   public void onKicked(User user, String reason, String message) {
-    LccHolder.LOG.info("CONNECTION: user kicked");
+    LccHolder.LOG.info("LCCLOG CONNECTION: user kicked");
     lccHolder.getAndroid().informAndExit(reason, "You have been kicked/banned");
   }
 
