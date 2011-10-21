@@ -3,9 +3,9 @@ package com.chess.activities.tabs;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chess.R;
@@ -14,13 +14,10 @@ import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixAdViewListenerImpl;
-import com.mobclix.android.sdk.MobclixFullScreenAdView;
-import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 public class Home extends CoreActivity {
-
-	private MobclixMMABannerXLAdView adview;
+	private LinearLayout adviewWrapper = null;
 	private TextView removeAds;
 
 	@Override
@@ -42,9 +39,16 @@ public class Home extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
-    adview = (MobclixMMABannerXLAdView) findViewById(R.id.adview);
-    adview.addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-	adview.setVisibility(View.GONE);
+
+
+	if (isShowAds())
+	{
+		setAdview(new MobclixMMABannerXLAdView(this));
+		getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+    	adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+    	adviewWrapper.addView(getAdview());
+	}
+
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
@@ -129,15 +133,18 @@ public class Home extends CoreActivity {
   @Override
   protected void onResume() {
       super.onResume();
-      new Handler().post(new Runnable() {
-          public void run() {
-              showAds(adview);
-              showFullscreenAd();
-              if (isShowAds()) {
-                  showRemoveAds(adview, removeAds);
-              }
-          }
-      });
+      if (isShowAds())
+      {
+        showAds(adviewWrapper, getAdview(), removeAds);
+      }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    if (isShowAds()) {
+      pauseAdview();
+    }
   }
 
   private void showFullscreenAd()

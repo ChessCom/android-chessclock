@@ -10,8 +10,8 @@
           android:visibility="gone"
       />-->
 
-    <com.mobclix.android.sdk.MobclixMMABannerXLAdView
-            android:id="@+id/adview"
+    <LinearLayout
+            android:id="@+id/adview_wrapper"
             android:layout_height="50dip"
             android:layout_width="320dip"
             android:visibility="gone"
