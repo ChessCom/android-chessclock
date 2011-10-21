@@ -31,7 +31,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   {
     lccHolder.setUser(user);
     lccHolder.setConnected(true);
-    //lccHolder.setConnectingInProgress(false);
+    lccHolder.setConnectingInProgress(false);
     lccHolder.setSettings(settings);
     lccHolder.setServerStats(stats);
     lccHolder.setFriends(settings.getFriends());
@@ -64,8 +64,8 @@ public class ConnectionListenerImpl implements ConnectionListener
   {
     Log.d("", "LCCLOG CONNECTION: User connection failure:" + message + ", details=" + details);
     lccHolder.setConnected(false);
+    lccHolder.setConnectingInProgress(false);
     lccHolder.getAndroid().closeLoggingInIndicator();
-    //lccHolder.setConnectingInProgress(false);
     String detailsMessage = "";
     if (details != null)
     {
@@ -105,7 +105,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   {
     LccHolder.LOG.info("LCCLOG CONNECTION: Connection Lost");
     lccHolder.setConnected(false);
-    //lccHolder.setConnectingInProgress(false);
+    lccHolder.setConnectingInProgress(true);
     lccHolder.getAndroid().showReconnectingIndicator();
     lccHolder.getAndroid().closeLoggingInIndicator();
   }
@@ -118,7 +118,7 @@ public class ConnectionListenerImpl implements ConnectionListener
     lccHolder.clearOwnChallenges();
     lccHolder.clearSeeks();
     lccHolder.setConnected(true);
-    //lccHolder.setConnectingInProgress(false);
+    lccHolder.setConnectingInProgress(false);
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
     lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
@@ -139,7 +139,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   {
     LccHolder.LOG.info("LCCLOG CONNECTION: Connection Restored");
     lccHolder.setConnected(true);
-    //lccHolder.setConnectingInProgress(false);
+    lccHolder.setConnectingInProgress(false);
     lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
     lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
     lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());

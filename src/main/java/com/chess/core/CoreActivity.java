@@ -29,6 +29,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public abstract class CoreActivity extends Activity {
@@ -39,6 +40,8 @@ public abstract class CoreActivity extends Activity {
 	public MyProgressDialog PD;
   public LccHolder lccHolder;
   private PowerManager.WakeLock wakeLock;
+	private MobclixMMABannerXLAdView adview = null;
+	private boolean adviewPaused;
 
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
@@ -130,7 +133,14 @@ public abstract class CoreActivity extends Activity {
       }
     }
 
-    if(App.isLiveChess() && !lccHolder.isConnected()/* && !lccHolder.isConnectingInProgress()*/)
+    final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+    if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null)
+    {
+      reconnectingIndicator.dismiss();
+      lccHolder.getAndroid().setReconnectingIndicator(null);
+    }
+
+    if(App.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress())
     {
       //lccHolder.getAndroid().showConnectingIndicator();
       manageConnectingIndicator(true, "Loading Live Chess");
@@ -333,7 +343,7 @@ public abstract class CoreActivity extends Activity {
     {
       if (App.isLiveChess())
       {
-        LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+        LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction() + ", enable=" + intent.getExtras().getBoolean("enable"));
         MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
         boolean enable = intent.getExtras().getBoolean("enable");
 
@@ -342,8 +352,13 @@ public abstract class CoreActivity extends Activity {
           reconnectingIndicator.dismiss();
           lccHolder.getAndroid().setReconnectingIndicator(null);
         }
-        /*else */if (enable)
+        /*else */
+        if (enable)
         {
+          if (isShowAds() && adview != null && !adviewPaused)
+          {
+            pauseAdview();
+          }
           reconnectingIndicator = new MyProgressDialog(context);
           reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
           reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener()
@@ -361,6 +376,13 @@ public abstract class CoreActivity extends Activity {
           reconnectingIndicator.setIndeterminate(true);
           reconnectingIndicator.show();
           lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
+        }
+        else
+        {
+          if (isShowAds() && adview != null && adviewPaused)
+          {
+            resumeAdview();
+          }
         }
       }
     }
@@ -554,26 +576,34 @@ public abstract class CoreActivity extends Activity {
             App.sharedData.getString("premium_status", "0")) < 1));
   }
 
-  protected void showRemoveAds(MobclixMMABannerXLAdView adview, TextView removeAds)
+  protected void showAds(LinearLayout adviewWrapper, MobclixMMABannerXLAdView adview, TextView removeAds)
   {
     int adsShowCounter = App.sharedData.getInt("com.chess.adsShowCounter", 0);
     if(adsShowCounter == 10)
     {
-      adview.setVisibility(View.GONE);
+      if (!adviewPaused)
+      {
+        pauseAdview();
+      }
+      adviewWrapper.setVisibility(View.GONE);
       removeAds.setVisibility(View.VISIBLE);
       App.SDeditor.putInt("com.chess.adsShowCounter", 0);
       App.SDeditor.commit();
     }
     else
     {
+      if (adviewPaused)
+      {
+        resumeAdview();
+      }
       removeAds.setVisibility(View.GONE);
-      adview.setVisibility(View.VISIBLE);
+      adviewWrapper.setVisibility(View.VISIBLE);
       App.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);
       App.SDeditor.commit();
     }
   }
 
-  protected void showAds(MobclixMMABannerXLAdView adview)
+  /*protected void showAds(MobclixMMABannerXLAdView adview)
   {
     if(!isShowAds())
     {
@@ -582,10 +612,34 @@ public abstract class CoreActivity extends Activity {
     else
     {
       adview.setVisibility(View.VISIBLE);
-      /*adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+      //adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
       //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
-      adview.loadAd();*/
+      //adview.loadAd();
     }
+  }*/
+
+  public MobclixMMABannerXLAdView getAdview()
+  {
+    return adview;
   }
 
+  public void setAdview(MobclixMMABannerXLAdView adview)
+  {
+    this.adview = adview;
+  }
+
+  protected void resumeAdview()
+  {
+    //System.out.println("Mobclix: RESUME");
+    adview.resume();
+    adviewPaused = false;
+  }
+
+  protected void pauseAdview()
+  {
+    //System.out.println("Mobclix: PAUSE");
+    adview.pause();
+    adviewPaused = true;
+  }
 }
+
