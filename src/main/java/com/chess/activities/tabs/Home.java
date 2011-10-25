@@ -3,9 +3,9 @@ package com.chess.activities.tabs;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chess.R;
@@ -13,12 +13,12 @@ import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
-import com.mopub.mobileads.*;
+import com.chess.utilities.MobclixAdViewListenerImpl;
+import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 public class Home extends CoreActivity {
-
-  private MoPubView adview;
-  private TextView removeAds;
+	private LinearLayout adviewWrapper = null;
+	private TextView removeAds;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,16 @@ public class Home extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
-    adview = (MoPubView) findViewById(R.id.adview);
+
+
+	if (isShowAds())
+	{
+		setAdview(new MobclixMMABannerXLAdView(this));
+		getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+    	adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+    	adviewWrapper.addView(getAdview());
+	}
+
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
@@ -124,26 +133,69 @@ public class Home extends CoreActivity {
   @Override
   protected void onResume() {
       super.onResume();
-      new Handler().post(new Runnable() {
-          public void run() {
-              showAds(adview);
-              showFullscreenAd();
-              if (isShowAds()) {
-                  showRemoveAds(adview, removeAds);
-              }
-          }
-      });
+      if (isShowAds())
+      {
+        showAds(adviewWrapper, getAdview(), removeAds);
+      }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    if (isShowAds()) {
+      pauseAdview();
+    }
   }
 
   private void showFullscreenAd()
   {
     if(!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && isShowAds())
     {
-      //MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
-      /*MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-      interstitial.showAd();
-      App.SDeditor.putBoolean("com.chess.showedFullscreenAd", true);
-      App.SDeditor.commit();*/
+		//MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
+/*		fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {
+			
+			@Override
+			public String query() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void onPresentAd(MobclixFullScreenAdView arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFinishLoad(MobclixFullScreenAdView arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailedLoad(MobclixFullScreenAdView adView, int errorCode) {
+				System.out.println("!!!!!!!! AD ERROR: " + errorCode);				
+			}
+			
+			@Override
+			public void onDismissAd(MobclixFullScreenAdView arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public String keywords() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		});*/
+		//fsAdView.requestAndDisplayAd();
+
+		//MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
+		/*MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+		interstitial.showAd();
+		App.SDeditor.putBoolean("com.chess.showedFullscreenAd", true);
+		App.SDeditor.commit();*/
     }
   }
 }

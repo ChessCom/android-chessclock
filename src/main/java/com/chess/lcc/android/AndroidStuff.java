@@ -103,7 +103,7 @@ public class AndroidStuff
 
   public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object)
   {
-    //LccHolder.LOG.info("ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
+    LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
     lccHolder.getAndroid().getContext().sendBroadcast(
       new Intent(broadcastAction)
         .putExtra("code", code)
@@ -117,7 +117,7 @@ public class AndroidStuff
 
   public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message)
   {
-    LccHolder.LOG.info("ANDROID: sendBroadcastMessageIntent action=" + broadcastAction);
+    LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
     lccHolder.getAndroid().getContext().sendBroadcast(
       new Intent(broadcastAction)
         .putExtra("code", code)
@@ -132,6 +132,7 @@ public class AndroidStuff
 
   public void sendBroadcastIntent(int code, String broadcastAction)
   {
+	LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
     lccHolder.getAndroid().getContext().sendBroadcast(
       new Intent(broadcastAction)
         .putExtra("code", code)
@@ -187,6 +188,7 @@ public class AndroidStuff
 
   public void manageProgressDialog(String broadcastAction, boolean enable, String message)
   {
+    LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
     lccHolder.getAndroid().getContext().sendBroadcast(
       new Intent(broadcastAction)
         .putExtra("enable", enable)
@@ -226,7 +228,7 @@ public class AndroidStuff
 
   public void informAndExit(String broadcastAction, String title, String message)
   {
-    LccHolder.LOG.info("ANDROID: sendBroadcastMessageIntent action=" + broadcastAction);
+    LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
     lccHolder.getAndroid().getContext().sendBroadcast(
       new Intent(broadcastAction)
         .putExtra("title", title)

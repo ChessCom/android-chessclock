@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.chess.utilities.Notifications;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -978,23 +980,27 @@ public class Game extends CoreActivity {
 							white.setVisibility(View.GONE);
 							black.setVisibility(View.GONE);
 							analysisLL.setVisibility(View.VISIBLE);
-              if (!App.isLiveChess() && analysisButtons!=null)
-              {
-                showAnalysisButtons();
-              }
+							if (!App.isLiveChess() && analysisButtons!=null)
+							{
+								showAnalysisButtons();
+							}
 						} else{
 							white.setVisibility(View.VISIBLE);
 							black.setVisibility(View.VISIBLE);
 							analysisLL.setVisibility(View.GONE);
-              if (!App.isLiveChess() && analysisButtons!=null)
-              {
-                analysisButtons.setVisibility(View.GONE);
-              }
+							if (!App.isLiveChess() && analysisButtons!=null)
+							{
+								hideAnalysisButtons();
+							}
 						}
 
 						break;
 					}
 					default: break;
+				}
+
+				if(BV.board.mode < 4) {
+					hideAnalysisButtons();
 				}
 
 				if(BV.board.mode == 4 || BV.board.mode == 5){
@@ -1008,19 +1014,19 @@ public class Game extends CoreActivity {
 					if(BV.board.analysis){
 						timer.setVisibility(View.GONE);
 						analysisLL.setVisibility(View.VISIBLE);
-            if (!App.isLiveChess() && analysisButtons!=null)
-            {
-              showAnalysisButtons();
-            }
+						if (!App.isLiveChess() && analysisButtons!=null)
+						{
+							showAnalysisButtons();
+						}
 					} else{
 						white.setVisibility(View.GONE);
 						black.setVisibility(View.GONE);
 						timer.setVisibility(View.VISIBLE);
 						analysisLL.setVisibility(View.GONE);
-            if (!App.isLiveChess() && analysisButtons!=null)
-            {
-              analysisButtons.setVisibility(View.GONE);
-            }
+						if (!App.isLiveChess() && analysisButtons!=null)
+						{
+							hideAnalysisButtons();
+						}
 					}
 				}
             movelist.setText(BV.board.MoveListSAN());
@@ -1086,6 +1092,10 @@ public class Game extends CoreActivity {
                                      App.OnlineGame.values.get("timestamp"),
                                      PD = new MyProgressDialog(
                                        ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+
+          NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+          mNotificationManager.cancel(1);
+          Notifications.resetCounter();
           }
         }
         break;
@@ -1103,6 +1113,9 @@ public class Game extends CoreActivity {
                                    App.OnlineGame.values.get("timestamp"),
                                    PD = new MyProgressDialog(
                                      ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.cancel(1);
+            Notifications.resetCounter();
         }
 				break;
 			}
@@ -1979,7 +1992,7 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       OG = (com.chess.model.Game) intent.getSerializableExtra("object");
       Update(9);
     }
@@ -1990,7 +2003,7 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 
       final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
       Integer newWhiteRating = null;
@@ -2055,7 +2068,7 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
+      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
       App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
     }
   };
@@ -2131,6 +2144,11 @@ public class Game extends CoreActivity {
     BV.invalidate();
     BV.board.submit = false;*/
   }
+
+	private void hideAnalysisButtons()
+	{
+		analysisButtons.setVisibility(View.GONE);
+	}
 
   private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver()
   {

@@ -83,7 +83,7 @@ public class LccHolder
   private Timer opponentClockDelayTimer = new Timer("OpponentClockDelayTimer", true);
   private ChessClock whiteClock;
   private ChessClock blackClock;
-  //private boolean connectingInProgress;
+  private boolean connectingInProgress;
   private boolean activityPausedMode = true;
   private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
   private Integer latestMoveNumber;
@@ -112,11 +112,12 @@ public class LccHolder
     _lccClient.setSupportedClientFeatures(false, false);
     //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-    httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
-    //httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+    //httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+    httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
     httpClient.setMaxConnectionsPerAddress(4);
     httpClient.setSoTimeout(7000);
     httpClient.setConnectTimeout(10000);
+    httpClient.setTimeout(7000); //
 
     httpClient.setKeyStoreType("PKCS12");
     httpClient.setTrustStoreType("PKCS12");
@@ -730,13 +731,14 @@ public class LccHolder
     getAndroid().getContext().setLiveChess(false);
     _lccClient.disconnect();
     setConnected(false);
+    setConnectingInProgress(false);
     clearGames();
     clearChallenges();
     clearOwnChallenges();
     clearSeeks();
   }
 
-  /*public boolean isConnectingInProgress()
+  public boolean isConnectingInProgress()
   {
     return connectingInProgress;
   }
@@ -744,7 +746,7 @@ public class LccHolder
   public void setConnectingInProgress(boolean connectingInProgress)
   {
     this.connectingInProgress = connectingInProgress;
-  }*/
+  }
 
   public boolean isSeekContains(Long id)
   {
@@ -941,10 +943,11 @@ public class LccHolder
   {
     if (getAndroid().getGameActivity() == null)
     {
-      throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
+      /*throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
                                      "t2-t1=" + (previousFGTime-currentFGTime)/1000 + ", " +
                                      "id1=" + previousFGGameId + ", " +
-                                     "id2=" + currentFGGameId);
+                                     "id2=" + currentFGGameId);*/
+      return;
     }
     getAndroid().getGameActivity().runOnUiThread(new Runnable()
     {

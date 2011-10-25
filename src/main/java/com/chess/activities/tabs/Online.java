@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,29 +39,30 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
+import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
-import com.mopub.mobileads.MoPubView;
 
 public class Online extends CoreActivity {
 	private ListView GamesList;
 	private Spinner GamesType;
 	private OnlineGamesAdapter GamesAdapter = null;
-  private TextView challengesListTitle;
-  private TextView startNewGameTitle;
-  private TextView tournaments;
-  private TextView stats;
-  private Button currentGame;
-  private Button start;
-  private GridView gridview;
-  private MoPubView adview;
-  private TextView removeAds;
+	private TextView challengesListTitle;
+	private TextView startNewGameTitle;
+	private TextView tournaments;
+	private TextView stats;
+	private Button currentGame;
+	private Button start;
+	private GridView gridview;
+	private TextView removeAds;
 
 	private String[] queries;
 	private boolean compleated = false;
 	private int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
+	private LinearLayout adviewWrapper = null;
 
   public static int ONLINE_CALLBACK_CODE = 32;
 
@@ -174,21 +176,22 @@ public class Online extends CoreActivity {
     {
       App.GameListItems.clear();
     }*/
-      new Handler().post(new Runnable() {
-          public void run() {
-              showAds(adview);
-              if (isShowAds()) {
-                  showRemoveAds(adview, removeAds);
-              }
-              disableScreenLock();
+    
+    if (isShowAds() && (!App.isLiveChess() || (App.isLiveChess() && lccHolder.isConnected()))) {
+        showAds(adviewWrapper, getAdview(), removeAds);
+    }
+    
+      new Handler().post(new Runnable()
+      {
+          public void run()
+          {
+            disableScreenLock();
           }
       });
     if (App.isLiveChess())
     {
       start.setText("Custom Challenge");
     }
-
-
     else
     {
       start.setText("Challenge");
@@ -197,6 +200,10 @@ public class Online extends CoreActivity {
 
   @Override
   protected void onPause() {
+  if (isShowAds())
+  {
+    pauseAdview();
+  }
     GamesList.setVisibility(View.GONE);
     unregisterReceiver(this.lccLoggingInInfoReceiver);
     if (App.isLiveChess())
@@ -236,7 +243,14 @@ public class Online extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
-    adview = (MoPubView) findViewById(R.id.adview);
+
+    if (isShowAds())
+	{
+		setAdview(new MobclixMMABannerXLAdView(this));
+		getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+    	adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+    	adviewWrapper.addView(getAdview());
+	}
 
     start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener()
@@ -723,22 +737,27 @@ public class Online extends CoreActivity {
     }
   }
 
-  private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver()
-  {
-    @Override
-    public void onReceive(Context context, Intent intent)
-    {
-      if (App.isLiveChess() && !intent.getExtras().getBoolean("enable"))
-      {
-        start.setVisibility(View.VISIBLE);
-        if (gridview != null)
-        {
-        gridview.setVisibility(View.VISIBLE);
-        }
-        challengesListTitle.setVisibility(View.VISIBLE);
-        startNewGameTitle.setVisibility(View.VISIBLE);
-      }
-    }
-  };
+	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, final Intent intent) {
+			new Handler().post(new Runnable() {
+				public void run() {
+					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
+						if (isShowAds())
+						{
+			              showAds(adviewWrapper, getAdview(), removeAds);
+			            }
+
+						start.setVisibility(View.VISIBLE);
+						if (gridview != null) {
+							gridview.setVisibility(View.VISIBLE);
+						}
+						challengesListTitle.setVisibility(View.VISIBLE);
+						startNewGameTitle.setVisibility(View.VISIBLE);
+					}
+				}
+			});
+		}
+	};
 
 }
