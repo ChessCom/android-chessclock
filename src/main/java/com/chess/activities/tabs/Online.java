@@ -122,6 +122,9 @@ public class Online extends CoreActivity {
 
   protected void onResume()
   {
+    if (isShowAds() && (!App.isLiveChess() || (App.isLiveChess() && lccHolder.isConnected()))) {
+      showAds(adviewWrapper, getAdview(), removeAds);
+    }
     App.setLiveChess(extras.getBoolean("liveChess"));
     if(App.isLiveChess() && !lccHolder.isConnected())
     {
@@ -177,10 +180,6 @@ public class Online extends CoreActivity {
       App.GameListItems.clear();
     }*/
     
-    if (isShowAds() && (!App.isLiveChess() || (App.isLiveChess() && lccHolder.isConnected()))) {
-        showAds(adviewWrapper, getAdview(), removeAds);
-    }
-    
       new Handler().post(new Runnable()
       {
           public void run()
@@ -219,8 +218,17 @@ public class Online extends CoreActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-		setContentView(R.layout.online);
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.online);
+
+      if (isShowAds())
+      {
+        setAdview(new MobclixMMABannerXLAdView(this));
+        getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+        adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+        adviewWrapper.addView(getAdview());
+        adviewWrapper.setVisibility(View.VISIBLE);
+      }
 
 		queries = new String[]{
 				"http://www." + LccHolder.HOST + "/api/echess_challenges?id="+App.sharedData.getString("user_token", ""),
@@ -243,14 +251,6 @@ public class Online extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
-
-    if (isShowAds())
-	{
-		setAdview(new MobclixMMABannerXLAdView(this));
-		getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-    	adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-    	adviewWrapper.addView(getAdview());
-	}
 
     start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener()
@@ -743,7 +743,7 @@ public class Online extends CoreActivity {
 			new Handler().post(new Runnable() {
 				public void run() {
 					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
-						if (isShowAds())
+						if (isShowAds() && lccHolder.isConnected())
 						{
 			              showAds(adviewWrapper, getAdview(), removeAds);
 			            }

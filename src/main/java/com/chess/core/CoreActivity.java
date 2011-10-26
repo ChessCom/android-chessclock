@@ -3,10 +3,7 @@ package com.chess.core;
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
-import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
-import com.chess.utilities.Web;
-import com.chess.utilities.WebService;
+import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
@@ -28,8 +25,12 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public abstract class CoreActivity extends Activity {
@@ -46,6 +47,8 @@ public abstract class CoreActivity extends Activity {
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
 	public abstract void Update(int code);
+	protected AlertDialog adPopup;
+	//PopupWindow pw;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -571,8 +574,8 @@ public abstract class CoreActivity extends Activity {
   {
     boolean liveMembershipLevel =
       lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 30) : false;
-    return ((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
-            (7 * 24 * 60 * 60 * 1000)) && (liveMembershipLevel || (!App.isLiveChess() && Integer.parseInt(
+    return /*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
+            (7 * 24 * 60 * 60 * 1000)) && */(liveMembershipLevel || (!App.isLiveChess() && Integer.parseInt(
             App.sharedData.getString("premium_status", "0")) < 1));
   }
 
@@ -631,15 +634,48 @@ public abstract class CoreActivity extends Activity {
   protected void resumeAdview()
   {
     //System.out.println("Mobclix: RESUME");
-    adview.resume();
+    if (adview != null)
+    {
+      //adview.resume();
+      adview.getAd();
+    }
     adviewPaused = false;
   }
 
   protected void pauseAdview()
   {
     //System.out.println("Mobclix: PAUSE");
-    adview.pause();
+    if (adview != null)
+    {
+      adview.pause();
+    }
     adviewPaused = true;
   }
-}
+  
+  protected void showAdPopup()
+  {
+	  AlertDialog.Builder builder;
+	  //Context mContext = getApplicationContext();
+	  Context mContext = this;
+	  LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+	  View layout = inflater.inflate(R.layout.ad_popup,
+	                                 (ViewGroup) findViewById(R.id.layout_root));
 
+	  LinearLayout adviewPopupWrapper = (LinearLayout) layout.findViewById(R.id.adview_popup_wrapper);
+	  //image.setImageResource(R.drawable.android);
+
+	  builder = new AlertDialog.Builder(mContext);
+	  builder.setView(layout);
+	  adPopup = builder.create();
+	  adPopup.show();
+	  
+	/*  //Context mContext = getApplicationContext();
+	  LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+	  View layout = inflater.inflate(R.layout.ad_popup,
+	        (ViewGroup) findViewById(R.id.layout_root));
+	
+	  pw = new PopupWindow(layout, 320, 300, true);
+	  // display the popup in the center
+	  pw.showAtLocation(layout, Gravity.CENTER, 0, 0);*/
+  }
+}

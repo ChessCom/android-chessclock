@@ -23,11 +23,19 @@ public class Home extends CoreActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		if(App.guest)
 			setContentView(R.layout.home_guest);
 		else
 			setContentView(R.layout.home);
+
+        if (isShowAds())
+        {
+            setAdview(new MobclixMMABannerXLAdView(this));
+            getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+            adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+            adviewWrapper.addView(getAdview());
+            adviewWrapper.setVisibility(View.VISIBLE);
+        }
 
 	removeAds = (TextView) findViewById(R.id.removeAds);
     removeAds.setOnClickListener(new OnClickListener()
@@ -39,16 +47,6 @@ public class Home extends CoreActivity {
           "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
       }
     });
-
-
-	if (isShowAds())
-	{
-		setAdview(new MobclixMMABannerXLAdView(this));
-		getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-    	adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-    	adviewWrapper.addView(getAdview());
-	}
-
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
@@ -131,20 +129,21 @@ public class Home extends CoreActivity {
 	}
 
   @Override
-  protected void onResume() {
-      super.onResume();
-      if (isShowAds())
-      {
-        showAds(adviewWrapper, getAdview(), removeAds);
-      }
+  protected void onResume()
+  {
+    if (isShowAds())
+    {
+      showAds(adviewWrapper, getAdview(), removeAds);
+    }
+    super.onResume();
   }
 
   @Override
   protected void onPause() {
-    super.onPause();
     if (isShowAds()) {
       pauseAdview();
     }
+    super.onPause();
   }
 
   private void showFullscreenAd()

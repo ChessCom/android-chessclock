@@ -10,20 +10,25 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
+import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class OnlineNewGame extends CoreActivity {
 	private ListView OpenChallengesLV;
@@ -32,12 +37,33 @@ public class OnlineNewGame extends CoreActivity {
 	private int UPDATE_DELAY = 120000;
   private Button challengecreate;
   private Button currentGame;
+	private TextView removeAds;
+	private LinearLayout adviewWrapper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-    setContentView(R.layout.onlinenewgame);
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.onlinenewgame);
 
+      if (isShowAds())
+      {
+        setAdview(new MobclixMMABannerXLAdView(this));
+        getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+        adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+        adviewWrapper.addView(getAdview());
+        adviewWrapper.setVisibility(View.VISIBLE);
+      }
+
+    removeAds = (TextView) findViewById(R.id.removeAds);
+    removeAds.setOnClickListener(new OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+      }
+    });
         OpenChallengesLV = (ListView)this.findViewById(R.id.openChallenges);
         OpenChallengesLV.setAdapter(GamesAdapter);
         OpenChallengesLV.setOnItemClickListener(new OnItemClickListener() {
@@ -189,6 +215,10 @@ public class OnlineNewGame extends CoreActivity {
 
   protected void onResume()
   {
+    if (isShowAds())
+	{
+      showAds(adviewWrapper, getAdview(), removeAds);
+    }
     registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
     super.onResume();
     if (lccHolder.getCurrentGameId() == null)
@@ -204,6 +234,10 @@ public class OnlineNewGame extends CoreActivity {
 
   @Override
   protected void onPause() {
+    if (isShowAds())
+    {
+      pauseAdview();
+    }
     unregisterReceiver(challengesListUpdateReceiver);
     super.onPause();
     enableScreenLock();
