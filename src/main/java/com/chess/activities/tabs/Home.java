@@ -14,6 +14,8 @@ import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixAdViewListenerImpl;
+import com.mobclix.android.sdk.MobclixFullScreenAdView;
+import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 public class Home extends CoreActivity {
@@ -134,6 +136,7 @@ public class Home extends CoreActivity {
     if (isShowAds())
     {
       showAds(adviewWrapper, getAdview(), removeAds);
+      showFullscreenAd();
     }
     super.onResume();
   }
@@ -150,8 +153,8 @@ public class Home extends CoreActivity {
   {
     if(!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && isShowAds())
     {
-		//MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
-/*		fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {
+		MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
+		fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {
 			
 			@Override
 			public String query() {
@@ -161,24 +164,24 @@ public class Home extends CoreActivity {
 			
 			@Override
 			public void onPresentAd(MobclixFullScreenAdView arg0) {
-				// TODO Auto-generated method stub
+				System.out.println("mobclix fullscreen onPresentAd");
 				
 			}
 			
 			@Override
 			public void onFinishLoad(MobclixFullScreenAdView arg0) {
-				// TODO Auto-generated method stub
+				System.out.println("mobclix fullscreen onFinishLoad");
 				
 			}
 			
 			@Override
 			public void onFailedLoad(MobclixFullScreenAdView adView, int errorCode) {
-				System.out.println("!!!!!!!! AD ERROR: " + errorCode);				
+				System.out.println("mobclix fullscreen onFailedLoad errorCode=" + errorCode);
 			}
 			
 			@Override
 			public void onDismissAd(MobclixFullScreenAdView arg0) {
-				// TODO Auto-generated method stub
+				System.out.println("mobclix fullscreen onDismissAd");
 				
 			}
 			
@@ -187,14 +190,14 @@ public class Home extends CoreActivity {
 				// TODO Auto-generated method stub
 				return null;
 			}
-		});*/
-		//fsAdView.requestAndDisplayAd();
+		});
+		fsAdView.requestAndDisplayAd();
 
 		//MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
 		/*MoPubInterstitial interstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-		interstitial.showAd();
+		interstitial.showAd();*/
 		App.SDeditor.putBoolean("com.chess.showedFullscreenAd", true);
-		App.SDeditor.commit();*/
+		App.SDeditor.commit();
     }
   }
 }

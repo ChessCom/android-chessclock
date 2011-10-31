@@ -5,6 +5,7 @@ import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
+import com.mobclix.android.sdk.MobclixAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -636,8 +637,8 @@ public abstract class CoreActivity extends Activity {
     //System.out.println("Mobclix: RESUME");
     if (adview != null)
     {
-      //adview.resume();
       adview.getAd();
+      adview.resume();
     }
     adviewPaused = false;
   }

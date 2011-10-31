@@ -548,7 +548,7 @@ public class Game extends CoreActivity {
 			}
 		}
 
-		if (isShowAds())
+		if (isShowAds() && getAdview() == null)
 	    {
 			setAdview(new MobclixIABRectangleMAdView(this));
 			getAdview().setRefreshTime(-1);
@@ -2065,7 +2065,6 @@ public class Game extends CoreActivity {
       
       if (isShowAds())
       {
-        //resumeAdview()
         if(adPopup != null)
         {
           adPopup.dismiss();
@@ -2081,7 +2080,8 @@ public class Game extends CoreActivity {
         builder = new AlertDialog.Builder(mContext);
         builder.setView(layout);
         adPopup = builder.create();
-        adPopup.setCancelable(false);
+        adPopup.setCancelable(true);
+        adPopup.setCanceledOnTouchOutside(true);
         adPopup.show();
 
         if (adviewWrapper != null && getAdview() != null)
@@ -2115,33 +2115,31 @@ public class Game extends CoreActivity {
             }
           });
           
-          endOfGameMessage = (TextView) layout.findViewById(R.id.endOfGameMessage);
-          endOfGameMessage.setText(intent.getExtras().getString("title") + ": " + intent.getExtras().getString("message"));
+          TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
+          endOfGameMessagePopup.setText(intent.getExtras().getString("title") + ": " + intent.getExtras().getString("message"));
       }
-      else
-      {
-        endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
-        //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
-        findViewById(R.id.moveButtons).setVisibility(View.GONE);
-        findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-        chatPanel.setVisibility(View.GONE);
-        findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
-        {
-          @Override
-          public void onClick(View v)
-          {
-            startActivity(new Intent(Game.this, OnlineNewGame.class));
-          }
-        });
-        findViewById(R.id.home).setOnClickListener(new OnClickListener()
-        {
-          @Override
-          public void onClick(View v)
-          {
-            startActivity(new Intent(Game.this, Tabs.class));
-          }
-        });
-      }
+      
+		endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
+		//App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
+		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+		findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
+		chatPanel.setVisibility(View.GONE);
+		findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
+		{
+		  @Override
+		  public void onClick(View v)
+		  {
+		    startActivity(new Intent(Game.this, OnlineNewGame.class));
+		  }
+		});
+		findViewById(R.id.home).setOnClickListener(new OnClickListener()
+		{
+		  @Override
+		  public void onClick(View v)
+		  {
+		    startActivity(new Intent(Game.this, Tabs.class));
+		  }
+		});
       getSoundPlayer().playGameEnd();
     }
   };
