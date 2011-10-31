@@ -18,7 +18,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 		System.out.println("MobclixAdViewListener: onOpenAllocationLoad openAllocationCode="
 						+ openAllocationCode);
-/*
+		/*
 		if (openAllocationCode == MobclixAdViewListener.SUBALLOCATION_ADMOB
 				|| openAllocationCode == MobclixAdViewListener.SUBALLOCATION_GOOGLE
 				|| openAllocationCode == MobclixAdViewListener.SUBALLOCATION_MILLENNIAL) {

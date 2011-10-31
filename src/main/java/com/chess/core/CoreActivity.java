@@ -5,7 +5,6 @@ import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
-import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,12 +24,8 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public abstract class CoreActivity extends Activity {
@@ -39,16 +34,13 @@ public abstract class CoreActivity extends Activity {
 	public Bundle extras;
 	public DisplayMetrics metrics;
 	public MyProgressDialog PD;
-  public LccHolder lccHolder;
-  private PowerManager.WakeLock wakeLock;
-	private MobclixMMABannerXLAdView adview = null;
+	public LccHolder lccHolder;
+	private PowerManager.WakeLock wakeLock;
+	private MobclixAdView adview = null;
 	private boolean adviewPaused;
-
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
 	public abstract void Update(int code);
-	protected AlertDialog adPopup;
-	//PopupWindow pw;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -579,7 +571,7 @@ public abstract class CoreActivity extends Activity {
             App.sharedData.getString("premium_status", "0")) < 1));
   }
 
-  protected void showAds(LinearLayout adviewWrapper, MobclixMMABannerXLAdView adview, TextView removeAds)
+  protected void showAds(LinearLayout adviewWrapper, MobclixAdView adview, TextView removeAds)
   {
     int adsShowCounter = App.sharedData.getInt("com.chess.adsShowCounter", 0);
     if(adsShowCounter == 10)
@@ -606,6 +598,14 @@ public abstract class CoreActivity extends Activity {
     }
   }
 
+	protected void showGameEndAds(LinearLayout adviewWrapper, MobclixAdView adview)
+    {
+      if (adviewPaused)
+      {
+        resumeAdview();
+      }
+    }
+
   /*protected void showAds(MobclixMMABannerXLAdView adview)
   {
     if(!isShowAds())
@@ -621,12 +621,12 @@ public abstract class CoreActivity extends Activity {
     }
   }*/
 
-  public MobclixMMABannerXLAdView getAdview()
+  public MobclixAdView getAdview()
   {
     return adview;
   }
 
-  public void setAdview(MobclixMMABannerXLAdView adview)
+  public void setAdview(MobclixAdView adview)
   {
     this.adview = adview;
   }
@@ -650,32 +650,5 @@ public abstract class CoreActivity extends Activity {
       adview.pause();
     }
     adviewPaused = true;
-  }
-  
-  protected void showAdPopup()
-  {
-	  AlertDialog.Builder builder;
-	  //Context mContext = getApplicationContext();
-	  Context mContext = this;
-	  LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-	  View layout = inflater.inflate(R.layout.ad_popup,
-	                                 (ViewGroup) findViewById(R.id.layout_root));
-
-	  LinearLayout adviewPopupWrapper = (LinearLayout) layout.findViewById(R.id.adview_popup_wrapper);
-	  //image.setImageResource(R.drawable.android);
-
-	  builder = new AlertDialog.Builder(mContext);
-	  builder.setView(layout);
-	  adPopup = builder.create();
-	  adPopup.show();
-	  
-	/*  //Context mContext = getApplicationContext();
-	  LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-	  View layout = inflater.inflate(R.layout.ad_popup,
-	        (ViewGroup) findViewById(R.id.layout_root));
-	
-	  pw = new PopupWindow(layout, 320, 300, true);
-	  // display the popup in the center
-	  pw.showAtLocation(layout, Gravity.CENTER, 0, 0);*/
   }
 }

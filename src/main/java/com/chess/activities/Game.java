@@ -24,11 +24,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,11 +49,13 @@ import com.chess.live.client.User;
 import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
+import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
 import com.chess.views.BoardView;
 import com.chess.utilities.ChessComApiParser;
 import com.flurry.android.FlurryAgent;
+import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 public class Game extends CoreActivity {
 	public BoardView BV;
@@ -69,7 +73,10 @@ public class Game extends CoreActivity {
 
   private TextView whiteClockView;
   private TextView blackClockView;
+
+  protected AlertDialog adPopup;
   private TextView endOfGameMessage;
+  private LinearLayout adviewWrapper = null;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -541,6 +548,13 @@ public class Game extends CoreActivity {
 			}
 		}
 
+		if (isShowAds())
+	    {
+			setAdview(new MobclixIABRectangleMAdView(this));
+			getAdview().setRefreshTime(-1);
+			getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+	    }
+		
 		Update(0);
 	}
 	private void GetOnlineGame(final String game_id){
@@ -1893,6 +1907,11 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
+		if (isShowAds())
+		{
+			resumeAdview();
+		}
+
     if (extras.containsKey("liveChess"))
     {
       App.setLiveChess(extras.getBoolean("liveChess"));
@@ -1955,7 +1974,12 @@ public class Game extends CoreActivity {
 		if(OnlineGameUpdate != null)
 			OnlineGameUpdate.cancel();
 
-    enableScreenLock();
+		if (isShowAds())
+		{
+			pauseAdview();
+		}
+		
+		enableScreenLock();
 	}
 
 	public void stopTacticsTimer(){
@@ -2036,29 +2060,88 @@ public class Game extends CoreActivity {
         (newBlackRating != null && newBlackRating != 0) ?
         newBlackRating.toString() : App.OnlineGame.values.get("black_rating");*/
       white.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-			black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+      black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
       BV.finished = true;
-      endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
-      //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
-      findViewById(R.id.moveButtons).setVisibility(View.GONE);
-      findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-      chatPanel.setVisibility(View.GONE);
-      findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
+      
+      if (isShowAds())
       {
-        @Override
-        public void onClick(View v)
+        //resumeAdview()
+        if(adPopup != null)
         {
-          startActivity(new Intent(Game.this, OnlineNewGame.class));
+          adPopup.dismiss();
+          adPopup = null;
         }
-      });
-      findViewById(R.id.home).setOnClickListener(new OnClickListener()
+        AlertDialog.Builder builder;
+        //Context mContext = getApplicationContext();
+        Context mContext = Game.this;
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.ad_popup,
+                                         (ViewGroup) findViewById(R.id.layout_root));
+
+        builder = new AlertDialog.Builder(mContext);
+        builder.setView(layout);
+        adPopup = builder.create();
+        adPopup.setCancelable(false);
+        adPopup.show();
+
+        if (adviewWrapper != null && getAdview() != null)
+        {
+            adviewWrapper.removeView(getAdview());
+        }
+        adviewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+        adviewWrapper.addView(getAdview());
+
+        adviewWrapper.setVisibility(View.VISIBLE);
+        showGameEndAds(adviewWrapper, getAdview());
+          
+        layout.findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
+        {
+          @Override
+          public void onClick(View v)
+          {
+            adPopup.dismiss();
+            adPopup = null;
+            startActivity(new Intent(Game.this, OnlineNewGame.class));
+           }
+          });
+          layout.findViewById(R.id.home).setOnClickListener(new OnClickListener()
+          {
+            @Override
+            public void onClick(View v)
+            {
+              adPopup.dismiss();
+              adPopup = null;
+              startActivity(new Intent(Game.this, Tabs.class));
+            }
+          });
+          
+          endOfGameMessage = (TextView) layout.findViewById(R.id.endOfGameMessage);
+          endOfGameMessage.setText(intent.getExtras().getString("title") + ": " + intent.getExtras().getString("message"));
+      }
+      else
       {
-        @Override
-        public void onClick(View v)
+        endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
+        //App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
+        findViewById(R.id.moveButtons).setVisibility(View.GONE);
+        findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
+        chatPanel.setVisibility(View.GONE);
+        findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
         {
-          startActivity(new Intent(Game.this, Tabs.class));
-        }
-      });
+          @Override
+          public void onClick(View v)
+          {
+            startActivity(new Intent(Game.this, OnlineNewGame.class));
+          }
+        });
+        findViewById(R.id.home).setOnClickListener(new OnClickListener()
+        {
+          @Override
+          public void onClick(View v)
+          {
+            startActivity(new Intent(Game.this, Tabs.class));
+          }
+        });
+      }
       getSoundPlayer().playGameEnd();
     }
   };
