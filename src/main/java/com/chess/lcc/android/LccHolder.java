@@ -16,9 +16,7 @@ import java.util.TimerTask;
 import com.chess.R;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
-import com.chess.live.client.impl.util.DateTimeUtils;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.live.util.Utils;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameListElement;
 
@@ -38,12 +36,12 @@ public class LccHolder
   //static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
   public static final String HOST = "chess.com";
-  //public static final String AUTH_URL = "http://www." + HOST + "/api/login?username=%s&password=%s";
+  //public static final String AUTH_URL = "http://" + HOST + "/api/v2/login?username=%s&password=%s";
   public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
   public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
+  //public static final String CONFIG_BAYEUX_HOST = HOST;
   //Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
-  public static final Integer CONFIG_PORT =
-    Config.get(CONFIG.getInteger("live.chess.client.demo.chat_generator.connection.bayeux.port"), 80);
+  public static final Integer CONFIG_PORT = 80;
   public static final String CONFIG_URI =
     Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
   public static final String CONFIG_AUTH_KEY =
@@ -92,7 +90,7 @@ public class LccHolder
   private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
     new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
 
-  public LccHolder(InputStream keyStoreInputStream)
+  public LccHolder(InputStream keyStoreInputStream, String versionName)
   {
     Log.d("Chess.Com", "Start Chess.Com LCC App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     //System.setProperty("java.net.preferIPv6Addresses", "false");
@@ -108,7 +106,7 @@ public class LccHolder
     }*/
 
     _lccClient = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST, CONFIG_PORT, CONFIG_URI);
-    _lccClient.setClientInfo("Android", DateTimeUtils.fromDateTime(Utils.getClassCompileTimeStamp(LccHolder.class), "yyyyMMddhhmm"), "No-Key");
+    _lccClient.setClientInfo("Android", versionName, "No-Key");
     _lccClient.setSupportedClientFeatures(false, false);
     //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
     HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
@@ -210,11 +208,11 @@ public class LccHolder
   public long currentFGGameId;
   public long previousFGGameId;
 
-  public static LccHolder getInstance(InputStream keyStoreInputStream)
+  public static LccHolder getInstance(InputStream keyStoreInputStream, String versionName)
   {
     if(INSTANCE == null)
     {
-      INSTANCE = new LccHolder(keyStoreInputStream);
+      INSTANCE = new LccHolder(keyStoreInputStream, versionName);
     }
     return INSTANCE;
   }

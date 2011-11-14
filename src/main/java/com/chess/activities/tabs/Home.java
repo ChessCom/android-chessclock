@@ -13,13 +13,11 @@ import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
-import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 public class Home extends CoreActivity {
-	private LinearLayout adviewWrapper = null;
 	private TextView removeAds;
 
 	@Override
@@ -32,11 +30,10 @@ public class Home extends CoreActivity {
 
         if (isShowAds())
         {
-            setAdview(new MobclixMMABannerXLAdView(this));
-            getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-            adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-            adviewWrapper.addView(getAdview());
-            adviewWrapper.setVisibility(View.VISIBLE);
+          if (getBannerAdviewWrapper() == null || getBannerAdview() == null)
+          {
+            initializeBannerAdView();
+          }
         }
 
 	removeAds = (TextView) findViewById(R.id.removeAds);
@@ -135,7 +132,7 @@ public class Home extends CoreActivity {
   {
     if (isShowAds())
     {
-      showAds(adviewWrapper, getAdview(), removeAds);
+      showBannerAd(getBannerAdviewWrapper(), removeAds);
       showFullscreenAd();
     }
     super.onResume();
@@ -144,7 +141,7 @@ public class Home extends CoreActivity {
   @Override
   protected void onPause() {
     if (isShowAds()) {
-      pauseAdview();
+      pauseAdview(getBannerAdview());
     }
     super.onPause();
   }
@@ -158,7 +155,6 @@ public class Home extends CoreActivity {
 			
 			@Override
 			public String query() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
@@ -182,12 +178,10 @@ public class Home extends CoreActivity {
 			@Override
 			public void onDismissAd(MobclixFullScreenAdView arg0) {
 				System.out.println("mobclix fullscreen onDismissAd");
-				
 			}
 			
 			@Override
 			public String keywords() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		});

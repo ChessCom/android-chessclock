@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
+import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
@@ -95,6 +96,28 @@ public class Tabs extends TabActivity {
 			tab = 0;
 		}
 
+	    getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+			
+			@Override
+			public void onTabChanged(String tabId) {
+				if(tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab6")) {
+					
+				}
+			}
+		});
+	    
 	    App.mTabHost.setCurrentTab(tab);
     }
+	
+	@Override
+	protected void onResume() {
+		System.out.println("@@@@@@@@@@@@@@@@ TABS onResume");
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		System.out.println("@@@@@@@@@@@@@@@@ TABS onPause");
+		super.onPause();
+	}
 }

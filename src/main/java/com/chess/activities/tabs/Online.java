@@ -39,7 +39,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
@@ -62,7 +61,6 @@ public class Online extends CoreActivity {
 	private boolean compleated = false;
 	private int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
-	private LinearLayout adviewWrapper = null;
 
   public static int ONLINE_CALLBACK_CODE = 32;
 
@@ -123,7 +121,7 @@ public class Online extends CoreActivity {
   protected void onResume()
   {
     if (isShowAds() && (!App.isLiveChess() || (App.isLiveChess() && lccHolder.isConnected()))) {
-      showAds(adviewWrapper, getAdview(), removeAds);
+      showBannerAd(getBannerAdviewWrapper(), removeAds);
     }
     App.setLiveChess(extras.getBoolean("liveChess"));
     if(App.isLiveChess() && !lccHolder.isConnected())
@@ -201,7 +199,7 @@ public class Online extends CoreActivity {
   protected void onPause() {
   if (isShowAds())
   {
-    pauseAdview();
+    pauseAdview(getBannerAdview());
   }
     GamesList.setVisibility(View.GONE);
     unregisterReceiver(this.lccLoggingInInfoReceiver);
@@ -223,11 +221,10 @@ public class Online extends CoreActivity {
 
       if (isShowAds())
       {
-        setAdview(new MobclixMMABannerXLAdView(this));
-        getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-        adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-        adviewWrapper.addView(getAdview());
-        adviewWrapper.setVisibility(View.VISIBLE);
+        if (getBannerAdviewWrapper() == null || getBannerAdview() == null)
+        {
+          initializeBannerAdView();
+        }
       }
 
 		queries = new String[]{
@@ -745,7 +742,7 @@ public class Online extends CoreActivity {
 					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
 						if (isShowAds() && lccHolder.isConnected())
 						{
-			              showAds(adviewWrapper, getAdview(), removeAds);
+						  showBannerAd(getBannerAdviewWrapper(), removeAds);
 			            }
 
 						start.setVisibility(View.VISIBLE);

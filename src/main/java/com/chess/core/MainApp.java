@@ -7,14 +7,18 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.model.*;
 import com.chess.utilities.BitmapLoader;
 import com.chess.utilities.SoundPlayer;
+import com.mobclix.android.sdk.MobclixAdView;
+import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -30,8 +34,10 @@ public class MainApp extends Application {
 
   private LccHolder lccHolder;
   private boolean liveChess;
-
   private SoundPlayer soundPlayer;
+  private MobclixAdView rectangleAdview;
+  private MobclixAdView bannerAdview;
+  public LinearLayout bannerAdviewWrapper;
 
   /*public void onCreate()
   {
@@ -112,7 +118,13 @@ public class MainApp extends Application {
     {
       try
       {
-        lccHolder = LccHolder.getInstance(getAssets().open("chesscom.pkcs12"));
+		String versionName = "";
+		try {
+			versionName = getPackageManager().getPackageInfo("com.chess", 0).versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+        lccHolder = LccHolder.getInstance(getAssets().open("chesscom.pkcs12"), versionName);
       }
       catch(IOException e)
       {
@@ -142,6 +154,26 @@ public class MainApp extends Application {
     {
       soundPlayer = new SoundPlayer(this);
     }
-	  return soundPlayer;
+    return soundPlayer;
+  }
+
+  public MobclixAdView getBannerAdview()
+  {
+    return bannerAdview;
+  }
+
+  public void setBannerAdview(MobclixAdView bannerAdview)
+  {
+    this.bannerAdview = bannerAdview;
+  }
+
+  public MobclixAdView getRectangleAdview()
+  {
+    return rectangleAdview;
+  }
+
+  public void setRectangleAdview(MobclixAdView rectangleAdview)
+  {
+    this.rectangleAdview = rectangleAdview;
   }
 }

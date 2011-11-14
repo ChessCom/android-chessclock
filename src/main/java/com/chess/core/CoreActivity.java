@@ -1,11 +1,19 @@
 package com.chess.core;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.apache.http.util.ByteArrayBuffer;
+
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
+import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,8 +45,8 @@ public abstract class CoreActivity extends Activity {
 	public MyProgressDialog PD;
 	public LccHolder lccHolder;
 	private PowerManager.WakeLock wakeLock;
-	private MobclixAdView adview = null;
 	private boolean adviewPaused;
+
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
 	public abstract void Update(int code);
@@ -178,6 +186,7 @@ public abstract class CoreActivity extends Activity {
       App.SDeditor.putLong("com.chess.startDay", System.currentTimeMillis());
       App.SDeditor.putBoolean("com.chess.showedFullscreenAd", false);
       App.SDeditor.commit();
+      checkUpdate();
     }
   }
 
@@ -332,6 +341,7 @@ public abstract class CoreActivity extends Activity {
     }
   };
 
+	// todo: lccReconnectingInfoReceiver for tab ads
   public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver()
   {
     @Override
@@ -351,9 +361,9 @@ public abstract class CoreActivity extends Activity {
         /*else */
         if (enable)
         {
-          if (isShowAds() && adview != null && !adviewPaused)
+          if (isShowAds() && getBannerAdview() != null && !adviewPaused)
           {
-            pauseAdview();
+            pauseAdview(getBannerAdview());
           }
           reconnectingIndicator = new MyProgressDialog(context);
           reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
@@ -375,9 +385,9 @@ public abstract class CoreActivity extends Activity {
         }
         else
         {
-          if (isShowAds() && adview != null && adviewPaused)
+          if (isShowAds() && getBannerAdview() != null && adviewPaused)
           {
-            resumeAdview();
+            resumeAdview(getBannerAdview());
           }
         }
       }
@@ -572,14 +582,31 @@ public abstract class CoreActivity extends Activity {
             App.sharedData.getString("premium_status", "0")) < 1));
   }
 
-  protected void showAds(LinearLayout adviewWrapper, MobclixAdView adview, TextView removeAds)
+  protected void showBannerAd(LinearLayout adviewWrapper, TextView removeAds)
   {
     int adsShowCounter = App.sharedData.getInt("com.chess.adsShowCounter", 0);
+    if (adviewWrapper == null || getBannerAdview() == null)
+    {
+      initializeBannerAdView();
+    }
+	  else
+	{
+		  LinearLayout bannerAdviewWrapper = getBannerAdviewWrapper();
+		  if (bannerAdviewWrapper != null)
+		  {
+		    bannerAdviewWrapper.removeView(getBannerAdview());
+		  }
+		  bannerAdviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+		  bannerAdviewWrapper.addView(getBannerAdview());
+		  bannerAdviewWrapper.setVisibility(View.VISIBLE);
+		  setBannerAdviewWrapper(bannerAdviewWrapper);
+	}
+
     if(adsShowCounter == 10)
     {
       if (!adviewPaused)
       {
-        pauseAdview();
+        pauseAdview(getBannerAdview());
       }
       adviewWrapper.setVisibility(View.GONE);
       removeAds.setVisibility(View.VISIBLE);
@@ -590,7 +617,7 @@ public abstract class CoreActivity extends Activity {
     {
       if (adviewPaused)
       {
-        resumeAdview();
+        resumeAdview(getBannerAdview());
       }
       removeAds.setVisibility(View.GONE);
       adviewWrapper.setVisibility(View.VISIBLE);
@@ -599,11 +626,11 @@ public abstract class CoreActivity extends Activity {
     }
   }
 
-	protected void showGameEndAds(LinearLayout adviewWrapper, MobclixAdView adview)
+	protected void showGameEndAds(LinearLayout adviewWrapper)
     {
       if (adviewPaused)
       {
-        resumeAdview();
+        resumeAdview(getRectangleAdview());
       }
     }
 
@@ -622,28 +649,28 @@ public abstract class CoreActivity extends Activity {
     }
   }*/
 
-  public MobclixAdView getAdview()
+  public MobclixAdView getBannerAdview()
   {
-    return adview;
+    return App.getBannerAdview();
   }
 
-  public void setAdview(MobclixAdView adview)
+  public void setBannerAdview(MobclixAdView bannerAdview)
   {
-    this.adview = adview;
+    App.setBannerAdview(bannerAdview);
   }
 
-  protected void resumeAdview()
+  protected void resumeAdview(MobclixAdView adview)
   {
     //System.out.println("Mobclix: RESUME");
     if (adview != null)
     {
-      adview.getAd();
+      //adview.getAd();
       adview.resume();
     }
     adviewPaused = false;
   }
 
-  protected void pauseAdview()
+  protected void pauseAdview(MobclixAdView adview)
   {
     //System.out.println("Mobclix: PAUSE");
     if (adview != null)
@@ -652,4 +679,101 @@ public abstract class CoreActivity extends Activity {
     }
     adviewPaused = true;
   }
+
+  public MobclixAdView getRectangleAdview()
+  {
+    return App.getRectangleAdview();
+  }
+
+  public void setRectangleAdview(MobclixAdView rectangleAdview)
+  {
+    App.setRectangleAdview(rectangleAdview);
+  }
+
+  private void checkUpdate()
+  {
+    new Handler().post(new Runnable()
+    {
+      public void run()
+      {
+        try 
+        {
+          URL updateURL = new URL("http://www.chess.com/api/get_android_version");
+          URLConnection conn = updateURL.openConnection();
+          InputStream is = conn.getInputStream();
+          BufferedInputStream bis = new BufferedInputStream(is);
+          ByteArrayBuffer baf = new ByteArrayBuffer(50);
+
+          int current = 0;
+          while((current = bis.read()) != -1)
+          {
+            baf.append((byte)current);
+          }
+
+          final String s = new String(baf.toByteArray());
+          String[] valuesArray = s.trim().split("\\|", 2);
+          
+          if (!valuesArray[0].trim().equals("1"))
+          {
+        	  return;
+          }
+          
+          int curVersion = getPackageManager().getPackageInfo("com.chess", 0).versionCode;
+          System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
+          int newVersion = Integer.valueOf(valuesArray[1].trim());
+                        
+          if (newVersion > curVersion)
+          {
+            new AlertDialog.Builder(CoreActivity.this)
+              .setIcon(R.drawable.icon)
+              .setTitle("Update Check")
+              .setMessage("An update is available! Please update")
+              .setPositiveButton("OK", new DialogInterface.OnClickListener() 
+                {
+                  public void onClick(DialogInterface dialog, int whichButton) 
+                  {
+                    //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chess"));
+                    startActivity(intent);
+                  }
+                }
+            )
+            .show();
+          }                
+        } 
+        catch (Exception e) 
+        {
+        }
+      }
+    });
+  }
+
+  protected void initializeBannerAdView()
+  {
+    if (getBannerAdview() == null)
+    {
+      setBannerAdview(new MobclixMMABannerXLAdView(this));
+      getBannerAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+    }
+    LinearLayout bannerAdviewWrapper = getBannerAdviewWrapper();
+    if (bannerAdviewWrapper != null)
+    {
+    	bannerAdviewWrapper.removeView(getBannerAdview());
+    }
+    bannerAdviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
+    bannerAdviewWrapper.addView(getBannerAdview());
+    bannerAdviewWrapper.setVisibility(View.VISIBLE);
+	  setBannerAdviewWrapper(bannerAdviewWrapper);
+  }
+  
+  public LinearLayout getBannerAdviewWrapper()
+  {
+	return App.bannerAdviewWrapper;  
+  }
+  
+  public void setBannerAdviewWrapper(LinearLayout bannerAdviewWrapper)
+  {
+	App.bannerAdviewWrapper = bannerAdviewWrapper;  
+  }
+
 }

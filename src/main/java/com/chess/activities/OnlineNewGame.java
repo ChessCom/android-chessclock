@@ -10,7 +10,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
@@ -38,7 +37,6 @@ public class OnlineNewGame extends CoreActivity {
   private Button challengecreate;
   private Button currentGame;
 	private TextView removeAds;
-	private LinearLayout adviewWrapper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +45,10 @@ public class OnlineNewGame extends CoreActivity {
 
       if (isShowAds())
       {
-        setAdview(new MobclixMMABannerXLAdView(this));
-        getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-        adviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-        adviewWrapper.addView(getAdview());
-        adviewWrapper.setVisibility(View.VISIBLE);
+        if (getBannerAdviewWrapper() == null || getBannerAdview() == null)
+        {
+          initializeBannerAdView();
+        }
       }
 
     removeAds = (TextView) findViewById(R.id.removeAds);
@@ -217,7 +214,7 @@ public class OnlineNewGame extends CoreActivity {
   {
     if (isShowAds())
 	{
-      showAds(adviewWrapper, getAdview(), removeAds);
+      showBannerAd(getBannerAdviewWrapper(), removeAds);
     }
     registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
     super.onResume();
@@ -236,7 +233,7 @@ public class OnlineNewGame extends CoreActivity {
   protected void onPause() {
     if (isShowAds())
     {
-      pauseAdview();
+      pauseAdview(getBannerAdview());
     }
     unregisterReceiver(challengesListUpdateReceiver);
     super.onPause();

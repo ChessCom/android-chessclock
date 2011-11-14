@@ -76,7 +76,7 @@ public class Game extends CoreActivity {
 
   protected AlertDialog adPopup;
   private TextView endOfGameMessage;
-  private LinearLayout adviewWrapper = null;
+  private LinearLayout adviewWrapper;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -548,11 +548,11 @@ public class Game extends CoreActivity {
 			}
 		}
 
-		if (isShowAds() && getAdview() == null)
+		if (isShowAds() && getRectangleAdview() == null)
 	    {
-			setAdview(new MobclixIABRectangleMAdView(this));
-			getAdview().setRefreshTime(-1);
-			getAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+			setRectangleAdview(new MobclixIABRectangleMAdView(this));
+			getRectangleAdview().setRefreshTime(-1);
+			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
 	    }
 		
 		Update(0);
@@ -1909,7 +1909,7 @@ public class Game extends CoreActivity {
 	protected void onResume() {
 		if (isShowAds())
 		{
-			resumeAdview();
+			resumeAdview(getRectangleAdview());
 		}
 
     if (extras.containsKey("liveChess"))
@@ -1976,7 +1976,7 @@ public class Game extends CoreActivity {
 
 		if (isShowAds())
 		{
-			pauseAdview();
+			pauseAdview(getRectangleAdview());
 		}
 		
 		enableScreenLock();
@@ -2084,15 +2084,15 @@ public class Game extends CoreActivity {
         adPopup.setCanceledOnTouchOutside(true);
         adPopup.show();
 
-        if (adviewWrapper != null && getAdview() != null)
+        if (adviewWrapper != null && getRectangleAdview() != null)
         {
-            adviewWrapper.removeView(getAdview());
+            adviewWrapper.removeView(getRectangleAdview());
         }
         adviewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-        adviewWrapper.addView(getAdview());
+        adviewWrapper.addView(getRectangleAdview());
 
         adviewWrapper.setVisibility(View.VISIBLE);
-        showGameEndAds(adviewWrapper, getAdview());
+        showGameEndAds(adviewWrapper);
           
         layout.findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
         {
