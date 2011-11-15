@@ -7,6 +7,7 @@ import com.chess.activities.tabs.Computer;
 import com.chess.activities.tabs.Home;
 import com.chess.activities.tabs.Online;
 import com.chess.activities.tabs.Video;
+import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
 
 import android.app.TabActivity;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 public class Tabs extends TabActivity {
 
 	public MainApp App;
+	private TextView removeAds;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,25 @@ public class Tabs extends TabActivity {
         App = (MainApp)getApplication();
 
         setContentView(R.layout.tabs);
+
+        if (MobclixHelper.isShowAds(App))
+        {
+          if (MobclixHelper.getBannerAdviewWrapper(App) == null || MobclixHelper.getBannerAdview(App) == null)
+          {
+            MobclixHelper.initializeBannerAdView(this, App);
+          }
+        }
+
+		/*removeAds = (TextView) findViewById(R.id.removeAds);
+    removeAds.setOnClickListener(new OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+      }
+    });*/
 
 	    App.mTabHost = getTabHost();
 	    App.mTabHost.addTab(App.mTabHost.newTabSpec("tab1")
@@ -109,15 +130,20 @@ public class Tabs extends TabActivity {
 	    App.mTabHost.setCurrentTab(tab);
     }
 	
-	@Override
-	protected void onResume() {
-		System.out.println("@@@@@@@@@@@@@@@@ TABS onResume");
-		super.onResume();
-	}
-	
-	@Override
-	protected void onPause() {
-		System.out.println("@@@@@@@@@@@@@@@@ TABS onPause");
-		super.onPause();
-	}
+    @Override
+    protected void onResume() {
+      if (MobclixHelper.isShowAds(App))
+      {
+        MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+      }
+      super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+      if (MobclixHelper.isShowAds(App)) {
+        MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
+      }
+      super.onPause();
+    }
 }

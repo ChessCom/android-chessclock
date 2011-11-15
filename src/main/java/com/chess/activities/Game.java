@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.MemoryHandler;
 
 import com.chess.utilities.Notifications;
 import org.apache.http.util.ByteArrayBuffer;
@@ -50,6 +51,7 @@ import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
 import com.chess.utilities.MobclixAdViewListenerImpl;
+import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
 import com.chess.views.BoardView;
@@ -548,7 +550,7 @@ public class Game extends CoreActivity {
 			}
 		}
 
-		if (isShowAds() && getRectangleAdview() == null)
+		if (MobclixHelper.isShowAds(App) && getRectangleAdview() == null)
 	    {
 			setRectangleAdview(new MobclixIABRectangleMAdView(this));
 			getRectangleAdview().setRefreshTime(-1);
@@ -1907,9 +1909,9 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		if (isShowAds())
+		if (MobclixHelper.isShowAds(App))
 		{
-			resumeAdview(getRectangleAdview());
+			MobclixHelper.resumeAdview(getRectangleAdview(), App);
 		}
 
     if (extras.containsKey("liveChess"))
@@ -1974,9 +1976,9 @@ public class Game extends CoreActivity {
 		if(OnlineGameUpdate != null)
 			OnlineGameUpdate.cancel();
 
-		if (isShowAds())
+		if (MobclixHelper.isShowAds(App))
 		{
-			pauseAdview(getRectangleAdview());
+			MobclixHelper.pauseAdview(getRectangleAdview(), App);
 		}
 		
 		enableScreenLock();
@@ -2063,7 +2065,7 @@ public class Game extends CoreActivity {
       black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
       BV.finished = true;
       
-      if (isShowAds())
+      if (MobclixHelper.isShowAds(App))
       {
         if(adPopup != null)
         {

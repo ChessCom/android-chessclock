@@ -10,22 +10,6 @@
           android:visibility="gone"
       />-->
 
-    <LinearLayout
-            android:id="@+id/adview_wrapper"
-            android:layout_height="50dip"
-            android:layout_width="320dip"
-            android:visibility="gone"
-            android:layout_gravity="center"/>
-
-  <TextView android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:id="@+id/removeAds"
-		android:text="@string/removeAds" android:background="#ffffcd"
-		android:textColor="#0066cc" android:textStyle="bold"
-		android:drawableLeft="@drawable/star" android:padding="7dp"
-		android:drawablePadding="10dp" android:visibility="gone"
-		android:textSize="17dip" android:gravity="left">
-	</TextView>
-
 	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#e1e1e1">
 		<TextView android:id="@+id/tournaments" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="Tournaments" android:textSize="16dip" android:textStyle="bold" android:padding="5px" android:drawableLeft="@drawable/tourny" android:drawablePadding="10px" android:gravity="center" android:textColor="#222"></TextView>
 		<TextView android:id="@+id/stats" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:textSize="16dip" android:textStyle="bold" android:padding="5px" android:drawableLeft="@drawable/chart_bar" android:text="Stats" android:drawablePadding="10px" android:gravity="center" android:textColor="#222"></TextView>

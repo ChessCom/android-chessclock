@@ -38,6 +38,7 @@ public class MainApp extends Application {
   private MobclixAdView rectangleAdview;
   private MobclixAdView bannerAdview;
   public LinearLayout bannerAdviewWrapper;
+  public boolean adviewPaused;
 
   /*public void onCreate()
   {

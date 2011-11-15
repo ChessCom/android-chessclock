@@ -5,20 +5,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.chess.R;
 import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
-import com.chess.lcc.android.LccHolder;
+import com.chess.utilities.MobclixHelper;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
-import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 public class Home extends CoreActivity {
-	private TextView removeAds;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,25 +23,6 @@ public class Home extends CoreActivity {
 			setContentView(R.layout.home_guest);
 		else
 			setContentView(R.layout.home);
-
-        if (isShowAds())
-        {
-          if (getBannerAdviewWrapper() == null || getBannerAdview() == null)
-          {
-            initializeBannerAdView();
-          }
-        }
-
-	removeAds = (TextView) findViewById(R.id.removeAds);
-    removeAds.setOnClickListener(new OnClickListener()
-    {
-      public void onClick(View v)
-      {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
-          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
-      }
-    });
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override
@@ -130,25 +107,16 @@ public class Home extends CoreActivity {
   @Override
   protected void onResume()
   {
-    if (isShowAds())
+    if (MobclixHelper.isShowAds(App))
     {
-      showBannerAd(getBannerAdviewWrapper(), removeAds);
       showFullscreenAd();
     }
     super.onResume();
   }
 
-  @Override
-  protected void onPause() {
-    if (isShowAds()) {
-      pauseAdview(getBannerAdview());
-    }
-    super.onPause();
-  }
-
   private void showFullscreenAd()
   {
-    if(!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && isShowAds())
+    if(!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && MobclixHelper.isShowAds(App))
     {
 		MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
 		fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {

@@ -45,7 +45,6 @@ public abstract class CoreActivity extends Activity {
 	public MyProgressDialog PD;
 	public LccHolder lccHolder;
 	private PowerManager.WakeLock wakeLock;
-	private boolean adviewPaused;
 
 	public abstract void LoadNext(int code);
 	public abstract void LoadPrev(int code);
@@ -342,6 +341,7 @@ public abstract class CoreActivity extends Activity {
   };
 
 	// todo: lccReconnectingInfoReceiver for tab ads
+	// 2) test banner ads after game end ad - adviewPaused
   public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver()
   {
     @Override
@@ -361,9 +361,9 @@ public abstract class CoreActivity extends Activity {
         /*else */
         if (enable)
         {
-          if (isShowAds() && getBannerAdview() != null && !adviewPaused)
+          if (MobclixHelper.isShowAds(App) && MobclixHelper.getBannerAdview(App) != null && !App.adviewPaused)
           {
-            pauseAdview(getBannerAdview());
+            MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
           }
           reconnectingIndicator = new MyProgressDialog(context);
           reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
@@ -385,9 +385,9 @@ public abstract class CoreActivity extends Activity {
         }
         else
         {
-          if (isShowAds() && getBannerAdview() != null && adviewPaused)
+          if (MobclixHelper.isShowAds(App) && MobclixHelper.getBannerAdview(App) != null && App.adviewPaused)
           {
-            resumeAdview(getBannerAdview());
+            MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(App), App);
           }
         }
       }
@@ -573,64 +573,11 @@ public abstract class CoreActivity extends Activity {
 	  FlurryAgent.onEndSession(this);
   }
 
-  protected boolean isShowAds()
-  {
-    boolean liveMembershipLevel =
-      lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 30) : false;
-    return /*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
-            (7 * 24 * 60 * 60 * 1000)) && */(liveMembershipLevel || (!App.isLiveChess() && Integer.parseInt(
-            App.sharedData.getString("premium_status", "0")) < 1));
-  }
-
-  protected void showBannerAd(LinearLayout adviewWrapper, TextView removeAds)
-  {
-    int adsShowCounter = App.sharedData.getInt("com.chess.adsShowCounter", 0);
-    if (adviewWrapper == null || getBannerAdview() == null)
-    {
-      initializeBannerAdView();
-    }
-	  else
-	{
-		  LinearLayout bannerAdviewWrapper = getBannerAdviewWrapper();
-		  if (bannerAdviewWrapper != null)
-		  {
-		    bannerAdviewWrapper.removeView(getBannerAdview());
-		  }
-		  bannerAdviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-		  bannerAdviewWrapper.addView(getBannerAdview());
-		  bannerAdviewWrapper.setVisibility(View.VISIBLE);
-		  setBannerAdviewWrapper(bannerAdviewWrapper);
-	}
-
-    if(adsShowCounter == 10)
-    {
-      if (!adviewPaused)
-      {
-        pauseAdview(getBannerAdview());
-      }
-      adviewWrapper.setVisibility(View.GONE);
-      removeAds.setVisibility(View.VISIBLE);
-      App.SDeditor.putInt("com.chess.adsShowCounter", 0);
-      App.SDeditor.commit();
-    }
-    else
-    {
-      if (adviewPaused)
-      {
-        resumeAdview(getBannerAdview());
-      }
-      removeAds.setVisibility(View.GONE);
-      adviewWrapper.setVisibility(View.VISIBLE);
-      App.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);
-      App.SDeditor.commit();
-    }
-  }
-
 	protected void showGameEndAds(LinearLayout adviewWrapper)
     {
-      if (adviewPaused)
+      if (App.adviewPaused)
       {
-        resumeAdview(getRectangleAdview());
+        MobclixHelper.resumeAdview(getRectangleAdview(), App);
       }
     }
 
@@ -648,37 +595,6 @@ public abstract class CoreActivity extends Activity {
       //adview.loadAd();
     }
   }*/
-
-  public MobclixAdView getBannerAdview()
-  {
-    return App.getBannerAdview();
-  }
-
-  public void setBannerAdview(MobclixAdView bannerAdview)
-  {
-    App.setBannerAdview(bannerAdview);
-  }
-
-  protected void resumeAdview(MobclixAdView adview)
-  {
-    //System.out.println("Mobclix: RESUME");
-    if (adview != null)
-    {
-      //adview.getAd();
-      adview.resume();
-    }
-    adviewPaused = false;
-  }
-
-  protected void pauseAdview(MobclixAdView adview)
-  {
-    //System.out.println("Mobclix: PAUSE");
-    if (adview != null)
-    {
-      adview.pause();
-    }
-    adviewPaused = true;
-  }
 
   public MobclixAdView getRectangleAdview()
   {
@@ -746,34 +662,6 @@ public abstract class CoreActivity extends Activity {
         }
       }
     });
-  }
-
-  protected void initializeBannerAdView()
-  {
-    if (getBannerAdview() == null)
-    {
-      setBannerAdview(new MobclixMMABannerXLAdView(this));
-      getBannerAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl());
-    }
-    LinearLayout bannerAdviewWrapper = getBannerAdviewWrapper();
-    if (bannerAdviewWrapper != null)
-    {
-    	bannerAdviewWrapper.removeView(getBannerAdview());
-    }
-    bannerAdviewWrapper = (LinearLayout) findViewById(R.id.adview_wrapper);
-    bannerAdviewWrapper.addView(getBannerAdview());
-    bannerAdviewWrapper.setVisibility(View.VISIBLE);
-	  setBannerAdviewWrapper(bannerAdviewWrapper);
-  }
-  
-  public LinearLayout getBannerAdviewWrapper()
-  {
-	return App.bannerAdviewWrapper;  
-  }
-  
-  public void setBannerAdviewWrapper(LinearLayout bannerAdviewWrapper)
-  {
-	App.bannerAdviewWrapper = bannerAdviewWrapper;  
   }
 
 }

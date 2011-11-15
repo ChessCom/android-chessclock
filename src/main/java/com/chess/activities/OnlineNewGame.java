@@ -10,6 +10,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
@@ -43,11 +44,11 @@ public class OnlineNewGame extends CoreActivity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.onlinenewgame);
 
-      if (isShowAds())
+      if (MobclixHelper.isShowAds(App))
       {
-        if (getBannerAdviewWrapper() == null || getBannerAdview() == null)
+        if (MobclixHelper.getBannerAdviewWrapper(App) == null || MobclixHelper.getBannerAdview(App) == null)
         {
-          initializeBannerAdView();
+        	MobclixHelper.initializeBannerAdView(this, App);
         }
       }
 
@@ -212,9 +213,9 @@ public class OnlineNewGame extends CoreActivity {
 
   protected void onResume()
   {
-    if (isShowAds())
+    if (MobclixHelper.isShowAds(App))
 	{
-      showBannerAd(getBannerAdviewWrapper(), removeAds);
+      MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
     }
     registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
     super.onResume();
@@ -231,9 +232,9 @@ public class OnlineNewGame extends CoreActivity {
 
   @Override
   protected void onPause() {
-    if (isShowAds())
+    if (MobclixHelper.isShowAds(App))
     {
-      pauseAdview(getBannerAdview());
+    	MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
     }
     unregisterReceiver(challengesListUpdateReceiver);
     super.onPause();
