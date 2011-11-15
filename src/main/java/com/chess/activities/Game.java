@@ -1967,6 +1967,7 @@ public class Game extends CoreActivity {
 
 		super.onPause();
 
+    adviewWrapper.removeView(getRectangleAdview());
     lccHolder.setActivityPausedMode(true);
     lccHolder.getPausedActivityGameEvents().clear();
 

@@ -7,13 +7,17 @@ import com.chess.activities.tabs.Computer;
 import com.chess.activities.tabs.Home;
 import com.chess.activities.tabs.Online;
 import com.chess.activities.tabs.Video;
+import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
 
 import android.app.TabActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -31,6 +35,17 @@ public class Tabs extends TabActivity {
 
         setContentView(R.layout.tabs);
 
+        removeAds = (TextView) findViewById(R.id.removeAds);
+        removeAds.setOnClickListener(new OnClickListener()
+        {
+          public void onClick(View v)
+          {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+              "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+              "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+          }
+        });
+        
         if (MobclixHelper.isShowAds(App))
         {
           if (MobclixHelper.getBannerAdviewWrapper(App) == null || MobclixHelper.getBannerAdview(App) == null)
@@ -38,17 +53,6 @@ public class Tabs extends TabActivity {
             MobclixHelper.initializeBannerAdView(this, App);
           }
         }
-
-		/*removeAds = (TextView) findViewById(R.id.removeAds);
-    removeAds.setOnClickListener(new OnClickListener()
-    {
-      public void onClick(View v)
-      {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-          "http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
-          "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
-      }
-    });*/
 
 	    App.mTabHost = getTabHost();
 	    App.mTabHost.addTab(App.mTabHost.newTabSpec("tab1")
