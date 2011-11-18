@@ -1966,8 +1966,10 @@ public class Game extends CoreActivity {
     unregisterReceiver(chatMessageReceiver);
 
 		super.onPause();
-
-    adviewWrapper.removeView(getRectangleAdview());
+	if (adviewWrapper != null && getRectangleAdview() != null && MobclixHelper.isShowAds(App))
+	{
+		adviewWrapper.removeView(getRectangleAdview());
+	}
     lccHolder.setActivityPausedMode(true);
     lccHolder.getPausedActivityGameEvents().clear();
 

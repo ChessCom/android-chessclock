@@ -125,7 +125,7 @@ public class MainApp extends Application {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-        lccHolder = LccHolder.getInstance(getAssets().open("chesscom.pkcs12"), versionName);
+		lccHolder = LccHolder.getInstance(getAssets().open("chesscom.pkcs12"), versionName);
       }
       catch(IOException e)
       {

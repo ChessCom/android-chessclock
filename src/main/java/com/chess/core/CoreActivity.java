@@ -65,8 +65,11 @@ public abstract class CoreActivity extends Activity {
 		extras = getIntent().getExtras();
 
 		//get global Shared Preferences
-        App.sharedData = getSharedPreferences("sharedData", 0);
-        App.SDeditor = App.sharedData.edit();
+		if (App.sharedData == null)
+		{
+			App.sharedData = getSharedPreferences("sharedData", 0);
+			App.SDeditor = App.sharedData.edit();
+		}
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -340,8 +343,6 @@ public abstract class CoreActivity extends Activity {
     }
   };
 
-	// todo: lccReconnectingInfoReceiver for tab ads
-	// 2) test banner ads after game end ad - adviewPaused
   public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver()
   {
     @Override
@@ -629,33 +630,50 @@ public abstract class CoreActivity extends Activity {
           final String s = new String(baf.toByteArray());
           String[] valuesArray = s.trim().split("\\|", 2);
           
-          if (!valuesArray[0].trim().equals("1"))
+          int actualVersion = getPackageManager().getPackageInfo("com.chess", 0).versionCode;
+          System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
+          
+          int minimumVersion = Integer.valueOf(valuesArray[0].trim());
+          int prefferedVersion = Integer.valueOf(valuesArray[1].trim());
+              
+          Boolean force = null;
+          if (actualVersion < prefferedVersion)
           {
-        	  return;
+        	  force = false;
+          }
+          if (actualVersion < minimumVersion)
+          {
+        	  force = true;
           }
           
-          int curVersion = getPackageManager().getPackageInfo("com.chess", 0).versionCode;
-          System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
-          int newVersion = Integer.valueOf(valuesArray[1].trim());
-                        
-          if (newVersion > curVersion)
+          if (force != null)
           {
+			  final boolean forceFlag = force;
             new AlertDialog.Builder(CoreActivity.this)
               .setIcon(R.drawable.icon)
               .setTitle("Update Check")
               .setMessage("An update is available! Please update")
+              .setCancelable(false)
               .setPositiveButton("OK", new DialogInterface.OnClickListener() 
                 {
                   public void onClick(DialogInterface dialog, int whichButton) 
                   {
                     //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chess"));
+                	if (forceFlag)
+                	{
+                		App.SDeditor.putLong("com.chess.startDay", 0);
+                		App.SDeditor.commit();
+                		startActivity(new Intent(CoreActivity.this, Singin.class));
+                		finish();
+                	}
+                	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chess"));
                     startActivity(intent);
+
                   }
                 }
             )
             .show();
-          }                
+          }
         } 
         catch (Exception e) 
         {

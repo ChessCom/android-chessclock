@@ -33,6 +33,13 @@ public class Tabs extends TabActivity {
         super.onCreate(savedInstanceState);
         App = (MainApp)getApplication();
 
+        //get global Shared Preferences
+        if (App.sharedData == null)
+        {
+          App.sharedData = getSharedPreferences("sharedData", 0);
+          App.SDeditor = App.sharedData.edit();
+        }
+
         setContentView(R.layout.tabs);
 
         removeAds = (TextView) findViewById(R.id.removeAds);

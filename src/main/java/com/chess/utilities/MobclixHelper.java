@@ -92,12 +92,23 @@ public class MobclixHelper {
 	}
 
 	public static boolean isShowAds(MainApp app) {
-		final User lccUser = app.getLccHolder().getUser();
+		boolean result = false;
+		User lccUser = null;
+		try {
+
+		lccUser = app.getLccHolder().getUser();
 		boolean liveMembershipLevel =
 				lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) : false;
-		return /*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
+
+		result = /*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
             (7 * 24 * 60 * 60 * 1000)) && */(liveMembershipLevel || (!app.isLiveChess() && Integer.parseInt(
 				app.sharedData.getString("premium_status", "0")) < 1));
+		}
+		catch (Exception e)
+		{
+			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.sharedData " + app.sharedData + ", app.sharedData.getString(\"premium_status\", \"0\") " + app.sharedData.getString("premium_status", "0"));
+		}
+		return result;
 	}
 
 	public static LinearLayout getBannerAdviewWrapper(MainApp app) {

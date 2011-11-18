@@ -1,8 +1,6 @@
 package com.chess.lcc.android;
 
 import com.chess.R;
-import com.chess.activities.Singin;
-import com.chess.core.MainApp;
 import com.chess.live.client.*;
 
 import android.content.Intent;
