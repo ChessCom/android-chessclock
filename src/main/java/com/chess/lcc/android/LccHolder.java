@@ -20,6 +20,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameListElement;
 
+import com.chess.utilities.NetworkChangeService;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 
@@ -89,6 +90,7 @@ public class LccHolder
   private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
   private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
     new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
+  public String networkTypeName;
 
   public LccHolder(InputStream keyStoreInputStream, String versionName)
   {
@@ -723,10 +725,10 @@ public class LccHolder
   public void logout()
   {
     LOG.info("USER LOGOUT");
+    android.getContext().setLiveChess(false);
     setCurrentGameId(null);
-    getAndroid().closeLoggingInIndicator();
-    getAndroid().closeReconnectingIndicator();
-    getAndroid().getContext().setLiveChess(false);
+    android.closeLoggingInIndicator();
+    android.closeReconnectingIndicator();
     _lccClient.disconnect();
     setConnected(false);
     setConnectingInProgress(false);
@@ -734,6 +736,7 @@ public class LccHolder
     clearChallenges();
     clearOwnChallenges();
     clearSeeks();
+    setNetworkTypeName(null);
   }
 
   public boolean isConnectingInProgress()
@@ -1028,5 +1031,15 @@ public class LccHolder
       }
     }
     return null;
+  }
+
+  public void setNetworkTypeName(String networkTypeName)
+  {
+    this.networkTypeName = networkTypeName;
+  }
+
+  public String getNetworkTypeName()
+  {
+    return networkTypeName;
   }
 }

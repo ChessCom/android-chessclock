@@ -54,18 +54,19 @@ public class MobclixHelper {
 			app.bannerAdviewWrapper = bannerAdviewWrapper;
 		}
 
+		if (app.adviewPaused) {
+			resumeAdview(bannerAdview, app);
+		}
+
 		if (adsShowCounter == 10) {
-			if (!app.adviewPaused) {
+			/*if (!app.adviewPaused) {
 				pauseAdview(bannerAdview, app);
-			}
+			}*/
 			//adviewWrapper.setVisibility(View.GONE);
 			removeAds.setVisibility(View.VISIBLE);
 			app.SDeditor.putInt("com.chess.adsShowCounter", 0);
 			app.SDeditor.commit();
 		} else {
-			if (app.adviewPaused) {
-				resumeAdview(bannerAdview, app);
-			}
 			removeAds.setVisibility(View.GONE);
 			adviewWrapper.setVisibility(View.VISIBLE);
 			app.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);

@@ -39,6 +39,7 @@ public class MainApp extends Application {
   private MobclixAdView bannerAdview;
   public LinearLayout bannerAdviewWrapper;
   public boolean adviewPaused;
+  private boolean networkChangedNotification;
 
   /*public void onCreate()
   {
@@ -145,7 +146,7 @@ public class MainApp extends Application {
 
   public void setLiveChess(boolean liveChess)
   {
-    LccHolder.LOG.info("INFO: Set Live Chess mode to: " + liveChess);
+    LccHolder.LOG.info("LCCLOG: Set Live Chess mode to: " + liveChess);
     this.liveChess = liveChess;
   }
 
@@ -176,5 +177,14 @@ public class MainApp extends Application {
   public void setRectangleAdview(MobclixAdView rectangleAdview)
   {
     this.rectangleAdview = rectangleAdview;
+  }
+  
+  public void setNetworkChangedNotification(boolean networkChangedNotification)
+  {
+    this.networkChangedNotification = networkChangedNotification;
+  }
+  
+  public boolean isNetworkChangedNotification() {
+    return networkChangedNotification;
   }
 }

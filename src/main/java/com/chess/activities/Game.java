@@ -1914,7 +1914,7 @@ public class Game extends CoreActivity {
 			MobclixHelper.resumeAdview(getRectangleAdview(), App);
 		}
 
-    if (extras.containsKey("liveChess"))
+    if (!App.isNetworkChangedNotification() && extras.containsKey("liveChess"))
     {
       App.setLiveChess(extras.getBoolean("liveChess"));
       if (!App.isLiveChess())

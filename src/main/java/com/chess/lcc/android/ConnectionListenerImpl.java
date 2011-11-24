@@ -1,5 +1,8 @@
 package com.chess.lcc.android;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import com.chess.R;
 import com.chess.live.client.*;
 
@@ -47,6 +50,11 @@ public class ConnectionListenerImpl implements ConnectionListener
     /*lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", "" + user.getMembershipLevel());
     lccHolder.getAndroid().getSharedDataEditor().commit();*/
     lccHolder.getAndroid().closeLoggingInIndicator();
+
+    final ConnectivityManager connectivityManager = (ConnectivityManager)
+    lccHolder.getAndroid().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    lccHolder.setNetworkTypeName(activeNetworkInfo.getTypeName());
 
     Log.d("", "LCCLOG CONNECTION: User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
   }
@@ -161,6 +169,7 @@ public class ConnectionListenerImpl implements ConnectionListener
   public void onKicked(User user, String reason, String message) {
     LccHolder.LOG.info("LCCLOG CONNECTION: user kicked");
     lccHolder.getAndroid().informAndExit(reason, "You have been kicked/banned");
+    lccHolder.setNetworkTypeName(null);
   }
 
 }
