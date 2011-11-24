@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.MemoryHandler;
 
 import com.chess.utilities.Notifications;
 import org.apache.http.util.ByteArrayBuffer;

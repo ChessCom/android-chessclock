@@ -4,11 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import org.apache.http.util.ByteArrayBuffer;
 
 import com.chess.R;
@@ -17,7 +13,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
-import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,9 +32,7 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.chess.utilities.NetworkChangeService;
 
 public abstract class CoreActivity extends Activity {

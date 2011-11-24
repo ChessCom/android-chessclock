@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 
 import com.chess.R;
 import com.chess.core.CoreActivity;
-import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.*;
 import com.chess.model.Message;
 import com.chess.views.MessagesAdapter;

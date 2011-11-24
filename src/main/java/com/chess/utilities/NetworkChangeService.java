@@ -1,19 +1,16 @@
 package com.chess.utilities;
 
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.*;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 import com.chess.core.MainApp;
-import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
 
 public class NetworkChangeService extends Service {
 
 	public MainApp mainApp;
-	private IntentFilter connectionIntentFilter;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -24,8 +21,7 @@ public class NetworkChangeService extends Service {
 	{
 		super.onCreate();
 		mainApp = (MainApp) getApplication();
-		connectionIntentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-		registerReceiver(networkChangeReceiver, connectionIntentFilter);
+		registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 	}
 
 	public void onDestroy()
@@ -33,7 +29,6 @@ public class NetworkChangeService extends Service {
 		super.onDestroy();
 		unregisterReceiver(networkChangeReceiver);
 	}
-
 
 	private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver()
   {

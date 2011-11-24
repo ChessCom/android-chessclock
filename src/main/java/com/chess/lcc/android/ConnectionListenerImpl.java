@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import com.chess.R;
 import com.chess.live.client.*;
 
-import android.content.Intent;
 import android.util.Log;
 
 /**

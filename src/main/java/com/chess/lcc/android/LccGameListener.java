@@ -5,7 +5,6 @@ import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
 import com.chess.live.util.Utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
