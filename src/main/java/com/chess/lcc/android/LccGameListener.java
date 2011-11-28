@@ -115,6 +115,10 @@ public class LccGameListener implements GameListener
     lccHolder.processFullGame(game);
   }
 
+  public void onServerStatusChanged(Game game, Game.ServerStatus oldStatus, Game.ServerStatus newStatus)
+  {
+  }
+
   public void onGameStarted(Game game)
   {
     LOG.info("GAME LISTENER: onGameStarted id=" + game.getId());
