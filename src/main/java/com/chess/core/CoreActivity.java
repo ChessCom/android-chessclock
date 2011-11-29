@@ -368,7 +368,7 @@ public abstract class CoreActivity extends Activity {
         /*else */
         if (enable)
         {
-          if (MobclixHelper.isShowAds(App) && MobclixHelper.getBannerAdview(App) != null && !App.adviewPaused)
+          if (MobclixHelper.isShowAds(App) && MobclixHelper.getBannerAdview(App) != null && !App.isAdviewPaused())
           {
             MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
           }
@@ -392,7 +392,7 @@ public abstract class CoreActivity extends Activity {
         }
         else
         {
-          if (MobclixHelper.isShowAds(App) && MobclixHelper.getBannerAdview(App) != null && App.adviewPaused)
+          if (MobclixHelper.isShowAds(App) && MobclixHelper.getBannerAdview(App) != null && App.isAdviewPaused())
           {
             MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(App), App);
           }
@@ -582,7 +582,7 @@ public abstract class CoreActivity extends Activity {
 
 	protected void showGameEndAds(LinearLayout adviewWrapper)
     {
-      if (App.adviewPaused)
+      if (App.isAdviewPaused())
       {
         MobclixHelper.resumeAdview(getRectangleAdview(), App);
       }

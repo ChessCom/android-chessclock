@@ -20,7 +20,6 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameListElement;
 
-import com.chess.utilities.NetworkChangeService;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 

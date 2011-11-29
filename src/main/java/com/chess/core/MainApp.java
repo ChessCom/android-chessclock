@@ -37,7 +37,7 @@ public class MainApp extends Application {
   private MobclixAdView rectangleAdview;
   private MobclixAdView bannerAdview;
   public LinearLayout bannerAdviewWrapper;
-  public boolean adviewPaused;
+  private boolean adviewPaused;
   private boolean networkChangedNotification;
 
   /*public void onCreate()
@@ -186,4 +186,12 @@ public class MainApp extends Application {
   public boolean isNetworkChangedNotification() {
     return networkChangedNotification;
   }
+
+	public boolean isAdviewPaused() {
+		return adviewPaused;
+	}
+
+	public void setAdviewPaused(boolean adviewPaused) {
+		this.adviewPaused = adviewPaused;
+	}
 }

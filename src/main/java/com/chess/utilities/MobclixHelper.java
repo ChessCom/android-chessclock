@@ -25,7 +25,7 @@ public class MobclixHelper {
 		LinearLayout bannerAdviewWrapper = app.bannerAdviewWrapper;
 		if (bannerAdview == null) {
 			bannerAdview = new MobclixMMABannerXLAdView(activity);
-			bannerAdview.addMobclixAdViewListener(new MobclixAdViewListenerImpl());
+			bannerAdview.addMobclixAdViewListener(new MobclixAdViewListenerImpl(false, app));
 		}
 		if (bannerAdviewWrapper != null) {
 			bannerAdviewWrapper.removeView(bannerAdview);
@@ -54,7 +54,7 @@ public class MobclixHelper {
 			app.bannerAdviewWrapper = bannerAdviewWrapper;
 		}
 
-		if (app.adviewPaused) {
+		if (app.isAdviewPaused()) {
 			resumeAdview(bannerAdview, app);
 		}
 
@@ -80,7 +80,7 @@ public class MobclixHelper {
 			//adview.getAd();
 			adview.resume();
 		}
-		app.adviewPaused = false;
+		app.setAdviewPaused(false);
 	}
 
 	public static void pauseAdview(MobclixAdView adview, MainApp app) {
@@ -89,7 +89,7 @@ public class MobclixHelper {
 		if (adview != null) {
 			adview.pause();
 		}
-		app.adviewPaused = true;
+		app.setAdviewPaused(true);
 	}
 
 	public static boolean isShowAds(MainApp app) {
@@ -110,6 +110,13 @@ public class MobclixHelper {
 			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.sharedData " + app.sharedData + ", app.sharedData.getString(\"premium_status\", \"0\") " + app.sharedData.getString("premium_status", "0"));
 		}
 		return result;
+	}
+
+	public static void hideBannerAd(MainApp app, TextView removeAds)
+	{
+		getBannerAdviewWrapper(app).setVisibility(View.GONE);
+		removeAds.setVisibility(View.GONE);
+		pauseAdview(getBannerAdview(app), app);
 	}
 
 	public static LinearLayout getBannerAdviewWrapper(MainApp app) {

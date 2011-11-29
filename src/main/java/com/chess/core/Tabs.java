@@ -129,15 +129,23 @@ public class Tabs extends TabActivity {
 		}
 
 	    getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-			
+
 			@Override
 			public void onTabChanged(String tabId) {
-				if(tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab6")) {
-					
+				if (MobclixHelper.isShowAds(App))
+				{
+					if(tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6"))
+					{
+						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
+					}
+					else if (tabId.equals("tab4"))
+					{
+						MobclixHelper.hideBannerAd(App, removeAds);
+					}
 				}
 			}
 		});
-	    
+
 	    App.mTabHost.setCurrentTab(tab);
     }
 	

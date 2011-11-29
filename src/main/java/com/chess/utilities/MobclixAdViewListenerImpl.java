@@ -1,9 +1,20 @@
 package com.chess.utilities;
 
+import com.chess.core.MainApp;
 import com.mobclix.android.sdk.MobclixAdView;
 import com.mobclix.android.sdk.MobclixAdViewListener;
 
 public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
+
+	private boolean isRectangle;
+	private MainApp mainApp;
+
+	public MobclixAdViewListenerImpl(boolean isRectangle, MainApp mainApp)
+	{
+		this.isRectangle = isRectangle;
+		this.mainApp = mainApp;
+	}
+
 	public void onSuccessfulLoad(MobclixAdView view) {
 		//view.setVisibility(View.VISIBLE);
 		System.out.println("MobclixAdViewListener: onSuccessfulLoad");
@@ -33,13 +44,16 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 	}
 
 	public void onAdClick(MobclixAdView adView) {
-		//System.out.println("MobclixAdViewListener: onAdClick");
-		return;
+		System.out.println("MobclixAdViewListener: onAdClick");
+		/*if (isRectangle)
+		{
+			MobclixHelper.resumeAdview(adView, mainApp);
+		}*/
+		adView.getAd();
 	}
 
 	public void onCustomAdTouchThrough(MobclixAdView adView, String string) {
 		//System.out.println("MobclixAdViewListener: onCustomAdTouchThrough");
-		return;
 	}
 
 	public String keywords() {
