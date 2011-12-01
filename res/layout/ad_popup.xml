@@ -25,13 +25,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Game"
-                android:layout_weight="1"></Button>
+                android:layout_weight="1"
+                android:visibility="gone"></Button>
 
         <Button android:id="@+id/home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Home"
-                android:layout_weight="1"></Button>
+                android:layout_weight="1"
+                android:visibility="gone"></Button>
     </LinearLayout>
 
 </LinearLayout>

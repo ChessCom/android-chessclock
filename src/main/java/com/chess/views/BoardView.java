@@ -3,6 +3,7 @@ package com.chess.views;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import android.content.Intent;
 import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.engine.Board;
@@ -165,8 +166,11 @@ public class BoardView extends ImageView {
         /*else if (board.fifty >= 100)
             message = "1/2 - 1/2 Draw by fifty move rule";*/
         if (message != null) {
-        	finished = true;
-        	ca.App.ShowMessage(message);
+            finished = true;
+            ca.App.ShowMessage(message);
+
+            ca.App.sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", message));
+
             return true;
         }
         if (board.inCheck(board.side)){

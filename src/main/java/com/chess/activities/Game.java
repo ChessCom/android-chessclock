@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.widget.*;
 import com.chess.utilities.Notifications;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -31,10 +32,6 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.chess.R;
 import com.chess.core.CoreActivity;
@@ -1935,6 +1932,7 @@ public class Game extends CoreActivity {
     registerReceiver(gameEndMessageReceiver, new IntentFilter("com.chess.lcc.android-game-end"));
     registerReceiver(gameInfoMessageReceived, new IntentFilter("com.chess.lcc.android-game-info"));
     registerReceiver(chatMessageReceiver, new IntentFilter("com.chess.lcc.android-game-chat-message"));
+    registerReceiver(showGameEndPopupReceiver, new IntentFilter("com.chess.lcc.android-show-game-end-popup"));
 
 		if(BV.board.mode == 6){
 			if(BV.board.tacticCanceled){
@@ -1963,6 +1961,7 @@ public class Game extends CoreActivity {
 		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
 		unregisterReceiver(chatMessageReceiver);
+		unregisterReceiver(showGameEndPopupReceiver);
 
 		super.onPause();
 		/*if (adviewWrapper != null && getRectangleAdview() != null && MobclixHelper.isShowAds(App))
@@ -2029,7 +2028,7 @@ public class Game extends CoreActivity {
   private BroadcastReceiver gameEndMessageReceiver = new BroadcastReceiver()
   {
     @Override
-    public void onReceive(Context context, Intent intent)
+    public void onReceive(Context context, final Intent intent)
     {
       LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 
@@ -2069,42 +2068,13 @@ public class Game extends CoreActivity {
 
       if (MobclixHelper.isShowAds(App))
       {
-        if(adPopup != null)
-        {
-          adPopup.dismiss();
-          adPopup = null;
-        }
+		final LayoutInflater inflater = (LayoutInflater) Game.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+		final View layout = inflater.inflate(R.layout.ad_popup,
+				(ViewGroup) findViewById(R.id.layout_root));
+		showGameEndPopup(layout, intent.getExtras().getString("title") + ": " + intent.getExtras().getString("message"));
 
-        final Context mContext = Game.this;
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View layout = inflater.inflate(R.layout.ad_popup,
-                                         (ViewGroup) findViewById(R.id.layout_root));
-
-        new Handler().postDelayed(new Runnable() {
-			public void run() {
-
-				AlertDialog.Builder builder;
-				//Context mContext = getApplicationContext();
-
-				builder = new AlertDialog.Builder(mContext);
-				builder.setView(layout);
-				adPopup = builder.create();
-				adPopup.setCancelable(true);
-				adPopup.setCanceledOnTouchOutside(true);
-				adPopup.show();
-
-				if (adviewWrapper != null && getRectangleAdview() != null) {
-					adviewWrapper.removeView(getRectangleAdview());
-				}
-				adviewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-				adviewWrapper.addView(getRectangleAdview());
-
-				adviewWrapper.setVisibility(View.VISIBLE);
-				showGameEndAds(adviewWrapper);
-			}
-		}, 1500);
-
-        layout.findViewById(R.id.newGame).setOnClickListener(new OnClickListener()
+        final View newGame = layout.findViewById(R.id.newGame);
+        newGame.setOnClickListener(new OnClickListener()
         {
           @Override
           public void onClick(View v)
@@ -2112,21 +2082,22 @@ public class Game extends CoreActivity {
             adPopup.dismiss();
             adPopup = null;
             startActivity(new Intent(Game.this, OnlineNewGame.class));
-           }
-          });
-          layout.findViewById(R.id.home).setOnClickListener(new OnClickListener()
-          {
-            @Override
-            public void onClick(View v)
-            {
-              adPopup.dismiss();
-              adPopup = null;
-              startActivity(new Intent(Game.this, Tabs.class));
-            }
-          });
+          }
+        });
+        newGame.setVisibility(View.VISIBLE);
 
-          TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
-          endOfGameMessagePopup.setText(intent.getExtras().getString("title") + ": " + intent.getExtras().getString("message"));
+        final View home = layout.findViewById(R.id.home);
+        home.setOnClickListener(new OnClickListener()
+        {
+          @Override
+          public void onClick(View v)
+          {
+            adPopup.dismiss();
+            adPopup = null;
+            startActivity(new Intent(Game.this, Tabs.class));
+          }
+        });
+        home.setVisibility(View.VISIBLE);
       }
 
 		endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
@@ -2250,4 +2221,68 @@ public class Game extends CoreActivity {
       chatPanel.setVisibility(View.VISIBLE);
     }
   };
+
+  private BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver()
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+		final LayoutInflater inflater = (LayoutInflater) Game.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+		final View layout = inflater.inflate(R.layout.ad_popup,
+				(ViewGroup) findViewById(R.id.layout_root));
+		showGameEndPopup(layout, "GAME OVER: " + intent.getExtras().getString("message"));
+
+		final Button ok = (Button) layout.findViewById(R.id.home);
+		ok.setText("OK");
+        ok.setOnClickListener(new OnClickListener()
+        {
+          @Override
+          public void onClick(View v)
+          {
+            adPopup.dismiss();
+            adPopup = null;
+            LoadPrev(0);
+          }
+        });
+        ok.setVisibility(View.VISIBLE);
+    }
+  };
+
+  public void showGameEndPopup(final View layout, final String message)
+  {
+	if(adPopup != null)
+	{
+	  adPopup.dismiss();
+	  adPopup = null;
+	}
+
+	new Handler().postDelayed(new Runnable() {
+		public void run() {
+
+			AlertDialog.Builder builder;
+			//Context mContext = getApplicationContext();
+
+			builder = new AlertDialog.Builder(Game.this);
+			builder.setView(layout);
+			adPopup = builder.create();
+			adPopup.setCancelable(true);
+			adPopup.setCanceledOnTouchOutside(true);
+			adPopup.show();
+
+			if (adviewWrapper != null && getRectangleAdview() != null) {
+				adviewWrapper.removeView(getRectangleAdview());
+			}
+			adviewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+			adviewWrapper.addView(getRectangleAdview());
+
+			adviewWrapper.setVisibility(View.VISIBLE);
+			showGameEndAds(adviewWrapper);
+
+			TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
+			endOfGameMessagePopup.setText(message);
+
+		}
+	}, 1500);
+  }
+
 }
