@@ -403,7 +403,7 @@ public class Game extends CoreActivity {
                     {
                       String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=RESIGN&timestamp="+App.OnlineGame.values.get("timestamp"), "GET", null, null);
                       if(result.contains("Success")){
-                        finish();
+                        sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", "GAME OVER"));
                       } else if(result.contains("Error+")){
                         App.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
                       } else{
@@ -1905,7 +1905,7 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(App))
+		if (MobclixHelper.isShowAds(App) /*&& !App.mTabHost.getCurrentTabTag().equals("tab4")*/)
 		{
 			MobclixHelper.resumeAdview(getRectangleAdview(), App);
 		}
@@ -2227,13 +2227,12 @@ public class Game extends CoreActivity {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-		final LayoutInflater inflater = (LayoutInflater) Game.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-		final View layout = inflater.inflate(R.layout.ad_popup,
-				(ViewGroup) findViewById(R.id.layout_root));
-		showGameEndPopup(layout, "GAME OVER: " + intent.getExtras().getString("message"));
+        final LayoutInflater inflater = (LayoutInflater) Game.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(R.layout.ad_popup, (ViewGroup) findViewById(R.id.layout_root));
+        showGameEndPopup(layout, intent.getExtras().getString("message"));
 
-		final Button ok = (Button) layout.findViewById(R.id.home);
-		ok.setText("OK");
+        final Button ok = (Button) layout.findViewById(R.id.home);
+        ok.setText("OK");
         ok.setOnClickListener(new OnClickListener()
         {
           @Override
@@ -2241,7 +2240,7 @@ public class Game extends CoreActivity {
           {
             adPopup.dismiss();
             adPopup = null;
-            LoadPrev(0);
+            finish();
           }
         });
         ok.setVisibility(View.VISIBLE);

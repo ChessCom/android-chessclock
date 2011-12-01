@@ -169,7 +169,7 @@ public class BoardView extends ImageView {
             finished = true;
             ca.App.ShowMessage(message);
 
-            ca.App.sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", message));
+            ca.App.sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", "GAME OVER: " + message));
 
             return true;
         }

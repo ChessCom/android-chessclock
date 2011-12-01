@@ -153,7 +153,15 @@ public class Tabs extends TabActivity {
     protected void onResume() {
       if (MobclixHelper.isShowAds(App))
       {
-        MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+    	  final String currentTab = getTabHost().getCurrentTabTag();
+    	  if(currentTab.equals("tab1") || currentTab.equals("tab2") || currentTab.equals("tab3") || currentTab.equals("tab5") || currentTab.equals("tab6"))
+			{
+				MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+			}
+			else if (currentTab.equals("tab4"))
+			{
+				MobclixHelper.hideBannerAd(App, removeAds);
+			}
       }
       super.onResume();
     }
