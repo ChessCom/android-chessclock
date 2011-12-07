@@ -36,7 +36,7 @@ public class MainApp extends Application {
   private SoundPlayer soundPlayer;
   private MobclixAdView rectangleAdview;
   private MobclixAdView bannerAdview;
-  public LinearLayout bannerAdviewWrapper;
+  private LinearLayout bannerAdviewWrapper;
   private boolean adviewPaused;
   private boolean networkChangedNotification;
 
@@ -193,5 +193,13 @@ public class MainApp extends Application {
 
 	public void setAdviewPaused(boolean adviewPaused) {
 		this.adviewPaused = adviewPaused;
+	}
+
+	public LinearLayout getBannerAdviewWrapper() {
+		return bannerAdviewWrapper;
+	}
+
+	public void setBannerAdviewWrapper(LinearLayout bannerAdviewWrapper) {
+		this.bannerAdviewWrapper = bannerAdviewWrapper;
 	}
 }

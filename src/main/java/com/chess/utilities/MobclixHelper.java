@@ -1,6 +1,8 @@
 package com.chess.utilities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,9 +22,10 @@ import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
  */
 public class MobclixHelper {
 
-	public static void initializeBannerAdView(Activity activity, MainApp app) {
+	public static void initializeBannerAdView(Activity activity, MainApp app)
+	{
 		MobclixAdView bannerAdview = app.getBannerAdview();
-		LinearLayout bannerAdviewWrapper = app.bannerAdviewWrapper;
+		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 		if (bannerAdview == null) {
 			bannerAdview = new MobclixMMABannerXLAdView(activity);
 			bannerAdview.addMobclixAdViewListener(new MobclixAdViewListenerImpl(false, app));
@@ -34,16 +37,32 @@ public class MobclixHelper {
 		bannerAdviewWrapper.addView(bannerAdview);
 		bannerAdviewWrapper.setVisibility(View.VISIBLE);
 		app.setBannerAdview(bannerAdview);
-		app.bannerAdviewWrapper = bannerAdviewWrapper;
+		app.setBannerAdviewWrapper(bannerAdviewWrapper);
 	}
 
-	public static void showBannerAd(LinearLayout adviewWrapper, TextView removeAds, Activity activity, MainApp app) {
+	public static void showBannerAd(LinearLayout adviewWrapper, TextView removeAds, Activity activity, MainApp app)
+	{
 		MobclixAdView bannerAdview = app.getBannerAdview();
-		LinearLayout bannerAdviewWrapper = app.bannerAdviewWrapper;
+		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
+
+		if (System.currentTimeMillis() - app.sharedData.getLong("lastActivityPauseTime", 0) > 30000)
+		{
+			if (bannerAdviewWrapper != null) {
+				bannerAdviewWrapper.removeView(bannerAdview);
+			}
+			System.out.println("MOBCLIX: FORCE getAd by 30 seconds pause");
+			pauseAdview(bannerAdview, app);
+			app.setBannerAdview(null);
+			app.setBannerAdviewWrapper(null);
+		}
+
 		int adsShowCounter = app.sharedData.getInt("com.chess.adsShowCounter", 0);
-		if (adviewWrapper == null || bannerAdview == null) {
+		if (adviewWrapper == null || bannerAdview == null)
+		{
 			initializeBannerAdView(activity, app);
-		} else {
+		}
+		else
+		{
 			if (bannerAdviewWrapper != null) {
 				bannerAdviewWrapper.removeView(bannerAdview);
 			}
@@ -51,10 +70,11 @@ public class MobclixHelper {
 			bannerAdviewWrapper.addView(bannerAdview);
 			bannerAdviewWrapper.setVisibility(View.VISIBLE);
 			app.setBannerAdview(bannerAdview);
-			app.bannerAdviewWrapper = bannerAdviewWrapper;
+			app.setBannerAdviewWrapper(bannerAdviewWrapper);
 		}
 
-		if (app.isAdviewPaused()) {
+		if (app.isAdviewPaused())
+		{
 			resumeAdview(bannerAdview, app);
 		}
 
@@ -120,11 +140,11 @@ public class MobclixHelper {
 	}
 
 	public static LinearLayout getBannerAdviewWrapper(MainApp app) {
-		return app.bannerAdviewWrapper;
+		return app.getBannerAdviewWrapper();
 	}
 
 	public static void setBannerAdviewWrapper(LinearLayout bannerAdviewWrapper, MainApp app) {
-		app.bannerAdviewWrapper = bannerAdviewWrapper;
+		app.setBannerAdviewWrapper(bannerAdviewWrapper);
 	}
 
 	public static MobclixAdView getBannerAdview(MainApp app) {

@@ -78,8 +78,10 @@ public class Game extends CoreActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK){
-			if(BV.board.analysis){
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			if(BV.board.analysis)
+			{
 				if(BV.board.mode < 6){
 					BV.board = new Board(this);
 					BV.board.init = true;
@@ -106,7 +108,7 @@ public class Game extends CoreActivity {
 					int i;
 					for(i=0; i < BV.board.movesCount; i++){
 
-            int[] moveFT = App.isLiveChess() ? MoveParser.parseCoordinate(BV.board, Moves[i]) : MoveParser.Parse(BV.board, Moves[i]);
+						int[] moveFT = App.isLiveChess() ? MoveParser.parseCoordinate(BV.board, Moves[i]) : MoveParser.Parse(BV.board, Moves[i]);
 						if(moveFT.length == 4){
 							Move m;
 							if(moveFT[3]==2)
@@ -141,9 +143,11 @@ public class Game extends CoreActivity {
 							}
 						};
 					}).start();
-				} else if(BV.board.mode == 6){
+				} else if(BV.board.mode == 6)
+				{
 					int sec = BV.board.sec;
-					if(App.guest || App.noInternet){
+					if(App.guest || App.noInternet)
+					{
 						BV.board = new Board(this);
 						BV.board.mode = 6;
 
@@ -199,7 +203,8 @@ public class Game extends CoreActivity {
 								}
 							};
 						}).start();
-					} else{
+					} else
+					{
 						BV.board = new Board(this);
 						BV.board.mode = 6;
 
@@ -267,7 +272,7 @@ public class Game extends CoreActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 			case 0:
-        FlurryAgent.onEvent("Tactics Daily Limit Exceded", null);
+				FlurryAgent.onEvent("Tactics Daily Limit Exceded", null);
 				return new AlertDialog.Builder(this)
 	            .setTitle("Daily Limit Exceeded").setMessage("You have hit your maximum number of tactics for today. Would you like to be able to do more tactics?")
 	            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -403,7 +408,14 @@ public class Game extends CoreActivity {
                     {
                       String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id="+App.sharedData.getString("user_token", "")+"&chessid="+App.OnlineGame.values.get("game_id")+"&command=RESIGN&timestamp="+App.OnlineGame.values.get("timestamp"), "GET", null, null);
                       if(result.contains("Success")){
-                        sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", "GAME OVER"));
+                        if (MobclixHelper.isShowAds(App))
+                        {
+                          sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", "GAME OVER").putExtra("finishable", true));
+                        }
+                        else
+                        {
+                          finish();
+                        }
                       } else if(result.contains("Error+")){
                         App.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
                       } else{
@@ -874,6 +886,10 @@ public class Game extends CoreActivity {
 	                			GetTacticsGame(App.Tactic.values.get("id"));
 	                		}
 	                	}
+						/*if(which == 2){
+							BV.board.analysis = true;
+							Update(0);
+						}*/
 	                }
 	            })
 	            .create().show();
@@ -1167,6 +1183,10 @@ public class Game extends CoreActivity {
 	                		BV.board.retry = true;
 	                		GetTacticsGame(App.Tactic.values.get("id"));
 	                	}
+						/*if(which == 2){
+							BV.board.analysis = true;
+							Update(0);
+						}*/
 	                }
 	            })
 	            .create().show();
@@ -2225,8 +2245,13 @@ public class Game extends CoreActivity {
   private BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver()
   {
     @Override
-    public void onReceive(Context context, Intent intent)
+    public void onReceive(Context context, final Intent intent)
     {
+        if (!MobclixHelper.isShowAds(App))
+        {
+          return;
+        }
+
         final LayoutInflater inflater = (LayoutInflater) Game.this.getSystemService(LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(R.layout.ad_popup, (ViewGroup) findViewById(R.id.layout_root));
         showGameEndPopup(layout, intent.getExtras().getString("message"));
@@ -2240,7 +2265,10 @@ public class Game extends CoreActivity {
           {
             adPopup.dismiss();
             adPopup = null;
-            finish();
+            if (intent.getBooleanExtra("finishable", false))
+            {
+              finish();
+            }
           }
         });
         ok.setVisibility(View.VISIBLE);
@@ -2249,6 +2277,11 @@ public class Game extends CoreActivity {
 
   public void showGameEndPopup(final View layout, final String message)
   {
+	if (!MobclixHelper.isShowAds(App))
+	{
+		return;
+	}
+
 	if(adPopup != null)
 	{
 	  adPopup.dismiss();

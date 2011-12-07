@@ -1,5 +1,6 @@
 package com.chess.utilities;
 
+import android.os.Handler;
 import com.chess.core.MainApp;
 import com.mobclix.android.sdk.MobclixAdView;
 import com.mobclix.android.sdk.MobclixAdViewListener;
@@ -22,6 +23,15 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 	public void onFailedLoad(MobclixAdView view, int errorCode) {
 		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode);
+
+		/*if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND)
+		{
+			new Handler().postDelayed(new Runnable() {
+				public void run() {
+					MobclixHelper.showBannerAd();
+	}
+			}, 3000);
+		}*/
 	}
 
 	public boolean onOpenAllocationLoad(MobclixAdView adView,
@@ -37,7 +47,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 		}
 		if (openAllocationCode == MobclixAdViewListener.SUBALLOCATION_OTHER) {
 			//adView.setVisibility(View.GONE);
-			
+
 			return true;
 		}*/
 		return false;

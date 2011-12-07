@@ -12,6 +12,7 @@ import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
+import com.mobclix.android.sdk.Mobclix;
 import com.mobclix.android.sdk.MobclixAdView;
 
 import android.app.Activity;
@@ -220,6 +221,9 @@ public abstract class CoreActivity extends Activity {
       {
         lccHolder.logout();
       }*/
+
+      App.SDeditor.putLong("lastActivityPauseTime", System.currentTimeMillis());
+      App.SDeditor.commit();
 
     	if(PD != null)
     		PD.dismiss();

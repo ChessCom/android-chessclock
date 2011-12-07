@@ -10,6 +10,7 @@ import com.chess.activities.tabs.Video;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
+import com.mobclix.android.sdk.Mobclix;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -31,6 +32,7 @@ public class Tabs extends TabActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Mobclix.onCreate(this);
         App = (MainApp)getApplication();
 
         //get global Shared Preferences
