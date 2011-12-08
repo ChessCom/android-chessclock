@@ -12,7 +12,6 @@ import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
-import com.mobclix.android.sdk.Mobclix;
 import com.mobclix.android.sdk.MobclixAdView;
 
 import android.app.Activity;
@@ -73,7 +72,9 @@ public abstract class CoreActivity extends Activity {
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-    lccHolder = App.getLccHolder();
+		lccHolder = App.getLccHolder();
+
+		Thread.setDefaultUncaughtExceptionHandler(new TopExceptionHandler(this));
 	}
 
 	@Override
@@ -224,6 +225,7 @@ public abstract class CoreActivity extends Activity {
 
       App.SDeditor.putLong("lastActivityPauseTime", System.currentTimeMillis());
       App.SDeditor.commit();
+      App.setForceLoadAd(false);
 
     	if(PD != null)
     		PD.dismiss();
@@ -383,7 +385,7 @@ public abstract class CoreActivity extends Activity {
             public void onCancel(DialogInterface dialog)
             {
               lccHolder.logout();
-              final Intent intent = new Intent(App, Singin.class);
+              final Intent intent = new Intent(CoreActivity.this, Tabs.class);
               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
               //reconnectingIndicator.dismiss();
               App.startActivity(intent);
@@ -391,8 +393,19 @@ public abstract class CoreActivity extends Activity {
           });
           reconnectingIndicator.setCancelable(true);
           reconnectingIndicator.setIndeterminate(true);
-          reconnectingIndicator.show();
-          lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
+          try
+          {
+            reconnectingIndicator.show();
+            lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
+          }
+          catch (Exception e)
+          {
+            lccHolder.logout();
+            intent = new Intent(CoreActivity.this, Tabs.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //reconnectingIndicator.dismiss();
+            App.startActivity(intent);
+          }
         }
         else
         {
@@ -720,4 +733,17 @@ public abstract class CoreActivity extends Activity {
       }
     }
   };
+
+	public class TopExceptionHandler implements Thread.UncaughtExceptionHandler
+	{
+		public TopExceptionHandler(Activity app) {
+			Thread.getDefaultUncaughtExceptionHandler();
+		}
+
+		public void uncaughtException(Thread t, Throwable e)
+		{
+		    MobclixHelper.getAdTimer().cancel();
+		}
+	}
+
 }

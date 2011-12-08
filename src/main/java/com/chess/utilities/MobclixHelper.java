@@ -13,6 +13,9 @@ import com.chess.live.client.User;
 import com.mobclix.android.sdk.MobclixAdView;
 import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by IntelliJ IDEA.
  * User: vm
@@ -22,12 +25,16 @@ import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
  */
 public class MobclixHelper {
 
+	private static java.util.Timer adTimer;
+
 	public static void initializeBannerAdView(Activity activity, MainApp app)
 	{
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 		if (bannerAdview == null) {
 			bannerAdview = new MobclixMMABannerXLAdView(activity);
+			bannerAdview.setRefreshTime(-1);
+			MobclixHelper.resumeAdview(bannerAdview, app);
 			bannerAdview.addMobclixAdViewListener(new MobclixAdViewListenerImpl(false, app));
 		}
 		if (bannerAdviewWrapper != null) {
@@ -45,7 +52,7 @@ public class MobclixHelper {
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 
-		if (System.currentTimeMillis() - app.sharedData.getLong("lastActivityPauseTime", 0) > 30000)
+		if (System.currentTimeMillis() - app.sharedData.getLong("lastActivityPauseTime", 0) > 30000 || app.isForceLoadAd())
 		{
 			if (bannerAdviewWrapper != null) {
 				bannerAdviewWrapper.removeView(bannerAdview);
@@ -96,18 +103,23 @@ public class MobclixHelper {
 
 	public static void resumeAdview(MobclixAdView adview, MainApp app) {
 		System.out.println("Mobclix: RESUME");
-		if (adview != null) {
-			//adview.getAd();
-			adview.resume();
+		if (adview != null)
+		{
+			//adview.resume();
+			startTimer(adview, app);
 		}
 		app.setAdviewPaused(false);
 	}
 
+
+
 	public static void pauseAdview(MobclixAdView adview, MainApp app) {
 		System.out.println("Mobclix: PAUSE");
 
-		if (adview != null) {
-			adview.pause();
+		if (adview != null)
+		{
+			//adview.pause();
+			stopTimer(adview);
 		}
 		app.setAdviewPaused(true);
 	}
@@ -153,5 +165,41 @@ public class MobclixHelper {
 
 	public static void setBannerAdview(MobclixAdView bannerAdview, MainApp app) {
 		app.setBannerAdview(bannerAdview);
+	}
+
+	private static void startTimer(final MobclixAdView adview, final MainApp mainApp)
+	{
+		adTimer = new java.util.Timer();
+		adTimer.schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				if (!mainApp.isAdviewPaused())
+				{
+					getAd(adview);
+				}
+			}
+		}, 0, 15000); // TODO: 15000
+	}
+
+	private static void stopTimer(MobclixAdView adview)
+	{
+		adview.cancelAd();
+		if (adTimer != null)
+		{
+			adTimer.cancel();
+		}
+	}
+
+	public static void getAd(MobclixAdView adview)
+	{
+		System.out.println("MOBCLIX: getAd");
+		adview.getAd();
+	}
+
+	public static Timer getAdTimer()
+	{
+		return adTimer;
 	}
 }

@@ -39,11 +39,12 @@ public class MainApp extends Application {
   private LinearLayout bannerAdviewWrapper;
   private boolean adviewPaused;
   private boolean networkChangedNotification;
+  private boolean forceLoadAd;
 
-  /*public void onCreate()
-  {
-    soundPlayer = new SoundPlayer(this);
-  }*/
+	/*public void onCreate()
+	  {
+		soundPlayer = new SoundPlayer(this);
+	  }*/
 
 	public void ShowMessage(String msg){
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
@@ -201,5 +202,15 @@ public class MainApp extends Application {
 
 	public void setBannerAdviewWrapper(LinearLayout bannerAdviewWrapper) {
 		this.bannerAdviewWrapper = bannerAdviewWrapper;
+	}
+
+	public void setForceLoadAd(boolean forceLoadAd)
+	{
+		this.forceLoadAd = forceLoadAd;
+	}
+
+	public boolean isForceLoadAd()
+	{
+		return forceLoadAd;
 	}
 }

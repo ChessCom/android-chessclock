@@ -1925,10 +1925,10 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(App) /*&& !App.mTabHost.getCurrentTabTag().equals("tab4")*/)
+		/*if (MobclixHelper.isShowAds(App) *//*&& !App.mTabHost.getCurrentTabTag().equals("tab4")*//*)
 		{
 			MobclixHelper.resumeAdview(getRectangleAdview(), App);
-		}
+		}*/
 
     if (!App.isNetworkChangedNotification() && extras.containsKey("liveChess"))
     {
@@ -1997,10 +1997,10 @@ public class Game extends CoreActivity {
 		if(OnlineGameUpdate != null)
 			OnlineGameUpdate.cancel();
 
-		if (MobclixHelper.isShowAds(App))
+		/*if (MobclixHelper.isShowAds(App))
 		{
 			MobclixHelper.pauseAdview(getRectangleAdview(), App);
-		}
+		}*/
 		
 		enableScreenLock();
 	}
@@ -2099,8 +2099,11 @@ public class Game extends CoreActivity {
           @Override
           public void onClick(View v)
           {
-            adPopup.dismiss();
-            adPopup = null;
+            if (adPopup != null)
+            {
+              adPopup.dismiss();
+              adPopup = null;
+            }
             startActivity(new Intent(Game.this, OnlineNewGame.class));
           }
         });
@@ -2112,8 +2115,11 @@ public class Game extends CoreActivity {
           @Override
           public void onClick(View v)
           {
-            adPopup.dismiss();
-            adPopup = null;
+            if (adPopup != null)
+            {
+              adPopup.dismiss();
+              adPopup = null;
+            }
             startActivity(new Intent(Game.this, Tabs.class));
           }
         });
@@ -2263,8 +2269,11 @@ public class Game extends CoreActivity {
           @Override
           public void onClick(View v)
           {
-            adPopup.dismiss();
-            adPopup = null;
+            if (adPopup != null)
+            {
+              adPopup.dismiss();
+              adPopup = null;
+            }
             if (intent.getBooleanExtra("finishable", false))
             {
               finish();
@@ -2299,7 +2308,14 @@ public class Game extends CoreActivity {
 			adPopup = builder.create();
 			adPopup.setCancelable(true);
 			adPopup.setCanceledOnTouchOutside(true);
-			adPopup.show();
+			try
+			{
+				adPopup.show();
+			}
+			catch (Exception e)
+			{
+				return;
+			}
 
 			if (adviewWrapper != null && getRectangleAdview() != null) {
 				adviewWrapper.removeView(getRectangleAdview());
@@ -2308,11 +2324,10 @@ public class Game extends CoreActivity {
 			adviewWrapper.addView(getRectangleAdview());
 
 			adviewWrapper.setVisibility(View.VISIBLE);
-			showGameEndAds(adviewWrapper);
+			//showGameEndAds(adviewWrapper);
 
 			TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
 			endOfGameMessagePopup.setText(message);
-
 		}
 	}, 1500);
   }

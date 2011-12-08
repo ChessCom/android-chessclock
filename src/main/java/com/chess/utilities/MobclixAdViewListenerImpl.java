@@ -21,17 +21,21 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 		System.out.println("MobclixAdViewListener: onSuccessfulLoad");
 	}
 
-	public void onFailedLoad(MobclixAdView view, int errorCode) {
+	public void onFailedLoad(MobclixAdView view, int errorCode)
+	{
 		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode);
 
-		/*if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND)
+		if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND)
 		{
-			new Handler().postDelayed(new Runnable() {
-				public void run() {
-					MobclixHelper.showBannerAd();
-	}
-			}, 3000);
-		}*/
+			mainApp.setForceLoadAd(true);
+			/*new Handler().postDelayed(new Runnable()
+				{
+					public void run()
+					{
+						MobclixHelper.showBannerAd();
+					}
+				}, 3000);*/
+		}
 	}
 
 	public boolean onOpenAllocationLoad(MobclixAdView adView,
@@ -55,11 +59,10 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 	public void onAdClick(MobclixAdView adView) {
 		System.out.println("MobclixAdViewListener: onAdClick");
-		/*if (isRectangle)
+		if (isRectangle)
 		{
-			MobclixHelper.resumeAdview(adView, mainApp);
-		}*/
-		adView.getAd();
+			MobclixHelper.getAd(adView);
+		}
 	}
 
 	public void onCustomAdTouchThrough(MobclixAdView adView, String string) {

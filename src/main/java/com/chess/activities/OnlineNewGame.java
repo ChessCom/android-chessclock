@@ -13,7 +13,6 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Web;
 import com.chess.views.OnlineGamesAdapter;
-import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -299,4 +298,14 @@ public class OnlineNewGame extends CoreActivity {
 			onResume();
 		}
 	}
+
+  @Override
+  public void onWindowFocusChanged(boolean hasFocus) {
+    super.onWindowFocusChanged(hasFocus);
+    System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
+    if (hasFocus && App.isForceLoadAd())
+    {
+      MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+    }
+  }
 }
