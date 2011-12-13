@@ -1989,7 +1989,7 @@ public class Game extends CoreActivity {
 	MobclixHelper.pauseAdview(App.getBannerAdview(), App);
 	/*App.setBannerAdview(null);
 	App.setBannerAdviewWrapper(null);*/
-	//App.setForceLoadAd(true);
+	//App.setForceBannerAdOnFailedLoad(true);
 
     disableScreenLock();
 	}

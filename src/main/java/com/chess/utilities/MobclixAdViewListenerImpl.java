@@ -1,6 +1,5 @@
 package com.chess.utilities;
 
-import android.os.Handler;
 import com.chess.core.MainApp;
 import com.mobclix.android.sdk.MobclixAdView;
 import com.mobclix.android.sdk.MobclixAdViewListener;
@@ -19,6 +18,12 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 	public void onSuccessfulLoad(MobclixAdView view) {
 		//view.setVisibility(View.VISIBLE);
 		System.out.println("MobclixAdViewListener: onSuccessfulLoad");
+		if (!isRectangle && mainApp.isForceBannerAdFirstLoad())
+		{
+			mainApp.setForceBannerAdFirstLoad(false);
+			MobclixHelper.pauseAdview(view, mainApp);
+			MobclixHelper.resumeAdview(view, mainApp);
+		}
 	}
 
 	public void onFailedLoad(MobclixAdView view, int errorCode)
@@ -27,7 +32,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 		if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND)
 		{
-			mainApp.setForceLoadAd(true);
+			mainApp.setForceBannerAdOnFailedLoad(true);
 			/*new Handler().postDelayed(new Runnable()
 				{
 					public void run()

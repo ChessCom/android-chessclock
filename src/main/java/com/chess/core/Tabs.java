@@ -174,14 +174,14 @@ public class Tabs extends TabActivity {
         MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
       }
       super.onPause();
-      App.setForceLoadAd(false);
+      App.setForceBannerAdOnFailedLoad(false);
     }
 
   @Override
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
-    System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged hasFocus=" + hasFocus + ", isForceLoadAd=" + App.isForceLoadAd());
-    if (MobclixHelper.isShowAds(App) && hasFocus && App.isForceLoadAd())
+    System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged hasFocus=" + hasFocus + ", isForceBannerAdOnFailedLoad=" + App.isForceBannerAdOnFailedLoad());
+    if (MobclixHelper.isShowAds(App) && hasFocus && App.isForceBannerAdOnFailedLoad())
     {
 	  System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged SHOW");
       MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);

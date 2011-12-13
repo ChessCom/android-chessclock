@@ -8,7 +8,6 @@ import com.chess.model.*;
 import com.chess.utilities.BitmapLoader;
 import com.chess.utilities.SoundPlayer;
 import com.mobclix.android.sdk.MobclixAdView;
-import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import android.app.AlertDialog;
 import android.app.Application;
@@ -39,7 +38,8 @@ public class MainApp extends Application {
   private LinearLayout bannerAdviewWrapper;
   private boolean adviewPaused;
   private boolean networkChangedNotification;
-  private boolean forceLoadAd;
+  private boolean forceBannerAdOnFailedLoad;
+  private boolean forceBannerAdFirstLoad;
   private boolean forceRectangleAd;
 
 	/*public void onCreate()
@@ -205,14 +205,14 @@ public class MainApp extends Application {
 		this.bannerAdviewWrapper = bannerAdviewWrapper;
 	}
 
-	public void setForceLoadAd(boolean forceLoadAd)
+	public void setForceBannerAdOnFailedLoad(boolean forceBannerAdOnFailedLoad)
 	{
-		this.forceLoadAd = forceLoadAd;
+		this.forceBannerAdOnFailedLoad = forceBannerAdOnFailedLoad;
 	}
 
-	public boolean isForceLoadAd()
+	public boolean isForceBannerAdOnFailedLoad()
 	{
-		return forceLoadAd;
+		return forceBannerAdOnFailedLoad;
 	}
 
 	public boolean isForceRectangleAd() {
@@ -221,5 +221,13 @@ public class MainApp extends Application {
 
 	public void setForceRectangleAd(boolean forceRectangleAd) {
 		this.forceRectangleAd = forceRectangleAd;
+	}
+
+	public boolean isForceBannerAdFirstLoad() {
+		return forceBannerAdFirstLoad;
+	}
+
+	public void setForceBannerAdFirstLoad(boolean forceBannerAdFirstLoad) {
+		this.forceBannerAdFirstLoad = forceBannerAdFirstLoad;
 	}
 }

@@ -1,8 +1,6 @@
 package com.chess.utilities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,13 +34,16 @@ public class MobclixHelper {
 
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
-		if (bannerAdview == null) {
+		if (bannerAdview == null)
+		{
 			bannerAdview = new MobclixMMABannerXLAdView(activity);
+			app.setForceBannerAdFirstLoad(true);
 			bannerAdview.setRefreshTime(-1);
 			MobclixHelper.resumeAdview(bannerAdview, app);
 			bannerAdview.addMobclixAdViewListener(new MobclixAdViewListenerImpl(false, app));
 		}
-		if (bannerAdviewWrapper != null) {
+		if (bannerAdviewWrapper != null)
+		{
 			bannerAdviewWrapper.removeView(bannerAdview);
 		}
 		bannerAdviewWrapper = (LinearLayout) activity.findViewById(R.id.adview_wrapper);
@@ -62,7 +63,7 @@ public class MobclixHelper {
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 
-		if (System.currentTimeMillis() - app.sharedData.getLong("lastActivityPauseTime", 0) > 30000 || app.isForceLoadAd())
+		if (System.currentTimeMillis() - app.sharedData.getLong("lastActivityPauseTime", 0) > 30000 || app.isForceBannerAdOnFailedLoad())
 		{
 			if (bannerAdviewWrapper != null) {
 				bannerAdviewWrapper.removeView(bannerAdview);

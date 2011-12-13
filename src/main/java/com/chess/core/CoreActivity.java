@@ -32,7 +32,6 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.widget.LinearLayout;
 import com.chess.utilities.NetworkChangeService;
 
 public abstract class CoreActivity extends Activity {
@@ -225,7 +224,7 @@ public abstract class CoreActivity extends Activity {
 
       App.SDeditor.putLong("lastActivityPauseTime", System.currentTimeMillis());
       App.SDeditor.commit();
-      App.setForceLoadAd(false);
+      App.setForceBannerAdOnFailedLoad(false);
 
     	if(PD != null)
     		PD.dismiss();
