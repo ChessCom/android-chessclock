@@ -597,13 +597,13 @@ public abstract class CoreActivity extends Activity {
 	  FlurryAgent.onEndSession(this);
   }
 
-	protected void showGameEndAds(LinearLayout adviewWrapper)
+	/*protected void showGameEndAds(LinearLayout adviewWrapper)
     {
       if (App.isAdviewPaused())
       {
         MobclixHelper.resumeAdview(getRectangleAdview(), App);
       }
-    }
+    }*/
 
   /*protected void showAds(MobclixMMABannerXLAdView adview)
   {

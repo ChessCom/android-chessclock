@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import android.widget.*;
 import com.chess.utilities.Notifications;
+import com.mobclix.android.sdk.MobclixAdView;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.app.AlertDialog;
@@ -558,12 +559,13 @@ public class Game extends CoreActivity {
 			}
 		}
 
-		if (MobclixHelper.isShowAds(App)/* && getRectangleAdview() == null*/)
-	    {
+		if (MobclixHelper.isShowAds(App) && getRectangleAdview() == null && !App.mTabHost.getCurrentTabTag().equals("tab4"))
+		{
 			setRectangleAdview(new MobclixIABRectangleMAdView(this));
 			getRectangleAdview().setRefreshTime(-1);
 			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, App));
-	    }
+			App.setForceRectangleAd(false);
+		}
 		
 		Update(0);
 	}
@@ -1925,10 +1927,14 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		/*if (MobclixHelper.isShowAds(App) *//*&& !App.mTabHost.getCurrentTabTag().equals("tab4")*//*)
+		if (MobclixHelper.isShowAds(App) && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null)
 		{
-			MobclixHelper.resumeAdview(getRectangleAdview(), App);
-		}*/
+			adviewWrapper.addView(getRectangleAdview());
+			if (App.isForceRectangleAd())
+			{
+				getRectangleAdview().getAd();				
+			}
+		}
 
     if (!App.isNetworkChangedNotification() && extras.containsKey("liveChess"))
     {
@@ -1973,6 +1979,18 @@ public class Game extends CoreActivity {
       }
       //lccHolder.updateClockTime(lccHolder.getGame(App.gameId));
     }
+
+	/*MobclixAdView bannerAdview = App.getBannerAdview();
+	LinearLayout bannerAdviewWrapper = App.getBannerAdviewWrapper();
+	if (bannerAdviewWrapper != null)
+	{
+		bannerAdviewWrapper.removeView(bannerAdview);
+	}*/
+	MobclixHelper.pauseAdview(App.getBannerAdview(), App);
+	/*App.setBannerAdview(null);
+	App.setBannerAdviewWrapper(null);*/
+	//App.setForceLoadAd(true);
+
     disableScreenLock();
 	}
 	@Override
@@ -1984,10 +2002,11 @@ public class Game extends CoreActivity {
 		unregisterReceiver(showGameEndPopupReceiver);
 
 		super.onPause();
-		/*if (adviewWrapper != null && getRectangleAdview() != null && MobclixHelper.isShowAds(App))
+		if (adviewWrapper != null && getRectangleAdview() != null && MobclixHelper.isShowAds(App))
 		{
+			getRectangleAdview().cancelAd();
 			adviewWrapper.removeView(getRectangleAdview());
-		}*/
+		}
 		lccHolder.setActivityPausedMode(true);
 		lccHolder.getPausedActivityGameEvents().clear();
 
@@ -2101,7 +2120,13 @@ public class Game extends CoreActivity {
           {
             if (adPopup != null)
             {
-              adPopup.dismiss();
+              try
+              {
+                adPopup.dismiss();
+              }
+              catch (Exception e)
+              {
+              }
               adPopup = null;
             }
             startActivity(new Intent(Game.this, OnlineNewGame.class));
@@ -2117,7 +2142,13 @@ public class Game extends CoreActivity {
           {
             if (adPopup != null)
             {
-              adPopup.dismiss();
+              try
+              {
+                adPopup.dismiss();
+              }
+              catch (Exception e)
+              {
+              }
               adPopup = null;
             }
             startActivity(new Intent(Game.this, Tabs.class));
@@ -2271,7 +2302,13 @@ public class Game extends CoreActivity {
           {
             if (adPopup != null)
             {
-              adPopup.dismiss();
+              try
+              {
+                adPopup.dismiss();
+              }
+              catch (Exception e)
+              {
+              }
               adPopup = null;
             }
             if (intent.getBooleanExtra("finishable", false))
@@ -2293,8 +2330,14 @@ public class Game extends CoreActivity {
 
 	if(adPopup != null)
 	{
-	  adPopup.dismiss();
-	  adPopup = null;
+		try
+	 	{
+			adPopup.dismiss();
+		}
+		catch (Exception e)
+		{
+		}
+		adPopup = null;
 	}
 
 	new Handler().postDelayed(new Runnable() {
@@ -2308,6 +2351,7 @@ public class Game extends CoreActivity {
 			adPopup = builder.create();
 			adPopup.setCancelable(true);
 			adPopup.setCanceledOnTouchOutside(true);
+
 			try
 			{
 				adPopup.show();
@@ -2328,6 +2372,25 @@ public class Game extends CoreActivity {
 
 			TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
 			endOfGameMessagePopup.setText(message);
+
+			adPopup.setOnCancelListener(new DialogInterface.OnCancelListener()
+			{
+				public void onCancel(DialogInterface dialogInterface) {
+					if (adviewWrapper != null && getRectangleAdview() != null)
+					{
+						adviewWrapper.removeView(getRectangleAdview());
+					}
+				}
+			});
+			adPopup.setOnDismissListener(new DialogInterface.OnDismissListener()
+			{
+				public void onDismiss(DialogInterface dialogInterface)
+				{
+					if (adviewWrapper != null && getRectangleAdview() != null) {
+						adviewWrapper.removeView(getRectangleAdview());
+					}
+				}
+			});
 		}
 	}, 1500);
   }

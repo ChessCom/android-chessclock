@@ -61,7 +61,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 		System.out.println("MobclixAdViewListener: onAdClick");
 		if (isRectangle)
 		{
-			MobclixHelper.getAd(adView);
+			mainApp.setForceRectangleAd(true);
 		}
 	}
 

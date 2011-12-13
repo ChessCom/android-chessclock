@@ -181,7 +181,7 @@ public class Tabs extends TabActivity {
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
     System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged hasFocus=" + hasFocus + ", isForceLoadAd=" + App.isForceLoadAd());
-    if (hasFocus && App.isForceLoadAd())
+    if (MobclixHelper.isShowAds(App) && hasFocus && App.isForceLoadAd())
     {
 	  System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged SHOW");
       MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);

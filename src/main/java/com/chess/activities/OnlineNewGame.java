@@ -303,7 +303,7 @@ public class OnlineNewGame extends CoreActivity {
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
     System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
-    if (hasFocus && App.isForceLoadAd())
+    if (hasFocus && MobclixHelper.isShowAds(App) && App.isForceLoadAd())
     {
       MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
     }

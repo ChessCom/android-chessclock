@@ -40,6 +40,7 @@ public class MainApp extends Application {
   private boolean adviewPaused;
   private boolean networkChangedNotification;
   private boolean forceLoadAd;
+  private boolean forceRectangleAd;
 
 	/*public void onCreate()
 	  {
@@ -212,5 +213,13 @@ public class MainApp extends Application {
 	public boolean isForceLoadAd()
 	{
 		return forceLoadAd;
+	}
+
+	public boolean isForceRectangleAd() {
+		return forceRectangleAd;
+	}
+
+	public void setForceRectangleAd(boolean forceRectangleAd) {
+		this.forceRectangleAd = forceRectangleAd;
 	}
 }

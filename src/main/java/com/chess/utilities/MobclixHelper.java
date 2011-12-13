@@ -29,6 +29,11 @@ public class MobclixHelper {
 
 	public static void initializeBannerAdView(Activity activity, MainApp app)
 	{
+		if (!isShowAds(app))
+		{
+			return;
+		}
+
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 		if (bannerAdview == null) {
@@ -49,6 +54,11 @@ public class MobclixHelper {
 
 	public static void showBannerAd(LinearLayout adviewWrapper, TextView removeAds, Activity activity, MainApp app)
 	{
+		if (!isShowAds(app))
+		{
+			return;
+		}
+
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 
@@ -93,7 +103,9 @@ public class MobclixHelper {
 			removeAds.setVisibility(View.VISIBLE);
 			app.SDeditor.putInt("com.chess.adsShowCounter", 0);
 			app.SDeditor.commit();
-		} else {
+		}
+		else 
+		{
 			removeAds.setVisibility(View.GONE);
 			adviewWrapper.setVisibility(View.VISIBLE);
 			app.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);
@@ -115,12 +127,7 @@ public class MobclixHelper {
 
 	public static void pauseAdview(MobclixAdView adview, MainApp app) {
 		System.out.println("Mobclix: PAUSE");
-
-		if (adview != null)
-		{
-			//adview.pause();
-			stopTimer(adview);
-		}
+		stopTimer(adview);
 		app.setAdviewPaused(true);
 	}
 
@@ -169,6 +176,10 @@ public class MobclixHelper {
 
 	private static void startTimer(final MobclixAdView adview, final MainApp mainApp)
 	{
+		if (!isShowAds(mainApp))
+		{
+			return;
+		}
 		adTimer = new java.util.Timer();
 		adTimer.schedule(new TimerTask()
 		{
@@ -180,12 +191,15 @@ public class MobclixHelper {
 					getAd(adview);
 				}
 			}
-		}, 0, 15000); // TODO: 15000
+		}, 0, 15000);
 	}
 
 	private static void stopTimer(MobclixAdView adview)
 	{
-		adview.cancelAd();
+		if (adview != null)
+		{
+			adview.cancelAd();
+		}
 		if (adTimer != null)
 		{
 			adTimer.cancel();
