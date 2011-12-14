@@ -720,14 +720,11 @@ public class Online extends CoreActivity {
 		public void onReceive(Context context, final Intent intent) {
 			new Handler().post(new Runnable() {
 				public void run() {
-					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
-						/*if (isShowAds() && lccHolder.isConnected())
-						{
-							MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, Online.this, App);
-			            }*/
-
+					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable"))
+					{
 						start.setVisibility(View.VISIBLE);
-						if (gridview != null) {
+						if (gridview != null)
+						{
 							gridview.setVisibility(View.VISIBLE);
 						}
 						challengesListTitle.setVisibility(View.VISIBLE);
@@ -737,5 +734,4 @@ public class Online extends CoreActivity {
 			});
 		}
 	};
-
 }

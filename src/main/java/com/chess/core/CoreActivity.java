@@ -158,6 +158,7 @@ public abstract class CoreActivity extends Activity {
           lccHolder.getClient().disconnect();
           lccHolder.setNetworkTypeName(null);
           startService(new Intent(getApplicationContext(), NetworkChangeService.class));
+          lccHolder.setConnectingInProgress(true);
           lccHolder.getClient()
             .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
@@ -742,7 +743,7 @@ public abstract class CoreActivity extends Activity {
 		public void uncaughtException(Thread t, Throwable e)
 		{
 		    MobclixHelper.getAdTimer().cancel();
+			enableScreenLock();
 		}
 	}
-
 }

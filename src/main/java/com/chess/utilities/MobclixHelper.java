@@ -124,8 +124,6 @@ public class MobclixHelper {
 		app.setAdviewPaused(false);
 	}
 
-
-
 	public static void pauseAdview(MobclixAdView adview, MainApp app) {
 		System.out.println("Mobclix: PAUSE");
 		stopTimer(adview);
@@ -133,17 +131,19 @@ public class MobclixHelper {
 	}
 
 	public static boolean isShowAds(MainApp app) {
-		boolean result = false;
+		boolean result;
 		User lccUser = null;
 		try {
 
-		lccUser = app.getLccHolder().getUser();
-		boolean liveMembershipLevel =
-				lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) : false;
+			lccUser = app.getLccHolder().getUser();
+			boolean liveMembershipLevel =
+					lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) && !app.getLccHolder().isConnectingInProgress() : false;
 
-		result = /*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
-            (7 * 24 * 60 * 60 * 1000)) && */(liveMembershipLevel || (!app.isLiveChess() && Integer.parseInt(
-				app.sharedData.getString("premium_status", "0")) < 1));
+			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
+					app.sharedData.getString("premium_status", "0")) < 1;
+
+			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
+				(7 * 24 * 60 * 60 * 1000)) && */;
 		}
 		catch (Exception e)
 		{

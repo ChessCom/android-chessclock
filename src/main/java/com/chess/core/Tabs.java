@@ -1,5 +1,9 @@
 package com.chess.core;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.os.Handler;
 import com.chess.R;
 import com.chess.activities.Game;
 import com.chess.activities.Register;
@@ -131,20 +135,25 @@ public class Tabs extends TabActivity {
 		}
 
 	    getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-
 			@Override
-			public void onTabChanged(String tabId) {
+			public void onTabChanged(String tabId)
+			{
+				//System.out.println("LCCLOG2: ONTABCHANGED");
 				if (MobclixHelper.isShowAds(App))
 				{
 					if(tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6"))
 					{
+						//System.out.println("LCCLOG2: ONTABCHANGED 1");
 						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
 					}
 					else if (tabId.equals("tab4"))
 					{
+						//System.out.println("LCCLOG2: ONTABCHANGED 2");
 						MobclixHelper.hideBannerAd(App, removeAds);
 					}
+					//System.out.println("LCCLOG2: ONTABCHANGED 3");
 				}
+				//System.out.println("LCCLOG2: ONTABCHANGED 4");
 			}
 		});
 
@@ -153,38 +162,68 @@ public class Tabs extends TabActivity {
 	
     @Override
     protected void onResume() {
+		super.onResume();
+		//System.out.println("LCCLOG2: TABS ONRESUME");
       if (MobclixHelper.isShowAds(App))
       {
+		  //System.out.println("LCCLOG2: TABS ONRESUME 1");
     	  final String currentTab = getTabHost().getCurrentTabTag();
     	  if(currentTab.equals("tab1") || currentTab.equals("tab2") || currentTab.equals("tab3") || currentTab.equals("tab5") || currentTab.equals("tab6"))
 			{
+				//System.out.println("LCCLOG2: TABS ONRESUME 2");
 				MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
 			}
 			else if (currentTab.equals("tab4"))
 			{
+				//System.out.println("LCCLOG2: TABS ONRESUME 3");
 				MobclixHelper.hideBannerAd(App, removeAds);
 			}
+		  //System.out.println("LCCLOG2: TABS ONRESUME 4");
       }
-      super.onResume();
+	  //System.out.println("LCCLOG2: TABS ONRESUME 5");
+	  registerReceiver(lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
     }
 
     @Override
-    protected void onPause() {
-      if (MobclixHelper.isShowAds(App)) {
+    protected void onPause()
+	{
+	  super.onPause();
+      if (MobclixHelper.isShowAds(App))
+	  {
         MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
       }
-      super.onPause();
       App.setForceBannerAdOnFailedLoad(false);
+      unregisterReceiver(lccLoggingInInfoReceiver);
     }
 
   @Override
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
+	  //System.out.println("LCCLOG2: TABS FOCUS 1");
     System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged hasFocus=" + hasFocus + ", isForceBannerAdOnFailedLoad=" + App.isForceBannerAdOnFailedLoad());
     if (MobclixHelper.isShowAds(App) && hasFocus && App.isForceBannerAdOnFailedLoad())
     {
+		//System.out.println("LCCLOG2: TABS FOCUS 2");
 	  System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged SHOW");
       MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+		//System.out.println("LCCLOG2: TABS FOCUS 3");
     }
   }
+
+  private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, final Intent intent) {
+			new Handler().post(new Runnable() {
+				public void run() {
+					if (getTabHost().getCurrentTabTag().equals("tab2") && App.isLiveChess() && !intent.getExtras().getBoolean("enable"))
+					{
+						if (MobclixHelper.isShowAds(App) && App.getLccHolder().isConnected() && !App.getLccHolder().isConnectingInProgress())
+						{
+							MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
+			            }
+					}
+				}
+			});
+		}
+	};
 }

@@ -1995,6 +1995,7 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onPause() {
+		System.out.println("LCCLOG2: GAME ONPAUSE");
 		unregisterReceiver(gameMoveReceiver);
 		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
@@ -2002,10 +2003,14 @@ public class Game extends CoreActivity {
 		unregisterReceiver(showGameEndPopupReceiver);
 
 		super.onPause();
-		if (adviewWrapper != null && getRectangleAdview() != null && MobclixHelper.isShowAds(App))
+		System.out.println("LCCLOG2: GAME ONPAUSE adviewWrapper=" + adviewWrapper + ", getRectangleAdview() " + getRectangleAdview());
+		if (adviewWrapper != null && getRectangleAdview() != null)
 		{
+			System.out.println("LCCLOG2: GAME ONPAUSE 1");
 			getRectangleAdview().cancelAd();
+			System.out.println("LCCLOG2: GAME ONPAUSE 2");
 			adviewWrapper.removeView(getRectangleAdview());
+			System.out.println("LCCLOG2: GAME ONPAUSE 3");
 		}
 		lccHolder.setActivityPausedMode(true);
 		lccHolder.getPausedActivityGameEvents().clear();
@@ -2333,33 +2338,6 @@ public class Game extends CoreActivity {
 		try
 	 	{
 			adPopup.dismiss();
-		}
-		catch (Exception e)
-		{
-		}
-		adPopup = null;
-	}
-
-	new Handler().postDelayed(new Runnable() {
-		public void run() {
-
-			AlertDialog.Builder builder;
-			//Context mContext = getApplicationContext();
-
-			builder = new AlertDialog.Builder(Game.this);
-			builder.setView(layout);
-			adPopup = builder.create();
-			adPopup.setCancelable(true);
-			adPopup.setCanceledOnTouchOutside(true);
-
-			try
-			{
-				adPopup.show();
-			}
-			catch (Exception e)
-			{
-				return;
-			}
 
 			if (adviewWrapper != null && getRectangleAdview() != null) {
 				adviewWrapper.removeView(getRectangleAdview());
@@ -2391,6 +2369,36 @@ public class Game extends CoreActivity {
 					}
 				}
 			});
+
+		}
+		catch (Exception e)
+		{
+		}
+		adPopup = null;
+	}
+
+	new Handler().postDelayed(new Runnable() {
+		public void run() {
+
+			AlertDialog.Builder builder;
+			//Context mContext = getApplicationContext();
+
+			builder = new AlertDialog.Builder(Game.this);
+			builder.setView(layout);
+			adPopup = builder.create();
+			adPopup.setCancelable(true);
+			adPopup.setCanceledOnTouchOutside(true);
+
+			try
+			{
+				adPopup.show();
+
+			}
+			catch (Exception e)
+			{
+				return;
+			}
+
 		}
 	}, 1500);
   }
