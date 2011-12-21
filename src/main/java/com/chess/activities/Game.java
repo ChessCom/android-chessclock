@@ -8,7 +8,6 @@ import java.util.TimerTask;
 
 import android.widget.*;
 import com.chess.utilities.Notifications;
-import com.mobclix.android.sdk.MobclixAdView;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.app.AlertDialog;
@@ -67,6 +66,7 @@ public class Game extends CoreActivity {
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
 	//private String gameId = "";
 	private int UPDATE_DELAY = 10000;
+	private int resignOrAbort = R.string.resign;;
 
   private com.chess.model.Game OG;
 
@@ -394,14 +394,21 @@ public class Game extends CoreActivity {
                     if (App.isLiveChess() && BV.board.mode == 4)
                     {
                       final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
-                      LccHolder.LOG.info("Abort/Resign game: " + game);
-                      if (game.getSeq() >= 3)
+
+                      if (lccHolder.isFairPlayRestriction(App.gameId))
                       {
+                        LccHolder.LOG.info("Resign game: " + game);
                         lccHolder.getClient().makeResign(game, "");
+                      }
+                      else if (lccHolder.isAbortableBySeq(App.gameId))
+                      {
+                        LccHolder.LOG.info("Abort game: " + game);
+                        lccHolder.getClient().abortGame(game, "");
                       }
                       else
                       {
-                        lccHolder.getClient().abortGame(game, "");
+                        LccHolder.LOG.info("Resign game: " + game);
+                        lccHolder.getClient().makeResign(game, "");
                       }
                       finish();
                     }
@@ -1588,7 +1595,7 @@ public class Game extends CoreActivity {
         options.add(0, 1, 0, getString(R.string.menuSettings)).setIcon(R.drawable.options);
         options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
         options.add(0, 3, 0, getString(R.string.drawoffer));
-        options.add(0, 4, 0, getString(R.string.resign));
+        options.add(0, 4, 0, getString(resignOrAbort));
         options.add(0, 5, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
       }
       else
@@ -1598,7 +1605,7 @@ public class Game extends CoreActivity {
         options.add(0, 8, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
         options.add(0, 9, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
         options.add(0, 10, 0, getString(R.string.drawoffer));
-        options.add(0, 11, 0, getString(R.string.resign));
+        options.add(0, 11, 0, getString(R.string.resignorabort));
       }
     }
     else if(BV.board.mode == 6){
@@ -1618,13 +1625,33 @@ public class Game extends CoreActivity {
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-    if(App.OnlineGame != null && BV.board.mode < 6 && BV.board.mode > 3){
-      int itemPosition = App.isLiveChess() ? 1 : 3;
-			if( App.OnlineGame.values.get("has_new_message").equals("1") )
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		if(App.OnlineGame != null && BV.board.mode < 6 && BV.board.mode > 3)
+		{
+			int itemPosition = App.isLiveChess() ? 1 : 3;
+			if( App.OnlineGame.values.get("has_new_message").equals("1"))
 				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
 			else
 				menu.getItem(itemPosition).setIcon(R.drawable.chat);
+		}
+
+		if(App.isLiveChess() && BV.board.mode == 4)
+		{
+			final SubMenu options = menu.getItem(0).getSubMenu();
+			if (lccHolder.isFairPlayRestriction(App.gameId))
+			{
+				resignOrAbort = R.string.resign;
+			}
+			else if (lccHolder.isAbortableBySeq(App.gameId))
+			{
+				resignOrAbort = R.string.abort;
+			}
+			else
+			{
+				resignOrAbort = R.string.resign;
+			}
+			options.findItem(4).setTitle(resignOrAbort);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -1932,7 +1959,7 @@ public class Game extends CoreActivity {
 			adviewWrapper.addView(getRectangleAdview());
 			if (App.isForceRectangleAd())
 			{
-				getRectangleAdview().getAd();				
+				getRectangleAdview().getAd();
 			}
 		}
 
@@ -2326,23 +2353,34 @@ public class Game extends CoreActivity {
     }
   };
 
-  public void showGameEndPopup(final View layout, final String message)
-  {
-	if (!MobclixHelper.isShowAds(App))
-	{
-		return;
-	}
+	public void showGameEndPopup(final View layout, final String message) {
+		if (!MobclixHelper.isShowAds(App))
+		{
+			return;
+		}
 
-	if(adPopup != null)
-	{
+		if (adPopup != null)
+		{
+			try
+			{
+				adPopup.dismiss();
+			}
+			catch (Exception e)
+			{
+				System.out.println("MOBCLIX: EXCEPTION IN showGameEndPopup");
+				e.printStackTrace();
+			}
+			adPopup = null;
+		}
+
 		try
-	 	{
-			adPopup.dismiss();
-
-			if (adviewWrapper != null && getRectangleAdview() != null) {
+		{
+			if (adviewWrapper != null && getRectangleAdview() != null)
+			{
 				adviewWrapper.removeView(getRectangleAdview());
 			}
 			adviewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+			System.out.println("MOBCLIX: GET WRAPPER " + adviewWrapper);
 			adviewWrapper.addView(getRectangleAdview());
 
 			adviewWrapper.setVisibility(View.VISIBLE);
@@ -2353,7 +2391,8 @@ public class Game extends CoreActivity {
 
 			adPopup.setOnCancelListener(new DialogInterface.OnCancelListener()
 			{
-				public void onCancel(DialogInterface dialogInterface) {
+				public void onCancel(DialogInterface dialogInterface)
+				{
 					if (adviewWrapper != null && getRectangleAdview() != null)
 					{
 						adviewWrapper.removeView(getRectangleAdview());
@@ -2364,43 +2403,39 @@ public class Game extends CoreActivity {
 			{
 				public void onDismiss(DialogInterface dialogInterface)
 				{
-					if (adviewWrapper != null && getRectangleAdview() != null) {
+					if (adviewWrapper != null && getRectangleAdview() != null)
+					{
 						adviewWrapper.removeView(getRectangleAdview());
 					}
 				}
 			});
-
 		}
 		catch (Exception e)
 		{
+			System.out.println("MOBCLIX: EXCEPTION IN showGameEndPopup");
+			e.printStackTrace();
 		}
-		adPopup = null;
+
+		new Handler().postDelayed(new Runnable()
+		{
+			public void run()
+			{
+				AlertDialog.Builder builder;
+				//Context mContext = getApplicationContext();
+				builder = new AlertDialog.Builder(Game.this);
+				builder.setView(layout);
+				adPopup = builder.create();
+				adPopup.setCancelable(true);
+				adPopup.setCanceledOnTouchOutside(true);
+				try
+				{
+					adPopup.show();
+				}
+				catch (Exception e)
+				{
+					return;
+				}
+			}
+		}, 1500);
 	}
-
-	new Handler().postDelayed(new Runnable() {
-		public void run() {
-
-			AlertDialog.Builder builder;
-			//Context mContext = getApplicationContext();
-
-			builder = new AlertDialog.Builder(Game.this);
-			builder.setView(layout);
-			adPopup = builder.create();
-			adPopup.setCancelable(true);
-			adPopup.setCanceledOnTouchOutside(true);
-
-			try
-			{
-				adPopup.show();
-
-			}
-			catch (Exception e)
-			{
-				return;
-			}
-
-		}
-	}, 1500);
-  }
-
 }

@@ -436,7 +436,7 @@ public class Online extends CoreActivity {
 				final GameListElement el = App.GameListItems.get(pos);
 				if(el.type == 1){
 					new AlertDialog.Builder(Online.this)
-		            .setItems(new String[]{getString(R.string.chat), getString(R.string.drawoffer), getString(R.string.resign)}, new DialogInterface.OnClickListener(){
+		            .setItems(new String[]{getString(R.string.chat), getString(R.string.drawoffer), getString(R.string.resignorabort)}, new DialogInterface.OnClickListener(){
 		            	@Override
 						public void onClick(DialogInterface d, int pos) {
 							if(pos == 0){

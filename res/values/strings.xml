@@ -137,7 +137,9 @@
 <string name="messages">Messages</string>
 <string name="analysis">Analysis board</string>
 <string name="drawoffer">Offer (or Accept) a Draw</string>
-<string name="resign">Resign (or Abort)</string>
+<string name="resignorabort">Resign (or Abort)</string>
+<string name="resign">Resign</string>
+<string name="abort">Abort</string>
 <string name="cancel">Cancel</string>
 <string name="game">Game</string>
 <string name="newgame">New game</string>

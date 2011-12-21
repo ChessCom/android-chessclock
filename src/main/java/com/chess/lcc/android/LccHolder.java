@@ -794,12 +794,12 @@ public class LccHolder
     latestMoveNumber = null;
     putGame(game);
     int time = game.getGameTimeConfig().getBaseTime() * 100;
-    if (whiteClock != null && game.getWhitePlayer().getUsername().equals(game.getWhitePlayer().getUsername())
+    if (whiteClock != null /*&& game.getWhitePlayer().getUsername().equals(game.getWhitePlayer().getUsername())*/
         && whiteClock.isRunning())
     {
       whiteClock.setRunning(false);
     }
-    if (blackClock != null && game.getBlackPlayer().getUsername().equals(game.getBlackPlayer().getUsername())
+    if (blackClock != null /*&& game.getBlackPlayer().getUsername().equals(game.getBlackPlayer().getUsername())*/
         && blackClock.isRunning())
     {
       blackClock.setRunning(false);
@@ -1042,4 +1042,23 @@ public class LccHolder
   {
     return networkTypeName;
   }
+
+	public Boolean isFairPlayRestriction(String gameId)
+	{
+		final com.chess.live.client.Game game = getGame(gameId);
+		if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer())
+		{
+			return true;
+		}
+		if (game.getBlackPlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByBlackPlayer())
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public Boolean isAbortableBySeq(String gameId)
+	{
+		return getGame(gameId).getSeq() < 3;
+	}
 }

@@ -17,7 +17,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 	public void onSuccessfulLoad(MobclixAdView view) {
 		//view.setVisibility(View.VISIBLE);
-		System.out.println("MobclixAdViewListener: onSuccessfulLoad");
+		System.out.println("MobclixAdViewListener: onSuccessfulLoad" + (isRectangle ? " Rectangle ad" : ""));
 		if (!isRectangle && mainApp.isForceBannerAdFirstLoad())
 		{
 			mainApp.setForceBannerAdFirstLoad(false);
@@ -28,7 +28,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 	public void onFailedLoad(MobclixAdView view, int errorCode)
 	{
-		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode);
+		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode + (isRectangle ? " Rectangle ad" : ""));
 
 		if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND)
 		{
@@ -47,7 +47,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 			int openAllocationCode) {
 
 		System.out.println("MobclixAdViewListener: onOpenAllocationLoad openAllocationCode="
-						+ openAllocationCode);
+						+ openAllocationCode  + (isRectangle ? " Rectangle ad" : ""));
 		/*
 		if (openAllocationCode == MobclixAdViewListener.SUBALLOCATION_ADMOB
 				|| openAllocationCode == MobclixAdViewListener.SUBALLOCATION_GOOGLE
