@@ -38,8 +38,16 @@ public class Singin extends CoreActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.singin);
+
+		/*getWindow().setFormat(PixelFormat.RGBA_8888);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
+
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		Bitmap gradient = BitmapFactory.decodeResource(getResources(), R.drawable.back_image, options);
+
+		findViewById(R.id.back).setBackgroundDrawable(new BitmapDrawable(gradient));*/
 
 		username = (EditText)findViewById(R.id.username);
 		password = (EditText)findViewById(R.id.password);
