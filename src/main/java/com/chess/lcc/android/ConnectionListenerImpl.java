@@ -68,12 +68,14 @@ public class ConnectionListenerImpl implements ConnectionListener
   public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable)
   {
     Log.d("", "LCCLOG CONNECTION: User connection failure:" + message + ", details=" + details);
-    lccHolder.setConnected(false);
-    lccHolder.setConnectingInProgress(false);
-    lccHolder.getAndroid().closeLoggingInIndicator();
+
     String detailsMessage = "";
     if (details != null)
     {
+      lccHolder.setConnected(false);
+      lccHolder.setConnectingInProgress(false);
+      lccHolder.getAndroid().closeLoggingInIndicator();
+
       switch(details)
       {
         case USER_KICKED:
@@ -96,13 +98,14 @@ public class ConnectionListenerImpl implements ConnectionListener
           detailsMessage = message;
         }
       }
+      lccHolder.getAndroid().informAndExit("", detailsMessage);
+      //lccHolder.getAndroid().sendConnectionBroadcastIntent(false, 0, detailsMessage);
     }
     else
     {
-      detailsMessage = "Connection/login error";
+      //detailsMessage = "Connection/login error";
+      Log.d("", "LCCLOG CONNECTION: User connection failure: IGNORING");
     }
-    lccHolder.getAndroid().informAndExit("", detailsMessage);
-    //lccHolder.getAndroid().sendConnectionBroadcastIntent(false, 0, detailsMessage);
   }
 
   public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
