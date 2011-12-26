@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.util.TypedValue;
+import android.widget.TextView;
 import org.apache.http.util.ByteArrayBuffer;
 
 import com.chess.R;
@@ -482,14 +487,38 @@ public abstract class CoreActivity extends Activity {
   };
 
    private BroadcastReceiver infoMessageReceiver = new BroadcastReceiver()
-  {
-    @Override
-    public void onReceive(Context context, Intent intent)
-    {
-      LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
-      App.ShowDialog(CoreActivity.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
-    }
-  };
+   {
+     @Override
+     public void onReceive(Context context, Intent intent)
+     {
+       LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+       final TextView messageView = new TextView(context);
+       messageView.setMovementMethod(LinkMovementMethod.getInstance());
+       messageView.setText(Html.fromHtml(intent.getExtras().getString("message")));
+       messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+       messageView.setGravity(Gravity.CENTER);
+
+       new AlertDialog.Builder(context)
+         .setIcon(android.R.drawable.ic_dialog_alert)
+         .setCancelable(true)
+         .setTitle(intent.getExtras().getString("title"))
+         .setView(messageView)
+         .setPositiveButton("OK", new DialogInterface.OnClickListener()
+         {
+           public void onClick(final DialogInterface dialog, int whichButton)
+           {
+             final Handler handler = new Handler();
+             handler.post(new Runnable()
+             {
+               public void run()
+               {
+                 dialog.dismiss();
+               }
+             });
+           }
+         }).create().show();
+     }
+   };
 
   private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver()
   {

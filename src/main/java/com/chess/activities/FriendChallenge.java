@@ -314,7 +314,7 @@ public class FriendChallenge extends CoreActivity {
         App.SDeditor.putString("initialTime", initialTime.getText().toString().trim());
         App.SDeditor.putString("bonusTime", bonusTime.getText().toString().trim());
         App.SDeditor.commit();
-        App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+        //App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
       }
       else
       {

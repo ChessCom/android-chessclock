@@ -397,17 +397,18 @@ public class Game extends CoreActivity {
 
                       if (lccHolder.isFairPlayRestriction(App.gameId))
                       {
+						System.out.println("LCCLOG: resign game by fair play restriction: " + game);
                         LccHolder.LOG.info("Resign game: " + game);
                         lccHolder.getClient().makeResign(game, "");
                       }
                       else if (lccHolder.isAbortableBySeq(App.gameId))
                       {
-                        LccHolder.LOG.info("Abort game: " + game);
+						LccHolder.LOG.info("LCCLOG: abort game: " + game);
                         lccHolder.getClient().abortGame(game, "");
                       }
                       else
                       {
-                        LccHolder.LOG.info("Resign game: " + game);
+						LccHolder.LOG.info("LCCLOG: resign game: " + game);
                         lccHolder.getClient().makeResign(game, "");
                       }
                       finish();

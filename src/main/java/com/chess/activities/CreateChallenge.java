@@ -275,7 +275,7 @@ public class CreateChallenge extends CoreActivity {
         App.SDeditor.putInt("minrating", minrating.getSelectedItemPosition());
         App.SDeditor.putInt("maxrating", maxrating.getSelectedItemPosition());
         App.SDeditor.commit();
-        App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+        //App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
       }
       else
       {
