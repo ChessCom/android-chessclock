@@ -15,5 +15,6 @@ public class Tactic {
 		this.values.put("passed_count", values[4]);
 		this.values.put("rating", values[5]);
 		this.values.put("average_seconds", values[6]);
+		this.values.put("stop", "0");
 	}
 }

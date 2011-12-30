@@ -83,7 +83,8 @@ public class Game extends CoreActivity {
 		{
 			if(BV.board.analysis)
 			{
-				if(BV.board.mode < 6){
+				if(BV.board.mode < 6)
+				{
 					BV.board = new Board(this);
 					BV.board.init = true;
 					BV.board.mode = extras.getInt("mode");
@@ -146,6 +147,11 @@ public class Game extends CoreActivity {
 					}).start();
 				} else if(BV.board.mode == 6)
 				{
+					if (App.Tactic != null && App.Tactic.values.get("stop").equals("1"))
+					{
+						openOptionsMenu();
+						return true;
+					}
 					int sec = BV.board.sec;
 					if(App.guest || App.noInternet)
 					{
@@ -206,6 +212,11 @@ public class Game extends CoreActivity {
 						}).start();
 					} else
 					{
+						if (App.Tactic != null && App.Tactic.values.get("stop").equals("1"))
+						{
+							openOptionsMenu();
+							return true;
+						}
 						BV.board = new Board(this);
 						BV.board.mode = 6;
 
@@ -263,8 +274,11 @@ public class Game extends CoreActivity {
 						}).start();
 					}
 				}
-			} else
+			}
+            else
+			{
 				LoadPrev(MainApp.loadPrev);
+			}
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -896,10 +910,11 @@ public class Game extends CoreActivity {
 	                			GetTacticsGame(App.Tactic.values.get("id"));
 	                		}
 	                	}
-						/*if(which == 2){
-							BV.board.analysis = true;
-							Update(0);
-						}*/
+						if(which == 2)
+                        {
+							BV.finished = true;
+							App.Tactic.values.put("stop", "1");
+						}
 	                }
 	            })
 	            .create().show();
@@ -1193,10 +1208,11 @@ public class Game extends CoreActivity {
 	                		BV.board.retry = true;
 	                		GetTacticsGame(App.Tactic.values.get("id"));
 	                	}
-						/*if(which == 2){
-							BV.board.analysis = true;
-							Update(0);
-						}*/
+						if(which == 2)
+                        {
+							BV.finished = true;
+							App.Tactic.values.put("stop", "1");
+						}
 	                }
 	            })
 	            .create().show();
@@ -1889,6 +1905,7 @@ public class Game extends CoreActivity {
 						GetGuestTacticsGame();
 					} else{
 						if(App.noInternet)	App.currentTacticProblem++;
+						closeOptionsMenu();
 						GetTacticsGame("");
 					}
 			        return true;
@@ -1935,7 +1952,7 @@ public class Game extends CoreActivity {
 		return false;
 	}
 
-  @Override
+	@Override
 	public void onOptionsMenuClosed(Menu menu) {
 		if(isMoveNav){
 			new Handler().postDelayed(new Runnable() {
@@ -1993,8 +2010,11 @@ public class Game extends CoreActivity {
 				BV.board.tacticCanceled = false;
 				showDialog(1);
 				startTacticsTimer();
-			} else
+			}
+			else if (App.Tactic != null && App.Tactic.values.get("stop").equals("0"))
+			{
 				startTacticsTimer();
+			}
 		}
     if (App.isLiveChess() && App.gameId != null && App.gameId != "" && lccHolder.getGame(App.gameId) != null)
     {
@@ -2065,6 +2085,8 @@ public class Game extends CoreActivity {
 	}
 	public void startTacticsTimer(){
 		stopTacticsTimer();
+		BV.finished = false;
+		App.Tactic.values.put("stop", "0");
 		TacticsTimer = new Timer();
 		TacticsTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
