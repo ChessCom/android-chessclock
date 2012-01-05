@@ -163,12 +163,12 @@ public class LccChallengeListener implements ChallengeListener
     }*/
   }
 
-  public void onChallengeAccepted(Long challengeId, String by, String warning)
+  public void onChallengeAccepted(Long challengeId, String by, String codeMessage)
   {
 	  // TODO: Show the warning to user if it is not null
 	  LccHolder.LOG.info(
 		  "CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-	      challengeId + ", by: " + by + ", warning: " + warning);
+	      challengeId + ", by: " + by + ", codeMessage: " + codeMessage);
 	  lccHolder.removeChallenge(challengeId);
 	  /*MatchOffer matchOffer = user.getConnection().getJinChallenge(challengeId);
 	    if(matchOffer != null)
@@ -178,25 +178,25 @@ public class LccChallengeListener implements ChallengeListener
 	      user.getListenerManager().fireMatchOfferEvent(
 	        new MatchOfferEvent(user.getConnection(), null, MatchOfferEvent.MATCH_OFFER_WITHDRAWN, matchOffer));
 	    }*/
-    showWarning(warning);
+    showWarning(codeMessage); // TODO: Localize the codeMessage
   }
 
-  public void onChallengeRejected(Long challengeId, String by, String warning)
+  public void onChallengeRejected(Long challengeId, String by, String codeMessage)
   {
 	  // TODO: Show the warning to user if it is not null
 	  LccHolder.LOG.info(
 			  "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-		      challengeId + ", by: " + by + ", warning: " + warning);
+		      challengeId + ", by: " + by + ", codeMessage: " + codeMessage);
 	  lccHolder.removeChallenge(challengeId);
-    showWarning(warning);
+    showWarning(codeMessage); // TODO: Localize the codeMessage
   }
 
-  public void onChallengeCancelled(Long challengeId, String by, String warning)
+  public void onChallengeCancelled(Long challengeId, String by, String codeMessage)
   {
     // TODO: Show the warning to user if it is not null
     LccHolder.LOG.info(
       "CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-      challengeId + ", by: " + by + ", warning: " + warning);
+      challengeId + ", by: " + by + ", codeMessage: " + codeMessage);
 
     /*if(by == null) // in second onChallengeCancelled invocation the "by" field is null
     {
@@ -208,7 +208,7 @@ public class LccChallengeListener implements ChallengeListener
       lccHolder.removeOwnChallenge(challenge.getId());
     }*/
     lccHolder.removeChallenge(challengeId);
-    showWarning(warning);
+    showWarning(codeMessage);  // TODO: Localize the codeMessage
   }
 
   private void showWarning(String warning)
