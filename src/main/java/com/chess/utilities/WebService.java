@@ -73,7 +73,7 @@ public class WebService extends Service {
 				);
 				if(PD != null)
 					PD.dismiss();
-				stopSelf();
+				//stopSelf();
 			}
 		}, DELAY, INTERVAL);
 	}
@@ -101,7 +101,7 @@ public class WebService extends Service {
 			}
 			if(PD != null)
 				PD.dismiss();
-			stopSelf();
+			//stopSelf();
 			return null;
 		}
 	}
@@ -123,21 +123,6 @@ public class WebService extends Service {
     }
   }*/
 
-  public void RunChesscomSendChallengeTask(LccHolder lccHolder, MyProgressDialog PD, Challenge challenge) {
-		//this.CODE = CODE;
-		//this.PD = PD;
-	  this.lccHolder = lccHolder;
-	  lccHolder.getAndroid().setCurrentProgressDialog(PD);
-	  new ChesscomSendChallengeTask().execute(challenge);
-  }
-
-  public class ChesscomSendChallengeTask extends AsyncTask<Challenge, Void, Void> {
-    protected Void doInBackground(Challenge... challenge) {
-      lccHolder.getClient().sendChallenge(challenge[0], lccHolder.getChallengeListener());
-      stopSelf();
-      return null;
-    }
-  }
 
   public void RunRepeatble(final int CODE, final int DELAY, final int INTERVAL, final MyProgressDialog PD){
 		this.CODE = CODE;
@@ -159,7 +144,7 @@ public class WebService extends Service {
 				);
 				if(PD != null)
 					PD.dismiss();
-				stopSelf();
+				//stopSelf();
 			}
 		}, DELAY, INTERVAL);
 	}

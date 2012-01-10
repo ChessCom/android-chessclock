@@ -84,13 +84,13 @@ public class OnlineNewGame extends CoreActivity {
                       if(pos == 0){
                           final Challenge challenge = lccHolder.getChallenge(el.values.get("game_id"));
                           LccHolder.LOG.info("Accept challenge: " + challenge);
-                          lccHolder.getClient().acceptChallenge(challenge, lccHolder.getChallengeListener());
+                          lccHolder.getAndroid().runAcceptChallengeTask(challenge);
                           lccHolder.removeChallenge(el.values.get("game_id"));
                           Update(2);
                       } else if(pos == 1){
                           final Challenge challenge = lccHolder.getChallenge(el.values.get("game_id"));
                           LccHolder.LOG.info("Decline challenge: " + challenge);
-                          lccHolder.getClient().rejectChallenge(challenge, lccHolder.getChallengeListener());
+                          lccHolder.getAndroid().runRejectChallengeTask(challenge);
                           lccHolder.removeChallenge(el.values.get("game_id"));
                           Update(3);
                       }
@@ -108,7 +108,7 @@ public class OnlineNewGame extends CoreActivity {
                       if(pos == 0){
                           final Challenge challenge = lccHolder.getChallenge(el.values.get("game_id"));
                           LccHolder.LOG.info("Cancel my challenge: " + challenge);
-                          lccHolder.getClient().cancelChallenge(challenge);
+                          lccHolder.getAndroid().runCancelChallengeTask(challenge);
                           lccHolder.removeChallenge(el.values.get("game_id"));
                           Update(4);
                       } else if(pos == 1){
@@ -123,7 +123,7 @@ public class OnlineNewGame extends CoreActivity {
             {
               final Challenge challenge = lccHolder.getSeek(el.values.get("game_id"));
               LccHolder.LOG.info("Accept seek: " + challenge);
-              lccHolder.getClient().acceptChallenge(challenge, lccHolder.getChallengeListener());
+              lccHolder.getAndroid().runAcceptChallengeTask(challenge);
               lccHolder.removeSeek(el.values.get("game_id"));
               Update(2);
             }
@@ -137,7 +137,7 @@ public class OnlineNewGame extends CoreActivity {
                       if(pos == 0){
                           final Challenge challenge = lccHolder.getSeek(el.values.get("game_id"));
                           LccHolder.LOG.info("Cancel my seek: " + challenge);
-                          lccHolder.getClient().cancelChallenge(challenge);
+                          lccHolder.getAndroid().runCancelChallengeTask(challenge);
                           lccHolder.removeSeek(el.values.get("game_id"));
                           Update(4);
                       } else if(pos == 1){

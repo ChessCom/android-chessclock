@@ -377,7 +377,7 @@ public class Game extends CoreActivity {
                     {
                       final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
                       LccHolder.LOG.info("Request draw: " + game);
-                      lccHolder.getClient().makeDraw(game, "");
+                      lccHolder.getAndroid().runMakeDrawTask(game);
                     }
                     else
                     {
@@ -413,17 +413,17 @@ public class Game extends CoreActivity {
                       {
 						System.out.println("LCCLOG: resign game by fair play restriction: " + game);
                         LccHolder.LOG.info("Resign game: " + game);
-                        lccHolder.getClient().makeResign(game, "");
+                        lccHolder.getAndroid().runMakeResignTask(game);
                       }
                       else if (lccHolder.isAbortableBySeq(App.gameId))
                       {
 						LccHolder.LOG.info("LCCLOG: abort game: " + game);
-                        lccHolder.getClient().abortGame(game, "");
+                        lccHolder.getAndroid().runAbortGameTask(game);
                       }
                       else
                       {
 						LccHolder.LOG.info("LCCLOG: resign game: " + game);
-                        lccHolder.getClient().makeResign(game, "");
+						lccHolder.getAndroid().runMakeResignTask(game);
                       }
                       finish();
                     }

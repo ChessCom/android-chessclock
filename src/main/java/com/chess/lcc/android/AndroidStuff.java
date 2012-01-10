@@ -6,9 +6,11 @@ package com.chess.lcc.android;
 
 import java.io.Serializable;
 
+import android.os.AsyncTask;
 import com.chess.activities.Game;
 import com.chess.activities.tabs.Online;
 import com.chess.core.MainApp;
+import com.chess.live.client.Challenge;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.WebService;
 
@@ -250,5 +252,116 @@ public class AndroidStuff
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }*/
+
+	public void runSendChallengeTask(MyProgressDialog PD, Challenge challenge) {
+		//this.CODE = CODE;
+		//this.PD = PD;
+		lccHolder.getAndroid().setCurrentProgressDialog(PD);
+		new LiveSendChallengeTask().execute(challenge);
+	}
+
+	private class LiveSendChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		protected Void doInBackground(Challenge... challenge) {
+			lccHolder.getClient().sendChallenge(challenge[0], lccHolder.getChallengeListener());
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runCancelChallengeTask(Challenge challenge) {
+		new LiveCancelChallengeTask().execute(challenge);
+	}
+
+	private class LiveCancelChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		protected Void doInBackground(Challenge... challenge) {
+			lccHolder.getClient().cancelChallenge(challenge[0]);
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runDisconnectTask() {
+		new LiveDisconnectTask().execute();
+	}
+
+	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
+		protected Void doInBackground(Void... voids) {
+			lccHolder.getClient().disconnect();
+			return null;
+		}
+	}
+
+	public void runMakeDrawTask(com.chess.live.client.Game game) {
+		new LiveMakeDrawTask().execute(game);
+	}
+
+	private class LiveMakeDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		protected Void doInBackground(com.chess.live.client.Game... game) {
+			lccHolder.getClient().makeDraw(game[0], "");
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runMakeResignTask(com.chess.live.client.Game game) {
+		new LiveMakeResignTask().execute(game);
+	}
+
+	private class LiveMakeResignTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		protected Void doInBackground(com.chess.live.client.Game... game) {
+			lccHolder.getClient().makeResign(game[0], "");
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runAbortGameTask(com.chess.live.client.Game game) {
+		new LiveAbortGameTask().execute(game);
+	}
+
+	private class LiveAbortGameTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		protected Void doInBackground(com.chess.live.client.Game... game) {
+			lccHolder.getClient().abortGame(game[0], "");
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runAcceptChallengeTask(Challenge challenge) {
+		new LiveAcceptChallengeTask().execute(challenge);
+	}
+
+	private class LiveAcceptChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		protected Void doInBackground(Challenge... challenge) {
+			lccHolder.getClient().acceptChallenge(challenge[0], lccHolder.getChallengeListener());
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runRejectChallengeTask(Challenge challenge) {
+		new LiveRejectChallengeTask().execute(challenge);
+	}
+
+	private class LiveRejectChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		protected Void doInBackground(Challenge... challenge) {
+			lccHolder.getClient().rejectChallenge(challenge[0], lccHolder.getChallengeListener());
+			//stopSelf();
+			return null;
+		}
+	}
+
+	public void runRejectDrawTask(com.chess.live.client.Game game) {
+		new LiveRejectDrawTask().execute(game);
+	}
+
+	private class LiveRejectDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		protected Void doInBackground(com.chess.live.client.Game... game) {
+			lccHolder.getClient().rejectDraw(game[0], "");
+			//stopSelf();
+			return null;
+		}
+	}
+
 }
 

@@ -189,8 +189,7 @@ public class FriendChallenge extends CoreActivity {
           if(appService != null)
           {
             FlurryAgent.onEvent("Challenge Created", null);
-            appService.RunChesscomSendChallengeTask(
-              lccHolder,
+            lccHolder.getAndroid().runSendChallengeTask(
               //PD = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
               null,
               challenge

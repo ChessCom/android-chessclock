@@ -35,11 +35,14 @@ public class LccHolder
 
   //static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
-  public static final String HOST = "chess.com";
-  //public static final String AUTH_URL = "http://" + HOST + "/api/v2/login?username=%s&password=%s";
-  public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
-  public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
-  //public static final String CONFIG_BAYEUX_HOST = HOST;
+	public static final String HOST = "chess.com";
+	public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
+	public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
+
+  /*public static final String HOST = "10.0.2.2";
+  public static final String AUTH_URL = "http://" + HOST + "/api/v2/login?username=%s&password=%s";
+  public static final String CONFIG_BAYEUX_HOST = HOST;*/
+
   //Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
   public static final Integer CONFIG_PORT = 80;
   public static final String CONFIG_URI =
@@ -729,7 +732,7 @@ public class LccHolder
     setUser(null);
     android.closeLoggingInIndicator();
     android.closeReconnectingIndicator();
-    _lccClient.disconnect();
+    getAndroid().runDisconnectTask();
     setConnected(false);
     setConnectingInProgress(false);
     clearGames();

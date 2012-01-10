@@ -7,7 +7,6 @@ import java.net.URLConnection;
 
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.widget.TextView;
 import org.apache.http.util.ByteArrayBuffer;
@@ -60,6 +59,7 @@ public abstract class CoreActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -127,8 +127,9 @@ public abstract class CoreActivity extends Activity {
       {
         public void run()
         {
-          App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "") + "board", 0)]);
+          App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "") + "board", 8)]);
           App.LoadPieces(App.res_pieces[App.sharedData.getInt(App.sharedData.getString("username", "") + "pieces", 0)]);
+          App.loadCapturedPieces();
         }
       });
       if (!App.sharedData.getString("username", "").equals(""))
@@ -207,7 +208,7 @@ public abstract class CoreActivity extends Activity {
     @Override
     protected void onPause() {
     	super.onPause();
-    	doUnbindService();
+    	//doUnbindService();
     	if(appService != null && appService.repeatble != null){
     		appService.stopSelf();
     		appService.repeatble.cancel();
@@ -316,14 +317,14 @@ public abstract class CoreActivity extends Activity {
         {
           public void onClick(DialogInterface dialog, int whichButton)
           {
-            App.getLccHolder().getClient().makeDraw(game, "");
+            App.getLccHolder().getAndroid().runMakeDrawTask(game);
           }
         })
         .setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener()
         {
           public void onClick(DialogInterface dialog, int whichButton)
           {
-            App.getLccHolder().getClient().rejectDraw(game, "");
+            lccHolder.getAndroid().runRejectDrawTask(game);
           }
         })
         /*.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -339,7 +340,7 @@ public abstract class CoreActivity extends Activity {
       {
         public void onCancel(DialogInterface dialogInterface)
         {
-          App.getLccHolder().getClient().rejectDraw(game, "");
+			lccHolder.getAndroid().runRejectDrawTask(game);
         }
       });
       alertDialog.getWindow().setGravity(Gravity.BOTTOM);

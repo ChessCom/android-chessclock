@@ -17,8 +17,9 @@ public class StartActivity extends CoreActivity {
         setContentView(R.layout.start);
 
         //defaults
-        App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "")+"board", 0)]);
+        App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "")+"board", 8)]);
         App.LoadPieces(App.res_pieces[App.sharedData.getInt(App.sharedData.getString("username", "")+"pieces", 0)]);
+		App.loadCapturedPieces();
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(1);

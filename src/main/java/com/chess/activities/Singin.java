@@ -59,11 +59,12 @@ public class Singin extends CoreActivity {
 					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
 					return;
 				}
-				if(password.getText().toString().length() < 6 || password.getText().toString().length() > 20){
+				/*if(password.getText().toString().length() < 6 || password.getText().toString().length() > 20){
 					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validatePassword));
 					return;
-				}
+				}*/
         String query = "http://www." + LccHolder.HOST + "/api/v2/login";
+		//String query = "http://" + LccHolder.HOST + "/api/v2/login";
         try
         {
           if(appService != null)
@@ -165,7 +166,7 @@ public class Singin extends CoreActivity {
 	}
 	@Override
 	public void LoadPrev(int code) {
-		//finish();
+		finish();
 	}
 	@Override
   public void Update(int code)

@@ -95,6 +95,9 @@ public class MainApp extends Application {
 									"modern",
 									"vintage"};
 
+	public Bitmap capturedBB, capturedBN, capturedBP, capturedBQ, capturedBR,
+			capturedWB, capturedWN, capturedWP, capturedWQ, capturedWR;
+
 	public void LoadBoard(String b){
     board = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(b, "drawable", "com.chess"));
   }
@@ -114,6 +117,21 @@ public class MainApp extends Application {
 		pieces[1][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bq", "drawable", "com.chess"));
 		pieces[1][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p+"_bk", "drawable", "com.chess"));
   }
+
+	public void loadCapturedPieces()
+	{
+		capturedBB = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bb", "drawable", "com.chess"));
+		capturedBN = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bn", "drawable", "com.chess"));
+		capturedBP = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bp", "drawable", "com.chess"));
+		capturedBQ = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bq", "drawable", "com.chess"));
+		capturedBR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_br", "drawable", "com.chess"));
+		capturedWB = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wb", "drawable", "com.chess"));
+		capturedWN = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wn", "drawable", "com.chess"));
+		capturedWP = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wp", "drawable", "com.chess"));
+		capturedWQ = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wq", "drawable", "com.chess"));
+		capturedWR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wr", "drawable", "com.chess"));
+	}
+
 
   public LccHolder getLccHolder()
   {
