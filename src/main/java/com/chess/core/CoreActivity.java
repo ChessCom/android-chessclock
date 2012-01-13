@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.os.*;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -28,10 +29,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.PowerManager;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -77,8 +74,6 @@ public abstract class CoreActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		lccHolder = App.getLccHolder();
-
-		Thread.setDefaultUncaughtExceptionHandler(new TopExceptionHandler(this));
 	}
 
 	@Override
@@ -155,22 +150,26 @@ public abstract class CoreActivity extends Activity {
     {
       //lccHolder.getAndroid().showConnectingIndicator();
       manageConnectingIndicator(true, "Loading Live Chess");
-      new Handler().post(new Runnable()
+
+      startService(new Intent(getApplicationContext(), NetworkChangeService.class));
+
+      new AsyncTask<Void, Void, Void>()
       {
-        public void run()
+        @Override
+        protected Void doInBackground(Void... voids)
         {
           final LccHolder lccHolder = App.getLccHolder();
           //lccHolder.setConnectingInProgress(true);
           lccHolder.getClient().disconnect();
           lccHolder.setNetworkTypeName(null);
-          startService(new Intent(getApplicationContext(), NetworkChangeService.class));
           lccHolder.setConnectingInProgress(true);
           lccHolder.getClient()
-            .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
+                  .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
           PD = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
+          return null;
         }
-      });
+      }.execute();
     }
     doBindService();
     registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
@@ -662,11 +661,12 @@ public abstract class CoreActivity extends Activity {
 
   private void checkUpdate()
   {
-    new Handler().post(new Runnable()
+    new AsyncTask<Void, Void, Void>()
     {
-      public void run()
+      @Override
+      protected Void doInBackground(Void... voids)
       {
-        try 
+        try
         {
           URL updateURL = new URL("http://www.chess.com/api/get_android_version");
           URLConnection conn = updateURL.openConnection();
@@ -731,8 +731,9 @@ public abstract class CoreActivity extends Activity {
         catch (Exception e) 
         {
         }
+        return null;
       }
-    });
+	  }.execute();
   }
   
   private void showNetworkChangeNotification()
@@ -763,17 +764,4 @@ public abstract class CoreActivity extends Activity {
       }
     }
   };
-
-	public class TopExceptionHandler implements Thread.UncaughtExceptionHandler
-	{
-		public TopExceptionHandler(Activity app) {
-			Thread.getDefaultUncaughtExceptionHandler();
-		}
-
-		public void uncaughtException(Thread t, Throwable e)
-		{
-		    MobclixHelper.getAdTimer().cancel();
-			enableScreenLock();
-		}
-	}
 }

@@ -2,6 +2,7 @@ package com.chess.core;
 
 import com.chess.R;
 import com.chess.activities.Singin;
+import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
 
 import android.app.NotificationManager;
@@ -23,6 +24,8 @@ public class StartActivity extends CoreActivity {
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(1);
+
+		Thread.setDefaultUncaughtExceptionHandler(new TopExceptionHandler());
 
         LoadNext(0);
     }
@@ -53,4 +56,19 @@ public class StartActivity extends CoreActivity {
 	}
 	@Override
 	public void Update(int code) {}
+
+	public class TopExceptionHandler implements Thread.UncaughtExceptionHandler
+	{
+		Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler;
+		public TopExceptionHandler() {
+			defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+		}
+
+		public void uncaughtException(Thread t, Throwable e)
+		{
+			defaultUncaughtExceptionHandler.uncaughtException(t, e);
+			MobclixHelper.getAdTimer().cancel();
+			enableScreenLock();
+		}
+	}
 }
