@@ -18,6 +18,7 @@ public class ChessClock
   private LccHolder lccHolder;
   private boolean isWhite;
   private java.util.Timer myTimer;
+  private boolean tenSecondsPlayed;
 
   public ChessClock(LccHolder lccHolder, boolean isWhite, int time)
   {
@@ -212,6 +213,13 @@ public class ChessClock
       public void run()
       {
         paint();
+
+        if (getTime() <= secondTenthsThreshold && !tenSecondsPlayed)
+        {
+          tenSecondsPlayed = true;
+          lccHolder.getAndroid().getContext().getSoundPlayer().playTenSeconds();
+        }
+
         if(getTime() < 100)
         {
           stopTimer();

@@ -64,6 +64,11 @@ public class SoundPlayer
     playSound(R.raw.notify);
   }
 
+  public void playTenSeconds()
+  {
+    playSound(R.raw.tenseconds);
+  }
+
   private void playSound(int soundResource)
   {
     final SharedPreferences SharedPreferences = context.getSharedPreferences("sharedData", 0);
@@ -72,6 +77,7 @@ public class SoundPlayer
       try
       {
         MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
+        mediaPlayer.setVolume(0.5f, 0.5f);
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
         {
