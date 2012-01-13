@@ -77,7 +77,7 @@ public class SoundPlayer
       try
       {
         MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
-        mediaPlayer.setVolume(0.5f, 0.5f);
+        mediaPlayer.setVolume(0.1f, 0.1f);
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
         {
