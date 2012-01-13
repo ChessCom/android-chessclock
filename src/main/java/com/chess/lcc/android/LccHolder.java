@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.os.AsyncTask;
 import com.chess.R;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
@@ -641,7 +642,7 @@ public class LccHolder
     return gameData;
   }
 
-  public void makeMove(String gameId, String move)
+  public void makeMove(String gameId, final String move)
   {
     final Game game = getGame(gameId);
     /*if(chessMove.isCastling())
@@ -661,7 +662,15 @@ public class LccHolder
     try
     {
       LOG.info("MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
-      _lccClient.makeMove(game, move);
+      new AsyncTask<Void, Void, Void>()
+      {
+        @Override
+        protected Void doInBackground(Void... voids)
+        {
+          _lccClient.makeMove(game, move);
+          return null;
+        }
+	  }.execute();
       if(game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
       {
         final boolean isWhiteRunning =
