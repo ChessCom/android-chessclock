@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.os.AsyncTask;
 import android.widget.*;
 import com.chess.utilities.Notifications;
 import org.apache.http.util.ByteArrayBuffer;
@@ -1986,14 +1987,15 @@ public class Game extends CoreActivity {
       App.setLiveChess(extras.getBoolean("liveChess"));
       if (!App.isLiveChess())
       {
-        new Handler().post(new Runnable()
+        new AsyncTask<Void, Void, Void>()
         {
-          public void run()
+          @Override
+          protected Void doInBackground(Void... voids)
           {
             App.getLccHolder().logout();
+            return null;
           }
-        }
-        );
+        }.execute();
       }
     }
 
@@ -2086,7 +2088,10 @@ public class Game extends CoreActivity {
 	public void startTacticsTimer(){
 		stopTacticsTimer();
 		BV.finished = false;
-		App.Tactic.values.put("stop", "0");
+		if (App.Tactic != null)
+		{
+			App.Tactic.values.put("stop", "0");
+		}
 		TacticsTimer = new Timer();
 		TacticsTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
