@@ -42,7 +42,7 @@ public class BoardView extends ImageView {
 	public boolean stopThinking = false;
 	private int[] p_tmp, c_tmp;
 
-	private Paint blue, black, red, green;
+	private Paint white, black, red, green;
 
 	private String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	private String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -55,12 +55,12 @@ public class BoardView extends ImageView {
 		ca = (CoreActivity)context;
 
 		green = new Paint();
-		blue = new Paint();
+		white = new Paint();
 		black = new Paint();
 		red = new Paint();
 
-		blue.setStrokeWidth(2.0f);
-		blue.setStyle(Style.STROKE);
+		white.setStrokeWidth(2.0f);
+		white.setStyle(Style.STROKE);
 		black.setStrokeWidth(1.0f);
 		black.setStyle(Style.FILL);
 		red.setStrokeWidth(2.0f);
@@ -68,7 +68,7 @@ public class BoardView extends ImageView {
 		green.setStrokeWidth(2.0f);
 		green.setStyle(Style.STROKE);
 
-		blue.setColor(Color.BLUE);
+		white.setColor(Color.WHITE);
 		black.setColor(Color.BLACK);
 		red.setColor(Color.RED);
 		green.setColor(Color.GREEN);
@@ -319,7 +319,7 @@ public class BoardView extends ImageView {
 		if(sel){
 			int x = Board.COL(from, board.reside);
 			int y = Board.ROW(from, board.reside);
-			canvas.drawRect(x*square,y*square,x*square+square,y*square+square, blue);
+			canvas.drawRect(x*square,y*square,x*square+square,y*square+square, white);
 		}
 		if(drag){
 			int c = board.color[from];
@@ -330,7 +330,7 @@ public class BoardView extends ImageView {
 			int row = (int)((dragY+square)-(dragY+square)%square)/square;
 			if(c != 6 && p != 6){
 				canvas.drawBitmap(ca.App.pieces[c][p], null, new Rect(x-square/2,y-square/2,x+square+square/2,y+square+square/2), null);
-				canvas.drawRect(col*square-square/2, row*square-square/2, col*square+square+square/2, row*square+square+square/2, blue);
+				canvas.drawRect(col*square-square/2, row*square-square/2, col*square+square+square/2, row*square+square+square/2, white);
 			}
 		}
 		if(track){
@@ -349,7 +349,8 @@ public class BoardView extends ImageView {
 			if(side < 10)
 				return;
 
-			int offset = side/5;
+			//int offset = 1;
+            int offset = side/5;
 
 			int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
 			int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
@@ -380,27 +381,48 @@ public class BoardView extends ImageView {
 				}
 			}
 			//white
-			for(i=0;i<w_pawns;i++)
-				canvas.drawBitmap(ca.App.pieces[0][0], null, new Rect(i*side-offset, W, i*side+side+offset, W+side+2*offset), null);
+/*			/*for(i=0;i<w_pawns;i++)
+				canvas.drawBitmap(ca.App.capturedWP, null, new Rect(i*side-offset, W, i*side+side+offset, W+side+2*offset), null);
 			for(i=0;i<w_knights;i++)
-				canvas.drawBitmap(ca.App.pieces[0][1], null, new Rect((i)*side+8*side-offset, W, (i)*side+side+8*side+offset, W+side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedWN, null, new Rect((i)*side+8*side-offset, W, (i)*side+side+8*side+offset, W+side+2*offset), null);
 			for(i=0;i<w_bishops;i++)
-				canvas.drawBitmap(ca.App.pieces[0][2], null, new Rect((i)*side+10*side-offset, W, (i)*side+side+10*side+offset, W+side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedWB, null, new Rect((i)*side+10*side-offset, W, (i)*side+side+10*side+offset, W+side+2*offset), null);
 			for(i=0;i<w_rooks;i++)
-				canvas.drawBitmap(ca.App.pieces[0][3], null, new Rect((i)*side+12*side-offset, W, (i)*side+side+12*side+offset, W+side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedWR, null, new Rect((i)*side+12*side-offset, W, (i)*side+side+12*side+offset, W+side+2*offset), null);
 			if(w_queen == 1)
-				canvas.drawBitmap(ca.App.pieces[0][4], null, new Rect(14*side-offset, W-offset, 15*side+offset, W+side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedWQ, null, new Rect(14*side-offset, W-offset, 15*side+offset, W+side+2*offset), null);
 			//black
 			for(i=0;i<b_pawns;i++)
-				canvas.drawBitmap(ca.App.pieces[1][0], null, new Rect(i*side-offset, W+side, i*side+side+offset, W+2*side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedBP, null, new Rect(i*side-offset, W+side, i*side+side+offset, W+2*side+2*offset), null);
 			for(i=0;i<b_knights;i++)
-				canvas.drawBitmap(ca.App.pieces[1][1], null, new Rect((i)*side+8*side-offset, W+side, (i)*side+side+8*side+offset, W+2*side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedBN, null, new Rect((i)*side+8*side-offset, W+side, (i)*side+side+8*side+offset, W+2*side+2*offset), null);
 			for(i=0;i<b_bishops;i++)
-				canvas.drawBitmap(ca.App.pieces[1][2], null, new Rect((i)*side+10*side-offset, W+side, (i)*side+side+10*side+offset, W+2*side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedBB, null, new Rect((i)*side+10*side-offset, W+side, (i)*side+side+10*side+offset, W+2*side+2*offset), null);
 			for(i=0;i<b_rooks;i++)
-				canvas.drawBitmap(ca.App.pieces[1][3], null, new Rect((i)*side+12*side-offset, W+side, (i)*side+side+12*side+offset, W+2*side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedBR, null, new Rect((i)*side+12*side-offset, W+side, (i)*side+side+12*side+offset, W+2*side+2*offset), null);
 			if(b_queen == 1)
-				canvas.drawBitmap(ca.App.pieces[1][4], null, new Rect(14*side-offset, W+side, 15*side+offset, W+2*side+2*offset), null);
+				canvas.drawBitmap(ca.App.capturedBQ, null, new Rect(14*side-offset, W+side, 15*side+offset, W+2*side+2*offset), null);*/
+            for(i=0;i<w_pawns;i++)
+                canvas.drawBitmap(ca.App.pieces[0][0], null, new Rect(i*side-offset, W, i*side+side+offset, W+side+2*offset), null);
+            for(i=0;i<w_knights;i++)
+                canvas.drawBitmap(ca.App.pieces[0][1], null, new Rect((i)*side+8*side-offset, W, (i)*side+side+8*side+offset, W+side+2*offset), null);
+            for(i=0;i<w_bishops;i++)
+                canvas.drawBitmap(ca.App.pieces[0][2], null, new Rect((i)*side+10*side-offset, W, (i)*side+side+10*side+offset, W+side+2*offset), null);
+            for(i=0;i<w_rooks;i++)
+                canvas.drawBitmap(ca.App.pieces[0][3], null, new Rect((i)*side+12*side-offset, W, (i)*side+side+12*side+offset, W+side+2*offset), null);
+            if(w_queen == 1)
+                canvas.drawBitmap(ca.App.pieces[0][4], null, new Rect(14*side-offset, W-offset, 15*side+offset, W+side+2*offset), null);
+            //black
+            for(i=0;i<b_pawns;i++)
+                canvas.drawBitmap(ca.App.pieces[1][0], null, new Rect(i*side-offset, W+side, i*side+side+offset, W+2*side+2*offset), null);
+            for(i=0;i<b_knights;i++)
+                canvas.drawBitmap(ca.App.pieces[1][1], null, new Rect((i)*side+8*side-offset, W+side, (i)*side+side+8*side+offset, W+2*side+2*offset), null);
+            for(i=0;i<b_bishops;i++)
+                canvas.drawBitmap(ca.App.pieces[1][2], null, new Rect((i)*side+10*side-offset, W+side, (i)*side+side+10*side+offset, W+2*side+2*offset), null);
+            for(i=0;i<b_rooks;i++)
+                canvas.drawBitmap(ca.App.pieces[1][3], null, new Rect((i)*side+12*side-offset, W+side, (i)*side+side+12*side+offset, W+2*side+2*offset), null);
+            if(b_queen == 1)
+                canvas.drawBitmap(ca.App.pieces[1][4], null, new Rect(14*side-offset, W+side, 15*side+offset, W+2*side+2*offset), null);
 
 		} else{
 			int h = W-H;
@@ -409,7 +431,8 @@ public class BoardView extends ImageView {
 				side = h/2;
 			if(side < 10)
 				return;
-			int offset = side/8;
+			//int offset = 1;
+            int offset = side/8;
 
 			int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
 			int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
@@ -440,7 +463,7 @@ public class BoardView extends ImageView {
 				}
 			}
 			//white
-			for(i=0;i<w_pawns;i++)
+			/*for(i=0;i<w_pawns;i++)
 				canvas.drawBitmap(ca.App.capturedWP, null, new Rect(H, i*side-offset, H+side+2*offset, i*side+side+offset), null);
 			for(i=0;i<w_knights;i++)
 				canvas.drawBitmap(ca.App.capturedWN, null, new Rect(H, (i)*side+8*side-offset, H+side+2*offset, (i)*side+side+8*side+offset), null);
@@ -460,7 +483,28 @@ public class BoardView extends ImageView {
 			for(i=0;i<b_rooks;i++)
 				canvas.drawBitmap(ca.App.capturedBR, null, new Rect(H+side, (i)*side+12*side-offset, H+2*side+2*offset, (i)*side+side+12*side+offset), null);
 			if(b_queen == 1)
-				canvas.drawBitmap(ca.App.capturedBQ, null, new Rect(H+side, 14*side-offset, H+2*side+2*offset, 15*side+offset), null);
+				canvas.drawBitmap(ca.App.capturedBQ, null, new Rect(H+side, 14*side-offset, H+2*side+2*offset, 15*side+offset), null);*/
+            for(i=0;i<w_pawns;i++)
+                canvas.drawBitmap(ca.App.pieces[0][0], null, new Rect(H, i*side-offset, H+side+2*offset, i*side+side+offset), null);
+            for(i=0;i<w_knights;i++)
+                canvas.drawBitmap(ca.App.pieces[0][1], null, new Rect(H, (i)*side+8*side-offset, H+side+2*offset, (i)*side+side+8*side+offset), null);
+            for(i=0;i<w_bishops;i++)
+                canvas.drawBitmap(ca.App.pieces[0][2], null, new Rect(H, (i)*side+10*side-offset, H+side+2*offset, (i)*side+side+10*side+offset), null);
+            for(i=0;i<w_rooks;i++)
+                canvas.drawBitmap(ca.App.pieces[0][3], null, new Rect(H, (i)*side+12*side-offset, H+side+2*offset, (i)*side+side+12*side+offset), null);
+            if(w_queen == 1)
+                canvas.drawBitmap(ca.App.pieces[0][4], null, new Rect(H-offset, 14*side-offset, H+side+2*offset, 15*side+offset), null);
+            //black
+            for(i=0;i<b_pawns;i++)
+                canvas.drawBitmap(ca.App.pieces[1][0], null, new Rect(H+side, i*side-offset, H+2*side+2*offset, i*side+side+offset), null);
+            for(i=0;i<b_knights;i++)
+                canvas.drawBitmap(ca.App.pieces[1][1], null, new Rect(H+side, (i)*side+8*side-offset, H+2*side+2*offset, (i)*side+side+8*side+offset), null);
+            for(i=0;i<b_bishops;i++)
+                canvas.drawBitmap(ca.App.pieces[1][2], null, new Rect(H+side, (i)*side+10*side-offset, H+2*side+2*offset, (i)*side+side+10*side+offset), null);
+            for(i=0;i<b_rooks;i++)
+                canvas.drawBitmap(ca.App.pieces[1][3], null, new Rect(H+side, (i)*side+12*side-offset, H+2*side+2*offset, (i)*side+side+12*side+offset), null);
+            if(b_queen == 1)
+                canvas.drawBitmap(ca.App.pieces[1][4], null, new Rect(H+side, 14*side-offset, H+2*side+2*offset, 15*side+offset), null);
 		}
 	}
 
