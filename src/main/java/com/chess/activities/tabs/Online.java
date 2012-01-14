@@ -120,10 +120,10 @@ public class Online extends CoreActivity {
     /*if (isShowAds() && (!App.isLiveChess() || (App.isLiveChess() && lccHolder.isConnected()))) {
       MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, App);
     }*/
-    if (!App.isNetworkChangedNotification())
-    {
-      App.setLiveChess(extras.getBoolean("liveChess"));
-    }
+    /*if (!App.isNetworkChangedNotification())
+    {*/
+    App.setLiveChess(extras.getBoolean("liveChess"));
+    //}
     if(App.isLiveChess() && !lccHolder.isConnected())
     {
       new Handler().post(new Runnable()
@@ -236,10 +236,10 @@ public class Online extends CoreActivity {
       }
     });
 
-    if (!App.isNetworkChangedNotification())
-    {
-        App.setLiveChess(extras.getBoolean("liveChess"));
-    }
+    /*if (!App.isNetworkChangedNotification())
+    {*/
+    App.setLiveChess(extras.getBoolean("liveChess"));
+    //}
     if (App.isLiveChess())
     {
       tournaments.setVisibility(View.GONE);

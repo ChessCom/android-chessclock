@@ -33,7 +33,6 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import com.chess.utilities.NetworkChangeService;
 
 public abstract class CoreActivity extends Activity {
 
@@ -151,7 +150,7 @@ public abstract class CoreActivity extends Activity {
       //lccHolder.getAndroid().showConnectingIndicator();
       manageConnectingIndicator(true, "Loading Live Chess");
 
-      startService(new Intent(getApplicationContext(), NetworkChangeService.class));
+      //startService(new Intent(getApplicationContext(), NetworkChangeService.class));
 
       new AsyncTask<Void, Void, Void>()
       {
@@ -182,7 +181,7 @@ public abstract class CoreActivity extends Activity {
     registerReceiver(obsoleteProtocolVersionReceiver,
                      new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
     registerReceiver(infoMessageReceiver, new IntentFilter("com.chess.lcc.android-info"));
-    registerReceiver(networkChangeNotificationReceiver, new IntentFilter("com.chess.lcc.android-network-change"));
+    //registerReceiver(networkChangeNotificationReceiver, new IntentFilter("com.chess.lcc.android-network-change"));
     /*}*/
     if (App.sharedData.getLong("com.chess.firstTimeStart", 0) == 0)
     {
@@ -198,16 +197,16 @@ public abstract class CoreActivity extends Activity {
       App.SDeditor.commit();
       checkUpdate();
     }
-    if (App.isNetworkChangedNotification())
+    /*if (App.isNetworkChangedNotification())
     {
       showNetworkChangeNotification();
-    }
+    }*/
   }
 
     @Override
     protected void onPause() {
     	super.onPause();
-    	//doUnbindService();
+    	doUnbindService();
     	if(appService != null && appService.repeatble != null){
     		appService.stopSelf();
     		appService.repeatble.cancel();
@@ -220,7 +219,7 @@ public abstract class CoreActivity extends Activity {
       unregisterReceiver(informAndExitReceiver);
       unregisterReceiver(obsoleteProtocolVersionReceiver);
       unregisterReceiver(infoMessageReceiver);
-      unregisterReceiver(networkChangeNotificationReceiver);
+      //unregisterReceiver(networkChangeNotificationReceiver);
 
       // todo: how to logout user when he/she is switching to another activity?
       /*if (App.isLiveChess() && lccHolder.isConnected())
@@ -747,13 +746,13 @@ public abstract class CoreActivity extends Activity {
 		{
 		  public void onClick(DialogInterface dialog, int whichButton)
 		  {
-			  App.setNetworkChangedNotification(false);
-			  startActivity(new Intent(CoreActivity.this, Tabs.class));
+			//App.setNetworkChangedNotification(false);
+			startActivity(new Intent(CoreActivity.this, Tabs.class));
 		  }
 		}).create().show();
   }
 
-  private BroadcastReceiver networkChangeNotificationReceiver = new BroadcastReceiver()
+  /*private BroadcastReceiver networkChangeNotificationReceiver = new BroadcastReceiver()
   {
     @Override
     public void onReceive(Context context, Intent intent)
@@ -763,5 +762,5 @@ public abstract class CoreActivity extends Activity {
         showNetworkChangeNotification();
       }
     }
-  };
+  };*/
 }

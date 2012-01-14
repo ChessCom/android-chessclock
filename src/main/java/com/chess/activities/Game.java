@@ -1982,7 +1982,7 @@ public class Game extends CoreActivity {
 			}
 		}
 
-    if (!App.isNetworkChangedNotification() && extras.containsKey("liveChess"))
+    if (/*!App.isNetworkChangedNotification() && */extras.containsKey("liveChess"))
     {
       App.setLiveChess(extras.getBoolean("liveChess"));
       if (!App.isLiveChess())

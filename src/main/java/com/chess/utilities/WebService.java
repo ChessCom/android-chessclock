@@ -73,7 +73,7 @@ public class WebService extends Service {
 				);
 				if(PD != null)
 					PD.dismiss();
-				//stopSelf();
+				stopSelf();
 			}
 		}, DELAY, INTERVAL);
 	}
@@ -101,7 +101,7 @@ public class WebService extends Service {
 			}
 			if(PD != null)
 				PD.dismiss();
-			//stopSelf();
+			stopSelf();
 			return null;
 		}
 	}
@@ -144,7 +144,7 @@ public class WebService extends Service {
 				);
 				if(PD != null)
 					PD.dismiss();
-				//stopSelf();
+				stopSelf();
 			}
 		}, DELAY, INTERVAL);
 	}

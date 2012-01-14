@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:versionCode="63"
-      android:versionName="1.948" package="com.chess" android:installLocation="auto">
+      android:versionCode="71"
+      android:versionName="1.963" package="com.chess" android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -56,13 +56,13 @@
 		<service android:name=".utilities.WebService" />
 		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
 
-        <service android:name=".utilities.NetworkChangeService">
+        <!--<service android:name=".utilities.NetworkChangeService">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
-        </service>
-	      
+        </service>-->
+
 	</application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
