@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    
+    <style name="text_shadow" parent="@android:style/Widget.TextView">
+        <item name="android:typeface">normal</item>        
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowRadius">1.5</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+    </style>
+    
+    <style name="small_button_grey" parent="text_shadow">
+        <item name="android:background">@drawable/button_grey_small_selector</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="big_button_grey" parent="text_shadow">
+        <item name="android:background">@drawable/button_grey_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="small_button_orange" parent="text_shadow">
+        <item name="android:background">@drawable/button_grey_small_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="button_orange" parent="text_shadow">
+        <item name="android:background">@drawable/button_orange_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>        
+    </style>
+    <!--     <item name="android:layout_height">@dimen/default_button_height</item> -->
+    
+    <style name="button_grey" parent="button_orange">
+        <item name="android:background">@drawable/button_grey_selector</item>
+    </style>    
+    
+    <style name="signin_button" parent="button_orange">
+        <item name="android:textSize">19sp</item>
+    </style>
+    
+    <style name="f_button_login" parent="signin_button">
+        <item name="android:background">@drawable/button_f_login_selector</item>
+    </style>
+
+    <style name="custom_edit_field">
+        <item name="android:typeface">normal</item>
+        <item name="android:paddingLeft">14dip</item>
+        <item name="android:paddingTop">0dip</item>
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:textSize">18sp</item>
+		<item name="android:textStyle">normal</item>            
+    </style>
+    
+    <style name="text_pressed">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    	
+    	
+</resources>

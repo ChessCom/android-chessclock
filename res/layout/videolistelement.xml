@@ -1,9 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
-<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#fff" android:textStyle="bold" android:textSize="16dip" android:id="@+id/title" android:text="Title" android:paddingBottom="5dip" android:paddingTop="5dip" android:paddingLeft="10dip" android:background="#666"></TextView><ImageView android:layout_width="fill_parent" android:layout_height="2dip" android:background="#ccc"></ImageView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#fff" android:textStyle="bold" android:id="@+id/times" android:padding="3dip" android:gravity="center"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#fff" android:padding="2dip" android:id="@+id/desc" android:maxLines="4"></TextView>
-<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center"><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textStyle="bold" android:textSize="16dip" android:id="@+id/addinfo" android:padding="2dip" android:textColor="#00bb00" android:layout_weight="1" android:gravity="center"></TextView><Button android:layout_width="wrap_content" android:id="@+id/fulldesc" android:text="@string/details" android:layout_height="42dip"></Button><Button android:layout_width="wrap_content" android:id="@+id/play" android:text="@string/playvideo" android:background="@drawable/defaultbutton" android:layout_height="40dip" android:layout_gravity="top"></Button>
-</LinearLayout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:orientation="vertical">
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:textColor="#fff"
+		android:textStyle="bold"
+		android:textSize="16dip"
+		android:id="@+id/title"
+		android:text="@string/title"
+		android:paddingBottom="5dip"
+		android:paddingTop="5dip"
+		android:paddingLeft="10dip"
+		android:background="#666"/>
+	<ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dip"
+	    android:background="#ccc"
+	    />
+	<TextView
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:textColor="#fff"
+	    android:textStyle="bold"
+	    android:id="@+id/times"
+	    android:padding="3dip"
+	    android:gravity="center"
+	    />
+	<TextView
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:textColor="#fff"
+	    android:padding="2dip"
+	    android:id="@+id/desc"
+	    android:maxLines="4"
+	    />
+	<LinearLayout
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:gravity="center"
+	    >
+		<TextView
+		    android:layout_height="wrap_content"
+		    android:layout_width="fill_parent"
+		    android:textStyle="bold"
+		    android:textSize="16dip"
+		    android:id="@+id/addinfo"
+		    android:padding="2dip"
+		    android:textColor="#00bb00"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    />
+		<Button
+		    android:layout_width="wrap_content"
+		    android:id="@+id/fulldesc"
+		    android:text="@string/details"
+		    android:layout_height="42dip"
+		    />
+		<Button
+		    android:id="@+id/play"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/playvideo"
+		    android:layout_gravity="top"
+		    />
+	</LinearLayout>
 
 </LinearLayout>

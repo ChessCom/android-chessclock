@@ -75,7 +75,15 @@
 	          android:gravity="right" android:ellipsize="start" android:layout_gravity="bottom"></TextView>
 
 	<LinearLayout android:id="@+id/moveButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="gone" android:paddingBottom="20dip">
-		<Button android:id="@+id/submit" android:background="@drawable/defaultbutton" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="Submit" android:layout_height="45dip"></Button>
+		<Button
+		    android:id="@+id/submit"
+		    android:layout_height="wrap_content"
+		    android:layout_width="fill_parent"
+		    android:layout_weight="1"
+		    android:layout_marginLeft="10dip"
+		    android:layout_marginRight="10dip"
+		    android:text="@string/submit"
+		    />
 		<Button android:id="@+id/cancel" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textStyle="bold" android:textSize="16dip" android:textColor="#222" android:text="Cancel" android:layout_height="45dip"></Button>
 	</LinearLayout>
 
@@ -105,7 +113,7 @@
 		<ImageButton android:id="@+id/chat" android:layout_width="64px"
 			android:layout_height="32px" android:src="@drawable/chat_nm"
 			android:layout_centerHorizontal="true" android:scaleType="center"
-			android:background="@drawable/defaultbutton">
+			android:background="@drawable/button_orange_selector">
 		</ImageButton>
 	</RelativeLayout>
 

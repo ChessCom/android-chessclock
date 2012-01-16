@@ -58,7 +58,13 @@
 			</LinearLayout>
 
 
-			<Button android:layout_width="fill_parent" android:textStyle="bold" android:text="@string/ChallengeCreate" android:layout_margin="25dip" android:background="@drawable/defaultbutton" android:id="@+id/createchallenge" android:textSize="16dip" android:textColor="#222" android:layout_height="45dip"></Button>
+			<Button
+			    android:layout_width="fill_parent"
+			    android:text="@string/ChallengeCreate"
+			    android:layout_margin="25dip"
+			    android:background="@drawable/button_orange_selector"
+			    android:id="@+id/createchallenge"
+			    android:layout_height="wrap_content"/>
 
 
 
