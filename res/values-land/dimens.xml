@@ -32,10 +32,10 @@
  	<dimen name="smallLogo_width">100dip</dimen>
 	<dimen name="smallLogo_height">37dip</dimen>
  	
-	<dimen name="list_item_padding">4dip</dimen>
+	<dimen name="list_item_padding">2dip</dimen>
 	<dimen name="list_item_image_marging">3dip</dimen>
 	
-	<dimen name="list_item_text_size">15sp</dimen>
-			
-	
+	<dimen name="list_item_text_size">17sp</dimen>
+		
+		
 </resources>

@@ -165,45 +165,10 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 		}
 	}
 
-	//	itemList.add("Live");
-//	itemList.add("Online");
-//	itemList.add("Computer");
-//	itemList.add("Trainer");
-//	itemList.add("Video");
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
 		App.mTabHost.setCurrentTab(position + 1);
-
-//		findViewById(R.id.live).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				App.mTabHost.setCurrentTab(1);
-//			}
-//		});
-//		findViewById(R.id.online).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				App.mTabHost.setCurrentTab(2);
-//			}
-//		});
-//		findViewById(R.id.computer).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				App.mTabHost.setCurrentTab(3);
-//			}
-//		});
-//		findViewById(R.id.tactics).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				App.mTabHost.setCurrentTab(4);
-//			}
-//		});
-//		findViewById(R.id.video).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				App.mTabHost.setCurrentTab(5);
-//			}
-//		});
 	}
 
 	private class HomeListAdapter extends BaseAdapter {

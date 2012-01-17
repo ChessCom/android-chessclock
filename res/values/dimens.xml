@@ -29,4 +29,16 @@
  	<dimen name="home_main_padding_left">20dip</dimen>
  	<dimen name="home_main_padding_right">20dip</dimen>
  	 	
+ 	<dimen name="smallLogo_width">218dip</dimen>
+	<dimen name="smallLogo_height">89dip</dimen>
+	 	
+	<dimen name="pressed_text_size">17sp</dimen>
+		
+	
+	<dimen name="list_item_padding">5dip</dimen>
+	<dimen name="list_item_image_marging">5dip</dimen>
+	
+	<dimen name="list_item_text_size">17sp</dimen>
+				
+	
 </resources>

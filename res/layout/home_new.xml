@@ -40,14 +40,6 @@
 		    style="@style/text_pressed"
 			android:layout_weight="1" 
 			android:padding="5dip"/>		
-<!-- 		<TextView 
-			android:id="@+id/site" 
-		    android:layout_height="wrap_content" 
-			android:layout_width="fill_parent" 
-			android:text="@string/menuSite" 
-		    style="@style/text_pressed"
-			android:layout_weight="1" 
-			android:padding="5dip"/> -->
 		<TextView 
 			android:id="@+id/help" 
 		    android:layout_height="wrap_content" 
@@ -68,6 +60,7 @@
 	    android:divider="@android:color/black"
 	    android:dividerHeight="0px"
 	    android:listSelector="@android:color/transparent"
+	    android:scrollbars="none"
 	    />
     	
 

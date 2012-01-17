@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" 
+	android:layout_width="fill_parent" 
+	android:background="@drawable/back_image"
+	android:paddingTop="@dimen/home_main_padding_top"
+	android:paddingBottom="@dimen/home_main_padding_bot"
+	android:paddingLeft="@dimen/home_main_padding_left"
+	android:paddingRight="@dimen/home_main_padding_right"
+	>
+	<LinearLayout 
+		android:layout_height="fill_parent" 
+		android:layout_width="fill_parent" 
+		android:layout_weight="1"
+	    >
+	    <RelativeLayout 
+			android:layout_height="fill_parent" 
+			android:layout_width="fill_parent" 
+	        >
+			<ImageView 
+			    android:id="@+id/logoImg"
+			    android:src="@drawable/logo" 
+				android:layout_height="wrap_content" 
+				android:layout_width="wrap_content" 
+				android:layout_centerHorizontal="true"
+				android:layout_centerInParent="true"
+				android:layout_margin="10dip"
+				/>
+<!-- 				android:layout_height="@dimen/smallLogo_height" 
+				android:layout_width="@dimen/smallLogo_width" 
+ -->			
+			<LinearLayout 
+			    android:id="@+id/bottomButtonsLay"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content" 
+			    android:layout_alignParentBottom="true"
+				android:layout_alignParentLeft="true"
+				
+			    >
+				<TextView 
+				    android:layout_height="wrap_content" 
+				    android:id="@+id/settings" 
+				    android:text="@string/settings"
+				    style="@style/text_pressed"
+					android:layout_width="fill_parent"
+					android:layout_weight="1" 
+					android:padding="5dip"
+					/>
+				<TextView 
+					android:id="@+id/upgrade" 
+				    android:layout_height="wrap_content" 
+					android:layout_width="fill_parent" 
+					android:text="@string/upgrade" 
+				    style="@style/text_pressed"
+					android:layout_weight="1" 
+					android:padding="5dip"/>		
+				<TextView 
+					android:id="@+id/help" 
+				    android:layout_height="wrap_content" 
+					android:layout_width="fill_parent" 
+					android:text="@string/help" 
+				    style="@style/text_pressed"
+					android:layout_weight="1" 
+					android:padding="5dip"/>
+			</LinearLayout>
+	        	        
+	    </RelativeLayout>
+	    	    
+	</LinearLayout>
+<!-- 	<LinearLayout 
+		android:layout_height="fill_parent" 
+		android:layout_width="fill_parent" 
+		android:layout_weight="1"
+	    >
+	    
+	</LinearLayout> -->
+		
+	<ListView 
+	    android:id="@+id/listView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@id/logoImg"
+	    android:cacheColorHint="@android:color/transparent"
+	    android:divider="@android:color/black"
+	    android:dividerHeight="0px"
+	    android:listSelector="@android:color/transparent"
+   		android:layout_weight="1"
+	    
+	    />
+	    <!-- android:layout_above="@id/bottomButtonsLay" -->
+		
+
+
+
+
+</LinearLayout>

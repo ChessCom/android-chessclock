@@ -20,5 +20,4 @@
         android:bottom="@dimen/rounded_button_padding"
         />
 	<size android:height="@dimen/default_button_height"/>
-    
 </shape>

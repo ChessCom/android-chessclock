@@ -239,7 +239,8 @@ public abstract class CoreActivity extends Activity {
 				return;
 			}
 
-			if (Web.StatusCode == -1) App.noInternet = true;
+			if (Web.StatusCode == -1) 
+				App.noInternet = true;
 			else {
 				if (App.noInternet) { /*App.ShowMessage("Online mode!");*/
 					App.offline = false;
