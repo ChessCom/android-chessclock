@@ -4,7 +4,7 @@
 	android:orientation="vertical">
 
 
-	<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/menuSettings"></TextView>
+	<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip" android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff" android:text="@string/settings"></TextView>
 	<ImageView android:layout_width="fill_parent"
 		android:layout_height="5dip" android:background="#00bb00"></ImageView>
 
@@ -79,8 +79,28 @@
 				android:layout_width="fill_parent" android:textStyle="bold" android:padding="5dip" android:textColor="#ccc"
 				android:textSize="20dip" android:text="@string/interfaceP"></TextView>
 
-			<Button android:layout_height="wrap_content"
-				android:layout_width="fill_parent" android:id="@+id/PrefBoard" android:drawableLeft="@drawable/board_marble" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textSize="20dip" android:text="@string/board"></Button><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/PrefPices" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:textSize="20dip" android:drawableLeft="@drawable/pieces_alpha" android:text="@string/pieces"></Button>
+			<Button
+			    android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:id="@+id/PrefBoard"
+				android:drawableLeft="@drawable/board_marble"
+				android:drawablePadding="10dip"
+				android:paddingLeft="10dip"
+				android:layout_marginLeft="10dip"
+				android:layout_marginRight="10dip"
+				android:textSize="20dip"
+				android:text="@string/board"/>
+
+			<Button
+			    android:layout_height="wrap_content"
+			    android:layout_width="fill_parent"
+			    android:id="@+id/PrefPices"
+			    android:layout_marginLeft="10dip"
+			    android:layout_marginRight="10dip"
+				android:paddingLeft="10dip"
+			    android:textSize="20dip"
+			    android:drawableLeft="@drawable/pieces_alpha"
+			    android:text="@string/pieces"/>
 
 			<CheckBox android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:layout_marginLeft="10px"
@@ -91,9 +111,22 @@
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/PrefInvite"
 			  android:layout_marginRight="10dip" android:layout_marginLeft="10dip" android:textSize="20dip"
 			  android:text="@string/invite"></Button>
-			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/prefContactUs"
-			  android:layout_marginRight="10dip" android:layout_marginLeft="10dip" android:textSize="20dip"
-			  android:text="@string/contactUs"></Button>
+			<Button
+				android:id="@+id/prefContactUs"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_marginRight="10dip"
+				android:layout_marginLeft="10dip"
+				android:textSize="20dip"
+				android:text="@string/contactUs"/>
+			<Button
+				android:id="@+id/prefLogout"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_marginRight="10dip"
+				android:layout_marginLeft="10dip"
+				android:textSize="20dip"
+				android:text="@string/logout"/>
 
 
 

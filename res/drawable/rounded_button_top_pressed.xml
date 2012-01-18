@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient android:startColor="#FF5286f0" 
+        android:endColor="#FF185a98"
+        android:angle="270" />
+    <corners 
+        android:topLeftRadius="@dimen/rounded_list_item_radius"
+        android:topRightRadius="@dimen/rounded_list_item_radius"
+        />
+    <padding 
+        android:left="@dimen/rounded_button_padding"
+        android:right="@dimen/rounded_button_padding"
+        android:top="@dimen/rounded_button_padding"
+        android:bottom="@dimen/rounded_button_padding"
+        />
+    <stroke android:width="@dimen/list_item_stroke_width"
+        android:color="@android:color/black"/>
+    
+</shape>

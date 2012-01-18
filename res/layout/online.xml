@@ -17,7 +17,16 @@
 
 	<ImageView android:background="#cbcbcb" android:layout_width="fill_parent" android:layout_height="2px" android:layout_marginBottom="5px"></ImageView>
 
-	<Button android:layout_width="fill_parent" android:textStyle="bold" android:layout_marginTop="10dip" android:layout_marginBottom="10dip" android:id="@+id/currentGame" android:background="@drawable/defaultbutton" android:textSize="16dip" android:layout_height="45dip" android:layout_marginLeft="20dip" android:layout_marginRight="20dip" android:textColor="#222" android:text="@string/currentGame" android:visibility="gone"></Button>
+	<Button
+	    android:id="@+id/currentGame"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="10dip"
+	    android:layout_marginBottom="10dip"
+	    android:layout_marginLeft="20dip"
+	    android:layout_marginRight="20dip"
+	    android:text="@string/currentGame"
+	    android:visibility="gone"/>
 
 	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
 		<TextView android:id="@+id/startNewGameTitle" android:layout_height="wrap_content" android:layout_width="fill_parent"

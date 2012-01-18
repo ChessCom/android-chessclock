@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="playas">
+		<item>Random</item>
+		<item>White</item>
+		<item>Black</item>
+	</string-array>
+
+	<string-array name="dayspermove">
+	    <item>1 day</item>
+		<item>2 days</item>
+		<item>3 days</item>
+		<item>5 days</item>
+		<item>7 days</item>
+		<item>14 days</item>
+	</string-array>
+	
+	<string-array name="minRating">
+		<item>None</item>
+		<item>1000</item>
+		<item>1200</item>
+		<item>1400</item>
+		<item>1600</item>
+		<item>1800</item>
+		<item>2000</item>
+	</string-array>
+	
+	<string-array name="maxRating">
+		<item>None</item>
+		<item>1000</item>
+		<item>1200</item>
+		<item>1400</item>
+		<item>1600</item>
+		<item>1800</item>
+		<item>2000</item>
+		<item>2200</item>
+		<item>2400</item>
+	</string-array>
+	
+	<string-array name="skill">
+	    <item>Not set</item>
+	    <item>Beginner</item>
+		<item>Intermediate</item>
+		<item>Advanced</item>
+	</string-array>
+	
+	<string-array name="category">
+	    <item>Not set</item>
+	    <item>Amazing games</item>
+		<item>Endgames</item>
+		<item>Openings</item>
+		<item>Rules basics</item>
+		<item>Strategy</item>
+		<item>Tactics</item>
+	</string-array>	
+	
+	<string-array name="wrongtactic">
+	    <item>Next</item>
+		<item>Retry</item>
+		<item>Stop</item>
+	</string-array>
+	
+	<string-array name="correcttactic">
+	    <item>Stop</item>
+		<item>Next</item>
+	</string-array>
+
+	<string-array name="onlineSpinner">
+	    <item>Challenges</item>
+		<item>Current games</item>
+		<item>Finished games</item>
+	</string-array>	
+
+	<string-array name="AIM">
+	    <item>Go to Next Ready Game</item>
+		<item>Stay on Same Game</item>
+		<item>Return to Game List</item>
+	</string-array>
+	<string-array name="Notif">
+	    <item>None</item>
+		<item>Vibrate</item>
+		<item>Ring</item>
+		<item>Blinking LED</item>
+	</string-array>
+	
+	<string-array name="Strength">
+	    <item>1 sec</item>
+		<item>3 sec</item>
+		<item>5 sec</item>
+		<item>10 sec</item>
+		<item>30 sec</item>
+		<item>1 min</item>
+	</string-array>
+	
+
+	<string-array name="home_items">
+	    <item>@string/menuLive</item>
+	    <item>@string/menuOnline</item>
+   	    <item>@string/menuComp</item>
+   	    <item>@string/menuTactics</item>
+   	    <item>@string/menuVideo</item>
+	</string-array>	
+</resources>
