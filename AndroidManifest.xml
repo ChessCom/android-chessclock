@@ -4,6 +4,67 @@
       android:versionName="1.963" package="com.chess" android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".core.MainApp" 
+    	android:debuggable="false">
+
+        <activity android:name=".core.StartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/MyTheme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
+        <activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+
+        <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.millennialmedia.android.VideoPlayer"
+              android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:configChanges="keyboardHidden|orientation|keyboard" />
+
+	    <activity android:name=".activities.Singin" android:screenOrientation="portrait" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+
+	    <activity android:name=".core.Tabs" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Register" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Preferences" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Chat" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+	    <activity android:name=".activities.ChatLive" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.Game" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.VideoList" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+
+    	<activity android:name=".activities.tabs.Home" android:theme="@style/MyTheme"></activity>
+    	<activity android:name=".activities.tabs.Online" android:theme="@style/MyTheme"></activity>
+    	<activity android:name=".activities.tabs.Computer" android:theme="@style/MyTheme"></activity>
+    	<activity android:name=".activities.tabs.Video" android:theme="@style/MyTheme"></activity>
+
+    	<activity android:name=".activities.OnlineNewGame" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.FriendChallenge" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+    	<activity android:name=".activities.CreateChallenge" android:theme="@style/MyTheme.NoTitleBar.Fullscreen"></activity>
+
+	    <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
+
+		<meta-data android:name="com.mobclix.APPLICATION_ID"
+			android:value="2128371D-8E8F-476E-8791-EEA2125CE104"/>
+		<activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+		<service android:name=".utilities.WebService" />
+		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
+
+        <!--<service android:name=".utilities.NetworkChangeService">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </service>-->
+
+	</application>
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -17,64 +78,4 @@
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
-
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".core.MainApp"
-    	android:debuggable="false"
-    	android:theme="@style/OrangeButtonTheme"
-    	>
-
-        <activity android:name=".core.StartActivity"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait"
-                  > <!-- android:theme="@style/MyTheme.NoTitleBar.Fullscreen" -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation"/>
-
-        <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity" />
-        <activity android:name="com.millennialmedia.android.VideoPlayer" android:configChanges="keyboardHidden|orientation|keyboard" />
-
-	    <activity android:name=".activities.Singin"  /> <!--android:screenOrientation="portrait"-->
-
-	    <activity android:name=".core.Tabs" 			/>
-    	<activity android:name=".activities.Register" 	/>
-    	<activity android:name=".activities.Preferences" android:theme="@style/GreyButtonTheme"/>
-    	<activity android:name=".activities.Chat" 		/>
-	    <activity android:name=".activities.ChatLive" 	/>
-    	<activity android:name=".activities.Game" 		/>
-    	<activity android:name=".activities.VideoList" 	/>
-
-    	<activity android:name=".activities.tabs.Home" 	/>
-    	<activity android:name=".activities.tabs.Online" />
-    	<activity android:name=".activities.tabs.Computer" />
-    	<activity android:name=".activities.tabs.Video" />
-
-    	<activity android:name=".activities.OnlineNewGame" />
-    	<activity android:name=".activities.FriendChallenge" />
-    	<activity android:name=".activities.CreateChallenge" />
-
-        <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
-
-	    <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
-
-		<service android:name=".utilities.WebService" />
-		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />
-
-        <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
-
-		<meta-data android:name="com.mobclix.APPLICATION_ID" android:value="2128371D-8E8F-476E-8791-EEA2125CE104"/>
-
-        <service android:name=".utilities.NetworkChangeService">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </service>
-
-	</application>
-
 </manifest>

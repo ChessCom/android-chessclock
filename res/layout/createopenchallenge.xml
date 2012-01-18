@@ -60,13 +60,7 @@
 			</LinearLayout>
 
 
-			<Button
-                android:layout_width="fill_parent"
-                android:id="@+id/createchallenge"
-                android:text="@string/ChallengeCreate"
-                android:layout_margin="25dip"
-                android:layout_height="wrap_content"
-                />
+			<Button android:layout_width="fill_parent" android:textStyle="bold" android:id="@+id/createchallenge" android:text="@string/ChallengeCreate" android:background="@drawable/defaultbutton" android:layout_margin="25dip" android:textSize="16dip" android:textColor="#222" android:layout_height="45dip"></Button>
 
 
 

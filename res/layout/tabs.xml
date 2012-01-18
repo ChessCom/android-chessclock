@@ -3,15 +3,14 @@
     android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <RelativeLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"/>
+            android:layout_height="wrap_content" />
 
         <TextView android:layout_height="wrap_content"
 			android:layout_width="fill_parent" android:id="@+id/removeAds"
@@ -19,9 +18,7 @@
 			android:textColor="#0066cc" android:textStyle="bold"
 			android:drawableLeft="@drawable/star" android:padding="7dp"
 			android:drawablePadding="10dp" android:visibility="gone"
-			android:textSize="17dip" android:gravity="left"
-			android:layout_below="@android:id/tabs"
-			>
+			android:textSize="17dip" android:gravity="left">
 		</TextView>
         
         <LinearLayout
@@ -29,18 +26,13 @@
             android:layout_height="50dip"
             android:layout_width="320dip"
             android:visibility="gone"
-            android:layout_gravity="center"
-            android:layout_alignParentBottom="true"
-            />
+            android:layout_gravity="center" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@id/adview_wrapper"
-            android:layout_below="@id/removeAds"
-            />
-
-
-    </RelativeLayout>
+            android:layout_height="fill_parent">            
+            
+    	</FrameLayout>
+    </LinearLayout>
 </TabHost>

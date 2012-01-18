@@ -64,12 +64,10 @@
 		              android:id="@+id/moveButtons" android:visibility="gone"
 		              android:orientation="vertical" android:background="#444"
 		              android:layout_width="wrap_content">
-			<Button
-			    android:id="@+id/submit"
-			    android:text="@string/submit"
-			    android:layout_height="wrap_content"
-			    android:layout_width="wrap_content"
-			    />
+			<Button android:id="@+id/submit" android:background="@drawable/defaultbutton"
+			        android:textStyle="bold" android:textSize="16dip" android:textColor="#222"
+			        android:text="Submit" android:layout_height="45dip"
+			        android:layout_width="wrap_content"></Button>
 			<Button android:id="@+id/cancel" android:textStyle="bold"
 			        android:textSize="16dip" android:textColor="#222" android:text="Cancel"
 			        android:layout_height="45dip" android:layout_width="wrap_content"></Button>
@@ -91,14 +89,11 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_gravity="bottom" android:visibility="gone"
 		android:paddingBottom="5dip" android:paddingRight="5dip">
-		<ImageButton
-		    android:id="@+id/chat"
-		    android:layout_width="64dp"
-			android:layout_height="32dp"
-			android:src="@drawable/chat_nm"
-			android:layout_centerHorizontal="true"
-			android:scaleType="center"
-			/>
+		<ImageButton android:id="@+id/chat" android:layout_width="64px"
+			android:layout_height="32px" android:src="@drawable/chat_nm"
+			android:layout_centerHorizontal="true" android:scaleType="center"
+			android:background="@drawable/defaultbutton">
+		</ImageButton>
 	</RelativeLayout>
 	
 	</LinearLayout>

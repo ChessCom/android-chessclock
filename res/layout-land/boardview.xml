@@ -52,12 +52,10 @@
 			android:id="@+id/moveButtons" android:visibility="gone"
 			android:orientation="vertical" android:background="#444"
 			android:layout_width="wrap_content">
-			<Button
-			    android:id="@+id/submit"
-				android:text="@string/submit"
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content"
-				/>
+			<Button android:id="@+id/submit" android:background="@drawable/defaultbutton"
+				android:textStyle="bold" android:textSize="16dip" android:textColor="#222"
+				android:text="Submit" android:layout_height="45dip"
+				android:layout_width="wrap_content"></Button>
 			<Button android:id="@+id/cancel" android:textStyle="bold"
 				android:textSize="16dip" android:textColor="#222" android:text="Cancel"
 				android:layout_height="45dip" android:layout_width="wrap_content"></Button>
