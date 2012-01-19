@@ -120,7 +120,7 @@ public class MainApp extends Application {
 
 	public void loadCapturedPieces()
 	{
-		capturedBB = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bb", "drawable", "com.chess"));
+		/*capturedBB = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bb", "drawable", "com.chess"));
 		capturedBN = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bn", "drawable", "com.chess"));
 		capturedBP = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bp", "drawable", "com.chess"));
 		capturedBQ = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bq", "drawable", "com.chess"));
@@ -129,7 +129,7 @@ public class MainApp extends Application {
 		capturedWN = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wn", "drawable", "com.chess"));
 		capturedWP = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wp", "drawable", "com.chess"));
 		capturedWQ = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wq", "drawable", "com.chess"));
-		capturedWR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wr", "drawable", "com.chess"));
+		capturedWR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wr", "drawable", "com.chess"));*/
 	}
 
 

@@ -582,7 +582,7 @@ public class Game extends CoreActivity {
 			}
 		}
 
-		if (MobclixHelper.isShowAds(App) && getRectangleAdview() == null && !App.mTabHost.getCurrentTabTag().equals("tab4"))
+		if (MobclixHelper.isShowAds(App) && getRectangleAdview() == null && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4"))
 		{
 			setRectangleAdview(new MobclixIABRectangleMAdView(this));
 			getRectangleAdview().setRefreshTime(-1);
@@ -914,7 +914,10 @@ public class Game extends CoreActivity {
 						if(which == 2)
                         {
 							BV.finished = true;
-							App.Tactic.values.put("stop", "1");
+							if (App.Tactic != null)
+							{
+								App.Tactic.values.put("stop", "1");
+							}
 						}
 	                }
 	            })

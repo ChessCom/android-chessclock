@@ -241,12 +241,23 @@ public class BoardView extends ImageView {
 		super.onDraw(canvas);
 		/*W = getWidth();
 		H = getHeight();*/
-        W = viewWidth;
+
+		W = viewWidth;
 		H = viewHeight;
 
-		side = W/4;
-		if(H < W)	side = H/4;
-		square = side/2;
+		if(H < W)
+		{
+			square = viewHeight / 8;
+			H -= viewHeight % 8;
+			//offsetY = (viewHeight % 8) / 2;
+		}
+		else
+		{
+			square = viewWidth / 8;
+			W -= viewWidth % 8;
+			//offsetX = (viewWidth % 8) / 2;
+		}
+		side = square * 2;
 
 		int i,j;
 		for(i=0;i<4;i++){
