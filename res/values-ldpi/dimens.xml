@@ -37,5 +37,8 @@
 	
 	<dimen name="list_item_text_size">15sp</dimen>
 			
-	
+	<dimen name="list_item_height">48dip</dimen>
+		
+	<dimen name="list_padding_top">10dip</dimen>
+		
 </resources>

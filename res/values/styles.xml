@@ -10,6 +10,13 @@
         <item name="android:shadowDy">1</item>
     </style>
     
+    <style name="text_shadow_more" parent="text_shadow">
+        <item name="android:shadowRadius">3.5</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+    </style>
+    
+    
     <style name="small_button_grey" parent="text_shadow">
         <item name="android:background">@drawable/button_grey_small_selector</item>
         <item name="android:typeface">sans</item>
@@ -60,19 +67,26 @@
 		<item name="android:textStyle">normal</item>            
     </style>
     
-    <style name="text_pressed">
+    <style name="text_pressed" parent="text_shadow_more">
         <item name="android:textColor">@color/text_white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/pressed_text_size</item>
         <item name="android:gravity">center</item>
+        
     </style>
     <!--     <item name="android:textSize">17sp</item> -->
     	
-    <style name="list_text">
+    <style name="list_text" >
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/list_item_text_size</item>
     </style>
     
+    <style name="list_text_orange" parent="text_shadow_more">
+        <item name="android:textColor">@color/text_white_orange</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/list_item_text_size</item>
+	</style>
+
     	
 </resources>
