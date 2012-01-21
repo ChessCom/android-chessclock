@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
-    android:padding="@dimen/list_item_padding"
-    android:weightSum="10"
-    android:gravity="center_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/list_item_height"
+              android:padding="@dimen/list_item_padding"
+              android:weightSum="10"
+              android:gravity="center_vertical"
     >
     <!-- 	android:background="@drawable/rounded_button_mid_default" -->
 

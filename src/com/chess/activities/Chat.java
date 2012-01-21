@@ -1,12 +1,18 @@
 package com.chess.activities;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
@@ -14,14 +20,11 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.views.MessagesAdapter;
 
-import java.net.URLEncoder;
-import java.util.ArrayList;
-
 public class Chat extends CoreActivity {
 	private EditText sendText;
 	private ListView ChatLV;
 	private MessagesAdapter messages = null;
-	private ArrayList<com.chess.model.Message> chatItems = new ArrayList<com.chess.model.Message>();
+	private final ArrayList<com.chess.model.Message> chatItems = new ArrayList<com.chess.model.Message>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +38,21 @@ public class Chat extends CoreActivity {
 				String message = "";
 				try {
 					message = URLEncoder.encode(sendText.getText().toString(), "UTF-8");
-				} catch (Exception e) {
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					Log.e("Chat", e.toString()); 	// TODO handle exception
+													// correctly
 				}
 
 				if (appService != null) {
-					appService.RunSingleTask(1,
-							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + extras.getString("game_id") + "&command=CHAT&message=" + message + "&timestamp=" + extras.getString("timestamp"),
-							PD = new MyProgressDialog(ProgressDialog.show(Chat.this, null, getString(R.string.sendingmessage), true))
-					);
+					appService.RunSingleTask(
+							1,
+							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="
+									+ App.sharedData.getString("user_token", "") + "&chessid="
+									+ extras.getString("game_id") + "&command=CHAT&message=" + message + "&timestamp="
+									+ extras.getString("timestamp"),
+							PD = new MyProgressDialog(ProgressDialog.show(Chat.this, null,
+									getString(R.string.sendingmessage), true)));
 				}
 			}
 		});
@@ -61,9 +71,13 @@ public class Chat extends CoreActivity {
 	public void Update(int code) {
 		if (code == -1) {
 			if (appService != null) {
-				appService.RunRepeatbleTask(0, 0, 60000,
-						"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + extras.getString("game_id") + "&command=CHAT&timestamp=" + extras.getString("timestamp"),
-						null/*PD = MyProgressDialog.show(Chat.this, null, getString(R.string.gettingmessages), true)*/
+				appService.RunRepeatbleTask(0, 0, 60000, "http://www." + LccHolder.HOST
+						+ "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid="
+						+ extras.getString("game_id") + "&command=CHAT&timestamp=" + extras.getString("timestamp"),
+						null/*
+							 * PD = MyProgressDialog.show(Chat.this, null,
+							 * getString(R.string.gettingmessages), true)
+							 */
 				);
 			}
 		} else if (code == 0) {

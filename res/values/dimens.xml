@@ -32,7 +32,7 @@
  	<dimen name="smallLogo_width">218dip</dimen>
 	<dimen name="smallLogo_height">89dip</dimen>
 	 	
-	<dimen name="pressed_text_size">17sp</dimen>
+	<dimen name="pressed_text_size">16sp</dimen>
 		
 	
 	<dimen name="list_item_padding">5dip</dimen>
@@ -43,5 +43,6 @@
 	<dimen name="list_item_height">48dip</dimen>
 	<dimen name="list_padding_top">10dip</dimen>
 		
+
 		
 </resources>

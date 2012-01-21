@@ -5,10 +5,10 @@
 
 	
 	<style name="OrangeButtonTheme" parent="android:Theme.NoTitleBar.Fullscreen">
-		<item name="android:panelFullBackground">@color/mytheme_color</item>
 		<item name="android:buttonStyle">@style/button_orange</item>
 	</style>
-
+	<!-- 	<item name="android:panelFullBackground">@color/mytheme_color</item> -->
+	
 	<style name="GreyButtonTheme" parent="OrangeButtonTheme">
 		<item name="android:buttonStyle">@style/button_grey</item>
 	</style>

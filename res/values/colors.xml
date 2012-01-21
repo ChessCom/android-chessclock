@@ -9,6 +9,11 @@
     <color name="dark_orange">#FFb66400</color>
     <color name="dark_orange_1">#FFa15906</color>
     
+    <color name="list_pressed_1">#FFf98c15</color>
+    <color name="list_pressed_2">#FFe07a0d</color>
+<!--     <color name="list_pressed_1">#FF5286f0</color>
+    <color name="list_pressed_2">#FF185a98</color>
+ -->    
     
     <color name="dark_light">#FFf3f4f6</color>
     

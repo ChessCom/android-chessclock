@@ -1,34 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:background="@drawable/back_image"
-                android:paddingTop="@dimen/home_main_padding_top"
-                android:paddingBottom="@dimen/home_main_padding_bot"
-                android:paddingLeft="@dimen/home_main_padding_left"
-                android:paddingRight="@dimen/home_main_padding_right"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+    android:weightSum="@integer/home_text_weightSum"
     >
-    <ImageView
-        android:id="@+id/logoImg"
-        android:src="@drawable/logo"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        />
     <LinearLayout
-        android:id="@+id/bottomButtonsLay"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        >
-        <include layout="@layout/home_bottom_texts"/>
-<!--     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -105,21 +81,6 @@
             android:paddingRight="1dip"
             android:gravity="left"
             />
-    </LinearLayout> -->
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/logoImg"
-        android:layout_above="@id/bottomButtonsLay"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0px"
-        android:listSelector="@android:color/transparent"
-        android:scrollbars="none"
-        android:paddingTop="@dimen/list_padding_top"
-
-        />
-</RelativeLayout>
+</merge>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+         android:id="@android:id/tabhost"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent">
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -14,16 +14,16 @@
             android:layout_alignParentTop="true"/>
 
         <TextView android:layout_height="wrap_content"
-			android:layout_width="fill_parent" android:id="@+id/removeAds"
-			android:text="@string/removeAds" android:background="#ffffcd"
-			android:textColor="#0066cc" android:textStyle="bold"
-			android:drawableLeft="@drawable/star" android:padding="7dp"
-			android:drawablePadding="10dp" android:visibility="gone"
-			android:textSize="17dip" android:gravity="left"
-			android:layout_below="@android:id/tabs"
-			>
-		</TextView>
-        
+                  android:layout_width="fill_parent" android:id="@+id/removeAds"
+                  android:text="@string/removeAds" android:background="#ffffcd"
+                  android:textColor="#0066cc" android:textStyle="bold"
+                  android:drawableLeft="@drawable/star" android:padding="7dp"
+                  android:drawablePadding="10dp" android:visibility="gone"
+                  android:textSize="17dip" android:gravity="left"
+                  android:layout_below="@android:id/tabs"
+            >
+        </TextView>
+
         <LinearLayout
             android:id="@+id/adview_wrapper"
             android:layout_height="50dip"
