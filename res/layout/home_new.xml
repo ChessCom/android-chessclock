@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:background="@drawable/back_image"
-                android:paddingTop="@dimen/home_main_padding_top"
-                android:paddingBottom="@dimen/home_main_padding_bot"
-                android:paddingLeft="@dimen/home_main_padding_left"
-                android:paddingRight="@dimen/home_main_padding_right"
+    android:id="@+id/mainView"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:background="@drawable/back_image"
+    android:paddingTop="@dimen/home_main_padding_top"
+    android:paddingBottom="@dimen/home_main_padding_bot"
+    android:paddingLeft="@dimen/home_main_padding_left"
+    android:paddingRight="@dimen/home_main_padding_right"
     >
     <ImageView
         android:id="@+id/logoImg"

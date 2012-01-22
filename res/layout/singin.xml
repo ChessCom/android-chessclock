@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:background="@drawable/back_image"
-                android:padding="20dip"
+    android:id="@+id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center"
+	android:padding="20dip"
     >
+    
+	<!-- android:background="@drawable/back_image" -->
+    
+<!-- 	<com.chess.views.BackgroundChessView
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		/>   -->  
     <ImageView
         android:id="@+id/logoImg"
         android:layout_height="wrap_content"

@@ -1,12 +1,17 @@
 package com.chess.activities;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+
 import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
@@ -14,6 +19,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
 import com.chess.utilities.Web;
+import com.chess.views.BackgroundChessDrawable;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
@@ -21,9 +27,6 @@ import com.facebook.android.SessionEvents.AuthListener;
 import com.facebook.android.SessionEvents.LogoutListener;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public class Singin extends CoreActivity {
 
@@ -35,19 +38,26 @@ public class Singin extends CoreActivity {
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 
 	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		getWindow().setFormat(PixelFormat.RGBA_8888);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singin);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		/*
 		 * getWindow().setFormat(PixelFormat.RGBA_8888);
 		 * getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-		 *
+		 * 
 		 * BitmapFactory.Options options = new BitmapFactory.Options();
 		 * options.inPreferredConfig = Bitmap.Config.ARGB_8888; Bitmap gradient
 		 * = BitmapFactory.decodeResource(getResources(), R.drawable.back_image,
 		 * options);
-		 *
+		 * 
 		 * findViewById(R.id.back).setBackgroundDrawable(new
 		 * BitmapDrawable(gradient));
 		 */
@@ -63,21 +73,30 @@ public class Singin extends CoreActivity {
 					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
 					return;
 				}
-				/*if(password.getText().toString().length() < 6 || password.getText().toString().length() > 20){
-					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validatePassword));
-					return;
-				}*/
+				/*
+				 * if(password.getText().toString().length() < 6 ||
+				 * password.getText().toString().length() > 20){
+				 * App.ShowDialog(Singin.this, getString(R.string.error),
+				 * getString(R.string.validatePassword)); return; }
+				 */
 
 				String query = "http://www." + LccHolder.HOST + "/api/v2/login";
-				//String query = "http://" + LccHolder.HOST + "/api/v2/login";
+				// String query = "http://" + LccHolder.HOST + "/api/v2/login";
 				try {
 					if (appService != null) {
-						appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE,
-								query,
-								PD = new MyProgressDialog(
-										ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
-								"username", /*URLEncoder.encode(*/username.getText().toString()/*, "UTF-8")*/,
-								"password", /*URLEncoder.encode(*/password.getText().toString()/*, "UTF-8")*/
+						appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, PD = new MyProgressDialog(
+								ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
+								"username", /* URLEncoder.encode( */username.getText().toString()/*
+																								 * ,
+																								 * "UTF-8"
+																								 * )
+																								 */, "password", /*
+																												 * URLEncoder
+																												 * .
+																												 * encode
+																												 * (
+																												 */
+								password.getText().toString()/* , "UTF-8") */
 						);
 					}
 				} catch (Exception e) {
@@ -106,19 +125,21 @@ public class Singin extends CoreActivity {
 
 		SessionEvents.addAuthListener(new SampleAuthListener());
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
-		mLoginButton.init(mFacebook, new String[]{});
+		mLoginButton.init(mFacebook, new String[] {});
 	}
 
 	public class SampleAuthListener implements AuthListener {
 		@Override
 		public void onAuthSucceed() {
-			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token=" + mFacebook.getAccessToken() + "&return=username";
+			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="
+					+ mFacebook.getAccessToken() + "&return=username";
 			response = Web.Request(query, "GET", null, null);
 			if (response.contains("Success+")) {
 				Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
 			} else if (response.contains("Error+Facebook user has no Chess.com account")) {
 				App.ShowMessage("You have no Chess.com account, sign up, please.");
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/register.html")));
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
+						+ "/register.html")));
 			}
 		}
 
@@ -153,27 +174,27 @@ public class Singin extends CoreActivity {
 	@Override
 	public void LoadNext(int code) {
 		switch (code) {
-			case 0: {
-				FlurryAgent.onEvent("Logged In", null);
-				if (App.sharedData.getBoolean(App.sharedData.getString("username", "") + "notifE", true))
-					startService(new Intent(this, Notifications.class));
-				App.guest = false;
-				startActivity(new Intent(this, Tabs.class));
-				finish();
-				break;
-			}
-			case 1: {
-				startActivity(new Intent(this, Register.class));
-				break;
-			}
-			case 2: {
-				FlurryAgent.onEvent("Guest Login", null);
-				App.guest = true;
-				startActivity(new Intent(this, Tabs.class));
-				break;
-			}
-			default:
-				break;
+		case 0: {
+			FlurryAgent.onEvent("Logged In", null);
+			if (App.sharedData.getBoolean(App.sharedData.getString("username", "") + "notifE", true))
+				startService(new Intent(this, Notifications.class));
+			App.guest = false;
+			startActivity(new Intent(this, Tabs.class));
+			finish();
+			break;
+		}
+		case 1: {
+			startActivity(new Intent(this, Register.class));
+			break;
+		}
+		case 2: {
+			FlurryAgent.onEvent("Guest Login", null);
+			App.guest = true;
+			startActivity(new Intent(this, Tabs.class));
+			break;
+		}
+		default:
+			break;
 		}
 	}
 

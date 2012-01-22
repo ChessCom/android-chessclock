@@ -1,25 +1,32 @@
 package com.chess.activities.tabs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.chess.R;
 import com.chess.activities.Preferences;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
+import com.chess.views.BackgroundChessDrawable;
 import com.chess.views.HomeListItem;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Home extends CoreActivity implements View.OnClickListener, OnItemClickListener {
 
@@ -27,10 +34,18 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 	private LayoutInflater inflater;
 
 	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		getWindow().setFormat(PixelFormat.RGBA_8888);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.home_new);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+
 		inflater = LayoutInflater.from(this);
 
 		listView = (ListView) findViewById(R.id.listView);
@@ -158,7 +173,6 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 		} else if (v.getId() == R.id.help) {
 		}
 	}
-
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
