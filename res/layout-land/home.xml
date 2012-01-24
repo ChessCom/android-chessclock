@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="fill_parent" android:layout_width="fill_parent">
-	<ImageView android:layout_height="fill_parent" android:layout_width="fill_parent" android:src="@drawable/back_image" android:scaleType="centerCrop"></ImageView>
+	<ImageView android:id="@+id/bg" android:layout_height="fill_parent" android:layout_width="fill_parent" android:scaleType="centerCrop"></ImageView>
 
 	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:layout_height="wrap_content" android:id="@+id/settings" android:text="@string/menuSettings"

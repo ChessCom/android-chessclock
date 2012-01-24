@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
@@ -39,6 +40,8 @@ public class Singin extends CoreActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singin);
+
+		((ImageView)findViewById(R.id.bg)).setImageDrawable(App.getBackgroundImage());
 
 		/*getWindow().setFormat(PixelFormat.RGBA_8888);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import android.widget.ImageView;
 import com.chess.R;
 import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
@@ -23,6 +24,8 @@ public class Home extends CoreActivity {
 			setContentView(R.layout.home_guest);
 		else
 			setContentView(R.layout.home);
+
+		((ImageView)findViewById(R.id.bg)).setImageDrawable(App.getBackgroundImage());
 
     findViewById(R.id.live).setOnClickListener(new OnClickListener() {
 			@Override

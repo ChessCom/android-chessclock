@@ -3,6 +3,8 @@ package com.chess.core;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.graphics.drawable.Drawable;
+import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.*;
 import com.chess.utilities.BitmapLoader;
@@ -41,6 +43,7 @@ public class MainApp extends Application {
   private boolean forceBannerAdOnFailedLoad;
   private boolean forceBannerAdFirstLoad;
   private boolean forceRectangleAd;
+  private static Drawable backgroundImage;
 
 	/*public void onCreate()
 	  {
@@ -247,5 +250,14 @@ public class MainApp extends Application {
 
 	public void setForceBannerAdFirstLoad(boolean forceBannerAdFirstLoad) {
 		this.forceBannerAdFirstLoad = forceBannerAdFirstLoad;
+	}
+
+	public Drawable getBackgroundImage()
+	{
+		if (backgroundImage == null)
+		{
+			backgroundImage = getResources().getDrawable(R.drawable.bg_gray);
+		}
+		return backgroundImage;
 	}
 }
