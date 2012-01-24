@@ -2,6 +2,9 @@
 
 <resources>
     
+    
+    
+    
     <style name="text_shadow" parent="@android:style/Widget.TextView">
         <item name="android:typeface">normal</item>        
         <item name="android:shadowColor">#000000</item>
