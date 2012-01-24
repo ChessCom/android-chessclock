@@ -1976,7 +1976,7 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(App) && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null)
+		if (MobclixHelper.isShowAds(App) && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null)
 		{
 			adviewWrapper.addView(getRectangleAdview());
 			if (App.isForceRectangleAd())
