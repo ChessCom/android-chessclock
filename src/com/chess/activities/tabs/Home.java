@@ -65,13 +65,13 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 //		findViewById(R.id.logout).setOnClickListener(new OnClickListener() {
 //			@Override
 //			public void onClick(View v) {
-//				if (!App.guest) {
-//					if (App.isLiveChess()/* && lccHolder.isConnected() */) {
+//				if (!mainApp.guest) {
+//					if (mainApp.isLiveChess()/* && lccHolder.isConnected() */) {
 //						lccHolder.logout();
 //					}
-//					App.SDeditor.putString("password", "");
-//					App.SDeditor.putString("user_token", "");
-//					App.SDeditor.commit();
+//					mainApp.getSharedDataEditor().putString("password", "");
+//					mainApp.getSharedDataEditor().putString("user_token", "");
+//					mainApp.getSharedDataEditor().commit();
 //				}
 //				startActivity(new Intent(Home.this, Singin.class));
 //				finish();
@@ -105,14 +105,14 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(App)) {
+		if (MobclixHelper.isShowAds(mainApp)) {
 			showFullscreenAd();
 		}
 		super.onResume();
 	}
 
 	private void showFullscreenAd() {
-		if (!App.sharedData.getBoolean("com.chess.showedFullscreenAd", false) && MobclixHelper.isShowAds(App)) {
+		if (!mainApp.getSharedData().getBoolean("com.chess.showedFullscreenAd", false) && MobclixHelper.isShowAds(mainApp)) {
 			MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
 			fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {
 
@@ -157,8 +157,8 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 			 * "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
 			 * interstitial.showAd();
 			 */
-			App.SDeditor.putBoolean("com.chess.showedFullscreenAd", true);
-			App.SDeditor.commit();
+			mainApp.getSharedDataEditor().putBoolean("com.chess.showedFullscreenAd", true);
+			mainApp.getSharedDataEditor().commit();
 		}
 	}
 
@@ -168,7 +168,7 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 			startActivity(new Intent(Home.this, Preferences.class));
 		} else if (v.getId() == R.id.upgrade) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="
-					+ App.sharedData.getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST
+					+ mainApp.getSharedData().getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST
 					+ "%2Fmembership.html?c=androidads")));
 		} else if (v.getId() == R.id.help) {
 		}
@@ -176,7 +176,7 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
-		App.mTabHost.setCurrentTab(position + 1);
+		mainApp.getTabHost().setCurrentTab(position + 1);
 	}
 
 	private class HomeListAdapter extends BaseAdapter {

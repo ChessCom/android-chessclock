@@ -56,7 +56,7 @@ public class MobclixHelper {
 		MobclixAdView bannerAdview = app.getBannerAdview();
 		LinearLayout bannerAdviewWrapper = app.getBannerAdviewWrapper();
 
-		if (System.currentTimeMillis() - app.sharedData.getLong("lastActivityPauseTime", 0) > 30000 || app.isForceBannerAdOnFailedLoad()) {
+		if (System.currentTimeMillis() - app.getSharedData().getLong("lastActivityPauseTime", 0) > 30000 || app.isForceBannerAdOnFailedLoad()) {
 			if (bannerAdviewWrapper != null) {
 				bannerAdviewWrapper.removeView(bannerAdview);
 			}
@@ -66,7 +66,7 @@ public class MobclixHelper {
 			app.setBannerAdviewWrapper(null);
 		}
 
-		int adsShowCounter = app.sharedData.getInt("com.chess.adsShowCounter", 0);
+		int adsShowCounter = app.getSharedData().getInt("com.chess.adsShowCounter", 0);
 		if (adviewWrapper == null || bannerAdview == null) {
 			initializeBannerAdView(activity, app);
 		} else {
@@ -90,13 +90,13 @@ public class MobclixHelper {
 			}*/
 			//adviewWrapper.setVisibility(View.GONE);
 			removeAds.setVisibility(View.VISIBLE);
-			app.SDeditor.putInt("com.chess.adsShowCounter", 0);
-			app.SDeditor.commit();
+			app.getSharedDataEditor().putInt("com.chess.adsShowCounter", 0);
+			app.getSharedDataEditor().commit();
 		} else {
 			removeAds.setVisibility(View.GONE);
 			adviewWrapper.setVisibility(View.VISIBLE);
-			app.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);
-			app.SDeditor.commit();
+			app.getSharedDataEditor().putInt("com.chess.adsShowCounter", adsShowCounter + 1);
+			app.getSharedDataEditor().commit();
 		}
 	}
 
@@ -125,12 +125,12 @@ public class MobclixHelper {
 					lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) && !app.getLccHolder().isConnectingInProgress() : false;
 
 			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
-					app.sharedData.getString("premium_status", "0")) < 1;
+					app.getSharedData().getString("premium_status", "0")) < 1;
 
-			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - App.sharedData.getLong("com.chess.firstTimeStart", 0)) >
+			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - mainApp.getSharedData().getLong("com.chess.firstTimeStart", 0)) >
 				(7 * 24 * 60 * 60 * 1000)) && */;
 		} catch (Exception e) {
-			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.sharedData " + app.sharedData + ", app.sharedData.getString(\"premium_status\", \"0\") " + app.sharedData.getString("premium_status", "0"));
+			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.getSharedData() " + app.getSharedData() + ", app.getSharedData().getString(\"premium_status\", \"0\") " + app.getSharedData().getString("premium_status", "0"));
 		}
 		return result;
 	}

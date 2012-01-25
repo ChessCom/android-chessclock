@@ -31,14 +31,14 @@ public class Video extends CoreActivity {
 		setContentView(R.layout.video);
 		Upgrade = (TextView) findViewById(R.id.Upgrade);
 		boolean liveMembershipLevel =
-				lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
-				|| (!App.isLiveChess() && Integer.parseInt(App.sharedData.getString("premium_status", "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString("premium_status", "0")) < 3)) {
 			Upgrade.setVisibility(View.VISIBLE);
 			Upgrade.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					FlurryAgent.onEvent("Upgrade From Videos", null);
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
 				}
 			});
 		} else {
@@ -53,14 +53,14 @@ public class Video extends CoreActivity {
 		skills.post(new Runnable() {
 			@Override
 			public void run() {
-				skills.setSelection(App.sharedData.getInt("skills", 0));
+				skills.setSelection(mainApp.getSharedData().getInt("skills", 0));
 			}
 		});
 		skills.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				App.SDeditor.putInt("skills", pos);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putInt("skills", pos);
+				mainApp.getSharedDataEditor().commit();
 			}
 
 			@Override
@@ -71,14 +71,14 @@ public class Video extends CoreActivity {
 		categories.post(new Runnable() {
 			@Override
 			public void run() {
-				categories.setSelection(App.sharedData.getInt("categories", 0));
+				categories.setSelection(mainApp.getSharedData().getInt("categories", 0));
 			}
 		});
 		categories.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				App.SDeditor.putInt("categories", pos);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putInt("categories", pos);
+				mainApp.getSharedDataEditor().commit();
 			}
 
 			@Override
@@ -157,7 +157,7 @@ public class Video extends CoreActivity {
 	@Override
 	public void LoadPrev(int code) {
 		//finish();
-		App.mTabHost.setCurrentTab(0);
+		mainApp.getTabHost().setCurrentTab(0);
 	}
 
 	@Override
@@ -165,7 +165,7 @@ public class Video extends CoreActivity {
 		if (code == -1) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + App.sharedData.getString("user_token", "") + "&page-size=1",
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString("user_token", "") + "&page-size=1",
 						PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}

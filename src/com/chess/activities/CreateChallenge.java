@@ -33,12 +33,12 @@ public class CreateChallenge extends CoreActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			setContentView(R.layout.createopenchallengelive);
 			initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 			bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
-			initialTime.setText(App.sharedData.getString("initialTime", "5"));
+			initialTime.setText(mainApp.getSharedData().getString("initialTime", "5"));
 			initialTime.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -68,11 +68,11 @@ public class CreateChallenge extends CoreActivity {
 
 				@Override
 				public CharSequence fixText(CharSequence invalidText) {
-					return App.sharedData.getString("initialTime", "5");
+					return mainApp.getSharedData().getString("initialTime", "5");
 				}
 			});
 			initialTime.setOnEditorActionListener(null);
-			bonusTime.setText(App.sharedData.getString("bonusTime", "0"));
+			bonusTime.setText(mainApp.getSharedData().getString("bonusTime", "0"));
 			bonusTime.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -102,7 +102,7 @@ public class CreateChallenge extends CoreActivity {
 
 				@Override
 				public CharSequence fixText(CharSequence invalidText) {
-					return App.sharedData.getString("bonusTime", "0");
+					return mainApp.getSharedData().getString("bonusTime", "0");
 				}
 			});
 
@@ -113,9 +113,9 @@ public class CreateChallenge extends CoreActivity {
 			iplayas = (Spinner) findViewById(R.id.iplayas);
 		}
 		minrating = (Spinner) findViewById(R.id.minRating);
-		minrating.setSelection(App.sharedData.getInt("minrating", 0));
+		minrating.setSelection(mainApp.getSharedData().getInt("minrating", 0));
 		maxrating = (Spinner) findViewById(R.id.maxRating);
-		maxrating.setSelection(App.sharedData.getInt("maxrating", 0));
+		maxrating.setSelection(mainApp.getSharedData().getInt("maxrating", 0));
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
 		findViewById(R.id.createchallenge).setOnClickListener(new OnClickListener() {
@@ -181,7 +181,7 @@ public class CreateChallenge extends CoreActivity {
 						break;
 				}
 
-				if (App.isLiveChess()) {
+				if (mainApp.isLiveChess()) {
 					if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
 						initialTime.setText("10");
 						bonusTime.setText("0");
@@ -255,7 +255,7 @@ public class CreateChallenge extends CoreActivity {
 					if (chess960.isChecked())
 						gametype = 2;
 
-					String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + App.sharedData.getString("user_token", "") +
+					String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString("user_token", "") +
 							"&timepermove=" + days +
 							"&iplayas=" + color +
 							"&israted=" + israted +
@@ -287,15 +287,15 @@ public class CreateChallenge extends CoreActivity {
 	@Override
 	public void Update(int code) {
 		if (code == 0) {
-			if (App.isLiveChess()) {
-				App.SDeditor.putString("initialTime", initialTime.getText().toString().trim());
-				App.SDeditor.putString("bonusTime", bonusTime.getText().toString().trim());
-				App.SDeditor.putInt("minrating", minrating.getSelectedItemPosition());
-				App.SDeditor.putInt("maxrating", maxrating.getSelectedItemPosition());
-				App.SDeditor.commit();
-				//App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+			if (mainApp.isLiveChess()) {
+				mainApp.getSharedDataEditor().putString("initialTime", initialTime.getText().toString().trim());
+				mainApp.getSharedDataEditor().putString("bonusTime", bonusTime.getText().toString().trim());
+				mainApp.getSharedDataEditor().putInt("minrating", minrating.getSelectedItemPosition());
+				mainApp.getSharedDataEditor().putInt("maxrating", maxrating.getSelectedItemPosition());
+				mainApp.getSharedDataEditor().commit();
+				//mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
 			} else {
-				App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
+				mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
 			}
 		}
 	}
@@ -303,7 +303,7 @@ public class CreateChallenge extends CoreActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (App.isLiveChess() && lccHolder.getUser() == null) {
+		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
 			lccHolder.logout();
 			startActivity(new Intent(this, Tabs.class));
 		}

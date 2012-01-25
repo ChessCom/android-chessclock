@@ -16,9 +16,9 @@ public class StartActivity extends CoreActivity {
 		setContentView(R.layout.start);
 
 		//defaults
-		App.LoadBoard(App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "") + "board", 8)]);
-		App.LoadPieces(App.res_pieces[App.sharedData.getInt(App.sharedData.getString("username", "") + "pieces", 0)]);
-		App.loadCapturedPieces();
+		mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "board", 8)]);
+		mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "pieces", 0)]);
+		mainApp.loadCapturedPieces();
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(1);
@@ -35,11 +35,11 @@ public class StartActivity extends CoreActivity {
 
 	@Override
 	public void LoadNext(int code) {
-		if (App.sharedData.getString("user_token", "").equals("")) {
+		if (mainApp.getSharedData().getString("user_token", "").equals("")) {
 			startActivity(new Intent(this, Singin.class));
-			App.guest = true;
+			mainApp.guest = true;
 		} else {
-			if (App.sharedData.getBoolean(App.sharedData.getString("username", "") + "notifE", true))
+			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "notifE", true))
 				startService(new Intent(this, Notifications.class));
 
 			boolean fromnotif = false;
@@ -49,7 +49,7 @@ public class StartActivity extends CoreActivity {
 			}
 
 			startActivity(new Intent(this, Tabs.class).putExtra("fromnotif", fromnotif));
-			App.guest = false;
+			mainApp.guest = false;
 		}
 		finish();
 	}

@@ -55,14 +55,14 @@ public class Online extends CoreActivity {
 		switch (id) {
 			case 0: {
 				if (temp_pos > -1) {
-					final GameListElement el = App.GameListItems.get(temp_pos);
+					final GameListElement el = mainApp.getGameListItems().get(temp_pos);
 					return new AlertDialog.Builder(this)
 							.setTitle("     Accept Draw?     ")
 							.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
 									if (appService != null) {
 										appService.RunSingleTask(4,
-												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=ACCEPTDRAW&timestamp=" + el.values.get("timestamp"),
+												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=ACCEPTDRAW&timestamp=" + el.values.get("timestamp"),
 												null/*PD = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 										);
 									}
@@ -72,7 +72,7 @@ public class Online extends CoreActivity {
 								public void onClick(DialogInterface dialog, int whichButton) {
 									if (appService != null) {
 										appService.RunSingleTask(4,
-												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=DECLINEDRAW&timestamp=" + el.values.get("timestamp"),
+												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=DECLINEDRAW&timestamp=" + el.values.get("timestamp"),
 												null/*PD = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 										);
 									}
@@ -106,14 +106,14 @@ public class Online extends CoreActivity {
 	}
 
 	protected void onResume() {
-		/*if (isShowAds() && (!App.isLiveChess() || (App.isLiveChess() && lccHolder.isConnected()))) {
-			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, App);
+		/*if (isShowAds() && (!mainApp.isLiveChess() || (mainApp.isLiveChess() && lccHolder.isConnected()))) {
+			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
 			}*/
-		/*if (!App.isNetworkChangedNotification())
+		/*if (!mainApp.isNetworkChangedNotification())
 			{*/
-		App.setLiveChess(extras.getBoolean("liveChess"));
+		mainApp.setLiveChess(extras.getBoolean("liveChess"));
 		//}
-		if (App.isLiveChess() && !lccHolder.isConnected()) {
+		if (mainApp.isLiveChess() && !lccHolder.isConnected()) {
 			new Handler().post(new Runnable() {
 				public void run() {
 					start.setVisibility(View.GONE);
@@ -124,7 +124,7 @@ public class Online extends CoreActivity {
 			});
 		}
 		registerReceiver(this.lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
 		} else {
 			// if connected
@@ -134,7 +134,7 @@ public class Online extends CoreActivity {
 		super.onResume();
 		currentGame.post(new Runnable() {
 			public void run() {
-				if (App.isLiveChess() && lccHolder.getCurrentGameId() != null &&
+				if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
 						lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
 					currentGame.setVisibility(View.VISIBLE);
 				} else {
@@ -148,12 +148,12 @@ public class Online extends CoreActivity {
 			{
 			  GamesAdapter.clear();
 			  GamesAdapter = null;
-			  App.GameListItems.clear();
+			  mainApp.getGameListItems().clear();
 			  GamesAdapter.notifyDataSetChanged();
 			}
 			else
 			{
-			  App.GameListItems.clear();
+			  mainApp.getGameListItems().clear();
 			}*/
 
 		new Handler().post(new Runnable() {
@@ -161,7 +161,7 @@ public class Online extends CoreActivity {
 				disableScreenLock();
 			}
 		});
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			start.setText("Custom Challenge");
 		} else {
 			start.setText("Challenge");
@@ -172,7 +172,7 @@ public class Online extends CoreActivity {
 	protected void onPause() {
 		GamesList.setVisibility(View.GONE);
 		unregisterReceiver(this.lccLoggingInInfoReceiver);
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			/*// if connected
 				  System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
 				  lccHolder.logout();*/
@@ -188,9 +188,9 @@ public class Online extends CoreActivity {
 		setContentView(R.layout.online);
 
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + App.sharedData.getString("user_token", ""),
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + App.sharedData.getString("user_token", "") + "&all=1",
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + App.sharedData.getString("user_token", "")};
+				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString("user_token", ""),
+				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString("user_token", "") + "&all=1",
+				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString("user_token", "")};
 
 		GamesType = (Spinner) findViewById(R.id.gamestypes);
 		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
@@ -206,11 +206,11 @@ public class Online extends CoreActivity {
 			}
 		});
 
-		/*if (!App.isNetworkChangedNotification())
+		/*if (!mainApp.isNetworkChangedNotification())
 			{*/
-		App.setLiveChess(extras.getBoolean("liveChess"));
+		mainApp.setLiveChess(extras.getBoolean("liveChess"));
 		//}
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			tournaments.setVisibility(View.GONE);
 			stats.setVisibility(View.GONE);
 			GamesType.setVisibility(View.GONE);
@@ -224,7 +224,7 @@ public class Online extends CoreActivity {
 			startNewGameTitle.setVisibility(View.GONE);
 		}
 
-		if (App.isLiveChess() && lccHolder.isConnected()) {
+		if (mainApp.isLiveChess() && lccHolder.isConnected()) {
 			start.setVisibility(View.VISIBLE);
 			gridview.setVisibility(View.VISIBLE);
 			challengesListTitle.setVisibility(View.VISIBLE);
@@ -234,15 +234,15 @@ public class Online extends CoreActivity {
 		GamesType.post(new Runnable() {
 			@Override
 			public void run() {
-				GamesType.setSelection(App.sharedData.getInt("gamestype", 1));
+				GamesType.setSelection(mainApp.getSharedData().getInt("gamestype", 1));
 			}
 		});
 		GamesType.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				GamesAdapter = null;
-				App.SDeditor.putInt("gamestype", pos);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putInt("gamestype", pos);
+				mainApp.getSharedDataEditor().commit();
 				if (compleated && appService != null && appService.repeatble != null) {
 					onPause();
 					onResume();
@@ -259,13 +259,13 @@ public class Online extends CoreActivity {
 		GamesList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-				final GameListElement el = App.GameListItems.get(pos);
+				final GameListElement el = mainApp.getGameListItems().get(pos);
 				if (el.type == 0) {
-					final String title = App.isLiveChess() ?
+					final String title = mainApp.isLiveChess() ?
 							el.values.get("opponent_chess_title") :
 							"Win: " + el.values.get("opponent_win_count") + " Loss: " + el.values.get("opponent_loss_count") + " Draw: " + el.values.get("opponent_draw_count");
 
-					if (App.isLiveChess()) {
+					if (mainApp.isLiveChess()) {
 						if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0")) {
 							new AlertDialog.Builder(Online.this)
 									.setTitle(title)
@@ -341,23 +341,23 @@ public class Online extends CoreActivity {
 									@Override
 									public void onClick(DialogInterface d, int pos) {
 										if (pos == 0) {
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + App.sharedData.getString("user_token", "") + "&acceptinviteid=" + el.values.get("game_id"), "GET", null, null);
+											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString("user_token", "") + "&acceptinviteid=" + el.values.get("game_id"), "GET", null, null);
 											if (result.contains("Success")) {
 												Update(2);
 											} else if (result.contains("Error+")) {
-												App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
+												mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
 											} else {
-												//App.ShowDialog(Online.this, "Error", result);
+												//mainApp.ShowDialog(Online.this, "Error", result);
 											}
 										} else if (pos == 1) {
 
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + App.sharedData.getString("user_token", "") + "&declineinviteid=" + el.values.get("game_id"), "GET", null, null);
+											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString("user_token", "") + "&declineinviteid=" + el.values.get("game_id"), "GET", null, null);
 											if (result.contains("Success")) {
 												Update(3);
 											} else if (result.contains("Error+")) {
-												App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
+												mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
 											} else {
-												//App.ShowDialog(Online.this, "Error", result);
+												//mainApp.ShowDialog(Online.this, "Error", result);
 											}
 										}
 									}
@@ -366,22 +366,22 @@ public class Online extends CoreActivity {
 					}
 
 				} else if (el.type == 1) {
-					App.SDeditor.putString("opponent", el.values.get("opponent_username"));
-					App.SDeditor.commit();
+					mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+					mainApp.getSharedDataEditor().commit();
 
 					if (el.values.get("is_draw_offer_pending").equals("p")) {
-						App.acceptdraw = true;
+						mainApp.acceptdraw = true;
 						temp_pos = pos;
 						showDialog(0);
 					} else {
-						App.acceptdraw = false;
+						mainApp.acceptdraw = false;
 						startActivity(new Intent(Online.this, Game.class).
 								putExtra("mode", 4).
 								putExtra("game_id", el.values.get("game_id")));
 					}
 				} else if (el.type == 2) {
-					App.SDeditor.putString("opponent", el.values.get("opponent_username"));
-					App.SDeditor.commit();
+					mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+					mainApp.getSharedDataEditor().commit();
 					startActivity(new Intent(Online.this, Game.class).
 							putExtra("mode", 5).
 							putExtra("game_id", el.values.get("game_id")));
@@ -391,15 +391,15 @@ public class Online extends CoreActivity {
 		GamesList.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> a, View v, int pos, long id) {
-				final GameListElement el = App.GameListItems.get(pos);
+				final GameListElement el = mainApp.getGameListItems().get(pos);
 				if (el.type == 1) {
 					new AlertDialog.Builder(Online.this)
 							.setItems(new String[]{getString(R.string.chat), getString(R.string.drawoffer), getString(R.string.resignorabort)}, new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface d, int pos) {
 									if (pos == 0) {
-										App.SDeditor.putString("opponent", el.values.get("opponent_username"));
-										App.SDeditor.commit();
+										mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+										mainApp.getSharedDataEditor().commit();
 										startActivity(new Intent(Online.this, Chat.class).
 												putExtra("game_id", el.values.get("game_id")).
 												putExtra("timestamp", el.values.get("timestamp")));
@@ -407,31 +407,31 @@ public class Online extends CoreActivity {
 										String Draw = "OFFERDRAW";
 										if (el.values.get("is_draw_offer_pending").equals("p"))
 											Draw = "ACCEPTDRAW";
-										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=" + Draw + "&timestamp=" + el.values.get("timestamp"), "GET", null, null);
+										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=" + Draw + "&timestamp=" + el.values.get("timestamp"), "GET", null, null);
 										if (result.contains("Success")) {
-											App.ShowMessage(getString(R.string.accepted));
+											mainApp.ShowMessage(getString(R.string.accepted));
 											Update(1);
 										} else if (result.contains("Error+")) {
-											App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
+											mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
 										} else {
-											//App.ShowDialog(Online.this, "Error", result);
+											//mainApp.ShowDialog(Online.this, "Error", result);
 										}
 									} else if (pos == 2) {
-										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=RESIGN&timestamp=" + el.values.get("timestamp"), "GET", null, null);
+										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get("game_id") + "&command=RESIGN&timestamp=" + el.values.get("timestamp"), "GET", null, null);
 										if (result.contains("Success")) {
 											Update(1);
 										} else if (result.contains("Error+")) {
-											App.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
+											mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
 										} else {
-											//App.ShowDialog(Online.this, "Error", result);
+											//mainApp.ShowDialog(Online.this, "Error", result);
 										}
 									}
 								}
 							})
 							.create().show();
 				} else if (el.type == 2) {
-					App.SDeditor.putString("opponent", el.values.get("opponent_username"));
-					App.SDeditor.commit();
+					mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+					mainApp.getSharedDataEditor().commit();
 					startActivity(new Intent(Online.this, Chat.class).
 							putExtra("game_id", el.values.get("game_id")).
 							putExtra("timestamp", el.values.get("timestamp")));
@@ -446,17 +446,17 @@ public class Online extends CoreActivity {
 					GOTO = URLEncoder.encode(GOTO, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 				}
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") + "&goto=" + GOTO)));
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=" + GOTO)));
 			}
 		});
 		findViewById(R.id.stats).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/" + App.sharedData.getString("username", "");
+				String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/" + mainApp.getSharedData().getString("username", "");
 				try {
 					GOTO = URLEncoder.encode(GOTO, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 				}
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") + "&goto=" + GOTO)));
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=" + GOTO)));
 			}
 		});
 		currentGame = (Button) findViewById(R.id.currentGame);
@@ -472,12 +472,12 @@ public class Online extends CoreActivity {
 							catch(Exception e)
 							{
 							  e.printStackTrace();
-							  System.out.println("!!!!!!!! App.gameId " + App.gameId);
-							  System.out.println("!!!!!!!! lccHolder.getGame(App.gameId) " + lccHolder.getGame(App.gameId));
+							  System.out.println("!!!!!!!! mainApp.getGameId() " + mainApp.getGameId());
+							  System.out.println("!!!!!!!! lccHolder.getGame(mainApp.getGameId()) " + lccHolder.getGame(mainApp.getGameId()));
 							}*/
 			}
 		});
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			gridview.setAdapter(new BaseAdapter() {
 				public int getCount() {
 					return StartNewGameButtonsEnum.values().length;
@@ -494,7 +494,7 @@ public class Online extends CoreActivity {
 				public View getView(int position, View convertView, ViewGroup parent) {
 					final Button button;
 					if (convertView == null) {
-						button = new Button(App);
+						button = new Button(mainApp);
 					} else {
 						button = (Button) convertView;
 					}
@@ -503,9 +503,9 @@ public class Online extends CoreActivity {
 					button.setText(startNewGameButton.getText());
 					button.setOnClickListener(new OnClickListener() {
 						public void onClick(View view) {
-							App.SDeditor.putString("initialTime", "" + startNewGameButton.getMin());
-							App.SDeditor.putString("bonusTime", "" + startNewGameButton.getSec());
-							App.SDeditor.commit();
+							mainApp.getSharedDataEditor().putString("initialTime", "" + startNewGameButton.getMin());
+							mainApp.getSharedDataEditor().putString("bonusTime", "" + startNewGameButton.getSec());
+							mainApp.getSharedDataEditor().commit();
 							startActivity(new Intent(Online.this, CreateChallenge.class));
 						}
 					});
@@ -526,16 +526,16 @@ public class Online extends CoreActivity {
 	@Override
 	public void LoadPrev(int code) {
 		//finish();
-		App.mTabHost.setCurrentTab(0);
+		mainApp.getTabHost().setCurrentTab(0);
 	}
 
 	@Override
 	public void Update(int code) {
 		if (code == -1) {
 			if (appService != null) {
-				if (!App.isLiveChess()) {
+				if (!mainApp.isLiveChess()) {
 					appService.RunRepeatbleTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							queries[App.sharedData.getInt("gamestype", 1)],
+							queries[mainApp.getSharedData().getInt("gamestype", 1)],
 							null/*PD = MyProgressDialog
                                         .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
 				} else {
@@ -546,15 +546,15 @@ public class Online extends CoreActivity {
 				}
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
-			int t = App.sharedData.getInt("gamestype", 1);
+			int t = mainApp.getSharedData().getInt("gamestype", 1);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
 			GamesList.setVisibility(View.GONE);
-			App.GameListItems.clear();
+			mainApp.getGameListItems().clear();
 			if (GamesAdapter != null) {
 				GamesAdapter.notifyDataSetChanged();
 			}
 			//GamesList.setVisibility(View.VISIBLE);
-			if (App.isLiveChess()) {
+			if (mainApp.isLiveChess()) {
 				tmp.addAll(lccHolder.getChallengesAndSeeksData());
 			} else {
 				if (t == 0) {
@@ -568,21 +568,21 @@ public class Online extends CoreActivity {
 				}
 			}
 			//GamesList.setVisibility(View.GONE);
-			App.GameListItems.addAll(tmp);
+			mainApp.getGameListItems().addAll(tmp);
 			if (GamesAdapter != null) {
 				GamesAdapter.notifyDataSetChanged();
 			}
 			GamesList.setVisibility(View.VISIBLE);
 			if (GamesAdapter == null) {
 
-				if (t == 0 || App.isLiveChess()) {
-					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems);
+				if (t == 0 || mainApp.isLiveChess()) {
+					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
 				}
-				if (t == 1 && !App.isLiveChess()) {
-					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems);
+				if (t == 1 && !mainApp.isLiveChess()) {
+					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
 				}
-				if (t == 2 && !App.isLiveChess()) {
-					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, App.GameListItems);
+				if (t == 2 && !mainApp.isLiveChess()) {
+					GamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
 				}
 				GamesList.setAdapter(GamesAdapter);
 			} /*else {*/
@@ -595,11 +595,11 @@ public class Online extends CoreActivity {
 		} else if (code == 2) {
 			onPause();
 			onResume();
-			App.ShowMessage(getString(R.string.challengeaccepted));
+			mainApp.ShowMessage(getString(R.string.challengeaccepted));
 		} else if (code == 3) {
 			onPause();
 			onResume();
-			App.ShowMessage(getString(R.string.challengedeclined));
+			mainApp.ShowMessage(getString(R.string.challengedeclined));
 		} else if (code == 4) {
 			onPause();
 			onResume();
@@ -651,7 +651,7 @@ public class Online extends CoreActivity {
 		public void onReceive(Context context, final Intent intent) {
 			new Handler().post(new Runnable() {
 				public void run() {
-					if (App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
+					if (mainApp.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
 						start.setVisibility(View.VISIBLE);
 						if (gridview != null) {
 							gridview.setVisibility(View.VISIBLE);

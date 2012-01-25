@@ -39,9 +39,9 @@ public class Tabs extends TabActivity {
 		App = (MainApp) getApplication();
 
 		//get global Shared Preferences
-		if (App.sharedData == null) {
-			App.sharedData = getSharedPreferences("sharedData", 0);
-			App.SDeditor = App.sharedData.edit();
+		if (App.getSharedData() == null) {
+			App.setSharedData(getSharedPreferences("sharedData", 0));
+			App.setSharedDataEditor(App.getSharedData().edit());
 		}
 
 		setContentView(R.layout.tabs);
@@ -50,7 +50,7 @@ public class Tabs extends TabActivity {
 		removeAds.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+						"http://www." + LccHolder.HOST + "/login.html?als=" + App.getSharedData().getString("user_token", "") +
 								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
 			}
 		});
@@ -61,33 +61,33 @@ public class Tabs extends TabActivity {
 			}
 		}
 
-		App.mTabHost = getTabHost();
-		App.mTabHost.addTab(App.mTabHost.newTabSpec("tab1")
+		App.setTabHost(getTabHost());
+		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab1")
 				.setIndicator("Home", getResources().getDrawable(R.drawable.home))
 				.setContent(new Intent(this, Home.class)));
 		if (App.guest) {
-			App.mTabHost.addTab(App.mTabHost.newTabSpec("tab2")
+			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab2")
 					.setIndicator("Live", getResources().getDrawable(R.drawable.live))
 					.setContent(new Intent(this, Register.class).putExtra("liveChess", true)));
-			App.mTabHost.addTab(App.mTabHost.newTabSpec("tab6")
+			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab6")
 					.setIndicator("Online", getResources().getDrawable(R.drawable.online))
 					.setContent(new Intent(this, Register.class).putExtra("liveChess", false)));
 		} else {
-			App.mTabHost.addTab(App.mTabHost.newTabSpec("tab2")
+			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab2")
 					.setIndicator("Live", getResources().getDrawable(R.drawable.live))
 					.setContent(new Intent(this, Online.class).putExtra("liveChess", true)));
-			App.mTabHost.addTab(App.mTabHost.newTabSpec("tab6")
+			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab6")
 					.setIndicator("Online", getResources().getDrawable(R.drawable.online))
 					.setContent(new Intent(this, Online.class).putExtra("liveChess", false)));
 		}
 
-		App.mTabHost.addTab(App.mTabHost.newTabSpec("tab3")
+		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab3")
 				.setIndicator("Comp", getResources().getDrawable(R.drawable.computer))
 				.setContent(new Intent(this, Computer.class)));
-		App.mTabHost.addTab(App.mTabHost.newTabSpec("tab4")
+		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab4")
 				.setIndicator("Tactics", getResources().getDrawable(R.drawable.tactics))
 				.setContent(new Intent(this, Game.class).putExtra("mode", 6).putExtra("liveChess", false)));
-		App.mTabHost.addTab(App.mTabHost.newTabSpec("tab5")
+		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab5")
 				.setIndicator("Video", getResources().getDrawable(R.drawable.video))
 				.setContent(new Intent(this, Video.class)));
 
@@ -106,15 +106,15 @@ public class Tabs extends TabActivity {
 				if (extras.getBoolean("fromnotif")) {
 					tab = 2;
 					Notifications.resetCounter();
-					if (App.SDeditor != null) {
-						App.SDeditor.putInt("gamestype", 1);
-						App.SDeditor.commit();
+					if (App.getSharedDataEditor() != null) {
+						App.getSharedDataEditor().putInt("gamestype", 1);
+						App.getSharedDataEditor().commit();
 					}
 				} else {
 					tab = extras.getInt("tab", 0);
-					if (tab != 0 && App.SDeditor != null) {
-						App.SDeditor.putInt("gamestype", 1);
-						App.SDeditor.commit();
+					if (tab != 0 && App.getSharedDataEditor() != null) {
+						App.getSharedDataEditor().putInt("gamestype", 1);
+						App.getSharedDataEditor().commit();
 					}
 				}
 			}
@@ -140,7 +140,7 @@ public class Tabs extends TabActivity {
 			}
 		});
 
-		App.mTabHost.setCurrentTab(tab);
+		App.getTabHost().setCurrentTab(tab);
 	}
 
 	@Override

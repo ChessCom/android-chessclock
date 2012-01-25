@@ -28,9 +28,9 @@ public class Computer extends CoreActivity {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				try {
-					if (App.SDeditor != null && App.sharedData != null && pos >= 0) {
-						App.SDeditor.putInt(App.sharedData.getString("username", "") + "strength", pos);
-						App.SDeditor.commit();
+					if (mainApp.getSharedDataEditor() != null && mainApp.getSharedData() != null && pos >= 0) {
+						mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "") + "strength", pos);
+						mainApp.getSharedDataEditor().commit();
 					}
 				} catch (Exception e) {
 				}
@@ -51,30 +51,30 @@ public class Computer extends CoreActivity {
 
 	@Override
 	protected void onResume() {
-		if (App.isLiveChess()) {
-			App.setLiveChess(false);
+		if (mainApp.isLiveChess()) {
+			mainApp.setLiveChess(false);
 			new AsyncTask<Void, Void, Void>() {
 				@Override
 				protected Void doInBackground(Void... voids) {
-					App.getLccHolder().logout();
+					mainApp.getLccHolder().logout();
 					return null;
 				}
 			}.execute();
 		}
 		super.onResume();
-		if (Strength != null && App != null && App.sharedData != null) {
+		if (Strength != null && mainApp != null && mainApp.getSharedData() != null) {
 			Strength.post(new Runnable() {
 				public void run() {
-					Strength.setSelection(App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0));
+					Strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0));
 				}
 			});
-			if (!App.sharedData.getString("saving", "").equals("")) {
+			if (!mainApp.getSharedData().getString("saving", "").equals("")) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
 				findViewById(R.id.load).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						FlurryAgent.onEvent("New Game VS Computer", null);
-						startActivity(new Intent(Computer.this, Game.class).putExtra("mode", Integer.parseInt(App.sharedData.getString("saving", "").substring(0, 1))));
+						startActivity(new Intent(Computer.this, Game.class).putExtra("mode", Integer.parseInt(mainApp.getSharedData().getString("saving", "").substring(0, 1))));
 					}
 				});
 			} else {
@@ -97,8 +97,8 @@ public class Computer extends CoreActivity {
 		else if (!wh.isChecked() && !bh.isChecked())
 			mode = 3;
 
-		App.SDeditor.putString("saving", "");
-		App.SDeditor.commit();
+		mainApp.getSharedDataEditor().putString("saving", "");
+		mainApp.getSharedDataEditor().commit();
 
 		FlurryAgent.onEvent("New Game VS Computer", null);
 		startActivity(new Intent(this, Game.class).putExtra("mode", mode));
@@ -107,7 +107,7 @@ public class Computer extends CoreActivity {
 	@Override
 	public void LoadPrev(int code) {
 		//finish();
-		App.mTabHost.setCurrentTab(0);
+		mainApp.getTabHost().setCurrentTab(0);
 	}
 
 	@Override

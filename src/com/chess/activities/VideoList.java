@@ -34,14 +34,14 @@ public class VideoList extends CoreActivity {
 
 		videoUpgrade = (TextView) findViewById(R.id.videoUpgrade);
 		boolean liveMembershipLevel =
-				lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
-				|| (!App.isLiveChess() && Integer.parseInt(App.sharedData.getString("premium_status", "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString("premium_status", "0")) < 3)) {
 			videoUpgrade.setVisibility(View.VISIBLE);
 			videoUpgrade.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-							"http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+							"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") +
 									"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
 				}
 			});
@@ -69,7 +69,7 @@ public class VideoList extends CoreActivity {
 						String skill = "&skill_level=" + extras.getString("skill");
 						String category = "&category=" + extras.getString("category");
 						appService.RunSingleTask(0,
-								"http://www." + LccHolder.HOST + "/api/get_videos?id=" + App.sharedData.getString("user_token", "") + "&page-size=20&page=" + page + skill + category,
+								"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString("user_token", "") + "&page-size=20&page=" + page + skill + category,
 								PD = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
 						);
 						update = false;
@@ -101,7 +101,7 @@ public class VideoList extends CoreActivity {
 				String skill = "&skill_level=" + extras.getString("skill");
 				String category = "&category=" + extras.getString("category");
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + App.sharedData.getString("user_token", "") + "&page-size=20&page=" + page + skill + category,
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString("user_token", "") + "&page-size=20&page=" + page + skill + category,
 						PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}

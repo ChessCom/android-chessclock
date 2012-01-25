@@ -41,10 +41,10 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 			if (owner != null) {
 				if (el.owner.equals("0")) {
 					owner.setTextColor(Color.GREEN);
-					owner.setText(CA.App.sharedData.getString("username", ""));
+					owner.setText(CA.mainApp.getSharedData().getString("username", ""));
 				} else {
 					owner.setTextColor(Color.RED);
-					owner.setText(CA.App.sharedData.getString("opponent", ""));
+					owner.setText(CA.mainApp.getSharedData().getString("opponent", ""));
 				}
 			}
 		}

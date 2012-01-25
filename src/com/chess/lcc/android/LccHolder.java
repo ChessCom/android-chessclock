@@ -83,7 +83,7 @@ public class LccHolder {
 	public String networkTypeName;
 
 	public LccHolder(InputStream keyStoreInputStream, String versionName) {
-		Log.d("Chess.Com", "Start Chess.Com LCC App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		Log.d("Chess.Com", "Start Chess.Com LCC mainApp @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		//System.setProperty("java.net.preferIPv6Addresses", "false");
 		LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
 		//InputStream keyStoreInputStream = null;
@@ -748,10 +748,10 @@ public class LccHolder {
 		}
 		if (isActivityPausedMode()) {
 			final GameEvent moveEvent = new GameEvent();
-			moveEvent.event = GameEvent.Event.Move;
-			moveEvent.gameId = game.getId();
-			moveEvent.moveIndex = moveIndex;
-			getPausedActivityGameEvents().put(moveEvent.event, moveEvent);
+			moveEvent.setEvent(GameEvent.Event.Move);
+			moveEvent.setGameId(game.getId());
+			moveEvent.setMoveIndex(moveIndex);
+			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
 			android.processMove(game.getId(), moveIndex);
 		}

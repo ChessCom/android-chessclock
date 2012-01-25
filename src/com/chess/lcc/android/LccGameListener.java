@@ -195,9 +195,9 @@ public class LccGameListener implements GameListener {
 
 		if (lccHolder.isActivityPausedMode()) {
 			final GameEvent gameEndedEvent = new GameEvent();
-			gameEndedEvent.event = GameEvent.Event.EndOfGame;
-			gameEndedEvent.gameEndedMessage = message;
-			lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.event, gameEndedEvent);
+			gameEndedEvent.setEvent(GameEvent.Event.EndOfGame);
+			gameEndedEvent.setGameEndedMessage(message);
+			lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
 			if (lccHolder.getAndroid().getGameActivity() == null) {
 				lccHolder.processFullGame(game);
 			}
@@ -252,10 +252,10 @@ public class LccGameListener implements GameListener {
 		}
 		if (lccHolder.isActivityPausedMode()) {
 			final GameEvent drawOfferedEvent = new GameEvent();
-			drawOfferedEvent.event = GameEvent.Event.DrawOffer;
-			drawOfferedEvent.gameId = game.getId();
-			drawOfferedEvent.drawOffererUsername = offerer.getUsername();
-			lccHolder.getPausedActivityGameEvents().put(drawOfferedEvent.event, drawOfferedEvent);
+			drawOfferedEvent.setEvent(GameEvent.Event.DrawOffer);
+			drawOfferedEvent.setGameId(game.getId());
+			drawOfferedEvent.setDrawOffererUsername(offerer.getUsername());
+			lccHolder.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
 		} else {
 			lccHolder.getAndroid().processDrawOffered(offerer.getUsername());
 		}

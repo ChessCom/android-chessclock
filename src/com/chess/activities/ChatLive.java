@@ -40,7 +40,7 @@ public class ChatLive extends CoreActivity {
 					@Override
 					protected Void doInBackground(Void... voids) {
 						System.out.println("LCCLOG: SEND");
-						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(App.OnlineGame.values.get("game_id"))), sendText.getText().toString());
+						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(mainApp.getCurrentGame().values.get("game_id"))), sendText.getText().toString());
 						return null;
 					}
 				}.execute();
@@ -92,7 +92,7 @@ public class ChatLive extends CoreActivity {
 
 	private ArrayList<Message> getMessagesList() {
 		ArrayList<Message> output = new ArrayList<Message>();
-		Long currentGameId = new Long(App.OnlineGame.values.get("game_id"));
+		Long currentGameId = new Long(mainApp.getCurrentGame().values.get("game_id"));
 		com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
@@ -119,7 +119,7 @@ public class ChatLive extends CoreActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-			App.OnlineGame.values.put("has_new_message", "0");
+			mainApp.getCurrentGame().values.put("has_new_message", "0");
 			Update(ChatLive.MESSAGE_RECEIVED);
 		}
 	};

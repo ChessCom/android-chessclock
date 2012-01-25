@@ -34,7 +34,7 @@ public class FriendChallenge extends CoreActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			setContentView(R.layout.challengeafriendlive);
 		} else {
 			setContentView(R.layout.challengeafriend);
@@ -46,8 +46,8 @@ public class FriendChallenge extends CoreActivity {
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
-		if (App.isLiveChess()) {
-			initialTime.setText(App.sharedData.getString("initialTime", "5"));
+		if (mainApp.isLiveChess()) {
+			initialTime.setText(mainApp.getSharedData().getString("initialTime", "5"));
 			initialTime.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -77,11 +77,11 @@ public class FriendChallenge extends CoreActivity {
 
 				@Override
 				public CharSequence fixText(CharSequence invalidText) {
-					return App.sharedData.getString("initialTime", "5");
+					return mainApp.getSharedData().getString("initialTime", "5");
 				}
 			});
 			initialTime.setOnEditorActionListener(null);
-			bonusTime.setText(App.sharedData.getString("bonusTime", "0"));
+			bonusTime.setText(mainApp.getSharedData().getString("bonusTime", "0"));
 			bonusTime.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -111,7 +111,7 @@ public class FriendChallenge extends CoreActivity {
 
 				@Override
 				public CharSequence fixText(CharSequence invalidText) {
-					return App.sharedData.getString("bonusTime", "0");
+					return mainApp.getSharedData().getString("bonusTime", "0");
 				}
 			});
 		}
@@ -121,7 +121,7 @@ public class FriendChallenge extends CoreActivity {
 				if (friends.getCount() == 0) {
 					return;
 				}
-				if (App.isLiveChess()) {
+				if (mainApp.isLiveChess()) {
 					if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
 						initialTime.setText("10");
 						bonusTime.setText("0");
@@ -195,7 +195,7 @@ public class FriendChallenge extends CoreActivity {
 					if (chess960.isChecked()) {
 						gametype = 2;
 					}
-					String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + App.sharedData.getString("user_token", "") +
+					String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString("user_token", "") +
 							"&timepermove=" + days +
 							"&iplayas=" + color +
 							"&israted=" + israted +
@@ -226,16 +226,16 @@ public class FriendChallenge extends CoreActivity {
 	public void Update(int code) {
 		if (code == -2) {
 			finish();
-		} else if (code == -1 && !App.isLiveChess()) {
+		} else if (code == -1 && !mainApp.isLiveChess()) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + App.sharedData.getString("user_token", ""),
+						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString("user_token", ""),
 						PD = new MyProgressDialog(ProgressDialog.show(FriendChallenge.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
-		} else if (code == 0 || (code == -1 && App.isLiveChess())) {
+		} else if (code == 0 || (code == -1 && mainApp.isLiveChess())) {
 			String[] FRIENDS;
-			if (App.isLiveChess()) {
+			if (mainApp.isLiveChess()) {
 				FRIENDS = lccHolder.getOnlineFriends();
 			} else {
 				FRIENDS = ChessComApiParser.GetFriendsParse(response);
@@ -264,13 +264,13 @@ public class FriendChallenge extends CoreActivity {
 						.create().show();
 			}
 		} else if (code == 1) {
-			if (App.isLiveChess()) {
-				App.SDeditor.putString("initialTime", initialTime.getText().toString().trim());
-				App.SDeditor.putString("bonusTime", bonusTime.getText().toString().trim());
-				App.SDeditor.commit();
-				//App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+			if (mainApp.isLiveChess()) {
+				mainApp.getSharedDataEditor().putString("initialTime", initialTime.getText().toString().trim());
+				mainApp.getSharedDataEditor().putString("bonusTime", bonusTime.getText().toString().trim());
+				mainApp.getSharedDataEditor().commit();
+				//mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
 			} else {
-				App.ShowDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
+				mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
 			}
 		}
 	}
@@ -278,7 +278,7 @@ public class FriendChallenge extends CoreActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (App.isLiveChess() && lccHolder.getUser() == null) {
+		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
 			lccHolder.logout();
 			startActivity(new Intent(this, Tabs.class));
 		}

@@ -208,10 +208,10 @@ public class AndroidStuff {
 
 	/*public void startSigninActivity()
 	  {
-		context.SDeditor.putString("password", "");
-		context.SDeditor.putString("user_token", "");
-		context.SDeditor.commit();
-		final Intent intent = new Intent(App, Singin.class);
+		context.getSharedDataEditor().putString("password", "");
+		context.getSharedDataEditor().putString("user_token", "");
+		context.getSharedDataEditor().commit();
+		final Intent intent = new Intent(mainApp, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	  }*/

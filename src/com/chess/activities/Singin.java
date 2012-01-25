@@ -70,13 +70,13 @@ public class Singin extends CoreActivity {
 			public void onClick(View v) {
 
 				if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
-					App.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
+					mainApp.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
 					return;
 				}
 				/*
 				 * if(password.getText().toString().length() < 6 ||
 				 * password.getText().toString().length() > 20){
-				 * App.ShowDialog(Singin.this, getString(R.string.error),
+				 * mainApp.ShowDialog(Singin.this, getString(R.string.error),
 				 * getString(R.string.validatePassword)); return; }
 				 */
 
@@ -137,7 +137,7 @@ public class Singin extends CoreActivity {
 			if (response.contains("Success+")) {
 				Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
 			} else if (response.contains("Error+Facebook user has no Chess.com account")) {
-				App.ShowMessage("You have no Chess.com account, sign up, please.");
+				mainApp.ShowMessage("You have no Chess.com account, sign up, please.");
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
 						+ "/register.html")));
 			}
@@ -145,30 +145,30 @@ public class Singin extends CoreActivity {
 
 		@Override
 		public void onAuthFail(String error) {
-			App.ShowMessage("Login Failed: " + error);
+			mainApp.ShowMessage("Login Failed: " + error);
 		}
 	}
 
 	public class SampleLogoutListener implements LogoutListener {
 		@Override
 		public void onLogoutBegin() {
-			App.ShowMessage("Logging out...");
+			mainApp.ShowMessage("Logging out...");
 		}
 
 		@Override
 		public void onLogoutFinish() {
-			App.ShowMessage("You have logged out!");
+			mainApp.ShowMessage("You have logged out!");
 		}
 	}
 
 	@Override
 	protected void onResume() {
-		if (App.isLiveChess()) {
-			App.setLiveChess(false);
+		if (mainApp.isLiveChess()) {
+			mainApp.setLiveChess(false);
 		}
 		super.onResume();
-		username.setText(App.sharedData.getString("username", ""));
-		password.setText(App.sharedData.getString("password", ""));
+		username.setText(mainApp.getSharedData().getString("username", ""));
+		password.setText(mainApp.getSharedData().getString("password", ""));
 	}
 
 	@Override
@@ -176,9 +176,9 @@ public class Singin extends CoreActivity {
 		switch (code) {
 		case 0: {
 			FlurryAgent.onEvent("Logged In", null);
-			if (App.sharedData.getBoolean(App.sharedData.getString("username", "") + "notifE", true))
+			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "notifE", true))
 				startService(new Intent(this, Notifications.class));
-			App.guest = false;
+			mainApp.guest = false;
 			startActivity(new Intent(this, Tabs.class));
 			finish();
 			break;
@@ -189,7 +189,7 @@ public class Singin extends CoreActivity {
 		}
 		case 2: {
 			FlurryAgent.onEvent("Guest Login", null);
-			App.guest = true;
+			mainApp.guest = true;
 			startActivity(new Intent(this, Tabs.class));
 			break;
 		}
@@ -209,11 +209,11 @@ public class Singin extends CoreActivity {
 			final String[] responseArray = response.split(":");
 			if (responseArray.length >= 4) {
 				if (code == SIGNIN_CALLBACK_CODE) {
-					App.SDeditor.putString("username", username.getText().toString().trim().toLowerCase());
+					mainApp.getSharedDataEditor().putString("username", username.getText().toString().trim().toLowerCase());
 					doUpdate(responseArray);
 				} else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
 					FlurryAgent.onEvent("FB Login", null);
-					App.SDeditor.putString("username", responseArray[4].trim().toLowerCase());
+					mainApp.getSharedDataEditor().putString("username", responseArray[4].trim().toLowerCase());
 					doUpdate(responseArray);
 				}
 			}
@@ -221,16 +221,16 @@ public class Singin extends CoreActivity {
 	}
 
 	private void doUpdate(String[] response) {
-		App.SDeditor.putString("password", password.getText().toString().trim());
-		App.SDeditor.putString("premium_status", response[0].split("[+]")[1]);
-		App.SDeditor.putString("api_version", response[1]);
+		mainApp.getSharedDataEditor().putString("password", password.getText().toString().trim());
+		mainApp.getSharedDataEditor().putString("premium_status", response[0].split("[+]")[1]);
+		mainApp.getSharedDataEditor().putString("api_version", response[1]);
 		try {
-			App.SDeditor.putString("user_token", URLEncoder.encode(response[2], "UTF-8"));
+			mainApp.getSharedDataEditor().putString("user_token", URLEncoder.encode(response[2], "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 		}
-		App.SDeditor.putString("user_session_id", response[3]);
+		mainApp.getSharedDataEditor().putString("user_session_id", response[3]);
 
-		App.SDeditor.commit();
+		mainApp.getSharedDataEditor().commit();
 		LoadNext(0);
 	}
 }

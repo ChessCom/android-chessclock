@@ -54,7 +54,8 @@ public class Board {
 
 	public final static int HIST_STACK = 1000;
 
-	public boolean init = false, chess960 = false, reside = false, submit = false, analysis = false, retry = false, tacticCanceled = false;
+	public boolean init = false, chess960 = false, reside = false, submit = false, analysis = false, retry = false;
+	private boolean tacticCanceled;
 	public int side = LIGHT;
 	public int sec = 0, left = 0;
 	public int TacticsCorrectMoves = 0;
@@ -1734,5 +1735,13 @@ public class Board {
 
 	private SoundPlayer getSoundPlayer() {
 		return coreActivity.getSoundPlayer();
+	}
+
+	public boolean isTacticCanceled() {
+		return tacticCanceled;
+	}
+
+	public void setTacticCanceled(boolean tacticCanceled) {
+		this.tacticCanceled = tacticCanceled;
 	}
 }

@@ -80,23 +80,23 @@ public class Register extends CoreActivity {
 		RegSubmit.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (RegUsername.getText().toString().length() < 3) {
-					App.ShowMessage(getString(R.string.wrongusername));
+					mainApp.ShowMessage(getString(R.string.wrongusername));
 					return;
 				}
 				if (RegEmail.getText().toString().equals("")) {
-					App.ShowMessage(getString(R.string.wrongemail));
+					mainApp.ShowMessage(getString(R.string.wrongemail));
 					return;
 				}
 				if (RegPassword.getText().toString().length() < 6) {
-					App.ShowMessage(getString(R.string.wrongpassword));
+					mainApp.ShowMessage(getString(R.string.wrongpassword));
 					return;
 				}
 				if (!RegPassword.getText().toString().equals(RegRetype.getText().toString())) {
-					App.ShowMessage(getString(R.string.wrongretype));
+					mainApp.ShowMessage(getString(R.string.wrongretype));
 					return;
 				}
 				if (CID == -1) {
-					App.ShowMessage(getString(R.string.wrongcountry));
+					mainApp.ShowMessage(getString(R.string.wrongcountry));
 					return;
 				}
 
@@ -144,19 +144,19 @@ public class Register extends CoreActivity {
 		} else if (code == 1) {
 			FlurryAgent.onEvent("New Account Created", null);
 			String[] r = response.split(":");
-			App.SDeditor.putString("username", RegUsername.getText().toString().toLowerCase());
-			App.SDeditor.putString("password", RegPassword.getText().toString());
-			App.SDeditor.putString("premium_status", r[0].split("[+]")[1]);
-			App.SDeditor.putString("api_version", r[1]);
+			mainApp.getSharedDataEditor().putString("username", RegUsername.getText().toString().toLowerCase());
+			mainApp.getSharedDataEditor().putString("password", RegPassword.getText().toString());
+			mainApp.getSharedDataEditor().putString("premium_status", r[0].split("[+]")[1]);
+			mainApp.getSharedDataEditor().putString("api_version", r[1]);
 			try {
-				App.SDeditor.putString("user_token", URLEncoder.encode(r[2], "UTF-8"));
+				mainApp.getSharedDataEditor().putString("user_token", URLEncoder.encode(r[2], "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 			}
-			App.SDeditor.putString("user_session_id", r[3]);
-			App.SDeditor.commit();
+			mainApp.getSharedDataEditor().putString("user_session_id", r[3]);
+			mainApp.getSharedDataEditor().commit();
 			startActivity(new Intent(Register.this, Tabs.class));
 			finish();
-			App.ShowMessage(getString(R.string.congratulations));
+			mainApp.ShowMessage(getString(R.string.congratulations));
 		}
 	}
 

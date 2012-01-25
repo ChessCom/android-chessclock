@@ -93,7 +93,7 @@ public class ChatListenerImpl
 			return;
 		}
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroid().getContext().OnlineGame.values.put("has_new_message", "1");
+			lccHolder.getAndroid().getContext().getCurrentGame().values.put("has_new_message", "1");
 			lccHolder.getAndroid().sendBroadcastIntent(0, "com.chess.lcc.android-game-chat-message");
 		}
 	}

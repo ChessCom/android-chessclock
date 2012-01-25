@@ -40,7 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Game extends CoreActivity {
-	public BoardView BV;
+	public BoardView boardView;
 	private LinearLayout analysisLL;
 	private LinearLayout analysisButtons;
 	private RelativeLayout chatPanel;
@@ -53,7 +53,7 @@ public class Game extends CoreActivity {
 	private int UPDATE_DELAY = 10000;
 	private int resignOrAbort = R.string.resign;
 
-	private com.chess.model.Game OG;
+	private com.chess.model.Game game;
 
 	private TextView whiteClockView;
 	private TextView blackClockView;
@@ -65,49 +65,49 @@ public class Game extends CoreActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (BV.board.analysis) {
-				if (BV.board.mode < 6) {
-					BV.board = new Board(this);
-					BV.board.init = true;
-					BV.board.mode = extras.getInt("mode");
+			if (boardView.board.analysis) {
+				if (boardView.board.mode < 6) {
+					boardView.board = new Board(this);
+					boardView.board.init = true;
+					boardView.board.mode = extras.getInt("mode");
 
-					if (App.OnlineGame.values.get("game_type").equals("2"))
-						BV.board.chess960 = true;
+					if (mainApp.getCurrentGame().values.get("game_type").equals("2"))
+						boardView.board.chess960 = true;
 
 					if (!isUserColorWhite()) {
-						BV.board.setReside(true);
+						boardView.board.setReside(true);
 					}
 					String[] Moves = {};
-					if (App.OnlineGame.values.get("move_list").contains("1.")) {
-						Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-						BV.board.movesCount = Moves.length;
+					if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
+						Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+						boardView.board.movesCount = Moves.length;
 					}
 
-					String FEN = App.OnlineGame.values.get("starting_fen_position");
+					String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 					if (!FEN.equals("")) {
-						BV.board.GenCastlePos(FEN);
-						MoveParser.FenParse(FEN, BV.board);
+						boardView.board.GenCastlePos(FEN);
+						MoveParser.FenParse(FEN, boardView.board);
 					}
 
 					int i;
-					for (i = 0; i < BV.board.movesCount; i++) {
+					for (i = 0; i < boardView.board.movesCount; i++) {
 
-						int[] moveFT = App.isLiveChess() ? MoveParser.parseCoordinate(BV.board, Moves[i]) : MoveParser.Parse(BV.board, Moves[i]);
+						int[] moveFT = mainApp.isLiveChess() ? MoveParser.parseCoordinate(boardView.board, Moves[i]) : MoveParser.Parse(boardView.board, Moves[i]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2)
 								m = new Move(moveFT[0], moveFT[1], 0, 2);
 							else
 								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							BV.board.makeMove(m, false);
+							boardView.board.makeMove(m, false);
 						} else {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							BV.board.makeMove(m, false);
+							boardView.board.makeMove(m, false);
 						}
 					}
 					Update(0);
-					BV.board.takeBack();
-					BV.invalidate();
+					boardView.board.takeBack();
+					boardView.invalidate();
 
 					//last move anim
 					new Thread(new Runnable() {
@@ -115,7 +115,7 @@ public class Game extends CoreActivity {
 						public void run() {
 							try {
 								Thread.sleep(1300);
-								BV.board.takeNext();
+								boardView.board.takeNext();
 								update.sendEmptyMessage(0);
 							} catch (Exception e) {
 							}
@@ -126,60 +126,60 @@ public class Game extends CoreActivity {
 							public void dispatchMessage(Message msg) {
 								super.dispatchMessage(msg);
 								Update(0);
-								BV.invalidate();
+								boardView.invalidate();
 							}
 						};
 					}).start();
-				} else if (BV.board.mode == 6) {
-					if (App.Tactic != null && App.Tactic.values.get("stop").equals("1")) {
+				} else if (boardView.board.mode == 6) {
+					if (mainApp.getTactic() != null && mainApp.getTactic().values.get("stop").equals("1")) {
 						openOptionsMenu();
 						return true;
 					}
-					int sec = BV.board.sec;
-					if (App.guest || App.noInternet) {
-						BV.board = new Board(this);
-						BV.board.mode = 6;
+					int sec = boardView.board.sec;
+					if (mainApp.guest || mainApp.noInternet) {
+						boardView.board = new Board(this);
+						boardView.board.mode = 6;
 
-						String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
+						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("fen");
 						if (!FEN.equals("")) {
-							BV.board.GenCastlePos(FEN);
-							MoveParser.FenParse(FEN, BV.board);
+							boardView.board.GenCastlePos(FEN);
+							MoveParser.FenParse(FEN, boardView.board);
 							String[] tmp = FEN.split(" ");
 							if (tmp.length > 1) {
 								if (tmp[1].trim().equals("w")) {
-									BV.board.setReside(true);
+									boardView.board.setReside(true);
 								}
 							}
 						}
-						if (App.TacticsBatch.get(App.currentTacticProblem).values.get("move_list").contains("1.")) {
-							BV.board.TacticMoves = App.TacticsBatch.get(App.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-							BV.board.movesCount = 1;
+						if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").contains("1.")) {
+							boardView.board.TacticMoves = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+							boardView.board.movesCount = 1;
 						}
-						BV.board.sec = sec;
-						BV.board.left = Integer.parseInt(App.TacticsBatch.get(App.currentTacticProblem).values.get("average_seconds")) - sec;
+						boardView.board.sec = sec;
+						boardView.board.left = Integer.parseInt(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("average_seconds")) - sec;
 						startTacticsTimer();
-						int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+						int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[0]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2)
 								m = new Move(moveFT[0], moveFT[1], 0, 2);
 							else
 								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							BV.board.makeMove(m);
+							boardView.board.makeMove(m);
 						} else {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							BV.board.makeMove(m);
+							boardView.board.makeMove(m);
 						}
 						Update(0);
-						BV.board.takeBack();
-						BV.invalidate();
+						boardView.board.takeBack();
+						boardView.invalidate();
 
 						//last move anim
 						new Thread(new Runnable() {
 							public void run() {
 								try {
 									Thread.sleep(1300);
-									BV.board.takeNext();
+									boardView.board.takeNext();
 									update.sendEmptyMessage(0);
 								} catch (Exception e) {
 								}
@@ -190,58 +190,58 @@ public class Game extends CoreActivity {
 								public void dispatchMessage(Message msg) {
 									super.dispatchMessage(msg);
 									Update(0);
-									BV.invalidate();
+									boardView.invalidate();
 								}
 							};
 						}).start();
 					} else {
-						if (App.Tactic != null && App.Tactic.values.get("stop").equals("1")) {
+						if (mainApp.getTactic() != null && mainApp.getTactic().values.get("stop").equals("1")) {
 							openOptionsMenu();
 							return true;
 						}
-						BV.board = new Board(this);
-						BV.board.mode = 6;
+						boardView.board = new Board(this);
+						boardView.board.mode = 6;
 
-						String FEN = App.Tactic.values.get("fen");
+						String FEN = mainApp.getTactic().values.get("fen");
 						if (!FEN.equals("")) {
-							BV.board.GenCastlePos(FEN);
-							MoveParser.FenParse(FEN, BV.board);
+							boardView.board.GenCastlePos(FEN);
+							MoveParser.FenParse(FEN, boardView.board);
 							String[] tmp2 = FEN.split(" ");
 							if (tmp2.length > 1) {
 								if (tmp2[1].trim().equals("w")) {
-									BV.board.setReside(true);
+									boardView.board.setReside(true);
 								}
 							}
 						}
 
-						if (App.Tactic.values.get("move_list").contains("1.")) {
-							BV.board.TacticMoves = App.Tactic.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-							BV.board.movesCount = 1;
+						if (mainApp.getTactic().values.get("move_list").contains("1.")) {
+							boardView.board.TacticMoves = mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+							boardView.board.movesCount = 1;
 						}
-						BV.board.sec = sec;
-						BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds")) - sec;
-						int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+						boardView.board.sec = sec;
+						boardView.board.left = Integer.parseInt(mainApp.getTactic().values.get("average_seconds")) - sec;
+						int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[0]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2)
 								m = new Move(moveFT[0], moveFT[1], 0, 2);
 							else
 								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							BV.board.makeMove(m);
+							boardView.board.makeMove(m);
 						} else {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							BV.board.makeMove(m);
+							boardView.board.makeMove(m);
 						}
 						Update(0);
-						BV.board.takeBack();
-						BV.invalidate();
+						boardView.board.takeBack();
+						boardView.invalidate();
 
 						//last move anim
 						new Thread(new Runnable() {
 							public void run() {
 								try {
 									Thread.sleep(1300);
-									BV.board.takeNext();
+									boardView.board.takeNext();
 									update.sendEmptyMessage(0);
 								} catch (Exception e) {
 								}
@@ -252,7 +252,7 @@ public class Game extends CoreActivity {
 								public void dispatchMessage(Message msg) {
 									super.dispatchMessage(msg);
 									Update(0);
-									BV.invalidate();
+									boardView.invalidate();
 								}
 							};
 						}).start();
@@ -276,13 +276,13 @@ public class Game extends CoreActivity {
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								FlurryAgent.onEvent("Upgrade From Tactics", null);
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
+								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
 							}
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								App.mTabHost.setCurrentTab(0);
-								BV.board.tacticCanceled = true;
+								mainApp.getTabHost().setCurrentTab(0);
+								boardView.board.setTacticCanceled(true);
 							}
 						})
 						.create();
@@ -302,17 +302,17 @@ public class Game extends CoreActivity {
 									String input = new String(baf.toByteArray());
 									String[] tmp = input.split("[|]");
 									int count = tmp.length - 1;
-									App.TacticsBatch = new ArrayList<Tactic>(count);
+									mainApp.setTacticsBatch(new ArrayList<Tactic>(count));
 									int i;
 									for (i = 1; i <= count; i++) {
-										App.TacticsBatch.add(new Tactic(tmp[i].split(":")));
+										mainApp.getTacticsBatch().add(new Tactic(tmp[i].split(":")));
 									}
 									f.close();
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
 
-								if (App.guest)
+								if (mainApp.guest)
 									GetGuestTacticsGame();
 								else
 									GetTacticsGame("");
@@ -320,8 +320,8 @@ public class Game extends CoreActivity {
 						})
 						.setNegativeButton("No", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								App.mTabHost.setCurrentTab(0);
-								BV.board.tacticCanceled = true;
+								mainApp.getTabHost().setCurrentTab(0);
+								boardView.board.setTacticCanceled(true);
 							}
 						})
 						.create();
@@ -330,8 +330,8 @@ public class Game extends CoreActivity {
 						.setTitle("100 tactics complited!")
 						.setNegativeButton("OK", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								App.mTabHost.setCurrentTab(0);
-								App.currentTacticProblem = 0;
+								mainApp.getTabHost().setCurrentTab(0);
+								mainApp.currentTacticProblem = 0;
 							}
 						})
 						.create();
@@ -346,8 +346,8 @@ public class Game extends CoreActivity {
 						})
 						.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								App.mTabHost.setCurrentTab(0);
-								BV.board.tacticCanceled = true;
+								mainApp.getTabHost().setCurrentTab(0);
+								boardView.board.setTacticCanceled(true);
 							}
 						})
 						.create();
@@ -356,21 +356,21 @@ public class Game extends CoreActivity {
 						.setTitle("Offer a draw:").setMessage("Are you sure?")
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								if (App.isLiveChess() && BV.board.mode == 4) {
-									final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+								if (mainApp.isLiveChess() && boardView.board.mode == 4) {
+									final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 									LccHolder.LOG.info("Request draw: " + game);
 									lccHolder.getAndroid().runMakeDrawTask(game);
 								} else {
 									String Draw = "OFFERDRAW";
-									if (App.acceptdraw)
+									if (mainApp.acceptdraw)
 										Draw = "ACCEPTDRAW";
-									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + App.OnlineGame.values.get("game_id") + "&command=" + Draw + "&timestamp=" + App.OnlineGame.values.get("timestamp"), "GET", null, null);
+									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + mainApp.getCurrentGame().values.get("game_id") + "&command=" + Draw + "&timestamp=" + mainApp.getCurrentGame().values.get("timestamp"), "GET", null, null);
 									if (result.contains("Success")) {
-										App.ShowDialog(Game.this, "", getString(R.string.drawoffered));
+										mainApp.ShowDialog(Game.this, "", getString(R.string.drawoffered));
 									} else if (result.contains("Error+")) {
-										App.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
+										mainApp.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
 									} else {
-										//App.ShowDialog(Game.this, "Error", result);
+										//mainApp.ShowDialog(Game.this, "Error", result);
 									}
 								}
 							}
@@ -385,14 +385,14 @@ public class Game extends CoreActivity {
 						.setTitle("Abort/Resign a game:").setMessage("Are you sure?")
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								if (App.isLiveChess() && BV.board.mode == 4) {
-									final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+								if (mainApp.isLiveChess() && boardView.board.mode == 4) {
+									final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 
-									if (lccHolder.isFairPlayRestriction(App.gameId)) {
+									if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 										System.out.println("LCCLOG: resign game by fair play restriction: " + game);
 										LccHolder.LOG.info("Resign game: " + game);
 										lccHolder.getAndroid().runMakeResignTask(game);
-									} else if (lccHolder.isAbortableBySeq(App.gameId)) {
+									} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
 										LccHolder.LOG.info("LCCLOG: abort game: " + game);
 										lccHolder.getAndroid().runAbortGameTask(game);
 									} else {
@@ -401,17 +401,17 @@ public class Game extends CoreActivity {
 									}
 									finish();
 								} else {
-									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + App.sharedData.getString("user_token", "") + "&chessid=" + App.OnlineGame.values.get("game_id") + "&command=RESIGN&timestamp=" + App.OnlineGame.values.get("timestamp"), "GET", null, null);
+									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + mainApp.getCurrentGame().values.get("game_id") + "&command=RESIGN&timestamp=" + mainApp.getCurrentGame().values.get("timestamp"), "GET", null, null);
 									if (result.contains("Success")) {
-										if (MobclixHelper.isShowAds(App)) {
+										if (MobclixHelper.isShowAds(mainApp)) {
 											sendBroadcast(new Intent("com.chess.lcc.android-show-game-end-popup").putExtra("message", "GAME OVER").putExtra("finishable", true));
 										} else {
 											finish();
 										}
 									} else if (result.contains("Error+")) {
-										App.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
+										mainApp.ShowDialog(Game.this, "Error", result.split("[+]")[1]);
 									} else {
-										//App.ShowDialog(Game.this, "Error", result);
+										//mainApp.ShowDialog(Game.this, "Error", result);
 									}
 								}
 							}
@@ -432,7 +432,7 @@ public class Game extends CoreActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (App.isLiveChess() && extras.getInt("mode") == 4) {
+		if (mainApp.isLiveChess() && extras.getInt("mode") == 4) {
 			setContentView(R.layout.boardviewlive);
 			lccHolder.getAndroid().setGameActivity(this);
 		} else {
@@ -441,32 +441,32 @@ public class Game extends CoreActivity {
 
 		analysisLL = (LinearLayout) findViewById(R.id.analysis);
 		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
-		if (App.isLiveChess() && extras.getInt("mode") != 6) {
+		if (mainApp.isLiveChess() && extras.getInt("mode") != 6) {
 			chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
 			chatButton = (ImageButton) findViewById(R.id.chat);
 			chatButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
 					chat = true;
-					GetOnlineGame(App.gameId);
+					GetOnlineGame(mainApp.getGameId());
 					chatPanel.setVisibility(View.GONE);
 				}
 			});
 		}
-		if (!App.isLiveChess()) {
+		if (!mainApp.isLiveChess()) {
 			findViewById(R.id.prev).setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					BV.finished = false;
-					BV.sel = false;
-					BV.board.takeBack();
-					BV.invalidate();
+					boardView.finished = false;
+					boardView.sel = false;
+					boardView.board.takeBack();
+					boardView.invalidate();
 					Update(0);
 					isMoveNav = true;
 				}
 			});
 			findViewById(R.id.next).setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					BV.board.takeNext();
-					BV.invalidate();
+					boardView.board.takeNext();
+					boardView.invalidate();
 					Update(0);
 					isMoveNav = true;
 				}
@@ -481,7 +481,7 @@ public class Game extends CoreActivity {
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
-		if (App.isLiveChess() && extras.getInt("mode") == 4 && lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
+		if (mainApp.isLiveChess() && extras.getInt("mode") == 4 && lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
 			whiteClockView.setVisibility(View.VISIBLE);
 			blackClockView.setVisibility(View.VISIBLE);
 			lccHolder.getWhiteClock().paint();
@@ -495,55 +495,55 @@ public class Game extends CoreActivity {
 
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
-		BV = (BoardView) findViewById(R.id.boardview);
-		BV.setFocusable(true);
-		BV.board = (Board) getLastNonConfigurationInstance();
+		boardView = (BoardView) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.board = (Board) getLastNonConfigurationInstance();
 
-		lccHolder = App.getLccHolder();
+		lccHolder = mainApp.getLccHolder();
 
-		if (BV.board == null) {
-			BV.board = new Board(this);
-			BV.board.init = true;
-			BV.board.mode = extras.getInt("mode");
-			BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-			//BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+		if (boardView.board == null) {
+			boardView.board = new Board(this);
+			boardView.board.init = true;
+			boardView.board.mode = extras.getInt("mode");
+			boardView.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+			//boardView.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-			if (BV.board.mode < 4 && !App.sharedData.getString("saving", "").equals("")) {
+			if (boardView.board.mode < 4 && !mainApp.getSharedData().getString("saving", "").equals("")) {
 				int i;
-				String[] moves = App.sharedData.getString("saving", "").split("[|]");
+				String[] moves = mainApp.getSharedData().getString("saving", "").split("[|]");
 				for (i = 1; i < moves.length; i++) {
 					String[] move = moves[i].split(":");
-					BV.board.makeMove(new Move(
+					boardView.board.makeMove(new Move(
 							Integer.parseInt(move[0]),
 							Integer.parseInt(move[1]),
 							Integer.parseInt(move[2]),
 							Integer.parseInt(move[3])), false);
 				}
-				if (BV.board.mode == 1)
-					BV.board.setReside(true);
+				if (boardView.board.mode == 1)
+					boardView.board.setReside(true);
 			} else {
-				if (BV.board.mode == 1) {
-					BV.board.setReside(true);
-					BV.invalidate();
-					BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0)]);
+				if (boardView.board.mode == 1) {
+					boardView.board.setReside(true);
+					boardView.invalidate();
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
 				}
-				if (BV.board.mode == 3) {
-					BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0)]);
+				if (boardView.board.mode == 3) {
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
 				}
-				if (BV.board.mode == 4 || BV.board.mode == 5)
-					App.gameId = extras.getString("game_id");
+				if (boardView.board.mode == 4 || boardView.board.mode == 5)
+					mainApp.setGameId(extras.getString("game_id"));
 			}
-			if (BV.board.mode == 6) {
+			if (boardView.board.mode == 6) {
 				showDialog(1);
 				return;
 			}
 		}
 
-		if (MobclixHelper.isShowAds(App) && getRectangleAdview() == null && !App.mTabHost.getCurrentTabTag().equals("tab4")) {
+		if (MobclixHelper.isShowAds(mainApp) && getRectangleAdview() == null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4")) {
 			setRectangleAdview(new MobclixIABRectangleMAdView(this));
 			getRectangleAdview().setRefreshTime(-1);
-			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, App));
-			App.setForceRectangleAd(false);
+			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
+			mainApp.setForceRectangleAd(false);
 		}
 
 		Update(0);
@@ -554,14 +554,14 @@ public class Game extends CoreActivity {
 			appService.repeatble.cancel();
 			appService.repeatble = null;
 		}
-		App.gameId = game_id;
+		mainApp.setGameId(game_id);
 
-		if (App.isLiveChess() && BV.board.mode == 4) {
+		if (mainApp.isLiveChess() && boardView.board.mode == 4) {
 			Update(10);
 		} else {
 			if (appService != null) {
 				appService.RunSingleTask(10,
-						"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + App.sharedData.getString("user_token", "") + "&gid=" + game_id,
+						"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString("user_token", "") + "&gid=" + game_id,
 						null/*PD = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 			}
 		}
@@ -569,53 +569,53 @@ public class Game extends CoreActivity {
 
 	private void GetTacticsGame(final String id) {
 		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
-		if (!App.noInternet) {
-			BV.board = new Board(this);
-			BV.board.mode = 6;
+		if (!mainApp.noInternet) {
+			boardView.board = new Board(this);
+			boardView.board.mode = 6;
 
-			if (App.Tactic != null && id.equals(App.Tactic.values.get("id"))) {
-				BV.board.retry = true;
-				String FEN = App.Tactic.values.get("fen");
+			if (mainApp.getTactic() != null && id.equals(mainApp.getTactic().values.get("id"))) {
+				boardView.board.retry = true;
+				String FEN = mainApp.getTactic().values.get("fen");
 				if (!FEN.equals("")) {
-					BV.board.GenCastlePos(FEN);
-					MoveParser.FenParse(FEN, BV.board);
+					boardView.board.GenCastlePos(FEN);
+					MoveParser.FenParse(FEN, boardView.board);
 					String[] tmp2 = FEN.split(" ");
 					if (tmp2.length > 1) {
 						if (tmp2[1].trim().equals("w")) {
-							BV.board.setReside(true);
+							boardView.board.setReside(true);
 						}
 					}
 				}
 
-				if (App.Tactic.values.get("move_list").contains("1.")) {
-					BV.board.TacticMoves = App.Tactic.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-					BV.board.movesCount = 1;
+				if (mainApp.getTactic().values.get("move_list").contains("1.")) {
+					boardView.board.TacticMoves = mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					boardView.board.movesCount = 1;
 				}
-				BV.board.sec = 0;
-				BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds"));
+				boardView.board.sec = 0;
+				boardView.board.left = Integer.parseInt(mainApp.getTactic().values.get("average_seconds"));
 				startTacticsTimer();
-				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+				int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[0]);
 				if (moveFT.length == 4) {
 					Move m;
 					if (moveFT[3] == 2)
 						m = new Move(moveFT[0], moveFT[1], 0, 2);
 					else
 						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					BV.board.makeMove(m);
+					boardView.board.makeMove(m);
 				} else {
 					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-					BV.board.makeMove(m);
+					boardView.board.makeMove(m);
 				}
 				Update(0);
-				BV.board.takeBack();
-				BV.invalidate();
+				boardView.board.takeBack();
+				boardView.invalidate();
 
 				//last move anim
 				new Thread(new Runnable() {
 					public void run() {
 						try {
 							Thread.sleep(1300);
-							BV.board.takeNext();
+							boardView.board.takeNext();
 							update.sendEmptyMessage(0);
 						} catch (Exception e) {
 						}
@@ -626,7 +626,7 @@ public class Game extends CoreActivity {
 						public void dispatchMessage(Message msg) {
 							super.dispatchMessage(msg);
 							Update(0);
-							BV.invalidate();
+							boardView.invalidate();
 						}
 					};
 				}).start();
@@ -636,7 +636,7 @@ public class Game extends CoreActivity {
 		}
 		if (appService != null) {
 			appService.RunSingleTask(7,
-					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + App.sharedData.getString("user_token", "") + "&tactics_id=" + id,
+					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString("user_token", "") + "&tactics_id=" + id,
 					PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
 			);
 		}
@@ -645,54 +645,54 @@ public class Game extends CoreActivity {
 	private void GetGuestTacticsGame() {
 		FlurryAgent.onEvent("Tactics Session Started For Guest", null);
 
-		if (App.currentTacticProblem >= App.TacticsBatch.size()) {
+		if (mainApp.currentTacticProblem >= mainApp.getTacticsBatch().size()) {
 			showDialog(2);
 			return;
 		}
 
-		BV.board = new Board(this);
-		BV.board.mode = 6;
+		boardView.board = new Board(this);
+		boardView.board.mode = 6;
 
-		String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
+		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("fen");
 		if (!FEN.equals("")) {
-			BV.board.GenCastlePos(FEN);
-			MoveParser.FenParse(FEN, BV.board);
+			boardView.board.GenCastlePos(FEN);
+			MoveParser.FenParse(FEN, boardView.board);
 			String[] tmp = FEN.split(" ");
 			if (tmp.length > 1) {
 				if (tmp[1].trim().equals("w")) {
-					BV.board.setReside(true);
+					boardView.board.setReside(true);
 				}
 			}
 		}
-		if (App.TacticsBatch.get(App.currentTacticProblem).values.get("move_list").contains("1.")) {
-			BV.board.TacticMoves = App.TacticsBatch.get(App.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-			BV.board.movesCount = 1;
+		if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").contains("1.")) {
+			boardView.board.TacticMoves = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+			boardView.board.movesCount = 1;
 		}
-		BV.board.sec = 0;
-		BV.board.left = Integer.parseInt(App.TacticsBatch.get(App.currentTacticProblem).values.get("average_seconds"));
+		boardView.board.sec = 0;
+		boardView.board.left = Integer.parseInt(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("average_seconds"));
 		startTacticsTimer();
-		int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+		int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[0]);
 		if (moveFT.length == 4) {
 			Move m;
 			if (moveFT[3] == 2)
 				m = new Move(moveFT[0], moveFT[1], 0, 2);
 			else
 				m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-			BV.board.makeMove(m);
+			boardView.board.makeMove(m);
 		} else {
 			Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-			BV.board.makeMove(m);
+			boardView.board.makeMove(m);
 		}
 		Update(0);
-		BV.board.takeBack();
-		BV.invalidate();
+		boardView.board.takeBack();
+		boardView.invalidate();
 
 		//last move anim
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					Thread.sleep(1300);
-					BV.board.takeNext();
+					boardView.board.takeNext();
 					update.sendEmptyMessage(0);
 				} catch (Exception e) {
 				}
@@ -703,59 +703,59 @@ public class Game extends CoreActivity {
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
 					Update(0);
-					BV.invalidate();
+					boardView.invalidate();
 				}
 			};
 		}).start();
 	}
 
 	private void ShowAnswer() {
-		BV.board = new Board(this);
-		BV.board.mode = 6;
-		BV.board.retry = true;
+		boardView.board = new Board(this);
+		boardView.board.mode = 6;
+		boardView.board.retry = true;
 
-		if (App.guest || App.noInternet) {
-			String FEN = App.TacticsBatch.get(App.currentTacticProblem).values.get("fen");
+		if (mainApp.guest || mainApp.noInternet) {
+			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("fen");
 			if (!FEN.equals("")) {
-				BV.board.GenCastlePos(FEN);
-				MoveParser.FenParse(FEN, BV.board);
+				boardView.board.GenCastlePos(FEN);
+				MoveParser.FenParse(FEN, boardView.board);
 				String[] tmp = FEN.split(" ");
 				if (tmp.length > 1) {
 					if (tmp[1].trim().equals("w")) {
-						BV.board.setReside(true);
+						boardView.board.setReside(true);
 					}
 				}
 			}
-			if (App.TacticsBatch.get(App.currentTacticProblem).values.get("move_list").contains("1.")) {
-				BV.board.TacticMoves = App.TacticsBatch.get(App.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-				BV.board.movesCount = 1;
+			if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").contains("1.")) {
+				boardView.board.TacticMoves = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+				boardView.board.movesCount = 1;
 			}
 		} else {
-			String FEN = App.Tactic.values.get("fen");
+			String FEN = mainApp.getTactic().values.get("fen");
 			if (!FEN.equals("")) {
-				BV.board.GenCastlePos(FEN);
-				MoveParser.FenParse(FEN, BV.board);
+				boardView.board.GenCastlePos(FEN);
+				MoveParser.FenParse(FEN, boardView.board);
 				String[] tmp2 = FEN.split(" ");
 				if (tmp2.length > 1) {
 					if (tmp2[1].trim().equals("w")) {
-						BV.board.setReside(true);
+						boardView.board.setReside(true);
 					}
 				}
 			}
 
-			if (App.Tactic.values.get("move_list").contains("1.")) {
-				BV.board.TacticMoves = App.Tactic.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-				BV.board.movesCount = 1;
+			if (mainApp.getTactic().values.get("move_list").contains("1.")) {
+				boardView.board.TacticMoves = mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+				boardView.board.movesCount = 1;
 			}
 		}
-		BV.invalidate();
+		boardView.invalidate();
 
 
 		new Thread(new Runnable() {
 			public void run() {
 				int i;
-				for (i = 0; i < BV.board.TacticMoves.length; i++) {
-					int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[i]);
+				for (i = 0; i < boardView.board.TacticMoves.length; i++) {
+					int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[i]);
 					try {
 						Thread.sleep(1500);
 					} catch (Exception e) {
@@ -767,10 +767,10 @@ public class Game extends CoreActivity {
 						else
 							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 
-						BV.board.makeMove(m);
+						boardView.board.makeMove(m);
 					} else {
 						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-						BV.board.makeMove(m);
+						boardView.board.makeMove(m);
 					}
 					handler.sendEmptyMessage(0);
 				}
@@ -781,16 +781,16 @@ public class Game extends CoreActivity {
 				public void handleMessage(Message msg) {
 					super.handleMessage(msg);
 					Update(0);
-					BV.invalidate();
+					boardView.invalidate();
 				}
 			};
 		}).start();
 	}
 
 	private void CheckTacticMoves() {
-		Move m = BV.board.histDat[BV.board.hply - 1].m;
+		Move m = boardView.board.histDat[boardView.board.hply - 1].m;
 		String f = "";
-		int p = BV.board.piece[m.to];
+		int p = boardView.board.piece[m.to];
 		if (p == 1) {
 			f = "N";
 		} else if (p == 2) {
@@ -803,35 +803,35 @@ public class Game extends CoreActivity {
 			f = "K";
 		}
 		String Moveto = MoveParser.positionToString(m.to);
-		Log.d("!!!", f + " | " + Moveto + " : " + BV.board.TacticMoves[BV.board.hply - 1]);
-		if (BV.board.TacticMoves[BV.board.hply - 1].contains(f) && BV.board.TacticMoves[BV.board.hply - 1].contains(Moveto)) {
-			BV.board.TacticsCorrectMoves++;
-			if (BV.board.movesCount < BV.board.TacticMoves.length - 1) {
-				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[BV.board.hply]);
+		Log.d("!!!", f + " | " + Moveto + " : " + boardView.board.TacticMoves[boardView.board.hply - 1]);
+		if (boardView.board.TacticMoves[boardView.board.hply - 1].contains(f) && boardView.board.TacticMoves[boardView.board.hply - 1].contains(Moveto)) {
+			boardView.board.TacticsCorrectMoves++;
+			if (boardView.board.movesCount < boardView.board.TacticMoves.length - 1) {
+				int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[boardView.board.hply]);
 				if (moveFT.length == 4) {
 					if (moveFT[3] == 2)
 						m = new Move(moveFT[0], moveFT[1], 0, 2);
 					else
 						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					BV.board.makeMove(m);
+					boardView.board.makeMove(m);
 				} else {
 					m = new Move(moveFT[0], moveFT[1], 0, 0);
-					BV.board.makeMove(m);
+					boardView.board.makeMove(m);
 				}
 				Update(0);
-				BV.invalidate();
+				boardView.invalidate();
 			} else {
-				if (App.guest || BV.board.retry || App.noInternet) {
+				if (mainApp.guest || boardView.board.retry || mainApp.noInternet) {
 					new AlertDialog.Builder(this)
 							.setTitle("Correct!")
 							.setItems(getResources().getTextArray(R.array.correcttactic), new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
 									if (which == 1) {
-										if (App.guest) {
-											App.currentTacticProblem++;
+										if (mainApp.guest) {
+											mainApp.currentTacticProblem++;
 											GetGuestTacticsGame();
 										} else {
-											if (App.noInternet) App.currentTacticProblem++;
+											if (mainApp.noInternet) mainApp.currentTacticProblem++;
 											GetTacticsGame("");
 										}
 									}
@@ -842,38 +842,38 @@ public class Game extends CoreActivity {
 				} else {
 					if (appService != null) {
 						appService.RunSingleTask(6,
-								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + App.sharedData.getString("user_token", "") + "&tactics_id=" + App.Tactic.values.get("id") + "&passed=" + 1 + "&correct_moves=" + BV.board.TacticsCorrectMoves + "&seconds=" + BV.board.sec,
+								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString("user_token", "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 1 + "&correct_moves=" + boardView.board.TacticsCorrectMoves + "&seconds=" + boardView.board.sec,
 								PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 					}
 					stopTacticsTimer();
 				}
 			}
 		} else {
-			if (App.guest || BV.board.retry || App.noInternet) {
+			if (mainApp.guest || boardView.board.retry || mainApp.noInternet) {
 				new AlertDialog.Builder(this)
 						.setTitle("Wrong!")
 						.setItems(getResources().getTextArray(R.array.wrongtactic), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 0) {
-									if (App.guest) {
-										App.currentTacticProblem++;
+									if (mainApp.guest) {
+										mainApp.currentTacticProblem++;
 										GetGuestTacticsGame();
 									} else {
-										if (App.noInternet) App.currentTacticProblem++;
+										if (mainApp.noInternet) mainApp.currentTacticProblem++;
 										GetTacticsGame("");
 									}
 								}
 								if (which == 1) {
-									if (App.guest || App.noInternet) {
-										BV.board.retry = true;
+									if (mainApp.guest || mainApp.noInternet) {
+										boardView.board.retry = true;
 										GetGuestTacticsGame();
 									} else {
-										GetTacticsGame(App.Tactic.values.get("id"));
+										GetTacticsGame(mainApp.getTactic().values.get("id"));
 									}
 								}
 								if (which == 2) {
-									BV.finished = true;
-									App.Tactic.values.put("stop", "1");
+									boardView.finished = true;
+									mainApp.getTactic().values.put("stop", "1");
 								}
 							}
 						})
@@ -882,7 +882,7 @@ public class Game extends CoreActivity {
 			} else {
 				if (appService != null) {
 					appService.RunSingleTask(5,
-							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + App.sharedData.getString("user_token", "") + "&tactics_id=" + App.Tactic.values.get("id") + "&passed=" + 0 + "&correct_moves=" + BV.board.TacticsCorrectMoves + "&seconds=" + BV.board.sec,
+							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString("user_token", "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 0 + "&correct_moves=" + boardView.board.TacticsCorrectMoves + "&seconds=" + boardView.board.sec,
 							PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 				}
 				stopTacticsTimer();
@@ -897,9 +897,9 @@ public class Game extends CoreActivity {
 
 	@Override
 	public void LoadPrev(int code) {
-		if (BV.board != null && BV.board.mode == 6) {
-			App.mTabHost.setCurrentTab(0);
-			BV.board.tacticCanceled = true;
+		if (boardView.board != null && boardView.board.mode == 6) {
+			mainApp.getTabHost().setCurrentTab(0);
+			boardView.board.setTacticCanceled(true);
 		} else {
 			finish();
 		}
@@ -909,16 +909,16 @@ public class Game extends CoreActivity {
 	public void Update(int code) {
 		switch (code) {
 			case -2:
-				if (BV.board.mode < 6)
+				if (boardView.board.mode < 6)
 					finish();
-				else if (BV.board.mode == 6) {
-					/*App.mTabHost.setCurrentTab(0);
-					BV.board.tacticCanceled = true;*/
-					if (App.noInternet) {
-						if (App.offline) {
+				else if (boardView.board.mode == 6) {
+					/*mainApp.getTabHost().setCurrentTab(0);
+					boardView.board.getTactic()Canceled = true;*/
+					if (mainApp.noInternet) {
+						if (mainApp.offline) {
 							GetGuestTacticsGame();
 						} else {
-							App.offline = true;
+							mainApp.offline = true;
 							showDialog(3);
 						}
 						return;
@@ -927,19 +927,19 @@ public class Game extends CoreActivity {
 				//finish();
 				break;
 			case -1:
-				if (BV.board.init && BV.board.mode == 4 || BV.board.mode == 5) {
-					//System.out.println("@@@@@@@@ POINT 1 App.gameId=" + App.gameId);
-					GetOnlineGame(App.gameId);
-					BV.board.init = false;
-				} else if (!BV.board.init) {
-					if (BV.board.mode == 4 && appService != null && appService.repeatble == null) {
+				if (boardView.board.init && boardView.board.mode == 4 || boardView.board.mode == 5) {
+					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
+					GetOnlineGame(mainApp.getGameId());
+					boardView.board.init = false;
+				} else if (!boardView.board.init) {
+					if (boardView.board.mode == 4 && appService != null && appService.repeatble == null) {
 						if (PD != null) {
 							PD.dismiss();
 							PD = null;
 						}
-						if (!App.isLiveChess()) {
+						if (!mainApp.isLiveChess()) {
 							appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + App.sharedData.getString("user_token", "") + "&gid=" + App.gameId,
+									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString("user_token", "") + "&gid=" + mainApp.getGameId(),
 									null/*PD*/
 							);
 						}
@@ -947,7 +947,7 @@ public class Game extends CoreActivity {
 				}
 				break;
 			case 0: {
-				switch (BV.board.mode) {
+				switch (boardView.board.mode) {
 					case 0: {	//w - human; b - comp
 						white.setText(getString(R.string.Human));
 						black.setText(getString(R.string.Computer));
@@ -969,7 +969,7 @@ public class Game extends CoreActivity {
 						break;
 					}
 					case 4: {
-						if (BV.board.submit)
+						if (boardView.board.submit)
 							findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 						findViewById(R.id.submit).setOnClickListener(new OnClickListener() {
 							@Override
@@ -981,24 +981,24 @@ public class Game extends CoreActivity {
 							@Override
 							public void onClick(View v) {
 								findViewById(R.id.moveButtons).setVisibility(View.GONE);
-								BV.board.takeBack();
-								BV.board.movesCount--;
-								BV.invalidate();
-								BV.board.submit = false;
+								boardView.board.takeBack();
+								boardView.board.movesCount--;
+								boardView.invalidate();
+								boardView.board.submit = false;
 							}
 						});
-						if (BV.board.analysis) {
+						if (boardView.board.analysis) {
 							white.setVisibility(View.GONE);
 							black.setVisibility(View.GONE);
 							analysisLL.setVisibility(View.VISIBLE);
-							if (!App.isLiveChess() && analysisButtons != null) {
+							if (!mainApp.isLiveChess() && analysisButtons != null) {
 								showAnalysisButtons();
 							}
 						} else {
 							white.setVisibility(View.VISIBLE);
 							black.setVisibility(View.VISIBLE);
 							analysisLL.setVisibility(View.GONE);
-							if (!App.isLiveChess() && analysisButtons != null) {
+							if (!mainApp.isLiveChess() && analysisButtons != null) {
 								hideAnalysisButtons();
 							}
 						}
@@ -1009,22 +1009,22 @@ public class Game extends CoreActivity {
 						break;
 				}
 
-				if (BV.board.mode < 4) {
+				if (boardView.board.mode < 4) {
 					hideAnalysisButtons();
 				}
 
-				if (BV.board.mode == 4 || BV.board.mode == 5) {
-					if (App.OnlineGame != null) {
-						white.setText(App.OnlineGame.values.get("white_username") + "\n(" + App.OnlineGame.values.get("white_rating") + ")");
-						black.setText(App.OnlineGame.values.get("black_username") + "\n(" + App.OnlineGame.values.get("black_rating") + ")");
+				if (boardView.board.mode == 4 || boardView.board.mode == 5) {
+					if (mainApp.getCurrentGame() != null) {
+						white.setText(mainApp.getCurrentGame().values.get("white_username") + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
+						black.setText(mainApp.getCurrentGame().values.get("black_username") + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
 					}
 				}
 
-				if (BV.board.mode == 6) {
-					if (BV.board.analysis) {
+				if (boardView.board.mode == 6) {
+					if (boardView.board.analysis) {
 						timer.setVisibility(View.GONE);
 						analysisLL.setVisibility(View.VISIBLE);
-						if (!App.isLiveChess() && analysisButtons != null) {
+						if (!mainApp.isLiveChess() && analysisButtons != null) {
 							showAnalysisButtons();
 						}
 					} else {
@@ -1032,26 +1032,26 @@ public class Game extends CoreActivity {
 						black.setVisibility(View.GONE);
 						timer.setVisibility(View.VISIBLE);
 						analysisLL.setVisibility(View.GONE);
-						if (!App.isLiveChess() && analysisButtons != null) {
+						if (!mainApp.isLiveChess() && analysisButtons != null) {
 							hideAnalysisButtons();
 						}
 					}
 				}
-				movelist.setText(BV.board.MoveListSAN());
-				/*if(App.OnlineGame != null && App.OnlineGame.values.get("move_list") != null)
+				movelist.setText(boardView.board.MoveListSAN());
+				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
 								{
-								  movelist.setText(App.OnlineGame.values.get("move_list"));
+								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
 								}
 								else
 								{
-								  movelist.setText(BV.board.MoveListSAN());
+								  movelist.setText(boardView.board.MoveListSAN());
 								}*/
-				BV.invalidate();
+				boardView.invalidate();
 
 				new Handler().post(new Runnable() {
 					@Override
 					public void run() {
-						BV.requestFocus();
+						boardView.requestFocus();
 					}
 				});
 				break;
@@ -1059,34 +1059,34 @@ public class Game extends CoreActivity {
 			case 1: {
 				// making the move
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
-				BV.board.submit = false;
-				//String myMove = BV.board.MoveSubmit();
-				if (App.isLiveChess() && BV.board.mode == 4) {
-					final String move = BV.board.convertMoveLive();
+				boardView.board.submit = false;
+				//String myMove = boardView.board.MoveSubmit();
+				if (mainApp.isLiveChess() && boardView.board.mode == 4) {
+					final String move = boardView.board.convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
 					try {
-						lccHolder.makeMove(App.OnlineGame.values.get("game_id"), move);
+						lccHolder.makeMove(mainApp.getCurrentGame().values.get("game_id"), move);
 					} catch (IllegalArgumentException e) {
 						LccHolder.LOG.info("LCC illegal move: " + move);
 						e.printStackTrace();
 					}
-				} else if (!App.isLiveChess() && appService != null) {
-					if (App.OnlineGame == null) {
+				} else if (!mainApp.isLiveChess() && appService != null) {
+					if (mainApp.getCurrentGame() == null) {
 						if (appService.repeatble != null) {
 							appService.repeatble.cancel();
 							appService.repeatble = null;
 						}
 						appService.RunSingleTask(12,
 								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" +
-										App.sharedData.getString("user_token", "") + "&gid=" + App.gameId,
+										mainApp.getSharedData().getString("user_token", "") + "&gid=" + mainApp.getGameId(),
 								null);
 					} else {
 						appService.RunSingleTask(8,
 								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
-										App.sharedData.getString("user_token", "") + "&chessid=" +
-										App.OnlineGame.values.get("game_id") + "&command=SUBMIT&newmove=" +
-										BV.board.convertMoveEchess() + "&timestamp=" +
-										App.OnlineGame.values.get("timestamp"),
+										mainApp.getSharedData().getString("user_token", "") + "&chessid=" +
+										mainApp.getCurrentGame().values.get("game_id") + "&command=SUBMIT&newmove=" +
+										boardView.board.convertMoveEchess() + "&timestamp=" +
+										mainApp.getCurrentGame().values.get("timestamp"),
 								PD = new MyProgressDialog(
 										ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 
@@ -1098,14 +1098,14 @@ public class Game extends CoreActivity {
 				break;
 			}
 			case 12: {
-				App.OnlineGame = ChessComApiParser.GetGameParseV3(response);
-				if (!App.isLiveChess() && appService != null) {
+				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
+				if (!mainApp.isLiveChess() && appService != null) {
 					appService.RunSingleTask(8,
 							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
-									App.sharedData.getString("user_token", "") + "&chessid=" +
-									App.OnlineGame.values.get("game_id") + "&command=SUBMIT&newmove=" +
-									BV.board.convertMoveEchess() + "&timestamp=" +
-									App.OnlineGame.values.get("timestamp"),
+									mainApp.getSharedData().getString("user_token", "") + "&chessid=" +
+									mainApp.getCurrentGame().values.get("game_id") + "&command=SUBMIT&newmove=" +
+									boardView.board.convertMoveEchess() + "&timestamp=" +
+									mainApp.getCurrentGame().values.get("timestamp"),
 							PD = new MyProgressDialog(
 									ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -1147,12 +1147,12 @@ public class Game extends CoreActivity {
 									GetTacticsGame("");
 								}
 								if (which == 1) {
-									BV.board.retry = true;
-									GetTacticsGame(App.Tactic.values.get("id"));
+									boardView.board.retry = true;
+									GetTacticsGame(mainApp.getTactic().values.get("id"));
 								}
 								if (which == 2) {
-									BV.finished = true;
-									App.Tactic.values.put("stop", "1");
+									boardView.finished = true;
+									mainApp.getTactic().values.put("stop", "1");
 								}
 							}
 						})
@@ -1182,8 +1182,8 @@ public class Game extends CoreActivity {
 			}
 			case 7:
 
-				BV.board = new Board(this);
-				BV.board.mode = 6;
+				boardView.board = new Board(this);
+				boardView.board.mode = 6;
 
 				String[] tmp = response.trim().split("[|]");
 				if (tmp.length < 3 || tmp[2].trim().equals("")) {
@@ -1191,49 +1191,49 @@ public class Game extends CoreActivity {
 					return;
 				}
 
-				App.Tactic = new Tactic(tmp[2].split(":"));
+				mainApp.setTactic(new Tactic(tmp[2].split(":")));
 
-				String FEN = App.Tactic.values.get("fen");
+				String FEN = mainApp.getTactic().values.get("fen");
 				if (!FEN.equals("")) {
-					BV.board.GenCastlePos(FEN);
-					MoveParser.FenParse(FEN, BV.board);
+					boardView.board.GenCastlePos(FEN);
+					MoveParser.FenParse(FEN, boardView.board);
 					String[] tmp2 = FEN.split(" ");
 					if (tmp2.length > 1) {
 						if (tmp2[1].trim().equals("w")) {
-							BV.board.setReside(true);
+							boardView.board.setReside(true);
 						}
 					}
 				}
 
-				if (App.Tactic.values.get("move_list").contains("1.")) {
-					BV.board.TacticMoves = App.Tactic.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-					BV.board.movesCount = 1;
+				if (mainApp.getTactic().values.get("move_list").contains("1.")) {
+					boardView.board.TacticMoves = mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					boardView.board.movesCount = 1;
 				}
-				BV.board.sec = 0;
-				BV.board.left = Integer.parseInt(App.Tactic.values.get("average_seconds"));
+				boardView.board.sec = 0;
+				boardView.board.left = Integer.parseInt(mainApp.getTactic().values.get("average_seconds"));
 				startTacticsTimer();
-				int[] moveFT = MoveParser.Parse(BV.board, BV.board.TacticMoves[0]);
+				int[] moveFT = MoveParser.Parse(boardView.board, boardView.board.TacticMoves[0]);
 				if (moveFT.length == 4) {
 					Move m;
 					if (moveFT[3] == 2)
 						m = new Move(moveFT[0], moveFT[1], 0, 2);
 					else
 						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					BV.board.makeMove(m);
+					boardView.board.makeMove(m);
 				} else {
 					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-					BV.board.makeMove(m);
+					boardView.board.makeMove(m);
 				}
 				Update(0);
-				BV.board.takeBack();
-				BV.invalidate();
+				boardView.board.takeBack();
+				boardView.invalidate();
 
 				//last move anim
 				new Thread(new Runnable() {
 					public void run() {
 						try {
 							Thread.sleep(1300);
-							BV.board.takeNext();
+							boardView.board.takeNext();
 							update.sendEmptyMessage(0);
 						} catch (Exception e) {
 						}
@@ -1244,30 +1244,30 @@ public class Game extends CoreActivity {
 						public void dispatchMessage(Message msg) {
 							super.dispatchMessage(msg);
 							Update(0);
-							BV.invalidate();
+							boardView.invalidate();
 						}
 					};
 				}).start();
 				break;
 			case 8:
 				// move was made
-				if (App.sharedData.getInt(App.sharedData.getString("username", "") + "aim", 0) == 2) {
+				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "aim", 0) == 2) {
 					finish();
-				} else if (App.sharedData.getInt(App.sharedData.getString("username", "") + "aim", 0) == 0) {
+				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "aim", 0) == 0) {
 
 					int i;
 					ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-					for (GameListElement gle : App.GameListItems) {
+					for (GameListElement gle : mainApp.getGameListItems()) {
 						if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
 							currentGames.add(gle);
 						}
 					}
 					for (i = 0; i < currentGames.size(); i++) {
-						if (currentGames.get(i).values.get("game_id").contains(App.OnlineGame.values.get("game_id"))) {
+						if (currentGames.get(i).values.get("game_id").contains(mainApp.getCurrentGame().values.get("game_id"))) {
 							if (i + 1 < currentGames.size()) {
-								BV.board = new Board(this);
-								BV.board.analysis = false;
-								BV.board.mode = 4;
+								boardView.board = new Board(this);
+								boardView.board.analysis = false;
+								boardView.board.mode = 4;
 
 								if (PD != null) {
 									PD.dismiss();
@@ -1287,54 +1287,54 @@ public class Game extends CoreActivity {
 				}
 				break;
 			case 9:
-				if (BV.board.analysis)
+				if (boardView.board.analysis)
 					return;
-				if (!App.isLiveChess()) {
-					OG = ChessComApiParser.GetGameParseV3(rep_response);
+				if (!mainApp.isLiveChess()) {
+					game = ChessComApiParser.GetGameParseV3(rep_response);
 				}
-				//System.out.println("!!!!!!!! App.OnlineGame " + App.OnlineGame);
-				//System.out.println("!!!!!!!! OG " + OG);
+				//System.out.println("!!!!!!!! mainApp.getCurrentGame() " + mainApp.getCurrentGame());
+				//System.out.println("!!!!!!!! game " + game);
 
-				if (App.OnlineGame == null || OG == null) {
+				if (mainApp.getCurrentGame() == null || game == null) {
 					return;
 				}
 
-				if (!App.OnlineGame.equals(OG)) {
-					if (!App.OnlineGame.values.get("move_list").equals(OG.values.get("move_list"))) {
-						App.OnlineGame = OG;
+				if (!mainApp.getCurrentGame().equals(game)) {
+					if (!mainApp.getCurrentGame().values.get("move_list").equals(game.values.get("move_list"))) {
+						mainApp.setCurrentGame(game);
 						String[] Moves = {};
-						if (App.OnlineGame.values.get("move_list").contains("1.") || ((App.isLiveChess() && BV.board.mode == 4))) {
-							int beginIndex = (App.isLiveChess() && BV.board.mode == 4) ? 0 : 1;
-							Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
-							if (Moves.length - BV.board.movesCount == 1) {
-								if (App.isLiveChess()) {
-									moveFT = MoveParser.parseCoordinate(BV.board, Moves[Moves.length - 1]);
+						if (mainApp.getCurrentGame().values.get("move_list").contains("1.") || ((mainApp.isLiveChess() && boardView.board.mode == 4))) {
+							int beginIndex = (mainApp.isLiveChess() && boardView.board.mode == 4) ? 0 : 1;
+							Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							if (Moves.length - boardView.board.movesCount == 1) {
+								if (mainApp.isLiveChess()) {
+									moveFT = MoveParser.parseCoordinate(boardView.board, Moves[Moves.length - 1]);
 								} else {
-									moveFT = MoveParser.Parse(BV.board, Moves[Moves.length - 1]);
+									moveFT = MoveParser.Parse(boardView.board, Moves[Moves.length - 1]);
 								}
-								boolean playSound = (App.isLiveChess() && lccHolder.getGame(App.OnlineGame.values.get("game_id")).getSeq() == Moves.length)
-										|| !App.isLiveChess();
+								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get("game_id")).getSeq() == Moves.length)
+										|| !mainApp.isLiveChess();
 								if (moveFT.length == 4) {
 									Move m;
 									if (moveFT[3] == 2)
 										m = new Move(moveFT[0], moveFT[1], 0, 2);
 									else
 										m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									BV.board.makeMove(m, playSound);
+									boardView.board.makeMove(m, playSound);
 								} else {
 									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-									BV.board.makeMove(m, playSound);
+									boardView.board.makeMove(m, playSound);
 								}
-								//App.ShowMessage("Move list updated!");
-								BV.board.movesCount = Moves.length;
-								BV.invalidate();
+								//mainApp.ShowMessage("Move list updated!");
+								boardView.board.movesCount = Moves.length;
+								boardView.invalidate();
 								Update(0);
 							}
 						}
 						return;
 					}
-					if (OG.values.get("has_new_message").equals("1")) {
-						App.OnlineGame = OG;
+					if (game.values.get("has_new_message").equals("1")) {
+						mainApp.setCurrentGame(game);
 						if (!msgShowed) {
 							msgShowed = true;
 							new AlertDialog.Builder(Game.this)
@@ -1343,7 +1343,7 @@ public class Game extends CoreActivity {
 									.setPositiveButton("Browse", new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int whichButton) {
 											chat = true;
-											GetOnlineGame(App.gameId);
+											GetOnlineGame(mainApp.getGameId());
 											msgShowed = false;
 										}
 									})
@@ -1363,70 +1363,70 @@ public class Game extends CoreActivity {
 
 				getSoundPlayer().playGameStart();
 
-				if (App.isLiveChess() && BV.board.mode == 4) {
-					App.OnlineGame = new com.chess.model.Game(lccHolder.getGameData(App.gameId, -1), true);
+				if (mainApp.isLiveChess() && boardView.board.mode == 4) {
+					mainApp.setCurrentGame(new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 					executePausedActivityGameEvents();
 					//lccHolder.setActivityPausedMode(false);
 					lccHolder.getWhiteClock().paint();
 					lccHolder.getBlackClock().paint();
-					/*int time = lccHolder.getGame(App.gameId).getGameTimeConfig().getBaseTime() * 100;
+					/*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
 							  lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
 							  lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
 				} else {
-					App.OnlineGame = ChessComApiParser.GetGameParseV3(response);
+					mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
 				}
 
 				if (chat) {
 					if (!isUserColorWhite())
-						App.SDeditor.putString("opponent", App.OnlineGame.values.get("white_username"));
+						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get("white_username"));
 					else
-						App.SDeditor.putString("opponent", App.OnlineGame.values.get("black_username"));
-					App.SDeditor.commit();
-					App.OnlineGame.values.put("has_new_message", "0");
-					startActivity(new Intent(Game.this, App.isLiveChess() ? ChatLive.class : Chat.class).
-							putExtra("game_id", App.OnlineGame.values.get("game_id")).
-							putExtra("timestamp", App.OnlineGame.values.get("timestamp")));
+						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get("black_username"));
+					mainApp.getSharedDataEditor().commit();
+					mainApp.getCurrentGame().values.put("has_new_message", "0");
+					startActivity(new Intent(Game.this, mainApp.isLiveChess() ? ChatLive.class : Chat.class).
+							putExtra("game_id", mainApp.getCurrentGame().values.get("game_id")).
+							putExtra("timestamp", mainApp.getCurrentGame().values.get("timestamp")));
 					chat = false;
 					return;
 				}
 
-				if (App.OnlineGame.values.get("game_type").equals("2"))
-					BV.board.chess960 = true;
+				if (mainApp.getCurrentGame().values.get("game_type").equals("2"))
+					boardView.board.chess960 = true;
 
 
 				if (!isUserColorWhite()) {
-					BV.board.setReside(true);
+					boardView.board.setReside(true);
 				}
 				String[] Moves = {};
 
 
-				if (App.OnlineGame.values.get("move_list").contains("1.")) {
-					Moves = App.OnlineGame.values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-					BV.board.movesCount = Moves.length;
-				} else if (!App.isLiveChess()) {
-					BV.board.movesCount = 0;
+				if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
+					Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					boardView.board.movesCount = Moves.length;
+				} else if (!mainApp.isLiveChess()) {
+					boardView.board.movesCount = 0;
 				}
 
-				final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+				final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 				if (game != null && game.getSeq() > 0) {
 					lccHolder.doReplayMoves(game);
 				}
 
-				FEN = App.OnlineGame.values.get("starting_fen_position");
+				FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
-					BV.board.GenCastlePos(FEN);
-					MoveParser.FenParse(FEN, BV.board);
+					boardView.board.GenCastlePos(FEN);
+					MoveParser.FenParse(FEN, boardView.board);
 				}
 
 				int i;
-				//System.out.println("@@@@@@@@ POINT 2 BV.board.movesCount=" + BV.board.movesCount);
+				//System.out.println("@@@@@@@@ POINT 2 boardView.board.movesCount=" + boardView.board.movesCount);
 				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
 
-				if (!App.isLiveChess()) {
-					for (i = 0; i < BV.board.movesCount; i++) {
+				if (!mainApp.isLiveChess()) {
+					for (i = 0; i < boardView.board.movesCount; i++) {
 						//System.out.println("@@@@@@@@ POINT 4 i=" + i);
 						//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
-						moveFT = MoveParser.Parse(BV.board, Moves[i]);
+						moveFT = MoveParser.Parse(boardView.board, Moves[i]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2) {
@@ -1434,24 +1434,24 @@ public class Game extends CoreActivity {
 							} else {
 								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 							}
-							BV.board.makeMove(m, false);
+							boardView.board.makeMove(m, false);
 						} else {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							BV.board.makeMove(m, false);
+							boardView.board.makeMove(m, false);
 						}
 					}
 				}
 
 				Update(0);
-				BV.board.takeBack();
-				BV.invalidate();
+				boardView.board.takeBack();
+				boardView.invalidate();
 
 				//last move anim
 				new Thread(new Runnable() {
 					public void run() {
 						try {
 							Thread.sleep(1300);
-							BV.board.takeNext();
+							boardView.board.takeNext();
 							update.sendEmptyMessage(0);
 						} catch (Exception e) {
 						}
@@ -1462,18 +1462,18 @@ public class Game extends CoreActivity {
 						public void dispatchMessage(Message msg) {
 							super.dispatchMessage(msg);
 							Update(0);
-							BV.invalidate();
+							boardView.invalidate();
 						}
 					};
 				}).start();
-				if (BV.board.mode == 4 && appService != null && appService.repeatble == null) {
+				if (boardView.board.mode == 4 && appService != null && appService.repeatble == null) {
 					if (PD != null) {
 						PD.dismiss();
 						PD = null;
 					}
-					if (!App.isLiveChess()) {
+					if (!mainApp.isLiveChess()) {
 						appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
-								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + App.sharedData.getString("user_token", "") + "&gid=" + App.gameId,
+								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString("user_token", "") + "&gid=" + mainApp.getGameId(),
 								null/*PD*/
 						);
 					}
@@ -1488,12 +1488,12 @@ public class Game extends CoreActivity {
 
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		return BV.board;
+		return boardView.board;
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (BV.board.mode < 4) {
+		if (boardView.board.mode < 4) {
 			menu.add(0, 0, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
 			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
@@ -1505,11 +1505,11 @@ public class Game extends CoreActivity {
 			Options.add(0, 7, 0, getString(R.string.ngblack));
 			Options.add(0, 8, 0, getString(R.string.emailgame));
 			Options.add(0, 9, 0, getString(R.string.settings));
-		} else if (BV.board.mode < 6) {
+		} else if (boardView.board.mode < 6) {
 			SubMenu options;
-			if (App.isLiveChess() && BV.board.mode == 4) {
+			if (mainApp.isLiveChess() && boardView.board.mode == 4) {
 				options = menu.addSubMenu(0, 0, 0, getString(R.string.options)).setIcon(R.drawable.options);
-				if (App.OnlineGame.values.get("has_new_message").equals("1")) {
+				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
 					menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
 				} else {
 					menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
@@ -1519,7 +1519,7 @@ public class Game extends CoreActivity {
 				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 				menu.add(0, 2, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
 				try {
-					if (App.OnlineGame.values.get("has_new_message").equals("1")) {
+					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
 						menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
 					} else {
 						menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
@@ -1530,7 +1530,7 @@ public class Game extends CoreActivity {
 				menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
 				menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
 			}
-			if (App.isLiveChess() && BV.board.mode == 4) {
+			if (mainApp.isLiveChess() && boardView.board.mode == 4) {
 				options.add(0, 1, 0, getString(R.string.settings)).setIcon(R.drawable.options);
 				options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
 				options.add(0, 3, 0, getString(R.string.drawoffer));
@@ -1544,7 +1544,7 @@ public class Game extends CoreActivity {
 				options.add(0, 10, 0, getString(R.string.drawoffer));
 				options.add(0, 11, 0, getString(R.string.resignorabort));
 			}
-		} else if (BV.board.mode == 6) {
+		} else if (boardView.board.mode == 6) {
 			menu.add(0, 0, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
 			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
@@ -1562,19 +1562,19 @@ public class Game extends CoreActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (App.OnlineGame != null && BV.board.mode < 6 && BV.board.mode > 3) {
-			int itemPosition = App.isLiveChess() ? 1 : 3;
-			if (App.OnlineGame.values.get("has_new_message").equals("1"))
+		if (mainApp.getCurrentGame() != null && boardView.board.mode < 6 && boardView.board.mode > 3) {
+			int itemPosition = mainApp.isLiveChess() ? 1 : 3;
+			if (mainApp.getCurrentGame().values.get("has_new_message").equals("1"))
 				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
 			else
 				menu.getItem(itemPosition).setIcon(R.drawable.chat);
 		}
 
-		if (App.isLiveChess() && BV.board.mode == 4) {
+		if (mainApp.isLiveChess() && boardView.board.mode == 4) {
 			final SubMenu options = menu.getItem(0).getSubMenu();
-			if (lccHolder.isFairPlayRestriction(App.gameId)) {
+			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 				resignOrAbort = R.string.resign;
-			} else if (lccHolder.isAbortableBySeq(App.gameId)) {
+			} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
 				resignOrAbort = R.string.abort;
 			} else {
 				resignOrAbort = R.string.resign;
@@ -1586,71 +1586,71 @@ public class Game extends CoreActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (BV.board.mode < 4) {
+		if (boardView.board.mode < 4) {
 			switch (item.getItemId()) {
 				case 0:
-					BV.stopThinking = true;
+					boardView.stopThinking = true;
 					finish();
 					return true;
 				case 1:
-					BV.stopThinking = true;
+					boardView.stopThinking = true;
 					return true;
 				case 2:
-					BV.stopThinking = true;
-					if (!BV.compmoving) {
-						BV.board.setReside(!BV.board.reside);
-						if (BV.board.mode < 2) {
-							BV.board.mode ^= 1;
-							BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0)]);
+					boardView.stopThinking = true;
+					if (!boardView.compmoving) {
+						boardView.board.setReside(!boardView.board.reside);
+						if (boardView.board.mode < 2) {
+							boardView.board.mode ^= 1;
+							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
 						}
-						BV.invalidate();
+						boardView.invalidate();
 						Update(0);
 					}
 					return true;
 				case 3:
-					BV.stopThinking = true;
-					if (!BV.compmoving) {
-						BV.hint = true;
-						BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0)]);
+					boardView.stopThinking = true;
+					if (!boardView.compmoving) {
+						boardView.hint = true;
+						boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
 					}
 					return true;
 				case 4:
-					BV.stopThinking = true;
-					if (!BV.compmoving) {
-						BV.finished = false;
-						BV.sel = false;
-						BV.board.takeBack();
-						BV.invalidate();
+					boardView.stopThinking = true;
+					if (!boardView.compmoving) {
+						boardView.finished = false;
+						boardView.sel = false;
+						boardView.board.takeBack();
+						boardView.invalidate();
 						Update(0);
 						isMoveNav = true;
 					}
 					return true;
 				case 5:
-					BV.stopThinking = true;
-					if (!BV.compmoving) {
-						BV.sel = false;
-						BV.board.takeNext();
-						BV.invalidate();
+					boardView.stopThinking = true;
+					if (!boardView.compmoving) {
+						boardView.sel = false;
+						boardView.board.takeNext();
+						boardView.invalidate();
 						Update(0);
 						isMoveNav = true;
 					}
 					return true;
 				case 6: {
-					BV.board = new Board(this);
-					BV.board.mode = 0;
-					BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-					BV.invalidate();
+					boardView.board = new Board(this);
+					boardView.board.mode = 0;
+					boardView.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+					boardView.invalidate();
 					Update(0);
 					return true;
 				}
 				case 7: {
-					BV.board = new Board(this);
-					BV.board.mode = 1;
-					BV.board.setReside(true);
-					BV.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-					BV.invalidate();
+					boardView.board = new Board(this);
+					boardView.board.mode = 1;
+					boardView.board.setReside(true);
+					boardView.board.GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+					boardView.invalidate();
 					Update(0);
-					BV.ComputerMove(App.strength[App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0)]);
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
 					return true;
 				}
 				case 8: {
@@ -1658,7 +1658,7 @@ public class Game extends CoreActivity {
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType("plain/text");
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
-					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + App.sharedData.getString("username", "") + "\"]\n [White \"" + App.sharedData.getString("username", "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
+					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString("username", "") + "\"]\n [White \"" + mainApp.getSharedData().getString("username", "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 					return true;
 				}
@@ -1667,16 +1667,16 @@ public class Game extends CoreActivity {
 					return true;
 				}
 			}
-		} else if (BV.board.mode < 6) {
-			if (App.isLiveChess() && BV.board.mode == 4) {
+		} else if (boardView.board.mode < 6) {
+			if (mainApp.isLiveChess() && boardView.board.mode == 4) {
 				switch (item.getItemId()) {
 					case 1: {
 						startActivity(new Intent(Game.this, Preferences.class));
 						return true;
 					}
 					case 2: {
-						BV.board.setReside(!BV.board.reside);
-						BV.invalidate();
+						boardView.board.setReside(!boardView.board.reside);
+						boardView.invalidate();
 						return true;
 					}
 					case 3: {
@@ -1690,27 +1690,27 @@ public class Game extends CoreActivity {
 					case 5:
 					case 6: {
 						chat = true;
-						GetOnlineGame(App.gameId);
+						GetOnlineGame(mainApp.getGameId());
 						return true;
 					}
 				}
 			} else {
 				switch (item.getItemId()) {
 					case 0:
-						if (BV.board.mode == 4) {
+						if (boardView.board.mode == 4) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-							for (GameListElement gle : App.GameListItems) {
+							for (GameListElement gle : mainApp.getGameListItems()) {
 								if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
 									currentGames.add(gle);
 								}
 							}
 							for (i = 0; i < currentGames.size(); i++) {
-								if (currentGames.get(i).values.get("game_id").contains(App.OnlineGame.values.get("game_id"))) {
+								if (currentGames.get(i).values.get("game_id").contains(mainApp.getCurrentGame().values.get("game_id"))) {
 									if (i + 1 < currentGames.size()) {
-										BV.board.analysis = false;
-										BV.board = new Board(this);
-										BV.board.mode = 4;
+										boardView.board.analysis = false;
+										boardView.board = new Board(this);
+										boardView.board.mode = 4;
 										GetOnlineGame(currentGames.get(i + 1).values.get("game_id"));
 										return true;
 									} else {
@@ -1721,20 +1721,20 @@ public class Game extends CoreActivity {
 							}
 							finish();
 							return true;
-						} else if (BV.board.mode == 5) {
+						} else if (boardView.board.mode == 5) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-							for (GameListElement gle : App.GameListItems) {
+							for (GameListElement gle : mainApp.getGameListItems()) {
 								if (gle.type == 2) {
 									currentGames.add(gle);
 								}
 							}
 							for (i = 0; i < currentGames.size(); i++) {
-								if (currentGames.get(i).values.get("game_id").contains(App.OnlineGame.values.get("game_id"))) {
+								if (currentGames.get(i).values.get("game_id").contains(mainApp.getCurrentGame().values.get("game_id"))) {
 									if (i + 1 < currentGames.size()) {
-										BV.board.analysis = false;
-										BV.board = new Board(this);
-										BV.board.mode = 5;
+										boardView.board.analysis = false;
+										boardView.board = new Board(this);
+										boardView.board.mode = 5;
 										GetOnlineGame(currentGames.get(i + 1).values.get("game_id"));
 										return true;
 									} else {
@@ -1748,24 +1748,24 @@ public class Game extends CoreActivity {
 						}
 						return true;
 					case 2:
-						BV.board.analysis = true;
+						boardView.board.analysis = true;
 						Update(0);
 						return true;
 					case 3:
 						chat = true;
-						GetOnlineGame(App.gameId);
+						GetOnlineGame(mainApp.getGameId());
 						return true;
 					case 4:
-						BV.finished = false;
-						BV.sel = false;
-						BV.board.takeBack();
-						BV.invalidate();
+						boardView.finished = false;
+						boardView.sel = false;
+						boardView.board.takeBack();
+						boardView.invalidate();
 						Update(0);
 						isMoveNav = true;
 						return true;
 					case 5:
-						BV.board.takeNext();
-						BV.invalidate();
+						boardView.board.takeNext();
+						boardView.invalidate();
 						Update(0);
 						isMoveNav = true;
 						return true;
@@ -1779,12 +1779,12 @@ public class Game extends CoreActivity {
 					}
 					case 8: {
 						chat = true;
-						GetOnlineGame(App.gameId);
+						GetOnlineGame(mainApp.getGameId());
 						return true;
 					}
 					case 9: {
-						BV.board.setReside(!BV.board.reside);
-						BV.invalidate();
+						boardView.board.setReside(!boardView.board.reside);
+						boardView.invalidate();
 						return true;
 					}
 					case 10: {
@@ -1797,43 +1797,43 @@ public class Game extends CoreActivity {
 					}
 				}
 			}
-		} else if (BV.board.mode == 6) {
+		} else if (boardView.board.mode == 6) {
 			switch (item.getItemId()) {
 				case 0:
-					if (App.guest) {
-						App.currentTacticProblem++;
+					if (mainApp.guest) {
+						mainApp.currentTacticProblem++;
 						GetGuestTacticsGame();
 					} else {
-						if (App.noInternet) App.currentTacticProblem++;
+						if (mainApp.noInternet) mainApp.currentTacticProblem++;
 						closeOptionsMenu();
 						GetTacticsGame("");
 					}
 					return true;
 				case 2:
-					BV.board.setReside(!BV.board.reside);
-					BV.invalidate();
+					boardView.board.setReside(!boardView.board.reside);
+					boardView.invalidate();
 					return true;
 				case 3:
-					BV.board.analysis = true;
+					boardView.board.analysis = true;
 					Update(0);
 					return true;
 				case 4:
-					BV.finished = false;
-					BV.sel = false;
-					BV.board.takeBack();
-					BV.invalidate();
+					boardView.finished = false;
+					boardView.sel = false;
+					boardView.board.takeBack();
+					boardView.invalidate();
 					Update(0);
 					isMoveNav = true;
 					return true;
 				case 5:
-					BV.board.takeNext();
-					BV.invalidate();
+					boardView.board.takeNext();
+					boardView.invalidate();
 					Update(0);
 					isMoveNav = true;
 					return true;
 				case 6: {
-					if (App.guest || App.noInternet) {
-						App.currentTacticProblem++;
+					if (mainApp.guest || mainApp.noInternet) {
+						mainApp.currentTacticProblem++;
 						GetGuestTacticsGame();
 					} else
 						GetTacticsGame("");
@@ -1867,26 +1867,26 @@ public class Game extends CoreActivity {
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		BV.requestFocus();
+		boardView.requestFocus();
 		super.onWindowFocusChanged(hasFocus);
 	}
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(App) && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null) {
+		if (MobclixHelper.isShowAds(mainApp) && !mainApp.getTabHost().getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null) {
 			adviewWrapper.addView(getRectangleAdview());
-			if (App.isForceRectangleAd()) {
+			if (mainApp.isForceRectangleAd()) {
 				getRectangleAdview().getAd();
 			}
 		}
 
-		if (/*!App.isNetworkChangedNotification() && */extras.containsKey("liveChess")) {
-			App.setLiveChess(extras.getBoolean("liveChess"));
-			if (!App.isLiveChess()) {
+		if (/*!mainApp.isNetworkChangedNotification() && */extras.containsKey("liveChess")) {
+			mainApp.setLiveChess(extras.getBoolean("liveChess"));
+			if (!mainApp.isLiveChess()) {
 				new AsyncTask<Void, Void, Void>() {
 					@Override
 					protected Void doInBackground(Void... voids) {
-						App.getLccHolder().logout();
+						mainApp.getLccHolder().logout();
 						return null;
 					}
 				}.execute();
@@ -1901,35 +1901,35 @@ public class Game extends CoreActivity {
 		registerReceiver(chatMessageReceiver, new IntentFilter("com.chess.lcc.android-game-chat-message"));
 		registerReceiver(showGameEndPopupReceiver, new IntentFilter("com.chess.lcc.android-show-game-end-popup"));
 
-		if (BV.board.mode == 6) {
-			if (BV.board.tacticCanceled) {
-				BV.board.tacticCanceled = false;
+		if (boardView.board.mode == 6) {
+			if (boardView.board.isTacticCanceled()) {
+				boardView.board.setTacticCanceled(false);
 				showDialog(1);
 				startTacticsTimer();
-			} else if (App.Tactic != null && App.Tactic.values.get("stop").equals("0")) {
+			} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get("stop").equals("0")) {
 				startTacticsTimer();
 			}
 		}
-		if (App.isLiveChess() && App.gameId != null && App.gameId != "" && lccHolder.getGame(App.gameId) != null) {
-			OG = new com.chess.model.Game(lccHolder.getGameData(App.gameId, lccHolder.getGame(App.gameId).getSeq() - 1), true);
+		if (mainApp.isLiveChess() && mainApp.getGameId() != null && mainApp.getGameId() != "" && lccHolder.getGame(mainApp.getGameId()) != null) {
+			game = new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(), lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
 			lccHolder.getAndroid().setGameActivity(this);
 			if (lccHolder.isActivityPausedMode()) {
 				executePausedActivityGameEvents();
 				lccHolder.setActivityPausedMode(false);
 			}
-			//lccHolder.updateClockTime(lccHolder.getGame(App.gameId));
+			//lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
 		}
 
-		/*MobclixAdView bannerAdview = App.getBannerAdview();
-	 LinearLayout bannerAdviewWrapper = App.getBannerAdviewWrapper();
+		/*MobclixAdView bannerAdview = mainApp.getBannerAdview();
+	 LinearLayout bannerAdviewWrapper = mainApp.getBannerAdviewWrapper();
 	 if (bannerAdviewWrapper != null)
 	 {
 		 bannerAdviewWrapper.removeView(bannerAdview);
 	 }*/
-		MobclixHelper.pauseAdview(App.getBannerAdview(), App);
-		/*App.setBannerAdview(null);
-	 App.setBannerAdviewWrapper(null);*/
-		//App.setForceBannerAdOnFailedLoad(true);
+		MobclixHelper.pauseAdview(mainApp.getBannerAdview(), mainApp);
+		/*mainApp.setBannerAdview(null);
+	 mainApp.setBannerAdviewWrapper(null);*/
+		//mainApp.setForceBannerAdOnFailedLoad(true);
 
 		disableScreenLock();
 	}
@@ -1955,15 +1955,15 @@ public class Game extends CoreActivity {
 		lccHolder.setActivityPausedMode(true);
 		lccHolder.getPausedActivityGameEvents().clear();
 
-		BV.stopThinking = true;
+		boardView.stopThinking = true;
 
 		stopTacticsTimer();
 		if (OnlineGameUpdate != null)
 			OnlineGameUpdate.cancel();
 
-		/*if (MobclixHelper.isShowAds(App))
+		/*if (MobclixHelper.isShowAds(mainApp))
 		{
-			MobclixHelper.pauseAdview(getRectangleAdview(), App);
+			MobclixHelper.pauseAdview(getRectangleAdview(), mainApp);
 		}*/
 
 		enableScreenLock();
@@ -1978,19 +1978,19 @@ public class Game extends CoreActivity {
 
 	public void startTacticsTimer() {
 		stopTacticsTimer();
-		BV.finished = false;
-		if (App.Tactic != null) {
-			App.Tactic.values.put("stop", "0");
+		boardView.finished = false;
+		if (mainApp.getTactic() != null) {
+			mainApp.getTactic().values.put("stop", "0");
 		}
 		TacticsTimer = new Timer();
 		TacticsTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				if (BV.board.analysis)
+				if (boardView.board.analysis)
 					return;
-				BV.board.sec++;
-				if (BV.board.left > 0)
-					BV.board.left--;
+				boardView.board.sec++;
+				if (boardView.board.left > 0)
+					boardView.board.left--;
 				update.sendEmptyMessage(0);
 			}
 
@@ -1998,7 +1998,7 @@ public class Game extends CoreActivity {
 				@Override
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
-					timer.setText("Bonus Time Left: " + BV.board.left + " Time Spent: " + BV.board.sec);
+					timer.setText("Bonus Time Left: " + boardView.board.left + " Time Spent: " + boardView.board.sec);
 				}
 			};
 		}, 0, 1000);
@@ -2008,7 +2008,7 @@ public class Game extends CoreActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
-			OG = (com.chess.model.Game) intent.getSerializableExtra("object");
+			game = (com.chess.model.Game) intent.getSerializableExtra("object");
 			Update(9);
 		}
 	};
@@ -2018,7 +2018,7 @@ public class Game extends CoreActivity {
 		public void onReceive(Context context, final Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 
-			final com.chess.live.client.Game game = lccHolder.getGame(App.gameId);
+			final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 			Integer newWhiteRating = null;
 			Integer newBlackRating = null;
 			switch (game.getGameTimeConfig().getGameTimeClass()) {
@@ -2040,15 +2040,15 @@ public class Game extends CoreActivity {
 			}
 			/*final String whiteRating =
 					(newWhiteRating != null && newWhiteRating != 0) ?
-					newWhiteRating.toString() : App.OnlineGame.values.get("white_rating");
+					newWhiteRating.toString() : mainApp.getCurrentGame().values.get("white_rating");
 				  final String blackRating =
 					(newBlackRating != null && newBlackRating != 0) ?
-					newBlackRating.toString() : App.OnlineGame.values.get("black_rating");*/
+					newBlackRating.toString() : mainApp.getCurrentGame().values.get("black_rating");*/
 			white.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
 			black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
-			BV.finished = true;
+			boardView.finished = true;
 
-			if (MobclixHelper.isShowAds(App)) {
+			if (MobclixHelper.isShowAds(mainApp)) {
 				final LayoutInflater inflater = (LayoutInflater) Game.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.ad_popup,
 						(ViewGroup) findViewById(R.id.layout_root));
@@ -2088,7 +2088,7 @@ public class Game extends CoreActivity {
 			}
 
 			endOfGameMessage.setText(/*intent.getExtras().getString("title") + ": " +*/ intent.getExtras().getString("message"));
-			//App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
+			//mainApp.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
 			findViewById(R.id.moveButtons).setVisibility(View.GONE);
 			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
 			chatPanel.setVisibility(View.GONE);
@@ -2112,7 +2112,7 @@ public class Game extends CoreActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
-			App.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
+			mainApp.ShowDialog(Game.this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
 		}
 	};
 
@@ -2129,55 +2129,55 @@ public class Game extends CoreActivity {
 			//boolean fullGameProcessed = false;
 			GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);
 			if (gameEvent != null &&
-					(lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId))) {
-				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+					(lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
+				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-				//lccHolder.getAndroid().processMove(gameEvent.gameId, gameEvent.moveIndex);
-				OG = new com.chess.model.Game(lccHolder.getGameData(gameEvent.gameId.toString(), gameEvent.moveIndex), true);
+				//lccHolder.getAndroid().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
+				game = new com.chess.model.Game(lccHolder.getGameData(gameEvent.getGameId().toString(), gameEvent.getMoveIndex()), true);
 				Update(9);
 			}
 
 			gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.DrawOffer);
 			if (gameEvent != null &&
-					(lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId))) {
+					(lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
 				/*if (!fullGameProcessed)
 						{
-						  lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+						  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 						  fullGameProcessed = true;
 						}*/
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-				lccHolder.getAndroid().processDrawOffered(gameEvent.drawOffererUsername);
+				lccHolder.getAndroid().processDrawOffered(gameEvent.getDrawOffererUsername());
 			}
 
 			gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.EndOfGame);
 			if (gameEvent != null &&
-					(lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.gameId))) {
+					(lccHolder.getCurrentGameId() == null || lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
 				/*if (!fullGameProcessed)
 						{
-						  lccHolder.processFullGame(lccHolder.getGame(gameEvent.gameId.toString()));
+						  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 						  fullGameProcessed = true;
 						}*/
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-				lccHolder.getAndroid().processGameEnd(gameEvent.gameEndedMessage);
+				lccHolder.getAndroid().processGameEnd(gameEvent.getGameEndedMessage());
 			}
 		}
 	}
 
 	/*public void onStop()
 	  {
-		App.OnlineGame = null;
-		BV.board = null;
+		mainApp.getCurrentGame() = null;
+		boardView.board = null;
 		super.onStop();
 	  }*/
 
 	private void showAnalysisButtons() {
 		analysisButtons.setVisibility(View.VISIBLE);
 		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*BV.board.takeBack();
-			BV.board.movesCount--;
-			BV.invalidate();
-			BV.board.submit = false;*/
+		/*boardView.board.takeBack();
+			boardView.board.movesCount--;
+			boardView.invalidate();
+			boardView.board.submit = false;*/
 	}
 
 	private void hideAnalysisButtons() {
@@ -2195,7 +2195,7 @@ public class Game extends CoreActivity {
 	private BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			if (!MobclixHelper.isShowAds(App)) {
+			if (!MobclixHelper.isShowAds(mainApp)) {
 				return;
 			}
 
@@ -2225,7 +2225,7 @@ public class Game extends CoreActivity {
 	};
 
 	public void showGameEndPopup(final View layout, final String message) {
-		if (!MobclixHelper.isShowAds(App)) {
+		if (!MobclixHelper.isShowAds(mainApp)) {
 			return;
 		}
 

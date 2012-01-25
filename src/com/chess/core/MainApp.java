@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 import com.chess.lcc.android.LccHolder;
+import com.chess.model.Game;
 import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.utilities.BitmapLoader;
@@ -24,10 +25,10 @@ public class MainApp extends Application {
 
 	public static String APP_ID = "2427617054";
 
-	public SharedPreferences sharedData;
-	public SharedPreferences.Editor SDeditor;
+	private SharedPreferences sharedData;
+	private SharedPreferences.Editor sharedDataEditor;
 
-	public TabHost mTabHost;
+	private TabHost tabHost;
 	public static int loadPrev = 0;
 
 	private LccHolder lccHolder;
@@ -42,37 +43,15 @@ public class MainApp extends Application {
 	private boolean forceBannerAdFirstLoad;
 	private boolean forceRectangleAd;
 
-	/*public void onCreate()
-	  {
-		soundPlayer = new SoundPlayer(this);
-	  }*/
-
-	public void ShowMessage(String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-	}
-
-	public void ShowDialog(Context ctx, String title, String message) {
-		if (message == null || message.trim().equals("")) {
-			return;
-		}
-		new AlertDialog.Builder(ctx)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(title)
-				.setMessage(message)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-					}
-				}).create().show();
-	}
-
 	public boolean guest = false, noInternet = false, offline = false, acceptdraw = false;
-	public Bitmap[][] pieces;
-	public Bitmap board;
-	public ArrayList<GameListElement> GameListItems = new ArrayList<GameListElement>();
-	public com.chess.model.Game OnlineGame;
-	public String gameId = "";
-	public ArrayList<Tactic> TacticsBatch;
-	public Tactic Tactic;
+	private Bitmap[][] piecesBitmap;
+	private Bitmap boardBitmap;
+	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
+	private Game currentGame;
+	private String gameId = "";
+	private ArrayList<Tactic> tacticsBatch;
+
+	private Tactic tactic;
 	public int currentTacticProblem = 0;
 
 	public int[] strength = {1000, 3000, 5000, 10000, 30000, 60000};
@@ -99,23 +78,23 @@ public class MainApp extends Application {
 			capturedWB, capturedWN, capturedWP, capturedWQ, capturedWR;
 
 	public void LoadBoard(String b) {
-		board = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(b, "drawable", "com.chess"));
+		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(b, "drawable", "com.chess"));
 	}
 
 	public void LoadPieces(String p) {
-		pieces = new Bitmap[2][6];
-		pieces[0][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wp", "drawable", "com.chess"));
-		pieces[0][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wn", "drawable", "com.chess"));
-		pieces[0][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wb", "drawable", "com.chess"));
-		pieces[0][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wr", "drawable", "com.chess"));
-		pieces[0][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wq", "drawable", "com.chess"));
-		pieces[0][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wk", "drawable", "com.chess"));
-		pieces[1][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bp", "drawable", "com.chess"));
-		pieces[1][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bn", "drawable", "com.chess"));
-		pieces[1][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bb", "drawable", "com.chess"));
-		pieces[1][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_br", "drawable", "com.chess"));
-		pieces[1][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bq", "drawable", "com.chess"));
-		pieces[1][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bk", "drawable", "com.chess"));
+		piecesBitmap = new Bitmap[2][6];
+		piecesBitmap[0][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wp", "drawable", "com.chess"));
+		piecesBitmap[0][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wn", "drawable", "com.chess"));
+		piecesBitmap[0][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wb", "drawable", "com.chess"));
+		piecesBitmap[0][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wr", "drawable", "com.chess"));
+		piecesBitmap[0][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wq", "drawable", "com.chess"));
+		piecesBitmap[0][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wk", "drawable", "com.chess"));
+		piecesBitmap[1][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bp", "drawable", "com.chess"));
+		piecesBitmap[1][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bn", "drawable", "com.chess"));
+		piecesBitmap[1][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bb", "drawable", "com.chess"));
+		piecesBitmap[1][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_br", "drawable", "com.chess"));
+		piecesBitmap[1][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bq", "drawable", "com.chess"));
+		piecesBitmap[1][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bk", "drawable", "com.chess"));
 	}
 
 	public void loadCapturedPieces() {
@@ -131,6 +110,28 @@ public class MainApp extends Application {
 		capturedWR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wr", "drawable", "com.chess"));
 	}
 
+	/*public void onCreate()
+	  {
+		soundPlayer = new SoundPlayer(this);
+	  }*/
+
+	public void ShowMessage(String msg) {
+		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+	}
+
+	public void ShowDialog(Context ctx, String title, String message) {
+		if (message == null || message.trim().equals("")) {
+			return;
+		}
+		new AlertDialog.Builder(ctx)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(title)
+				.setMessage(message)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				}).create().show();
+	}
 
 	public LccHolder getLccHolder() {
 		if (lccHolder == null) {
@@ -230,5 +231,93 @@ public class MainApp extends Application {
 
 	public void setForceBannerAdFirstLoad(boolean forceBannerAdFirstLoad) {
 		this.forceBannerAdFirstLoad = forceBannerAdFirstLoad;
+	}
+
+	public Bitmap getBoardBitmap() {
+		return boardBitmap;
+	}
+
+	public void setBoardBitmap(Bitmap boardBitmap) {
+		this.boardBitmap = boardBitmap;
+	}
+
+	public Game getCurrentGame() {
+		return currentGame;
+	}
+
+	public void setCurrentGame(Game currentGame) {
+		this.currentGame = currentGame;
+	}
+
+	public int getCurrentTacticProblem() {
+		return currentTacticProblem;
+	}
+
+	public void setCurrentTacticProblem(int currentTacticProblem) {
+		this.currentTacticProblem = currentTacticProblem;
+	}
+
+	public String getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
+	}
+
+	public ArrayList<GameListElement> getGameListItems() {
+		return gameListItems;
+	}
+
+	public void setGameListItems(ArrayList<GameListElement> gameListItems) {
+		this.gameListItems = gameListItems;
+	}
+
+	public Bitmap[][] getPiecesBitmap() {
+		return piecesBitmap;
+	}
+
+	public void setPiecesBitmap(Bitmap[][] piecesBitmap) {
+		this.piecesBitmap = piecesBitmap;
+	}
+
+	public SharedPreferences getSharedData() {
+		return sharedData;
+	}
+
+	public void setSharedData(SharedPreferences sharedData) {
+		this.sharedData = sharedData;
+	}
+
+	public SharedPreferences.Editor getSharedDataEditor() {
+		return sharedDataEditor;
+	}
+
+	public void setSharedDataEditor(SharedPreferences.Editor sharedDataEditor) {
+		this.sharedDataEditor = sharedDataEditor;
+	}
+
+	public TabHost getTabHost() {
+		return tabHost;
+	}
+
+	public void setTabHost(TabHost tabHost) {
+		this.tabHost = tabHost;
+	}
+
+	public Tactic getTactic() {
+		return tactic;
+	}
+
+	public void setTactic(Tactic tactic) {
+		this.tactic = tactic;
+	}
+
+	public ArrayList<Tactic> getTacticsBatch() {
+		return tacticsBatch;
+	}
+
+	public void setTacticsBatch(ArrayList<Tactic> tacticsBatch) {
+		this.tacticsBatch = tacticsBatch;
 	}
 }

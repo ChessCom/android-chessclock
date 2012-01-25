@@ -67,15 +67,15 @@ public class Preferences extends CoreActivity implements OnClickListener {
 
 		preferencesUpgrade = (TextView) findViewById(R.id.preferencesUpgrade);
 		boolean liveMembershipLevel =
-				lccHolder.getUser() != null ? App.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
-				|| (!App.isLiveChess() && Integer.parseInt(App.sharedData.getString("premium_status", "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString("premium_status", "0")) < 3)) {
 			preferencesUpgrade.setVisibility(View.VISIBLE);
 		} else {
 			preferencesUpgrade.setVisibility(View.GONE);
 		}
 
-		if (App.isLiveChess()) {
+		if (mainApp.isLiveChess()) {
 			onlineTitle.setText("Live Game");
 			afterIMoveLayout.setVisibility(View.GONE);
 			PrefNEnable.setVisibility(View.GONE);
@@ -93,7 +93,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		preferencesUpgrade.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + App.sharedData.getString("user_token", "") +
+						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") +
 								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
 			}
 		});
@@ -102,8 +102,8 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		AIM.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				App.SDeditor.putInt(App.sharedData.getString("username", "") + "aim", pos);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "") + "aim", pos);
+				mainApp.getSharedDataEditor().commit();
 			}
 
 			@Override
@@ -113,8 +113,8 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		/*Notif.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				App.SDeditor.putInt(App.sharedData.getString("username", "")+"notif", pos);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "")+"notif", pos);
+				mainApp.getSharedDataEditor().commit();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> a) {}
@@ -122,8 +122,8 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		Strength.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				App.SDeditor.putInt(App.sharedData.getString("username", "") + "strength", pos);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "") + "strength", pos);
+				mainApp.getSharedDataEditor().commit();
 			}
 
 			@Override
@@ -136,27 +136,27 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		enableSounds.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton b, boolean res) {
-				App.SDeditor.putBoolean(App.sharedData.getString("username", "") + "enableSounds", res);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString("username", "") + "enableSounds", res);
+				mainApp.getSharedDataEditor().commit();
 			}
 		});
 
 		PrefSSB.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton b, boolean res) {
-				if (App.isLiveChess()) {
-					App.SDeditor.putBoolean(App.sharedData.getString("username", "") + "ssblive", res);
+				if (mainApp.isLiveChess()) {
+					mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString("username", "") + "ssblive", res);
 				} else {
-					App.SDeditor.putBoolean(App.sharedData.getString("username", "") + "ssb", res);
+					mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString("username", "") + "ssb", res);
 				}
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().commit();
 			}
 		});
 		PrefNEnable.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton b, boolean res) {
-				App.SDeditor.putBoolean(App.sharedData.getString("username", "") + "notifE", res);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString("username", "") + "notifE", res);
+				mainApp.getSharedDataEditor().commit();
 				if (res)
 					startService(new Intent(Preferences.this, Notifications.class));
 				else
@@ -166,18 +166,18 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		PrefShowCoords.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton b, boolean res) {
-				App.SDeditor.putBoolean(App.sharedData.getString("username", "") + "coords", res);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString("username", "") + "coords", res);
+				mainApp.getSharedDataEditor().commit();
 			}
 		});
 		PrefShowHighlights.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton b, boolean res) {
-				App.SDeditor.putBoolean(App.sharedData.getString("username", "") + "highlights", res);
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString("username", "") + "highlights", res);
+				mainApp.getSharedDataEditor().commit();
 			}
 		});
-		if (App.guest) {
+		if (mainApp.guest) {
 			PrefVacation.setVisibility(View.GONE);
 		} else {
 			PrefVacation.setOnClickListener(new OnClickListener() {
@@ -185,9 +185,9 @@ public class Preferences extends CoreActivity implements OnClickListener {
 				public void onClick(View v) {
 					String query = "";
 					if (PrefVacation.isChecked()) {
-						query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id=" + App.sharedData.getString("user_token", "");
+						query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id=" + mainApp.getSharedData().getString("user_token", "");
 					} else {
-						query = "http://www." + LccHolder.HOST + "/api/vacation_return?id=" + App.sharedData.getString("user_token", "");
+						query = "http://www." + LccHolder.HOST + "/api/vacation_return?id=" + mainApp.getSharedData().getString("user_token", "");
 					}
 					if (appService != null) {
 						appService.RunSingleTask(1,
@@ -206,10 +206,10 @@ public class Preferences extends CoreActivity implements OnClickListener {
 						.setAdapter(Boards, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface d, int pos) {
-								App.SDeditor.putInt(App.sharedData.getString("username", "") + "board", pos);
-								App.SDeditor.commit();
+								mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "") + "board", pos);
+								mainApp.getSharedDataEditor().commit();
 								PrefBoard.setCompoundDrawables(Boards.items.get(pos).image, null, null, null);
-								App.LoadBoard(App.res_boards[pos]);
+								mainApp.LoadBoard(mainApp.res_boards[pos]);
 							}
 						}).create().show();
 			}
@@ -222,10 +222,10 @@ public class Preferences extends CoreActivity implements OnClickListener {
 						.setAdapter(Pieces, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface d, int pos) {
-								App.SDeditor.putInt(App.sharedData.getString("username", "") + "pieces", pos);
-								App.SDeditor.commit();
+								mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "") + "pieces", pos);
+								mainApp.getSharedDataEditor().commit();
 								PrefPices.setCompoundDrawables(Pieces.items.get(pos).image, null, null, null);
-								App.LoadPieces(App.res_pieces[pos]);
+								mainApp.LoadPieces(mainApp.res_pieces[pos]);
 							}
 						}).create().show();
 			}
@@ -236,7 +236,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 				Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 				emailIntent.setType("text/plain");
 				emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Play Chess with me");
-				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just signed up to play chess at Chess.com on my Android device. Download the free app here: \n http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"" + App.sharedData.getString("username", "") + "\". \n \n Sent from my Android");
+				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "I just signed up to play chess at Chess.com on my Android device. Download the free app here: \n http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"" + mainApp.getSharedData().getString("username", "") + "\". \n \n Sent from my Android");
 				FlurryAgent.onEvent("Invite A Friend", null);
 				startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 			}
@@ -260,13 +260,13 @@ public class Preferences extends CoreActivity implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.prefLogout) { // DO NOT turn to switch!
-			if (!App.guest) {
-				if (App.isLiveChess()/* && lccHolder.isConnected() */) {
+			if (!mainApp.guest) {
+				if (mainApp.isLiveChess()/* && lccHolder.isConnected() */) {
 					lccHolder.logout();
 				}
-				App.SDeditor.putString("password", "");
-				App.SDeditor.putString("user_token", "");
-				App.SDeditor.commit();
+				mainApp.getSharedDataEditor().putString("password", "");
+				mainApp.getSharedDataEditor().putString("user_token", "");
+				mainApp.getSharedDataEditor().commit();
 			}
 			startActivity(new Intent(this, Singin.class));
 			finish();
@@ -279,54 +279,54 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		AIM.post(new Runnable() {
 			@Override
 			public void run() {
-				AIM.setSelection(App.sharedData.getInt(App.sharedData.getString("username", "") + "aim", 0));
+				AIM.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "aim", 0));
 			}
 		});
 		/*Notif.post(new Runnable() {
 			@Override
 			public void run() {
-				Notif.setSelection(App.sharedData.getInt(App.sharedData.getString("username", "")+"notif", 0));
+				Notif.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "")+"notif", 0));
 			}
 		});*/
 		Strength.post(new Runnable() {
 			@Override
 			public void run() {
-				Strength.setSelection(App.sharedData.getInt(App.sharedData.getString("username", "") + "strength", 0));
+				Strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0));
 			}
 		});
 		Strength.post(new Runnable() {
 			@Override
 			public void run() {
-				if (App.isLiveChess()) {
-					PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "ssblive", false));
+				if (mainApp.isLiveChess()) {
+					PrefSSB.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "ssblive", false));
 				} else {
-					PrefSSB.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "ssb", true));
+					PrefSSB.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "ssb", true));
 				}
-				enableSounds.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "enableSounds", true));
+				enableSounds.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "enableSounds", true));
 			}
 		});
 		PrefNEnable.post(new Runnable() {
 			@Override
 			public void run() {
-				PrefNEnable.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "notifE", true));
+				PrefNEnable.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "notifE", true));
 			}
 		});
 		PrefShowCoords.post(new Runnable() {
 			@Override
 			public void run() {
-				PrefShowCoords.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "coords", true));
+				PrefShowCoords.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "coords", true));
 			}
 		});
 		PrefShowHighlights.post(new Runnable() {
 			@Override
 			public void run() {
-				PrefShowHighlights.setChecked(App.sharedData.getBoolean(App.sharedData.getString("username", "") + "highlights", true));
+				PrefShowHighlights.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "highlights", true));
 			}
 		});
 
 		//buttons defaults
-		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("board_" + App.res_boards[App.sharedData.getInt(App.sharedData.getString("username", "") + "board", 0)], "drawable", "com.chess")), null, null, null);
-		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("pieces_" + App.res_pieces[App.sharedData.getInt(App.sharedData.getString("username", "") + "pieces", 0)], "drawable", "com.chess")), null, null, null);
+		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "board", 0)], "drawable", "com.chess")), null, null, null);
+		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "pieces", 0)], "drawable", "com.chess")), null, null, null);
 
 		ArrayList<Selection> pieces = new ArrayList<Selection>(9);
 		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
@@ -366,16 +366,16 @@ public class Preferences extends CoreActivity implements OnClickListener {
 	@Override
 	public void Update(int code) {
 		if (code == -1) {
-			if (!App.guest && !App.isLiveChess()) {
+			if (!mainApp.guest && !mainApp.isLiveChess()) {
 				if (appService != null) {
 					appService.RunSingleTask(0,
-							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + App.sharedData.getString("user_token", ""),
+							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + mainApp.getSharedData().getString("user_token", ""),
 							PD = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true))
 					);
 				}
 			}
 		} else if (code == 0) {
-			if (!App.guest && response.trim().split("[+]")[1].equals("1")) {
+			if (!mainApp.guest && response.trim().split("[+]")[1].equals("1")) {
 				PrefVacation.setChecked(true);
 				PrefVacation.setText(getString(R.string.vacationOn));
 			}
