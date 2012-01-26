@@ -43,6 +43,6 @@
 	<dimen name="list_item_height">48dip</dimen>
 	<dimen name="list_padding_top">10dip</dimen>
 		
-
+    <dimen name="text_size_small">16sp</dimen>
 		
 </resources>

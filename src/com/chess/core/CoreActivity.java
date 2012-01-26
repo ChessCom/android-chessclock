@@ -1,10 +1,27 @@
 package com.chess.core;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.apache.http.util.ByteArrayBuffer;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -13,18 +30,17 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.TextView;
+
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
-import com.chess.utilities.*;
+import com.chess.utilities.MobclixHelper;
+import com.chess.utilities.MyProgressDialog;
+import com.chess.utilities.SoundPlayer;
+import com.chess.utilities.Web;
+import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
-import org.apache.http.util.ByteArrayBuffer;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 public abstract class CoreActivity extends Activity {
 
@@ -36,7 +52,9 @@ public abstract class CoreActivity extends Activity {
 	private PowerManager.WakeLock wakeLock;
 
 	public abstract void LoadNext(int code);
+
 	public abstract void LoadPrev(int code);
+
 	public abstract void Update(int code);
 
 	@Override
@@ -54,7 +72,7 @@ public abstract class CoreActivity extends Activity {
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
-		//get global Shared Preferences
+		// get global Shared Preferences
 		if (mainApp.getSharedData() == null) {
 			mainApp.setSharedData(getSharedPreferences("sharedData", 0));
 			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
@@ -72,18 +90,19 @@ public abstract class CoreActivity extends Activity {
 		doUnbindService();
 	}
 
-	/*public boolean isConnected(){
-	    ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
-	    NetworkInfo NI = cm.getActiveNetworkInfo();
-	    if(NI == null)	return false;
-	    else			return NI.isConnectedOrConnecting();
-	}*/
+	/*
+	 * public boolean isConnected(){ ConnectivityManager cm =
+	 * (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE); NetworkInfo
+	 * NI = cm.getActiveNetworkInfo(); if(NI == null) return false; else return
+	 * NI.isConnectedOrConnecting(); }
+	 */
 
 	public boolean mIsBound;
 	public WebService appService = null;
 
 	public boolean doBindService() {
-		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService, Context.BIND_AUTO_CREATE);
+		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
+				Context.BIND_AUTO_CREATE);
 		return mIsBound;
 	}
 
@@ -95,11 +114,13 @@ public abstract class CoreActivity extends Activity {
 	}
 
 	public ServiceConnection onService = new ServiceConnection() {
+		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
 			Update(-1);
 		}
 
+		@Override
 		public void onServiceDisconnected(ComponentName className) {
 			appService = null;
 		}
@@ -111,9 +132,12 @@ public abstract class CoreActivity extends Activity {
 
 		if (mainApp.getBoardBitmap() == null || mainApp.getPiecesBitmap() == null) {
 			new Handler().post(new Runnable() {
+				@Override
 				public void run() {
-					mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "board", 8)]);
-					mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "pieces", 0)]);
+					mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
+							mainApp.getSharedData().getString("username", "") + "board", 8)]);
+					mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
+							mainApp.getSharedData().getString("username", "") + "pieces", 0)]);
 					mainApp.loadCapturedPieces();
 				}
 			});
@@ -133,40 +157,46 @@ public abstract class CoreActivity extends Activity {
 		}
 
 		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
-			//lccHolder.getAndroid().showConnectingIndicator();
+			// lccHolder.getAndroid().showConnectingIndicator();
 			manageConnectingIndicator(true, "Loading Live Chess");
 
-			//startService(new Intent(getApplicationContext(), NetworkChangeService.class));
+			// startService(new Intent(getApplicationContext(),
+// NetworkChangeService.class));
 
 			new AsyncTask<Void, Void, Void>() {
 				@Override
 				protected Void doInBackground(Void... voids) {
 					final LccHolder lccHolder = mainApp.getLccHolder();
-					//lccHolder.setConnectingInProgress(true);
+					// lccHolder.setConnectingInProgress(true);
 					lccHolder.getClient().disconnect();
 					lccHolder.setNetworkTypeName(null);
 					lccHolder.setConnectingInProgress(true);
-					lccHolder.getClient()
-							.connect(mainApp.getSharedData().getString("user_session_id", ""), lccHolder.getConnectionListener());
-					/*appService.RunRepeatble(0, 0, 120000,
-							  progressDialog = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
+					lccHolder.getClient().connect(mainApp.getSharedData().getString("user_session_id", ""),
+							lccHolder.getConnectionListener());
+					/*
+					 * appService.RunRepeatble(0, 0, 120000, progressDialog =
+					 * MyProgressDialog.show(this, null,
+					 * getString(R.string.updatinggameslist), true));
+					 */
 					return null;
 				}
 			}.execute();
 		}
 		doBindService();
 		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
-		/*if (mainApp.isLiveChess())
-			{*/
+		/*
+		 * if (mainApp.isLiveChess()) {
+		 */
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
 		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-reconnecting-info"));
 		registerReceiver(drawOfferedMessageReceiver, new IntentFilter("com.chess.lcc.android-game-draw-offered"));
 		registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
-		registerReceiver(obsoleteProtocolVersionReceiver,
-				new IntentFilter("com.chess.lcc.android-obsolete-protocol-version"));
+		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(
+				"com.chess.lcc.android-obsolete-protocol-version"));
 		registerReceiver(infoMessageReceiver, new IntentFilter("com.chess.lcc.android-info"));
-		//registerReceiver(networkChangeNotificationReceiver, new IntentFilter("com.chess.lcc.android-network-change"));
-		/*}*/
+		// registerReceiver(networkChangeNotificationReceiver, new
+// IntentFilter("com.chess.lcc.android-network-change"));
+		/* } */
 		if (mainApp.getSharedData().getLong("com.chess.firstTimeStart", 0) == 0) {
 			mainApp.getSharedDataEditor().putLong("com.chess.firstTimeStart", System.currentTimeMillis());
 			mainApp.getSharedDataEditor().putInt("com.chess.adsShowCounter", 0);
@@ -179,10 +209,10 @@ public abstract class CoreActivity extends Activity {
 			mainApp.getSharedDataEditor().commit();
 			checkUpdate();
 		}
-		/*if (mainApp.isNetworkChangedNotification())
-			{
-			  showNetworkChangeNotification();
-			}*/
+		/*
+		 * if (mainApp.isNetworkChangedNotification()) {
+		 * showNetworkChangeNotification(); }
+		 */
 	}
 
 	@Override
@@ -201,13 +231,14 @@ public abstract class CoreActivity extends Activity {
 		unregisterReceiver(informAndExitReceiver);
 		unregisterReceiver(obsoleteProtocolVersionReceiver);
 		unregisterReceiver(infoMessageReceiver);
-		//unregisterReceiver(networkChangeNotificationReceiver);
+		// unregisterReceiver(networkChangeNotificationReceiver);
 
-		// todo: how to logout user when he/she is switching to another activity?
-		/*if (mainApp.isLiveChess() && lccHolder.isConnected())
-			  {
-				lccHolder.logout();
-			  }*/
+		// todo: how to logout user when he/she is switching to another
+// activity?
+		/*
+		 * if (mainApp.isLiveChess() && lccHolder.isConnected()) {
+		 * lccHolder.logout(); }
+		 */
 
 		mainApp.getSharedDataEditor().putLong("lastActivityPauseTime", System.currentTimeMillis());
 		mainApp.getSharedDataEditor().commit();
@@ -219,17 +250,20 @@ public abstract class CoreActivity extends Activity {
 
 	public String response = "", rep_response = "";
 
-	private BroadcastReceiver receiver = new BroadcastReceiver() {
+	private final BroadcastReceiver receiver = new BroadcastReceiver() {
+		@Override
 		public void onReceive(Context context, Intent intent) {
-			//getting extras
+			// getting extras
 			Bundle rExtras = intent.getExtras();
 			boolean repeatble = false;
 			String resp = "";
 			int retCode = -2;
 			try {
 				repeatble = rExtras.getBoolean("repeatble");
-				if (repeatble) resp = rep_response = rExtras.getString("result");
-				else resp = response = rExtras.getString("result");
+				if (repeatble)
+					resp = rep_response = rExtras.getString("result");
+				else
+					resp = response = rExtras.getString("result");
 
 				retCode = rExtras.getInt("code");
 			} catch (Exception e) {
@@ -240,7 +274,7 @@ public abstract class CoreActivity extends Activity {
 			if (Web.getStatusCode() == -1)
 				mainApp.noInternet = true;
 			else {
-				if (mainApp.noInternet) { /*mainApp.ShowMessage("Online mode!");*/
+				if (mainApp.noInternet) { /* mainApp.ShowMessage("Online mode!"); */
 					mainApp.offline = false;
 				}
 				mainApp.noInternet = false;
@@ -269,11 +303,10 @@ public abstract class CoreActivity extends Activity {
 					Update(-2);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivity.this)
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setTitle(title)
+				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int whichButton) {
 								Update(-2);
 							}
@@ -282,34 +315,38 @@ public abstract class CoreActivity extends Activity {
 		}
 	};
 
-	private BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 			final com.chess.live.client.Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
 			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
-					//.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
 					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
 						}
-					})
-					.setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
+					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							lccHolder.getAndroid().runRejectDrawTask(game);
 						}
 					})
-							/*.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int whichButton) {
-										  startActivity(new Intent(CoreActivity.this, Game.class).
-											putExtra(AppConstants.GAME_MODE, 4).
-											putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID)));
-										}
-									})*/
+					/*
+					 * .setNegativeButton(getString(R.string.cancel), new
+					 * DialogInterface.OnClickListener() { public void
+					 * onClick(DialogInterface dialog, int whichButton) {
+					 * startActivity(new Intent(CoreActivity.this, Game.class).
+					 * putExtra(AppConstants.GAME_MODE, 4).
+					 * putExtra(AppConstants.GAME_ID,
+					 * el.values.get(AppConstants.GAME_ID))); } })
+					 */
 					.create();
 			alertDialog.setCanceledOnTouchOutside(true);
 			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				@Override
 				public void onCancel(DialogInterface dialogInterface) {
 					lccHolder.getAndroid().runRejectDrawTask(game);
 				}
@@ -333,7 +370,8 @@ public abstract class CoreActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction() + ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
+				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction()
+						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
 				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
 				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
 
@@ -341,19 +379,21 @@ public abstract class CoreActivity extends Activity {
 					reconnectingIndicator.dismiss();
 					lccHolder.getAndroid().setReconnectingIndicator(null);
 				}
-				/*else */
+				/* else */
 				if (enable) {
-					if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null && !mainApp.isAdviewPaused()) {
+					if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+							&& !mainApp.isAdviewPaused()) {
 						MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 					}
 					reconnectingIndicator = new MyProgressDialog(context);
 					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
 					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
+						@Override
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
 							final Intent intent = new Intent(CoreActivity.this, Tabs.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							//reconnectingIndicator.dismiss();
+							// reconnectingIndicator.dismiss();
 							mainApp.startActivity(intent);
 						}
 					});
@@ -366,11 +406,12 @@ public abstract class CoreActivity extends Activity {
 						lccHolder.logout();
 						intent = new Intent(CoreActivity.this, Tabs.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						//reconnectingIndicator.dismiss();
+						// reconnectingIndicator.dismiss();
 						mainApp.startActivity(intent);
 					}
 				} else {
-					if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null && mainApp.isAdviewPaused()) {
+					if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+							&& mainApp.isAdviewPaused()) {
 						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 					}
 				}
@@ -385,14 +426,15 @@ public abstract class CoreActivity extends Activity {
 			if (message == null || message.trim().equals("")) {
 				return;
 			}
-			new AlertDialog.Builder(context)
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setCancelable(false)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
-					.setMessage(message)
+			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							if (mainApp.isLiveChess()/* && lccHolder.isConnected()*/) {
+							if (mainApp.isLiveChess()/*
+													 * &&
+													 * lccHolder.isConnected()
+													 */) {
 								lccHolder.logout();
 							}
 							final Intent intent = new Intent(mainApp, Singin.class);
@@ -406,19 +448,19 @@ public abstract class CoreActivity extends Activity {
 	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(context)
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setCancelable(false)
-					.setTitle("Version Check")
-					.setMessage("The client version is obsolete. Please update")
+			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
 							handler.post(new Runnable() {
+								@Override
 								public void run() {
 									mainApp.setLiveChess(false);
 									lccHolder.setConnected(false);
-									startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com/play/android.html")));
+									startActivity(new Intent(Intent.ACTION_VIEW, Uri
+											.parse("http://www.chess.com/play/android.html")));
 								}
 							});
 							final Intent intent = new Intent(mainApp, Tabs.class);
@@ -429,7 +471,7 @@ public abstract class CoreActivity extends Activity {
 		}
 	};
 
-	private BroadcastReceiver infoMessageReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver infoMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
@@ -439,15 +481,14 @@ public abstract class CoreActivity extends Activity {
 			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			messageView.setGravity(Gravity.CENTER);
 
-			new AlertDialog.Builder(context)
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setCancelable(true)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
-					.setView(messageView)
+			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
 							handler.post(new Runnable() {
+								@Override
 								public void run() {
 									dialog.dismiss();
 								}
@@ -457,7 +498,7 @@ public abstract class CoreActivity extends Activity {
 		}
 	};
 
-	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
@@ -475,18 +516,16 @@ public abstract class CoreActivity extends Activity {
 			} else if (enable) {
 				connectingIndicator = new MyProgressDialog(this);
 				connectingIndicator.setMessage(message);
-				/*connectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener()
-						{
-						  public void onCancel(DialogInterface dialog)
-						  {
-
-							final Intent intent = new Intent(mainApp, Singin.class);
-							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							//connectingIndicator.dismiss();
-							lccHolder.logout();
-							mainApp.startActivity(intent);
-						  }
-						});*/
+				/*
+				 * connectingIndicator.setOnCancelListener(new
+				 * DialogInterface.OnCancelListener() { public void
+				 * onCancel(DialogInterface dialog) {
+				 * 
+				 * final Intent intent = new Intent(mainApp, Singin.class);
+				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				 * //connectingIndicator.dismiss(); lccHolder.logout();
+				 * mainApp.startActivity(intent); } });
+				 */
 				connectingIndicator.setCancelable(true);
 				connectingIndicator.setIndeterminate(true);
 				connectingIndicator.show();
@@ -508,18 +547,21 @@ public abstract class CoreActivity extends Activity {
 		}
 	}
 
+	@Override
 	public void unregisterReceiver(BroadcastReceiver receiver) {
 		try {
 			super.unregisterReceiver(receiver);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			// hack for Android's IllegalArgumentException: Receiver not registered
+			// hack for Android's IllegalArgumentException: Receiver not
+// registered
 		}
 	}
 
 	public Boolean isUserColorWhite() {
 		try {
-			return mainApp.getCurrentGame().values.get("white_username").toLowerCase().equals(mainApp.getSharedData().getString("username", ""));
+			return mainApp.getCurrentGame().values.get("white_username").toLowerCase()
+					.equals(mainApp.getSharedData().getString("username", ""));
 		} catch (Exception e) {
 			return null;
 		}
@@ -545,28 +587,20 @@ public abstract class CoreActivity extends Activity {
 		FlurryAgent.onEndSession(this);
 	}
 
-	/*protected void showGameEndAds(LinearLayout adviewWrapper)
-    {
-      if (mainApp.isAdviewPaused())
-      {
-        MobclixHelper.resumeAdview(getRectangleAdview(), mainApp);
-      }
-    }*/
+	/*
+	 * protected void showGameEndAds(LinearLayout adviewWrapper) { if
+	 * (mainApp.isAdviewPaused()) {
+	 * MobclixHelper.resumeAdview(getRectangleAdview(), mainApp); } }
+	 */
 
-	/*protected void showAds(MobclixMMABannerXLAdView adview)
-	  {
-		if(!isShowAds())
-		{
-		  adview.setVisibility(View.GONE);
-		}
-		else
-		{
-		  adview.setVisibility(View.VISIBLE);
-		  //adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
-		  //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
-		  //adview.loadAd();
-		}
-	  }*/
+	/*
+	 * protected void showAds(MobclixMMABannerXLAdView adview) {
+	 * if(!isShowAds()) { adview.setVisibility(View.GONE); } else {
+	 * adview.setVisibility(View.VISIBLE);
+	 * //adview.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYmrqmAgw");
+	 * //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
+	 * //adview.loadAd(); } }
+	 */
 
 	public MobclixAdView getRectangleAdview() {
 		return mainApp.getRectangleAdview();
@@ -611,27 +645,25 @@ public abstract class CoreActivity extends Activity {
 
 					if (force != null) {
 						final boolean forceFlag = force;
-						new AlertDialog.Builder(CoreActivity.this)
-								.setIcon(R.drawable.icon)
-								.setTitle("Update Check")
-								.setMessage("An update is available! Please update")
-								.setCancelable(false)
+						new AlertDialog.Builder(CoreActivity.this).setIcon(R.drawable.ic_home).setTitle("Update Check")
+								.setMessage("An update is available! Please update").setCancelable(false)
 								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog, int whichButton) {
-										//Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
+										// Intent intent = new
+// Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
 										if (forceFlag) {
 											mainApp.getSharedDataEditor().putLong("com.chess.startDay", 0);
 											mainApp.getSharedDataEditor().commit();
 											startActivity(new Intent(CoreActivity.this, Singin.class));
 											finish();
 										}
-										Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chess"));
+										Intent intent = new Intent(Intent.ACTION_VIEW, Uri
+												.parse("market://details?id=com.chess"));
 										startActivity(intent);
 
 									}
-								}
-								)
-								.show();
+								}).show();
 					}
 				} catch (Exception e) {
 				}
@@ -641,30 +673,25 @@ public abstract class CoreActivity extends Activity {
 	}
 
 	private void showNetworkChangeNotification() {
-		new AlertDialog.Builder(CoreActivity.this)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setCancelable(false)
-				.setTitle("Logout")
-				.setMessage("Network was changed. Please relogin to Live")
+		new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
-						//mainApp.setNetworkChangedNotification(false);
+						// mainApp.setNetworkChangedNotification(false);
 						startActivity(new Intent(CoreActivity.this, Tabs.class));
 					}
 				}).create().show();
 	}
 
-	/*private BroadcastReceiver networkChangeNotificationReceiver = new BroadcastReceiver()
-	  {
-		@Override
-		public void onReceive(Context context, Intent intent)
-		{
-		  if (mainApp.isNetworkChangedNotification())
-		  {
-			showNetworkChangeNotification();
-		  }
-		}
-	  };*/
+	/*
+	 * private BroadcastReceiver networkChangeNotificationReceiver = new
+	 * BroadcastReceiver() {
+	 * 
+	 * @Override public void onReceive(Context context, Intent intent) { if
+	 * (mainApp.isNetworkChangedNotification()) {
+	 * showNetworkChangeNotification(); } } };
+	 */
 
 	public MainApp getMainApp() {
 		return mainApp;
