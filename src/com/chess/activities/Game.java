@@ -1291,7 +1291,7 @@ public class Game extends CoreActivity {
 				if (boardView.getBoard().analysis)
 					return;
 				if (!mainApp.isLiveChess()) {
-					game = ChessComApiParser.GetGameParseV3(rep_response);
+					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
 				}
 				//System.out.println("!!!!!!!! mainApp.getCurrentGame() " + mainApp.getCurrentGame());
 				//System.out.println("!!!!!!!! game " + game);

@@ -84,7 +84,7 @@ public class Chat extends CoreActivity {
 		} else if (code == 0) {
 			int before = chatItems.size();
 			chatItems.clear();
-			chatItems.addAll(ChessComApiParser.ReciveMessages(rep_response));
+			chatItems.addAll(ChessComApiParser.ReciveMessages(responseRepeatable));
 			if (before != chatItems.size()) {
 				if (messages == null) {
 					messages = new MessagesAdapter(Chat.this, R.layout.chat_item, chatItems);

@@ -78,9 +78,9 @@ public class AndroidStuff {
 
 	public void sendConnectionBroadcastIntent(boolean result, int code, String... errorMessage) {
 		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(WebService.BROADCAST_ACTION)
-				.putExtra("repeatble", false)
+				.putExtra(AppConstants.REPEATABLE, false)
 				.putExtra("code", code)
-				.putExtra("result",
+				.putExtra(AppConstants.REQUEST_RESULT,
 						result ? "Success" : "Error+" + errorMessage[0])
 		);
 		/*if(currentProgressDialog != null)

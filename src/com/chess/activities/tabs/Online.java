@@ -559,13 +559,13 @@ public class Online extends CoreActivity {
 				tmp.addAll(lccHolder.getChallengesAndSeeksData());
 			} else {
 				if (t == 0) {
-					tmp.addAll(ChessComApiParser.ViewChallengeParse(rep_response));
+					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
 				}
 				if (t == 1) {
-					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(rep_response));
+					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
 				}
 				if (t == 2) {
-					tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(rep_response));
+					tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(responseRepeatable));
 				}
 			}
 			//gamesList.setVisibility(View.GONE);

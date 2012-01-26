@@ -252,7 +252,7 @@ public class OnlineNewGame extends CoreActivity {
 			if (mainApp.isLiveChess()) {
 				gameListItems.addAll(lccHolder.getChallengesAndSeeksData());
 			} else {
-				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(rep_response));
+				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 			}
 			if (gamesAdapter == null) {
 				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);

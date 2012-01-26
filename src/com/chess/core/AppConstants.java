@@ -15,4 +15,6 @@ public class AppConstants {
 	public static String VIDEO_SKILL_LEVEL = "video-skill-level";
 	public static String VIDEO_CATEGORY = "video-category";
 	public static String ENABLE_LIVE_CONNECTING_INDICATOR = "enable-live-connectiong-indicator";
+	public static String REPEATABLE = "repeatable";
+	public static String REQUEST_RESULT = "request-result";
 }

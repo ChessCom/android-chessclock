@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import com.chess.core.AppConstants;
 import com.chess.lcc.android.LccHolder;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -41,21 +42,21 @@ public class WebService extends Service {
 		return mBinder;
 	}
 
-	public void RunSingleTask(int CODE, String query, MyProgressDialog PD) {
-		this.code = CODE;
-		this.progressDialog = PD;
+	public void RunSingleTask(int code, String query, MyProgressDialog progressDialog) {
+		this.code = code;
+		this.progressDialog = progressDialog;
 		new SingleTask().execute(query, "GET");
 	}
 
-	public void RunSingleTaskPost(int CODE, String query, MyProgressDialog PD, String... parameters) {
-		this.code = CODE;
-		this.progressDialog = PD;
+	public void RunSingleTaskPost(int code, String query, MyProgressDialog progressDialog, String... parameters) {
+		this.code = code;
+		this.progressDialog = progressDialog;
 		new SingleTask().execute(query, "POST", parameters[0], parameters[1], parameters[2], parameters[3]);
 	}
 
-	public void RunRepeatbleTask(final int CODE, final int DELAY, final int INTERVAL, final String query, final MyProgressDialog PD) {
-		this.code = CODE;
-		this.progressDialog = PD;
+	public void RunRepeatbleTask(final int code, final int DELAY, final int INTERVAL, final String query, final MyProgressDialog progressDialog) {
+		this.code = code;
+		this.progressDialog = progressDialog;
 
 		if (repeatableTimer != null) {
 			repeatableTimer.cancel();
@@ -68,11 +69,11 @@ public class WebService extends Service {
 			public void run() {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
 						.putExtra("repeatableTimer", true)
-						.putExtra("code", CODE)
-						.putExtra("result", Web.Request(query, "GET", null, null))
+						.putExtra("code", code)
+						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(query, "GET", null, null))
 				);
-				if (PD != null)
-					PD.dismiss();
+				if (progressDialog != null)
+					progressDialog.dismiss();
 				stopSelf();
 			}
 		}, DELAY, INTERVAL);
@@ -93,7 +94,7 @@ public class WebService extends Service {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
 						.putExtra("repeatableTimer", false)
 						.putExtra("code", code)
-						.putExtra("result", Web.Request(options[0], options[1], null, new UrlEncodedFormEntity(nameValuePairs)))
+						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(options[0], options[1], null, new UrlEncodedFormEntity(nameValuePairs)))
 				);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -123,9 +124,9 @@ public class WebService extends Service {
   }*/
 
 
-	public void RunRepeatble(final int CODE, final int DELAY, final int INTERVAL, final MyProgressDialog PD) {
-		this.code = CODE;
-		this.progressDialog = PD;
+	public void RunRepeatble(final int code, final int DELAY, final int INTERVAL, final MyProgressDialog progressDialog) {
+		this.code = code;
+		this.progressDialog = progressDialog;
 
 		if (repeatableTimer != null) {
 			repeatableTimer.cancel();
@@ -138,11 +139,11 @@ public class WebService extends Service {
 			public void run() {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
 						.putExtra("repeatableTimer", true)
-						.putExtra("code", CODE)
-						.putExtra("result", "Success")
+						.putExtra("code", code)
+						.putExtra(AppConstants.REQUEST_RESULT, "Success")
 				);
-				if (PD != null)
-					PD.dismiss();
+				if (progressDialog != null)
+					progressDialog.dismiss();
 				stopSelf();
 			}
 		}, DELAY, INTERVAL);
