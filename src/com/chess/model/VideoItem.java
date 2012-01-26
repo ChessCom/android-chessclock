@@ -1,5 +1,7 @@
 package com.chess.model;
 
+import com.chess.core.AppConstants;
+
 import java.util.HashMap;
 
 public class VideoItem {
@@ -8,9 +10,9 @@ public class VideoItem {
 
 	public VideoItem(String[] values) {
 		this.values = new HashMap<String, String>();
-		this.values.put("title", values[0]);
+		this.values.put(AppConstants.TITLE, values[0]);
 		this.values.put("description", values[1].replaceAll("&quot;", "\""));
-		this.values.put("category", values[2]);
+		this.values.put(AppConstants.VIDEO_CATEGORY, values[2]);
 		this.values.put("skill_level", values[3]);
 		this.values.put("opening", values[4]);
 		this.values.put("author_username", values[5]);

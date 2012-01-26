@@ -18,14 +18,14 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 	public ArrayList<Message> items;
 	private LayoutInflater vi;
 	private int resource;
-	private CoreActivity CA;
+	private CoreActivity activity;
 
 	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<Message> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.vi = LayoutInflater.from(context);
 		this.resource = textViewResourceId;
-		this.CA = (CoreActivity) context;
+		this.activity = (CoreActivity) context;
 	}
 
 	@Override
@@ -41,10 +41,10 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 			if (owner != null) {
 				if (el.owner.equals("0")) {
 					owner.setTextColor(Color.GREEN);
-					owner.setText(CA.mainApp.getSharedData().getString("username", ""));
+					owner.setText(activity.getMainApp().getSharedData().getString("username", ""));
 				} else {
 					owner.setTextColor(Color.RED);
-					owner.setText(CA.mainApp.getSharedData().getString("opponent", ""));
+					owner.setText(activity.getMainApp().getSharedData().getString("opponent", ""));
 				}
 			}
 		}

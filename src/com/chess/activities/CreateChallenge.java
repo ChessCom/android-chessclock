@@ -215,7 +215,7 @@ public class CreateChallenge extends CoreActivity {
 					if (appService != null) {
 						FlurryAgent.onEvent("Challenge Created", null);
 						lccHolder.getAndroid().runSendChallengeTask(
-								//PD = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
+								//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
 								null,
 								challenge
 						);
@@ -266,7 +266,7 @@ public class CreateChallenge extends CoreActivity {
 					if (appService != null) {
 						appService.RunSingleTask(0,
 								query,
-								PD = new MyProgressDialog(ProgressDialog
+								progressDialog = new MyProgressDialog(ProgressDialog
 										.show(CreateChallenge.this, null, getString(R.string.creating), true))
 						);
 					}

@@ -28,17 +28,15 @@ import java.net.URLConnection;
 
 public abstract class CoreActivity extends Activity {
 
-	public MainApp mainApp; // todo: should be private
-	public Bundle extras;
-	public DisplayMetrics metrics;
-	public MyProgressDialog PD;
-	public LccHolder lccHolder;
+	protected MainApp mainApp;
+	protected Bundle extras;
+	protected DisplayMetrics metrics;
+	protected MyProgressDialog progressDialog;
+	protected LccHolder lccHolder;
 	private PowerManager.WakeLock wakeLock;
 
 	public abstract void LoadNext(int code);
-
 	public abstract void LoadPrev(int code);
-
 	public abstract void Update(int code);
 
 	@Override
@@ -151,7 +149,7 @@ public abstract class CoreActivity extends Activity {
 					lccHolder.getClient()
 							.connect(mainApp.getSharedData().getString("user_session_id", ""), lccHolder.getConnectionListener());
 					/*appService.RunRepeatble(0, 0, 120000,
-							  PD = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
+							  progressDialog = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
 					return null;
 				}
 			}.execute();
@@ -191,9 +189,9 @@ public abstract class CoreActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		doUnbindService();
-		if (appService != null && appService.repeatble != null) {
+		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.stopSelf();
-			appService.repeatble.cancel();
+			appService.getRepeatableTimer().cancel();
 			appService = null;
 		}
 		unregisterReceiver(receiver);
@@ -215,8 +213,8 @@ public abstract class CoreActivity extends Activity {
 		mainApp.getSharedDataEditor().commit();
 		mainApp.setForceBannerAdOnFailedLoad(false);
 
-		if (PD != null)
-			PD.dismiss();
+		if (progressDialog != null)
+			progressDialog.dismiss();
 	}
 
 	public String response = "", rep_response = "";
@@ -239,7 +237,7 @@ public abstract class CoreActivity extends Activity {
 				return;
 			}
 
-			if (Web.StatusCode == -1)
+			if (Web.getStatusCode() == -1)
 				mainApp.noInternet = true;
 			else {
 				if (mainApp.noInternet) { /*mainApp.ShowMessage("Online mode!");*/
@@ -290,8 +288,8 @@ public abstract class CoreActivity extends Activity {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 			final com.chess.live.client.Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
 			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
-					//.setTitle(intent.getExtras().getString("title"))
-					.setMessage(intent.getExtras().getString("message"))
+					//.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
 					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
@@ -305,8 +303,8 @@ public abstract class CoreActivity extends Activity {
 							/*.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int whichButton) {
 										  startActivity(new Intent(CoreActivity.this, Game.class).
-											putExtra("mode", 4).
-											putExtra("game_id", el.values.get("game_id")));
+											putExtra(AppConstants.GAME_MODE, 4).
+											putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID)));
 										}
 									})*/
 					.create();
@@ -335,9 +333,9 @@ public abstract class CoreActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction() + ", enable=" + intent.getExtras().getBoolean("enable"));
+				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction() + ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
 				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-				boolean enable = intent.getExtras().getBoolean("enable");
+				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
 
 				if (reconnectingIndicator != null) {
 					reconnectingIndicator.dismiss();
@@ -349,7 +347,7 @@ public abstract class CoreActivity extends Activity {
 						MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 					}
 					reconnectingIndicator = new MyProgressDialog(context);
-					reconnectingIndicator.setMessage(intent.getExtras().getString("message"));
+					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
 					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
@@ -383,14 +381,14 @@ public abstract class CoreActivity extends Activity {
 	public BroadcastReceiver informAndExitReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			final String message = intent.getExtras().getString("message");
+			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
 			if (message == null || message.trim().equals("")) {
 				return;
 			}
 			new AlertDialog.Builder(context)
 					.setIcon(android.R.drawable.ic_dialog_alert)
 					.setCancelable(false)
-					.setTitle(intent.getExtras().getString("title"))
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(message)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
@@ -437,14 +435,14 @@ public abstract class CoreActivity extends Activity {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 			final TextView messageView = new TextView(context);
 			messageView.setMovementMethod(LinkMovementMethod.getInstance());
-			messageView.setText(Html.fromHtml(intent.getExtras().getString("message")));
+			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
 			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			messageView.setGravity(Gravity.CENTER);
 
 			new AlertDialog.Builder(context)
 					.setIcon(android.R.drawable.ic_dialog_alert)
 					.setCancelable(true)
-					.setTitle(intent.getExtras().getString("title"))
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setView(messageView)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						public void onClick(final DialogInterface dialog, int whichButton) {
@@ -463,8 +461,8 @@ public abstract class CoreActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
-			boolean enable = intent.getExtras().getBoolean("enable");
-			manageConnectingIndicator(enable, intent.getExtras().getString("message"));
+			boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
+			manageConnectingIndicator(enable, intent.getExtras().getString(AppConstants.MESSAGE));
 		}
 	};
 
@@ -667,4 +665,8 @@ public abstract class CoreActivity extends Activity {
 		  }
 		}
 	  };*/
+
+	public MainApp getMainApp() {
+		return mainApp;
+	}
 }

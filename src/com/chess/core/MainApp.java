@@ -38,7 +38,6 @@ public class MainApp extends Application {
 	private MobclixAdView bannerAdview;
 	private LinearLayout bannerAdviewWrapper;
 	private boolean adviewPaused;
-	private boolean networkChangedNotification;
 	private boolean forceBannerAdOnFailedLoad;
 	private boolean forceBannerAdFirstLoad;
 	private boolean forceRectangleAd;
@@ -185,14 +184,6 @@ public class MainApp extends Application {
 		this.rectangleAdview = rectangleAdview;
 	}
 
-	public void setNetworkChangedNotification(boolean networkChangedNotification) {
-		this.networkChangedNotification = networkChangedNotification;
-	}
-
-	public boolean isNetworkChangedNotification() {
-		return networkChangedNotification;
-	}
-
 	public boolean isAdviewPaused() {
 		return adviewPaused;
 	}
@@ -237,24 +228,12 @@ public class MainApp extends Application {
 		return boardBitmap;
 	}
 
-	public void setBoardBitmap(Bitmap boardBitmap) {
-		this.boardBitmap = boardBitmap;
-	}
-
 	public Game getCurrentGame() {
 		return currentGame;
 	}
 
 	public void setCurrentGame(Game currentGame) {
 		this.currentGame = currentGame;
-	}
-
-	public int getCurrentTacticProblem() {
-		return currentTacticProblem;
-	}
-
-	public void setCurrentTacticProblem(int currentTacticProblem) {
-		this.currentTacticProblem = currentTacticProblem;
 	}
 
 	public String getGameId() {
@@ -269,16 +248,8 @@ public class MainApp extends Application {
 		return gameListItems;
 	}
 
-	public void setGameListItems(ArrayList<GameListElement> gameListItems) {
-		this.gameListItems = gameListItems;
-	}
-
 	public Bitmap[][] getPiecesBitmap() {
 		return piecesBitmap;
-	}
-
-	public void setPiecesBitmap(Bitmap[][] piecesBitmap) {
-		this.piecesBitmap = piecesBitmap;
 	}
 
 	public SharedPreferences getSharedData() {

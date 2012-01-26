@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.MainApp;
 import com.chess.core.StartActivity;
 import com.chess.lcc.android.LccHolder;
@@ -19,7 +20,7 @@ import java.util.TimerTask;
 
 public class Notifications extends Service {
 
-	public MainApp App;
+	public MainApp mainApp;
 	public Timer timer = new Timer();
 
 	private static int counter = 0;
@@ -32,7 +33,7 @@ public class Notifications extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		App = (MainApp) getApplication();
+		mainApp = (MainApp) getApplication();
 
 		timer.scheduleAtFixedRate(
 				new TimerTask() {
@@ -43,11 +44,11 @@ public class Notifications extends Service {
 							timestamp = "";
 
 					public void run() {
-						if (App == null || App.getSharedData() == null) {
+						if (mainApp == null || mainApp.getSharedData() == null) {
 							return;
 						}
-						if ((counter <= 5 || (counter % 15 == 0 && counter <= 60) || counter % 60 == 0) && !App.guest && !App.getSharedData().getString("user_token", "").equals("")) {
-							response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id=" + App.getSharedData().getString("user_token", ""), "GET", null, null);
+						if ((counter <= 5 || (counter % 15 == 0 && counter <= 60) || counter % 60 == 0) && !mainApp.guest && !mainApp.getSharedData().getString("user_token", "").equals("")) {
+							response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id=" + mainApp.getSharedData().getString("user_token", ""), "GET", null, null);
 							if (response.trim().contains("Success+1")) {
 								/*String[] tmp = response.trim().split(":");
 														notification_message = tmp[1];
@@ -91,7 +92,7 @@ public class Notifications extends Service {
 
 						  default: break;
 					  }*/
-							PendingIntent contentIntent = PendingIntent.getActivity(Notifications.this, 0, new Intent(Notifications.this, StartActivity.class).putExtra("fromnotif", true), 0);
+							PendingIntent contentIntent = PendingIntent.getActivity(Notifications.this, 0, new Intent(Notifications.this, StartActivity.class).putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true), 0);
 							notification.setLatestEventInfo(getApplicationContext(), "ChessCom", notification_message, contentIntent);
 							mNotificationManager.notify(1, notification);
 						}

@@ -84,7 +84,7 @@ public class Singin extends CoreActivity {
 				// String query = "http://" + LccHolder.HOST + "/api/v2/login";
 				try {
 					if (appService != null) {
-						appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, PD = new MyProgressDialog(
+						appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
 								ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
 								"username", /* URLEncoder.encode( */username.getText().toString()/*
 																								 * ,

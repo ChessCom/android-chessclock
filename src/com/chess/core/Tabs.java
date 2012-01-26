@@ -29,19 +29,19 @@ import com.mobclix.android.sdk.Mobclix;
 
 public class Tabs extends TabActivity {
 
-	public MainApp App;
+	public MainApp mainApp;
 	private TextView removeAds;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Mobclix.onCreate(this);
-		App = (MainApp) getApplication();
+		mainApp = (MainApp) getApplication();
 
 		//get global Shared Preferences
-		if (App.getSharedData() == null) {
-			App.setSharedData(getSharedPreferences("sharedData", 0));
-			App.setSharedDataEditor(App.getSharedData().edit());
+		if (mainApp.getSharedData() == null) {
+			mainApp.setSharedData(getSharedPreferences("sharedData", 0));
+			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
 		}
 
 		setContentView(R.layout.tabs);
@@ -50,44 +50,44 @@ public class Tabs extends TabActivity {
 		removeAds.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + App.getSharedData().getString("user_token", "") +
+						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") +
 								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
 			}
 		});
 
-		if (MobclixHelper.isShowAds(App)) {
-			if (MobclixHelper.getBannerAdviewWrapper(App) == null || MobclixHelper.getBannerAdview(App) == null) {
-				MobclixHelper.initializeBannerAdView(this, App);
+		if (MobclixHelper.isShowAds(mainApp)) {
+			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {
+				MobclixHelper.initializeBannerAdView(this, mainApp);
 			}
 		}
 
-		App.setTabHost(getTabHost());
-		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab1")
+		mainApp.setTabHost(getTabHost());
+		getTabHost().addTab(getTabHost().newTabSpec("tab1")
 				.setIndicator("Home", getResources().getDrawable(R.drawable.home))
 				.setContent(new Intent(this, Home.class)));
-		if (App.guest) {
-			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab2")
+		if (mainApp.guest) {
+			getTabHost().addTab(getTabHost().newTabSpec("tab2")
 					.setIndicator("Live", getResources().getDrawable(R.drawable.live))
-					.setContent(new Intent(this, Register.class).putExtra("liveChess", true)));
-			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab6")
+					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, true)));
+			getTabHost().addTab(getTabHost().newTabSpec("tab6")
 					.setIndicator("Online", getResources().getDrawable(R.drawable.online))
-					.setContent(new Intent(this, Register.class).putExtra("liveChess", false)));
+					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, false)));
 		} else {
-			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab2")
+			getTabHost().addTab(getTabHost().newTabSpec("tab2")
 					.setIndicator("Live", getResources().getDrawable(R.drawable.live))
-					.setContent(new Intent(this, Online.class).putExtra("liveChess", true)));
-			App.getTabHost().addTab(App.getTabHost().newTabSpec("tab6")
+					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, true)));
+			getTabHost().addTab(getTabHost().newTabSpec("tab6")
 					.setIndicator("Online", getResources().getDrawable(R.drawable.online))
-					.setContent(new Intent(this, Online.class).putExtra("liveChess", false)));
+					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, false)));
 		}
 
-		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab3")
+		getTabHost().addTab(getTabHost().newTabSpec("tab3")
 				.setIndicator("Comp", getResources().getDrawable(R.drawable.computer))
 				.setContent(new Intent(this, Computer.class)));
-		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab4")
+		getTabHost().addTab(getTabHost().newTabSpec("tab4")
 				.setIndicator("Tactics", getResources().getDrawable(R.drawable.tactics))
-				.setContent(new Intent(this, Game.class).putExtra("mode", 6).putExtra("liveChess", false)));
-		App.getTabHost().addTab(App.getTabHost().newTabSpec("tab5")
+				.setContent(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, 6).putExtra(AppConstants.LIVE_CHESS, false)));
+		getTabHost().addTab(getTabHost().newTabSpec("tab5")
 				.setIndicator("Video", getResources().getDrawable(R.drawable.video))
 				.setContent(new Intent(this, Video.class)));
 
@@ -103,18 +103,18 @@ public class Tabs extends TabActivity {
 		try {
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
-				if (extras.getBoolean("fromnotif")) {
+				if (extras.getBoolean(AppConstants.ENTER_FROM_NOTIFICATION)) {
 					tab = 2;
 					Notifications.resetCounter();
-					if (App.getSharedDataEditor() != null) {
-						App.getSharedDataEditor().putInt("gamestype", 1);
-						App.getSharedDataEditor().commit();
+					if (mainApp.getSharedDataEditor() != null) {
+						mainApp.getSharedDataEditor().putInt("gamestype", 1);
+						mainApp.getSharedDataEditor().commit();
 					}
 				} else {
-					tab = extras.getInt("tab", 0);
-					if (tab != 0 && App.getSharedDataEditor() != null) {
-						App.getSharedDataEditor().putInt("gamestype", 1);
-						App.getSharedDataEditor().commit();
+					tab = extras.getInt(AppConstants.TAB_INDEX, 0);
+					if (tab != 0 && mainApp.getSharedDataEditor() != null) {
+						mainApp.getSharedDataEditor().putInt("gamestype", 1);
+						mainApp.getSharedDataEditor().commit();
 					}
 				}
 			}
@@ -126,13 +126,13 @@ public class Tabs extends TabActivity {
 			@Override
 			public void onTabChanged(String tabId) {
 				//System.out.println("LCCLOG2: ONTABCHANGED");
-				if (MobclixHelper.isShowAds(App)) {
+				if (MobclixHelper.isShowAds(mainApp)) {
 					if (tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6")) {
 						//System.out.println("LCCLOG2: ONTABCHANGED 1");
-						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
+						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, Tabs.this, mainApp);
 					} else if (tabId.equals("tab4")) {
 						//System.out.println("LCCLOG2: ONTABCHANGED 2");
-						MobclixHelper.hideBannerAd(App, removeAds);
+						MobclixHelper.hideBannerAd(mainApp, removeAds);
 					}
 					//System.out.println("LCCLOG2: ONTABCHANGED 3");
 				}
@@ -140,22 +140,22 @@ public class Tabs extends TabActivity {
 			}
 		});
 
-		App.getTabHost().setCurrentTab(tab);
+		getTabHost().setCurrentTab(tab);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		//System.out.println("LCCLOG2: TABS ONRESUME");
-		if (MobclixHelper.isShowAds(App)) {
+		if (MobclixHelper.isShowAds(mainApp)) {
 			//System.out.println("LCCLOG2: TABS ONRESUME 1");
 			final String currentTab = getTabHost().getCurrentTabTag();
 			if (currentTab.equals("tab1") || currentTab.equals("tab2") || currentTab.equals("tab3") || currentTab.equals("tab5") || currentTab.equals("tab6")) {
 				//System.out.println("LCCLOG2: TABS ONRESUME 2");
-				MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+				MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, this, mainApp);
 			} else if (currentTab.equals("tab4")) {
 				//System.out.println("LCCLOG2: TABS ONRESUME 3");
-				MobclixHelper.hideBannerAd(App, removeAds);
+				MobclixHelper.hideBannerAd(mainApp, removeAds);
 			}
 			//System.out.println("LCCLOG2: TABS ONRESUME 4");
 		}
@@ -166,10 +166,10 @@ public class Tabs extends TabActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (MobclixHelper.isShowAds(App)) {
-			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(App), App);
+		if (MobclixHelper.isShowAds(mainApp)) {
+			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 		}
-		App.setForceBannerAdOnFailedLoad(false);
+		mainApp.setForceBannerAdOnFailedLoad(false);
 		unregisterReceiver(lccLoggingInInfoReceiver);
 	}
 
@@ -177,11 +177,11 @@ public class Tabs extends TabActivity {
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		//System.out.println("LCCLOG2: TABS FOCUS 1");
-		System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged hasFocus=" + hasFocus + ", isForceBannerAdOnFailedLoad=" + App.isForceBannerAdOnFailedLoad());
-		if (MobclixHelper.isShowAds(App) && hasFocus && App.isForceBannerAdOnFailedLoad()) {
+		System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged hasFocus=" + hasFocus + ", isForceBannerAdOnFailedLoad=" + mainApp.isForceBannerAdOnFailedLoad());
+		if (MobclixHelper.isShowAds(mainApp) && hasFocus && mainApp.isForceBannerAdOnFailedLoad()) {
 			//System.out.println("LCCLOG2: TABS FOCUS 2");
 			System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged SHOW");
-			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, this, mainApp);
 			//System.out.println("LCCLOG2: TABS FOCUS 3");
 		}
 	}
@@ -191,9 +191,9 @@ public class Tabs extends TabActivity {
 		public void onReceive(Context context, final Intent intent) {
 			new Handler().post(new Runnable() {
 				public void run() {
-					if (getTabHost().getCurrentTabTag().equals("tab2") && App.isLiveChess() && !intent.getExtras().getBoolean("enable")) {
-						if (MobclixHelper.isShowAds(App) && App.getLccHolder().isConnected() && !App.getLccHolder().isConnectingInProgress()) {
-							MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
+					if (getTabHost().getCurrentTabTag().equals("tab2") && mainApp.isLiveChess() && !intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
+						if (MobclixHelper.isShowAds(mainApp) && mainApp.getLccHolder().isConnected() && !mainApp.getLccHolder().isConnectingInProgress()) {
+							MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, Tabs.this, mainApp);
 						}
 					}
 				}

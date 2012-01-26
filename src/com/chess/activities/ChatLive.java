@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.live.client.ChatMessage;
 import com.chess.model.Message;
@@ -40,7 +41,7 @@ public class ChatLive extends CoreActivity {
 					@Override
 					protected Void doInBackground(Void... voids) {
 						System.out.println("LCCLOG: SEND");
-						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(mainApp.getCurrentGame().values.get("game_id"))), sendText.getText().toString());
+						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))), sendText.getText().toString());
 						return null;
 					}
 				}.execute();
@@ -92,7 +93,7 @@ public class ChatLive extends CoreActivity {
 
 	private ArrayList<Message> getMessagesList() {
 		ArrayList<Message> output = new ArrayList<Message>();
-		Long currentGameId = new Long(mainApp.getCurrentGame().values.get("game_id"));
+		Long currentGameId = new Long(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID));
 		com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());

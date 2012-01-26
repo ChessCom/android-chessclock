@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import com.chess.core.AppConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -180,7 +181,7 @@ public final class Util {
 		if (json.has("error")) {
 			JSONObject error = json.getJSONObject("error");
 			throw new FacebookError(
-					error.getString("message"), error.getString("type"), 0);
+					error.getString(AppConstants.MESSAGE), error.getString("type"), 0);
 		}
 		if (json.has("error_code") && json.has("error_msg")) {
 			throw new FacebookError(json.getString("error_msg"), "",

@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.live.util.GameTimeConfig;
@@ -468,7 +469,7 @@ public class LccHolder {
 		final String[] gameData = new String[com.chess.model.Game.GAME_DATA_ELEMENTS_COUNT];
 		gameData[0] = lccGame.getId().toString();
 		gameData[1] = "1";
-		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve "timestamp"
+		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve AppConstants.TIMESTAMP
 		gameData[3] = "";
 		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
@@ -697,8 +698,8 @@ public class LccHolder {
 		final ContextWrapper androidContext = android.getContext();
 		final Intent intent = new Intent(androidContext, com.chess.activities.Game.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra("mode", 4);
-		intent.putExtra("game_id", "" + game.getId());
+		intent.putExtra(AppConstants.GAME_MODE, 4);
+		intent.putExtra(AppConstants.GAME_ID, "" + game.getId());
 		androidContext.startActivity(intent);
 		/*final Game currentGame = game;
 			if(game.getSeq() > 0)

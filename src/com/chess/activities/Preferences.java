@@ -192,7 +192,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 					if (appService != null) {
 						appService.RunSingleTask(1,
 								query,
-								PD = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)));
+								progressDialog = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true)));
 					}
 				}
 			});
@@ -370,7 +370,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 				if (appService != null) {
 					appService.RunSingleTask(0,
 							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + mainApp.getSharedData().getString("user_token", ""),
-							PD = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true))
+							progressDialog = new MyProgressDialog(ProgressDialog.show(Preferences.this, null, getString(R.string.loading), true))
 					);
 				}
 			}

@@ -154,7 +154,7 @@ public class FriendChallenge extends CoreActivity {
 					if (appService != null) {
 						FlurryAgent.onEvent("Challenge Created", null);
 						lccHolder.getAndroid().runSendChallengeTask(
-								//PD = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
+								//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
 								null,
 								challenge
 						);
@@ -204,7 +204,7 @@ public class FriendChallenge extends CoreActivity {
 					if (appService != null) {
 						appService.RunSingleTask(1,
 								query,
-								PD = new MyProgressDialog(ProgressDialog
+								progressDialog = new MyProgressDialog(ProgressDialog
 										.show(FriendChallenge.this, null, getString(R.string.creating), true))
 						);
 					}
@@ -230,7 +230,7 @@ public class FriendChallenge extends CoreActivity {
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString("user_token", ""),
-						PD = new MyProgressDialog(ProgressDialog.show(FriendChallenge.this, null, getString(R.string.gettingfriends), true))
+						progressDialog = new MyProgressDialog(ProgressDialog.show(FriendChallenge.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
 		} else if (code == 0 || (code == -1 && mainApp.isLiveChess())) {

@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
@@ -21,9 +22,9 @@ import com.chess.views.VideosAdapter;
 import java.util.ArrayList;
 
 public class VideoList extends CoreActivity {
-	private ArrayList<VideoItem> Items = new ArrayList<VideoItem>();
-	private VideosAdapter VA = null;
-	private ListView videosLV;
+	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
+	private VideosAdapter videosAdapter = null;
+	private ListView videosListView;
 	private TextView videoUpgrade;
 	private int page = 1;
 
@@ -49,16 +50,16 @@ public class VideoList extends CoreActivity {
 			videoUpgrade.setVisibility(View.GONE);
 		}
 
-		videosLV = (ListView) findViewById(R.id.videosLV);
-		videosLV.setOnItemClickListener(new OnItemClickListener() {
+		videosListView = (ListView) findViewById(R.id.videosLV);
+		videosListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setDataAndType(Uri.parse(Items.get(pos).values.get("view_url").trim()), "video/*");
+				i.setDataAndType(Uri.parse(items.get(pos).values.get("view_url").trim()), "video/*");
 				startActivity(i);
 			}
 		});
-		videosLV.setOnScrollListener(new OnScrollListener() {
+		videosListView.setOnScrollListener(new OnScrollListener() {
 			private boolean update = false;
 
 			@Override
@@ -66,11 +67,11 @@ public class VideoList extends CoreActivity {
 				if (scrollState == SCROLL_STATE_IDLE) {
 					if (update) {
 						page++;
-						String skill = "&skill_level=" + extras.getString("skill");
-						String category = "&category=" + extras.getString("category");
+						String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
+						String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 						appService.RunSingleTask(0,
 								"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString("user_token", "") + "&page-size=20&page=" + page + skill + category,
-								PD = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
+								progressDialog = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
 						);
 						update = false;
 					}
@@ -97,12 +98,12 @@ public class VideoList extends CoreActivity {
 	@Override
 	public void Update(int code) {
 		if (code == -1) {
-			if (appService != null && VA == null) {
-				String skill = "&skill_level=" + extras.getString("skill");
-				String category = "&category=" + extras.getString("category");
+			if (appService != null && videosAdapter == null) {
+				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
+				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString("user_token", "") + "&page-size=20&page=" + page + skill + category,
-						PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
+						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}
 		} else if (code == 0) {
@@ -111,15 +112,15 @@ public class VideoList extends CoreActivity {
 				tmp = tmp[2].split("<--->");
 			} else return;
 			if (page == 1)
-				Items.clear();
+				items.clear();
 			for (String v : tmp) {
-				Items.add(new VideoItem(v.split("<->")));
+				items.add(new VideoItem(v.split("<->")));
 			}
-			if (VA == null) {
-				VA = new VideosAdapter(VideoList.this, R.layout.videolistelement, Items);
-				videosLV.setAdapter(VA);
+			if (videosAdapter == null) {
+				videosAdapter = new VideosAdapter(VideoList.this, R.layout.videolistelement, items);
+				videosListView.setAdapter(videosAdapter);
 			} else
-				VA.notifyDataSetChanged();
+				videosAdapter.notifyDataSetChanged();
 
 		}
 	}

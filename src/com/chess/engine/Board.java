@@ -59,7 +59,7 @@ public class Board {
 	public int side = LIGHT;
 	public int sec = 0, left = 0;
 	public int TacticsCorrectMoves = 0;
-	public String[] TacticMoves;
+	private String[] tacticMoves;
 	int xside = DARK;
 	int rotated = 0;
 	int ep = -1;
@@ -1743,5 +1743,13 @@ public class Board {
 
 	public void setTacticCanceled(boolean tacticCanceled) {
 		this.tacticCanceled = tacticCanceled;
+	}
+
+	public void setTacticMoves(String[] tacticMoves) {
+		this.tacticMoves = tacticMoves;
+	}
+
+	public String[] getTacticMoves() {
+		return tacticMoves;
 	}
 }

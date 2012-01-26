@@ -11,20 +11,21 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.activities.Game;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.flurry.android.FlurryAgent;
 
 public class Computer extends CoreActivity {
 
-	private Spinner Strength;
+	private Spinner strength;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer);
 
-		Strength = (Spinner) findViewById(R.id.PrefStrength);
-		Strength.setOnItemSelectedListener(new OnItemSelectedListener() {
+		strength = (Spinner) findViewById(R.id.PrefStrength);
+		strength.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				try {
@@ -62,10 +63,10 @@ public class Computer extends CoreActivity {
 			}.execute();
 		}
 		super.onResume();
-		if (Strength != null && mainApp != null && mainApp.getSharedData() != null) {
-			Strength.post(new Runnable() {
+		if (strength != null && mainApp != null && mainApp.getSharedData() != null) {
+			strength.post(new Runnable() {
 				public void run() {
-					Strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0));
+					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0));
 				}
 			});
 			if (!mainApp.getSharedData().getString("saving", "").equals("")) {
@@ -74,7 +75,7 @@ public class Computer extends CoreActivity {
 					@Override
 					public void onClick(View v) {
 						FlurryAgent.onEvent("New Game VS Computer", null);
-						startActivity(new Intent(Computer.this, Game.class).putExtra("mode", Integer.parseInt(mainApp.getSharedData().getString("saving", "").substring(0, 1))));
+						startActivity(new Intent(Computer.this, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString("saving", "").substring(0, 1))));
 					}
 				});
 			} else {
@@ -101,7 +102,7 @@ public class Computer extends CoreActivity {
 		mainApp.getSharedDataEditor().commit();
 
 		FlurryAgent.onEvent("New Game VS Computer", null);
-		startActivity(new Intent(this, Game.class).putExtra("mode", mode));
+		startActivity(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, mode));
 	}
 
 	@Override
@@ -112,6 +113,5 @@ public class Computer extends CoreActivity {
 
 	@Override
 	public void Update(int code) {
-
 	}
 }

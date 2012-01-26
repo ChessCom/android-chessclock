@@ -1,5 +1,7 @@
 package com.chess.model;
 
+import com.chess.core.AppConstants;
+
 import java.util.HashMap;
 
 public class GameListElement {
@@ -13,7 +15,7 @@ public class GameListElement {
 		this.isLiveChess = isLiveChess;
 		switch (type) {
 			case 0: {	//Challenges
-				this.values.put("game_id", values[0].trim());
+				this.values.put(AppConstants.GAME_ID, values[0].trim());
 				this.values.put("opponent_username", values[1]);
 				this.values.put("opponent_rating", values[2]);
 
@@ -38,7 +40,7 @@ public class GameListElement {
 				break;
 			}
 			case 1: {	//Current Games
-				this.values.put("game_id", values[0]);
+				this.values.put(AppConstants.GAME_ID, values[0]);
 				this.values.put("color", values[1]);
 				this.values.put("game_type", values[2]);
 				this.values.put("username_string_length", values[3]);
@@ -48,7 +50,7 @@ public class GameListElement {
 				this.values.put("time_remaining_units", values[7]);
 				this.values.put("fen_string_length", values[8]);
 				this.values.put("fen", values[9]);
-				this.values.put("timestamp", values[10]);
+				this.values.put(AppConstants.TIMESTAMP, values[10]);
 				this.values.put("last_move_from_square", values[11]);
 				this.values.put("last_move_to_square", values[12]);
 				this.values.put("is_draw_offer_pending", values[13]);
@@ -58,7 +60,7 @@ public class GameListElement {
 				break;
 			}
 			case 2: {	//Finished Games
-				this.values.put("game_id", values[0]);
+				this.values.put(AppConstants.GAME_ID, values[0]);
 				this.values.put("color", values[1]);
 				this.values.put("game_type", values[2]);
 				this.values.put("username_string_length", values[3]);
@@ -68,7 +70,7 @@ public class GameListElement {
 				this.values.put("time_remaining_units", values[7]);
 				this.values.put("fen_string_length", values[8]);
 				this.values.put("fen", values[9]);
-				this.values.put("timestamp", values[10]);
+				this.values.put(AppConstants.TIMESTAMP, values[10]);
 				this.values.put("last_move_from_square", values[11]);
 				this.values.put("last_move_to_square", values[12]);
 				this.values.put("is_opponent_online", values[13]);

@@ -19,12 +19,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class Web {
-	public static int StatusCode = -1;
-	public static String Reason = "";
+	private static int statusCode = -1;
+	private static String reason = "";
 
 	public static String Request(String url, String method, HashMap<String, String> headers, HttpEntity entity) {
-		StatusCode = -1;
-		Reason = "";
+		statusCode = -1;
+		reason = "";
 		String responseBody = "";
 
 		HttpParams httpParameters = null;
@@ -76,9 +76,9 @@ public class Web {
 				responseBody = convertStreamToString(response.getEntity().getContent());
 			i = 2;
 
-			StatusCode = response.getStatusLine().getStatusCode();
+			statusCode = response.getStatusLine().getStatusCode();
 			i = 3;
-			Reason = response.getStatusLine().getReasonPhrase();
+			reason = response.getStatusLine().getReasonPhrase();
 			i = 4;
 			Log.d("SERVER RESPONSE: ", responseBody);
 			i = 5;
@@ -127,5 +127,9 @@ public class Web {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static int getStatusCode() {
+		return statusCode;
 	}
 }

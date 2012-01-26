@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import com.chess.activities.Game;
 import com.chess.activities.tabs.Online;
+import com.chess.core.AppConstants;
 import com.chess.core.MainApp;
 import com.chess.live.client.Challenge;
 import com.chess.utilities.MyProgressDialog;
@@ -93,7 +94,7 @@ public class AndroidStuff {
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra("code", code)
-						.putExtra("object", object)
+						.putExtra(AppConstants.OBJECT, object)
 		);
 		if (currentProgressDialog != null) {
 			currentProgressDialog.dismiss();
@@ -105,8 +106,8 @@ public class AndroidStuff {
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra("code", code)
-						.putExtra("title", title)
-						.putExtra("message", message)
+						.putExtra(AppConstants.TITLE, title)
+						.putExtra(AppConstants.MESSAGE, message)
 		);
 		if (currentProgressDialog != null) {
 			currentProgressDialog.dismiss();
@@ -163,8 +164,8 @@ public class AndroidStuff {
 		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
-						.putExtra("enable", enable)
-						.putExtra("message", message)
+						.putExtra(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR, enable)
+						.putExtra(AppConstants.MESSAGE, message)
 		);
 	}
 
@@ -197,8 +198,8 @@ public class AndroidStuff {
 		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
-						.putExtra("title", title)
-						.putExtra("message", message)
+						.putExtra(AppConstants.TITLE, title)
+						.putExtra(AppConstants.MESSAGE, message)
 		);
 	}
 
@@ -218,7 +219,7 @@ public class AndroidStuff {
 
 	public void runSendChallengeTask(MyProgressDialog PD, Challenge challenge) {
 		//this.CODE = CODE;
-		//this.PD = PD;
+		//this.progressDialog = progressDialog;
 		lccHolder.getAndroid().setCurrentProgressDialog(PD);
 		new LiveSendChallengeTask().execute(challenge);
 	}

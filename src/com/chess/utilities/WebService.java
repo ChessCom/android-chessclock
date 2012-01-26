@@ -18,9 +18,9 @@ import java.util.TimerTask;
 
 public class WebService extends Service {
 
-	public Timer repeatble = null;
-	private int CODE = 0;
-	private MyProgressDialog PD;
+	private Timer repeatableTimer = null;
+	private int code = 0;
+	private MyProgressDialog progressDialog;
 	public static final String BROADCAST_ACTION = "GetServerResponse";
 
 	private LccHolder lccHolder;
@@ -42,32 +42,32 @@ public class WebService extends Service {
 	}
 
 	public void RunSingleTask(int CODE, String query, MyProgressDialog PD) {
-		this.CODE = CODE;
-		this.PD = PD;
+		this.code = CODE;
+		this.progressDialog = PD;
 		new SingleTask().execute(query, "GET");
 	}
 
 	public void RunSingleTaskPost(int CODE, String query, MyProgressDialog PD, String... parameters) {
-		this.CODE = CODE;
-		this.PD = PD;
+		this.code = CODE;
+		this.progressDialog = PD;
 		new SingleTask().execute(query, "POST", parameters[0], parameters[1], parameters[2], parameters[3]);
 	}
 
 	public void RunRepeatbleTask(final int CODE, final int DELAY, final int INTERVAL, final String query, final MyProgressDialog PD) {
-		this.CODE = CODE;
-		this.PD = PD;
+		this.code = CODE;
+		this.progressDialog = PD;
 
-		if (repeatble != null) {
-			repeatble.cancel();
-			repeatble = null;
+		if (repeatableTimer != null) {
+			repeatableTimer.cancel();
+			repeatableTimer = null;
 		}
 
-		repeatble = new Timer();
-		repeatble.scheduleAtFixedRate(new TimerTask() {
+		repeatableTimer = new Timer();
+		repeatableTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
-						.putExtra("repeatble", true)
+						.putExtra("repeatableTimer", true)
 						.putExtra("code", CODE)
 						.putExtra("result", Web.Request(query, "GET", null, null))
 				);
@@ -91,25 +91,25 @@ public class WebService extends Service {
 			}
 			try {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
-						.putExtra("repeatble", false)
-						.putExtra("code", CODE)
+						.putExtra("repeatableTimer", false)
+						.putExtra("code", code)
 						.putExtra("result", Web.Request(options[0], options[1], null, new UrlEncodedFormEntity(nameValuePairs)))
 				);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			if (PD != null)
-				PD.dismiss();
+			if (progressDialog != null)
+				progressDialog.dismiss();
 			stopSelf();
 			return null;
 		}
 	}
 
-	/*public void RunChesscomConnectionTask(LccHolder lccHolder, *//*MyProgressDialog PD,*//* String... credentials) {
-	  	//this.CODE = CODE;
-		//this.PD = PD;
+	/*public void RunChesscomConnectionTask(LccHolder lccHolder, *//*MyProgressDialog progressDialog,*//* String... credentials) {
+	  	//this.code = code;
+		//this.progressDialog = progressDialog;
     this.lccHolder = lccHolder;
-    //lccHolder.getAndroid().setCurrentProgressDialog(PD);
+    //lccHolder.getAndroid().setCurrentProgressDialog(progressDialog);
 	new ChesscomConnectionTask().execute(credentials);
   }
 
@@ -124,20 +124,20 @@ public class WebService extends Service {
 
 
 	public void RunRepeatble(final int CODE, final int DELAY, final int INTERVAL, final MyProgressDialog PD) {
-		this.CODE = CODE;
-		this.PD = PD;
+		this.code = CODE;
+		this.progressDialog = PD;
 
-		if (repeatble != null) {
-			repeatble.cancel();
-			repeatble = null;
+		if (repeatableTimer != null) {
+			repeatableTimer.cancel();
+			repeatableTimer = null;
 		}
 
-		repeatble = new Timer();
-		repeatble.scheduleAtFixedRate(new TimerTask() {
+		repeatableTimer = new Timer();
+		repeatableTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
-						.putExtra("repeatble", true)
+						.putExtra("repeatableTimer", true)
 						.putExtra("code", CODE)
 						.putExtra("result", "Success")
 				);
@@ -146,6 +146,14 @@ public class WebService extends Service {
 				stopSelf();
 			}
 		}, DELAY, INTERVAL);
+	}
+
+	public Timer getRepeatableTimer() {
+		return repeatableTimer;
+	}
+
+	public void setRepeatableTimer(Timer repeatableTimer) {
+		this.repeatableTimer = repeatableTimer;
 	}
 }
 

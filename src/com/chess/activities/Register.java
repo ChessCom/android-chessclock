@@ -109,7 +109,7 @@ public class Register extends CoreActivity {
 				if (appService != null) {
 					appService.RunSingleTask(0,
 							query,
-							PD = new MyProgressDialog(ProgressDialog.show(Register.this, null, getString(R.string.loading), true))
+							progressDialog = new MyProgressDialog(ProgressDialog.show(Register.this, null, getString(R.string.loading), true))
 					);
 				}
 			}
@@ -133,7 +133,7 @@ public class Register extends CoreActivity {
 				if (appService != null) {
 					appService.RunSingleTaskPost(1,
 							query,
-							PD = new MyProgressDialog(
+							progressDialog = new MyProgressDialog(
 									ProgressDialog.show(Register.this, null, getString(R.string.loading), true)),
 							"username", /*URLEncoder.encode(*/RegUsername.getText().toString()/*, "UTF-8")*/,
 							"password", /*URLEncoder.encode(*/RegPassword.getText().toString()/*, "UTF-8")*/

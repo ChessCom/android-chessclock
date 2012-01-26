@@ -12,23 +12,24 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.model.VideoItem;
 
 import java.util.ArrayList;
 
 public class VideosAdapter extends ArrayAdapter<VideoItem> {
 
-	public ArrayList<VideoItem> items;
+	private ArrayList<VideoItem> items;
 	private LayoutInflater vi;
 	private int resource;
-	private Context CTX;
+	private Context context;
 
 	public VideosAdapter(Context context, int textViewResourceId, ArrayList<VideoItem> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.vi = LayoutInflater.from(context);
 		this.resource = textViewResourceId;
-		this.CTX = context;
+		this.context = context;
 	}
 
 	@Override
@@ -46,10 +47,10 @@ public class VideosAdapter extends ArrayAdapter<VideoItem> {
 			convertView.findViewById(R.id.fulldesc).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					new AlertDialog.Builder(CTX)
-							.setTitle(el.values.get("title"))
+					new AlertDialog.Builder(context)
+							.setTitle(el.values.get(AppConstants.TITLE))
 							.setMessage(el.values.get("description"))
-							.setPositiveButton(CTX.getString(R.string.ok), null)
+							.setPositiveButton(context.getString(R.string.ok), null)
 							.create().show();
 				}
 			});
@@ -58,15 +59,15 @@ public class VideosAdapter extends ArrayAdapter<VideoItem> {
 				public void onClick(View v) {
 					Intent i = new Intent(Intent.ACTION_VIEW);
 					i.setDataAndType(Uri.parse(el.values.get("view_url").trim()), "video/*");
-					CTX.startActivity(i);
+					context.startActivity(i);
 				}
 			});
 
 			CharSequence date = DateFormat.format("dd.MM.yyyy", 1000 * Long.parseLong(el.values.get("publish_timestamp")));
 
-			if (title != null) title.setText(el.values.get("title"));
+			if (title != null) title.setText(el.values.get(AppConstants.TITLE));
 			if (times != null)
-				times.setText(CTX.getString(R.string.duration) + " " + el.values.get("minutes") + "min " + CTX.getString(R.string.published) + " " + date);
+				times.setText(context.getString(R.string.duration) + " " + el.values.get("minutes") + "min " + context.getString(R.string.published) + " " + date);
 			if (desc != null) desc.setText(el.values.get("description"));
 			if (addinfo != null) addinfo.setText(el.values.get("author_username"));
 

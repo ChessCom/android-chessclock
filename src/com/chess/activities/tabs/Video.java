@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.VideoList;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
@@ -22,27 +23,27 @@ import com.flurry.android.FlurryAgent;
 public class Video extends CoreActivity {
 	private VideoItem item;
 	private LinearLayout recent;
-	private TextView Upgrade, title, desc;
+	private TextView upgrade, title, desc;
 	private Spinner skills, categories;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video);
-		Upgrade = (TextView) findViewById(R.id.Upgrade);
+		upgrade = (TextView) findViewById(R.id.Upgrade);
 		boolean liveMembershipLevel =
 				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
 				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString("premium_status", "0")) < 3)) {
-			Upgrade.setVisibility(View.VISIBLE);
-			Upgrade.setOnClickListener(new OnClickListener() {
+			upgrade.setVisibility(View.VISIBLE);
+			upgrade.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					FlurryAgent.onEvent("Upgrade From Videos", null);
+					FlurryAgent.onEvent("upgrade From Videos", null);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
 				}
 			});
 		} else {
-			Upgrade.setVisibility(View.GONE);
+			upgrade.setVisibility(View.GONE);
 		}
 
 		recent = (LinearLayout) findViewById(R.id.recent);
@@ -92,8 +93,8 @@ public class Video extends CoreActivity {
 				int s = skills.getSelectedItemPosition();
 				int c = categories.getSelectedItemPosition();
 				Intent i = new Intent(Video.this, VideoList.class);
-				i.putExtra("skill", "");
-				i.putExtra("category", "");
+				i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, "");
+				i.putExtra(AppConstants.VIDEO_CATEGORY, "");
 				if (s > 0) {
 					String skill = "";
 					switch (s) {
@@ -110,7 +111,7 @@ public class Video extends CoreActivity {
 						default:
 							break;
 					}
-					i.putExtra("skill", skill);
+					i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
 				}
 				if (c > 0) {
 					String category = "";
@@ -137,7 +138,7 @@ public class Video extends CoreActivity {
 						default:
 							break;
 					}
-					i.putExtra("category", category);
+					i.putExtra(AppConstants.VIDEO_CATEGORY, category);
 				}
 				startActivity(i);
 			}
@@ -166,13 +167,13 @@ public class Video extends CoreActivity {
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString("user_token", "") + "&page-size=1",
-						PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
+						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}
 		} else if (code == 0) {
 			recent.setVisibility(View.VISIBLE);
 			item = new VideoItem(response.split("[|]")[2].split("<->"));
-			title.setText(item.values.get("title"));
+			title.setText(item.values.get(AppConstants.TITLE));
 			desc.setText(item.values.get("description"));
 			findViewById(R.id.play).setOnClickListener(new OnClickListener() {
 				@Override

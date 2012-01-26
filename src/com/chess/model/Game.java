@@ -1,5 +1,7 @@
 package com.chess.model;
 
+import com.chess.core.AppConstants;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -12,9 +14,9 @@ public class Game implements Serializable {
 	public Game(String[] values, boolean isLiveChess) {
 		this.values = new HashMap<String, String>();
 		final String gameId = isLiveChess ? values[0] : values[0].split("[+]")[1];
-		this.values.put("game_id", gameId);
+		this.values.put(AppConstants.GAME_ID, gameId);
 		this.values.put("game_type", values[1]);
-		this.values.put("timestamp", values[2]);
+		this.values.put(AppConstants.TIMESTAMP, values[2]);
 		this.values.put("game_name", values[3]);
 		this.values.put("white_username", values[4].trim());
 		this.values.put("black_username", values[5].trim());
