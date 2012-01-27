@@ -37,5 +37,6 @@
     <color name="f_dark_blue_1">#FF28447d</color>
     
     <color name="f_stroke">#FF899dc2</color>
-
+    
+    <color name="dashboard_button">#FF3d3d3d</color>
 </resources>

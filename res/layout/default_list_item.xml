@@ -29,7 +29,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginRight="5dip"
             android:layout_marginLeft="10dip"
-            android:src="@drawable/icon"
+            android:src="@drawable/ic_home"
             android:layout_gravity="center"
             android:shadowColor="#000000"
             android:shadowRadius="1.5"
