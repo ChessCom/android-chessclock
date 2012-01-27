@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
@@ -135,7 +136,7 @@ public class Register extends CoreActivity {
 							query,
 							progressDialog = new MyProgressDialog(
 									ProgressDialog.show(Register.this, null, getString(R.string.loading), true)),
-							"username", /*URLEncoder.encode(*/RegUsername.getText().toString()/*, "UTF-8")*/,
+							AppConstants.USERNAME, /*URLEncoder.encode(*/RegUsername.getText().toString()/*, "UTF-8")*/,
 							"password", /*URLEncoder.encode(*/RegPassword.getText().toString()/*, "UTF-8")*/
 					);
 				}
@@ -144,15 +145,15 @@ public class Register extends CoreActivity {
 		} else if (code == 1) {
 			FlurryAgent.onEvent("New Account Created", null);
 			String[] r = response.split(":");
-			mainApp.getSharedDataEditor().putString("username", RegUsername.getText().toString().toLowerCase());
+			mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, RegUsername.getText().toString().toLowerCase());
 			mainApp.getSharedDataEditor().putString("password", RegPassword.getText().toString());
-			mainApp.getSharedDataEditor().putString("premium_status", r[0].split("[+]")[1]);
+			mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
 			mainApp.getSharedDataEditor().putString("api_version", r[1]);
 			try {
-				mainApp.getSharedDataEditor().putString("user_token", URLEncoder.encode(r[2], "UTF-8"));
+				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 			}
-			mainApp.getSharedDataEditor().putString("user_session_id", r[3]);
+			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
 			mainApp.getSharedDataEditor().commit();
 			startActivity(new Intent(Register.this, Tabs.class));
 			finish();

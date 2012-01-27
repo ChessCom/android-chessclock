@@ -137,13 +137,13 @@ public abstract class CoreActivity extends Activity {
 				@Override
 				public void run() {
 					mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString("username", "") + "board", 8)]);
+							mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 8)]);
 					mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString("username", "") + "pieces", 0)]);
+							mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)]);
 					mainApp.loadCapturedPieces();
 				}
 			});
-			if (!mainApp.getSharedData().getString("username", "").equals("")) {
+			if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
 				final Intent intent = new Intent(mainApp, Tabs.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mainApp.startActivity(intent);
@@ -173,7 +173,7 @@ public abstract class CoreActivity extends Activity {
 					lccHolder.getClient().disconnect();
 					lccHolder.setNetworkTypeName(null);
 					lccHolder.setConnectingInProgress(true);
-					lccHolder.getClient().connect(mainApp.getSharedData().getString("user_session_id", ""),
+					lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, ""),
 							lccHolder.getConnectionListener());
 					/*
 					 * appService.RunRepeatble(0, 0, 120000, progressDialog =
@@ -199,15 +199,15 @@ public abstract class CoreActivity extends Activity {
 		// registerReceiver(networkChangeNotificationReceiver, new
 // IntentFilter("com.chess.lcc.android-network-change"));
 		/* } */
-		if (mainApp.getSharedData().getLong("com.chess.firstTimeStart", 0) == 0) {
-			mainApp.getSharedDataEditor().putLong("com.chess.firstTimeStart", System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt("com.chess.adsShowCounter", 0);
+		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			mainApp.getSharedDataEditor().commit();
 		}
-		long startDay = mainApp.getSharedData().getLong("com.chess.startDay", 0);
-		if (mainApp.getSharedData().getLong("com.chess.startDay", 0) == 0 || !DateUtils.isToday(startDay)) {
-			mainApp.getSharedDataEditor().putLong("com.chess.startDay", System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putBoolean("com.chess.showedFullscreenAd", false);
+		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
+		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+			mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, System.currentTimeMillis());
+			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
 			mainApp.getSharedDataEditor().commit();
 			checkUpdate();
 		}
@@ -242,7 +242,7 @@ public abstract class CoreActivity extends Activity {
 		 * lccHolder.logout(); }
 		 */
 
-		mainApp.getSharedDataEditor().putLong("lastActivityPauseTime", System.currentTimeMillis());
+		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		mainApp.getSharedDataEditor().commit();
 		mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -268,7 +268,7 @@ public abstract class CoreActivity extends Activity {
                     response = resp;
                 }
 
-				retCode = rExtras.getInt("code");
+				retCode = rExtras.getInt(AppConstants.CALLBACK_CODE);
 			} catch (Exception e) {
 				Update(-2);
 				return;
@@ -364,7 +364,7 @@ public abstract class CoreActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			if (mainApp.isLiveChess()) {
 				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
-				Update(intent.getExtras().getInt("code"));
+				Update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
 			}
 		}
 	};
@@ -563,8 +563,8 @@ public abstract class CoreActivity extends Activity {
 
 	public Boolean isUserColorWhite() {
 		try {
-			return mainApp.getCurrentGame().values.get("white_username").toLowerCase()
-					.equals(mainApp.getSharedData().getString("username", ""));
+			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
+					.equals(mainApp.getSharedData().getString(AppConstants.USERNAME, ""));
 		} catch (Exception e) {
 			return null;
 		}
@@ -656,7 +656,7 @@ public abstract class CoreActivity extends Activity {
 										// Intent intent = new
 // Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
 										if (forceFlag) {
-											mainApp.getSharedDataEditor().putLong("com.chess.startDay", 0);
+											mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, 0);
 											mainApp.getSharedDataEditor().commit();
 											startActivity(new Intent(CoreActivity.this, Singin.class));
 											finish();

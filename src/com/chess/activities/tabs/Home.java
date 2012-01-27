@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.chess.R;
 import com.chess.activities.Preferences;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
@@ -70,7 +71,7 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 //						lccHolder.logout();
 //					}
 //					mainApp.getSharedDataEditor().putString("password", "");
-//					mainApp.getSharedDataEditor().putString("user_token", "");
+//					mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 //					mainApp.getSharedDataEditor().commit();
 //				}
 //				startActivity(new Intent(Home.this, Singin.class));
@@ -112,7 +113,7 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 	}
 
 	private void showFullscreenAd() {
-		if (!mainApp.getSharedData().getBoolean("com.chess.showedFullscreenAd", false) && MobclixHelper.isShowAds(mainApp)) {
+		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && MobclixHelper.isShowAds(mainApp)) {
 			MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
 			fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {
 
@@ -157,7 +158,7 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 			 * "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
 			 * interstitial.showAd();
 			 */
-			mainApp.getSharedDataEditor().putBoolean("com.chess.showedFullscreenAd", true);
+			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
 			mainApp.getSharedDataEditor().commit();
 		}
 	}
@@ -168,7 +169,7 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 			startActivity(new Intent(Home.this, Preferences.class));
 		} else if (v.getId() == R.id.upgrade) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="
-					+ mainApp.getSharedData().getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST
 					+ "%2Fmembership.html?c=androidads")));
 		} else if (v.getId() == R.id.help) {
 		}

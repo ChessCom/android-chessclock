@@ -277,7 +277,7 @@ public class Game extends CoreActivity {
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								FlurryAgent.onEvent("Upgrade From Tactics", null);
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
+								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
 							}
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -365,7 +365,7 @@ public class Game extends CoreActivity {
 									String Draw = "OFFERDRAW";
 									if (mainApp.acceptdraw)
 										Draw = "ACCEPTDRAW";
-									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=" + Draw + "&timestamp=" + mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP), "GET", null, null);
+									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=" + Draw + "&timestamp=" + mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP), "GET", null, null);
 									if (result.contains("Success")) {
 										mainApp.ShowDialog(Game.this, "", getString(R.string.drawoffered));
 									} else if (result.contains("Error+")) {
@@ -402,7 +402,7 @@ public class Game extends CoreActivity {
 									}
 									finish();
 								} else {
-									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=RESIGN&timestamp=" + mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP), "GET", null, null);
+									String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=RESIGN&timestamp=" + mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP), "GET", null, null);
 									if (result.contains("Success")) {
 										if (MobclixHelper.isShowAds(mainApp)) {
 											sendBroadcast(new Intent(AppConstants.ACTION_SHOW_GAME_END_POPUP).putExtra(AppConstants.MESSAGE, "GAME OVER").putExtra(AppConstants.FINISHABLE, true));
@@ -509,9 +509,9 @@ public class Game extends CoreActivity {
 			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-			if (boardView.getBoard().mode < 4 && !mainApp.getSharedData().getString("saving", "").equals("")) {
+			if (boardView.getBoard().mode < 4 && !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
 				int i;
-				String[] moves = mainApp.getSharedData().getString("saving", "").split("[|]");
+				String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
 				for (i = 1; i < moves.length; i++) {
 					String[] move = moves[i].split(":");
 					boardView.getBoard().makeMove(new Move(
@@ -526,10 +526,10 @@ public class Game extends CoreActivity {
 				if (boardView.getBoard().mode == 1) {
 					boardView.getBoard().setReside(true);
 					boardView.invalidate();
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (boardView.getBoard().mode == 3) {
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (boardView.getBoard().mode == 4 || boardView.getBoard().mode == 5)
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
@@ -562,7 +562,7 @@ public class Game extends CoreActivity {
 		} else {
 			if (appService != null) {
 				appService.RunSingleTask(10,
-						"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString("user_token", "") + "&gid=" + game_id,
+						"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
 						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 			}
 		}
@@ -637,7 +637,7 @@ public class Game extends CoreActivity {
 		}
 		if (appService != null) {
 			appService.RunSingleTask(7,
-					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString("user_token", "") + "&tactics_id=" + id,
+					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + id,
 					progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
 			);
 		}
@@ -843,7 +843,7 @@ public class Game extends CoreActivity {
 				} else {
 					if (appService != null) {
 						appService.RunSingleTask(6,
-								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString("user_token", "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 1 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
+								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 1 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
 								progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 					}
 					stopTacticsTimer();
@@ -883,7 +883,7 @@ public class Game extends CoreActivity {
 			} else {
 				if (appService != null) {
 					appService.RunSingleTask(5,
-							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString("user_token", "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 0 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
+							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 0 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
 							progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 				}
 				stopTacticsTimer();
@@ -940,7 +940,7 @@ public class Game extends CoreActivity {
 						}
 						if (!mainApp.isLiveChess()) {
 							appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString("user_token", "") + "&gid=" + mainApp.getGameId(),
+									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
 									null/*progressDialog*/
 							);
 						}
@@ -1016,8 +1016,8 @@ public class Game extends CoreActivity {
 
 				if (boardView.getBoard().mode == 4 || boardView.getBoard().mode == 5) {
 					if (mainApp.getCurrentGame() != null) {
-						white.setText(mainApp.getCurrentGame().values.get("white_username") + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
-						black.setText(mainApp.getCurrentGame().values.get("black_username") + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
+						white.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
+						black.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
 					}
 				}
 
@@ -1079,12 +1079,12 @@ public class Game extends CoreActivity {
 						}
 						appService.RunSingleTask(12,
 								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" +
-										mainApp.getSharedData().getString("user_token", "") + "&gid=" + mainApp.getGameId(),
+										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
 								null);
 					} else {
 						appService.RunSingleTask(8,
 								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
-										mainApp.getSharedData().getString("user_token", "") + "&chessid=" +
+										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" +
 										mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=SUBMIT&newmove=" +
 										boardView.getBoard().convertMoveEchess() + "&timestamp=" +
 										mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP),
@@ -1103,7 +1103,7 @@ public class Game extends CoreActivity {
 				if (!mainApp.isLiveChess() && appService != null) {
 					appService.RunSingleTask(8,
 							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
-									mainApp.getSharedData().getString("user_token", "") + "&chessid=" +
+									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" +
 									mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=SUBMIT&newmove=" +
 									boardView.getBoard().convertMoveEchess() + "&timestamp=" +
 									mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP),
@@ -1252,9 +1252,9 @@ public class Game extends CoreActivity {
 				break;
 			case 8:
 				// move was made
-				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "aim", 0) == 2) {
+				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
-				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "aim", 0) == 0) {
+				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
 
 					int i;
 					ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
@@ -1379,9 +1379,9 @@ public class Game extends CoreActivity {
 
 				if (chat) {
 					if (!isUserColorWhite())
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get("white_username"));
+						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME));
 					else
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get("black_username"));
+						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 					mainApp.getCurrentGame().values.put("has_new_message", "0");
 					startActivity(new Intent(Game.this, mainApp.isLiveChess() ? ChatLive.class : Chat.class).
@@ -1474,7 +1474,7 @@ public class Game extends CoreActivity {
 					}
 					if (!mainApp.isLiveChess()) {
 						appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
-								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString("user_token", "") + "&gid=" + mainApp.getGameId(),
+								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
 								null/*progressDialog*/
 						);
 					}
@@ -1602,7 +1602,7 @@ public class Game extends CoreActivity {
 						boardView.getBoard().setReside(!boardView.getBoard().reside);
 						if (boardView.getBoard().mode < 2) {
 							boardView.getBoard().mode ^= 1;
-							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 						}
 						boardView.invalidate();
 						Update(0);
@@ -1612,7 +1612,7 @@ public class Game extends CoreActivity {
 					boardView.stopThinking = true;
 					if (!boardView.compmoving) {
 						boardView.hint = true;
-						boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+						boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					}
 					return true;
 				case 4:
@@ -1651,7 +1651,7 @@ public class Game extends CoreActivity {
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
 					Update(0);
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					return true;
 				}
 				case 8: {
@@ -1659,7 +1659,7 @@ public class Game extends CoreActivity {
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType("plain/text");
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
-					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString("username", "") + "\"]\n [White \"" + mainApp.getSharedData().getString("username", "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
+					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 					return true;
 				}

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import com.chess.R;
+import com.chess.core.AppConstants;
 
 public class SoundPlayer {
 	private Context context;
@@ -58,7 +59,7 @@ public class SoundPlayer {
 
 	private void playSound(int soundResource) {
 		final SharedPreferences SharedPreferences = context.getSharedPreferences("sharedData", 0);
-		if (SharedPreferences.getBoolean(SharedPreferences.getString("username", "") + "enableSounds", true)) {
+		if (SharedPreferences.getBoolean(SharedPreferences.getString(AppConstants.USERNAME, "") + AppConstants.PREF_SOUNDS, true)) {
 			try {
 				MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
 				mediaPlayer.setVolume(0.1f, 0.1f);

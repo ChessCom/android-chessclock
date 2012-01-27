@@ -79,7 +79,7 @@ public class AndroidStuff {
 	public void sendConnectionBroadcastIntent(boolean result, int code, String... errorMessage) {
 		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(WebService.BROADCAST_ACTION)
 				.putExtra(AppConstants.REPEATABLE, false)
-				.putExtra("code", code)
+				.putExtra(AppConstants.CALLBACK_CODE, code)
 				.putExtra(AppConstants.REQUEST_RESULT,
 						result ? "Success" : "Error+" + errorMessage[0])
 		);
@@ -93,7 +93,7 @@ public class AndroidStuff {
 		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
-						.putExtra("code", code)
+						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.OBJECT, object)
 		);
 		if (currentProgressDialog != null) {
@@ -105,7 +105,7 @@ public class AndroidStuff {
 		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
-						.putExtra("code", code)
+						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.TITLE, title)
 						.putExtra(AppConstants.MESSAGE, message)
 		);
@@ -118,7 +118,7 @@ public class AndroidStuff {
 		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
-						.putExtra("code", code)
+						.putExtra(AppConstants.CALLBACK_CODE, code)
 		);
 		if (currentProgressDialog != null) {
 			currentProgressDialog.dismiss();
@@ -210,7 +210,7 @@ public class AndroidStuff {
 	/*public void startSigninActivity()
 	  {
 		context.getSharedDataEditor().putString("password", "");
-		context.getSharedDataEditor().putString("user_token", "");
+		context.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 		context.getSharedDataEditor().commit();
 		final Intent intent = new Intent(mainApp, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -68,8 +68,8 @@ public class WebService extends Service {
 			@Override
 			public void run() {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
-						.putExtra("repeatableTimer", true)
-						.putExtra("code", code)
+						.putExtra(AppConstants.REPEATABLE_TASK, true)
+						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(query, "GET", null, null))
 				);
 				if (progressDialog != null)
@@ -92,8 +92,8 @@ public class WebService extends Service {
 			}
 			try {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
-						.putExtra("repeatableTimer", false)
-						.putExtra("code", code)
+						.putExtra(AppConstants.REPEATABLE_TASK, false)
+						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(options[0], options[1], null, new UrlEncodedFormEntity(nameValuePairs)))
 				);
 			} catch (UnsupportedEncodingException e) {
@@ -138,8 +138,8 @@ public class WebService extends Service {
 			@Override
 			public void run() {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
-						.putExtra("repeatableTimer", true)
-						.putExtra("code", code)
+						.putExtra(AppConstants.REPEATABLE_TASK, true)
+						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.REQUEST_RESULT, "Success")
 				);
 				if (progressDialog != null)

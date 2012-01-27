@@ -49,7 +49,7 @@ public class Chat extends CoreActivity {
 					appService.RunSingleTask(
 							1,
 							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="
-									+ mainApp.getSharedData().getString("user_token", "") + "&chessid="
+									+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="
 									+ extras.getString(AppConstants.GAME_ID) + "&command=CHAT&message=" + message + "&timestamp="
 									+ extras.getString(AppConstants.TIMESTAMP),
 							progressDialog = new MyProgressDialog(ProgressDialog.show(Chat.this, null,
@@ -73,7 +73,7 @@ public class Chat extends CoreActivity {
 		if (code == -1) {
 			if (appService != null) {
 				appService.RunRepeatbleTask(0, 0, 60000, "http://www." + LccHolder.HOST
-						+ "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid="
+						+ "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="
 						+ extras.getString(AppConstants.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(AppConstants.TIMESTAMP),
 						null/*
 							 * progressDialog = MyProgressDialog.show(Chat.this, null,

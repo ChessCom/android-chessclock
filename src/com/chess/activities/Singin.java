@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
@@ -32,8 +33,8 @@ public class Singin extends CoreActivity {
 
 	private EditText username, password;
 
-	private Facebook mFacebook;
-	private LoginButton mLoginButton;
+	private Facebook facebook;
+	private LoginButton facebookLoginButton;
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 
@@ -86,7 +87,7 @@ public class Singin extends CoreActivity {
 					if (appService != null) {
 						appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
 								ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
-								"username", /* URLEncoder.encode( */username.getText().toString()/*
+								AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
 																								 * ,
 																								 * "UTF-8"
 																								 * )
@@ -116,23 +117,21 @@ public class Singin extends CoreActivity {
 			}
 		});
 
-		mLoginButton = (LoginButton) findViewById(R.id.fb_connect);
+		facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
 
-		mFacebook = new Facebook();
-
-		mFacebook = new Facebook();
-		SessionStore.restore(mFacebook, this);
+		facebook = new Facebook();
+		SessionStore.restore(facebook, this);
 
 		SessionEvents.addAuthListener(new SampleAuthListener());
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
-		mLoginButton.init(mFacebook, new String[] {});
+		facebookLoginButton.init(facebook, new String[]{});
 	}
 
 	public class SampleAuthListener implements AuthListener {
 		@Override
 		public void onAuthSucceed() {
 			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="
-					+ mFacebook.getAccessToken() + "&return=username";
+					+ facebook.getAccessToken() + "&return=username";
 			response = Web.Request(query, "GET", null, null);
 			if (response.contains("Success+")) {
 				Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
@@ -167,7 +166,7 @@ public class Singin extends CoreActivity {
 			mainApp.setLiveChess(false);
 		}
 		super.onResume();
-		username.setText(mainApp.getSharedData().getString("username", ""));
+		username.setText(mainApp.getSharedData().getString(AppConstants.USERNAME, ""));
 		password.setText(mainApp.getSharedData().getString("password", ""));
 	}
 
@@ -176,7 +175,7 @@ public class Singin extends CoreActivity {
 		switch (code) {
 		case 0: {
 			FlurryAgent.onEvent("Logged In", null);
-			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "notifE", true))
+			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
 				startService(new Intent(this, Notifications.class));
 			mainApp.guest = false;
 			startActivity(new Intent(this, Tabs.class));
@@ -209,11 +208,11 @@ public class Singin extends CoreActivity {
 			final String[] responseArray = response.split(":");
 			if (responseArray.length >= 4) {
 				if (code == SIGNIN_CALLBACK_CODE) {
-					mainApp.getSharedDataEditor().putString("username", username.getText().toString().trim().toLowerCase());
+					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, username.getText().toString().trim().toLowerCase());
 					doUpdate(responseArray);
 				} else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
 					FlurryAgent.onEvent("FB Login", null);
-					mainApp.getSharedDataEditor().putString("username", responseArray[4].trim().toLowerCase());
+					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 					doUpdate(responseArray);
 				}
 			}
@@ -222,13 +221,13 @@ public class Singin extends CoreActivity {
 
 	private void doUpdate(String[] response) {
 		mainApp.getSharedDataEditor().putString("password", password.getText().toString().trim());
-		mainApp.getSharedDataEditor().putString("premium_status", response[0].split("[+]")[1]);
+		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		mainApp.getSharedDataEditor().putString("api_version", response[1]);
 		try {
-			mainApp.getSharedDataEditor().putString("user_token", URLEncoder.encode(response[2], "UTF-8"));
+			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 		}
-		mainApp.getSharedDataEditor().putString("user_session_id", response[3]);
+		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
 
 		mainApp.getSharedDataEditor().commit();
 		LoadNext(0);

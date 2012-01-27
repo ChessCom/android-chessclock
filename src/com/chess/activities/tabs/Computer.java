@@ -30,7 +30,7 @@ public class Computer extends CoreActivity {
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				try {
 					if (mainApp.getSharedDataEditor() != null && mainApp.getSharedData() != null && pos >= 0) {
-						mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString("username", "") + "strength", pos);
+						mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, pos);
 						mainApp.getSharedDataEditor().commit();
 					}
 				} catch (Exception e) {
@@ -66,16 +66,16 @@ public class Computer extends CoreActivity {
 		if (strength != null && mainApp != null && mainApp.getSharedData() != null) {
 			strength.post(new Runnable() {
 				public void run() {
-					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0));
+					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 				}
 			});
-			if (!mainApp.getSharedData().getString("saving", "").equals("")) {
+			if (!mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
 				findViewById(R.id.load).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						FlurryAgent.onEvent("New Game VS Computer", null);
-						startActivity(new Intent(Computer.this, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString("saving", "").substring(0, 1))));
+						startActivity(new Intent(Computer.this, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
 					}
 				});
 			} else {
@@ -98,7 +98,7 @@ public class Computer extends CoreActivity {
 		else if (!wh.isChecked() && !bh.isChecked())
 			mode = 3;
 
-		mainApp.getSharedDataEditor().putString("saving", "");
+		mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, "");
 		mainApp.getSharedDataEditor().commit();
 
 		FlurryAgent.onEvent("New Game VS Computer", null);

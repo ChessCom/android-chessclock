@@ -47,8 +47,8 @@ public class Notifications extends Service {
 						if (mainApp == null || mainApp.getSharedData() == null) {
 							return;
 						}
-						if ((counter <= 5 || (counter % 15 == 0 && counter <= 60) || counter % 60 == 0) && !mainApp.guest && !mainApp.getSharedData().getString("user_token", "").equals("")) {
-							response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id=" + mainApp.getSharedData().getString("user_token", ""), "GET", null, null);
+						if ((counter <= 5 || (counter % 15 == 0 && counter <= 60) || counter % 60 == 0) && !mainApp.guest && !mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "").equals("")) {
+							response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""), "GET", null, null);
 							if (response.trim().contains("Success+1")) {
 								/*String[] tmp = response.trim().split(":");
 														notification_message = tmp[1];
@@ -72,7 +72,7 @@ public class Notifications extends Service {
 							NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 							Notification notification = new Notification(R.drawable.ccpawn32x32, "ChessCom", System.currentTimeMillis());
 
-							//int Notif = mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "")+"notif", 0);
+							//int Notif = mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")+"notif", 0);
 
 							/*switch (Notif) {
 						  case 0:

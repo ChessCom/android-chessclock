@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.model.Message;
 
@@ -41,7 +42,7 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 			if (owner != null) {
 				if (el.owner.equals("0")) {
 					owner.setTextColor(Color.GREEN);
-					owner.setText(activity.getMainApp().getSharedData().getString("username", ""));
+					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.USERNAME, ""));
 				} else {
 					owner.setTextColor(Color.RED);
 					owner.setText(activity.getMainApp().getSharedData().getString("opponent", ""));

@@ -50,7 +50,7 @@ public class Tabs extends TabActivity {
 		removeAds.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") +
+						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
 			}
 		});
@@ -107,13 +107,13 @@ public class Tabs extends TabActivity {
 					tab = 2;
 					Notifications.resetCounter();
 					if (mainApp.getSharedDataEditor() != null) {
-						mainApp.getSharedDataEditor().putInt("gamestype", 1);
+						mainApp.getSharedDataEditor().putInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
 						mainApp.getSharedDataEditor().commit();
 					}
 				} else {
 					tab = extras.getInt(AppConstants.TAB_INDEX, 0);
 					if (tab != 0 && mainApp.getSharedDataEditor() != null) {
-						mainApp.getSharedDataEditor().putInt("gamestype", 1);
+						mainApp.getSharedDataEditor().putInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
 						mainApp.getSharedDataEditor().commit();
 					}
 				}
@@ -125,18 +125,13 @@ public class Tabs extends TabActivity {
 		getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {
-				//System.out.println("LCCLOG2: ONTABCHANGED");
 				if (MobclixHelper.isShowAds(mainApp)) {
 					if (tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6")) {
-						//System.out.println("LCCLOG2: ONTABCHANGED 1");
 						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, Tabs.this, mainApp);
 					} else if (tabId.equals("tab4")) {
-						//System.out.println("LCCLOG2: ONTABCHANGED 2");
 						MobclixHelper.hideBannerAd(mainApp, removeAds);
 					}
-					//System.out.println("LCCLOG2: ONTABCHANGED 3");
 				}
-				//System.out.println("LCCLOG2: ONTABCHANGED 4");
 			}
 		});
 

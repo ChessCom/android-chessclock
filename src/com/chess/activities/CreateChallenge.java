@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
@@ -38,7 +39,7 @@ public class CreateChallenge extends CoreActivity {
 			initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 			bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
-			initialTime.setText(mainApp.getSharedData().getString("initialTime", "5"));
+			initialTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
 			initialTime.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -68,11 +69,11 @@ public class CreateChallenge extends CoreActivity {
 
 				@Override
 				public CharSequence fixText(CharSequence invalidText) {
-					return mainApp.getSharedData().getString("initialTime", "5");
+					return mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5");
 				}
 			});
 			initialTime.setOnEditorActionListener(null);
-			bonusTime.setText(mainApp.getSharedData().getString("bonusTime", "0"));
+			bonusTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
 			bonusTime.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -102,7 +103,7 @@ public class CreateChallenge extends CoreActivity {
 
 				@Override
 				public CharSequence fixText(CharSequence invalidText) {
-					return mainApp.getSharedData().getString("bonusTime", "0");
+					return mainApp.getSharedData().getString(AppConstants.CHALLENGE_BONUS_TIME, "0");
 				}
 			});
 
@@ -113,9 +114,9 @@ public class CreateChallenge extends CoreActivity {
 			iplayas = (Spinner) findViewById(R.id.iplayas);
 		}
 		minrating = (Spinner) findViewById(R.id.minRating);
-		minrating.setSelection(mainApp.getSharedData().getInt("minrating", 0));
+		minrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 		maxrating = (Spinner) findViewById(R.id.maxRating);
-		maxrating.setSelection(mainApp.getSharedData().getInt("maxrating", 0));
+		maxrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
 		findViewById(R.id.createchallenge).setOnClickListener(new OnClickListener() {
@@ -255,7 +256,7 @@ public class CreateChallenge extends CoreActivity {
 					if (chess960.isChecked())
 						gametype = 2;
 
-					String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString("user_token", "") +
+					String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 							"&timepermove=" + days +
 							"&iplayas=" + color +
 							"&israted=" + israted +
@@ -288,10 +289,10 @@ public class CreateChallenge extends CoreActivity {
 	public void Update(int code) {
 		if (code == 0) {
 			if (mainApp.isLiveChess()) {
-				mainApp.getSharedDataEditor().putString("initialTime", initialTime.getText().toString().trim());
-				mainApp.getSharedDataEditor().putString("bonusTime", bonusTime.getText().toString().trim());
-				mainApp.getSharedDataEditor().putInt("minrating", minrating.getSelectedItemPosition());
-				mainApp.getSharedDataEditor().putInt("maxrating", maxrating.getSelectedItemPosition());
+				mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+				mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+				mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
+				mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
 				mainApp.getSharedDataEditor().commit();
 				//mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
 			} else {

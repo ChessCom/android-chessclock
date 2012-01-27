@@ -85,9 +85,9 @@ public class BoardView extends ImageView {
 		if (board.mode == 4 && !board.analysis) {
 			boolean ssb;
 			if (mainApp.isLiveChess()) {
-				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "ssblive", false);
+				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 			} else {
-				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "ssb", true);
+				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
 			}
 			if (ssb) {
 				activity.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
@@ -100,11 +100,11 @@ public class BoardView extends ImageView {
 			return;
 		switch (board.mode) {
 			case 0: {	//w - human; b - comp
-				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
 			case 1: {	//w - comp; b - human
-				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString("username", "") + "strength", 0)]);
+				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
 			case 6: {
@@ -128,7 +128,7 @@ public class BoardView extends ImageView {
 				saving += "|" + m.from + ":" + m.to + ":" + m.promote + ":" + m.bits;
 			}
 
-			mainApp.getSharedDataEditor().putString("saving", saving);
+			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, saving);
 			mainApp.getSharedDataEditor().commit();
 		}
 
@@ -286,7 +286,7 @@ public class BoardView extends ImageView {
 			}
 		}
 
-		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "coords", true)) {
+		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_COORDINATES, true)) {
 			for (i = 0; i < 8; i++) {
 				if (board.reside) {
 					canvas.drawText(nums[i], 2, i * square + 12, black);
@@ -298,7 +298,7 @@ public class BoardView extends ImageView {
 			}
 		}
 
-		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString("username", "") + "highlights", true) && board.hply > 0 && !compmoving) {
+		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true) && board.hply > 0 && !compmoving) {
 			Move m = board.histDat[board.hply - 1].m;
 			int x1 = Board.COL(m.from, board.reside);
 			int y1 = Board.ROW(m.from, board.reside);
@@ -591,9 +591,9 @@ public class BoardView extends ImageView {
 					(board.mode == 4 && board.hply < board.movesCount))
 				return true;
 			if (board.mode == 4 && mainApp.getCurrentGame() != null) {
-				if (mainApp.getCurrentGame().values.get("white_username").toLowerCase().equals(mainApp.getSharedData().getString("username", "")) && board.movesCount % 2 != 0)
+				if (mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 != 0)
 					return true;
-				if (mainApp.getCurrentGame().values.get("black_username").toLowerCase().equals(mainApp.getSharedData().getString("username", "")) && board.movesCount % 2 == 0)
+				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 == 0)
 					return true;
 			}
 			if ((board.mode == 0 && board.hply % 2 != 0) || (board.mode == 1 && board.hply % 2 == 0)) {

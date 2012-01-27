@@ -52,7 +52,7 @@ public class OnlineNewGame extends CoreActivity {
 		removeAds.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") +
+						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
 			}
 		});
@@ -144,7 +144,7 @@ public class OnlineNewGame extends CoreActivity {
 									@Override
 									public void onClick(DialogInterface d, int pos) {
 										if (pos == 0) {
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString("user_token", "") + "&acceptinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
+											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
 											if (result.contains("Success")) {
 												Update(2);
 											} else if (result.contains("Error+")) {
@@ -154,7 +154,7 @@ public class OnlineNewGame extends CoreActivity {
 											}
 										} else if (pos == 1) {
 
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString("user_token", "") + "&declineinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
+											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
 											if (result.contains("Success")) {
 												Update(3);
 											} else if (result.contains("Error+")) {
@@ -236,7 +236,7 @@ public class OnlineNewGame extends CoreActivity {
 				if (!mainApp.isLiveChess()) {
 					appService.RunRepeatbleTask(Online.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							"http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
-									mainApp.getSharedData().getString("user_token", ""),
+									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
 							null/*progressDialog = MyProgressDialog
                                         .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
 				} else {

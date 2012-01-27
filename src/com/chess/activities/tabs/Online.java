@@ -63,7 +63,7 @@ public class Online extends CoreActivity {
 								public void onClick(DialogInterface dialog, int whichButton) {
 									if (appService != null) {
 										appService.RunSingleTask(4,
-												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=ACCEPTDRAW&timestamp=" + el.values.get(AppConstants.TIMESTAMP),
+												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=ACCEPTDRAW&timestamp=" + el.values.get(AppConstants.TIMESTAMP),
 												null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 										);
 									}
@@ -73,7 +73,7 @@ public class Online extends CoreActivity {
 								public void onClick(DialogInterface dialog, int whichButton) {
 									if (appService != null) {
 										appService.RunSingleTask(4,
-												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=DECLINEDRAW&timestamp=" + el.values.get(AppConstants.TIMESTAMP),
+												"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=DECLINEDRAW&timestamp=" + el.values.get(AppConstants.TIMESTAMP),
 												null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 										);
 									}
@@ -189,9 +189,9 @@ public class Online extends CoreActivity {
 		setContentView(R.layout.online);
 
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString("user_token", ""),
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString("user_token", "") + "&all=1",
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString("user_token", "")};
+				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
+				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
 
 		gamesType = (Spinner) findViewById(R.id.gamestypes);
 		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
@@ -235,14 +235,14 @@ public class Online extends CoreActivity {
 		gamesType.post(new Runnable() {
 			@Override
 			public void run() {
-				gamesType.setSelection(mainApp.getSharedData().getInt("gamestype", 1));
+				gamesType.setSelection(mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1));
 			}
 		});
 		gamesType.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				gamesAdapter = null;
-				mainApp.getSharedDataEditor().putInt("gamestype", pos);
+				mainApp.getSharedDataEditor().putInt(AppConstants.ONLINE_GAME_LIST_TYPE, pos);
 				mainApp.getSharedDataEditor().commit();
 				if (compleated && appService != null && appService.getRepeatableTimer() != null) {
 					onPause();
@@ -342,7 +342,7 @@ public class Online extends CoreActivity {
 									@Override
 									public void onClick(DialogInterface d, int pos) {
 										if (pos == 0) {
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString("user_token", "") + "&acceptinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
+											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
 											if (result.contains("Success")) {
 												Update(2);
 											} else if (result.contains("Error+")) {
@@ -352,7 +352,7 @@ public class Online extends CoreActivity {
 											}
 										} else if (pos == 1) {
 
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString("user_token", "") + "&declineinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
+											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
 											if (result.contains("Success")) {
 												Update(3);
 											} else if (result.contains("Error+")) {
@@ -408,7 +408,7 @@ public class Online extends CoreActivity {
 										String Draw = "OFFERDRAW";
 										if (el.values.get("is_draw_offer_pending").equals("p"))
 											Draw = "ACCEPTDRAW";
-										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=" + Draw + "&timestamp=" + el.values.get(AppConstants.TIMESTAMP), "GET", null, null);
+										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=" + Draw + "&timestamp=" + el.values.get(AppConstants.TIMESTAMP), "GET", null, null);
 										if (result.contains("Success")) {
 											mainApp.ShowMessage(getString(R.string.accepted));
 											Update(1);
@@ -418,7 +418,7 @@ public class Online extends CoreActivity {
 											//mainApp.ShowDialog(Online.this, "Error", result);
 										}
 									} else if (pos == 2) {
-										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString("user_token", "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=RESIGN&timestamp=" + el.values.get(AppConstants.TIMESTAMP), "GET", null, null);
+										String result = Web.Request("http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=RESIGN&timestamp=" + el.values.get(AppConstants.TIMESTAMP), "GET", null, null);
 										if (result.contains("Success")) {
 											Update(1);
 										} else if (result.contains("Error+")) {
@@ -447,17 +447,17 @@ public class Online extends CoreActivity {
 					GOTO = URLEncoder.encode(GOTO, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 				}
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=" + GOTO)));
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
 			}
 		});
 		findViewById(R.id.stats).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/" + mainApp.getSharedData().getString("username", "");
+				String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/" + mainApp.getSharedData().getString(AppConstants.USERNAME, "");
 				try {
 					GOTO = URLEncoder.encode(GOTO, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 				}
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString("user_token", "") + "&goto=" + GOTO)));
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
 			}
 		});
 		currentGame = (Button) findViewById(R.id.currentGame);
@@ -504,8 +504,8 @@ public class Online extends CoreActivity {
 					button.setText(startNewGameButton.getText());
 					button.setOnClickListener(new OnClickListener() {
 						public void onClick(View view) {
-							mainApp.getSharedDataEditor().putString("initialTime", "" + startNewGameButton.getMin());
-							mainApp.getSharedDataEditor().putString("bonusTime", "" + startNewGameButton.getSec());
+							mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, "" + startNewGameButton.getMin());
+							mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, "" + startNewGameButton.getSec());
 							mainApp.getSharedDataEditor().commit();
 							startActivity(new Intent(Online.this, CreateChallenge.class));
 						}
@@ -536,7 +536,7 @@ public class Online extends CoreActivity {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
 					appService.RunRepeatbleTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							queries[mainApp.getSharedData().getInt("gamestype", 1)],
+							queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
 							null/*progressDialog = MyProgressDialog
                                         .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
 				} else {
@@ -547,7 +547,7 @@ public class Online extends CoreActivity {
 				}
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
-			int t = mainApp.getSharedData().getInt("gamestype", 1);
+			int t = mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
 			gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().clear();
