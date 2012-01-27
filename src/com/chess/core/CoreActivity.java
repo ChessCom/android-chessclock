@@ -50,6 +50,8 @@ public abstract class CoreActivity extends Activity {
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
 	private PowerManager.WakeLock wakeLock;
+    protected String response = "";
+    protected String responseRepeatable = "";
 
 	public abstract void LoadNext(int code);
 
@@ -248,22 +250,23 @@ public abstract class CoreActivity extends Activity {
 			progressDialog.dismiss();
 	}
 
-	public String response = "", rep_response = "";
-
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// getting extras
 			Bundle rExtras = intent.getExtras();
-			boolean repeatble = false;
-			String resp = "";
-			int retCode = -2;
-			try {
-				repeatble = rExtras.getBoolean("repeatble");
-				if (repeatble)
-					resp = rep_response = rExtras.getString("result");
-				else
-					resp = response = rExtras.getString("result");
+            boolean repeatable;
+            String resp = "";
+            int retCode = -2;
+            try {
+                repeatable = rExtras.getBoolean(AppConstants.REPEATABLE);
+                resp = rExtras.getString(AppConstants.REQUEST_RESULT);
+                if (repeatable) {
+                    responseRepeatable = resp;
+                }
+                else {
+                    response = resp;
+                }
 
 				retCode = rExtras.getInt("code");
 			} catch (Exception e) {
@@ -520,7 +523,7 @@ public abstract class CoreActivity extends Activity {
 				 * connectingIndicator.setOnCancelListener(new
 				 * DialogInterface.OnCancelListener() { public void
 				 * onCancel(DialogInterface dialog) {
-				 * 
+				 *
 				 * final Intent intent = new Intent(mainApp, Singin.class);
 				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				 * //connectingIndicator.dismiss(); lccHolder.logout();
@@ -687,7 +690,7 @@ public abstract class CoreActivity extends Activity {
 	/*
 	 * private BroadcastReceiver networkChangeNotificationReceiver = new
 	 * BroadcastReceiver() {
-	 * 
+	 *
 	 * @Override public void onReceive(Context context, Intent intent) { if
 	 * (mainApp.isNetworkChangedNotification()) {
 	 * showNetworkChangeNotification(); } } };
