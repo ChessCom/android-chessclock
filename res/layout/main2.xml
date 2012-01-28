@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dot="http://schemas.android.com/apk/res/com.chess"
+    android:id="@id/mainView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+         <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello" />
+    -->
+    <!--
+             <com.chess.dashboard_test.CenteredButton
+            android:id="@id/playLiveFrame"
+            style="@style/DashboardButton"
+            dot:buttonText="Play Live"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            />
+    -->
+- 
+
+    <com.chess.views.DashBoardLayout2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.chess.views.CenteredButton
+            android:id="@id/playLiveFrame"
+            style="@style/DashboardButton"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            dot:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/playOnlineFrame"
+            style="@style/DashboardButton"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            dot:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/playComputerFrame"
+            style="@style/DashboardButton"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            dot:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/tacticsTrainerFrame"
+            style="@style/DashboardButton"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            dot:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/videoLessonsFrame"
+            style="@style/DashboardButton"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            dot:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/logOutFrame"
+            style="@style/DashboardButton"
+            dot:buttonDrawable="@drawable/dashboard_button2"
+            dot:buttonText="Play Live" />
+    </com.chess.views.DashBoardLayout2>
+
+</LinearLayout>

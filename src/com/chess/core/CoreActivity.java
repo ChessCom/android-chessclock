@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,14 +51,20 @@ public abstract class CoreActivity extends Activity {
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
 	private PowerManager.WakeLock wakeLock;
-    protected String response = "";
-    protected String responseRepeatable = "";
+	protected String response = "";
+	protected String responseRepeatable = "";
 
 	public abstract void LoadNext(int code);
 
 	public abstract void LoadPrev(int code);
 
 	public abstract void Update(int code);
+
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		getWindow().setFormat(PixelFormat.RGBA_8888);
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -255,18 +262,17 @@ public abstract class CoreActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			// getting extras
 			Bundle rExtras = intent.getExtras();
-            boolean repeatable;
-            String resp = "";
-            int retCode = -2;
-            try {
-                repeatable = rExtras.getBoolean(AppConstants.REPEATABLE);
-                resp = rExtras.getString(AppConstants.REQUEST_RESULT);
-                if (repeatable) {
-                    responseRepeatable = resp;
-                }
-                else {
-                    response = resp;
-                }
+			boolean repeatable;
+			String resp = "";
+			int retCode = -2;
+			try {
+				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE);
+				resp = rExtras.getString(AppConstants.REQUEST_RESULT);
+				if (repeatable) {
+					responseRepeatable = resp;
+				} else {
+					response = resp;
+				}
 
 				retCode = rExtras.getInt(AppConstants.CALLBACK_CODE);
 			} catch (Exception e) {
@@ -523,7 +529,7 @@ public abstract class CoreActivity extends Activity {
 				 * connectingIndicator.setOnCancelListener(new
 				 * DialogInterface.OnCancelListener() { public void
 				 * onCancel(DialogInterface dialog) {
-				 *
+				 * 
 				 * final Intent intent = new Intent(mainApp, Singin.class);
 				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				 * //connectingIndicator.dismiss(); lccHolder.logout();
@@ -690,7 +696,7 @@ public abstract class CoreActivity extends Activity {
 	/*
 	 * private BroadcastReceiver networkChangeNotificationReceiver = new
 	 * BroadcastReceiver() {
-	 *
+	 * 
 	 * @Override public void onReceive(Context context, Intent intent) { if
 	 * (mainApp.isNetworkChangedNotification()) {
 	 * showNetworkChangeNotification(); } } };

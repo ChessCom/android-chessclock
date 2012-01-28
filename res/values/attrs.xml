@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are attributes used with 'DraggableDot' drawables in
+         view/DragAndDropActivity.java and view/DraggableDot.java -->
+    <declare-styleable name="CenteredButton">
+
+        <attr name="buttonDrawable" format="dimension" />
+        <attr name="buttonText" format="reference|string" />
+    </declare-styleable>
+</resources>

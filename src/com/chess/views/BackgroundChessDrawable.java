@@ -40,7 +40,7 @@ public class BackgroundChessDrawable extends Drawable {
 	private float width;
 	private float height;
 
-	private final int blackColor = 0xFF000000;
+	private final int blackColor = 0x99000000;
 	private int screenOrientation;
 
 	public BackgroundChessDrawable(Context context) {

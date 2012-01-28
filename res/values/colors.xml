@@ -39,4 +39,8 @@
     <color name="f_stroke">#FF899dc2</color>
     
     <color name="dashboard_button">#FF3d3d3d</color>
+    
+    <color name="top_bar_1">#FF81d124</color>
+    <color name="top_bar_2">#FF63b81f</color>
+    <color name="top_bar_3">#FF006402</color>
 </resources>
