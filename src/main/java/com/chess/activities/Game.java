@@ -1978,6 +1978,8 @@ public class Game extends CoreActivity {
 	protected void onResume() {
 		if (MobclixHelper.isShowAds(App) && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null)
 		{
+			adviewWrapper.removeView(getRectangleAdview());
+
 			adviewWrapper.addView(getRectangleAdview());
 			if (App.isForceRectangleAd())
 			{

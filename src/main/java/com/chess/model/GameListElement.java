@@ -35,7 +35,9 @@ public class GameListElement {
 				  this.values.put("playas_color", values[6]);
 				  this.values.put("days_per_move", values[7]);
 				  this.values.put("game_type", values[8]);
-				  this.values.put("initial_setup_fen", values[9]);
+				  this.values.put("rated", values[9]);
+				  this.values.put("initial_setup_fen", values[10]);
+				  //this.values.put("initial_setup_fen", values[9]); // api ver 1
         }
 
 				break;

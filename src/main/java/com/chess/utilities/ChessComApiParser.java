@@ -23,7 +23,7 @@ public class ChessComApiParser {
 
 		int i, a;
 		for(i=1;i<=count;i++){
-			String[] tmp = new String[10];
+			String[] tmp = new String[11];
 			a = 0;
 			for(String s: g[i].split(":")){
 				tmp[a++] = s;
@@ -42,7 +42,7 @@ public class ChessComApiParser {
 
 		int i, a;
 		for(i=1;i<=count;i++){
-			String[] tmp = new String[10];
+			String[] tmp = new String[11];
 			a = 0;
 			for(String s: g[i].split(":")){
 				tmp[a++] = s;

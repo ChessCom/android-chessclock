@@ -254,7 +254,7 @@ public class OnlineNewGame extends CoreActivity {
         if(!App.isLiveChess())
         {
           appService.RunRepeatbleTask(Online.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-                                      "http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
+                                      "http://www." + LccHolder.HOST + "/api/v2/echess_open_invites?id=" +
                                       App.sharedData.getString("user_token", ""),
                                       null/*PD = MyProgressDialog
                                         .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);

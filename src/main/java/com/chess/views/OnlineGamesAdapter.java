@@ -93,8 +93,19 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
           }
           System.out.println("!!!!!!!! el.values.get(\"opponent_rating\") = " + el.values.get("opponent_rating"));*/
 
-          final String opponentRating =
-            (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) ? "" : "(" + el.values.get("opponent_rating") + ")";
+			String opponentRating;
+			if (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) {
+				opponentRating = "";
+			}
+			else if (!el.isLiveChess && el.values.get("rated").equals("0")) {
+				opponentRating = "(" + el.values.get("opponent_rating") + ") Unrated";
+			}
+			else {
+				opponentRating = "(" + el.values.get("opponent_rating") + ")";
+			}
+
+          /*final String opponentRating =
+            (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) ? "" : "(" + el.values.get("opponent_rating") + ")";*/
           final String prefix =
             (el.isLiveChess && el.values.get("is_direct_challenge").equals("0")) && el.values.get("is_released_by_me").equals("1") ?
             "(open)" : el.values.get("opponent_username");
