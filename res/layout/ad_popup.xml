@@ -1,39 +1,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/layout_root"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:padding="1dp"
-    >
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="1dp" >
 
-    <TextView android:id="@+id/endOfGameMessage" android:layout_height="wrap_content"
-              android:layout_width="wrap_content"
-              android:textColor="#ffffcc" android:textStyle="bold" android:layout_gravity="center"
-              android:layout_centerHorizontal="true" android:layout_margin="2dip"></TextView>
+    <TextView
+        android:id="@+id/endOfGameMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_margin="2dip"
+        android:textColor="#ffffcc"
+        android:textStyle="bold" >
+    </TextView>
 
     <LinearLayout
         android:id="@+id/adview_wrapper"
-        android:layout_height="250dip"
         android:layout_width="300dip"
-        android:layout_gravity="center"/>
+        android:layout_height="250dip"
+        android:layout_gravity="center" />
 
-    <LinearLayout android:id="@+id/endOfGameButtons"
-                  android:layout_width="fill_parent" android:layout_height="wrap_content"
-                  android:layout_gravity="center" android:textColor="#222"
-                  android:layout_marginTop="2dip" android:layout_marginLeft="2dip" android:layout_marginRight="2dip">
-        <Button android:id="@+id/newGame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Game"
-                android:layout_weight="1"
-                android:visibility="gone"></Button>
+    <LinearLayout
+        android:id="@+id/endOfGameButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="2dip"
+        android:layout_marginRight="2dip"
+        android:layout_marginTop="2dip"
+        android:textColor="#222" >
 
-        <Button android:id="@+id/home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:layout_weight="1"
-                android:visibility="gone"></Button>
+        <Button
+            android:id="@+id/newGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="New Game"
+            android:visibility="gone" >
+        </Button>
+
+        <Button
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Home"
+            android:visibility="gone" >
+        </Button>
     </LinearLayout>
 
 </LinearLayout>

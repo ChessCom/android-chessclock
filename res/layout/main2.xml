@@ -20,7 +20,7 @@
             dot:buttonDrawable="@drawable/dashboard_button2"
             />
     -->
-- 
+    -
 
     <com.chess.views.DashBoardLayout2
         android:layout_width="match_parent"

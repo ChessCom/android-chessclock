@@ -1,8 +1,5 @@
 package com.chess.activities.tabs;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
@@ -11,13 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.chess.R;
 import com.chess.activities.Preferences;
 import com.chess.core.AppConstants;
@@ -29,10 +21,14 @@ import com.chess.views.HomeListItem;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Home extends CoreActivity implements View.OnClickListener, OnItemClickListener {
 
 	private ListView listView;
 	private LayoutInflater inflater;
+	private MobFullScreeListener mobFullScreeListener;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -62,26 +58,12 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 		listView.setAdapter(new HomeListAdapter(itemList));
 		listView.setOnItemClickListener(this);
 
-//
-//		findViewById(R.id.logout).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				if (!mainApp.guest) {
-//					if (mainApp.isLiveChess()/* && lccHolder.isConnected() */) {
-//						lccHolder.logout();
-//					}
-//					mainApp.getSharedDataEditor().putString("password", "");
-//					mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
-//					mainApp.getSharedDataEditor().commit();
-//				}
-//				startActivity(new Intent(Home.this, Singin.class));
-//				finish();
-//			}
-//		});		
 
 		findViewById(R.id.settings).setOnClickListener(this);
 		findViewById(R.id.upgrade).setOnClickListener(this);
 		findViewById(R.id.help).setOnClickListener(this);
+
+		mobFullScreeListener = new MobFullScreeListener();
 	}
 
 	private HomeListItem setHomeItem(String text, int imageId) {
@@ -112,43 +94,46 @@ public class Home extends CoreActivity implements View.OnClickListener, OnItemCl
 		super.onResume();
 	}
 
+	private class MobFullScreeListener implements MobclixFullScreenAdViewListener{
+
+		@Override
+		public String query() {
+			return null;
+		}
+
+		@Override
+		public void onPresentAd(MobclixFullScreenAdView arg0) {
+			System.out.println("mobclix fullscreen onPresentAd");
+
+		}
+
+		@Override
+		public void onFinishLoad(MobclixFullScreenAdView arg0) {
+			System.out.println("mobclix fullscreen onFinishLoad");
+
+		}
+
+		@Override
+		public void onFailedLoad(MobclixFullScreenAdView adView, int errorCode) {
+			System.out.println("mobclix fullscreen onFailedLoad errorCode=" + errorCode);
+		}
+
+		@Override
+		public void onDismissAd(MobclixFullScreenAdView arg0) {
+			System.out.println("mobclix fullscreen onDismissAd");
+		}
+
+		@Override
+		public String keywords() {
+			return null;
+		}
+	}
+
 	private void showFullscreenAd() {
-		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && MobclixHelper.isShowAds(mainApp)) {
+		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
+				&& MobclixHelper.isShowAds(mainApp)) {
 			MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
-			fsAdView.addMobclixAdViewListener(new MobclixFullScreenAdViewListener() {
-
-				@Override
-				public String query() {
-					return null;
-				}
-
-				@Override
-				public void onPresentAd(MobclixFullScreenAdView arg0) {
-					System.out.println("mobclix fullscreen onPresentAd");
-
-				}
-
-				@Override
-				public void onFinishLoad(MobclixFullScreenAdView arg0) {
-					System.out.println("mobclix fullscreen onFinishLoad");
-
-				}
-
-				@Override
-				public void onFailedLoad(MobclixFullScreenAdView adView, int errorCode) {
-					System.out.println("mobclix fullscreen onFailedLoad errorCode=" + errorCode);
-				}
-
-				@Override
-				public void onDismissAd(MobclixFullScreenAdView arg0) {
-					System.out.println("mobclix fullscreen onDismissAd");
-				}
-
-				@Override
-				public String keywords() {
-					return null;
-				}
-			});
+			fsAdView.addMobclixAdViewListener(mobFullScreeListener);
 			fsAdView.requestAndDisplayAd();
 
 			// MoPubInterstitial interstitial = new MoPubInterstitial(this,

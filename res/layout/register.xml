@@ -1,74 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_height="fill_parent"
-              android:layout_width="fill_parent">
-    <TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip"
-              android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff"
-              android:text="@string/singupButton"></TextView>
-    <ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="3dip"
+        android:text="@string/singupButton"
+        android:textColor="#fff"
+        android:textSize="16dip"
+        android:textStyle="bold" >
+    </TextView>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="5dip"
+        android:background="#00bb00" >
+    </ImageView>
+
     <ScrollView
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
-        <LinearLayout android:layout_width="fill_parent" android:orientation="vertical"
-                      android:layout_height="fill_parent" android:padding="10dip">
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:gravity="center">
-                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                          android:text="@string/singinUsername" android:width="100dip" android:textSize="16dip"
-                          android:textStyle="bold" android:textColor="#fff"></TextView>
-                <EditText android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:id="@+id/RegUsername" android:inputType="text|textImeMultiLine"></EditText>
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:padding="10dip" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/singinUsername"
+                    android:textColor="#fff"
+                    android:textSize="16dip"
+                    android:textStyle="bold"
+                    android:width="100dip" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/RegUsername"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textImeMultiLine" >
+                </EditText>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:gravity="center">
-                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                          android:text="@string/email" android:width="100dip" android:textSize="16dip"
-                          android:textStyle="bold" android:textColor="#fff"></TextView>
-                <EditText android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:id="@+id/RegEmail" android:inputType="textImeMultiLine|textEmailAddress"></EditText>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:textColor="#fff"
+                    android:textSize="16dip"
+                    android:textStyle="bold"
+                    android:width="100dip" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/RegEmail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textImeMultiLine|textEmailAddress" >
+                </EditText>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:gravity="center">
-                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                          android:text="@string/singinPassword" android:width="100dip" android:textSize="16dip"
-                          android:textStyle="bold" android:textColor="#fff"></TextView>
-                <EditText android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:id="@+id/RegPassword" android:inputType="textImeMultiLine|textPassword"></EditText>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/singinPassword"
+                    android:textColor="#fff"
+                    android:textSize="16dip"
+                    android:textStyle="bold"
+                    android:width="100dip" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/RegPassword"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textImeMultiLine|textPassword" >
+                </EditText>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:gravity="center">
-                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                          android:text="@string/retype" android:width="100dip" android:textSize="16dip"
-                          android:textStyle="bold" android:textColor="#fff"></TextView>
-                <EditText android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:id="@+id/RegRetype" android:inputType="textImeMultiLine|textPassword"></EditText>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/retype"
+                    android:textColor="#fff"
+                    android:textSize="16dip"
+                    android:textStyle="bold"
+                    android:width="100dip" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/RegRetype"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textImeMultiLine|textPassword" >
+                </EditText>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"
-                          android:gravity="center">
-                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
-                          android:text="@string/country" android:width="100dip" android:textSize="16dip"
-                          android:textStyle="bold" android:textColor="#fff"></TextView>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/country"
+                    android:textColor="#fff"
+                    android:textSize="16dip"
+                    android:textStyle="bold"
+                    android:width="100dip" >
+                </TextView>
 
-                <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent"
-                         android:id="@+id/country"></Spinner>
+                <Spinner
+                    android:id="@+id/country"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+                </Spinner>
             </LinearLayout>
+
             <Button
                 android:id="@+id/RegSubmitBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/submit"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
-                />
-
+                android:text="@string/submit" />
         </LinearLayout>
-
     </ScrollView>
 
 </LinearLayout>

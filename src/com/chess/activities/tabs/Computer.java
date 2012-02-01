@@ -15,14 +15,17 @@ import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.flurry.android.FlurryAgent;
 
-public class Computer extends CoreActivity {
+public class Computer extends CoreActivity implements OnClickListener {
 
 	private Spinner strength;
+	private LogoutTask logoutTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer);
+		
+		logoutTask = new LogoutTask();
 
 		strength = (Spinner) findViewById(R.id.PrefStrength);
 		strength.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -51,18 +54,29 @@ public class Computer extends CoreActivity {
 	}
 
 	@Override
+	public void onClick(View view) { // make code more clear
+		if(view.getId() == R.id.load){
+			FlurryAgent.onEvent("New Game VS Computer", null);
+			startActivity(new Intent(Computer.this, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
+		}
+	}
+
+	private class LogoutTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			mainApp.getLccHolder().logout();
+			return null;
+		}
+	}
+
+	@Override
 	protected void onResume() {
 		if (mainApp.isLiveChess()) {
 			mainApp.setLiveChess(false);
-			new AsyncTask<Void, Void, Void>() {
-				@Override
-				protected Void doInBackground(Void... voids) {
-					mainApp.getLccHolder().logout();
-					return null;
-				}
-			}.execute();
+			logoutTask.execute();  // do not create new instance every time
 		}
 		super.onResume();
+		
 		if (strength != null && mainApp != null && mainApp.getSharedData() != null) {
 			strength.post(new Runnable() {
 				public void run() {
@@ -71,13 +85,7 @@ public class Computer extends CoreActivity {
 			});
 			if (!mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
-				findViewById(R.id.load).setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						FlurryAgent.onEvent("New Game VS Computer", null);
-						startActivity(new Intent(Computer.this, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
-					}
-				});
+				findViewById(R.id.load).setOnClickListener(this);
 			} else {
 				findViewById(R.id.load).setVisibility(View.GONE);
 			}

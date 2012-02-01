@@ -1,115 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainView"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:gravity="center"
-	android:padding="20dip"
-    >
-    
-	<!-- android:background="@drawable/back_image" -->
-    
-<!-- 	<com.chess.views.BackgroundChessView
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		/>   -->  
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:padding="20dip" >
+
+    <!-- android:background="@drawable/back_image" -->
+
+
+    <!--
+         	<com.chess.views.BackgroundChessView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    -->
+
     <ImageView
         android:id="@+id/logoImg"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:src="@drawable/logo"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/signin_logo_margin_top"
-        />
+        android:src="@drawable/logo" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@id/logoImg"
         android:layout_marginTop="@dimen/signin_main_margin_top"
-        >
+        android:orientation="vertical" >
+
         <EditText
             android:id="@+id/username"
-            android:inputType="textPersonName"
-            android:hint="@string/singinUsername"
+            style="@style/custom_edit_field"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/default_field_height"
             android:background="@drawable/rounded_button_top_default"
-            style="@style/custom_edit_field"
-            />
+            android:hint="@string/singinUsername"
+            android:inputType="textPersonName" />
+
         <EditText
             android:id="@+id/password"
-            android:inputType="textPersonName"
-            android:hint="@string/singinPassword"
-            android:password="true"
-            android:singleLine="true"
+            style="@style/custom_edit_field"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/default_field_height"
             android:background="@drawable/rounded_button_bot_default"
-            style="@style/custom_edit_field"
-            />
+            android:hint="@string/singinPassword"
+            android:inputType="textPersonName"
+            android:password="true"
+            android:singleLine="true" />
+
         <Button
             android:id="@+id/singin"
-            android:layout_gravity="center"
+            style="@style/signin_button"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/signin_button_height"
-            android:text="@string/singinButton"
-            style="@style/signin_button"
-            android:layout_marginTop="@dimen/signin_button_margin_updown"
+            android:layout_gravity="center"
             android:layout_marginBottom="@dimen/signin_button_margin_updown"
-            />
+            android:layout_marginTop="@dimen/signin_button_margin_updown"
+            android:text="@string/singinButton" />
+
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/signin_button_height"
             style="@style/f_button_login"
-            />
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/signin_button_height" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/signin_footer_margin_bottom"
-        >
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/dont_have_account_q"
-            android:gravity="center"
             style="@style/text_shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingBottom="10dip"
+            android:text="@string/dont_have_account_q"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            >
+            android:weightSum="2" >
+
             <Button
                 android:id="@+id/singup"
-                android:textStyle="bold"
+                style="@style/small_button_grey"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/small_button_height"
-                android:layout_weight="0.9"
-                style="@style/small_button_grey"
-                android:text="@string/singupButton"
                 android:layout_marginRight="3dip"
+                android:layout_weight="0.9"
+                android:text="@string/singupButton"
                 android:textColor="@android:color/white"
-                />
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/guestplay"
+                style="@style/small_button_grey"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/small_button_height"
-                android:layout_weight="1.1"
-                style="@style/small_button_grey"
-                android:text="@string/singinPlayguest"
                 android:layout_marginLeft="3dip"
-                android:textColor="@android:color/white"
-                />
+                android:layout_weight="1.1"
+                android:text="@string/singinPlayguest"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

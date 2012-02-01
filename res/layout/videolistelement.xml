@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_height="wrap_content"
-              android:layout_width="fill_parent"
-              android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
     <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:textColor="#fff"
-        android:textStyle="bold"
-        android:textSize="16dip"
         android:id="@+id/title"
-        android:text="@string/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#666"
         android:paddingBottom="5dip"
-        android:paddingTop="5dip"
         android:paddingLeft="10dip"
-        android:background="#666"/>
+        android:paddingTop="5dip"
+        android:text="@string/title"
+        android:textColor="#fff"
+        android:textSize="16dip"
+        android:textStyle="bold" />
+
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="2dip"
-        android:background="#ccc"
-        />
+        android:background="#ccc" />
+
     <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:textColor="#fff"
-        android:textStyle="bold"
         android:id="@+id/times"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="3dip"
-        android:gravity="center"
-        />
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
         android:textColor="#fff"
-        android:padding="2dip"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/desc"
-        android:maxLines="4"
-        />
-    <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:gravity="center"
-        >
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:padding="2dip"
+        android:textColor="#fff" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textStyle="bold"
-            android:textSize="16dip"
             android:id="@+id/addinfo"
-            android:padding="2dip"
-            android:textColor="#00bb00"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            />
+            android:padding="2dip"
+            android:textColor="#00bb00"
+            android:textSize="16dip"
+            android:textStyle="bold" />
+
         <Button
-            android:layout_width="wrap_content"
             android:id="@+id/fulldesc"
-            android:text="@string/details"
+            android:layout_width="wrap_content"
             android:layout_height="42dip"
-            />
+            android:text="@string/details" />
+
         <Button
             android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/playvideo"
             android:layout_gravity="top"
-            />
+            android:text="@string/playvideo" />
     </LinearLayout>
 
 </LinearLayout>

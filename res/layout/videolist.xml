@@ -1,22 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip"
-              android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff"
-              android:text="@string/videos"></TextView>
-    <ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="3dip"
+        android:text="@string/videos"
+        android:textColor="#fff"
+        android:textSize="16dip"
+        android:textStyle="bold" >
+    </TextView>
 
-    <TextView android:layout_height="wrap_content"
-              android:layout_width="fill_parent" android:id="@+id/videoUpgrade"
-              android:text="@string/videoUpgrade" android:background="#ffffcd"
-              android:textColor="#0066cc" android:textStyle="bold"
-              android:drawableLeft="@drawable/star" android:padding="5px"
-              android:drawablePadding="10dp" android:visibility="gone"
-              android:textSize="16dip" android:gravity="left"></TextView>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="5dip"
+        android:background="#00bb00" >
+    </ImageView>
 
-    <ListView android:id="@+id/videosLV" android:layout_height="fill_parent"
-              android:layout_width="fill_parent"></ListView>
+    <TextView
+        android:id="@+id/videoUpgrade"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffcd"
+        android:drawableLeft="@drawable/star"
+        android:drawablePadding="10dp"
+        android:gravity="left"
+        android:padding="5px"
+        android:text="@string/videoUpgrade"
+        android:textColor="#0066cc"
+        android:textSize="16dip"
+        android:textStyle="bold"
+        android:visibility="gone" >
+    </TextView>
+
+    <ListView
+        android:id="@+id/videosLV"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
 
 </LinearLayout>

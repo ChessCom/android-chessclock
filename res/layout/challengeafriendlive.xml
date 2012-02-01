@@ -1,65 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent" android:layout_height="fill_parent">
-    <LinearLayout android:orientation="vertical"
-                  android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-        <TextView android:layout_height="wrap_content"
-                  android:layout_width="fill_parent" android:padding="3dip"
-                  android:gravity="center" android:textStyle="bold" android:textSize="16dip"
-                  android:textColor="#fff" android:text="@string/challengeFriend"></TextView>
-        <ImageView android:layout_width="fill_parent"
-                   android:layout_height="5dip" android:background="#00bb00"></ImageView>
-        <LinearLayout android:layout_width="fill_parent"
-                      android:layout_height="fill_parent" android:orientation="vertical" android:gravity="center">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="3dip"
+            android:text="@string/challengeFriend"
+            android:textColor="#fff"
+            android:textSize="16dip"
+            android:textStyle="bold" >
+        </TextView>
 
-            <LinearLayout android:layout_height="wrap_content"
-                          android:layout_width="fill_parent">
-                <TextView android:layout_height="wrap_content"
-                          android:layout_gravity="center" android:layout_width="120dip" android:textColor="#fff"
-                          android:layout_marginLeft="10dip" android:textSize="16dip"
-                          android:text="@string/Friend"></TextView>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:background="#00bb00" >
+        </ImageView>
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-                <Spinner android:layout_width="fill_parent" android:layout_weight="1"
-                         android:layout_height="wrap_content" android:id="@+id/friend"></Spinner>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="120dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dip"
+                    android:text="@string/Friend"
+                    android:textColor="#fff"
+                    android:textSize="16dip" >
+                </TextView>
+
+                <Spinner
+                    android:id="@+id/friend"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+                </Spinner>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
-                <TextView android:layout_height="wrap_content"
-                          android:layout_gravity="center" android:layout_width="120dip"
-                          android:textColor="#fff" android:layout_marginLeft="10dip"
-                          android:textSize="16dip" android:text="@string/initialTime">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="120dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dip"
+                    android:text="@string/initialTime"
+                    android:textColor="#fff"
+                    android:textSize="16dip" >
                 </TextView>
-                <AutoCompleteTextView android:text="" android:layout_width="fill_parent"
-                                      android:layout_weight="1" android:layout_height="wrap_content"
-                                      android:id="@+id/initialTime" android:inputType="number">
+
+                <AutoCompleteTextView
+                    android:id="@+id/initialTime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:text="" >
                 </AutoCompleteTextView>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">
-                <TextView android:layout_height="wrap_content"
-                          android:layout_gravity="center" android:layout_width="120dip"
-                          android:textColor="#fff" android:layout_marginLeft="10dip"
-                          android:textSize="16dip" android:text="@string/bonusTime">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="120dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dip"
+                    android:text="@string/bonusTime"
+                    android:textColor="#fff"
+                    android:textSize="16dip" >
                 </TextView>
-                <AutoCompleteTextView android:text="" android:layout_width="fill_parent"
-                                      android:layout_weight="1" android:layout_height="wrap_content"
-                                      android:id="@+id/bonusTime" android:inputType="number">
+
+                <AutoCompleteTextView
+                    android:id="@+id/bonusTime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:text="" >
                 </AutoCompleteTextView>
             </LinearLayout>
 
-            <LinearLayout android:layout_height="wrap_content"
-                          android:layout_width="fill_parent">
-                <TextView android:layout_height="wrap_content"
-                          android:layout_gravity="center" android:layout_width="120dip" android:textColor="#fff"
-                          android:textSize="16dip" android:layout_marginLeft="10dip"
-                          android:text="@string/RatedGme"></TextView>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
-                <CheckBox android:id="@+id/ratedGame" android:layout_height="wrap_content" android:gravity="center"
-                          android:checked="true" android:layout_weight="1" android:layout_width="fill_parent"
-                          android:textColor="#fff" android:text="@string/onoff"></CheckBox>
+                <TextView
+                    android:layout_width="120dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dip"
+                    android:text="@string/RatedGme"
+                    android:textColor="#fff"
+                    android:textSize="16dip" >
+                </TextView>
+
+                <CheckBox
+                    android:id="@+id/ratedGame"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/onoff"
+                    android:textColor="#fff" >
+                </CheckBox>
             </LinearLayout>
 
             <!--
@@ -69,20 +134,17 @@
                  android:layout_gravity="center" android:layout_width="120dip" android:textColor="#fff" android:textSize="16dip" android:layout_marginLeft="10dip" android:text="@string/IplayAs"></TextView>
              <Spinner android:layout_width="fill_parent" android:layout_weight="1"
                  android:layout_height="wrap_content" android:id="@+id/iplayas" android:entries="@array/playas"></Spinner>
-         </LinearLayout>
-         -->
+         </LinearLayout>
+            -->
 
             <Button
+                android:id="@+id/createchallenge"
                 android:layout_width="fill_parent"
-                android:text="@string/ChallengeCreate"
+                android:layout_height="wrap_content"
                 android:layout_margin="25dip"
                 android:background="@drawable/button_orange_selector"
-                android:id="@+id/createchallenge"
-                android:layout_height="wrap_content"/>
-
-
+                android:text="@string/ChallengeCreate" />
         </LinearLayout>
-
-
     </LinearLayout>
+
 </ScrollView>

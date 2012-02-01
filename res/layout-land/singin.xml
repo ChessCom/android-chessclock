@@ -1,74 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainView"
-             android:layout_width="fill_parent" 
-             android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <LinearLayout android:orientation="vertical"
-                  android:layout_height="fill_parent" android:layout_width="fill_parent"
-                  android:gravity="center">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" android:layout_gravity="center"
-                  android:textColor="#ef8a17" android:textStyle="bold"
-                  android:layout_marginTop="3px" android:text="@string/singinUsername"></TextView>
-        <EditText android:text="" android:layout_gravity="center"
-                  android:singleLine="true" android:id="@+id/username"
-                  android:layout_width="fill_parent" android:layout_height="50dip"
-                  android:layout_marginLeft="20dip" android:layout_marginRight="20dip"></EditText>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" android:layout_gravity="center"
-                  android:textColor="#ef8a17" android:textStyle="bold"
-                  android:text="@string/singinPassword"></TextView>
-        <EditText android:text="" android:layout_gravity="center"
-                  android:password="true" android:singleLine="true" android:id="@+id/password"
-                  android:layout_width="fill_parent" android:layout_height="50dip"
-                  android:layout_marginLeft="20dip" android:layout_marginRight="20dip"></EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3px"
+            android:text="@string/singinUsername"
+            android:textColor="#ef8a17"
+            android:textStyle="bold" >
+        </TextView>
 
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:singleLine="true"
+            android:text="" >
+        </EditText>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/singinPassword"
+            android:textColor="#ef8a17"
+            android:textStyle="bold" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:password="true"
+            android:singleLine="true"
+            android:text="" >
+        </EditText>
 
         <Button
-            android:layout_gravity="center"
             android:id="@+id/singin"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/default_button_height"
+            android:layout_gravity="center"
+            android:layout_marginBottom="3dip"
             android:layout_marginLeft="20dip"
             android:layout_marginRight="20dip"
-            android:layout_marginBottom="3dip"
-            android:text="@string/singinButton"
-            />
+            android:text="@string/singinButton" />
+
         <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
             <Button
-                android:layout_width="fill_parent"
-                android:layout_weight="1"
                 android:id="@+id/singup"
+                style="@style/big_button_grey"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="5dip"
-                android:layout_height="wrap_content"
-                android:text="@string/singupButton"
-                style="@style/big_button_grey"
-                />
-            <Button
-                android:layout_width="fill_parent"
                 android:layout_weight="1"
+                android:text="@string/singupButton" />
+
+            <Button
                 android:id="@+id/guestplay"
+                style="@style/big_button_grey"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="20dip"
-                android:text="@string/singinPlayguest"
-                style="@style/big_button_grey"
-                />
+                android:layout_weight="1"
+                android:text="@string/singinPlayguest" />
         </LinearLayout>
+
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
+            style="@style/f_button_login"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/signin_button_height"
-            android:layout_marginRight="20dip"
+            android:layout_gravity="right"
             android:layout_marginLeft="5dip"
-            style="@style/f_button_login"
-            android:layout_gravity="right"/>
-
+            android:layout_marginRight="20dip" />
     </LinearLayout>
+
 </FrameLayout>
