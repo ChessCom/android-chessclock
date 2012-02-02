@@ -8,4 +8,6 @@ final public class HistoryData {
     boolean castleMask[] = {false, false, false, false};
     public int what = -1;
     public String notation;
+	public boolean whiteCanCastle = true;
+	public boolean blackCanCastle = true;
 }

@@ -147,6 +147,8 @@ public class Board {
     };
 
     public boolean castleMask[] = {false, false, false, false};
+	private boolean whiteCanCastle = true;
+	private boolean blackCanCastle = true;
 
     /* the values of the pieces */
     int pieceValue[] = {
@@ -229,10 +231,10 @@ public class Board {
 
     public int mode=0;
 
-    private final int BLACK_ROOK_1_INITIAL_POS = 0;
-    private final int BLACK_ROOK_2_INITIAL_POS = 7;
-    private final int WHITE_ROOK_1_INITIAL_POS = 56;
-    private final int WHITE_ROOK_2_INITIAL_POS = 63;
+    private int BLACK_ROOK_1_INITIAL_POS = 0;
+    private int BLACK_ROOK_2_INITIAL_POS = 7;
+    private int WHITE_ROOK_1_INITIAL_POS = 56;
+    private int WHITE_ROOK_2_INITIAL_POS = 63;
 
     public int bRook1 = BLACK_ROOK_1_INITIAL_POS;
 	  public int bKing = 4;
@@ -281,12 +283,22 @@ public class Board {
 			if(!castling.contains("Q")){
 				castleMask[3] = true;
 			}
+
+			if (!castling.contains("K") && !castling.contains("Q")) {
+				whiteCanCastle = false;
+			}
+
 			if(!castling.contains("k")){
 				castleMask[0] = true;
 			}
 			if(!castling.contains("q")){
 				castleMask[1] = true;
 			}
+
+			if (!castling.contains("k") && !castling.contains("q")) {
+				blackCanCastle = false;
+			}
+
 			Log.d(fen, ""+castleMask[2]+castleMask[3]+castleMask[0]+castleMask[1]);
 		}
 
@@ -295,10 +307,14 @@ public class Board {
 		boolean found = false;
 		for(i=0; i < FEN[0].length();i++){
 			if(FEN[0].charAt(i) == 'r'){
-				if(!found)
+				if(!found) {
 					bRook1 = i+offset;
-				else
+					BLACK_ROOK_1_INITIAL_POS = i+offset;
+				}
+				else {
 					bRook2 = i+offset;
+					BLACK_ROOK_2_INITIAL_POS = i+offset;
+				}
 				found = true;
 			}
 			if(FEN[0].charAt(i) == 'k'){
@@ -313,10 +329,14 @@ public class Board {
 		found = false;
 		for(i=0; i < FEN[7].length();i++){
 			if(FEN[7].charAt(i) == 'R'){
-				if(!found)
+				if(!found) {
 					wRook1 = i+offset;
-				else
+					WHITE_ROOK_1_INITIAL_POS = i+offset;
+				}
+				else {
 					wRook2 = i+offset;
+					WHITE_ROOK_2_INITIAL_POS = i+offset;
+				}
 				found = true;
 			}
 			if(FEN[7].charAt(i) == 'K'){
@@ -532,26 +552,45 @@ public class Board {
 	/* generate castle moves */
 	int i;
 	//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-	if (side == LIGHT) {
-            if (!castleMask[2]){
-            	for(i=0;i<wKingMoveOO.length;i++)
-            		genPush(ret, wKing, wKingMoveOO[i], 2);
-            }
-            if (!castleMask[3]){
-            	for(i=0;i<wKingMoveOOO.length;i++)
-            		genPush(ret, wKing, wKingMoveOOO[i], 2);
-            }
+	/*if (side == LIGHT && !castleMask[2] && !castleMask[3]) {
+		for(i = 0; i < wKingMoveOO.length; i++) {
+			genPush(ret, wKing, wKingMoveOO[i], 2);
+		}
+
+		for(i = 0 ; i < wKingMoveOOO.length; i++) {
+			genPush(ret, wKing, wKingMoveOOO[i], 2);
+		}
 	}
-	else {
-            if (!castleMask[0]){
-            	for(i=0;i<bKingMoveOO.length;i++)
-            		genPush(ret, bKing, bKingMoveOO[i], 2);
-            }
-            if (!castleMask[1]){
-            	for(i=0;i<bKingMoveOOO.length;i++)
-            		genPush(ret, bKing, bKingMoveOOO[i], 2);
-            }
-	}
+	else if (side == DARK && !castleMask[0] && !castleMask[1]) {
+		for(i = 0; i < bKingMoveOO.length; i++) {
+			genPush(ret, bKing, bKingMoveOO[i], 2);
+		}
+
+		for(i = 0; i < bKingMoveOOO.length; i++) {
+			genPush(ret, bKing, bKingMoveOOO[i], 2);
+		}
+	}*/
+
+		if (side == LIGHT) {
+			if (!castleMask[2] && whiteCanCastle){
+				for(i=0;i<wKingMoveOO.length;i++)
+					genPush(ret, wKing, wKingMoveOO[i], 2);
+			}
+			if (!castleMask[3] && whiteCanCastle){
+				for(i=0;i<wKingMoveOOO.length;i++)
+					genPush(ret, wKing, wKingMoveOOO[i], 2);
+			}
+		}
+		else {
+			if (!castleMask[0] && blackCanCastle){
+				for(i=0;i<bKingMoveOO.length;i++)
+					genPush(ret, bKing, bKingMoveOO[i], 2);
+			}
+			if (!castleMask[1] && blackCanCastle){
+				for(i=0;i<bKingMoveOOO.length;i++)
+					genPush(ret, bKing, bKingMoveOOO[i], 2);
+			}
+		}
 
 	/* generate en passant moves */
 	if (ep != -1) {
@@ -852,6 +891,8 @@ public class Board {
     	histDat[hply].ep = ep;
     	histDat[hply].fifty = fifty;
     	histDat[hply].castleMask = castleMask.clone();
+		histDat[hply].whiteCanCastle = whiteCanCastle;
+		histDat[hply].blackCanCastle = blackCanCastle;
     	histDat[hply].what = what;
     	if(what == 0 || what == 2)
     		histDat[hply].notation = "O-O";
@@ -861,28 +902,53 @@ public class Board {
 
     	/* update the castle, en passant, and
     	   fifty-move-draw variables */
-    	if(what != -1)	castleMask[what] = true;
+    	if(what != -1) {
+			castleMask[what] = true;
+			if (what == 0 || what == 1) {
+				blackCanCastle = false;
+			} else if (what == 2 || what == 3) {
+				whiteCanCastle = false;
+			}
+		}
     	if(piece[m.from] == KING){
         	if(side == DARK){
         		castleMask[0] = true;
         		castleMask[1] = true;
+				blackCanCastle = false;
         	} else{
         		castleMask[2] = true;
         		castleMask[3] = true;
+				whiteCanCastle = false;
         	}
         }
         //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
         if(piece[m.from] == ROOK){
         	if(side == DARK){
-        		if(m.from == bRook2)
+        		if(m.from == bRook2) {
         			castleMask[0] = true;
-        		if(m.from == bRook1)
+					if (castleMask[1]) {
+						blackCanCastle = false;
+					}
+				}
+        		if(m.from == bRook1) {
         			castleMask[1] = true;
-        	} else{
-        		if(m.from == wRook2)
+					if (castleMask[0]) {
+						blackCanCastle = false;
+					}
+				}
+        	} else {
+        		if(m.from == wRook2) {
         			castleMask[2] = true;
-        		if(m.from == wRook1)
+					if (castleMask[3]) {
+						whiteCanCastle = false;
+					}
+				}
+        		if(m.from == wRook1) {
         			castleMask[3] = true;
+					if (castleMask[2]) {
+						whiteCanCastle = false;
+					}
+				}
         	}
         }
 
@@ -948,52 +1014,92 @@ public class Board {
 	histDat[hply].ep = ep;
 	histDat[hply].fifty = fifty;
 	histDat[hply].castleMask = castleMask.clone();
+	histDat[hply].whiteCanCastle = whiteCanCastle;
+	histDat[hply].blackCanCastle = blackCanCastle;
 	histDat[hply].what = what;
 	histDat[hply].notation = GetMoveSAN();
 	++hply;
 
 	/* update the castle, en passant, and
 	   fifty-move-draw variables */
-	if(what != -1)	castleMask[what] = true;
+	if(what != -1) {
+		castleMask[what] = true;
+		if (what == 0 || what == 1) {
+			blackCanCastle = false;
+		} else if (what == 2 || what == 3) {
+			whiteCanCastle = false;
+		}
+	}
     if(piece[m.from] == KING){
-    	if(side == DARK){
-    		castleMask[0] = true;
-    		castleMask[1] = true;
-    	} else{
-    		castleMask[2] = true;
-    		castleMask[3] = true;
-    	}
+		if(side == DARK){
+			castleMask[0] = true;
+			castleMask[1] = true;
+			blackCanCastle = false;
+		} else{
+			castleMask[2] = true;
+			castleMask[3] = true;
+			whiteCanCastle = false;
+		}
     }
     //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
     if(piece[m.from] == ROOK){
-    	if(side == DARK){
-    		if(m.from == bRook2)
-    			castleMask[0] = true;
-    		if(m.from == bRook1)
-    			castleMask[1] = true;
-    	} else{
-    		if(m.from == wRook2)
-    			castleMask[2] = true;
-    		if(m.from == wRook1)
-    			castleMask[3] = true;
-    	}
+		if(side == DARK){
+			if(m.from == bRook2) {
+				castleMask[0] = true;
+				if (castleMask[1]) {
+					blackCanCastle = false;
+				}
+			}
+			if(m.from == bRook1) {
+				castleMask[1] = true;
+				if (castleMask[0]) {
+					blackCanCastle = false;
+				}
+			}
+		} else {
+			if(m.from == wRook2) {
+				castleMask[2] = true;
+				if (castleMask[3]) {
+					whiteCanCastle = false;
+				}
+			}
+			if(m.from == wRook1) {
+				castleMask[3] = true;
+				if (castleMask[2]) {
+					whiteCanCastle = false;
+				}
+			}
+		}
     }
 
+    // attacked rook
     if (m.to == BLACK_ROOK_1_INITIAL_POS && !castleMask[1]) // q (fen castle)
     {
       castleMask[1] = true;
+      if (castleMask[0]) {
+        blackCanCastle = false;
+      }
     }
     if (m.to == BLACK_ROOK_2_INITIAL_POS && !castleMask[0]) // k (fen castle)
     {
       castleMask[0] = true;
+      if (castleMask[1]) {
+        blackCanCastle = false;
+      }
     }
     if (m.to == WHITE_ROOK_1_INITIAL_POS && !castleMask[3]) // Q (fen castle)
     {
       castleMask[3] = true;
+      if (castleMask[2]) {
+        whiteCanCastle = false;
+      }
     }
     if (m.to == WHITE_ROOK_2_INITIAL_POS && !castleMask[2]) // K (fen castle)
     {
       castleMask[2] = true;
+      if (castleMask[3]) {
+        whiteCanCastle = false;
+      }
     }
 
 	if ((m.bits & 8) != 0) {
@@ -1100,6 +1206,8 @@ public class Board {
 		ep = histDat[hply].ep;
 		fifty = histDat[hply].fifty;
 		castleMask = histDat[hply].castleMask.clone();
+		whiteCanCastle = histDat[hply].whiteCanCastle;
+		blackCanCastle = histDat[hply].blackCanCastle;
 
 		if((m.bits & 2) != 0){
 
