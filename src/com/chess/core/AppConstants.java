@@ -46,5 +46,5 @@ public class AppConstants {
 	public static final String WHITE_USERNAME = "white_username";
 	public static final String BLACK_USERNAME = "black_username";
 
-	public static final String ACTION_SHOW_GAME_END_POPUP = "com.chess.lcc.android-show-game-end-popup";
+
 }

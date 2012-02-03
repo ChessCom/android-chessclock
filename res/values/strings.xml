@@ -183,5 +183,23 @@
     <string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating
         will not change after completing problems until your Internet connection returns.
     </string>
+    <string name="abort_resign_game">Abort/Resign a game:</string>
+    <string name="are_you_sure_q">Are you sure?</string>
+    <string name="correct_ex">Correct!</string>
+    <string name="wrong_ex">Wrong!</string>
+<!--
+    + result.values.get("user_rating_change")
+    +
+    + result.values.get("user_rating")
+-->
+    <string name="wrong_score">Wrong! Score: %1$s
+        \nNew rating: %2$s </string>
+    <string name="correct_score">Correct! Score:%1$s
+        \nNew rating: %2$s </string>
+    <string name="you_got_new_msg">You have got a new message!</string>
+    <string name="browse">Browse</string>
+
+
+    <string name="bonus_time_left">Bonus Time Left: %1$s Time Spent: %2$s</string>
 
 </resources>
