@@ -51,6 +51,8 @@ public class Online extends CoreActivity implements OnClickListener {
 
 	public static int ONLINE_CALLBACK_CODE = 32;
 
+	private GameListElement gameListElement;
+
 	private AcceptDrawDialogListener acceptDrawDialogListener;
 	private GameTypesSelectedListener gameTypesSelectedListener;
 	private GameListItemClickListener gameListItemClickListener;
@@ -58,7 +60,11 @@ public class Online extends CoreActivity implements OnClickListener {
 //	private NewGamesButtonsAdapter newGamesButtonsAdapter;
 	private GameListItemDialogListener gameListItemDialogListener;
 	private ChallengeDialogListener challengeDialogListener;
-	
+	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
+	private IsIndirencetDialogListener isIndirencetDialogListener;
+	private NonLiveDialogListener nonLiveDialogListener;
+
+
 	@Override
 	public void onClick(View view) {
 		if(view.getId() == R.id.tournaments){// !_Important_! Use instead of switch due issue of ADT14
@@ -100,7 +106,7 @@ public class Online extends CoreActivity implements OnClickListener {
 	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener{
 
 		public void onClick(DialogInterface dialog, int whichButton) {
-			final GameListElement el = mainApp.getGameListItems().get(temp_pos);
+			gameListElement = mainApp.getGameListItems().get(temp_pos);
 
 			switch (whichButton){
 				case DialogInterface.BUTTON_POSITIVE:{
@@ -108,9 +114,9 @@ public class Online extends CoreActivity implements OnClickListener {
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id="
 										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-										+ "&chessid=" + el.values.get(AppConstants.GAME_ID)
+										+ "&chessid=" + gameListElement.values.get(AppConstants.GAME_ID)
 										+ "&command=ACCEPTDRAW&timestamp="
-										+ el.values.get(AppConstants.TIMESTAMP),
+										+ gameListElement.values.get(AppConstants.TIMESTAMP),
 								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 						);
 					}
@@ -118,7 +124,7 @@ public class Online extends CoreActivity implements OnClickListener {
 				case DialogInterface.BUTTON_NEUTRAL:{
 					if (appService != null) {
 						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + el.values.get(AppConstants.GAME_ID) + "&command=DECLINEDRAW&timestamp=" + el.values.get(AppConstants.TIMESTAMP),
+								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" + gameListElement.values.get(AppConstants.GAME_ID) + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(AppConstants.TIMESTAMP),
 								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 						);
 					}
@@ -126,7 +132,7 @@ public class Online extends CoreActivity implements OnClickListener {
 				case DialogInterface.BUTTON_NEGATIVE:{
 					startActivity(new Intent(Online.this, Game.class).
 							putExtra(AppConstants.GAME_MODE, 4).
-							putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID)));
+							putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID)));
 
 				}break;
 				default: break;
@@ -141,10 +147,10 @@ public class Online extends CoreActivity implements OnClickListener {
 				if (temp_pos > -1) {
 //					final GameListElement el = mainApp.getGameListItems().get(temp_pos);
 					return new AlertDialog.Builder(this)
-							.setTitle("     Accept Draw?     ")
+							.setTitle(getString(R.string.accept_draw_q))
 							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
 							.setNeutralButton(getString(R.string.decline), acceptDrawDialogListener)
-							.setNegativeButton(getString(R.string.game),acceptDrawDialogListener).create();
+							.setNegativeButton(getString(R.string.game), acceptDrawDialogListener).create();
 				}
 			}
 			default:
@@ -183,7 +189,7 @@ public class Online extends CoreActivity implements OnClickListener {
 				}
 			});
 		}
-		registerReceiver(this.lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
+		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
 		if (mainApp.isLiveChess()) {
 			registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
 		} else {
@@ -250,6 +256,9 @@ public class Online extends CoreActivity implements OnClickListener {
 //		newGamesButtonsAdapter = new NewGamesButtonsAdapter();
 		gameListItemDialogListener = new GameListItemDialogListener();
 		challengeDialogListener = new ChallengeDialogListener();
+		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
+		isIndirencetDialogListener = new IsIndirencetDialogListener();
+		nonLiveDialogListener = new NonLiveDialogListener();
 	}
 
 	private class GameTypesSelectedListener implements OnItemSelectedListener{
@@ -275,27 +284,27 @@ public class Online extends CoreActivity implements OnClickListener {
 
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListElement el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
-				mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(Online.this, Chat.class);
-				intent.putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID));
-				intent.putExtra(AppConstants.TIMESTAMP, el.values.get(AppConstants.TIMESTAMP));
+				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
+				intent.putExtra(AppConstants.TIMESTAMP, gameListElement.values.get(AppConstants.TIMESTAMP));
 				startActivity(intent);
 			} else if (pos == 1) {
 				String Draw = "OFFERDRAW";
-				if (el.values.get("is_draw_offer_pending").equals("p"))
+				if (gameListElement.values.get("is_draw_offer_pending").equals("p"))
 					Draw = "ACCEPTDRAW";
 
 				String result = Web.Request("http://www."+ LccHolder.HOST
 						+ "/api/submit_echess_action?id="
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ "&chessid=" + el.values.get(AppConstants.GAME_ID)
+						+ "&chessid=" + gameListElement.values.get(AppConstants.GAME_ID)
 						+ "&command=" + Draw + "&timestamp="
-						+ el.values.get(AppConstants.TIMESTAMP), "GET", null, null);
+						+ gameListElement.values.get(AppConstants.TIMESTAMP), "GET", null, null);
 
 				if (result.contains("Success")) {
 					mainApp.ShowMessage(getString(R.string.accepted));
@@ -309,9 +318,9 @@ public class Online extends CoreActivity implements OnClickListener {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ "/api/submit_echess_action?id="
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ "&chessid=" + el.values.get(AppConstants.GAME_ID)
+						+ "&chessid=" + gameListElement.values.get(AppConstants.GAME_ID)
 						+ "&command=RESIGN&timestamp="
-						+ el.values.get(AppConstants.TIMESTAMP), "GET", null, null);
+						+ gameListElement.values.get(AppConstants.TIMESTAMP), "GET", null, null);
 
 				if (result.contains("Success")) {
 					Update(1);
@@ -324,12 +333,13 @@ public class Online extends CoreActivity implements OnClickListener {
 		}
 	}
 
+
 	private class GameListItemLongClickListener implements OnItemLongClickListener{
 
 		@Override
 		public boolean onItemLongClick(AdapterView<?> a, View v, int pos, long id) {
-			final GameListElement el = mainApp.getGameListItems().get(pos);
-			if (el.type == 1) {
+			gameListElement = mainApp.getGameListItems().get(pos);
+			if (gameListElement.type == 1) {
 				new AlertDialog.Builder(Online.this)
 						.setItems(new String[]{
 								getString(R.string.chat),
@@ -337,13 +347,13 @@ public class Online extends CoreActivity implements OnClickListener {
 								getString(R.string.resignorabort)},
 								gameListItemDialogListener)
 						.create().show();
-			} else if (el.type == 2) {
-				mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+			} else if (gameListElement.type == 2) {
+				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(Online.this, Chat.class);
-				intent.putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID));
-				intent.putExtra(AppConstants.TIMESTAMP, el.values.get(AppConstants.TIMESTAMP));
+				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
+				intent.putExtra(AppConstants.TIMESTAMP, gameListElement.values.get(AppConstants.TIMESTAMP));
 				startActivity(intent);
 			}
 			return true;
@@ -355,20 +365,88 @@ public class Online extends CoreActivity implements OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 
-			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListElement el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Accept challenge: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeChallenge(el.values.get(AppConstants.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				Update(2);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Decline challenge: " + challenge);
 				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-				lccHolder.removeChallenge(el.values.get(AppConstants.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				Update(3);
+			}
+		}
+	}
+
+	private class IsDirectDialogChallengeListener implements DialogInterface.OnClickListener{
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+//			final GameListElement el = mainApp.getGameListItems().get(pos);
+			if (pos == 0) {
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Cancel my challenge: " + challenge);
+				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				Update(4);
+			} else if (pos == 1) {
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Just keep my challenge: " + challenge);
+			}
+		}
+	}
+
+	private class IsIndirencetDialogListener implements DialogInterface.OnClickListener{
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+//			final GameListElement el = mainApp.getGameListItems().get(pos);
+			if (pos == 0) {
+				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Cancel my seek: " + challenge);
+				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+				lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
+				Update(4);
+			} else if (pos == 1) {
+				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Just keep my seek: " + challenge);
+			}
+		}
+	}
+
+	private class NonLiveDialogListener implements DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+//			final GameListElement el = mainApp.getGameListItems().get(pos);
+
+			if (pos == 0) {
+				String result = Web.Request("http://www." + LccHolder.HOST
+						+ "/api/echess_open_invites?id="
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
+				if (result.contains("Success")) {
+					Update(2);
+				} else if (result.contains("Error+")) {
+					mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
+				} else {
+					//mainApp.ShowDialog(Online.this, "Error", result);
+				}
+			} else if (pos == 1) {
+
+				String result = Web.Request("http://www." + LccHolder.HOST
+						+ "/api/echess_open_invites?id="
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ "&declineinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
+				if (result.contains("Success")) {
+					Update(3);
+				} else if (result.contains("Error+")) {
+					mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
+				} else {
+					//mainApp.ShowDialog(Online.this, "Error", result);
+				}
 			}
 		}
 	}
@@ -377,16 +455,16 @@ public class Online extends CoreActivity implements OnClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-			final GameListElement el = mainApp.getGameListItems().get(pos);
-			if (el.type == 0) {
+			gameListElement = mainApp.getGameListItems().get(pos);
+			if (gameListElement.type == 0) {
 				final String title = mainApp.isLiveChess() ?
-						el.values.get("opponent_chess_title") :
-						"Win: " + el.values.get("opponent_win_count")
-								+ " Loss: " + el.values.get("opponent_loss_count")
-								+ " Draw: " + el.values.get("opponent_draw_count");
+						gameListElement.values.get("opponent_chess_title") :
+						"Win: " + gameListElement.values.get("opponent_win_count")
+								+ " Loss: " + gameListElement.values.get("opponent_loss_count")
+								+ " Draw: " + gameListElement.values.get("opponent_draw_count");
 
 				if (mainApp.isLiveChess()) {
-					if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0")) {
+					if (gameListElement.values.get("is_direct_challenge").equals("1") && gameListElement.values.get("is_released_by_me").equals("0")) {
 						new AlertDialog.Builder(Online.this)
 								.setTitle(title)
 								.setItems(new String[]{
@@ -394,103 +472,58 @@ public class Online extends CoreActivity implements OnClickListener {
 										getString(R.string.decline)},
 										challengeDialogListener)
 								.create().show();
-					} else if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("1")) {
+					} else if (gameListElement.values.get("is_direct_challenge").equals("1") && gameListElement.values.get("is_released_by_me").equals("1")) {
 						new AlertDialog.Builder(Online.this)
 								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"}, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface d, int pos) {
-										if (pos == 0) {
-											final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
-											LccHolder.LOG.info("Cancel my challenge: " + challenge);
-											lccHolder.getAndroid().runCancelChallengeTask(challenge);
-											lccHolder.removeChallenge(el.values.get(AppConstants.GAME_ID));
-											Update(4);
-										} else if (pos == 1) {
-											final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
-											LccHolder.LOG.info("Just keep my challenge: " + challenge);
-										}
-									}
-								})
+								.setItems(new String[]{"Cancel", "Keep"},isDirectDialogChallengeListener)
 								.create().show();
-					} else if (el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("0")) {
-						final Challenge challenge = lccHolder.getSeek(el.values.get(AppConstants.GAME_ID));
+					} else if (gameListElement.values.get("is_direct_challenge").equals("0") && gameListElement.values.get("is_released_by_me").equals("0")) {
+						final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
 						LccHolder.LOG.info("Accept seek: " + challenge);
 						lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-						lccHolder.removeSeek(el.values.get(AppConstants.GAME_ID));
+						lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
 						Update(2);
-					} else if (el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("1")) {
+					} else if (gameListElement.values.get("is_direct_challenge").equals("0") && gameListElement.values.get("is_released_by_me").equals("1")) {
 						new AlertDialog.Builder(Online.this)
 								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"}, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface d, int pos) {
-										if (pos == 0) {
-											final Challenge challenge = lccHolder.getSeek(el.values.get(AppConstants.GAME_ID));
-											LccHolder.LOG.info("Cancel my seek: " + challenge);
-											lccHolder.getAndroid().runCancelChallengeTask(challenge);
-											lccHolder.removeSeek(el.values.get(AppConstants.GAME_ID));
-											Update(4);
-										} else if (pos == 1) {
-											final Challenge challenge = lccHolder.getSeek(el.values.get(AppConstants.GAME_ID));
-											LccHolder.LOG.info("Just keep my seek: " + challenge);
-										}
-									}
-								})
+								.setItems(new String[]{"Cancel", "Keep"},isIndirencetDialogListener)
 								.create().show();
 					}
 				} // echess
 				else {
 					new AlertDialog.Builder(Online.this)
 							.setTitle(title)
-							.setItems(new String[]{getString(R.string.accept), getString(R.string.decline)}, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface d, int pos) {
-									if (pos == 0) {
-										String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
-										if (result.contains("Success")) {
-											Update(2);
-										} else if (result.contains("Error+")) {
-											mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
-										} else {
-											//mainApp.ShowDialog(Online.this, "Error", result);
-										}
-									} else if (pos == 1) {
-
-										String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
-										if (result.contains("Success")) {
-											Update(3);
-										} else if (result.contains("Error+")) {
-											mainApp.ShowDialog(Online.this, "Error", result.split("[+]")[1]);
-										} else {
-											//mainApp.ShowDialog(Online.this, "Error", result);
-										}
-									}
-								}
-							})
+							.setItems(new String[]{
+									getString(R.string.accept),
+									getString(R.string.decline)},nonLiveDialogListener
+									)
 							.create().show();
 				}
 
-			} else if (el.type == 1) {
-				mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+			} else if (gameListElement.type == 1) {
+				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
-				if (el.values.get("is_draw_offer_pending").equals("p")) {
+				if (gameListElement.values.get("is_draw_offer_pending").equals("p")) {
 					mainApp.acceptdraw = true;
 					temp_pos = pos;
 					showDialog(0);
 				} else {
 					mainApp.acceptdraw = false;
-					startActivity(new Intent(Online.this, Game.class).
-							putExtra(AppConstants.GAME_MODE, 4).
-							putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID)));
+
+					Intent intent = new Intent(Online.this, Game.class);
+					intent.putExtra(AppConstants.GAME_MODE, 4);
+					intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
+					startActivity(intent);
 				}
-			} else if (el.type == 2) {
-				mainApp.getSharedDataEditor().putString("opponent", el.values.get("opponent_username"));
+			} else if (gameListElement.type == 2) {
+				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
-				startActivity(new Intent(Online.this, Game.class).
-						putExtra(AppConstants.GAME_MODE, 5).
-						putExtra(AppConstants.GAME_ID, el.values.get(AppConstants.GAME_ID)));
+
+				Intent intent = new Intent(Online.this, Game.class);
+				intent.putExtra(AppConstants.GAME_MODE, 5);
+				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
+				startActivity(intent );
 			}
 		}
 	}
@@ -656,13 +689,20 @@ public class Online extends CoreActivity implements OnClickListener {
 			gamesList.setVisibility(View.VISIBLE);
 			if (gamesAdapter == null) {
 
-				if (t == 0 || mainApp.isLiveChess()) {
+//				if (t == 0 || mainApp.isLiveChess()) { //  This cases creates up to 3 instance of new OnlineGamesAdapter, replaced with else if cases
+//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
+//				}
+//				if (t == 1 && !mainApp.isLiveChess()) {
+//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
+//				}
+//				if (t == 2 && !mainApp.isLiveChess()) {
+//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
+//				}
+				if (t == 0 || mainApp.isLiveChess()) { //
 					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-				}
-				if (t == 1 && !mainApp.isLiveChess()) {
+				}else if (t == 1 && !mainApp.isLiveChess()) {
 					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-				}
-				if (t == 2 && !mainApp.isLiveChess()) {
+				}else if (t == 2 && !mainApp.isLiveChess()) {
 					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
 				}
 				gamesList.setAdapter(gamesAdapter);
@@ -732,7 +772,9 @@ public class Online extends CoreActivity implements OnClickListener {
 		public void onReceive(Context context, final Intent intent) {
 			new Handler().post(new Runnable() {
 				public void run() {
-					if (mainApp.isLiveChess() && !intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
+					if (mainApp.isLiveChess() && !intent.getExtras()
+							.getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
+
 						start.setVisibility(View.VISIBLE);
 						if (gridview != null) {
 							gridview.setVisibility(View.VISIBLE);
