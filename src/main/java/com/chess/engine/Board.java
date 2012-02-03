@@ -747,7 +747,8 @@ public class Board {
     			what = 0;
     			d = Math.abs(m.from-bRook2);
     			min = bRook2;
-    	    	if(m.from < bRook2)	min = m.from;
+    	    	if(m.from < bRook2)
+					min = m.from;
     			break;
     		}
     	}
@@ -756,7 +757,8 @@ public class Board {
     			what = 1;
     			d = Math.abs(m.from-bRook1);
     			min = bRook1;
-    	    	if(m.from < bRook1)	min = m.from;
+    	    	if(m.from < bRook1)
+					min = m.from;
     			break;
     		}
     	}
@@ -765,7 +767,8 @@ public class Board {
     			what = 2;
     			d = Math.abs(m.from-wRook2);
     			min = wRook2;
-    	    	if(m.from < wRook2)	min = m.from;
+    	    	if(m.from < wRook2)
+					min = m.from;
     			break;
     		}
     	}
@@ -774,7 +777,8 @@ public class Board {
     			what = 3;
     			d = Math.abs(m.from-wRook1);
     			min = wRook1;
-    	    	if(m.from < wRook1)	min = m.from;
+    	    	if(m.from < wRook1)
+					min = m.from;
     			break;
     		}
     	}
@@ -782,8 +786,15 @@ public class Board {
     	if(castleMask[what]) return false;
 
     	if(what == 2){
-    		if (attack(F1, xside) || attack(G1, xside))
-                return false;
+
+			int distance = Math.abs(wKing - G1);
+			int minimalSquare = Math.min(wKing, G1);
+			for (int j = 0; j <= distance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
     		if(color[F1] != EMPTY && piece[F1] != KING && piece[F1] != ROOK)
     			return false;
     		if(color[G1] != EMPTY && piece[G1] != KING && piece[G1] != ROOK)
@@ -796,7 +807,8 @@ public class Board {
 
     		if(d > 1){
             	while(d != 0){
-            		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
+					min++;
+            		if((piece[min] == ROOK && min != wRook2) && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
@@ -806,8 +818,15 @@ public class Board {
             from = wRook2;
             to = F1;
     	} else if(what == 3){
-    		if (attack(C1, xside) || attack(D1, xside))
-                return false;
+
+			int distance = Math.abs(wKing - C1);
+			int minimalSquare = Math.min(wKing, C1);
+			for (int j = 0; j <= distance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
     		if(color[C1] != EMPTY && piece[C1] != KING && piece[C1] != ROOK)
     			return false;
     		if(color[D1] != EMPTY && piece[D1] != KING && piece[D1] != ROOK)
@@ -819,7 +838,8 @@ public class Board {
 
     		if(d > 1){
             	while(d != 0){
-            		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
+					min++;
+            		if((piece[min] == ROOK && min != wRook1) && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
@@ -829,8 +849,15 @@ public class Board {
             from = wRook1;
             to = D1;
     	} else if(what == 1){
-    		if (attack(C8, xside) || attack(D8, xside))
-                return false;
+
+			int distance = Math.abs(bKing - C8);
+			int minimalSquare = Math.min(bKing, C8);
+			for (int j = 0; j <= distance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
     		if(color[C8] != EMPTY && piece[C8] != KING && piece[C8] != ROOK)
     			return false;
     		if(color[D8] != EMPTY && piece[D8] != KING && piece[D8] != ROOK)
@@ -842,7 +869,8 @@ public class Board {
 
     		if(d > 1){
             	while(d != 0){
-            		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
+					min++;
+            		if((piece[min] == ROOK && min != bRook1) && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
@@ -852,8 +880,15 @@ public class Board {
             from = bRook1;
             to = D8;
     	} else if(what == 0){
-    		if (attack(F8, xside) || attack(G8, xside))
-                return false;
+
+			int distance = Math.abs(bKing - G8);
+			int minimalSquare = Math.min(bKing, G8);
+			for (int j = 0; j <= distance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
     		if(color[F8] != EMPTY && piece[F8] != KING && piece[F8] != ROOK)
     			return false;
     		if(color[G8] != EMPTY && piece[G8] != KING && piece[G8] != ROOK)
@@ -866,7 +901,8 @@ public class Board {
 
             if(d > 1){
             	while(d != 0){
-            		if(piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY){
+					min++;
+            		if((piece[min] == ROOK && min != bRook2) && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
