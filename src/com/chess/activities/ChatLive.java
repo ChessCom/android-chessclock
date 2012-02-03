@@ -21,7 +21,7 @@ import com.chess.views.MessagesAdapter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class ChatLive extends CoreActivity {
+public class ChatLive extends CoreActivity implements OnClickListener {
 	public static int MESSAGE_RECEIVED = 0;
 	public static int MESSAGE_SENT = 1;
 	private EditText sendText;
@@ -35,20 +35,7 @@ public class ChatLive extends CoreActivity {
 		setContentView(R.layout.chat);
 		sendText = (EditText) findViewById(R.id.sendText);
 		chatLV = (ListView) findViewById(R.id.chatLV);
-		findViewById(R.id.send).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				new AsyncTask<Void, Void, Void>() {
-					@Override
-					protected Void doInBackground(Void... voids) {
-						System.out.println("LCCLOG: SEND");
-						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))), sendText.getText().toString());
-						return null;
-					}
-				}.execute();
-
-				Update(MESSAGE_SENT);
-			}
-		});
+		findViewById(R.id.send).setOnClickListener(this);
 	}
 
 	@Override
@@ -124,4 +111,21 @@ public class ChatLive extends CoreActivity {
 			Update(ChatLive.MESSAGE_RECEIVED);
 		}
 	};
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.send){
+			new AsyncTask<Void, Void, Void>() {
+					@Override
+					protected Void doInBackground(Void... voids) {
+						System.out.println("LCCLOG: SEND");
+						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))), sendText.getText().toString());
+						return null;
+					}
+				}.execute();
+
+				Update(MESSAGE_SENT);
+		}
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
 }

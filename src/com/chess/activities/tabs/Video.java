@@ -60,21 +60,23 @@ public class Video extends CoreActivity implements OnClickListener {
 		desc = (TextView) findViewById(R.id.desc);
 
 		skills = (Spinner) findViewById(R.id.skills);
-		skills.post(new Runnable() {
-			@Override
-			public void run() {
-				skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
-			}
-		});
-		
+//		skills.post(new Runnable() {
+//			@Override
+//			public void run() {
+//				skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+//			}
+//		});
+		skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+
 		skills.setOnItemSelectedListener(skillsItemSelectedListener );
 		categories = (Spinner) findViewById(R.id.categories);
-		categories.post(new Runnable() {
-			@Override
-			public void run() {
-				categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
-			}
-		});
+		categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
+//		categories.post(new Runnable() {
+//			@Override
+//			public void run() {
+//				categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
+//			}
+//		});
 		categories.setOnItemSelectedListener(categoriesItemSelectedListener);
 
 		findViewById(R.id.start).setOnClickListener(this);
