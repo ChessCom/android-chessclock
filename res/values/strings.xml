@@ -170,5 +170,18 @@
     <string name="videoUpgrade">Upgrade for full access to videos!</string>
     <string name="removeAds">Upgrade and remove ads!</string>
     <string name="accept_draw_q">Accept Draw?</string>
+    <string name="ready_for_first_tackics_q">Are you ready for your first tactic?</string>
+    <string name="daily_limit_exceeded">Daily Limit Exceeded</string>
+    <string name="max_tackics_for_today_reached">You have hit your maximum number of tactics for today. Would you like
+        to be able to do more tactics?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="okay">OK</string>
+    <string name="hundred_tackics_completed">100 tactics complited!</string>
+    <string name="offline_mode">Offline mode</string>
+    <string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating
+        will not change after completing problems until your Internet connection returns.
+    </string>
 
 </resources>

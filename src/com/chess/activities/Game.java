@@ -63,6 +63,8 @@ public class Game extends CoreActivity {
 	private TextView endOfGameMessage;
 	private LinearLayout adviewWrapper;
 
+	private FirstTackicsDialogListener firstTackicsDialogListener;
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -267,13 +269,51 @@ public class Game extends CoreActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	private class FirstTackicsDialogListener implements DialogInterface.OnClickListener {
+
+		@Override
+		public void onClick(DialogInterface dialog, int whichButton) {
+			if(whichButton == DialogInterface.BUTTON_POSITIVE){
+				InputStream f = getResources().openRawResource(R.raw.tactics100batch);
+				try {
+					ByteArrayBuffer baf = new ByteArrayBuffer(50);
+					int current = 0;
+					while ((current = f.read()) != -1) {
+						baf.append((byte) current);
+					}
+					String input = new String(baf.toByteArray());
+					String[] tmp = input.split("[|]");
+					int count = tmp.length - 1;
+					mainApp.setTacticsBatch(new ArrayList<Tactic>(count));
+					int i;
+					for (i = 1; i <= count; i++) {
+						mainApp.getTacticsBatch().add(new Tactic(tmp[i].split(":")));
+					}
+					f.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				if (mainApp.guest)
+					GetGuestTacticsGame();
+				else
+					GetTacticsGame("");
+				
+			}else if(whichButton == DialogInterface.BUTTON_NEGATIVE){
+				mainApp.getTabHost().setCurrentTab(0);
+				boardView.getBoard().setTacticCanceled(true);
+			}
+		}
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 			case 0:
 				FlurryAgent.onEvent("Tactics Daily Limit Exceded", null);
 				return new AlertDialog.Builder(this)
-						.setTitle("Daily Limit Exceeded").setMessage("You have hit your maximum number of tactics for today. Would you like to be able to do more tactics?")
+						.setTitle(getString(R.string.daily_limit_exceeded))
+						.setMessage(getString(R.string.max_tackics_for_today_reached))
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								FlurryAgent.onEvent("Upgrade From Tactics", null);
@@ -289,47 +329,14 @@ public class Game extends CoreActivity {
 						.create();
 			case 1:
 				return new AlertDialog.Builder(this)
-						.setTitle("Are you ready for your first tactic?")
-						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-
-								InputStream f = getResources().openRawResource(R.raw.tactics100batch);
-								try {
-									ByteArrayBuffer baf = new ByteArrayBuffer(50);
-									int current = 0;
-									while ((current = f.read()) != -1) {
-										baf.append((byte) current);
-									}
-									String input = new String(baf.toByteArray());
-									String[] tmp = input.split("[|]");
-									int count = tmp.length - 1;
-									mainApp.setTacticsBatch(new ArrayList<Tactic>(count));
-									int i;
-									for (i = 1; i <= count; i++) {
-										mainApp.getTacticsBatch().add(new Tactic(tmp[i].split(":")));
-									}
-									f.close();
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-
-								if (mainApp.guest)
-									GetGuestTacticsGame();
-								else
-									GetTacticsGame("");
-							}
-						})
-						.setNegativeButton("No", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								mainApp.getTabHost().setCurrentTab(0);
-								boardView.getBoard().setTacticCanceled(true);
-							}
-						})
+						.setTitle(getString(R.string.ready_for_first_tackics_q))
+						.setPositiveButton(R.string.yes, firstTackicsDialogListener)
+						.setNegativeButton(R.string.no, firstTackicsDialogListener)
 						.create();
 			case 2:
 				return new AlertDialog.Builder(this)
-						.setTitle("100 tactics complited!")
-						.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+						.setTitle(R.string.hundred_tackics_completed)
+						.setNegativeButton(R.string.okay, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								mainApp.getTabHost().setCurrentTab(0);
 								mainApp.currentTacticProblem = 0;
@@ -338,14 +345,14 @@ public class Game extends CoreActivity {
 						.create();
 			case 3:
 				return new AlertDialog.Builder(this)
-						.setTitle("Offline mode")
-						.setMessage("Internet access is not currently available. As a result, your rating will not change after completing problems until your Internet connection returns.")
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						.setTitle(R.string.offline_mode)
+						.setMessage(getString(R.string.no_network_rating_not_changed))
+						.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								GetGuestTacticsGame();
 							}
 						})
-						.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								mainApp.getTabHost().setCurrentTab(0);
 								boardView.getBoard().setTacticCanceled(true);
@@ -429,6 +436,10 @@ public class Game extends CoreActivity {
 		return super.onCreateDialog(id);
 	}
 
+	private void init(){
+		firstTackicsDialogListener = new FirstTackicsDialogListener();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -439,6 +450,8 @@ public class Game extends CoreActivity {
 		} else {
 			setContentView(R.layout.boardview);
 		}
+
+		init();
 
 		analysisLL = (LinearLayout) findViewById(R.id.analysis);
 		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
