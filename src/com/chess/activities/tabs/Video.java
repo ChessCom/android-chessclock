@@ -20,28 +20,37 @@ import com.chess.model.VideoItem;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
-public class Video extends CoreActivity {
+public class Video extends CoreActivity implements OnClickListener {
 	private VideoItem item;
 	private LinearLayout recent;
 	private TextView upgrade, title, desc;
 	private Spinner skills, categories;
 
+	private SkillsItemSelectedListener skillsItemSelectedListener;
+	private CategoriesItemSelectedListener categoriesItemSelectedListener;
+
+	private void init(){
+		skillsItemSelectedListener = new SkillsItemSelectedListener();
+		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video);
+
+		init();
 		upgrade = (TextView) findViewById(R.id.Upgrade);
-		boolean liveMembershipLevel =
-				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+		boolean liveMembershipLevel = false;
+		if(lccHolder.getUser() != null){
+			liveMembershipLevel = mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
+		}
+//		boolean liveMembershipLevel =
+//				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
 				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
 			upgrade.setVisibility(View.VISIBLE);
-			upgrade.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					FlurryAgent.onEvent("upgrade From Videos", null);
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
-				}
-			});
+			upgrade.setOnClickListener(this);
 		} else {
 			upgrade.setVisibility(View.GONE);
 		}
@@ -57,17 +66,8 @@ public class Video extends CoreActivity {
 				skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
 			}
 		});
-		skills.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
-				mainApp.getSharedDataEditor().commit();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> a) {
-			}
-		});
+		
+		skills.setOnItemSelectedListener(skillsItemSelectedListener );
 		categories = (Spinner) findViewById(R.id.categories);
 		categories.post(new Runnable() {
 			@Override
@@ -75,74 +75,33 @@ public class Video extends CoreActivity {
 				categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
 			}
 		});
-		categories.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_CATEGORY, pos);
-				mainApp.getSharedDataEditor().commit();
-			}
+		categories.setOnItemSelectedListener(categoriesItemSelectedListener);
 
-			@Override
-			public void onNothingSelected(AdapterView<?> a) {
-			}
-		});
+		findViewById(R.id.start).setOnClickListener(this);
+	}
 
-		findViewById(R.id.start).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				int s = skills.getSelectedItemPosition();
-				int c = categories.getSelectedItemPosition();
-				Intent i = new Intent(Video.this, VideoList.class);
-				i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, "");
-				i.putExtra(AppConstants.VIDEO_CATEGORY, "");
-				if (s > 0) {
-					String skill = "";
-					switch (s) {
-						case 1:
-							skill = "beginner";
-							break;
-						case 2:
-							skill = "intermediate";
-							break;
-						case 3:
-							skill = "advanced";
-							break;
+	private class SkillsItemSelectedListener implements OnItemSelectedListener {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
+			mainApp.getSharedDataEditor().commit();
+		}
 
-						default:
-							break;
-					}
-					i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
-				}
-				if (c > 0) {
-					String category = "";
-					switch (c) {
-						case 1:
-							category = "amazing-games";
-							break;
-						case 2:
-							category = "endgames";
-							break;
-						case 3:
-							category = "openings";
-							break;
-						case 4:
-							category = "rules-basics";
-							break;
-						case 5:
-							category = "strategy";
-							break;
-						case 6:
-							category = "tactics";
-							break;
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
+	}
 
-						default:
-							break;
-					}
-					i.putExtra(AppConstants.VIDEO_CATEGORY, category);
-				}
-				startActivity(i);
-			}
-		});
+	private class CategoriesItemSelectedListener implements OnItemSelectedListener {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_CATEGORY, pos);
+			mainApp.getSharedDataEditor().commit();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
 	}
 
 	@Override
@@ -166,7 +125,9 @@ public class Video extends CoreActivity {
 		if (code == -1) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&page-size=1",
+						"http://www." + LccHolder.HOST + "/api/get_videos?id="
+								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+								+ "&page-size=1",
 						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}
@@ -175,15 +136,79 @@ public class Video extends CoreActivity {
 			item = new VideoItem(response.split("[|]")[2].split("<->"));
 			title.setText(item.values.get(AppConstants.TITLE));
 			desc.setText(item.values.get("description"));
-			findViewById(R.id.play).setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					FlurryAgent.onEvent("Video Played", null);
-					Intent i = new Intent(Intent.ACTION_VIEW);
-					i.setDataAndType(Uri.parse(item.values.get("view_url").trim()), "video/*");
-					startActivity(i);
+
+			findViewById(R.id.play).setOnClickListener(this);
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.Upgrade){
+			FlurryAgent.onEvent("upgrade From Videos", null);
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
+					+ "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos"));
+			startActivity(intent);
+		}else if(view.getId() == R.id.play){
+			FlurryAgent.onEvent("Video Played", null);
+			
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setDataAndType(Uri.parse(item.values.get("view_url").trim()), "video/*");
+			startActivity(i);
+		}else if(view.getId() == R.id.start){
+			int s = skills.getSelectedItemPosition();
+			int c = categories.getSelectedItemPosition();
+
+			Intent i = new Intent(Video.this, VideoList.class);
+			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, "");
+			i.putExtra(AppConstants.VIDEO_CATEGORY, "");
+
+			if (s > 0) {
+				String skill = "";
+				switch (s) {
+					case 1:
+						skill = "beginner";
+						break;
+					case 2:
+						skill = "intermediate";
+						break;
+					case 3:
+						skill = "advanced";
+						break;
+
+					default:
+						break;
 				}
-			});
+				i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
+			}
+			if (c > 0) {
+				String category = "";
+				switch (c) {
+					case 1:
+						category = "amazing-games";
+						break;
+					case 2:
+						category = "endgames";
+						break;
+					case 3:
+						category = "openings";
+						break;
+					case 4:
+						category = "rules-basics";
+						break;
+					case 5:
+						category = "strategy";
+						break;
+					case 6:
+						category = "tactics";
+						break;
+
+					default:
+						break;
+				}
+				i.putExtra(AppConstants.VIDEO_CATEGORY, category);
+			}
+			startActivity(i);
 		}
 	}
 }
