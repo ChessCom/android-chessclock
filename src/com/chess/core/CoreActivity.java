@@ -1,28 +1,11 @@
 package com.chess.core;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
-import org.apache.http.util.ByteArrayBuffer;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.PowerManager;
+import android.os.*;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -31,17 +14,18 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.TextView;
-
 import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.lcc.android.LccHolder;
-import com.chess.utilities.MobclixHelper;
-import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
-import com.chess.utilities.Web;
-import com.chess.utilities.WebService;
+import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
+import org.apache.http.util.ByteArrayBuffer;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 public abstract class CoreActivity extends Activity {
 
@@ -135,6 +119,25 @@ public abstract class CoreActivity extends Activity {
 		}
 	};
 
+	private class ReconnectTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			final LccHolder lccHolder = mainApp.getLccHolder();
+			// lccHolder.setConnectingInProgress(true);
+			lccHolder.getClient().disconnect();
+			lccHolder.setNetworkTypeName(null);
+			lccHolder.setConnectingInProgress(true);
+			lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, ""),
+					lccHolder.getConnectionListener());
+			/*
+								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
+								 * MyProgressDialog.show(this, null,
+								 * getString(R.string.updatinggameslist), true));
+								 */
+			return null;
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -172,37 +175,21 @@ public abstract class CoreActivity extends Activity {
 			// startService(new Intent(getApplicationContext(),
 // NetworkChangeService.class));
 
-			new AsyncTask<Void, Void, Void>() {
-				@Override
-				protected Void doInBackground(Void... voids) {
-					final LccHolder lccHolder = mainApp.getLccHolder();
-					// lccHolder.setConnectingInProgress(true);
-					lccHolder.getClient().disconnect();
-					lccHolder.setNetworkTypeName(null);
-					lccHolder.setConnectingInProgress(true);
-					lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, ""),
-							lccHolder.getConnectionListener());
-					/*
-					 * appService.RunRepeatble(0, 0, 120000, progressDialog =
-					 * MyProgressDialog.show(this, null,
-					 * getString(R.string.updatinggameslist), true));
-					 */
-					return null;
-				}
-			}.execute();
+			new ReconnectTask().execute();
 		}
 		doBindService();
 		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
 		/*
 		 * if (mainApp.isLiveChess()) {
 		 */
-		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
-		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter("com.chess.lcc.android-reconnecting-info"));
-		registerReceiver(drawOfferedMessageReceiver, new IntentFilter("com.chess.lcc.android-game-draw-offered"));
-		registerReceiver(informAndExitReceiver, new IntentFilter("com.chess.lcc.android-info-exit"));
-		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(
-				"com.chess.lcc.android-obsolete-protocol-version"));
-		registerReceiver(infoMessageReceiver, new IntentFilter("com.chess.lcc.android-info"));
+
+		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
+		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
+		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
+		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
+		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
+		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
+
 		// registerReceiver(networkChangeNotificationReceiver, new
 // IntentFilter("com.chess.lcc.android-network-change"));
 		/* } */
