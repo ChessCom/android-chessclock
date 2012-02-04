@@ -6,6 +6,10 @@
 	
 	<style name="OrangeButtonTheme" parent="android:Theme.NoTitleBar.Fullscreen">
 		<item name="android:buttonStyle">@style/button_orange</item>
+        <item name="android:textAppearanceSmall">@style/DefaultText</item>
+        <item name="android:editTextStyle">@style/DefaultEdt</item>	
+        <item name="android:spinnerStyle">@style/spinnerStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerStyleDropDown</item>
 	</style>
 	<!-- 	<item name="android:panelFullBackground">@color/mytheme_color</item> -->
 	
