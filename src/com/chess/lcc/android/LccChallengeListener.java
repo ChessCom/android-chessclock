@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import com.chess.core.IntentConstants;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
 
@@ -193,7 +194,7 @@ public class LccChallengeListener implements ChallengeListener {
 
 	private void showWarning(String warning) {
 		if (warning != null && !warning.equals("")) {
-			lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-info", "WARNING", warning);
+			lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.FILTER_INFO, "WARNING", warning);
 		}
 	}
 

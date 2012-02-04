@@ -137,7 +137,7 @@ public class Video extends CoreActivity implements OnClickListener {
 			recent.setVisibility(View.VISIBLE);
 			item = new VideoItem(response.split("[|]")[2].split("<->"));
 			title.setText(item.values.get(AppConstants.TITLE));
-			desc.setText(item.values.get("description"));
+			desc.setText(item.values.get(AppConstants.DESCRIPTION));
 
 			findViewById(R.id.play).setOnClickListener(this);
 		}
@@ -155,7 +155,7 @@ public class Video extends CoreActivity implements OnClickListener {
 			FlurryAgent.onEvent("Video Played", null);
 			
 			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse(item.values.get("view_url").trim()), "video/*");
+			i.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video/*");
 			startActivity(i);
 		}else if(view.getId() == R.id.start){
 			int s = skills.getSelectedItemPosition();

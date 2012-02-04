@@ -47,4 +47,31 @@ public class AppConstants {
 	public static final String BLACK_USERNAME = "black_username";
 
 
+	public static final String DESCRIPTION = "description";
+	public static final String SKILL_LEVEL = "skill_level";
+	public static final String OPENING = "opening";
+	public static final String AUTHOR_USERNAME = 	"author_username";
+	public static final String AUTHOR_CHESS_TITLE = "author_chess_title";
+	public static final String AUTHOR_FIRST_GAME = 	"author_first_name";
+	public static final String AUTHOR_LAST_NAME	 = 	"author_last_name";
+	public static final String MINUTES			=	"minutes";
+	public static final String PUBLISH_TIMESTAMP=	"publish_timestamp";
+	public static final String VIEW_URL			=	"view";
+
+	public static final String SCORE				= "score";
+	public static final String USER_RATING_CHANGE	= "user_rating_change";
+	public static final String USER_RATING			= "user_rating";
+	public static final String PROBLEM_RATING_CHANGE= "problem_rating_change";
+	public static final String PROBLEM_RATING		= "problem_rating";
+
+	public static final String ID			= "id";
+	public static final String FEN			= "fen";
+	public static final String MOVE_LIST	= "move_list";
+	public static final String ATTEMPT_CNT	= "attempt_count";
+	public static final String PASSED_CNT	= "passed_count";
+	public static final String RATING		= "rating";
+	public static final String AVG_SECONDS	= "average_seconds";
+	public static final String STOP			= "stop";
+
+
 }

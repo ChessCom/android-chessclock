@@ -139,7 +139,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						};
 					}).start();
 				} else if (boardView.getBoard().mode == 6) {
-					if (mainApp.getTactic() != null && mainApp.getTactic().values.get("stop").equals("1")) {
+					if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
 						openOptionsMenu();
 						return true;
 					}
@@ -148,7 +148,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						boardView.setBoard(new Board(this));
 						boardView.getBoard().mode = 6;
 
-						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("fen");
+						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
 							boardView.getBoard().GenCastlePos(FEN);
 							MoveParser.FenParse(FEN, boardView.getBoard());
@@ -159,12 +159,14 @@ public class Game extends CoreActivity implements OnClickListener {
 								}
 							}
 						}
-						if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").contains("1.")) {
-							boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+						if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
+							boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch()
+									.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
 							boardView.getBoard().movesCount = 1;
 						}
 						boardView.getBoard().sec = sec;
-						boardView.getBoard().left = Integer.parseInt(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("average_seconds")) - sec;
+						boardView.getBoard().left = Integer.parseInt(mainApp.getTacticsBatch()
+								.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - sec;
 						startTacticsTimer();
 						int[] moveFT = MoveParser.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
 						if (moveFT.length == 4) {
@@ -203,14 +205,14 @@ public class Game extends CoreActivity implements OnClickListener {
 							};
 						}).start();
 					} else {
-						if (mainApp.getTactic() != null && mainApp.getTactic().values.get("stop").equals("1")) {
+						if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
 							openOptionsMenu();
 							return true;
 						}
 						boardView.setBoard(new Board(this));
 						boardView.getBoard().mode = 6;
 
-						String FEN = mainApp.getTactic().values.get("fen");
+						String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
 							boardView.getBoard().GenCastlePos(FEN);
 							MoveParser.FenParse(FEN, boardView.getBoard());
@@ -222,12 +224,12 @@ public class Game extends CoreActivity implements OnClickListener {
 							}
 						}
 
-						if (mainApp.getTactic().values.get("move_list").contains("1.")) {
-							boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+						if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+							boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
 							boardView.getBoard().movesCount = 1;
 						}
 						boardView.getBoard().sec = sec;
-						boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get("average_seconds")) - sec;
+						boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS)) - sec;
 						int[] moveFT = MoveParser.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
 						if (moveFT.length == 4) {
 							Move m;
@@ -471,12 +473,12 @@ public class Game extends CoreActivity implements OnClickListener {
 					boardView.getBoard().retry = true;
 					GetGuestTacticsGame();
 				} else {
-					GetTacticsGame(mainApp.getTactic().values.get("id"));
+					GetTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 				}
 			}
 			if (which == 2) {
 				boardView.finished = true;
-				mainApp.getTactic().values.put("stop", "1");
+				mainApp.getTactic().values.put(AppConstants.STOP, "1");
 			}
 		}
 	}
@@ -489,11 +491,11 @@ public class Game extends CoreActivity implements OnClickListener {
 			}
 			if (which == 1) {
 				boardView.getBoard().retry = true;
-				GetTacticsGame(mainApp.getTactic().values.get("id"));
+				GetTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 			}
 			if (which == 2) {
 				boardView.finished = true;
-				mainApp.getTactic().values.put("stop", "1");
+				mainApp.getTactic().values.put(AppConstants.STOP, "1");
 			}
 		}
 	}
@@ -688,9 +690,9 @@ public class Game extends CoreActivity implements OnClickListener {
 			boardView.getBoard().mode = 6;
 
 			if (mainApp.getTactic() != null 
-					&& id.equals(mainApp.getTactic().values.get("id"))) {
+					&& id.equals(mainApp.getTactic().values.get(AppConstants.ID))) {
 				boardView.getBoard().retry = true;
-				String FEN = mainApp.getTactic().values.get("fen");
+				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
 					boardView.getBoard().GenCastlePos(FEN);
 					MoveParser.FenParse(FEN, boardView.getBoard());
@@ -702,12 +704,12 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 
-				if (mainApp.getTactic().values.get("move_list").contains("1.")) {
-					boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+					boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
 					boardView.getBoard().movesCount = 1;
 				}
 				boardView.getBoard().sec = 0;
-				boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get("average_seconds"));
+				boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS));
 				startTacticsTimer();
 				int[] moveFT = MoveParser.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
 				if (moveFT.length == 4) {
@@ -769,7 +771,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		boardView.setBoard(new Board(this));
 		boardView.getBoard().mode = 6;
 
-		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("fen");
+		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 		if (!FEN.equals("")) {
 			boardView.getBoard().GenCastlePos(FEN);
 			MoveParser.FenParse(FEN, boardView.getBoard());
@@ -780,16 +782,16 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 			}
 		}
-		if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").contains("1.")) {
+		if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch()
-					.get(mainApp.currentTacticProblem).values.get("move_list")
+					.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST)
 					.replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "")
 					.replaceAll("  ", " ").substring(1).split(" "));
 			boardView.getBoard().movesCount = 1;
 		}
 		boardView.getBoard().sec = 0;
 		boardView.getBoard().left = Integer.parseInt(mainApp.getTacticsBatch()
-				.get(mainApp.currentTacticProblem).values.get("average_seconds"));
+				.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS));
 		startTacticsTimer();
 		int[] moveFT = MoveParser.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
 		if (moveFT.length == 4) {
@@ -835,7 +837,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		boardView.getBoard().retry = true;
 
 		if (mainApp.guest || mainApp.noInternet) {
-			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("fen");
+			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				boardView.getBoard().GenCastlePos(FEN);
 				MoveParser.FenParse(FEN, boardView.getBoard());
@@ -846,12 +848,12 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 			}
-			if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").contains("1.")) {
-				boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+			if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
+				boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
 				boardView.getBoard().movesCount = 1;
 			}
 		} else {
-			String FEN = mainApp.getTactic().values.get("fen");
+			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				boardView.getBoard().GenCastlePos(FEN);
 				MoveParser.FenParse(FEN, boardView.getBoard());
@@ -863,8 +865,8 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 			}
 
-			if (mainApp.getTactic().values.get("move_list").contains("1.")) {
-				boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+			if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+				boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
 				boardView.getBoard().movesCount = 1;
 			}
 		}
@@ -951,7 +953,11 @@ public class Game extends CoreActivity implements OnClickListener {
 				} else {
 					if (appService != null) {
 						appService.RunSingleTask(6,
-								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 1 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
+								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" +
+										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+										+ "&tactics_id=" + mainApp.getTactic().values.get(AppConstants.ID)
+										+ "&passed=" + 1 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves
+										+ "&seconds=" + boardView.getBoard().sec,
 								progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 					}
 					stopTacticsTimer();
@@ -967,7 +973,10 @@ public class Game extends CoreActivity implements OnClickListener {
 			} else {
 				if (appService != null) {
 					appService.RunSingleTask(5,
-							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + mainApp.getTactic().values.get("id") + "&passed=" + 0 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
+							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="
+									+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+									+ "&tactics_id=" + mainApp.getTactic().values.get(AppConstants.ID)
+									+ "&passed=" + 0 + "&correct_moves=" + boardView.getBoard().TacticsCorrectMoves + "&seconds=" + boardView.getBoard().sec,
 							progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 				}
 				stopTacticsTimer();
@@ -1227,8 +1236,8 @@ public class Game extends CoreActivity implements OnClickListener {
 
 				new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.wrong_score,
-								 result.values.get("user_rating_change"),
-								result.values.get("user_rating")))
+								 result.values.get(AppConstants.USER_RATING_CHANGE),
+								result.values.get(AppConstants.USER_RATING)))
 						.setItems(getResources().getTextArray(R.array.wrongtactic), wrongScoreDialogListener)
 						.create().show();
 				break;
@@ -1244,8 +1253,8 @@ public class Game extends CoreActivity implements OnClickListener {
 
 				new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.correct_score,
-								result.values.get("user_rating_change"),
-								result.values.get("user_rating")))
+								result.values.get(AppConstants.USER_RATING_CHANGE),
+								result.values.get(AppConstants.USER_RATING)))
 						.setItems(getResources().getTextArray(R.array.correcttactic), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 1) {
@@ -1269,7 +1278,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 				mainApp.setTactic(new Tactic(tmp[2].split(":")));
 
-				String FEN = mainApp.getTactic().values.get("fen");
+				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
 					boardView.getBoard().GenCastlePos(FEN);
 					MoveParser.FenParse(FEN, boardView.getBoard());
@@ -1281,12 +1290,12 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 
-				if (mainApp.getTactic().values.get("move_list").contains("1.")) {
-					boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+					boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
 					boardView.getBoard().movesCount = 1;
 				}
 				boardView.getBoard().sec = 0;
-				boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get("average_seconds"));
+				boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS));
 				startTacticsTimer();
 				int[] moveFT = MoveParser.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
 				if (moveFT.length == 4) {
@@ -1995,12 +2004,14 @@ public class Game extends CoreActivity implements OnClickListener {
 				boardView.getBoard().setTacticCanceled(false);
 				showDialog(1);
 				startTacticsTimer();
-			} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get("stop").equals("0")) {
+			} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
 				startTacticsTimer();
 			}
 		}
-		if (mainApp.isLiveChess() && mainApp.getGameId() != null && mainApp.getGameId() != "" && lccHolder.getGame(mainApp.getGameId()) != null) {
-			game = new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(), lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
+		if (mainApp.isLiveChess() && mainApp.getGameId() != null && mainApp.getGameId() != ""
+				&& lccHolder.getGame(mainApp.getGameId()) != null) {
+			game = new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(),
+					lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
 			lccHolder.getAndroid().setGameActivity(this);
 			if (lccHolder.isActivityPausedMode()) {
 				executePausedActivityGameEvents();
@@ -2070,7 +2081,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		stopTacticsTimer();
 		boardView.finished = false;
 		if (mainApp.getTactic() != null) {
-			mainApp.getTactic().values.put("stop", "0");
+			mainApp.getTactic().values.put(AppConstants.STOP, "0");
 		}
 		tacticsTimer = new Timer();
 		tacticsTimer.scheduleAtFixedRate(new TimerTask() {

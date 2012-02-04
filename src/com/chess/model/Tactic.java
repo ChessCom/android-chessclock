@@ -1,5 +1,7 @@
 package com.chess.model;
 
+import com.chess.core.AppConstants;
+
 import java.util.HashMap;
 
 public class Tactic {
@@ -8,13 +10,13 @@ public class Tactic {
 
 	public Tactic(String[] values) {
 		this.values = new HashMap<String, String>();
-		this.values.put("id", values[0]);
-		this.values.put("fen", values[1]);
-		this.values.put("move_list", values[2]);
-		this.values.put("attempt_count", values[3]);
-		this.values.put("passed_count", values[4]);
-		this.values.put("rating", values[5]);
-		this.values.put("average_seconds", values[6]);
-		this.values.put("stop", "0");
+		this.values.put(AppConstants.ID, values[0]);
+		this.values.put(AppConstants.FEN, values[1]);
+		this.values.put(AppConstants.MOVE_LIST, values[2]);
+		this.values.put(AppConstants.ATTEMPT_CNT, values[3]);
+		this.values.put(AppConstants.PASSED_CNT, values[4]);
+		this.values.put(AppConstants.RATING, values[5]);
+		this.values.put(AppConstants.AVG_SECONDS, values[6]);
+		this.values.put(AppConstants.STOP, "0");
 	}
 }

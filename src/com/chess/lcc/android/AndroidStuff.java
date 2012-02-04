@@ -11,6 +11,7 @@ import android.os.Handler;
 import com.chess.activities.Game;
 import com.chess.activities.tabs.Online;
 import com.chess.core.AppConstants;
+import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
 import com.chess.live.client.Challenge;
 import com.chess.utilities.MyProgressDialog;
@@ -132,16 +133,16 @@ public class AndroidStuff {
 	public void processMove(Long gameId, int moveIndex) {
 		final com.chess.model.Game gameData =
 				new com.chess.model.Game(lccHolder.getGameData(gameId.toString(), moveIndex), true);
-		lccHolder.getAndroid().sendBroadcastObjectIntent(9, "com.chess.lcc.android-game-move", gameData);
+		lccHolder.getAndroid().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
 	}
 
 	public void processDrawOffered(String offererUsername) {
-		lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-game-draw-offered", "DRAW OFFER",
+		lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, "DRAW OFFER",
 				offererUsername + " has offered a draw");
 	}
 
 	public void processGameEnd(String message) {
-		lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-game-end", "GAME OVER", message);
+		lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, "GAME OVER", message);
 	}
 
 	public void setConnectingIndicator(MyProgressDialog connectingIndicator) {
@@ -175,23 +176,23 @@ public class AndroidStuff {
 	  }*/
 
 	public void closeLoggingInIndicator() {
-		manageProgressDialog("com.chess.lcc.android-logging-in-info", false, "");
+		manageProgressDialog(IntentConstants.FILTER_LOGINING_INFO, false, "");
 	}
 
 	public void showReconnectingIndicator() {
-		manageProgressDialog("com.chess.lcc.android-reconnecting-info", true, "Reconnecting...");
+		manageProgressDialog(IntentConstants.FILTER_RECONNECT_INFO, true, "Reconnecting...");
 	}
 
 	public void closeReconnectingIndicator() {
-		manageProgressDialog("com.chess.lcc.android-reconnecting-info", false, "");
+		manageProgressDialog(IntentConstants.FILTER_RECONNECT_INFO, false, "");
 	}
 
 	public void informAndExit(String title, String message) {
-		informAndExit("com.chess.lcc.android-info-exit", title, message);
+		informAndExit(IntentConstants.FILTER_EXIT_INFO, title, message);
 	}
 
 	public void processOtherClientEntered() {
-		informAndExit("com.chess.lcc.android-info-exit", "", "Another login has been detected.");
+		informAndExit(IntentConstants.FILTER_EXIT_INFO, "", "Another login has been detected.");
 	}
 
 	public void informAndExit(String broadcastAction, String title, String message) {
@@ -204,7 +205,7 @@ public class AndroidStuff {
 	}
 
 	public void processObsoleteProtocolVersion() {
-		lccHolder.getAndroid().getContext().sendBroadcast(new Intent("com.chess.lcc.android-obsolete-protocol-version"));
+		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
 	}
 
 	/*public void startSigninActivity()

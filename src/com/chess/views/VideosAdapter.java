@@ -49,7 +49,7 @@ public class VideosAdapter extends ArrayAdapter<VideoItem> {
 				public void onClick(View v) {
 					new AlertDialog.Builder(context)
 							.setTitle(el.values.get(AppConstants.TITLE))
-							.setMessage(el.values.get("description"))
+							.setMessage(el.values.get(AppConstants.DESCRIPTION))
 							.setPositiveButton(context.getString(R.string.ok), null)
 							.create().show();
 				}
@@ -58,18 +58,18 @@ public class VideosAdapter extends ArrayAdapter<VideoItem> {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(Intent.ACTION_VIEW);
-					i.setDataAndType(Uri.parse(el.values.get("view_url").trim()), "video/*");
+					i.setDataAndType(Uri.parse(el.values.get(AppConstants.VIEW_URL).trim()), "video/*");
 					context.startActivity(i);
 				}
 			});
 
-			CharSequence date = DateFormat.format("dd.MM.yyyy", 1000 * Long.parseLong(el.values.get("publish_timestamp")));
+			CharSequence date = DateFormat.format("dd.MM.yyyy", 1000 * Long.parseLong(el.values.get(AppConstants.PUBLISH_TIMESTAMP)));
 
 			if (title != null) title.setText(el.values.get(AppConstants.TITLE));
 			if (times != null)
 				times.setText(context.getString(R.string.duration) + " " + el.values.get("minutes") + "min " + context.getString(R.string.published) + " " + date);
-			if (desc != null) desc.setText(el.values.get("description"));
-			if (addinfo != null) addinfo.setText(el.values.get("author_username"));
+			if (desc != null) desc.setText(el.values.get(AppConstants.DESCRIPTION));
+			if (addinfo != null) addinfo.setText(el.values.get(AppConstants.AUTHOR_USERNAME));
 
 		}
 		return convertView;

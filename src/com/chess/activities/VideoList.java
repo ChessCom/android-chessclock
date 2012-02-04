@@ -93,7 +93,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setDataAndType(Uri.parse(items.get(pos).values.get("view_url").trim()), "video/*");
+		i.setDataAndType(Uri.parse(items.get(pos).values.get(AppConstants.VIEW_URL).trim()), "video/*");
 		startActivity(i);	}
 
 	@Override
