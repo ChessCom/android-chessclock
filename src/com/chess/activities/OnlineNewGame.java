@@ -28,7 +28,7 @@ import com.chess.views.OnlineGamesAdapter;
 
 import java.util.ArrayList;
 
-public class OnlineNewGame extends CoreActivity {
+public class OnlineNewGame extends CoreActivity implements OnClickListener, OnItemClickListener {
 	private ListView openChallengesLictView;
 	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
 	private OnlineGamesAdapter gamesAdapter = null;
@@ -36,6 +36,18 @@ public class OnlineNewGame extends CoreActivity {
 	private Button challengecreate;
 	private Button currentGame;
 	private TextView removeAds;
+	private GameListElement gameListElement;
+	private ChallengeDialogListener challengeDialogListener;
+	private DirectChallengeDialogListener directChallengeDialogListener;
+	private ReleasedByMeDialogListener releasedByMeDialogListener;
+	private EchessDialogListener echessDialogListener;
+
+	private void init(){
+		challengeDialogListener = new ChallengeDialogListener();
+		directChallengeDialogListener = new DirectChallengeDialogListener();
+		releasedByMeDialogListener = new ReleasedByMeDialogListener();
+		echessDialogListener = new EchessDialogListener();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,151 +60,21 @@ public class OnlineNewGame extends CoreActivity {
 			}
 		}
 
+		init();
+
 		removeAds = (TextView) findViewById(R.id.removeAds);
-		removeAds.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
-								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
-			}
-		});
+		removeAds.setOnClickListener(this);
+
 		openChallengesLictView = (ListView) this.findViewById(R.id.openChallenges);
 		openChallengesLictView.setAdapter(gamesAdapter);
-		openChallengesLictView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-				final GameListElement el = gameListItems.get(pos);
-				if (el.type == 0) {
-					final String title = mainApp.isLiveChess() ?
-							el.values.get("opponent_chess_title") :
-							"Win: " + el.values.get("opponent_win_count") + " Loss: " + el.values.get("opponent_loss_count")
-									+ " Draw: " + el.values.get("opponent_draw_count");
+		openChallengesLictView.setOnItemClickListener(this);
 
-					if (mainApp.isLiveChess()) {
-						if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0")) {
-							new AlertDialog.Builder(OnlineNewGame.this)
-									.setTitle(title)
-									.setItems(new String[]{getString(R.string.accept), getString(R.string.decline)}, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface d, int pos) {
-											if (pos == 0) {
-												final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
-												LccHolder.LOG.info("Accept challenge: " + challenge);
-												lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-												lccHolder.removeChallenge(el.values.get(AppConstants.GAME_ID));
-												Update(2);
-											} else if (pos == 1) {
-												final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
-												LccHolder.LOG.info("Decline challenge: " + challenge);
-												lccHolder.getAndroid().runRejectChallengeTask(challenge);
-												lccHolder.removeChallenge(el.values.get(AppConstants.GAME_ID));
-												Update(3);
-											}
-										}
-									})
-									.create().show();
-						} else if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("1")) {
-							new AlertDialog.Builder(OnlineNewGame.this)
-									.setTitle(title)
-									.setItems(new String[]{"Cancel", "Keep"}, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface d, int pos) {
-											if (pos == 0) {
-												final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
-												LccHolder.LOG.info("Cancel my challenge: " + challenge);
-												lccHolder.getAndroid().runCancelChallengeTask(challenge);
-												lccHolder.removeChallenge(el.values.get(AppConstants.GAME_ID));
-												Update(4);
-											} else if (pos == 1) {
-												final Challenge challenge = lccHolder.getChallenge(el.values.get(AppConstants.GAME_ID));
-												LccHolder.LOG.info("Just keep my challenge: " + challenge);
-											}
-										}
-									})
-									.create().show();
-						} else if (el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("0")) {
-							final Challenge challenge = lccHolder.getSeek(el.values.get(AppConstants.GAME_ID));
-							LccHolder.LOG.info("Accept seek: " + challenge);
-							lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-							lccHolder.removeSeek(el.values.get(AppConstants.GAME_ID));
-							Update(2);
-						} else if (el.values.get("is_direct_challenge").equals("0") && el.values.get("is_released_by_me").equals("1")) {
-							new AlertDialog.Builder(OnlineNewGame.this)
-									.setTitle(title)
-									.setItems(new String[]{"Cancel", "Keep"}, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface d, int pos) {
-											if (pos == 0) {
-												final Challenge challenge = lccHolder.getSeek(el.values.get(AppConstants.GAME_ID));
-												LccHolder.LOG.info("Cancel my seek: " + challenge);
-												lccHolder.getAndroid().runCancelChallengeTask(challenge);
-												lccHolder.removeSeek(el.values.get(AppConstants.GAME_ID));
-												Update(4);
-											} else if (pos == 1) {
-												final Challenge challenge = lccHolder.getSeek(el.values.get(AppConstants.GAME_ID));
-												LccHolder.LOG.info("Just keep my seek: " + challenge);
-											}
-										}
-									})
-									.create().show();
-						}
-					} // echess
-					else {
-						new AlertDialog.Builder(OnlineNewGame.this)
-								.setTitle(title)
-								.setItems(new String[]{getString(R.string.accept), getString(R.string.decline)}, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface d, int pos) {
-										if (pos == 0) {
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
-											if (result.contains("Success")) {
-												Update(2);
-											} else if (result.contains("Error+")) {
-												mainApp.ShowDialog(OnlineNewGame.this, "Error", result.split("[+]")[1]);
-											} else {
-												//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
-											}
-										} else if (pos == 1) {
-
-											String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + el.values.get(AppConstants.GAME_ID), "GET", null, null);
-											if (result.contains("Success")) {
-												Update(3);
-											} else if (result.contains("Error+")) {
-												mainApp.ShowDialog(OnlineNewGame.this, "Error", result.split("[+]")[1]);
-											} else {
-												//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
-											}
-										}
-									}
-								})
-								.create().show();
-					}
-
-				}
-			}
-		});
-		findViewById(R.id.friendchallenge).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(OnlineNewGame.this, FriendChallenge.class));
-			}
-		});
+		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		challengecreate = (Button) findViewById(R.id.challengecreate);
-		challengecreate.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(OnlineNewGame.this, CreateChallenge.class));
-			}
-		});
+		challengecreate.setOnClickListener(this);
+
 		currentGame = (Button) findViewById(R.id.currentGame);
-		currentGame.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-					lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
-				}
-			}
-		});
+		currentGame.setOnClickListener(this);
 	}
 
 	protected void onResume() {
@@ -281,6 +163,149 @@ public class OnlineNewGame extends CoreActivity {
 		System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
 		if (hasFocus && MobclixHelper.isShowAds(mainApp) && mainApp.isForceBannerAdOnFailedLoad()) {
 			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, this, mainApp);
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.removeAds){
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+					"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
+							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+
+		}else if(view.getId() == R.id.friendchallenge){
+			startActivity(new Intent(this, FriendChallenge.class));
+		}else if(view.getId() == R.id.challengecreate){
+			startActivity(new Intent(this, CreateChallenge.class));
+		}else if(view.getId() == R.id.currentGame){
+			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
+				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
+			}
+		}
+	}
+
+	private class ChallengeDialogListener implements  DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+			if (pos == 0) {
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Accept challenge: " + challenge);
+				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
+				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				Update(2);
+			} else if (pos == 1) {
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Decline challenge: " + challenge);
+				lccHolder.getAndroid().runRejectChallengeTask(challenge);
+				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				Update(3);
+			}
+		}
+	}
+
+	private class DirectChallengeDialogListener implements DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+			if (pos == 0) {
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Cancel my challenge: " + challenge);
+				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				Update(4);
+			} else if (pos == 1) {
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Just keep my challenge: " + challenge);
+			}
+		}
+	}
+
+	private class ReleasedByMeDialogListener implements DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+			if (pos == 0) {
+				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Cancel my seek: " + challenge);
+				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+				lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
+				Update(4);
+			} else if (pos == 1) {
+				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
+				LccHolder.LOG.info("Just keep my seek: " + challenge);
+			}
+		}
+	}
+
+	private class EchessDialogListener implements DialogInterface.OnClickListener {
+		@Override
+		public void onClick(DialogInterface d, int pos) {
+			if (pos == 0) {
+				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
+				if (result.contains("Success")) {
+					Update(2);
+				} else if (result.contains("Error+")) {
+					mainApp.ShowDialog(OnlineNewGame.this, "Error", result.split("[+]")[1]);
+				} else {
+					//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
+				}
+			} else if (pos == 1) {
+
+				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
+				if (result.contains("Success")) {
+					Update(3);
+				} else if (result.contains("Error+")) {
+					mainApp.ShowDialog(OnlineNewGame.this, "Error", result.split("[+]")[1]);
+				} else {
+					//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?>  a, View v, int pos, long id) {
+		gameListElement = gameListItems.get(pos);
+		if (gameListElement.type == 0) {
+			final String title = mainApp.isLiveChess() ?
+					gameListElement.values.get("opponent_chess_title") :
+					"Win: " + gameListElement.values.get("opponent_win_count")
+					+ " Loss: " + gameListElement.values.get("opponent_loss_count")
+					+ " Draw: " + gameListElement.values.get("opponent_draw_count");
+
+			if (mainApp.isLiveChess()) {
+				if (gameListElement.values.get("is_direct_challenge").equals("1") && gameListElement.values.get("is_released_by_me").equals("0")) {
+					new AlertDialog.Builder(OnlineNewGame.this)
+							.setTitle(title)
+							.setItems(new String[]{getString(R.string.accept),
+									getString(R.string.decline)}, challengeDialogListener)
+							.create().show();
+				} else if (gameListElement.values.get("is_direct_challenge").equals("1") && gameListElement.values.get("is_released_by_me").equals("1")) {
+					new AlertDialog.Builder(OnlineNewGame.this)
+							.setTitle(title)
+							.setItems(new String[]{"Cancel", "Keep"}, directChallengeDialogListener)
+							.create().show();
+				} else if (gameListElement.values.get("is_direct_challenge").equals("0")
+						&& gameListElement.values.get("is_released_by_me").equals("0")) {
+					final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
+					LccHolder.LOG.info("Accept seek: " + challenge);
+					lccHolder.getAndroid().runAcceptChallengeTask(challenge);
+					lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
+					Update(2);
+				} else if (gameListElement.values.get("is_direct_challenge").equals("0")
+						&& gameListElement.values.get("is_released_by_me").equals("1")) {
+					new AlertDialog.Builder(OnlineNewGame.this)
+							.setTitle(title)
+							.setItems(new String[]{"Cancel", "Keep"}, releasedByMeDialogListener)
+							.create().show();
+				}
+			} // echess
+			else {
+				new AlertDialog.Builder(OnlineNewGame.this)
+						.setTitle(title)
+						.setItems(new String[]{getString(R.string.accept),
+								getString(R.string.decline)}, echessDialogListener)
+						.create().show();
+			}
+
 		}
 	}
 }
