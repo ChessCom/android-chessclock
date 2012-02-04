@@ -201,6 +201,14 @@
 
 
     <string name="bonus_time_left">Bonus Time Left: %1$s Time Spent: %2$s</string>
-    <string name="pieces">Pieces:</string>
+
+    <string name="pieces_s">Pieces:</string>
+    <string name="home">Home</string>
+    <string name="live">Live</string>
+    <string name="online">Online</string>
+    <string name="comp">Comp</string>
+    <string name="tactics">Tactics</string>
+    <string name="video">Video</string>
+    <string name="boards_s">Boards:</string>
 
 </resources>

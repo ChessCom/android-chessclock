@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
+import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.Game;
 import com.chess.model.GameListElement;
@@ -126,7 +127,7 @@ public class MainApp extends Application {
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(title)
 				.setMessage(message)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 					}
 				}).create().show();

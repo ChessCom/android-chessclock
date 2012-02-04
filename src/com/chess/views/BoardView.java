@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
+import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
 import com.chess.engine.Board;
 import com.chess.engine.Move;
@@ -167,7 +168,7 @@ public class BoardView extends ImageView {
 			mainApp.ShowMessage(message);
 
 			mainApp.sendBroadcast(
-					new Intent(AppConstants.ACTION_SHOW_GAME_END_POPUP).putExtra(AppConstants.MESSAGE, "GAME OVER: " + message)
+					new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP).putExtra(AppConstants.MESSAGE, "GAME OVER: " + message)
 							.putExtra(AppConstants.FINISHABLE, false));
 
 			return true;

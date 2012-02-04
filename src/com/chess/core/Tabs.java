@@ -27,7 +27,7 @@ import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
 import com.mobclix.android.sdk.Mobclix;
 
-public class Tabs extends TabActivity {
+public class Tabs extends TabActivity implements OnClickListener {
 
 	public MainApp mainApp;
 	private TextView removeAds;
@@ -47,13 +47,8 @@ public class Tabs extends TabActivity {
 		setContentView(R.layout.tabs);
 
 		removeAds = (TextView) findViewById(R.id.removeAds);
-		removeAds.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
-								"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
-			}
-		});
+		removeAds.setOnClickListener(this);
+
 
 		if (MobclixHelper.isShowAds(mainApp)) {
 			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {
@@ -63,32 +58,32 @@ public class Tabs extends TabActivity {
 
 		mainApp.setTabHost(getTabHost());
 		getTabHost().addTab(getTabHost().newTabSpec("tab1")
-				.setIndicator("Home", getResources().getDrawable(R.drawable.home))
+				.setIndicator(getString(R.string.home), getResources().getDrawable(R.drawable.home))
 				.setContent(new Intent(this, Home.class)));
 		if (mainApp.guest) {
 			getTabHost().addTab(getTabHost().newTabSpec("tab2")
-					.setIndicator("Live", getResources().getDrawable(R.drawable.live))
+					.setIndicator(getString(R.string.live), getResources().getDrawable(R.drawable.live))
 					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, true)));
 			getTabHost().addTab(getTabHost().newTabSpec("tab6")
-					.setIndicator("Online", getResources().getDrawable(R.drawable.online))
+					.setIndicator(getString(R.string.online), getResources().getDrawable(R.drawable.online))
 					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, false)));
 		} else {
 			getTabHost().addTab(getTabHost().newTabSpec("tab2")
-					.setIndicator("Live", getResources().getDrawable(R.drawable.live))
+					.setIndicator(getString(R.string.live), getResources().getDrawable(R.drawable.live))
 					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, true)));
 			getTabHost().addTab(getTabHost().newTabSpec("tab6")
-					.setIndicator("Online", getResources().getDrawable(R.drawable.online))
+					.setIndicator(getString(R.string.online), getResources().getDrawable(R.drawable.online))
 					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, false)));
 		}
 
 		getTabHost().addTab(getTabHost().newTabSpec("tab3")
-				.setIndicator("Comp", getResources().getDrawable(R.drawable.computer))
+				.setIndicator(getString(R.string.comp), getResources().getDrawable(R.drawable.computer))
 				.setContent(new Intent(this, Computer.class)));
 		getTabHost().addTab(getTabHost().newTabSpec("tab4")
-				.setIndicator("Tactics", getResources().getDrawable(R.drawable.tactics))
+				.setIndicator(getString(R.string.tactics), getResources().getDrawable(R.drawable.tactics))
 				.setContent(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, 6).putExtra(AppConstants.LIVE_CHESS, false)));
 		getTabHost().addTab(getTabHost().newTabSpec("tab5")
-				.setIndicator("Video", getResources().getDrawable(R.drawable.video))
+				.setIndicator(getString(R.string.video), getResources().getDrawable(R.drawable.video))
 				.setContent(new Intent(this, Video.class)));
 
 		TabWidget tw = getTabWidget();
@@ -126,7 +121,8 @@ public class Tabs extends TabActivity {
 			@Override
 			public void onTabChanged(String tabId) {
 				if (MobclixHelper.isShowAds(mainApp)) {
-					if (tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6")) {
+					if (tabId.equals("tab1") || tabId.equals("tab2")
+							|| tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6")) {
 						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, Tabs.this, mainApp);
 					} else if (tabId.equals("tab4")) {
 						MobclixHelper.hideBannerAd(mainApp, removeAds);
@@ -195,4 +191,14 @@ public class Tabs extends TabActivity {
 			});
 		}
 	};
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.removeAds){
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+					"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
+							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+
+		}
+	}
 }

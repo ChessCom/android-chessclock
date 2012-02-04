@@ -202,7 +202,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				new AlertDialog.Builder(Preferences.this)
-						.setTitle("Boards:")
+						.setTitle(getString(R.string.boards_s))
 						.setAdapter(Boards, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface d, int pos) {
@@ -218,7 +218,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				new AlertDialog.Builder(Preferences.this)
-						.setTitle(getString(R.string.pieces))
+						.setTitle(getString(R.string.pieces_s))
 						.setAdapter(Pieces, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface d, int pos) {
