@@ -21,7 +21,7 @@ import com.chess.views.VideosAdapter;
 
 import java.util.ArrayList;
 
-public class VideoList extends CoreActivity {
+public class VideoList extends CoreActivity implements OnItemClickListener, View.OnClickListener, OnScrollListener {
 	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
 	private VideosAdapter videosAdapter = null;
 	private ListView videosListView;
@@ -39,51 +39,16 @@ public class VideoList extends CoreActivity {
 		if (liveMembershipLevel
 				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
 			videoUpgrade.setVisibility(View.VISIBLE);
-			videoUpgrade.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-							"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
-									"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));
-				}
-			});
+			videoUpgrade.setOnClickListener(this);
+
 		} else {
 			videoUpgrade.setVisibility(View.GONE);
 		}
 
 		videosListView = (ListView) findViewById(R.id.videosLV);
-		videosListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setDataAndType(Uri.parse(items.get(pos).values.get("view_url").trim()), "video/*");
-				startActivity(i);
-			}
-		});
-		videosListView.setOnScrollListener(new OnScrollListener() {
-			private boolean update = false;
+		videosListView.setOnItemClickListener(this);
+		videosListView.setOnScrollListener(this);
 
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if (scrollState == SCROLL_STATE_IDLE) {
-					if (update) {
-						page++;
-						String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
-						String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
-						appService.RunSingleTask(0,
-								"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&page-size=20&page=" + page + skill + category,
-								progressDialog = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
-						);
-						update = false;
-					}
-				}
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				if (firstVisibleItem == totalItemCount - visibleItemCount)
-					update = true;
-			}
-		});
 	}
 
 	@Override
@@ -122,6 +87,48 @@ public class VideoList extends CoreActivity {
 			} else
 				videosAdapter.notifyDataSetChanged();
 
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setDataAndType(Uri.parse(items.get(pos).values.get("view_url").trim()), "video/*");
+		startActivity(i);	}
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.videoUpgrade){
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+					"http://www." + LccHolder.HOST + "/login.html?als="
+							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
+							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos")));			
+		}
+		
+	}
+
+
+	private boolean update;
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		if (firstVisibleItem == totalItemCount - visibleItemCount)
+			update = true;
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		if (scrollState == SCROLL_STATE_IDLE) {
+			if (update) {
+				page++;
+				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
+				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
+				appService.RunSingleTask(0,
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&page-size=20&page=" + page + skill + category,
+						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
+				);
+				update = false;
+			}
 		}
 	}
 }

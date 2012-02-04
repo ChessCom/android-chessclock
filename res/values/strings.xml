@@ -201,5 +201,6 @@
 
 
     <string name="bonus_time_left">Bonus Time Left: %1$s Time Spent: %2$s</string>
+    <string name="pieces">Pieces:</string>
 
 </resources>

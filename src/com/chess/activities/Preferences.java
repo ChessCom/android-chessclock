@@ -218,7 +218,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				new AlertDialog.Builder(Preferences.this)
-						.setTitle("Pieces:")
+						.setTitle(getString(R.string.pieces))
 						.setAdapter(Pieces, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface d, int pos) {

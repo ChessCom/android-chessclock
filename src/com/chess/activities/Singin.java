@@ -1,8 +1,5 @@
 package com.chess.activities;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -11,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-
 import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
@@ -29,7 +25,10 @@ import com.facebook.android.SessionEvents.LogoutListener;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 
-public class Singin extends CoreActivity {
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+public class Singin extends CoreActivity implements OnClickListener {
 
 	private EditText username, password;
 
@@ -50,72 +49,12 @@ public class Singin extends CoreActivity {
 		setContentView(R.layout.singin);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
-		/*
-		 * getWindow().setFormat(PixelFormat.RGBA_8888);
-		 * getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-		 * 
-		 * BitmapFactory.Options options = new BitmapFactory.Options();
-		 * options.inPreferredConfig = Bitmap.Config.ARGB_8888; Bitmap gradient
-		 * = BitmapFactory.decodeResource(getResources(), R.drawable.back_image,
-		 * options);
-		 * 
-		 * findViewById(R.id.back).setBackgroundDrawable(new
-		 * BitmapDrawable(gradient));
-		 */
-
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
 
-		findViewById(R.id.singin).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
-					mainApp.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
-					return;
-				}
-				/*
-				 * if(password.getText().toString().length() < 6 ||
-				 * password.getText().toString().length() > 20){
-				 * mainApp.ShowDialog(Singin.this, getString(R.string.error),
-				 * getString(R.string.validatePassword)); return; }
-				 */
-
-				String query = "http://www." + LccHolder.HOST + "/api/v2/login";
-				// String query = "http://" + LccHolder.HOST + "/api/v2/login";
-				try {
-					if (appService != null) {
-						appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
-								ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
-								AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
-																								 * ,
-																								 * "UTF-8"
-																								 * )
-																								 */, "password", /*
-																												 * URLEncoder
-																												 * .
-																												 * encode
-																												 * (
-																												 */
-								password.getText().toString()/* , "UTF-8") */
-						);
-					}
-				} catch (Exception e) {
-				}
-			}
-		});
-		findViewById(R.id.singup).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				LoadNext(1);
-			}
-		});
-		findViewById(R.id.guestplay).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				LoadNext(2);
-			}
-		});
+		findViewById(R.id.singin).setOnClickListener(this);
+		findViewById(R.id.singup).setOnClickListener(this);
+		findViewById(R.id.guestplay).setOnClickListener(this);
 
 		facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
 
@@ -125,6 +64,49 @@ public class Singin extends CoreActivity {
 		SessionEvents.addAuthListener(new SampleAuthListener());
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
 		facebookLoginButton.init(facebook, new String[]{});
+	}
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.singin){
+
+			if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
+				mainApp.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
+				return;
+			}
+			/*
+							 * if(password.getText().toString().length() < 6 ||
+							 * password.getText().toString().length() > 20){
+							 * mainApp.ShowDialog(Singin.this, getString(R.string.error),
+							 * getString(R.string.validatePassword)); return; }
+							 */
+
+			String query = "http://www." + LccHolder.HOST + "/api/v2/login";
+			// String query = "http://" + LccHolder.HOST + "/api/v2/login";
+			try {
+				if (appService != null) {
+					appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
+							ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
+							AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
+																								 * ,
+																								 * "UTF-8"
+																								 * )
+																								 */, "password", /*
+																												 * URLEncoder
+																												 * .
+																												 * encode
+																												 * (
+																												 */
+							password.getText().toString()/* , "UTF-8") */
+					);
+				}
+			} catch (Exception e) {
+			}
+		}else if(view.getId() == R.id.singup){
+			LoadNext(1);
+		}else if(view.getId() == R.id.guestplay){
+			LoadNext(2);
+		}
 	}
 
 	public class SampleAuthListener implements AuthListener {
