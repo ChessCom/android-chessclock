@@ -1,20 +1,21 @@
 package com.chess.views;
 
-import android.content.ClipData;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import com.chess.R;
 
-public class CenteredButton extends FrameLayout {
+public class CenteredButton extends FrameLayout implements View.OnClickListener, View.OnTouchListener {
+//public class CenteredButton extends RelativeLayout {
 
 	static final String TAG = "CenteredButton";
 	private final int DEFAULT_WIDTH = 100;
@@ -24,142 +25,204 @@ public class CenteredButton extends FrameLayout {
 
 	int mRadius;
 	int mAnrType;
-	CharSequence mLegend;
+	CharSequence buttonText;
 
-	static final int ANR_NONE = 0;
-	static final int ANR_SHADOW = 1;
-	static final int ANR_DROP = 2;
-
-	void sleepSixSeconds() {
-		// hang forever; good for producing ANRs
-		long start = SystemClock.uptimeMillis();
-		do {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-		} while (SystemClock.uptimeMillis() < start + 6000);
-	}
-
-	// Shadow builder that can ANR if desired
-	class ANRShadowBuilder extends DragShadowBuilder {
-		boolean mDoAnr;
-
-		public ANRShadowBuilder(View view, boolean doAnr) {
-			super(view);
-			mDoAnr = doAnr;
-		}
-
-		@Override
-		public void onDrawShadow(Canvas canvas) {
-			if (mDoAnr) {
-				sleepSixSeconds();
-			}
-			super.onDrawShadow(canvas);
-		}
-	}
+	private int mMaxChildWidth = 0;
+	private int mMaxChildHeight = 0;
 
 	public CenteredButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-//		attrs.
-		init(context, attrs);
+		initFromAttr(context, attrs);
 	}
 
 	public CenteredButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context, attrs);
+		initFromAttr(context, attrs);
 	}
 
 	public CenteredButton(Context context) {
 		super(context);
-//		init(context);
 	}
 
-	private void init(Context context, AttributeSet attrs) {
+	private void initFromAttr(Context context, AttributeSet attrs) {
 		// look up any layout-defined attributes
-//		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
 
-//		final int N = a.getIndexCount();
-//		for (int i = 0; i < N; i++) {
-//			int attr = a.getIndex(i);
-//			switch (attr) {
-//			case R.styleable.CenteredButton_buttonDrawable: {
-//				drawable = a.getDrawable(i);
-////					mRadius = a.getDimensionPixelSize(attr, 0);
-//			}
-//				break;
-//
-//			case R.styleable.CenteredButton_buttonText: {
-//				mLegend = a.getText(attr);
-//			}
-//				break;
-//
-//			}
-//		}
-
-		Log.i(TAG, "DraggableDot @ " + this + " : radius=" + mRadius + " legend='" + mLegend + "' anr=" + mAnrType);
-
-		setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				ClipData data = ClipData.newPlainText("dot", "Dot : " + v.toString());
-				v.startDrag(data, new ANRShadowBuilder(v, mAnrType == ANR_SHADOW), v, 0);
-				return true;
+		final int N = a.getIndexCount();
+		for (int i = 0; i < N; i++) {
+			int attr = a.getIndex(i);
+			switch (attr) {
+			case R.styleable.CenteredButton_buttonDrawable: {
+				drawable = a.getDrawable(i);
 			}
-		});
+				break;
+
+			case R.styleable.CenteredButton_buttonText: {
+				buttonText = a.getText(attr);
+			}
+				break;
+
+			}
+		}
+
+		Log.i(TAG, "DraggableDot @ " + this + " : radius=" + mRadius + " legend='" + buttonText + "' anr=" + mAnrType);
 
 		button = new Button(getContext());
-		button.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT));
-		button.setText(mLegend);
-		button.setTextColor(Color.RED);
-		int left = 0;
-		int right = 50;
-		int top = 0;
-		int bottom = 50;
-		Rect bounds = new Rect(left, top, right, bottom);
-		drawable.setBounds(bounds);
-		button.setCompoundDrawables(null, drawable, null, null);
-		button.setBackgroundColor(Color.BLACK);
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+//		LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		LayoutParams buttonParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+//		buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		button.setLayoutParams(buttonParams);
+		button.setText(buttonText);
+		button.setTextColor(Color.WHITE);
+		button.setTextSize(14);
+
+//		button.setTextSize();
+		button.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+//		button.setDuplicateParentStateEnabled(true);
+//		button.setCompoundDrawablePadding(20);
+		button.setBackgroundColor(Color.TRANSPARENT);
+//		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		params.gravity = Gravity.CENTER;
+
 		addView(button, params);
-//		setBackgroundColor(Color.WHITE);
+//		button.setTouchDelegate(getTouchDelegate());
+		this.setTouchDelegate(button.getTouchDelegate());
+		button.setClickable(true);
+		button.setOnClickListener(this);
+		button.setOnTouchListener(this);
+		setClickable(true);
 	}
 
-	public void setButton(Button button) {
-		this.button = button;
-		button.setTouchDelegate(this.getTouchDelegate());
-//		button.get
-//		findViewById(R.id.meter_Btn).setTouchDelegate(findViewById(R.id.linearLayout2).getTouchDelegate());
+
+
+	@Override
+	public void setPressed(boolean pressed) {
+		super.setPressed(pressed);
+		button.setPressed(pressed);
+	}
+
+	/**
+	 * Implement this method to handle touch screen motion events.
+	 *
+	 * @param event The motion event.
+	 * @return True if the event was handled, false otherwise.
+	 */
+	public boolean onTouchEvent(MotionEvent event) {
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				button.performClick();
+				setPressed(true);
+				button.refreshDrawableState();
+
+
+				break;
+			case MotionEvent.ACTION_UP:
+				button.setPressed(false);
+				button.refreshDrawableState();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				button.setPressed(true);
+				button.refreshDrawableState();
+
+				break;
+		}
+		return super.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		switch (motionEvent.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				setPressed(true);
+				refreshDrawableState();
+				performClick();
+
+				break;
+			case MotionEvent.ACTION_UP:
+				setPressed(false);
+				refreshDrawableState();
+				break;
+		}
+		return false;
 	}
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		if (button == null)
 			return;
-
-		button.draw(canvas);
 		super.dispatchDraw(canvas);
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 		int height = measureParam(heightMeasureSpec, DEFAULT_HEIGHT);
 		int width = measureParam(widthMeasureSpec, DEFAULT_WIDTH);
+
+		int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec),
+				MeasureSpec.AT_MOST);
+		int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec),
+				MeasureSpec.AT_MOST);
+
+		final int count = getChildCount();
+		for (int i = 0; i < count; i++) {
+			final View child = getChildAt(i);
+			if (child.getVisibility() == GONE) {
+				continue;
+			}
+
+			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+
+			mMaxChildWidth = Math.max(mMaxChildWidth, child.getMeasuredWidth());
+			mMaxChildHeight = Math.max(mMaxChildHeight, child.getMeasuredHeight());
+		}
+
+		// Measure again for each child to be exactly the same size.
+
+		childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildWidth, MeasureSpec.EXACTLY);
+		childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildHeight, MeasureSpec.EXACTLY);
+
+		for (int i = 0; i < count; i++) {
+			final View child = getChildAt(i);
+			if (child.getVisibility() == GONE) {
+				continue;
+			}
+
+			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+		}
+
 		setMeasuredDimension(width, height);
 	}
 
 	private int measureParam(int valueMeasureSpec, int value) {
-		switch (View.MeasureSpec.getMode(valueMeasureSpec)) {
-		case MeasureSpec.AT_MOST:
-			return MeasureSpec.getSize(valueMeasureSpec);
+		switch (MeasureSpec.getMode(valueMeasureSpec)) {
 		case MeasureSpec.EXACTLY:
+			return MeasureSpec.getSize(valueMeasureSpec);
+		case MeasureSpec.AT_MOST:
 			return Math.min(value, MeasureSpec.getSize(valueMeasureSpec));
 		default:
 		case MeasureSpec.UNSPECIFIED:
 			return value;
 		}
 	}
+
+	private boolean isButtonClicked;
+//	@Override
+//	public boolean performClick() {
+//		refreshDrawableState();
+//		if(!isButtonClicked)
+//			button.performClick();
+//		return super.performClick();
+//	}
+
+	@Override
+	public void onClick(View view) {
+		isButtonClicked = view.equals(button);
+//		performClick();
+	}
+
+
 }

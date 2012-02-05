@@ -37,12 +37,26 @@
     <color name="f_dark_blue_1">#FF28447d</color>
     
     <color name="f_stroke">#FF899dc2</color>
-    
+
     <color name="dashboard_button">#FF3d3d3d</color>
-    
-    <color name="top_bar_1">#FF81d124</color>
-    <color name="top_bar_2">#FF63b81f</color>
-    <color name="top_bar_3">#FF006402</color>
+
+    <color name="blue">#FF183b94</color>
+    <color name="orange">#FFf97028</color>
+    <!--<color name="dark_orange">#FFa94a14</color>-->
+
+    <color name="glow_border">#19FFFFFF</color>
+    <color name="shadow_border">#27000000</color>
+    <color name="dashboard_item_default">#FF353535</color>
+    <color name="dashboard_item_stroke">#FF474747</color>
+    <color name="dashboard_item_stroke_2">#FF232323</color>
+
+
+    <color name="top_bar_stroke_1">#FF767676</color>
+    <color name="top_bar_stroke_2">#FF252525</color>
+
+    <color name="top_bar_1">#FF8c8c8c</color>
+    <color name="top_bar_2">#FF585858</color>
+    <color name="top_bar_3">#FF353535</color>
     
 
     <color name="disabled">#FF7a7a7a</color>    

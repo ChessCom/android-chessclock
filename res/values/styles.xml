@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    
-    
+
+    <style name="ActionBarCompatBackground" parent="ActionBarCompat">
+        <item name="android:background">@drawable/top_bar_grey</item>
+    </style>
     
     
     <style name="text_shadow" parent="@android:style/Widget.TextView">
@@ -91,19 +93,38 @@
         <item name="android:textSize">@dimen/list_item_text_size</item>
 	</style>
 
-    	
+
     <style name="DashboardButton">
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
         <item name="android:drawablePadding">5dp</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/top_bar_1</item>
         <item name="android:background">@drawable/dashboard_button</item>
-    </style>  
-    
+        <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <style name="MyDashboardButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/top_bar_1</item>
+        <item name="android:background">@drawable/dashboard_button</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="DashboardItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/dashboard_item</item>
+    </style>
+
     <style name="DefaultEdt" parent="@android:style/Widget.EditText">
         <item name="android:background">@drawable/textfield_selector</item>
 		<item name="android:textSize">14sp</item>
