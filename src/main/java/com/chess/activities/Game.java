@@ -2,9 +2,7 @@ package com.chess.activities;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import android.os.AsyncTask;
 import android.widget.*;

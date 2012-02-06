@@ -216,7 +216,7 @@ public class Online extends CoreActivity {
       setContentView(R.layout.online);
 
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id="+App.sharedData.getString("user_token", ""),
+				"http://www." + LccHolder.HOST + "/api/v2/echess_challenges?id="+App.sharedData.getString("user_token", ""),
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id="+App.sharedData.getString("user_token", "")+"&all=1",
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id="+App.sharedData.getString("user_token", "") };
 
