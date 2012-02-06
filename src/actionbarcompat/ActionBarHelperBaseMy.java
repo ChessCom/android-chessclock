@@ -33,14 +33,14 @@ import java.util.Set;
 /**
  * A class that implements the action bar pattern for pre-Honeycomb devices.
  */
-public class ActionBarHelperBase extends ActionBarHelper {
+public class ActionBarHelperBaseMy extends ActionBarHelperMy {
 	private static final String MENU_RES_NAMESPACE = "http://schemas.android.com/apk/res/android";
 	private static final String MENU_ATTR_ID = "id";
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 
-	protected ActionBarHelperBase(Activity activity) {
+	protected ActionBarHelperBaseMy(Activity activity) {
 		super(activity);
 	}
 
@@ -84,13 +84,14 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0,
 				mActivity.getString(R.string.app_name));
-		homeItem.setIcon(R.drawable.ic_logo);
+		homeItem.setIcon(R.drawable.ic_logo_bar);
 		addActionItemCompatFromMenuItem(homeItem);
 
 		// Add title text
 		TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
 		titleText.setLayoutParams(springLayoutParams);
 		titleText.setText(mActivity.getTitle());
+		titleText.setVisibility(View.INVISIBLE);
 		actionBarCompat.addView(titleText);
 	}
 
@@ -111,7 +112,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	/**
 	 * Action bar helper code to be run in
 	 * {@link android.app.Activity#onCreateOptionsMenu(android.view.Menu)}.
-	 * 
+	 *
 	 * NOTE: This code will mark on-screen menu items as invisible.
 	 */
 	@Override
@@ -155,7 +156,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	 * information from a {@link android.view.MenuItem}. If the menu item ID is
 	 * <code>menu_refresh</code>, the menu item's state can be changed to show a
 	 * loading spinner using
-	 * {@link actionbarcompat.ActionBarHelperBase#setRefreshActionItemState(boolean)}
+	 * {@link ActionBarHelperBaseMy#setRefreshActionItemState(boolean)}
 	 * .
 	 */
 	private View addActionItemCompatFromMenuItem(final MenuItem item) {
@@ -169,9 +170,11 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		// Create the button
 		ImageButton actionButton = new ImageButton(mActivity, null,
 				itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
+
 		actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
-				itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
+				itemId == android.R.id.home ? R.dimen.actionbar_my_compat_button_home_width
 						: R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.FILL_PARENT));
+
 		if (itemId == R.id.menu_refresh) {
 			actionButton.setId(R.id.actionbar_compat_item_refresh);
 		}

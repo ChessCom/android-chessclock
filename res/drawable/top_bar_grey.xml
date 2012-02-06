@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
             >
-    <item android:bottom="1px" android:top="1px">
+    <item >
         <shape
             android:dither="true" android:shape="rectangle">
             <gradient android:angle="270"
@@ -11,7 +11,7 @@
                 />
         </shape>
     </item>
-    <item >
+    <item android:bottom="2dip" android:top="2dip">
         <shape
             android:dither="true" android:shape="rectangle">
             <gradient android:angle="270"

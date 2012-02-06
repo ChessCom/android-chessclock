@@ -24,15 +24,15 @@ import android.view.MenuInflater;
 
 /**
  * A base activity that defers common functionality across app activities to an {@link
- * ActionBarHelper}.
+ * actionbarcompat.ActionBarHelper}.
  *
  * NOTE: dynamically marking menu items as invisible/visible is not currently supported.
  *
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivity extends Activity {
-    final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
+public abstract class ActionBarActivityMy extends Activity {
+    final ActionBarHelperMy mActionBarHelperMy = ActionBarHelperMy.createInstance(this);
 
 	@Override
 	public void onAttachedToWindow() {
@@ -43,30 +43,30 @@ public abstract class ActionBarActivity extends Activity {
 	}
 
     /**
-     * Returns the {@link ActionBarHelper} for this activity.
+     * Returns the {@link actionbarcompat.ActionBarHelper} for this activity.
      */
-    protected ActionBarHelper getActionBarHelper() {
-        return mActionBarHelper;
+    protected ActionBarHelperMy getActionBarHelper() {
+        return mActionBarHelperMy;
     }
 
     /**{@inheritDoc}*/
     @Override
     public MenuInflater getMenuInflater() {
-        return mActionBarHelper.getMenuInflater(super.getMenuInflater());
+        return mActionBarHelperMy.getMenuInflater(super.getMenuInflater());
     }
 
     /**{@inheritDoc}*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActionBarHelper.onCreate(savedInstanceState);
+        mActionBarHelperMy.onCreate(savedInstanceState);
     }
 
     /**{@inheritDoc}*/
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mActionBarHelper.onPostCreate(savedInstanceState);
+		super.onPostCreate(savedInstanceState);
+        mActionBarHelperMy.onPostCreate(savedInstanceState);
     }
 
     /**
@@ -78,15 +78,15 @@ public abstract class ActionBarActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean retValue = false;
-        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+        retValue |= mActionBarHelperMy.onCreateOptionsMenu(menu);
         retValue |= super.onCreateOptionsMenu(menu);
         return retValue;
     }
 
     /**{@inheritDoc}*/
     @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        mActionBarHelper.onTitleChanged(title, color);
+	protected void onTitleChanged(CharSequence title, int color) {
+        mActionBarHelperMy.onTitleChanged(title, color);
         super.onTitleChanged(title, color);
     }
 }

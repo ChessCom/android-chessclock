@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-
+    <style name="MyAppTheme" parent="AppTheme">
+        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
+    </style>
 
 	
 	<style name="OrangeButtonTheme" parent="android:Theme.NoTitleBar.Fullscreen">

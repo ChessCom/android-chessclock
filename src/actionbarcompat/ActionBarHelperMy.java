@@ -28,29 +28,29 @@ import android.view.MenuInflater;
  * tablets, and does not require any Android 3.0-specific features, although it
  * uses them if available.
  * 
- * Two implementations of this class are {@link ActionBarHelperBase} for a
- * pre-Honeycomb version of the action bar, and {@link ActionBarHelperHoneycomb}
+ * Two implementations of this class are {@link actionbarcompat.ActionBarHelperBase} for a
+ * pre-Honeycomb version of the action bar, and {@link actionbarcompat.ActionBarHelperHoneycomb}
  * , which uses the built-in ActionBar features in Android 3.0 and later.
  */
-public abstract class ActionBarHelper {
+public abstract class ActionBarHelperMy {
 	protected Activity mActivity;
 
 	/**
-	 * Factory method for creating {@link ActionBarHelper} objects for a given
+	 * Factory method for creating {@link actionbarcompat.ActionBarHelperMy} objects for a given
 	 * activity. Depending on which device the app is running, either a basic
 	 * helper or Honeycomb-specific helper will be returned.
 	 */
-	public static ActionBarHelper createInstance(Activity activity) {
+	public static ActionBarHelperMy createInstance(Activity activity) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return new ActionBarHelperICS(activity);
+			return new ActionBarHelperICSMy(activity);
 		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			return new ActionBarHelperHoneycomb(activity);
+			return new ActionBarHelperHoneycombMy(activity);
 		} else {
-			return new ActionBarHelperBase(activity);
+			return new ActionBarHelperBaseMy(activity);
 		}
 	}
 
-	protected ActionBarHelper(Activity activity) {
+	protected ActionBarHelperMy(Activity activity) {
 		mActivity = activity;
 	}
 
@@ -71,7 +71,7 @@ public abstract class ActionBarHelper {
 	/**
 	 * Action bar helper code to be run in
 	 * {@link android.app.Activity#onCreateOptionsMenu(android.view.Menu)}.
-	 * 
+	 *
 	 * NOTE: Setting the visibility of menu items in <em>menu</em> is not
 	 * currently supported.
 	 */
@@ -94,7 +94,7 @@ public abstract class ActionBarHelper {
 
 	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
-	 * The implementation of this method in {@link ActionBarHelperBase} returns
+	 * The implementation of this method in {@link actionbarcompat.ActionBarHelperBase} returns
 	 * a wrapped menu inflater that can read action bar metadata from a menu
 	 * resource pre-Honeycomb.
 	 */
