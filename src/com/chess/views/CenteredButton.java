@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +21,7 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 	private final int DEFAULT_HEIGHT = 100;
 	private Button button;
 	private Drawable drawable;
+	private float density;
 
 	int mRadius;
 	int mAnrType;
@@ -47,46 +47,44 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 	private void initFromAttr(Context context, AttributeSet attrs) {
 		// look up any layout-defined attributes
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
+//		private static final float GESTURE_THRESHOLD_DP = 16.0f;
+
+// Get the screen's density scale
+		density = getResources().getDisplayMetrics().density;
+// Convert the dps to pixels, based on density scale
+//		mGestureThreshold = (int) (GESTURE_THRESHOLD_DP * density + 0.5f);
+//		TypedArray dashboardItemText = context.obtainStyledAttributes(attrs, R.style.DashboardItemText);
 
 		final int N = a.getIndexCount();
 		for (int i = 0; i < N; i++) {
 			int attr = a.getIndex(i);
 			switch (attr) {
-			case R.styleable.CenteredButton_buttonDrawable: {
-				drawable = a.getDrawable(i);
-			}
-				break;
-
-			case R.styleable.CenteredButton_buttonText: {
-				buttonText = a.getText(attr);
-			}
-				break;
-
+				case R.styleable.CenteredButton_buttonDrawable: {
+					drawable = a.getDrawable(i);
+				}break;
+				case R.styleable.CenteredButton_buttonText: {
+					buttonText = a.getText(attr);
+				}break;
 			}
 		}
-
-		Log.i(TAG, "DraggableDot @ " + this + " : radius=" + mRadius + " legend='" + buttonText + "' anr=" + mAnrType);
+//		getBackground()
+//		Log.i(TAG, "DraggableDot @ " + this + " : radius=" + mRadius + " legend='" + buttonText + "' anr=" + mAnrType);
 
 		button = new Button(getContext());
-//		LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		LayoutParams buttonParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-//		buttonParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		button.setLayoutParams(buttonParams);
 		button.setText(buttonText);
-		button.setTextColor(Color.WHITE);
-		button.setTextSize(14);
-
-//		button.setTextSize();
+		button.setTextAppearance(getContext(), R.style.DashboardItemText);
+		float shadowRadius = 1*density + 0.5f;
+		float shadowDx = 0*density + 0.5f;
+		float shadowDy = 0*density + 0.5f;
+		button.setShadowLayer(shadowRadius,shadowDx,shadowDy,Color.BLACK);
 		button.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
-//		button.setDuplicateParentStateEnabled(true);
-//		button.setCompoundDrawablePadding(20);
 		button.setBackgroundColor(Color.TRANSPARENT);
-//		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		params.gravity = Gravity.CENTER;
 
 		addView(button, params);
-//		button.setTouchDelegate(getTouchDelegate());
 		this.setTouchDelegate(button.getTouchDelegate());
 		button.setClickable(true);
 		button.setOnClickListener(this);

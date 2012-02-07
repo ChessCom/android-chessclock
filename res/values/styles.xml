@@ -130,7 +130,12 @@
 		<item name="android:textSize">14sp</item>
 		<item name="android:textColor">@android:color/black</item>
     </style>
-    
+
+    <style name="DashboardItemText" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
     <style name="DefaultText" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">17sp</item>

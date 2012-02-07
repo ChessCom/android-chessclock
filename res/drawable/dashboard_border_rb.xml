@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape
+            android:dither="true"
+            android:shape="rectangle">
+            <stroke
+                android:width="1px"
+                android:color="@color/dashboard_item_stroke_2"/>
+        </shape>
+    </item>
+    <item
+        android:bottom="1px"
+        android:left="1px"
+        android:right="1px"
+        android:top="1px"
+        >
+        <shape
+            android:dither="true"
+            android:shape="rectangle">
+            <solid android:color="@color/dashboard_item_default"/>
+
+            <stroke
+                android:width="1px"
+                android:color="@color/dashboard_item_stroke"/>
+        </shape>
+    </item>
+
+    <item
+        android:bottom="1px"
+        android:left="0px"
+        android:right="1px"
+        android:top="0px"
+        android:id="@id/glow_layer"
+        >
+        <shape android:dither="true">
+            <gradient
+                android:centerX="0.0"
+                android:centerY="0.0"
+                android:endColor="@color/dashboard_button"
+                android:gradientRadius="180"
+                android:startColor="@color/glow_border2"
+                android:type="radial"/>
+        </shape>
+    </item>
+
+</layer-list>

@@ -44,7 +44,9 @@
     <color name="orange">#FFf97028</color>
     <!--<color name="dark_orange">#FFa94a14</color>-->
 
-    <color name="glow_border">#19FFFFFF</color>
+    <color name="glow_border">#00c9c9c9</color>
+    <color name="glow_border2">#7F949494</color>
+
     <color name="shadow_border">#27000000</color>
     <color name="dashboard_item_default">#FF353535</color>
     <color name="dashboard_item_stroke">#FF474747</color>

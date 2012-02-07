@@ -171,9 +171,20 @@ public class ActionBarHelperBaseMy extends ActionBarHelperMy {
 		ImageButton actionButton = new ImageButton(mActivity, null,
 				itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
 
-		actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
-				itemId == android.R.id.home ? R.dimen.actionbar_my_compat_button_home_width
-						: R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.FILL_PARENT));
+		if(itemId == android.R.id.home){
+			float density = mActivity.getResources().getDisplayMetrics().density;
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) mActivity.getResources().getDimension(
+					R.dimen.actionbar_my_compat_button_home_width), ViewGroup.LayoutParams.FILL_PARENT);
+			int left = (int) (12*density + 0.5f);
+			params.setMargins(0,0,2,0);
+			actionButton.setPadding(left,1,3,1);
+			actionButton.setLayoutParams(params);
+		}else{
+			actionButton.setLayoutParams(new ViewGroup.LayoutParams((int)mActivity.getResources().getDimension(
+					R.dimen.actionbar_compat_button_width),
+					ViewGroup.LayoutParams.FILL_PARENT));
+		}
+
 
 		if (itemId == R.id.menu_refresh) {
 			actionButton.setId(R.id.actionbar_compat_item_refresh);
