@@ -32,25 +32,25 @@ import android.view.MenuInflater;
  * pre-Honeycomb version of the action bar, and {@link actionbarcompat.ActionBarHelperHoneycomb}
  * , which uses the built-in ActionBar features in Android 3.0 and later.
  */
-public abstract class ActionBarHelperMy {
+public abstract class ActionBarHelperHome {
 	protected Activity mActivity;
 
 	/**
-	 * Factory method for creating {@link actionbarcompat.ActionBarHelperMy} objects for a given
+	 * Factory method for creating {@link ActionBarHelperHome} objects for a given
 	 * activity. Depending on which device the app is running, either a basic
 	 * helper or Honeycomb-specific helper will be returned.
 	 */
-	public static ActionBarHelperMy createInstance(Activity activity) {
+	public static ActionBarHelperHome createInstance(Activity activity) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return new ActionBarHelperICSMy(activity);
+			return new ActionBarHelperICSHome(activity);
 		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			return new ActionBarHelperHoneycombMy(activity);
+			return new ActionBarHelperHoneycombHome(activity);
 		} else {
-			return new ActionBarHelperBaseMy(activity);
+			return new ActionBarHelperBaseHome(activity);
 		}
 	}
 
-	protected ActionBarHelperMy(Activity activity) {
+	protected ActionBarHelperHome(Activity activity) {
 		mActivity = activity;
 	}
 

@@ -39,8 +39,8 @@ public class DashBoardLayout2 extends RelativeLayout {
 				R.drawable.dashboard_item_rt,
 				R.drawable.dashboard_item_lm,
 				R.drawable.dashboard_item_rm,
-			R.drawable.dashboard_item_lb,
-			R.drawable.dashboard_item_rb
+				R.drawable.dashboard_item_lb,
+				R.drawable.dashboard_item_rb
 		};
 
 	}

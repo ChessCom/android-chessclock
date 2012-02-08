@@ -1,9 +1,8 @@
 package com.chess.core;
 
-import android.app.Activity;
+import actionbarcompat.ActionBarActivityHome;
 import android.app.AlertDialog;
 import android.content.*;
-import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.*;
 import android.text.Html;
@@ -12,8 +11,6 @@ import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.WindowManager;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.Singin;
@@ -28,7 +25,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public abstract class CoreActivity extends Activity {
+public abstract class CoreActivityHome extends ActionBarActivityHome {
 
 	protected MainApp mainApp;
 	protected Bundle extras;
@@ -39,30 +36,13 @@ public abstract class CoreActivity extends Activity {
 	protected String response = "";
 	protected String responseRepeatable = "";
 
-	public abstract void LoadNext(int code);
 
-	public abstract void LoadPrev(int code);
 
 	public abstract void Update(int code);
-
 	protected Context context;
 
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-		getWindow().setFormat(PixelFormat.RGBA_8888);
-	}
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			LoadPrev(MainApp.loadPrev);
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +97,7 @@ public abstract class CoreActivity extends Activity {
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
-			Update(-1);
+			Update(-1); // TODO send broadcast or call local method, but with readable arguments
 		}
 
 		@Override
@@ -306,7 +286,7 @@ public abstract class CoreActivity extends Activity {
 					Update(-2);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(CoreActivityHome.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -323,7 +303,7 @@ public abstract class CoreActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 			final com.chess.live.client.Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
-			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
+			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivityHome.this)
 					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
 					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
@@ -394,7 +374,7 @@ public abstract class CoreActivity extends Activity {
 						@Override
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
-							final Intent intent = new Intent(CoreActivity.this, Tabs.class);
+							final Intent intent = new Intent(CoreActivityHome.this, Tabs.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							// reconnectingIndicator.dismiss();
 							mainApp.startActivity(intent);
@@ -407,7 +387,7 @@ public abstract class CoreActivity extends Activity {
 						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
 					} catch (Exception e) {
 						lccHolder.logout();
-						intent = new Intent(CoreActivity.this, Tabs.class);
+						intent = new Intent(CoreActivityHome.this, Tabs.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						// reconnectingIndicator.dismiss();
 						mainApp.startActivity(intent);
@@ -648,7 +628,7 @@ public abstract class CoreActivity extends Activity {
 
 					if (force != null) {
 						final boolean forceFlag = force;
-						new AlertDialog.Builder(CoreActivity.this).setIcon(R.drawable.ic_launcher).setTitle("Update Check")
+						new AlertDialog.Builder(CoreActivityHome.this).setIcon(R.drawable.ic_launcher).setTitle("Update Check")
 								.setMessage("An update is available! Please update").setCancelable(false)
 								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 									@Override
@@ -658,7 +638,7 @@ public abstract class CoreActivity extends Activity {
 										if (forceFlag) {
 											mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, 0);
 											mainApp.getSharedDataEditor().commit();
-											startActivity(new Intent(CoreActivity.this, Singin.class));
+											startActivity(new Intent(CoreActivityHome.this, Singin.class));
 											finish();
 										}
 										Intent intent = new Intent(Intent.ACTION_VIEW, Uri
@@ -676,13 +656,13 @@ public abstract class CoreActivity extends Activity {
 	}
 
 	private void showNetworkChangeNotification() {
-		new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+		new AlertDialog.Builder(CoreActivityHome.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
 				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// mainApp.setNetworkChangedNotification(false);
-						startActivity(new Intent(CoreActivity.this, Tabs.class));
+						startActivity(new Intent(CoreActivityHome.this, Tabs.class));
 					}
 				}).create().show();
 	}

@@ -18,20 +18,33 @@
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
 
-    <application android:icon="@drawable/ic_home" android:label="@string/app_name" android:name=".core.MainApp"
+    <application android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name=".core.MainApp"
     	android:debuggable="true"
     	android:theme="@style/OrangeButtonTheme"
     	>
 
-        <activity android:name=".core.StartActivity"
+        <activity android:name=".core.StartActivity2"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
-                  > <!-- android:theme="@style/MyTheme.NoTitleBar.Fullscreen" -->
+                  android:theme="@android:style/Theme.Light.NoTitleBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+<!--
+        <activity android:name=".core.StartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+-->
 
         <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation"/>
 
@@ -61,8 +74,26 @@
     	<activity android:name=".activities.CreateChallenge" />
 
         <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
+        <activity android:name=".activities.LoginScreenActivity"
+                  android:theme="@android:style/Theme.Light.NoTitleBar"
+                  />
+        <activity android:name=".activities.HomeScreenActivity"/>
+        <activity android:name=".activities.OnlineScreenActivity"
+            android:label="@string/menuOnline"/>
+        <activity android:name=".activities.LiveScreenActivity"
+                  android:label="@string/menuLive"/>
+        <activity android:name=".activities.TacticsScreenActivity"
+                  android:label="@string/menuTactics"/>
+        <activity android:name=".activities.PreferencesScreenActivity"
+                  android:label="@string/settings"/>
+        <activity android:name=".activities.VideoScreenActivity"
+                  android:label="@string/menuVideo"/>
+        <activity android:name=".activities.ComputerScreenActivity"
+                  android:label="@string/menuComp"/>
+        <activity android:name=".activities.SignUpScreenActivity"
+                  android:label="@string/menuLive"/>
 
-	    <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
+        <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 
 		<service android:name=".utilities.WebService" />
 		<service android:name=".utilities.Notifications" android:enabled="true" android:label="Notifications" />

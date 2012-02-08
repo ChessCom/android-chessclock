@@ -6,7 +6,7 @@
     </style>
 
 	
-	<style name="OrangeButtonTheme" parent="android:Theme.NoTitleBar.Fullscreen">
+	<style name="OrangeButtonTheme" parent="MyAppTheme">
 		<item name="android:buttonStyle">@style/button_orange</item>
         <item name="android:textAppearanceSmall">@style/DefaultText</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>	

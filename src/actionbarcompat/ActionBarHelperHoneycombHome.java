@@ -28,11 +28,11 @@ import com.chess.R;
  * An extension of {@link actionbarcompat.ActionBarHelper} that provides Android 3.0-specific
  * functionality for Honeycomb tablets. It thus requires API level 11.
  */
-public class ActionBarHelperHoneycombMy extends ActionBarHelperMy {
+public class ActionBarHelperHoneycombHome extends ActionBarHelperHome {
 	private Menu mOptionsMenu;
 	private View mRefreshIndeterminateProgressView = null;
 
-	protected ActionBarHelperHoneycombMy(Activity activity) {
+	protected ActionBarHelperHoneycombHome(Activity activity) {
 		super(activity);
 	}
 

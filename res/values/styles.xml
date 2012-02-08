@@ -3,7 +3,7 @@
 <resources>
 
     <style name="ActionBarCompatBackground" parent="ActionBarCompat">
-        <item name="android:background">@drawable/top_bar_grey</item>
+        <item name="android:background">@drawable/top_bar_texture</item>
     </style>
     
     

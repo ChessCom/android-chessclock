@@ -21,6 +21,7 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.WindowManager;
 
 /**
  * A base activity that defers common functionality across app activities to an {@link
@@ -31,21 +32,20 @@ import android.view.MenuInflater;
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivityMy extends Activity {
-    final ActionBarHelperMy mActionBarHelperMy = ActionBarHelperMy.createInstance(this);
+public abstract class ActionBarActivityHome extends Activity {
+    final ActionBarHelperHome mActionBarHelperMy = ActionBarHelperHome.createInstance(this);
 
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-
-		// Eliminates color banding
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 		getWindow().setFormat(PixelFormat.RGBA_8888);
 	}
 
     /**
      * Returns the {@link actionbarcompat.ActionBarHelper} for this activity.
      */
-    protected ActionBarHelperMy getActionBarHelper() {
+    protected ActionBarHelperHome getActionBarHelper() {
         return mActionBarHelperMy;
     }
 

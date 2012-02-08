@@ -33,14 +33,14 @@ import java.util.Set;
 /**
  * A class that implements the action bar pattern for pre-Honeycomb devices.
  */
-public class ActionBarHelperBaseMy extends ActionBarHelperMy {
+public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 	private static final String MENU_RES_NAMESPACE = "http://schemas.android.com/apk/res/android";
 	private static final String MENU_ATTR_ID = "id";
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 
-	protected ActionBarHelperBaseMy(Activity activity) {
+	protected ActionBarHelperBaseHome(Activity activity) {
 		super(activity);
 	}
 
@@ -156,7 +156,7 @@ public class ActionBarHelperBaseMy extends ActionBarHelperMy {
 	 * information from a {@link android.view.MenuItem}. If the menu item ID is
 	 * <code>menu_refresh</code>, the menu item's state can be changed to show a
 	 * loading spinner using
-	 * {@link ActionBarHelperBaseMy#setRefreshActionItemState(boolean)}
+	 * {@link ActionBarHelperBaseHome#setRefreshActionItemState(boolean)}
 	 * .
 	 */
 	private View addActionItemCompatFromMenuItem(final MenuItem item) {

@@ -1,6 +1,6 @@
 package com.chess.activities;
 
-import actionbarcompat.ActionBarActivityMy;
+import actionbarcompat.ActionBarActivityHome;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.views.BackgroundChessDrawable;
 
-public class DashBoardTestActivity extends ActionBarActivityMy implements OnClickListener {
+public class DashBoardTestActivity extends ActionBarActivityHome implements OnClickListener {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

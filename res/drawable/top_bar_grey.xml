@@ -19,8 +19,8 @@
                       android:centerColor="@color/top_bar_2"
                       android:endColor="@color/top_bar_3"
                 />
-
         </shape>
-
+    </item>
+    <item android:drawable="@drawable/top_bar_texture">
     </item>
 </layer-list>

@@ -47,13 +47,10 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 	private void initFromAttr(Context context, AttributeSet attrs) {
 		// look up any layout-defined attributes
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
-//		private static final float GESTURE_THRESHOLD_DP = 16.0f;
 
-// Get the screen's density scale
+		// Get the screen's density scale
 		density = getResources().getDisplayMetrics().density;
-// Convert the dps to pixels, based on density scale
-//		mGestureThreshold = (int) (GESTURE_THRESHOLD_DP * density + 0.5f);
-//		TypedArray dashboardItemText = context.obtainStyledAttributes(attrs, R.style.DashboardItemText);
+		// Convert the dps to pixels, based on density scale
 
 		final int N = a.getIndexCount();
 		for (int i = 0; i < N; i++) {

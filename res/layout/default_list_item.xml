@@ -37,7 +37,7 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1.5"
-            android:src="@drawable/ic_home" />
+            android:src="@drawable/ic_launcher" />
     </FrameLayout>
 
     <TextView

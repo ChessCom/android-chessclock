@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 import com.chess.R;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity;
-import com.chess.core.Tabs;
+import com.chess.core.CoreActivity2;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
@@ -19,15 +17,19 @@ import com.chess.views.BackgroundChessDrawable;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
-import com.facebook.android.SessionEvents.AuthListener;
-import com.facebook.android.SessionEvents.LogoutListener;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class Singin extends CoreActivity implements OnClickListener {
+/**
+ * LoginScreenActivity class
+ *
+ * @author alien_roger
+ * @created at: 08.02.12 6:23
+ */
+public class LoginScreenActivity extends CoreActivity2 implements View.OnClickListener {
 
 	private EditText username, password;
 
@@ -40,6 +42,9 @@ public class Singin extends CoreActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singin);
+
+
+
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		username = (EditText) findViewById(R.id.username);
@@ -64,22 +69,22 @@ public class Singin extends CoreActivity implements OnClickListener {
 		if(view.getId() == R.id.singin){
 
 			if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
-				mainApp.ShowDialog(Singin.this, getString(R.string.error), getString(R.string.validateUsername));
+				mainApp.ShowDialog(context, getString(R.string.error), getString(R.string.validateUsername));
 				return;
 			}
 			/*
-							 * if(password.getText().toString().length() < 6 ||
-							 * password.getText().toString().length() > 20){
-							 * mainApp.ShowDialog(Singin.this, getString(R.string.error),
-							 * getString(R.string.validatePassword)); return; }
-							 */
+			 * if(password.getText().toString().length() < 6 ||
+			 * password.getText().toString().length() > 20){
+			 * mainApp.ShowDialog(Singin.this, getString(R.string.error),
+			 * getString(R.string.validatePassword)); return; }
+			 */
 
 			String query = "http://www." + LccHolder.HOST + "/api/v2/login";
 			// String query = "http://" + LccHolder.HOST + "/api/v2/login";
 			try {
 				if (appService != null) {
 					appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
-							ProgressDialog.show(Singin.this, null, getString(R.string.signingin), true)),
+							ProgressDialog.show(context, null, getString(R.string.signingin), true)),
 							AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
 																								 * ,
 																								 * "UTF-8"
@@ -96,13 +101,15 @@ public class Singin extends CoreActivity implements OnClickListener {
 			} catch (Exception e) {
 			}
 		}else if(view.getId() == R.id.singup){
-			LoadNext(1);
+			startActivity(new Intent(this,SignUpScreenActivity.class));
+//			LoadNext(1);
 		}else if(view.getId() == R.id.guestplay){
-			LoadNext(2);
+			startActivity(new Intent(this,HomeScreenActivity.class));
+//			LoadNext(2);
 		}
 	}
 
-	public class SampleAuthListener implements AuthListener {
+	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
 			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="
@@ -123,7 +130,7 @@ public class Singin extends CoreActivity implements OnClickListener {
 		}
 	}
 
-	public class SampleLogoutListener implements LogoutListener {
+	public class SampleLogoutListener implements SessionEvents.LogoutListener {
 		@Override
 		public void onLogoutBegin() {
 			mainApp.ShowMessage("Logging out...");
@@ -145,37 +152,38 @@ public class Singin extends CoreActivity implements OnClickListener {
 		password.setText(mainApp.getSharedData().getString("password", ""));
 	}
 
-	@Override
-	public void LoadNext(int code) {
-		switch (code) {
-		case 0: {
-			FlurryAgent.onEvent("Logged In", null);
-			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
-				startService(new Intent(this, Notifications.class));
-			mainApp.guest = false;
-			startActivity(new Intent(this, Tabs.class));
-			finish();
-			break;
-		}
-		case 1: {
-			startActivity(new Intent(this, Register.class));
-			break;
-		}
-		case 2: {
-			FlurryAgent.onEvent("Guest Login", null);
-			mainApp.guest = true;
-			startActivity(new Intent(this, Tabs.class));
-			break;
-		}
-		default:
-			break;
-		}
-	}
+	// TODO handle method call
+//	@Override
+//	public void LoadNext(int code) {
+//		switch (code) {
+//			case 0: {
+//				FlurryAgent.onEvent("Logged In", null);
+//				if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
+//					startService(new Intent(this, Notifications.class));
+//				mainApp.guest = false;
+//				startActivity(new Intent(this, Tabs.class));
+//				finish();
+//				break;
+//			}
+//			case 1: {
+//				startActivity(new Intent(this, Register.class));
+//				break;
+//			}
+//			case 2: {
+//				FlurryAgent.onEvent("Guest Login", null);
+//				mainApp.guest = true;
+//				startActivity(new Intent(this, Tabs.class));
+//				break;
+//			}
+//			default:
+//				break;
+//		}
+//	}
 
-	@Override
-	public void LoadPrev(int code) {
-		finish();
-	}
+//	@Override
+//	public void LoadPrev(int code) {
+//		finish();
+//	}
 
 	@Override
 	public void Update(int code) {
@@ -205,6 +213,13 @@ public class Singin extends CoreActivity implements OnClickListener {
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
 
 		mainApp.getSharedDataEditor().commit();
-		LoadNext(0);
+//		LoadNext(0);
+
+		FlurryAgent.onEvent("Logged In", null);
+		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+				+ AppConstants.PREF_NOTIFICATION, true))
+			startService(new Intent(this, Notifications.class));
+		mainApp.guest = false;
+		startActivity(new Intent(this, HomeScreenActivity.class));
 	}
 }

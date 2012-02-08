@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.chess.R;
-import com.chess.activities.Singin;
+import com.chess.activities.HomeScreenActivity;
+import com.chess.activities.LoginScreenActivity;
 import com.chess.utilities.Notifications;
 
-public class StartActivity extends CoreActivity {
+public class StartActivity2 extends CoreActivity2 {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,18 +30,8 @@ public class StartActivity extends CoreActivity {
 
 //		Thread.setDefaultUncaughtExceptionHandler(new TopExceptionHandler());
 
-		LoadNext(0);
-	}
-
-	@Override
-	public void LoadPrev(int code) {
-		finish();
-	}
-
-	@Override
-	public void LoadNext(int code) {
 		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "").equals("")) {
-			startActivity(new Intent(this, Singin.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {
 			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
@@ -52,7 +43,7 @@ public class StartActivity extends CoreActivity {
 				Notifications.resetCounter();
 			}
 
-			startActivity(new Intent(this, Tabs.class).putExtra(AppConstants.ENTER_FROM_NOTIFICATION, fromnotif));
+			startActivity(new Intent(this, HomeScreenActivity.class).putExtra(AppConstants.ENTER_FROM_NOTIFICATION, fromnotif));
 			mainApp.guest = false;
 		}
 		finish();

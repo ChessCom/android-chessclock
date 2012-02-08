@@ -53,12 +53,12 @@
     <color name="dashboard_item_stroke_2">#FF232323</color>
 
 
-    <color name="top_bar_stroke_1">#FF767676</color>
-    <color name="top_bar_stroke_2">#FF252525</color>
+    <color name="top_bar_stroke_1">#FF5e5e5e</color>
+    <color name="top_bar_stroke_2">#FF404040</color>
 
-    <color name="top_bar_1">#FF8c8c8c</color>
-    <color name="top_bar_2">#FF585858</color>
-    <color name="top_bar_3">#FF353535</color>
+    <color name="top_bar_1">#FF757575</color>
+    <color name="top_bar_2">#FF5d5d5d</color>
+    <color name="top_bar_3">#FF363636</color>
     
 
     <color name="disabled">#FF7a7a7a</color>    

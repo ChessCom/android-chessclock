@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cb="http://schemas.android.com/apk/res/com.chess"
+    android:id="@id/mainView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+
+    <com.chess.views.DashBoardLayout2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.chess.views.CenteredButton
+            android:id="@id/playLiveFrame"
+            style="@style/DashboardItem"
+            cb:buttonDrawable="@drawable/dashboard_play_live"
+            android:clickable="true"
+            cb:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/playOnlineFrame"
+            style="@style/DashboardItem"
+            cb:buttonDrawable="@drawable/dashboard_play_online"
+            cb:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/playComputerFrame"
+            style="@style/DashboardItem"
+            cb:buttonDrawable="@drawable/dashboard_icon"
+            cb:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/tacticsTrainerFrame"
+            style="@style/DashboardItem"
+            cb:buttonDrawable="@drawable/dashboard_icon"
+            cb:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/videoLessonsFrame"
+            style="@style/DashboardItem"
+            cb:buttonDrawable="@drawable/dashboard_icon"
+            cb:buttonText="Play Live" />
+
+        <com.chess.views.CenteredButton
+            android:id="@id/settingsFrame"
+            style="@style/DashboardItem"
+            cb:buttonDrawable="@drawable/dashboard_icon"
+            cb:buttonText="Play Live" />
+    </com.chess.views.DashBoardLayout2>
+
+
+
+</LinearLayout>

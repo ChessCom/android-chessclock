@@ -23,8 +23,8 @@ import android.content.Context;
  * An extension of {@link com.example.android.actionbarcompat.ActionBarHelper} that provides Android
  * 4.0-specific functionality for IceCreamSandwich devices. It thus requires API level 14.
  */
-public class ActionBarHelperICSMy extends ActionBarHelperHoneycombMy {
-    protected ActionBarHelperICSMy(Activity activity) {
+public class ActionBarHelperICSHome extends ActionBarHelperHoneycombHome {
+    protected ActionBarHelperICSHome(Activity activity) {
         super(activity);
     }
 
