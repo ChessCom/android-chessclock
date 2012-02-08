@@ -552,25 +552,6 @@ public class Board {
 	/* generate castle moves */
 	int i;
 	//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-	/*if (side == LIGHT && !castleMask[2] && !castleMask[3]) {
-		for(i = 0; i < wKingMoveOO.length; i++) {
-			genPush(ret, wKing, wKingMoveOO[i], 2);
-		}
-
-		for(i = 0 ; i < wKingMoveOOO.length; i++) {
-			genPush(ret, wKing, wKingMoveOOO[i], 2);
-		}
-	}
-	else if (side == DARK && !castleMask[0] && !castleMask[1]) {
-		for(i = 0; i < bKingMoveOO.length; i++) {
-			genPush(ret, bKing, bKingMoveOO[i], 2);
-		}
-
-		for(i = 0; i < bKingMoveOOO.length; i++) {
-			genPush(ret, bKing, bKingMoveOOO[i], 2);
-		}
-	}*/
-
 		if (side == LIGHT) {
 			if (!castleMask[2] && whiteCanCastle){
 				for(i=0;i<wKingMoveOO.length;i++)

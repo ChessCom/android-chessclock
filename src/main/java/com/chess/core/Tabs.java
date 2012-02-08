@@ -115,7 +115,7 @@ public class Tabs extends TabActivity {
           if (extras.getBoolean("fromnotif"))
           {
             tab = 2;
-            Notifications.resetCounter();
+            //Notifications.resetCounter();
             if(App.SDeditor != null){
               App.SDeditor.putInt("gamestype", 1);
               App.SDeditor.commit();

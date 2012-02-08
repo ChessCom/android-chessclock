@@ -46,7 +46,7 @@ public class StartActivity extends CoreActivity {
 			if(extras != null && extras.getBoolean("fromnotif"))
       {
         fromnotif = true;
-        Notifications.resetCounter();
+        //Notifications.resetCounter();
       }
 
 			startActivity(new Intent(this, Tabs.class).putExtra("fromnotif", fromnotif));

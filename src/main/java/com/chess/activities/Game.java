@@ -1150,7 +1150,7 @@ public class Game extends CoreActivity {
 
           NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
           mNotificationManager.cancel(1);
-          Notifications.resetCounter();
+          //Notifications.resetCounter();
           }
         }
         break;
@@ -1170,7 +1170,7 @@ public class Game extends CoreActivity {
                                      ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.cancel(1);
-            Notifications.resetCounter();
+            //Notifications.resetCounter();
         }
 				break;
 			}

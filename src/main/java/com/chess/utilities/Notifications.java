@@ -23,7 +23,7 @@ public class Notifications extends Service {
 	public MainApp App;
 	public Timer timer = new Timer();
 
-  private static int counter = 0;
+  //private static int counter = 0;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -43,7 +43,7 @@ public class Notifications extends Service {
         {
           return;
         }
-				if((counter <= 5 || (counter%15 == 0 && counter <= 60) || counter%60 == 0) && !App.guest && !App.sharedData.getString("user_token", "").equals("")){
+				if(/*(counter <= 5 || (counter%15 == 0 && counter <= 60) || counter%60 == 0) && */!App.guest && !App.sharedData.getString("user_token", "").equals("")){
 					response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id="+App.sharedData.getString("user_token", ""), "GET", null, null);
 					if(response.trim().contains("Success+1")){
 						/*String[] tmp = response.trim().split(":");
@@ -55,10 +55,10 @@ public class Notifications extends Service {
 						//}
 					} else{
 						clear.sendEmptyMessage(0);
-            resetCounter();
+            //resetCounter();
           }
 				}
-				counter++;
+				//counter++;
 			}
 			private Handler handler = new Handler() {
 				@Override
@@ -101,7 +101,7 @@ public class Notifications extends Service {
 				}
 			};
 
-		}, 0, 60000);
+		}, 0, 30000);
 	}
 	@Override
 	public void onDestroy() {
@@ -111,7 +111,7 @@ public class Notifications extends Service {
 
   public static void resetCounter()
   {
-    counter = 0;
+    //counter = 0;
 
   }
 }

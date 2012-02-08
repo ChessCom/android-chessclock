@@ -686,10 +686,10 @@ public abstract class CoreActivity extends Activity {
           System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
           
           int minimumVersion = Integer.valueOf(valuesArray[0].trim());
-          int prefferedVersion = Integer.valueOf(valuesArray[1].trim());
+          int preferredVersion = Integer.valueOf(valuesArray[1].trim());
               
           Boolean force = null;
-          if (actualVersion < prefferedVersion)
+          if (actualVersion < preferredVersion)
           {
         	  force = false;
           }
@@ -717,10 +717,9 @@ public abstract class CoreActivity extends Activity {
                 		App.SDeditor.commit();
                 		startActivity(new Intent(CoreActivity.this, Singin.class));
                 		finish();
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chess"));
+						startActivity(intent);
                 	}
-                	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chess"));
-                    startActivity(intent);
-
                   }
                 }
             )

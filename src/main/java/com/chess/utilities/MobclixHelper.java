@@ -192,7 +192,7 @@ public class MobclixHelper {
 					getAd(adview);
 				}
 			}
-		}, 0, 15000);
+		}, 0, 20000);
 	}
 
 	private static void stopTimer(MobclixAdView adview)
