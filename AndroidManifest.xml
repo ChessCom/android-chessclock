@@ -79,19 +79,19 @@
                   />
         <activity android:name=".activities.HomeScreenActivity"/>
         <activity android:name=".activities.OnlineScreenActivity"
-            android:label="@string/menuOnline"/>
+            android:label="@string/label_play_online"/>
         <activity android:name=".activities.LiveScreenActivity"
-                  android:label="@string/menuLive"/>
+                  android:label="@string/label_play_live"/>
         <activity android:name=".activities.TacticsScreenActivity"
-                  android:label="@string/menuTactics"/>
+                  android:label="@string/label_tactics"/>
         <activity android:name=".activities.PreferencesScreenActivity"
-                  android:label="@string/settings"/>
+                  android:label="@string/label_settings"/>
         <activity android:name=".activities.VideoScreenActivity"
-                  android:label="@string/menuVideo"/>
+                  android:label="@string/label_video"/>
         <activity android:name=".activities.ComputerScreenActivity"
-                  android:label="@string/menuComp"/>
+                  android:label="@string/label_play_comp"/>
         <activity android:name=".activities.SignUpScreenActivity"
-                  android:label="@string/menuLive"/>
+                  android:label="@string/label_play_live"/>
 
         <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 

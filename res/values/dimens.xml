@@ -3,11 +3,15 @@
 <resources>
 
   	<!-- Rounded buttons -->
-  	<dimen name="rounded_button_radius">3dip</dimen>
-  	<dimen name="rounded_list_item_radius">9dip</dimen>
-  	
+
+    <dimen name="rounded_button_radius">4px</dimen>
+    <dimen name="button_pressed_stroke_radius">4px</dimen>
+    <dimen name="button_pressed_stroke_width_1">8px</dimen>
+    <dimen name="button_pressed_stroke_width_2">8px</dimen>
+    <dimen name="button_margin4stroke">6px</dimen> <!--Must be less than stroke width_1 by 2 px-->
+
   	<dimen name="small_button_height">35dip</dimen>
-  	<dimen name="rounded_button_height">60dip</dimen>
+  	<dimen name="rounded_button_height">48dip</dimen>
 	<dimen name="rounded_button_padding_disabled">0dip</dimen>
   	<dimen name="rounded_button_padding">0dip</dimen>
   	    

@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:left="@dimen/button_margin4stroke"
+        android:top="@dimen/button_margin4stroke"
+        android:right="@dimen/button_margin4stroke"
+        android:bottom="@dimen/button_margin4stroke"
+        android:drawable="@drawable/button_orange_p">
+
+    </item>
+<!--    <item >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_pressed_stroke_radius"  />
+            <solid android:color="@android:color/transparent"/>
+            <stroke
+                android:width="@dimen/button_pressed_stroke_width_2"
+                android:color="@color/orange_button_pressed_stroke_2"/>
+        </shape>
+
+    </item>-->
+    <item
+
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_pressed_stroke_radius"  />
+            <solid android:color="@android:color/transparent"/>
+            <stroke
+                android:width="@dimen/button_pressed_stroke_width_1"
+                android:color="@color/orange_button_pressed_stroke_1"/>
+        </shape>
+
+    </item>
+
+
+
+</layer-list >
+
+
+
+<!--
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
     <gradient
         android:startColor="@color/dark_orange"
@@ -7,18 +47,18 @@
         />
     <stroke android:width="@dimen/default_stroke_width"
         android:color="@android:color/black"/>
-    <corners 
+    <corners
         android:topLeftRadius="@dimen/rounded_button_radius"
         android:topRightRadius="@dimen/rounded_button_radius"
         android:bottomLeftRadius="@dimen/rounded_button_radius"
         android:bottomRightRadius="@dimen/rounded_button_radius"
        />
-    <padding 
+    <padding
         android:left="@dimen/rounded_button_padding"
         android:right="@dimen/rounded_button_padding"
         android:top="@dimen/rounded_button_padding"
         android:bottom="@dimen/rounded_button_padding"
         />
 	<size android:height="@dimen/default_button_height"/>
-    
-</shape>
+
+</shape>-->

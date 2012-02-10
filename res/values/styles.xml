@@ -7,18 +7,22 @@
     </style>
     
     
-    <style name="text_shadow" parent="@android:style/Widget.TextView">
-        <item name="android:typeface">normal</item>        
+    <style name="text_shadow" parent="DefaultText">
+<!--
+        <item name="android:typeface">normal</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowRadius">1.5</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
+-->
     </style>
     
     <style name="text_shadow_more" parent="text_shadow">
+<!--
         <item name="android:shadowRadius">3.5</item>
         <item name="android:shadowDx">3</item>
         <item name="android:shadowDy">3</item>
+-->
     </style>
     
     
@@ -41,20 +45,21 @@
 
     <style name="button_orange" parent="text_shadow">
         <item name="android:background">@drawable/button_orange_selector</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>        
     </style>
     <!--     <item name="android:layout_height">@dimen/default_button_height</item> -->
-    
+
     <style name="button_grey" parent="button_orange">
         <item name="android:background">@drawable/button_grey_selector</item>
-    </style>    
-    
+    </style>
+
+    <style name="button_green" parent="button_orange">
+        <item name="android:background">@drawable/button_green_selector</item>
+    </style>
+
     <style name="signin_button" parent="button_orange">
         <item name="android:textSize">19sp</item>
     </style>
@@ -138,7 +143,9 @@
     </style>
     
     <style name="DefaultText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="spinnerStyle" parent="@android:style/Widget.Spinner">

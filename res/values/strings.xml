@@ -6,11 +6,23 @@
     <string name="lccFailedKicked">You have been kicked/banned by a moderator or admin.</string>
     <string name="hello">Hello World!</string>
     <string name="app_name">ChessCom</string>
+
+    <!--Dashboard labels-->
     <string name="menuLive">Play Live</string>
     <string name="menuOnline">Play Online</string>
     <string name="menuComp">Play Computer</string>
     <string name="menuTactics">Tactics Trainer</string>
     <string name="menuVideo">Video Lessons</string>
+
+    <!--activities titles-->
+    <string name="label_play_live">PLAY LIVE</string>
+    <string name="label_play_online">PLAY ONLINE</string>
+    <string name="label_play_comp">PLAY COMP</string>
+    <string name="label_video">VIDEO</string>
+    <string name="label_settings">SETTINGS</string>
+    <string name="label_tactics">TACTICS</string>
+    <string name="label_sign_up">SIGN UP</string>
+
     <string name="settings">Settings</string>
     <string name="onlineTitle">Online Game</string>
     <string name="startNewGameButton">Start new game</string>

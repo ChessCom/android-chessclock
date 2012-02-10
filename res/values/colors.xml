@@ -2,19 +2,58 @@
 <resources>
     
    	<color name="mytheme_color">#888888</color>
-    	
-    <color name="light_orange">#FFf98c15</color>
-    <color name="light_orange_1">#FFe07a0d</color>
-    
-    <color name="dark_orange">#FFb66400</color>
-    <color name="dark_orange_1">#FFa15906</color>
+
+    <!--Buttons-->
+
+    <!--Buttons-->
+
+
+    <color name="stroke_shadow">#26000000</color>
+
+    <color name="any_button_stroke">#23FFFFFF</color>
+    <!--Orange-->
+    <!--<color name="orange_button_stroke">#23FFFFFF</color>-->
+    <color name="orange_button">#FFff7e00</color>
+    <color name="orange_button_p">#FFde6e00</color>
+
+    <color name="orange_emboss_low_right">#FFd0751d</color>
+    <color name="orange_emboss_top_left">#FFffa853</color>
+
+    <color name="orange_button_pressed_stroke_1">#96ff7e00</color>
+    <color name="orange_button_pressed_stroke_2">#FFffd9b4</color>
+
+
+    <!--Grey -->
+    <color name="grey_button">#FF8a8a8a</color>
+    <color name="grey_button_p">#FF666666</color>
+    <!--<color name="grey_button_stroke">#23747474</color>-->
+
+    <color name="grey_emboss_low_right">#FF656565</color>
+    <color name="grey_emboss_top_left">#FF989898</color>
+
+    <color name="grey_button_pressed_stroke_1">#968c8c8c</color>
+    <color name="grey_button_pressed_stroke_2">#FFdddddd</color>
+
+    <!--Green-->
+    <color name="green_button">#FF59b111</color>
+    <color name="green_button_p">#FF419100</color>
+    <!--<color name="orange_button_stroke">#23FFFFFF</color>-->
+
+    <color name="green_emboss_low_right">#FF63a62d</color>
+    <color name="green_emboss_top_left">#FF7fc349</color>
+
+    <color name="green_button_pressed_stroke_1">#9663b91c</color>
+    <color name="green_button_pressed_stroke_2">#FFd9eec8</color>
     
     <color name="list_pressed_1">#FFf98c15</color>
     <color name="list_pressed_2">#FFe07a0d</color>
 <!--     <color name="list_pressed_1">#FF5286f0</color>
     <color name="list_pressed_2">#FF185a98</color>
- -->    
-    
+ -->
+
+    <color name="dark_orange">#FFb66400</color>
+    <color name="dark_orange_1">#FFa15906</color>
+
     <color name="dark_light">#FFf3f4f6</color>
     
     <color name="light_grey">#FF9e989e</color>

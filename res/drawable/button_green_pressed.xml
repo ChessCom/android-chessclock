@@ -6,7 +6,7 @@
         android:top="@dimen/button_margin4stroke"
         android:right="@dimen/button_margin4stroke"
         android:bottom="@dimen/button_margin4stroke"
-        android:drawable="@drawable/button_grey_p">
+        android:drawable="@drawable/button_green_p">
 
     </item>
 <!--    <item >
@@ -15,17 +15,18 @@
             <solid android:color="@android:color/transparent"/>
             <stroke
                 android:width="@dimen/button_pressed_stroke_width_2"
-                android:color="@color/grey_button_pressed_stroke_2"/>
+                android:color="@color/green_button_pressed_stroke_2"/>
         </shape>
     </item>-->
     <item
+
         >
         <shape android:dither="true">
             <corners android:radius="@dimen/button_pressed_stroke_radius"  />
             <solid android:color="@android:color/transparent"/>
             <stroke
                 android:width="@dimen/button_pressed_stroke_width_1"
-                android:color="@color/grey_button_pressed_stroke_1"/>
+                android:color="@color/green_button_pressed_stroke_1"/>
         </shape>
     </item>
 
@@ -37,8 +38,8 @@
 
 
 <gradient
-android:startColor="@color/pressed_grey_1"
-android:endColor="@color/pressed_grey_2"
+android:startColor="@color/pressed_green_1"
+android:endColor="@color/pressed_green_2"
 android:angle="270"
     />
 <stroke android:width="@dimen/default_stroke_width"

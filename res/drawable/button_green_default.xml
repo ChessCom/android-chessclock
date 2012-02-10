@@ -6,7 +6,7 @@
         android:top="@dimen/button_margin4stroke"
         android:right="@dimen/button_margin4stroke"
         android:bottom="@dimen/button_margin4stroke"
-        android:drawable="@drawable/button_grey">
+        android:drawable="@drawable/button_green">
 
     </item>
     <item >
