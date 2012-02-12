@@ -6,15 +6,6 @@
     android:gravity="center"
     android:padding="20dip" >
 
-    <!-- android:background="@drawable/back_image" -->
-
-
-    <!--
-         	<com.chess.views.BackgroundChessView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            />
-    -->
 
     <ImageView
         android:id="@+id/logoImg"
@@ -33,19 +24,17 @@
 
         <EditText
             android:id="@+id/username"
-            style="@style/custom_edit_field"
+
             android:layout_width="fill_parent"
             android:layout_height="@dimen/default_field_height"
-            android:background="@drawable/rounded_button_top_default"
             android:hint="@string/singinUsername"
-            android:inputType="textPersonName" />
+            />
 
         <EditText
             android:id="@+id/password"
-            style="@style/custom_edit_field"
+
             android:layout_width="fill_parent"
             android:layout_height="@dimen/default_field_height"
-            android:background="@drawable/rounded_button_bot_default"
             android:hint="@string/singinPassword"
             android:inputType="textPersonName"
             android:password="true"
@@ -55,7 +44,7 @@
             android:id="@+id/singin"
             style="@style/signin_button"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/signin_button_height"
+            android:layout_height="@dimen/default_button_height"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/signin_button_margin_updown"
             android:layout_marginTop="@dimen/signin_button_margin_updown"
@@ -65,7 +54,7 @@
             android:id="@+id/fb_connect"
             style="@style/f_button_login"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/signin_button_height" />
+            android:layout_height="@dimen/default_button_height" />
     </LinearLayout>
 
     <LinearLayout
@@ -93,9 +82,9 @@
 
             <Button
                 android:id="@+id/singup"
-                style="@style/small_button_grey"
+                style="@style/button_grey"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/small_button_height"
+                android:layout_height="@dimen/default_button_height"
                 android:layout_marginRight="3dip"
                 android:layout_weight="0.9"
                 android:text="@string/singupButton"
@@ -104,9 +93,9 @@
 
             <Button
                 android:id="@+id/guestplay"
-                style="@style/small_button_grey"
+                style="@style/button_grey"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/small_button_height"
+                android:layout_height="@dimen/default_button_height"
                 android:layout_marginLeft="3dip"
                 android:layout_weight="1.1"
                 android:text="@string/singinPlayguest"

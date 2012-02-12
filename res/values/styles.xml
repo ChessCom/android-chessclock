@@ -26,22 +26,12 @@
     </style>
     
     
-    <style name="small_button_grey" parent="text_shadow">
-        <item name="android:background">@drawable/button_grey_small_selector</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
     <style name="big_button_grey" parent="text_shadow">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="small_button_orange" parent="text_shadow">
-        <item name="android:background">@drawable/button_grey_small_selector</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
+
 
     <style name="button_orange" parent="text_shadow">
         <item name="android:background">@drawable/button_orange_selector</item>
@@ -68,14 +58,14 @@
         <item name="android:background">@drawable/button_f_login_selector</item>
     </style>
 
-    <style name="custom_edit_field">
+<!--    <style name="custom_edit_field">
         <item name="android:typeface">normal</item>
         <item name="android:paddingLeft">14dip</item>
         <item name="android:paddingTop">0dip</item>
         <item name="android:paddingBottom">0dip</item>
         <item name="android:textSize">18sp</item>
 		<item name="android:textStyle">normal</item>            
-    </style>
+    </style>-->
     
     <style name="text_pressed" parent="text_shadow_more">
         <item name="android:textColor">@color/text_white</item>
@@ -132,8 +122,8 @@
 
     <style name="DefaultEdt" parent="@android:style/Widget.EditText">
         <item name="android:background">@drawable/textfield_selector</item>
-		<item name="android:textSize">14sp</item>
-		<item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="DashboardItemText" parent="@android:style/Widget.TextView">
@@ -156,6 +146,7 @@
         <item name="android:textColor">@color/text_black_selector</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
+
     <style name="spinnerStyleDropDown" parent="@android:style/Widget.Spinner.DropDown">
     </style>
 </resources>

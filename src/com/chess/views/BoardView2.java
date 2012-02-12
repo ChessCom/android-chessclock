@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.Paint.Style;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +26,7 @@ import com.chess.engine.Search;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class BoardView extends ImageView {
+public class BoardView2 extends ImageView {
 
 	public int W, H,
 			side, square,
@@ -54,7 +54,14 @@ public class BoardView extends ImageView {
 	private int viewWidth = 0;
 	private int viewHeight = 0;
 
-	public BoardView(Context context, AttributeSet attrs) {
+
+	private Drawable image;
+
+
+	private float width;
+	private float height;
+
+	public BoardView2(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		activity = (CoreActivity) context;
 		mainApp = activity.getMainApp();
@@ -77,6 +84,16 @@ public class BoardView extends ImageView {
 		black.setColor(Color.BLACK);
 		red.setColor(Color.RED);
 		green.setColor(Color.GREEN);
+
+		width = context.getResources().getDisplayMetrics().widthPixels;
+		height = context.getResources().getDisplayMetrics().heightPixels;
+
+		image = context.getResources().getDrawable(R.drawable.chess_back);
+		int opacity = context.getResources().getInteger(R.integer.fade_opacity);
+//		blackColor ^= (opacity * 0xFF / 100) << 32;
+		image.setBounds(0, 0, (int) width, (int) height);
+
+		image.setDither(true);
 
 	}
 
@@ -225,9 +242,11 @@ public class BoardView extends ImageView {
 		/*if (mainApp.isLiveChess())
 			{*/
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			this.setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(widthMeasureSpec + widthMeasureSpec / 5));
+			this.setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
+					MeasureSpec.getSize(widthMeasureSpec + widthMeasureSpec / 5));
 		} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			this.setMeasuredDimension(MeasureSpec.getSize(heightMeasureSpec + heightMeasureSpec / 5), MeasureSpec.getSize(heightMeasureSpec));
+			this.setMeasuredDimension(MeasureSpec.getSize(heightMeasureSpec + heightMeasureSpec / 5),
+					MeasureSpec.getSize(heightMeasureSpec));
 		}
 		//}
 	}
@@ -247,21 +266,23 @@ public class BoardView extends ImageView {
 		square = side / 2;
 
 		int i, j;
-		for (i = 0; i < 4; i++) {
-			for (j = 0; j < 4; j++) {
-				try {
-					if (mainApp == null || mainApp.getBoardBitmap() == null) {
-						throw new Exception();
-					}
-					canvas.drawBitmap(mainApp.getBoardBitmap(), null, new Rect(i * side, j * side, i * side + side, j * side + side), null);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Log.d("BoardView", "mainApp " + mainApp);
-					Log.d("BoardView", "mainApp.board " + mainApp.getBoardBitmap());
-					return;
-				}
-			}
-		}
+//		for (i = 0; i < 4; i++) {
+//			for (j = 0; j < 4; j++) {
+//				try {
+//					if (mainApp == null || mainApp.getBoardBitmap() == null) {
+//						throw new Exception();
+//					}
+//					canvas.drawBitmap(mainApp.getBoardBitmap(), null, new Rect(i * side, j * side, i * side + side, j * side + side), null);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					Log.d("BoardView", "mainApp " + mainApp);
+//					Log.d("BoardView", "mainApp.board " + mainApp.getBoardBitmap());
+//					return;
+//				}
+//			}
+//		}
+
+		image.draw(canvas);
 
 		if (!compmoving) {
 			for (i = 0; i < 64; i++) {

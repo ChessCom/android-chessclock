@@ -101,12 +101,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.chess.views.BoardView
+        <com.chess.views.BoardView2
             android:id="@+id/boardview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-<!--       <ImageView android:id="@+id/boardview" android:layout_height="320px" android:layout_width="320px" android:layout_weight="1"/> -->
+<!--       <ImageView android:id="@+id/boardview" android:layout_height="320px" android:layout_width="320px" android:layout_weight="1"/>
+ -->
 
 
         <!--
@@ -124,7 +125,8 @@
        </RelativeLayout>
 
        <TextView android:id="@+id/endOfGameMessage" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#ffffcc" android:textStyle="bold"
-                 android:gravity="center" android:padding="2dip" android:text="end of game"></TextView>
+                 android:gravity="center" android:padding="2dip" android:text="end of game"></TextView>
+
         -->
     </LinearLayout>
 
@@ -270,7 +272,8 @@
         <LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="visible" android:background="#444">
             <ImageButton android:id="@+id/prev" android:src="@drawable/prev" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
             <ImageButton android:id="@+id/next" android:src="@drawable/next" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
-        </LinearLayout>
+        </LinearLayout>
+
     -->
 
 </FrameLayout>
