@@ -222,5 +222,12 @@
     <string name="tactics">Tactics</string>
     <string name="video">Video</string>
     <string name="boards_s">Boards:</string>
+    <string name="invite_subject">Play Chess with me</string>
+    <string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app
+        here:
+        http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"
+    </string>
+    <string name="live_game">Live Game</string>
+    <string name="online_game">Online Game</string>
 
 </resources>

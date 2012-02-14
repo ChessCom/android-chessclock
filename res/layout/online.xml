@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <!--
   	<com.mopub.mobileads.MoPubView
@@ -16,7 +18,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#e1e1e1" >
+        android:background="#e1e1e1">
 
         <TextView
             android:id="@+id/tournaments"
@@ -30,7 +32,7 @@
             android:text="Tournaments"
             android:textColor="#222"
             android:textSize="16dip"
-            android:textStyle="bold" >
+            android:textStyle="bold">
         </TextView>
 
         <TextView
@@ -45,7 +47,7 @@
             android:text="Stats"
             android:textColor="#222"
             android:textSize="16dip"
-            android:textStyle="bold" >
+            android:textStyle="bold">
         </TextView>
     </LinearLayout>
 
@@ -53,7 +55,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2px"
         android:layout_marginBottom="5px"
-        android:background="#cbcbcb" >
+        android:background="#cbcbcb">
     </ImageView>
 
     <Button
@@ -65,12 +67,12 @@
         android:layout_marginRight="20dip"
         android:layout_marginTop="10dip"
         android:text="@string/currentGame"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="center">
 
         <TextView
             android:id="@+id/startNewGameTitle"
@@ -84,7 +86,7 @@
             android:textColor="#fff"
             android:textSize="16px"
             android:textStyle="bold"
-            android:visibility="gone" >
+            android:visibility="gone">
         </TextView>
 
         <Spinner
@@ -93,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/onlineSpinner"
-            android:textSize="8dip" >
+            android:textSize="8dip">
         </Spinner>
 
         <Button
@@ -103,7 +105,7 @@
             android:textColor="#222"
             android:textSize="16dip"
             android:textStyle="bold"
-            android:visibility="gone" >
+            android:visibility="gone">
         </Button>
     </LinearLayout>
 
@@ -117,7 +119,7 @@
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"
-        android:visibility="gone" >
+        android:visibility="gone">
     </GridView>
 
     <TextView
@@ -132,14 +134,14 @@
         android:textColor="#fff"
         android:textSize="16px"
         android:textStyle="bold"
-        android:visibility="gone" >
+        android:visibility="gone">
     </TextView>
 
     <ListView
         android:id="@+id/GamesList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1" >
+        android:layout_weight="1">
     </ListView>
 
 </LinearLayout>

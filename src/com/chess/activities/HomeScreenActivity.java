@@ -113,9 +113,15 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
-			startActivity(new Intent(context, LiveScreenActivity.class));
+			if (mainApp.guest)
+				startActivity(new Intent(context, SignUpScreenActivity.class));
+			else
+				startActivity(new Intent(context, LiveScreenActivity.class));
 		} else if (v.getId() == R.id.playOnlineFrame) {
-			startActivity(new Intent(context, OnlineScreenActivity.class));
+			if (mainApp.guest)
+				startActivity(new Intent(context, SignUpScreenActivity.class));
+			else
+				startActivity(new Intent(context, OnlineScreenActivity.class));
 		} else if (v.getId() == R.id.playComputerFrame) {
 			startActivity(new Intent(context, ComputerScreenActivity.class));
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {

@@ -63,6 +63,10 @@
 
     <style name="ActionBarCompatTitle" parent="style/ActionBarCompatTitleBase">
         <item name="android:textColor">@color/actionbar_title_color</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowRadius">1.5</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
     </style>
 
     <style name="ActionBarCompatItem" parent="style/ActionBarCompatItemBase">

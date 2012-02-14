@@ -78,20 +78,14 @@
                   android:theme="@style/OrangeButtonNotitle"
                   />
         <activity android:name=".activities.HomeScreenActivity"/>
-        <activity android:name=".activities.OnlineScreenActivity"
-            android:label="@string/label_play_online"/>
-        <activity android:name=".activities.LiveScreenActivity"
-                  android:label="@string/label_play_live"/>
-        <activity android:name=".activities.TacticsScreenActivity"
-                  android:label="@string/label_tactics"/>
-        <activity android:name=".activities.PreferencesScreenActivity"
-                  android:label="@string/label_settings"/>
-        <activity android:name=".activities.VideoScreenActivity"
-                  android:label="@string/label_video"/>
-        <activity android:name=".activities.ComputerScreenActivity"
-                  android:label="@string/label_play_comp"/>
-        <activity android:name=".activities.SignUpScreenActivity"
-                  android:label="@string/label_play_live"/>
+        <activity android:name=".activities.OnlineScreenActivity" android:label="@string/label_play_online"/>
+        <activity android:name=".activities.LiveScreenActivity" android:label="@string/label_play_live"/>
+        <activity android:name=".activities.TacticsScreenActivity" android:label="@string/label_tactics"/>
+        <activity android:name=".activities.PreferencesScreenActivity" android:label="@string/label_settings"
+            android:theme="@style/GreyButtonTheme"/>
+        <activity android:name=".activities.VideoScreenActivity" android:label="@string/label_video"/>
+        <activity android:name=".activities.ComputerScreenActivity" android:label="@string/label_play_comp"/>
+        <activity android:name=".activities.SignUpScreenActivity" android:label="@string/label_sign_up"/>
 
         <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 

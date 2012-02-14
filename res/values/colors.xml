@@ -5,9 +5,6 @@
 
     <!--Buttons-->
 
-    <!--Buttons-->
-
-
     <color name="stroke_shadow">#26000000</color>
 
     <color name="any_button_stroke">#23FFFFFF</color>
@@ -98,6 +95,7 @@
     <color name="top_bar_1">#FF757575</color>
     <color name="top_bar_2">#FF5d5d5d</color>
     <color name="top_bar_3">#FF363636</color>
+
     
 
     <color name="disabled">#FF7a7a7a</color>    

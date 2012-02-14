@@ -26,7 +26,7 @@
             android:id="@+id/username"
 
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/default_field_height"
+            android:layout_height="wrap_content"
             android:hint="@string/singinUsername"
             />
 
@@ -34,7 +34,7 @@
             android:id="@+id/password"
 
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/default_field_height"
+            android:layout_height="wrap_content"
             android:hint="@string/singinPassword"
             android:inputType="textPersonName"
             android:password="true"
