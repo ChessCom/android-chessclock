@@ -675,7 +675,7 @@ public abstract class CoreActivity2 extends Activity {
 	 * private BroadcastReceiver networkChangeNotificationReceiver = new
 	 * BroadcastReceiver() {
 	 * 
-	 * @Override public void onReceive(Context context, Intent intent) { if
+	 * @Override public void onReceive(Context coreContext, Intent intent) { if
 	 * (mainApp.isNetworkChangedNotification()) {
 	 * showNetworkChangeNotification(); } } };
 	 */

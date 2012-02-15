@@ -203,7 +203,7 @@ public final class Util {
 	/**
 	 * Display a simple alert dialog with the given text and title.
 	 *
-	 * @param context Android context in which the dialog should be displayed
+	 * @param context Android coreContext in which the dialog should be displayed
 	 * @param title   Alert dialog title
 	 * @param text	Alert dialog message
 	 */

@@ -94,7 +94,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <com.chess.views.BoardView2
+        <com.chess.views.BoardView
             android:id="@+id/boardview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

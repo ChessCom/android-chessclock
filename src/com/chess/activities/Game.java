@@ -26,7 +26,7 @@ import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
 import com.chess.utilities.*;
-import com.chess.views.BoardView2;
+import com.chess.views.BoardView;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 import org.apache.http.util.ByteArrayBuffer;
@@ -38,7 +38,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Game extends CoreActivity implements OnClickListener {
-	public BoardView2 boardView;
+	public BoardView boardView;
 	private LinearLayout analysisLL;
 	private LinearLayout analysisButtons;
 	private RelativeLayout chatPanel;
@@ -610,7 +610,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
-		boardView = (BoardView2) findViewById(R.id.boardview);
+		boardView = (BoardView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setBoard((Board) getLastNonConfigurationInstance());
 

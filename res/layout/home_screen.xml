@@ -14,39 +14,39 @@
         <com.chess.views.CenteredButton
             android:id="@id/playLiveFrame"
             style="@style/DashboardItem"
-            cb:buttonDrawable="@drawable/dashboard_play_live"
+            cb:buttonDrawable="@drawable/dashboard_play_live_selector"
             android:clickable="true"
-            cb:buttonText="Play Live" />
+            cb:buttonText="@string/menuLive" />
 
         <com.chess.views.CenteredButton
             android:id="@id/playOnlineFrame"
             style="@style/DashboardItem"
-            cb:buttonDrawable="@drawable/dashboard_play_online"
-            cb:buttonText="Play Live" />
+            cb:buttonDrawable="@drawable/dashboard_play_online_selector"
+            cb:buttonText="@string/menuOnline" />
 
         <com.chess.views.CenteredButton
             android:id="@id/playComputerFrame"
             style="@style/DashboardItem"
-            cb:buttonDrawable="@drawable/dashboard_icon"
-            cb:buttonText="Play Live" />
+            cb:buttonDrawable="@drawable/dashboard_play_comp_selector"
+            cb:buttonText="@string/menuComp" />
 
         <com.chess.views.CenteredButton
             android:id="@id/tacticsTrainerFrame"
             style="@style/DashboardItem"
-            cb:buttonDrawable="@drawable/dashboard_icon"
-            cb:buttonText="Play Live" />
+            cb:buttonDrawable="@drawable/dashboard_tactics_selector"
+            cb:buttonText="@string/menuTactics" />
 
         <com.chess.views.CenteredButton
             android:id="@id/videoLessonsFrame"
             style="@style/DashboardItem"
-            cb:buttonDrawable="@drawable/dashboard_icon"
-            cb:buttonText="Play Live" />
+            cb:buttonDrawable="@drawable/dashboard_video_selector"
+            cb:buttonText="@string/menuVideo" />
 
         <com.chess.views.CenteredButton
             android:id="@id/settingsFrame"
             style="@style/DashboardItem"
-            cb:buttonDrawable="@drawable/dashboard_icon"
-            cb:buttonText="Play Live" />
+            cb:buttonDrawable="@drawable/dashboard_settings_selector"
+            cb:buttonText="@string/settings" />
     </com.chess.views.DashBoardLayout2>
 
 

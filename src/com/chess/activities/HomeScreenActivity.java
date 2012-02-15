@@ -22,7 +22,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	private MobFullScreeListener mobFullScreeListener;
 
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,19 +112,26 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
-			if (mainApp.guest)
-				startActivity(new Intent(context, SignUpScreenActivity.class));
-			else
-				startActivity(new Intent(context, LiveScreenActivity.class));
+			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class
+					: LiveScreenActivity.class;
+			Intent intent = new Intent(context, clazz);
+			intent.putExtra(AppConstants.LIVE_CHESS, true);
+			startActivity(intent);
+
 		} else if (v.getId() == R.id.playOnlineFrame) {
-			if (mainApp.guest)
-				startActivity(new Intent(context, SignUpScreenActivity.class));
-			else
-				startActivity(new Intent(context, OnlineScreenActivity.class));
+			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class
+					: OnlineScreenActivity.class;
+			Intent intent = new Intent(context, clazz);
+			intent.putExtra(AppConstants.LIVE_CHESS, true);
+			startActivity(intent);
+
 		} else if (v.getId() == R.id.playComputerFrame) {
 			startActivity(new Intent(context, ComputerScreenActivity.class));
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
-			startActivity(new Intent(context, TacticsScreenActivity.class));
+			Intent intent = new Intent(context, TacticsScreenActivity.class);
+			intent.putExtra(AppConstants.GAME_MODE, 6);
+			intent.putExtra(AppConstants.LIVE_CHESS, false);
+			startActivity(intent);
 		} else if (v.getId() == R.id.videoLessonsFrame) {
 			startActivity(new Intent(context, VideoScreenActivity.class));
 		} else if (v.getId() == R.id.settingsFrame) {
@@ -136,8 +142,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 //		} else if (v.getId() == R.id.logOutFrame) {
 		}
 	}
-
-
 
 
 }

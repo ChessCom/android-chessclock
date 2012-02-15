@@ -81,7 +81,9 @@ public class Tabs extends TabActivity implements OnClickListener {
 				.setContent(new Intent(this, Computer.class)));
 		getTabHost().addTab(getTabHost().newTabSpec("tab4")
 				.setIndicator(getString(R.string.tactics), getResources().getDrawable(R.drawable.tactics))
-				.setContent(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, 6).putExtra(AppConstants.LIVE_CHESS, false)));
+				.setContent(new Intent(this, Game.class)
+						.putExtra(AppConstants.GAME_MODE, 6)
+						.putExtra(AppConstants.LIVE_CHESS, false)));
 		getTabHost().addTab(getTabHost().newTabSpec("tab5")
 				.setIndicator(getString(R.string.video), getResources().getDrawable(R.drawable.video))
 				.setContent(new Intent(this, Video.class)));

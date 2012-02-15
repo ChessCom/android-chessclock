@@ -15,13 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import com.chess.R;
-import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity;
-import com.chess.core.IntentConstants;
-import com.chess.core.MainApp;
+import com.chess.core.*;
 import com.chess.engine.Board;
+import com.chess.engine.Board2;
 import com.chess.engine.Move;
-import com.chess.engine.Search;
+import com.chess.engine.Search2;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -33,10 +31,10 @@ public class BoardView2 extends ImageView {
 			from = -1, to = -1,
 			dragX = 0, dragY = 0,
 			trackX = 0, trackY = 0;
-	private CoreActivity activity;
+	private CoreActivityActionBar activity;
 	private MainApp mainApp;
 
-	private Board board;
+	private Board2 board;
 	public boolean hint = false,
 			firstclick = true,
 			compmoving = false,
@@ -63,7 +61,7 @@ public class BoardView2 extends ImageView {
 
 	public BoardView2(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		activity = (CoreActivity) context;
+		activity = (CoreActivityActionBar) context;
 		mainApp = activity.getMainApp();
 
 		green = new Paint();
@@ -210,7 +208,7 @@ public class BoardView2 extends ImageView {
 			public void run() {
 				p_tmp = board.piece.clone();
 				c_tmp = board.color.clone();
-				Search searcher = new Search(board);
+				Search2 searcher = new Search2(board);
 				searcher.think(0, time, 32);
 				Move best = searcher.getBest();
 				board.makeMove(best);
@@ -773,11 +771,11 @@ public class BoardView2 extends ImageView {
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
 	}
 
-	public Board getBoard() {
+	public Board2 getBoard() {
 		return board;
 	}
 
-	public void setBoard(Board board) {
+	public void setBoard(Board2 board) {
 		this.board = board;
 	}
 }

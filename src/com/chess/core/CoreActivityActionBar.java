@@ -37,13 +37,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 	protected String responseRepeatable = "";
 
 	public abstract void Update(int code);
-	protected Context context;
+	protected Context coreContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		context = this;
+		coreContext = this;
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
@@ -666,7 +666,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 	 * private BroadcastReceiver networkChangeNotificationReceiver = new
 	 * BroadcastReceiver() {
 	 * 
-	 * @Override public void onReceive(Context context, Intent intent) { if
+	 * @Override public void onReceive(Context coreContext, Intent intent) { if
 	 * (mainApp.isNetworkChangedNotification()) {
 	 * showNetworkChangeNotification(); } } };
 	 */

@@ -83,7 +83,7 @@ public class Facebook {
 	 * Also note that requests may be made to the API without calling
 	 * authorize first, in which case only public information is returned.
 	 *
-	 * @param context	   The Android context in which we want to display the
+	 * @param context	   The Android coreContext in which we want to display the
 	 *                      authorization dialog
 	 * @param applicationId The Facebook application identifier e.g. "350685531728"
 	 * @param permissions   A list of permission required for this application: e.g.
@@ -146,8 +146,8 @@ public class Facebook {
 	 * Note that this method blocks waiting for a network response, so do not
 	 * call it in a UI thread.
 	 *
-	 * @param context The Android context in which the logout should be called: it
-	 *                should be the same context in which the login occurred in
+	 * @param context The Android coreContext in which the logout should be called: it
+	 *                should be the same coreContext in which the login occurred in
 	 *                order to clear any stored cookies
 	 * @return JSON string representation of the auth.expireSession response
 	 *         ("true" if successful)
@@ -282,12 +282,12 @@ public class Facebook {
 
 	/**
 	 * Generate a UI dialog for the request action in the given Android
-	 * context.
+	 * coreContext.
 	 * <p/>
 	 * Note that this method is asynchronous and the callback will be invoked
 	 * in the original calling thread (not in a background thread).
 	 *
-	 * @param context  The Android context in which we will generate this dialog.
+	 * @param context  The Android coreContext in which we will generate this dialog.
 	 * @param action   String representation of the desired method: e.g. "login",
 	 *                 "stream.publish", ...
 	 * @param listener Callback interface to notify the application when the dialog
@@ -301,12 +301,12 @@ public class Facebook {
 
 	/**
 	 * Generate a UI dialog for the request action in the given Android
-	 * context with the provided parameters.
+	 * coreContext with the provided parameters.
 	 * <p/>
 	 * Note that this method is asynchronous and the callback will be invoked
 	 * in the original calling thread (not in a background thread).
 	 *
-	 * @param context	The Android context in which we will generate this dialog.
+	 * @param context	The Android coreContext in which we will generate this dialog.
 	 * @param action	 String representation of the desired method: e.g. "login",
 	 *                   "stream.publish", ...
 	 * @param parameters key-value string parameters

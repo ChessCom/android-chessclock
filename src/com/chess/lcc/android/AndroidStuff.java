@@ -210,12 +210,12 @@ public class AndroidStuff {
 
 	/*public void startSigninActivity()
 	  {
-		context.getSharedDataEditor().putString("password", "");
-		context.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
-		context.getSharedDataEditor().commit();
+		coreContext.getSharedDataEditor().putString("password", "");
+		coreContext.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
+		coreContext.getSharedDataEditor().commit();
 		final Intent intent = new Intent(mainApp, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
+		coreContext.startActivity(intent);
 	  }*/
 
 	public void runSendChallengeTask(MyProgressDialog PD, Challenge challenge) {

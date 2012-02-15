@@ -59,8 +59,8 @@ public class AsyncFacebookRunner {
 	 * in a background thread; operations that affect the UI will need to be
 	 * posted to the UI thread or an appropriate handler.
 	 *
-	 * @param context  The Android context in which the logout should be called: it
-	 *                 should be the same context in which the login occurred in
+	 * @param context  The Android coreContext in which the logout should be called: it
+	 *                 should be the same coreContext in which the login occurred in
 	 *                 order to clear any stored cookies
 	 * @param listener Callback interface to notify the application when the request
 	 *                 has completed.

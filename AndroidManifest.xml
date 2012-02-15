@@ -53,10 +53,7 @@
 
 	    <activity android:name=".activities.Singin"  /> <!--android:screenOrientation="portrait"-->
 
-        <activity
-            android:name=".activities.DashBoardTestActivity" android:theme="@style/MyAppTheme"
-            />
-	    <activity android:name=".core.Tabs" 			/>
+        <activity android:name=".core.Tabs" 			/>
     	<activity android:name=".activities.Register" 	/>
     	<activity android:name=".activities.Preferences" android:theme="@style/GreyButtonTheme"/>
     	<activity android:name=".activities.Chat" 		/>
@@ -85,7 +82,8 @@
             android:theme="@style/GreyButtonTheme"/>
         <activity android:name=".activities.VideoScreenActivity" android:label="@string/label_video"/>
         <activity android:name=".activities.ComputerScreenActivity" android:label="@string/label_play_comp"/>
-        <activity android:name=".activities.SignUpScreenActivity" android:label="@string/label_sign_up"/>
+        <activity android:name=".activities.SignUpScreenActivity" android:label="@string/label_sign_up"
+            android:windowSoftInputMode="stateHidden"/>
 
         <!--<activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 
