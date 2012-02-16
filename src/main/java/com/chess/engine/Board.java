@@ -789,7 +789,7 @@ public class Board {
     		if(d > 1){
             	while(d != 0){
 					min++;
-            		if((piece[min] == ROOK && min != wRook2) && piece[min] != KING && color[min] != EMPTY){
+            		if(min != wRook2 && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
@@ -820,7 +820,7 @@ public class Board {
     		if(d > 1){
             	while(d != 0){
 					min++;
-            		if((piece[min] == ROOK && min != wRook1) && piece[min] != KING && color[min] != EMPTY){
+            		if(min != wRook1 && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
@@ -851,7 +851,7 @@ public class Board {
     		if(d > 1){
             	while(d != 0){
 					min++;
-            		if((piece[min] == ROOK && min != bRook1) && piece[min] != KING && color[min] != EMPTY){
+            		if(min != bRook1 && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
@@ -883,7 +883,7 @@ public class Board {
             if(d > 1){
             	while(d != 0){
 					min++;
-            		if((piece[min] == ROOK && min != bRook2) && piece[min] != KING && color[min] != EMPTY){
+            		if(min != bRook2 && piece[min] != KING && color[min] != EMPTY){
             			return false;
             		}
             		d--;
