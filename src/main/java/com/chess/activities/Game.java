@@ -7,6 +7,7 @@ import java.util.*;
 import android.os.AsyncTask;
 import android.widget.*;
 import com.chess.utilities.Notifications;
+import com.mobclix.android.sdk.MobclixAdView;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.app.AlertDialog;
@@ -55,6 +56,12 @@ import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 public class Game extends CoreActivity {
+
+	// should be refactored
+	private final int CALLBACK_TACTIC_1 = 15;
+	private final int CALLBACK_TACTIC_2 = 16;
+	private final int CALLBACK_TACTIC_3 = 17;
+	
 	public BoardView BV;
 	private LinearLayout analysisLL;
   private LinearLayout analysisButtons;
@@ -75,6 +82,7 @@ public class Game extends CoreActivity {
   protected AlertDialog adPopup;
   private TextView endOfGameMessage;
   private LinearLayout adviewWrapper;
+	private MobclixAdView rectangleAdview;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -580,11 +588,11 @@ public class Game extends CoreActivity {
 			}
 		}
 
-		if (MobclixHelper.isShowAds(App) && getRectangleAdview() == null && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4"))
+		if (MobclixHelper.isShowAds(App) /*&& rectangleAdview == null*/ && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4"))
 		{
-			setRectangleAdview(new MobclixIABRectangleMAdView(this));
-			getRectangleAdview().setRefreshTime(-1);
-			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, App));
+			rectangleAdview = new MobclixIABRectangleMAdView(this);
+			rectangleAdview.setRefreshTime(-1);
+			rectangleAdview.addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, App));
 			App.setForceRectangleAd(false);
 		}
 		
@@ -678,7 +686,7 @@ public class Game extends CoreActivity {
 			}
 		}
 		if(appService != null){
-			appService.RunSingleTask(7,
+			appService.RunSingleTask(CALLBACK_TACTIC_3,
 				"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="+App.sharedData.getString("user_token", "")+"&tactics_id="+id,
 				PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
       );
@@ -879,7 +887,7 @@ public class Game extends CoreActivity {
 					stopTacticsTimer();
 				}	else{
 					if(appService != null){
-						appService.RunSingleTask(6,
+						appService.RunSingleTask(CALLBACK_TACTIC_2,
 								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="+App.sharedData.getString("user_token", "")+"&tactics_id="+App.Tactic.values.get("id")+"&passed="+1+"&correct_moves="+BV.board.TacticsCorrectMoves+"&seconds="+BV.board.sec,
 							PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 					}
@@ -923,7 +931,7 @@ public class Game extends CoreActivity {
 				stopTacticsTimer();
 			}	else{
 				if(appService != null){
-					appService.RunSingleTask(5,
+					appService.RunSingleTask(CALLBACK_TACTIC_1,
 						"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="+App.sharedData.getString("user_token", "")+"&tactics_id="+App.Tactic.values.get("id")+"&passed="+0+"&correct_moves="+BV.board.TacticsCorrectMoves+"&seconds="+BV.board.sec,
 						PD = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 				}
@@ -1190,10 +1198,14 @@ public class Game extends CoreActivity {
 				CheckTacticMoves();
 				break;
 			}
-			case 5:{
+			case CALLBACK_TACTIC_1:{
 				String[] tmp = response.split("[|]");
-				if(tmp.length < 2 || tmp[1].trim().equals("")){
+				
+				if (response.trim().equals("Success+||")) {
 					showDialog(0);
+					return;
+				}
+				else if (tmp.length < 2 || tmp[1].trim().equals("")){
 					return;
 				}
 
@@ -1220,10 +1232,14 @@ public class Game extends CoreActivity {
 	            .create().show();
 				break;
 			}
-			case 6:{
+			case CALLBACK_TACTIC_2:{
 				String[] tmp = response.split("[|]");
-				if(tmp.length < 2 || tmp[1].trim().equals("")){
+
+				if (response.trim().equals("Success+||")) {
 					showDialog(0);
+					return;
+				}
+				else if (tmp.length < 2 || tmp[1].trim().equals("")){
 					return;
 				}
 
@@ -1241,14 +1257,18 @@ public class Game extends CoreActivity {
 	            .create().show();
 				break;
 			}
-			case 7:
+			case CALLBACK_TACTIC_3:
 
 				BV.board = new Board(this);
 				BV.board.mode = 6;
 
 				String[] tmp = response.trim().split("[|]");
-				if(tmp.length < 3 || tmp[2].trim().equals("")){
+
+				if (response.trim().equals("Success+||")) {
 					showDialog(0);
+					return;
+				}
+				else if (tmp.length < 3 || tmp[2].trim().equals("")){
 					return;
 				}
 
@@ -1974,14 +1994,14 @@ public class Game extends CoreActivity {
 	}
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(App) && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null)
+		if (MobclixHelper.isShowAds(App) && App.mTabHost != null && !App.mTabHost.getCurrentTabTag().equals("tab4") && adviewWrapper != null && rectangleAdview != null)
 		{
-			adviewWrapper.removeView(getRectangleAdview());
+			adviewWrapper.removeView(rectangleAdview);
 
-			adviewWrapper.addView(getRectangleAdview());
+			adviewWrapper.addView(rectangleAdview);
 			if (App.isForceRectangleAd())
 			{
-				getRectangleAdview().getAd();
+				rectangleAdview.getAd();
 			}
 		}
 
@@ -2056,13 +2076,13 @@ public class Game extends CoreActivity {
 		unregisterReceiver(showGameEndPopupReceiver);
 
 		super.onPause();
-		System.out.println("LCCLOG2: GAME ONPAUSE adviewWrapper=" + adviewWrapper + ", getRectangleAdview() " + getRectangleAdview());
-		if (adviewWrapper != null && getRectangleAdview() != null)
+		System.out.println("LCCLOG2: GAME ONPAUSE adviewWrapper=" + adviewWrapper + ", rectangleAdview " + rectangleAdview);
+		if (adviewWrapper != null && rectangleAdview != null)
 		{
 			System.out.println("LCCLOG2: GAME ONPAUSE 1");
-			getRectangleAdview().cancelAd();
+			rectangleAdview.cancelAd();
 			System.out.println("LCCLOG2: GAME ONPAUSE 2");
-			adviewWrapper.removeView(getRectangleAdview());
+			adviewWrapper.removeView(rectangleAdview);
 			System.out.println("LCCLOG2: GAME ONPAUSE 3");
 		}
 		lccHolder.setActivityPausedMode(true);
@@ -2076,7 +2096,7 @@ public class Game extends CoreActivity {
 
 		/*if (MobclixHelper.isShowAds(App))
 		{
-			MobclixHelper.pauseAdview(getRectangleAdview(), App);
+			MobclixHelper.pauseAdview(rectangleAdview, App);
 		}*/
 		
 		enableScreenLock();
@@ -2406,13 +2426,13 @@ public class Game extends CoreActivity {
 
 		try
 		{
-			if (adviewWrapper != null && getRectangleAdview() != null)
+			if (adviewWrapper != null && rectangleAdview != null)
 			{
-				adviewWrapper.removeView(getRectangleAdview());
+				adviewWrapper.removeView(rectangleAdview);
 			}
 			adviewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 			System.out.println("MOBCLIX: GET WRAPPER " + adviewWrapper);
-			adviewWrapper.addView(getRectangleAdview());
+			adviewWrapper.addView(rectangleAdview);
 
 			adviewWrapper.setVisibility(View.VISIBLE);
 			//showGameEndAds(adviewWrapper);
@@ -2424,9 +2444,9 @@ public class Game extends CoreActivity {
 			{
 				public void onCancel(DialogInterface dialogInterface)
 				{
-					if (adviewWrapper != null && getRectangleAdview() != null)
+					if (adviewWrapper != null && rectangleAdview != null)
 					{
-						adviewWrapper.removeView(getRectangleAdview());
+						adviewWrapper.removeView(rectangleAdview);
 					}
 				}
 			});
@@ -2434,9 +2454,9 @@ public class Game extends CoreActivity {
 			{
 				public void onDismiss(DialogInterface dialogInterface)
 				{
-					if (adviewWrapper != null && getRectangleAdview() != null)
+					if (adviewWrapper != null && rectangleAdview != null)
 					{
-						adviewWrapper.removeView(getRectangleAdview());
+						adviewWrapper.removeView(rectangleAdview);
 					}
 				}
 			});

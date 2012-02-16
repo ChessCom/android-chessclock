@@ -35,7 +35,6 @@ public class MainApp extends Application {
   private LccHolder lccHolder;
   private boolean liveChess;
   private SoundPlayer soundPlayer;
-  private MobclixAdView rectangleAdview;
   private MobclixAdView bannerAdview;
   private LinearLayout bannerAdviewWrapper;
   private boolean adviewPaused;
@@ -189,16 +188,6 @@ public class MainApp extends Application {
   public void setBannerAdview(MobclixAdView bannerAdview)
   {
     this.bannerAdview = bannerAdview;
-  }
-
-  public MobclixAdView getRectangleAdview()
-  {
-    return rectangleAdview;
-  }
-
-  public void setRectangleAdview(MobclixAdView rectangleAdview)
-  {
-    this.rectangleAdview = rectangleAdview;
   }
   
   public void setNetworkChangedNotification(boolean networkChangedNotification)

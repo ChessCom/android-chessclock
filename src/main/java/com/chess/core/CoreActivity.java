@@ -648,16 +648,6 @@ public abstract class CoreActivity extends Activity {
     }
   }*/
 
-  public MobclixAdView getRectangleAdview()
-  {
-    return App.getRectangleAdview();
-  }
-
-  public void setRectangleAdview(MobclixAdView rectangleAdview)
-  {
-    App.setRectangleAdview(rectangleAdview);
-  }
-
   private void checkUpdate()
   {
     new AsyncTask<Void, Void, Void>()
