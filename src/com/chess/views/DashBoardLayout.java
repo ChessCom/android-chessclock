@@ -1,6 +1,7 @@
 package com.chess.views;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -10,31 +11,33 @@ import com.chess.R;
  * Custom layout that arranges children in a grid-like manner, optimizing for
  * even horizontal and vertical whitespace.
  */
-public class DashBoardLayout2 extends RelativeLayout {
+public class DashBoardLayout extends RelativeLayout {
 
 	private static final int UNEVEN_GRID_PENALTY_MULTIPLIER = 10;
 
 	private int mMaxChildWidth = 0;
 	private int mMaxChildHeight = 0;
-	private int[] backgrounds;
+	private int[] portBackgrounds;
+	private int[] landBackgrounds;
+	private int screenOrientation;
 
-	public DashBoardLayout2(Context context) {
+	public DashBoardLayout(Context context) {
 		super(context, null);
 		init();
 	}
 
-	public DashBoardLayout2(Context context, AttributeSet attrs) {
+	public DashBoardLayout(Context context, AttributeSet attrs) {
 		super(context, attrs, 0);
 		init();
 	}
 
-	public DashBoardLayout2(Context context, AttributeSet attrs, int defStyle) {
+	public DashBoardLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}
 
 	private void init(){
-		backgrounds = new int[]{
+		portBackgrounds = new int[]{
 				R.drawable.dashboard_item_lt,
 				R.drawable.dashboard_item_rt,
 				R.drawable.dashboard_item_lm,
@@ -42,7 +45,15 @@ public class DashBoardLayout2 extends RelativeLayout {
 				R.drawable.dashboard_item_lb,
 				R.drawable.dashboard_item_rb
 		};
-
+		landBackgrounds = new int[]{
+				R.drawable.dashboard_item_lt,
+				R.drawable.dashboard_item_mt,
+				R.drawable.dashboard_item_rt,
+				R.drawable.dashboard_item_lb,
+				R.drawable.dashboard_item_mt,
+				R.drawable.dashboard_item_rb
+		};
+		screenOrientation = getResources().getConfiguration().orientation;
 	}
 
 	@Override
@@ -72,8 +83,6 @@ public class DashBoardLayout2 extends RelativeLayout {
 
 		// Measure again for each child to be exactly the same size.
 
-//		childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildWidth, MeasureSpec.EXACTLY);
-//		childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildHeight, MeasureSpec.EXACTLY);
 		childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildWidth, MeasureSpec.AT_MOST);
 		childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildHeight, MeasureSpec.AT_MOST);
 
@@ -112,9 +121,9 @@ public class DashBoardLayout2 extends RelativeLayout {
 		}
 
 		// Calculate what number of rows and columns will optimize for even
-// horizontal and
+		// horizontal and
 		// vertical whitespace between items. Start with a 1 x N grid, then try
-// 2 x N, and so on.
+		// 2 x N, and so on.
 		int bestSpaceDifference = Integer.MAX_VALUE;
 		int spaceDifference;
 
@@ -141,14 +150,14 @@ public class DashBoardLayout2 extends RelativeLayout {
 				bestSpaceDifference = spaceDifference;
 
 				// If we found a better whitespace squareness and there's only 1
-// row, this is
+				// row, this is
 				// the best we can do.
 				if (rows == 1) {
 					break;
 				}
 			} else {
 				// This is a worse whitespace ratio, use the previous value of
-// cols and exit.
+				// cols and exit.
 				--cols;
 				rows = (visibleCount - 1) / cols + 1;
 				hSpace = ((width - mMaxChildWidth * cols) / (cols + 1));
@@ -199,7 +208,11 @@ public class DashBoardLayout2 extends RelativeLayout {
 //			bottom = (vSpace == 0 && row == rows - 1) ? b : (top + height);
 
 			child.layout(left, top, right, bottom);
-			child.setBackgroundResource(backgrounds[visibleIndex]);
+			if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
+				child.setBackgroundResource(landBackgrounds[visibleIndex]);
+			}else{
+				child.setBackgroundResource(portBackgrounds[visibleIndex]);
+			}
 			++visibleIndex;
 		}
 	}

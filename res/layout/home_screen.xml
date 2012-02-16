@@ -7,7 +7,7 @@
     android:orientation="vertical" >
 
 
-    <com.chess.views.DashBoardLayout2
+    <com.chess.views.DashBoardLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -47,7 +47,7 @@
             style="@style/DashboardItem"
             cb:buttonDrawable="@drawable/dashboard_settings_selector"
             cb:buttonText="@string/settings" />
-    </com.chess.views.DashBoardLayout2>
+    </com.chess.views.DashBoardLayout>
 
 
 

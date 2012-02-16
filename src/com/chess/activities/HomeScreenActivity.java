@@ -29,7 +29,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		setContentView(R.layout.home_screen);
 
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-		int padding = getResources().getDrawable(R.drawable.chess_cells).getIntrinsicWidth() / 2;
+		int padding = getResources().getDrawable(R.drawable.chess_cell).getIntrinsicWidth() / 2;
 		findViewById(R.id.mainView).setPadding(padding, padding, padding, padding);
 
 		findViewById(R.id.playLiveFrame).setOnClickListener(this);

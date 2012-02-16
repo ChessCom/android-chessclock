@@ -1594,16 +1594,16 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (boardView.getBoard().mode < 4) {
 			menu.add(0, 0, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
-			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
+			SubMenu options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
 			menu.add(0, 3, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
 			menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
 			menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
 
-			Options.add(0, 6, 0, getString(R.string.ngwhite));
-			Options.add(0, 7, 0, getString(R.string.ngblack));
-			Options.add(0, 8, 0, getString(R.string.emailgame));
-			Options.add(0, 9, 0, getString(R.string.settings));
+			options.add(0, 6, 0, getString(R.string.ngwhite));
+			options.add(0, 7, 0, getString(R.string.ngblack));
+			options.add(0, 8, 0, getString(R.string.emailgame));
+			options.add(0, 9, 0, getString(R.string.settings));
 		} else if (boardView.getBoard().mode < 6) {
 			SubMenu options;
 			if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
@@ -1629,6 +1629,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
 				menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
 			}
+
 			if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
 				options.add(0, 1, 0, getString(R.string.settings)).setIcon(R.drawable.options);
 				options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
