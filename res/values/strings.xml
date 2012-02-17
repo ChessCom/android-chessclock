@@ -30,7 +30,7 @@
     <string name="singinUsername">Username</string>
     <string name="singinPassword">Password</string>
     <string name="singinButton">Sign In</string>
-    <string name="singupButton">Sign Up - It\'s FREE!</string>
+    <string name="singupButton">Sign Up</string>
     <string name="singinPlayguest">Play as Guest</string>
     <string name="computerTitle">Computer Play</string>
     <string name="computerWhite">White:</string>

@@ -34,7 +34,6 @@
     <!--Green-->
     <color name="green_button">#FF59b111</color>
     <color name="green_button_p">#FF419100</color>
-    <!--<color name="orange_button_stroke">#23FFFFFF</color>-->
 
     <color name="green_emboss_low_right">#FF63a62d</color>
     <color name="green_emboss_top_left">#FF7fc349</color>
@@ -42,11 +41,27 @@
     <color name="green_button_pressed_stroke_1">#9663b91c</color>
     <color name="green_button_pressed_stroke_2">#FFd9eec8</color>
     
+
+    <!--Facebook button-->
+    <color name="f_button">#FF3b5998</color>
+    <color name="f_button_p">#FF254485</color>
+
+    <color name="f_emboss_low_right">#FF47639e</color>
+    <color name="f_emboss_top_left">#FF657caf</color>
+
+    <color name="f_button_pressed_stroke_1">#96657caf</color>
+    <color name="f_button_pressed_stroke_2">#FF93afee</color>
+
+
+
+
+
     <color name="list_pressed_1">#FFf98c15</color>
     <color name="list_pressed_2">#FFe07a0d</color>
-<!--     <color name="list_pressed_1">#FF5286f0</color>
-    <color name="list_pressed_2">#FF185a98</color>
- -->
+    <!--     <color name="list_pressed_1">#FF5286f0</color>
+        <color name="list_pressed_2">#FF185a98</color>
+     -->
+
 
     <color name="dark_orange">#FFb66400</color>
     <color name="dark_orange_1">#FFa15906</color>

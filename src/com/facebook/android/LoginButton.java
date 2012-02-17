@@ -56,8 +56,8 @@ public class LoginButton extends /* Image */Button {
 //		setAdjustViewBounds(true);
 //		setImageResource(fb.isSessionValid() ? R.drawable.logout_button
 //				: R.drawable.login_button_selector);
-		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_logout_selector
-				: R.drawable.button_f_login_selector);
+		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_selector
+				: R.drawable.button_f_selector);
 		setText(getResources().getString(
 				fb.isSessionValid() ? R.string.logout
 						: R.string.connect_with_facebook));
@@ -125,7 +125,7 @@ public class LoginButton extends /* Image */Button {
 
 		@Override
 		public void onAuthSucceed() {
-			setBackgroundResource(R.drawable.button_f_logout_selector);// ImageResource(R.drawable.button_f_logout_selector);
+			setBackgroundResource(R.drawable.button_f_selector);// ImageResource(R.drawable.button_f_logout_selector);
 			setText(getResources().getString(R.string.logout));
 
 			SessionStore.save(mFb, getContext());
@@ -142,7 +142,7 @@ public class LoginButton extends /* Image */Button {
 		@Override
 		public void onLogoutFinish() {
 			SessionStore.clear(getContext());
-			setBackgroundResource(R.drawable.button_f_login_selector);
+			setBackgroundResource(R.drawable.button_f_selector);
 			setText(getResources().getString(R.string.connect_with_facebook));
 
 //			invalidate();

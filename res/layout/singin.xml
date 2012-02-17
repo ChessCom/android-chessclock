@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:robo="http://schemas.android.com/apk/res/com.chess"
     android:id="@+id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -22,42 +23,64 @@
         android:layout_marginTop="@dimen/signin_main_margin_top"
         android:orientation="vertical" >
 
-        <EditText
+        <com.chess.RoboEditText
             android:id="@+id/username"
-
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/singinUsername"
+            robo:ttf="Regular"
             />
 
-        <EditText
+        <com.chess.RoboEditText
             android:id="@+id/password"
-
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/singinPassword"
             android:inputType="textPersonName"
             android:password="true"
-            android:singleLine="true" />
+            android:singleLine="true"
+            robo:ttf="Regular"
+            />
 
-        <Button
+        <com.chess.RoboButton
             android:id="@+id/singin"
-            style="@style/signin_button"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/default_button_height"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/signin_button_margin_updown"
-            android:layout_marginTop="@dimen/signin_button_margin_updown"
-            android:text="@string/singinButton" />
+            android:layout_height="wrap_content"
+            android:text="@string/singinButton"
+            robo:ttf="Regular"
+            />
 
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
             style="@style/f_button_login"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/default_button_height" />
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/facebook_icon"
+
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/singup"
+            style="@style/button_green"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/singupButton"
+            robo:ttf="Regular"
+
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/guestplay"
+            style="@style/button_grey"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/singinPlayguest"
+            robo:ttf="Regular"
+
+             />
     </LinearLayout>
 
-    <LinearLayout
+<!--    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -80,27 +103,8 @@
             android:layout_height="wrap_content"
             android:weightSum="2" >
 
-            <Button
-                android:id="@+id/singup"
-                style="@style/button_grey"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/default_button_height"
-                android:layout_marginRight="3dip"
-                android:layout_weight="0.9"
-                android:text="@string/singupButton"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/guestplay"
-                style="@style/button_grey"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/default_button_height"
-                android:layout_marginLeft="3dip"
-                android:layout_weight="1.1"
-                android:text="@string/singinPlayguest"
-                android:textColor="@android:color/white" />
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 
 </RelativeLayout>
