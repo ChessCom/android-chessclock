@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import android.os.AsyncTask;
 import android.widget.*;
 import com.chess.utilities.Notifications;
 import com.mobclix.android.sdk.MobclixAdView;
@@ -2010,15 +2009,11 @@ public class Game extends CoreActivity {
       App.setLiveChess(extras.getBoolean("liveChess"));
       if (!App.isLiveChess())
       {
-        new AsyncTask<Void, Void, Void>()
-        {
-          @Override
-          protected Void doInBackground(Void... voids)
-          {
+        new Thread(new Runnable() {
+          public void run() {
             App.getLccHolder().logout();
-            return null;
           }
-        }.execute();
+        }).start();
       }
     }
 

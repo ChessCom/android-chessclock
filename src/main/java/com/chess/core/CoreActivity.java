@@ -152,23 +152,19 @@ public abstract class CoreActivity extends Activity {
 
       //startService(new Intent(getApplicationContext(), NetworkChangeService.class));
 
-      new AsyncTask<Void, Void, Void>()
-      {
-        @Override
-        protected Void doInBackground(Void... voids)
-        {
+      new Thread(new Runnable() {
+        public void run() {
           final LccHolder lccHolder = App.getLccHolder();
           //lccHolder.setConnectingInProgress(true);
           lccHolder.getClient().disconnect();
           lccHolder.setNetworkTypeName(null);
           lccHolder.setConnectingInProgress(true);
           lccHolder.getClient()
-                  .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
+            .connect(App.sharedData.getString("user_session_id", ""), lccHolder.getConnectionListener());
           /*appService.RunRepeatble(0, 0, 120000,
-          PD = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
-          return null;
+            PD = MyProgressDialog.show(this, null, getString(R.string.updatinggameslist), true));*/
         }
-      }.execute();
+      }).start();
     }
     doBindService();
     registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));

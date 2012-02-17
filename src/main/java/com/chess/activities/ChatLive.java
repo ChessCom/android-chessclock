@@ -3,7 +3,6 @@ package com.chess.activities;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import android.os.AsyncTask;
 import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.live.client.*;
@@ -39,16 +38,13 @@ public class ChatLive extends CoreActivity {
 		{
 			public void onClick(View v)
 			{
-				new AsyncTask<Void, Void, Void>()
-				{
-					@Override
-					protected Void doInBackground(Void... voids)
-					{
+				final String message = sendText.getText().toString();
+				new Thread(new Runnable() {
+					public void run() {
 						System.out.println("LCCLOG: SEND");
-						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(App.OnlineGame.values.get("game_id"))), sendText.getText().toString());
-						return null;
+						lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(new Long(App.OnlineGame.values.get("game_id"))), message);
 					}
-				}.execute();
+				}).start();
 
         		Update(MESSAGE_SENT);
 			}

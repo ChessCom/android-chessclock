@@ -1,7 +1,6 @@
 package com.chess.activities.tabs;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -53,15 +52,11 @@ public class Computer extends CoreActivity {
 		if (App.isLiveChess())
     {
       App.setLiveChess(false);
-      new AsyncTask<Void, Void, Void>()
-      {
-        @Override
-        protected Void doInBackground(Void... voids)
-        {
+      new Thread(new Runnable() {
+        public void run() {
           App.getLccHolder().logout();
-          return null;
         }
-      }.execute();
+      }).start();
     }
     super.onResume();
 		if(Strength != null && App != null && App.sharedData != null){
