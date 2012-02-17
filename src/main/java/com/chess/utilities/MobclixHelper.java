@@ -53,7 +53,7 @@ public class MobclixHelper {
 		app.setBannerAdviewWrapper(bannerAdviewWrapper);
 	}
 
-	public static void showBannerAd(LinearLayout adviewWrapper, TextView removeAds, Activity activity, MainApp app)
+	public static void showBannerAd(TextView removeAds, Activity activity, MainApp app)
 	{
 		if (!isShowAds(app))
 		{
@@ -75,7 +75,7 @@ public class MobclixHelper {
 		}
 
 		int adsShowCounter = app.sharedData.getInt("com.chess.adsShowCounter", 0);
-		if (adviewWrapper == null || bannerAdview == null)
+		if (bannerAdviewWrapper == null || bannerAdview == null)
 		{
 			initializeBannerAdView(activity, app);
 		}
@@ -108,7 +108,7 @@ public class MobclixHelper {
 		else 
 		{
 			removeAds.setVisibility(View.GONE);
-			adviewWrapper.setVisibility(View.VISIBLE);
+			bannerAdviewWrapper.setVisibility(View.VISIBLE);
 			app.SDeditor.putInt("com.chess.adsShowCounter", adsShowCounter + 1);
 			app.SDeditor.commit();
 		}

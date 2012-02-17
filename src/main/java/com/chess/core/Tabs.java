@@ -144,7 +144,7 @@ public class Tabs extends TabActivity {
 					if(tabId.equals("tab1") || tabId.equals("tab2") || tabId.equals("tab3") || tabId.equals("tab5") || tabId.equals("tab6"))
 					{
 						//System.out.println("LCCLOG2: ONTABCHANGED 1");
-						MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
+						MobclixHelper.showBannerAd(removeAds, Tabs.this, App);
 					}
 					else if (tabId.equals("tab4"))
 					{
@@ -171,7 +171,7 @@ public class Tabs extends TabActivity {
     	  if(currentTab.equals("tab1") || currentTab.equals("tab2") || currentTab.equals("tab3") || currentTab.equals("tab5") || currentTab.equals("tab6"))
 			{
 				//System.out.println("LCCLOG2: TABS ONRESUME 2");
-				MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+				MobclixHelper.showBannerAd(removeAds, this, App);
 			}
 			else if (currentTab.equals("tab4"))
 			{
@@ -205,7 +205,7 @@ public class Tabs extends TabActivity {
     {
 		//System.out.println("LCCLOG2: TABS FOCUS 2");
 	  System.out.println("LCCLOG MOBCLIX: onWindowFocusChanged SHOW");
-      MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+      MobclixHelper.showBannerAd(removeAds, this, App);
 		//System.out.println("LCCLOG2: TABS FOCUS 3");
     }
   }
@@ -219,7 +219,7 @@ public class Tabs extends TabActivity {
 					{
 						if (MobclixHelper.isShowAds(App) && App.getLccHolder().isConnected() && !App.getLccHolder().isConnectingInProgress())
 						{
-							MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, Tabs.this, App);
+							MobclixHelper.showBannerAd(removeAds, Tabs.this, App);
 			            }
 					}
 				}

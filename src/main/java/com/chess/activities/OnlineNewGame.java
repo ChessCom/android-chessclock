@@ -213,7 +213,7 @@ public class OnlineNewGame extends CoreActivity {
   {
     if (MobclixHelper.isShowAds(App))
 	{
-      MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+      MobclixHelper.showBannerAd(removeAds, this, App);
     }
     registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
     super.onResume();
@@ -305,7 +305,7 @@ public class OnlineNewGame extends CoreActivity {
     System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
     if (hasFocus && MobclixHelper.isShowAds(App) && App.isForceBannerAdOnFailedLoad())
     {
-      MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(App), removeAds, this, App);
+      MobclixHelper.showBannerAd(removeAds, this, App);
     }
   }
 }
