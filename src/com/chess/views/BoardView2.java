@@ -98,7 +98,7 @@ public class BoardView2 extends ImageView {
 	public void AfterMove() {
 		board.movesCount = board.hply;
 		activity.Update(0);	//movelist
-		if (board.mode == 4 && !board.analysis) {
+		if (board.mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && !board.analysis) {
 			boolean ssb;
 			if (mainApp.isLiveChess()) {
 				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
@@ -607,10 +607,10 @@ public class BoardView2 extends ImageView {
 
 		track = false;
 		if (!board.analysis) {
-			if (compmoving || board.mode == 5 || finished || board.submit ||
-					(board.mode == 4 && board.hply < board.movesCount))
+			if (compmoving || board.mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS || finished || board.submit ||
+					(board.mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && board.hply < board.movesCount))
 				return true;
-			if (board.mode == 4 && mainApp.getCurrentGame() != null) {
+			if (board.mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && mainApp.getCurrentGame() != null) {
 				if (mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 != 0)
 					return true;
 				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 == 0)

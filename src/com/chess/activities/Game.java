@@ -374,7 +374,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 					LccHolder.LOG.info("Request draw: " + game);
 					lccHolder.getAndroid().runMakeDrawTask(game);
@@ -400,7 +400,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 
 					if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
@@ -566,7 +566,7 @@ public class Game extends CoreActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) == 4) {
+		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 			setContentView(R.layout.boardviewlive);
 			lccHolder.getAndroid().setGameActivity(this);
 		} else {
@@ -595,7 +595,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
-		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) == 4
+		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) == AppConstants.GAME_MODE_LIVE_OR_ECHESS
 				&& lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
 			whiteClockView.setVisibility(View.VISIBLE);
 			blackClockView.setVisibility(View.VISIBLE);
@@ -646,7 +646,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
-				if (boardView.getBoard().mode == 4 || boardView.getBoard().mode == 5)
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS || boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS)
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
 			if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
@@ -672,7 +672,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		}
 		mainApp.setGameId(game_id);
 
-		if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+		if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 			Update(10);
 		} else {
 			if (appService != null) {
@@ -1021,12 +1021,12 @@ public class Game extends CoreActivity implements OnClickListener {
 				//finish();
 				break;
 			case -1:
-				if (boardView.getBoard().init && boardView.getBoard().mode == 4 || boardView.getBoard().mode == 5) {
+				if (boardView.getBoard().init && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS || boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS) {
 					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
 					GetOnlineGame(mainApp.getGameId());
 					boardView.getBoard().init = false;
 				} else if (!boardView.getBoard().init) {
-					if (boardView.getBoard().mode == 4 && appService != null
+					if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && appService != null
 							&& appService.getRepeatableTimer() == null) {
 						if (progressDialog != null) {
 							progressDialog.dismiss();
@@ -1108,7 +1108,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					hideAnalysisButtons();
 				}
 
-				if (boardView.getBoard().mode == 4 || boardView.getBoard().mode == 5) {
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS || boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS) {
 					if (mainApp.getCurrentGame() != null) {
 						white.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
 						black.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
@@ -1156,7 +1156,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
 				//String myMove = boardView.getBoard().MoveSubmit();
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 					final String move = boardView.getBoard().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
 					try {
@@ -1355,7 +1355,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							if (i + 1 < currentGames.size()) {
 								boardView.setBoard(new Board(this));
 								boardView.getBoard().analysis = false;
-								boardView.getBoard().mode = 4;
+								boardView.getBoard().mode = AppConstants.GAME_MODE_LIVE_OR_ECHESS;
 
 								if (progressDialog != null) {
 									progressDialog.dismiss();
@@ -1393,9 +1393,9 @@ public class Game extends CoreActivity implements OnClickListener {
 						String[] Moves = {};
 						
 						if (mainApp.getCurrentGame().values.get("move_list").contains("1.") 
-								|| ((mainApp.isLiveChess() && boardView.getBoard().mode == 4))) {
+								|| ((mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS))) {
 							
-							int beginIndex = (mainApp.isLiveChess() && boardView.getBoard().mode == 4) ? 0 : 1;
+							int beginIndex = (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) ? 0 : 1;
 							
 							Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
 							
@@ -1457,7 +1457,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 				getSoundPlayer().playGameStart();
 
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 					mainApp.setCurrentGame(new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 					executePausedActivityGameEvents();
 					//lccHolder.setActivityPausedMode(false);
@@ -1560,7 +1560,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						}
 					};
 				}).start();
-				if (boardView.getBoard().mode == 4 && appService != null && appService.getRepeatableTimer() == null) {
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && appService != null && appService.getRepeatableTimer() == null) {
 					if (progressDialog != null) {
 						progressDialog.dismiss();
 						progressDialog = null;
@@ -1601,7 +1601,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			Options.add(0, 9, 0, getString(R.string.settings));
 		} else if (boardView.getBoard().mode < 6) {
 			SubMenu options;
-			if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+			if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 				options = menu.addSubMenu(0, 0, 0, getString(R.string.options)).setIcon(R.drawable.options);
 				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
 					menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
@@ -1624,7 +1624,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
 				menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
 			}
-			if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+			if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 				options.add(0, 1, 0, getString(R.string.settings)).setIcon(R.drawable.options);
 				options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
 				options.add(0, 3, 0, getString(R.string.drawoffer));
@@ -1664,7 +1664,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				menu.getItem(itemPosition).setIcon(R.drawable.chat);
 		}
 
-		if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+		if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 			final SubMenu options = menu.getItem(0).getSubMenu();
 			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 				resignOrAbort = R.string.resign;
@@ -1766,7 +1766,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 			}
 		} else if (boardView.getBoard().mode < 6) {
-			if (mainApp.isLiveChess() && boardView.getBoard().mode == 4) {
+			if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 				switch (item.getItemId()) {
 					case 1: {
 						startActivity(new Intent(Game.this, Preferences.class));
@@ -1795,7 +1795,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			} else {
 				switch (item.getItemId()) {
 					case 0:
-						if (boardView.getBoard().mode == 4) {
+						if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 							for (GameListElement gle : mainApp.getGameListItems()) {
@@ -1808,7 +1808,7 @@ public class Game extends CoreActivity implements OnClickListener {
 									if (i + 1 < currentGames.size()) {
 										boardView.getBoard().analysis = false;
 										boardView.setBoard(new Board(this));
-										boardView.getBoard().mode = 4;
+										boardView.getBoard().mode = AppConstants.GAME_MODE_LIVE_OR_ECHESS;
 										GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
 										return true;
 									} else {
@@ -1819,7 +1819,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							}
 							finish();
 							return true;
-						} else if (boardView.getBoard().mode == 5) {
+						} else if (boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 							for (GameListElement gle : mainApp.getGameListItems()) {
@@ -1832,7 +1832,7 @@ public class Game extends CoreActivity implements OnClickListener {
 									if (i + 1 < currentGames.size()) {
 										boardView.getBoard().analysis = false;
 										boardView.setBoard(new Board(this));
-										boardView.getBoard().mode = 5;
+										boardView.getBoard().mode = AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
 										GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
 										return true;
 									} else {

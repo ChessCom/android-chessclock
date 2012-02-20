@@ -131,7 +131,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				}break;
 				case DialogInterface.BUTTON_NEGATIVE:{
 					startActivity(new Intent(coreContext, Game.class).
-							putExtra(AppConstants.GAME_MODE, 4).
+							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
 							putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID)));
 
 				}break;
@@ -512,7 +512,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 					mainApp.acceptdraw = false;
 
 					Intent intent = new Intent(coreContext, Game.class);
-					intent.putExtra(AppConstants.GAME_MODE, 4);
+					intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 					intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
 					startActivity(intent);
 				}
@@ -521,7 +521,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, Game.class);
-				intent.putExtra(AppConstants.GAME_MODE, 5);
+				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
 				startActivity(intent );
 			}

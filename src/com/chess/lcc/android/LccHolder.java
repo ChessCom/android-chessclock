@@ -698,7 +698,7 @@ public class LccHolder {
 		final ContextWrapper androidContext = android.getContext();
 		final Intent intent = new Intent(androidContext, com.chess.activities.Game.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra(AppConstants.GAME_MODE, 4);
+		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(AppConstants.GAME_ID, "" + game.getId());
 		androidContext.startActivity(intent);
 		/*final Game currentGame = game;

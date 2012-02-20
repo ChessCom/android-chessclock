@@ -79,6 +79,8 @@ public class AppConstants {
 	public final static int GAME_MODE_COMPUTER_VS_HUMAN_BLACK = 1;
 	public final static int GAME_MODE_HUMAN_VS_HUMAN = 2;
 	public final static int GAME_MODE_COMPUTER_VS_COMPUTER = 3;
+	public final static int GAME_MODE_LIVE_OR_ECHESS = 4;
+	public final static int GAME_MODE_VIEW_FINISHED_ECHESS = 5;
 	public final static int GAME_MODE_TACTICS = 6;
 
 }
