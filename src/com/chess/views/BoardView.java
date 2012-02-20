@@ -97,7 +97,7 @@ public class BoardView extends ImageView {
 				activity.Update(1);
 			}
 		}
-		if (board.mode < 6 && isResult())
+		if (!MainApp.isTacticsGameMode(this) && isResult())
 			return;
 		switch (board.mode) {
 			case 0: {	//w - human; b - comp
@@ -333,7 +333,7 @@ public class BoardView extends ImageView {
 		}
 
 		//captured piecec
-		if (!compmoving && board.mode != AppConstants.GAME_MODE_TACTICS)
+		if (!compmoving && !MainApp.isTacticsGameMode(this))
 			if (W < H) {
 				int h = H - W - 16;
 				int side = W / 15;
@@ -600,7 +600,7 @@ public class BoardView extends ImageView {
 			if ((board.mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE && board.hply % 2 != 0) || (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK && board.hply % 2 == 0)) {
 				return true;
 			}
-			if (board.mode == AppConstants.GAME_MODE_TACTICS && board.hply % 2 == 0) {
+			if (MainApp.isTacticsGameMode(this) && board.hply % 2 == 0) {
 				return true;
 			}
 		}

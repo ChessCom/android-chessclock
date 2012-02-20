@@ -17,6 +17,8 @@ import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.utilities.BitmapLoader;
 import com.chess.utilities.SoundPlayer;
+import com.chess.views.BoardView;
+import com.chess.views.BoardView2;
 import com.mobclix.android.sdk.MobclixAdView;
 
 import java.io.IOException;
@@ -291,5 +293,18 @@ public class MainApp extends Application {
 
 	public void setTacticsBatch(ArrayList<Tactic> tacticsBatch) {
 		this.tacticsBatch = tacticsBatch;
+	}
+
+	public static boolean isTacticsGameMode(int mode) {
+		return mode == AppConstants.GAME_MODE_TACTICS;
+	}
+
+	public static boolean isTacticsGameMode(BoardView boardView) {
+		return isTacticsGameMode(boardView.getBoard().mode);
+	}
+
+	// todo: should be removed
+	public static boolean isTacticsGameMode(BoardView2 boardView) {
+		return isTacticsGameMode(boardView.getBoard().mode);
 	}
 }
