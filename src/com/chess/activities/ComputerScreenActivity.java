@@ -59,17 +59,17 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 			FlurryAgent.onEvent("New Game VS Computer", null);
 			startActivity(new Intent(coreContext, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
 		}else if(view.getId() == R.id.start){
-			RadioButton wh, bh;
-			wh = (RadioButton) findViewById(R.id.wHuman);
-			bh = (RadioButton) findViewById(R.id.bHuman);
+			RadioButton whiteHuman, blackHuman;
+			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
+			blackHuman = (RadioButton) findViewById(R.id.bHuman);
 
-			int mode = 0;
-			if (!wh.isChecked() && bh.isChecked())
-				mode = 1;
-			else if (wh.isChecked() && bh.isChecked())
-				mode = 2;
-			else if (!wh.isChecked() && !bh.isChecked())
-				mode = 3;
+			int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+			if (!whiteHuman.isChecked() && blackHuman.isChecked())
+				mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+			else if (whiteHuman.isChecked() && blackHuman.isChecked())
+				mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
+				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 
 			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, "");
 			mainApp.getSharedDataEditor().commit();

@@ -75,5 +75,10 @@ public class AppConstants {
 	public static final String AVG_SECONDS	= "average_seconds";
 	public static final String STOP			= "stop";
 
+	public final static int GAME_MODE_COMPUTER_VS_HUMAN_WHITE = 0;
+	public final static int GAME_MODE_COMPUTER_VS_HUMAN_BLACK = 1;
+	public final static int GAME_MODE_HUMAN_VS_HUMAN = 2;
+	public final static int GAME_MODE_COMPUTER_VS_COMPUTER = 3;
+	public final static int GAME_MODE_TACTICS = 6;
 
 }

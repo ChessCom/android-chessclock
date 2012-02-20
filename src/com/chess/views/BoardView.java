@@ -182,7 +182,7 @@ public class BoardView extends ImageView {
 	}
 
 	public void ComputerMove(final int time) {
-		if (board.mode == 3 && stopThinking) {
+		if (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER && stopThinking) {
 			stopThinking = false;
 			return;
 		}
@@ -211,7 +211,7 @@ public class BoardView extends ImageView {
 					invalidate();
 					if (isResult())
 						return;
-					if (board.mode == 3 || (hint && board.mode != 2)) {
+					if (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER || (hint && board.mode != AppConstants.GAME_MODE_HUMAN_VS_HUMAN)) {
 						if (hint) hint = false;
 						ComputerMove(time);
 					}
@@ -333,7 +333,7 @@ public class BoardView extends ImageView {
 		}
 
 		//captured piecec
-		if (!compmoving && board.mode != 6)
+		if (!compmoving && board.mode != AppConstants.GAME_MODE_TACTICS)
 			if (W < H) {
 				int h = H - W - 16;
 				int side = W / 15;
@@ -597,10 +597,10 @@ public class BoardView extends ImageView {
 				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 == 0)
 					return true;
 			}
-			if ((board.mode == 0 && board.hply % 2 != 0) || (board.mode == 1 && board.hply % 2 == 0)) {
+			if ((board.mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE && board.hply % 2 != 0) || (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK && board.hply % 2 == 0)) {
 				return true;
 			}
-			if (board.mode == 6 && board.hply % 2 == 0) {
+			if (board.mode == AppConstants.GAME_MODE_TACTICS && board.hply % 2 == 0) {
 				return true;
 			}
 		}

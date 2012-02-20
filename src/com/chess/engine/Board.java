@@ -10,6 +10,7 @@
 package com.chess.engine;
 
 import android.util.Log;
+import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.utilities.SoundPlayer;
 
@@ -227,7 +228,7 @@ public class Board {
 			0, 1, 2, 3, 4, 5, 6, 7
 	};
 
-	public int mode = 0;
+	public int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 
 	private final int BLACK_ROOK_1_INITIAL_POS = 0;
 	private final int BLACK_ROOK_2_INITIAL_POS = 7;

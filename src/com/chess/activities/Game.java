@@ -138,7 +138,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							}
 						};
 					}).start();
-				} else if (boardView.getBoard().mode == 6) {
+				} else if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 					if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
 						openOptionsMenu();
 						return true;
@@ -146,7 +146,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					int sec = boardView.getBoard().sec;
 					if (mainApp.guest || mainApp.noInternet) {
 						boardView.setBoard(new Board(this));
-						boardView.getBoard().mode = 6;
+						boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
 
 						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
@@ -210,7 +210,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							return true;
 						}
 						boardView.setBoard(new Board(this));
-						boardView.getBoard().mode = 6;
+						boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
 
 						String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
@@ -577,7 +577,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 		analysisLL = (LinearLayout) findViewById(R.id.analysis);
 		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
-		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) != 6) {
+		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) != AppConstants.GAME_MODE_TACTICS) {
 			chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
 			chatButton = (ImageButton) findViewById(R.id.chat);
 			chatButton.setOnClickListener(this);
@@ -635,21 +635,21 @@ public class Game extends CoreActivity implements OnClickListener {
 							Integer.parseInt(move[2]),
 							Integer.parseInt(move[3])), false);
 				}
-				if (boardView.getBoard().mode == 1)
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK)
 					boardView.getBoard().setReside(true);
 			} else {
-				if (boardView.getBoard().mode == 1) {
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK) {
 					boardView.getBoard().setReside(true);
 					boardView.invalidate();
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
-				if (boardView.getBoard().mode == 3) {
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (boardView.getBoard().mode == 4 || boardView.getBoard().mode == 5)
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
-			if (boardView.getBoard().mode == 6) {
+			if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 				showDialog(1);
 				return;
 			}
@@ -687,7 +687,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
 		if (!mainApp.noInternet) {
 			boardView.setBoard(new Board(this));
-			boardView.getBoard().mode = 6;
+			boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
 
 			if (mainApp.getTactic() != null 
 					&& id.equals(mainApp.getTactic().values.get(AppConstants.ID))) {
@@ -769,7 +769,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		}
 
 		boardView.setBoard(new Board(this));
-		boardView.getBoard().mode = 6;
+		boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
 
 		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 		if (!FEN.equals("")) {
@@ -833,7 +833,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 	private void ShowAnswer() {
 		boardView.setBoard(new Board(this));
-		boardView.getBoard().mode = 6;
+		boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
 		boardView.getBoard().retry = true;
 
 		if (mainApp.guest || mainApp.noInternet) {
@@ -991,7 +991,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void LoadPrev(int code) {
-		if (boardView.getBoard() != null && boardView.getBoard().mode == 6) {
+		if (boardView.getBoard() != null && boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 			mainApp.getTabHost().setCurrentTab(0);
 			boardView.getBoard().setTacticCanceled(true);
 		} else {
@@ -1005,7 +1005,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			case -2:
 				if (boardView.getBoard().mode < 6)
 					finish();
-				else if (boardView.getBoard().mode == 6) {
+				else if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 					/*mainApp.getTabHost().setCurrentTab(0);
 					boardView.getBoard().getTactic()Canceled = true;*/
 					if (mainApp.noInternet) {
@@ -1115,7 +1115,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 
-				if (boardView.getBoard().mode == 6) {
+				if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 					if (boardView.getBoard().analysis) {
 						timer.setVisibility(View.GONE);
 						analysisLL.setVisibility(View.VISIBLE);
@@ -1268,7 +1268,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			case 7:
 
 				boardView.setBoard(new Board(this));
-				boardView.getBoard().mode = 6;
+				boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
 
 				String[] tmp = response.trim().split("[|]");
 				if (tmp.length < 3 || tmp[2].trim().equals("")) {
@@ -1638,7 +1638,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				options.add(0, 10, 0, getString(R.string.drawoffer));
 				options.add(0, 11, 0, getString(R.string.resignorabort));
 			}
-		} else if (boardView.getBoard().mode == 6) {
+		} else if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 			menu.add(0, 0, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
 			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
@@ -1735,7 +1735,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					return true;
 				case 6: {
 					boardView.setBoard(new Board(this));
-					boardView.getBoard().mode = 0;
+					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
 					Update(0);
@@ -1743,7 +1743,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 				case 7: {
 					boardView.setBoard(new Board(this));
-					boardView.getBoard().mode = 1;
+					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
 					boardView.getBoard().setReside(true);
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
@@ -1895,7 +1895,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 			}
-		} else if (boardView.getBoard().mode == 6) {
+		} else if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 			switch (item.getItemId()) {
 				case 0:
 					if (mainApp.guest) {
@@ -1999,7 +1999,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
 
-		if (boardView.getBoard().mode == 6) {
+		if (boardView.getBoard().mode == AppConstants.GAME_MODE_TACTICS) {
 			if (boardView.getBoard().isTacticCanceled()) {
 				boardView.getBoard().setTacticCanceled(false);
 				showDialog(1);
