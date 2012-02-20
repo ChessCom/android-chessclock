@@ -1432,7 +1432,31 @@ public class Board {
     }
 
     private String convertMove(){
-    	Move m = histDat[hply-1].m;
+		Move m;
+		try {
+			m = histDat[hply-1].m;
+		} catch (ArrayIndexOutOfBoundsException e)
+		{
+			StringBuffer result = new StringBuffer();
+			if (histDat.length > 0) {
+				result.append(histDat[0]);
+				for (int i=1; i < histDat.length; i++) {
+					if (histDat[i] != null) {
+						result.append(", ");
+						result.append(histDat[i].m);
+					}
+				}
+			}
+			throw new ArrayIndexOutOfBoundsException(
+					"hply=" + hply +
+					", histDat=[" + result.toString() + "], " +
+					histDat.length + ", " +
+					coreActivity.App.OnlineGame.values.get("move_list") + ", " +
+					coreActivity.App.OnlineGame.values.get("encoded_move_string")+ ", " +
+					coreActivity.App.OnlineGame.values.get("starting_fen_position"));
+		}
+
+
     	String output = "";
     	try {
     		String to = MoveParser.positionToString(m.to);
