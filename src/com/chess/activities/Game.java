@@ -38,6 +38,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Game extends CoreActivity implements OnClickListener {
+
+	private final static int MENU_COMPUTER_NEW_GAME = 0;
+	private final static int MENU_COMPUTER_OPTIONS = 1;
+	private final static int MENU_COMPUTER_RESIDE = 2;
+	private final static int MENU_COMPUTER_HINT = 3;
+	private final static int MENU_COMPUTER_PREVIOUS = 4;
+	private final static int MENU_COMPUTER_NEXT = 5;
+	private final static int MENU_COMPUTER_NEW_GAME_WHITE = 6;
+	private final static int MENU_COMPUTER_NEW_GAME_BLACK = 7;
+	private final static int MENU_COMPUTER_EMAIL_GAME = 8;
+	private final static int MENU_COMPUTER_SETTINGS = 9;
+	
 	public BoardView boardView;
 	private LinearLayout analysisLL;
 	private LinearLayout analysisButtons;
@@ -1042,8 +1054,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 				break;
 			case 0: {
-				switch (boardView.getBoard().mode)
-				{
+				switch (boardView.getBoard().mode) {
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 						white.setText(getString(R.string.Human));
 						black.setText(getString(R.string.Computer));
@@ -1589,18 +1600,20 @@ public class Game extends CoreActivity implements OnClickListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (MainApp.isComputerGameMode(boardView)) {
-			menu.add(0, 0, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
-			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
-			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-			menu.add(0, 3, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
-			menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-			menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
+			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
+			SubMenu options =
+					menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
+			menu.add(0, MENU_COMPUTER_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+			menu.add(0, MENU_COMPUTER_HINT, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
+			menu.add(0, MENU_COMPUTER_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+			menu.add(0, MENU_COMPUTER_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
 
-			Options.add(0, 6, 0, getString(R.string.ngwhite));
-			Options.add(0, 7, 0, getString(R.string.ngblack));
-			Options.add(0, 8, 0, getString(R.string.emailgame));
-			Options.add(0, 9, 0, getString(R.string.settings));
-		} else if (!MainApp.isTacticsGameMode(boardView)) {
+			options.add(0, MENU_COMPUTER_NEW_GAME_WHITE, 0, getString(R.string.ngwhite));
+			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
+			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
+			ptions.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
+		} 
+		else if (!MainApp.isTacticsGameMode(boardView)) {
 			SubMenu options;
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 				options = menu.addSubMenu(0, 0, 0, getString(R.string.options)).setIcon(R.drawable.options);
@@ -1683,14 +1696,14 @@ public class Game extends CoreActivity implements OnClickListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (MainApp.isComputerGameMode(boardView)) {
 			switch (item.getItemId()) {
-				case 0:
+				case MENU_COMPUTER_NEW_GAME:
 					boardView.stopThinking = true;
 					finish();
 					return true;
-				case 1:
+				case MENU_COMPUTER_OPTIONS:
 					boardView.stopThinking = true;
 					return true;
-				case 2:
+				case MENU_COMPUTER_RESIDE:
 					boardView.stopThinking = true;
 					if (!boardView.compmoving) {
 						boardView.getBoard().setReside(!boardView.getBoard().reside);
@@ -1710,7 +1723,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						Update(0);
 					}
 					return true;
-				case 3:
+				case MENU_COMPUTER_HINT:
 					boardView.stopThinking = true;
 					if (!boardView.compmoving) {
 						boardView.hint = true;
@@ -1719,7 +1732,7 @@ public class Game extends CoreActivity implements OnClickListener {
 										+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					}
 					return true;
-				case 4:
+				case MENU_COMPUTER_PREVIOUS:
 					boardView.stopThinking = true;
 					if (!boardView.compmoving) {
 						boardView.finished = false;
@@ -1730,7 +1743,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						isMoveNav = true;
 					}
 					return true;
-				case 5:
+				case MENU_COMPUTER_NEXT:
 					boardView.stopThinking = true;
 					if (!boardView.compmoving) {
 						boardView.sel = false;
@@ -1740,7 +1753,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						isMoveNav = true;
 					}
 					return true;
-				case 6: {
+				case MENU_COMPUTER_NEW_GAME_WHITE: {
 					boardView.setBoard(new Board(this));
 					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -1748,7 +1761,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					Update(0);
 					return true;
 				}
-				case 7: {
+				case MENU_COMPUTER_NEW_GAME_BLACK: {
 					boardView.setBoard(new Board(this));
 					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
 					boardView.getBoard().setReside(true);
@@ -1758,7 +1771,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					return true;
 				}
-				case 8: {
+				case MENU_COMPUTER_EMAIL_GAME: {
 					String moves = movelist.getText().toString();
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType("plain/text");
@@ -1767,7 +1780,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 					return true;
 				}
-				case 9: {
+				case MENU_COMPUTER_SETTINGS: {
 					startActivity(new Intent(Game.this, Preferences.class));
 					return true;
 				}
