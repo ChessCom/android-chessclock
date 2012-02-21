@@ -307,4 +307,88 @@ public class MainApp extends Application {
 	public static boolean isTacticsGameMode(BoardView2 boardView) {
 		return isTacticsGameMode(boardView.getBoard().mode);
 	}
+
+	public static boolean isFinishedEchessGameMode(BoardView boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
+	}
+
+	// todo: should be removed
+	public static boolean isFinishedEchessGameMode(BoardView2 boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
+	}
+
+	public static boolean isComputerGameMode(BoardView boardView) {
+		final int mode = boardView.getBoard().mode;
+		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE || mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK
+				|| mode == AppConstants.GAME_MODE_HUMAN_VS_HUMAN || mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+	}
+
+	// todo: should be removed
+	public static boolean isComputerGameMode(BoardView2 boardView) {
+		final int mode = boardView.getBoard().mode;
+		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE || mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK
+				|| mode == AppConstants.GAME_MODE_HUMAN_VS_HUMAN || mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+	}
+
+	public static boolean isLiveOrEchessGameMode(int mode) {
+		return mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS;
+	}
+
+	public static boolean isLiveOrEchessGameMode(BoardView boardView) {
+		return isLiveOrEchessGameMode(boardView.getBoard().mode);
+	}
+
+	// todo: should be removed
+	public static boolean isLiveOrEchessGameMode(BoardView2 boardView) {
+		return isLiveOrEchessGameMode(boardView.getBoard().mode);
+	}
+
+	public static boolean isComputerVsComputerGameMode(BoardView boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+	}
+
+	// todo: should be removed
+	public static boolean isComputerVsComputerGameMode(BoardView2 boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+	}
+
+	public static boolean isComputerVsHumanGameMode(BoardView boardView) {
+		final int mode = boardView.getBoard().mode;
+		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE
+				|| mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+	}
+
+	// todo: should be removed
+	public static boolean isComputerVsHumanGameMode(BoardView2 boardView) {
+		final int mode = boardView.getBoard().mode;
+		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE
+				|| mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+	}
+
+	public static boolean isHumanVsHumanGameMode(BoardView boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+	}
+
+	// todo: should be removed
+	public static boolean isHumanVsHumanGameMode(BoardView2 boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+	}
+
+	public static boolean isComputerVsHumanWhiteGameMode(BoardView boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+	}
+
+	// todo: should be removed
+	public static boolean isComputerVsHumanWhiteGameMode(BoardView2 boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+	}
+
+	public static boolean isComputerVsHumanBlackGameMode(BoardView boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+	}
+
+	// todo: should be removed
+	public static boolean isComputerVsHumanBlackGameMode(BoardView2 boardView) {
+		return boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+	}
 }

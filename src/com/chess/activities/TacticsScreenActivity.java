@@ -380,7 +380,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 					LccHolder.LOG.info("Request draw: " + game);
 					lccHolder.getAndroid().runMakeDrawTask(game);
@@ -406,7 +406,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 
 					if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
@@ -572,7 +572,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))) {
 			setContentView(R.layout.boardviewlive2);
 //			lccHolder.getAndroid().setGameActivity(this);   //TODO
 		} else {
@@ -603,7 +603,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
-		if (mainApp.isLiveChess() && extras.getInt(AppConstants.GAME_MODE) == AppConstants.GAME_MODE_LIVE_OR_ECHESS
+		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))
 				&& lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
 			whiteClockView.setVisibility(View.VISIBLE);
 			blackClockView.setVisibility(View.VISIBLE);
@@ -631,7 +631,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-			if (boardView.getBoard().mode < 4
+			if (MainApp.isComputerGameMode(boardView)
 					&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
 				int i;
 				String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
@@ -643,18 +643,18 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 							Integer.parseInt(move[2]),
 							Integer.parseInt(move[3])), false);
 				}
-				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK)
+				if (MainApp.isComputerVsHumanBlackGameMode(boardView))
 					boardView.getBoard().setReside(true);
 			} else {
-				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK) {
+				if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
 					boardView.getBoard().setReside(true);
 					boardView.invalidate();
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
-				if (boardView.getBoard().mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
+				if (MainApp.isComputerVsComputerGameMode(boardView)) {
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
-				if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS || boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS)
+				if (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView))
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
 			if (MainApp.isTacticsGameMode(boardView)) {
@@ -680,7 +680,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 		}
 		mainApp.setGameId(game_id);
 
-		if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 			Update(10);
 		} else {
 			if (appService != null) {
@@ -1026,12 +1026,12 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				//finish();
 				break;
 			case -1:
-				if (boardView.getBoard().init && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS || boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS) {
+				if (boardView.getBoard().init && MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView)) {
 					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
 					GetOnlineGame(mainApp.getGameId());
 					boardView.getBoard().init = false;
 				} else if (!boardView.getBoard().init) {
-					if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && appService != null
+					if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null
 							&& appService.getRepeatableTimer() == null) {
 						if (progressDialog != null) {
 							progressDialog.dismiss();
@@ -1109,11 +1109,11 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 						break;
 				}
 
-				if (boardView.getBoard().mode < 4) {
+				if (MainApp.isComputerGameMode(boardView)) {
 					hideAnalysisButtons();
 				}
 
-				if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS || boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS) {
+				if (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView)) {
 					if (mainApp.getCurrentGame() != null) {
 						white.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
 						black.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
@@ -1161,7 +1161,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
 				//String myMove = boardView.getBoard().MoveSubmit();
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					final String move = boardView.getBoard().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
 					try {
@@ -1398,9 +1398,9 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 						String[] Moves = {};
 
 						if (mainApp.getCurrentGame().values.get("move_list").contains("1.")
-								|| ((mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS))) {
+								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)))) {
 
-							int beginIndex = (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) ? 0 : 1;
+							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) ? 0 : 1;
 
 							Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
 
@@ -1462,7 +1462,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 				getSoundPlayer().playGameStart();
 
-				if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					mainApp.setCurrentGame(new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 					executePausedActivityGameEvents();
 					//lccHolder.setActivityPausedMode(false);
@@ -1565,7 +1565,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 						}
 					};
 				}).start();
-				if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && appService != null && appService.getRepeatableTimer() == null) {
+				if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null && appService.getRepeatableTimer() == null) {
 					if (progressDialog != null) {
 						progressDialog.dismiss();
 						progressDialog = null;
@@ -1592,7 +1592,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (boardView.getBoard().mode < 4) {
+		if (MainApp.isComputerGameMode(boardView)) {
 			menu.add(0, 0, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
 			SubMenu options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
@@ -1606,7 +1606,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 			options.add(0, 9, 0, getString(R.string.settings));
 		} else if (!MainApp.isTacticsGameMode(boardView)) {
 			SubMenu options;
-			if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 				options = menu.addSubMenu(0, 0, 0, getString(R.string.options)).setIcon(R.drawable.options);
 				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
 					menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
@@ -1630,7 +1630,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
 			}
 
-			if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 				options.add(0, 1, 0, getString(R.string.settings)).setIcon(R.drawable.options);
 				options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
 				options.add(0, 3, 0, getString(R.string.drawoffer));
@@ -1662,7 +1662,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mainApp.getCurrentGame() != null && !MainApp.isTacticsGameMode(boardView) && boardView.getBoard().mode > 3) {
+		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView))) {
 			int itemPosition = mainApp.isLiveChess() ? 1 : 3;
 			if (mainApp.getCurrentGame().values.get("has_new_message").equals("1"))
 				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
@@ -1670,7 +1670,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				menu.getItem(itemPosition).setIcon(R.drawable.chat);
 		}
 
-		if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 			final SubMenu options = menu.getItem(0).getSubMenu();
 			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 				resignOrAbort = R.string.resign;
@@ -1686,7 +1686,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (boardView.getBoard().mode < 4) {
+		if (MainApp.isComputerGameMode(boardView)) {
 			switch (item.getItemId()) {
 				case 0:
 					boardView.stopThinking = true;
@@ -1699,7 +1699,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 					boardView.stopThinking = true;
 					if (!boardView.compmoving) {
 						boardView.getBoard().setReside(!boardView.getBoard().reside);
-						if (boardView.getBoard().mode < 2) {
+						if (MainApp.isComputerVsHumanGameMode(boardView)) {
 							boardView.getBoard().mode ^= 1;
 							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
 									.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
@@ -1772,7 +1772,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				}
 			}
 		} else if (!MainApp.isTacticsGameMode(boardView)) {
-			if (mainApp.isLiveChess() && boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 				switch (item.getItemId()) {
 					case 1: {
 						startActivity(new Intent(coreContext, Preferences.class));
@@ -1801,7 +1801,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 			} else {
 				switch (item.getItemId()) {
 					case 0:
-						if (boardView.getBoard().mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS) {
+						if (MainApp.isLiveOrEchessGameMode(boardView)) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 							for (GameListElement gle : mainApp.getGameListItems()) {
@@ -1825,7 +1825,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 							}
 							finish();
 							return true;
-						} else if (boardView.getBoard().mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS) {
+						} else if (MainApp.isFinishedEchessGameMode(boardView)) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 							for (GameListElement gle : mainApp.getGameListItems()) {

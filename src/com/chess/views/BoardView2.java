@@ -98,7 +98,7 @@ public class BoardView2 extends ImageView {
 	public void AfterMove() {
 		board.movesCount = board.hply;
 		activity.Update(0);	//movelist
-		if (board.mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && !board.analysis) {
+		if (MainApp.isLiveOrEchessGameMode(this) && !board.analysis) {
 			boolean ssb;
 			if (mainApp.isLiveChess()) {
 				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
@@ -135,7 +135,7 @@ public class BoardView2 extends ImageView {
 
 	boolean isResult() {
 		//saving game
-		if (board.mode < 3) {
+		if (MainApp.isComputerVsHumanGameMode(this) || MainApp.isHumanVsHumanGameMode(this)) {
 			String saving = "" + board.mode;
 
 			int i;
@@ -197,7 +197,7 @@ public class BoardView2 extends ImageView {
 	}
 
 	public void ComputerMove(final int time) {
-		if (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER && stopThinking) {
+		if (MainApp.isComputerVsComputerGameMode(this) && stopThinking) {
 			stopThinking = false;
 			return;
 		}
@@ -226,7 +226,7 @@ public class BoardView2 extends ImageView {
 					invalidate();
 					if (isResult())
 						return;
-					if (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER || (hint && board.mode != AppConstants.GAME_MODE_HUMAN_VS_HUMAN)) {
+					if (MainApp.isComputerVsComputerGameMode(BoardView2.this) || (hint && !MainApp.isHumanVsHumanGameMode(BoardView2.this))) {
 						if (hint) hint = false;
 						ComputerMove(time);
 					}
@@ -607,16 +607,16 @@ public class BoardView2 extends ImageView {
 
 		track = false;
 		if (!board.analysis) {
-			if (compmoving || board.mode == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS || finished || board.submit ||
-					(board.mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && board.hply < board.movesCount))
+			if (compmoving || MainApp.isFinishedEchessGameMode(this) || finished || board.submit ||
+					(MainApp.isLiveOrEchessGameMode(this) && board.hply < board.movesCount))
 				return true;
-			if (board.mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS && mainApp.getCurrentGame() != null) {
+			if (MainApp.isLiveOrEchessGameMode(this) && mainApp.getCurrentGame() != null) {
 				if (mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 != 0)
 					return true;
 				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && board.movesCount % 2 == 0)
 					return true;
 			}
-			if ((board.mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE && board.hply % 2 != 0) || (board.mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK && board.hply % 2 == 0)) {
+			if ((MainApp.isComputerVsHumanWhiteGameMode(this) && board.hply % 2 != 0) || (MainApp.isComputerVsHumanBlackGameMode(this) && board.hply % 2 == 0)) {
 				return true;
 			}
 			if (MainApp.isTacticsGameMode(this) && board.hply % 2 == 0) {
