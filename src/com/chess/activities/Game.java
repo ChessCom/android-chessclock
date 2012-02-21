@@ -1611,7 +1611,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			options.add(0, MENU_COMPUTER_NEW_GAME_WHITE, 0, getString(R.string.ngwhite));
 			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
 			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
-			ptions.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
+			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
 		} 
 		else if (!MainApp.isTacticsGameMode(boardView)) {
 			SubMenu options;
