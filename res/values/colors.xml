@@ -21,8 +21,8 @@
 
 
     <!--Grey -->
-    <color name="grey_button">#FF8a8a8a</color>
-    <color name="grey_button_p">#FF666666</color>
+    <color name="grey_button">#FF666666</color>
+    <color name="grey_button_p">#FF575151</color>
     <!--<color name="grey_button_stroke">#23747474</color>-->
 
     <color name="grey_emboss_low_right">#FF656565</color>
