@@ -1008,7 +1008,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 	public void Update(int code) {
 		switch (code) {
 			case -2:
-				if (boardView.getBoard().mode < 6)
+				if (!MainApp.isTacticsGameMode(boardView))
 					finish();
 				else if (MainApp.isTacticsGameMode(boardView)) {
 					/*mainApp.getTabHost().setCurrentTab(0);
@@ -1048,27 +1048,27 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 				break;
 			case 0: {
 				switch (boardView.getBoard().mode) {
-					case 0: {	//w - human; b - comp
+					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 						white.setText(getString(R.string.Human));
 						black.setText(getString(R.string.Computer));
 						break;
 					}
-					case 1: {	//w - comp; b - human
+					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
 						white.setText(getString(R.string.Computer));
 						black.setText(getString(R.string.Human));
 						break;
 					}
-					case 2: {	//w - human; b - human
+					case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
 						white.setText(getString(R.string.Human));
 						black.setText(getString(R.string.Human));
 						break;
 					}
-					case 3: {	//w - comp; b - comp
+					case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
 						white.setText(getString(R.string.Computer));
 						black.setText(getString(R.string.Computer));
 						break;
 					}
-					case 4: {
+					case AppConstants.GAME_MODE_LIVE_OR_ECHESS: {
 						if (boardView.getBoard().submit)
 							findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 						findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
@@ -1700,7 +1700,13 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 					if (!boardView.compmoving) {
 						boardView.getBoard().setReside(!boardView.getBoard().reside);
 						if (MainApp.isComputerVsHumanGameMode(boardView)) {
-							boardView.getBoard().mode ^= 1;
+							if (MainApp.isComputerVsHumanWhiteGameMode(boardView)) {
+								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+							}
+							else if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
+								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+							}
+							//boardView.getBoard().mode ^= 1;
 							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
 									.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 											+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);

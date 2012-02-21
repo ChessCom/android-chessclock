@@ -100,15 +100,15 @@ public class BoardView extends ImageView {
 		if (!MainApp.isTacticsGameMode(this) && isResult())
 			return;
 		switch (board.mode) {
-			case 0: {	//w - human; b - comp
+			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
-			case 1: {	//w - comp; b - human
+			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
 				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
-			case 6: {
+			case AppConstants.GAME_MODE_TACTICS: {
 				if (!board.analysis)
 					activity.Update(4);
 				break;
