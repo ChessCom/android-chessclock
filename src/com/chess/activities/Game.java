@@ -655,7 +655,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			}
 		}
 
-		if (MobclixHelper.isShowAds(mainApp) && getRectangleAdview() == null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4")) {
+		if (MobclixHelper.isShowAds(mainApp) /*&& getRectangleAdview() == null*/ && mainApp.getTabHost() != null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4")) {
 			setRectangleAdview(new MobclixIABRectangleMAdView(this));
 			getRectangleAdview().setRefreshTime(-1);
 			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
@@ -1978,7 +1978,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(mainApp) && !mainApp.getTabHost().getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null) {
+		if (MobclixHelper.isShowAds(mainApp) && mainApp.getTabHost() != null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4") && adviewWrapper != null && getRectangleAdview() != null) {
 			adviewWrapper.addView(getRectangleAdview());
 			if (mainApp.isForceRectangleAd()) {
 				getRectangleAdview().getAd();
