@@ -8,7 +8,7 @@
         <attr name="buttonText" format="reference|string" />
     </declare-styleable>
 
-    <declare-styleable name="BlendTextView">
+    <declare-styleable name="RobotoTextView">
         <attr name="ttf" format="string" />
     </declare-styleable>
 

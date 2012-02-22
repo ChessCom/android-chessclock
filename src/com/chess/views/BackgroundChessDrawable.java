@@ -19,6 +19,7 @@ import com.chess.R;
 
 public class BackgroundChessDrawable extends Drawable {
 
+
 	private Paint paint;
 	private Paint[] shinePaints;
 	private Path[] shinePaths;
@@ -40,7 +41,7 @@ public class BackgroundChessDrawable extends Drawable {
 	private float width;
 	private float height;
 
-	private final int blackColor = 0x99000000;
+	private final int blackColor = 0x48000000;
 	private int screenOrientation;
 
 	public BackgroundChessDrawable(Context context) {
@@ -90,10 +91,10 @@ public class BackgroundChessDrawable extends Drawable {
 	}
 
 	private float[] borders;
-    private static final int LEFT = 0;
-    private static final int TOP = 1;
-    private static final int RIGHT = 2;
-    private static final int BOTTOM = 3;
+	private static final int LEFT = 0;
+	private static final int TOP = 1;
+	private static final int RIGHT = 2;
+	private static final int BOTTOM = 3;
 
 	private void createShinePath() {
 		borders = new float[4];
@@ -107,7 +108,9 @@ public class BackgroundChessDrawable extends Drawable {
 			borders[1] = width / 4;
 			borders[2] = width * 3 / 4;
 //            borders[BOTTOM] = height * 3 / 4;
-            borders[BOTTOM] = height;
+//			borders[BOTTOM] = 0;
+			borders[BOTTOM] = -5;
+//			borders[BOTTOM] = height *1/ 50;
 		} else { // SQUARE
 			borders[LEFT] = height / 4;
 			borders[1] = height / 4;
@@ -118,24 +121,25 @@ public class BackgroundChessDrawable extends Drawable {
 			shinePaths[i] = new Path();
 			setCoordinates(shinePaths[i], 0, (int) width, 0, (int) height);
 			switch (i) {
-			case LEFT:
+				case LEFT:
 //				shinePaints[i].setShader(new LinearGradient(0, 0, 0, borders[i], blackColor, 0x0000000,
 //						Shader.TileMode.CLAMP));
-				break;
-			case 1:
+					break;
+				case 1:
 //				shinePaints[i].setShader(new LinearGradient(0, 0, borders[i], 0, blackColor, 0x0000000,
 //						Shader.TileMode.CLAMP));
-				break;
-			case 2:
+					break;
+				case 2:
 //				shinePaints[i].setShader(new LinearGradient(width, 0, borders[i], 0, blackColor, 0x0000000,
 //						Shader.TileMode.CLAMP));
-				break;
-			case BOTTOM:
-				shinePaints[i].setShader(new LinearGradient(0, height, 0, borders[i], blackColor, 0x0000000,
-						Shader.TileMode.CLAMP));
-				break;
-			default:
-				break;
+					break;
+				case BOTTOM:
+					shinePaints[i].setShader(
+							new LinearGradient(0, height, 0, borders[i], blackColor, 0x00000000,
+									Shader.TileMode.CLAMP));
+					break;
+				default:
+					break;
 			}
 		}
 		pathsInitiated = true;
@@ -161,7 +165,7 @@ public class BackgroundChessDrawable extends Drawable {
 
 		for (int i = 0; i < shinePaints.length; i++) {
 //            canvas.drawPath(shinePaths[i], shinePaints[i]);
-            canvas.drawPath(shinePaths[BOTTOM], shinePaints[BOTTOM]);
+			canvas.drawPath(shinePaths[BOTTOM], shinePaints[BOTTOM]);
 		}
 	}
 

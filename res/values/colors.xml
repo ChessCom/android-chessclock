@@ -3,6 +3,10 @@
     
    	<color name="mytheme_color">#888888</color>
 
+    <!--Back shadow-->
+    <color name="back_shadows_chess">#99000000</color>
+
+
     <!--Buttons-->
 
     <color name="stroke_shadow">#26000000</color>

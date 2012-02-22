@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+
     android:id="@id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -27,15 +29,13 @@
         android:background="#00bb00" >
     </ImageView>-->
 
-    <Button
+    <com.chess.RoboButton
             android:id="@+id/upgradeBtn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/button_green"
+            style="@style/button_upgrade"
             android:text="@string/preferencesUpgrade"
-            android:drawableLeft="@drawable/star"
-            android:paddingLeft="46dip"
-            android:paddingRight="50dip"
+
             android:gravity="center"
 
             />

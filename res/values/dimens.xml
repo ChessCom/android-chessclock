@@ -18,9 +18,14 @@
   	<dimen name="default_field_height">48dip</dimen>
   	<dimen name="default_button_height">40dip</dimen>    <!--Plus glow borders-->
  	<dimen name="signin_button_height">50dip</dimen>
-	<dimen name="default_stroke_width">1dip</dimen>
- 	
- 	<dimen name="list_item_image_size">27dip</dimen>
+    <dimen name="default_stroke_width">1dip</dimen>
+
+    <!--Upgrade Button-->
+    <dimen name="button_upgrade_left_padding">43dip</dimen>
+    <dimen name="button_upgrade_right_padding">46dip</dimen>
+
+
+    <dimen name="list_item_image_size">27dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>
  	
  	<dimen name="signin_logo_margin_top">15dip</dimen>
@@ -51,7 +56,7 @@
 
     <!--Default screen-->
 
-    <dimen name="default_scr_top_padding">23</dimen>
+    <dimen name="default_scr_top_padding">23dip</dimen>
     <dimen name="default_scr_side_padding">16dip</dimen>
 
 </resources>

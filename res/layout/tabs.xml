@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@android:id/tabs"
             android:background="#ffffcd"
-            android:drawableLeft="@drawable/star"
+            android:drawableLeft="@drawable/ic_star"
             android:drawablePadding="10dp"
             android:gravity="left"
             android:padding="7dp"
