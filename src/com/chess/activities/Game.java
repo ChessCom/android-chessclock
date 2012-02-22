@@ -79,6 +79,13 @@ public class Game extends CoreActivity implements OnClickListener {
 	private final static int MENU_TACTICS_SHOW_ANSWER = 7;
 	private final static int MENU_TACTICS_SETTINGS = 8;
 
+	private final static int DIALOG_TACTICS_LIMIT = 0;
+	private final static int DIALOG_TACTICS_START_TACTICS = 1;
+	private final static int DIALOG_TACTICS_HUNDRED = 2;
+	private final static int DIALOG_TACTICS_OFFLINE_RATING = 3;
+	private final static int DIALOG_DRAW_OFFER = 4;
+	private final static int DIALOG_ABORT_OR_RESIGN = 5;
+
 	public BoardView boardView;
 	private LinearLayout analysisLL;
 	private LinearLayout analysisButtons;
@@ -544,7 +551,7 @@ public class Game extends CoreActivity implements OnClickListener {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-			case 0:
+			case DIALOG_TACTICS_LIMIT:
 				FlurryAgent.onEvent("Tactics Daily Limit Exceded", null);
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.daily_limit_exceeded))
@@ -552,32 +559,32 @@ public class Game extends CoreActivity implements OnClickListener {
 						.setPositiveButton(getString(R.string.ok), maxTackicksDialogListener)
 						.setNegativeButton(R.string.cancel, maxTackicksDialogListener)
 						.create();
-			case 1:
+			case DIALOG_TACTICS_START_TACTICS:
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.ready_for_first_tackics_q))
 						.setPositiveButton(R.string.yes, firstTackicsDialogListener)
 						.setNegativeButton(R.string.no, firstTackicsDialogListener)
 						.create();
-			case 2:
+			case DIALOG_TACTICS_HUNDRED:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.hundred_tackics_completed)
 						.setNegativeButton(R.string.okay, hundredTackicsDialogListener)
 						.create();
-			case 3:
+			case DIALOG_TACTICS_OFFLINE_RATING:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.offline_mode)
 						.setMessage(getString(R.string.no_network_rating_not_changed))
 						.setPositiveButton(R.string.okay,offlineModeDialogListener)
 						.setNegativeButton(R.string.cancel, offlineModeDialogListener)
 						.create();
-			case 4:
+			case DIALOG_DRAW_OFFER:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.drawoffer)
 						.setMessage(getString(R.string.are_you_sure_q))
 						.setPositiveButton(getString(R.string.ok), drawOfferDialogListener)
 						.setNegativeButton(getString(R.string.cancel),drawOfferDialogListener)
 						.create();
-			case 5:
+			case DIALOG_ABORT_OR_RESIGN:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.abort_resign_game)
 						.setMessage(getString(R.string.are_you_sure_q))
@@ -691,7 +698,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
 			if (MainApp.isTacticsGameMode(boardView)) {
-				showDialog(1);
+				showDialog(DIALOG_TACTICS_START_TACTICS);
 				return;
 			}
 		}
@@ -805,7 +812,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		FlurryAgent.onEvent("Tactics Session Started For Guest", null);
 
 		if (mainApp.currentTacticProblem >= mainApp.getTacticsBatch().size()) {
-			showDialog(2);
+			showDialog(DIALOG_TACTICS_HUNDRED);
 			return;
 		}
 
@@ -1054,7 +1061,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							GetGuestTacticsGame();
 						} else {
 							mainApp.offline = true;
-							showDialog(3);
+							showDialog(DIALOG_TACTICS_OFFLINE_RATING);
 						}
 						return;
 					}
@@ -1269,7 +1276,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			case 5: {
 				String[] tmp = response.split("[|]");
 				if (tmp.length < 2 || tmp[1].trim().equals("")) {
-					showDialog(0);
+					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
 				}
 
@@ -1286,7 +1293,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			case 6: {
 				String[] tmp = response.split("[|]");
 				if (tmp.length < 2 || tmp[1].trim().equals("")) {
-					showDialog(0);
+					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
 				}
 
@@ -1313,7 +1320,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 				String[] tmp = response.trim().split("[|]");
 				if (tmp.length < 3 || tmp[2].trim().equals("")) {
-					showDialog(0);
+					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
 				}
 
@@ -1827,11 +1834,11 @@ public class Game extends CoreActivity implements OnClickListener {
 						return true;
 					}
 					case MENU_LIVE_DRAW_OFFER: {
-						showDialog(4);
+						showDialog(DIALOG_DRAW_OFFER);
 						return true;
 					}
 					case MENU_LIVE_RESIGN_OR_ABORT: {
-						showDialog(5);
+						showDialog(DIALOG_ABORT_OR_RESIGN);
 						return true;
 					}
 					case MENU_LIVE_MESSAGES:
@@ -1935,11 +1942,11 @@ public class Game extends CoreActivity implements OnClickListener {
 						return true;
 					}
 					case MENU_ECHESS_DRAW_OFFER: {
-						showDialog(4);
+						showDialog(DIALOG_DRAW_OFFER);
 						return true;
 					}
 					case MENU_ECHESS_RESIGN_OR_ABORT: {
-						showDialog(5);
+						showDialog(DIALOG_ABORT_OR_RESIGN);
 						return true;
 					}
 				}
@@ -2051,7 +2058,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		if (MainApp.isTacticsGameMode(boardView)) {
 			if (boardView.getBoard().isTacticCanceled()) {
 				boardView.getBoard().setTacticCanceled(false);
-				showDialog(1);
+				showDialog(DIALOG_TACTICS_START_TACTICS);
 				startTacticsTimer();
 			} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
 				startTacticsTimer();
