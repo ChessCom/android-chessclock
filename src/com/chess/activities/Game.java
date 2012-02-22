@@ -49,7 +49,36 @@ public class Game extends CoreActivity implements OnClickListener {
 	private final static int MENU_COMPUTER_NEW_GAME_BLACK = 7;
 	private final static int MENU_COMPUTER_EMAIL_GAME = 8;
 	private final static int MENU_COMPUTER_SETTINGS = 9;
-	
+
+	private final static int MENU_LIVE_OPTIONS = 0;
+	private final static int MENU_LIVE_CHAT = 6;
+	private final static int MENU_LIVE_SETTINGS = 1;
+	private final static int MENU_LIVE_RESIDE = 2;
+	private final static int MENU_LIVE_DRAW_OFFER = 3;
+	private final static int MENU_LIVE_RESIGN_OR_ABORT = 4;
+	private final static int MENU_LIVE_MESSAGES = 5;
+
+	private final static int MENU_ECHESS_NEXT_GAME = 0;
+	private final static int MENU_ECHESS_ANALYSIS = 2;
+	private final static int MENU_ECHESS_CHAT = 3;
+	private final static int MENU_ECHESS_PREVIOUS = 4;
+	private final static int MENU_ECHESS_NEXT = 5;
+	private final static int MENU_ECHESS_SETTINGS = 6;
+	private final static int MENU_ECHESS_BACK_TO_GAME_LIST = 7;
+	private final static int MENU_ECHESS_MESSAGES = 8;
+	private final static int MENU_ECHESS_RESIDE = 9;
+	private final static int MENU_ECHESS_DRAW_OFFER = 10;
+	private final static int MENU_ECHESS_RESIGN_OR_ABORT = 11;
+
+	private final static int MENU_TACTICS_NEXT_GAME = 0;
+	private final static int MENU_TACTICS_RESIDE = 2;
+	private final static int MENU_TACTICS_ANALYSIS = 3;
+	private final static int MENU_TACTICS_PREVIOUS = 4;
+	private final static int MENU_TACTICS_NEXT = 5;
+	private final static int MENU_TACTICS_SKIP_PROBLEM = 6;
+	private final static int MENU_TACTICS_SHOW_ANSWER = 7;
+	private final static int MENU_TACTICS_SETTINGS = 8;
+
 	public BoardView boardView;
 	private LinearLayout analysisLL;
 	private LinearLayout analysisButtons;
@@ -1616,53 +1645,53 @@ public class Game extends CoreActivity implements OnClickListener {
 		else if (!MainApp.isTacticsGameMode(boardView)) {
 			SubMenu options;
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				options = menu.addSubMenu(0, 0, 0, getString(R.string.options)).setIcon(R.drawable.options);
+				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
 				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
-					menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
 				} else {
-					menu.add(0, 6, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
 				}
 			} else {
-				menu.add(0, 0, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+				menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
 				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
-				menu.add(0, 2, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+				menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
 				try {
 					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
-						menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
 					} else {
-						menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
 					}
 				} catch (Exception e) {
-					menu.add(0, 3, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+					menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
 				}
-				menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-				menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
+				menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+				menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
 			}
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				options.add(0, 1, 0, getString(R.string.settings)).setIcon(R.drawable.options);
-				options.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-				options.add(0, 3, 0, getString(R.string.drawoffer));
-				options.add(0, 4, 0, getString(resignOrAbort));
-				options.add(0, 5, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+				options.add(0, MENU_LIVE_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+				options.add(0, MENU_LIVE_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+				options.add(0, MENU_LIVE_DRAW_OFFER, 0, getString(R.string.drawoffer));
+				options.add(0, MENU_LIVE_RESIGN_OR_ABORT, 0, getString(resignOrAbort));
+				options.add(0, MENU_LIVE_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
 			} else {
-				options.add(0, 6, 0, getString(R.string.settings)).setIcon(R.drawable.options);
-				options.add(0, 7, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
-				options.add(0, 8, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
-				options.add(0, 9, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-				options.add(0, 10, 0, getString(R.string.drawoffer));
-				options.add(0, 11, 0, getString(R.string.resignorabort));
+				options.add(0, MENU_ECHESS_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+				options.add(0, MENU_ECHESS_BACK_TO_GAME_LIST, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
+				options.add(0, MENU_ECHESS_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+				options.add(0, MENU_ECHESS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+				options.add(0, MENU_ECHESS_DRAW_OFFER, 0, getString(R.string.drawoffer));
+				options.add(0, MENU_ECHESS_RESIGN_OR_ABORT, 0, getString(R.string.resignorabort));
 			}
 		} else if (MainApp.isTacticsGameMode(boardView)) {
-			menu.add(0, 0, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+			menu.add(0, MENU_TACTICS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
 			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
-			menu.add(0, 2, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-			menu.add(0, 3, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
-			menu.add(0, 4, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-			menu.add(0, 5, 0, getString(R.string.next)).setIcon(R.drawable.next);
+			menu.add(0, MENU_TACTICS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+			menu.add(0, MENU_TACTICS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+			menu.add(0, MENU_TACTICS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+			menu.add(0, MENU_TACTICS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
 
-			Options.add(0, 6, 0, getString(R.string.skipproblem));
-			Options.add(0, 7, 0, getString(R.string.showanswer));
-			Options.add(0, 8, 0, getString(R.string.settings));
+			Options.add(0, MENU_TACTICS_SKIP_PROBLEM, 0, getString(R.string.skipproblem));
+			Options.add(0, MENU_TACTICS_SHOW_ANSWER, 0, getString(R.string.showanswer));
+			Options.add(0, MENU_TACTICS_SETTINGS, 0, getString(R.string.settings));
 
 		}
 		return true;
@@ -1788,25 +1817,25 @@ public class Game extends CoreActivity implements OnClickListener {
 		} else if (!MainApp.isTacticsGameMode(boardView)) {
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 				switch (item.getItemId()) {
-					case 1: {
+					case MENU_LIVE_SETTINGS: {
 						startActivity(new Intent(Game.this, Preferences.class));
 						return true;
 					}
-					case 2: {
+					case MENU_LIVE_RESIDE: {
 						boardView.getBoard().setReside(!boardView.getBoard().reside);
 						boardView.invalidate();
 						return true;
 					}
-					case 3: {
+					case MENU_LIVE_DRAW_OFFER: {
 						showDialog(4);
 						return true;
 					}
-					case 4: {
+					case MENU_LIVE_RESIGN_OR_ABORT: {
 						showDialog(5);
 						return true;
 					}
-					case 5:
-					case 6: {
+					case MENU_LIVE_MESSAGES:
+					case MENU_LIVE_CHAT: {
 						chat = true;
 						GetOnlineGame(mainApp.getGameId());
 						return true;
@@ -1814,7 +1843,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 			} else {
 				switch (item.getItemId()) {
-					case 0:
+					case MENU_ECHESS_NEXT_GAME:
 						if (MainApp.isLiveOrEchessGameMode(boardView)) {
 							int i;
 							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
@@ -1865,15 +1894,15 @@ public class Game extends CoreActivity implements OnClickListener {
 							return true;
 						}
 						return true;
-					case 2:
+					case MENU_ECHESS_ANALYSIS:
 						boardView.getBoard().analysis = true;
 						Update(0);
 						return true;
-					case 3:
+					case MENU_ECHESS_CHAT:
 						chat = true;
 						GetOnlineGame(mainApp.getGameId());
 						return true;
-					case 4:
+					case MENU_ECHESS_PREVIOUS:
 						boardView.finished = false;
 						boardView.sel = false;
 						boardView.getBoard().takeBack();
@@ -1881,35 +1910,35 @@ public class Game extends CoreActivity implements OnClickListener {
 						Update(0);
 						isMoveNav = true;
 						return true;
-					case 5:
+					case MENU_ECHESS_NEXT:
 						boardView.getBoard().takeNext();
 						boardView.invalidate();
 						Update(0);
 						isMoveNav = true;
 						return true;
-					case 6: {
+					case MENU_ECHESS_SETTINGS: {
 						startActivity(new Intent(Game.this, Preferences.class));
 						return true;
 					}
-					case 7: {
+					case MENU_ECHESS_BACK_TO_GAME_LIST: {
 						finish();
 						return true;
 					}
-					case 8: {
+					case MENU_ECHESS_MESSAGES: {
 						chat = true;
 						GetOnlineGame(mainApp.getGameId());
 						return true;
 					}
-					case 9: {
+					case MENU_ECHESS_RESIDE: {
 						boardView.getBoard().setReside(!boardView.getBoard().reside);
 						boardView.invalidate();
 						return true;
 					}
-					case 10: {
+					case MENU_ECHESS_DRAW_OFFER: {
 						showDialog(4);
 						return true;
 					}
-					case 11: {
+					case MENU_ECHESS_RESIGN_OR_ABORT: {
 						showDialog(5);
 						return true;
 					}
@@ -1917,7 +1946,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			}
 		} else if (MainApp.isTacticsGameMode(boardView)) {
 			switch (item.getItemId()) {
-				case 0:
+				case MENU_TACTICS_NEXT_GAME:
 					if (mainApp.guest) {
 						mainApp.currentTacticProblem++;
 						GetGuestTacticsGame();
@@ -1927,15 +1956,15 @@ public class Game extends CoreActivity implements OnClickListener {
 						GetTacticsGame("");
 					}
 					return true;
-				case 2:
+				case MENU_TACTICS_RESIDE:
 					boardView.getBoard().setReside(!boardView.getBoard().reside);
 					boardView.invalidate();
 					return true;
-				case 3:
+				case MENU_TACTICS_ANALYSIS:
 					boardView.getBoard().analysis = true;
 					Update(0);
 					return true;
-				case 4:
+				case MENU_TACTICS_PREVIOUS:
 					boardView.finished = false;
 					boardView.sel = false;
 					boardView.getBoard().takeBack();
@@ -1943,13 +1972,13 @@ public class Game extends CoreActivity implements OnClickListener {
 					Update(0);
 					isMoveNav = true;
 					return true;
-				case 5:
+				case MENU_TACTICS_NEXT:
 					boardView.getBoard().takeNext();
 					boardView.invalidate();
 					Update(0);
 					isMoveNav = true;
 					return true;
-				case 6: {
+				case MENU_TACTICS_SKIP_PROBLEM: {
 					if (mainApp.guest || mainApp.noInternet) {
 						mainApp.currentTacticProblem++;
 						GetGuestTacticsGame();
@@ -1957,11 +1986,11 @@ public class Game extends CoreActivity implements OnClickListener {
 						GetTacticsGame("");
 					return true;
 				}
-				case 7: {
+				case MENU_TACTICS_SHOW_ANSWER: {
 					ShowAnswer();
 					return true;
 				}
-				case 8: {
+				case MENU_TACTICS_SETTINGS: {
 					startActivity(new Intent(Game.this, Preferences.class));
 					return true;
 				}
