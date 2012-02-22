@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 public class RoboEditText extends EditText {
     private Context context;
-    private String ttfName;
+    private String ttfName = "Regular";
 //    private float density;
 
 	public RoboEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -25,13 +25,13 @@ public class RoboEditText extends EditText {
         this.context = context;
 
 
-    	TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BlendTextView);
+    	TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
 
 		final int N = a.getIndexCount();
 		for (int i = 0; i < N; i++) {
 			int attr = a.getIndex(i);
 			switch (attr) {
-				case R.styleable.BlendTextView_ttf: {
+				case R.styleable.RobotoTextView_ttf: {
 					ttfName = a.getString(i);
 				}break;
 			}

@@ -3,6 +3,10 @@
     
    	<color name="mytheme_color">#888888</color>
 
+    <!--Back shadow-->
+    <color name="back_shadows_chess">#99000000</color>
+
+
     <!--Buttons-->
 
     <color name="stroke_shadow">#26000000</color>
@@ -53,6 +57,10 @@
     <color name="f_button_pressed_stroke_2">#FF93afee</color>
 
 
+
+
+    <!--Settings -->
+    <color name="underline_color_grey">#FF8f8f8f</color>
 
 
 

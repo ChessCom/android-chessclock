@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+
     android:id="@id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingTop="@dimen/default_scr_top_padding"
+    android:paddingLeft="@dimen/default_scr_side_padding"
+    android:paddingRight="@dimen/default_scr_side_padding"
+
     android:orientation="vertical" >
 
-    <TextView
+<!--    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -21,9 +27,20 @@
         android:layout_width="fill_parent"
         android:layout_height="5dip"
         android:background="#00bb00" >
-    </ImageView>
+    </ImageView>-->
 
-    <TextView
+    <com.chess.RoboButton
+            android:id="@+id/upgradeBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/button_upgrade"
+            android:text="@string/preferencesUpgrade"
+
+            android:gravity="center"
+
+            />
+
+<!--    <TextView
         android:id="@+id/videoUpgrade"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -37,7 +54,7 @@
         android:textSize="16dip"
         android:textStyle="bold"
         android:visibility="gone" >
-    </TextView>
+    </TextView>-->
 
     <ListView
         android:id="@+id/videosLV"

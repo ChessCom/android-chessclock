@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#ffffcd"
-        android:drawableLeft="@drawable/star"
+        android:drawableLeft="@drawable/ic_star"
         android:drawablePadding="10dp"
         android:gravity="left"
         android:padding="7dp"

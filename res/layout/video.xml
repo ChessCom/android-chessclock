@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+
     android:id="@id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
@@ -9,14 +11,17 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="5dip" >
+        android:paddingTop="@dimen/default_scr_top_padding"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="@dimen/default_scr_side_padding"
+        >
 
-        <TextView
+        <com.chess.RoboTextView
             android:id="@+id/Upgrade"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#ffffcd"
-            android:drawableLeft="@drawable/star"
+            android:drawableLeft="@drawable/ic_star"
             android:drawablePadding="10dp"
             android:gravity="left"
             android:padding="5px"
@@ -24,8 +29,8 @@
             android:textColor="#0066cc"
             android:textSize="16dip"
             android:textStyle="bold"
-            android:visibility="gone" >
-        </TextView>
+            android:visibility="gone" />
+
 
         <LinearLayout
             android:id="@+id/recent"
@@ -34,7 +39,7 @@
             android:orientation="vertical"
             android:visibility="gone" >
 
-            <TextView
+            <com.chess.RoboTextView
                 android:id="@+id/title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -44,7 +49,7 @@
                 android:textSize="16dip"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.chess.RoboTextView
                 android:id="@+id/desc"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +64,7 @@
                 android:text="@string/play" />
         </LinearLayout>
 
-        <TextView
+        <com.chess.RoboTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="5dip"
@@ -67,7 +72,7 @@
             android:textColor="#fff"
             android:textSize="16dip"
             android:textStyle="bold" >
-        </TextView>
+        </com.chess.RoboTextView>
 
         <Spinner
             android:id="@+id/skills"
@@ -76,7 +81,7 @@
             android:entries="@array/skill" >
         </Spinner>
 
-        <TextView
+        <com.chess.RoboTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="5dip"
@@ -84,7 +89,7 @@
             android:textColor="#fff"
             android:textSize="16dip"
             android:textStyle="bold" >
-        </TextView>
+        </com.chess.RoboTextView>
 
         <Spinner
             android:id="@+id/categories"
@@ -93,7 +98,7 @@
             android:entries="@array/category" >
         </Spinner>
 
-        <Button
+        <com.chess.RoboButton
             android:id="@+id/start"
             android:layout_width="100dip"
             android:layout_height="wrap_content"

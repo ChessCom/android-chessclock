@@ -5,22 +5,22 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.CheckBox;
 
-public class RoboTextView extends TextView{
+public class RoboCheckBox extends CheckBox {
     private Context context;
     private String ttfName = "Regular";
 //    private float density;
 
-	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
+	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public RoboTextView(Context context) {
+	public RoboCheckBox(Context context) {
 		super(context);
 	}
 
-    public RoboTextView(Context context, AttributeSet attrs) {
+    public RoboCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 

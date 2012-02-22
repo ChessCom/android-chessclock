@@ -50,6 +50,13 @@
         <item name="android:background">@drawable/button_green_selector</item>
     </style>
 
+    <style name="button_upgrade" parent="button_green">
+        <item name="android:background">@drawable/button_green_selector</item>
+        <item name="android:paddingLeft">@dimen/button_upgrade_left_padding</item>
+        <item name="android:paddingRight">@dimen/button_upgrade_right_padding</item>
+        <item name="android:drawableLeft">@drawable/ic_star</item>
+    </style>
+
 
     <style name="f_button_login" parent="button_orange">
         <item name="android:background">@drawable/button_f_selector</item>
