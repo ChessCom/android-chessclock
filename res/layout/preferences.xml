@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
+<!--    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -14,13 +14,13 @@
         android:textColor="#fff"
         android:textSize="16dip"
         android:textStyle="bold" >
-    </TextView>
+    </TextView>-->
 
-    <ImageView
+<!--    <ImageView
         android:layout_width="fill_parent"
         android:layout_height="5dip"
         android:background="#00bb00" >
-    </ImageView>
+    </ImageView>-->
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -30,9 +30,25 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
+            android:paddingTop="@dimen/default_scr_top_padding"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding"
             android:scrollbarTrackVertical="@drawable/whitemove" >
 
-            <TextView
+            <Button
+                    android:id="@+id/preferencesUpgrade"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/button_green"
+                    android:text="@string/preferencesUpgrade"
+                    android:drawableLeft="@drawable/star"
+                    android:paddingLeft="46dip"
+                    android:paddingRight="50dip"
+                    android:gravity="center"
+
+                    />
+
+<!--            <TextView
                 android:id="@+id/preferencesUpgrade"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -45,8 +61,8 @@
                 android:textColor="#0066cc"
                 android:textSize="17dip"
                 android:textStyle="bold"
-                android:visibility="gone" >
-            </TextView>
+                android:visibility="visible" >
+            </TextView>-->
 
             <TextView
                 android:id="@+id/onlineTitle"
@@ -58,6 +74,14 @@
                 android:textSize="20dip"
                 android:textStyle="bold" >
             </TextView>
+
+            <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/underline_grey"
+
+                    />
+
 
             <LinearLayout
                 android:id="@+id/afterIMoveLayout"
@@ -159,6 +183,13 @@
                 android:textSize="20dip"
                 android:textStyle="bold" >
             </TextView>
+            <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/underline_grey"
+
+                    />
+
 
             <LinearLayout
                 android:id="@+id/prefStrengthLayout"

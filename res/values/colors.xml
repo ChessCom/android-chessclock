@@ -55,6 +55,10 @@
 
 
 
+    <!--Settings -->
+    <color name="underline_color_grey">#FF8f8f8f</color>
+
+
 
     <color name="list_pressed_1">#FFf98c15</color>
     <color name="list_pressed_2">#FFe07a0d</color>

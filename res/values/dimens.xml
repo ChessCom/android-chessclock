@@ -24,7 +24,7 @@
  	<dimen name="list_item_stroke_width">1px</dimen>
  	
  	<dimen name="signin_logo_margin_top">15dip</dimen>
- 	<dimen name="signin_main_margin_top">40dip</dimen>
+ 	<dimen name="signin_main_margin_top">36dip</dimen>
 	<dimen name="signin_button_margin_updown">24dip</dimen>
  	<dimen name="signin_footer_margin_bottom">10dip</dimen>
 				
@@ -48,5 +48,10 @@
 	<dimen name="list_padding_top">10dip</dimen>
 		
     <dimen name="text_size_small">16sp</dimen>
-		
+
+    <!--Default screen-->
+
+    <dimen name="default_scr_top_padding">23</dimen>
+    <dimen name="default_scr_side_padding">16dip</dimen>
+
 </resources>

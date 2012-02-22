@@ -33,7 +33,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
 
-		videoUpgrade = (TextView) findViewById(R.id.videoUpgrade);
+		videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 		boolean liveMembershipLevel =
 				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
@@ -98,7 +98,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.videoUpgrade){
+		if(view.getId() == R.id.upgradeBtn){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
 					"http://www." + LccHolder.HOST + "/login.html?als="
 							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +

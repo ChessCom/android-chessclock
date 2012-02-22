@@ -4,9 +4,13 @@
     android:id="@id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingTop="@dimen/default_scr_top_padding"
+    android:paddingLeft="@dimen/default_scr_side_padding"
+    android:paddingRight="@dimen/default_scr_side_padding"
+
     android:orientation="vertical" >
 
-    <TextView
+<!--    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -21,9 +25,22 @@
         android:layout_width="fill_parent"
         android:layout_height="5dip"
         android:background="#00bb00" >
-    </ImageView>
+    </ImageView>-->
 
-    <TextView
+    <Button
+            android:id="@+id/upgradeBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/button_green"
+            android:text="@string/preferencesUpgrade"
+            android:drawableLeft="@drawable/star"
+            android:paddingLeft="46dip"
+            android:paddingRight="50dip"
+            android:gravity="center"
+
+            />
+
+<!--    <TextView
         android:id="@+id/videoUpgrade"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -37,7 +54,7 @@
         android:textSize="16dip"
         android:textStyle="bold"
         android:visibility="gone" >
-    </TextView>
+    </TextView>-->
 
     <ListView
         android:id="@+id/videosLV"
