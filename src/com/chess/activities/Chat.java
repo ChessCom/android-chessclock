@@ -46,7 +46,7 @@ public class Chat extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void Update(int code) {
-		if (code == -1) {
+		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunRepeatbleTask(0, 0, 60000, "http://www." + LccHolder.HOST
 						+ "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="

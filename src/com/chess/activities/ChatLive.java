@@ -49,7 +49,7 @@ public class ChatLive extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void Update(int code) {
-		if (code == -1 || code == MESSAGE_RECEIVED) {
+		if (code == INIT_ACTIVITY || code == MESSAGE_RECEIVED) {
 			int before = chatItems.size();
 			chatItems.clear();
 			chatItems.addAll(getMessagesList());

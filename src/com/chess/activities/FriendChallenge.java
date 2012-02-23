@@ -89,16 +89,16 @@ public class FriendChallenge extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void Update(int code) {
-		if (code == CALLBACK_ERROR_SERVER_RESPONSE) {
+		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
-		} else if (code == -1 && !mainApp.isLiveChess()) {
+		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(FriendChallenge.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
-		} else if (code == 0 || (code == -1 && mainApp.isLiveChess())) {
+		} else if (code == 0 || (code == INIT_ACTIVITY && mainApp.isLiveChess())) {
 			String[] FRIENDS;
 			if (mainApp.isLiveChess()) {
 				FRIENDS = lccHolder.getOnlineFriends();

@@ -62,7 +62,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 
 	@Override
 	public void Update(int code) {
-		if (code == -1) {
+		if (code == INIT_ACTIVITY) {
 			if (appService != null && videosAdapter == null) {
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);

@@ -108,7 +108,7 @@ public class Video extends CoreActivity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
-		Update(-1);
+		Update(INIT_ACTIVITY);
 		super.onResume();
 	}
 
@@ -124,7 +124,7 @@ public class Video extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void Update(int code) {
-		if (code == -1) {
+		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_videos?id="

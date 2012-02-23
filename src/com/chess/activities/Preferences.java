@@ -365,7 +365,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void Update(int code) {
-		if (code == -1) {
+		if (code == INIT_ACTIVITY) {
 			if (!mainApp.guest && !mainApp.isLiveChess()) {
 				if (appService != null) {
 					appService.RunSingleTask(0,

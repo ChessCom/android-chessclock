@@ -645,7 +645,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 	@Override
 	public void Update(int code) {
-		if (code == -1) {
+		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
 					appService.RunRepeatbleTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,

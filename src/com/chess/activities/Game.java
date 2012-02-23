@@ -1060,7 +1060,7 @@ public class Game extends CoreActivity implements OnClickListener {
 	@Override
 	public void Update(int code) {
 		switch (code) {
-			case CALLBACK_ERROR_SERVER_RESPONSE:
+			case ERROR_SERVER_RESPONSE:
 				if (!MainApp.isTacticsGameMode(boardView))
 					finish();
 				else if (MainApp.isTacticsGameMode(boardView)) {
@@ -1078,7 +1078,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 				//finish();
 				break;
-			case -1:
+			case INIT_ACTIVITY:
 				if (boardView.getBoard().init && MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView)) {
 					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
 					GetOnlineGame(mainApp.getGameId());
