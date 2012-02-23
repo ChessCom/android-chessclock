@@ -30,10 +30,10 @@
     <item
         android:bottom="2px"
         android:left="2px"
-        android:right="1px"
-        android:top="1px"
+        android:right="2px"
+        android:top="2px"
         android:id="@id/glow_layer"
-        android:drawable="@drawable/dashboard_glow_lb"
+        android:drawable="@drawable/dashboard_glow_rt"
         />
 
 </layer-list>

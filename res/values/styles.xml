@@ -121,7 +121,7 @@
     <style name="DashboardItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@drawable/dashboard_item</item>
+        <!--<item name="android:background">@drawable/dashboard_item</item>-->
     </style>
 
     <style name="DefaultEdt">    <!--parent="@android:style/Widget.EditText"-->

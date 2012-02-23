@@ -2,6 +2,7 @@ package com.chess.views;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -12,7 +13,6 @@ import com.chess.R;
  * even horizontal and vertical whitespace.
  */
 public class DashBoardLayout extends RelativeLayout {
-
 	private static final int UNEVEN_GRID_PENALTY_MULTIPLIER = 10;
 
 	private int mMaxChildWidth = 0;
@@ -20,6 +20,15 @@ public class DashBoardLayout extends RelativeLayout {
 	private int[] portBackgrounds;
 	private int[] landBackgrounds;
 	private int screenOrientation;
+//	private Paint paint;
+
+//	private Bitmap grad;
+
+	private int centerX;
+	private int centerY;
+	private int gradRadius;
+	private int startGradientColor;
+	private int endGradientColor;
 
 	public DashBoardLayout(Context context) {
 		super(context, null);
@@ -36,7 +45,7 @@ public class DashBoardLayout extends RelativeLayout {
 		init();
 	}
 
-	private void init(){
+	private void init() {
 		portBackgrounds = new int[]{
 				R.drawable.dashboard_item_lt,
 				R.drawable.dashboard_item_rt,
@@ -50,11 +59,48 @@ public class DashBoardLayout extends RelativeLayout {
 				R.drawable.dashboard_item_mt,
 				R.drawable.dashboard_item_rt,
 				R.drawable.dashboard_item_lb,
-				R.drawable.dashboard_item_mt,
+				R.drawable.dashboard_item_mb,
 				R.drawable.dashboard_item_rb
 		};
 		screenOrientation = getResources().getConfiguration().orientation;
+//		paint = new Paint();
+//		paint.setColor(Color.RED);
+//		// init colors
+//		startGradientColor = getResources().getColor(R.color.glow_border);
+//		endGradientColor = getResources().getColor(R.color.dashboard_button);
+//		endGradientColor = Color.TRANSPARENT;
 	}
+
+
+	@Override
+	protected void dispatchDraw(Canvas canvas) {
+		super.dispatchDraw(canvas);
+
+
+//		if(grad == null){
+//			gradRadius = getWidth()/2;
+//			grad = makeRadGrad();
+//			centerX =  getWidth()/2;
+//			centerY =  getHeight()/2;
+//		}
+//		canvas.drawBitmap(grad,centerX,centerY,paint);
+
+	}
+
+
+//	private Bitmap makeRadGrad() {
+//		RadialGradient gradient = new RadialGradient(gradRadius, gradRadius, gradRadius, startGradientColor,
+//				endGradientColor, android.graphics.Shader.TileMode.CLAMP);
+//		Paint p = new Paint();
+//		p.setDither(true);
+//		p.setShader(gradient);
+//
+//		Bitmap bitmap = Bitmap.createBitmap(gradRadius*2, gradRadius*2, Bitmap.Config.ARGB_8888);
+//		Canvas c = new Canvas(bitmap);
+//		c.drawCircle(gradRadius, gradRadius, gradRadius, p);
+//
+//		return bitmap;
+//	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -208,9 +254,9 @@ public class DashBoardLayout extends RelativeLayout {
 //			bottom = (vSpace == 0 && row == rows - 1) ? b : (top + height);
 
 			child.layout(left, top, right, bottom);
-			if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
+			if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 				child.setBackgroundResource(landBackgrounds[visibleIndex]);
-			}else{
+			} else {
 				child.setBackgroundResource(portBackgrounds[visibleIndex]);
 			}
 			++visibleIndex;

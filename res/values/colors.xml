@@ -104,11 +104,19 @@
     <!--<color name="dark_orange">#FFa94a14</color>-->
 
     <color name="glow_border">#00c9c9c9</color>
-    <color name="glow_border2">#7F949494</color>
+    <!--<color name="glow_border">#FFdadada</color>-->
+
+    <!--<color name="glow_border2">#7F949494</color>-->
+    <!--<color name="glow_border2">#7F949494</color>-->
+    <!--<color name="glow_border2">#7F858585</color>-->
+    <!--<color name="glow_border2">#74858585</color>-->
+    <color name="glow_border2">#FF5e5e5e</color>   <!--Good-->
+    <!--<color name="glow_border2">#7Fdadada</color>-->
 
     <color name="shadow_border">#27000000</color>
     <color name="dashboard_item_default">#FF353535</color>
-    <color name="dashboard_item_stroke">#FF474747</color>
+    <color name="dashboard_item_stroke">#FF575757</color>
+    <!--<color name="dashboard_item_stroke">#FFFFFFFF</color>-->
     <color name="dashboard_item_stroke_2">#FF232323</color>
 
 
