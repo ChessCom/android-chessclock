@@ -89,7 +89,7 @@ public class FriendChallenge extends CoreActivity implements OnClickListener {
 
 	@Override
 	public void Update(int code) {
-		if (code == -2) {
+		if (code == CALLBACK_ERROR_SERVER_RESPONSE) {
 			finish();
 		} else if (code == -1 && !mainApp.isLiveChess()) {
 			if (appService != null) {

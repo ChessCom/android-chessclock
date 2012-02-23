@@ -27,6 +27,8 @@ import java.net.URLConnection;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity {
 
+	protected final static int CALLBACK_ERROR_SERVER_RESPONSE = -2;
+
 	protected MainApp mainApp;
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
@@ -233,7 +235,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 			Bundle rExtras = intent.getExtras();
 			boolean repeatable;
 			String resp = "";
-			int retCode = -2;
+			int retCode = CALLBACK_ERROR_SERVER_RESPONSE;
 			try {
 				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE);
 				resp = rExtras.getString(AppConstants.REQUEST_RESULT);
@@ -245,7 +247,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 
 				retCode = rExtras.getInt(AppConstants.CALLBACK_CODE);
 			} catch (Exception e) {
-				Update(-2);
+				Update(CALLBACK_ERROR_SERVER_RESPONSE);
 				return;
 			}
 
@@ -262,11 +264,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 				Update(retCode);
 			else {
 				if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
-					Update(-2);
+					Update(CALLBACK_ERROR_SERVER_RESPONSE);
 					return;
 				}
 				if (resp.length() == 0) {
-					Update(-2);
+					Update(CALLBACK_ERROR_SERVER_RESPONSE);
 					return;
 				}
 				String title = getString(R.string.error);
@@ -274,11 +276,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 				if (resp.contains("Error+")) {
 					message = resp.split("[+]")[1];
 				} else {
-					Update(-2);
+					Update(CALLBACK_ERROR_SERVER_RESPONSE);
 					return;
 				}
 				if (message == null || message.trim().equals("")) {
-					Update(-2);
+					Update(CALLBACK_ERROR_SERVER_RESPONSE);
 					return;
 				}
 				new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
@@ -286,7 +288,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int whichButton) {
-								Update(-2);
+								Update(CALLBACK_ERROR_SERVER_RESPONSE);
 							}
 						}).create().show();
 			}

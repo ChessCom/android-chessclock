@@ -86,6 +86,16 @@ public class Game extends CoreActivity implements OnClickListener {
 	private final static int DIALOG_DRAW_OFFER = 4;
 	private final static int DIALOG_ABORT_OR_RESIGN = 5;
 
+	private final static int CALLBACK_GAME_STARTED = 10;
+	private final static int CALLBACK_GET_TACTICS = 7;
+	private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
+	private final static int CALLBACK_REPAINT_UI = 0;
+	private final static int CALLBACK_GAME_REFRESH = 9;
+	private final static int CALLBACK_TACTICS_CORRECT = 6;
+	private final static int CALLBACK_TACTICS_WRONG = 5;
+	private final static int CALLBACK_SEND_MOVE = 1;
+	private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
+
 	public BoardView boardView;
 	private LinearLayout analysisLL;
 	private LinearLayout analysisButtons;
@@ -161,7 +171,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							boardView.getBoard().makeMove(m, false);
 						}
 					}
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					boardView.getBoard().takeBack();
 					boardView.invalidate();
 
@@ -181,7 +191,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							@Override
 							public void dispatchMessage(Message msg) {
 								super.dispatchMessage(msg);
-								Update(0);
+								Update(CALLBACK_REPAINT_UI);
 								boardView.invalidate();
 							}
 						};
@@ -228,7 +238,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 							boardView.getBoard().makeMove(m);
 						}
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						boardView.getBoard().takeBack();
 						boardView.invalidate();
 
@@ -247,7 +257,7 @@ public class Game extends CoreActivity implements OnClickListener {
 								@Override
 								public void dispatchMessage(Message msg) {
 									super.dispatchMessage(msg);
-									Update(0);
+									Update(CALLBACK_REPAINT_UI);
 									boardView.invalidate();
 								}
 							};
@@ -290,7 +300,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 							boardView.getBoard().makeMove(m);
 						}
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						boardView.getBoard().takeBack();
 						boardView.invalidate();
 
@@ -309,7 +319,7 @@ public class Game extends CoreActivity implements OnClickListener {
 								@Override
 								public void dispatchMessage(Message msg) {
 									super.dispatchMessage(msg);
-									Update(0);
+									Update(CALLBACK_REPAINT_UI);
 									boardView.invalidate();
 								}
 							};
@@ -335,12 +345,12 @@ public class Game extends CoreActivity implements OnClickListener {
 			boardView.sel = false;
 			boardView.getBoard().takeBack();
 			boardView.invalidate();
-			Update(0);
+			Update(CALLBACK_REPAINT_UI);
 			isMoveNav = true;
 		}else if(view.getId() == R.id.next){
 			boardView.getBoard().takeNext();
 			boardView.invalidate();
-			Update(0);
+			Update(CALLBACK_REPAINT_UI);
 			isMoveNav = true;
 		}else if(view.getId() == R.id.newGame){
 			startActivity(new Intent(this, OnlineNewGame.class));			
@@ -710,7 +720,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			mainApp.setForceRectangleAd(false);
 		}
 
-		Update(0);
+		Update(CALLBACK_REPAINT_UI);
 	}
 
 	private void GetOnlineGame(final String game_id) {
@@ -721,10 +731,10 @@ public class Game extends CoreActivity implements OnClickListener {
 		mainApp.setGameId(game_id);
 
 		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-			Update(10);
+			Update(CALLBACK_GAME_STARTED);
 		} else {
 			if (appService != null) {
-				appService.RunSingleTask(10,
+				appService.RunSingleTask(CALLBACK_GAME_STARTED,
 						"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
 						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 			}
@@ -771,7 +781,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 					boardView.getBoard().makeMove(m);
 				}
-				Update(0);
+				Update(CALLBACK_REPAINT_UI);
 				boardView.getBoard().takeBack();
 				boardView.invalidate();
 
@@ -790,7 +800,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						@Override
 						public void dispatchMessage(Message msg) {
 							super.dispatchMessage(msg);
-							Update(0);
+							Update(CALLBACK_REPAINT_UI);
 							boardView.invalidate();
 						}
 					};
@@ -800,7 +810,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			}
 		}
 		if (appService != null) {
-			appService.RunSingleTask(7,
+			appService.RunSingleTask(CALLBACK_GET_TACTICS,
 					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="
 							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + id,
 					progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
@@ -853,7 +863,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 			boardView.getBoard().makeMove(m);
 		}
-		Update(0);
+		Update(CALLBACK_REPAINT_UI);
 		boardView.getBoard().takeBack();
 		boardView.invalidate();
 
@@ -872,7 +882,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				@Override
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					boardView.invalidate();
 				}
 			};
@@ -950,7 +960,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				@Override
 				public void handleMessage(Message msg) {
 					super.handleMessage(msg);
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					boardView.invalidate();
 				}
 			};
@@ -988,7 +998,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					m = new Move(moveFT[0], moveFT[1], 0, 0);
 					boardView.getBoard().makeMove(m);
 				}
-				Update(0);
+				Update(CALLBACK_REPAINT_UI);
 				boardView.invalidate();
 			} else {
 				if (mainApp.guest || boardView.getBoard().retry || mainApp.noInternet) {
@@ -1000,7 +1010,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					stopTacticsTimer();
 				} else {
 					if (appService != null) {
-						appService.RunSingleTask(6,
+						appService.RunSingleTask(CALLBACK_TACTICS_CORRECT,
 								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" +
 										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 										+ "&tactics_id=" + mainApp.getTactic().values.get(AppConstants.ID)
@@ -1020,7 +1030,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				stopTacticsTimer();
 			} else {
 				if (appService != null) {
-					appService.RunSingleTask(5,
+					appService.RunSingleTask(CALLBACK_TACTICS_WRONG,
 							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="
 									+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 									+ "&tactics_id=" + mainApp.getTactic().values.get(AppConstants.ID)
@@ -1050,7 +1060,7 @@ public class Game extends CoreActivity implements OnClickListener {
 	@Override
 	public void Update(int code) {
 		switch (code) {
-			case -2:
+			case CALLBACK_ERROR_SERVER_RESPONSE:
 				if (!MainApp.isTacticsGameMode(boardView))
 					finish();
 				else if (MainApp.isTacticsGameMode(boardView)) {
@@ -1081,7 +1091,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							progressDialog = null;
 						}
 						if (!mainApp.isLiveChess()) {
-							appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
+							appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
 									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
 									null/*progressDialog*/
 							);
@@ -1089,7 +1099,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 				break;
-			case 0: {
+			case CALLBACK_REPAINT_UI: {
 				switch (boardView.getBoard().mode) {
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 						white.setText(getString(R.string.Human));
@@ -1117,7 +1127,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						findViewById(R.id.submit).setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								Update(1);	//movesubmit
+								Update(CALLBACK_SEND_MOVE);
 							}
 						});
 						findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
@@ -1199,8 +1209,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				});
 				break;
 			}
-			case 1: {
-				// making the move
+			case CALLBACK_SEND_MOVE: {
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
 				//String myMove = boardView.getBoard().MoveSubmit();
@@ -1219,18 +1228,18 @@ public class Game extends CoreActivity implements OnClickListener {
 							appService.getRepeatableTimer().cancel();
 							appService.setRepeatableTimer(null);
 						}
-						appService.RunSingleTask(12,
+						appService.RunSingleTask(CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE,
 								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" +
 										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
 								null);
 					} else {
-						appService.RunSingleTask(8,
+						appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
 								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
 										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" +
 										mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=SUBMIT&newmove=" +
 										boardView.getBoard().convertMoveEchess() + "&timestamp=" +
 										mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP),
-								progressDialog = new MyProgressDialog(
+										progressDialog = new MyProgressDialog(
 										ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 
 						NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -1240,16 +1249,16 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 				break;
 			}
-			case 12: {
+			case CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE: {
 				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
 				if (!mainApp.isLiveChess() && appService != null) {
-					appService.RunSingleTask(8,
+					appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
 							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
 									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" +
 									mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=SUBMIT&newmove=" +
 									boardView.getBoard().convertMoveEchess() + "&timestamp=" +
 									mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP),
-							progressDialog = new MyProgressDialog(
+									progressDialog = new MyProgressDialog(
 									ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 					mNotificationManager.cancel(1);
@@ -1273,7 +1282,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				CheckTacticMoves();
 				break;
 			}
-			case 5: {
+			case CALLBACK_TACTICS_WRONG: {
 				String[] tmp = response.split("[|]");
 				if (tmp.length < 2 || tmp[1].trim().equals("")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
@@ -1290,7 +1299,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						.create().show();
 				break;
 			}
-			case 6: {
+			case CALLBACK_TACTICS_CORRECT: {
 				String[] tmp = response.split("[|]");
 				if (tmp.length < 2 || tmp[1].trim().equals("")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
@@ -1313,7 +1322,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						.create().show();
 				break;
 			}
-			case 7:
+			case CALLBACK_GET_TACTICS:
 
 				boardView.setBoard(new Board(this));
 				boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
@@ -1357,7 +1366,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 					boardView.getBoard().makeMove(m);
 				}
-				Update(0);
+				Update(CALLBACK_REPAINT_UI);
 				boardView.getBoard().takeBack();
 				boardView.invalidate();
 
@@ -1376,13 +1385,13 @@ public class Game extends CoreActivity implements OnClickListener {
 						@Override
 						public void dispatchMessage(Message msg) {
 							super.dispatchMessage(msg);
-							Update(0);
+							Update(CALLBACK_REPAINT_UI);
 							boardView.invalidate();
 						}
 					};
 				}).start();
 				break;
-			case 8:
+			case CALLBACK_ECHESS_MOVE_WAS_SENT:
 				// move was made
 				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
@@ -1422,7 +1431,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					return;
 				}
 				break;
-			case 9:
+			case CALLBACK_GAME_REFRESH:
 				if (boardView.getBoard().analysis)
 					return;
 				if (!mainApp.isLiveChess()) {
@@ -1470,7 +1479,7 @@ public class Game extends CoreActivity implements OnClickListener {
 								//mainApp.ShowMessage("Move list updated!");
 								boardView.getBoard().movesCount = Moves.length;
 								boardView.invalidate();
-								Update(0);
+								Update(CALLBACK_REPAINT_UI);
 							}
 						}
 						return;
@@ -1500,9 +1509,8 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 				break;
-			case 10:
-				// handle game start
 
+			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
@@ -1584,7 +1592,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 				}
 
-				Update(0);
+				Update(CALLBACK_REPAINT_UI);
 				boardView.getBoard().takeBack();
 				boardView.invalidate();
 
@@ -1603,18 +1611,19 @@ public class Game extends CoreActivity implements OnClickListener {
 						@Override
 						public void dispatchMessage(Message msg) {
 							super.dispatchMessage(msg);
-							Update(0);
+							Update(CALLBACK_REPAINT_UI);
 							boardView.invalidate();
 						}
 					};
 				}).start();
+
 				if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null && appService.getRepeatableTimer() == null) {
 					if (progressDialog != null) {
 						progressDialog.dismiss();
 						progressDialog = null;
 					}
 					if (!mainApp.isLiveChess()) {
-						appService.RunRepeatbleTask(9, UPDATE_DELAY, UPDATE_DELAY,
+						appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
 								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
 								null/*progressDialog*/
 						);
@@ -1756,7 +1765,7 @@ public class Game extends CoreActivity implements OnClickListener {
 											+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 						}
 						boardView.invalidate();
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 					}
 					return true;
 				case MENU_COMPUTER_HINT:
@@ -1775,7 +1784,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						boardView.sel = false;
 						boardView.getBoard().takeBack();
 						boardView.invalidate();
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						isMoveNav = true;
 					}
 					return true;
@@ -1785,7 +1794,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						boardView.sel = false;
 						boardView.getBoard().takeNext();
 						boardView.invalidate();
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						isMoveNav = true;
 					}
 					return true;
@@ -1794,7 +1803,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					return true;
 				}
 				case MENU_COMPUTER_NEW_GAME_BLACK: {
@@ -1803,7 +1812,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					boardView.getBoard().setReside(true);
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					return true;
 				}
@@ -1903,7 +1912,7 @@ public class Game extends CoreActivity implements OnClickListener {
 						return true;
 					case MENU_ECHESS_ANALYSIS:
 						boardView.getBoard().analysis = true;
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						return true;
 					case MENU_ECHESS_CHAT:
 						chat = true;
@@ -1914,13 +1923,13 @@ public class Game extends CoreActivity implements OnClickListener {
 						boardView.sel = false;
 						boardView.getBoard().takeBack();
 						boardView.invalidate();
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						isMoveNav = true;
 						return true;
 					case MENU_ECHESS_NEXT:
 						boardView.getBoard().takeNext();
 						boardView.invalidate();
-						Update(0);
+						Update(CALLBACK_REPAINT_UI);
 						isMoveNav = true;
 						return true;
 					case MENU_ECHESS_SETTINGS: {
@@ -1969,20 +1978,20 @@ public class Game extends CoreActivity implements OnClickListener {
 					return true;
 				case MENU_TACTICS_ANALYSIS:
 					boardView.getBoard().analysis = true;
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					return true;
 				case MENU_TACTICS_PREVIOUS:
 					boardView.finished = false;
 					boardView.sel = false;
 					boardView.getBoard().takeBack();
 					boardView.invalidate();
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					isMoveNav = true;
 					return true;
 				case MENU_TACTICS_NEXT:
 					boardView.getBoard().takeNext();
 					boardView.invalidate();
-					Update(0);
+					Update(CALLBACK_REPAINT_UI);
 					isMoveNav = true;
 					return true;
 				case MENU_TACTICS_SKIP_PROBLEM: {
@@ -2167,7 +2176,7 @@ public class Game extends CoreActivity implements OnClickListener {
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 			game = (com.chess.model.Game) intent.getSerializableExtra(AppConstants.OBJECT);
-			Update(9);
+			Update(CALLBACK_GAME_REFRESH);
 		}
 	};
 
@@ -2286,7 +2295,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				//lccHolder.getAndroid().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
 				game = new com.chess.model.Game(lccHolder.getGameData(
 						gameEvent.getGameId().toString(), gameEvent.getMoveIndex()), true);
-				Update(9);
+				Update(CALLBACK_GAME_REFRESH);
 			}
 
 			gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.DrawOffer);
