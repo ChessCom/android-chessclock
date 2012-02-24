@@ -1,27 +1,27 @@
-package com.chess;
+package com.chess.view;
 
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.CheckBox;
+import android.widget.EditText;
 import com.chess.R;
 
-public class RoboCheckBox extends CheckBox {
+public class RoboEditText extends EditText {
     private Context context;
     private String ttfName = "Regular";
 //    private float density;
 
-	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
+	public RoboEditText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public RoboCheckBox(Context context) {
+	public RoboEditText(Context context) {
 		super(context);
 	}
 
-    public RoboCheckBox(Context context, AttributeSet attrs) {
+    public RoboEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 

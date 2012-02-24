@@ -1,174 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:paddingTop="@dimen/default_scr_top_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:background="@android:color/black"
+		>
+		<!--
+				<TextView
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:padding="3dip"
+					android:text="@string/createNewChallenge"
+					android:textColor="#fff"
+					android:textSize="16dip"
+					android:textStyle="bold" >
+				</TextView>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="3dip"
-            android:text="@string/createNewChallenge"
-            android:textColor="#fff"
-            android:textSize="16dip"
-            android:textStyle="bold" >
-        </TextView>
+				<ImageView
+					android:layout_width="fill_parent"
+					android:layout_height="5dip"
+					android:background="#00bb00" >
+				</ImageView>-->
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="5dip"
-            android:background="#00bb00" >
-        </ImageView>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="120dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
-                    android:text="@string/initialTime"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+				<com.chess.RoboTextView
+					android:layout_width="120dip"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text="@string/initialTime"
+					/>
 
-                <AutoCompleteTextView
-                    android:id="@+id/initialTime"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="number"
-                    android:text="" >
-                </AutoCompleteTextView>
-            </LinearLayout>
+				<AutoCompleteTextView
+					android:id="@+id/initialTime"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:inputType="number"
+					android:text="">
+				</AutoCompleteTextView>
+			</LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="120dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
-                    android:text="@string/bonusTime"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+				<com.chess.RoboTextView
+					android:layout_width="120dip"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text="@string/bonusTime"
 
-                <AutoCompleteTextView
-                    android:id="@+id/bonusTime"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="number"
-                    android:text="" >
-                </AutoCompleteTextView>
-            </LinearLayout>
+					/>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+				<AutoCompleteTextView
+					android:id="@+id/bonusTime"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:inputType="number"
+					android:text="">
+				</AutoCompleteTextView>
+			</LinearLayout>
 
-                <TextView
-                    android:layout_width="120dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
-                    android:text="@string/RatedGme"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
 
-                <CheckBox
-                    android:id="@+id/ratedGame"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="@string/onoff"
-                    android:textColor="#fff" >
-                </CheckBox>
-            </LinearLayout>
+				<com.chess.RoboTextView
+					android:layout_width="120dip"
+					android:layout_height="wrap_content"
 
-            <!--
-         <LinearLayout android:layout_height="wrap_content"
-             android:layout_width="fill_parent">
-             <TextView android:layout_height="wrap_content"
-                 android:layout_gravity="center" android:layout_width="120dip" android:textSize="16dip" android:textColor="#fff" android:text="@string/IplayAs" android:layout_marginLeft="10dip"></TextView>
-             <Spinner android:layout_height="wrap_content"
-                 android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/iplayas" android:entries="@array/playas"></Spinner>
-         </LinearLayout>
-            -->
+					android:text="@string/RatedGme"
+					/>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+				<com.chess.RoboCheckBox
+					android:id="@+id/ratedGame"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:checked="true"
+					android:text="@string/onoff"
+					/>
+			</LinearLayout>
 
-                <TextView
-                    android:layout_width="120dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
-                    android:text="@string/minrating"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+			<!--
+					 <LinearLayout android:layout_height="wrap_content"
+						 android:layout_width="fill_parent">
+						 <TextView android:layout_height="wrap_content"
+							 android:layout_gravity="center" android:layout_width="120dip" android:textSize="16dip" android:textColor="#fff" android:text="@string/IplayAs" android:layout_marginLeft="10dip"></TextView>
+						 <Spinner android:layout_height="wrap_content"
+							 android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/iplayas" android:entries="@array/playas"></Spinner>
+					 </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/minRating"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:entries="@array/minRating" >
-                </Spinner>
-            </LinearLayout>
+						-->
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="120dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
-                    android:text="@string/maxrating"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+				<com.chess.RoboTextView
+					android:layout_width="120dip"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text="@string/minrating"
+					/>
 
-                <Spinner
-                    android:id="@+id/maxRating"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:entries="@array/maxRating" >
-                </Spinner>
-            </LinearLayout>
+				<Spinner
+					android:id="@+id/minRating"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:entries="@array/minRating">
+				</Spinner>
+			</LinearLayout>
 
-            <Button
-                android:id="@+id/createchallenge"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="25dip"
-                android:background="@drawable/button_orange_selector"
-                android:text="@string/ChallengeCreate" />
-        </LinearLayout>
-    </LinearLayout>
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+
+				<com.chess.RoboTextView
+					android:layout_width="120dip"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text="@string/maxrating"
+					/>
+
+				<Spinner
+					android:id="@+id/maxRating"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:entries="@array/maxRating">
+				</Spinner>
+			</LinearLayout>
+
+			<com.chess.RoboButton
+				android:id="@+id/createchallenge"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+
+				android:text="@string/ChallengeCreate"/>
+		</LinearLayout>
+
 
 </ScrollView>

@@ -86,7 +86,7 @@
 		<item>Blinking LED</item>
 	</string-array>
 	
-	<string-array name="Strength">
+	<string-array name="strength">
 	    <item>1 sec</item>
 		<item>3 sec</item>
 		<item>5 sec</item>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.core.IntentConstants;
@@ -576,6 +577,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
 
 		gamesType = (Spinner) findViewById(R.id.gamestypes);
+		gamesType.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
 		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
 		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
 		tournaments = (TextView) findViewById(R.id.tournaments);

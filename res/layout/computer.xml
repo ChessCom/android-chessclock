@@ -1,127 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/mainView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="5dip" >
+	android:id="@id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:paddingTop="@dimen/default_scr_top_padding"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	android:background="@android:color/black">
 
-    <RadioGroup
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal" >
+	<RadioGroup
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="75dip"
-            android:layout_height="wrap_content"
-            android:padding="3dip"
-            android:text="@string/computerWhite"
-            android:textColor="#fff"
-            android:textSize="20dip"
-            android:textStyle="bold" >
-        </TextView>
+		<com.chess.RoboTextView
+			android:layout_width="75dip"
+			android:layout_height="wrap_content"
+			android:padding="3dip"
+			android:text="@string/computerWhite"
+			/>
 
-        <RadioButton
-            android:id="@+id/wHuman"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/Human"
-            android:textSize="16dip" >
-        </RadioButton>
+		<com.chess.RoboRadioButton
+			android:id="@+id/wHuman"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:checked="true"
+			android:text="@string/Human"
+			/>
 
-        <RadioButton
-            android:id="@+id/wComp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/Computer"
-            android:textSize="16dip" >
-        </RadioButton>
-    </RadioGroup>
+		<com.chess.RoboRadioButton
+			android:id="@+id/wComp"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/Computer"
+			/>
 
-    <RadioGroup
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal" >
+	</RadioGroup>
 
-        <TextView
-            android:layout_width="75dip"
-            android:layout_height="wrap_content"
-            android:padding="3dip"
-            android:text="@string/computerBlack"
-            android:textColor="#fff"
-            android:textSize="20dip"
-            android:textStyle="bold" >
-        </TextView>
+	<RadioGroup
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/bHuman"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/Human"
-            android:textSize="16dip" >
-        </RadioButton>
+		<com.chess.RoboTextView
+			android:layout_width="75dip"
+			android:layout_height="wrap_content"
+			android:padding="3dip"
+			android:text="@string/computerBlack"
+			android:textColor="#fff"
+			android:textSize="20dip"
+			/>
 
-        <RadioButton
-            android:id="@+id/bComp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/Computer"
-            android:textSize="16dip" >
-        </RadioButton>
-    </RadioGroup>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingRight="20dip" >
+		<com.chess.RoboRadioButton
+			android:id="@+id/bHuman"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/Human"
+			/>
 
-        <TextView
-            android:layout_width="140dip"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/strength"
-            android:textColor="#fff"
-            android:textSize="16dip"
-            android:textStyle="bold" >
-        </TextView>
 
-        <Spinner
-            android:id="@+id/PrefStrength"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/Strength" >
-        </Spinner>
-    </LinearLayout>
+		<com.chess.RoboRadioButton
+			android:id="@+id/bComp"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:checked="true"
+			android:text="@string/Computer"
+			/>
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="3dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:text="@string/startNewGameButton" />
+	</RadioGroup>
 
-    <Button
-        android:id="@+id/load"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="3dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:gravity="center"
-        android:text="@string/load"
-        android:visibility="gone" />
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical"
+		android:paddingRight="20dip">
+
+		<com.chess.RoboTextView
+			android:layout_width="140dip"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:text="@string/strength"
+			/>
+
+
+		<Spinner
+			android:id="@+id/PrefStrength"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:entries="@array/strength">
+		</Spinner>
+	</LinearLayout>
+
+	<com.chess.RoboButton
+		android:id="@+id/start"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+
+
+		android:text="@string/startNewGameButton"/>
+
+	<com.chess.RoboButton
+		android:id="@+id/load"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="@string/load"
+		android:layout_marginBottom="3dip"
+		android:visibility="gone"/>
 
 </LinearLayout>

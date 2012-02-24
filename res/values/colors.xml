@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-   	<color name="mytheme_color">#888888</color>
+
+    <color name="mytheme_color">#888888</color>
+    <color name="hint_text">#FFaaaaaa</color>
+
 
     <!--Back shadow-->
     <color name="back_shadows_chess">#99000000</color>
@@ -62,14 +64,8 @@
     <!--Settings -->
     <color name="underline_color_grey">#FF8f8f8f</color>
 
-
-
     <color name="list_pressed_1">#FFf98c15</color>
     <color name="list_pressed_2">#FFe07a0d</color>
-    <!--     <color name="list_pressed_1">#FF5286f0</color>
-        <color name="list_pressed_2">#FF185a98</color>
-     -->
-
 
     <color name="dark_orange">#FFb66400</color>
     <color name="dark_orange_1">#FFa15906</color>
@@ -104,14 +100,7 @@
     <!--<color name="dark_orange">#FFa94a14</color>-->
 
     <color name="glow_border">#00c9c9c9</color>
-    <!--<color name="glow_border">#FFdadada</color>-->
-
-    <!--<color name="glow_border2">#7F949494</color>-->
-    <!--<color name="glow_border2">#7F949494</color>-->
-    <!--<color name="glow_border2">#7F858585</color>-->
-    <!--<color name="glow_border2">#74858585</color>-->
     <color name="glow_border2">#FF5e5e5e</color>   <!--Good-->
-    <!--<color name="glow_border2">#7Fdadada</color>-->
 
     <color name="shadow_border">#27000000</color>
     <color name="dashboard_item_default">#FF353535</color>

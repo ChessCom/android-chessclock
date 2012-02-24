@@ -16,6 +16,16 @@
         android:paddingRight="@dimen/default_scr_side_padding"
         >
 
+		<com.chess.RoboButton
+			android:id="@+id/upgradeBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/button_upgrade"
+			android:text="@string/preferencesUpgrade"
+			android:gravity="center"
+			/>
+
+<!--
         <com.chess.RoboTextView
             android:id="@+id/Upgrade"
             android:layout_width="fill_parent"
@@ -30,6 +40,7 @@
             android:textSize="16dip"
             android:textStyle="bold"
             android:visibility="gone" />
+-->
 
 
         <LinearLayout
@@ -45,9 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dip"
                 android:padding="5dip"
-                android:textColor="#fff"
-                android:textSize="16dip"
-                android:textStyle="bold" />
+/>
 
             <com.chess.RoboTextView
                 android:id="@+id/desc"
@@ -69,9 +78,7 @@
             android:layout_height="wrap_content"
             android:padding="5dip"
             android:text="@string/skill"
-            android:textColor="#fff"
-            android:textSize="16dip"
-            android:textStyle="bold" >
+ >
         </com.chess.RoboTextView>
 
         <Spinner
@@ -86,9 +93,7 @@
             android:layout_height="wrap_content"
             android:padding="5dip"
             android:text="@string/category"
-            android:textColor="#fff"
-            android:textSize="16dip"
-            android:textStyle="bold" >
+>
         </com.chess.RoboTextView>
 
         <Spinner

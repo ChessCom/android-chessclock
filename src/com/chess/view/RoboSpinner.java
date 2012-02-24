@@ -1,27 +1,27 @@
-package com.chess;
+package com.chess.view;
 
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.CheckBox;
+import android.widget.Spinner;
 import com.chess.R;
 
-public class RoboCheckBox extends CheckBox {
+public class RoboSpinner extends Spinner {
     private Context context;
     private String ttfName = "Regular";
 //    private float density;
 
-	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
+	public RoboSpinner(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public RoboCheckBox(Context context) {
+	public RoboSpinner(Context context) {
 		super(context);
 	}
 
-    public RoboCheckBox(Context context, AttributeSet attrs) {
+    public RoboSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 
@@ -42,12 +42,12 @@ public class RoboCheckBox extends CheckBox {
 
     private void init() {
         Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-" + ttfName + ".ttf");
-        setTypeface(font);
+//        setTypeface(font);
     }
 
-    @Override
-    public void setTypeface(Typeface tf) {
-        super.setTypeface(tf);
-    }
+//    @Override
+//    public void setTypeface(Typeface tf) {
+//        super.setTypeface(tf);
+//    }
 
 }

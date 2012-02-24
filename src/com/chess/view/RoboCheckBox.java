@@ -1,4 +1,4 @@
-package com.chess;
+package com.chess.view;
 
 
 import android.content.Context;

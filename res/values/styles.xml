@@ -124,6 +124,8 @@
         <!--<item name="android:background">@drawable/dashboard_item</item>-->
     </style>
 
+    <style name="ttt" parent="@android:style/Widget.EditText"></style>
+
     <style name="DefaultEdt">    <!--parent="@android:style/Widget.EditText"-->
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -135,6 +137,7 @@
         <item name="android:minHeight">@dimen/default_field_height</item>
         <item name="android:paddingBottom">7dip</item>
         <item name="android:gravity">bottom</item>
+        <item name="android:textColorHint">@color/hint_text</item>
     </style>
 <!--    <item name="android:paddingBottom">1dip</item>-->
 
@@ -155,12 +158,16 @@
         <item name="android:drawSelectorOnTop">true</item>
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/text_black_selector</item>
+        <item name="android:textColor">@color/hint_text</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:selectable">true</item>
     </style>
 
-    <style name="spinnerStyleDropDown" parent="@android:style/Widget.Spinner.DropDown">
+    <style name="spinnerStyleDropDown" parent="DefaultText">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="spinnerText" parent="DefaultText">
+        <item name="android:textColor">@color/hint_text</item>
     </style>
 
     <style name="check_Box" parent="android:Widget.CompoundButton.CheckBox">

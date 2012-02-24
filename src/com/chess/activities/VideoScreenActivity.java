@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
@@ -27,7 +24,8 @@ import com.flurry.android.FlurryAgent;
 public class VideoScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
 	private VideoItem item;
 	private LinearLayout recent;
-	private TextView upgrade, title, desc;
+	private Button upgrade;
+			private TextView title, desc;
 	private Spinner skills, categories;
 
 	private SkillsItemSelectedListener skillsItemSelectedListener;
@@ -45,7 +43,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		init();
-		upgrade = (TextView) findViewById(R.id.Upgrade);
+		upgrade = (Button) findViewById(R.id.upgradeBtn);
 		boolean liveMembershipLevel = false;
 		if(lccHolder.getUser() != null){
 			liveMembershipLevel = mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
@@ -146,7 +144,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.Upgrade){
+		if(view.getId() == R.id.upgradeBtn){
 			FlurryAgent.onEvent("upgrade From Videos", null);
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
 					+ "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")

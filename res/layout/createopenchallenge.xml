@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <LinearLayout
+<!--    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical" >-->
 
-        <TextView
+<!--        <com.chess.RoboTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="3dip"
             android:text="@string/createNewChallenge"
-            android:textColor="#fff"
-            android:textSize="16dip"
-            android:textStyle="bold" >
-        </TextView>
+            />
 
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="5dip"
             android:background="#00bb00" >
-        </ImageView>
+        </ImageView>-->
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -31,22 +29,20 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <TextView
+            <com.chess.RoboTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:padding="5dip"
                 android:text="@string/GameType"
-                android:textColor="#fff"
-                android:textStyle="bold" >
-            </TextView>
+                />
 
             <RadioGroup
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
-                <RadioButton
+                <com.chess.RoboRadioButton
                     android:id="@+id/classic"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -55,10 +51,9 @@
                     android:checked="true"
                     android:gravity="center"
                     android:text="@string/classic"
-                    android:textColor="#fff" >
-                </RadioButton>
+                    />
 
-                <RadioButton
+                <com.chess.RoboRadioButton
                     android:id="@+id/chess960"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -66,94 +61,80 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/chess960"
-                    android:textColor="#fff" >
-                </RadioButton>
+                    />
             </RadioGroup>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
-                    android:text="@string/RatedGme"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
 
-                <CheckBox
+                    android:text="@string/RatedGme"
+                    />
+
+                <com.chess.RoboCheckBox
                     android:id="@+id/ratedGame"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/onoff"
-                    android:textColor="#fff" >
-                </CheckBox>
+                    />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
                     android:text="@string/IplayAs"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+                    />
 
                 <Spinner
                     android:id="@+id/iplayas"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:entries="@array/playas" >
-                </Spinner>
+                    android:entries="@array/playas" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dip"
                     android:text="@string/DaysPerMove"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+                    />
 
                 <Spinner
                     android:id="@+id/dayspermove"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:entries="@array/dayspermove" >
-                </Spinner>
+                    android:entries="@array/dayspermove" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
                     android:text="@string/minrating"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+                    />
 
                 <Spinner
                     android:id="@+id/minRating"
@@ -168,32 +149,27 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
                     android:text="@string/maxrating"
-                    android:textColor="#fff"
-                    android:textSize="16dip" >
-                </TextView>
+                    />
 
                 <Spinner
                     android:id="@+id/maxRating"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:entries="@array/maxRating" >
-                </Spinner>
+                    android:entries="@array/maxRating" />
             </LinearLayout>
 
-            <Button
+            <com.chess.RoboButton
                 android:id="@+id/createchallenge"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dip"
                 android:text="@string/ChallengeCreate" />
         </LinearLayout>
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </ScrollView>

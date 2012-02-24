@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.Button;
+import com.chess.R;
 
 public class RoboButton extends Button {
     private Context context;

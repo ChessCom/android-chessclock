@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
@@ -59,8 +60,10 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		prefContactUs = (Button) findViewById(R.id.prefContactUs);
 
 		actionAfterMyMove = (Spinner) findViewById(R.id.PrefAIM);
+		actionAfterMyMove.setAdapter(new ChessSpinnerAdapter(this,R.array.AIM));
 		//Notif =  (Spinner)findViewById(R.id.PrefNotif);
 		strength = (Spinner) findViewById(R.id.PrefStrength);
+		strength.setAdapter(new ChessSpinnerAdapter(this,R.array.strength));
 
 		enableSounds = (CheckBox) findViewById(R.id.enableSounds);
 		showSubmitButton = (CheckBox) findViewById(R.id.PrefSSB);
@@ -75,8 +78,10 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
 		preferencesUpgrade = (TextView) findViewById(R.id.preferencesUpgrade);
+//		boolean liveMembershipLevel =
+//				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		boolean liveMembershipLevel =
-				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+				lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
 		if (liveMembershipLevel
 				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
 			preferencesUpgrade.setVisibility(View.VISIBLE);

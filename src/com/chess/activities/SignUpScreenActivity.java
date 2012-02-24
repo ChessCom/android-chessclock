@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.core.Tabs;
@@ -28,7 +29,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 
 	private EditText RegUsername, RegEmail, RegPassword, RegRetype;
-	private Spinner Country;
+	private Spinner countrySpinner;
 	private Button RegSubmit;
 	private int CID = -1;
 	private Context context;
@@ -51,7 +52,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		RegPassword = (EditText) findViewById(R.id.RegPassword);
 		RegRetype = (EditText) findViewById(R.id.RegRetype);
 		RegSubmit = (Button) findViewById(R.id.RegSubmitBtn);
-		Country = (Spinner) findViewById(R.id.country);
+		countrySpinner = (Spinner) findViewById(R.id.country);
 
 
 		String[] tmp = COUNTRIES.clone();
@@ -73,11 +74,12 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			}
 		}
 
-		ArrayAdapter<String> adapterF = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tmp2);
-		adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		Country.setAdapter(adapterF);
+//		ArrayAdapter<String> adapterF = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tmp2);
+//		adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		countrySpinner.setAdapter(adapterF);
+		countrySpinner.setAdapter(new ChessSpinnerAdapter(this,tmp2));
 
-		Country.setOnItemSelectedListener(this);
+		countrySpinner.setOnItemSelectedListener(this);
 		RegSubmit.setOnClickListener(this);
 	}
 
@@ -95,7 +97,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 							"password", /*URLEncoder.encode(*/RegPassword.getText().toString()/*, "UTF-8")*/
 					);
 				}
-			} catch (Exception e) {
+			} catch (Exception ignored) { // TODO handle correctly
 			}
 		} else if (code == 1) {
 			FlurryAgent.onEvent("New Account Created", null);
@@ -106,7 +108,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, r[1]);
 			try {
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
+			} catch (UnsupportedEncodingException ignored) {
 			}
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
 			mainApp.getSharedDataEditor().commit();
@@ -145,7 +147,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				query = "http://www." + LccHolder.HOST + "/api/register?username=" + URLEncoder.encode(RegUsername.getText().toString(), "UTF-8") + "&password=" + URLEncoder.encode(RegPassword.getText().toString(), "UTF-8")
 						+ "&email=" + URLEncoder.encode(RegEmail.getText().toString(), "UTF-8")
 						+ "&country_id=" + CID + "&app_type=android";
-			} catch (Exception e) {
+			} catch (Exception e) {   // TODO handle correctly
 			}
 
 			if (appService != null) {

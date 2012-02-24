@@ -1,100 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/mainView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+	android:id="@id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:paddingTop="@dimen/default_scr_top_padding"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
 
-    <TextView
-        android:id="@+id/removeAds"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffcd"
-        android:drawableLeft="@drawable/ic_star"
-        android:drawablePadding="10dp"
-        android:gravity="left"
-        android:padding="7dp"
-        android:text="@string/removeAds"
-        android:textColor="#0066cc"
-        android:textSize="17dip"
-        android:textStyle="bold"
-        android:visibility="gone" >
-    </TextView>
+	android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/adview_wrapper"
-        android:layout_width="320dip"
-        android:layout_height="50dip"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+	<!--    <TextView
+			android:id="@+id/removeAds"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="#ffffcd"
+			android:drawableLeft="@drawable/ic_star"
+			android:drawablePadding="10dp"
+			android:gravity="left"
+			android:padding="7dp"
+			android:text="@string/removeAds"
+			android:textColor="#0066cc"
+			android:textSize="17dip"
+			android:textStyle="bold"
+			android:visibility="gone" >
+		</TextView>-->
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="3dip"
-        android:text="@string/onlineNewGametitle"
-        android:textColor="#fff"
-        android:textSize="16dip"
-        android:textStyle="bold" >
-    </TextView>
+	<!--    <LinearLayout
+			android:id="@+id/adview_wrapper"
+			android:layout_width="320dip"
+			android:layout_height="50dip"
+			android:layout_gravity="center"
+			android:visibility="gone" />-->
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="5dip"
-        android:background="#00bb00" >
-    </ImageView>
+	<com.chess.RoboButton
+		android:id="@+id/preferencesUpgrade"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		style="@style/button_upgrade"
+		android:text="@string/preferencesUpgrade"
+		android:gravity="center_vertical"
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+		/>
 
-        <Button
-            android:id="@+id/friendchallenge"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:text="@string/challengeFriend" />
+<!--	<com.chess.RoboTextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:padding="3dip"
+		android:text="@string/onlineNewGametitle"
+		android:textColor="#fff"
+		android:textSize="16dip"
+		android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/challengecreate"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:text="@string/createNewChallenge" />
 
-        <Button
-            android:id="@+id/currentGame"
-            android:layout_width="fill_parent"
-            android:layout_height="45dip"
-            android:layout_marginBottom="10dip"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:text="@string/currentGame"
-            android:visibility="gone" />
+	<ImageView
+		android:layout_width="fill_parent"
+		android:layout_height="5dip"
+		android:background="#00bb00">
+	</ImageView>-->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dip"
-            android:paddingLeft="20dip"
-            android:paddingTop="5dip"
-            android:text="@string/onlineChallenges"
-            android:textColor="#fff"
-            android:textSize="16dip" >
-        </TextView>
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/openChallenges"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-        </ListView>
-    </LinearLayout>
+		<com.chess.RoboButton
+			android:id="@+id/friendchallenge"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+
+			android:layout_marginTop="10dip"
+			android:text="@string/challengeFriend"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/challengecreate"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+
+			android:layout_marginTop="10dip"
+			android:text="@string/createNewChallenge"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/currentGame"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="10dip"
+			android:layout_marginTop="10dip"
+			android:text="@string/currentGame"
+			android:visibility="gone"/>
+
+		<com.chess.RoboTextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/onlineChallenges"
+			/>
+
+
+		<ListView
+			android:id="@+id/openChallenges"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+		</ListView>
+	</LinearLayout>
 
 </LinearLayout>

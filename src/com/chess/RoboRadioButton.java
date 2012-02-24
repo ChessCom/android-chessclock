@@ -5,23 +5,23 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import com.chess.R;
 
-public class RoboCheckBox extends CheckBox {
+public class RoboRadioButton extends RadioButton {
     private Context context;
     private String ttfName = "Regular";
 //    private float density;
 
-	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
+	public RoboRadioButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public RoboCheckBox(Context context) {
+	public RoboRadioButton(Context context) {
 		super(context);
 	}
 
-    public RoboCheckBox(Context context, AttributeSet attrs) {
+    public RoboRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 

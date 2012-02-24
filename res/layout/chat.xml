@@ -4,34 +4,27 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <com.chess.RoboTextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:padding="3dip"
         android:text="@string/chat"
-        android:textColor="#fff"
-        android:textSize="16dip"
-        android:textStyle="bold" >
-    </TextView>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="5dip"
-        android:background="#00bb00" >
-    </ImageView>
+    />
 
-    <EditText
+
+
+    <com.chess.RoboEditText
         android:id="@+id/sendText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:minLines="2" >
-    </EditText>
+        android:minLines="2" />
 
-    <Button
+
+    <com.chess.RoboButton
         android:id="@+id/send"
         android:layout_width="100dip"
         android:layout_height="wrap_content"
