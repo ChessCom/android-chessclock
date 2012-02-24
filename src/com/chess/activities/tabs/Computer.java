@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.activities.Game;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.flurry.android.FlurryAgent;
@@ -28,6 +29,7 @@ public class Computer extends CoreActivity implements OnClickListener {
 		logoutTask = new LogoutTask();
 
 		strength = (Spinner) findViewById(R.id.PrefStrength);
+        strength.setAdapter(new ChessSpinnerAdapter(this,R.array.strength));
 		strength.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {

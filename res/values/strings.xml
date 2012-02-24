@@ -36,6 +36,7 @@
     <string name="computerWhite">White:</string>
     <string name="computerBlack">Black:</string>
     <string name="Human">Human</string>
+    <string name="Comp">Comp</string>
     <string name="Computer">Computer</string>
     <string name="Thinking">Thinking...</string>
     <string name="menuSite">www.chess.com</string>

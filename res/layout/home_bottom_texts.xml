@@ -20,7 +20,6 @@
 
         <TextView
             android:id="@+id/settings"
-            style="@style/text_pressed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -46,7 +45,6 @@
 
         <TextView
             android:id="@+id/upgrade"
-            style="@style/text_pressed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="3dip"
@@ -70,7 +68,6 @@
 
         <TextView
             android:id="@+id/help"
-            style="@style/text_pressed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
@@ -12,11 +13,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="3dip"
             android:text="@string/challengeFriend"
-            android:textColor="#fff"
-            android:textSize="16dip"
-            android:textStyle="bold" />
+          />
 
 
 
@@ -34,7 +32,6 @@
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
                     android:text="@string/Friend"
                     />
 
@@ -53,7 +50,7 @@
                 <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
+
                     android:text="@string/initialTime"
                 />
 
@@ -74,8 +71,7 @@
                 <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
+
                     android:text="@string/bonusTime"
                    />
 
@@ -96,8 +92,6 @@
                 <com.chess.RoboTextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dip"
                     android:text="@string/RatedGme"
                   />
 
@@ -127,7 +121,6 @@
                 android:id="@+id/createchallenge"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dip"
                 android:background="@drawable/button_orange_selector"
                 android:text="@string/ChallengeCreate" />
         </LinearLayout>

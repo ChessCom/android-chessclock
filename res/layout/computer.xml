@@ -18,7 +18,6 @@
 		<com.chess.RoboTextView
 			android:layout_width="75dip"
 			android:layout_height="wrap_content"
-			android:padding="3dip"
 			android:text="@string/computerWhite"
 			/>
 
@@ -50,10 +49,8 @@
 		<com.chess.RoboTextView
 			android:layout_width="75dip"
 			android:layout_height="wrap_content"
-			android:padding="3dip"
 			android:text="@string/computerBlack"
-			android:textColor="#fff"
-			android:textSize="20dip"
+
 			/>
 
 
@@ -81,7 +78,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		android:paddingRight="20dip">
+		>
 
 		<com.chess.RoboTextView
 			android:layout_width="140dip"
@@ -113,7 +110,6 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:text="@string/load"
-		android:layout_marginBottom="3dip"
 		android:visibility="gone"/>
 
 </LinearLayout>

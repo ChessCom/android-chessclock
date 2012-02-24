@@ -6,34 +6,14 @@
         <item name="android:background">@drawable/top_bar_texture</item>
     </style>
     
-    
-    <style name="text_shadow" parent="DefaultText">
-<!--
-        <item name="android:typeface">normal</item>
-        <item name="android:shadowColor">#000000</item>
-        <item name="android:shadowRadius">1.5</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
--->
-    </style>
-    
-    <style name="text_shadow_more" parent="text_shadow">
-<!--
-        <item name="android:shadowRadius">3.5</item>
-        <item name="android:shadowDx">3</item>
-        <item name="android:shadowDy">3</item>
--->
-    </style>
-    
-    
-    <style name="big_button_grey" parent="text_shadow">
+    <style name="big_button_grey" parent="DefaultText">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
 
 
-    <style name="button_orange" parent="text_shadow">
+    <style name="button_orange" parent="DefaultText">
         <item name="android:background">@drawable/button_orange_selector</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
@@ -62,35 +42,24 @@
         <item name="android:background">@drawable/button_f_selector</item>
     </style>
 
-<!--    <style name="custom_edit_field">
-        <item name="android:typeface">normal</item>
-        <item name="android:paddingLeft">14dip</item>
-        <item name="android:paddingTop">0dip</item>
-        <item name="android:paddingBottom">0dip</item>
-        <item name="android:textSize">18sp</item>
-		<item name="android:textStyle">normal</item>            
-    </style>-->
-    
-    <style name="text_pressed" parent="text_shadow_more">
+<!--    <style name="text_pressed" parent="text_shadow_more">
         <item name="android:textColor">@color/text_white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/pressed_text_size</item>
         <item name="android:gravity">center</item>
-        
-    </style>
-    <!--     <item name="android:textSize">17sp</item> -->
-    	
+    </style>-->
+
     <style name="list_text" >
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/list_item_text_size</item>
     </style>
     
-    <style name="list_text_orange" parent="text_shadow_more">
+<!--    <style name="list_text_orange" parent="text_shadow_more">
         <item name="android:textColor">@color/text_white_orange</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/list_item_text_size</item>
-	</style>
+	</style>-->
 
 
     <style name="DashboardButton">
@@ -124,7 +93,9 @@
         <!--<item name="android:background">@drawable/dashboard_item</item>-->
     </style>
 
-    <style name="ttt" parent="@android:style/Widget.EditText"></style>
+    <style name="ttt" parent="@android:style/Widget.EditText">
+
+    </style>
 
     <style name="DefaultEdt">    <!--parent="@android:style/Widget.EditText"-->
         <item name="android:focusable">true</item>
@@ -151,6 +122,7 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="spinnerStyle" parent="@android:style/Widget.Spinner">
@@ -172,11 +144,17 @@
 
     <style name="check_Box" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/btn_check_selector</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
 
     <style name="radio_Button" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/btn_radio_selector</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
 </resources>
