@@ -50,5 +50,16 @@
     </com.chess.views.DashBoardLayout>
 
 
+	<TextView
+		android:id="@+id/adView"
+		android:layout_width="fill_parent"
+		android:layout_height="48dip"
+		android:layout_marginTop="20dip"
+	    android:background="@android:color/black"
+	    android:textColor="#FF434343"
+	    android:text="Advertisment"
+	    android:layout_weight="1"
+        />
+
 
 </LinearLayout>
