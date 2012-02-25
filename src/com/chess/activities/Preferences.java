@@ -76,14 +76,14 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		}
 
 		if (mainApp.isLiveChess()) {
-			onlineTitle.setText("Live Game");
+			onlineTitle.setText(R.string.liveTitle);
 			afterIMoveLayout.setVisibility(View.GONE);
 			PrefNEnable.setVisibility(View.GONE);
 			PrefVacation.setVisibility(View.GONE);
 			computerTitle.setVisibility(View.GONE);
 			prefStrengthLayout.setVisibility(View.GONE);
 		} else {
-			onlineTitle.setText("Online Game");
+			onlineTitle.setText(R.string.onlineTitle);
 			afterIMoveLayout.setVisibility(View.VISIBLE);
 			PrefNEnable.setVisibility(View.VISIBLE);
 			PrefVacation.setVisibility(View.VISIBLE);

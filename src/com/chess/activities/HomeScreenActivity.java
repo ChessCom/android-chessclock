@@ -6,8 +6,8 @@ import android.view.View;
 import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityHome;
+import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MobclixHelper;
-import com.chess.views.BackgroundChessDrawable;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 
@@ -28,9 +28,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 		setContentView(R.layout.home_screen);
 
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-		int padding = getResources().getDrawable(R.drawable.chess_cell).getIntrinsicWidth() / 2;
-		findViewById(R.id.mainView).setPadding(padding, padding, padding, padding);
+		CommonUtils.setBackground(findViewById(R.id.mainView), this);
 
 		findViewById(R.id.playLiveFrame).setOnClickListener(this);
 		findViewById(R.id.playOnlineFrame).setOnClickListener(this);

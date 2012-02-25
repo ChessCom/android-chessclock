@@ -77,7 +77,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		computerTitle = (TextView) findViewById(R.id.computerTitle);
 		prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
-		preferencesUpgrade = (TextView) findViewById(R.id.preferencesUpgrade);
+		preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 //		boolean liveMembershipLevel =
 //				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		boolean liveMembershipLevel =
@@ -90,14 +90,14 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		}
 
 		if (mainApp.isLiveChess()) {
-			onlineTitle.setText(getString(R.string.live_game));
+			onlineTitle.setText(getString(R.string.liveTitle));
 			afterIMoveLayout.setVisibility(View.GONE);
 			PrefNEnable.setVisibility(View.GONE);
 			PrefVacation.setVisibility(View.GONE);
 			computerTitle.setVisibility(View.GONE);
 			prefStrengthLayout.setVisibility(View.GONE);
 		} else {
-			onlineTitle.setText(getString(R.string.online_game));
+			onlineTitle.setText(getString(R.string.onlineTitle));
 			afterIMoveLayout.setVisibility(View.VISIBLE);
 			PrefNEnable.setVisibility(View.VISIBLE);
 			PrefVacation.setVisibility(View.VISIBLE);
@@ -174,7 +174,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			}
 			startActivity(new Intent(this, Singin.class));
 			finish();
-		}else if(view.getId() == R.id.preferencesUpgrade){
+		}else if(view.getId() == R.id.upgradeBtn){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
 					"http://www." + LccHolder.HOST + "/login.html?als="
 							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +

@@ -10,7 +10,8 @@
     android:paddingLeft="@dimen/default_scr_side_padding"
     android:paddingRight="@dimen/default_scr_side_padding"
 
-    android:orientation="vertical" >
+    android:orientation="vertical"
+	>
 
 <!--    <TextView
         android:layout_width="fill_parent"
@@ -35,9 +36,6 @@
             android:layout_height="wrap_content"
             style="@style/button_upgrade"
             android:text="@string/preferencesUpgrade"
-
-            android:gravity="center"
-
             />
 
 <!--    <TextView
@@ -59,7 +57,12 @@
     <ListView
         android:id="@+id/videosLV"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+		android:fadingEdge="none"
+		android:background="@android:color/transparent"
+		android:cacheColorHint="@android:color/transparent"
+		android:divider="@color/underline_color_grey"
+		android:dividerHeight="2px">
     </ListView>
 
 </LinearLayout>

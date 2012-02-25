@@ -4,17 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
+    <com.chess.RoboTextView
         android:id="@+id/owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dip"
         android:text="Owner:"
         android:textColor="#00bb00"
-        android:textStyle="bold" >
-    </TextView>
+        android:textStyle="bold" />
 
-    <TextView
+
+    <com.chess.RoboTextView
         android:id="@+id/text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,6 @@
         android:text="some text"
         android:textColor="#ccc"
         android:textSize="16dip"
-        android:textStyle="bold" >
-    </TextView>
+        android:textStyle="bold" />
 
 </LinearLayout>

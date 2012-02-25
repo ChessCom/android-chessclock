@@ -2,7 +2,8 @@
 <resources>
 
     <color name="mytheme_color">#888888</color>
-    <color name="hint_text">#FFaaaaaa</color>
+	<color name="hint_text">#FFaaaaaa</color>
+	<color name="green_text">#FF43a712</color>
 
 
     <!--Back shadow-->

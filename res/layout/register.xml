@@ -77,7 +77,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:weightSum="100">
+            android:weightSum="100"
+			android:paddingLeft="5dip">
 
             <com.chess.RoboTextView
                 android:layout_width="match_parent"

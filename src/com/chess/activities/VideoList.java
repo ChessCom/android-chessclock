@@ -17,6 +17,7 @@ import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.utilities.MyProgressDialog;
+import com.chess.views.BackgroundChessDrawable;
 import com.chess.views.VideosAdapter;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 		boolean liveMembershipLevel =

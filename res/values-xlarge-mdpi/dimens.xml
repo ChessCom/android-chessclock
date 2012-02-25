@@ -1,0 +1,7 @@
+<resources>
+
+	<dimen name="dashboard_padding_top">88dip</dimen>
+	<dimen name="dashboard_padding_bot">209dip</dimen>
+	<dimen name="dashboard_padding_side">60dip</dimen>
+
+</resources>

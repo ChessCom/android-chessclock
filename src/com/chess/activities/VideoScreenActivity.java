@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
@@ -23,7 +24,7 @@ import com.flurry.android.FlurryAgent;
  */
 public class VideoScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
 	private VideoItem item;
-	private LinearLayout recent;
+	private View recent;
 	private Button upgrade;
 			private TextView title, desc;
 	private Spinner skills, categories;
@@ -58,7 +59,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 			upgrade.setVisibility(View.GONE);
 		}
 
-		recent = (LinearLayout) findViewById(R.id.recent);
+		recent = findViewById(R.id.recent);
 		title = (TextView) findViewById(R.id.title);
 		desc = (TextView) findViewById(R.id.desc);
 
@@ -70,9 +71,10 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 //			}
 //		});
 		skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
-
-		skills.setOnItemSelectedListener(skillsItemSelectedListener );
+		skills.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
+		skills.setOnItemSelectedListener(skillsItemSelectedListener);
 		categories = (Spinner) findViewById(R.id.categories);
+		categories.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
 		categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
 //		categories.post(new Runnable() {
 //			@Override

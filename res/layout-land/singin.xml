@@ -66,7 +66,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <Button
+            <com.chess.RoboButton
                 android:id="@+id/singup"
                 style="@style/big_button_grey"
                 android:layout_width="fill_parent"
@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:text="@string/singupButton" />
 
-            <Button
+            <com.chess.RoboButton
                 android:id="@+id/guestplay"
                 style="@style/big_button_grey"
                 android:layout_width="fill_parent"

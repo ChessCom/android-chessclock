@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:id="@id/mainView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+	android:id="@id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/default_scr_top_padding"
-        android:paddingLeft="@dimen/default_scr_side_padding"
-        android:paddingRight="@dimen/default_scr_side_padding"
-        >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:paddingTop="@dimen/default_scr_top_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		>
 
 		<com.chess.RoboButton
 			android:id="@+id/upgradeBtn"
@@ -22,92 +21,109 @@
 			android:layout_height="wrap_content"
 			style="@style/button_upgrade"
 			android:text="@string/preferencesUpgrade"
-			android:gravity="center"
 			/>
 
-<!--
-        <com.chess.RoboTextView
-            android:id="@+id/Upgrade"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffcd"
-            android:drawableLeft="@drawable/ic_star"
-            android:drawablePadding="10dp"
-            android:gravity="left"
-            android:padding="5px"
-            android:text="@string/videoUpgrade"
-            android:textColor="#0066cc"
-            android:textSize="16dip"
-            android:textStyle="bold"
-            android:visibility="gone" />
--->
+		<!--
+		  <com.chess.RoboTextView
+			  android:id="@+id/Upgrade"
+			  android:layout_width="fill_parent"
+			  android:layout_height="wrap_content"
+			  android:background="#ffffcd"
+			  android:drawableLeft="@drawable/ic_star"
+			  android:drawablePadding="10dp"
+			  android:gravity="left"
+			  android:padding="5px"
+			  android:text="@string/videoUpgrade"
+			  android:textColor="#0066cc"
+			  android:textSize="16dip"
+			  android:textStyle="bold"
+			  android:visibility="gone" />
+  -->
+
+		<RelativeLayout
+			android:id="@+id/recent"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:visibility="visible"
+			>
+
+			<com.chess.RoboTextView
+				android:id="@+id/title"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="Live sessions; An Opposite Coloured "
+				android:minHeight="52dip"
+				android:layout_toLeftOf="@+id/play"
+				android:gravity="center_vertical"
+				/>
+			<com.chess.RoboButton
+				android:id="@id/play"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/play"
+				android:layout_alignParentRight="true"/>
+
+			<com.chess.RoboTextView
+				android:id="@+id/desc"
+				android:layout_below="@id/title"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:maxLines="4"
+				android:text="After erqualizing quickly against the English opening, IM Danny Rensch finds himself playing an unstable middlegame with neither side possessing a clear plan."
+				android:textColor="@color/hint_text"
+
+				/>
 
 
-        <LinearLayout
-            android:id="@+id/recent"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone" >
+		</RelativeLayout>
 
-            <com.chess.RoboTextView
-                android:id="@+id/title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dip"
-                android:padding="5dip"
-/>
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:weightSum="10"
+			android:layout_marginTop="10dip"
+			>
+			<com.chess.RoboTextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/skill"
+				android:layout_weight="6"
+				/>
 
-            <com.chess.RoboTextView
-                android:id="@+id/desc"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="4"
-                android:padding="5dip"
-                android:textColor="#fff" />
+			<Spinner
+				android:id="@+id/skills"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:entries="@array/skill"
+				android:layout_weight="4"/>
 
-            <Button
-                android:id="@+id/play"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:text="@string/play" />
-        </LinearLayout>
+		</LinearLayout>
 
-        <com.chess.RoboTextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:text="@string/skill"
- >
-        </com.chess.RoboTextView>
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:weightSum="10"
+			>
+			<com.chess.RoboTextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/category"
+				android:layout_weight="6"
+				/>
 
-        <Spinner
-            android:id="@+id/skills"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/skill" >
-        </Spinner>
+			<Spinner
+				android:id="@+id/categories"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:entries="@array/category"
+				android:layout_weight="4"/>
+		</LinearLayout>
 
-        <com.chess.RoboTextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:text="@string/category"
->
-        </com.chess.RoboTextView>
-
-        <Spinner
-            android:id="@+id/categories"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/category" >
-        </Spinner>
-
-        <com.chess.RoboButton
-            android:id="@+id/start"
-            android:layout_width="100dip"
-            android:layout_height="wrap_content"
-            android:text="@string/search" />
-    </LinearLayout>
+		<com.chess.RoboButton
+			android:id="@+id/start"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/search"/>
+	</LinearLayout>
 
 </ScrollView>

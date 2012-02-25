@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.views.BackgroundChessDrawable;
@@ -33,6 +34,7 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 		logoutTask = new LogoutTask();
 
 		strength = (Spinner) findViewById(R.id.PrefStrength);
+		strength.setAdapter(new ChessSpinnerAdapter(this,R.array.strength));
 		strength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
