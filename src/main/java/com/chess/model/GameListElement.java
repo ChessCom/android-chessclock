@@ -3,6 +3,11 @@ package com.chess.model;
 import java.util.HashMap;
 
 public class GameListElement {
+
+	public final static int LIST_TYPE_GAMES = 0;
+	public final static int LIST_TYPE_CHALLENGES = 1;
+	public final static int LIST_TYPE_FINISHED = 2;
+
 	public int type = 0;
 	public HashMap<String, String> values;
   public boolean isLiveChess;
@@ -12,7 +17,7 @@ public class GameListElement {
 		this.values = new HashMap<String, String>();
     this.isLiveChess = isLiveChess;
 		switch (type) {
-			case 0:{	//Challenges
+			case LIST_TYPE_CHALLENGES:{
 				this.values.put("game_id", values[0].trim());
 				this.values.put("opponent_username", values[1]);
 				this.values.put("opponent_rating", values[2]);
@@ -42,7 +47,7 @@ public class GameListElement {
 
 				break;
 			}
-			case 1:{	//Current Games
+			case LIST_TYPE_GAMES:{
 				this.values.put("game_id", values[0]);
 				this.values.put("color", values[1]);
 				this.values.put("game_type", values[2]);
@@ -62,7 +67,7 @@ public class GameListElement {
 				this.values.put("has_new_message", values[16]);
 				break;
 			}
-			case 2:{	//Finished Games
+			case LIST_TYPE_FINISHED:{
 				this.values.put("game_id", values[0]);
 				this.values.put("color", values[1]);
 				this.values.put("game_type", values[2]);

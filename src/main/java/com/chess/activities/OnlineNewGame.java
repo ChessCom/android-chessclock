@@ -66,7 +66,7 @@ public class OnlineNewGame extends CoreActivity {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 				final GameListElement el = GameListItems.get(pos);
-				if(el.type == 0){
+				if(el.type == GameListElement.LIST_TYPE_CHALLENGES){
           final String title = App.isLiveChess() ?
                                el.values.get("opponent_chess_title") :
                                "Win: "+el.values.get("opponent_win_count")+" Loss: "+el.values.get("opponent_loss_count")

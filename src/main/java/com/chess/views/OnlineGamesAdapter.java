@@ -36,7 +36,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
         final GameListElement el = items.get(position);
       if(el != null)
       {
-        if(el.type == 0)
+        if(el.type == GameListElement.LIST_TYPE_CHALLENGES)
         {
           if (el.isLiveChess)
           {
@@ -112,7 +112,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
           info.setText(prefix + ' ' + opponentRating + ' ' + gametype/* + ' ' + color*/ + "  " + time);
           //left.setText(time);
         }
-        else if(el.type == 1)
+        else if(el.type == GameListElement.LIST_TYPE_GAMES)
         {
         		TextView info = (TextView) convertView.findViewById(R.id.info);
         		TextView left = (TextView) convertView.findViewById(R.id.left);
@@ -137,7 +137,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 					left.setText("");
 				}
 
-          } else if(el.type == 2){
+          } else if(el.type == GameListElement.LIST_TYPE_FINISHED){
         		TextView info = (TextView) convertView.findViewById(R.id.info);
         		TextView left = (TextView) convertView.findViewById(R.id.left);
 

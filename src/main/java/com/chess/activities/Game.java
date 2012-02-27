@@ -1336,7 +1336,7 @@ public class Game extends CoreActivity {
 					int i;
 					ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 					for(GameListElement gle: App.GameListItems){
-						if(gle.type == 1 && gle.values.get("is_my_turn").equals("1")){
+						if(gle.type == GameListElement.LIST_TYPE_GAMES && gle.values.get("is_my_turn").equals("1")){
 							currentGames.add(gle);
 						}
 					}
@@ -1822,7 +1822,7 @@ public class Game extends CoreActivity {
 						int i;
 						ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 						for(GameListElement gle: App.GameListItems){
-							if(gle.type == 1 && gle.values.get("is_my_turn").equals("1")){
+							if(gle.type == GameListElement.LIST_TYPE_GAMES && gle.values.get("is_my_turn").equals("1")){
 								currentGames.add(gle);
 							}
 						}
@@ -1846,7 +1846,7 @@ public class Game extends CoreActivity {
 						int i;
 						ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
 						for(GameListElement gle: App.GameListItems){
-							if(gle.type == 2){
+							if(gle.type == GameListElement.LIST_TYPE_FINISHED){
 								currentGames.add(gle);
 							}
 						}

@@ -211,9 +211,10 @@
 <string name="sendinggameinfo">Sending game info...</string>
 <string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 <string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
-<string-array name="onlineSpinner"><item>Challenges</item>
-<item>Current games</item>
-<item>Finished games</item>
+<string-array name="onlineSpinner">
+    <item>Current games</item>
+    <item>Challenges</item>
+    <item>Finished games</item>
 </string-array>
 <string name="black">Black</string>
 <string name="white">White</string>

@@ -28,7 +28,7 @@ public class ChessComApiParser {
 			for(String s: g[i].split(":")){
 				tmp[a++] = s;
 			}
-			GameListElement gle = new GameListElement(0, tmp, false);
+			GameListElement gle = new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, tmp, false);
 			output.add(gle);
 		}
 		return output;
@@ -47,7 +47,7 @@ public class ChessComApiParser {
 			for(String s: g[i].split(":")){
 				tmp[a++] = s;
 			}
-			output.add(new GameListElement(0, tmp, false));
+			output.add(new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, tmp, false));
 		}
 		return output;
 	}
@@ -70,7 +70,7 @@ public class ChessComApiParser {
             for(j=0;j<17;j++){
               tmp2[j] = tmp[inc++];
             }
-        output.add(new GameListElement(1, tmp2, false));
+        output.add(new GameListElement(GameListElement.LIST_TYPE_GAMES, tmp2, false));
 	      }
       }
       catch (Exception e)
@@ -99,7 +99,7 @@ public class ChessComApiParser {
         	for(j=0; j < 15; j++){
         		tmp2[j] = tmp[inc++];
         	}
-			output.add(new GameListElement(2, tmp2, false));
+			output.add(new GameListElement(GameListElement.LIST_TYPE_FINISHED, tmp2, false));
         }
         return output;
 	}
