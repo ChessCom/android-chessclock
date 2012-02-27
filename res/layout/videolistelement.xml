@@ -3,6 +3,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
+	style="@style/tightContainer"
 	>
 
 	<TextView
@@ -10,7 +11,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/title"
-		android:textStyle="normal"
+		android:textStyle="bold"
 		android:visibility="visible"/>
 
 	<com.chess.RoboTextView
@@ -43,7 +44,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="ACEChess"
-			android:textColor="@color/green_text"
+			android:textColor="@color/hint_text"
 			/>
 
 		<com.chess.RoboButton

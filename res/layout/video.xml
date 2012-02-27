@@ -83,6 +83,7 @@
 			android:layout_height="wrap_content"
 			android:weightSum="10"
 			android:layout_marginTop="10dip"
+			android:paddingBottom="5dip"
 			>
 			<com.chess.RoboTextView
 				android:layout_width="fill_parent"
@@ -104,6 +105,8 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:weightSum="10"
+			android:paddingBottom="5dip"
+
 			>
 			<com.chess.RoboTextView
 				android:layout_width="fill_parent"

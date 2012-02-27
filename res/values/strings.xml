@@ -35,31 +35,31 @@
 	<string name="complete_singupButton">Complete Signup</string>
     <string name="singinPlayguest">Play as Guest</string>
     <string name="computerTitle">COMPUTER PLAY</string>
-    <string name="computerWhite">White:</string>
-    <string name="computerBlack">Black:</string>
+    <string name="computerWhite">White</string>
+    <string name="computerBlack">Black</string>
     <string name="Human">Human</string>
     <string name="Comp">Comp</string>
     <string name="Computer">Computer</string>
     <string name="Thinking">Thinking...</string>
     <string name="menuSite">www.chess.com</string>
     <string name="onlineNewGametitle">New Game</string>
-    <string name="onlineChallenges">Open challenges:</string>
+    <string name="onlineChallenges">Open challenges</string>
     <string name="challengeFriend">Challenge a friend</string>
     <string name="createNewChallenge">Create Open Challenge</string>
     <string name="currentGame">Current Live Game</string>
-    <string name="GameType">Game Type:</string>
+    <string name="GameType">Game Type</string>
     <string name="classic">Classic Chess</string>
     <string name="chess960">Chess 960</string>
-    <string name="Friend">Friend:</string>
-    <string name="initialTime">Initial Time:</string>
-    <string name="bonusTime">Bonus Time:</string>
-    <string name="RatedGme">Rated Game:</string>
-    <string name="IplayAs">I play as:</string>
-    <string name="DaysPerMove">Days per Move:</string>
+    <string name="Friend">Friend</string>
+    <string name="initialTime">Initial Time</string>
+    <string name="bonusTime">Bonus Time</string>
+    <string name="RatedGme">Rated Game</string>
+    <string name="IplayAs">I play as</string>
+    <string name="DaysPerMove">Days per Move</string>
     <string name="ChallengeCreate">Create Challenge</string>
     <string name="onoff">ON / OFF</string>
-    <string name="minrating">Min rating:</string>
-    <string name="maxrating">Max rating:</string>
+    <string name="minrating">Min rating</string>
+    <string name="maxrating">Max rating</string>
     <string name="email">Email</string>
     <string name="retype">Re-type</string>
     <string name="country">Country</string>
@@ -86,7 +86,7 @@
     <string name="notificationE">Enable notifications</string>
     <string name="ssb">Show submit button</string>
     <string name="enableSounds">Enable sounds</string>
-    <string name="strength">Strength:</string>
+    <string name="strength">Strength</string>
     <string name="interfaceP">INTERFACE</string>
     <string name="board">Board</string>
     <string name="pieces">Pieces</string>
@@ -139,7 +139,7 @@
     <string name="challengedeclined">Challenge Declined!</string>
     <string name="decline">Decline</string>
     <string name="updatinggameslist">Updating Games List...</string>
-    <string name="challengetitle">Challenge:</string>
+    <string name="challengetitle">Challenge</string>
     <string name="loadinggames">Loading Games...</string>
     <string name="drawoffered">Draw Offered</string>
     <string name="gettingmessages">Getting Messages...</string>
@@ -175,8 +175,8 @@
     <string name="won">won</string>
     <string name="lost">lost</string>
     <string name="draw">draw</string>
-    <string name="duration">Duration:</string>
-    <string name="published">Published:</string>
+    <string name="duration">Duration</string>
+    <string name="published">Published</string>
     <string name="details">Details</string>
     <string name="playvideo">Play Video</string>
     <string name="accepted">Accepted!</string>
@@ -207,15 +207,15 @@
     +
     + result.values.get("user_rating")
 -->
-    <string name="wrong_score">Wrong! Score: %1$s
-        \nNew rating: %2$s </string>
-    <string name="correct_score">Correct! Score:%1$s
-        \nNew rating: %2$s </string>
+    <string name="wrong_score">Wrong! Score %1$s
+        \nNew rating %2$s </string>
+    <string name="correct_score">Correct! Score%1$s
+        \nNew rating %2$s </string>
     <string name="you_got_new_msg">You have got a new message!</string>
     <string name="browse">Browse</string>
 
 
-    <string name="bonus_time_left">Bonus Time Left: %1$s Time Spent: %2$s</string>
+    <string name="bonus_time_left">Bonus Time Left %1$s Time Spent %2$s</string>
 
     <string name="pieces_s">Pieces:</string>
     <string name="home">Home</string>
@@ -224,7 +224,7 @@
     <string name="comp">Comp</string>
     <string name="tactics">Tactics</string>
     <string name="video">Video</string>
-    <string name="boards_s">Boards:</string>
+    <string name="boards_s">Boards</string>
     <string name="invite_subject">Play Chess with me</string>
     <string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app
         here:
