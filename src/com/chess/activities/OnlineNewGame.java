@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.tabs.Online;
+import com.chess.adapters.OnlineGamesAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
@@ -24,7 +25,6 @@ import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Web;
-import com.chess.views.OnlineGamesAdapter;
 
 import java.util.ArrayList;
 

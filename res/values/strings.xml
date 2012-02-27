@@ -21,7 +21,7 @@
     <string name="label_video">VIDEO</string>
     <string name="label_settings">SETTINGS</string>
     <string name="label_tactics">TACTICS</string>
-    <string name="label_sign_up">SIGN UP</string>
+    <string name="label_sign_up">Join Now – It’s Free!</string>
 
     <string name="settings">Settings</string>
 	<string name="onlineTitle">ONLINE GAME</string>
@@ -31,7 +31,8 @@
     <string name="singinUsername">Username</string>
     <string name="singinPassword">Password</string>
     <string name="singinButton">Sign In</string>
-    <string name="singupButton">Sign Up</string>
+	<string name="singupButton">Sign Up</string>
+	<string name="complete_singupButton">Complete Signup</string>
     <string name="singinPlayguest">Play as Guest</string>
     <string name="computerTitle">COMPUTER PLAY</string>
     <string name="computerWhite">White:</string>
@@ -85,7 +86,7 @@
     <string name="notificationE">Enable notifications</string>
     <string name="ssb">Show submit button</string>
     <string name="enableSounds">Enable sounds</string>
-    <string name="strength">Strength</string>
+    <string name="strength">Strength:</string>
     <string name="interfaceP">INTERFACE</string>
     <string name="board">Board</string>
     <string name="pieces">Pieces</string>
@@ -231,5 +232,6 @@
     </string>
     <string name="live_game">Live Game</string>
     <string name="online_game">Online Game</string>
+	<string name="send_mail">Send mail...</string>
 
 </resources>

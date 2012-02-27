@@ -26,7 +26,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 	private VideoItem item;
 	private View recent;
 	private Button upgrade;
-			private TextView title, desc;
+	private TextView title, desc;
 	private Spinner skills, categories;
 
 	private SkillsItemSelectedListener skillsItemSelectedListener;
@@ -162,7 +162,8 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 			int s = skills.getSelectedItemPosition();
 			int c = categories.getSelectedItemPosition();
 
-			Intent i = new Intent(coreContext, VideoList.class);
+//			Intent i = new Intent(coreContext, VideoList.class);
+			Intent i = new Intent(coreContext, VideoListActivity.class);
 			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, "");
 			i.putExtra(AppConstants.VIDEO_CATEGORY, "");
 

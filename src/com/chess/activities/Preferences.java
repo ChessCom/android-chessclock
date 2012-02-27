@@ -12,13 +12,13 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.chess.R;
+import com.chess.adapters.SelectionAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.Selection;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
-import com.chess.views.SelectionAdapter;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences);
 
-		PrefBoard = (Button) findViewById(R.id.PrefBoard);
-		PrefPices = (Button) findViewById(R.id.PrefPices);
+//		PrefBoard = (Button) findViewById(R.id.PrefBoard);
+//		PrefPices = (Button) findViewById(R.id.PrefPices);
 		PrefInvite = (Button) findViewById(R.id.PrefInvite);
 		prefContactUs = (Button) findViewById(R.id.prefContactUs);
 

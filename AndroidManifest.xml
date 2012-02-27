@@ -59,7 +59,8 @@
     	<activity android:name=".activities.Chat" 		/>
 	    <activity android:name=".activities.ChatLive" 	/>
     	<activity android:name=".activities.Game" 		/>
-    	<activity android:name=".activities.VideoList" 	/>
+		<activity android:name=".activities.VideoList" />
+		<activity android:name=".activities.VideoListActivity" 	android:label="@string/label_video"/>
 
     	<activity android:name=".activities.tabs.Home" 	/>
     	<activity android:name=".activities.tabs.Online" />

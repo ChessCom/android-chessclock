@@ -1,9 +1,7 @@
 package com.chess.activities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +9,7 @@ import android.view.View;
 import android.widget.*;
 import com.chess.R;
 import com.chess.adapters.ChessSpinnerAdapter;
+import com.chess.adapters.SelectionAdapter2;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
@@ -18,10 +17,10 @@ import com.chess.model.Selection;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
 import com.chess.views.BackgroundChessDrawable;
-import com.chess.views.SelectionAdapter;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * PreferencesScreenActivity class
@@ -30,17 +29,14 @@ import java.util.ArrayList;
  * @created at: 08.02.12 7:18
  */
 public class PreferencesScreenActivity extends CoreActivityActionBar implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-	private Button PrefBoard, PrefPices, PrefInvite;
-	private Button prefContactUs;
-	private Spinner actionAfterMyMove, /*Notif, */ strength;
-	private CheckBox showSubmitButton, PrefNEnable, PrefVacation, PrefShowCoords, PrefShowHighlights;
+	private Spinner actionAfterMyMove; /*Notif, */
+	private Spinner strength;
+	private CheckBox showSubmitButton;
+	private CheckBox PrefNEnable;
+	private CheckBox PrefVacation;
+	private CheckBox PrefShowCoords;
+	private CheckBox PrefShowHighlights;
 	private CheckBox enableSounds;
-	private SelectionAdapter Boards, Pieces;
-	private TextView onlineTitle;
-	private LinearLayout afterIMoveLayout;
-	private TextView computerTitle;
-	private LinearLayout prefStrengthLayout;
-	private TextView preferencesUpgrade;
 	private Context context;
 
 	@Override
@@ -54,10 +50,12 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 		context = this;
 
-		PrefBoard = (Button) findViewById(R.id.PrefBoard);
-		PrefPices = (Button) findViewById(R.id.PrefPices);
-		PrefInvite = (Button) findViewById(R.id.PrefInvite);
-		prefContactUs = (Button) findViewById(R.id.prefContactUs);
+//		PrefBoard = (Button) findViewById(R.id.PrefBoard);
+//		PrefPices = (Button) findViewById(R.id.PrefPices);
+		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
+		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
+		Button prefInvite = (Button) findViewById(R.id.PrefInvite);
+		Button prefContactUs = (Button) findViewById(R.id.prefContactUs);
 
 		actionAfterMyMove = (Spinner) findViewById(R.id.PrefAIM);
 		actionAfterMyMove.setAdapter(new ChessSpinnerAdapter(this,R.array.AIM));
@@ -72,12 +70,12 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		PrefShowCoords = (CheckBox) findViewById(R.id.PrefCoords);
 		PrefShowHighlights = (CheckBox) findViewById(R.id.PrefHighlights);
 
-		onlineTitle = (TextView) findViewById(R.id.onlineTitle);
-		afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
-		computerTitle = (TextView) findViewById(R.id.computerTitle);
-		prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
+		TextView onlineTitle = (TextView) findViewById(R.id.onlineTitle);
+		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
+		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
+		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
-		preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
+		TextView preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 //		boolean liveMembershipLevel =
 //				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		boolean liveMembershipLevel =
@@ -106,7 +104,53 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		}
 		preferencesUpgrade.setOnClickListener(this);
 
-		//spiners
+
+		List<Selection> piecesList = new ArrayList<Selection>(9);
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.cases)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_classic), getString(R.string.classicP)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_club), getString(R.string.club)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_condal), getString(R.string.condal)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_maya), getString(R.string.maya)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.modern)));
+		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.vintage)));
+
+		List<Selection> boardsList = new ArrayList<Selection>(9);
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_blue), getString(R.string.blue)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_brown), getString(R.string.brown)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_green), getString(R.string.green)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_grey), getString(R.string.grey)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_marble), getString(R.string.marble)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_red), getString(R.string.red)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.woodlight)));
+		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.wooddark)));
+
+		//spinners
+		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));
+		boardsSpinner.setOnItemSelectedListener(new BoardSpinnerListener());
+		int boardsPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
+				.getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0);
+		boardsSpinner.setSelection(boardsPosition);
+
+		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
+		piecesSpinner.setOnItemSelectedListener(new PiecesSpinnerListener());
+		int piecesPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
+				.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0);
+		piecesSpinner.setSelection(piecesPosition);
+		//set defaults
+//		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().
+// getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData()
+// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)],
+// "drawable", "com.chess")), null, null, null);
+//		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources()
+// .getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData()
+// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)],
+// "drawable", "com.chess")), null, null, null);
+
+
+
 		actionAfterMyMove.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
@@ -152,9 +196,9 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			PrefVacation.setOnClickListener(this);
 		}
 		//buttons
-		PrefBoard.setOnClickListener(this);
-		PrefPices.setOnClickListener(this);
-		PrefInvite.setOnClickListener(this);
+//		PrefBoard.setOnClickListener(this);
+//		PrefPices.setOnClickListener(this);
+		prefInvite.setOnClickListener(this);
 		prefContactUs.setOnClickListener(this);
 
 		findViewById(R.id.prefLogout).setOnClickListener(this);
@@ -179,50 +223,80 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 					"http://www." + LccHolder.HOST + "/login.html?als="
 							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
-		}else if(view.getId() == R.id.PrefBoard){
+		}/*else if(view.getId() == R.id.PrefBoard){
 			new AlertDialog.Builder(context)
 					.setTitle(getString(R.string.boards_s))
-					.setAdapter(Boards, new DialogInterface.OnClickListener() {
+					.setAdapter(boardsList, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface d, int pos) {
 							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
 							mainApp.getSharedDataEditor().commit();
-							PrefBoard.setCompoundDrawables(Boards.items.get(pos).image, null, null, null);
+							PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
 							mainApp.LoadBoard(mainApp.res_boards[pos]);
 						}
 					}).create().show();
-		}else if(view.getId() == R.id.PrefPices){
+		}*//*else if(view.getId() == R.id.PrefPices){
 			new AlertDialog.Builder(context)
 					.setTitle(getString(R.string.pieces_s))
-					.setAdapter(Pieces, new DialogInterface.OnClickListener() {
+					.setAdapter(piecesList, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface d, int pos) {
-							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
+							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
+									.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 							mainApp.getSharedDataEditor().commit();
-							PrefPices.setCompoundDrawables(Pieces.items.get(pos).image, null, null, null);
+							PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
 							mainApp.LoadPieces(mainApp.res_pieces[pos]);
 						}
 					}).create().show();
-		}else if(view.getId() == R.id.PrefInvite){
+		}*/else if(view.getId() == R.id.PrefInvite){
 			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 			emailIntent.setType("text/plain");
 			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
 			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invite_text) + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\". \n \n Sent from my Android");
 			FlurryAgent.onEvent("Invite A Friend", null);
-			startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		}else if(view.getId() == R.id.prefContactUs){
 			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 			emailIntent.setType("plain/text");
 			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"mobile@chess.com"});
 			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Android Support");
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
-			startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		}
 
 //		PrefBoard = (Button) findViewById(R.id.PrefBoard);
 //		PrefPices = (Button) findViewById(R.id.PrefPices);
 //		PrefInvite = (Button) findViewById(R.id.PrefInvite);
 //		prefContactUs = (Button) findViewById(R.id.prefContactUs);		
+	}
+
+	private class BoardSpinnerListener implements AdapterView.OnItemSelectedListener{
+		@Override
+		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
+			mainApp.getSharedDataEditor().commit();
+//			PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
+			mainApp.LoadBoard(mainApp.res_boards[pos]);
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> adapterView) {
+		}
+	}
+
+	private class PiecesSpinnerListener implements AdapterView.OnItemSelectedListener{
+		@Override
+		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
+						.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
+				mainApp.getSharedDataEditor().commit();
+//				PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
+				mainApp.LoadPieces(mainApp.res_pieces[pos]);
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> adapterView) {
+		}
 	}
 
 	@Override
@@ -276,34 +350,14 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 //			}
 //		});
 
-		//buttons defaults
-		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)], "drawable", "com.chess")), null, null, null);
-		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)], "drawable", "com.chess")), null, null, null);
+		//buttons defaults   // TODO set defaults for button
+//		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().
+// getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData()
+// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)],
+// "drawable", "com.chess")), null, null, null);
+//		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)], "drawable", "com.chess")), null, null, null);
 
-		ArrayList<Selection> pieces = new ArrayList<Selection>(9);
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.cases)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_classic), getString(R.string.classicP)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_club), getString(R.string.club)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_condal), getString(R.string.condal)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_maya), getString(R.string.maya)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.modern)));
-		pieces.add(new Selection(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.vintage)));
 
-		ArrayList<Selection> boards = new ArrayList<Selection>(9);
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_blue), getString(R.string.blue)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_brown), getString(R.string.brown)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_green), getString(R.string.green)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_grey), getString(R.string.grey)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_marble), getString(R.string.marble)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_red), getString(R.string.red)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.woodlight)));
-		boards.add(new Selection(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.wooddark)));
-
-		Pieces = new SelectionAdapter(context, R.layout.selection_item, pieces);
-		Boards = new SelectionAdapter(context, R.layout.selection_item, boards);
 	}
 
 
@@ -333,12 +387,6 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-//		enableSounds = (CheckBox) findViewById(R.id.enableSounds);
-//		showSubmitButton = (CheckBox) findViewById(R.id.PrefSSB);
-//		PrefNEnable = (CheckBox) findViewById(R.id.PrefNEnable);
-//		PrefVacation = (CheckBox) findViewById(R.id.PrefVacation);
-//		PrefShowCoords = (CheckBox) findViewById(R.id.PrefCoords);
-//		PrefShowHighlights = (CheckBox) findViewById(R.id.PrefHighlights);
 		if(compoundButton.getId() == R.id.PrefSSB){
 			if (mainApp.isLiveChess()) {
 				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
@@ -376,6 +424,5 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, checked);
 			mainApp.getSharedDataEditor().commit();			
 		}
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 }

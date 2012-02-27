@@ -5,17 +5,13 @@
 	android:orientation="vertical"
 	>
 
-	<com.chess.RoboTextView
+	<TextView
 		android:id="@+id/title"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="#666"
-		android:paddingBottom="5dip"
-		android:paddingLeft="10dip"
-		android:paddingTop="5dip"
 		android:text="@string/title"
 		android:textStyle="bold"
-		android:visibility="gone"/>
+		android:visibility="visible"/>
 
 	<com.chess.RoboTextView
 		android:id="@+id/desc"
@@ -39,7 +35,7 @@
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical">
 
-		<TextView
+		<com.chess.RoboTextView
 			android:id="@+id/addinfo"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -48,14 +44,14 @@
 			android:textColor="@color/green_text"
 			/>
 
-		<Button
+		<com.chess.RoboButton
 			android:id="@+id/fulldesc"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			style="@style/button_grey"
 			android:text="@string/details"/>
 
-		<Button
+		<com.chess.RoboButton
 			android:id="@+id/play"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

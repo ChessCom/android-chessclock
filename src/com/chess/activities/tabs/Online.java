@@ -18,6 +18,7 @@ import com.chess.activities.Chat;
 import com.chess.activities.CreateChallenge;
 import com.chess.activities.Game;
 import com.chess.activities.OnlineNewGame;
+import com.chess.adapters.OnlineGamesAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
@@ -25,7 +26,6 @@ import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.Web;
-import com.chess.views.OnlineGamesAdapter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

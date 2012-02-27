@@ -6,10 +6,10 @@
         <item name="android:background">@drawable/top_bar_texture</item>
     </style>
     
-    <style name="big_button_grey" parent="DefaultText">
+<!--    <style name="big_button_grey" parent="DefaultText">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:textColor">@android:color/white</item>
-    </style>
+    </style>-->
 
 
 
@@ -23,15 +23,21 @@
 		<item name="android:paddingRight">16dip</item>
 		<item name="android:paddingTop">1dip</item>
 		<item name="android:paddingBottom">1dip</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
     <!--     <item name="android:layout_height">@dimen/default_button_height</item> -->
 
     <style name="button_grey" parent="button_orange">
         <item name="android:background">@drawable/button_grey_selector</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
     <style name="button_green" parent="button_orange">
         <item name="android:background">@drawable/button_green_selector</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
     <style name="button_upgrade" parent="button_green">
@@ -39,6 +45,8 @@
         <item name="android:paddingLeft">@dimen/button_upgrade_left_padding</item>
         <item name="android:paddingRight">@dimen/button_upgrade_right_padding</item>
         <item name="android:drawableLeft">@drawable/ic_star</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
 
@@ -113,6 +121,8 @@
         <item name="android:paddingBottom">7dip</item>
         <item name="android:gravity">bottom</item>
         <item name="android:textColorHint">@color/hint_text</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 <!--    <item name="android:paddingBottom">1dip</item>-->
 
@@ -126,6 +136,8 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">normal</item>
+		<item name="android:paddingTop">3dip</item>
+		<item name="android:paddingBottom">3dip</item>
     </style>
 
     <style name="spinnerStyle" parent="@android:style/Widget.Spinner">
@@ -136,6 +148,8 @@
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:selectable">true</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
     <style name="spinnerStyleDropDown" parent="DefaultText">
@@ -150,6 +164,8 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:textStyle">normal</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
 
@@ -158,6 +174,8 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:textStyle">normal</item>
+		<item name="android:layout_marginTop">2dip</item>
+		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
 	<style name="SettingsDividerText" parent="DefaultText">

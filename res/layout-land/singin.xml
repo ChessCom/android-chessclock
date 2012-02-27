@@ -68,7 +68,7 @@
 
             <com.chess.RoboButton
                 android:id="@+id/singup"
-                style="@style/big_button_grey"
+                style="@style/button_grey"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dip"
@@ -78,7 +78,7 @@
 
             <com.chess.RoboButton
                 android:id="@+id/guestplay"
-                style="@style/big_button_grey"
+                style="@style/button_grey"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"

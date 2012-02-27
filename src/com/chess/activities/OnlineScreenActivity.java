@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.adapters.ChessSpinnerAdapter;
+import com.chess.adapters.OnlineGamesAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.core.IntentConstants;
@@ -19,7 +20,6 @@ import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.Web;
-import com.chess.views.OnlineGamesAdapter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

@@ -28,7 +28,10 @@ import java.net.URLEncoder;
 public class SignUpScreenActivity extends CoreActivityActionBar implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
-	private EditText RegUsername, RegEmail, RegPassword, RegRetype;
+	private EditText RegUsername;
+	private EditText RegEmail;
+	private EditText RegPassword;
+	private EditText RegRetype;
 	private Spinner countrySpinner;
 	private Button RegSubmit;
 	private int CID = -1;

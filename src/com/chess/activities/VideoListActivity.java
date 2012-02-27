@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.adapters.VideosAdapter;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity;
+import com.chess.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.utilities.MyProgressDialog;
@@ -22,7 +22,7 @@ import com.chess.views.BackgroundChessDrawable;
 
 import java.util.ArrayList;
 
-public class VideoList extends CoreActivity implements OnItemClickListener, View.OnClickListener, OnScrollListener {
+public class VideoListActivity extends CoreActivityActionBar implements OnItemClickListener, View.OnClickListener, OnScrollListener {
 	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
 	private VideosAdapter videosAdapter = null;
 	private ListView videosListView;
@@ -54,15 +54,6 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 	}
 
 	@Override
-	public void LoadNext(int code) {
-	}
-
-	@Override
-	public void LoadPrev(int code) {
-		finish();
-	}
-
-	@Override
 	public void Update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null && videosAdapter == null) {
@@ -84,7 +75,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 				items.add(new VideoItem(v.split("<->")));
 			}
 			if (videosAdapter == null) {
-				videosAdapter = new VideosAdapter(VideoList.this, R.layout.videolistelement, items);
+				videosAdapter = new VideosAdapter(VideoListActivity.this, R.layout.videolistelement, items);
 				videosListView.setAdapter(videosAdapter);
 			} else
 				videosAdapter.notifyDataSetChanged();
@@ -127,7 +118,7 @@ public class VideoList extends CoreActivity implements OnItemClickListener, View
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&page-size=20&page=" + page + skill + category,
-						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoList.this, null, getString(R.string.loading), true))
+						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoListActivity.this, null, getString(R.string.loading), true))
 				);
 				update = false;
 			}

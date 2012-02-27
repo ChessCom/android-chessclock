@@ -9,12 +9,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.adapters.MessagesAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.views.MessagesAdapter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

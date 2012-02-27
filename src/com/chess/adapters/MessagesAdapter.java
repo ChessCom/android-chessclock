@@ -1,4 +1,4 @@
-package com.chess.views;
+package com.chess.adapters;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -102,7 +102,17 @@
             android:id="@+id/RegSubmitBtn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/submit"/>
+            android:text="@string/complete_singupButton"/>
+
+		<com.facebook.android.LoginButton
+			android:id="@+id/fb_connect"
+			style="@style/f_button_login"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/facebook_icon"
+			android:text="@string/connect_with_facebook"
+			android:paddingLeft="5dip"
+			/>
     </LinearLayout>
 </ScrollView>
 

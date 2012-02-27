@@ -1,4 +1,4 @@
-package com.chess.views;
+package com.chess.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -63,13 +63,23 @@ public class VideosAdapter extends ArrayAdapter<VideoItem> {
 				}
 			});
 
-			CharSequence date = DateFormat.format("dd.MM.yyyy", 1000 * Long.parseLong(el.values.get(AppConstants.PUBLISH_TIMESTAMP)));
+//			CharSequence date = DateFormat.format("dd.MM.yyyy", 1000 * Long.parseLong(el.values.get(AppConstants.PUBLISH_TIMESTAMP)));
+			CharSequence date = DateFormat.format("MMMM' 'dd,' 'yyyy", 1000 * Long.parseLong(el.values.get(AppConstants.PUBLISH_TIMESTAMP)));
 
 			if (title != null) title.setText(el.values.get(AppConstants.TITLE));
-			if (times != null)
-				times.setText(context.getString(R.string.duration) + " " + el.values.get("minutes") + "min " + context.getString(R.string.published) + " " + date);
-			if (desc != null) desc.setText(el.values.get(AppConstants.DESCRIPTION));
-			if (addinfo != null) addinfo.setText(el.values.get(AppConstants.AUTHOR_USERNAME));
+			if (times != null){
+//			“21 min | Jan 23, 2012”
+//				times.setText(context.getString(R.string.duration)
+//						+ " " + el.values.get("minutes") + "min " + context.getString(R.string.published) + " " + date);
+				times.setText(el.values.get("minutes") + " min "
+						+ " | " + date);
+
+			}
+			if (desc != null)
+				desc.setText(el.values.get(AppConstants.DESCRIPTION));
+			if (addinfo != null)
+				addinfo.setText(el.values.get(AppConstants.AUTHOR_FIRST_GAME) + " "
+						+ el.values.get(AppConstants.AUTHOR_LAST_NAME));
 
 		}
 		return convertView;
