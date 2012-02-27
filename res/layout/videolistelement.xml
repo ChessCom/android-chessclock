@@ -10,7 +10,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/title"
-		android:textStyle="bold"
+		android:textStyle="normal"
 		android:visibility="visible"/>
 
 	<com.chess.RoboTextView
@@ -19,6 +19,7 @@
 		android:layout_height="wrap_content"
 		android:maxLines="4"
 		android:text="desc"
+	    android:visibility="gone"
 		/>
 
 	<com.chess.RoboTextView
@@ -26,8 +27,9 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="9dip"
-		android:text="Duration 32 min Published 11.11.11"
+		android:text="32 min Published 11.11.11"
 		android:textColor="@color/hint_text"
+	    android:textSize="15sp"
 		/>
 
 	<LinearLayout

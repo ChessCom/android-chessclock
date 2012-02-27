@@ -64,7 +64,7 @@
 
     <!--Default screen-->
 
-    <dimen name="default_scr_top_padding">20dip</dimen>
+    <dimen name="default_scr_top_padding">16dip</dimen>
     <dimen name="default_scr_side_padding">16dip</dimen>
 
 </resources>
