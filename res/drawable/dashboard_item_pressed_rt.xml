@@ -12,28 +12,34 @@
                 android:color="@color/dark_orange" />
         </shape>
     </item>
-    <item  >
-        <shape android:dither="true" >
-            <gradient 
-                android:startColor="@android:color/transparent"
-                android:centerColor="@android:color/transparent"
-                android:endColor="@color/shadow_border"
-                android:angle="270"
-                android:centerX="90%p"
-                />
-        </shape>
-    </item>
+	<!--Shadows-->
 
-    <item >
-        <shape android:dither="true">
-            <gradient 
-                android:startColor="@android:color/transparent"
-                android:centerColor="@android:color/transparent"
-                android:endColor="@color/shadow_border"
-                android:angle="180"
-                android:centerX="90%p"
-                />
-        </shape>
-    </item>
+	<!--left-->
+	<item >
+		<shape android:dither="true">
+			<gradient
+					android:startColor="@android:color/transparent"
+					android:centerColor="@android:color/transparent"
+					android:endColor="@color/shadow_border"
+					android:angle="180"
+					android:centerX="95%"
+					android:centerY="0"
+					/>
+		</shape>
+	</item>
+	<!--bottom-->
+	<item >
+		<shape android:dither="true">
+			<gradient
+					android:startColor="@android:color/transparent"
+					android:centerColor="@android:color/transparent"
+					android:endColor="@color/shadow_border"
+					android:angle="270"
+					android:centerX="50%"
+					android:centerY="95%"
+
+					/>
+		</shape>
+	</item>
 
 </layer-list>

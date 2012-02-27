@@ -103,7 +103,9 @@
     <color name="glow_border">#00c9c9c9</color>
     <color name="glow_border2">#FF5e5e5e</color>   <!--Good-->
 
-    <color name="shadow_border">#27000000</color>
+	<!--<color name="shadow_border">#27000000</color>-->
+	<color name="shadow_border">#7F000000</color>
+	<!--<color name="shadow_border">#FF183b94</color>-->
     <color name="dashboard_item_default">#FF353535</color>
     <color name="dashboard_item_stroke">#FF575757</color>
     <!--<color name="dashboard_item_stroke">#FFFFFFFF</color>-->
