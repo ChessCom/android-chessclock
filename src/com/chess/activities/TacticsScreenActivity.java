@@ -1647,12 +1647,79 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 		return boardView.getBoard();
 	}
 
+/*
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
 		if (MainApp.isComputerGameMode(boardView)) {
+			menuInflater.inflate(R.menu.comp_game_menu, menu);
+//			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
+////			SubMenu options = menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options))
+////					.setIcon(R.drawable.options);
+//			menu.add(0, MENU_COMPUTER_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//			menu.add(0, MENU_COMPUTER_HINT, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
+//			menu.add(0, MENU_COMPUTER_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+//			menu.add(0, MENU_COMPUTER_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+
+//			options.add(0, MENU_COMPUTER_NEW_GAME_WHITE, 0, getString(R.string.ngwhite));
+//			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
+//			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
+//			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
+		}else if (!MainApp.isTacticsGameMode(boardView)) {
+			menuInflater.inflate(R.menu.tactics_game_menu, menu);
+			SubMenu options;
+			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
+				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
+					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+				} else {
+					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+				}
+			} else {
+				menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
+				menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+				try {
+					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
+						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+					} else {
+						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+					}
+				} catch (Exception e) {
+					menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+				}
+				menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+				menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+			}
+
+			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+				options.add(0, MENU_LIVE_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+				options.add(0, MENU_LIVE_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+				options.add(0, MENU_LIVE_DRAW_OFFER, 0, getString(R.string.drawoffer));
+				options.add(0, MENU_LIVE_RESIGN_OR_ABORT, 0, getString(resignOrAbort));
+				options.add(0, MENU_LIVE_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+			} else {
+				options.add(0, MENU_ECHESS_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+				options.add(0, MENU_ECHESS_BACK_TO_GAME_LIST, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
+				options.add(0, MENU_ECHESS_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+				options.add(0, MENU_ECHESS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+				options.add(0, MENU_ECHESS_DRAW_OFFER, 0, getString(R.string.drawoffer));
+				options.add(0, MENU_ECHESS_RESIGN_OR_ABORT, 0, getString(R.string.resignorabort));
+			}
+		}
+
+		return super.onCreateOptionsMenu(menu);
+	}
+*/
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		/*if (MainApp.isComputerGameMode(boardView)) {
 			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
-			SubMenu options =
-					menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
+			SubMenu options = menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options))
+					.setIcon(R.drawable.options);
 			menu.add(0, MENU_COMPUTER_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
 			menu.add(0, MENU_COMPUTER_HINT, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
 			menu.add(0, MENU_COMPUTER_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
@@ -1662,8 +1729,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
 			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
 			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
-		}
-		else if (!MainApp.isTacticsGameMode(boardView)) {
+		}else */if (!MainApp.isTacticsGameMode(boardView)) {
 			SubMenu options;
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
@@ -1705,6 +1771,7 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 			}
 		} else if (MainApp.isTacticsGameMode(boardView)) {
 			menu.add(0, MENU_TACTICS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+
 			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
 			menu.add(0, MENU_TACTICS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
 			menu.add(0, MENU_TACTICS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
@@ -1721,7 +1788,8 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView))) {
+		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(boardView)
+				|| MainApp.isFinishedEchessGameMode(boardView))) {
 			int itemPosition = mainApp.isLiveChess() ? 1 : 3;
 			if (mainApp.getCurrentGame().values.get("has_new_message").equals("1"))
 				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
@@ -1742,6 +1810,36 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
+
+
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case android.R.id.home:
+//				onBackPressed();
+////			Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
+//				break;
+//
+//			case R.id.menu_refresh:
+//				break;
+//
+//			case R.id.menu_preferences:
+//				// TODO show popup list
+//				final CharSequence[] items = {"Red", "Green", "Blue"};
+//
+//				new AlertDialog.Builder(this)
+//						.setTitle("Pick a color")
+//						.setItems(items, new DialogInterface.OnClickListener() {
+//							public void onClick(DialogInterface dialog, int item) {
+//								Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
+//							}
+//						}).show();
+////				AlertDialog alert = builder.create();
+////				alert.show();
+//				break;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
