@@ -395,7 +395,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 					GetTacticsGame("");
 
 			}else if(whichButton == DialogInterface.BUTTON_NEGATIVE){
-				mainApp.getTabHost().setCurrentTab(0);
+				//mainApp.getTabHost().setCurrentTab(0);
 				boardView.getBoard().setTacticCanceled(true);
 			}
 		}
@@ -408,7 +408,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 				FlurryAgent.onEvent("Upgrade From Tactics", null);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
 			}else if(whichButton == DialogInterface.BUTTON_NEGATIVE){
-				mainApp.getTabHost().setCurrentTab(0);
+				//mainApp.getTabHost().setCurrentTab(0);
 				boardView.getBoard().setTacticCanceled(true);
 			}
 		}
@@ -417,7 +417,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 	private class HundredTackicsDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
-			mainApp.getTabHost().setCurrentTab(0);
+			//mainApp.getTabHost().setCurrentTab(0);
 			mainApp.currentTacticProblem = 0;
 		}
 	}
@@ -428,7 +428,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
 				GetGuestTacticsGame();
 			}else if(whichButton == DialogInterface.BUTTON_NEGATIVE){
-				mainApp.getTabHost().setCurrentTab(0);
+				//mainApp.getTabHost().setCurrentTab(0);
 				boardView.getBoard().setTacticCanceled(true);
 			}
 		}
@@ -1055,7 +1055,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 //	@Override
 	public void LoadPrev(int code) {
 		if (boardView.getBoard() != null && MainApp.isTacticsGameMode(boardView)) {
-//			mainApp.getTabHost().setCurrentTab(0);
+//			//mainApp.getTabHost().setCurrentTab(0);
 			boardView.getBoard().setTacticCanceled(true);
 			onBackPressed();
 		} else {
@@ -1070,7 +1070,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 				if (!MainApp.isTacticsGameMode(boardView))
 					finish();
 				else if (MainApp.isTacticsGameMode(boardView)) {
-					/*mainApp.getTabHost().setCurrentTab(0);
+					/*//mainApp.getTabHost().setCurrentTab(0);
 					boardView.getBoard().getTactic()Canceled = true;*/
 					if (mainApp.noInternet) {
 						if (mainApp.offline) {
