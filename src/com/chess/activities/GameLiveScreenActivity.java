@@ -38,12 +38,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * TacticsScreenActivity class
+ * GameTacticsScreenActivity class
  *
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class TacticsScreenActivity extends CoreActivityActionBar implements View.OnClickListener{
+public class GameLiveScreenActivity extends CoreActivityActionBar implements View.OnClickListener{
 
 	private final static int MENU_COMPUTER_NEW_GAME = 0;
 	private final static int MENU_COMPUTER_OPTIONS = 1;
@@ -1055,8 +1055,9 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 //	@Override
 	public void LoadPrev(int code) {
 		if (boardView.getBoard() != null && MainApp.isTacticsGameMode(boardView)) {
-			mainApp.getTabHost().setCurrentTab(0);
+//			mainApp.getTabHost().setCurrentTab(0);
 			boardView.getBoard().setTacticCanceled(true);
+			onBackPressed();
 		} else {
 			finish();
 		}
@@ -1647,13 +1648,12 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 		return boardView.getBoard();
 	}
 
-/*
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		if (MainApp.isComputerGameMode(boardView)) {
-			menuInflater.inflate(R.menu.comp_game_menu, menu);
+			menuInflater.inflate(R.menu.game_comp, menu);
 //			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
 ////			SubMenu options = menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options))
 ////					.setIcon(R.drawable.options);
@@ -1666,148 +1666,168 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 //			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
 //			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
 //			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
-		}else if (!MainApp.isTacticsGameMode(boardView)) {
-			menuInflater.inflate(R.menu.tactics_game_menu, menu);
-			SubMenu options;
+		}else if (MainApp.isTacticsGameMode(boardView)) {
+			menuInflater.inflate(R.menu.game_tactics, menu);
+//			menu.add(0, MENU_TACTICS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+//			menu.add(0, MENU_TACTICS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//			menu.add(0, MENU_TACTICS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+//			menu.add(0, MENU_TACTICS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+//			menu.add(0, MENU_TACTICS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+
+			// TODO move to another callback
+//			SubMenu options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
+//			options.add(0, MENU_TACTICS_SKIP_PROBLEM, 0, getString(R.string.skipproblem));
+//			options.add(0, MENU_TACTICS_SHOW_ANSWER, 0, getString(R.string.showanswer));
+//			options.add(0, MENU_TACTICS_SETTINGS, 0, getString(R.string.settings));
+//		}else if (!MainApp.isTacticsGameMode(boardView)) {
+		}else /*if (!MainApp.isTacticsGameMode(boardView))*/ {
+//			SubMenu options;
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
-				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
-					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
-				} else {
-					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
-				}
+				menuInflater.inflate(R.menu.game_live, menu);
+//				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
+
+				// TODO create separate method
+//				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
+//					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm); // TODO change to setIcon
+//				} else {
+//					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+//				}
 			} else {
-				menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
-				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
-				menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
-				try {
-					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
-						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
-					} else {
-						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
-					}
-				} catch (Exception e) {
-					menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
-				}
-				menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-				menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+				menuInflater.inflate(R.menu.game_echess, menu);
+
+//				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
+//				menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+//				menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+//				menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+//				menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+
+				// TODO create separate method
+//				try {
+//					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
+//						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+//					} else {
+//						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+//					}
+//				} catch (Exception e) {
+//					menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+//				}
 			}
 
-			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				options.add(0, MENU_LIVE_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
-				options.add(0, MENU_LIVE_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-				options.add(0, MENU_LIVE_DRAW_OFFER, 0, getString(R.string.drawoffer));
-				options.add(0, MENU_LIVE_RESIGN_OR_ABORT, 0, getString(resignOrAbort));
-				options.add(0, MENU_LIVE_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
-			} else {
-				options.add(0, MENU_ECHESS_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
-				options.add(0, MENU_ECHESS_BACK_TO_GAME_LIST, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
-				options.add(0, MENU_ECHESS_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
-				options.add(0, MENU_ECHESS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-				options.add(0, MENU_ECHESS_DRAW_OFFER, 0, getString(R.string.drawoffer));
-				options.add(0, MENU_ECHESS_RESIGN_OR_ABORT, 0, getString(R.string.resignorabort));
-			}
+			// TODO move to another callback
+//			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+//				options.add(0, MENU_LIVE_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+//				options.add(0, MENU_LIVE_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//				options.add(0, MENU_LIVE_DRAW_OFFER, 0, getString(R.string.drawoffer));
+//				options.add(0, MENU_LIVE_RESIGN_OR_ABORT, 0, getString(resignOrAbort));
+//				options.add(0, MENU_LIVE_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+//			} else {
+//				options.add(0, MENU_ECHESS_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+//				options.add(0, MENU_ECHESS_BACK_TO_GAME_LIST, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
+//				options.add(0, MENU_ECHESS_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+//				options.add(0, MENU_ECHESS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//				options.add(0, MENU_ECHESS_DRAW_OFFER, 0, getString(R.string.drawoffer));
+//				options.add(0, MENU_ECHESS_RESIGN_OR_ABORT, 0, getString(R.string.resignorabort));
+//			}
 		}
 
 		return super.onCreateOptionsMenu(menu);
 	}
-*/
 
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		/*if (MainApp.isComputerGameMode(boardView)) {
-			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
-			SubMenu options = menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options))
-					.setIcon(R.drawable.options);
-			menu.add(0, MENU_COMPUTER_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-			menu.add(0, MENU_COMPUTER_HINT, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
-			menu.add(0, MENU_COMPUTER_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-			menu.add(0, MENU_COMPUTER_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
-
-			options.add(0, MENU_COMPUTER_NEW_GAME_WHITE, 0, getString(R.string.ngwhite));
-			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
-			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
-			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
-		}else */if (!MainApp.isTacticsGameMode(boardView)) {
-			SubMenu options;
-			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
-				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
-					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
-				} else {
-					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
-				}
-			} else {
-				menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
-				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
-				menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
-				try {
-					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
-						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
-					} else {
-						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
-					}
-				} catch (Exception e) {
-					menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
-				}
-				menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-				menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
-			}
-
-			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				options.add(0, MENU_LIVE_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
-				options.add(0, MENU_LIVE_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-				options.add(0, MENU_LIVE_DRAW_OFFER, 0, getString(R.string.drawoffer));
-				options.add(0, MENU_LIVE_RESIGN_OR_ABORT, 0, getString(resignOrAbort));
-				options.add(0, MENU_LIVE_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
-			} else {
-				options.add(0, MENU_ECHESS_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
-				options.add(0, MENU_ECHESS_BACK_TO_GAME_LIST, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
-				options.add(0, MENU_ECHESS_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
-				options.add(0, MENU_ECHESS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-				options.add(0, MENU_ECHESS_DRAW_OFFER, 0, getString(R.string.drawoffer));
-				options.add(0, MENU_ECHESS_RESIGN_OR_ABORT, 0, getString(R.string.resignorabort));
-			}
-		} else if (MainApp.isTacticsGameMode(boardView)) {
-			menu.add(0, MENU_TACTICS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
-
-			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
-			menu.add(0, MENU_TACTICS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-			menu.add(0, MENU_TACTICS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
-			menu.add(0, MENU_TACTICS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-			menu.add(0, MENU_TACTICS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
-
-			Options.add(0, MENU_TACTICS_SKIP_PROBLEM, 0, getString(R.string.skipproblem));
-			Options.add(0, MENU_TACTICS_SHOW_ANSWER, 0, getString(R.string.showanswer));
-			Options.add(0, MENU_TACTICS_SETTINGS, 0, getString(R.string.settings));
-
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		/*if (MainApp.isComputerGameMode(boardView)) {
+//			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
+//			SubMenu options = menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options))
+//					.setIcon(R.drawable.options);
+//			menu.add(0, MENU_COMPUTER_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//			menu.add(0, MENU_COMPUTER_HINT, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
+//			menu.add(0, MENU_COMPUTER_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+//			menu.add(0, MENU_COMPUTER_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+//
+//			options.add(0, MENU_COMPUTER_NEW_GAME_WHITE, 0, getString(R.string.ngwhite));
+//			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
+//			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
+//			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
+//		}else *//*if (!MainApp.isTacticsGameMode(boardView)) {
+//			SubMenu options;
+//			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+//				options = menu.addSubMenu(0, MENU_LIVE_OPTIONS, 0, getString(R.string.options)).setIcon(R.drawable.options);
+//				if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
+//					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+//				} else {
+//					menu.add(0, MENU_LIVE_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+//				}
+//			} else {
+//				menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+//				options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
+//				menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+//				try {
+//					if (mainApp.getCurrentGame().values.get("has_new_message").equals("1")) {
+//						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat_nm);
+//					} else {
+//						menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+//					}
+//				} catch (Exception e) {
+//					menu.add(0, MENU_ECHESS_CHAT, 0, getString(R.string.chat)).setIcon(R.drawable.chat);
+//				}
+//				menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+//				menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+//			}
+//
+//			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+//				options.add(0, MENU_LIVE_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+//				options.add(0, MENU_LIVE_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//				options.add(0, MENU_LIVE_DRAW_OFFER, 0, getString(R.string.drawoffer));
+//				options.add(0, MENU_LIVE_RESIGN_OR_ABORT, 0, getString(resignOrAbort));
+//				options.add(0, MENU_LIVE_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+//			} else {
+//				options.add(0, MENU_ECHESS_SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.options);
+//				options.add(0, MENU_ECHESS_BACK_TO_GAME_LIST, 0, getString(R.string.backtogamelist)).setIcon(R.drawable.prev);
+//				options.add(0, MENU_ECHESS_MESSAGES, 0, getString(R.string.messages)).setIcon(R.drawable.chat);
+//				options.add(0, MENU_ECHESS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//				options.add(0, MENU_ECHESS_DRAW_OFFER, 0, getString(R.string.drawoffer));
+//				options.add(0, MENU_ECHESS_RESIGN_OR_ABORT, 0, getString(R.string.resignorabort));
+//			}
+//		} else*/ /*if (MainApp.isTacticsGameMode(boardView)) {
+//			menu.add(0, MENU_TACTICS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
+//
+//			SubMenu Options = menu.addSubMenu(0, 1, 0, getString(R.string.options)).setIcon(R.drawable.options);
+//			menu.add(0, MENU_TACTICS_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
+//			menu.add(0, MENU_TACTICS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
+//			menu.add(0, MENU_TACTICS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
+//			menu.add(0, MENU_TACTICS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
+//
+//			Options.add(0, MENU_TACTICS_SKIP_PROBLEM, 0, getString(R.string.skipproblem));
+//			Options.add(0, MENU_TACTICS_SHOW_ANSWER, 0, getString(R.string.showanswer));
+//			Options.add(0, MENU_TACTICS_SETTINGS, 0, getString(R.string.settings));
+//
+//		}*/
+//		return true;
+//	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(boardView)
-				|| MainApp.isFinishedEchessGameMode(boardView))) {
-			int itemPosition = mainApp.isLiveChess() ? 1 : 3;
-			if (mainApp.getCurrentGame().values.get("has_new_message").equals("1"))
-				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
-			else
-				menu.getItem(itemPosition).setIcon(R.drawable.chat);
-		}
-
-		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-			final SubMenu options = menu.getItem(0).getSubMenu();
-			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
-				resignOrAbort = R.string.resign;
-			} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
-				resignOrAbort = R.string.abort;
-			} else {
-				resignOrAbort = R.string.resign;
-			}
-			options.findItem(4).setTitle(resignOrAbort);
-		}
+//		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(boardView)
+//				|| MainApp.isFinishedEchessGameMode(boardView))) {
+//			int itemPosition = mainApp.isLiveChess() ? 1 : 3;
+//			if (mainApp.getCurrentGame().values.get("has_new_message").equals("1"))
+//				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
+//			else
+//				menu.getItem(itemPosition).setIcon(R.drawable.chat);
+//		}
+//
+//		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+//			final SubMenu options = menu.getItem(0).getSubMenu();
+//			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
+//				resignOrAbort = R.string.resign;
+//			} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
+//				resignOrAbort = R.string.abort;
+//			} else {
+//				resignOrAbort = R.string.resign;
+//			}
+//			options.findItem(4).setTitle(resignOrAbort);
+//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -1843,279 +1863,279 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (MainApp.isComputerGameMode(boardView)) {
-			switch (item.getItemId()) {
-				case MENU_COMPUTER_NEW_GAME:
-					boardView.stopThinking = true;
-					finish();
-					return true;
-				case MENU_COMPUTER_OPTIONS:
-					boardView.stopThinking = true;
-					return true;
-				case MENU_COMPUTER_RESIDE:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.getBoard().setReside(!boardView.getBoard().reside);
-						if (MainApp.isComputerVsHumanGameMode(boardView)) {
-							if (MainApp.isComputerVsHumanWhiteGameMode(boardView)) {
-								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
-							}
-							else if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
-								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
-							}
-							//boardView.getBoard().mode ^= 1;
-							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
-									.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-											+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-						}
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-					}
-					return true;
-				case MENU_COMPUTER_HINT:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.hint = true;
-						boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
-								.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-										+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-					}
-					return true;
-				case MENU_COMPUTER_PREVIOUS:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.finished = false;
-						boardView.sel = false;
-						boardView.getBoard().takeBack();
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-						isMoveNav = true;
-					}
-					return true;
-				case MENU_COMPUTER_NEXT:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.sel = false;
-						boardView.getBoard().takeNext();
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-						isMoveNav = true;
-					}
-					return true;
-				case MENU_COMPUTER_NEW_GAME_WHITE: {
-					boardView.setBoard(new Board2(this));
-					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
-					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-					boardView.invalidate();
-					Update(CALLBACK_REPAINT_UI);
-					return true;
-				}
-				case MENU_COMPUTER_NEW_GAME_BLACK: {
-					boardView.setBoard(new Board2(this));
-					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
-					boardView.getBoard().setReside(true);
-					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-					boardView.invalidate();
-					Update(CALLBACK_REPAINT_UI);
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-					return true;
-				}
-				case MENU_COMPUTER_EMAIL_GAME: {
-					String moves = movelist.getText().toString();
-					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-					emailIntent.setType("plain/text");
-					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
-					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
-					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-					return true;
-				}
-				case MENU_COMPUTER_SETTINGS: {
-					startActivity(new Intent(coreContext, Preferences.class));
-					return true;
-				}
-			}
-		} else if (!MainApp.isTacticsGameMode(boardView)) {
-			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-				switch (item.getItemId()) {
-					case MENU_LIVE_SETTINGS: {
-						startActivity(new Intent(coreContext, Preferences.class));
-						return true;
-					}
-					case MENU_LIVE_RESIDE: {
-						boardView.getBoard().setReside(!boardView.getBoard().reside);
-						boardView.invalidate();
-						return true;
-					}
-					case MENU_LIVE_DRAW_OFFER: {
-						showDialog(DIALOG_DRAW_OFFER);
-						return true;
-					}
-					case MENU_LIVE_RESIGN_OR_ABORT: {
-						showDialog(DIALOG_ABORT_OR_RESIGN);
-						return true;
-					}
-					case MENU_LIVE_MESSAGES:
-					case MENU_LIVE_CHAT: {
-						chat = true;
-						GetOnlineGame(mainApp.getGameId());
-						return true;
-					}
-				}
-			} else {
-				switch (item.getItemId()) {
-					case MENU_ECHESS_NEXT_GAME:
-						if (MainApp.isLiveOrEchessGameMode(boardView)) {
-							int i;
-							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-							for (GameListElement gle : mainApp.getGameListItems()) {
-								if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
-									currentGames.add(gle);
-								}
-							}
-							for (i = 0; i < currentGames.size(); i++) {
-								if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
-									if (i + 1 < currentGames.size()) {
-										boardView.getBoard().analysis = false;
-										boardView.setBoard(new Board2(this));
-										boardView.getBoard().mode = AppConstants.GAME_MODE_LIVE_OR_ECHESS;
-										GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
-										return true;
-									} else {
-										finish();
-										return true;
-									}
-								}
-							}
-							finish();
-							return true;
-						} else if (MainApp.isFinishedEchessGameMode(boardView)) {
-							int i;
-							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-							for (GameListElement gle : mainApp.getGameListItems()) {
-								if (gle.type == 2) {
-									currentGames.add(gle);
-								}
-							}
-							for (i = 0; i < currentGames.size(); i++) {
-								if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
-									if (i + 1 < currentGames.size()) {
-										boardView.getBoard().analysis = false;
-										boardView.setBoard(new Board2(this));
-										boardView.getBoard().mode = AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
-										GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
-										return true;
-									} else {
-										finish();
-										return true;
-									}
-								}
-							}
-							finish();
-							return true;
-						}
-						return true;
-					case MENU_ECHESS_ANALYSIS:
-						boardView.getBoard().analysis = true;
-						Update(CALLBACK_REPAINT_UI);
-						return true;
-					case MENU_ECHESS_CHAT:
-						chat = true;
-						GetOnlineGame(mainApp.getGameId());
-						return true;
-					case MENU_ECHESS_PREVIOUS:
-						boardView.finished = false;
-						boardView.sel = false;
-						boardView.getBoard().takeBack();
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-						isMoveNav = true;
-						return true;
-					case MENU_ECHESS_NEXT:
-						boardView.getBoard().takeNext();
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-						isMoveNav = true;
-						return true;
-					case MENU_ECHESS_SETTINGS: {
-						startActivity(new Intent(coreContext, Preferences.class));
-						return true;
-					}
-					case MENU_ECHESS_BACK_TO_GAME_LIST: {
-						finish();
-						return true;
-					}
-					case MENU_ECHESS_MESSAGES: {
-						chat = true;
-						GetOnlineGame(mainApp.getGameId());
-						return true;
-					}
-					case MENU_ECHESS_RESIDE: {
-						boardView.getBoard().setReside(!boardView.getBoard().reside);
-						boardView.invalidate();
-						return true;
-					}
-					case MENU_ECHESS_DRAW_OFFER: {
-						showDialog(DIALOG_DRAW_OFFER);
-						return true;
-					}
-					case MENU_ECHESS_RESIGN_OR_ABORT: {
-						showDialog(DIALOG_ABORT_OR_RESIGN);
-						return true;
-					}
-				}
-			}
-		} else if (MainApp.isTacticsGameMode(boardView)) {
-			switch (item.getItemId()) {
-				case MENU_TACTICS_NEXT_GAME:
-					if (mainApp.guest) {
-						mainApp.currentTacticProblem++;
-						GetGuestTacticsGame();
-					} else {
-						if (mainApp.noInternet) mainApp.currentTacticProblem++;
-						closeOptionsMenu();
-						GetTacticsGame("");
-					}
-					return true;
-				case MENU_TACTICS_RESIDE:
-					boardView.getBoard().setReside(!boardView.getBoard().reside);
-					boardView.invalidate();
-					return true;
-				case MENU_TACTICS_ANALYSIS:
-					boardView.getBoard().analysis = true;
-					Update(CALLBACK_REPAINT_UI);
-					return true;
-				case MENU_TACTICS_PREVIOUS:
-					boardView.finished = false;
-					boardView.sel = false;
-					boardView.getBoard().takeBack();
-					boardView.invalidate();
-					Update(CALLBACK_REPAINT_UI);
-					isMoveNav = true;
-					return true;
-				case MENU_TACTICS_NEXT:
-					boardView.getBoard().takeNext();
-					boardView.invalidate();
-					Update(CALLBACK_REPAINT_UI);
-					isMoveNav = true;
-					return true;
-				case MENU_TACTICS_SKIP_PROBLEM: {
-					if (mainApp.guest || mainApp.noInternet) {
-						mainApp.currentTacticProblem++;
-						GetGuestTacticsGame();
-					} else
-						GetTacticsGame("");
-					return true;
-				}
-				case MENU_TACTICS_SHOW_ANSWER: {
-					ShowAnswer();
-					return true;
-				}
-				case MENU_TACTICS_SETTINGS: {
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
-					return true;
-				}
-			}
-		}
+//		if (MainApp.isComputerGameMode(boardView)) {
+//			switch (item.getItemId()) {
+//				case MENU_COMPUTER_NEW_GAME:
+//					boardView.stopThinking = true;
+//					finish();
+//					return true;
+//				case MENU_COMPUTER_OPTIONS:
+//					boardView.stopThinking = true;
+//					return true;
+//				case MENU_COMPUTER_RESIDE:
+//					boardView.stopThinking = true;
+//					if (!boardView.compmoving) {
+//						boardView.getBoard().setReside(!boardView.getBoard().reside);
+//						if (MainApp.isComputerVsHumanGameMode(boardView)) {
+//							if (MainApp.isComputerVsHumanWhiteGameMode(boardView)) {
+//								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+//							}
+//							else if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
+//								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+//							}
+//							//boardView.getBoard().mode ^= 1;
+//							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
+//									.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+//											+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//						}
+//						boardView.invalidate();
+//						Update(CALLBACK_REPAINT_UI);
+//					}
+//					return true;
+//				case MENU_COMPUTER_HINT:
+//					boardView.stopThinking = true;
+//					if (!boardView.compmoving) {
+//						boardView.hint = true;
+//						boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
+//								.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+//										+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//					}
+//					return true;
+//				case MENU_COMPUTER_PREVIOUS:
+//					boardView.stopThinking = true;
+//					if (!boardView.compmoving) {
+//						boardView.finished = false;
+//						boardView.sel = false;
+//						boardView.getBoard().takeBack();
+//						boardView.invalidate();
+//						Update(CALLBACK_REPAINT_UI);
+//						isMoveNav = true;
+//					}
+//					return true;
+//				case MENU_COMPUTER_NEXT:
+//					boardView.stopThinking = true;
+//					if (!boardView.compmoving) {
+//						boardView.sel = false;
+//						boardView.getBoard().takeNext();
+//						boardView.invalidate();
+//						Update(CALLBACK_REPAINT_UI);
+//						isMoveNav = true;
+//					}
+//					return true;
+//				case MENU_COMPUTER_NEW_GAME_WHITE: {
+//					boardView.setBoard(new Board2(this));
+//					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+//					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+//					boardView.invalidate();
+//					Update(CALLBACK_REPAINT_UI);
+//					return true;
+//				}
+//				case MENU_COMPUTER_NEW_GAME_BLACK: {
+//					boardView.setBoard(new Board2(this));
+//					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+//					boardView.getBoard().setReside(true);
+//					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+//					boardView.invalidate();
+//					Update(CALLBACK_REPAINT_UI);
+//					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//					return true;
+//				}
+//				case MENU_COMPUTER_EMAIL_GAME: {
+//					String moves = movelist.getText().toString();
+//					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+//					emailIntent.setType("plain/text");
+//					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
+//					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
+//					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+//					return true;
+//				}
+//				case MENU_COMPUTER_SETTINGS: {
+//					startActivity(new Intent(coreContext, Preferences.class));
+//					return true;
+//				}
+//			}
+//		} else if (!MainApp.isTacticsGameMode(boardView)) {
+//			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+//				switch (item.getItemId()) {
+//					case MENU_LIVE_SETTINGS: {
+//						startActivity(new Intent(coreContext, Preferences.class));
+//						return true;
+//					}
+//					case MENU_LIVE_RESIDE: {
+//						boardView.getBoard().setReside(!boardView.getBoard().reside);
+//						boardView.invalidate();
+//						return true;
+//					}
+//					case MENU_LIVE_DRAW_OFFER: {
+//						showDialog(DIALOG_DRAW_OFFER);
+//						return true;
+//					}
+//					case MENU_LIVE_RESIGN_OR_ABORT: {
+//						showDialog(DIALOG_ABORT_OR_RESIGN);
+//						return true;
+//					}
+//					case MENU_LIVE_MESSAGES:
+//					case MENU_LIVE_CHAT: {
+//						chat = true;
+//						GetOnlineGame(mainApp.getGameId());
+//						return true;
+//					}
+//				}
+//			} else {
+//				switch (item.getItemId()) {
+//					case MENU_ECHESS_NEXT_GAME:
+//						if (MainApp.isLiveOrEchessGameMode(boardView)) {
+//							int i;
+//							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
+//							for (GameListElement gle : mainApp.getGameListItems()) {
+//								if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
+//									currentGames.add(gle);
+//								}
+//							}
+//							for (i = 0; i < currentGames.size(); i++) {
+//								if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
+//									if (i + 1 < currentGames.size()) {
+//										boardView.getBoard().analysis = false;
+//										boardView.setBoard(new Board2(this));
+//										boardView.getBoard().mode = AppConstants.GAME_MODE_LIVE_OR_ECHESS;
+//										GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
+//										return true;
+//									} else {
+//										finish();
+//										return true;
+//									}
+//								}
+//							}
+//							finish();
+//							return true;
+//						} else if (MainApp.isFinishedEchessGameMode(boardView)) {
+//							int i;
+//							ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
+//							for (GameListElement gle : mainApp.getGameListItems()) {
+//								if (gle.type == 2) {
+//									currentGames.add(gle);
+//								}
+//							}
+//							for (i = 0; i < currentGames.size(); i++) {
+//								if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
+//									if (i + 1 < currentGames.size()) {
+//										boardView.getBoard().analysis = false;
+//										boardView.setBoard(new Board2(this));
+//										boardView.getBoard().mode = AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
+//										GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
+//										return true;
+//									} else {
+//										finish();
+//										return true;
+//									}
+//								}
+//							}
+//							finish();
+//							return true;
+//						}
+//						return true;
+//					case MENU_ECHESS_ANALYSIS:
+//						boardView.getBoard().analysis = true;
+//						Update(CALLBACK_REPAINT_UI);
+//						return true;
+//					case MENU_ECHESS_CHAT:
+//						chat = true;
+//						GetOnlineGame(mainApp.getGameId());
+//						return true;
+//					case MENU_ECHESS_PREVIOUS:
+//						boardView.finished = false;
+//						boardView.sel = false;
+//						boardView.getBoard().takeBack();
+//						boardView.invalidate();
+//						Update(CALLBACK_REPAINT_UI);
+//						isMoveNav = true;
+//						return true;
+//					case MENU_ECHESS_NEXT:
+//						boardView.getBoard().takeNext();
+//						boardView.invalidate();
+//						Update(CALLBACK_REPAINT_UI);
+//						isMoveNav = true;
+//						return true;
+//					case MENU_ECHESS_SETTINGS: {
+//						startActivity(new Intent(coreContext, Preferences.class));
+//						return true;
+//					}
+//					case MENU_ECHESS_BACK_TO_GAME_LIST: {
+//						finish();
+//						return true;
+//					}
+//					case MENU_ECHESS_MESSAGES: {
+//						chat = true;
+//						GetOnlineGame(mainApp.getGameId());
+//						return true;
+//					}
+//					case MENU_ECHESS_RESIDE: {
+//						boardView.getBoard().setReside(!boardView.getBoard().reside);
+//						boardView.invalidate();
+//						return true;
+//					}
+//					case MENU_ECHESS_DRAW_OFFER: {
+//						showDialog(DIALOG_DRAW_OFFER);
+//						return true;
+//					}
+//					case MENU_ECHESS_RESIGN_OR_ABORT: {
+//						showDialog(DIALOG_ABORT_OR_RESIGN);
+//						return true;
+//					}
+//				}
+//			}
+//		} else if (MainApp.isTacticsGameMode(boardView)) {
+//			switch (item.getItemId()) {
+//				case MENU_TACTICS_NEXT_GAME:
+//					if (mainApp.guest) {
+//						mainApp.currentTacticProblem++;
+//						GetGuestTacticsGame();
+//					} else {
+//						if (mainApp.noInternet) mainApp.currentTacticProblem++;
+//						closeOptionsMenu();
+//						GetTacticsGame("");
+//					}
+//					return true;
+//				case MENU_TACTICS_RESIDE:
+//					boardView.getBoard().setReside(!boardView.getBoard().reside);
+//					boardView.invalidate();
+//					return true;
+//				case MENU_TACTICS_ANALYSIS:
+//					boardView.getBoard().analysis = true;
+//					Update(CALLBACK_REPAINT_UI);
+//					return true;
+//				case MENU_TACTICS_PREVIOUS:
+//					boardView.finished = false;
+//					boardView.sel = false;
+//					boardView.getBoard().takeBack();
+//					boardView.invalidate();
+//					Update(CALLBACK_REPAINT_UI);
+//					isMoveNav = true;
+//					return true;
+//				case MENU_TACTICS_NEXT:
+//					boardView.getBoard().takeNext();
+//					boardView.invalidate();
+//					Update(CALLBACK_REPAINT_UI);
+//					isMoveNav = true;
+//					return true;
+//				case MENU_TACTICS_SKIP_PROBLEM: {
+//					if (mainApp.guest || mainApp.noInternet) {
+//						mainApp.currentTacticProblem++;
+//						GetGuestTacticsGame();
+//					} else
+//						GetTacticsGame("");
+//					return true;
+//				}
+//				case MENU_TACTICS_SHOW_ANSWER: {
+//					ShowAnswer();
+//					return true;
+//				}
+//				case MENU_TACTICS_SETTINGS: {
+//					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+//					return true;
+//				}
+//			}
+//		}
 		return false;
 	}
 
@@ -2363,8 +2383,8 @@ public class TacticsScreenActivity extends CoreActivityActionBar implements View
 			findViewById(R.id.moveButtons).setVisibility(View.GONE);
 			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
 			chatPanel.setVisibility(View.GONE);
-			findViewById(R.id.newGame).setOnClickListener(TacticsScreenActivity.this);
-			findViewById(R.id.home).setOnClickListener(TacticsScreenActivity.this);
+			findViewById(R.id.newGame).setOnClickListener(GameLiveScreenActivity.this);
+			findViewById(R.id.home).setOnClickListener(GameLiveScreenActivity.this);
 			getSoundPlayer().playGameEnd();
 		}
 	};

@@ -20,7 +20,9 @@
     <string name="label_play_comp">PLAY COMP</string>
     <string name="label_video">VIDEO</string>
     <string name="label_settings">SETTINGS</string>
-    <string name="label_tactics">TACTICS</string>
+	<string name="label_tactics">TACTICS</string>
+	<string name="label_game_live">LIVE GAME</string>
+	<string name="label_game_comp">COMP GAME</string>
     <string name="label_sign_up">Join Now – It’s Free!</string>
 
     <string name="settings">Settings</string>

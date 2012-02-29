@@ -264,23 +264,23 @@ public class BoardView2 extends ImageView {
 		square = side / 2;
 
 		int i, j;
-//		for (i = 0; i < 4; i++) {
-//			for (j = 0; j < 4; j++) {
-//				try {
-//					if (mainApp == null || mainApp.getBoardBitmap() == null) {
-//						throw new Exception();
-//					}
-//					canvas.drawBitmap(mainApp.getBoardBitmap(), null, new Rect(i * side, j * side, i * side + side, j * side + side), null);
-//				} catch (Exception e) {
-//					e.printStackTrace();
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				try {
+					if (mainApp == null || mainApp.getBoardBitmap() == null) {
+						throw new Exception();
+					}
+					canvas.drawBitmap(mainApp.getBoardBitmap(), null, new Rect(i * side, j * side, i * side + side, j * side + side), null);
+				} catch (Exception e) {
+					e.printStackTrace();
 //					Log.d("BoardView", "mainApp " + mainApp);
 //					Log.d("BoardView", "mainApp.board " + mainApp.getBoardBitmap());
-//					return;
-//				}
-//			}
-//		}
+					return;
+				}
+			}
+		}
 
-		image.draw(canvas);
+//		image.draw(canvas);
 
 		if (!compmoving) {
 			for (i = 0; i < 64; i++) {

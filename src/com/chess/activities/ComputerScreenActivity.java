@@ -59,12 +59,22 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 	public void onClick(View view) { // make code more clear
 		if(view.getId() == R.id.load){
 			FlurryAgent.onEvent("New Game VS Computer", null);
-			startActivity(new Intent(coreContext, Game.class).putExtra(AppConstants.GAME_MODE, Integer.parseInt(mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
+
+//			startActivity(new Intent(coreContext, Game.class)
+//					.putExtra(AppConstants.GAME_MODE,
+//							Integer.parseInt(mainApp.getSharedData()
+//									.getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
+			startActivity(new Intent(coreContext, GameCompScreenActivity.class)
+					.putExtra(AppConstants.GAME_MODE,
+							Integer.parseInt(mainApp.getSharedData()
+									.getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
 		}else if(view.getId() == R.id.start){
 			RadioButton whiteHuman, blackHuman;
 			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
 			blackHuman = (RadioButton) findViewById(R.id.bHuman);
 
+			// TODO replace with bit shifts
+			// TODO init mode on changes
 			int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 			if (!whiteHuman.isChecked() && blackHuman.isChecked())
 				mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
@@ -77,7 +87,8 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 			mainApp.getSharedDataEditor().commit();
 
 			FlurryAgent.onEvent("New Game VS Computer", null);
-			startActivity(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, mode));
+//			startActivity(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, mode));
+			startActivity(new Intent(this, GameCompScreenActivity.class).putExtra(AppConstants.GAME_MODE, mode));
 		}
 	}
 
