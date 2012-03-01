@@ -20,13 +20,27 @@
 			android:drawablePadding="10dp" android:visibility="gone"
 			android:textSize="17dip" android:gravity="left">
 		</TextView>
-        
-        <LinearLayout
+
+        <!-- integrate mopub, disable mobclix -->
+        <!--<LinearLayout
             android:id="@+id/adview_wrapper"
             android:layout_height="50dip"
             android:layout_width="320dip"
             android:visibility="gone"
-            android:layout_gravity="center" />
+            android:layout_gravity="center" />-->
+
+        <FrameLayout
+                android:id="@+id/millennial_wrapper"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:visibility="visible"
+                android:layout_gravity="center" />
+
+        <com.mopub.mobileads.MoPubView
+                android:id="@+id/mopub_adview"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
