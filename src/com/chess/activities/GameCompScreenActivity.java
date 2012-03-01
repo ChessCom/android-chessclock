@@ -327,11 +327,7 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 //		if(getWindowManager().getDefaultDisplay().getMetrics();)
 	}
 
-	public void setFullscreen() {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-	}
+
 
 
 	private void GetOnlineGame(final String game_id) {

@@ -11,6 +11,8 @@ import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.Singin;
@@ -41,6 +43,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity {
 
 	public abstract void Update(int code);
 	protected Context coreContext;
+
+	public void setFullscreen() {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
