@@ -110,10 +110,11 @@ public class Home extends CoreActivity {
   @Override
   protected void onResume()
   {
-    if (MobclixHelper.isShowAds(App))
+	// integrate mopub, disable mobclix
+    /*if (MobclixHelper.isShowAds(App))
     {
       showFullscreenAd();
-    }
+    }*/
     super.onResume();
   }
 

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.widget.*;
 import com.chess.R;
 import com.chess.activities.Game;
 import com.chess.activities.Register;
@@ -14,6 +15,8 @@ import com.chess.activities.tabs.Video;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
+import com.millennialmedia.android.MMAdView;
+import com.millennialmedia.android.MMAdViewSDK;
 import com.mobclix.android.sdk.Mobclix;
 
 import android.app.TabActivity;
@@ -23,15 +26,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
-import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
+import com.mopub.mobileads.MoPubView;
+
+import java.util.Hashtable;
 
 public class Tabs extends TabActivity {
 
 	public MainApp App;
 	private TextView removeAds;
+	private MoPubView moPubAdView;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,14 +61,31 @@ public class Tabs extends TabActivity {
               "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
           }
         });
-        
-        if (MobclixHelper.isShowAds(App))
+
+		// integrate mopub, disable mobclix
+        /*if (MobclixHelper.isShowAds(App))
         {
           if (MobclixHelper.getBannerAdviewWrapper(App) == null || MobclixHelper.getBannerAdview(App) == null)
           {
             MobclixHelper.initializeBannerAdView(this, App);
           }
-        }
+        }*/
+		/*Hashtable<String, String> map = new Hashtable<String, String>();
+		//map.put("income", "50000");
+		MMAdView adView = new MMAdView(this, "77013", MMAdView.BANNER_AD_BOTTOM, 30);
+		//MMAdView adView = new MMAdView(this, "28911", MMAdView.BANNER_AD_BOTTOM, 30);
+		adView.setId(MMAdViewSDK.DEFAULT_VIEWID);
+		FrameLayout adFrameLayout = (FrameLayout)findViewById(R.id.millennial_wrapper);
+		//LinearLayout adFrameLayout = (LinearLayout)findViewById(R.id.adview_wrapper);
+		adFrameLayout.setVisibility(View.VISIBLE);
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		adFrameLayout.addView(adView, lp);
+		//final LinearLayout bannerAdviewWrapper = (LinearLayout) findViewById(R.id.wrapper);*/
+
+		moPubAdView = (MoPubView) findViewById(R.id.mopub_adview);
+		moPubAdView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww"); // Enter your Ad Unit ID from www.mopub.com
+		moPubAdView.loadAd();
+		//
 
 	    App.mTabHost = getTabHost();
 	    App.mTabHost.addTab(App.mTabHost.newTabSpec("tab1")
@@ -159,7 +179,14 @@ public class Tabs extends TabActivity {
 
 	    App.mTabHost.setCurrentTab(tab);
     }
-	
+
+	protected void onDestroy() {
+		if (moPubAdView != null) {
+			moPubAdView.destroy();
+		}
+		super.onDestroy();
+	}
+
     @Override
     protected void onResume() {
 		super.onResume();
@@ -171,7 +198,8 @@ public class Tabs extends TabActivity {
     	  if(currentTab.equals("tab1") || currentTab.equals("tab2") || currentTab.equals("tab3") || currentTab.equals("tab5") || currentTab.equals("tab6"))
 			{
 				//System.out.println("LCCLOG2: TABS ONRESUME 2");
-				MobclixHelper.showBannerAd(removeAds, this, App);
+				// integrate mopub, disable mobclix
+				//MobclixHelper.showBannerAd(removeAds, this, App);
 			}
 			else if (currentTab.equals("tab4"))
 			{
