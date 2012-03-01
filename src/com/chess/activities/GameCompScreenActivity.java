@@ -2,15 +2,16 @@ package com.chess.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.*;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.core.*;
 import com.chess.engine.Board2;
@@ -18,12 +19,10 @@ import com.chess.engine.Move;
 import com.chess.engine.MoveParser2;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.GameListElement;
 import com.chess.utilities.*;
 import com.chess.views.BoardView2;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
-import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -34,72 +33,32 @@ import java.util.Timer;
  */
 public class GameCompScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
 
-	private final static int MENU_COMPUTER_NEW_GAME = 0;
-	private final static int MENU_COMPUTER_OPTIONS = 1;
-	private final static int MENU_COMPUTER_RESIDE = 2;
-	private final static int MENU_COMPUTER_HINT = 3;
-	private final static int MENU_COMPUTER_PREVIOUS = 4;
-	private final static int MENU_COMPUTER_NEXT = 5;
-	private final static int MENU_COMPUTER_NEW_GAME_WHITE = 6;
-	private final static int MENU_COMPUTER_NEW_GAME_BLACK = 7;
-	private final static int MENU_COMPUTER_EMAIL_GAME = 8;
-	private final static int MENU_COMPUTER_SETTINGS = 9;
-//
-//	private final static int MENU_LIVE_OPTIONS = 0;
-//	private final static int MENU_LIVE_CHAT = 6;
-//	private final static int MENU_LIVE_SETTINGS = 1;
-//	private final static int MENU_LIVE_RESIDE = 2;
-//	private final static int MENU_LIVE_DRAW_OFFER = 3;
-//	private final static int MENU_LIVE_RESIGN_OR_ABORT = 4;
-//	private final static int MENU_LIVE_MESSAGES = 5;
-//
-//	private final static int MENU_ECHESS_NEXT_GAME = 0;
-//	private final static int MENU_ECHESS_ANALYSIS = 2;
-//	private final static int MENU_ECHESS_CHAT = 3;
-//	private final static int MENU_ECHESS_PREVIOUS = 4;
-//	private final static int MENU_ECHESS_NEXT = 5;
-//	private final static int MENU_ECHESS_SETTINGS = 6;
-//	private final static int MENU_ECHESS_BACK_TO_GAME_LIST = 7;
-//	private final static int MENU_ECHESS_MESSAGES = 8;
-//	private final static int MENU_ECHESS_RESIDE = 9;
-//	private final static int MENU_ECHESS_DRAW_OFFER = 10;
-//	private final static int MENU_ECHESS_RESIGN_OR_ABORT = 11;
-//
-//	private final static int MENU_TACTICS_NEXT_GAME = 0;
-//	private final static int MENU_TACTICS_RESIDE = 2;
-//	private final static int MENU_TACTICS_ANALYSIS = 3;
-//	private final static int MENU_TACTICS_PREVIOUS = 4;
-//	private final static int MENU_TACTICS_NEXT = 5;
-//	private final static int MENU_TACTICS_SKIP_PROBLEM = 6;
-//	private final static int MENU_TACTICS_SHOW_ANSWER = 7;
-//	private final static int MENU_TACTICS_SETTINGS = 8;
-
-	private final static int DIALOG_TACTICS_LIMIT = 0;
-	private final static int DIALOG_TACTICS_START_TACTICS = 1;
-	private final static int DIALOG_TACTICS_HUNDRED = 2;
-	private final static int DIALOG_TACTICS_OFFLINE_RATING = 3;
 	private final static int DIALOG_DRAW_OFFER = 4;
 	private final static int DIALOG_ABORT_OR_RESIGN = 5;
 
 	private final static int CALLBACK_GAME_STARTED = 10;
-	private final static int CALLBACK_GET_TACTICS = 7;
-	private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
+//	private final static int CALLBACK_GET_TACTICS = 7;
+//	private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
 	private final static int CALLBACK_REPAINT_UI = 0;
 	private final static int CALLBACK_GAME_REFRESH = 9;
-	private final static int CALLBACK_TACTICS_CORRECT = 6;
-	private final static int CALLBACK_TACTICS_WRONG = 5;
-	private final static int CALLBACK_SEND_MOVE = 1;
-	private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
+//	private final static int CALLBACK_TACTICS_CORRECT = 6;
+//	private final static int CALLBACK_TACTICS_WRONG = 5;
+//	private final static int CALLBACK_SEND_MOVE = 1;
+//	private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
 
 	public BoardView2 boardView;
-	private LinearLayout analysisLL;
-	private LinearLayout analysisButtons;
-	private RelativeLayout chatPanel;
-	private TextView white, black, thinking, timer, movelist;
+//	private LinearLayout analysisLL;
+//	private LinearLayout analysisButtons;
+//	private RelativeLayout chatPanel;
+	private TextView whitePlayerLabel;
+	private TextView blackPlayerLabel;
+	private TextView thinking;
+//	private TextView timer;
+	private TextView movelist;
 	private Timer onlineGameUpdate = null;
-	private Timer tacticsTimer = null;
+//	private Timer tacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
-	private int resignOrAbort = R.string.resign;
+//	private int resignOrAbort = R.string.resign;
 
 	private com.chess.model.Game game;
 
@@ -116,309 +75,123 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 //	private OfflineModeDialogListener offlineModeDialogListener;
 	private DrawOfferDialogListener drawOfferDialogListener;
 	private AbortGameDialogListener abortGameDialogListener;
+	private MenuOptionsDialogListener menuOptionsDialogListener;
 
 //	private WrongScoreDialogListener wrongScoreDialogListener;
 
+	private CharSequence[] menuOptionsItems;
+
+
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (boardView.getBoard().analysis) {
-				if (!MainApp.isTacticsGameMode(boardView)) {
-					boardView.setBoard(new Board2(this));
-					boardView.getBoard().init = true;
-					boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
+	protected void onCreate(Bundle savedInstanceState) {
+		if(CommonUtils.needFullScreen(this)){
+			setFullscreen();
+			savedInstanceState = new Bundle();
+			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN,true);
+		}
+		super.onCreate(savedInstanceState);
 
-					if (mainApp.getCurrentGame().values.get("game_type").equals("2"))
-						boardView.getBoard().chess960 = true;
 
-					if (!isUserColorWhite()) {
-						boardView.getBoard().setReside(true);
-					}
-					String[] Moves = {};
-					if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
-						Moves = mainApp.getCurrentGame().values.get("move_list")
-								.replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-						boardView.getBoard().movesCount = Moves.length;
-					}
+		/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))) {
+			setContentView(R.layout.boardviewlive2);
+//			lccHolder.getAndroid().setGameActivity(this);   //TODO
+		} else*/
+		{
+			setContentView(R.layout.boardview_comp);
+		}
 
-					String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
-					if (!FEN.equals("")) {
-						boardView.getBoard().GenCastlePos(FEN);
-						MoveParser2.FenParse(FEN, boardView.getBoard());
-					}
+		init();
 
-					int i;
-					for (i = 0; i < boardView.getBoard().movesCount; i++) {
+//		analysisLL = (LinearLayout) findViewById(R.id.analysis);
+//		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
+//		if (mainApp.isLiveChess() && !MainApp.isTacticsGameMode(extras.getInt(AppConstants.GAME_MODE))) {
+//		chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
+//		ImageButton chatButton = (ImageButton) findViewById(R.id.chat);
+//		chatButton.setOnClickListener(this);
+//		}
 
-						int[] moveFT = mainApp.isLiveChess() ? MoveParser2.parseCoordinate(boardView.getBoard(), Moves[i]) : MoveParser2.Parse(boardView.getBoard(), Moves[i]);
-						if (moveFT.length == 4) {
-							Move m;
-							if (moveFT[3] == 2)
-								m = new Move(moveFT[0], moveFT[1], 0, 2);
-							else
-								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							boardView.getBoard().makeMove(m, false);
-						} else {
-							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							boardView.getBoard().makeMove(m, false);
-						}
-					}
-					Update(CALLBACK_REPAINT_UI);
-					boardView.getBoard().takeBack();
-					boardView.invalidate();
 
-					//last move anim
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								Thread.sleep(1300);
-								boardView.getBoard().takeNext();
-								update.sendEmptyMessage(0);
-							} catch (Exception e) {
-							}
-						}
+		whitePlayerLabel = (TextView) findViewById(R.id.white);
+		blackPlayerLabel = (TextView) findViewById(R.id.black);
+		thinking = (TextView) findViewById(R.id.thinking);
+//		timer = (TextView) findViewById(R.id.timer);
+		movelist = (TextView) findViewById(R.id.movelist);
 
-						private Handler update = new Handler() {
-							@Override
-							public void dispatchMessage(Message msg) {
-								super.dispatchMessage(msg);
-								Update(CALLBACK_REPAINT_UI);
-								boardView.invalidate();
-							}
-						};
-					}).start();
-				}/* else if (MainApp.isTacticsGameMode(boardView)) {
-					if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
-						openOptionsMenu();
-						return true;
-					}
-					int sec = boardView.getBoard().sec;
-					if (mainApp.guest || mainApp.noInternet) {
-						boardView.setBoard(new Board2(this));
-						boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
+		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
+		blackClockView = (TextView) findViewById(R.id.blackClockView);
+		/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))
+				&& lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
+			whiteClockView.setVisibility(View.VISIBLE);
+			blackClockView.setVisibility(View.VISIBLE);
+			lccHolder.getWhiteClock().paint();
+			lccHolder.getBlackClock().paint();
+			final com.chess.live.client.Game game = lccHolder.getGame(new Long(extras.getString(AppConstants.GAME_ID)));
+			final User whiteUser = game.getWhitePlayer();
+			final User blackUser = game.getBlackPlayer();
+			final Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
+			lccHolder.setClockDrawPointer(isWhite);
+		}*/
 
-						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
-						if (!FEN.equals("")) {
-							boardView.getBoard().GenCastlePos(FEN);
-							MoveParser2.FenParse(FEN, boardView.getBoard());
-							String[] tmp = FEN.split(" ");
-							if (tmp.length > 1) {
-								if (tmp[1].trim().equals("w")) {
-									boardView.getBoard().setReside(true);
-								}
-							}
-						}
-						if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
-							boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch()
-									.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
-							boardView.getBoard().movesCount = 1;
-						}
-						boardView.getBoard().sec = sec;
-						boardView.getBoard().left = Integer.parseInt(mainApp.getTacticsBatch()
-								.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - sec;
-						startTacticsTimer();
-						int[] moveFT = MoveParser2.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
-						if (moveFT.length == 4) {
-							Move m;
-							if (moveFT[3] == 2)
-								m = new Move(moveFT[0], moveFT[1], 0, 2);
-							else
-								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							boardView.getBoard().makeMove(m);
-						} else {
-							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							boardView.getBoard().makeMove(m);
-						}
-						Update(CALLBACK_REPAINT_UI);
-						boardView.getBoard().takeBack();
-						boardView.invalidate();
+		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
-						//last move anim
-						new Thread(new Runnable() {
-							public void run() {
-								try {
-									Thread.sleep(1300);
-									boardView.getBoard().takeNext();
-									update.sendEmptyMessage(0);
-								} catch (Exception e) {
-								}
-							}
+		boardView = (BoardView2) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setBoard((Board2) getLastNonConfigurationInstance());
 
-							private Handler update = new Handler() {
-								@Override
-								public void dispatchMessage(Message msg) {
-									super.dispatchMessage(msg);
-									Update(CALLBACK_REPAINT_UI);
-									boardView.invalidate();
-								}
-							};
-						}).start();
-					} else {
-						if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
-							openOptionsMenu();
-							return true;
-						}
-						boardView.setBoard(new Board2(this));
-						boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
+		lccHolder = mainApp.getLccHolder();
 
-						String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-						if (!FEN.equals("")) {
-							boardView.getBoard().GenCastlePos(FEN);
-							MoveParser2.FenParse(FEN, boardView.getBoard());
-							String[] tmp2 = FEN.split(" ");
-							if (tmp2.length > 1) {
-								if (tmp2[1].trim().equals("w")) {
-									boardView.getBoard().setReside(true);
-								}
-							}
-						}
+		if (boardView.getBoard() == null) {
+			boardView.setBoard(new Board2(this));
+			boardView.getBoard().init = true;
+			boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
+			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-						if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-							boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
-							boardView.getBoard().movesCount = 1;
-						}
-						boardView.getBoard().sec = sec;
-						boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS)) - sec;
-						int[] moveFT = MoveParser2.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
-						if (moveFT.length == 4) {
-							Move m;
-							if (moveFT[3] == 2)
-								m = new Move(moveFT[0], moveFT[1], 0, 2);
-							else
-								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							boardView.getBoard().makeMove(m);
-						} else {
-							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							boardView.getBoard().makeMove(m);
-						}
-						Update(CALLBACK_REPAINT_UI);
-						boardView.getBoard().takeBack();
-						boardView.invalidate();
-
-						//last move anim
-						new Thread(new Runnable() {
-							public void run() {
-								try {
-									Thread.sleep(1300);
-									boardView.getBoard().takeNext();
-									update.sendEmptyMessage(0);
-								} catch (Exception e) {
-								}
-							}
-
-							private Handler update = new Handler() {
-								@Override
-								public void dispatchMessage(Message msg) {
-									super.dispatchMessage(msg);
-									Update(CALLBACK_REPAINT_UI);
-									boardView.invalidate();
-								}
-							};
-						}).start();
-					}
-				}*/
+			if (MainApp.isComputerGameMode(boardView)
+					&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
+				int i;
+				String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
+				for (i = 1; i < moves.length; i++) {
+					String[] move = moves[i].split(":");
+					boardView.getBoard().makeMove(new Move(
+							Integer.parseInt(move[0]),
+							Integer.parseInt(move[1]),
+							Integer.parseInt(move[2]),
+							Integer.parseInt(move[3])), false);
+				}
+				if (MainApp.isComputerVsHumanBlackGameMode(boardView))
+					boardView.getBoard().setReside(true);
 			} else {
-				LoadPrev(MainApp.loadPrev);
+				if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
+					boardView.getBoard().setReside(true);
+					boardView.invalidate();
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				}
+				if (MainApp.isComputerVsComputerGameMode(boardView)) {
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				}
+				if (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView))
+					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
-			return true;
+//			if (MainApp.isTacticsGameMode(boardView)) {
+//				showDialog(DIALOG_TACTICS_START_TACTICS);
+//				return;
+//			}
 		}
-		return super.onKeyDown(keyCode, event);
+
+		if (MobclixHelper.isShowAds(mainApp) /*&& getRectangleAdview() == null*/
+				&& mainApp.getTabHost() != null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4")) {
+			setRectangleAdview(new MobclixIABRectangleMAdView(this));
+			getRectangleAdview().setRefreshTime(-1);
+			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
+			mainApp.setForceRectangleAd(false);
+		}
+
+		Update(CALLBACK_REPAINT_UI);
 	}
 
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.chat) {
-			chat = true;
-			GetOnlineGame(mainApp.getGameId());
-			chatPanel.setVisibility(View.GONE);
-		} else if (view.getId() == R.id.prev) {
-			boardView.finished = false;
-			boardView.sel = false;
-			boardView.getBoard().takeBack();
-			boardView.invalidate();
-			Update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
-		} else if (view.getId() == R.id.next) {
-			boardView.getBoard().takeNext();
-			boardView.invalidate();
-			Update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
-		} else if (view.getId() == R.id.newGame) {
-			startActivity(new Intent(this, OnlineNewGame.class));
-		} else if (view.getId() == R.id.home) {
-			startActivity(new Intent(this, Tabs.class));
-		}
-	}
 
-//	private class FirstTacticsDialogListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface dialog, int whichButton) {
-//			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-//				InputStream f = getResources().openRawResource(R.raw.tactics100batch);
-//				try {
-//					ByteArrayBuffer baf = new ByteArrayBuffer(50);
-//					int current = 0;
-//					while ((current = f.read()) != -1) {
-//						baf.append((byte) current);
-//					}
-//					String input = new String(baf.toByteArray());
-//					String[] tmp = input.split("[|]");
-//					int count = tmp.length - 1;
-//					mainApp.setTacticsBatch(new ArrayList<Tactic>(count));
-//					int i;
-//					for (i = 1; i <= count; i++) {
-//						mainApp.getTacticsBatch().add(new Tactic(tmp[i].split(":")));
-//					}
-//					f.close();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//
-//				if (mainApp.guest)
-//					GetGuestTacticsGame();
-//				else
-//					GetTacticsGame("");
-//
-//			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
-//				//mainApp.getTabHost().setCurrentTab(0);
-//				boardView.getBoard().setTacticCanceled(true);
-//			}
-//		}
-//	}
 
-//	private class MaxTacticksDialogListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface dialog, int whichButton) {
-//			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-//				FlurryAgent.onEvent("Upgrade From Tactics", null);
-//				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
-//			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
-//				//mainApp.getTabHost().setCurrentTab(0);
-//				boardView.getBoard().setTacticCanceled(true);
-//			}
-//		}
-//	}
-
-//	private class HundredTacticsDialogListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface dialog, int whichButton) {
-//			//mainApp.getTabHost().setCurrentTab(0);
-//			mainApp.currentTacticProblem = 0;
-//		}
-//	}
-
-//	private class OfflineModeDialogListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface dialog, int whichButton) {
-//			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-//				GetGuestTacticsGame();
-//			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
-//				//mainApp.getTabHost().setCurrentTab(0);
-//				boardView.getBoard().setTacticCanceled(true);
-//			}
-//		}
-//	}
 
 	private class DrawOfferDialogListener implements DialogInterface.OnClickListener {
 		@Override
@@ -512,32 +285,6 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-//			case DIALOG_TACTICS_LIMIT:
-//				FlurryAgent.onEvent("Tactics Daily Limit Exceded", null);
-//				return new AlertDialog.Builder(this)
-//						.setTitle(getString(R.string.daily_limit_exceeded))
-//						.setMessage(getString(R.string.max_tackics_for_today_reached))
-//						.setPositiveButton(getString(R.string.ok), maxTackicksDialogListener)
-//						.setNegativeButton(R.string.cancel, maxTackicksDialogListener)
-//						.create();
-//			case DIALOG_TACTICS_START_TACTICS:
-//				return new AlertDialog.Builder(this)
-//						.setTitle(getString(R.string.ready_for_first_tackics_q))
-//						.setPositiveButton(R.string.yes, firstTackicsDialogListener)
-//						.setNegativeButton(R.string.no, firstTackicsDialogListener)
-//						.create();
-//			case DIALOG_TACTICS_HUNDRED:
-//				return new AlertDialog.Builder(this)
-//						.setTitle(R.string.hundred_tackics_completed)
-//						.setNegativeButton(R.string.okay, hundredTackicsDialogListener)
-//						.create();
-//			case DIALOG_TACTICS_OFFLINE_RATING:
-//				return new AlertDialog.Builder(this)
-//						.setTitle(R.string.offline_mode)
-//						.setMessage(getString(R.string.no_network_rating_not_changed))
-//						.setPositiveButton(R.string.okay, offlineModeDialogListener)
-//						.setNegativeButton(R.string.cancel, offlineModeDialogListener)
-//						.create();
 			case DIALOG_DRAW_OFFER:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.drawoffer)
@@ -560,120 +307,32 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 	}
 
 	private void init() {
+		menuOptionsItems = new CharSequence[]{
+				getString(R.string.ngwhite),
+				getString(R.string.ngblack),
+				getString(R.string.emailgame),
+				getString(R.string.settings)};
 //		firstTackicsDialogListener = new FirstTacticsDialogListener();
 //		maxTackicksDialogListener = new MaxTacticksDialogListener();
 //		hundredTackicsDialogListener = new HundredTacticsDialogListener();
 //		offlineModeDialogListener = new OfflineModeDialogListener();
 		drawOfferDialogListener = new DrawOfferDialogListener();
 		abortGameDialogListener = new AbortGameDialogListener();
-
+		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 //		wrongScoreDialogListener = new WrongScoreDialogListener();
+		
+
+				
+//		displayMetrics.density
+//		if(getWindowManager().getDefaultDisplay().getMetrics();)
 	}
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))) {
-			setContentView(R.layout.boardviewlive2);
-//			lccHolder.getAndroid().setGameActivity(this);   //TODO
-		} else*/
-		{
-			setContentView(R.layout.boardview2);
-		}
-
-		init();
-
-		analysisLL = (LinearLayout) findViewById(R.id.analysis);
-		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
-//		if (mainApp.isLiveChess() && !MainApp.isTacticsGameMode(extras.getInt(AppConstants.GAME_MODE))) {
-//		chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
-//		ImageButton chatButton = (ImageButton) findViewById(R.id.chat);
-//		chatButton.setOnClickListener(this);
-//		}
-//		if (!mainApp.isLiveChess()) {
-		findViewById(R.id.prev).setOnClickListener(this);
-		findViewById(R.id.next).setOnClickListener(this);
-//		}
-
-		white = (TextView) findViewById(R.id.white);
-		black = (TextView) findViewById(R.id.black);
-		thinking = (TextView) findViewById(R.id.thinking);
-		timer = (TextView) findViewById(R.id.timer);
-		movelist = (TextView) findViewById(R.id.movelist);
-
-		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
-		blackClockView = (TextView) findViewById(R.id.blackClockView);
-		/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))
-				&& lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
-			whiteClockView.setVisibility(View.VISIBLE);
-			blackClockView.setVisibility(View.VISIBLE);
-			lccHolder.getWhiteClock().paint();
-			lccHolder.getBlackClock().paint();
-			final com.chess.live.client.Game game = lccHolder.getGame(new Long(extras.getString(AppConstants.GAME_ID)));
-			final User whiteUser = game.getWhitePlayer();
-			final User blackUser = game.getBlackPlayer();
-			final Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
-			lccHolder.setClockDrawPointer(isWhite);
-		}*/
-
-		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
-
-		boardView = (BoardView2) findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setBoard((Board2) getLastNonConfigurationInstance());
-
-		lccHolder = mainApp.getLccHolder();
-
-		if (boardView.getBoard() == null) {
-			boardView.setBoard(new Board2(this));
-			boardView.getBoard().init = true;
-			boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
-			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
-			if (MainApp.isComputerGameMode(boardView)
-					&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
-				int i;
-				String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
-				for (i = 1; i < moves.length; i++) {
-					String[] move = moves[i].split(":");
-					boardView.getBoard().makeMove(new Move(
-							Integer.parseInt(move[0]),
-							Integer.parseInt(move[1]),
-							Integer.parseInt(move[2]),
-							Integer.parseInt(move[3])), false);
-				}
-				if (MainApp.isComputerVsHumanBlackGameMode(boardView))
-					boardView.getBoard().setReside(true);
-			} else {
-				if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
-					boardView.getBoard().setReside(true);
-					boardView.invalidate();
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-				}
-				if (MainApp.isComputerVsComputerGameMode(boardView)) {
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-				}
-				if (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView))
-					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
-			}
-//			if (MainApp.isTacticsGameMode(boardView)) {
-//				showDialog(DIALOG_TACTICS_START_TACTICS);
-//				return;
-//			}
-		}
-
-		if (MobclixHelper.isShowAds(mainApp) /*&& getRectangleAdview() == null*/
-				&& mainApp.getTabHost() != null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4")) {
-			setRectangleAdview(new MobclixIABRectangleMAdView(this));
-			getRectangleAdview().setRefreshTime(-1);
-			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
-			mainApp.setForceRectangleAd(false);
-		}
-
-		Update(CALLBACK_REPAINT_UI);
+	public void setFullscreen() {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
+
 
 	private void GetOnlineGame(final String game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {
@@ -693,154 +352,6 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 			}
 		}
 	}
-
-//	private void GetTacticsGame(final String id) {
-//		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
-//		if (!mainApp.noInternet) {
-//			boardView.setBoard(new Board2(this));
-//			boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
-//
-//			if (mainApp.getTactic() != null
-//					&& id.equals(mainApp.getTactic().values.get(AppConstants.ID))) {
-//				boardView.getBoard().retry = true;
-//				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-//				if (!FEN.equals("")) {
-//					boardView.getBoard().GenCastlePos(FEN);
-//					MoveParser2.FenParse(FEN, boardView.getBoard());
-//					String[] tmp2 = FEN.split(" ");
-//					if (tmp2.length > 1) {
-//						if (tmp2[1].trim().equals("w")) {
-//							boardView.getBoard().setReside(true);
-//						}
-//					}
-//				}
-//
-//				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-//					boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
-//					boardView.getBoard().movesCount = 1;
-//				}
-//				boardView.getBoard().sec = 0;
-//				boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS));
-//				startTacticsTimer();
-//				int[] moveFT = MoveParser2.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
-//				if (moveFT.length == 4) {
-//					Move m;
-//					if (moveFT[3] == 2)
-//						m = new Move(moveFT[0], moveFT[1], 0, 2);
-//					else
-//						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-//					boardView.getBoard().makeMove(m);
-//				} else {
-//					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-//					boardView.getBoard().makeMove(m);
-//				}
-//				Update(CALLBACK_REPAINT_UI);
-//				boardView.getBoard().takeBack();
-//				boardView.invalidate();
-//
-//				//last move anim
-//				new Thread(new Runnable() {
-//					public void run() {
-//						try {
-//							Thread.sleep(1300);
-//							boardView.getBoard().takeNext();
-//							update.sendEmptyMessage(0);
-//						} catch (Exception e) {
-//						}
-//					}
-//
-//					private Handler update = new Handler() {
-//						@Override
-//						public void dispatchMessage(Message msg) {
-//							super.dispatchMessage(msg);
-//							Update(CALLBACK_REPAINT_UI);
-//							boardView.invalidate();
-//						}
-//					};
-//				}).start();
-//
-//				return;
-//			}
-//		}
-//		if (appService != null) {
-//			appService.RunSingleTask(CALLBACK_GET_TACTICS,
-//					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="
-//							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + id,
-//					progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
-//			);
-//		}
-//	}
-
-//	private void GetGuestTacticsGame() {
-//		FlurryAgent.onEvent("Tactics Session Started For Guest", null);
-//
-//		if (mainApp.currentTacticProblem >= mainApp.getTacticsBatch().size()) {
-//			showDialog(DIALOG_TACTICS_HUNDRED);
-//			return;
-//		}
-//
-//		boardView.setBoard(new Board2(this));
-//		boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
-//
-//		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
-//		if (!FEN.equals("")) {
-//			boardView.getBoard().GenCastlePos(FEN);
-//			MoveParser2.FenParse(FEN, boardView.getBoard());
-//			String[] tmp = FEN.split(" ");
-//			if (tmp.length > 1) {
-//				if (tmp[1].trim().equals("w")) {
-//					boardView.getBoard().setReside(true);
-//				}
-//			}
-//		}
-//		if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
-//			boardView.getBoard().setTacticMoves(mainApp.getTacticsBatch()
-//					.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST)
-//					.replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "")
-//					.replaceAll("  ", " ").substring(1).split(" "));
-//			boardView.getBoard().movesCount = 1;
-//		}
-//		boardView.getBoard().sec = 0;
-//		boardView.getBoard().left = Integer.parseInt(mainApp.getTacticsBatch()
-//				.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS));
-//		startTacticsTimer();
-//		int[] moveFT = MoveParser2.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
-//		if (moveFT.length == 4) {
-//			Move m;
-//			if (moveFT[3] == 2)
-//				m = new Move(moveFT[0], moveFT[1], 0, 2);
-//			else
-//				m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-//			boardView.getBoard().makeMove(m);
-//		} else {
-//			Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-//			boardView.getBoard().makeMove(m);
-//		}
-//		Update(CALLBACK_REPAINT_UI);
-//		boardView.getBoard().takeBack();
-//		boardView.invalidate();
-//
-//		//last move anim
-//		new Thread(new Runnable() {
-//			public void run() {
-//				try {
-//					Thread.sleep(1300);
-//					boardView.getBoard().takeNext();
-//					update.sendEmptyMessage(0);
-//				} catch (Exception e) {
-//				}
-//			}
-//
-//			private Handler update = new Handler() {
-//				@Override
-//				public void dispatchMessage(Message msg) {
-//					super.dispatchMessage(msg);
-//					Update(CALLBACK_REPAINT_UI);
-//					boardView.invalidate();
-//				}
-//			};
-//		}).start();
-//	}
 
 
 
@@ -886,42 +397,28 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
 					GetOnlineGame(mainApp.getGameId());
 					boardView.getBoard().init = false;
-				} else if (!boardView.getBoard().init) {
-					/*if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null
-							&& appService.getRepeatableTimer() == null) {
-						if (progressDialog != null) {
-							progressDialog.dismiss();
-							progressDialog = null;
-						}
-						if (!mainApp.isLiveChess()) {
-							appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
-									null*//*progressDialog*//*
-							);
-						}
-					}*/
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
 				switch (boardView.getBoard().mode) {
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-						white.setText(getString(R.string.Human));
-						black.setText(getString(R.string.Computer));
+						whitePlayerLabel.setText(getString(R.string.Human));
+						blackPlayerLabel.setText(getString(R.string.Computer));
 						break;
 					}
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-						white.setText(getString(R.string.Computer));
-						black.setText(getString(R.string.Human));
+						whitePlayerLabel.setText(getString(R.string.Computer));
+						blackPlayerLabel.setText(getString(R.string.Human));
 						break;
 					}
 					case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-						white.setText(getString(R.string.Human));
-						black.setText(getString(R.string.Human));
+						whitePlayerLabel.setText(getString(R.string.Human));
+						blackPlayerLabel.setText(getString(R.string.Human));
 						break;
 					}
 					case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-						white.setText(getString(R.string.Computer));
-						black.setText(getString(R.string.Computer));
+						whitePlayerLabel.setText(getString(R.string.Computer));
+						blackPlayerLabel.setText(getString(R.string.Computer));
 						break;
 					}
 
@@ -930,13 +427,13 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 				}
 
 				if (MainApp.isComputerGameMode(boardView)) {
-					hideAnalysisButtons();
+//					hideAnalysisButtons();
 				}
 
 				/*if (MainApp.isLiveOrEchessGameMode(boardView) || MainApp.isFinishedEchessGameMode(boardView)) {
 					if (mainApp.getCurrentGame() != null) {
-						white.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
-						black.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
+						whitePlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
+						blackPlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
 					}
 				}*/
 
@@ -948,8 +445,8 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 							showAnalysisButtons();
 						}
 					} else {
-						white.setVisibility(View.GONE);
-						black.setVisibility(View.GONE);
+						whitePlayerLabel.setVisibility(View.GONE);
+						blackPlayerLabel.setVisibility(View.GONE);
 						timer.setVisibility(View.VISIBLE);
 						analysisLL.setVisibility(View.GONE);
 						if (!mainApp.isLiveChess() && analysisButtons != null) {
@@ -976,235 +473,30 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 				});
 				break;
 			}
-			case CALLBACK_SEND_MOVE: {
-				findViewById(R.id.moveButtons).setVisibility(View.GONE);
-				boardView.getBoard().submit = false;
-				//String myMove = boardView.getBoard().MoveSubmit();
-				/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
-					final String move = boardView.getBoard().convertMoveLive();
-					LccHolder.LOG.info("LCC make move: " + move);
-					try {
-						lccHolder.makeMove(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID), move);
-					} catch (IllegalArgumentException e) {
-						LccHolder.LOG.info("LCC illegal move: " + move);
-						e.printStackTrace();
-					}
-				} else */
-				if (!mainApp.isLiveChess() && appService != null) {
-					if (mainApp.getCurrentGame() == null) {
-						if (appService.getRepeatableTimer() != null) {
-							appService.getRepeatableTimer().cancel();
-							appService.setRepeatableTimer(null);
-						}
-						appService.RunSingleTask(CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE,
-								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" +
-										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
-								null);
-					} else {
-						appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
-								"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
-										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" +
-										mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=SUBMIT&newmove=" +
-										boardView.getBoard().convertMoveEchess() + "&timestamp=" +
-										mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP),
-								progressDialog = new MyProgressDialog(
-										ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 
-						NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-						mNotificationManager.cancel(1);
-						Notifications.resetCounter();
-					}
-				}
-				break;
-			}
-			case CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE: {
-				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
-				if (!mainApp.isLiveChess() && appService != null) {
-					appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
-							"http://www." + LccHolder.HOST + "/api/submit_echess_action?id=" +
-									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid=" +
-									mainApp.getCurrentGame().values.get(AppConstants.GAME_ID) + "&command=SUBMIT&newmove=" +
-									boardView.getBoard().convertMoveEchess() + "&timestamp=" +
-									mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP),
-							progressDialog = new MyProgressDialog(
-									ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
-					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-					mNotificationManager.cancel(1);
-					Notifications.resetCounter();
-				}
-				break;
-			}
 			case 2: {
-				white.setVisibility(View.GONE);
-				black.setVisibility(View.GONE);
+				whitePlayerLabel.setVisibility(View.GONE);
+				blackPlayerLabel.setVisibility(View.GONE);
 				thinking.setVisibility(View.VISIBLE);
 				break;
 			}
 			case 3: {
-				white.setVisibility(View.VISIBLE);
-				black.setVisibility(View.VISIBLE);
+				whitePlayerLabel.setVisibility(View.VISIBLE);
+				blackPlayerLabel.setVisibility(View.VISIBLE);
 				thinking.setVisibility(View.GONE);
 				break;
 			}
-			case 4: {
-//				CheckTacticMoves();
-				break;
-			}
-			case CALLBACK_TACTICS_WRONG: {
-				/*String[] tmp = response.split("[|]");
-				if (tmp.length < 2 || tmp[1].trim().equals("")) {
-					showDialog(DIALOG_TACTICS_LIMIT);
-					return;
-				}
+//			case 4: {
+////				CheckTacticMoves();
+//				break;
+//			}
 
-				TacticResult result = new TacticResult(tmp[1].split(":"));
-
-				new AlertDialog.Builder(this)
-						.setTitle(getString(R.string.wrong_score,
-								result.values.get(AppConstants.USER_RATING_CHANGE),
-								result.values.get(AppConstants.USER_RATING)))
-						.setItems(getResources().getTextArray(R.array.wrongtactic), wrongScoreDialogListener)
-						.create().show();*/
-				break;
-			}
-			case CALLBACK_TACTICS_CORRECT: {
-			/*	String[] tmp = response.split("[|]");
-				if (tmp.length < 2 || tmp[1].trim().equals("")) {
-					showDialog(DIALOG_TACTICS_LIMIT);
-					return;
-				}
-
-				TacticResult result = new TacticResult(tmp[1].split(":"));
-
-				new AlertDialog.Builder(this)
-						.setTitle(getString(R.string.correct_score,
-								result.values.get(AppConstants.USER_RATING_CHANGE),
-								result.values.get(AppConstants.USER_RATING)))
-						.setItems(getResources().getTextArray(R.array.correcttactic), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								if (which == 1) {
-									GetTacticsGame("");
-								}
-							}
-						})
-						.create().show();*/
-				break;
-			}
-			case CALLBACK_GET_TACTICS:
-/*
-				boardView.setBoard(new Board2(this));
-				boardView.getBoard().mode = AppConstants.GAME_MODE_TACTICS;
-
-				String[] tmp = response.trim().split("[|]");
-				if (tmp.length < 3 || tmp[2].trim().equals("")) {
-					showDialog(DIALOG_TACTICS_LIMIT);
-					return;
-				}
-
-				mainApp.setTactic(new Tactic(tmp[2].split(":")));
-
-				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
-					MoveParser2.FenParse(FEN, boardView.getBoard());
-					String[] tmp2 = FEN.split(" ");
-					if (tmp2.length > 1) {
-						if (tmp2[1].trim().equals("w")) {
-							boardView.getBoard().setReside(true);
-						}
-					}
-				}
-
-				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					boardView.getBoard().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
-					boardView.getBoard().movesCount = 1;
-				}
-				boardView.getBoard().sec = 0;
-				boardView.getBoard().left = Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS));
-				startTacticsTimer();
-				c = MoveParser2.Parse(boardView.getBoard(), boardView.getBoard().getTacticMoves()[0]);
-				if (moveFT.length == 4) {
-					Move m;
-					if (moveFT[3] == 2)
-						m = new Move(moveFT[0], moveFT[1], 0, 2);
-					else
-						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					boardView.getBoard().makeMove(m);
-				} else {
-					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-					boardView.getBoard().makeMove(m);
-				}
-				Update(CALLBACK_REPAINT_UI);
-				boardView.getBoard().takeBack();
-				boardView.invalidate();
-
-				//last move anim
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(1300);
-							boardView.getBoard().takeNext();
-							update.sendEmptyMessage(0);
-						} catch (Exception e) {
-						}
-					}
-
-					private Handler update = new Handler() {
-						@Override
-						public void dispatchMessage(Message msg) {
-							super.dispatchMessage(msg);
-							Update(CALLBACK_REPAINT_UI);
-							boardView.invalidate();
-						}
-					};
-				}).start();*/
-				break;
-			case CALLBACK_ECHESS_MOVE_WAS_SENT:
-				// move was made
-				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
-					finish();
-				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
-						.getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
-
-					int i;
-					ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-					for (GameListElement gle : mainApp.getGameListItems()) {
-						if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
-							currentGames.add(gle);
-						}
-					}
-					for (i = 0; i < currentGames.size(); i++) {
-						if (currentGames.get(i).values.get(AppConstants.GAME_ID)
-								.contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
-							if (i + 1 < currentGames.size()) {
-								boardView.setBoard(new Board2(this));
-								boardView.getBoard().analysis = false;
-								boardView.getBoard().mode = AppConstants.GAME_MODE_LIVE_OR_ECHESS;
-
-								if (progressDialog != null) {
-									progressDialog.dismiss();
-									progressDialog = null;
-								}
-
-								GetOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
-								return;
-							} else {
-								finish();
-								return;
-							}
-						}
-					}
-					finish();
-					return;
-				}
-				break;
 			case CALLBACK_GAME_REFRESH:
-				if (boardView.getBoard().analysis)
-					return;
-				if (!mainApp.isLiveChess()) {
-					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
-				}
+//				if (boardView.getBoard().analysis)
+//					return;
+//				if (!mainApp.isLiveChess()) {
+//					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
+//				}
 				//System.out.println("!!!!!!!! mainApp.getCurrentGame() " + mainApp.getCurrentGame());
 				//System.out.println("!!!!!!!! game " + game);
 
@@ -1387,18 +679,18 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 					};
 				}).start();
 
-				if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null && appService.getRepeatableTimer() == null) {
-					if (progressDialog != null) {
-						progressDialog.dismiss();
-						progressDialog = null;
-					}
-					if (!mainApp.isLiveChess()) {
-						appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
-								null/*progressDialog*/
-						);
-					}
-				}
+//				if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null && appService.getRepeatableTimer() == null) {
+//					if (progressDialog != null) {
+//						progressDialog.dismiss();
+//						progressDialog = null;
+//					}
+//					if (!mainApp.isLiveChess()) {
+//						appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
+//								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
+//								null/*progressDialog*/
+//						);
+//					}
+//				}
 				break;
 
 			default:
@@ -1406,33 +698,17 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 		}
 	}
 
-
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		return boardView.getBoard();
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		if (MainApp.isComputerGameMode(boardView)) {
 			menuInflater.inflate(R.menu.game_comp, menu);
-//			menu.add(0, MENU_COMPUTER_NEW_GAME, 0, getString(R.string.newgame)).setIcon(R.drawable.newgame);
-////			SubMenu options = menu.addSubMenu(0, MENU_COMPUTER_OPTIONS, 0, getString(R.string.options))
-////					.setIcon(R.drawable.options);
-//			menu.add(0, MENU_COMPUTER_RESIDE, 0, getString(R.string.reside)).setIcon(R.drawable.reside);
-//			menu.add(0, MENU_COMPUTER_HINT, 0, getString(R.string.hint)).setIcon(R.drawable.hint);
-//			menu.add(0, MENU_COMPUTER_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-//			menu.add(0, MENU_COMPUTER_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
-
-//			options.add(0, MENU_COMPUTER_NEW_GAME_WHITE, 0, getString(R.string.ngwhite));
-//			options.add(0, MENU_COMPUTER_NEW_GAME_BLACK, 0, getString(R.string.ngblack));
-//			options.add(0, MENU_COMPUTER_EMAIL_GAME, 0, getString(R.string.emailgame));
-//			options.add(0, MENU_COMPUTER_SETTINGS, 0, getString(R.string.settings));
-
 		}
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -1447,136 +723,130 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 //			else
 //				menu.getItem(itemPosition).setIcon(R.drawable.chat);
 //		}
-//
-
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case android.R.id.home:
-//				onBackPressed();
-////			Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
-//				break;
-//
-//			case R.id.menu_refresh:
-//				break;
-//
-//			case R.id.menu_preferences:
-//				// TODO show popup list
-//				final CharSequence[] items = {"Red", "Green", "Blue"};
-//
-//				new AlertDialog.Builder(this)
-//						.setTitle("Pick a color")
-//						.setItems(items, new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog, int item) {
-//								Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
-//							}
-//						}).show();
-////				AlertDialog alert = builder.create();
-////				alert.show();
-//				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (MainApp.isComputerGameMode(boardView)) {
-			switch (item.getItemId()) {
-				case MENU_COMPUTER_NEW_GAME:
-					boardView.stopThinking = true;
-					finish();
-					return true;
-				case MENU_COMPUTER_OPTIONS:
-					boardView.stopThinking = true;
-					return true;
-				case MENU_COMPUTER_RESIDE:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.getBoard().setReside(!boardView.getBoard().reside);
-						if (MainApp.isComputerVsHumanGameMode(boardView)) {
-							if (MainApp.isComputerVsHumanWhiteGameMode(boardView)) {
-								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
-							} else if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
-								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
-							}
-							//boardView.getBoard().mode ^= 1;
-							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
-									.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-											+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+		switch (item.getItemId()) {
+			case R.id.menu_new_game:
+				boardView.stopThinking = true;
+//				finish();
+				onBackPressed();
+				break;
+			case R.id.menu_options:
+				boardView.stopThinking = true;
+
+				new AlertDialog.Builder(this)
+						.setTitle(R.string.options)
+						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+				break;
+			case R.id.menu_reside:
+				boardView.stopThinking = true;
+				if (!boardView.compmoving) {
+					boardView.getBoard().setReside(!boardView.getBoard().reside);
+					if (MainApp.isComputerVsHumanGameMode(boardView)) {
+						if (MainApp.isComputerVsHumanWhiteGameMode(boardView)) {
+							boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+						} else if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
+							boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 						}
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-					}
-					return true;
-				case MENU_COMPUTER_HINT:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.hint = true;
+						//boardView.getBoard().mode ^= 1;
 						boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
 								.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 										+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					}
-					return true;
-				case MENU_COMPUTER_PREVIOUS:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.finished = false;
-						boardView.sel = false;
-						boardView.getBoard().takeBack();
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-						isMoveNav = true;
-					}
-					return true;
-				case MENU_COMPUTER_NEXT:
-					boardView.stopThinking = true;
-					if (!boardView.compmoving) {
-						boardView.sel = false;
-						boardView.getBoard().takeNext();
-						boardView.invalidate();
-						Update(CALLBACK_REPAINT_UI);
-						isMoveNav = true;
-					}
-					return true;
-				case MENU_COMPUTER_NEW_GAME_WHITE: {
-					boardView.setBoard(new Board2(this));
+					boardView.invalidate();
+					Update(CALLBACK_REPAINT_UI);
+				}
+				break;
+			case R.id.menu_hint:
+				boardView.stopThinking = true;
+				if (!boardView.compmoving) {
+					boardView.hint = true;
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
+							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				}
+				break;
+			case R.id.menu_previous:
+				boardView.stopThinking = true;
+				if (!boardView.compmoving) {
+					boardView.finished = false;
+					boardView.sel = false;
+					boardView.getBoard().takeBack();
+					boardView.invalidate();
+					Update(CALLBACK_REPAINT_UI);
+					isMoveNav = true;
+				}
+				break;
+			case R.id.menu_next:
+				boardView.stopThinking = true;
+				if (!boardView.compmoving) {
+					boardView.sel = false;
+					boardView.getBoard().takeNext();
+					boardView.invalidate();
+					Update(CALLBACK_REPAINT_UI);
+					isMoveNav = true;
+				}
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener{
+		final CharSequence[] items;
+		private final int NEW_GAME_WHITE = 0;
+		private final int NEW_GAME_BLACK = 1;
+		private final int EMAIL_GAME = 2;
+		private final int SETTINGS = 3;
+
+		private MenuOptionsDialogListener(CharSequence[] items) {
+			this.items = items;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialogInterface, int i) {
+			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
+			switch (i){
+				case NEW_GAME_WHITE: {
+					boardView.setBoard(new Board2(GameCompScreenActivity.this));
 					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
 					Update(CALLBACK_REPAINT_UI);
-					return true;
+					break;
 				}
-				case MENU_COMPUTER_NEW_GAME_BLACK: {
-					boardView.setBoard(new Board2(this));
+				case NEW_GAME_BLACK: {
+					// TODO encapsulate
+					boardView.setBoard(new Board2(GameCompScreenActivity.this));
 					boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
 					boardView.getBoard().setReside(true);
 					boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					boardView.invalidate();
 					Update(CALLBACK_REPAINT_UI);
-					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-					return true;
+					boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
+							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					break;
 				}
-				case MENU_COMPUTER_EMAIL_GAME: {
+				case EMAIL_GAME: {
 					String moves = movelist.getText().toString();
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType("plain/text");
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
 					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
-					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-					return true;
+					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
+					break;
 				}
-				case MENU_COMPUTER_SETTINGS: {
-					startActivity(new Intent(coreContext, Preferences.class));
-					return true;
+
+				case SETTINGS: {
+					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					break;
 				}
 			}
-
 		}
-		return false;
 	}
 
 	@Override
@@ -1625,7 +895,7 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 		registerReceiver(gameMoveReceiver, new IntentFilter(IntentConstants.ACTION_GAME_MOVE));
 		registerReceiver(gameEndMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_END));
 		registerReceiver(gameInfoMessageReceived, new IntentFilter(IntentConstants.ACTION_GAME_INFO));
-		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
+//		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
 
 		/*if (MainApp.isTacticsGameMode(boardView)) {
@@ -1669,7 +939,7 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 		unregisterReceiver(gameMoveReceiver);
 		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
-		unregisterReceiver(chatMessageReceiver);
+//		unregisterReceiver(chatMessageReceiver);
 		unregisterReceiver(showGameEndPopupReceiver);
 
 		super.onPause();
@@ -1775,8 +1045,8 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 				  final String blackRating =
 					(newBlackRating != null && newBlackRating != 0) ?
 					newBlackRating.toString() : mainApp.getCurrentGame().values.get("black_rating");*/
-			white.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-			black.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+			blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
 			boardView.finished = true;
 
 			if (MobclixHelper.isShowAds(mainApp)) {
@@ -1820,9 +1090,9 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 
 			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
 			//mainApp.ShowDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
-			findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//			findViewById(R.id.moveButtons).setVisibility(View.GONE);
 			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-			chatPanel.setVisibility(View.GONE);
+//			chatPanel.setVisibility(View.GONE);
 			findViewById(R.id.newGame).setOnClickListener(GameCompScreenActivity.this);
 			findViewById(R.id.home).setOnClickListener(GameCompScreenActivity.this);
 			getSoundPlayer().playGameEnd();
@@ -1896,26 +1166,6 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 		super.onStop();
 	  }*/
 
-	private void showAnalysisButtons() {
-		analysisButtons.setVisibility(View.VISIBLE);
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*boardView.getBoard().takeBack();
-			boardView.getBoard().movesCount--;
-			boardView.invalidate();
-			boardView.getBoard().submit = false;*/
-	}
-
-	private void hideAnalysisButtons() {
-		analysisButtons.setVisibility(View.GONE);
-	}
-
-	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-			chatPanel.setVisibility(View.VISIBLE);
-		}
-	};
 
 	private BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 		@Override
@@ -2009,9 +1259,113 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 				try {
 					adPopup.show();
 				} catch (Exception e) {
-					return;
 				}
 			}
 		}, 1500);
+	}
+
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (boardView.getBoard().analysis) {
+				if (!MainApp.isTacticsGameMode(boardView)) {
+					boardView.setBoard(new Board2(this));
+					boardView.getBoard().init = true;
+					boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
+
+					if (mainApp.getCurrentGame().values.get("game_type").equals("2"))
+						boardView.getBoard().chess960 = true;
+
+					if (!isUserColorWhite()) {
+						boardView.getBoard().setReside(true);
+					}
+					String[] Moves = {};
+					if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
+						Moves = mainApp.getCurrentGame().values.get("move_list")
+								.replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+						boardView.getBoard().movesCount = Moves.length;
+					}
+
+					String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
+					if (!FEN.equals("")) {
+						boardView.getBoard().GenCastlePos(FEN);
+						MoveParser2.FenParse(FEN, boardView.getBoard());
+					}
+
+					int i;
+					for (i = 0; i < boardView.getBoard().movesCount; i++) {
+
+						int[] moveFT = mainApp.isLiveChess() ? MoveParser2.parseCoordinate(boardView.getBoard(), Moves[i]) : MoveParser2.Parse(boardView.getBoard(), Moves[i]);
+						if (moveFT.length == 4) {
+							Move m;
+							if (moveFT[3] == 2)
+								m = new Move(moveFT[0], moveFT[1], 0, 2);
+							else
+								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+							boardView.getBoard().makeMove(m, false);
+						} else {
+							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
+							boardView.getBoard().makeMove(m, false);
+						}
+					}
+					Update(CALLBACK_REPAINT_UI);
+					boardView.getBoard().takeBack();
+					boardView.invalidate();
+
+					//last move anim
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								Thread.sleep(1300);
+								boardView.getBoard().takeNext();
+								update.sendEmptyMessage(0);
+							} catch (Exception e) {
+							}
+						}
+
+						private Handler update = new Handler() {
+							@Override
+							public void dispatchMessage(Message msg) {
+								super.dispatchMessage(msg);
+								Update(CALLBACK_REPAINT_UI);
+								boardView.invalidate();
+							}
+						};
+					}).start();
+				}
+			} else {
+				LoadPrev(MainApp.loadPrev);
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public void onClick(View view) {
+		/*if (view.getId() == R.id.chat) {
+			chat = true;
+			GetOnlineGame(mainApp.getGameId());
+			chatPanel.setVisibility(View.GONE);
+		} else*/ /*if (view.getId() == R.id.prev) {
+			boardView.finished = false;
+			boardView.sel = false;
+			boardView.getBoard().takeBack();
+			boardView.invalidate();
+			Update(CALLBACK_REPAINT_UI);
+			isMoveNav = true;
+		} else if (view.getId() == R.id.next) {
+			boardView.getBoard().takeNext();
+			boardView.invalidate();
+			Update(CALLBACK_REPAINT_UI);
+			isMoveNav = true;
+		} else */
+		if (view.getId() == R.id.newGame) {
+			startActivity(new Intent(this, OnlineNewGame.class));
+		} else if (view.getId() == R.id.home) {
+			startActivity(new Intent(this, Tabs.class));
+		}
 	}
 }

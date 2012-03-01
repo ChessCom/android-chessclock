@@ -1,6 +1,7 @@
 package com.chess.utilities;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
 import com.chess.R;
 import com.chess.views.BackgroundChessDrawable;
@@ -13,6 +14,8 @@ import com.chess.views.BackgroundChessDrawable;
  */
 public class CommonUtils {
 
+	private static final int MDPI_DENSITY = 1;
+
 	public static void setBackground(View mainView, Context context){
 		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
 
@@ -22,5 +25,10 @@ public class CommonUtils {
 		int paddingRight = (int)context.getResources().getDimension(R.dimen.dashboard_padding_side);
 		int paddingBot = (int)context.getResources().getDimension(R.dimen.dashboard_padding_bot);
 		mainView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBot);
+	}
+
+	public static boolean needFullScreen(Context context) {
+		DisplayMetrics displayMetrics =  context.getResources().getDisplayMetrics();
+		return displayMetrics.density < MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW;
 	}
 }

@@ -25,6 +25,11 @@
 		android:title="@string/nextgame"
 		android:icon="@drawable/forward"
 		android:showAsAction="never" />
+	<item android:id="@+id/menu_options"
+		android:title="@string/options"
+		android:icon="@drawable/options"
+		android:showAsAction="never" />
+
 	<item android:id="@+id/menu_analysis"
 		android:title="@string/analysis"
 		android:icon="@drawable/analysis"

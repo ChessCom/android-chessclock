@@ -21,6 +21,7 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.WindowManager;
 
 /**
  * A base activity that defers common functionality across app activities to an {@link
@@ -37,7 +38,7 @@ public abstract class ActionBarActivity extends Activity {
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 		// Eliminates color banding
 		getWindow().setFormat(PixelFormat.RGBA_8888);
 	}

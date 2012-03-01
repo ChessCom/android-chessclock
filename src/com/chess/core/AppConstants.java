@@ -1,6 +1,11 @@
 package com.chess.core;
 
 public class AppConstants {
+
+	/*Sreen Features*/
+	public static final String SMALL_SCREEN = "small_screen";
+
+
 	public static final String ENTER_FROM_NOTIFICATION = "enter_from_notification";
 	public static final String GAME_ID = "game_id";
 	public static final String TIMESTAMP = "time_stamp";

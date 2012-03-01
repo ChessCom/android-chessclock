@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
+import com.chess.core.AppConstants;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -47,7 +48,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	/** {@inheritDoc} */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		if(savedInstanceState == null  || !savedInstanceState.getBoolean(AppConstants.SMALL_SCREEN))
+			mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	}
 
 	/** {@inheritDoc} */

@@ -19,6 +19,11 @@
 		android:title="@string/newgame"
 		android:icon="@drawable/newgame"
 		android:showAsAction="never" />
+	<item android:id="@+id/menu_options"
+		android:title="@string/options"
+		android:icon="@drawable/options"
+		android:showAsAction="never" />
+
 	<item android:id="@+id/menu_reside"
 		android:title="@string/reside"
 		android:icon="@drawable/reside"
