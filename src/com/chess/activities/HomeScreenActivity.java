@@ -120,7 +120,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class
 					: OnlineScreenActivity.class;
 			Intent intent = new Intent(context, clazz);
-			intent.putExtra(AppConstants.LIVE_CHESS, true);
+			intent.putExtra(AppConstants.LIVE_CHESS, false);
 			startActivity(intent);
 
 		} else if (v.getId() == R.id.playComputerFrame) {

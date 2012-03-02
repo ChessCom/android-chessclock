@@ -15,29 +15,14 @@
   -->
 
 <menu  xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menu_new_game"
-		android:title="@string/newgame"
-		android:icon="@drawable/newgame"
-		android:showAsAction="never" />
+
 	<item android:id="@+id/menu_options"
 		android:title="@string/options"
 		android:icon="@drawable/options"
 		android:showAsAction="never" />
+	<item android:id="@+id/menu_chat"
+		android:title="@string/chat"
+		android:icon="@drawable/chat"
+		android:showAsAction="never" />
 
-	<item android:id="@+id/menu_reside"
-		android:title="@string/reside"
-		android:icon="@drawable/reside"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_hint"
-		android:title="@string/hint"
-		android:icon="@drawable/hint"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_previous"
-		android:title="@string/prev"
-		android:icon="@drawable/prev"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_next"
-		android:title="@string/next"
-		android:icon="@drawable/next"
-		android:showAsAction="never" />
 </menu>

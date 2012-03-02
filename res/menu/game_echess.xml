@@ -29,10 +29,13 @@
 		android:title="@string/options"
 		android:icon="@drawable/options"
 		android:showAsAction="never" />
-
 	<item android:id="@+id/menu_analysis"
 		android:title="@string/analysis"
 		android:icon="@drawable/analysis"
+		android:showAsAction="never" />
+	<item android:id="@+id/menu_chat"
+		android:title="@string/chat"
+		android:icon="@drawable/chat"
 		android:showAsAction="never" />
 	<item android:id="@+id/menu_previous"
 		android:title="@string/prev"

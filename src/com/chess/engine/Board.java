@@ -55,7 +55,12 @@ public class Board {
 
 	public final static int HIST_STACK = 1000;
 
-	public boolean init = false, chess960 = false, reside = false, submit = false, analysis = false, retry = false;
+	public boolean init;     // boolean field by default takes false value.
+	public boolean chess960;
+	public boolean reside;
+	public boolean submit;
+	public boolean analysis;
+	public boolean retry;
 	private boolean tacticCanceled;
 	public int side = LIGHT;
 	public int sec = 0, left = 0;

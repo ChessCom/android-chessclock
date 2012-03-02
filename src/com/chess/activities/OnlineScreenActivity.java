@@ -20,6 +20,7 @@ import com.chess.live.client.Challenge;
 import com.chess.model.GameListElement;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.Web;
+import com.chess.views.BackgroundChessDrawable;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -569,6 +570,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		init();
 		queries = new String[]{

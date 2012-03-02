@@ -77,10 +77,13 @@
                   />
         <activity android:name=".activities.HomeScreenActivity"/>
         <activity android:name=".activities.OnlineScreenActivity" android:label="@string/label_play_online"/>
+		<activity android:name=".activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"/>
+
         <activity android:name=".activities.LiveScreenActivity" android:label="@string/label_play_live"/>
 		<activity android:name=".activities.GameTacticsScreenActivity" android:label="@string/label_tactics"/>
 		<activity android:name=".activities.GameCompScreenActivity" android:label="@string/label_game_comp"/>
 		<activity android:name=".activities.GameLiveScreenActivity" android:label="@string/label_game_live"/>
+		<activity android:name=".activities.GameOnlineScreenActivity" android:label="@string/label_game_online"/>
         <activity android:name=".activities.PreferencesScreenActivity" android:label="@string/label_settings"
             android:theme="@style/GreyButtonTheme"/>
         <activity android:name=".activities.VideoScreenActivity" android:label="@string/label_video"/>

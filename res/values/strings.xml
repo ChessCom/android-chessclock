@@ -16,12 +16,14 @@
 
     <!--activities titles-->
     <string name="label_play_live">PLAY LIVE</string>
-    <string name="label_play_online">PLAY ONLINE</string>
+	<string name="label_play_online">PLAY ONLINE</string>
+	<string name="label_online_new_game">ONLINE NEW GAME</string>
     <string name="label_play_comp">PLAY COMP</string>
     <string name="label_video">VIDEO</string>
     <string name="label_settings">SETTINGS</string>
 	<string name="label_tactics">TACTICS</string>
 	<string name="label_game_live">LIVE GAME</string>
+	<string name="label_game_online">ONLINE GAME</string>
 	<string name="label_game_comp">COMP GAME</string>
     <string name="label_sign_up">Join Now – It’s Free!</string>
 
