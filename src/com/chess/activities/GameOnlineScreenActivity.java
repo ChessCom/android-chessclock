@@ -35,46 +35,6 @@ import java.util.Timer;
  */
 public class GameOnlineScreenActivity extends CoreActivityActionBar implements View.OnClickListener{
 
-	private final static int MENU_COMPUTER_NEW_GAME = 0;
-	private final static int MENU_COMPUTER_OPTIONS = 1;
-	private final static int MENU_COMPUTER_RESIDE = 2;
-	private final static int MENU_COMPUTER_HINT = 3;
-	private final static int MENU_COMPUTER_PREVIOUS = 4;
-	private final static int MENU_COMPUTER_NEXT = 5;
-	private final static int MENU_COMPUTER_NEW_GAME_WHITE = 6;
-	private final static int MENU_COMPUTER_NEW_GAME_BLACK = 7;
-	private final static int MENU_COMPUTER_EMAIL_GAME = 8;
-	private final static int MENU_COMPUTER_SETTINGS = 9;
-
-	private final static int MENU_LIVE_OPTIONS = 0;
-	private final static int MENU_LIVE_CHAT = 6;
-	private final static int MENU_LIVE_SETTINGS = 1;
-	private final static int MENU_LIVE_RESIDE = 2;
-	private final static int MENU_LIVE_DRAW_OFFER = 3;
-	private final static int MENU_LIVE_RESIGN_OR_ABORT = 4;
-	private final static int MENU_LIVE_MESSAGES = 5;
-
-	private final static int MENU_ECHESS_NEXT_GAME = 0;
-	private final static int MENU_ECHESS_ANALYSIS = 2;
-	private final static int MENU_ECHESS_CHAT = 3;
-	private final static int MENU_ECHESS_PREVIOUS = 4;
-	private final static int MENU_ECHESS_NEXT = 5;
-	private final static int MENU_ECHESS_SETTINGS = 6;
-	private final static int MENU_ECHESS_BACK_TO_GAME_LIST = 7;
-	private final static int MENU_ECHESS_MESSAGES = 8;
-	private final static int MENU_ECHESS_RESIDE = 9;
-	private final static int MENU_ECHESS_DRAW_OFFER = 10;
-	private final static int MENU_ECHESS_RESIGN_OR_ABORT = 11;
-
-	private final static int MENU_TACTICS_NEXT_GAME = 0;
-	private final static int MENU_TACTICS_RESIDE = 2;
-	private final static int MENU_TACTICS_ANALYSIS = 3;
-	private final static int MENU_TACTICS_PREVIOUS = 4;
-	private final static int MENU_TACTICS_NEXT = 5;
-	private final static int MENU_TACTICS_SKIP_PROBLEM = 6;
-	private final static int MENU_TACTICS_SHOW_ANSWER = 7;
-	private final static int MENU_TACTICS_SETTINGS = 8;
-
 	private final static int DIALOG_TACTICS_LIMIT = 0;
 	private final static int DIALOG_TACTICS_START_TACTICS = 1;
 	private final static int DIALOG_TACTICS_HUNDRED = 2;
