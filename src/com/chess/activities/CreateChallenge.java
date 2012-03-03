@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.core.Tabs;
@@ -21,6 +22,7 @@ import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.utilities.MyProgressDialog;
+import com.chess.views.BackgroundChessDrawable;
 import com.flurry.android.FlurryAgent;
 
 public class CreateChallenge extends CoreActivity implements OnClickListener {
@@ -43,7 +45,7 @@ public class CreateChallenge extends CoreActivity implements OnClickListener {
 		init();
 		
 		if (mainApp.isLiveChess()) {
-			setContentView(R.layout.createopenchallengelive);
+			setContentView(R.layout.live_create_challenge);
 			initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 			bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
@@ -62,10 +64,16 @@ public class CreateChallenge extends CoreActivity implements OnClickListener {
 			chess960 = (RadioButton) findViewById(R.id.chess960);
 			iplayas = (Spinner) findViewById(R.id.iplayas);
 		}
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+
 		minrating = (Spinner) findViewById(R.id.minRating);
+		minrating.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
 		minrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+
 		maxrating = (Spinner) findViewById(R.id.maxRating);
+		maxrating.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
 		maxrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
 		findViewById(R.id.createchallenge).setOnClickListener(this);

@@ -2,12 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/mainView"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
 	android:paddingTop="@dimen/default_scr_top_padding"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
+	android:background="#000000"
 	>
 
     <!--
@@ -15,55 +16,51 @@
           android:id="@+id/adview"
           android:layout_width="fill_parent"
           android:layout_height="50dp"
-          android:visibility="gone"
+          android:visibility="visible"
       />
     -->
+	<com.chess.RoboButton
+		android:id="@+id/upgradeBtn"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		style="@style/button_upgrade"
+		android:text="@string/preferencesUpgrade"
+		/>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#e1e1e1">
 
-        <com.chess.RoboTextView
-            android:id="@+id/tournaments"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/tourny"
-            android:drawablePadding="10px"
-            android:text="Tournaments"
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="10"
+		>
+		<com.chess.RoboButton
+			android:id="@+id/tournaments"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="4"
+			android:drawableLeft="@drawable/ic_tournament"
+			android:text="@string/tournaments"
+			style="@style/button_grey"
 			/>
 
 
-        <com.chess.RoboTextView
-            android:id="@+id/stats"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/chart_bar"
-            android:drawablePadding="10px"
-            android:padding="5px"
-            android:text="Stats"
+		<com.chess.RoboButton
+			android:id="@+id/stats"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="6"
+			android:drawableLeft="@drawable/ic_chartbar"
+			android:text="@string/stats"
+			style="@style/button_grey"
 			/>
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="2px"
-        android:layout_marginBottom="5px"
-        android:background="#cbcbcb">
-    </ImageView>
+	</LinearLayout>
 
     <com.chess.RoboButton
         android:id="@+id/currentGame"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:layout_marginTop="10dip"
         android:text="@string/currentGame"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -78,9 +75,9 @@
             android:drawablePadding="10px"
             android:gravity="left"
             android:padding="5px"
-            android:text="Start New Game:"
+            android:text="@string/start_new_game"
 
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
 
         <Spinner
@@ -89,30 +86,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/onlineSpinner"
-            >
-        </Spinner>
+            />
 
         <com.chess.RoboButton
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:columnWidth="90dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp"
-        android:visibility="gone">
-    </GridView>
 
     <com.chess.RoboTextView
         android:id="@+id/challengesListTitle"
@@ -124,14 +108,14 @@
         android:padding="5px"
         android:text="Challenges:"
 
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 
     <ListView
         android:id="@+id/GamesList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1">
-    </ListView>
+        android:layout_weight="1"
+		android:background="@android:color/transparent"/>
 
 </LinearLayout>

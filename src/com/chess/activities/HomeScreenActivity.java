@@ -125,13 +125,16 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 		} else if (v.getId() == R.id.playComputerFrame) {
 			startActivity(new Intent(context, ComputerScreenActivity.class));
+
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
 			Intent intent = new Intent(context, GameTacticsScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
 			intent.putExtra(AppConstants.LIVE_CHESS, false);
 			startActivity(intent);
+
 		} else if (v.getId() == R.id.videoLessonsFrame) {
 			startActivity(new Intent(context, VideoScreenActivity.class));
+
 		} else if (v.getId() == R.id.settingsFrame) {
 			startActivity(new Intent(context, PreferencesScreenActivity.class));
 //			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="

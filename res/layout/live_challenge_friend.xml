@@ -39,8 +39,7 @@
                     android:id="@+id/friend"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
-                </Spinner>
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -52,16 +51,15 @@
                     android:layout_height="wrap_content"
 
                     android:text="@string/initialTime"
-                />
+                	/>
 
-                <AutoCompleteTextView
+                <com.chess.RoboAutoCompleteTextView
                     android:id="@+id/initialTime"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:text="" >
-                </AutoCompleteTextView>
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,14 +73,13 @@
                     android:text="@string/bonusTime"
                    />
 
-                <AutoCompleteTextView
+                <com.chess.RoboAutoCompleteTextView
                     android:id="@+id/bonusTime"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:text="" >
-                </AutoCompleteTextView>
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,7 +106,7 @@
             <!--
          <LinearLayout android:layout_height="wrap_content"
              android:layout_width="fill_parent">
-             <TextView android:layout_height="wrap_content"
+             <com.chess.RoboTextView android:layout_height="wrap_content"
                  android:layout_gravity="center" android:layout_width="120dip" android:textColor="#fff" android:textSize="16dip" android:layout_marginLeft="10dip" android:text="@string/IplayAs"></TextView>
              <Spinner android:layout_width="fill_parent" android:layout_weight="1"
                  android:layout_height="wrap_content" android:id="@+id/iplayas" android:entries="@array/playas"></Spinner>

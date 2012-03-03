@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.tabs.Online;
 import com.chess.adapters.OnlineGamesAdapter;
@@ -35,7 +34,7 @@ public class OnlineNewGame extends CoreActivity implements OnClickListener, OnIt
 	private int UPDATE_DELAY = 120000;
 	private Button challengecreate;
 	private Button currentGame;
-	private TextView removeAds;
+	private Button upgradeBtn;
 	private GameListElement gameListElement;
 	private ChallengeDialogListener challengeDialogListener;
 	private DirectChallengeDialogListener directChallengeDialogListener;
@@ -62,8 +61,8 @@ public class OnlineNewGame extends CoreActivity implements OnClickListener, OnIt
 
 		init();
 
-		removeAds = (TextView) findViewById(R.id.removeAds);
-		removeAds.setOnClickListener(this);
+		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
 
 		openChallengesLictView = (ListView) this.findViewById(R.id.openChallenges);
 		openChallengesLictView.setAdapter(gamesAdapter);
@@ -79,7 +78,7 @@ public class OnlineNewGame extends CoreActivity implements OnClickListener, OnIt
 
 	protected void onResume() {
 		if (MobclixHelper.isShowAds(mainApp)) {
-			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, this, mainApp);
+			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), upgradeBtn, this, mainApp);
 		}
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
 		super.onResume();
@@ -162,13 +161,13 @@ public class OnlineNewGame extends CoreActivity implements OnClickListener, OnIt
 		super.onWindowFocusChanged(hasFocus);
 		System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
 		if (hasFocus && MobclixHelper.isShowAds(mainApp) && mainApp.isForceBannerAdOnFailedLoad()) {
-			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), removeAds, this, mainApp);
+			MobclixHelper.showBannerAd(MobclixHelper.getBannerAdviewWrapper(mainApp), upgradeBtn, this, mainApp);
 		}
 	}
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.removeAds){
+		if(view.getId() == R.id.upgradeBtn){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
 					"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));

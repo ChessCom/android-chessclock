@@ -567,7 +567,7 @@ public class Online extends CoreActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.online);
+		setContentView(R.layout.online_screen);
 
 		init();
 		queries = new String[]{

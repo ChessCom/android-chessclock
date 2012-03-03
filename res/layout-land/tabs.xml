@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/removeAds"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:textSize="17dip"
             android:textStyle="bold"
             android:visibility="gone" >
-        </TextView>
+        </TextView>-->
 
         <LinearLayout
             android:id="@+id/adview_wrapper"
@@ -45,7 +45,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@id/adview_wrapper"
-            android:layout_below="@id/removeAds" />
+            android:layout_below="@android:id/tabs" />
     </RelativeLayout>
 
 </TabHost>

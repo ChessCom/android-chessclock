@@ -46,7 +46,7 @@ public class Tabs extends TabActivity implements OnClickListener {
 
 		setContentView(R.layout.tabs);
 
-		removeAds = (TextView) findViewById(R.id.removeAds);
+		removeAds = (TextView) findViewById(R.id.upgradeBtn);
 		removeAds.setOnClickListener(this);
 
 
@@ -196,7 +196,7 @@ public class Tabs extends TabActivity implements OnClickListener {
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.removeAds){
+		if(view.getId() == R.id.upgradeBtn){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
 					"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));

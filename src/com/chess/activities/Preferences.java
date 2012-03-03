@@ -65,7 +65,7 @@ public class Preferences extends CoreActivity implements OnClickListener {
 		computerTitle = (TextView) findViewById(R.id.computerTitle);
 		prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
-		preferencesUpgrade = (TextView) findViewById(R.id.preferencesUpgrade);
+		preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 		boolean liveMembershipLevel =
 				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel

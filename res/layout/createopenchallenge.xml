@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >-->
 
-<!--        <com.chess.RoboTextView
+<!--        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <com.chess.RoboTextView
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
@@ -68,7 +68,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <com.chess.RoboTextView
+                <TextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
 
@@ -89,7 +89,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <com.chess.RoboTextView
+                <TextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -109,7 +109,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <com.chess.RoboTextView
+                <TextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -130,7 +130,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <com.chess.RoboTextView
+                <TextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:text="@string/minrating"
@@ -149,7 +149,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
-                <com.chess.RoboTextView
+                <TextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -164,7 +164,7 @@
                     android:entries="@array/maxRating" />
             </LinearLayout>
 
-            <com.chess.RoboButton
+            <Button
                 android:id="@+id/createchallenge"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

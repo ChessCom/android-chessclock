@@ -67,19 +67,36 @@
     	<activity android:name=".activities.tabs.Computer" />
     	<activity android:name=".activities.tabs.Video" />
 
-    	<activity android:name=".activities.OnlineNewGame" />
-    	<activity android:name=".activities.FriendChallenge" />
-    	<activity android:name=".activities.CreateChallenge" />
+		<activity android:name=".activities.OnlineNewGame" />
+		<activity android:name=".activities.FriendChallenge" />
+		<activity android:name=".activities.CreateChallenge" />
+
+
 
         <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
         <activity android:name=".activities.LoginScreenActivity"
                   android:theme="@style/OrangeButtonNotitle"
                   />
         <activity android:name=".activities.HomeScreenActivity"/>
+
+		<activity android:name=".activities.LiveFriendChallengeActivity"
+			android:label="@string/label_friend_challenge_live" />
+
+		<activity android:name=".activities.LiveCreateChallengeActivity"
+			android:label="@string/label_create_challenge_live"/>
+
+		<activity android:name=".activities.OnlineFriendChallengeActivity"
+			android:label="@string/label_friend_challenge_online"/>
+
+		<activity android:name=".activities.OnlineCreateChallengeActivity"
+			android:label="@string/label_create_challenge_online"/>
+
         <activity android:name=".activities.OnlineScreenActivity" android:label="@string/label_play_online"/>
 		<activity android:name=".activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"/>
 
-        <activity android:name=".activities.LiveScreenActivity" android:label="@string/label_play_live"/>
+		<activity android:name=".activities.LiveScreenActivity" android:label="@string/label_play_live"/>
+		<activity android:name=".activities.LiveNewGameActivity" android:label="@string/label_online_new_game"/>
+
 		<activity android:name=".activities.GameTacticsScreenActivity" android:label="@string/label_tactics"/>
 		<activity android:name=".activities.GameCompScreenActivity" android:label="@string/label_game_comp"/>
 		<activity android:name=".activities.GameLiveScreenActivity" android:label="@string/label_game_live"/>

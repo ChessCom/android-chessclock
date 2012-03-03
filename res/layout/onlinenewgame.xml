@@ -33,7 +33,7 @@
 			android:visibility="gone" />-->
 
 	<com.chess.RoboButton
-		android:id="@+id/preferencesUpgrade"
+		android:id="@+id/upgradeBtn"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		style="@style/button_upgrade"

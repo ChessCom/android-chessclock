@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:paddingTop="@dimen/default_scr_top_padding"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	android:background="#000000"
+	>
+
+	<com.chess.RoboButton
+		android:id="@+id/upgradeBtn"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		style="@style/button_upgrade"
+		android:text="@string/preferencesUpgrade"
+		/>
+
+	<com.chess.RoboButton
+		android:id="@+id/currentGame"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/currentGame"
+		android:visibility="visible"/>
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center">
+
+		<com.chess.RoboTextView
+			android:id="@+id/startNewGameTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="left"
+			android:text="@string/start_new_game"
+
+			android:visibility="visible"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/start"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ChallengeCreate"
+			android:visibility="visible"/>
+
+	</LinearLayout>
+
+	<GridView
+		android:id="@+id/gridview"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:columnWidth="90dp"
+		android:gravity="center"
+		android:horizontalSpacing="10dp"
+		android:numColumns="auto_fit"
+		android:stretchMode="columnWidth"
+		android:verticalSpacing="10dp"
+		android:visibility="visible"
+		android:background="@android:color/transparent"/>
+
+
+	<com.chess.RoboTextView
+		android:id="@+id/challengesListTitle"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="left"
+		android:text="@string/challenges"
+		android:visibility="visible"/>
+
+	<ListView
+		android:id="@+id/GamesList"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:background="@android:color/transparent"/>
+
+</LinearLayout>

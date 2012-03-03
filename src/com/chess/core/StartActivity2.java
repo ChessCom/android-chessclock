@@ -8,6 +8,7 @@ import com.chess.R;
 import com.chess.activities.HomeScreenActivity;
 import com.chess.activities.LoginScreenActivity;
 import com.chess.utilities.Notifications;
+import com.chess.views.BackgroundChessDrawable;
 
 public class StartActivity2 extends CoreActivity2 {
 
@@ -15,6 +16,7 @@ public class StartActivity2 extends CoreActivity2 {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		//defaults
 		mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData()
@@ -28,8 +30,6 @@ public class StartActivity2 extends CoreActivity2 {
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(1);
 
-//		Thread.setDefaultUncaughtExceptionHandler(new TopExceptionHandler());
-
 		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "").equals("")) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
@@ -37,13 +37,14 @@ public class StartActivity2 extends CoreActivity2 {
 			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
 				startService(new Intent(this, Notifications.class));
 
-			boolean fromnotif = false;
+			boolean fromNotification = false;
 			if (extras != null && extras.getBoolean(AppConstants.ENTER_FROM_NOTIFICATION)) {
-				fromnotif = true;
+				fromNotification = true;
 				Notifications.resetCounter();
 			}
 
-			startActivity(new Intent(this, HomeScreenActivity.class).putExtra(AppConstants.ENTER_FROM_NOTIFICATION, fromnotif));
+			startActivity(new Intent(this, HomeScreenActivity.class)
+					.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, fromNotification));
 			mainApp.guest = false;
 		}
 		finish();
@@ -53,17 +54,4 @@ public class StartActivity2 extends CoreActivity2 {
 	public void Update(int code) {
 	}
 
-//	public class TopExceptionHandler implements Thread.UncaughtExceptionHandler {
-//		Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler;
-//
-//		public TopExceptionHandler() {
-//			defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-//		}
-//
-//		public void uncaughtException(Thread t, Throwable e) {
-//			defaultUncaughtExceptionHandler.uncaughtException(t, e);
-//			MobclixHelper.getAdTimer().cancel();
-//			enableScreenLock();
-//		}
-//	}
 }

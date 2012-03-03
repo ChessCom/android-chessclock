@@ -26,7 +26,7 @@ public class MobclixHelper {
 	private static java.util.Timer adTimer;
 
 	public static void initializeBannerAdView(Activity activity, MainApp app) {
-		// TODO
+		// TODO  restore
 		if (true) {
 //		if (!isShowAds(app)) {
 			return;
@@ -52,7 +52,8 @@ public class MobclixHelper {
 	}
 
 	public static void showBannerAd(LinearLayout adviewWrapper, TextView removeAds, Activity activity, MainApp app) {
-		if (!isShowAds(app)) {
+		if (true) { //TODO  restore
+//		if (!isShowAds(app)) {
 			return;
 		}
 

@@ -27,7 +27,7 @@ import com.chess.views.BackgroundChessDrawable;
 
 import java.util.ArrayList;
 
-public class OnlineNewGameActivity extends CoreActivityActionBar implements OnClickListener, OnItemClickListener {
+public class LiveNewGameActivity extends CoreActivityActionBar implements OnClickListener, OnItemClickListener {
 	private ListView openChallengesLictView;
 	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
 	private OnlineGamesAdapter gamesAdapter = null;
@@ -233,7 +233,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 				if (result.contains("Success")) {
 					Update(2);
 				} else if (result.contains("Error+")) {
-					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
+					mainApp.ShowDialog(LiveNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {
 					//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
 				}
@@ -243,7 +243,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 				if (result.contains("Success")) {
 					Update(3);
 				} else if (result.contains("Error+")) {
-					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
+					mainApp.ShowDialog(LiveNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {
 					//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
 				}
@@ -263,13 +263,13 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 
 			if (mainApp.isLiveChess()) {
 				if (gameListElement.values.get("is_direct_challenge").equals("1") && gameListElement.values.get("is_released_by_me").equals("0")) {
-					new AlertDialog.Builder(OnlineNewGameActivity.this)
+					new AlertDialog.Builder(LiveNewGameActivity.this)
 							.setTitle(title)
 							.setItems(new String[]{getString(R.string.accept),
 									getString(R.string.decline)}, challengeDialogListener)
 							.create().show();
 				} else if (gameListElement.values.get("is_direct_challenge").equals("1") && gameListElement.values.get("is_released_by_me").equals("1")) {
-					new AlertDialog.Builder(OnlineNewGameActivity.this)
+					new AlertDialog.Builder(LiveNewGameActivity.this)
 							.setTitle(title)
 							.setItems(new String[]{"Cancel", "Keep"}, directChallengeDialogListener)
 							.create().show();
@@ -282,14 +282,14 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 					Update(2);
 				} else if (gameListElement.values.get("is_direct_challenge").equals("0")
 						&& gameListElement.values.get("is_released_by_me").equals("1")) {
-					new AlertDialog.Builder(OnlineNewGameActivity.this)
+					new AlertDialog.Builder(LiveNewGameActivity.this)
 							.setTitle(title)
 							.setItems(new String[]{"Cancel", "Keep"}, releasedByMeDialogListener)
 							.create().show();
 				}
 			} // echess
 			else {
-				new AlertDialog.Builder(OnlineNewGameActivity.this)
+				new AlertDialog.Builder(LiveNewGameActivity.this)
 						.setTitle(title)
 						.setItems(new String[]{getString(R.string.accept),
 								getString(R.string.decline)}, echessDialogListener)

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.adapters.ChessSpinnerAdapter;
@@ -38,11 +37,10 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	private OnlineGamesAdapter gamesAdapter = null;
 	private TextView challengesListTitle;
 	private TextView startNewGameTitle;
-	private TextView tournaments;
-	private TextView stats;
+	private Button tournaments;
+	private Button stats;
 	private Button currentGame;
 	private Button start;
-	private GridView gridview;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -66,44 +64,58 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 
 	@Override
-	public void onClick(View view) {
-		if(view.getId() == R.id.tournaments){// !_Important_! Use instead of switch due issue of ADT14
-			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
-			try {
-				GOTO = URLEncoder.encode(GOTO, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.online_screen);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+
+		init();
+		queries = new String[]{
+				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
+				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
+
+		gamesType = (Spinner) findViewById(R.id.gamestypes);
+		gamesType.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
+		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
+		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
+		tournaments = (Button) findViewById(R.id.tournaments);
+		stats = (Button) findViewById(R.id.stats);
+
+		start = (Button) findViewById(R.id.start);
+		start.setOnClickListener(this);
+
+		/*if (!mainApp.isNetworkChangedNotification())
+			{*/
+		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
+		//}
+		tournaments.setVisibility(View.VISIBLE);
+		stats.setVisibility(View.VISIBLE);
+		gamesType.setVisibility(View.VISIBLE);
+		start.setVisibility(View.VISIBLE);
+		challengesListTitle.setVisibility(View.GONE);
+		startNewGameTitle.setVisibility(View.GONE);
+
+
+		gamesType.post(new Runnable() {
+			@Override
+			public void run() {
+				gamesType.setSelection(mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1));
 			}
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
-					+ LccHolder.HOST + "/login.html?als="
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-					+ "&goto=" + GOTO)));
-		}else if(view.getId() == R.id.stats){
-			String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/"
-					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
-			try {
-				GOTO = URLEncoder.encode(GOTO, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-			}
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
-		}else if(view.getId() == R.id.currentGame){
-			/*try
-						{*/
-			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
-			}
-			/*}
-						catch(Exception e)
-						{
-						  e.printStackTrace();
-						  System.out.println("!!!!!!!! mainApp.getGameId() " + mainApp.getGameId());
-						  System.out.println("!!!!!!!! lccHolder.getGame(mainApp.getGameId()) " + lccHolder.getGame(mainApp.getGameId()));
-						}*/
-		}else if(view.getId() == R.id.start){
-			startActivity(new Intent(this, OnlineNewGame.class));
-			finish();
-//			LoadNext(0);
-		}
+		});
+		gamesType.setOnItemSelectedListener(gameTypesSelectedListener);
+
+		gamesList = (ListView) findViewById(R.id.GamesList);
+		gamesList.setOnItemClickListener(gameListItemClickListener );
+		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
+		findViewById(R.id.tournaments).setOnClickListener(this);
+		findViewById(R.id.stats).setOnClickListener(this);
+		currentGame = (Button) findViewById(R.id.currentGame);
+		currentGame.setOnClickListener(this);
+
 	}
+
+
 
 	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener{
 
@@ -181,24 +193,12 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			{*/
 		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 		//}
-		if (mainApp.isLiveChess() && !lccHolder.isConnected()) {
-			new Handler().post(new Runnable() {
-				public void run() {
-					start.setVisibility(View.GONE);
-					gridview.setVisibility(View.GONE);
-					challengesListTitle.setVisibility(View.GONE);
-					startNewGameTitle.setVisibility(View.GONE);
-				}
-			});
-		}
+
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-		if (mainApp.isLiveChess()) {
-			registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
-		} else {
-			// if connected
-			//System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
-			lccHolder.logout();
-		}
+
+		// if connected
+		//System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
+		lccHolder.logout();
 		super.onResume();
 		currentGame.post(new Runnable() {
 			public void run() {
@@ -229,11 +229,8 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				disableScreenLock();
 			}
 		});
-		if (mainApp.isLiveChess()) {
-			start.setText("Custom Challenge");
-		} else {
-			start.setText("Challenge");
-		}
+
+		start.setText(R.string.challenge);
 	}
 
 	@Override
@@ -530,122 +527,6 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		}
 	}
 
-	private class NewGamesButtonsAdapter extends BaseAdapter{
-		public int getCount() {
-			return StartNewGameButtonsEnum.values().length;
-		}
-
-		public Object getItem(int position) {
-			return null;
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final Button button;
-			if (convertView == null) {
-				button = new Button(mainApp);
-			} else {
-				button = (Button) convertView;
-			}
-			StartNewGameButtonsEnum.values();
-			final StartNewGameButtonsEnum startNewGameButton = StartNewGameButtonsEnum.values()[position];
-			button.setText(startNewGameButton.getText());
-			button.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View view) {
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, "" + startNewGameButton.getMin());
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, "" + startNewGameButton.getSec());
-					mainApp.getSharedDataEditor().commit();
-					startActivity(new Intent(coreContext, CreateChallenge.class));
-				}
-			});
-			return button;
-		}
-
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.online);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-
-		init();
-		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
-
-		gamesType = (Spinner) findViewById(R.id.gamestypes);
-		gamesType.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
-		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
-		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
-		tournaments = (TextView) findViewById(R.id.tournaments);
-		stats = (TextView) findViewById(R.id.stats);
-
-		start = (Button) findViewById(R.id.start);
-		start.setOnClickListener(this);
-
-		/*if (!mainApp.isNetworkChangedNotification())
-			{*/
-		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-		//}
-		if (mainApp.isLiveChess()) {
-			tournaments.setVisibility(View.GONE);
-			stats.setVisibility(View.GONE);
-			gamesType.setVisibility(View.GONE);
-			gridview = (GridView) findViewById(R.id.gridview);
-		} else {
-			tournaments.setVisibility(View.VISIBLE);
-			stats.setVisibility(View.VISIBLE);
-			gamesType.setVisibility(View.VISIBLE);
-			start.setVisibility(View.VISIBLE);
-			challengesListTitle.setVisibility(View.GONE);
-			startNewGameTitle.setVisibility(View.GONE);
-		}
-
-		if (mainApp.isLiveChess() && lccHolder.isConnected()) {
-			start.setVisibility(View.VISIBLE);
-			gridview.setVisibility(View.VISIBLE);
-			challengesListTitle.setVisibility(View.VISIBLE);
-			startNewGameTitle.setVisibility(View.VISIBLE);
-		}
-
-		gamesType.post(new Runnable() {
-			@Override
-			public void run() {
-				gamesType.setSelection(mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1));
-			}
-		});
-		gamesType.setOnItemSelectedListener(gameTypesSelectedListener);
-
-		gamesList = (ListView) findViewById(R.id.GamesList);
-		gamesList.setOnItemClickListener(gameListItemClickListener );
-		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
-		findViewById(R.id.tournaments).setOnClickListener(this);
-		findViewById(R.id.stats).setOnClickListener(this);
-		currentGame = (Button) findViewById(R.id.currentGame);
-		currentGame.setOnClickListener(this);
-
-		if (mainApp.isLiveChess()) {
-			gridview.setAdapter(new NewGamesButtonsAdapter());
-		}
-	}
-
-//	@Override
-//	public void LoadNext(int code) {
-//		//gamesList.setVisibility(View.GONE);
-//		finish();
-//		startActivity(new Intent(this, OnlineNewGame.class));
-//	}
-
-//	@Override
-//	public void LoadPrev(int code) {
-//		//finish();
-//		mainApp.getTabHost().setCurrentTab(0);
-//	}
 
 	@Override
 	public void Update(int code) {
@@ -731,6 +612,46 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		}
 	}
 
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.tournaments){// !_Important_! Use instead of switch due issue of ADT14
+			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
+			try {
+				GOTO = URLEncoder.encode(GOTO, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+			}
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
+					+ LccHolder.HOST + "/login.html?als="
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ "&goto=" + GOTO)));
+		}else if(view.getId() == R.id.stats){
+			String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/"
+					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
+			try {
+				GOTO = URLEncoder.encode(GOTO, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+			}
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
+		}else if(view.getId() == R.id.currentGame){
+			/*try
+						{*/
+			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
+				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
+			}
+			/*}
+						catch(Exception e)
+						{
+						  e.printStackTrace();
+						  System.out.println("!!!!!!!! mainApp.getGameId() " + mainApp.getGameId());
+						  System.out.println("!!!!!!!! lccHolder.getGame(mainApp.getGameId()) " + lccHolder.getGame(mainApp.getGameId()));
+						}*/
+		}else if(view.getId() == R.id.start){
+			startActivity(new Intent(this, OnlineNewGameActivity.class));
+			finish();
+//			LoadNext(0);
+		}
+	}
+
 	private enum StartNewGameButtonsEnum {
 		/*BUTTON_10_0(10, 0, "10 min"),
 			BUTTON_5_0(5, 0, "5 min"),
@@ -776,16 +697,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		public void onReceive(Context context, final Intent intent) {
 			new Handler().post(new Runnable() {
 				public void run() {
-					if (mainApp.isLiveChess() && !intent.getExtras()
-							.getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
 
-						start.setVisibility(View.VISIBLE);
-						if (gridview != null) {
-							gridview.setVisibility(View.VISIBLE);
-						}
-						challengesListTitle.setVisibility(View.VISIBLE);
-						startNewGameTitle.setVisibility(View.VISIBLE);
-					}
 				}
 			});
 		}
