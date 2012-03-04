@@ -68,7 +68,7 @@
 
             <com.chess.RoboButton
                 android:id="@+id/singup"
-                style="@style/button_grey"
+                style="@style/Text.Button.Grey"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dip"
@@ -78,7 +78,7 @@
 
             <com.chess.RoboButton
                 android:id="@+id/guestplay"
-                style="@style/button_grey"
+                style="@style/Text.Button.Grey"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
@@ -89,7 +89,7 @@
 
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
-            style="@style/f_button_login"
+            style="@style/Text.Button.Login"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/signin_button_height"
             android:layout_gravity="right"

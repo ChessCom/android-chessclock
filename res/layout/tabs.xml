@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+	android:id="@android:id/tabhost"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
 
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+		<TabWidget
+			android:id="@android:id/tabs"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"/>
 
-        <!--<TextView
-            android:id="@+id/removeAds"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@android:id/tabs"
-            android:background="#ffffcd"
-            android:drawableLeft="@drawable/ic_star"
-            android:drawablePadding="10dp"
-            android:gravity="left"
-            android:padding="7dp"
-            android:text="@string/removeAds"
-            android:textColor="#0066cc"
-            android:textSize="17dip"
-            android:textStyle="bold"
-            android:visibility="gone" >
-        </TextView>-->
+		<!--<TextView
+					android:id="@+id/removeAds"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@android:id/tabs"
+					android:background="#ffffcd"
+					android:drawableLeft="@drawable/ic_star"
+					android:drawablePadding="10dp"
+					android:gravity="left"
+					android:padding="7dp"
+					android:text="@string/removeAds"
+					android:textColor="#0066cc"
+					android:textSize="17dip"
+					android:textStyle="bold"
+					android:visibility="gone" >
+				</TextView>-->
 
-        <LinearLayout
-            android:id="@+id/adview_wrapper"
-            android:layout_width="320dip"
-            android:layout_height="50dip"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+		<LinearLayout
+			android:id="@+id/adview_wrapper"
+			android:layout_width="320dip"
+			android:layout_height="50dip"
+			android:layout_alignParentBottom="true"
+			android:layout_gravity="center"
+			android:visibility="gone"/>
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@id/adview_wrapper"
-            android:layout_below="@android:id/tabs" />
-    </RelativeLayout>
+		<FrameLayout
+			android:id="@android:id/tabcontent"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_above="@id/adview_wrapper"
+			android:layout_below="@android:id/tabs"/>
+	</RelativeLayout>
 
 </TabHost>

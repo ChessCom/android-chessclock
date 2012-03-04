@@ -35,7 +35,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		findViewById(R.id.playComputerFrame).setOnClickListener(this);
 		findViewById(R.id.tacticsTrainerFrame).setOnClickListener(this);
 		findViewById(R.id.videoLessonsFrame).setOnClickListener(this);
-//		findViewById(R.id.logOutFrame).setOnClickListener(this);
 		findViewById(R.id.settingsFrame).setOnClickListener(this);
 
 		mobFullScreeListener = new MobFullScreeListener();

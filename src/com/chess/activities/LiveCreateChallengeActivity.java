@@ -57,11 +57,11 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 		bonusTime.setValidator(bonusTimeValidator);
 
 		minrating = (Spinner) findViewById(R.id.minRating);
-		minrating.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
+		minrating.setAdapter(new ChessSpinnerAdapter(this,R.array.minRating));
 		minrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxrating = (Spinner) findViewById(R.id.maxRating);
-		maxrating.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
+		maxrating.setAdapter(new ChessSpinnerAdapter(this,R.array.maxRating));
 		maxrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);

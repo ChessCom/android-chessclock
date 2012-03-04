@@ -37,30 +37,19 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
 	private BonusTimeValidator bonusTimeValidator;
 
-	private int[] daysArr = new int[]{
-			1,
-			2,
-			3,
-			5,
-			7,
-			14
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-
+		init();
 		setContentView(R.layout.live_challenge_friend);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-
-
-		init();
 
 		friends = (Spinner) findViewById(R.id.friend);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
+
 		initialTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
 		initialTime.addTextChangedListener(initialTimeTextWatcher);
 		initialTime.setValidator(initialTimeValidator);
@@ -109,7 +98,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								finish();
+//								finish();
 							}
 						}).setCancelable(false)
 						.create().show();

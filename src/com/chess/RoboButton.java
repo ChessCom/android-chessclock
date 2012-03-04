@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.Button;
-import com.chess.R;
 
 public class RoboButton extends Button {
     private Context context;
@@ -15,6 +14,7 @@ public class RoboButton extends Button {
 
 	public RoboButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		setupFont(context, attrs);
 	}
 
 	public RoboButton(Context context) {
@@ -23,10 +23,14 @@ public class RoboButton extends Button {
 
     public RoboButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
+		setupFont(context, attrs);
+    }
+
+	private void setupFont(Context context, AttributeSet attrs){
+		this.context = context;
 
 
-    	TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
 
 		final int N = a.getIndexCount();
 		for (int i = 0; i < N; i++) {
@@ -37,8 +41,8 @@ public class RoboButton extends Button {
 				}break;
 			}
 		}
-        init();
-    }
+		init();
+	}
 
     private void init() {
         Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-" + ttfName + ".ttf");

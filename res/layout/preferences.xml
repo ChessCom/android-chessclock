@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
@@ -11,30 +10,30 @@
 
 	<LinearLayout
 
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:orientation="vertical"
-			android:paddingTop="@dimen/default_scr_top_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/default_scr_side_padding"
-			android:scrollbarTrackVertical="@drawable/whitemove">
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:paddingTop="@dimen/default_scr_top_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:scrollbarTrackVertical="@drawable/whitemove">
 
 		<com.chess.RoboButton
-				android:id="@+id/upgradeBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/button_upgrade"
-				android:text="@string/preferencesUpgrade"
-				/>
+			android:id="@+id/upgradeBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/Text.Button.Upgrade"
+			android:text="@string/preferencesUpgrade"
+			/>
 
 		<com.chess.RoboTextView
-				android:id="@+id/onlineTitle"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/onlineTitle"
-				style="@style/SettingsDividerText"
-				robo:ttf="Bold"
-				/>
+			android:id="@+id/onlineTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/onlineTitle"
+			style="@style/SettingsDividerText"
+			robo:ttf="Bold"
+			/>
 
 		<View
 			android:layout_width="fill_parent"
@@ -43,29 +42,25 @@
 			/>
 
 		<LinearLayout
-				android:id="@+id/afterIMoveLayout"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:weightSum="10"
-				android:paddingLeft="10dip"
-		        style="@style/tightContainer"
-
-				>
+			android:id="@+id/afterIMoveLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearDescription"
+			>
 
 			<com.chess.RoboTextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/aim"
-					android:layout_weight="6"
-					/>
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/aim"
+				android:layout_weight="6"
+				/>
 
 			<Spinner
-					android:id="@+id/PrefAIM"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:entries="@array/AIM"
-					android:layout_weight="4">
+				android:id="@+id/PrefAIM"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:entries="@array/AIM"
+				android:layout_weight="4">
 			</Spinner>
 		</LinearLayout>
 
@@ -83,170 +78,170 @@ LinearLayout android:layout_height="wrap_content"
 -->
 
 		<com.chess.RoboCheckBox
-				android:id="@+id/enableSounds"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/enableSounds"
-				/>
-
-
-		<com.chess.RoboCheckBox
-				android:id="@+id/PrefSSB"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/ssb"
-				/>
+			android:id="@+id/enableSounds"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/enableSounds"
+			/>
 
 		<com.chess.RoboCheckBox
-				android:id="@+id/PrefNEnable"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/notificationE"
-				/>
+			android:id="@+id/PrefSSB"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/ssb"
+			/>
 
 		<com.chess.RoboCheckBox
-				android:id="@+id/PrefVacation"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/vacationOff"
-				/>
+			android:id="@+id/PrefNEnable"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/notificationE"
+			/>
+
+		<com.chess.RoboCheckBox
+			android:id="@+id/PrefVacation"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/vacationOff"
+			/>
 
 		<com.chess.RoboTextView
-				android:id="@+id/computerTitle"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/computerTitle"
-				style="@style/SettingsDividerText"
-				robo:ttf="Bold"
-				/>
+			android:id="@+id/computerTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/computerTitle"
+			style="@style/SettingsDividerText"
+			robo:ttf="Bold"
+			/>
 
 		<View
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/underline_grey"
-				style="@style/lineDivider"
-				/>
-
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/underline_grey"
+			style="@style/lineDivider"
+			/>
 
 		<LinearLayout
-				android:id="@+id/prefStrengthLayout"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:weightSum="10"
-				android:paddingLeft="10dip"
-				>
+			android:id="@+id/prefStrengthLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/LinearDescription"
+			>
 
 			<com.chess.RoboTextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/strength"
-					android:layout_weight="6"
-					/>
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/strength"
+				android:layout_weight="6"
+				/>
 
 			<Spinner
-					android:id="@+id/PrefStrength"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:entries="@array/strength"
-					android:layout_weight="4">
-			</Spinner>
+				android:id="@+id/PrefStrength"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:entries="@array/strength"
+				android:layout_weight="4"/>
 		</LinearLayout>
 
 		<com.chess.RoboTextView
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/interfaceP"
-				style="@style/SettingsDividerText"
-				robo:ttf="Bold"
-				/>
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/interfaceP"
+			style="@style/SettingsDividerText"
+			robo:ttf="Bold"
+			/>
 
 		<View
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/underline_grey"
-				style="@style/lineDivider"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/underline_grey"
+			style="@style/lineDivider"
 
-				/>
+			/>
 
 		<LinearLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:weightSum="10"
-				android:paddingLeft="10dip"
-				>
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/LinearDescription"
+			>
 
 			<com.chess.RoboTextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/board"
-					android:layout_weight="6"
-					/>
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/board"
+				android:layout_weight="6"
+				/>
 
 			<Spinner
-					android:id="@+id/boardsSpinner"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="4">
+				android:id="@+id/boardsSpinner"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4">
 			</Spinner>
 		</LinearLayout>
 
 		<LinearLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:weightSum="10"
-				android:paddingLeft="10dip"
-				>
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/LinearDescription"
+			>
 
 			<com.chess.RoboTextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/pieces"
-					android:layout_weight="6"
-					/>
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/pieces"
+				android:layout_weight="6"
+				/>
 
 			<Spinner
-					android:id="@+id/piecesSpinner"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="4">
+				android:id="@+id/piecesSpinner"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4">
 			</Spinner>
 		</LinearLayout>
 
 		<com.chess.RoboCheckBox
-				android:id="@+id/PrefCoords"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
+			android:id="@+id/PrefCoords"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
 
-				android:text="@string/showcoords"/>
+			android:text="@string/showcoords"/>
 
 		<com.chess.RoboCheckBox
-				android:id="@+id/PrefHighlights"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/movehighlights"/>
+			android:id="@+id/PrefHighlights"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/movehighlights"/>
 
 		<com.chess.RoboButton
-				android:id="@+id/PrefInvite"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/invite"
-				/>
+			android:id="@+id/PrefInvite"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/invite"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+
+			/>
 
 		<com.chess.RoboButton
-				android:id="@+id/prefContactUs"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/contactUs"
-				/>
+			android:id="@+id/prefContactUs"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/contactUs"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+
+			/>
 
 		<com.chess.RoboButton
-				android:id="@+id/prefLogout"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/logout"
-				/>
+			android:id="@+id/prefLogout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/logout"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+
+			/>
 	</LinearLayout>
 </ScrollView>

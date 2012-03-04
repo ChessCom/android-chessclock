@@ -17,7 +17,7 @@ import com.chess.views.BackgroundChessDrawable;
 
 public class OnlineCreateChallengeActivity extends CoreActivityActionBar implements OnClickListener {
 	private Spinner iplayas;
-	private Spinner dayspermove;
+	private Spinner daysPerMoveSpinner;
 	private Spinner minrating;
 	private Spinner maxrating;
 	private CheckBox isRated;
@@ -35,16 +35,19 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 		setContentView(R.layout.online_create_challenge);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
-		dayspermove = (Spinner) findViewById(R.id.dayspermove);
+		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
+		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this,R.array.dayspermove ));
+
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 		iplayas = (Spinner) findViewById(R.id.iplayas);
+		iplayas.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
 		minrating = (Spinner) findViewById(R.id.minRating);
-		minrating.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
+		minrating.setAdapter(new ChessSpinnerAdapter(this,R.array.minRating));
 		minrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxrating = (Spinner) findViewById(R.id.maxRating);
-		maxrating.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
+		maxrating.setAdapter(new ChessSpinnerAdapter(this,R.array.maxRating));
 		maxrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
@@ -105,7 +108,7 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 
 			int color = iplayas.getSelectedItemPosition();
 			int days = 1;
-			days = daysArr[dayspermove.getSelectedItemPosition()];
+			days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
 			int israted = 0;
 			int gametype = 0;
 
@@ -113,6 +116,7 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 				israted = 1;
 			else
 				israted = 0;
+
 			if (chess960.isChecked())
 				gametype = 2;
 

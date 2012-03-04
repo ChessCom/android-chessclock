@@ -7,18 +7,20 @@
 
 
     <style name="OrangeButtonTheme" parent="MyAppTheme">
-        <item name="android:buttonStyle">@style/button_orange</item>
-        <item name="android:textAppearanceSmall">@style/DefaultText</item>
+        <item name="android:buttonStyle">@style/Text.Button</item>
+        <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>
+		<item name="android:autoCompleteTextViewStyle">@style/DefaultAutoComplete</item>
         <item name="android:spinnerStyle">@style/spinnerStyle</item>
         <item name="android:checkboxStyle">@style/check_Box</item>
         <item name="android:radioButtonStyle">@style/radio_Button</item>
+		<item name="android:listViewStyle">@style/DefaultListView</item>
     </style>
 
 
     <style name="OrangeButtonNotitle" parent="android:style/Theme.Light.NoTitleBar">
-        <item name="android:buttonStyle">@style/button_orange</item>
-        <item name="android:textAppearanceSmall">@style/DefaultText</item>
+        <item name="android:buttonStyle">@style/Text.Button</item>
+        <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>
         <item name="android:spinnerStyle">@style/spinnerStyle</item>
         <item name="android:checkboxStyle">@style/check_Box</item>
@@ -28,7 +30,7 @@
 	<!-- 	<item name="android:panelFullBackground">@color/mytheme_color</item> -->
 	
 	<style name="GreyButtonTheme" parent="OrangeButtonTheme">
-		<item name="android:buttonStyle">@style/button_grey</item>
+		<item name="android:buttonStyle">@style/Text.Button.Grey</item>
 	</style>
 		
 <!-- 	<style name="MyTheme" parent="android:Theme">

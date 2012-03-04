@@ -5,11 +5,19 @@
 
   	<!-- Rounded buttons -->
 
-    <dimen name="rounded_button_radius">4px</dimen>
-    <dimen name="button_pressed_stroke_radius">4px</dimen>
-    <dimen name="button_pressed_stroke_width_1">8px</dimen>
-    <dimen name="button_pressed_stroke_width_2">8px</dimen>
-    <dimen name="button_margin4stroke">6px</dimen> <!--Must be less than stroke width_1 by 2 px-->
+<!--
+	<dimen name="rounded_button_radius">4px</dimen>
+	<dimen name="button_pressed_stroke_radius">4px</dimen>
+	<dimen name="button_pressed_stroke_width_1">8px</dimen>
+	<dimen name="button_pressed_stroke_width_2">8px</dimen>
+	<dimen name="button_margin4stroke">6px</dimen>
+-->
+
+	<dimen name="rounded_button_radius">3dip</dimen>
+	<dimen name="button_pressed_stroke_radius">3dip</dimen>
+	<dimen name="button_pressed_stroke_width_1">5dip</dimen>
+	<dimen name="button_pressed_stroke_width_2">5dip</dimen>
+	<dimen name="button_margin4stroke">4dip</dimen> <!--Must be less than stroke width_1 by 2 px-->
 
   	<dimen name="small_button_height">35dip</dimen>
   	<dimen name="rounded_button_height">48dip</dimen>
@@ -66,5 +74,14 @@
 
     <dimen name="default_scr_top_padding">16dip</dimen>
     <dimen name="default_scr_side_padding">16dip</dimen>
+
+	<!--Default margins between screen widgets-->
+
+	<dimen name="margin_top_beween_buttons">10dip</dimen>
+	<!--Linear Description paddings-->
+	<dimen name="default_linear_bottom_padding">2dip</dimen>
+	<dimen name="default_linear_top_padding">2dip</dimen>
+	<dimen name="default_linear_left_padding">5dip</dimen>
+	<dimen name="default_linear_right_padding">5dip</dimen>
 
 </resources>

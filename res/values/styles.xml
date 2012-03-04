@@ -11,46 +11,49 @@
         <item name="android:textColor">@android:color/white</item>
     </style>-->
 
+	<style name="Text" parent="@android:style/TextAppearance.Small">
+		<item name="android:textSize">17sp</item>
+		<item name="android:textColor">@android:color/white</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:paddingTop">3dip</item>
+		<item name="android:paddingBottom">3dip</item>
+	</style>
 
 
-    <style name="button_orange" parent="DefaultText">
-        <item name="android:background">@drawable/button_orange_selector</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
-        <item name="android:gravity">center_vertical|center_horizontal</item>
+
+	<style name="Text.Button">
+		<item name="android:background">@drawable/button_orange_selector</item>
+		<item name="android:focusable">true</item>
+		<item name="android:clickable">true</item>
+		<item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+		<item name="android:gravity">center_vertical|center_horizontal</item>
 		<item name="android:paddingLeft">16dip</item>
 		<item name="android:paddingRight">16dip</item>
 		<item name="android:paddingTop">1dip</item>
 		<item name="android:paddingBottom">1dip</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
-    </style>
+		<item name="android:layout_marginTop">5dip</item>
+		<item name="android:layout_marginBottom">5dip</item>
+	</style>
+
     <!--     <item name="android:layout_height">@dimen/default_button_height</item> -->
 
-    <style name="button_grey" parent="button_orange">
+    <style name="Text.Button.Grey">
         <item name="android:background">@drawable/button_grey_selector</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
-    <style name="button_green" parent="button_orange">
+    <style name="Text.Button.Green" >
         <item name="android:background">@drawable/button_green_selector</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
-    <style name="button_upgrade" parent="button_green">
+    <style name="Text.Button.Upgrade" >
         <item name="android:background">@drawable/button_green_selector</item>
         <item name="android:paddingLeft">@dimen/button_upgrade_left_padding</item>
         <item name="android:paddingRight">@dimen/button_upgrade_right_padding</item>
         <item name="android:drawableLeft">@drawable/ic_star</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
 
-    <style name="f_button_login" parent="button_orange">
+    <style name="Text.Button.Login" >
         <item name="android:background">@drawable/button_f_selector</item>
     </style>
 
@@ -124,6 +127,22 @@
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
     </style>
+
+	<style name="DefaultAutoComplete" parent="DefaultEdt" >
+		<item name="android:completionHintView">@layout/simple_dropdown_hint</item>
+		<item name="android:completionThreshold">2</item>
+		<item name="android:dropDownSelector">@android:drawable/list_selector_background</item>
+		<item name="android:popupBackground">@android:drawable/spinner_dropdown_background</item>
+		<item name="android:dropDownVerticalOffset">-6dip</item>
+		<item name="android:dropDownHorizontalOffset">0dip</item>
+		<item name="android:dropDownWidth">wrap_content</item>
+	</style>
+
+	<style name="DefaultListView" parent="android:style/Widget.ListView" >
+		<item name="android:cacheColorHint">@android:color/transparent</item>
+		<item name="android:background">@android:color/transparent</item>
+	</style>
+
 <!--    <item name="android:paddingBottom">1dip</item>-->
 
     <style name="DashboardItemText" parent="@android:style/Widget.TextView">
@@ -132,13 +151,6 @@
         <item name="android:textStyle">bold</item>
     </style>
     
-    <style name="DefaultText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">normal</item>
-		<item name="android:paddingTop">3dip</item>
-		<item name="android:paddingBottom">3dip</item>
-    </style>
 
     <style name="spinnerStyle" parent="@android:style/Widget.Spinner">
         <item name="android:layout_margin">2dip</item>
@@ -150,10 +162,10 @@
         <item name="android:selectable">true</item>
     </style>
 
-    <style name="spinnerStyleDropDown" parent="DefaultText">
+    <style name="spinnerStyleDropDown" parent="Text">
         <item name="android:textColor">@android:color/black</item>
     </style>
-    <style name="spinnerText" parent="DefaultText">
+    <style name="spinnerText" parent="Text">
         <item name="android:textColor">@color/hint_text</item>
     </style>
 
@@ -162,8 +174,7 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:textStyle">normal</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
+		<item name="android:gravity">center_vertical</item>
     </style>
 
 
@@ -174,9 +185,10 @@
         <item name="android:textStyle">normal</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
+		<item name="android:gravity">center_vertical</item>
     </style>
 
-	<style name="SettingsDividerText" parent="DefaultText">
+	<style name="SettingsDividerText" parent="Text">
 		<item name="android:paddingLeft">10dip</item>
 		<item name="android:textStyle">bold</item>
 	</style>
@@ -185,10 +197,18 @@
 		<item name="android:layout_marginBottom">5dip</item>
 	</style>
 
-	<style name="tightContainer" >
+<!--	<style name="tightContainer" >
 		<item name="android:paddingBottom">5dip</item>
 		<item name="android:paddingTop">5dip</item>
-	</style>
+	</style>-->
 
+	<style name="LinearDescription">
+		<item name="android:weightSum">10</item>
+		<item name="android:paddingBottom">@dimen/default_linear_bottom_padding</item>
+		<item name="android:paddingTop">@dimen/default_linear_top_padding</item>
+		<item name="android:paddingLeft">@dimen/default_linear_left_padding</item>
+		<item name="android:paddingRight">@dimen/default_linear_right_padding</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
 
 </resources>

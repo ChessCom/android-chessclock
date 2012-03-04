@@ -2,146 +2,56 @@ package com.chess.views;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.Path;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.graphics.Shader;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-
 import com.chess.R;
 
 public class BackgroundChessDrawable extends Drawable {
 
-
-	private Paint paint;
-	private Paint[] shinePaints;
-	private Path[] shinePaths;
-	private Rect rect;
-	private float density = 1;
+	private Paint gradientPaint;
+	private Path gradientPath;
 
 	private Drawable image;
 
-	private final int DEFAULT_WIDTH = 50;
-	private final int DEFAULT_HEIGHT = 50;
-
-	private int cellSize = 50;
-	private int cellColor1 = 0xFF494846;
-	private int cellColor2 = 0xFF51504d;
-	private GradientDrawable gradienView;
 	private boolean pathsInitiated;
 
-	private final Context context;
-	private float width;
-	private float height;
+	private int height;
+	private int width;
 
-	private final int blackColor = 0x48000000;
 	private int screenOrientation;
 
 	public BackgroundChessDrawable(Context context) {
-		this.context = context;
-		init();
+		init(context);
 	}
 
-	private void init() {
-		density = context.getResources().getDisplayMetrics().density;
-		cellSize *= (int) density;
-		paint = new Paint(/* Paint.DITHER_FLAG | Paint.ANTI_ALIAS_FLAG */);
-		shinePaints = new Paint[4];
-		for (int i = 0; i < shinePaints.length; i++) {
-			shinePaints[i] = new Paint();
-			shinePaints[i].setDither(true);
-			shinePaints[i].setAntiAlias(true);
-		}
-
-		shinePaths = new Path[4];
-		rect = new Rect(0, 0, 5, 5);
-
-		paint.setStrokeWidth(1.0f);
-		paint.setColor(Color.BLUE);
-		paint.setStyle(Style.FILL);
-		paint.setDither(true);
-		paint.setAntiAlias(true);
+	private void init(Context context) {
+		gradientPaint = new Paint();
+		gradientPaint.setDither(true);
+		gradientPaint.setAntiAlias(true);
 
 		width = context.getResources().getDisplayMetrics().widthPixels;
 		height = context.getResources().getDisplayMetrics().heightPixels;
 
 		image = context.getResources().getDrawable(R.drawable.chess_back);
-		int opacity = context.getResources().getInteger(R.integer.fade_opacity);
-//		blackColor ^= (opacity * 0xFF / 100) << 32;
-		image.setBounds(0, 0, (int) width, (int) height);
-
+		image.setBounds(0, 0, width, height);
 		image.setDither(true);
 
 		screenOrientation = context.getResources().getConfiguration().orientation;
 	}
 
-	public void setCellColor1(int color) {
-		cellColor1 = color;
-	}
-
-	public void setCellColor2(int color) {
-		cellColor2 = color;
-	}
-
-	private float[] borders;
-	private static final int LEFT = 0;
-	private static final int TOP = 1;
-	private static final int RIGHT = 2;
-	private static final int BOTTOM = 3;
-
-	private void createShinePath() {
-		borders = new float[4];
+	private void createGradientPath(){
+		float border = 0;
 		if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-			borders[LEFT] = height / 4;
-			borders[1] = width / 4;
-			borders[2] = width * 3 / 4;
-			borders[BOTTOM] = height * 3 / 4;
+			border = height * 3 / 4;
 		} else if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
-			borders[LEFT] = height / 4;
-			borders[1] = width / 4;
-			borders[2] = width * 3 / 4;
-//            borders[BOTTOM] = height * 3 / 4;
-//			borders[BOTTOM] = 0;
-			borders[BOTTOM] = -5;
-//			borders[BOTTOM] = height *1/ 50;
-		} else { // SQUARE
-			borders[LEFT] = height / 4;
-			borders[1] = height / 4;
-			borders[2] = height / 4;
-			borders[BOTTOM] = height / 4;
+			border = -5;
 		}
-		for (int i = 0; i < shinePaints.length; i++) {
-			shinePaths[i] = new Path();
-			setCoordinates(shinePaths[i], 0, (int) width, 0, (int) height);
-			switch (i) {
-				case LEFT:
-//				shinePaints[i].setShader(new LinearGradient(0, 0, 0, borders[i], blackColor, 0x0000000,
-//						Shader.TileMode.CLAMP));
-					break;
-				case 1:
-//				shinePaints[i].setShader(new LinearGradient(0, 0, borders[i], 0, blackColor, 0x0000000,
-//						Shader.TileMode.CLAMP));
-					break;
-				case 2:
-//				shinePaints[i].setShader(new LinearGradient(width, 0, borders[i], 0, blackColor, 0x0000000,
-//						Shader.TileMode.CLAMP));
-					break;
-				case BOTTOM:
-					shinePaints[i].setShader(
-							new LinearGradient(0, height, 0, borders[i], blackColor, 0x00000000,
-									Shader.TileMode.CLAMP));
-					break;
-				default:
-					break;
-			}
-		}
+		gradientPath = new Path();
+		setCoordinates(gradientPath, 0, width, 0, height);
+		int blackColor = 0xB4000000;
+		gradientPaint.setShader(
+				new LinearGradient(0, height, 0, border, blackColor, 0x00000000,
+						Shader.TileMode.CLAMP));
 		pathsInitiated = true;
 	}
 
@@ -156,17 +66,15 @@ public class BackgroundChessDrawable extends Drawable {
 	@Override
 	public void draw(Canvas canvas) {
 		if (!pathsInitiated) {
-			createShinePath();
+			createGradientPath();
 		}
 		canvas.save();
 
 		image.draw(canvas);
 		canvas.restore();
 
-		for (int i = 0; i < shinePaints.length; i++) {
-//            canvas.drawPath(shinePaths[i], shinePaints[i]);
-			canvas.drawPath(shinePaths[BOTTOM], shinePaints[BOTTOM]);
-		}
+		canvas.drawPath(gradientPath, gradientPaint);
+		canvas.drawPath(gradientPath, gradientPaint);
 	}
 
 	@Override

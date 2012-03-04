@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="@integer/home_text_weightSum" >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:weightSum="@integer/home_text_weightSum">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="@integer/home_text_left_weight"
-        android:gravity="center"
-        android:paddingLeft="2dip"
-        android:paddingRight="3dip" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="@integer/home_text_left_weight"
+		android:gravity="center"
+		android:paddingLeft="2dip"
+		android:paddingRight="3dip">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dip"
-            android:src="@drawable/ic_settings_selector" />
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="2dip"
+			android:src="@drawable/ic_settings_selector"/>
 
-        <TextView
-            android:id="@+id/settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:paddingLeft="3dip"
-            android:paddingRight="2dip"
-            android:text="@string/settings" />
-    </LinearLayout>
+		<TextView
+			android:id="@+id/settings"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:gravity="center_vertical"
+			android:paddingLeft="3dip"
+			android:paddingRight="2dip"
+			android:text="@string/settings"/>
+	</LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="@integer/home_text_left_weight"
-        android:gravity="center"
-        android:paddingLeft="2dip"
-        android:paddingRight="1dip" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="@integer/home_text_left_weight"
+		android:gravity="center"
+		android:paddingLeft="2dip"
+		android:paddingRight="1dip">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dip"
-            android:src="@drawable/ic_star_selector" />
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="0dip"
+			android:src="@drawable/ic_star_selector"/>
 
-        <TextView
-            android:id="@+id/upgrade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dip"
-            android:paddingRight="1dip"
-            android:text="@string/upgrade" />
-    </LinearLayout>
+		<TextView
+			android:id="@+id/upgrade"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingLeft="3dip"
+			android:paddingRight="1dip"
+			android:text="@string/upgrade"/>
+	</LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="@integer/home_text_right_weight"
-        android:gravity="center"
-        android:paddingLeft="0dip"
-        android:paddingRight="1dip" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="@integer/home_text_right_weight"
+		android:gravity="center"
+		android:paddingLeft="0dip"
+		android:paddingRight="1dip">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dip"
-            android:src="@drawable/ic_help_selector" />
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="2dip"
+			android:src="@drawable/ic_help_selector"/>
 
-        <TextView
-            android:id="@+id/help"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingLeft="3dip"
-            android:paddingRight="1dip"
-            android:text="@string/help" />
-    </LinearLayout>
+		<TextView
+			android:id="@+id/help"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:paddingLeft="3dip"
+			android:paddingRight="1dip"
+			android:text="@string/help"/>
+	</LinearLayout>
 
 </merge>

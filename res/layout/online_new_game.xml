@@ -9,55 +9,21 @@
 
 	android:orientation="vertical">
 
-	<!--    <TextView
-			android:id="@+id/removeAds"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:background="#ffffcd"
-			android:drawableLeft="@drawable/ic_star"
-			android:drawablePadding="10dp"
-			android:gravity="left"
-			android:padding="7dp"
-			android:text="@string/removeAds"
-			android:textColor="#0066cc"
-			android:textSize="17dip"
-			android:textStyle="bold"
-			android:visibility="gone" >
-		</TextView>-->
-
 	<!--    <LinearLayout
-			android:id="@+id/adview_wrapper"
-			android:layout_width="320dip"
-			android:layout_height="50dip"
-			android:layout_gravity="center"
-			android:visibility="gone" />-->
+				android:id="@+id/adview_wrapper"
+				android:layout_width="320dip"
+				android:layout_height="50dip"
+				android:layout_gravity="center"
+				android:visibility="gone" />-->
 
 	<com.chess.RoboButton
 		android:id="@+id/upgradeBtn"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		style="@style/button_upgrade"
+		style="@style/Text.Button.Upgrade"
 		android:text="@string/preferencesUpgrade"
 		android:gravity="center_vertical"
-
 		/>
-
-<!--	<com.chess.RoboTextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:padding="3dip"
-		android:text="@string/onlineNewGametitle"
-		android:textColor="#fff"
-		android:textSize="16dip"
-		android:textStyle="bold"/>
-
-
-	<ImageView
-		android:layout_width="fill_parent"
-		android:layout_height="5dip"
-		android:background="#00bb00">
-	</ImageView>-->
 
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -77,7 +43,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 
-			android:layout_marginTop="10dip"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
 			android:text="@string/createNewChallenge"/>
 
 		<com.chess.RoboButton
@@ -85,7 +51,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dip"
-			android:layout_marginTop="10dip"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
 			android:text="@string/currentGame"
 			android:visibility="gone"/>
 
@@ -93,14 +59,14 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/onlineChallenges"
+			android:paddingLeft="@dimen/default_linear_left_padding"
+			android:paddingTop="@dimen/margin_top_beween_buttons"
 			/>
-
 
 		<ListView
 			android:id="@+id/openChallenges"
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-		</ListView>
+			android:layout_height="fill_parent"/>
 	</LinearLayout>
 
 </LinearLayout>

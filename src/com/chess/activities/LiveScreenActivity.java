@@ -190,13 +190,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			});
 		}
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-		if (mainApp.isLiveChess()) {
-			registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
-		} else {
-			// if connected
-			//System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
-			lccHolder.logout();
-		}
+		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
+
+
 		super.onResume();
 		currentGame.post(new Runnable() {
 			public void run() {
@@ -648,7 +644,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 						  System.out.println("!!!!!!!! lccHolder.getGame(mainApp.getGameId()) " + lccHolder.getGame(mainApp.getGameId()));
 						}*/
 		}else if(view.getId() == R.id.start){
-			startActivity(new Intent(this, OnlineNewGameActivity.class));
+			startActivity(new Intent(this, LiveNewGameActivity.class));
 			finish();
 //			LoadNext(0);
 		}

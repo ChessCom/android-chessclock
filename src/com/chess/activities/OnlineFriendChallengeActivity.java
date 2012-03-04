@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
@@ -19,10 +20,8 @@ import com.chess.views.BackgroundChessDrawable;
 
 public class OnlineFriendChallengeActivity extends CoreActivityActionBar implements OnClickListener {
 	private Spinner iplayas;
-	private Spinner dayspermove;
-	private Spinner friends;
-	private AutoCompleteTextView initialTime;
-	private AutoCompleteTextView bonusTime;
+	private Spinner daysPerMoveSpinner;
+	private Spinner friendsSpinner;
 	private CheckBox isRated;
 	private RadioButton chess960;
 
@@ -44,13 +43,18 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 		setContentView(R.layout.online_challenge_friend);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
-		dayspermove = (Spinner) findViewById(R.id.dayspermove);
+		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
+		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this,R.array.dayspermove ));
+
 		chess960 = (RadioButton) findViewById(R.id.chess960);
+
 		iplayas = (Spinner) findViewById(R.id.iplayas);
-		friends = (Spinner) findViewById(R.id.friend);
+		iplayas.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
+
+		friendsSpinner = (Spinner) findViewById(R.id.friend);
+		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{""} ));
+
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
-		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
-		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
 	}
 
@@ -78,8 +82,8 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 					android.R.layout.simple_spinner_item,
 					FRIENDS);
 			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			friends.setAdapter(adapterF);
-			if (friends.getSelectedItem().equals("")) {
+			friendsSpinner.setAdapter(adapterF);
+			if (friendsSpinner.getSelectedItem().equals("")) {
 				new AlertDialog.Builder(OnlineFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(getString(R.string.sorry))
@@ -91,7 +95,7 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								finish();
+//								finish();
 							}
 						}).setCancelable(false)
 						.create().show();
@@ -108,13 +112,13 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
-			if (friends.getCount() == 0) {
+			if (friendsSpinner.getCount() == 0) {
 				return;
 			}
 
 			int color = iplayas.getSelectedItemPosition();
 			int days = 1;
-			days = daysArr[dayspermove.getSelectedItemPosition()];
+			days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
 			int israted = 0;
 			int gametype = 0;
 
@@ -131,7 +135,7 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 					"&iplayas=" + color +
 					"&israted=" + israted +
 					"&game_type=" + gametype +
-					"&opponent=" + friends.getSelectedItem().toString().trim();
+					"&opponent=" + friendsSpinner.getSelectedItem().toString().trim();
 			if (appService != null) {
 				appService.RunSingleTask(1,
 						query,

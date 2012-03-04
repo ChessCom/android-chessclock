@@ -8,7 +8,6 @@ import com.chess.R;
 import com.chess.activities.HomeScreenActivity;
 import com.chess.activities.LoginScreenActivity;
 import com.chess.utilities.Notifications;
-import com.chess.views.BackgroundChessDrawable;
 
 public class StartActivity2 extends CoreActivity2 {
 
@@ -16,7 +15,7 @@ public class StartActivity2 extends CoreActivity2 {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+//		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		//defaults
 		mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData()

@@ -51,7 +51,7 @@ public class OnlineNewGame extends CoreActivity implements OnClickListener, OnIt
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.onlinenewgame);
+		setContentView(R.layout.online_new_game);
 
 		if (MobclixHelper.isShowAds(mainApp)) {
 			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {

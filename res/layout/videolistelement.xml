@@ -3,7 +3,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	style="@style/tightContainer"
+	style="@style/LinearDescription"
 	>
 
 	<TextView
@@ -20,7 +20,7 @@
 		android:layout_height="wrap_content"
 		android:maxLines="4"
 		android:text="desc"
-	    android:visibility="gone"
+		android:visibility="gone"
 		/>
 
 	<com.chess.RoboTextView
@@ -30,7 +30,7 @@
 		android:paddingTop="9dip"
 		android:text="32 min Published 11.11.11"
 		android:textColor="@color/hint_text"
-	    android:textSize="15sp"
+		android:textSize="15sp"
 		/>
 
 	<LinearLayout
@@ -51,7 +51,7 @@
 			android:id="@+id/fulldesc"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			style="@style/button_grey"
+			style="@style/Text.Button.Grey"
 			android:text="@string/details"/>
 
 		<com.chess.RoboButton
