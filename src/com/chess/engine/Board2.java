@@ -55,10 +55,16 @@ public class Board2 {
 
 	public final static int HIST_STACK = 1000;
 
-	public boolean init = false, chess960 = false, reside = false, submit = false, analysis = false, retry = false;
+	public boolean init;
+	public boolean chess960;
+	public boolean reside;
+	public boolean submit;
+	public boolean analysis;
+	public boolean retry;
 	private boolean tacticCanceled;
 	public int side = LIGHT;
-	public int sec = 0, left = 0;
+	public int sec = 0;
+	public int left = 0;
 	public int TacticsCorrectMoves = 0;
 	private String[] tacticMoves;
 	int xside = DARK;
@@ -731,7 +737,8 @@ public class Board2 {
 				}
 			}
 
-			if (castleMask[what]) return false;
+			if (castleMask[what])
+				return false;
 
 			if (what == 2) {
 				if (attack(F1, xside) || attack(G1, xside))

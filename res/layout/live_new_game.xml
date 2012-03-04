@@ -22,7 +22,6 @@
 		android:layout_height="wrap_content"
 		style="@style/Text.Button.Upgrade"
 		android:text="@string/preferencesUpgrade"
-		android:gravity="center_vertical"
 		/>
 
 	<!--	<com.chess.RoboTextView
@@ -51,8 +50,7 @@
 			android:id="@+id/friendchallenge"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-
-			android:layout_marginTop="10dip"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
 			android:text="@string/challengeFriend"/>
 
 		<com.chess.RoboButton
@@ -60,7 +58,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 
-			android:layout_marginTop="10dip"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
 			android:text="@string/createNewChallenge"/>
 
 		<com.chess.RoboButton
@@ -68,7 +66,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dip"
-			android:layout_marginTop="10dip"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
 			android:text="@string/currentGame"
 			android:visibility="gone"/>
 

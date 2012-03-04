@@ -144,7 +144,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 					}
 				}break;
 				case DialogInterface.BUTTON_NEGATIVE:{
-					startActivity(new Intent(coreContext, Game.class).
+					startActivity(new Intent(coreContext, GameOnlineScreenActivity.class).
 							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
 							putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID)));
 
@@ -510,7 +510,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				} else {
 					mainApp.acceptdraw = false;
 
-					Intent intent = new Intent(coreContext, Game.class);
+					Intent intent = new Intent(coreContext, GameOnlineScreenActivity.class);
 					intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 					intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
 					startActivity(intent);
@@ -519,7 +519,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
-				Intent intent = new Intent(coreContext, Game.class);
+				Intent intent = new Intent(coreContext, GameOnlineScreenActivity.class);
 				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
 				startActivity(intent );

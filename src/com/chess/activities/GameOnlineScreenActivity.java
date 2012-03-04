@@ -57,7 +57,11 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 	private LinearLayout analysisButtons;
 	private RelativeLayout chatPanel;
 	private ImageButton chatButton;
-	private TextView white, black, thinking, timer, movelist;
+	private TextView white;
+	private TextView black;
+	private TextView thinking;
+	private TextView timer;
+	private TextView movelist;
 	private Timer onlineGameUpdate = null;
 	private Timer tacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;

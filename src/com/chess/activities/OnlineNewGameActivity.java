@@ -27,7 +27,7 @@ import com.chess.views.BackgroundChessDrawable;
 import java.util.ArrayList;
 
 public class OnlineNewGameActivity extends CoreActivityActionBar implements OnClickListener, OnItemClickListener {
-	private ListView openChallengesLictView;
+	private ListView openChallengesListView;
 	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
 	private OnlineGamesAdapter gamesAdapter = null;
 	private int UPDATE_DELAY = 120000;
@@ -58,9 +58,9 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 
-		openChallengesLictView = (ListView) this.findViewById(R.id.openChallenges);
-		openChallengesLictView.setAdapter(gamesAdapter);
-		openChallengesLictView.setOnItemClickListener(this);
+		openChallengesListView = (ListView) this.findViewById(R.id.openChallenges);
+		openChallengesListView.setAdapter(gamesAdapter);
+		openChallengesListView.setOnItemClickListener(this);
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		challengecreate = (Button) findViewById(R.id.challengecreate);
@@ -112,7 +112,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 				}
 			}
 		} else if (code == Online.ONLINE_CALLBACK_CODE) {
-			openChallengesLictView.setVisibility(View.GONE);
+			openChallengesListView.setVisibility(View.GONE);
 			gameListItems.clear();
 			if (mainApp.isLiveChess()) {
 				gameListItems.addAll(lccHolder.getChallengesAndSeeksData());
@@ -121,10 +121,10 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			}
 			if (gamesAdapter == null) {
 				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);
-				openChallengesLictView.setAdapter(gamesAdapter);
+				openChallengesListView.setAdapter(gamesAdapter);
 			} /*else{*/
 			gamesAdapter.notifyDataSetChanged();
-			openChallengesLictView.setVisibility(View.VISIBLE);
+			openChallengesListView.setVisibility(View.VISIBLE);
 			/*}*/
 		} else if (code == 2) {
 			mainApp.ShowMessage(getString(R.string.challengeaccepted));

@@ -11,7 +11,7 @@
 		android:paddingTop="@dimen/default_scr_top_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:background="#000"
+
 		>
 		<!--
 				<com.chess.RoboTextView

@@ -95,7 +95,7 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								finish();
+//								finish();
 							}
 						}).setCancelable(false)
 						.create().show();

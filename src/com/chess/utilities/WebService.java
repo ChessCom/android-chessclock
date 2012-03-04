@@ -94,7 +94,8 @@ public class WebService extends Service {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
 						.putExtra(AppConstants.REPEATABLE_TASK, false)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
-						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(options[0], options[1], null, new UrlEncodedFormEntity(nameValuePairs)))
+						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(options[0], options[1], null,
+								new UrlEncodedFormEntity(nameValuePairs)))
 				);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();

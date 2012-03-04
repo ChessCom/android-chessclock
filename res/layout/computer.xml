@@ -13,9 +13,7 @@
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:weightSum="10"
-		android:gravity="center_vertical"
-		android:layout_marginBottom="10dip"
+		style="@style/LinearDescription"
 		>
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
@@ -57,10 +55,7 @@
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:weightSum="10"
-		android:gravity="center_vertical"
-		android:layout_marginBottom="10dip"
-
+		style="@style/LinearDescription"
 		>
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
@@ -99,9 +94,7 @@
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:gravity="center_vertical"
-		android:weightSum="10"
-		android:paddingBottom="5dip"
+		style="@style/LinearDescription"
 		>
 
 		<com.chess.RoboTextView
@@ -127,14 +120,14 @@
 		android:id="@+id/start"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-
+		android:layout_marginTop="@dimen/margin_top_beween_buttons"
 		android:text="@string/start_new_game"/>
 
 	<com.chess.RoboButton
 		android:id="@+id/load"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin_top_beween_buttons"
 		android:text="@string/load"
 		android:visibility="gone"/>
 

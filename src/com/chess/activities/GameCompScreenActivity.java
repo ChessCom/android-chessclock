@@ -37,28 +37,16 @@ public class GameCompScreenActivity extends CoreActivityActionBar implements Vie
 	private final static int DIALOG_ABORT_OR_RESIGN = 5;
 
 	private final static int CALLBACK_GAME_STARTED = 10;
-//	private final static int CALLBACK_GET_TACTICS = 7;
-//	private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
 	private final static int CALLBACK_REPAINT_UI = 0;
 	private final static int CALLBACK_GAME_REFRESH = 9;
-//	private final static int CALLBACK_TACTICS_CORRECT = 6;
-//	private final static int CALLBACK_TACTICS_WRONG = 5;
-//	private final static int CALLBACK_SEND_MOVE = 1;
-//	private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
 
 	public BoardView2 boardView;
-//	private LinearLayout analysisLL;
-//	private LinearLayout analysisButtons;
-//	private RelativeLayout chatPanel;
 	private TextView whitePlayerLabel;
 	private TextView blackPlayerLabel;
 	private TextView thinking;
-//	private TextView timer;
 	private TextView movelist;
 	private Timer onlineGameUpdate = null;
-//	private Timer tacticsTimer = null;
 	private boolean msgShowed = false, isMoveNav = false, chat = false;
-//	private int resignOrAbort = R.string.resign;
 
 	private com.chess.model.Game game;
 
