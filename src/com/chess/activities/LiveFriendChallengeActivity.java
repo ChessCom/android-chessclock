@@ -98,7 +98,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-//								finish();
+								finish();
 							}
 						}).setCancelable(false)
 						.create().show();
