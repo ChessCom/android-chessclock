@@ -19,7 +19,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
 import com.chess.model.GameListElement;
 import com.chess.utilities.*;
-import com.chess.views.BoardView2;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import java.util.ArrayList;
@@ -126,8 +125,8 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 			boardView.setBoard(new Board2(this));
 			boardView.getBoard().init = true;
 			boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
-			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			boardView.getBoard().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+			//newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
@@ -182,7 +181,7 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
-//				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+//				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView)) {
 					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 
 					if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
@@ -368,7 +367,7 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 								}
 								else
 								{
-								  movelist.setText(boardView.getBoard().MoveListSAN());
+								  movelist.setText(newBoardView.getBoardFace().MoveListSAN());
 								}*/
 				boardView.invalidate();
 
@@ -383,7 +382,7 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 			case CALLBACK_SEND_MOVE: {
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
-				//String myMove = boardView.getBoard().MoveSubmit();
+				//String myMove = newBoardView.getBoardFace().MoveSubmit();
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					final String move = boardView.getBoard().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
@@ -584,19 +583,19 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 				}
 
 				int i;
-				//System.out.println("@@@@@@@@ POINT 2 boardView.getBoard().movesCount=" + boardView.getBoard().movesCount);
+				//System.out.println("@@@@@@@@ POINT 2 newBoardView.getBoardFace().movesCount=" + newBoardView.getBoardFace().movesCount);
 				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
 
 				/*if (!mainApp.isLiveChess()) {
-					for (i = 0; i < boardView.getBoard().movesCount; i++) {
+					for (i = 0; i < newBoardView.getBoardFace().movesCount; i++) {
 						//System.out.println("@@@@@@@@ POINT 4 i=" + i);
 						//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
-						moveFT = MoveParser2.Parse(boardView.getBoard(), Moves[i]);
+						moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[i]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2) {
@@ -604,10 +603,10 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 							} else {
 								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 							}
-							boardView.getBoard().makeMove(m, false);
+							newBoardView.getBoardFace().makeMove(m, false);
 						} else {
 							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							boardView.getBoard().makeMove(m, false);
+							newBoardView.getBoardFace().makeMove(m, false);
 						}
 					}
 				}*/
@@ -1020,7 +1019,7 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 	/*public void onStop()
 	  {
 		mainApp.getCurrentGame() = null;
-		boardView.board = null;
+		newBoardView.board = null;
 		super.onStop();
 	  }*/
 
@@ -1153,7 +1152,7 @@ public class GameLiveScreenActivity extends CoreActivityActionBar implements Vie
 
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 				}
 

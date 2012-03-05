@@ -11,13 +11,14 @@ package com.chess.engine;
 
 import android.util.Log;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivityActionBar;
+import com.chess.core.interfaces.BoardFace;
+import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.utilities.SoundPlayer;
 
 import java.net.URLEncoder;
 import java.util.TreeSet;
 
-public class Board2 {
+public class Board2 implements BoardFace {
 	final public static int LIGHT = 0;
 	final public static int DARK = 1;
 	final public static int PAWN = 0;
@@ -55,33 +56,39 @@ public class Board2 {
 
 	public final static int HIST_STACK = 1000;
 
-	public boolean init;
-	public boolean chess960;
-	public boolean reside;
-	public boolean submit;
-	public boolean analysis;
-	public boolean retry;
-	private boolean tacticCanceled;
-	public int side = LIGHT;
-	public int sec = 0;
-	public int left = 0;
-	public int TacticsCorrectMoves = 0;
-	private String[] tacticMoves;
-	int xside = DARK;
-	int rotated = 0;
-	int ep = -1;
-	int fifty = 0;
-	public int movesCount = 0;
-	public int hply = 0;
-	int history[][] = new int[64][64];
-	public HistoryData histDat[] = new HistoryData[HIST_STACK];
-	int pawnRank[][] = new int[2][10];
-	int pieceMat[] = new int[2];
-	int pawnMat[] = new int[2];
+	private boolean init;
+	private boolean chess960;
+	private boolean reside;
+	private boolean submit;
 
-	int boardcolor[] = {
+
+
+	private boolean analysis;
+	private boolean retry;
+	private boolean tacticCanceled;
+	private int side = LIGHT;
+	private int sec = 0;
+	private int left = 0;
+	private int TacticsCorrectMoves = 0;
+	private String[] tacticMoves;
+	private int xside = DARK;
+	private int rotated = 0;
+	private int ep = -1;
+	private int fifty = 0;
+	private int movesCount = 0;
+	private int hply = 0;
+	private int history[][] = new int[64][64];
+	private HistoryData[] histDat = new HistoryData[HIST_STACK];
+	private int pawnRank[][] = new int[2][10];
+	private int pieceMat[] = new int[2];
+	private int pawnMat[] = new int[2];
+
+
+
+	private int boardcolor[] = {
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,
+
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,
 			0, 1, 0, 1, 0, 1, 0, 1,
@@ -90,7 +97,7 @@ public class Board2 {
 			1, 0, 1, 0, 1, 0, 1, 0
 	};
 
-	public int color[] = {
+	private int color[] = {
 			1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1,
 			6, 6, 6, 6, 6, 6, 6, 6,
@@ -101,7 +108,7 @@ public class Board2 {
 			0, 0, 0, 0, 0, 0, 0, 0
 	};
 
-	public int piece[] = {
+	private int piece[] = {
 			3, 1, 2, 4, 5, 2, 1, 3,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			6, 6, 6, 6, 6, 6, 6, 6,
@@ -153,7 +160,7 @@ public class Board2 {
 			91, 92, 93, 94, 95, 96, 97, 98
 	};
 
-	public boolean castleMask[] = {false, false, false, false};
+	private boolean castleMask[] = {false, false, false, false};
 
 	/* the values of the pieces */
 	int pieceValue[] = {
@@ -208,10 +215,13 @@ public class Board2 {
 			0, 20, 40, -20, 0, -20, 40, 20
 	};
 
+
+
 	int kingEndgamePcsq[] = {
 			0, 10, 20, 30, 30, 20, 10, 0,
 			10, 20, 30, 40, 40, 30, 20, 10,
 			20, 30, 40, 50, 50, 40, 30, 20,
+
 			30, 40, 50, 60, 60, 50, 40, 30,
 			30, 40, 50, 60, 60, 50, 40, 30,
 			20, 30, 40, 50, 50, 40, 30, 20,
@@ -234,35 +244,35 @@ public class Board2 {
 			0, 1, 2, 3, 4, 5, 6, 7
 	};
 
-	public int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+	private int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 
 	private final int BLACK_ROOK_1_INITIAL_POS = 0;
 	private final int BLACK_ROOK_2_INITIAL_POS = 7;
 	private final int WHITE_ROOK_1_INITIAL_POS = 56;
 	private final int WHITE_ROOK_2_INITIAL_POS = 63;
 
-	public int bRook1 = BLACK_ROOK_1_INITIAL_POS;
-	public int bKing = 4;
-	public int bRook2 = BLACK_ROOK_2_INITIAL_POS;
+	private int bRook1 = BLACK_ROOK_1_INITIAL_POS;
+	private int bKing = 4;
+	private int bRook2 = BLACK_ROOK_2_INITIAL_POS;
 
-	public int wRook1 = WHITE_ROOK_1_INITIAL_POS;
-	public int wKing = 60;
-	public int wRook2 = WHITE_ROOK_2_INITIAL_POS;
+	private int wRook1 = WHITE_ROOK_1_INITIAL_POS;
+	private int wKing = 60;
+	private int wRook2 = WHITE_ROOK_2_INITIAL_POS;
 
-	public int[] bKingMoveOO = new int[]{6};
-	public int[] bKingMoveOOO = new int[]{2};
+	private int[] bKingMoveOO = new int[]{6};
+	private int[] bKingMoveOOO = new int[]{2};
 
-	public int[] wKingMoveOO = new int[]{62};
-	public int[] wKingMoveOOO = new int[]{58};
+	private int[] wKingMoveOO = new int[]{62};
+	private int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	private CoreActivityActionBar coreActivity;
+	private CoreActivityFace coreActivity;
 
-	public Board2(CoreActivityActionBar coreActivity) {
+	public Board2(CoreActivityFace coreActivity) {
 		this.coreActivity = coreActivity;
 	}
 
-	public void ResetCastlePos() {
+	public void resetCastlePos() {
 		bRook1 = 0;
 		bKing = 4;
 		bRook2 = 7;
@@ -275,7 +285,7 @@ public class Board2 {
 		wKingMoveOOO = new int[]{58};
 	}
 
-	public int[] GenCastlePos(String fen) {
+	public int[] genCastlePos(String fen) {
 		//rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR
 		String[] tmp = fen.split(" ");
 
@@ -487,6 +497,7 @@ public class Board2 {
 		combination, it calls genPush to put the move on the "move
 		stack." */
 
+	@Override
 	public TreeSet<Move> gen() {
 		TreeSet<Move> ret = new TreeSet<Move>();
 
@@ -571,12 +582,17 @@ public class Board2 {
 		return ret;
 	}
 
+	@Override
+	public int getSide() {
+		return side;
+	}
+
 
 /* genCaps() is basically a copy of gen() that's modified to
    only generate capture and promote moves. It's used by the
    quiescence search. */
 
-	TreeSet<Move> genCaps() {
+	public TreeSet<Move> genCaps() {
 		TreeSet<Move> ret = new TreeSet<Move>();
 
 		for (int i = 0; i < 64; ++i)
@@ -950,7 +966,8 @@ public class Board2 {
 
 		/* update the castle, en passant, and
 			   fifty-move-draw variables */
-		if (what != -1) castleMask[what] = true;
+		if (what != -1)
+			castleMask[what] = true;
 		if (piece[m.from] == KING) {
 			if (side == DARK) {
 				castleMask[0] = true;
@@ -1068,6 +1085,17 @@ public class Board2 {
 
 
 /* takeBack() is very similar to makeMove(), only backwards :)  */
+
+	@Override
+	public int getBoardMode() {
+		return mode;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+
+	@Override
+	public Board2 getBoard() {
+		return this;  //To change body of implemented methods use File | Settings | File Templates.
+	}
 
 	public void takeBack() {
 		if (hply - 1 < 0) return;
@@ -1428,7 +1456,7 @@ public class Board2 {
 		return r;
 	}
 
-	int eval() {
+	public int eval() {
 		int score[] = new int[2];  /* each side's score */
 
 		/* this is the first pass: set up pawnRank, pieceMat, and pawnMat. */
@@ -1720,8 +1748,17 @@ public class Board2 {
 		return (x >> 3);
 	}
 
+	public int[] getColor() {
+		return color;
+	}
+
+	public void setColor(int[] color) {
+		this.color = color;
+	}
+
 	public static int POS(int c, int r, boolean reside) {
 		if (reside)
+
 			return 63 - (8 * r + c);
 		else
 			return (8 * r + c);
@@ -1741,8 +1778,85 @@ public class Board2 {
 		this.reside = reside;
 	}
 
-	private SoundPlayer getSoundPlayer() {
+
+	public SoundPlayer getSoundPlayer() {
 		return coreActivity.getSoundPlayer();
+	}
+
+	public boolean isReside(){
+		return reside;
+	}
+
+	public int[] getPiece() {
+		return piece;
+	}
+
+	public void setPiece(int[] piece) {
+		this.piece = piece;
+	}
+
+	public int getHply() {
+		return hply;
+	}
+
+	public void setHply(int hply) {
+		this.hply = hply;
+	}
+
+	public int getMovesCount() {
+		return movesCount;
+	}
+
+	public void setMovesCount(int movesCount) {
+		this.movesCount = movesCount;
+	}
+
+	public boolean isSubmit() {
+		return submit;
+	}
+
+	public void setSubmit(boolean submit) {
+		this.submit = submit;
+	}
+
+	public boolean isRetry() {
+		return retry;
+	}
+
+	public void setRetry(boolean retry) {
+		this.retry = retry;
+	}
+
+	public boolean isInit() {
+		return init;
+	}
+
+	public void setInit(boolean init) {
+		this.init = init;
+	}
+
+	public int getSec() {
+		return sec;
+	}
+
+	public void setSec(int sec) {
+		this.sec = sec;
+	}
+
+	public int getLeft() {
+		return left;
+	}
+
+	public void setLeft(int left) {
+		this.left = left;
+	}
+
+	public int getMode() {
+		return mode;
+	}
+
+	public void setMode(int mode) {
+		this.mode = mode;
 	}
 
 	public boolean isTacticCanceled() {
@@ -1759,5 +1873,221 @@ public class Board2 {
 
 	public String[] getTacticMoves() {
 		return tacticMoves;
+	}
+
+	public boolean isAnalysis() {
+		return analysis;
+	}
+
+	public void setAnalysis(boolean analysis) {
+		this.analysis = analysis;
+	}
+
+	public HistoryData[] getHistDat() {
+		return histDat;
+	}
+
+	public void setHistDat(HistoryData[] histDat) {
+		this.histDat = histDat;
+	}
+
+	public boolean[] getSlide() {
+		return slide;
+	}
+
+	public void setSlide(boolean[] slide) {
+		this.slide = slide;
+	}
+
+	public int[] getOffsets() {
+		return offsets;
+	}
+
+	public void setOffsets(int[] offsets) {
+		this.offsets = offsets;
+	}
+
+	public int[][] getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int[][] offset) {
+		this.offset = offset;
+	}
+
+	public int getbRook1() {
+		return bRook1;
+	}
+
+	public void setbRook1(int bRook1) {
+		this.bRook1 = bRook1;
+	}
+
+	public int getbKing() {
+		return bKing;
+	}
+
+	public void setbKing(int bKing) {
+		this.bKing = bKing;
+	}
+
+	public int getbRook2() {
+		return bRook2;
+	}
+
+	public void setbRook2(int bRook2) {
+		this.bRook2 = bRook2;
+	}
+
+	public int getwRook1() {
+		return wRook1;
+	}
+
+	public void setwRook1(int wRook1) {
+		this.wRook1 = wRook1;
+	}
+
+	public int getwKing() {
+		return wKing;
+	}
+
+	public void setwKing(int wKing) {
+		this.wKing = wKing;
+	}
+
+	public int getwRook2() {
+		return wRook2;
+	}
+
+	public void setwRook2(int wRook2) {
+		this.wRook2 = wRook2;
+	}
+
+	public int[] getbKingMoveOO() {
+		return bKingMoveOO;
+	}
+
+	public void setbKingMoveOO(int[] bKingMoveOO) {
+		this.bKingMoveOO = bKingMoveOO;
+	}
+
+	public int[] getbKingMoveOOO() {
+		return bKingMoveOOO;
+	}
+
+	public void setbKingMoveOOO(int[] bKingMoveOOO) {
+		this.bKingMoveOOO = bKingMoveOOO;
+	}
+
+	public int[] getwKingMoveOO() {
+		return wKingMoveOO;
+	}
+
+	public void setwKingMoveOO(int[] wKingMoveOO) {
+		this.wKingMoveOO = wKingMoveOO;
+	}
+
+	public int[] getwKingMoveOOO() {
+		return wKingMoveOOO;
+	}
+
+	public void setwKingMoveOOO(int[] wKingMoveOOO) {
+		this.wKingMoveOOO = wKingMoveOOO;
+	}
+
+	public int[] getBoardcolor() {
+		return boardcolor;
+	}
+
+	public void setBoardcolor(int[] boardcolor) {
+		this.boardcolor = boardcolor;
+	}
+
+	public boolean[] getCastleMask() {
+		return castleMask;
+	}
+
+	public void setCastleMask(boolean[] castleMask) {
+		this.castleMask = castleMask;
+	}
+
+	public boolean isChess960() {
+		return chess960;
+	}
+
+	public void setChess960(boolean chess960) {
+		this.chess960 = chess960;
+	}
+
+	public int[][] getHistory() {
+		return history;
+	}
+
+	public void setHistory(int[][] history) {
+		this.history = history;
+	}
+
+	public int[] getPawnMat() {
+		return pawnMat;
+	}
+
+	public void setPawnMat(int[] pawnMat) {
+		this.pawnMat = pawnMat;
+	}
+
+	public int[][] getPawnRank() {
+		return pawnRank;
+	}
+
+	public void setPawnRank(int[][] pawnRank) {
+		this.pawnRank = pawnRank;
+	}
+
+	public int[] getPieceMat() {
+		return pieceMat;
+	}
+
+	public void setPieceMat(int[] pieceMat) {
+		this.pieceMat = pieceMat;
+	}
+
+	public int getRotated() {
+		return rotated;
+	}
+
+	public void setRotated(int rotated) {
+		this.rotated = rotated;
+	}
+
+	public int getTacticsCorrectMoves() {
+		return TacticsCorrectMoves;
+	}
+
+	public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
+		TacticsCorrectMoves = tacticsCorrectMoves;
+	}
+
+	public int getXside() {
+		return xside;
+	}
+
+	public void setXside(int xside) {
+		this.xside = xside;
+	}
+
+	public int getFifty() {
+		return fifty;
+	}
+
+	public void setFifty(int fifty) {
+		this.fifty = fifty;
+	}
+
+	public int getEp() {
+		return ep;
+	}
+
+	public void setEp(int ep) {
+		this.ep = ep;
 	}
 }

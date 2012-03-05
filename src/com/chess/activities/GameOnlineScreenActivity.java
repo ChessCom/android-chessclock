@@ -21,7 +21,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
 import com.chess.model.GameListElement;
 import com.chess.utilities.*;
-import com.chess.views.BoardView2;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import java.util.ArrayList;
@@ -145,8 +144,8 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 			boardView.setBoard(new Board2(this));
 			boardView.getBoard().init = true;
 			boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
-			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			boardView.getBoard().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+			//newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 			if (MainApp.isComputerGameMode(boardView)
 					&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
@@ -436,7 +435,7 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 								}
 								else
 								{
-								  movelist.setText(boardView.getBoard().MoveListSAN());
+								  movelist.setText(newBoardView.getBoardFace().MoveListSAN());
 								}*/
 				boardView.invalidate();
 
@@ -451,7 +450,7 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 			case CALLBACK_SEND_MOVE: {
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
-				//String myMove = boardView.getBoard().MoveSubmit();
+				//String myMove = newBoardView.getBoardFace().MoveSubmit();
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					final String move = boardView.getBoard().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
@@ -692,12 +691,12 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 				}
 
 				int i;
-				//System.out.println("@@@@@@@@ POINT 2 boardView.getBoard().movesCount=" + boardView.getBoard().movesCount);
+				//System.out.println("@@@@@@@@ POINT 2 newBoardView.getBoardFace().movesCount=" + newBoardView.getBoardFace().movesCount);
 				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
 
 				if (!mainApp.isLiveChess()) {
@@ -1173,17 +1172,17 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 	/*public void onStop()
 	  {
 		mainApp.getCurrentGame() = null;
-		boardView.board = null;
+		newBoardView.board = null;
 		super.onStop();
 	  }*/
 
 	private void showAnalysisButtons() {
 		analysisButtons.setVisibility(View.VISIBLE);
 		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*boardView.getBoard().takeBack();
-			boardView.getBoard().movesCount--;
-			boardView.invalidate();
-			boardView.getBoard().submit = false;*/
+		/*newBoardView.getBoardFace().takeBack();
+			newBoardView.getBoardFace().movesCount--;
+			newBoardView.invalidate();
+			newBoardView.getBoardFace().submit = false;*/
 	}
 
 	private void hideAnalysisButtons() {
@@ -1319,7 +1318,7 @@ public class GameOnlineScreenActivity extends CoreActivityActionBar implements V
 
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 				}
 

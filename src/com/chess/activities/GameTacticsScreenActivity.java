@@ -26,7 +26,6 @@ import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
 import com.chess.utilities.*;
-import com.chess.views.BoardView2;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 import org.apache.http.util.ByteArrayBuffer;
@@ -146,8 +145,8 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 			boardView.setBoard(new Board2(this));
 			boardView.getBoard().init = true;
 			boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
-			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			boardView.getBoard().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+			//newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
@@ -479,7 +478,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 				boardView.getBoard().retry = true;
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 					String[] tmp2 = FEN.split(" ");
 					if (tmp2.length > 1) {
@@ -558,7 +557,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 
 		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 		if (!FEN.equals("")) {
-			boardView.getBoard().GenCastlePos(FEN);
+			boardView.getBoard().genCastlePos(FEN);
 			MoveParser2.FenParse(FEN, boardView.getBoard());
 			String[] tmp = FEN.split(" ");
 			if (tmp.length > 1) {
@@ -624,7 +623,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 		if (mainApp.guest || mainApp.noInternet) {
 			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
-				boardView.getBoard().GenCastlePos(FEN);
+				boardView.getBoard().genCastlePos(FEN);
 				MoveParser2.FenParse(FEN, boardView.getBoard());
 				String[] tmp = FEN.split(" ");
 				if (tmp.length > 1) {
@@ -640,7 +639,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 		} else {
 			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
-				boardView.getBoard().GenCastlePos(FEN);
+				boardView.getBoard().genCastlePos(FEN);
 				MoveParser2.FenParse(FEN, boardView.getBoard());
 				String[] tmp2 = FEN.split(" ");
 				if (tmp2.length > 1) {
@@ -790,7 +789,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 					finish();
 				else if (MainApp.isTacticsGameMode(boardView)) {
 					/*//mainApp.getTabHost().setCurrentTab(0);
-					boardView.getBoard().getTactic()Canceled = true;*/
+					newBoardView.getBoardFace().getTactic()Canceled = true;*/
 					if (mainApp.noInternet) {
 						if (mainApp.offline) {
 							GetGuestTacticsGame();
@@ -874,7 +873,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 								}
 								else
 								{
-								  movelist.setText(boardView.getBoard().MoveListSAN());
+								  movelist.setText(newBoardView.getBoardFace().MoveListSAN());
 								}*/
 				boardView.invalidate();
 
@@ -958,7 +957,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 					String[] tmp2 = FEN.split(" ");
 					if (tmp2.length > 1) {
@@ -1134,7 +1133,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
-				/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
+				/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView)) {
 					mainApp.setCurrentGame(new com.chess.model.Game(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 					executePausedActivityGameEvents();
 					//lccHolder.setActivityPausedMode(false);
@@ -1185,12 +1184,12 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 
 				FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
-					boardView.getBoard().GenCastlePos(FEN);
+					boardView.getBoard().genCastlePos(FEN);
 					MoveParser2.FenParse(FEN, boardView.getBoard());
 				}
 
 				int i;
-				//System.out.println("@@@@@@@@ POINT 2 boardView.getBoard().movesCount=" + boardView.getBoard().movesCount);
+				//System.out.println("@@@@@@@@ POINT 2 newBoardView.getBoardFace().movesCount=" + newBoardView.getBoardFace().movesCount);
 				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
 
 				if (!mainApp.isLiveChess()) {
@@ -1238,7 +1237,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 					};
 				}).start();
 
-				/*if (MainApp.isLiveOrEchessGameMode(boardView) && appService != null && appService.getRepeatableTimer() == null) {
+				/*if (MainApp.isLiveOrEchessGameMode(newBoardView) && appService != null && appService.getRepeatableTimer() == null) {
 					if (progressDialog != null) {
 						progressDialog.dismiss();
 						progressDialog = null;
@@ -1275,8 +1274,8 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-//		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(boardView)
-//				|| MainApp.isFinishedEchessGameMode(boardView))) {
+//		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(newBoardView)
+//				|| MainApp.isFinishedEchessGameMode(newBoardView))) {
 //			int itemPosition = mainApp.isLiveChess() ? 1 : 3;
 //			if (mainApp.getCurrentGame().values.get("has_new_message").equals("1"))
 //				menu.getItem(itemPosition).setIcon(R.drawable.chat_nm);
@@ -1417,7 +1416,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 //		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
 
-//		if (MainApp.isTacticsGameMode(boardView)) {
+//		if (MainApp.isTacticsGameMode(newBoardView)) {
 			if (boardView.getBoard().isTacticCanceled()) {
 				boardView.getBoard().setTacticCanceled(false);
 				showDialog(DIALOG_TACTICS_START_TACTICS);
@@ -1681,17 +1680,17 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 	/*public void onStop()
 	  {
 		mainApp.getCurrentGame() = null;
-		boardView.board = null;
+		newBoardView.board = null;
 		super.onStop();
 	  }*/
 
 	private void showAnalysisButtons() {
 		analysisButtons.setVisibility(View.VISIBLE);
 		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*boardView.getBoard().takeBack();
-			boardView.getBoard().movesCount--;
-			boardView.invalidate();
-			boardView.getBoard().submit = false;*/
+		/*newBoardView.getBoardFace().takeBack();
+			newBoardView.getBoardFace().movesCount--;
+			newBoardView.invalidate();
+			newBoardView.getBoardFace().submit = false;*/
 	}
 
 	private void hideAnalysisButtons() {
@@ -1820,7 +1819,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 
 						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
-							boardView.getBoard().GenCastlePos(FEN);
+							boardView.getBoard().genCastlePos(FEN);
 							MoveParser2.FenParse(FEN, boardView.getBoard());
 							String[] tmp = FEN.split(" ");
 							if (tmp.length > 1) {
@@ -1884,7 +1883,7 @@ public class GameTacticsScreenActivity extends CoreActivityActionBar implements 
 
 						String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
-							boardView.getBoard().GenCastlePos(FEN);
+							boardView.getBoard().genCastlePos(FEN);
 							MoveParser2.FenParse(FEN, boardView.getBoard());
 							String[] tmp2 = FEN.split(" ");
 							if (tmp2.length > 1) {

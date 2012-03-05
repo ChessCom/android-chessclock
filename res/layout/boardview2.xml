@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="#444"
+
 	android:orientation="vertical">
 
 	<LinearLayout
@@ -23,16 +23,8 @@
 				android:gravity="center"
 				android:padding="3dip"
 				android:text="@string/analysis"
-				android:textColor="#fff"
-				android:textSize="16dip"
-				android:textStyle="bold">
-			</TextView>
+				/>
 
-			<ImageView
-				android:layout_width="fill_parent"
-				android:layout_height="5dip"
-				android:background="#00bb00">
-			</ImageView>
 		</LinearLayout>
 
 		<TextView
@@ -43,10 +35,7 @@
 			android:inputType="textImeMultiLine"
 			android:padding="2dip"
 			android:text="@string/Thinking"
-			android:textColor="#fff"
-			android:textStyle="bold"
-			android:visibility="gone">
-		</TextView>
+			android:visibility="gone"/>
 
 		<TextView
 			android:id="@+id/white"
@@ -54,12 +43,9 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:drawablePadding="5dip"
-			android:inputType="textImeMultiLine"
 			android:padding="2dip"
-			android:text="Player"
-			android:textColor="#fff"
-			android:textStyle="bold">
-		</TextView>
+			android:text="@string/Human"
+			/>
 
 		<TextView
 			android:id="@+id/black"
@@ -68,12 +54,9 @@
 			android:layout_weight="1"
 			android:drawablePadding="5dip"
 			android:gravity="right"
-			android:inputType="textImeMultiLine"
 			android:padding="2dip"
-			android:text="Computer"
-			android:textColor="#fff"
-			android:textStyle="bold">
-		</TextView>
+			android:text="@string/Computer"
+			/>
 
 		<TextView
 			android:id="@+id/timer"
@@ -82,12 +65,8 @@
 			android:layout_weight="1"
 			android:drawablePadding="5dip"
 			android:gravity="center"
-			android:inputType="textImeMultiLine"
 			android:padding="2dip"
-			android:textColor="#fff"
-			android:textStyle="bold"
-			android:visibility="gone">
-		</TextView>
+			android:visibility="gone"/>
 	</LinearLayout>
 
 	<FrameLayout
@@ -108,7 +87,6 @@
 			android:gravity="right"
 			android:inputType="textImeMultiLine"
 			android:padding="2dip"
-			android:textColor="#fff"
 			android:textSize="12dip"/>
 
 		<LinearLayout

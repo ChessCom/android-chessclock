@@ -11,7 +11,7 @@ package com.chess.engine;
 
 import android.util.Log;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity;
+import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.utilities.SoundPlayer;
 
 import java.net.URLEncoder;
@@ -63,7 +63,8 @@ public class Board {
 	public boolean retry;
 	private boolean tacticCanceled;
 	public int side = LIGHT;
-	public int sec = 0, left = 0;
+	public int sec = 0;
+	public int left = 0;
 	public int TacticsCorrectMoves = 0;
 	private String[] tacticMoves;
 	int xside = DARK;
@@ -255,9 +256,9 @@ public class Board {
 	public int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	private CoreActivity coreActivity;
+	private CoreActivityFace coreActivity;
 
-	public Board(CoreActivity coreActivity) {
+	public Board(CoreActivityFace coreActivity) {
 		this.coreActivity = coreActivity;
 	}
 
@@ -736,7 +737,8 @@ public class Board {
 				}
 			}
 
-			if (castleMask[what]) return false;
+			if (castleMask[what])
+				return false;
 
 			if (what == 2) {
 				if (attack(F1, xside) || attack(G1, xside))
@@ -948,7 +950,8 @@ public class Board {
 
 		/* update the castle, en passant, and
 			   fifty-move-draw variables */
-		if (what != -1) castleMask[what] = true;
+		if (what != -1)
+			castleMask[what] = true;
 		if (piece[m.from] == KING) {
 			if (side == DARK) {
 				castleMask[0] = true;

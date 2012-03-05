@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.Singin;
+import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
@@ -27,7 +28,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public abstract class CoreActivityActionBar extends ActionBarActivity {
+public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;

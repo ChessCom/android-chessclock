@@ -11,6 +11,7 @@
 package com.chess.engine;
 
 import android.util.Log;
+import com.chess.core.interfaces.BoardFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -18,7 +19,7 @@ import java.util.TreeSet;
 public class Search2 {
 	final static int MAX_PLY = 32;
 
-	private Board2 board;
+	private BoardFace boardFace;
 	private Move pv[][] = new Move[MAX_PLY][MAX_PLY];
 	private int pvLength[] = new int[MAX_PLY];
 	private boolean followPV;
@@ -27,8 +28,8 @@ public class Search2 {
 	private long startTime;
 	private long stopTime;
 
-	public Search2(Board2 b) {
-		board = b;
+	public Search2(BoardFace boardFace1) {
+		boardFace = boardFace1;
 	}
 
 	public Move getBest() {
@@ -49,7 +50,7 @@ public class Search2 {
 					pv[i][j] = new Move((char) 0, (char) 0, (char) 0, (char) 0);
 			for (int i = 0; i < 64; i++)
 				for (int j = 0; j < 64; j++)
-					board.history[i][j] = 0;
+					boardFace.getHistory()[i][j] = 0;
 			if (output == 1)
 				Log.d("SEARCH", "ply      nodes  score  pv");
 			for (int i = 1; i <= maxDepth; ++i) {
@@ -66,7 +67,7 @@ public class Search2 {
 		} catch (StopSearchingException e) {
 			/* make sure to take back the line we were searching */
 			while (ply != 0) {
-				board.takeBack();
+				boardFace.takeBack();
 				--ply;
 			}
 		}
@@ -93,21 +94,21 @@ public class Search2 {
 			   to pick a move and can't simply return 0) then check to
 			   see if the position is a repeat. if so, we can assume that
 			   this line is a draw and return 0. */
-		if ((ply > 0) && (board.reps() > 0))
+		if ((ply > 0) && (boardFace.reps() > 0))
 			return 0;
 
 		/* are we too deep? */
 		if (ply >= MAX_PLY - 1)
-			return board.eval();
+			return boardFace.eval();
 /*	if (hply >= HIST_STACK - 1)
-            return board.eval();
+            return newBoardView.eval();
 FIXME!!! We could in principle overflow the move history stack.
 */
 		/* are we in check? if so, we want to search deeper */
-		boolean check = board.inCheck(board.side);
+		boolean check = boardFace.inCheck(boardFace.getSide());
 		if (check)
 			++depth;
-		TreeSet<Move> validMoves = board.gen();
+		TreeSet<Move> validMoves = boardFace.gen();
 		if (followPV)  /* are we following the PV? */
 			sortPV(validMoves);
 
@@ -116,18 +117,18 @@ FIXME!!! We could in principle overflow the move history stack.
 		Iterator<Move> i = validMoves.iterator();
 		while (i.hasNext()) {
 			Move m = (Move) i.next();
-			if (!board.makeMove(m, false))
+			if (!boardFace.makeMove(m, false))
 				continue;
 			foundMove = true;
 			ply++;
 			int x = -search(-beta, -alpha, depth - 1);
-			board.takeBack();
+			boardFace.takeBack();
 			ply--;
 			if (x > alpha) {
 				/* this move caused a cutoff, so increase the history
 									value so it gets ordered high next time we can
 									search it */
-				board.history[m.from][m.to] += depth;
+				boardFace.getHistory()[m.from][m.to] += depth;
 				if (x >= beta)
 					return beta;
 				alpha = x;
@@ -149,7 +150,7 @@ FIXME!!! We could in principle overflow the move history stack.
 		}
 
 		/* fifty move draw rule */
-		if (board.fifty >= 100)
+		if (boardFace.getFifty() >= 100)
 			return 0;
 		return alpha;
 	}
@@ -173,18 +174,18 @@ FIXME!!! We could in principle overflow the move history stack.
 
 		/* are we too deep? */
 		if (ply >= MAX_PLY - 1)
-			return board.eval();
+			return boardFace.eval();
 /*	if (hply >= HIST_STACK - 1)
-            return board.eval();
+            return newBoardView.eval();
 FIXME!! see above */
 		/* check with the evaluation function */
-		int x = board.eval();
+		int x = boardFace.eval();
 		if (x >= beta)
 			return beta;
 		if (x > alpha)
 			alpha = x;
 
-		TreeSet<Move> validCaptures = board.genCaps();
+		TreeSet<Move> validCaptures = boardFace.genCaps();
 		if (followPV)  /* are we following the PV? */
 			sortPV(validCaptures);
 
@@ -192,11 +193,11 @@ FIXME!! see above */
 		Iterator<Move> i = validCaptures.iterator();
 		while (i.hasNext()) {
 			Move m = (Move) i.next();
-			if (!board.makeMove(m, false))
+			if (!boardFace.makeMove(m, false))
 				continue;
 			ply++;
 			x = -quiesce(-beta, -alpha);
-			board.takeBack();
+			boardFace.takeBack();
 			ply--;
 			if (x > alpha) {
 				if (x >= beta)

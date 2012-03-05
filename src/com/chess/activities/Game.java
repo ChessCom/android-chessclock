@@ -679,7 +679,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			boardView.getBoard().init = true;
 			boardView.getBoard().mode = extras.getInt(AppConstants.GAME_MODE);
 			boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-			//boardView.getBoard().GenCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+			//newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 			if (MainApp.isComputerGameMode(boardView)
 					&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
@@ -1065,7 +1065,7 @@ public class Game extends CoreActivity implements OnClickListener {
 					finish();
 				else if (MainApp.isTacticsGameMode(boardView)) {
 					/*mainApp.getTabHost().setCurrentTab(0);
-					boardView.getBoard().getTactic()Canceled = true;*/
+					newBoardView.getBoardFace().getTactic()Canceled = true;*/
 					if (mainApp.noInternet) {
 						if (mainApp.offline) {
 							GetGuestTacticsGame();
@@ -1197,7 +1197,7 @@ public class Game extends CoreActivity implements OnClickListener {
 								}
 								else
 								{
-								  movelist.setText(boardView.getBoard().MoveListSAN());
+								  movelist.setText(newBoardView.getBoardFace().MoveListSAN());
 								}*/
 				boardView.invalidate();
 
@@ -1212,7 +1212,7 @@ public class Game extends CoreActivity implements OnClickListener {
 			case CALLBACK_SEND_MOVE: {
 				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
-				//String myMove = boardView.getBoard().MoveSubmit();
+				//String myMove = newBoardView.getBoardFace().MoveSubmit();
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
 					final String move = boardView.getBoard().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
@@ -1569,7 +1569,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				}
 
 				int i;
-				//System.out.println("@@@@@@@@ POINT 2 boardView.getBoard().movesCount=" + boardView.getBoard().movesCount);
+				//System.out.println("@@@@@@@@ POINT 2 newBoardView.getBoardFace().movesCount=" + newBoardView.getBoardFace().movesCount);
 				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
 
 				if (!mainApp.isLiveChess()) {
@@ -1759,7 +1759,7 @@ public class Game extends CoreActivity implements OnClickListener {
 							else if (MainApp.isComputerVsHumanBlackGameMode(boardView)) {
 								boardView.getBoard().mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 							}
-							//boardView.getBoard().mode ^= 1;
+							//newBoardView.getBoardFace().mode ^= 1;
 							boardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
 									.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 											+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
@@ -2328,17 +2328,17 @@ public class Game extends CoreActivity implements OnClickListener {
 	/*public void onStop()
 	  {
 		mainApp.getCurrentGame() = null;
-		boardView.board = null;
+		newBoardView.board = null;
 		super.onStop();
 	  }*/
 
 	private void showAnalysisButtons() {
 		analysisButtons.setVisibility(View.VISIBLE);
 		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*boardView.getBoard().takeBack();
-			boardView.getBoard().movesCount--;
-			boardView.invalidate();
-			boardView.getBoard().submit = false;*/
+		/*newBoardView.getBoardFace().takeBack();
+			newBoardView.getBoardFace().movesCount--;
+			newBoardView.invalidate();
+			newBoardView.getBoardFace().submit = false;*/
 	}
 
 	private void hideAnalysisButtons() {

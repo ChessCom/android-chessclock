@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.Singin;
+import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
@@ -25,7 +26,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public abstract class CoreActivityHome extends ActionBarActivityHome {
+public abstract class CoreActivityHome extends ActionBarActivityHome implements CoreActivityFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -544,6 +545,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome {
 		}
 	}
 
+	@Override
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
@@ -553,6 +555,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome {
 		}
 	}
 
+	@Override
 	public SoundPlayer getSoundPlayer() {
 		return mainApp.getSoundPlayer();
 	}
