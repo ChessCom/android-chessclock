@@ -1,5 +1,7 @@
 package com.chess.engine;
 
+import com.chess.core.interfaces.BoardFace;
+
 import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -11,7 +13,7 @@ public class MoveParser2 {
 	public MoveParser2() {
 	}
 
-	public static int[] parseCoordinate(Board2 board, String move) {
+	public static int[] parseCoordinate(BoardFace board, String move) {
 		TreeSet<Move> validMoves = board.gen();
 
 		int promotion = 0;
@@ -20,17 +22,17 @@ public class MoveParser2 {
 		String currentmove = move.trim();
 
 		if (currentmove.equals("O-O") || currentmove.equals("O-O+")) {
-			if (board.side == 0) {
-				return new int[]{board.wKing, board.wKingMoveOO[0], 0, 2};
-			} else if (board.side == 1) {
-				return new int[]{board.bKing, board.bKingMoveOO[0], 0, 2};
+			if (board.getSide() == 0) {
+				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
+			} else if (board.getSide() == 1) {
+				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
 			}
 		}
 		if (currentmove.equals("O-O-O") || currentmove.equals("O-O-O+")) {
-			if (board.side == 0) {
-				return new int[]{board.wKing, board.wKingMoveOOO[0], 0, 2};
-			} else if (board.side == 1) {
-				return new int[]{board.bKing, board.bKingMoveOOO[0], 0, 2};
+			if (board.getSide() == 0) {
+				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
+			} else if (board.getSide() == 1) {
+				return new int[]{board.getbKing(), board.getbKingMoveOOO()[0], 0, 2};
 			}
 		}
 
@@ -71,7 +73,7 @@ public class MoveParser2 {
 		return new int[]{from, to, promotion};
 	}
 
-	public static int[] Parse(Board2 board, String move) {
+	public static int[] Parse(BoardFace board, String move) {
 		TreeSet<Move> validMoves = board.gen();
 
 		int promotion = 0;
@@ -80,17 +82,17 @@ public class MoveParser2 {
 		String currentmove = move.trim();
 
 		if (currentmove.equals("O-O") || currentmove.equals("O-O+")) {
-			if (board.side == 0) {
-				return new int[]{board.wKing, board.wKingMoveOO[0], 0, 2};
-			} else if (board.side == 1) {
-				return new int[]{board.bKing, board.bKingMoveOO[0], 0, 2};
+			if (board.getSide() == 0) {
+				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
+			} else if (board.getSide() == 1) {
+				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
 			}
 		}
 		if (currentmove.equals("O-O-O") || currentmove.equals("O-O-O+")) {
-			if (board.side == 0) {
-				return new int[]{board.wKing, board.wKingMoveOOO[0], 0, 2};
-			} else if (board.side == 1) {
-				return new int[]{board.bKing, board.bKingMoveOOO[0], 0, 2};
+			if (board.getSide() == 0) {
+				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
+			} else if (board.getSide() == 1) {
+				return new int[]{board.getbKing(), board.getbKingMoveOOO()[0], 0, 2};
 			}
 		}
 
@@ -122,26 +124,26 @@ public class MoveParser2 {
 				int l2 = NumToBN(currentmove.substring(1, 2)) * 8 - (Board.COL(k) + 1);
 
 				if (currentmove.substring(1, 2).matches("[abcdefgh]")) {
-					if (board.piece[l1] == pieceType && board.color[l1] == board.side) {
+					if (board.getPiece()[l1] == pieceType && board.getColor()[l1] == board.getSide()) {
 						return new int[]{l1, to, promotion};
 					}
 				}
 				if (currentmove.substring(1, 2).matches("[0-9]")) {
-					if (board.piece[l2] == pieceType && board.color[l2] == board.side)
+					if (board.getPiece()[l2] == pieceType && board.getColor()[l2] == board.getSide())
 						return new int[]{l2, to, promotion};
 				}
 			}
 		}
 
 		for (k = 0; k < 64; k++) {
-			if (board.piece[k] == pieceType && board.color[k] == board.side) {
+			if (board.getPiece()[k] == pieceType && board.getColor()[k] == board.getSide()) {
 				Iterator<Move> itr = validMoves.iterator();
 				Move M = null;
 				while (itr.hasNext()) {
 					M = (Move) itr.next();
 					if (M.from == k && M.to == to) {
 						if (pieceType == 2) {
-							if (board.boardcolor[k] == board.boardcolor[to])
+							if (board.getBoardColor()[k] == board.getBoardColor()[to])
 								return new int[]{k, to, promotion};
 						} else if (pieceType == 0) {
 							if (currentmove.contains("x") && 9 - LetterToBN(currentmove.substring(0, 1)) != Board.COL(k) + 1) {
@@ -226,7 +228,8 @@ public class MoveParser2 {
 		return BNToLetter(Board.COL(pos)) + BNToNum(Board.ROW(pos));
 	}
 
-	public static void FenParse(String fen, Board2 b) {
+//    public static void FenParse(String fen, Board2 b) {
+    public static void FenParse(String fen, BoardFace b) {
 		String[] FEN = fen.split("[/]");
 		int i, j, p = 0;
 		for (i = 0; i < 8; i++) {
@@ -235,11 +238,11 @@ public class MoveParser2 {
 				String[] tmp2 = FEN[i].split(" ");
 				pos = tmp2[0];
 				if (tmp2[1].contains("w")) {
-					b.side = 0;
-					b.xside = 1;
+					b.setSide(0);
+					b.setXside(1);
 				} else {
-					b.side = 1;
-					b.xside = 0;
+					b.setSide(1);
+					b.setXside(0);
 				}
 			}
 			String[] f = pos.trim().split("|");
@@ -247,58 +250,58 @@ public class MoveParser2 {
 				if (f[j].matches("[0-9]")) {
 					int cnt = new Integer(f[j]);
 					while (cnt > 0) {
-						b.piece[p] = 6;
-						b.color[p++] = 6;
+						b.getPiece()[p] = 6;
+						b.getColor()[p++] = 6;
 						cnt--;
 					}
 				}
 				if (f[j].contains("P")) {
-					b.piece[p] = 0;
-					b.color[p++] = 0;
+					b.getPiece()[p] = 0;
+					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("N")) {
-					b.piece[p] = 1;
-					b.color[p++] = 0;
+					b.getPiece()[p] = 1;
+					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("B")) {
-					b.piece[p] = 2;
-					b.color[p++] = 0;
+					b.getPiece()[p] = 2;
+					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("R")) {
-					b.piece[p] = 3;
-					b.color[p++] = 0;
+					b.getPiece()[p] = 3;
+					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("Q")) {
-					b.piece[p] = 4;
-					b.color[p++] = 0;
+					b.getPiece()[p] = 4;
+					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("K")) {
-					b.piece[p] = 5;
-					b.color[p++] = 0;
+					b.getPiece()[p] = 5;
+					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("p")) {
-					b.piece[p] = 0;
-					b.color[p++] = 1;
+					b.getPiece()[p] = 0;
+					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("n")) {
-					b.piece[p] = 1;
-					b.color[p++] = 1;
+					b.getPiece()[p] = 1;
+					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("b")) {
-					b.piece[p] = 2;
-					b.color[p++] = 1;
+					b.getPiece()[p] = 2;
+					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("r")) {
-					b.piece[p] = 3;
-					b.color[p++] = 1;
+					b.getPiece()[p] = 3;
+					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("q")) {
-					b.piece[p] = 4;
-					b.color[p++] = 1;
+					b.getPiece()[p] = 4;
+					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("k")) {
-					b.piece[p] = 5;
-					b.color[p++] = 1;
+					b.getPiece()[p] = 5;
+					b.getColor()[p++] = 1;
 				}
 			}
 		}

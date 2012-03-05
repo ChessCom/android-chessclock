@@ -129,7 +129,7 @@ public class NewBoardView extends ImageView {
 		}
 		if (!MainApp.isTacticsGameMode(boardFace) && isResult())
 			return;
-		switch (boardFace.getBoardMode()) {
+		switch (boardFace.getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
@@ -151,7 +151,7 @@ public class NewBoardView extends ImageView {
 	boolean isResult() {
 		//saving game
 		if (MainApp.isComputerVsHumanGameMode(boardFace) || MainApp.isHumanVsHumanGameMode(boardFace)) {
-			String saving = "" + boardFace.getBoardMode();
+			String saving = "" + boardFace.getMode();
 
 			int i;
 			for (i = 0; i < boardFace.getMovesCount(); i++) {

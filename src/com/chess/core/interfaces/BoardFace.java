@@ -13,7 +13,8 @@ import java.util.TreeSet;
  * @created at: 05.03.12 5:16
  */
 public interface BoardFace {
-	int getBoardMode();
+	int getMode();
+    void setMode(int mode);
 	void takeBack();
 	TreeSet<Move> gen();
 	int getSide();
@@ -45,4 +46,39 @@ public interface BoardFace {
 	Board2 getBoard();
 	void setInit(boolean init);
 	boolean isInit();
+
+    void setTacticCanceled(boolean tacticCanceled);
+
+    void setXside(int xside);
+
+    void setSide(int side);
+    int getwKing();
+    int[] getwKingMoveOO();
+
+    int getbKing();
+
+    int[] getbKingMoveOO();
+
+    int[] getwKingMoveOOO();
+
+    int[] getbKingMoveOOO();
+
+    int[] getBoardColor();
+
+    void setChess960(boolean chess960);
+
+    int[] genCastlePos(String fen);
+
+    void takeNext();
+
+    CharSequence MoveListSAN();
+
+    String convertMoveLive();
+
+    void setAnalysis(boolean analysis);
+
+    void decreaseMovesCount();
+
+    void increaseMovesCount();
+
 }

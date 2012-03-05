@@ -582,10 +582,7 @@ public class Board2 implements BoardFace {
 		return ret;
 	}
 
-	@Override
-	public int getSide() {
-		return side;
-	}
+
 
 
 /* genCaps() is basically a copy of gen() that's modified to
@@ -1086,10 +1083,7 @@ public class Board2 implements BoardFace {
 
 /* takeBack() is very similar to makeMove(), only backwards :)  */
 
-	@Override
-	public int getBoardMode() {
-		return mode;  //To change body of implemented methods use File | Settings | File Templates.
-	}
+
 
 
 	@Override
@@ -1783,6 +1777,15 @@ public class Board2 implements BoardFace {
 		return coreActivity.getSoundPlayer();
 	}
 
+    @Override
+    public int getSide() {
+        return side;
+    }
+
+    public void setSide(int side){
+        this.side = side;
+    }
+
 	public boolean isReside(){
 		return reside;
 	}
@@ -1810,6 +1813,14 @@ public class Board2 implements BoardFace {
 	public void setMovesCount(int movesCount) {
 		this.movesCount = movesCount;
 	}
+
+    public void decreaseMovesCount(){
+        movesCount--;
+    }
+
+    public void increaseMovesCount(){
+        movesCount++;
+    }
 
 	public boolean isSubmit() {
 		return submit;
@@ -1851,9 +1862,10 @@ public class Board2 implements BoardFace {
 		this.left = left;
 	}
 
-	public int getMode() {
-		return mode;
-	}
+    @Override
+    public int getMode() {
+        return mode;
+    }
 
 	public void setMode(int mode) {
 		this.mode = mode;
@@ -1995,7 +2007,7 @@ public class Board2 implements BoardFace {
 		this.wKingMoveOOO = wKingMoveOOO;
 	}
 
-	public int[] getBoardcolor() {
+	public int[] getBoardColor() {
 		return boardcolor;
 	}
 
