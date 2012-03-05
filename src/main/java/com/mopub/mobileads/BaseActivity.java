@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.chess.R;
+
 public abstract class BaseActivity extends Activity {
     private static final float CLOSE_BUTTON_SIZE_DP = 50.0f;
     private static final float CLOSE_BUTTON_PADDING_DP = 8.0f;

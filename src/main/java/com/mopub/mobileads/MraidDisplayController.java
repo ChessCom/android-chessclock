@@ -2,7 +2,7 @@ package com.mopub.mobileads;
 
 import java.util.ArrayList;
 
-import com.mopub.mobileads.R;
+import com.chess.R;
 import com.mopub.mobileads.MraidView.ExpansionStyle;
 import com.mopub.mobileads.MraidView.NativeCloseButtonStyle;
 import com.mopub.mobileads.MraidView.PlacementType;

@@ -16,7 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.mopub.mobileads.R;
+import com.chess.R;
 
 public class MraidBrowser extends Activity {
     

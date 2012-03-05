@@ -29,12 +29,14 @@
             android:visibility="gone"
             android:layout_gravity="center" />-->
 
+        <!--
         <FrameLayout
                 android:id="@+id/millennial_wrapper"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:visibility="visible"
                 android:layout_gravity="center" />
+                -->
 
         <com.mopub.mobileads.MoPubView
                 android:id="@+id/mopub_adview"

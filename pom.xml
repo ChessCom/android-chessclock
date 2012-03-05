@@ -87,7 +87,7 @@
 		<dependency>
 			<groupId>com.millennialmedia.android</groupId>
 			<artifactId>mm-ad-view</artifactId>
-			<version>4.2.6</version>
+			<version>4.5.1</version>
 		</dependency>
 
 		<dependency>

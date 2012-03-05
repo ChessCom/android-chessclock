@@ -20,7 +20,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.mopub.mobileads.R;
+import com.chess.R;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
