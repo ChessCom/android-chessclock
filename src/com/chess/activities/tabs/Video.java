@@ -17,6 +17,7 @@ import com.chess.model.VideoItem;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
+@Deprecated
 public class Video extends CoreActivity implements OnClickListener {
 	private VideoItem item;
 	private LinearLayout recent;

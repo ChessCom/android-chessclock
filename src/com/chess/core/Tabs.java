@@ -27,6 +27,7 @@ import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
 import com.mobclix.android.sdk.Mobclix;
 
+@Deprecated
 public class Tabs extends TabActivity implements OnClickListener {
 
 	public MainApp mainApp;

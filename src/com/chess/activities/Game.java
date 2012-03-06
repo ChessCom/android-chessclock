@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@Deprecated
 public class Game extends CoreActivity implements OnClickListener {
 
 	private final static int MENU_COMPUTER_NEW_GAME = 0;

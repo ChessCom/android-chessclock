@@ -29,7 +29,7 @@ import java.util.List;
  * @created at: 08.02.12 7:18
  */
 public class PreferencesScreenActivity extends CoreActivityActionBar implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-	private Spinner actionAfterMyMove; /*Notif, */
+	private Spinner actionAfterMyMove;
 	private Spinner strength;
 	private CheckBox showSubmitButton;
 	private CheckBox PrefNEnable;
@@ -50,8 +50,6 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 		context = this;
 
-//		PrefBoard = (Button) findViewById(R.id.PrefBoard);
-//		PrefPices = (Button) findViewById(R.id.PrefPices);
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
 		Button prefInvite = (Button) findViewById(R.id.PrefInvite);
@@ -216,7 +214,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 				mainApp.getSharedDataEditor().commit();
 			}
-			startActivity(new Intent(this, Singin.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 			finish();
 		}else if(view.getId() == R.id.upgradeBtn){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(

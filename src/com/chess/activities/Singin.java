@@ -27,6 +27,7 @@ import com.flurry.android.FlurryAgent;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+@Deprecated
 public class Singin extends CoreActivity implements OnClickListener {
 
 	private EditText username, password;

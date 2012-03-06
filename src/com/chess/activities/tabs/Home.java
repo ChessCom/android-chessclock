@@ -24,6 +24,7 @@ import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class Home extends CoreActivity implements View.OnClickListener, OnItemClickListener {
 
 	private ListView listView;

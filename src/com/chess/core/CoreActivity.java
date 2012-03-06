@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+@Deprecated
 public abstract class CoreActivity extends Activity implements CoreActivityFace {
 
 	protected final static int INIT_ACTIVITY = -1;

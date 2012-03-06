@@ -24,6 +24,7 @@ import com.mobclix.android.sdk.MobclixAdView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class MainApp extends Application {
 
 	public static String APP_ID = "2427617054";

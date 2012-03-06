@@ -32,6 +32,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
+@Deprecated
 public class Online extends CoreActivity implements OnClickListener {
 	private ListView gamesList;
 	private Spinner gamesType;

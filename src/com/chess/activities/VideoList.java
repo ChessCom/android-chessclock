@@ -22,6 +22,7 @@ import com.chess.views.BackgroundChessDrawable;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class VideoList extends CoreActivity implements OnItemClickListener, View.OnClickListener, OnScrollListener {
 	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
 	private VideosAdapter videosAdapter = null;

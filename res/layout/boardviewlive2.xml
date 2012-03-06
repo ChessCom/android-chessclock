@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="#444">
+	android:background="@color/dark_grey"
+	>
 
 	<LinearLayout
 		android:layout_width="fill_parent"

@@ -54,8 +54,9 @@ public class ChessSpinnerAdapter extends ItemsAdapter<String> {
 
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) convertView = createDropDownView(parent);
-		bindView(itemsList.get(position), position, convertView);
-		return convertView;
+		return super.getDropDownView(position,convertView, parent);
+//		if (convertView == null) convertView = createDropDownView(parent);
+//		bindView(itemsList.get(position), position, convertView);
+//		return convertView;
 	}
 }

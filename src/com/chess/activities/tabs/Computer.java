@@ -16,6 +16,7 @@ import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.flurry.android.FlurryAgent;
 
+@Deprecated
 public class Computer extends CoreActivity implements OnClickListener {
 
 	private Spinner strength;

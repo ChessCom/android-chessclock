@@ -8,6 +8,7 @@ import com.chess.R;
 import com.chess.activities.Singin;
 import com.chess.utilities.Notifications;
 
+@Deprecated
 public class StartActivity extends CoreActivity {
 
 	@Override

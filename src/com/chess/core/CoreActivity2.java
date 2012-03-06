@@ -15,6 +15,8 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.activities.HomeScreenActivity;
+import com.chess.activities.LoginScreenActivity;
 import com.chess.activities.Singin;
 import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
@@ -142,18 +144,20 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 				@Override
 				public void run() {
 					mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 8)]);
+							mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+									+ AppConstants.PREF_BOARD_TYPE, 8)]);
 					mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)]);
+							mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+									+ AppConstants.PREF_PIECES_SET, 0)]);
 					mainApp.loadCapturedPieces();
 				}
 			});
 			if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
-				final Intent intent = new Intent(mainApp, Tabs.class);
+				final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mainApp.startActivity(intent);
 			} else {
-				startActivity(new Intent(mainApp, Singin.class));
+				startActivity(new Intent(mainApp, LoginScreenActivity.class));
 			}
 		}
 
@@ -382,7 +386,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 						@Override
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
-							final Intent intent = new Intent(CoreActivity2.this, Tabs.class);
+							final Intent intent = new Intent(CoreActivity2.this, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							// reconnectingIndicator.dismiss();
 							mainApp.startActivity(intent);
@@ -395,7 +399,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
 					} catch (Exception e) {
 						lccHolder.logout();
-						intent = new Intent(CoreActivity2.this, Tabs.class);
+						intent = new Intent(CoreActivity2.this, HomeScreenActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						// reconnectingIndicator.dismiss();
 						mainApp.startActivity(intent);

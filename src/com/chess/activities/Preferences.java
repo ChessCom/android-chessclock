@@ -23,11 +23,18 @@ import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class Preferences extends CoreActivity implements OnClickListener {
-	private Button PrefBoard, PrefPices, PrefInvite;
+	private Button PrefBoard;
+	private Button PrefPices;
+	private Button PrefInvite;
 	private Button prefContactUs;
 	private Spinner actionAfterMyMove, /*Notif, */ strength;
-	private CheckBox showSubmitButton, PrefNEnable, PrefVacation, PrefShowCoords, PrefShowHighlights;
+	private CheckBox showSubmitButton;
+	private CheckBox PrefNEnable;
+	private CheckBox PrefVacation;
+	private CheckBox PrefShowCoords;
+	private CheckBox PrefShowHighlights;
 	private CheckBox enableSounds;
 	private SelectionAdapter Boards, Pieces;
 	private TextView onlineTitle;

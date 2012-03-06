@@ -18,6 +18,7 @@ import com.flurry.android.FlurryAgent;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+@Deprecated
 public class Register extends CoreActivity {
 	private EditText RegUsername, RegEmail, RegPassword, RegRetype;
 	private Spinner Country;
