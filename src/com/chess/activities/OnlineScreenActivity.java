@@ -307,7 +307,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 				if (result.contains("Success")) {
 					mainApp.ShowMessage(getString(R.string.accepted));
-					Update(1);
+					update(1);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(coreContext, "Error", result.split("[+]")[1]);
 				} else {
@@ -322,7 +322,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 						+ gameListElement.values.get(AppConstants.TIMESTAMP), "GET", null, null);
 
 				if (result.contains("Success")) {
-					Update(1);
+					update(1);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(coreContext, "Error", result.split("[+]")[1]);
 				} else {
@@ -371,13 +371,13 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				LccHolder.LOG.info("Accept challenge: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(2);
+				update(2);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Decline challenge: " + challenge);
 				lccHolder.getAndroid().runRejectChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(3);
+				update(3);
 			}
 		}
 	}
@@ -391,7 +391,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				LccHolder.LOG.info("Cancel my challenge: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(4);
+				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Just keep my challenge: " + challenge);
@@ -408,7 +408,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				LccHolder.LOG.info("Cancel my seek: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(4);
+				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Just keep my seek: " + challenge);
@@ -427,7 +427,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 						+ "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					Update(2);
+					update(2);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(coreContext, "Error", result.split("[+]")[1]);
 				} else {
@@ -440,7 +440,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 						+ "&declineinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					Update(3);
+					update(3);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(coreContext, "Error", result.split("[+]")[1]);
 				} else {
@@ -481,7 +481,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 						LccHolder.LOG.info("Accept seek: " + challenge);
 						lccHolder.getAndroid().runAcceptChallengeTask(challenge);
 						lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
-						Update(2);
+						update(2);
 					} else if (gameListElement.values.get("is_direct_challenge").equals("0") && gameListElement.values.get("is_released_by_me").equals("1")) {
 						new AlertDialog.Builder(coreContext)
 								.setTitle(title)
@@ -529,7 +529,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
@@ -541,7 +541,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 					/*appService.RunRepeatble(ONLINE_CALLBACK_CODE, 0, 2000,
 													  progressDialog = MyProgressDialog
 														.show(Online.this, null, getString(R.string.updatinggameslist), true));*/
-					Update(ONLINE_CALLBACK_CODE);
+					update(ONLINE_CALLBACK_CODE);
 				}
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {

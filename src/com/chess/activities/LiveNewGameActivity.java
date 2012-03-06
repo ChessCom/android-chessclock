@@ -102,7 +102,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
@@ -115,7 +115,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 					/*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,
 													  progressDialog = MyProgressDialog
 														.show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
-					Update(Online.ONLINE_CALLBACK_CODE);
+					update(Online.ONLINE_CALLBACK_CODE);
 				}
 			}
 		} else if (code == Online.ONLINE_CALLBACK_CODE) {
@@ -182,13 +182,13 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				LccHolder.LOG.info("Accept challenge: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(2);
+				update(2);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Decline challenge: " + challenge);
 				lccHolder.getAndroid().runRejectChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(3);
+				update(3);
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				LccHolder.LOG.info("Cancel my challenge: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(4);
+				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Just keep my challenge: " + challenge);
@@ -217,7 +217,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				LccHolder.LOG.info("Cancel my seek: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(4);
+				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Just keep my seek: " + challenge);
@@ -231,7 +231,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					Update(2);
+					update(2);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(LiveNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {
@@ -241,7 +241,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 
 				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					Update(3);
+					update(3);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(LiveNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {
@@ -274,7 +274,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				LccHolder.LOG.info("Accept seek: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
 				lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
-				Update(2);
+				update(2);
 			} else if (gameListElement.values.get("is_direct_challenge").equals("0")
 					&& gameListElement.values.get("is_released_by_me").equals("1")) {
 				new AlertDialog.Builder(LiveNewGameActivity.this)

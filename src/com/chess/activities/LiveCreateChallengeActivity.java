@@ -77,7 +77,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == 0) {
 			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
 			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
@@ -163,7 +163,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 						null,
 						challenge
 				);
-				Update(0);
+				update(0);
 			}
 		}
 

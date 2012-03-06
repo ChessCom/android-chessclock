@@ -69,7 +69,7 @@ public class Board2 implements BoardFace {
 	private int side = LIGHT;
 	private int sec = 0;
 	private int left = 0;
-	private int TacticsCorrectMoves = 0;
+	private int tacticsCorrectMoves = 0;
 	private String[] tacticMoves;
 	private int xside = DARK;
 	private int rotated = 0;
@@ -1858,11 +1858,21 @@ public class Board2 implements BoardFace {
 		return left;
 	}
 
+	@Override
+	public void increaseSec() {
+		sec++;
+	}
+
 	public void setLeft(int left) {
 		this.left = left;
 	}
 
-    @Override
+	@Override
+	public void decreaseLeft() {
+		left--;
+	}
+
+	@Override
     public int getMode() {
         return mode;
     }
@@ -2072,11 +2082,16 @@ public class Board2 implements BoardFace {
 	}
 
 	public int getTacticsCorrectMoves() {
-		return TacticsCorrectMoves;
+		return tacticsCorrectMoves;
+	}
+
+	@Override
+	public void increaseTacticsCorrectMoves() {
+		tacticsCorrectMoves++;
 	}
 
 	public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
-		TacticsCorrectMoves = tacticsCorrectMoves;
+		this.tacticsCorrectMoves = tacticsCorrectMoves;
 	}
 
 	public int getXside() {

@@ -54,7 +54,7 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null && videosAdapter == null) {
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);

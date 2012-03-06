@@ -87,7 +87,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == 0) {
 			String query = "http://www." + LccHolder.HOST + "/api/v2/login";
 			try {

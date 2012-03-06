@@ -113,7 +113,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 
 	@Override
 	protected void onResume() {
-		Update(INIT_ACTIVITY);
+		update(INIT_ACTIVITY);
 		super.onResume();
 	}
 
@@ -124,7 +124,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 //	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunSingleTask(0,

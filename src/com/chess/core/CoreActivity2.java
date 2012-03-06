@@ -636,7 +636,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 
 					if (force != null) {
 						final boolean forceFlag = force;
-						new AlertDialog.Builder(CoreActivity2.this).setIcon(R.drawable.ic_launcher).setTitle("Update Check")
+						new AlertDialog.Builder(CoreActivity2.this).setIcon(R.drawable.ic_launcher).setTitle("update Check")
 								.setMessage("An update is available! Please update").setCancelable(false)
 								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 									@Override

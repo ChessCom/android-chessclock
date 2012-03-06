@@ -60,7 +60,7 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
 		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {

@@ -112,7 +112,7 @@ public class NewBoardView extends ImageView {
 
 	public void AfterMove() {
 		boardFace.setMovesCount(boardFace.getHply());
-		activity.Update(0);	//movelist
+		activity.update(0);	//movelist
 		if (MainApp.isLiveOrEchessGameMode(boardFace) && !boardFace.isAnalysis()) {
 			boolean ssb;
 			if (mainApp.isLiveChess()) {
@@ -124,7 +124,7 @@ public class NewBoardView extends ImageView {
 				activity.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 				boardFace.setSubmit(true);
 			} else {
-				activity.Update(1);
+				activity.update(1);
 			}
 		}
 		if (!MainApp.isTacticsGameMode(boardFace) && isResult())
@@ -140,7 +140,7 @@ public class NewBoardView extends ImageView {
 			}
 			case AppConstants.GAME_MODE_TACTICS: {
 				if (!boardFace.isAnalysis())
-					activity.Update(4);
+					activity.update(4);
 				break;
 			}
 			default:
@@ -182,7 +182,7 @@ public class NewBoardView extends ImageView {
 		if (!found) {
 			if (boardFace.inCheck(boardFace.getSide())) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-				activity.Update(0);
+				activity.update(0);
 				if (boardFace.getSide() == Board.LIGHT)
 					message = "0 - 1 Black mates";
 				else
@@ -205,7 +205,7 @@ public class NewBoardView extends ImageView {
 		}
 		if (boardFace.inCheck(boardFace.getSide())) {
 			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
-			activity.Update(0);
+			activity.update(0);
 			mainApp.ShowMessage("Check!");
 		}
 		return false;
@@ -217,7 +217,7 @@ public class NewBoardView extends ImageView {
 			return;
 		}
 		compmoving = true;
-		activity.Update(2);
+		activity.update(2);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -236,8 +236,8 @@ public class NewBoardView extends ImageView {
 				@Override
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
-					activity.Update(0);	//movelist
-					activity.Update(3);
+					activity.update(0);	//movelist
+					activity.update(3);
 					invalidate();
 					if (isResult())
 						return;

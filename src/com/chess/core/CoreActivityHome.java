@@ -634,7 +634,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 					if (force != null) {
 						final boolean forceFlag = force;
-						new AlertDialog.Builder(CoreActivityHome.this).setIcon(R.drawable.ic_launcher).setTitle("Update Check")
+						new AlertDialog.Builder(CoreActivityHome.this).setIcon(R.drawable.ic_launcher).setTitle("update Check")
 								.setMessage("An update is available! Please update").setCancelable(false)
 								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 									@Override

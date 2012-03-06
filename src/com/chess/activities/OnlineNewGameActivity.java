@@ -95,7 +95,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
@@ -108,7 +108,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 					/*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,
 													  progressDialog = MyProgressDialog
 														.show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
-					Update(Online.ONLINE_CALLBACK_CODE);
+					update(Online.ONLINE_CALLBACK_CODE);
 				}
 			}
 		} else if (code == Online.ONLINE_CALLBACK_CODE) {
@@ -173,7 +173,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					Update(2);
+					update(2);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {
@@ -183,7 +183,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 
 				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					Update(3);
+					update(3);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {

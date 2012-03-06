@@ -362,7 +362,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (!mainApp.guest && !mainApp.isLiveChess()) {
 				if (appService != null) {

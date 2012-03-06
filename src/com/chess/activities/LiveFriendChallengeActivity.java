@@ -63,7 +63,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
 		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
@@ -169,7 +169,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 						null,
 						challenge
 				);
-				Update(1);
+				update(1);
 			}
 
 		}

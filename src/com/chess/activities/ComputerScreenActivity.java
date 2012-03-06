@@ -132,6 +132,6 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 //	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 	}
 }
