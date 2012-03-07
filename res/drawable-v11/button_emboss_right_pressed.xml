@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Shadow -->
+    <item>
+        <shape >
+            <corners
+                android:bottomRightRadius="@dimen/toggle_button_radius"
+                android:topRightRadius="@dimen/toggle_button_radius" />
+
+            <solid android:color="@android:color/transparent" />
+
+            <stroke
+                android:width="@dimen/toggle_button_stroke_width"
+                android:color="@color/toggle_button_outer_shadow" />
+        </shape>
+    </item>
+
+    <!-- Button -->
+    <item
+        android:bottom="1px"
+        android:left="0px"
+        android:right="1px"
+        android:top="0px">
+        <shape  >
+            <gradient
+                android:angle="270"
+                android:endColor="@color/toggle_button_p_2"
+                android:startColor="@color/toggle_button_p_1" />
+
+            <stroke
+                android:width="@dimen/default_stroke_width"
+                android:color="@color/toggle_button_inside_stroke" />
+
+            <corners
+                android:bottomRightRadius="@dimen/toggle_button_radius"
+                android:topRightRadius="@dimen/toggle_button_radius" />
+
+            <padding
+                android:bottom="@dimen/toggle_button_padding_bottom"
+                android:left="@dimen/toggle_button_padding_left"
+                android:right="@dimen/toggle_button_padding_right"
+                android:top="@dimen/toggle_button_padding_top" />
+
+            <size android:height="@dimen/blue_button_height" />
+        </shape>
+    </item>
+
+    <!-- Inner shadow -->
+    <item
+        android:bottom="1px"
+        android:left="1px"
+        android:right="1px"
+        android:top="1px">
+        <shape  >
+            <corners
+                android:bottomRightRadius="@dimen/toggle_button_radius"
+                android:topRightRadius="@dimen/toggle_button_radius" />
+
+            <solid android:color="@android:color/transparent" />
+
+            <stroke
+                android:width="@dimen/toggle_button_stroke_width"
+                android:color="@color/blue_button_inside_shadow" />
+        </shape>
+    </item>
+
+</layer-list>

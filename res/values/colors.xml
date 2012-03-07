@@ -61,6 +61,29 @@
 
 
 
+	<!--Toggle buttons-->
+
+	<color name="toggle_button_1">#FF929292</color>
+	<!--<color name="toggle_button_1">#FF3d3d3d</color>-->
+	<color name="toggle_button_2">#FF3d3d3d</color>
+
+	<color name="game_board_back">#ff262626</color>
+	<color name="toggle_button_p_1">#ff8c8c8c</color>
+	<color name="toggle_button_p_2">#ff383838</color>
+
+
+
+	<!--<color name="blue_emboss_low_right">#FF63a62d</color>-->
+	<color name="blue_emboss_top_left">#FF7fc349</color>
+
+	<!--<color name="toggle_button_inside_stroke">#FF191919</color>-->
+	<color name="toggle_button_inside_stroke">#00000000</color>
+	<color name="blue_button_reversed_inside_stroke">#FF0068cb</color>
+
+	<color name="toggle_button_outer_shadow">#5BFFFFFF</color>
+	<!--    <color name="blue_button_inside_shadow">#7F000000</color>-->
+	<color name="blue_button_inside_shadow">#00000000</color>
+
 
     <!--Settings -->
     <color name="underline_color_grey">#FF8f8f8f</color>
