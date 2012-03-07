@@ -211,4 +211,12 @@
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
+
+	<style name="GamePanelButton">
+		<item name="android:layout_weight">1</item>
+	</style>
+
+	<style name="CapturedPiece">
+		<item name="android:layout_weight">1</item>
+	</style>
 </resources>
