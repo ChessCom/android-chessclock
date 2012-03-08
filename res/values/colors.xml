@@ -67,9 +67,8 @@
 	<!--<color name="toggle_button_1">#FF3d3d3d</color>-->
 	<color name="toggle_button_2">#FF3d3d3d</color>
 
-	<color name="game_board_back">#ff262626</color>
-	<color name="toggle_button_p_1">#ff8c8c8c</color>
-	<color name="toggle_button_p_2">#ff383838</color>
+	<color name="toggle_button_p_1">#ff6b6b6b</color>
+	<color name="toggle_button_p_2">#ff1a1a1a</color>
 
 
 
@@ -84,6 +83,8 @@
 	<!--    <color name="blue_button_inside_shadow">#7F000000</color>-->
 	<color name="blue_button_inside_shadow">#00000000</color>
 
+	<!--Game Board-->
+	<color name="game_board_back">#ff262626</color>
 
     <!--Settings -->
     <color name="underline_color_grey">#FF8f8f8f</color>

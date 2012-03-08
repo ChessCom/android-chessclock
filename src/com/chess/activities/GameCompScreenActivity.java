@@ -193,7 +193,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 						break;
 				}
 
-				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+//				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
 				newBoardView.invalidate();
 
 				new Handler().post(new Runnable() {
@@ -498,11 +498,15 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					break;
 				}
 				case EMAIL_GAME: {
-					String moves = movelist.getText().toString();
+//					String moves = movelist.getText().toString();
+					String moves = "";
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType("plain/text");
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
-					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \"" + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n " + moves + " \n \n Sent from my Android");
+					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
+							+ mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \""
+							+ mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n "
+							+ moves + " \n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
 					break;
 				}

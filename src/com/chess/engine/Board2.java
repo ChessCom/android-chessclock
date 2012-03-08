@@ -108,6 +108,7 @@ public class Board2 implements BoardFace {
 			0, 0, 0, 0, 0, 0, 0, 0
 	};
 
+//	PieceItem.R
 	private int piece[] = {
 			3, 1, 2, 4, 5, 2, 1, 3,
 			0, 0, 0, 0, 0, 0, 0, 0,

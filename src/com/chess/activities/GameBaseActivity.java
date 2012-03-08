@@ -20,6 +20,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.MobclixHelper;
+import com.chess.views.GamePanelView;
 import com.chess.views.NewBoardView;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
@@ -89,6 +90,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		newBoardView.setFocusable(true);
 		newBoardView.setBoardFace((Board2) getLastNonConfigurationInstance());
 
+		newBoardView.setGamePanelView((GamePanelView) findViewById(R.id.gamePanelView));
 		lccHolder = mainApp.getLccHolder();
 	}
 

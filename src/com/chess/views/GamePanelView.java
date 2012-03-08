@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.adapters.ItemsAdapter;
+import com.chess.engine.PieceItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +26,34 @@ import java.util.List;
  */
 public class GamePanelView extends LinearLayout {
 
-	private LinearLayout whiteCapturedPieces;
-	private LinearLayout blackCapturedPieces;
-	private ListView movesListView;
 	private LinearLayout controlsLayout;
-	private static final int DEFAULT_HEIGHT = 50;
-	private static final int DEFAULT_WIDTH = 50;
-	private int mMaxChildWidth;
-	private int mMaxChildHeight;
+	private int[] pieceIds;
+	private int[] whitePieceDrawableIds;
+	private int[] blackPieceDrawableIds;
+
+	//	Ids for pieces
+	public static final int PAWN_ID = 0;
+	public static final int KNIGHT_ID = 1;
+	public static final int BISHOP_ID = 2;
+	public static final int ROOK_ID = 3;
+	public static final int QUEEN_ID = 4;
+	public static final int KING_ID = 5;
+
+//	if (piece == 0)
+//	w_pawns--;
+//	if (piece == 1)
+//	w_knights--;
+//	if (piece == 2)
+//	w_bishops--;
+//	if (piece == 3)
+//	w_rooks--;
+//	if (piece == 4)
+//	w_queen = 0;
+
+
+	//	prefixes
+	public static final int FRAME_PREFIX = 0x00001000;
+
 
 	public GamePanelView(Context context) {
 		super(context);
@@ -45,7 +66,7 @@ public class GamePanelView extends LinearLayout {
 	}
 
 
-	private void addControlButton(int imageId,int backId){
+	private void addControlButton(int imageId, int backId) {
 		ImageButton imageButton = new ImageButton(getContext());
 		imageButton.setImageResource(imageId);
 		imageButton.setBackgroundResource(backId);
@@ -61,8 +82,10 @@ public class GamePanelView extends LinearLayout {
 	public void onCreate() {
 		setOrientation(VERTICAL);
 
+		pieceIds = getResources().getIntArray(R.array.pieces_ids);
+
 		controlsLayout = new LinearLayout(getContext());
-		controlsLayout.setPadding(10,10,10,10);
+		controlsLayout.setPadding(10, 10, 10, 10);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -70,17 +93,13 @@ public class GamePanelView extends LinearLayout {
 		controlsLayout.setLayoutParams(params);
 
 		addControlButton(R.drawable.ic_fastforward, R.drawable.button_emboss_left_selector);
-		addControlButton(R.drawable.ic_options,R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_flip,R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_analysis,R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_chat,R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_back,R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_forward,R.drawable.button_emboss_right_selector);
+		addControlButton(R.drawable.ic_options, R.drawable.button_emboss_mid_selector);
+		addControlButton(R.drawable.ic_flip, R.drawable.button_emboss_mid_selector);
+		addControlButton(R.drawable.ic_analysis, R.drawable.button_emboss_mid_selector);
+		addControlButton(R.drawable.ic_chat, R.drawable.button_emboss_mid_selector);
+		addControlButton(R.drawable.ic_back, R.drawable.button_emboss_mid_selector);
+		addControlButton(R.drawable.ic_forward, R.drawable.button_emboss_right_selector);
 		addView(controlsLayout);
-
-		whiteCapturedPieces = new LinearLayout(getContext());
-		blackCapturedPieces = new LinearLayout(getContext());
-		movesListView = new ListView(getContext());
 
 
 		LinearLayout infoLayout = new LinearLayout(getContext());
@@ -95,65 +114,186 @@ public class GamePanelView extends LinearLayout {
 		pieceParams.weight = 3;
 		piecesLayout.setLayoutParams(pieceParams);
 		piecesLayout.setOrientation(VERTICAL);
-		piecesLayout.setPadding(7,0,0,0);
+		piecesLayout.setPadding(7, 1, 0, 1);
+		piecesLayout.setGravity(Gravity.CENTER);
+
+		LinearLayout whiteCapturedPieces = new LinearLayout(getContext());
+		whiteCapturedPieces.setPadding(1, 1, 1, 1);
+		whiteCapturedPieces.setLayoutParams(params);
+		whiteCapturedPieces.setGravity(Gravity.LEFT);
 
 		piecesLayout.addView(whiteCapturedPieces);
+
+		LinearLayout blackCapturedPieces = new LinearLayout(getContext());
+		blackCapturedPieces.setPadding(1, 1, 1, 1);
+		blackCapturedPieces.setLayoutParams(params);
+		blackCapturedPieces.setGravity(Gravity.LEFT);
+
 		piecesLayout.addView(blackCapturedPieces);
 
 		infoLayout.addView(piecesLayout);
-		// add captured pieces layout
+
+		// add moves list view
 		LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		listParams.weight = 7;
+		listParams.gravity = Gravity.RIGHT;
+
+
+		ListView movesListView = new ListView(getContext());
+		movesListView.setPadding(1, 1, 0, 1);
 		movesListView.setLayoutParams(listParams);
 
 		movesListView.setCacheColorHint(Color.TRANSPARENT);
 		movesListView.setBackgroundColor(Color.TRANSPARENT);
 		movesListView.setDividerHeight(0);
-//		movesListView.setDivider(getResources().g);
+		movesListView.setDivider(getResources().getDrawable(android.R.color.transparent));
+
 		infoLayout.addView(movesListView);
 
 		addView(infoLayout);
 
 		List<String> itemList = new ArrayList<String>();
-
 		itemList.add("42. Bf3  Ke7");
 		itemList.add("43. Nd5+  Nxd5");
-		itemList.add("44. exd5  Ke7");
-		itemList.add("44. exd5  Ke7");
-		itemList.add("44. exd5  Ke7");
-		itemList.add("44. exd5  Ke7");
-		itemList.add("44. exd5  Ke7");
-		itemList.add("44. exd5  Ke7");
 		itemList.add("44. exd5  Ke7");
 
 		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
 
-		addItems(whiteCapturedPieces, R.drawable.captured_bq, 1, 1.0f);
-		addItems(whiteCapturedPieces, R.drawable.captured_br, 2, 1.0f);
-		addItems(whiteCapturedPieces, R.drawable.captured_bb, 2, 1.0f);
-		addItems(whiteCapturedPieces, R.drawable.captured_bn, 2, 1.0f);
-		addItems(whiteCapturedPieces, R.drawable.captured_bp, 8, 1.0f);
-		addItems(whiteCapturedPieces, R.drawable.captured_bk, 1, 1.0f);
+		whitePieceDrawableIds = new int[]{
+				R.drawable.captured_wp,
+				R.drawable.captured_wn,
+				R.drawable.captured_wb,
+				R.drawable.captured_wr,
+				R.drawable.captured_wq,
+				R.drawable.captured_wk
+		};
 
-		addItems(blackCapturedPieces, R.drawable.captured_wq, 1, 1.0f);
-		addItems(blackCapturedPieces, R.drawable.captured_wr, 2, 1.0f);
-		addItems(blackCapturedPieces, R.drawable.captured_wb, 2, 1.0f);
-		addItems(blackCapturedPieces, R.drawable.captured_wn, 2, 1.0f);
-		addItems(blackCapturedPieces, R.drawable.captured_wp, 8, 1.0f);
-		addItems(blackCapturedPieces, R.drawable.captured_wk, 1, 1.0f);
+		blackPieceDrawableIds = new int[]{   // TODO reuse to set other drawable sets
+				R.drawable.captured_bp,
+				R.drawable.captured_bn,
+				R.drawable.captured_bb,
+				R.drawable.captured_br,
+				R.drawable.captured_bq,
+				R.drawable.captured_bk
+		};
+
+		addItems(whiteCapturedPieces, true, 1, 1.0f, QUEEN_ID );
+		addItems(whiteCapturedPieces, true, 2, 1.0f, ROOK_ID  );
+		addItems(whiteCapturedPieces, true, 2, 1.0f, BISHOP_ID);
+		addItems(whiteCapturedPieces, true, 2, 1.0f, KNIGHT_ID);
+		addItems(whiteCapturedPieces, true, 8, 1.0f, PAWN_ID  );
+		addItems(whiteCapturedPieces, true, 1, 1.0f, KING_ID  );
+
+		addItems(blackCapturedPieces, false, 1, 1.0f, QUEEN_ID );
+		addItems(blackCapturedPieces, false, 2, 1.0f, ROOK_ID  );
+		addItems(blackCapturedPieces, false, 2, 1.0f, BISHOP_ID);
+		addItems(blackCapturedPieces, false, 2, 1.0f, KNIGHT_ID);
+		addItems(blackCapturedPieces, false, 8, 1.0f, PAWN_ID  );
+		addItems(blackCapturedPieces, false, 1, 1.0f, KING_ID  );
 
 		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
+	}
 
+	private int getFrameIdByCode(PieceItem pieceItem){
+		int pieceId = 0;
+/*
+		String strCode = pieceItem.getStringCode();
+		pieceItem.setWhite(strCode.substring(0, 1).equals("w"));
+
+		String pieceCode = strCode.substring(1, 2);
+		int pieceId = 0;
+		if(pieceCode.equals("q")){
+			pieceId = QUEEN_ID;
+		}else if (pieceCode.equals("r")){
+			pieceId = ROOK_ID;
+		}else if (pieceCode.equals("b")){
+			pieceId = BISHOP_ID;
+		}else if (pieceCode.equals("n")){
+			pieceId = KNIGHT_ID;
+		}else if (pieceCode.equals("p")){
+			pieceId = PAWN_ID;
+		}else if (pieceCode.equals("k")){
+			pieceId = KING_ID;
+		}
+*/
+
+
+		switch(pieceItem.getCode()){
+			case PieceItem.Q:
+				pieceId = QUEEN_ID;
+				break;
+			case PieceItem.R:
+				pieceId = ROOK_ID;
+				break;
+			case PieceItem.B:
+				pieceId = BISHOP_ID;
+				break;
+			case PieceItem.N:
+				pieceId = KNIGHT_ID;
+				break;
+			case PieceItem.P:
+				pieceId = PAWN_ID;
+				break;
+			case PieceItem.K:
+				pieceId = KING_ID;
+				break;
+		}
+
+		return FRAME_PREFIX + pieceIds[pieceId];
+	}
+
+	public void capturePiece(PieceItem pieceItem) {
+		if(pieceItem.isCaptured())
+			return;
+		showPiece(true, pieceItem);
+	}
+
+	public void restorePiece(PieceItem pieceItem) {
+		showPiece(false, pieceItem);
+	}
+
+	private void showPiece(boolean show, PieceItem pieceItem) {
+		int frameId = getFrameIdByCode(pieceItem);
+
+		FrameLayout capturedFrame = (FrameLayout) findViewById(frameId);
+
+		PieceItem storedPieceItem = (PieceItem) capturedFrame.getTag();
+		// change image
+		ImageView imageView = (ImageView) capturedFrame.findViewById(R.id.imagePieceView);
+
+		int maxLevel = storedPieceItem.getLayersCnt();
+		int currentLevel = storedPieceItem.getCurrentLevel();
+
+		if(show){
+			if(currentLevel < maxLevel){
+				currentLevel++;
+			}
+		}else{
+			if(currentLevel > 0){
+				currentLevel--;
+			}
+		}
+		storedPieceItem.setCurrentLevel(currentLevel);
+		LayerDrawable pieceDrawable;
+		if(storedPieceItem.isWhite()){
+			pieceDrawable = createImageDrawable(currentLevel, whitePieceDrawableIds[storedPieceItem.getPieceId()]);
+		}else{
+			pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
+		}
+		imageView.setImageDrawable(pieceDrawable);
+
+		capturedFrame.setTag(storedPieceItem);
+		invalidate();
 	}
 
 
-	private void addItems(LinearLayout viewGroup, int pieceId, int layersCnt, float itemWeight) {
 
+	private LayerDrawable createImageDrawable(int layersCnt, int pieceDrawableId){
 		Drawable[] layers = new Drawable[layersCnt];
 
 		for (int j = 0; j < layersCnt; j++) {
-			layers[j] = getResources().getDrawable(pieceId);
+			layers[j] = getResources().getDrawable(pieceDrawableId);
 		}
 
 		LayerDrawable pieceDrawable = new LayerDrawable(layers);
@@ -161,34 +301,68 @@ public class GamePanelView extends LinearLayout {
 		for (int i = 0; i < layersCnt; i++) {
 			shiftLayer(pieceDrawable, i);
 		}
+		return pieceDrawable;
+	}
 
+	private void addItems(LinearLayout viewGroup, boolean isWhite, int layersCnt, float itemWeight, int pieceId) {
+		// Add background image to get correct weights
 		ImageView imageView = new ImageView(getContext());
 		imageView.setAdjustViewBounds(false);
 		imageView.setScaleType(ImageView.ScaleType.CENTER);
 
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
 		FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		params.weight = itemWeight;
-		params.gravity = Gravity.LEFT;
+		LayerDrawable pieceDrawable;
+		if(isWhite){
+			pieceDrawable = createImageDrawable(layersCnt, whitePieceDrawableIds[pieceId]);
+		}else{
+			pieceDrawable = createImageDrawable(layersCnt, blackPieceDrawableIds[pieceId]);
+		}
 
 		imageView.setImageDrawable(pieceDrawable);
 		imageView.setLayoutParams(imageParams);
+
+		// crate pieceItem
+		PieceItem pieceItem = new PieceItem();
+		pieceItem.setCode(PieceItem.P);
+		pieceItem.setWhite(true);
+		pieceItem.setPieceId(pieceId);
+		pieceItem.setLayersCnt(layersCnt);
+		pieceItem.setPieceFrameId(FRAME_PREFIX +  pieceIds[pieceId]);
+
+
+		imageView.setVisibility(INVISIBLE);
 		viewGroup.setWeightSum(16f);
 
-		// put iamge inside frame to get left gravity
+		// put image inside frame to get left gravity
 		FrameLayout frame = new FrameLayout(getContext());
+
 		frame.addView(imageView);
+		frame.setId(pieceItem.getPieceFrameId());
+		frame.setTag(pieceItem);
+
+		// Add empty image view to show captured pieces
+		FrameLayout.LayoutParams pieceImageParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		pieceImageParams.gravity = Gravity.LEFT;
+		ImageView pieceView = new ImageView(getContext());
+		pieceView.setAdjustViewBounds(false);
+		pieceView.setScaleType(ImageView.ScaleType.CENTER);
+		pieceView.setId(R.id.imagePieceView);
+		pieceView.setLayoutParams(pieceImageParams);
+		frame.addView(pieceView);
+
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+
+		params.weight = itemWeight;
 		frame.setLayoutParams(params);
 
 		viewGroup.addView(frame);
-		viewGroup.setGravity(Gravity.LEFT);
 	}
 
-	private int shiftSize = 6;
+	private int shiftSize = 7;
 
 	private void shiftLayer(LayerDrawable pieceDrawable, int level) {
 
@@ -218,59 +392,4 @@ public class GamePanelView extends LinearLayout {
 		}
 	}
 
-//	@Override
-//	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//		mMaxChildWidth = 0;
-//		mMaxChildHeight = 0;
-//
-//		// Measure once to find the maximum child size.
-//
-//		int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec),
-//				MeasureSpec.AT_MOST);
-//		int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec),
-//				MeasureSpec.AT_MOST);
-//
-//		final int count = getChildCount();
-//		for (int i = 0; i < count; i++) {
-//			final View child = getChildAt(i);
-//			if (child.getVisibility() == GONE) {
-//				continue;
-//			}
-//
-//			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-//
-//			mMaxChildWidth = Math.max(mMaxChildWidth, child.getMeasuredWidth());
-//			mMaxChildHeight = Math.max(mMaxChildHeight, child.getMeasuredHeight());
-//		}
-//
-//		// Measure again for each child to be exactly the same size.
-//
-//		childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildWidth, MeasureSpec.AT_MOST);
-//		childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxChildHeight, MeasureSpec.AT_MOST);
-//
-//		for (int i = 0; i < count; i++) {
-//			final View child = getChildAt(i);
-//			if (child.getVisibility() == GONE) {
-//				continue;
-//			}
-//
-////			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-//		}
-//
-//		setMeasuredDimension(resolveSize(mMaxChildWidth, widthMeasureSpec),
-//				resolveSize(mMaxChildHeight, heightMeasureSpec));
-//	}
-
-
-	private int measureParam(int valueMeasureSpec, int value) {
-		switch (View.MeasureSpec.getMode(valueMeasureSpec)) {
-			case MeasureSpec.EXACTLY:
-				return MeasureSpec.getSize(valueMeasureSpec);
-			case MeasureSpec.AT_MOST:
-				return Math.min(value, MeasureSpec.getSize(valueMeasureSpec));
-			default:
-			case MeasureSpec.UNSPECIFIED:
-				return value;
-		}
-	}
 }
