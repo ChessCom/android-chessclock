@@ -251,4 +251,15 @@ public class Tabs extends TabActivity {
 			});
 		}
 	};
+
+	public void unregisterReceiver(BroadcastReceiver receiver)
+	{
+		try {
+			super.unregisterReceiver(receiver);
+		} catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+			// hack for Android's IllegalArgumentException: Receiver not registered
+		}
+	}
 }
