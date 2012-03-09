@@ -14,8 +14,11 @@ import com.chess.core.CoreActivity;
 import com.chess.utilities.MobclixHelper;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
+import com.mopub.mobileads.MoPubInterstitial;
 
 public class Home extends CoreActivity {
+
+	private MoPubInterstitial moPubInterstitial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,21 @@ public class Home extends CoreActivity {
     {
       showFullscreenAd();
     }*/
+
+	  moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww");
+	  //moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+	  moPubInterstitial.setListener(new MoPubInterstitial.MoPubInterstitialListener() {
+		  public void OnInterstitialLoaded() {
+			  if (moPubInterstitial.isReady()) {
+				  moPubInterstitial.show();
+			  }
+		  }
+
+		  public void OnInterstitialFailed() {
+		  }
+	  });
+	  moPubInterstitial.load();
+
     super.onResume();
   }
 
@@ -166,4 +184,11 @@ public class Home extends CoreActivity {
 		App.SDeditor.commit();
     }
   }
+
+	protected void onDestroy() {
+		if (moPubInterstitial != null) {
+			moPubInterstitial.destroy();
+		}
+		super.onDestroy();
+	}
 }

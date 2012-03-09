@@ -14,9 +14,6 @@ import com.chess.activities.tabs.Online;
 import com.chess.activities.tabs.Video;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
-import com.chess.utilities.Notifications;
-import com.millennialmedia.android.MMAdView;
-import com.millennialmedia.android.MMAdViewSDK;
 import com.mobclix.android.sdk.Mobclix;
 
 import android.app.TabActivity;
@@ -27,8 +24,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import com.mopub.mobileads.MoPubView;
-
-import java.util.Hashtable;
 
 public class Tabs extends TabActivity {
 
@@ -70,7 +65,9 @@ public class Tabs extends TabActivity {
             MobclixHelper.initializeBannerAdView(this, App);
           }
         }*/
-		/*Hashtable<String, String> map = new Hashtable<String, String>();
+		/*
+		//
+		Hashtable<String, String> map = new Hashtable<String, String>();
 		//map.put("income", "50000");
 		MMAdView adView = new MMAdView(this, "77013", MMAdView.BANNER_AD_BOTTOM, 30);
 		//MMAdView adView = new MMAdView(this, "28911", MMAdView.BANNER_AD_BOTTOM, 30);
@@ -83,7 +80,7 @@ public class Tabs extends TabActivity {
 		//final LinearLayout bannerAdviewWrapper = (LinearLayout) findViewById(R.id.wrapper);*/
 
 		moPubAdView = (MoPubView) findViewById(R.id.mopub_adview);
-		moPubAdView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww"); // Enter your Ad Unit ID from www.mopub.com
+		moPubAdView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww");
 		moPubAdView.loadAd();
 		//
 
