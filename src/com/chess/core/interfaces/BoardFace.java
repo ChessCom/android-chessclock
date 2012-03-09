@@ -29,7 +29,8 @@ public interface BoardFace {
 	boolean makeMove(Move m) ;
 	boolean makeMove(Move m, boolean playSound);
 	boolean inCheck(int s);
-	int[] getPiece();
+	int[] getPieces();
+	int getPiece(int pieceId);
 	int[] getColor();
 	int getColor(int i, int j);
 	int getPiece(int i, int j);

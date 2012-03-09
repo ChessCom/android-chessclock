@@ -124,19 +124,19 @@ public class MoveParser2 {
 				int l2 = NumToBN(currentmove.substring(1, 2)) * 8 - (Board.COL(k) + 1);
 
 				if (currentmove.substring(1, 2).matches("[abcdefgh]")) {
-					if (board.getPiece()[l1] == pieceType && board.getColor()[l1] == board.getSide()) {
+					if (board.getPieces()[l1] == pieceType && board.getColor()[l1] == board.getSide()) {
 						return new int[]{l1, to, promotion};
 					}
 				}
 				if (currentmove.substring(1, 2).matches("[0-9]")) {
-					if (board.getPiece()[l2] == pieceType && board.getColor()[l2] == board.getSide())
+					if (board.getPieces()[l2] == pieceType && board.getColor()[l2] == board.getSide())
 						return new int[]{l2, to, promotion};
 				}
 			}
 		}
 
 		for (k = 0; k < 64; k++) {
-			if (board.getPiece()[k] == pieceType && board.getColor()[k] == board.getSide()) {
+			if (board.getPieces()[k] == pieceType && board.getColor()[k] == board.getSide()) {
 				Iterator<Move> itr = validMoves.iterator();
 				Move M = null;
 				while (itr.hasNext()) {
@@ -250,57 +250,57 @@ public class MoveParser2 {
 				if (f[j].matches("[0-9]")) {
 					int cnt = new Integer(f[j]);
 					while (cnt > 0) {
-						b.getPiece()[p] = 6;
+						b.getPieces()[p] = 6;
 						b.getColor()[p++] = 6;
 						cnt--;
 					}
 				}
 				if (f[j].contains("P")) {
-					b.getPiece()[p] = 0;
+					b.getPieces()[p] = 0;
 					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("N")) {
-					b.getPiece()[p] = 1;
+					b.getPieces()[p] = 1;
 					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("B")) {
-					b.getPiece()[p] = 2;
+					b.getPieces()[p] = 2;
 					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("R")) {
-					b.getPiece()[p] = 3;
+					b.getPieces()[p] = 3;
 					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("Q")) {
-					b.getPiece()[p] = 4;
+					b.getPieces()[p] = 4;
 					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("K")) {
-					b.getPiece()[p] = 5;
+					b.getPieces()[p] = 5;
 					b.getColor()[p++] = 0;
 				}
 				if (f[j].contains("p")) {
-					b.getPiece()[p] = 0;
+					b.getPieces()[p] = 0;
 					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("n")) {
-					b.getPiece()[p] = 1;
+					b.getPieces()[p] = 1;
 					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("b")) {
-					b.getPiece()[p] = 2;
+					b.getPieces()[p] = 2;
 					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("r")) {
-					b.getPiece()[p] = 3;
+					b.getPieces()[p] = 3;
 					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("q")) {
-					b.getPiece()[p] = 4;
+					b.getPieces()[p] = 4;
 					b.getColor()[p++] = 1;
 				}
 				if (f[j].contains("k")) {
-					b.getPiece()[p] = 5;
+					b.getPieces()[p] = 5;
 					b.getColor()[p++] = 1;
 				}
 			}

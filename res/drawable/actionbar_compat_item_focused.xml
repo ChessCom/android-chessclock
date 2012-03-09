@@ -15,5 +15,5 @@
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#ef7000" />
+    <solid android:color="@color/action_bar_item_focused" />
 </shape>

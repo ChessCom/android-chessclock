@@ -1720,7 +1720,7 @@ public class Board {
 		if (reside) x = 63 - x;
 		return (x >> 3);
 	}
-
+	// get piece position
 	public static int POS(int c, int r, boolean reside) {
 		if (reside)
 			return 63 - (8 * r + c);

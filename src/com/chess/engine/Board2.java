@@ -21,6 +21,8 @@ import java.util.TreeSet;
 public class Board2 implements BoardFace {
 	final public static int LIGHT = 0;
 	final public static int DARK = 1;
+
+	// pieces codes on board
 	final public static int PAWN = 0;
 	final static int KNIGHT = 1;
 	final static int BISHOP = 2;
@@ -88,7 +90,6 @@ public class Board2 implements BoardFace {
 	private int boardcolor[] = {
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,
-
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,
 			0, 1, 0, 1, 0, 1, 0, 1,
@@ -97,6 +98,7 @@ public class Board2 implements BoardFace {
 			1, 0, 1, 0, 1, 0, 1, 0
 	};
 
+	// 1 means - white, 0 -> black
 	private int color[] = {
 			1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1,
@@ -108,8 +110,8 @@ public class Board2 implements BoardFace {
 			0, 0, 0, 0, 0, 0, 0, 0
 	};
 
-//	PieceItem.R
-	private int piece[] = {
+//	Example: PieceItem.R = 3
+	private int pieces[] = {
 			3, 1, 2, 4, 5, 2, 1, 3,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			6, 6, 6, 6, 6, 6, 6, 6,
@@ -168,9 +170,9 @@ public class Board2 implements BoardFace {
 			100, 300, 300, 500, 900, 0
 	};
 
-	/* The "pcsq" arrays are piece/square tables. They're values
-		added to the material value of the piece based on the
-		location of the piece. */
+	/* The "pcsq" arrays are pieces/square tables. They're values
+		added to the material value of the pieces based on the
+		location of the pieces. */
 
 	int pawnPcsq[] = {
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -230,8 +232,8 @@ public class Board2 implements BoardFace {
 			0, 10, 20, 30, 30, 20, 10, 0
 	};
 
-	/* The flip array is used to calculate the piece/square
-		values for DARK pieces. The piece/square value of a
+	/* The flip array is used to calculate the pieces/square
+		values for DARK pieces. The pieces/square value of a
 		LIGHT pawn is pawnPcsq[sq] and the value of a DARK
 		pawn is pawnPcsq[flip[sq]] */
 	int flip[] = {
@@ -431,7 +433,7 @@ public class Board2 implements BoardFace {
 	}
 
 	public int getPiece(int i, int j) {
-		return piece[(i << 3) + j];
+		return pieces[(i << 3) + j];
 	}
 
 	public boolean isWhiteToMove() {
@@ -446,7 +448,7 @@ public class Board2 implements BoardFace {
 		int i;
 
 		for (i = 0; i < 64; ++i)
-			if (piece[i] == KING && color[i] == s)
+			if (pieces[i] == KING && color[i] == s)
 				return attack(i, s ^ 1);
 		return true;  /* shouldn't get here */
 	}
@@ -460,7 +462,7 @@ public class Board2 implements BoardFace {
 
 		for (i = 0; i < 64; ++i)
 			if (color[i] == s) {
-				int p = piece[i];
+				int p = pieces[i];
 				if (p == PAWN) {
 					if (s == LIGHT) {
 						if (COL(i) != 0 && i - 9 == sq)
@@ -494,7 +496,7 @@ public class Board2 implements BoardFace {
 
 	/* gen() generates pseudo-legal moves for the current position.
 		It scans the board to find friendly pieces and then determines
-		what squares they attack. When it finds a piece/square
+		what squares they attack. When it finds a pieces/square
 		combination, it calls genPush to put the move on the "move
 		stack." */
 
@@ -504,7 +506,7 @@ public class Board2 implements BoardFace {
 
 		for (int i = 0; i < 64; ++i)
 			if (color[i] == side) {
-				if (piece[i] == PAWN) {
+				if (pieces[i] == PAWN) {
 					if (side == LIGHT) {
 						if (COL(i) != 0 && color[i - 9] == DARK)
 							genPush(ret, i, i - 9, 17);
@@ -526,10 +528,10 @@ public class Board2 implements BoardFace {
 								genPush(ret, i, i + 16, 24);
 						}
 					}
-				} else if (piece[i] < offsets.length)
-					for (int j = 0; j < offsets[piece[i]]; ++j)
+				} else if (pieces[i] < offsets.length)
+					for (int j = 0; j < offsets[pieces[i]]; ++j)
 						for (int n = i; ; ) {
-							n = mailbox[mailbox64[n] + offset[piece[i]][j]];
+							n = mailbox[mailbox64[n] + offset[pieces[i]][j]];
 							if (n == -1)
 								break;
 							if (color[n] != EMPTY) {
@@ -538,7 +540,7 @@ public class Board2 implements BoardFace {
 								break;
 							}
 							genPush(ret, i, n, 0);
-							if (!slide[piece[i]])
+							if (!slide[pieces[i]])
 								break;
 						}
 			}
@@ -569,14 +571,14 @@ public class Board2 implements BoardFace {
 		/* generate en passant moves */
 		if (ep != -1) {
 			if (side == LIGHT) {
-				if (COL(ep) != 0 && color[ep + 7] == LIGHT && piece[ep + 7] == PAWN)
+				if (COL(ep) != 0 && color[ep + 7] == LIGHT && pieces[ep + 7] == PAWN)
 					genPush(ret, ep + 7, ep, 21);
-				if (COL(ep) != 7 && color[ep + 9] == LIGHT && piece[ep + 9] == PAWN)
+				if (COL(ep) != 7 && color[ep + 9] == LIGHT && pieces[ep + 9] == PAWN)
 					genPush(ret, ep + 9, ep, 21);
 			} else {
-				if (COL(ep) != 0 && color[ep - 9] == DARK && piece[ep - 9] == PAWN)
+				if (COL(ep) != 0 && color[ep - 9] == DARK && pieces[ep - 9] == PAWN)
 					genPush(ret, ep - 9, ep, 21);
-				if (COL(ep) != 7 && color[ep - 7] == DARK && piece[ep - 7] == PAWN)
+				if (COL(ep) != 7 && color[ep - 7] == DARK && pieces[ep - 7] == PAWN)
 					genPush(ret, ep - 7, ep, 21);
 			}
 		}
@@ -595,7 +597,7 @@ public class Board2 implements BoardFace {
 
 		for (int i = 0; i < 64; ++i)
 			if (color[i] == side) {
-				if (piece[i] == PAWN) {
+				if (pieces[i] == PAWN) {
 					if (side == LIGHT) {
 						if (COL(i) != 0 && color[i - 9] == DARK)
 							genPush(ret, i, i - 9, 17);
@@ -612,10 +614,10 @@ public class Board2 implements BoardFace {
 						if (i >= 48 && color[i + 8] == EMPTY)
 							genPush(ret, i, i + 8, 16);
 					}
-				} else if (piece[i] < offsets.length)
-					for (int j = 0; j < offsets[piece[i]]; ++j)
+				} else if (pieces[i] < offsets.length)
+					for (int j = 0; j < offsets[pieces[i]]; ++j)
 						for (int n = i; ; ) {
-							n = mailbox[mailbox64[n] + offset[piece[i]][j]];
+							n = mailbox[mailbox64[n] + offset[pieces[i]][j]];
 							if (n == -1)
 								break;
 							if (color[n] != EMPTY) {
@@ -623,20 +625,20 @@ public class Board2 implements BoardFace {
 									genPush(ret, i, n, 1);
 								break;
 							}
-							if (!slide[piece[i]])
+							if (!slide[pieces[i]])
 								break;
 						}
 			}
 		if (ep != -1) {
 			if (side == LIGHT) {
-				if (COL(ep) != 0 && color[ep + 7] == LIGHT && piece[ep + 7] == PAWN)
+				if (COL(ep) != 0 && color[ep + 7] == LIGHT && pieces[ep + 7] == PAWN)
 					genPush(ret, ep + 7, ep, 21);
-				if (COL(ep) != 7 && color[ep + 9] == LIGHT && piece[ep + 9] == PAWN)
+				if (COL(ep) != 7 && color[ep + 9] == LIGHT && pieces[ep + 9] == PAWN)
 					genPush(ret, ep + 9, ep, 21);
 			} else {
-				if (COL(ep) != 0 && color[ep - 9] == DARK && piece[ep - 9] == PAWN)
+				if (COL(ep) != 0 && color[ep - 9] == DARK && pieces[ep - 9] == PAWN)
 					genPush(ret, ep - 9, ep, 21);
-				if (COL(ep) != 7 && color[ep - 7] == DARK && piece[ep - 7] == PAWN)
+				if (COL(ep) != 7 && color[ep - 7] == DARK && pieces[ep - 7] == PAWN)
 					genPush(ret, ep - 7, ep, 21);
 			}
 		}
@@ -670,7 +672,7 @@ public class Board2 implements BoardFace {
 		Move g = new Move(from, to, 0, bits);
 
 		if (color[to] != EMPTY)
-			g.setScore(1000000 + (piece[to] * 10) - piece[from]);
+			g.setScore(1000000 + (pieces[to] * 10) - pieces[from]);
 		else
 			g.setScore(history[from][to]);
 		ret.add(g);
@@ -678,7 +680,7 @@ public class Board2 implements BoardFace {
 
 
 	/* genPromote() is just like genPush(), only it puts 4 moves
-		on the move stack, one for each possible promotion piece */
+		on the move stack, one for each possible promotion pieces */
 
 	void genPromote(TreeSet<Move> ret, int from, int to, int bits) {
 		for (char i = KNIGHT; i <= QUEEN; ++i) {
@@ -704,7 +706,7 @@ public class Board2 implements BoardFace {
 		if ((m.bits & 2) != 0) {
 			int from = -1, to = -1;
 
-			int[] piece_tmp = piece.clone();
+			int[] piece_tmp = pieces.clone();
 
 			if (inCheck(side))
 				return false;
@@ -757,19 +759,19 @@ public class Board2 implements BoardFace {
 			if (what == 2) {
 				if (attack(F1, xside) || attack(G1, xside))
 					return false;
-				if (color[F1] != EMPTY && piece[F1] != KING && piece[F1] != ROOK)
+				if (color[F1] != EMPTY && pieces[F1] != KING && pieces[F1] != ROOK)
 					return false;
-				if (color[G1] != EMPTY && piece[G1] != KING && piece[G1] != ROOK)
+				if (color[G1] != EMPTY && pieces[G1] != KING && pieces[G1] != ROOK)
 					return false;
-				if (piece[F1] == ROOK && F1 != wRook2)
+				if (pieces[F1] == ROOK && F1 != wRook2)
 					return false;
-				if (piece[G1] == ROOK && G1 != wRook2)
+				if (pieces[G1] == ROOK && G1 != wRook2)
 					return false;
 
 
 				if (d > 1) {
 					while (d != 0) {
-						if (piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY) {
+						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -781,18 +783,18 @@ public class Board2 implements BoardFace {
 			} else if (what == 3) {
 				if (attack(C1, xside) || attack(D1, xside))
 					return false;
-				if (color[C1] != EMPTY && piece[C1] != KING && piece[C1] != ROOK)
+				if (color[C1] != EMPTY && pieces[C1] != KING && pieces[C1] != ROOK)
 					return false;
-				if (color[D1] != EMPTY && piece[D1] != KING && piece[D1] != ROOK)
+				if (color[D1] != EMPTY && pieces[D1] != KING && pieces[D1] != ROOK)
 					return false;
-				if (piece[C1] == ROOK && C1 != wRook1)
+				if (pieces[C1] == ROOK && C1 != wRook1)
 					return false;
-				if (piece[D1] == ROOK && D1 != wRook1)
+				if (pieces[D1] == ROOK && D1 != wRook1)
 					return false;
 
 				if (d > 1) {
 					while (d != 0) {
-						if (piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY) {
+						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -804,18 +806,18 @@ public class Board2 implements BoardFace {
 			} else if (what == 1) {
 				if (attack(C8, xside) || attack(D8, xside))
 					return false;
-				if (color[C8] != EMPTY && piece[C8] != KING && piece[C8] != ROOK)
+				if (color[C8] != EMPTY && pieces[C8] != KING && pieces[C8] != ROOK)
 					return false;
-				if (color[D8] != EMPTY && piece[D8] != KING && piece[D8] != ROOK)
+				if (color[D8] != EMPTY && pieces[D8] != KING && pieces[D8] != ROOK)
 					return false;
-				if (piece[C8] == ROOK && C8 != bRook1)
+				if (pieces[C8] == ROOK && C8 != bRook1)
 					return false;
-				if (piece[D8] == ROOK && D8 != bRook1)
+				if (pieces[D8] == ROOK && D8 != bRook1)
 					return false;
 
 				if (d > 1) {
 					while (d != 0) {
-						if (piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY) {
+						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -827,19 +829,19 @@ public class Board2 implements BoardFace {
 			} else if (what == 0) {
 				if (attack(F8, xside) || attack(G8, xside))
 					return false;
-				if (color[F8] != EMPTY && piece[F8] != KING && piece[F8] != ROOK)
+				if (color[F8] != EMPTY && pieces[F8] != KING && pieces[F8] != ROOK)
 					return false;
-				if (color[G8] != EMPTY && piece[G8] != KING && piece[G8] != ROOK)
+				if (color[G8] != EMPTY && pieces[G8] != KING && pieces[G8] != ROOK)
 					return false;
 
-				if (piece[F8] == ROOK && bRook2 != F8)
+				if (pieces[F8] == ROOK && bRook2 != F8)
 					return false;
-				if (piece[G8] == ROOK && bRook2 != G8)
+				if (pieces[G8] == ROOK && bRook2 != G8)
 					return false;
 
 				if (d > 1) {
 					while (d != 0) {
-						if (piece[++min] != ROOK && piece[min] != KING && color[min] != EMPTY) {
+						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -851,16 +853,16 @@ public class Board2 implements BoardFace {
 			}
 
 			color[to] = color[from];
-			piece[to] = piece[from];
+			pieces[to] = pieces[from];
 			if (to != from) {
 				color[from] = EMPTY;
-				piece[from] = EMPTY;
+				pieces[from] = EMPTY;
 			}
 
 			/* back up information so we can take the move back later. */
 			histDat[hply] = new HistoryData();
 			histDat[hply].m = m;
-			histDat[hply].capture = piece[m.to];
+			histDat[hply].capture = pieces[m.to];
 			histDat[hply].ep = ep;
 			histDat[hply].fifty = fifty;
 			histDat[hply].castleMask = castleMask.clone();
@@ -874,7 +876,7 @@ public class Board2 implements BoardFace {
 			/* update the castle, en passant, and
 					   fifty-move-draw variables */
 			if (what != -1) castleMask[what] = true;
-			if (piece[m.from] == KING) {
+			if (pieces[m.from] == KING) {
 				if (side == DARK) {
 					castleMask[0] = true;
 					castleMask[1] = true;
@@ -884,7 +886,7 @@ public class Board2 implements BoardFace {
 				}
 			}
 			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-			if (piece[m.from] == ROOK) {
+			if (pieces[m.from] == ROOK) {
 				if (side == DARK) {
 					if (m.from == bRook2)
 						castleMask[0] = true;
@@ -910,28 +912,28 @@ public class Board2 implements BoardFace {
 			else
 				++fifty;
 
-			/* move the piece */
+			/* move the pieces */
 			int tmp_to = -1;
 			if (what == 3) {
 				color[58] = side;
-				piece[58] = piece_tmp[(int) m.from];
+				pieces[58] = piece_tmp[(int) m.from];
 				tmp_to = 58;
 			} else if (what == 2) {
 				color[62] = side;
-				piece[62] = piece_tmp[(int) m.from];
+				pieces[62] = piece_tmp[(int) m.from];
 				tmp_to = 62;
 			} else if (what == 1) {
 				color[2] = side;
-				piece[2] = piece_tmp[(int) m.from];
+				pieces[2] = piece_tmp[(int) m.from];
 				tmp_to = 2;
 			} else if (what == 0) {
 				color[6] = side;
-				piece[6] = piece_tmp[(int) m.from];
+				pieces[6] = piece_tmp[(int) m.from];
 				tmp_to = 6;
 			}
-			if (piece[m.from] != ROOK && tmp_to != m.from) {
+			if (pieces[m.from] != ROOK && tmp_to != m.from) {
 				color[m.from] = EMPTY;
-				piece[m.from] = EMPTY;
+				pieces[m.from] = EMPTY;
 			}
 
 			/* switch sides and test for legality (if we can capture
@@ -954,7 +956,7 @@ public class Board2 implements BoardFace {
 		/* back up information so we can take the move back later. */
 		histDat[hply] = new HistoryData();
 		histDat[hply].m = m;
-		histDat[hply].capture = piece[(int) m.to];
+		histDat[hply].capture = pieces[(int) m.to];
 		histDat[hply].ep = ep;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
@@ -966,7 +968,7 @@ public class Board2 implements BoardFace {
 			   fifty-move-draw variables */
 		if (what != -1)
 			castleMask[what] = true;
-		if (piece[m.from] == KING) {
+		if (pieces[m.from] == KING) {
 			if (side == DARK) {
 				castleMask[0] = true;
 				castleMask[1] = true;
@@ -976,7 +978,7 @@ public class Board2 implements BoardFace {
 			}
 		}
 		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		if (piece[m.from] == ROOK) {
+		if (pieces[m.from] == ROOK) {
 			if (side == DARK) {
 				if (m.from == bRook2)
 					castleMask[0] = true;
@@ -1019,31 +1021,31 @@ public class Board2 implements BoardFace {
 		else
 			++fifty;
 
-		/* move the piece */
+		/* move the pieces */
 
 		int colorFrom = color[m.from];
-		int pieceTo = piece[m.to];
+		int pieceTo = pieces[m.to];
 
 		color[m.to] = side;
 
 		if ((m.bits & 32) != 0) {
-			piece[m.to] = m.promote;
+			pieces[m.to] = m.promote;
 			//System.out.println("!!!!!!!! PROMOTION");
 		} else {
-			piece[m.to] = piece[m.from];
+			pieces[m.to] = pieces[m.from];
 		}
 
 		color[m.from] = EMPTY;
-		piece[m.from] = EMPTY;
+		pieces[m.from] = EMPTY;
 
 		/* erase the pawn if this is an en passant move */
 		if ((m.bits & 4) != 0) {
 			if (side == LIGHT) {
 				color[m.to + 8] = EMPTY;
-				piece[m.to + 8] = EMPTY;
+				pieces[m.to + 8] = EMPTY;
 			} else {
 				color[m.to - 8] = EMPTY;
-				piece[m.to - 8] = EMPTY;
+				pieces[m.to - 8] = EMPTY;
 			}
 		}
 
@@ -1104,7 +1106,7 @@ public class Board2 implements BoardFace {
 
 		if ((m.bits & 2) != 0) {
 
-			int[] piece_tmp = piece.clone();
+			int[] piece_tmp = pieces.clone();
 
 			int i;
 			int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
@@ -1125,26 +1127,26 @@ public class Board2 implements BoardFace {
 					what = 3;
 			}
 			int to = m.to;
-			int pt = piece[to];
+			int pt = pieces[to];
 			if (what == 3) {
-				pt = piece[58];
+				pt = pieces[58];
 				to = 58;
 			} else if (what == 2) {
-				pt = piece[62];
+				pt = pieces[62];
 				to = 62;
 			} else if (what == 1) {
-				pt = piece[2];
+				pt = pieces[2];
 				to = 2;
 			} else if (what == 0) {
-				pt = piece[6];
+				pt = pieces[6];
 				to = 6;
 			}
-			/* move the piece */
+			/* move the pieces */
 			color[m.from] = side;
-			piece[m.from] = pt;
+			pieces[m.from] = pt;
 			if (m.from != to) {
 				color[to] = EMPTY;
-				piece[to] = EMPTY;
+				pieces[to] = EMPTY;
 			}
 
 			int from = -1;
@@ -1162,10 +1164,10 @@ public class Board2 implements BoardFace {
 				to = F8;
 			}
 			color[from] = side;
-			piece[from] = piece_tmp[to];
-			if (to != from && piece[to] != KING) {
+			pieces[from] = piece_tmp[to];
+			if (to != from && pieces[to] != KING) {
 				color[to] = EMPTY;
-				piece[to] = EMPTY;
+				pieces[to] = EMPTY;
 			}
 
 			return;
@@ -1174,23 +1176,23 @@ public class Board2 implements BoardFace {
 
 		color[(int) m.from] = side;
 		if ((m.bits & 32) != 0)
-			piece[(int) m.from] = PAWN;
+			pieces[(int) m.from] = PAWN;
 		else
-			piece[(int) m.from] = piece[(int) m.to];
+			pieces[(int) m.from] = pieces[(int) m.to];
 		if (histDat[hply].capture == EMPTY) {
 			color[(int) m.to] = EMPTY;
-			piece[(int) m.to] = EMPTY;
+			pieces[(int) m.to] = EMPTY;
 		} else {
 			color[(int) m.to] = xside;
-			piece[(int) m.to] = histDat[hply].capture;
+			pieces[(int) m.to] = histDat[hply].capture;
 		}
 		if ((m.bits & 4) != 0) {
 			if (side == LIGHT) {
 				color[m.to + 8] = xside;
-				piece[m.to + 8] = PAWN;
+				pieces[m.to + 8] = PAWN;
 			} else {
 				color[m.to - 8] = xside;
-				piece[m.to - 8] = PAWN;
+				pieces[m.to - 8] = PAWN;
 			}
 		}
 	}
@@ -1230,7 +1232,7 @@ public class Board2 implements BoardFace {
 
 	public String GetMoveSAN() {
 		Move m = histDat[hply].m;
-		int p = piece[m.from];
+		int p = pieces[m.from];
 		String f = "", capture = "", promotion = "";
 		if (p == 1) {
 			f = "N";
@@ -1244,7 +1246,7 @@ public class Board2 implements BoardFace {
 				int pos = positions[i];
 				if (pos < 0 || pos > 63 || pos == m.from)
 					continue;
-				if (piece[pos] == 1 && color[pos] == side) {
+				if (pieces[pos] == 1 && color[pos] == side) {
 					if (COL(pos) == COL(m.from))
 						f += MoveParser.BNToNum(ROW(m.from));
 					else
@@ -1269,7 +1271,7 @@ public class Board2 implements BoardFace {
 				int pos = positions[i];
 				if (pos < 0 || pos > 63 || pos == m.from)
 					continue;
-				if (piece[pos] == 3 && color[pos] == side) {
+				if (pieces[pos] == 3 && color[pos] == side) {
 					if (COL(pos) == COL(m.from))
 						f += MoveParser.BNToNum(ROW(m.from));
 					else
@@ -1398,11 +1400,11 @@ public class Board2 implements BoardFace {
 					break;
 				case LIGHT:
 					sb.append(" ");
-					sb.append(pieceChar[piece[i]]);
+					sb.append(pieceChar[pieces[i]]);
 					break;
 				case DARK:
 					sb.append(" ");
-					sb.append((char) (pieceChar[piece[i]] + ('a' - 'A')));
+					sb.append((char) (pieceChar[pieces[i]] + ('a' - 'A')));
 					break;
 				default:
 					throw new IllegalStateException("Square not EMPTY, LIGHT or DARK: " + i);
@@ -1468,7 +1470,7 @@ public class Board2 implements BoardFace {
 		for (i = 0; i < 64; i++) {
 			if (color[i] == EMPTY)
 				continue;
-			if (piece[i] == PAWN) {
+			if (pieces[i] == PAWN) {
 				pawnMat[color[i]] += pieceValue[PAWN];
 				int f = COL(i) + 1;  /* add 1 because of the extra file in the array */
 				if (color[i] == LIGHT) {
@@ -1480,21 +1482,21 @@ public class Board2 implements BoardFace {
 				}
 			} else {
 				try {
-					pieceMat[color[i]] += pieceValue[piece[i]];
+					pieceMat[color[i]] += pieceValue[pieces[i]];
 				} catch (Exception e) {
 					Log.d("I!!!!!!!!:", "" + i);
 				}
 			}
 		}
 
-		/* this is the second pass: evaluate each piece */
+		/* this is the second pass: evaluate each pieces */
 		score[LIGHT] = pieceMat[LIGHT] + pawnMat[LIGHT];
 		score[DARK] = pieceMat[DARK] + pawnMat[DARK];
 		for (i = 0; i < 64; ++i) {
 			if (color[i] == EMPTY)
 				continue;
 			if (color[i] == LIGHT) {
-				switch (piece[i]) {
+				switch (pieces[i]) {
 					case PAWN:
 						score[LIGHT] += evalLightPawn(i);
 						break;
@@ -1522,7 +1524,7 @@ public class Board2 implements BoardFace {
 						break;
 				}
 			} else {
-				switch (piece[i]) {
+				switch (pieces[i]) {
 					case PAWN:
 						score[DARK] += evalDarkPawn(i);
 						break;
@@ -1791,12 +1793,16 @@ public class Board2 implements BoardFace {
 		return reside;
 	}
 
-	public int[] getPiece() {
-		return piece;
+	public int[] getPieces() {
+		return pieces;
 	}
 
-	public void setPiece(int[] piece) {
-		this.piece = piece;
+	public int getPiece(int pieceId){
+		return pieces[pieceId];
+	}
+
+	public void setPieces(int[] pieces) {
+		this.pieces = pieces;
 	}
 
 	public int getHply() {

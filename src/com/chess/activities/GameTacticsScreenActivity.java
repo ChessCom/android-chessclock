@@ -648,7 +648,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	private void checkTacticMoves() {
 		Move m = newBoardView.getBoardFace().getHistDat()[newBoardView.getBoardFace().getHply() - 1].m;
 		String f = "";
-		int p = newBoardView.getBoardFace().getPiece()[m.to];
+		int p = newBoardView.getBoardFace().getPieces()[m.to];
 		if (p == 1) {
 			f = "N";
 		} else if (p == 2) {
@@ -662,10 +662,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 		String Moveto = MoveParser.positionToString(m.to);
 		Log.d("!!!", f + " | " + Moveto + " : " + newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1]);
-		if (newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(f) && newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(Moveto)) {
+		if (newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(f)
+				&& newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(Moveto)) {
 			newBoardView.getBoardFace().increaseTacticsCorrectMoves();
 			if (newBoardView.getBoardFace().getMovesCount() < newBoardView.getBoardFace().getTacticMoves().length - 1) {
-				int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply()]);
+				int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(),
+						newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply()]);
 				if (moveFT.length == 4) {
 					if (moveFT[3] == 2)
 						m = new Move(moveFT[0], moveFT[1], 0, 2);

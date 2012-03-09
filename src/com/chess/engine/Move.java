@@ -7,7 +7,10 @@
 package com.chess.engine;
 
 public final class Move implements Comparable<Object> {
-	public int from, to, promote, bits;
+	public int from;
+	public int to;
+	public int promote;
+	public int bits;
 	int score = 0;
 
 	public Move(int from, int to, int promote, int bits) {

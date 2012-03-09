@@ -347,7 +347,9 @@ public class BoardView extends ImageView {
 
 				int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
 				int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
+				// Count for existing pieces. If piece exist on board, decrease it counter so it will not be redrawn in old version
 				for (i = 0; i < 64; i++) {
+					// count for existing pieces. If piece exist on bo
 					int piece = board.piece[i];
 					if (board.color[i] == Board.LIGHT) {
 						if (piece == 0)
@@ -396,7 +398,8 @@ public class BoardView extends ImageView {
 			if(b_queen == 1)
 				canvas.drawBitmap(mainApp.capturedBQ, null, new Rect(14*side-offset, W+side, 15*side+offset, W+2*side+2*offset), null);*/
 				for (i = 0; i < w_pawns; i++)
-					canvas.drawBitmap(mainApp.getPiecesBitmap()[0][0], null, new Rect(i * side - offset, W, i * side + side + offset, W + side + 2 * offset), null);
+					canvas.drawBitmap(mainApp.getPiecesBitmap()[0][0], null,
+							new Rect(i * side - offset, W, i * side + side + offset, W + side + 2 * offset), null);
 				for (i = 0; i < w_knights; i++)
 					canvas.drawBitmap(mainApp.getPiecesBitmap()[0][1], null, new Rect((i) * side + 8 * side - offset, W, (i) * side + side + 8 * side + offset, W + side + 2 * offset), null);
 				for (i = 0; i < w_bishops; i++)
