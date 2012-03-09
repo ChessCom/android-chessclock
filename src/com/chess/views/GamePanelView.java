@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +82,16 @@ public class GamePanelView extends LinearLayout {
 
 	public void onCreate() {
 		setOrientation(VERTICAL);
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
 
 		pieceIds = getResources().getIntArray(R.array.pieces_ids);
 
 		controlsLayout = new LinearLayout(getContext());
-		controlsLayout.setPadding(10, 10, 10, 10);
+		int paddingLeft = (int) (10*metrics.density);
+		int paddingTop = (int) (12*metrics.density);
+		int paddingRight = (int) (10*metrics.density);
+		int paddingBottom = (int) (12*metrics.density);
+		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
