@@ -46,10 +46,10 @@
 	</item>
 	<!--Button-->
 	<item
-		android:left="0px"
-		android:top="0px"
-		android:bottom="1px"
-		android:right="0px"
+		android:left="1px"
+		android:top="1px"
+		android:bottom="2px"
+		android:right="1px"
 		>
 		<shape  >
 			<corners
@@ -57,15 +57,15 @@
 				android:bottomLeftRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@color/grey_button_p" />
-			<stroke android:width="@dimen/default_stroke_width"
-				android:color="@color/gray_button_stroke"/>
+<!--			<stroke android:width="@dimen/default_stroke_width"
+				android:color="@color/gray_button_stroke"/>-->
 			<padding
 				android:left="@dimen/toggle_button_padding_left"
 				android:right="@dimen/toggle_button_padding_right"
 				android:top="@dimen/toggle_button_padding_top"
 				android:bottom="@dimen/toggle_button_padding_bottom"
 				/>
-			<size android:height="@dimen/blue_button_height"/>
+			<size android:height="@dimen/toggle_button_height"/>
 		</shape>
 	</item>
 </layer-list>

@@ -65,7 +65,7 @@
 				android:top="@dimen/toggle_button_padding_top"
 				android:bottom="@dimen/toggle_button_padding_bottom"
 				/>
-			<size android:height="@dimen/blue_button_height"/>
+			<size android:height="@dimen/toggle_button_height"/>
 		</shape>
 	</item>
 </layer-list>

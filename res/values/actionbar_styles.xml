@@ -55,7 +55,7 @@
         <!-- layout_width/height/weight must be set in code -->
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingLeft">2dp</item>
         <item name="android:paddingRight">6dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
