@@ -15,17 +15,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import com.chess.R;
+import com.chess.activities.GameBaseActivity;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
 import com.chess.core.interfaces.BoardFace;
+import com.chess.core.interfaces.BoardViewFace;
 import com.chess.engine.*;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class NewBoardView extends ImageView {
+public class NewBoardView extends ImageView implements BoardViewFace {
 
 	public int W;
 	public int H;
@@ -110,6 +112,7 @@ public class NewBoardView extends ImageView {
 		image.setBounds(0, 0, (int) width, (int) height);
 
 		image.setDither(true);
+
 
 	}
 
@@ -196,7 +199,7 @@ public class NewBoardView extends ImageView {
 				message = "0 - 0 Stalemate";
 		} else if (boardFace.reps() == 3 && !mainApp.isLiveChess())
 			message = "1/2 - 1/2 Draw by repetition";
-		/*else if (newBoardView.fifty >= 100)
+		/*else if (fifty >= 100)
 					message = "1/2 - 1/2 Draw by fifty move rule";*/
 		if (message != null) {
 			finished = true;
@@ -222,7 +225,7 @@ public class NewBoardView extends ImageView {
 			return;
 		}
 		compmoving = true;
-		activity.update(2);
+		activity.update(GameBaseActivity.CALLBACK_COMP_MOVE);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -242,7 +245,7 @@ public class NewBoardView extends ImageView {
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
 					activity.update(0);	//movelist
-					activity.update(3);
+					activity.update(GameBaseActivity.CALLBACK_PLAYER_MOVE);
 					invalidate();
 					if (isResult())
 						return;
@@ -275,7 +278,6 @@ public class NewBoardView extends ImageView {
 
 	private int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
 	private int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
-
 
 
 	@Override
@@ -319,7 +321,7 @@ public class NewBoardView extends ImageView {
 				int p = boardFace.getPieces()[i];
 				int x = Board.COL(i, boardFace.isReside());
 				int y = Board.ROW(i, boardFace.isReside());
-				if (c != 6 && p != 6) {    // TODO here is the simple replace/redraw of piece
+				if (c != 6 && p != 6) {	// TODO here is the simple replace/redraw of piece
 					canvas.drawBitmap(mainApp.getPiecesBitmap()[c][p], null,
 							new Rect(x * square, y * square, x * square + square, y * square + square), null);
 				}
@@ -332,7 +334,7 @@ public class NewBoardView extends ImageView {
 				int p = p_tmp[i];
 				int x = Board.COL(i, boardFace.isReside());
 				int y = Board.ROW(i, boardFace.isReside());
-				if (c != 6 && p != 6) {     // TODO here is the simple replace/redraw of piece
+				if (c != 6 && p != 6) {	 // TODO here is the simple replace/redraw of piece
 					canvas.drawBitmap(mainApp.getPiecesBitmap()[c][p], null,
 							new Rect(x * square, y * square, x * square + square, y * square + square), null);
 				}
@@ -394,9 +396,9 @@ public class NewBoardView extends ImageView {
 			for (i = 0; i < 64; i++) {
 				int pieceId = boardFace.getPiece(i);
 				if (boardFace.getColor()[i] == Board.LIGHT) {
-					gamePanelView.addAlivePiece(true,pieceId);
+					gamePanelView.addAlivePiece(true, pieceId);
 				} else {
-					gamePanelView.addAlivePiece(false,pieceId);
+					gamePanelView.addAlivePiece(false, pieceId);
 				}
 			}
 		}
@@ -584,7 +586,7 @@ public class NewBoardView extends ImageView {
 
 					Move m = null;
 					while (i.hasNext()) {
-						m = i.next();     // search for move that was made
+						m = i.next();	 // search for move that was made
 						if (m.from == from && m.to == to) {
 							found = true;
 							break;
@@ -628,7 +630,6 @@ public class NewBoardView extends ImageView {
 
 		return super.onTouchEvent(event);
 	}
-
 
 
 	private void promote(int promote, int col, int row) {
@@ -678,5 +679,85 @@ public class NewBoardView extends ImageView {
 
 	public void setGamePanelView(GamePanelView gamePanelView) {
 		this.gamePanelView = gamePanelView;
+		this.gamePanelView.setBoardViewFace(this);
+	}
+
+	@Override
+	public void fastForward() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void showOptions() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void flipBoard() {
+		stopThinking = true;
+		if (!compmoving) {
+			getBoardFace().setReside(!getBoardFace().isReside());
+			if (MainApp.isComputerVsHumanGameMode(getBoardFace())) {
+				if (MainApp.isComputerVsHumanWhiteGameMode(getBoardFace())) {
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
+				} else if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace())) {
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
+				}
+				//getBoardFaceFace().mode ^= 1;
+				ComputerMove(mainApp.strength[mainApp.getSharedData()
+						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+			}
+			invalidate();
+			activity.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+		}
+	}
+
+	@Override
+	public void switchAnalysis() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void switchChat() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void moveBack() {
+		stopThinking = true;
+		if (!compmoving) {
+			finished = false;
+			sel = false;
+			getBoardFace().takeBack();
+			invalidate();
+			activity.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+		}
+	}
+
+	@Override
+	public void moveForward() {
+		stopThinking = true;
+		if (!compmoving) {
+			sel = false;
+			getBoardFace().takeNext();
+			invalidate();
+			activity.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+		}
+	}
+
+	@Override
+	public void showHint() {
+		stopThinking = true;
+		if (!compmoving) {
+			hint = true;
+			ComputerMove(mainApp.strength[mainApp.getSharedData()
+					.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+							+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+		}
+	}
+
+	public void addMove2Log(CharSequence move) {
+		gamePanelView.addMoveLog(move);
 	}
 }

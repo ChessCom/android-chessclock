@@ -104,4 +104,5 @@ public interface BoardFace {
 	int getTacticsCorrectMoves();
 
 	void increaseTacticsCorrectMoves();
+
 }

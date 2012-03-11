@@ -32,6 +32,7 @@
 		android:gravity="center"
 		style="@style/LinearDescription"
 		android:paddingRight="0dip"
+		android:layout_marginTop="10dip"
 		>
 
 		<com.chess.RoboTextView
@@ -55,7 +56,7 @@
 
 	<GridView
 		android:id="@+id/gridview"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:columnWidth="90dp"
 		android:gravity="center"
@@ -64,7 +65,13 @@
 		android:stretchMode="columnWidth"
 		android:verticalSpacing="10dp"
 		android:visibility="visible"
-		android:background="@android:color/transparent"/>
+		android:background="@android:color/transparent"
+		android:paddingTop="10dip"
+		android:paddingLeft="0dip"
+		android:paddingRight="0dip"
+		android:paddingBottom="10dip"
+		android:listSelector="@android:color/transparent"
+		/>
 
 	<com.chess.RoboTextView
 		android:id="@+id/challengesListTitle"

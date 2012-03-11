@@ -3,12 +3,9 @@ package com.chess.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * ChessSpinnerAdapter class
@@ -16,8 +13,8 @@ import java.util.List;
  * @author alien_roger
  * @created at: 24.02.12 5:22
  */
-public class ChessSpinnerAdapter extends ItemsAdapter<String> {
-
+public class ChessSpinnerAdapter extends ArrayAdapter<String>/*ItemsAdapter<String>*/ {
+/*
 	public ChessSpinnerAdapter(Context context, int resourceId) {
 		super(context, null);
 		List<String> itemsList = new ArrayList<String>();
@@ -58,5 +55,27 @@ public class ChessSpinnerAdapter extends ItemsAdapter<String> {
 //		if (convertView == null) convertView = createDropDownView(parent);
 //		bindView(itemsList.get(position), position, convertView);
 //		return convertView;
+	}*/
+
+	private Context context;
+
+	public ChessSpinnerAdapter(Context context, int entries) {
+		super(context, android.R.layout.simple_spinner_item,
+				context.getResources().getStringArray(entries));
+		setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		this.context = context;
 	}
-}
+
+	public ChessSpinnerAdapter(Context context, String[] entries) {
+		super(context, android.R.layout.simple_spinner_item, entries);
+		setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		this.context = context;
+	}
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View v = super.getView(position, convertView, parent);
+		((TextView)v.findViewById(android.R.id.text1)).setTextColor(context.getResources().getColor(R.color.hint_text));
+		return v;
+	}
+	}
+

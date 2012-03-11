@@ -30,7 +30,10 @@
 			android:gravity="center_vertical"
 			android:text="@string/Human"
 			android:textSize="14sp"
-			android:padding="2dip"
+			android:paddingTop="2dip"
+			android:paddingLeft="8dip"
+			android:paddingBottom="2dip"
+			android:paddingRight="2dip"
 			android:drawableLeft="@drawable/whitemove"
 			/>
 
@@ -46,7 +49,7 @@
 			android:paddingTop="2dip"
 			android:paddingLeft="2dip"
 			android:paddingBottom="2dip"
-			android:paddingRight="4dip"
+			android:paddingRight="8dip"
 			android:drawableRight="@drawable/blackmove"
 			android:drawablePadding="2dip"
 

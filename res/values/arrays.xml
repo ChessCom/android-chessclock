@@ -41,18 +41,18 @@
 	</string-array>
 	
 	<string-array name="skill">
-	    <item>Not set</item>
+	    <item>Not Set</item>
 	    <item>Beginner</item>
 		<item>Intermediate</item>
 		<item>Advanced</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Not set</item>
+	    <item>Not Set</item>
 	    <item>Amazing games</item>
 		<item>Endgames</item>
 		<item>Openings</item>
-		<item>Rules basics</item>
+		<item>Rules Basics</item>
 		<item>Strategy</item>
 		<item>Tactics</item>
 	</string-array>	
@@ -70,15 +70,16 @@
 
 	<string-array name="onlineSpinner">
 	    <item>Challenges</item>
-		<item>Current games</item>
-		<item>Finished games</item>
+		<item>Current Games</item>
+		<item>Finished Games</item>
 	</string-array>	
 
 	<string-array name="AIM">
-	    <item>Go to Next Ready Game</item>
-		<item>Stay on Same Game</item>
-		<item>Return to Game List</item>
+	    <item>Go To Next Ready Game</item>
+		<item>Stay On Same Game</item>
+		<item>Return To Game List</item>
 	</string-array>
+
 	<string-array name="Notif">
 	    <item>None</item>
 		<item>Vibrate</item>

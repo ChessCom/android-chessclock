@@ -150,7 +150,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public void update(int code) {
-		int UPDATE_DELAY = 10000;
+//		int UPDATE_DELAY = 10000;
 		int[] moveFT = new int[]{};
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
@@ -194,6 +194,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 //				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+
+				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
 				newBoardView.invalidate();
 
 				new Handler().post(new Runnable() {
@@ -397,11 +399,11 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_new_game:
+			case R.id.menu_new_game: // TODO move to action bar
 				newBoardView.stopThinking = true;
 				onBackPressed();
 				break;
-			case R.id.menu_options:
+			case R.id.menu_options:     // TODO move to action bar
 				newBoardView.stopThinking = true;
 
 				new AlertDialog.Builder(this)
@@ -409,53 +411,21 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 				break;
 			case R.id.menu_reside:
-				newBoardView.stopThinking = true;
-				if (!newBoardView.compmoving) {
-					newBoardView.getBoardFace().setReside(!newBoardView.getBoardFace().isReside());
-					if (MainApp.isComputerVsHumanGameMode(newBoardView.getBoardFace())) {
-						if (MainApp.isComputerVsHumanWhiteGameMode(newBoardView.getBoardFace())) {
-							newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-						} else if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
-							newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-						}
-						//newBoardView.getBoardFaceFace().mode ^= 1;
-						newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
-								.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-										+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-					}
-					newBoardView.invalidate();
-					update(CALLBACK_REPAINT_UI);
-				}
+				newBoardView.flipBoard();
+
 				break;
 			case R.id.menu_hint:
-				newBoardView.stopThinking = true;
-				if (!newBoardView.compmoving) {
-					newBoardView.hint = true;
-					newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
-							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-				}
+				newBoardView.showHint();
+
 				break;
 			case R.id.menu_previous:
-				newBoardView.stopThinking = true;
-				if (!newBoardView.compmoving) {
-					newBoardView.finished = false;
-					newBoardView.sel = false;
-					newBoardView.getBoardFace().takeBack();
-					newBoardView.invalidate();
-					update(CALLBACK_REPAINT_UI);
-					isMoveNav = true;
-				}
+				newBoardView.moveBack();
+
+				isMoveNav = true;
 				break;
 			case R.id.menu_next:
-				newBoardView.stopThinking = true;
-				if (!newBoardView.compmoving) {
-					newBoardView.sel = false;
-					newBoardView.getBoardFace().takeNext();
-					newBoardView.invalidate();
-					update(CALLBACK_REPAINT_UI);
-					isMoveNav = true;
-				}
+				newBoardView.moveForward();
+				isMoveNav = true;
 				break;
 		}
 		return super.onOptionsItemSelected(item);

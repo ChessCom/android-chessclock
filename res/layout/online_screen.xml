@@ -31,6 +31,8 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		style="@style/LinearDescription"
+		android:paddingLeft="0dip"
+		android:paddingRight="0dip"
 		>
 		<com.chess.RoboButton
 			android:id="@+id/tournaments"
@@ -76,6 +78,8 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		style="@style/LinearDescription"
+		android:paddingLeft="0dip"
+		android:paddingRight="0dip"
 		>
 
 		<Spinner
@@ -103,7 +107,7 @@
 		android:drawablePadding="10px"
 		android:gravity="left"
 		android:padding="5px"
-		android:text="Challenges:"
+		android:text="@string/challenges"
 
 		android:visibility="visible"/>
 

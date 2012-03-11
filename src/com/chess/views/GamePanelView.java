@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.adapters.ItemsAdapter;
+import com.chess.core.interfaces.BoardViewFace;
 import com.chess.engine.PieceItem;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class GamePanelView extends LinearLayout {
+public class GamePanelView extends LinearLayout implements View.OnClickListener {
 
 	private LinearLayout controlsLayout;
 	private int[] pieceIds;
@@ -51,29 +52,50 @@ public class GamePanelView extends LinearLayout {
 			1,
 			1
 	};
-	private int whiteSavedPiecesCount[] = new int[]{
+	private int whiteSavedPiecesCount[] = pieceItemCounts.clone();/* new int[]{
 			8,
 			2,
 			2,
 			2,
 			1,
 			1
-	};
-	private int blackSavedPiecesCount[] = new int[]{
+	};*/
+	private int blackSavedPiecesCount[] = pieceItemCounts.clone();/*new int[]{
 			8,
 			2,
 			2,
 			2,
 			1,
 			1
+	};*/
+
+	private int[] buttonsDrawableIds = new int[]{
+			R.drawable.ic_fastforward,
+			R.drawable.ic_options,
+			R.drawable.ic_flip,
+			R.drawable.ic_analysis,
+			R.drawable.ic_chat,
+			R.drawable.ic_back,
+			R.drawable.ic_forward
 	};
+
+	private static final int B_FASTFORWARD_ID 	= 0;
+	private static final int B_OPTIONS_ID 		= 1;
+	private static final int B_FLIP_ID 			= 2;
+	private static final int B_ANALYSIS_ID 		= 3;
+	private static final int B_CHAT_ID 			= 4;
+	private static final int B_BACK_ID 			= 5;
+	private static final int B_FORWARD_ID 		= 6;
 
 	private int whiteAlivePiecesCount[] = new int[6];
 	private int blackAlivePiecesCount[] = new int[6];
 
 	//	prefixes
+	public static final int BUTTON_PREFIX = 0x00000000;
 	public static final int WHITE_FRAME_PREFIX = 0x00001000;
 	public static final int BLACK_FRAME_PREFIX = 0x00004000;
+	private List<String> itemList;
+	private BoardViewFace boardViewFace;
 
 
 	public GamePanelView(Context context) {
@@ -86,11 +108,12 @@ public class GamePanelView extends LinearLayout {
 		onCreate();
 	}
 
-
-	private void addControlButton(int imageId, int backId) {
+	private void addControlButton(int buttonId, int backId) {
 		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(imageId);
+		imageButton.setImageResource(buttonsDrawableIds[buttonId]);
 		imageButton.setBackgroundResource(backId);
+		imageButton.setOnClickListener(this);
+		imageButton.setId(BUTTON_PREFIX + buttonId);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -119,13 +142,13 @@ public class GamePanelView extends LinearLayout {
 
 		controlsLayout.setLayoutParams(params);
 
-		addControlButton(R.drawable.ic_fastforward, R.drawable.button_emboss_left_selector);
-		addControlButton(R.drawable.ic_options, R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_flip, R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_analysis, R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_chat, R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_back, R.drawable.button_emboss_mid_selector);
-		addControlButton(R.drawable.ic_forward, R.drawable.button_emboss_right_selector);
+		addControlButton(B_FASTFORWARD_ID, 	R.drawable.button_emboss_left_selector);
+		addControlButton(B_OPTIONS_ID, 		R.drawable.button_emboss_mid_selector);
+		addControlButton(B_FLIP_ID, 		R.drawable.button_emboss_mid_selector);
+		addControlButton(B_ANALYSIS_ID, 	R.drawable.button_emboss_mid_selector);
+		addControlButton(B_CHAT_ID, 		R.drawable.button_emboss_mid_selector);
+		addControlButton(B_BACK_ID, 		R.drawable.button_emboss_mid_selector);
+		addControlButton(B_FORWARD_ID, 		R.drawable.button_emboss_right_selector);
 		addView(controlsLayout);
 
 
@@ -180,10 +203,7 @@ public class GamePanelView extends LinearLayout {
 
 		addView(infoLayout);
 
-		List<String> itemList = new ArrayList<String>();
-		itemList.add("42. Bf3  Ke7");
-		itemList.add("43. Nd5+  Nxd5");
-		itemList.add("44. exd5  Ke7");
+		itemList = new ArrayList<String>();
 
 		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
 
@@ -222,6 +242,11 @@ public class GamePanelView extends LinearLayout {
 		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
 	}
 
+	public void addMoveLog(CharSequence move){
+		itemList.clear();
+		itemList.add(move.toString());
+	}
+	
 	private int getFramePrefix(boolean isWhite) {
 		return isWhite ? WHITE_FRAME_PREFIX : BLACK_FRAME_PREFIX;
 	}
@@ -411,7 +436,28 @@ public class GamePanelView extends LinearLayout {
 		}
 	}
 
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == BUTTON_PREFIX + B_FASTFORWARD_ID){
+			boardViewFace.fastForward();
+		}else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
+			boardViewFace.showOptions();
+		}else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID){
+			boardViewFace.flipBoard();
+		}else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID){
+			boardViewFace.switchAnalysis();
+		}else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID){
+			boardViewFace.switchChat();
+		}else if (view.getId() == BUTTON_PREFIX + B_BACK_ID){
+			boardViewFace.moveBack();
+		}else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID){
+			boardViewFace.moveForward();
+		}
+	}
 
+	public void setBoardViewFace(BoardViewFace boardViewFace) {
+		this.boardViewFace = boardViewFace;
+	}
 
 	private class MovesAdapter extends ItemsAdapter<String> {
 		public MovesAdapter(Context context, List<String> itemList) {
