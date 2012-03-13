@@ -49,8 +49,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		if (newBoardView.getBoardFace() == null) {
+//		if (newBoardView.getBoardFace() == null) {
 			newBoardView.setBoardFace(new Board2(this));
+			newBoardView.setGameActivityFace(this);
 			newBoardView.getBoardFace().setInit(true);//init = true;
 			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -81,7 +82,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
-		}
+//		}
 	}
 
 	protected void init() {

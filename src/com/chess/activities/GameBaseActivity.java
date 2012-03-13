@@ -112,6 +112,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		drawOfferDialogListener = new DrawOfferDialogListener();
 		abortGameDialogListener = new AbortGameDialogListener();
+
 	}
 
 	protected abstract void onDrawOffered(int whichButton);

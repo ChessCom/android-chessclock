@@ -1,5 +1,6 @@
 package com.chess.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -78,11 +79,10 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 //	private PieceItem pieceItem;
 	private Resources resources;
 
-	public NewBoardView(GameActivityFace gameActivityFace, AttributeSet attrs) {
-		super(gameActivityFace.getMeContext(), attrs);
-		this.gameActivityFace = gameActivityFace;
-		mainApp = this.gameActivityFace.getMainApp();
-		resources = gameActivityFace.getMeContext().getResources();
+	public NewBoardView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+
+		resources = context.getResources();
 
 		green = new Paint();
 		white = new Paint();
@@ -118,6 +118,12 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 
 	}
 
+    public void setGameActivityFace(GameActivityFace gameActivityFace){
+        this.gameActivityFace = gameActivityFace;
+        mainApp = gameActivityFace.getMainApp();
+    }
+
+
 	public void afterMove() {
 		boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.update(0);	//movelist
@@ -147,8 +153,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
 				computerMove(mainApp.strength[mainApp.getSharedData()
-						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+                        .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+                                + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
 			case AppConstants.GAME_MODE_TACTICS: {
@@ -281,8 +287,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		}
 	}
 
-	private int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
-	private int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
+//	private int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
+//	private int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
 
 
 	@Override
@@ -380,8 +386,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			int p = boardFace.getPieces()[from];
 			int x = dragX - square / 2;
 			int y = dragY - square / 2;
-			int col = (int) (dragX - dragX % square) / square;
-			int row = (int) ((dragY + square) - (dragY + square) % square) / square;
+			int col = (dragX - dragX % square) / square;
+			int row = ((dragY + square) - (dragY + square) % square) / square;
 			if (c != 6 && p != 6) {
 				canvas.drawBitmap(mainApp.getPiecesBitmap()[c][p], null,
 						new Rect(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2), null);
@@ -390,13 +396,13 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			}
 		}
 		if (track) {
-			int x = (int) (trackX - trackX % square) / square;
-			int y = (int) (trackY - trackY % square) / square;
+			int x = (trackX - trackX % square) / square;
+			int y = (trackY - trackY % square) / square;
 			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, green);
 		}
 
 		// Count captured pieces
-		if (!compmoving && !MainApp.isTacticsGameMode(boardFace)) {
+		if (!compmoving /*&& !MainApp.isTacticsGameMode(boardFace)*/) {
 			gamePanelView.dropAlivePieces();
 			for (i = 0; i < 64; i++) {
 				int pieceId = boardFace.getPiece(i);
@@ -438,8 +444,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 				trackY = 7 * square;
 			invalidate();
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			int col = (int) (trackX - trackX % square) / square;
-			int row = (int) (trackY - trackY % square) / square;
+			int col = (trackX - trackX % square) / square;
+			int row = (trackY - trackY % square) / square;
 			if (firstclick) {
 				from = Board.POS(col, row, boardFace.isReside());
 				if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
@@ -716,8 +722,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 				}
 				//getBoardFaceFace().mode ^= 1;
 				computerMove(mainApp.strength[mainApp.getSharedData()
-						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+                        .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+                                + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			invalidate();
 			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
@@ -766,8 +772,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		if (!compmoving) {
 			hint = true;
 			computerMove(mainApp.strength[mainApp.getSharedData()
-					.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-							+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+                    .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+                            + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 		}
 	}
 

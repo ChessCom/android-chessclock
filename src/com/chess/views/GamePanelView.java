@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -94,7 +96,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public static final int BUTTON_PREFIX = 0x00000000;
 	public static final int WHITE_FRAME_PREFIX = 0x00001000;
 	public static final int BLACK_FRAME_PREFIX = 0x00004000;
-	private List<String> itemList;
+//	private List<String> itemList;
+    private TextView movesTextView;
 	private BoardViewFace boardViewFace;
 
 
@@ -188,24 +191,35 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		listParams.weight = 7;
 		listParams.gravity = Gravity.RIGHT;
+//        android:gravity="right"
 
 
-		ListView movesListView = new ListView(getContext());
-		movesListView.setPadding(1, 1, 0, 1);
-		movesListView.setLayoutParams(listParams);
+        // change to TextView
+//		ListView movesListView = new ListView(getContext());
+//		movesListView.setPadding(1, 1, 0, 1);
+//		movesListView.setLayoutParams(listParams);
+//
+//		movesListView.setCacheColorHint(Color.TRANSPARENT);
+//		movesListView.setBackgroundColor(Color.TRANSPARENT);
+//		movesListView.setDividerHeight(0);
+//		movesListView.setDivider(getResources().getDrawable(android.R.color.transparent));
+//        infoLayout.addView(movesListView);
 
-		movesListView.setCacheColorHint(Color.TRANSPARENT);
-		movesListView.setBackgroundColor(Color.TRANSPARENT);
-		movesListView.setDividerHeight(0);
-		movesListView.setDivider(getResources().getDrawable(android.R.color.transparent));
-
-		infoLayout.addView(movesListView);
-
+        movesTextView = new TextView(getContext());
+//        android:inputType="textImeMultiLine"
+//        android:ellipsize="start"
+//        movesTextView.setEllipsize(TextUtils.TruncateAt.START);
+//        movesTextView.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        movesTextView.setLayoutParams(listParams);
+        movesTextView.setGravity(Gravity.BOTTOM);
+        movesTextView.setTextSize(13);
+        infoLayout.addView(movesTextView);
+        
 		addView(infoLayout);
 
-		itemList = new ArrayList<String>();
+//		itemList = new ArrayList<String>();
 
-		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
+//		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
 
 		whitePieceDrawableIds = new int[]{
 				R.drawable.captured_wp,
@@ -239,12 +253,13 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		addItems(blackCapturedPieces, false, 1.0f, PAWN_ID);
 		addItems(blackCapturedPieces, false, 1.0f, KING_ID);
 
-		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
+//		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
 	}
 
 	public void addMoveLog(CharSequence move){
-		itemList.clear();
-		itemList.add(move.toString());
+//		itemList.clear();
+//		itemList.add(move.toString());
+        movesTextView.setText(move);
 	}
 	
 	private int getFramePrefix(boolean isWhite) {
@@ -431,7 +446,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 					capturePiece(isWhite, i);
 					storedPiecesCounts[i]--;
 				}
-
 			}
 		}
 	}

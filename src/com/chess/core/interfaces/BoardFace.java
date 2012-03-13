@@ -4,6 +4,7 @@ import com.chess.engine.Board2;
 import com.chess.engine.HistoryData;
 import com.chess.engine.Move;
 
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -75,6 +76,7 @@ public interface BoardFace {
     void takeNext();
 
     CharSequence MoveListSAN();
+//    List<String> MoveListSAN();
 
     String convertMoveLive();
 

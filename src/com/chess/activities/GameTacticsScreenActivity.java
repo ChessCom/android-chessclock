@@ -100,8 +100,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		timer = (TextView) findViewById(R.id.timer);
 
 
-		if (newBoardView.getBoardFace() == null) {
+//		if (newBoardView.getBoardFace() == null) {
 			newBoardView.setBoardFace(new Board2(this));
+            newBoardView.setGameActivityFace(this);
 			newBoardView.getBoardFace().setInit(true);
 			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -122,7 +123,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
 				showDialog(DIALOG_TACTICS_START_TACTICS);
 			}
-		}
+//		}
 	}
 
 
