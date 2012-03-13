@@ -2,12 +2,9 @@ package com.chess.views;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -19,7 +16,6 @@ import com.chess.adapters.ItemsAdapter;
 import com.chess.core.interfaces.BoardViewFace;
 import com.chess.engine.PieceItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,7 +68,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	};*/
 
 	private int[] buttonsDrawableIds = new int[]{
-			R.drawable.ic_fastforward,
+			R.drawable.ic_next_game,
 			R.drawable.ic_options,
 			R.drawable.ic_flip,
 			R.drawable.ic_analysis,
@@ -81,13 +77,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 			R.drawable.ic_forward
 	};
 
-	private static final int B_FASTFORWARD_ID 	= 0;
-	private static final int B_OPTIONS_ID 		= 1;
-	private static final int B_FLIP_ID 			= 2;
-	private static final int B_ANALYSIS_ID 		= 3;
-	private static final int B_CHAT_ID 			= 4;
-	private static final int B_BACK_ID 			= 5;
-	private static final int B_FORWARD_ID 		= 6;
+	public static final int B_NEW_GAME_ID   = 0;
+	public static final int B_OPTIONS_ID 	= 1;
+	public static final int B_FLIP_ID 		= 2;
+	public static final int B_ANALYSIS_ID 	= 3;
+	public static final int B_CHAT_ID 		= 4;
+	public static final int B_BACK_ID 		= 5;
+	public static final int B_FORWARD_ID 	= 6;
+//	private static final int B_NEW_GAME_ID 	= 7;
 
 	private int whiteAlivePiecesCount[] = new int[6];
 	private int blackAlivePiecesCount[] = new int[6];
@@ -145,7 +142,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		controlsLayout.setLayoutParams(params);
 
-		addControlButton(B_FASTFORWARD_ID, 	R.drawable.button_emboss_left_selector);
+		addControlButton(B_NEW_GAME_ID, 	R.drawable.button_emboss_left_selector);
 		addControlButton(B_OPTIONS_ID, 		R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FLIP_ID, 		R.drawable.button_emboss_mid_selector);
 		addControlButton(B_ANALYSIS_ID, 	R.drawable.button_emboss_mid_selector);
@@ -254,6 +251,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		addItems(blackCapturedPieces, false, 1.0f, KING_ID);
 
 //		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
+	}
+
+	public void changeGameButton(int buttonId, int resId){
+		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
 	}
 
 	public void addMoveLog(CharSequence move){
@@ -452,8 +453,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == BUTTON_PREFIX + B_FASTFORWARD_ID){
-			boardViewFace.fastForward();
+		/*if(view.getId() == BUTTON_PREFIX + B_NEXT_GAME_ID){
+			boardViewFace.nextGame();
+		}else */if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
+			boardViewFace.newGame();
 		}else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
 		}else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID){

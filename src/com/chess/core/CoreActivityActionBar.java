@@ -15,7 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.activities.Singin;
+import com.chess.activities.HomeScreenActivity;
+import com.chess.activities.LoginScreenActivity;
 import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
@@ -27,6 +28,8 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+
+//import com.chess.activities.Singin;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace {
 
@@ -148,11 +151,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				}
 			});
 			if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
-				final Intent intent = new Intent(mainApp, Tabs.class);
+				final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mainApp.startActivity(intent);
 			} else {
-				startActivity(new Intent(mainApp, Singin.class));
+				startActivity(new Intent(mainApp, LoginScreenActivity.class));
 			}
 		}
 
@@ -381,7 +384,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 						@Override
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
-							final Intent intent = new Intent(CoreActivityActionBar.this, Tabs.class);
+							final Intent intent = new Intent(CoreActivityActionBar.this, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							// reconnectingIndicator.dismiss();
 							mainApp.startActivity(intent);
@@ -394,7 +397,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
 					} catch (Exception e) {
 						lccHolder.logout();
-						intent = new Intent(CoreActivityActionBar.this, Tabs.class);
+						intent = new Intent(CoreActivityActionBar.this, HomeScreenActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						// reconnectingIndicator.dismiss();
 						mainApp.startActivity(intent);
@@ -427,7 +430,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 													 */) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(mainApp, Singin.class);
+							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -453,7 +456,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 											.parse("http://www.chess.com/play/android.html")));
 								}
 							});
-							final Intent intent = new Intent(mainApp, Tabs.class);
+							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -637,7 +640,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 						final boolean forceFlag = force;
 						new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(R.drawable.ic_launcher).setTitle("update Check")
 								.setMessage("An update is available! Please update").setCancelable(false)
-								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+								.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog, int whichButton) {
 										// Intent intent = new
@@ -645,7 +648,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 										if (forceFlag) {
 											mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, 0);
 											mainApp.getSharedDataEditor().commit();
-											startActivity(new Intent(CoreActivityActionBar.this, Singin.class));
+											startActivity(new Intent(CoreActivityActionBar.this, LoginScreenActivity.class));
 											finish();
 										}
 										Intent intent = new Intent(Intent.ACTION_VIEW, Uri
@@ -669,7 +672,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// mainApp.setNetworkChangedNotification(false);
-						startActivity(new Intent(CoreActivityActionBar.this, Tabs.class));
+						startActivity(new Intent(CoreActivityActionBar.this, HomeScreenActivity.class));
 					}
 				}).create().show();
 	}

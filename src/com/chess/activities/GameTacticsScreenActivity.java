@@ -64,9 +64,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	private Timer tacticsTimer = null;
 	private int UPDATE_DELAY = 10000;
 
-	private FirstTacticsDialogListener firstTackicsDialogListener;
-	private MaxTacticksDialogListener maxTackicksDialogListener;
-	private HundredTacticsDialogListener hundredTackicsDialogListener;
+	private FirstTacticsDialogListener firstTacticsDialogListener;
+	private MaxTacticsDialogListener maxTacticsDialogListener;
+	private HundredTacticsDialogListener hundredTacticsDialogListener;
 	private OfflineModeDialogListener offlineModeDialogListener;
 	private CorrectDialogListener correctDialogListener;
 	private WrongDialogListener wrongDialogListener;
@@ -124,6 +124,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				showDialog(DIALOG_TACTICS_START_TACTICS);
 			}
 //		}
+
 	}
 
 
@@ -163,7 +164,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	private class MaxTacticksDialogListener implements DialogInterface.OnClickListener {
+	private class MaxTacticsDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
@@ -334,19 +335,19 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.daily_limit_exceeded))
 						.setMessage(getString(R.string.max_tackics_for_today_reached))
-						.setPositiveButton(getString(R.string.ok), maxTackicksDialogListener)
-						.setNegativeButton(R.string.cancel, maxTackicksDialogListener)
+						.setPositiveButton(getString(R.string.ok), maxTacticsDialogListener)
+						.setNegativeButton(R.string.cancel, maxTacticsDialogListener)
 						.create();
 			case DIALOG_TACTICS_START_TACTICS:
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.ready_for_first_tackics_q))
-						.setPositiveButton(R.string.yes, firstTackicsDialogListener)
-						.setNegativeButton(R.string.no, firstTackicsDialogListener)
+						.setPositiveButton(R.string.yes, firstTacticsDialogListener)
+						.setNegativeButton(R.string.no, firstTacticsDialogListener)
 						.create();
 			case DIALOG_TACTICS_HUNDRED:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.hundred_tackics_completed)
-						.setNegativeButton(R.string.okay, hundredTackicsDialogListener)
+						.setNegativeButton(R.string.okay, hundredTacticsDialogListener)
 						.create();
 			case DIALOG_TACTICS_OFFLINE_RATING:
 				return new AlertDialog.Builder(this)
@@ -382,9 +383,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				getString(R.string.showanswer),
 				getString(R.string.settings)};
 
-		firstTackicsDialogListener = new FirstTacticsDialogListener();
-		maxTackicksDialogListener = new MaxTacticksDialogListener();
-		hundredTackicsDialogListener = new HundredTacticsDialogListener();
+		firstTacticsDialogListener = new FirstTacticsDialogListener();
+		maxTacticsDialogListener = new MaxTacticsDialogListener();
+		hundredTacticsDialogListener = new HundredTacticsDialogListener();
 		offlineModeDialogListener = new OfflineModeDialogListener();
 		correctDialogListener = new CorrectDialogListener();
 		wrongDialogListener = new WrongDialogListener();
@@ -1191,6 +1192,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				.create().show();
 	}
 
+	@Override
+	public void newGame() {
+		if (mainApp.guest) {
+			mainApp.currentTacticProblem++;
+			GetGuestTacticsGame();
+		} else {
+			if (mainApp.noInternet) mainApp.currentTacticProblem++;
+			closeOptionsMenu();
+			GetTacticsGame("");
+		}
+	}
+
 
 	@Override
 	public void showOptions() {
@@ -1210,14 +1223,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_next_game:
-				if (mainApp.guest) {
-					mainApp.currentTacticProblem++;
-					GetGuestTacticsGame();
-				} else {
-					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					closeOptionsMenu();
-					GetTacticsGame("");
-				}
+				newGame();
 				break;
 			case R.id.menu_options:
 				showOptions();

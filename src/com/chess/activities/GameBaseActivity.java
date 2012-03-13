@@ -67,6 +67,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected AbortGameDialogListener abortGameDialogListener;
 
 	protected CharSequence[] menuOptionsItems;
+	protected GamePanelView gamePanelView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		newBoardView.setFocusable(true);
 		newBoardView.setBoardFace((Board2) getLastNonConfigurationInstance());
 
-		newBoardView.setGamePanelView((GamePanelView) findViewById(R.id.gamePanelView));
+		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
+		newBoardView.setGamePanelView(gamePanelView);
 		lccHolder = mainApp.getLccHolder();
 	}
 

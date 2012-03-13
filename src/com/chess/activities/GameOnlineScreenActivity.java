@@ -643,6 +643,32 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	}
 
 	@Override
+	public void newGame() {
+		int i;
+		ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
+		for (GameListElement gle : mainApp.getGameListItems()) {
+			if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
+				currentGames.add(gle);
+			}
+		}
+		for (i = 0; i < currentGames.size(); i++) {
+			if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
+				if (i + 1 < currentGames.size()) {
+					newBoardView.getBoardFace().setAnalysis(false);
+					newBoardView.setBoardFace(new Board2(this));
+					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+					getOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
+					return;
+				} else {
+					onBackPressed();
+					return;
+				}
+			}
+		}
+		onBackPressed();
+	}
+
+	@Override
 	public void showOptions() {
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
@@ -665,31 +691,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_next_game:
-				int i;
-				ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-				for (GameListElement gle : mainApp.getGameListItems()) {
-					if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
-						currentGames.add(gle);
-					}
-				}
-				for (i = 0; i < currentGames.size(); i++) {
-					if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
-						if (i + 1 < currentGames.size()) {
-							newBoardView.getBoardFace().setAnalysis(false);
-							newBoardView.setBoardFace(new Board2(this));
-							newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-							getOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
-							return true;
-						} else {
-							onBackPressed();
-							return true;
-						}
-					}
-				}
-				onBackPressed();
+			case R.id.menu_next_game: // TODO move to action bar
+				newGame();
 				break;
-			case R.id.menu_options:
+			case R.id.menu_options: // TODO move to action bar
 				showOptions();
 				break;
 			case R.id.menu_analysis:

@@ -699,10 +699,10 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		this.gamePanelView.setBoardViewFace(this);
 	}
 
-	@Override
-	public void fastForward() {
-		//To change body of implemented methods use File | Settings | File Templates.
-	}
+//	@Override // we use new game for next game in tactics mode
+//	public void nextGame() {
+//
+//	}
 
 	@Override
 	public void showOptions() {
@@ -775,6 +775,11 @@ public class NewBoardView extends ImageView implements BoardViewFace {
                     .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
                             + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 		}
+	}
+
+	@Override
+	public void newGame() {
+		gameActivityFace.newGame();
 	}
 
 	public void addMove2Log(CharSequence move) {

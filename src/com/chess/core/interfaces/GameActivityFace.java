@@ -21,4 +21,6 @@ public interface GameActivityFace {
 	void showChoosePieceDialog(final int col,final int row);
 
 	void switch2Chat();
+
+	void newGame();
 }

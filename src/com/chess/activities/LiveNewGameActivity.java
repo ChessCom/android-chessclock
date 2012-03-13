@@ -39,13 +39,13 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 	private ChallengeDialogListener challengeDialogListener;
 	private DirectChallengeDialogListener directChallengeDialogListener;
 	private ReleasedByMeDialogListener releasedByMeDialogListener;
-	private EchessDialogListener echessDialogListener;
+//	private EchessDialogListener echessDialogListener;
 
 	private void init(){
 		challengeDialogListener = new ChallengeDialogListener();
 		directChallengeDialogListener = new DirectChallengeDialogListener();
 		releasedByMeDialogListener = new ReleasedByMeDialogListener();
-		echessDialogListener = new EchessDialogListener();
+//		echessDialogListener = new EchessDialogListener();
 	}
 
 	@Override

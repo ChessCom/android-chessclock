@@ -471,6 +471,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	}
 
+	@Override
+	public void newGame() {
+
+	}
+
 
 	@Override
 	public void showOptions() {

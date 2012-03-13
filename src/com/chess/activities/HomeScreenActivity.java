@@ -47,7 +47,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	protected void onResume() {
 		if (MobclixHelper.isShowAds(mainApp)) {
-			showFullscreenAd();
+			showFullScreenAd();
 		}
 		super.onResume();
 	}
@@ -87,12 +87,13 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 	}
 
-	private void showFullscreenAd() {
+	private void showFullScreenAd() {
 		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
 				&& MobclixHelper.isShowAds(mainApp)) {
-			MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
-			fsAdView.addMobclixAdViewListener(mobFullScreeListener);
-			fsAdView.requestAndDisplayAd();
+			// TODO handle for support show ad on tablet in portrait mode
+//			MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
+//			fsAdView.addMobclixAdViewListener(mobFullScreeListener);
+//			fsAdView.requestAndDisplayAd();
 
 			// MoPubInterstitial interstitial = new MoPubInterstitial(this,
 // "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");

@@ -23,6 +23,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Web;
+import com.chess.views.GamePanelView;
 
 /**
  * GameTacticsScreenActivity class
@@ -83,6 +84,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 			}
 //		}
+
+		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID,R.drawable.ic_new_game);
+
 	}
 
 	protected void init() {
@@ -404,6 +408,12 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
+	public void newGame() {
+		newBoardView.stopThinking = true;
+		onBackPressed();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.game_comp, menu);
@@ -414,8 +424,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_new_game: // TODO move to action bar
-				newBoardView.stopThinking = true;
-				onBackPressed();
+				newGame();
 				break;
 			case R.id.menu_options:     // TODO move to action bar
 				showOptions();
