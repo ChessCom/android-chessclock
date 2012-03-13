@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -44,12 +43,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	private final static int CALLBACK_SEND_MOVE = 1;
 	private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
 
-	private LinearLayout analysisLL;
-	private LinearLayout analysisButtons;
+//	private LinearLayout analysisLL;
+//	private LinearLayout analysisButtons;
 	private RelativeLayout chatPanel;
 	private ImageButton chatButton;
-	private TextView timer;
+//	private TextView timer;
 	private int UPDATE_DELAY = 10000;
+	private View submitButtonsLay;
 
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -67,19 +67,23 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 	protected void widgetsInit(){
 		super.widgetsInit();
-		analysisLL = (LinearLayout) findViewById(R.id.analysis);
-		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
+
+		submitButtonsLay = findViewById(R.id.submitButtonsLay);
+		findViewById(R.id.submit).setOnClickListener(this);
+		findViewById(R.id.cancel).setOnClickListener(this);
+//		analysisLL = (LinearLayout) findViewById(R.id.analysis);
+//		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
 		if (mainApp.isLiveChess() && !MainApp.isTacticsGameMode(extras.getInt(AppConstants.GAME_MODE))) {
 			chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
 			chatButton = (ImageButton) findViewById(R.id.chat);
 			chatButton.setOnClickListener(this);
 		}
-		if (!mainApp.isLiveChess()) {
-			findViewById(R.id.prev).setOnClickListener(this);
-			findViewById(R.id.next).setOnClickListener(this);
-		}
+//		if (!mainApp.isLiveChess()) {
+//			findViewById(R.id.prev).setOnClickListener(this);
+//			findViewById(R.id.next).setOnClickListener(this);
+//		}
 
-		timer = (TextView) findViewById(R.id.timer);
+//		timer = (TextView) findViewById(R.id.timer);
 
 		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))
 				&& lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
@@ -120,10 +124,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 					newBoardView.getBoardFace().setReside(true);
 					newBoardView.invalidate();
-					newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-					newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
@@ -254,77 +258,39 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
-				switch (newBoardView.getBoardFace().getMode()) {
-					case AppConstants.GAME_MODE_LIVE_OR_ECHESS: {
-						if (newBoardView.getBoardFace().isSubmit())
-							findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
-						findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								update(CALLBACK_SEND_MOVE);
-							}
-						});
-						findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								findViewById(R.id.moveButtons).setVisibility(View.GONE);
-								newBoardView.getBoardFace().takeBack();
-								newBoardView.getBoardFace().decreaseMovesCount();
-								newBoardView.invalidate();
-								newBoardView.getBoardFace().setSubmit(false);
-							}
-						});
-						if (newBoardView.getBoardFace().isAnalysis()) {
-							whitePlayerLabel.setVisibility(View.GONE);
-							blackPlayerLabel.setVisibility(View.GONE);
-							analysisLL.setVisibility(View.VISIBLE);
-							if (!mainApp.isLiveChess() && analysisButtons != null) {
-								showAnalysisButtons();
-							}
-						} else {
-							whitePlayerLabel.setVisibility(View.VISIBLE);
-							blackPlayerLabel.setVisibility(View.VISIBLE);
-							analysisLL.setVisibility(View.GONE);
-							if (!mainApp.isLiveChess() && analysisButtons != null) {
-								hideAnalysisButtons();
-							}
-						}
+				if (newBoardView.getBoardFace().isSubmit())
+					showSubmitButtonsLay(true);
 
-						break;
-					}
-					default:
-						break;
+				if (newBoardView.getBoardFace().isAnalysis()) {
+					whitePlayerLabel.setVisibility(View.GONE);
+					blackPlayerLabel.setVisibility(View.GONE);
+//							analysisLL.setVisibility(View.VISIBLE);
+//							if (!mainApp.isLiveChess() && analysisButtons != null) {
+//								showAnalysisButtons();
+//							}
+				} else {
+					whitePlayerLabel.setVisibility(View.VISIBLE);
+					blackPlayerLabel.setVisibility(View.VISIBLE);
+//							analysisLL.setVisibility(View.GONE);
+//							if (!mainApp.isLiveChess() && analysisButtons != null) {
+//								hideAnalysisButtons();
+//							}
 				}
 
-				if (MainApp.isComputerGameMode(newBoardView.getBoardFace())) {
-					hideAnalysisButtons();
-				}
 
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
 					if (mainApp.getCurrentGame() != null) {
-						whitePlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("white_rating") + ")");
-						blackPlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
+						whitePlayerLabel.setText(mainApp.getCurrentGame()
+								.values.get(AppConstants.WHITE_USERNAME) + "\n("
+								+ mainApp.getCurrentGame().values.get("white_rating") + ")");
+						blackPlayerLabel.setText(mainApp.getCurrentGame()
+								.values.get(AppConstants.BLACK_USERNAME)
+								+ "\n(" + mainApp.getCurrentGame().values.get("black_rating") + ")");
 					}
 				}
 
-				if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
-					if (newBoardView.getBoardFace().isAnalysis()) {
-						timer.setVisibility(View.GONE);
-						analysisLL.setVisibility(View.VISIBLE);
-						if (!mainApp.isLiveChess() && analysisButtons != null) {
-							showAnalysisButtons();
-						}
-					} else {
-						whitePlayerLabel.setVisibility(View.GONE);
-						blackPlayerLabel.setVisibility(View.GONE);
-						timer.setVisibility(View.VISIBLE);
-						analysisLL.setVisibility(View.GONE);
-						if (!mainApp.isLiveChess() && analysisButtons != null) {
-							hideAnalysisButtons();
-						}
-					}
-				}
-				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+
+				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
 				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
 								{
 								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
@@ -344,8 +310,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				break;
 			}
 			case CALLBACK_SEND_MOVE: {
-				findViewById(R.id.moveButtons).setVisibility(View.GONE);
-				newBoardView.getBoardFace().setSubmit(false);
+				showSubmitButtonsLay(false);
 				//String myMove = newBoardView.getBoardFaceFace().MoveSubmit();
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
 					final String move = newBoardView.getBoardFace().convertMoveLive();
@@ -400,13 +365,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				}
 				break;
 			}
-			case 2: {
+			case CALLBACK_COMP_MOVE: {
 				whitePlayerLabel.setVisibility(View.GONE);
 				blackPlayerLabel.setVisibility(View.GONE);
 				thinking.setVisibility(View.VISIBLE);
 				break;
 			}
-			case 3: {
+			case CALLBACK_PLAYER_MOVE: {
 				whitePlayerLabel.setVisibility(View.VISIBLE);
 				blackPlayerLabel.setVisibility(View.VISIBLE);
 				thinking.setVisibility(View.GONE);
@@ -659,6 +624,35 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 	}
 
+	@Override
+	public void showChoosePieceDialog(final int col,final int row) {
+		new AlertDialog.Builder(this)
+				.setTitle("Choose a piece ")
+				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								if (which == 4) {
+									newBoardView.invalidate();
+									return;
+								}
+								newBoardView.promote(4 - which, col, row);
+							}
+						}).setCancelable(false)
+				.create().show();
+	}
+
+	@Override
+	public void showOptions() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.options)
+				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	}
+
+	@Override
+	public void showSubmitButtonsLay(boolean show) {
+		submitButtonsLay.setVisibility(show? View.VISIBLE: View.GONE);
+		newBoardView.getBoardFace().setSubmit(show);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -695,9 +689,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				onBackPressed();
 				break;
 			case R.id.menu_options:
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.options)
-						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+				showOptions();
 				break;
 			case R.id.menu_analysis:
 				newBoardView.getBoardFace().setAnalysis(true);
@@ -812,7 +804,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 	@Override
 	protected void onGameEndMsgReceived() {
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+		showSubmitButtonsLay(false);
 		chatPanel.setVisibility(View.GONE);
 	}
 
@@ -842,18 +834,18 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			super.onStop();
 		  }*/
 
-	private void showAnalysisButtons() {
-		analysisButtons.setVisibility(View.VISIBLE);
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*newBoardView.getBoardFaceFace().takeBack();
-			newBoardView.getBoardFaceFace().getMovesCount()--;
-			newBoardView.invalidate();
-			newBoardView.getBoardFaceFace().setSubmit( false;*/
-	}
-
-	private void hideAnalysisButtons() {
-		analysisButtons.setVisibility(View.GONE);
-	}
+//	private void showAnalysisButtons() {
+//		analysisButtons.setVisibility(View.VISIBLE);
+//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//		/*newBoardView.getBoardFaceFace().takeBack();
+//			newBoardView.getBoardFaceFace().getMovesCount()--;
+//			newBoardView.invalidate();
+//			newBoardView.getBoardFaceFace().setSubmit( false;*/
+//	}
+//
+//	private void hideAnalysisButtons() {
+//		analysisButtons.setVisibility(View.GONE);
+//	}
 
 	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
 		@Override
@@ -871,20 +863,28 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			chat = true;
 			getOnlineGame(mainApp.getGameId());
 			chatPanel.setVisibility(View.GONE);
-		} else if (view.getId() == R.id.prev) {
-			newBoardView.finished = false;
-			newBoardView.sel = false;
+//		} else if (view.getId() == R.id.prev) {
+//			newBoardView.finished = false;
+//			newBoardView.sel = false;
+//			newBoardView.getBoardFace().takeBack();
+//			newBoardView.invalidate();
+//			update(CALLBACK_REPAINT_UI);
+//			isMoveNav = true;
+//		} else if (view.getId() == R.id.next) {
+//			newBoardView.getBoardFace().takeNext();
+//			newBoardView.invalidate();
+//			update(CALLBACK_REPAINT_UI);
+//			isMoveNav = true;
+		} else if (view.getId() == R.id.cancel) {
+			showSubmitButtonsLay(false);
+
 			newBoardView.getBoardFace().takeBack();
+			newBoardView.getBoardFace().decreaseMovesCount();
 			newBoardView.invalidate();
-			update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
-		} else if (view.getId() == R.id.next) {
-			newBoardView.getBoardFace().takeNext();
-			newBoardView.invalidate();
-			update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
+		} else if (view.getId() == R.id.submit) {
+			update(CALLBACK_SEND_MOVE);
 		} else if (view.getId() == R.id.newGame) {
-			startActivity(new Intent(this, OnlineNewGame.class));
+			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}
 	}
 

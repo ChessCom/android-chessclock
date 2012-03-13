@@ -73,10 +73,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 					newBoardView.getBoardFace().setReside(true);
 					newBoardView.invalidate();
-					newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-					newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				}
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
 					mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
@@ -390,6 +390,19 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
+	public void showOptions() {
+		newBoardView.stopThinking = true;
+
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.options)
+				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	}
+
+	@Override
+	public void showChoosePieceDialog(int col, int row) {
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.game_comp, menu);
@@ -404,11 +417,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				onBackPressed();
 				break;
 			case R.id.menu_options:     // TODO move to action bar
-				newBoardView.stopThinking = true;
-
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.options)
-						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+				showOptions();
 				break;
 			case R.id.menu_reside:
 				newBoardView.flipBoard();
@@ -462,7 +471,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					newBoardView.invalidate();
 					update(CALLBACK_REPAINT_UI);
-					newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData()
+					newBoardView.computerMove(mainApp.strength[mainApp.getSharedData()
 							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					break;

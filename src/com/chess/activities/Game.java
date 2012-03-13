@@ -341,18 +341,18 @@ public class Game extends CoreActivity implements OnClickListener {
 			chat = true;
 			GetOnlineGame(mainApp.getGameId());
 			chatPanel.setVisibility(View.GONE);
-		}else if(view.getId() == R.id.prev){
-			boardView.finished = false;
-			boardView.sel = false;
-			boardView.getBoard().takeBack();
-			boardView.invalidate();
-			Update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
-		}else if(view.getId() == R.id.next){
-			boardView.getBoard().takeNext();
-			boardView.invalidate();
-			Update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
+//		}else if(view.getId() == R.id.prev){
+//			boardView.finished = false;
+//			boardView.sel = false;
+//			boardView.getBoard().takeBack();
+//			boardView.invalidate();
+//			Update(CALLBACK_REPAINT_UI);
+//			isMoveNav = true;
+//		}else if(view.getId() == R.id.next){
+//			boardView.getBoard().takeNext();
+//			boardView.invalidate();
+//			Update(CALLBACK_REPAINT_UI);
+//			isMoveNav = true;
 		}else if(view.getId() == R.id.newGame){
 			startActivity(new Intent(this, OnlineNewGame.class));			
 		}else if(view.getId() == R.id.home){
@@ -634,17 +634,17 @@ public class Game extends CoreActivity implements OnClickListener {
 
 		init();
 
-		analysisLL = (LinearLayout) findViewById(R.id.analysis);
-		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
+//		analysisLL = (LinearLayout) findViewById(R.id.analysis);
+//		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
 		if (mainApp.isLiveChess() && !MainApp.isTacticsGameMode(extras.getInt(AppConstants.GAME_MODE))) {
 			chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
 			chatButton = (ImageButton) findViewById(R.id.chat);
 			chatButton.setOnClickListener(this);
 		}
-		if (!mainApp.isLiveChess()) {
-			findViewById(R.id.prev).setOnClickListener(this);
-			findViewById(R.id.next).setOnClickListener(this);
-		}
+//		if (!mainApp.isLiveChess()) {
+//			findViewById(R.id.prev).setOnClickListener(this);
+//			findViewById(R.id.next).setOnClickListener(this);
+//		}
 
 		white = (TextView) findViewById(R.id.white);
 		black = (TextView) findViewById(R.id.black);
@@ -1124,23 +1124,23 @@ public class Game extends CoreActivity implements OnClickListener {
 					}
 					case AppConstants.GAME_MODE_LIVE_OR_ECHESS: {
 						if (boardView.getBoard().submit)
-							findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
-						findViewById(R.id.submit).setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Update(CALLBACK_SEND_MOVE);
-							}
-						});
-						findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								findViewById(R.id.moveButtons).setVisibility(View.GONE);
-								boardView.getBoard().takeBack();
-								boardView.getBoard().movesCount--;
-								boardView.invalidate();
-								boardView.getBoard().submit = false;
-							}
-						});
+//							findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
+//						findViewById(R.id.submit).setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								Update(CALLBACK_SEND_MOVE);
+//							}
+//						});
+//						findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//								boardView.getBoard().takeBack();
+//								boardView.getBoard().movesCount--;
+//								boardView.invalidate();
+//								boardView.getBoard().submit = false;
+//							}
+//						});
 						if (boardView.getBoard().analysis) {
 							white.setVisibility(View.GONE);
 							black.setVisibility(View.GONE);
@@ -1211,7 +1211,7 @@ public class Game extends CoreActivity implements OnClickListener {
 				break;
 			}
 			case CALLBACK_SEND_MOVE: {
-				findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//				findViewById(R.id.moveButtons).setVisibility(View.GONE);
 				boardView.getBoard().submit = false;
 				//String myMove = newBoardView.getBoardFace().MoveSubmit();
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView)) {
@@ -2257,7 +2257,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
 			//mainApp.ShowDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
-			findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//			findViewById(R.id.moveButtons).setVisibility(View.GONE);
 			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
 			chatPanel.setVisibility(View.GONE);
 			findViewById(R.id.newGame).setOnClickListener(Game.this);
@@ -2335,7 +2335,7 @@ public class Game extends CoreActivity implements OnClickListener {
 
 	private void showAnalysisButtons() {
 		analysisButtons.setVisibility(View.VISIBLE);
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
 		/*newBoardView.getBoardFace().takeBack();
 			newBoardView.getBoardFace().movesCount--;
 			newBoardView.invalidate();

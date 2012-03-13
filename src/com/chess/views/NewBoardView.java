@@ -1,10 +1,8 @@
 package com.chess.views;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
@@ -12,17 +10,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.activities.GameBaseActivity;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivityActionBar;
 import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
 import com.chess.core.interfaces.BoardFace;
 import com.chess.core.interfaces.BoardViewFace;
-import com.chess.engine.*;
+import com.chess.core.interfaces.GameActivityFace;
+import com.chess.engine.Board;
+import com.chess.engine.Board2;
+import com.chess.engine.Move;
+import com.chess.engine.Search2;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -39,7 +39,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 	public int dragY = 0;
 	public int trackX = 0;
 	public int trackY = 0;
-	private CoreActivityActionBar activity;
+	private GameActivityFace gameActivityFace;
 	private MainApp mainApp;
 
 	//	private Board2 newBoardView;
@@ -75,19 +75,21 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 
 
 	private GamePanelView gamePanelView;
-	private PieceItem pieceItem;
+//	private PieceItem pieceItem;
+	private Resources resources;
 
-	public NewBoardView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		activity = (CoreActivityActionBar) context;
-		mainApp = activity.getMainApp();
+	public NewBoardView(GameActivityFace gameActivityFace, AttributeSet attrs) {
+		super(gameActivityFace.getMeContext(), attrs);
+		this.gameActivityFace = gameActivityFace;
+		mainApp = this.gameActivityFace.getMainApp();
+		resources = gameActivityFace.getMeContext().getResources();
 
 		green = new Paint();
 		white = new Paint();
 		black = new Paint();
 		red = new Paint();
 		// captured piece Item
-		pieceItem = new PieceItem();
+//		pieceItem = new PieceItem();
 
 		white.setStrokeWidth(2.0f);
 		white.setStyle(Style.STROKE);
@@ -103,11 +105,11 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		red.setColor(Color.RED);
 		green.setColor(Color.GREEN);
 
-		width = context.getResources().getDisplayMetrics().widthPixels;
-		height = context.getResources().getDisplayMetrics().heightPixels;
+		width = resources.getDisplayMetrics().widthPixels;
+		height = resources.getDisplayMetrics().heightPixels;
 
-		image = context.getResources().getDrawable(R.drawable.chess_back);
-		int opacity = context.getResources().getInteger(R.integer.fade_opacity);
+		image = resources.getDrawable(R.drawable.chess_back);
+		int opacity = resources.getInteger(R.integer.fade_opacity);
 //		blackColor ^= (opacity * 0xFF / 100) << 32;
 		image.setBounds(0, 0, (int) width, (int) height);
 
@@ -116,39 +118,42 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 
 	}
 
-	public void AfterMove() {
+	public void afterMove() {
 		boardFace.setMovesCount(boardFace.getHply());
-		activity.update(0);	//movelist
+		gameActivityFace.update(0);	//movelist
 		if (MainApp.isLiveOrEchessGameMode(boardFace) && !boardFace.isAnalysis()) {
-			boolean ssb;
+			boolean showSubmitButtons;
 			if (mainApp.isLiveChess()) {
-				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
+				showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+						+ AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 			} else {
-				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
+				showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+						+ AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
 			}
-			if (ssb) {
-				activity.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
+			if (showSubmitButtons) {
+				gameActivityFace.showSubmitButtonsLay(true);
+//				gameActivityFace.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 				boardFace.setSubmit(true);
 			} else {
-				activity.update(1);
+				gameActivityFace.update(1);
 			}
 		}
 		if (!MainApp.isTacticsGameMode(boardFace) && isResult())
 			return;
 		switch (boardFace.getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-				ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-				ComputerMove(mainApp.strength[mainApp.getSharedData()
+				computerMove(mainApp.strength[mainApp.getSharedData()
 						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 				break;
 			}
 			case AppConstants.GAME_MODE_TACTICS: {
 				if (!boardFace.isAnalysis())
-					activity.update(4);
+					gameActivityFace.update(4);
 				break;
 			}
 			default:
@@ -190,7 +195,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		if (!found) {
 			if (boardFace.inCheck(boardFace.getSide())) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-				activity.update(0);
+				gameActivityFace.update(0);
 				if (boardFace.getSide() == Board.LIGHT)
 					message = "0 - 1 Black mates";
 				else
@@ -213,19 +218,19 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		}
 		if (boardFace.inCheck(boardFace.getSide())) {
 			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
-			activity.update(0);
+			gameActivityFace.update(0);
 			mainApp.ShowMessage("Check!");
 		}
 		return false;
 	}
 
-	public void ComputerMove(final int time) {
+	public void computerMove(final int time) {
 		if (MainApp.isComputerVsComputerGameMode(boardFace) && stopThinking) {
 			stopThinking = false;
 			return;
 		}
 		compmoving = true;
-		activity.update(GameBaseActivity.CALLBACK_COMP_MOVE);
+		gameActivityFace.update(GameBaseActivity.CALLBACK_COMP_MOVE);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -244,8 +249,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 				@Override
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
-					activity.update(0);	//movelist
-					activity.update(GameBaseActivity.CALLBACK_PLAYER_MOVE);
+					gameActivityFace.update(0);	//movelist
+					gameActivityFace.update(GameBaseActivity.CALLBACK_PLAYER_MOVE);
 					invalidate();
 					if (isResult())
 						return;
@@ -253,7 +258,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 							|| (hint && !MainApp.isHumanVsHumanGameMode(boardFace))) {
 						if (hint)
 							hint = false;
-						ComputerMove(time);
+						computerMove(time);
 					}
 				}
 			};
@@ -423,10 +428,14 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 				trackY += square;
 			else if (event.getY() < -sens)
 				trackY -= square;
-			if (trackX < 0) trackX = 0;
-			if (trackY < 0) trackY = 0;
-			if (trackX > 7 * square) trackX = 7 * square;
-			if (trackY > 7 * square) trackY = 7 * square;
+			if (trackX < 0)
+				trackX = 0;
+			if (trackY < 0)
+				trackY = 0;
+			if (trackX > 7 * square)
+				trackX = 7 * square;
+			if (trackY > 7 * square)
+				trackY = 7 * square;
 			invalidate();
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			int col = (int) (trackX - trackX % square) / square;
@@ -457,24 +466,25 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 				if ((((to < 8) && (boardFace.getSide() == Board.LIGHT)) ||
 						((to > 55) && (boardFace.getSide() == Board.DARK))) &&
 						(boardFace.getPieces()[from] == Board.PAWN) && found) {
-					final int c = col, r = row;
-					new AlertDialog.Builder(activity)
-							.setTitle("Choose a piece ")
-							.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"}, new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int which) {
-									if (which == 4) {
-										invalidate();
-										return;
-									}
-									promote(4 - which, c, r);
-								}
-							}).setCancelable(false)
-							.create().show();
+//					final int col_ = col, row_ = row;
+					gameActivityFace.showChoosePieceDialog(col,row);
+//					new AlertDialog.Builder(gameActivityFace)
+//							.setTitle("Choose a piece ")
+//							.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"}, new DialogInterface.OnClickListener() {
+//								public void onClick(DialogInterface dialog, int which) {
+//									if (which == 4) {
+//										invalidate();
+//										return;
+//									}
+//									promote(4 - which, c, r);
+//								}
+//							}).setCancelable(false)
+//							.create().show();
 					return true;
 				}
 				if (found && m != null && boardFace.makeMove(m)) {
 					invalidate();
-					AfterMove();
+					afterMove();
 				} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 					sel = true;
 					firstclick = false;
@@ -595,24 +605,25 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					if ((((to < 8) && (boardFace.getSide() == Board.LIGHT)) ||
 							((to > 55) && (boardFace.getSide() == Board.DARK))) &&
 							(boardFace.getPieces()[from] == Board.PAWN) && found) {
-						final int c = col, r = row;
-						new AlertDialog.Builder(activity)
-								.setTitle("Choose a piece ")
-								.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
-										new DialogInterface.OnClickListener() {
-											public void onClick(DialogInterface dialog, int which) {
-												if (which == 4) {
-													invalidate();
-													return;
-												}
-												promote(4 - which, c, r);
-											}
-										}).setCancelable(false)
-								.create().show();
+//						final int col_ = col, row_ = row;
+						gameActivityFace.showChoosePieceDialog(col,row);
+//						new AlertDialog.Builder(gameActivityFace)
+//								.setTitle("Choose a piece ")
+//								.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+//										new DialogInterface.OnClickListener() {
+//											public void onClick(DialogInterface dialog, int which) {
+//												if (which == 4) {
+//													invalidate();
+//													return;
+//												}
+//												promote(4 - which, col_, row_);
+//											}
+//										}).setCancelable(false)
+//								.create().show();
 						return true;
 					}
 					if (found && m != null && boardFace.makeMove(m)) {
-						AfterMove();
+						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 						sel = true;
 						firstclick = false;
@@ -632,7 +643,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 	}
 
 
-	private void promote(int promote, int col, int row) {
+	public void promote(int promote, int col, int row) {
 		boolean found = false;
 		TreeSet<Move> moves = boardFace.gen();
 		Iterator<Move> i = moves.iterator();
@@ -647,7 +658,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		}
 		if (found && m != null && boardFace.makeMove(m)) {
 			invalidate();
-			AfterMove();
+			afterMove();
 		} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 			sel = true;
 			firstclick = false;
@@ -689,7 +700,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 
 	@Override
 	public void showOptions() {
-		//To change body of implemented methods use File | Settings | File Templates.
+		gameActivityFace.showOptions();
 	}
 
 	@Override
@@ -704,22 +715,25 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 				}
 				//getBoardFaceFace().mode ^= 1;
-				ComputerMove(mainApp.strength[mainApp.getSharedData()
+				computerMove(mainApp.strength[mainApp.getSharedData()
 						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			invalidate();
-			activity.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 		}
 	}
 
 	@Override
 	public void switchAnalysis() {
-		//To change body of implemented methods use File | Settings | File Templates.
+		getBoardFace().setAnalysis(true);
+
+		gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 	}
 
 	@Override
 	public void switchChat() {
+		gameActivityFace.switch2Chat();
 		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -731,7 +745,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			sel = false;
 			getBoardFace().takeBack();
 			invalidate();
-			activity.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 		}
 	}
 
@@ -742,7 +756,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			sel = false;
 			getBoardFace().takeNext();
 			invalidate();
-			activity.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 		}
 	}
 
@@ -751,7 +765,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		stopThinking = true;
 		if (!compmoving) {
 			hint = true;
-			ComputerMove(mainApp.strength[mainApp.getSharedData()
+			computerMove(mainApp.strength[mainApp.getSharedData()
 					.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 							+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 		}

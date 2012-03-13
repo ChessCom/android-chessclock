@@ -10,7 +10,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 
-		<LinearLayout
+<!--		<LinearLayout
 			android:id="@+id/analysis"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
 				android:text="@string/analysis"
 				/>
 
-		</LinearLayout>
+		</LinearLayout>-->
 
 		<TextView
 			android:id="@+id/thinking"
@@ -33,7 +33,6 @@
 			android:layout_height="wrap_content"
 			android:gravity="center"
 			android:inputType="textImeMultiLine"
-			android:padding="2dip"
 			android:text="@string/Thinking"
 			android:visibility="gone"/>
 
@@ -43,8 +42,15 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:drawablePadding="5dip"
-			android:padding="2dip"
+			android:inputType="textImeMultiLine"
+			android:gravity="center_vertical"
 			android:text="@string/Human"
+			android:textSize="14sp"
+			android:paddingTop="2dip"
+			android:paddingLeft="8dip"
+			android:paddingBottom="2dip"
+			android:paddingRight="2dip"
+			android:drawableLeft="@drawable/whitemove"
 			/>
 
 		<TextView
@@ -52,10 +58,16 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:drawablePadding="5dip"
-			android:gravity="right"
-			android:padding="2dip"
+			android:gravity="right|center_vertical"
+			android:inputType="textImeMultiLine"
 			android:text="@string/Computer"
+			android:textSize="14sp"
+			android:paddingTop="2dip"
+			android:paddingLeft="2dip"
+			android:paddingBottom="2dip"
+			android:paddingRight="8dip"
+			android:drawableRight="@drawable/blackmove"
+			android:drawablePadding="2dip"
 			/>
 
 		<TextView
@@ -64,6 +76,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:drawablePadding="5dip"
+			android:textSize="14sp"
 			android:gravity="center"
 			android:padding="2dip"
 			android:visibility="gone"/>
@@ -73,12 +86,25 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 
-		<com.chess.views.NewBoardView
-			android:id="@+id/boardview"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"/>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
 
-		<TextView
+			<com.chess.views.NewBoardView
+				android:id="@+id/boardview"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:visibility="visible"/>
+
+			<com.chess.views.GamePanelView
+				android:id="@+id/gamePanelView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				/>
+		</LinearLayout>
+
+<!--		<TextView
 			android:id="@+id/movelist"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -87,10 +113,10 @@
 			android:gravity="right"
 			android:inputType="textImeMultiLine"
 			android:padding="2dip"
-			android:textSize="12dip"/>
+			android:textSize="12dip"/>-->
 
 		<LinearLayout
-			android:id="@+id/moveButtons"
+			android:id="@+id/submitButtonsLay"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="bottom"
@@ -118,7 +144,7 @@
 				android:text="@string/cancel"/>
 		</LinearLayout>
 
-		<LinearLayout
+	<!--	<LinearLayout
 			android:id="@+id/analysisButtons"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -143,7 +169,7 @@
 				android:layout_marginRight="10dip"
 				android:layout_weight="1"
 				android:src="@drawable/next"/>
-		</LinearLayout>
+		</LinearLayout>-->
 	</FrameLayout>
 
 </LinearLayout>

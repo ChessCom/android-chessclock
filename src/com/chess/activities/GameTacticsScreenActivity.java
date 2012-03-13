@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.*;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
@@ -58,8 +57,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	private final static int CALLBACK_TACTICS_CORRECT = 6;
 	private final static int CALLBACK_TACTICS_WRONG = 5;
 
-	private LinearLayout analysisLL;
-	private LinearLayout analysisButtons;
+//	private LinearLayout analysisLL;
+//	private LinearLayout analysisButtons;
 
 	private TextView timer;
 	private Timer tacticsTimer = null;
@@ -92,11 +91,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
-		analysisLL = (LinearLayout) findViewById(R.id.analysis);
-		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
+//		analysisLL = (LinearLayout) findViewById(R.id.analysis);
+//		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
 
-		findViewById(R.id.prev).setOnClickListener(this);
-		findViewById(R.id.next).setOnClickListener(this);
+//		findViewById(R.id.prev).setOnClickListener(this);
+//		findViewById(R.id.next).setOnClickListener(this);
 
 		timer = (TextView) findViewById(R.id.timer);
 
@@ -112,10 +111,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 				newBoardView.getBoardFace().setReside(true);
 				newBoardView.invalidate();
-				newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-				newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
 				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
@@ -794,21 +793,22 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
 					if (newBoardView.getBoardFace().isAnalysis()) {
 						timer.setVisibility(View.GONE);
-						analysisLL.setVisibility(View.VISIBLE);
-						if (!mainApp.isLiveChess() && analysisButtons != null) {
-							showAnalysisButtons();
-						}
+//						analysisLL.setVisibility(View.VISIBLE);
+//						if (!mainApp.isLiveChess() && analysisButtons != null) {
+//							showAnalysisButtons();
+//						}
 					} else {
 						whitePlayerLabel.setVisibility(View.GONE);
 						blackPlayerLabel.setVisibility(View.GONE);
 						timer.setVisibility(View.VISIBLE);
-						analysisLL.setVisibility(View.GONE);
-						if (!mainApp.isLiveChess() && analysisButtons != null) {
-							hideAnalysisButtons();
-						}
+//						analysisLL.setVisibility(View.GONE);
+//						if (!mainApp.isLiveChess() && analysisButtons != null) {
+//							hideAnalysisButtons();
+//						}
 					}
 				}
-				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.invalidate();
 				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
 								{
 								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
@@ -817,7 +817,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 								{
 								  movelist.setText(newBoardView.getBoardFaceFace().MoveListSAN());
 								}*/
-				newBoardView.invalidate();
 
 				new Handler().post(new Runnable() {
 					@Override
@@ -1175,6 +1174,31 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 	@Override
+	public void showChoosePieceDialog(final int col,final int row) {
+		new AlertDialog.Builder(this)
+				.setTitle("Choose a piece ")
+				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								if (which == 4) {
+									newBoardView.invalidate();
+									return;
+								}
+								newBoardView.promote(4 - which, col, row);
+							}
+						}).setCancelable(false)
+				.create().show();
+	}
+
+
+	@Override
+	public void showOptions() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.options)
+				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.game_tactics, menu);
@@ -1195,30 +1219,32 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 				break;
 			case R.id.menu_options:
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.options)
-						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+				showOptions();
 				break;
 			case R.id.menu_reside:
-				newBoardView.getBoardFace().setReside(!newBoardView.getBoardFace().isReside());
-				newBoardView.invalidate();
+				newBoardView.flipBoard();
+//				newBoardView.getBoardFace().setReside(!newBoardView.getBoardFace().isReside());
+//				newBoardView.invalidate();
 				break;
 			case R.id.menu_analysis:
-				newBoardView.getBoardFace().setAnalysis(true);
-				update(CALLBACK_REPAINT_UI);
+				newBoardView.switchAnalysis();
+//				newBoardView.getBoardFace().setAnalysis(true);
+//				update(CALLBACK_REPAINT_UI);
 				break;
 			case R.id.menu_previous:
-				newBoardView.finished = false;
-				newBoardView.sel = false;
-				newBoardView.getBoardFace().takeBack();
-				newBoardView.invalidate();
-				update(CALLBACK_REPAINT_UI);
+				newBoardView.moveBack();
+//				newBoardView.finished = false;
+//				newBoardView.sel = false;
+//				newBoardView.getBoardFace().takeBack();
+//				newBoardView.invalidate();
+//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 			case R.id.menu_next:
-				newBoardView.getBoardFace().takeNext();
-				newBoardView.invalidate();
-				update(CALLBACK_REPAINT_UI);
+				newBoardView.moveForward();
+//				newBoardView.getBoardFace().takeNext();
+//				newBoardView.invalidate();
+//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 		}
@@ -1277,7 +1303,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 		}
 
-
 		if (newBoardView.getBoardFace().isTacticCanceled()) {
 			newBoardView.getBoardFace().setTacticCanceled(false);
 			showDialog(DIALOG_TACTICS_START_TACTICS);
@@ -1296,7 +1321,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 	@Override
 	protected void onGameEndMsgReceived() {
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//		showSubmitButtonsLay(false);
+//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
 	}
 
 	public void stopTacticsTimer() {
@@ -1336,18 +1362,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 
-	private void showAnalysisButtons() {
-		analysisButtons.setVisibility(View.VISIBLE);
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*newBoardView.getBoardFaceFace().takeBack();
-			newBoardView.getBoardFaceFace().getMovesCount()--;
-			newBoardView.invalidate();
-			newBoardView.getBoardFaceFace().submit = false;*/
-	}
-
-	private void hideAnalysisButtons() {
-		analysisButtons.setVisibility(View.GONE);
-	}
+//	private void showAnalysisButtons() {
+//		analysisButtons.setVisibility(View.VISIBLE);
+//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//		/*newBoardView.getBoardFaceFace().takeBack();
+//			newBoardView.getBoardFaceFace().getMovesCount()--;
+//			newBoardView.invalidate();
+//			newBoardView.getBoardFaceFace().submit = false;*/
+//	}
+//
+//	private void hideAnalysisButtons() {
+//		analysisButtons.setVisibility(View.GONE);
+//	}
 
 
 	@Override
@@ -1497,7 +1523,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.prev) {
+		/*if (view.getId() == R.id.prev) {
 			newBoardView.finished = false;
 			newBoardView.sel = false;
 			newBoardView.getBoardFace().takeBack();
@@ -1509,8 +1535,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			newBoardView.invalidate();
 			update(CALLBACK_REPAINT_UI);
 			isMoveNav = true;
-		} else if (view.getId() == R.id.newGame) {
-			startActivity(new Intent(this, OnlineNewGame.class));
+		} else*/ if (view.getId() == R.id.newGame) {
+			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}
 	}
 

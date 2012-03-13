@@ -3,8 +3,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-<!--  	<ImageView android:layout_height="fill_parent" android:layout_width="fill_parent" android:src="@drawable/back_image" android:scaleType="centerCrop"></ImageView> -->
-
+<!--  	<ImageView android:layout_height="fill_parent" android:layout_width="fill_parent" android:src="@drawable/back_image" android:scaleType="centerCrop"></ImageView>
+ -->
+<!--
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
@@ -68,7 +69,6 @@
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="3dip"
                     android:text="@string/menuLive" />
-                <!-- android:textSize="16dip" -->
 
                 <Button
                     android:id="@+id/online"
@@ -133,15 +133,6 @@
         android:layout_gravity="bottom"
         android:orientation="vertical" >
 
-        <!--
-      <com.mopub.mobileads.MoPubView
-        android:id="@+id/adview"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:visibility="gone"
-      />
-        -->
-
-    </LinearLayout>
+    </LinearLayout>-->
 
 </FrameLayout>
