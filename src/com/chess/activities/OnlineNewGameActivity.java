@@ -13,7 +13,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.activities.tabs.Online;
 import com.chess.adapters.OnlineGamesAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
@@ -27,6 +26,7 @@ import com.chess.views.BackgroundChessDrawable;
 import java.util.ArrayList;
 
 public class OnlineNewGameActivity extends CoreActivityActionBar implements OnClickListener, OnItemClickListener {
+
 	private ListView openChallengesListView;
 	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
 	private OnlineGamesAdapter gamesAdapter = null;
@@ -47,6 +47,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		setContentView(R.layout.online_new_game);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
+		// TODO investigate why don't receive lists
 		if (MobclixHelper.isShowAds(mainApp)) {
 			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {
 				MobclixHelper.initializeBannerAdView(this, mainApp);
@@ -99,7 +100,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
-					appService.RunRepeatbleTask(Online.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
+					appService.RunRepeatbleTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							"http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
 									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
 							null/*progressDialog = MyProgressDialog
@@ -108,10 +109,10 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 					/*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,
 													  progressDialog = MyProgressDialog
 														.show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
-					update(Online.ONLINE_CALLBACK_CODE);
+					update(OnlineScreenActivity.ONLINE_CALLBACK_CODE);
 				}
 			}
-		} else if (code == Online.ONLINE_CALLBACK_CODE) {
+		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
 			openChallengesListView.setVisibility(View.GONE);
 			gameListItems.clear();
 			if (mainApp.isLiveChess()) {

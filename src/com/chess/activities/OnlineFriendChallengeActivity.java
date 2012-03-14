@@ -78,11 +78,12 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 				FRIENDS = ChessComApiParser.GetFriendsParse(response);
 			}
 
-			ArrayAdapter<String> adapterF = new ArrayAdapter<String>(OnlineFriendChallengeActivity.this,
-					android.R.layout.simple_spinner_item,
-					FRIENDS);
-			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			friendsSpinner.setAdapter(adapterF);
+//			ArrayAdapter<String> adapterF = new ArrayAdapter<String>(OnlineFriendChallengeActivity.this,
+//					android.R.layout.simple_spinner_item,
+//					FRIENDS);
+//			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			ArrayAdapter<String> friendsAdapter  = new ChessSpinnerAdapter(this, FRIENDS);
+			friendsSpinner.setAdapter(friendsAdapter);
 			if (friendsSpinner.getSelectedItem().equals("")) {
 				new AlertDialog.Builder(OnlineFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)

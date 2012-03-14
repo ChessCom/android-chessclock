@@ -50,22 +50,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 			1,
 			1
 	};
-	private int whiteSavedPiecesCount[] = pieceItemCounts.clone();/* new int[]{
-			8,
-			2,
-			2,
-			2,
-			1,
-			1
-	};*/
-	private int blackSavedPiecesCount[] = pieceItemCounts.clone();/*new int[]{
-			8,
-			2,
-			2,
-			2,
-			1,
-			1
-	};*/
+	private int whiteSavedPiecesCount[] = pieceItemCounts.clone();
+	private int blackSavedPiecesCount[] = pieceItemCounts.clone();
 
 	private int[] buttonsDrawableIds = new int[]{
 			R.drawable.ic_next_game,
@@ -251,6 +237,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		addItems(blackCapturedPieces, false, 1.0f, KING_ID);
 
 //		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
+	}
+
+	public void hideGameButton(int buttonId){
+		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
+	}
+
+	public void enableGameButton(int buttonId,boolean enable){
+		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setEnabled(enable);
 	}
 
 	public void changeGameButton(int buttonId, int resId){

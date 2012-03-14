@@ -27,12 +27,13 @@ import com.chess.utilities.Web;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class OnlineNewGame extends CoreActivity implements OnClickListener, OnItemClickListener {
 	private ListView openChallengesLictView;
 	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
 	private OnlineGamesAdapter gamesAdapter = null;
 	private int UPDATE_DELAY = 120000;
-	private Button challengecreate;
+	private Button createChallenge;
 	private Button currentGame;
 	private Button upgradeBtn;
 	private GameListElement gameListElement;
@@ -69,8 +70,8 @@ public class OnlineNewGame extends CoreActivity implements OnClickListener, OnIt
 		openChallengesLictView.setOnItemClickListener(this);
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
-		challengecreate = (Button) findViewById(R.id.challengecreate);
-		challengecreate.setOnClickListener(this);
+		createChallenge = (Button) findViewById(R.id.challengecreate);
+		createChallenge.setOnClickListener(this);
 
 		currentGame = (Button) findViewById(R.id.currentGame);
 		currentGame.setOnClickListener(this);

@@ -13,18 +13,15 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.activities.HomeScreenActivity;
+import com.chess.activities.LoginScreenActivity;
 import com.chess.activities.Singin;
+import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
-import org.apache.http.util.ByteArrayBuffer;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 public abstract class CoreActivityHome extends ActionBarActivityHome implements CoreActivityFace {
 
@@ -145,7 +142,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				}
 			});
 			if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
-				final Intent intent = new Intent(mainApp, Tabs.class);
+				final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mainApp.startActivity(intent);
 			} else {
@@ -378,7 +375,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 						@Override
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
-							final Intent intent = new Intent(CoreActivityHome.this, Tabs.class);
+							final Intent intent = new Intent(CoreActivityHome.this, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							// reconnectingIndicator.dismiss();
 							mainApp.startActivity(intent);
@@ -391,7 +388,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
 					} catch (Exception e) {
 						lccHolder.logout();
-						intent = new Intent(CoreActivityHome.this, Tabs.class);
+						intent = new Intent(CoreActivityHome.this, HomeScreenActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						// reconnectingIndicator.dismiss();
 						mainApp.startActivity(intent);
@@ -424,7 +421,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 													 */) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(mainApp, Singin.class);
+							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -450,7 +447,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 											.parse("http://www.chess.com/play/android.html")));
 								}
 							});
-							final Intent intent = new Intent(mainApp, Tabs.class);
+							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -600,65 +597,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	private void checkUpdate() {
-		new AsyncTask<Void, Void, Void>() {
-			@Override
-			protected Void doInBackground(Void... voids) {
-				try {
-					URL updateURL = new URL("http://www.chess.com/api/get_android_version");
-					URLConnection conn = updateURL.openConnection();
-					InputStream is = conn.getInputStream();
-					BufferedInputStream bis = new BufferedInputStream(is);
-					ByteArrayBuffer baf = new ByteArrayBuffer(50);
-
-					int current = 0;
-					while ((current = bis.read()) != -1) {
-						baf.append((byte) current);
-					}
-
-					final String s = new String(baf.toByteArray());
-					String[] valuesArray = s.trim().split("\\|", 2);
-
-					int actualVersion = getPackageManager().getPackageInfo("com.chess", 0).versionCode;
-					System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
-
-					int minimumVersion = Integer.valueOf(valuesArray[0].trim());
-					int prefferedVersion = Integer.valueOf(valuesArray[1].trim());
-
-					Boolean force = null;
-					if (actualVersion < prefferedVersion) {
-						force = false;
-					}
-					if (actualVersion < minimumVersion) {
-						force = true;
-					}
-
-					if (force != null) {
-						final boolean forceFlag = force;
-						new AlertDialog.Builder(CoreActivityHome.this).setIcon(R.drawable.ic_launcher).setTitle("update Check")
-								.setMessage("An update is available! Please update").setCancelable(false)
-								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int whichButton) {
-										// Intent intent = new
-// Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
-										if (forceFlag) {
-											mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, 0);
-											mainApp.getSharedDataEditor().commit();
-											startActivity(new Intent(CoreActivityHome.this, Singin.class));
-											finish();
-										}
-										Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-												.parse("market://details?id=com.chess"));
-										startActivity(intent);
-
-									}
-								}).show();
-					}
-				} catch (Exception e) {
-				}
-				return null;
-			}
-		}.execute();
+		new CheckUpdateTask(this,mainApp).execute("http://www.chess.com/api/get_android_version");
 	}
 
 	private void showNetworkChangeNotification() {

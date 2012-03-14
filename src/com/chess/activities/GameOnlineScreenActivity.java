@@ -522,7 +522,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 					mainApp.getCurrentGame().values.put("has_new_message", "0");
-					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLive.class : Chat.class).
+					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
 							putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).
 							putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP)));
 					chat = false;

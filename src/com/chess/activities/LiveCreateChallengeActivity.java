@@ -13,7 +13,6 @@ import com.chess.R;
 import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
-import com.chess.core.Tabs;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
@@ -93,7 +92,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 		super.onResume();
 		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
 			lccHolder.logout();
-			startActivity(new Intent(this, Tabs.class));
+			startActivity(new Intent(this, HomeScreenActivity.class));
 		}
 	}
 

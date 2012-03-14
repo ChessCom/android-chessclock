@@ -30,6 +30,7 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
+import com.chess.views.GamePanelView;
 import com.flurry.android.FlurryAgent;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -109,21 +110,22 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			//newBoardView.getBoardFaceFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 
-			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
-				newBoardView.getBoardFace().setReside(true);
-				newBoardView.invalidate();
-				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-			}
-			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-			}
-			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
-				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
+//			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
+//				newBoardView.getBoardFace().setReside(true);
+//				newBoardView.invalidate();
+//				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//			}
+//			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
+//				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//			}
+//			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
+//				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 
-			if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
+//			if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
 				showDialog(DIALOG_TACTICS_START_TACTICS);
-			}
+//			}
 //		}
+		gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
 
 	}
 
@@ -153,9 +155,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 
 				if (mainApp.guest)
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				else
-					GetTacticsGame("");
+					getTacticsGame("");
 
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				//mainApp.getTabHost().setCurrentTab(0);
@@ -189,7 +191,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-				GetGuestTacticsGame();
+				getGuestTacticsGame();
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				//mainApp.getTabHost().setCurrentTab(0);
 				newBoardView.getBoardFace().setTacticCanceled(true);
@@ -274,10 +276,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (which == 1) {
 				if (mainApp.guest) {
 					mainApp.currentTacticProblem++;
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				} else {
 					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					GetTacticsGame("");
+					getTacticsGame("");
 				}
 			}
 		}
@@ -289,18 +291,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (which == 0) {
 				if (mainApp.guest) {
 					mainApp.currentTacticProblem++;
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				} else {
 					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					GetTacticsGame("");
+					getTacticsGame("");
 				}
 			}
 			if (which == 1) {
 				if (mainApp.guest || mainApp.noInternet) {
 					newBoardView.getBoardFace().setRetry(true);
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				} else {
-					GetTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
+					getTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 				}
 			}
 			if (which == 2) {
@@ -314,11 +316,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			if (which == 0) {
-				GetTacticsGame("");
+				getTacticsGame("");
 			}
 			if (which == 1) {
 				newBoardView.getBoardFace().setRetry(true);
-				GetTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
+				getTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 			}
 			if (which == 2) {
 				newBoardView.finished = true;
@@ -416,7 +418,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	private void GetTacticsGame(final String id) {
+	private void getTacticsGame(final String id) {
 		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
 		if (!mainApp.noInternet) {
 			newBoardView.setBoardFace(new Board2(this));
@@ -497,7 +499,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	private void GetGuestTacticsGame() {
+	private void getGuestTacticsGame() {
 		FlurryAgent.onEvent("Tactics Session Started For Guest", null);
 
 		if (mainApp.currentTacticProblem >= mainApp.getTacticsBatch().size()) {
@@ -735,7 +737,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					newBoardView.getBoardFaceFace().getTactic()Canceled = true;*/
 					if (mainApp.noInternet) {
 						if (mainApp.offline) {
-							GetGuestTacticsGame();
+							getGuestTacticsGame();
 						} else {
 							mainApp.offline = true;
 							showDialog(DIALOG_TACTICS_OFFLINE_RATING);
@@ -878,7 +880,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						.setItems(getResources().getTextArray(R.array.correcttactic), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 1) {
-									GetTacticsGame("");
+									getTacticsGame("");
 								}
 							}
 						})
@@ -1086,7 +1088,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 					mainApp.getCurrentGame().values.put("has_new_message", "0");
-					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLive.class : Chat.class).
+					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
 							putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).
 							putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP)));
 					chat = false;
@@ -1196,11 +1198,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	public void newGame() {
 		if (mainApp.guest) {
 			mainApp.currentTacticProblem++;
-			GetGuestTacticsGame();
+			getGuestTacticsGame();
 		} else {
 			if (mainApp.noInternet) mainApp.currentTacticProblem++;
 			closeOptionsMenu();
-			GetTacticsGame("");
+			getTacticsGame("");
 		}
 	}
 
@@ -1275,9 +1277,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				case TACTICS_SKIP_PROBLEM: {
 					if (mainApp.guest || mainApp.noInternet) {
 						mainApp.currentTacticProblem++;
-						GetGuestTacticsGame();
+						getGuestTacticsGame();
 					} else
-						GetTacticsGame("");
+						getTacticsGame("");
 					break;
 				}
 				case TACTICS_SHOW_ANSWER: {

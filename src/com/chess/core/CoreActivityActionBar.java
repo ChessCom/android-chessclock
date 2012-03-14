@@ -17,17 +17,12 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.HomeScreenActivity;
 import com.chess.activities.LoginScreenActivity;
+import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
-import org.apache.http.util.ByteArrayBuffer;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 //import com.chess.activities.Singin;
 
@@ -421,7 +416,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			}
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
 					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							if (mainApp.isLiveChess()/*
@@ -430,7 +425,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 													 */) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
+//							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
+							final Intent intent = new Intent(coreContext, LoginScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -443,7 +439,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		public void onReceive(Context context, Intent intent) {
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
 					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
@@ -476,7 +472,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
 					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
@@ -541,7 +537,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	public void unregisterReceiver(BroadcastReceiver receiver) {
+	public void unregisterReceiver(BroadcastReceiver receiver) {// TODO don't do any hacks
 		try {
 			super.unregisterReceiver(receiver);
 		} catch (IllegalArgumentException e) {
@@ -604,71 +600,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	private void checkUpdate() {
-		new AsyncTask<Void, Void, Void>() {
-			@Override
-			protected Void doInBackground(Void... voids) {
-				try {
-					URL updateURL = new URL("http://www.chess.com/api/get_android_version");
-					URLConnection conn = updateURL.openConnection();
-					InputStream is = conn.getInputStream();
-					BufferedInputStream bis = new BufferedInputStream(is);
-					ByteArrayBuffer baf = new ByteArrayBuffer(50);
-
-					int current = 0;
-					while ((current = bis.read()) != -1) {
-						baf.append((byte) current);
-					}
-
-					final String s = new String(baf.toByteArray());
-					String[] valuesArray = s.trim().split("\\|", 2);
-
-					int actualVersion = getPackageManager().getPackageInfo("com.chess", 0).versionCode;
-					System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
-
-					int minimumVersion = Integer.valueOf(valuesArray[0].trim());
-					int prefferedVersion = Integer.valueOf(valuesArray[1].trim());
-
-					Boolean force = null;
-					if (actualVersion < prefferedVersion) {
-						force = false;
-					}
-					if (actualVersion < minimumVersion) {
-						force = true;
-					}
-
-					if (force != null) {
-						final boolean forceFlag = force;
-						new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(R.drawable.ic_launcher).setTitle("update Check")
-								.setMessage("An update is available! Please update").setCancelable(false)
-								.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int whichButton) {
-										// Intent intent = new
-// Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
-										if (forceFlag) {
-											mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, 0);
-											mainApp.getSharedDataEditor().commit();
-											startActivity(new Intent(CoreActivityActionBar.this, LoginScreenActivity.class));
-											finish();
-										}
-										Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-												.parse("market://details?id=com.chess"));
-										startActivity(intent);
-
-									}
-								}).show();
-					}
-				} catch (Exception e) {
-				}
-				return null;
-			}
-		}.execute();
+		new CheckUpdateTask(this,mainApp).execute("http://www.chess.com/api/get_android_version");
 	}
 
 	private void showNetworkChangeNotification() {
 		new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
 				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// mainApp.setNetworkChangedNotification(false);

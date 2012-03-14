@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.adapters.MessagesAdapter;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity;
+import com.chess.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
@@ -20,8 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-@Deprecated
-public class Chat extends CoreActivity implements OnClickListener {
+public class ChatActivity extends CoreActivityActionBar implements OnClickListener {
 	private EditText sendText;
 	private ListView chatListView;
 	private MessagesAdapter messages = null;
@@ -37,16 +36,7 @@ public class Chat extends CoreActivity implements OnClickListener {
 	}
 
 	@Override
-	public void LoadNext(int code) {
-	}
-
-	@Override
-	public void LoadPrev(int code) {
-		finish();
-	}
-
-	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunRepeatbleTask(0, 0, 60000, "http://www." + LccHolder.HOST
@@ -64,7 +54,7 @@ public class Chat extends CoreActivity implements OnClickListener {
 			chatItems.addAll(ChessComApiParser.ReciveMessages(responseRepeatable));
 			if (before != chatItems.size()) {
 				if (messages == null) {
-					messages = new MessagesAdapter(Chat.this, R.layout.chat_item, chatItems);
+					messages = new MessagesAdapter(ChatActivity.this, R.layout.chat_item, chatItems);
 					chatListView.setAdapter(messages);
 				} else {
 					messages.notifyDataSetChanged();
@@ -76,7 +66,7 @@ public class Chat extends CoreActivity implements OnClickListener {
 			chatItems.addAll(ChessComApiParser.ReciveMessages(response));
 
 			if (messages == null) {
-				messages = new MessagesAdapter(Chat.this, R.layout.chat_item, chatItems);
+				messages = new MessagesAdapter(ChatActivity.this, R.layout.chat_item, chatItems);
 				chatListView.setAdapter(messages);
 			} else {
 				messages.notifyDataSetChanged();
@@ -106,7 +96,7 @@ public class Chat extends CoreActivity implements OnClickListener {
 						+ extras.getString(AppConstants.GAME_ID) + "&command=CHAT&message=" + message + "&timestamp="
 						+ extras.getString(AppConstants.TIMESTAMP);
 				appService.RunSingleTask(1, query,
-						progressDialog = new MyProgressDialog(ProgressDialog.show(Chat.this, null,
+						progressDialog = new MyProgressDialog(ProgressDialog.show(ChatActivity.this, null,
 								getString(R.string.sendingmessage), true)));
 			}
 		}
