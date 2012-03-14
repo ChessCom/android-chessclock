@@ -262,23 +262,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				if (newBoardView.getBoardFace().isSubmit())
 					showSubmitButtonsLay(true);
 
-				if (newBoardView.getBoardFace().isAnalysis()) {
-					whitePlayerLabel.setVisibility(View.GONE);
-					blackPlayerLabel.setVisibility(View.GONE);
-//							analysisLL.setVisibility(View.VISIBLE);
-//							if (!mainApp.isLiveChess() && analysisButtons != null) {
-//								showAnalysisButtons();
-//							}
-				} else {
-					whitePlayerLabel.setVisibility(View.VISIBLE);
-					blackPlayerLabel.setVisibility(View.VISIBLE);
-//							analysisLL.setVisibility(View.GONE);
-//							if (!mainApp.isLiveChess() && analysisButtons != null) {
-//								hideAnalysisButtons();
-//							}
-				}
-
-
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
 					if (mainApp.getCurrentGame() != null) {
 						whitePlayerLabel.setText(mainApp.getCurrentGame()

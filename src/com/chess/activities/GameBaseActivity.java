@@ -38,7 +38,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected final static int DIALOG_DRAW_OFFER = 4;
 	protected final static int DIALOG_ABORT_OR_RESIGN = 5;
 	public final static int CALLBACK_GAME_STARTED = 10;
-	public final static int CALLBACK_REPAINT_UI = 0;
+    public final static int CALLBACK_REPAINT_UI = 0;
 	public final static int CALLBACK_GAME_REFRESH = 9;
 	public final static int CALLBACK_COMP_MOVE = 2;
 	public final static int CALLBACK_PLAYER_MOVE = 3;
@@ -58,6 +58,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected TextView whiteClockView;
 	protected TextView blackClockView;
+    protected TextView analysisTxt;
+    protected ViewGroup statusBarLay;
 
 	protected AlertDialog adPopup;
 	protected TextView endOfGameMessage;
@@ -80,6 +82,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void widgetsInit(){
+        statusBarLay = (ViewGroup) findViewById(R.id.statusBarLay);
+
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
 		thinking = (TextView) findViewById(R.id.thinking);
@@ -87,6 +91,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
+
+        analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
@@ -96,6 +102,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		newBoardView.setGamePanelView(gamePanelView);
+
+
 		lccHolder = mainApp.getLccHolder();
 	}
 
@@ -364,6 +372,19 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	public TextView getBlackClockView() {
 		return blackClockView;
 	}
+
+    @Override
+    public void switch2Analysis(boolean isAnalysis) {
+        if (isAnalysis) {
+            analysisTxt.setVisibility(View.VISIBLE);
+            whitePlayerLabel.setVisibility(View.INVISIBLE);
+            blackPlayerLabel.setVisibility(View.INVISIBLE);
+        } else {
+            analysisTxt.setVisibility(View.INVISIBLE);
+            whitePlayerLabel.setVisibility(View.VISIBLE);
+            blackPlayerLabel.setVisibility(View.VISIBLE);
+        }
+    }
 
 
 	protected void executePausedActivityGameEvents() {

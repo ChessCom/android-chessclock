@@ -1923,6 +1923,11 @@ public class Board2 implements BoardFace {
 		return tacticMoves;
 	}
 
+    @Override
+    public boolean toggleAnalysis() {
+        return analysis = !analysis;
+    }
+
 	public boolean isAnalysis() {
 		return analysis;
 	}
@@ -2116,7 +2121,8 @@ public class Board2 implements BoardFace {
 		tacticsCorrectMoves++;
 	}
 
-	public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
+
+    public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
 		this.tacticsCorrectMoves = tacticsCorrectMoves;
 	}
 

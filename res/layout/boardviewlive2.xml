@@ -16,32 +16,6 @@
 			android:orientation="vertical"
 			android:paddingBottom="5dip">
 
-<!--			<LinearLayout
-				android:id="@+id/analysis"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:orientation="vertical"
-				android:visibility="gone">
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:padding="3dip"
-					android:text="@string/analysis"
-					android:textColor="#fff"
-					android:textSize="16dip"
-					android:textStyle="bold">
-				</TextView>
-
-				<ImageView
-					android:layout_width="fill_parent"
-					android:layout_height="5dip"
-					android:background="#00bb00">
-				</ImageView>
-			</LinearLayout>-->
-
 			<LinearLayout
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
@@ -96,13 +70,23 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					android:drawablePadding="5dip"
+					android:textSize="14sp"
 					android:gravity="center"
-					android:inputType="textImeMultiLine"
 					android:padding="2dip"
-					android:textColor="#fff"
-					android:textStyle="bold"
-					android:visibility="gone">
-				</TextView>
+					android:visibility="gone"/>
+
+				<TextView
+					android:id="@+id/analysisTxt"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:drawablePadding="5dip"
+					android:textSize="14sp"
+					android:gravity="center"
+					android:padding="2dip"
+					android:visibility="gone"
+					android:text="@string/analysis_mode"
+					/>
 			</LinearLayout>
 		</LinearLayout>
 

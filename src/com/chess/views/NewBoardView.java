@@ -732,9 +732,12 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 
 	@Override
 	public void switchAnalysis() {
-		getBoardFace().setAnalysis(true);
 
-		gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+//        boolean isAnalysis = getBoardFace().isAnalysis();
+        boolean isAnalysis = getBoardFace().toggleAnalysis();
+
+        gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, isAnalysis);
+        gameActivityFace.switch2Analysis(isAnalysis); //  update(GameBaseActivity.CALLBACK_REPAINT_UI);
 	}
 
 	@Override

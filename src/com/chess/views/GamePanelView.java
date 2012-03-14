@@ -94,21 +94,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		onCreate();
 	}
 
-	private void addControlButton(int buttonId, int backId) {
-		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(buttonsDrawableIds[buttonId]);
-		imageButton.setBackgroundResource(backId);
-		imageButton.setOnClickListener(this);
-		imageButton.setId(BUTTON_PREFIX + buttonId);
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-
-		params.weight = 1;
-		imageButton.setLayoutParams(params);
-		controlsLayout.addView(imageButton);
-	}
-
+    
 	public void onCreate() {
 		setOrientation(VERTICAL);
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -222,23 +208,47 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				R.drawable.captured_bk
 		};
 
-		addItems(whiteCapturedPieces, true, 1.0f, QUEEN_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, ROOK_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, BISHOP_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, KNIGHT_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, PAWN_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, KING_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, QUEEN_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, ROOK_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, BISHOP_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, KNIGHT_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, PAWN_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, KING_ID);
 
-		addItems(blackCapturedPieces, false, 1.0f, QUEEN_ID);
-		addItems(blackCapturedPieces, false, 1.0f, ROOK_ID);
-		addItems(blackCapturedPieces, false, 1.0f, BISHOP_ID);
-		addItems(blackCapturedPieces, false, 1.0f, KNIGHT_ID);
-		addItems(blackCapturedPieces, false, 1.0f, PAWN_ID);
-		addItems(blackCapturedPieces, false, 1.0f, KING_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, QUEEN_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, ROOK_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, BISHOP_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, KNIGHT_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, PAWN_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, KING_ID);
 
 //		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
 	}
 
+    private void addControlButton(int buttonId, int backId) {
+        ImageButton imageButton = new ImageButton(getContext());
+        imageButton.setImageResource(buttonsDrawableIds[buttonId]);
+        imageButton.setBackgroundResource(backId);
+        imageButton.setOnClickListener(this);
+        imageButton.setId(BUTTON_PREFIX + buttonId);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.weight = 1;
+        imageButton.setLayoutParams(params);
+        controlsLayout.addView(imageButton);
+    }
+
+    public void toggleControlButton(int buttonId,boolean checked){
+        if(checked){
+            findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_checked);
+        }else{
+            findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_selector);
+        }
+
+    }
+    
 	public void hideGameButton(int buttonId){
 		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
 	}
@@ -319,7 +329,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		return pieceDrawable;
 	}
 
-	private void addItems(LinearLayout viewGroup, boolean isWhite, /*int layersCnt, */float itemWeight, int pieceId) {
+	private void addPieceItems(LinearLayout viewGroup, boolean isWhite, /*int layersCnt, */float itemWeight, int pieceId) {
 		int layersCnt = pieceItemCounts[pieceId];
 		// Add background image to get correct weights
 		ImageView imageView = new ImageView(getContext());

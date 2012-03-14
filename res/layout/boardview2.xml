@@ -6,44 +6,27 @@
 	android:background="@color/game_board_back"
 	android:orientation="vertical">
 
-	<LinearLayout
+	<RelativeLayout
+		android:id="@+id/statusBarLay"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-
-<!--		<LinearLayout
-			android:id="@+id/analysis"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:visibility="gone">
-
-			<TextView
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:padding="3dip"
-				android:text="@string/analysis"
-				/>
-
-		</LinearLayout>-->
+		android:layout_height="wrap_content"
+		>
 
 		<TextView
 			android:id="@+id/thinking"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:gravity="center"
+			android:layout_centerInParent="true"
 			android:inputType="textImeMultiLine"
 			android:text="@string/Thinking"
 			android:visibility="gone"/>
 
 		<TextView
 			android:id="@+id/white"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
 			android:drawablePadding="5dip"
-			android:inputType="textImeMultiLine"
-			android:gravity="center_vertical"
+			android:layout_centerVertical="true"
 			android:text="@string/Human"
 			android:textSize="14sp"
 			android:paddingTop="2dip"
@@ -55,11 +38,10 @@
 
 		<TextView
 			android:id="@+id/black"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:gravity="right|center_vertical"
-			android:inputType="textImeMultiLine"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
 			android:text="@string/Computer"
 			android:textSize="14sp"
 			android:paddingTop="2dip"
@@ -72,15 +54,29 @@
 
 		<TextView
 			android:id="@+id/timer"
-			android:layout_width="fill_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:drawablePadding="5dip"
 			android:textSize="14sp"
-			android:gravity="center"
+			android:layout_centerInParent="true"
 			android:padding="2dip"
 			android:visibility="gone"/>
-	</LinearLayout>
+
+		<!--TODO set theme with text Size-->
+		<TextView
+			android:id="@+id/analysisTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:drawablePadding="5dip"
+			android:textSize="14sp"
+			android:layout_centerInParent="true"
+			android:padding="2dip"
+			android:visibility="gone"
+			android:text="@string/analysis_mode"
+			/>
+	</RelativeLayout>
 
 	<FrameLayout
 		android:layout_width="fill_parent"

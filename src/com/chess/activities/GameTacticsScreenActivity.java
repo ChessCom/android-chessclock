@@ -101,6 +101,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		timer = (TextView) findViewById(R.id.timer);
 
 
+
 //		if (newBoardView.getBoardFace() == null) {
 			newBoardView.setBoardFace(new Board2(this));
             newBoardView.setGameActivityFace(this);
@@ -726,7 +727,20 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 
-	@Override
+    @Override
+    public void switch2Analysis(boolean isAnalysis) {
+//        super.switch2Analysis(isAnalysis);
+//        switch2Analysis(isAnalysis);
+        if (isAnalysis) {
+            timer.setVisibility(View.INVISIBLE);
+            analysisTxt.setVisibility(View.VISIBLE);
+        } else {
+            timer.setVisibility(View.VISIBLE);
+            analysisTxt.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
 	public void update(int code) {
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
@@ -769,48 +783,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
-				switch (newBoardView.getBoardFace().getMode()) {
-					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-						whitePlayerLabel.setText(getString(R.string.Human));
-						blackPlayerLabel.setText(getString(R.string.Computer));
-						break;
-					}
-					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(getString(R.string.Human));
-						break;
-					}
-					case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-						whitePlayerLabel.setText(getString(R.string.Human));
-						blackPlayerLabel.setText(getString(R.string.Human));
-						break;
-					}
-					case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(getString(R.string.Computer));
-						break;
-					}
-					default:
-						break;
-				}
 
-				if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
-					if (newBoardView.getBoardFace().isAnalysis()) {
-						timer.setVisibility(View.GONE);
-//						analysisLL.setVisibility(View.VISIBLE);
-//						if (!mainApp.isLiveChess() && analysisButtons != null) {
-//							showAnalysisButtons();
-//						}
-					} else {
-						whitePlayerLabel.setVisibility(View.GONE);
-						blackPlayerLabel.setVisibility(View.GONE);
-						timer.setVisibility(View.VISIBLE);
-//						analysisLL.setVisibility(View.GONE);
-//						if (!mainApp.isLiveChess() && analysisButtons != null) {
-//							hideAnalysisButtons();
-//						}
-					}
-				}
 				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
 				newBoardView.invalidate();
 				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
@@ -831,18 +804,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				break;
 			}
 
-			case 2: {
-				whitePlayerLabel.setVisibility(View.GONE);
-				blackPlayerLabel.setVisibility(View.GONE);
-				thinking.setVisibility(View.VISIBLE);
-				break;
-			}
-			case 3: {
-				whitePlayerLabel.setVisibility(View.VISIBLE);
-				blackPlayerLabel.setVisibility(View.VISIBLE);
-				thinking.setVisibility(View.GONE);
-				break;
-			}
+//			case 2: {
+//				whitePlayerLabel.setVisibility(View.GONE);
+//				blackPlayerLabel.setVisibility(View.GONE);
+//				thinking.setVisibility(View.VISIBLE);
+//				break;
+//			}
+//			case 3: {
+//				whitePlayerLabel.setVisibility(View.VISIBLE);
+//				blackPlayerLabel.setVisibility(View.VISIBLE);
+//				thinking.setVisibility(View.GONE);
+//				break;
+//			}
 			case 4: {
 				checkTacticMoves();
 				break;

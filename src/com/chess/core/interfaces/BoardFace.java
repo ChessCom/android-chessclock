@@ -107,4 +107,5 @@ public interface BoardFace {
 
 	void increaseTacticsCorrectMoves();
 
+    boolean toggleAnalysis();
 }

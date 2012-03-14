@@ -23,4 +23,6 @@ public interface GameActivityFace {
 	void switch2Chat();
 
 	void newGame();
+
+    void switch2Analysis(boolean isAnalysis);
 }
