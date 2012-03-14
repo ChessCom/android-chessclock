@@ -12,12 +12,15 @@ import com.chess.activities.Preferences;
 import com.chess.activities.Singin;
 import com.chess.core.CoreActivity;
 import com.chess.utilities.MobclixHelper;
+import com.millennialmedia.android.MMAdView;
+import com.millennialmedia.android.MMAdViewSDK;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 import com.mopub.mobileads.MoPubInterstitial;
 
 public class Home extends CoreActivity {
 
+	static MMAdView interAdView = null;
 	private MoPubInterstitial moPubInterstitial;
 
 	@Override
@@ -119,8 +122,9 @@ public class Home extends CoreActivity {
       showFullscreenAd();
     }*/
 
-	  moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww");
-	  //moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+	  /*//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww");
+	  moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+	  //moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
 	  moPubInterstitial.setListener(new MoPubInterstitial.MoPubInterstitialListener() {
 		  public void OnInterstitialLoaded() {
 			  if (moPubInterstitial.isReady()) {
@@ -131,7 +135,38 @@ public class Home extends CoreActivity {
 		  public void OnInterstitialFailed() {
 		  }
 	  });
-	  moPubInterstitial.load();
+	  moPubInterstitial.load();*/
+
+	  /*if(interAdView == null)*/
+		  interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
+	  interAdView.setId(MMAdViewSDK.DEFAULT_VIEWID);
+	  interAdView.callForAd();
+	  interAdView.setListener(new MMAdView.MMAdListener() {
+		  public void MMAdReturned(MMAdView mmAdView) {
+			  if (mmAdView.check())
+			  mmAdView.display();
+		  }
+
+		  public void MMAdFailed(MMAdView mmAdView) {
+		  }
+
+		  public void MMAdClickedToNewBrowser(MMAdView mmAdView) {
+		  }
+
+		  public void MMAdClickedToOverlay(MMAdView mmAdView) {
+		  }
+
+		  public void MMAdOverlayLaunched(MMAdView mmAdView) {
+		  }
+
+		  public void MMAdRequestIsCaching(MMAdView mmAdView) {
+		  }
+
+		  public void MMAdCachingCompleted(MMAdView mmAdView, boolean b) {
+			  if (mmAdView.check())
+			  mmAdView.display();
+		  }
+	  });
 
     super.onResume();
   }

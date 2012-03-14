@@ -79,9 +79,9 @@ public class Tabs extends TabActivity {
 		adFrameLayout.addView(adView, lp);
 		//final LinearLayout bannerAdviewWrapper = (LinearLayout) findViewById(R.id.wrapper);*/
 
-		moPubAdView = (MoPubView) findViewById(R.id.mopub_adview);
+		/*moPubAdView = (MoPubView) findViewById(R.id.mopub_adview);
 		moPubAdView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww");
-		moPubAdView.loadAd();
+		moPubAdView.loadAd();*/
 		//
 
 	    App.mTabHost = getTabHost();
@@ -244,7 +244,7 @@ public class Tabs extends TabActivity {
 					{
 						if (MobclixHelper.isShowAds(App) && App.getLccHolder().isConnected() && !App.getLccHolder().isConnectingInProgress())
 						{
-							MobclixHelper.showBannerAd(removeAds, Tabs.this, App);
+							//MobclixHelper.showBannerAd(removeAds, Tabs.this, App);
 			            }
 					}
 				}

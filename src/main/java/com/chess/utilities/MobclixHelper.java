@@ -55,7 +55,7 @@ public class MobclixHelper {
 
 	public static void showBannerAd(TextView removeAds, Activity activity, MainApp app)
 	{
-		if (!isShowAds(app))
+		if (true/*!isShowAds(app)*/)
 		{
 			return;
 		}
