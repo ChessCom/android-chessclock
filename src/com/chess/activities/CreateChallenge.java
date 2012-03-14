@@ -25,6 +25,7 @@ import com.chess.utilities.MyProgressDialog;
 import com.chess.views.BackgroundChessDrawable;
 import com.flurry.android.FlurryAgent;
 
+@Deprecated
 public class CreateChallenge extends CoreActivity implements OnClickListener {
 	private Spinner iplayas, dayspermove, minrating, maxrating;
 	private CheckBox isRated;

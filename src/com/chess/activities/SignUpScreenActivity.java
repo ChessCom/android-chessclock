@@ -115,7 +115,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			}
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
 			mainApp.getSharedDataEditor().commit();
-			startActivity(new Intent(context, Tabs.class));
+			startActivity(new Intent(context, HomeScreenActivity.class));
 			finish();
 			mainApp.ShowMessage(getString(R.string.congratulations));
 		}

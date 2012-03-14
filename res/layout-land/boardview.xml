@@ -6,7 +6,7 @@
     android:background="#444"
     android:orientation="horizontal" >
 
-    <FrameLayout
+  <!--  <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1" >
@@ -168,5 +168,5 @@
             </ImageButton>
         </LinearLayout>
     </LinearLayout>
-
+-->
 </LinearLayout>

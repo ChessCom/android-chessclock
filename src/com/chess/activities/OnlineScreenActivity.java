@@ -289,7 +289,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
-				Intent intent = new Intent(coreContext, Chat.class);
+				Intent intent = new Intent(coreContext, ChatActivity.class);
 				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
 				intent.putExtra(AppConstants.TIMESTAMP, gameListElement.values.get(AppConstants.TIMESTAMP));
 				startActivity(intent);
@@ -350,7 +350,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
-				Intent intent = new Intent(coreContext, Chat.class);
+				Intent intent = new Intent(coreContext, ChatActivity.class);
 				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
 				intent.putExtra(AppConstants.TIMESTAMP, gameListElement.values.get(AppConstants.TIMESTAMP));
 				startActivity(intent);

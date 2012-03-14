@@ -43,6 +43,7 @@ public class AppConstants {
 	public static final String PREF_BOARD_SQUARE_HIGHLIGHT = "highlights";
 	public static final String PREF_BOARD_TYPE = "board";
 	public static final String PREF_PIECES_SET = "pieces";
+
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String ONLINE_GAME_LIST_TYPE = "gamestype";
 	public static final String USER_SESSION_ID = "user_session_id";

@@ -5,6 +5,7 @@
     android:layout_height="fill_parent"
     android:background="#444"
     android:orientation="horizontal" >
+<!--
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -17,10 +18,10 @@
             android:layout_height="fill_parent"
             android:layout_weight="1" />
 
-        <!--
+        &lt;!&ndash;
             <ImageView android:id="@+id/boardview"
                     android:layout_height="240px" android:layout_width="288px" android:layout_weight="1"/>
-        -->
+        &ndash;&gt;
 
     </FrameLayout>
 
@@ -235,5 +236,6 @@
                 android:src="@drawable/chat_nm" />
         </RelativeLayout>
     </LinearLayout>
+-->
 
 </LinearLayout>

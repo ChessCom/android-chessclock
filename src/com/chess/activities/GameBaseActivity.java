@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.core.*;
+import com.chess.core.interfaces.GameActivityFace;
 import com.chess.engine.Board2;
 import com.chess.engine.Move;
 import com.chess.engine.MoveParser2;
@@ -32,12 +33,12 @@ import java.util.Timer;
  * @author alien_roger
  * @created at: 05.03.12 21:18
  */
-public abstract class GameBaseActivity extends CoreActivityActionBar implements View.OnClickListener {
+public abstract class GameBaseActivity extends CoreActivityActionBar implements View.OnClickListener,GameActivityFace {
 
 	protected final static int DIALOG_DRAW_OFFER = 4;
 	protected final static int DIALOG_ABORT_OR_RESIGN = 5;
 	public final static int CALLBACK_GAME_STARTED = 10;
-	public final static int CALLBACK_REPAINT_UI = 0;
+    public final static int CALLBACK_REPAINT_UI = 0;
 	public final static int CALLBACK_GAME_REFRESH = 9;
 	public final static int CALLBACK_COMP_MOVE = 2;
 	public final static int CALLBACK_PLAYER_MOVE = 3;
@@ -47,7 +48,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected TextView whitePlayerLabel;
 	protected TextView blackPlayerLabel;
 	protected TextView thinking;
-	protected TextView movelist;
+//	protected TextView movelist;
 	protected Timer onlineGameUpdate = null;
 	protected boolean msgShowed;
 	protected boolean isMoveNav;
@@ -57,6 +58,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected TextView whiteClockView;
 	protected TextView blackClockView;
+    protected TextView analysisTxt;
+    protected ViewGroup statusBarLay;
 
 	protected AlertDialog adPopup;
 	protected TextView endOfGameMessage;
@@ -66,6 +69,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected AbortGameDialogListener abortGameDialogListener;
 
 	protected CharSequence[] menuOptionsItems;
+	protected GamePanelView gamePanelView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +82,17 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void widgetsInit(){
+        statusBarLay = (ViewGroup) findViewById(R.id.statusBarLay);
+
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
 		thinking = (TextView) findViewById(R.id.thinking);
-		movelist = (TextView) findViewById(R.id.movelist);
+//		movelist = (TextView) findViewById(R.id.movelist);
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
+
+        analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
@@ -92,7 +100,10 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		newBoardView.setFocusable(true);
 		newBoardView.setBoardFace((Board2) getLastNonConfigurationInstance());
 
-		newBoardView.setGamePanelView((GamePanelView) findViewById(R.id.gamePanelView));
+		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
+		newBoardView.setGamePanelView(gamePanelView);
+
+
 		lccHolder = mainApp.getLccHolder();
 	}
 
@@ -111,6 +122,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		drawOfferDialogListener = new DrawOfferDialogListener();
 		abortGameDialogListener = new AbortGameDialogListener();
+
 	}
 
 	protected abstract void onDrawOffered(int whichButton);
@@ -361,6 +373,19 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		return blackClockView;
 	}
 
+    @Override
+    public void switch2Analysis(boolean isAnalysis) {
+        if (isAnalysis) {
+            analysisTxt.setVisibility(View.VISIBLE);
+            whitePlayerLabel.setVisibility(View.INVISIBLE);
+            blackPlayerLabel.setVisibility(View.INVISIBLE);
+        } else {
+            analysisTxt.setVisibility(View.INVISIBLE);
+            whitePlayerLabel.setVisibility(View.VISIBLE);
+            blackPlayerLabel.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 	protected void executePausedActivityGameEvents() {
 		if (/*lccHolder.isActivityPausedMode() && */lccHolder.getPausedActivityGameEvents().size() > 0) {
@@ -588,8 +613,25 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
+//	@Override
+//	public void update(int code) {
+//		//To change body of implemented methods use File | Settings | File Templates.
+//	}
+
+
 	@Override
-	public void update(int code) {
-		//To change body of implemented methods use File | Settings | File Templates.
+	public void switch2Chat() {
+
+	}
+
+
+	@Override
+	public Context getMeContext() {
+		return coreContext;
+	}
+
+	@Override
+	public void showSubmitButtonsLay(boolean show){
+
 	}
 }

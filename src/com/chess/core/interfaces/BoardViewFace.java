@@ -8,8 +8,6 @@ package com.chess.core.interfaces;
  */
 public interface BoardViewFace {
 
-	void fastForward();
-
 	void showOptions();
 
 	void flipBoard();
@@ -22,4 +20,6 @@ public interface BoardViewFace {
 
 	void moveForward();
 	void showHint();
+
+	void newGame();
 }

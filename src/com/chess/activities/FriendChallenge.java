@@ -24,6 +24,7 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
+@Deprecated
 public class FriendChallenge extends CoreActivity implements OnClickListener {
 	private Spinner iplayas, dayspermove, friends;
 	private AutoCompleteTextView initialTime;

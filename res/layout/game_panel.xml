@@ -22,7 +22,7 @@
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				style="@style/GamePanelButton"
-				android:src="@drawable/ic_fastforward"
+				android:src="@drawable/ic_next_game"
 				android:background="@drawable/button_emboss_left_selector"
 				/>
 			<ImageButton

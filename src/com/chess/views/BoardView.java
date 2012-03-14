@@ -12,9 +12,7 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
-import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivity;
 import com.chess.core.IntentConstants;
@@ -84,14 +82,14 @@ public class BoardView extends ImageView {
 		board.movesCount = board.hply;
 		activity.Update(0);	//movelist
 		if (MainApp.isLiveOrEchessGameMode(this) && !board.analysis) {
-			boolean ssb;
+			boolean showSubmitButtonsLay;
 			if (mainApp.isLiveChess()) {
-				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
+				showSubmitButtonsLay = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 			} else {
-				ssb = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
+				showSubmitButtonsLay = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
 			}
-			if (ssb) {
-				activity.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
+			if (showSubmitButtonsLay) {
+//				activity.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 				board.submit = true;
 			} else {
 				activity.Update(1);

@@ -58,7 +58,8 @@
 		<activity android:name=".activities.FriendChallenge" />
 		<activity android:name=".activities.CreateChallenge" />
 
-
+		<activity android:name=".activities.ChatActivity" 		/>
+		<activity android:name=".activities.ChatLiveActivity" 	/>
 
         <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
         <activity android:name=".activities.LoginScreenActivity"

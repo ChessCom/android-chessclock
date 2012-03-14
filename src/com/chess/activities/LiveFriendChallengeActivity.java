@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
+import com.chess.adapters.ChessSpinnerAdapter;
 import com.chess.core.AppConstants;
 import com.chess.core.CoreActivityActionBar;
 import com.chess.core.Tabs;
@@ -81,11 +82,8 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 				FRIENDS = ChessComApiParser.GetFriendsParse(response);
 			}
 
-			ArrayAdapter<String> adapterF = new ArrayAdapter<String>(LiveFriendChallengeActivity.this,
-					android.R.layout.simple_spinner_item,
-					FRIENDS);
-			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			friends.setAdapter(adapterF);
+			ArrayAdapter<String> friendsAdapter  = new ChessSpinnerAdapter(this, FRIENDS);
+			friends.setAdapter(friendsAdapter);
 			if (friends.getSelectedItem().equals("")) {
 				new AlertDialog.Builder(LiveFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
@@ -116,7 +114,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 		super.onResume();
 		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
 			lccHolder.logout();
-			startActivity(new Intent(this, Tabs.class));
+			startActivity(new Intent(this, HomeScreenActivity.class));
 		}
 	}
 

@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.*;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
@@ -31,6 +30,7 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Web;
+import com.chess.views.GamePanelView;
 import com.flurry.android.FlurryAgent;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -58,16 +58,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	private final static int CALLBACK_TACTICS_CORRECT = 6;
 	private final static int CALLBACK_TACTICS_WRONG = 5;
 
-	private LinearLayout analysisLL;
-	private LinearLayout analysisButtons;
+//	private LinearLayout analysisLL;
+//	private LinearLayout analysisButtons;
 
 	private TextView timer;
 	private Timer tacticsTimer = null;
 	private int UPDATE_DELAY = 10000;
 
-	private FirstTacticsDialogListener firstTackicsDialogListener;
-	private MaxTacticksDialogListener maxTackicksDialogListener;
-	private HundredTacticsDialogListener hundredTackicsDialogListener;
+	private FirstTacticsDialogListener firstTacticsDialogListener;
+	private MaxTacticsDialogListener maxTacticsDialogListener;
+	private HundredTacticsDialogListener hundredTacticsDialogListener;
 	private OfflineModeDialogListener offlineModeDialogListener;
 	private CorrectDialogListener correctDialogListener;
 	private WrongDialogListener wrongDialogListener;
@@ -92,38 +92,42 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
-		analysisLL = (LinearLayout) findViewById(R.id.analysis);
-		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
+//		analysisLL = (LinearLayout) findViewById(R.id.analysis);
+//		analysisButtons = (LinearLayout) findViewById(R.id.analysisButtons);
 
-		findViewById(R.id.prev).setOnClickListener(this);
-		findViewById(R.id.next).setOnClickListener(this);
+//		findViewById(R.id.prev).setOnClickListener(this);
+//		findViewById(R.id.next).setOnClickListener(this);
 
 		timer = (TextView) findViewById(R.id.timer);
 
 
-		if (newBoardView.getBoardFace() == null) {
+
+//		if (newBoardView.getBoardFace() == null) {
 			newBoardView.setBoardFace(new Board2(this));
+            newBoardView.setGameActivityFace(this);
 			newBoardView.getBoardFace().setInit(true);
 			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 			//newBoardView.getBoardFaceFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
 
-			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
-				newBoardView.getBoardFace().setReside(true);
-				newBoardView.invalidate();
-				newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-			}
-			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-				newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-			}
-			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
-				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
+//			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
+//				newBoardView.getBoardFace().setReside(true);
+//				newBoardView.invalidate();
+//				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//			}
+//			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
+//				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+//			}
+//			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
+//				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 
-			if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
+//			if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
 				showDialog(DIALOG_TACTICS_START_TACTICS);
-			}
-		}
+//			}
+//		}
+		gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
+
 	}
 
 
@@ -152,9 +156,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 
 				if (mainApp.guest)
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				else
-					GetTacticsGame("");
+					getTacticsGame("");
 
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				//mainApp.getTabHost().setCurrentTab(0);
@@ -163,7 +167,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	private class MaxTacticksDialogListener implements DialogInterface.OnClickListener {
+	private class MaxTacticsDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
@@ -188,7 +192,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-				GetGuestTacticsGame();
+				getGuestTacticsGame();
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				//mainApp.getTabHost().setCurrentTab(0);
 				newBoardView.getBoardFace().setTacticCanceled(true);
@@ -273,10 +277,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (which == 1) {
 				if (mainApp.guest) {
 					mainApp.currentTacticProblem++;
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				} else {
 					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					GetTacticsGame("");
+					getTacticsGame("");
 				}
 			}
 		}
@@ -288,18 +292,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (which == 0) {
 				if (mainApp.guest) {
 					mainApp.currentTacticProblem++;
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				} else {
 					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					GetTacticsGame("");
+					getTacticsGame("");
 				}
 			}
 			if (which == 1) {
 				if (mainApp.guest || mainApp.noInternet) {
 					newBoardView.getBoardFace().setRetry(true);
-					GetGuestTacticsGame();
+					getGuestTacticsGame();
 				} else {
-					GetTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
+					getTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 				}
 			}
 			if (which == 2) {
@@ -313,11 +317,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			if (which == 0) {
-				GetTacticsGame("");
+				getTacticsGame("");
 			}
 			if (which == 1) {
 				newBoardView.getBoardFace().setRetry(true);
-				GetTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
+				getTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 			}
 			if (which == 2) {
 				newBoardView.finished = true;
@@ -334,19 +338,19 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.daily_limit_exceeded))
 						.setMessage(getString(R.string.max_tackics_for_today_reached))
-						.setPositiveButton(getString(R.string.ok), maxTackicksDialogListener)
-						.setNegativeButton(R.string.cancel, maxTackicksDialogListener)
+						.setPositiveButton(getString(R.string.ok), maxTacticsDialogListener)
+						.setNegativeButton(R.string.cancel, maxTacticsDialogListener)
 						.create();
 			case DIALOG_TACTICS_START_TACTICS:
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.ready_for_first_tackics_q))
-						.setPositiveButton(R.string.yes, firstTackicsDialogListener)
-						.setNegativeButton(R.string.no, firstTackicsDialogListener)
+						.setPositiveButton(R.string.yes, firstTacticsDialogListener)
+						.setNegativeButton(R.string.no, firstTacticsDialogListener)
 						.create();
 			case DIALOG_TACTICS_HUNDRED:
 				return new AlertDialog.Builder(this)
 						.setTitle(R.string.hundred_tackics_completed)
-						.setNegativeButton(R.string.okay, hundredTackicsDialogListener)
+						.setNegativeButton(R.string.okay, hundredTacticsDialogListener)
 						.create();
 			case DIALOG_TACTICS_OFFLINE_RATING:
 				return new AlertDialog.Builder(this)
@@ -382,9 +386,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				getString(R.string.showanswer),
 				getString(R.string.settings)};
 
-		firstTackicsDialogListener = new FirstTacticsDialogListener();
-		maxTackicksDialogListener = new MaxTacticksDialogListener();
-		hundredTackicsDialogListener = new HundredTacticsDialogListener();
+		firstTacticsDialogListener = new FirstTacticsDialogListener();
+		maxTacticsDialogListener = new MaxTacticsDialogListener();
+		hundredTacticsDialogListener = new HundredTacticsDialogListener();
 		offlineModeDialogListener = new OfflineModeDialogListener();
 		correctDialogListener = new CorrectDialogListener();
 		wrongDialogListener = new WrongDialogListener();
@@ -415,7 +419,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	private void GetTacticsGame(final String id) {
+	private void getTacticsGame(final String id) {
 		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
 		if (!mainApp.noInternet) {
 			newBoardView.setBoardFace(new Board2(this));
@@ -496,7 +500,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	private void GetGuestTacticsGame() {
+	private void getGuestTacticsGame() {
 		FlurryAgent.onEvent("Tactics Session Started For Guest", null);
 
 		if (mainApp.currentTacticProblem >= mainApp.getTacticsBatch().size()) {
@@ -723,7 +727,20 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 
-	@Override
+    @Override
+    public void switch2Analysis(boolean isAnalysis) {
+//        super.switch2Analysis(isAnalysis);
+//        switch2Analysis(isAnalysis);
+        if (isAnalysis) {
+            timer.setVisibility(View.INVISIBLE);
+            analysisTxt.setVisibility(View.VISIBLE);
+        } else {
+            timer.setVisibility(View.VISIBLE);
+            analysisTxt.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
 	public void update(int code) {
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
@@ -734,7 +751,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					newBoardView.getBoardFaceFace().getTactic()Canceled = true;*/
 					if (mainApp.noInternet) {
 						if (mainApp.offline) {
-							GetGuestTacticsGame();
+							getGuestTacticsGame();
 						} else {
 							mainApp.offline = true;
 							showDialog(DIALOG_TACTICS_OFFLINE_RATING);
@@ -766,49 +783,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
-				switch (newBoardView.getBoardFace().getMode()) {
-					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-						whitePlayerLabel.setText(getString(R.string.Human));
-						blackPlayerLabel.setText(getString(R.string.Computer));
-						break;
-					}
-					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(getString(R.string.Human));
-						break;
-					}
-					case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-						whitePlayerLabel.setText(getString(R.string.Human));
-						blackPlayerLabel.setText(getString(R.string.Human));
-						break;
-					}
-					case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(getString(R.string.Computer));
-						break;
-					}
-					default:
-						break;
-				}
 
-				if (MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
-					if (newBoardView.getBoardFace().isAnalysis()) {
-						timer.setVisibility(View.GONE);
-						analysisLL.setVisibility(View.VISIBLE);
-						if (!mainApp.isLiveChess() && analysisButtons != null) {
-							showAnalysisButtons();
-						}
-					} else {
-						whitePlayerLabel.setVisibility(View.GONE);
-						blackPlayerLabel.setVisibility(View.GONE);
-						timer.setVisibility(View.VISIBLE);
-						analysisLL.setVisibility(View.GONE);
-						if (!mainApp.isLiveChess() && analysisButtons != null) {
-							hideAnalysisButtons();
-						}
-					}
-				}
-				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.invalidate();
 				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
 								{
 								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
@@ -817,7 +794,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 								{
 								  movelist.setText(newBoardView.getBoardFaceFace().MoveListSAN());
 								}*/
-				newBoardView.invalidate();
 
 				new Handler().post(new Runnable() {
 					@Override
@@ -828,18 +804,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				break;
 			}
 
-			case 2: {
-				whitePlayerLabel.setVisibility(View.GONE);
-				blackPlayerLabel.setVisibility(View.GONE);
-				thinking.setVisibility(View.VISIBLE);
-				break;
-			}
-			case 3: {
-				whitePlayerLabel.setVisibility(View.VISIBLE);
-				blackPlayerLabel.setVisibility(View.VISIBLE);
-				thinking.setVisibility(View.GONE);
-				break;
-			}
+//			case 2: {
+//				whitePlayerLabel.setVisibility(View.GONE);
+//				blackPlayerLabel.setVisibility(View.GONE);
+//				thinking.setVisibility(View.VISIBLE);
+//				break;
+//			}
+//			case 3: {
+//				whitePlayerLabel.setVisibility(View.VISIBLE);
+//				blackPlayerLabel.setVisibility(View.VISIBLE);
+//				thinking.setVisibility(View.GONE);
+//				break;
+//			}
 			case 4: {
 				checkTacticMoves();
 				break;
@@ -877,7 +853,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						.setItems(getResources().getTextArray(R.array.correcttactic), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 1) {
-									GetTacticsGame("");
+									getTacticsGame("");
 								}
 							}
 						})
@@ -1085,7 +1061,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 					mainApp.getCurrentGame().values.put("has_new_message", "0");
-					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLive.class : Chat.class).
+					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
 							putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).
 							putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP)));
 					chat = false;
@@ -1175,6 +1151,43 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 	@Override
+	public void showChoosePieceDialog(final int col,final int row) {
+		new AlertDialog.Builder(this)
+				.setTitle("Choose a piece ")
+				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								if (which == 4) {
+									newBoardView.invalidate();
+									return;
+								}
+								newBoardView.promote(4 - which, col, row);
+							}
+						}).setCancelable(false)
+				.create().show();
+	}
+
+	@Override
+	public void newGame() {
+		if (mainApp.guest) {
+			mainApp.currentTacticProblem++;
+			getGuestTacticsGame();
+		} else {
+			if (mainApp.noInternet) mainApp.currentTacticProblem++;
+			closeOptionsMenu();
+			getTacticsGame("");
+		}
+	}
+
+
+	@Override
+	public void showOptions() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.options)
+				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.game_tactics, menu);
@@ -1185,40 +1198,35 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_next_game:
-				if (mainApp.guest) {
-					mainApp.currentTacticProblem++;
-					GetGuestTacticsGame();
-				} else {
-					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					closeOptionsMenu();
-					GetTacticsGame("");
-				}
+				newGame();
 				break;
 			case R.id.menu_options:
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.options)
-						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+				showOptions();
 				break;
 			case R.id.menu_reside:
-				newBoardView.getBoardFace().setReside(!newBoardView.getBoardFace().isReside());
-				newBoardView.invalidate();
+				newBoardView.flipBoard();
+//				newBoardView.getBoardFace().setReside(!newBoardView.getBoardFace().isReside());
+//				newBoardView.invalidate();
 				break;
 			case R.id.menu_analysis:
-				newBoardView.getBoardFace().setAnalysis(true);
-				update(CALLBACK_REPAINT_UI);
+				newBoardView.switchAnalysis();
+//				newBoardView.getBoardFace().setAnalysis(true);
+//				update(CALLBACK_REPAINT_UI);
 				break;
 			case R.id.menu_previous:
-				newBoardView.finished = false;
-				newBoardView.sel = false;
-				newBoardView.getBoardFace().takeBack();
-				newBoardView.invalidate();
-				update(CALLBACK_REPAINT_UI);
+				newBoardView.moveBack();
+//				newBoardView.finished = false;
+//				newBoardView.sel = false;
+//				newBoardView.getBoardFace().takeBack();
+//				newBoardView.invalidate();
+//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 			case R.id.menu_next:
-				newBoardView.getBoardFace().takeNext();
-				newBoardView.invalidate();
-				update(CALLBACK_REPAINT_UI);
+				newBoardView.moveForward();
+//				newBoardView.getBoardFace().takeNext();
+//				newBoardView.invalidate();
+//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 		}
@@ -1242,9 +1250,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				case TACTICS_SKIP_PROBLEM: {
 					if (mainApp.guest || mainApp.noInternet) {
 						mainApp.currentTacticProblem++;
-						GetGuestTacticsGame();
+						getGuestTacticsGame();
 					} else
-						GetTacticsGame("");
+						getTacticsGame("");
 					break;
 				}
 				case TACTICS_SHOW_ANSWER: {
@@ -1277,7 +1285,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 		}
 
-
 		if (newBoardView.getBoardFace().isTacticCanceled()) {
 			newBoardView.getBoardFace().setTacticCanceled(false);
 			showDialog(DIALOG_TACTICS_START_TACTICS);
@@ -1296,7 +1303,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 	@Override
 	protected void onGameEndMsgReceived() {
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//		showSubmitButtonsLay(false);
+//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
 	}
 
 	public void stopTacticsTimer() {
@@ -1336,18 +1344,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 
-	private void showAnalysisButtons() {
-		analysisButtons.setVisibility(View.VISIBLE);
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-		/*newBoardView.getBoardFaceFace().takeBack();
-			newBoardView.getBoardFaceFace().getMovesCount()--;
-			newBoardView.invalidate();
-			newBoardView.getBoardFaceFace().submit = false;*/
-	}
-
-	private void hideAnalysisButtons() {
-		analysisButtons.setVisibility(View.GONE);
-	}
+//	private void showAnalysisButtons() {
+//		analysisButtons.setVisibility(View.VISIBLE);
+//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+//		/*newBoardView.getBoardFaceFace().takeBack();
+//			newBoardView.getBoardFaceFace().getMovesCount()--;
+//			newBoardView.invalidate();
+//			newBoardView.getBoardFaceFace().submit = false;*/
+//	}
+//
+//	private void hideAnalysisButtons() {
+//		analysisButtons.setVisibility(View.GONE);
+//	}
 
 
 	@Override
@@ -1497,7 +1505,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.prev) {
+		/*if (view.getId() == R.id.prev) {
 			newBoardView.finished = false;
 			newBoardView.sel = false;
 			newBoardView.getBoardFace().takeBack();
@@ -1509,8 +1517,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			newBoardView.invalidate();
 			update(CALLBACK_REPAINT_UI);
 			isMoveNav = true;
-		} else if (view.getId() == R.id.newGame) {
-			startActivity(new Intent(this, OnlineNewGame.class));
+		} else*/ if (view.getId() == R.id.newGame) {
+			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}
 	}
 

@@ -45,6 +45,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	private RelativeLayout chatPanel;
 
 	private int resignOrAbort = R.string.resign;
+	private View submitButtonsLay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
 		ImageButton chatButton = (ImageButton) findViewById(R.id.chat);
 		chatButton.setOnClickListener(this);
-		findViewById(R.id.prev).setOnClickListener(this);
-		findViewById(R.id.next).setOnClickListener(this);
+
+		submitButtonsLay = findViewById(R.id.submitButtonsLay);
+		findViewById(R.id.submit).setOnClickListener(this);
+		findViewById(R.id.cancel).setOnClickListener(this);
+//		findViewById(R.id.prev).setOnClickListener(this);
+//		findViewById(R.id.next).setOnClickListener(this);
 
 		if (/*mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(extras.getInt(AppConstants.GAME_MODE))
 				&& */lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
@@ -78,8 +83,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			lccHolder.setClockDrawPointer(isWhite);
 		}
 
-		if (newBoardView.getBoardFace() == null) {
+//		if (newBoardView.getBoardFace() == null) {
 			newBoardView.setBoardFace(new Board2(this));
+            newBoardView.setGameActivityFace(this);
 			newBoardView.getBoardFace().setInit(true);
 			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -87,14 +93,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 				newBoardView.getBoardFace().setReside(true);
 				newBoardView.invalidate();
-				newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-				newBoardView.ComputerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
 				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
-		}
+//		}
 	}
 
 	@Override
@@ -187,36 +193,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
-				switch (newBoardView.getBoardFace().getMode()) {
+				if (newBoardView.getBoardFace().isSubmit())
+					showSubmitButtonsLay(true);
 
-					case AppConstants.GAME_MODE_LIVE_OR_ECHESS: {
-						if (newBoardView.getBoardFace().isSubmit())
-							findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
-						findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								update(CALLBACK_SEND_MOVE);
-							}
-						});
-						findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								findViewById(R.id.moveButtons).setVisibility(View.GONE);
-								newBoardView.getBoardFace().takeBack();
-								newBoardView.getBoardFace().decreaseMovesCount();
-								newBoardView.invalidate();
-								newBoardView.getBoardFace().setSubmit(false);
-							}
-						});
-						whitePlayerLabel.setVisibility(View.VISIBLE);
-						blackPlayerLabel.setVisibility(View.VISIBLE);
-
-
-						break;
-					}
-					default:
-						break;
-				}
+				whitePlayerLabel.setVisibility(View.VISIBLE);
+				blackPlayerLabel.setVisibility(View.VISIBLE);
 
 
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
@@ -226,7 +207,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					}
 				}
 
-				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
 				newBoardView.invalidate();
 
 				new Handler().post(new Runnable() {
@@ -238,8 +219,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 			}
 			case CALLBACK_SEND_MOVE: {
-				findViewById(R.id.moveButtons).setVisibility(View.GONE);
-				newBoardView.getBoardFace().setSubmit(false);
+				showSubmitButtonsLay(false);
+
+
 				//String myMove = newBoardView.getBoardFace().MoveSubmit();
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
 					final String move = newBoardView.getBoardFace().convertMoveLive();
@@ -407,7 +389,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 								.values.get(AppConstants.BLACK_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 					mainApp.getCurrentGame().values.put("has_new_message", "0");
-					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLive.class : Chat.class).
+					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
 							putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).
 							putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP)));
 					chat = false;
@@ -485,6 +467,47 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
+	public void switch2Chat() {
+
+	}
+
+	@Override
+	public void newGame() {
+
+	}
+
+
+	@Override
+	public void showOptions() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.options)
+				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	}
+
+	@Override
+	public void showSubmitButtonsLay(boolean show) {
+		submitButtonsLay.setVisibility(show? View.VISIBLE: View.GONE);
+		newBoardView.getBoardFace().setSubmit(show);
+	}
+
+	@Override
+	public void showChoosePieceDialog(final int col,final int row) {
+		new AlertDialog.Builder(this)
+		.setTitle("Choose a piece ")
+		.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == 4) {
+							newBoardView.invalidate();
+							return;
+						}
+						newBoardView.promote(4 - which, col, row);
+			}
+		}).setCancelable(false)
+		.create().show();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.game_live, menu);
@@ -495,9 +518,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_options:
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.options)
-						.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+				showOptions();
 				break;
 			case R.id.menu_chat:
 				chat = true;
@@ -615,7 +636,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	};
 
 	protected void onGameEndMsgReceived() {
-		findViewById(R.id.moveButtons).setVisibility(View.GONE);
+		showSubmitButtonsLay(false);
 		chatPanel.setVisibility(View.GONE);
 	}
 
@@ -660,6 +681,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	};
 
 
+
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
@@ -667,18 +689,26 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			chat = true;
 			getOnlineGame(mainApp.getGameId());
 			chatPanel.setVisibility(View.GONE);
-		} else if (view.getId() == R.id.prev) {
-			newBoardView.finished = false;
-			newBoardView.sel = false;
+//		} else if (view.getId() == R.id.prev) {
+//			newBoardView.finished = false;
+//			newBoardView.sel = false;
+//			newBoardView.getBoardFace().takeBack();
+//			newBoardView.invalidate();
+//			update(CALLBACK_REPAINT_UI);
+//			isMoveNav = true;
+//		} else if (view.getId() == R.id.next) {
+//			newBoardView.getBoardFace().takeNext();
+//			newBoardView.invalidate();
+//			update(CALLBACK_REPAINT_UI);
+//			isMoveNav = true;
+		} else if (view.getId() == R.id.cancel) {
+			showSubmitButtonsLay(false);
+
 			newBoardView.getBoardFace().takeBack();
+			newBoardView.getBoardFace().decreaseMovesCount();
 			newBoardView.invalidate();
-			update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
-		} else if (view.getId() == R.id.next) {
-			newBoardView.getBoardFace().takeNext();
-			newBoardView.invalidate();
-			update(CALLBACK_REPAINT_UI);
-			isMoveNav = true;
+		} else if (view.getId() == R.id.submit) {
+			update(CALLBACK_SEND_MOVE);
 		} else if (view.getId() == R.id.newGame) {
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}

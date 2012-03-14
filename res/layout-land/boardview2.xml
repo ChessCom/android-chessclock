@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:background="#444"
     android:orientation="horizontal" >
-
+<!--
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -167,6 +167,6 @@
                 android:src="@drawable/next" >
             </ImageButton>
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.chess.views;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -17,7 +16,6 @@ import com.chess.adapters.ItemsAdapter;
 import com.chess.core.interfaces.BoardViewFace;
 import com.chess.engine.PieceItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,25 +50,11 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 			1,
 			1
 	};
-	private int whiteSavedPiecesCount[] = pieceItemCounts.clone();/* new int[]{
-			8,
-			2,
-			2,
-			2,
-			1,
-			1
-	};*/
-	private int blackSavedPiecesCount[] = pieceItemCounts.clone();/*new int[]{
-			8,
-			2,
-			2,
-			2,
-			1,
-			1
-	};*/
+	private int whiteSavedPiecesCount[] = pieceItemCounts.clone();
+	private int blackSavedPiecesCount[] = pieceItemCounts.clone();
 
 	private int[] buttonsDrawableIds = new int[]{
-			R.drawable.ic_fastforward,
+			R.drawable.ic_next_game,
 			R.drawable.ic_options,
 			R.drawable.ic_flip,
 			R.drawable.ic_analysis,
@@ -79,13 +63,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 			R.drawable.ic_forward
 	};
 
-	private static final int B_FASTFORWARD_ID 	= 0;
-	private static final int B_OPTIONS_ID 		= 1;
-	private static final int B_FLIP_ID 			= 2;
-	private static final int B_ANALYSIS_ID 		= 3;
-	private static final int B_CHAT_ID 			= 4;
-	private static final int B_BACK_ID 			= 5;
-	private static final int B_FORWARD_ID 		= 6;
+	public static final int B_NEW_GAME_ID   = 0;
+	public static final int B_OPTIONS_ID 	= 1;
+	public static final int B_FLIP_ID 		= 2;
+	public static final int B_ANALYSIS_ID 	= 3;
+	public static final int B_CHAT_ID 		= 4;
+	public static final int B_BACK_ID 		= 5;
+	public static final int B_FORWARD_ID 	= 6;
+//	private static final int B_NEW_GAME_ID 	= 7;
 
 	private int whiteAlivePiecesCount[] = new int[6];
 	private int blackAlivePiecesCount[] = new int[6];
@@ -94,7 +79,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public static final int BUTTON_PREFIX = 0x00000000;
 	public static final int WHITE_FRAME_PREFIX = 0x00001000;
 	public static final int BLACK_FRAME_PREFIX = 0x00004000;
-	private List<String> itemList;
+//	private List<String> itemList;
+    private TextView movesTextView;
 	private BoardViewFace boardViewFace;
 
 
@@ -108,21 +94,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		onCreate();
 	}
 
-	private void addControlButton(int buttonId, int backId) {
-		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(buttonsDrawableIds[buttonId]);
-		imageButton.setBackgroundResource(backId);
-		imageButton.setOnClickListener(this);
-		imageButton.setId(BUTTON_PREFIX + buttonId);
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-
-		params.weight = 1;
-		imageButton.setLayoutParams(params);
-		controlsLayout.addView(imageButton);
-	}
-
+    
 	public void onCreate() {
 		setOrientation(VERTICAL);
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -142,7 +114,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		controlsLayout.setLayoutParams(params);
 
-		addControlButton(B_FASTFORWARD_ID, 	R.drawable.button_emboss_left_selector);
+		addControlButton(B_NEW_GAME_ID, 	R.drawable.button_emboss_left_selector);
 		addControlButton(B_OPTIONS_ID, 		R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FLIP_ID, 		R.drawable.button_emboss_mid_selector);
 		addControlButton(B_ANALYSIS_ID, 	R.drawable.button_emboss_mid_selector);
@@ -188,24 +160,35 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		listParams.weight = 7;
 		listParams.gravity = Gravity.RIGHT;
+//        android:gravity="right"
 
 
-		ListView movesListView = new ListView(getContext());
-		movesListView.setPadding(1, 1, 0, 1);
-		movesListView.setLayoutParams(listParams);
+        // change to TextView
+//		ListView movesListView = new ListView(getContext());
+//		movesListView.setPadding(1, 1, 0, 1);
+//		movesListView.setLayoutParams(listParams);
+//
+//		movesListView.setCacheColorHint(Color.TRANSPARENT);
+//		movesListView.setBackgroundColor(Color.TRANSPARENT);
+//		movesListView.setDividerHeight(0);
+//		movesListView.setDivider(getResources().getDrawable(android.R.color.transparent));
+//        infoLayout.addView(movesListView);
 
-		movesListView.setCacheColorHint(Color.TRANSPARENT);
-		movesListView.setBackgroundColor(Color.TRANSPARENT);
-		movesListView.setDividerHeight(0);
-		movesListView.setDivider(getResources().getDrawable(android.R.color.transparent));
-
-		infoLayout.addView(movesListView);
-
+        movesTextView = new TextView(getContext());
+//        android:inputType="textImeMultiLine"
+//        android:ellipsize="start"
+//        movesTextView.setEllipsize(TextUtils.TruncateAt.START);
+//        movesTextView.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        movesTextView.setLayoutParams(listParams);
+        movesTextView.setGravity(Gravity.BOTTOM);
+        movesTextView.setTextSize(13);
+        infoLayout.addView(movesTextView);
+        
 		addView(infoLayout);
 
-		itemList = new ArrayList<String>();
+//		itemList = new ArrayList<String>();
 
-		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
+//		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
 
 		whitePieceDrawableIds = new int[]{
 				R.drawable.captured_wp,
@@ -225,26 +208,63 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				R.drawable.captured_bk
 		};
 
-		addItems(whiteCapturedPieces, true, 1.0f, QUEEN_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, ROOK_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, BISHOP_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, KNIGHT_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, PAWN_ID);
-		addItems(whiteCapturedPieces, true, 1.0f, KING_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, QUEEN_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, ROOK_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, BISHOP_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, KNIGHT_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, PAWN_ID);
+		addPieceItems(whiteCapturedPieces, true, 1.0f, KING_ID);
 
-		addItems(blackCapturedPieces, false, 1.0f, QUEEN_ID);
-		addItems(blackCapturedPieces, false, 1.0f, ROOK_ID);
-		addItems(blackCapturedPieces, false, 1.0f, BISHOP_ID);
-		addItems(blackCapturedPieces, false, 1.0f, KNIGHT_ID);
-		addItems(blackCapturedPieces, false, 1.0f, PAWN_ID);
-		addItems(blackCapturedPieces, false, 1.0f, KING_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, QUEEN_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, ROOK_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, BISHOP_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, KNIGHT_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, PAWN_ID);
+		addPieceItems(blackCapturedPieces, false, 1.0f, KING_ID);
 
-		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
+//		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
+	}
+
+    private void addControlButton(int buttonId, int backId) {
+        ImageButton imageButton = new ImageButton(getContext());
+        imageButton.setImageResource(buttonsDrawableIds[buttonId]);
+        imageButton.setBackgroundResource(backId);
+        imageButton.setOnClickListener(this);
+        imageButton.setId(BUTTON_PREFIX + buttonId);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.weight = 1;
+        imageButton.setLayoutParams(params);
+        controlsLayout.addView(imageButton);
+    }
+
+    public void toggleControlButton(int buttonId,boolean checked){
+        if(checked){
+            findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_checked);
+        }else{
+            findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_selector);
+        }
+
+    }
+    
+	public void hideGameButton(int buttonId){
+		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
+	}
+
+	public void enableGameButton(int buttonId,boolean enable){
+		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setEnabled(enable);
+	}
+
+	public void changeGameButton(int buttonId, int resId){
+		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
 	}
 
 	public void addMoveLog(CharSequence move){
-		itemList.clear();
-		itemList.add(move.toString());
+//		itemList.clear();
+//		itemList.add(move.toString());
+        movesTextView.setText(move);
 	}
 	
 	private int getFramePrefix(boolean isWhite) {
@@ -309,7 +329,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		return pieceDrawable;
 	}
 
-	private void addItems(LinearLayout viewGroup, boolean isWhite, /*int layersCnt, */float itemWeight, int pieceId) {
+	private void addPieceItems(LinearLayout viewGroup, boolean isWhite, /*int layersCnt, */float itemWeight, int pieceId) {
 		int layersCnt = pieceItemCounts[pieceId];
 		// Add background image to get correct weights
 		ImageView imageView = new ImageView(getContext());
@@ -431,15 +451,16 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 					capturePiece(isWhite, i);
 					storedPiecesCounts[i]--;
 				}
-
 			}
 		}
 	}
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == BUTTON_PREFIX + B_FASTFORWARD_ID){
-			boardViewFace.fastForward();
+		/*if(view.getId() == BUTTON_PREFIX + B_NEXT_GAME_ID){
+			boardViewFace.nextGame();
+		}else */if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
+			boardViewFace.newGame();
 		}else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
 		}else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID){

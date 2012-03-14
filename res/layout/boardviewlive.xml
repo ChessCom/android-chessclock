@@ -3,7 +3,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="#444">
-
+<!--
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
@@ -106,6 +106,13 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"/>
+
+
+
+-->
+
+
+
 		<!--       <ImageView android:id="@+id/boardview" android:layout_height="320px" android:layout_width="320px" android:layout_weight="1"/>
 		 -->
 
@@ -127,6 +134,9 @@
 						 android:gravity="center" android:padding="2dip" android:text="end of game"></TextView>
 
 				-->
+
+
+<!--
 	</LinearLayout>
 
 	<RelativeLayout
@@ -266,6 +276,7 @@
 			android:src="@drawable/chat_nm">
 		</ImageButton>
 	</RelativeLayout>
+-->
 
 	<!--
 			<LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="visible" android:background="#444">

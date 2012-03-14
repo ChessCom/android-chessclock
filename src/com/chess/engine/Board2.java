@@ -16,6 +16,8 @@ import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.utilities.SoundPlayer;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 public class Board2 implements BoardFace {
@@ -1218,17 +1220,34 @@ public class Board2 implements BoardFace {
 		return output;
 	}
 
-	public String MoveListSAN() {
-		String output = "";
-		int i = 0;
-		for (i = 0; i < hply; i++) {
-			if (i % 2 == 0)
-				output += "\n " + (i / 2 + 1) + ". ";
-			output += histDat[i].notation;
-			output += " ";
-		}
-		return output;
-	}
+//	public List<String> MoveListSAN() {
+//        String output = "";
+//		int i = 0;
+//        List<String> outputList = new ArrayList<String>();
+//		for (i = 0; i < hply; i++) {
+//			if (i % 2 == 0)
+//				output += "\n " + (i / 2 + 1) + ". ";
+//			output += histDat[i].notation;
+//			output += " ";
+//
+//            outputList.add(histDat[i].notation);
+//		}
+//
+//
+//		return outputList;
+//	}
+
+    public String MoveListSAN() { // TODO check for correct output after loading game
+        String output = "";
+        int i = 0;
+        for (i = 0; i < hply; i++) {
+            if (i % 2 == 0)
+                output += "\n " + (i / 2 + 1) + ". ";
+            output += histDat[i].notation;
+            output += " ";
+        }
+        return output;
+    }
 
 	public String GetMoveSAN() {
 		Move m = histDat[hply].m;
@@ -1904,6 +1923,11 @@ public class Board2 implements BoardFace {
 		return tacticMoves;
 	}
 
+    @Override
+    public boolean toggleAnalysis() {
+        return analysis = !analysis;
+    }
+
 	public boolean isAnalysis() {
 		return analysis;
 	}
@@ -2097,7 +2121,8 @@ public class Board2 implements BoardFace {
 		tacticsCorrectMoves++;
 	}
 
-	public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
+
+    public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
 		this.tacticsCorrectMoves = tacticsCorrectMoves;
 	}
 
