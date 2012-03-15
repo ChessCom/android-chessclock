@@ -49,14 +49,14 @@ public class Chat extends CoreActivity implements OnClickListener {
 	public void Update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
-				appService.RunRepeatbleTask(0, 0, 60000, "http://www." + LccHolder.HOST
-						+ "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="
-						+ extras.getString(AppConstants.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(AppConstants.TIMESTAMP),
-						null/*
+				appService.RunRepeatableTask(0, 0, 60000, "http://www." + LccHolder.HOST
+                        + "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="
+                        + extras.getString(AppConstants.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(AppConstants.TIMESTAMP),
+                        null/*
 							 * progressDialog = MyProgressDialog.show(Chat.this, null,
 							 * getString(R.string.gettingmessages), true)
 							 */
-				);
+                );
 			}
 		} else if (code == 0) {
 			int before = chatItems.size();

@@ -15,22 +15,22 @@ import java.util.ArrayList;
 public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 
 	public ArrayList<GameListElement> items;
-	private LayoutInflater vi;
-	private int res;
+	private LayoutInflater inflater;
+	private int textViewResId;
 	private Context CTX;
 
 	public OnlineGamesAdapter(Context context, int textViewResourceId, ArrayList<GameListElement> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
-		this.vi = LayoutInflater.from(context);
-		this.res = textViewResourceId;
+		this.inflater = LayoutInflater.from(context);
+		this.textViewResId = textViewResourceId;
 		this.CTX = context;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = vi.inflate(res, null);
+			convertView = inflater.inflate(textViewResId, null);
 		}
 		final GameListElement el = items.get(position);
 		if (el != null) {

@@ -649,9 +649,9 @@ public class Online extends CoreActivity implements OnClickListener {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
-					appService.RunRepeatbleTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
-							null/*progressDialog = MyProgressDialog
+					appService.RunRepeatableTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
+                            queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
+                            null/*progressDialog = MyProgressDialog
                                         .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
 				} else {
 					/*appService.RunRepeatble(ONLINE_CALLBACK_CODE, 0, 2000,

@@ -53,7 +53,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	private GameListItemDialogListener gameListItemDialogListener;
 	private ChallengeDialogListener challengeDialogListener;
 	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
-	private IsIndirencetDialogListener isIndirencetDialogListener;
+	private IsIndirectDialogListener indirectDialogListener;
 	private NonLiveDialogListener nonLiveDialogListener;
 
 
@@ -157,7 +157,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 	@Override
 	protected void onRestart() {
-		gamesList.setVisibility(View.VISIBLE);
+        gamesList.setVisibility(View.VISIBLE);
 		super.onRestart();
 	}
 
@@ -191,10 +191,10 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			}*/
 
 		new Handler().post(new Runnable() {
-			public void run() {
-				disableScreenLock();
-			}
-		});
+            public void run() {
+                disableScreenLock();
+            }
+        });
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		gameListItemDialogListener = new GameListItemDialogListener();
 		challengeDialogListener = new ChallengeDialogListener();
 		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
-		isIndirencetDialogListener = new IsIndirencetDialogListener();
+		indirectDialogListener = new IsIndirectDialogListener();
 		nonLiveDialogListener = new NonLiveDialogListener();
 	}
 
@@ -254,8 +254,8 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, ChatActivity.class);
-				intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
-				intent.putExtra(AppConstants.TIMESTAMP, gameListElement.values.get(AppConstants.TIMESTAMP));
+                intent.putExtra(AppConstants.GAME_ID, gameListElement.values.get(AppConstants.GAME_ID));
+                intent.putExtra(AppConstants.TIMESTAMP, gameListElement.values.get(AppConstants.TIMESTAMP));
 				startActivity(intent);
 			} else if (pos == 1) {
 				String Draw = "OFFERDRAW";
@@ -308,7 +308,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 								getString(R.string.chat),
 								getString(R.string.drawoffer),
 								getString(R.string.resignorabort)},
-								gameListItemDialogListener)
+                                gameListItemDialogListener)
 						.create().show();
 			} else if (gameListElement.type == 2) {
 				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
@@ -331,13 +331,13 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 //			final GameListElement el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+                final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Accept challenge: " + challenge);
-				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+                lccHolder.getAndroid().runAcceptChallengeTask(challenge);
+                lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				update(2);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
+                final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Decline challenge: " + challenge);
 				lccHolder.getAndroid().runRejectChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
@@ -363,7 +363,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		}
 	}
 
-	private class IsIndirencetDialogListener implements DialogInterface.OnClickListener{
+	private class IsIndirectDialogListener implements DialogInterface.OnClickListener{
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 //			final GameListElement el = mainApp.getGameListItems().get(pos);
@@ -449,7 +449,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 					} else if (gameListElement.values.get("is_direct_challenge").equals("0") && gameListElement.values.get("is_released_by_me").equals("1")) {
 						new AlertDialog.Builder(coreContext)
 								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"},isIndirencetDialogListener)
+								.setItems(new String[]{"Cancel", "Keep"}, indirectDialogListener)
 								.create().show();
 					}
 				} // echess
@@ -496,9 +496,9 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
-					appService.RunRepeatbleTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
-							null/*progressDialog = MyProgressDialog
+					appService.RunRepeatableTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
+                            queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
+                            null/*progressDialog = MyProgressDialog
                                         .show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
 				} else {
 					/*appService.RunRepeatble(ONLINE_CALLBACK_CODE, 0, 2000,

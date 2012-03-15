@@ -100,10 +100,10 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
-					appService.RunRepeatbleTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							"http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
-									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
-							null/*progressDialog = MyProgressDialog
+					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
+                            "http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" +
+                                    mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+                            null/*progressDialog = MyProgressDialog
                                         .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
 				} else {
 					/*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,

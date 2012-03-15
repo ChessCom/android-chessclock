@@ -19,7 +19,7 @@ public class AppConstants {
 	public static final String VIDEO_SKILL_LEVEL = "video_skill_level";
 	public static final String VIDEO_CATEGORY = "video_category";
 	public static final String ENABLE_LIVE_CONNECTING_INDICATOR = "enable_live_connecting_indicator";
-	public static final String REPEATABLE = "repeatable";
+//	public static final String REPEATABLE = "repeatable"; // TODO use REPEATABLE_TASK instead!
 	public static final String REQUEST_RESULT = "request_result";
 	public static final String CALLBACK_CODE = "callback_code";
 	public static final String REPEATABLE_TASK = "repeatable_task";

@@ -265,7 +265,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			String resp = "";
 			int retCode = ERROR_SERVER_RESPONSE;
 			try {
-				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE);
+				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE_TASK);
 				resp = rExtras.getString(AppConstants.REQUEST_RESULT);
 				if (repeatable) {
 					responseRepeatable = resp;

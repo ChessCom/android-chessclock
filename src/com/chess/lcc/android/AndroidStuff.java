@@ -79,7 +79,7 @@ public class AndroidStuff {
 
 	public void sendConnectionBroadcastIntent(boolean result, int code, String... errorMessage) {
 		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(WebService.BROADCAST_ACTION)
-				.putExtra(AppConstants.REPEATABLE, false)
+				.putExtra(AppConstants.REPEATABLE_TASK, false)
 				.putExtra(AppConstants.CALLBACK_CODE, code)
 				.putExtra(AppConstants.REQUEST_RESULT,
 						result ? "Success" : "Error+" + errorMessage[0])

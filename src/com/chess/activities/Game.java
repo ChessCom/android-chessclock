@@ -1092,10 +1092,10 @@ public class Game extends CoreActivity implements OnClickListener {
 							progressDialog = null;
 						}
 						if (!mainApp.isLiveChess()) {
-							appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
-									null/*progressDialog*/
-							);
+							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
+                                    "http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
+                                    null/*progressDialog*/
+                            );
 						}
 					}
 				}
@@ -1624,10 +1624,10 @@ public class Game extends CoreActivity implements OnClickListener {
 						progressDialog = null;
 					}
 					if (!mainApp.isLiveChess()) {
-						appService.RunRepeatbleTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-								"http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
-								null/*progressDialog*/
-						);
+						appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
+                                "http://www." + LccHolder.HOST + "/api/v3/get_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
+                                null/*progressDialog*/
+                        );
 					}
 				}
 				break;
