@@ -28,7 +28,13 @@
  	<dimen name="home_main_padding_bot">0dip</dimen>
  	<dimen name="home_main_padding_left">20dip</dimen>
  	<dimen name="home_main_padding_right">20dip</dimen>
- 	 	
+
+
+	<!--Dashboard-->
+	<dimen name="dashboard_padding_top">21dip</dimen>
+	<dimen name="dashboard_padding_bot">48dip</dimen>
+	<dimen name="dashboard_padding_side">42dip</dimen>
+
  	<dimen name="smallLogo_width">100dip</dimen>
 	<dimen name="smallLogo_height">37dip</dimen>
  	

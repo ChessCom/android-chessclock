@@ -82,6 +82,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 //	private List<String> itemList;
     private TextView movesTextView;
 	private BoardViewFace boardViewFace;
+	private int screenOrientation;
 
 
 	public GamePanelView(Context context) {
@@ -96,6 +97,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
     
 	public void onCreate() {
+		screenOrientation = getContext().getResources().getConfiguration().orientation;
 		setOrientation(VERTICAL);
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 
