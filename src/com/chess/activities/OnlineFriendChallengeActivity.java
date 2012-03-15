@@ -19,7 +19,7 @@ import com.chess.utilities.MyProgressDialog;
 import com.chess.views.BackgroundChessDrawable;
 
 public class OnlineFriendChallengeActivity extends CoreActivityActionBar implements OnClickListener {
-	private Spinner iplayas;
+	private Spinner iPlayAsSpinner;
 	private Spinner daysPerMoveSpinner;
 	private Spinner friendsSpinner;
 	private CheckBox isRated;
@@ -48,8 +48,8 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 
-		iplayas = (Spinner) findViewById(R.id.iplayas);
-		iplayas.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
+		iPlayAsSpinner = (Spinner) findViewById(R.id.iplayas);
+		iPlayAsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
 		friendsSpinner = (Spinner) findViewById(R.id.friend);
 		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{""} ));
@@ -117,7 +117,7 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 				return;
 			}
 
-			int color = iplayas.getSelectedItemPosition();
+			int color = iPlayAsSpinner.getSelectedItemPosition();
 			int days = 1;
 			days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
 			int israted = 0;

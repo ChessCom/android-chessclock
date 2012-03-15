@@ -75,7 +75,7 @@
 
 	<com.chess.RoboTextView
 		android:id="@+id/challengesListTitle"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="left"
 		android:text="@string/challenges"
@@ -84,9 +84,8 @@
 
 	<ListView
 		android:id="@+id/GamesList"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
 		android:background="@android:color/transparent"/>
 
 </LinearLayout>

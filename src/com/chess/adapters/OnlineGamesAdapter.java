@@ -36,13 +36,14 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 		if (el != null) {
 			if (el.type == 0) {
 				if (el.isLiveChess) {
-					try {
+					try {       // TODO stop eating exceptions
 
 						/*System.out.println("!!!!!!!! items = " + items);
 									  System.out.println("!!!!!!!! el.values = " + el.values);
 									  System.out.println("!!!!!!!! el.values.get(is_direct_challenge) = " + el.values.get("is_direct_challenge"));
 									  System.out.println("!!!!!!!! el.values.get(is_released_by_me) = " + el.values.get("is_released_by_me"));*/
-						if (el.values.get("is_direct_challenge").equals("1") && el.values.get("is_released_by_me").equals("0")) {
+						if (el.values.get("is_direct_challenge").equals("1")
+								&& el.values.get("is_released_by_me").equals("0")) {
 							convertView.findViewById(R.id.directChallenge).setVisibility(View.VISIBLE);
 						} else {
 							convertView.findViewById(R.id.directChallenge).setVisibility(View.GONE);

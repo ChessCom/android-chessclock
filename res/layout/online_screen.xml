@@ -55,24 +55,6 @@
 			/>
 	</LinearLayout>
 
-	<com.chess.RoboButton
-		android:id="@+id/currentGame"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/currentGame"
-		android:visibility="gone"/>
-
-	<com.chess.RoboTextView
-		android:id="@+id/startNewGameTitle"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:drawablePadding="10px"
-		android:gravity="left"
-		android:padding="5px"
-		android:text="@string/start_new_game"
-		android:visibility="gone"
-		/>
-
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -95,27 +77,25 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="6"
+			android:text="@string/challenge"
 			/>
 
 	</LinearLayout>
 
 	<com.chess.RoboTextView
 		android:id="@+id/challengesListTitle"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:drawablePadding="10px"
 		android:gravity="left"
-		android:padding="5px"
+		android:paddingLeft="@dimen/default_linear_left_padding"
 		android:text="@string/challenges"
-
 		android:visibility="visible"/>
 
 	<ListView
 		android:id="@+id/GamesList"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_weight="1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@android:color/transparent"
 		/>
 
 </LinearLayout>

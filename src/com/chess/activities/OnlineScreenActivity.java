@@ -33,14 +33,8 @@ import java.util.ArrayList;
  */
 public class OnlineScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
 	private ListView gamesList;
-	private Spinner gamesType;
+	private Spinner gamesTypeSpinner;
 	private OnlineGamesAdapter gamesAdapter = null;
-	private TextView challengesListTitle;
-	private TextView startNewGameTitle;
-	private Button tournaments;
-	private Button stats;
-	private Button currentGame;
-	private Button start;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -75,44 +69,26 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
 
-		gamesType = (Spinner) findViewById(R.id.gamestypes);
-		gamesType.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
-		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
-		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
-		tournaments = (Button) findViewById(R.id.tournaments);
-		stats = (Button) findViewById(R.id.stats);
+		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
+		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this,R.array.onlineSpinner));
 
-		start = (Button) findViewById(R.id.start);
-		start.setOnClickListener(this);
-
-		/*if (!mainApp.isNetworkChangedNotification())
-			{*/
 		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-		//}
-		tournaments.setVisibility(View.VISIBLE);
-		stats.setVisibility(View.VISIBLE);
-		gamesType.setVisibility(View.VISIBLE);
-		start.setVisibility(View.VISIBLE);
-		challengesListTitle.setVisibility(View.GONE);
-		startNewGameTitle.setVisibility(View.GONE);
 
-
-		gamesType.post(new Runnable() {
+		gamesTypeSpinner.post(new Runnable() {
 			@Override
 			public void run() {
-				gamesType.setSelection(mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1));
+				gamesTypeSpinner.setSelection(mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1));
 			}
 		});
-		gamesType.setOnItemSelectedListener(gameTypesSelectedListener);
+		gamesTypeSpinner.setOnItemSelectedListener(gameTypesSelectedListener);
 
 		gamesList = (ListView) findViewById(R.id.GamesList);
 		gamesList.setOnItemClickListener(gameListItemClickListener );
 		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
+
 		findViewById(R.id.tournaments).setOnClickListener(this);
 		findViewById(R.id.stats).setOnClickListener(this);
-		currentGame = (Button) findViewById(R.id.currentGame);
-		currentGame.setOnClickListener(this);
-
+		findViewById(R.id.start).setOnClickListener(this);
 	}
 
 
@@ -191,7 +167,6 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			}*/
 		/*if (!mainApp.isNetworkChangedNotification())
 			{*/
-		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 		//}
 
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
@@ -200,16 +175,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		//System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
 		lccHolder.logout();
 		super.onResume();
-		currentGame.post(new Runnable() {
-			public void run() {
-				if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
-						lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-					currentGame.setVisibility(View.VISIBLE);
-				} else {
-					currentGame.setVisibility(View.GONE);
-				}
-			}
-		});
+
 		gamesList.setVisibility(View.VISIBLE);
 
 		/*if (gamesAdapter != null)
@@ -229,8 +195,6 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				disableScreenLock();
 			}
 		});
-
-		start.setText(R.string.challenge);
 	}
 
 	@Override
@@ -527,7 +491,6 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		}
 	}
 
-
 	@Override
 	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
@@ -615,6 +578,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	public void onClick(View view) {
 		if(view.getId() == R.id.tournaments){// !_Important_! Use instead of switch due issue of ADT14
+			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
@@ -625,6 +589,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 					+ "&goto=" + GOTO)));
 		}else if(view.getId() == R.id.stats){
+			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/"
 					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
 			try {
@@ -647,7 +612,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 						}*/
 		}else if(view.getId() == R.id.start){
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
-			finish();
+//			finish();
 //			LoadNext(0);
 		}
 	}

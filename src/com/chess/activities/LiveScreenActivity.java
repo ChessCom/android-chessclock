@@ -500,10 +500,10 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 	private class NewGamesButtonsAdapter extends BaseAdapter{
 
-		private LayoutInflater inflatter;
+		private LayoutInflater inflater;
 
 		private NewGamesButtonsAdapter() {
-			this.inflatter = LayoutInflater.from(coreContext);
+			this.inflater = LayoutInflater.from(coreContext);
 		}
 
 		public int getCount() {
@@ -521,7 +521,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final Button button;
 			if (convertView == null) {
-				button = (Button) inflatter.inflate(R.layout.default_button_grey,null,false);
+				button = (Button) inflater.inflate(R.layout.default_button_grey,null,false);
 			} else {
 				button = (Button) convertView;
 			}
@@ -558,9 +558,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			gamesList.setVisibility(View.GONE);
 
 			mainApp.getGameListItems().clear();
-			if (gamesAdapter != null) {
-				gamesAdapter.notifyDataSetChanged();
-			}
+//			if (gamesAdapter != null) {
+//				gamesAdapter.notifyDataSetChanged();
+//			}
 			//gamesList.setVisibility(View.VISIBLE);
 			tmp.addAll(lccHolder.getChallengesAndSeeksData());
 
@@ -629,7 +629,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 			}
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
+					+ "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ "&goto=" + GOTO)));
 		}else if(view.getId() == R.id.currentGame){
 			/*try
 						{*/
@@ -645,7 +647,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 						}*/
 		}else if(view.getId() == R.id.start){
 			startActivity(new Intent(this, LiveNewGameActivity.class));
-			finish();
+//			finish();
 //			LoadNext(0);
 		}
 	}
