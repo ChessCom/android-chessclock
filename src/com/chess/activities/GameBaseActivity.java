@@ -531,7 +531,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// restoring from analysis mode
+			// restoring from analysis mode        /// TODO fix
 			if (newBoardView.getBoardFace().isAnalysis()) {
 				newBoardView.setBoardFace(new Board2(this));
 				newBoardView.getBoardFace().setInit(true);

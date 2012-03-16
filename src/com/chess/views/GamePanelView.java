@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 			R.drawable.ic_analysis,
 			R.drawable.ic_chat,
 			R.drawable.ic_back,
-			R.drawable.ic_forward
+			R.drawable.ic_forward,
+			R.drawable.ic_hint
 	};
 
 	public static final int B_NEW_GAME_ID   = 0;
@@ -70,7 +72,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public static final int B_CHAT_ID 		= 4;
 	public static final int B_BACK_ID 		= 5;
 	public static final int B_FORWARD_ID 	= 6;
-//	private static final int B_NEW_GAME_ID 	= 7;
+	public static final int B_HINT_ID    	= 7;
 
 	private int whiteAlivePiecesCount[] = new int[6];
 	private int blackAlivePiecesCount[] = new int[6];
@@ -228,7 +230,23 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	}
 
     private void addControlButton(int buttonId, int backId) {
+//        ImageButton imageButton = new ImageButton(getContext());
+//        imageButton.setImageResource(buttonsDrawableIds[buttonId]);
+//        imageButton.setBackgroundResource(backId);
+//        imageButton.setOnClickListener(this);
+//        imageButton.setId(BUTTON_PREFIX + buttonId);
+//
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//
+//        params.weight = 1;
+//        imageButton.setLayoutParams(params);
+        controlsLayout.addView(createControlButton(buttonId,backId));
+    }
+    
+    private View createControlButton(int buttonId, int backId){
         ImageButton imageButton = new ImageButton(getContext());
+        Log.d("TEST", "buttonId = " + buttonId + " lenght = " + buttonsDrawableIds.length);
         imageButton.setImageResource(buttonsDrawableIds[buttonId]);
         imageButton.setBackgroundResource(backId);
         imageButton.setOnClickListener(this);
@@ -239,7 +257,12 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
         params.weight = 1;
         imageButton.setLayoutParams(params);
-        controlsLayout.addView(imageButton);
+        return imageButton;
+    }
+
+    public void addControlButton(int position, int buttonId, int backId){
+        controlsLayout.addView(createControlButton(buttonId, backId),position);
+//        ((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
     }
 
     public void toggleControlButton(int buttonId,boolean checked){
@@ -248,12 +271,12 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }else{
             findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_selector);
         }
-
     }
     
 	public void hideGameButton(int buttonId){
 		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
 	}
+
 
 	public void enableGameButton(int buttonId,boolean enable){
 		((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setEnabled(enable);
@@ -465,8 +488,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 			boardViewFace.newGame();
 		}else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
-		}else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID){
-			boardViewFace.flipBoard();
+        }else if (view.getId() == BUTTON_PREFIX + B_HINT_ID){
+            boardViewFace.showHint();
+        }else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID){
+            boardViewFace.flipBoard();
 		}else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID){
 			boardViewFace.switchAnalysis();
 		}else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID){

@@ -785,7 +785,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		gameActivityFace.newGame();
 	}
 
-	public void addMove2Log(CharSequence move) {
+    public void addMove2Log(CharSequence move) {
 		gamePanelView.addMoveLog(move);
 	}
 }

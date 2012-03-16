@@ -681,25 +681,28 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				showOptions();
 				break;
 			case R.id.menu_analysis:
-				newBoardView.getBoardFace().setAnalysis(true);
-				update(CALLBACK_REPAINT_UI);
+                newBoardView.switchAnalysis();
+//				newBoardView.getBoardFace().setAnalysis(true);
+//				update(CALLBACK_REPAINT_UI);
 				break;
 			case R.id.menu_chat:
 				chat = true;
 				getOnlineGame(mainApp.getGameId());
 				break;
 			case R.id.menu_previous:
-				newBoardView.finished = false;
-				newBoardView.sel = false;
-				newBoardView.getBoardFace().takeBack();
-				newBoardView.invalidate();
-				update(CALLBACK_REPAINT_UI);
+                newBoardView.moveBack();
+//				newBoardView.finished = false;
+//				newBoardView.sel = false;
+//				newBoardView.getBoardFace().takeBack();
+//				newBoardView.invalidate();
+//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 			case R.id.menu_next:
-				newBoardView.getBoardFace().takeNext();
-				newBoardView.invalidate();
-				update(CALLBACK_REPAINT_UI);
+                newBoardView.moveForward();
+//				newBoardView.getBoardFace().takeNext();
+//				newBoardView.invalidate();
+//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 		}

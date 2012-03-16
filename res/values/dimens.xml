@@ -40,10 +40,7 @@
     <dimen name="list_item_image_size">27dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>
  	
- 	<dimen name="signin_logo_margin_top">15dip</dimen>
- 	<dimen name="signin_main_margin_top">36dip</dimen>
-	<dimen name="signin_button_margin_updown">24dip</dimen>
- 	<dimen name="signin_footer_margin_bottom">10dip</dimen>
+
 				
  	<dimen name="home_main_padding_top">20dip</dimen>
  	<dimen name="home_main_padding_bot">20dip</dimen>
@@ -84,5 +81,16 @@
 	<dimen name="default_linear_top_padding">2dip</dimen>
 	<dimen name="default_linear_left_padding">5dip</dimen>
 	<dimen name="default_linear_right_padding">5dip</dimen>
+
+	<!--SigIn-->
+	<dimen name="signin_scr_top_padding">20dip</dimen>
+	<dimen name="signin_scr_bottom_padding">20dip</dimen>
+	<dimen name="signin_scr_side_padding">20dip</dimen>
+	<dimen name="signin_logo_margin_top">15dip</dimen>
+	<dimen name="signin_main_margin_top">36dip</dimen>
+<!--
+	<dimen name="signin_button_margin_updown">24dip</dimen>
+	<dimen name="signin_footer_margin_bottom">10dip</dimen>
+-->
 
 </resources>

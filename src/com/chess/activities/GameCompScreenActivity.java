@@ -87,6 +87,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID,R.drawable.ic_new_game);
 		gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
+        gamePanelView.addControlButton(1, GamePanelView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
 
 	}
 

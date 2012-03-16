@@ -19,6 +19,7 @@ public interface BoardViewFace {
 	void moveBack();
 
 	void moveForward();
+
 	void showHint();
 
 	void newGame();
