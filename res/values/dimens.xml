@@ -50,6 +50,7 @@
  	<dimen name="home_main_padding_left">20dip</dimen>
  	<dimen name="home_main_padding_right">20dip</dimen>
 
+	<!--Dashboard-->
 	<dimen name="dashboard_padding_top">21dip</dimen>
 	<dimen name="dashboard_padding_bot">68dip</dimen>
 	<dimen name="dashboard_padding_side">21dip</dimen>
