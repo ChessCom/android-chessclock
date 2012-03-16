@@ -521,6 +521,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				showOptions();
 				break;
 			case R.id.menu_chat:
+				// test
 				chat = true;
 				getOnlineGame(mainApp.getGameId());
 				break;
