@@ -138,13 +138,15 @@ public class Home extends CoreActivity {
 	  moPubInterstitial.load();*/
 
 	  /*if(interAdView == null)*/
-		  interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
+	  interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
 	  interAdView.setId(MMAdViewSDK.DEFAULT_VIEWID);
 	  interAdView.callForAd();
 	  interAdView.setListener(new MMAdView.MMAdListener() {
+
 		  public void MMAdReturned(MMAdView mmAdView) {
-			  if (mmAdView.check())
-			  mmAdView.display();
+			  if (mmAdView.check()) {
+				  mmAdView.display();
+			  }
 		  }
 
 		  public void MMAdFailed(MMAdView mmAdView) {
@@ -162,9 +164,10 @@ public class Home extends CoreActivity {
 		  public void MMAdRequestIsCaching(MMAdView mmAdView) {
 		  }
 
-		  public void MMAdCachingCompleted(MMAdView mmAdView, boolean b) {
-			  if (mmAdView.check())
-			  mmAdView.display();
+		  public void MMAdCachingCompleted(MMAdView mmAdView, boolean success) {
+			  if (success && mmAdView.check()) {
+				  mmAdView.display();
+			  }
 		  }
 	  });
 
