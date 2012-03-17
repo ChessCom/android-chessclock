@@ -1,8 +1,5 @@
 package com.chess.activities;
 
-import java.net.URLEncoder;
-import java.util.ArrayList;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -10,13 +7,17 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.chess.R;
 import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.views.MessagesAdapter;
+
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
+
 
 public class Chat extends CoreActivity {
 	private EditText sendText;
