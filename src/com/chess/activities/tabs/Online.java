@@ -679,7 +679,7 @@ public class Online extends CoreActivity implements OnClickListener {
 			if (mainApp.isLiveChess()) {
 				tmp.addAll(lccHolder.getChallengesAndSeeksData());
 			} else {
-				if (currentListType == GameListElement.LIST_TYPE_GAMES) {
+				if (currentListType == GameListElement.LIST_TYPE_CURRENT) {
 					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
 				}
 				if (currentListType == GameListElement.LIST_TYPE_CHALLENGES) {

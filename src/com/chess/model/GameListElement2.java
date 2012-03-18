@@ -4,22 +4,17 @@ import com.chess.core.AppConstants;
 
 import java.util.HashMap;
 
-public class GameListElement {
-
-	public final static int LIST_TYPE_CURRENT = 0;
-	public final static int LIST_TYPE_CHALLENGES = 1;
-	public final static int LIST_TYPE_FINISHED = 2;
-
+public class GameListElement2 {
 	public int type = 0;
 	public HashMap<String, String> values;
 	public boolean isLiveChess;
 
-	public GameListElement(int type, String[] values, boolean isLiveChess) {
+	public GameListElement2(int type, String[] values, boolean isLiveChess) {
 		this.type = type;
 		this.values = new HashMap<String, String>();
 		this.isLiveChess = isLiveChess;
 		switch (type) {
-			case LIST_TYPE_CURRENT: {
+			case 0: {	//Challenges
 				this.values.put(AppConstants.GAME_ID, values[0].trim());
 				this.values.put("opponent_username", values[1]);
 				this.values.put("opponent_rating", values[2]);
@@ -39,14 +34,12 @@ public class GameListElement {
 					this.values.put("playas_color", values[6]);
 					this.values.put("days_per_move", values[7]);
 					this.values.put("game_type", values[8]);
-					this.values.put("rated", values[9]);
-					this.values.put("initial_setup_fen", values[10]);
-					//this.values.put("initial_setup_fen", values[9]); // api ver 1
+					this.values.put("initial_setup_fen", values[9]);
 				}
 
 				break;
 			}
-			case LIST_TYPE_CHALLENGES: {
+			case 1: {	//Current Games
 				this.values.put(AppConstants.GAME_ID, values[0]);
 				this.values.put("color", values[1]);
 				this.values.put("game_type", values[2]);
@@ -66,7 +59,7 @@ public class GameListElement {
 				this.values.put("has_new_message", values[16]);
 				break;
 			}
-			case LIST_TYPE_FINISHED: {
+			case 2: {	//Finished Games
 				this.values.put(AppConstants.GAME_ID, values[0]);
 				this.values.put("color", values[1]);
 				this.values.put("game_type", values[2]);
