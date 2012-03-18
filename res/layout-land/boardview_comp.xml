@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/game_board_back"
+	android:orientation="vertical">
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		>
+		<com.chess.views.NewBoardView
+			android:id="@+id/boardview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:visibility="visible"
+			android:layout_weight="1"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:orientation="vertical"
+			>
+			<RelativeLayout
+				android:id="@+id/statusBarLay"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				>
+
+				<TextView
+					android:id="@+id/thinking"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:text="@string/Thinking"
+					android:visibility="gone"/>
+
+				<TextView
+					android:id="@+id/white"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:drawablePadding="5dip"
+					android:inputType="textImeMultiLine"
+					android:layout_centerVertical="true"
+					android:text="@string/Human"
+					android:textSize="14sp"
+					android:paddingTop="2dip"
+					android:paddingLeft="8dip"
+					android:paddingBottom="2dip"
+					android:paddingRight="2dip"
+					android:drawableLeft="@drawable/whitemove"
+					/>
+
+				<TextView
+					android:id="@+id/black"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:layout_centerVertical="true"
+					android:layout_alignParentRight="true"
+					android:text="@string/Computer"
+					android:textSize="14sp"
+					android:paddingTop="2dip"
+					android:paddingLeft="2dip"
+					android:paddingBottom="2dip"
+					android:paddingRight="8dip"
+					android:drawableRight="@drawable/blackmove"
+					android:drawablePadding="2dip"
+					/>
+
+				<!--TODO set theme with text Size-->
+				<TextView
+					android:id="@+id/analysisTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:drawablePadding="5dip"
+					android:textSize="14sp"
+					android:layout_centerInParent="true"
+					android:padding="2dip"
+					android:visibility="gone"
+					android:text="@string/analysis_mode"
+					/>
+			</RelativeLayout>
+
+			<com.chess.views.GamePanelView
+				android:id="@+id/gamePanelView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+
+</LinearLayout>

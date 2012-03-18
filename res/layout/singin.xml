@@ -1,64 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
-	<ImageView android:id="@+id/bg" android:layout_height="fill_parent"
-		android:layout_width="fill_parent" android:scaleType="centerCrop"></ImageView>
-	<LinearLayout android:orientation="vertical"
-		android:layout_height="fill_parent" android:layout_width="fill_parent"
-		android:gravity="center">
-		<ImageView android:scaleType="fitXY" android:src="@drawable/logo"
-			android:layout_height="114dip" android:layout_width="296dip"
-			android:layout_gravity="center_horizontal"></ImageView>
-		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_gravity="center"
-			android:textColor="#ef8a17" android:textStyle="bold"
-			android:layout_marginTop="3px" android:text="@string/singinUsername"></TextView>
-		<EditText android:text="" android:layout_gravity="center"
-			android:id="@+id/username" android:layout_width="fill_parent"
-			android:layout_height="50dip" android:layout_marginLeft="20dip"
-			android:layout_marginRight="20dip" android:inputType="textImeMultiLine"></EditText>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center"
+	android:paddingTop="@dimen/signin_scr_top_padding"
+	android:paddingBottom="@dimen/signin_scr_bottom_padding"
+	android:paddingLeft="@dimen/signin_scr_side_padding"
+	android:paddingRight="@dimen/signin_scr_side_padding"
+	>
 
-		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_gravity="center"
-			android:textColor="#ef8a17" android:textStyle="bold"
-			android:text="@string/singinPassword"></TextView>
-		<EditText android:text="" android:layout_gravity="center"
-			android:password="true" android:singleLine="true" android:id="@+id/password"
-			android:layout_width="fill_parent" android:layout_height="50dip"
-			android:layout_marginLeft="20dip" android:layout_marginRight="20dip"></EditText>
+	<ImageView
+		android:id="@+id/logoImg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="@dimen/signin_logo_margin_top"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY"
+		android:src="@drawable/logo"/>
 
+<!--
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+-->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/signin_main_margin_top"
+			android:layout_below="@id/logoImg"
+			android:orientation="vertical">
 
-		<LinearLayout android:layout_height="wrap_content"
-			android:layout_width="fill_parent">
+			<com.chess.RoboEditText
+				android:id="@+id/username"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/singinUsername"
+				android:singleLine="true"
+				/>
 
+			<com.chess.RoboEditText
+				android:id="@+id/password"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/singinPassword"
+				android:inputType="textPersonName"
+				android:password="true"
+				android:singleLine="true"
+				/>
 
-			<Button android:layout_gravity="center" android:textStyle="bold"
-				android:id="@+id/singin" android:background="@drawable/defaultbutton"
-				android:layout_width="fill_parent" android:layout_marginLeft="20dip"
-				android:layout_marginBottom="3dip" android:textSize="20dip"
-				android:layout_height="50dip" android:text="@string/singinButton"
-				android:textColor="#222" android:layout_marginRight="20dip"></Button>
+			<com.chess.RoboButton
+				android:id="@+id/singin"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singinButton"
+				/>
 
+			<com.facebook.android.LoginButton
+				android:id="@+id/fb_connect"
+				style="@style/Text.Button.Login"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:drawableLeft="@drawable/facebook_icon"
+
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/singup"
+				style="@style/Text.Button.Green"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singupButton"
+
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/guestplay"
+				style="@style/Text.Button.Grey"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singinPlayguest"
+
+				/>
 		</LinearLayout>
-		<LinearLayout android:layout_height="wrap_content"
-			android:layout_width="fill_parent">
-			<Button android:textStyle="bold" android:layout_width="fill_parent"
-				android:layout_weight="1" android:id="@+id/singup"
-				android:layout_marginLeft="20dip" android:layout_marginRight="5dip"
-				android:textSize="12dip" android:layout_height="50dip"
-				android:text="@string/singupButton"></Button>
-			<Button android:typeface="sans" android:textStyle="bold"
-				android:layout_width="fill_parent" android:layout_weight="1"
-				android:id="@+id/guestplay" android:layout_height="50dip"
-				android:layout_marginLeft="5dip" android:layout_marginRight="20dip"
-				android:textSize="12dip" android:text="@string/singinPlayguest"></Button>
-		</LinearLayout>
-		<com.facebook.android.LoginButton
-			android:layout_marginRight="20dip" android:layout_height="50dip"
-			android:id="@+id/fb_connect" android:src="@drawable/login_button"
-			android:layout_marginLeft="5dip" android:layout_width="wrap_content" android:layout_gravity="right"/>
+
+	<!--</ScrollView>-->
 
 
-	</LinearLayout>
-</FrameLayout>
+</RelativeLayout>

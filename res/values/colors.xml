@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="mytheme_color">#888888</color>
+	<color name="hint_text">#FFaaaaaa</color>
+	<color name="green_text">#FF43a712</color>
+
+
+    <!--Back shadow-->
+    <color name="back_shadows_chess">#99000000</color>
+
+
+    <!--Buttons-->
+
+    <color name="stroke_shadow">#26000000</color>
+
+    <color name="any_button_stroke">#23FFFFFF</color>
+    <color name="gray_button_stroke">#18FFFFFF</color>
+    <!--Orange-->
+    <!--<color name="orange_button_stroke">#23FFFFFF</color>-->
+    <color name="orange_button">#FFff7e00</color>
+    <color name="orange_button_p">#FFde6e00</color>
+
+    <color name="orange_emboss_low_right">#FFd0751d</color>
+    <color name="orange_emboss_top_left">#FFffa853</color>
+
+    <color name="orange_button_pressed_stroke_1">#96ff7e00</color>
+    <color name="orange_button_pressed_stroke_2">#FFffd9b4</color>
+
+
+    <!--Grey -->
+    <color name="grey_button">#FF666666</color>
+    <color name="grey_button_p">#FF575151</color>
+    <color name="grey_button_checked">#FFde6e00</color>
+    <!--<color name="grey_button_stroke">#23747474</color>-->
+
+    <color name="grey_emboss_low_right">#FF656565</color>
+    <color name="grey_emboss_top_left">#FF989898</color>
+
+    <color name="grey_button_pressed_stroke_1">#968c8c8c</color>
+    <color name="grey_button_pressed_stroke_2">#FFdddddd</color>
+
+    <!--Green-->
+    <color name="green_button">#FF59b111</color>
+    <color name="green_button_p">#FF419100</color>
+
+    <color name="green_emboss_low_right">#FF63a62d</color>
+    <color name="green_emboss_top_left">#FF7fc349</color>
+
+    <color name="green_button_pressed_stroke_1">#9663b91c</color>
+    <color name="green_button_pressed_stroke_2">#FFd9eec8</color>
+    
+
+    <!--Facebook button-->
+    <color name="f_button">#FF3b5998</color>
+    <color name="f_button_p">#FF254485</color>
+
+    <color name="f_emboss_low_right">#FF47639e</color>
+    <color name="f_emboss_top_left">#FF657caf</color>
+
+    <color name="f_button_pressed_stroke_1">#96657caf</color>
+    <color name="f_button_pressed_stroke_2">#FF93afee</color>
+
+
+
+	<!--Toggle buttons-->
+
+	<color name="toggle_button_1">#FF929292</color>
+	<!--<color name="toggle_button_1">#FF3d3d3d</color>-->
+	<color name="toggle_button_2">#FF3d3d3d</color>
+
+	<color name="toggle_button_p_1">#ff6b6b6b</color>
+	<color name="toggle_button_p_2">#ff1a1a1a</color>
+
+
+
+	<!--<color name="blue_emboss_low_right">#FF63a62d</color>-->
+	<color name="blue_emboss_top_left">#FF7fc349</color>
+
+	<!--<color name="toggle_button_inside_stroke">#FF191919</color>-->
+	<color name="toggle_button_inside_stroke">#00000000</color>
+	<color name="blue_button_reversed_inside_stroke">#FF0068cb</color>
+
+	<color name="toggle_button_outer_shadow">#5BFFFFFF</color>
+	<!--    <color name="blue_button_inside_shadow">#7F000000</color>-->
+	<color name="blue_button_inside_shadow">#00000000</color>
+
+	<!--Game Board-->
+	<color name="game_board_back">#ff262626</color>
+
+    <!--Settings -->
+    <color name="underline_color_grey">#FF8f8f8f</color>
+
+    <color name="list_pressed_1">#FFf98c15</color>
+    <color name="list_pressed_2">#FFe07a0d</color>
+
+    <color name="dark_orange">#FFb66400</color>
+    <color name="dark_orange_1">#FFa15906</color>
+
+    <color name="dark_light">#FFf3f4f6</color>
+    
+    <color name="light_grey">#FF9e989e</color>
+    <color name="dark_grey">#FF8c8c8c</color>
+    
+    <color name="f_light_grey">#FFb8b8b8</color>
+    <color name="f_dark_grey">#FF787878</color>
+    
+    <color name="pressed_grey_1">#FF505050</color>
+    <color name="pressed_grey_2">#FF474647</color>
+    
+    
+    <color name="light_blue">#FF5a81dc</color>
+    <color name="dark_blue">#FF314fab</color>
+
+    <color name="f_light_blue">#FF667fb0</color>
+    <color name="f_dark_blue">#FF435f9c</color>
+
+    <color name="f_light_blue_1">#FF35518c</color>
+    <color name="f_dark_blue_1">#FF28447d</color>
+    
+    <color name="f_stroke">#FF899dc2</color>
+
+    <color name="dashboard_button">#FF3d3d3d</color>
+
+    <color name="blue">#FF183b94</color>
+    <color name="orange">#FFf97028</color>
+    <!--<color name="dark_orange">#FFa94a14</color>-->
+
+    <color name="glow_border">#00c9c9c9</color>
+    <color name="glow_border2">#FF5e5e5e</color>   <!--Good-->
+
+	<!--<color name="shadow_border">#27000000</color>-->
+	<color name="shadow_border">#7F000000</color>
+	<!--<color name="shadow_border">#FF183b94</color>-->
+    <color name="dashboard_item_default">#FF353535</color>
+    <color name="dashboard_item_stroke">#FF575757</color>
+    <!--<color name="dashboard_item_stroke">#FFFFFFFF</color>-->
+    <color name="dashboard_item_stroke_2">#FF232323</color>
+
+
+    <color name="top_bar_stroke_1">#FF5e5e5e</color>
+    <color name="top_bar_stroke_2">#FF404040</color>
+
+    <color name="top_bar_1">#FF757575</color>
+    <color name="top_bar_2">#FF5d5d5d</color>
+    <color name="top_bar_3">#FF363636</color>
+
+    
+
+    <color name="disabled">#FF7a7a7a</color>
+</resources>

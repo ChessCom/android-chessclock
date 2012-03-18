@@ -1,0 +1,49 @@
+<resources>
+
+    <style name="button_blue" parent="Text">
+        <item name="android:gravity">center</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+        <item name="android:minWidth">@dimen/blue_button_min_width</item>
+    </style>
+
+
+    <style name="tap_button" parent="android:Widget.Button">
+        <item name="android:minWidth">10dip</item>
+    </style>
+    
+    <style name="image_button_blue" parent="button_blue">
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="toggle_button" parent="button_blue">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="button_blue_left" parent="toggle_button">
+
+        <item name="android:background">@drawable/button_emboss_left_selector</item>
+    </style>
+
+    <style name="button_blue_right" parent="toggle_button">
+        <item name="android:background">@drawable/button_emboss_right_selector</item>
+    </style>
+
+    <style name="button_blue_mid" parent="toggle_button">
+        <item name="android:background">@drawable/button_emboss_mid_selector</item>
+
+    </style>
+
+
+
+
+</resources>

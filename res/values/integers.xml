@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="integer" name="home_text_weightSum">9</item>
+    <item type="integer" name="home_text_left_weight">3</item>
+    <item type="integer" name="home_text_right_weight">3</item>
+    
+    <item type="integer" name="fade_opacity">60</item>
+</resources>

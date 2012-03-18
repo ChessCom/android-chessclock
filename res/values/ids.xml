@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Common-->
+    <item name="mainView" type="id"/>
+    <item name="glow_layer" type="id"/>
+
+    <!--Home screens-->
+    <item name="playLive" type="id"/>
+    <item name="playOnline" type="id"/>
+    <item name="playComputer" type="id"/>
+    <item name="tacticsTrainer" type="id"/>
+    <item name="videoLessons" type="id"/>
+    <item name="logOut" type="id"/>
+
+    <item name="playLiveFrame" type="id"/>
+    <item name="playOnlineFrame" type="id"/>
+    <item name="playComputerFrame" type="id"/>
+    <item name="tacticsTrainerFrame" type="id"/>
+    <item name="videoLessonsFrame" type="id"/>
+    <item name="logOutFrame" type="id"/>
+    <item name="settingsFrame" type="id"/>
+
+
+</resources>

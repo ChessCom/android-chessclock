@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!--	<item android:left="0dip" android:drawable="@drawable/wp_six">
+
+	</item>-->
+	<item
+		android:left="0dip" >
+		<bitmap
+
+			android:src="@drawable/tap_1"
+			android:gravity="top|left" />
+	</item>
+
+	<item
+		android:left="10dip" >
+		<bitmap
+
+			android:src="@drawable/tap_1"
+			android:gravity="top|left" />
+	</item>
+
+	<item
+		android:left="20dip" >
+		<bitmap
+
+			android:src="@drawable/tap_1"
+			android:gravity="top|left" />
+	</item>
+
+	<item
+		android:left="30dip" >
+		<bitmap
+
+			android:src="@drawable/tap_1"
+			android:gravity="top|left"
+			/>
+	</item>
+
+	<item
+		android:left="40dip" >
+		<bitmap
+
+			android:src="@drawable/tap_1"
+			android:gravity="top|left" />
+	</item>
+
+	<!--<item android:left="10dip" android:drawable="@drawable/wp_six" >
+
+	</item>
+	<item android:left="20dip" android:drawable="@drawable/wp_six">
+
+	</item>
+	<item android:left="30dip" android:drawable="@drawable/wp_six">
+
+	</item>
+	<item android:left="40dip" android:drawable="@drawable/wp_six">
+
+	</item>-->
+</layer-list>

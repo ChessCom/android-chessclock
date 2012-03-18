@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!--Shadow-->
+	<item
+		android:right="0px">
+		<shape >
+			<corners
+				android:topRightRadius="@dimen/toggle_button_radius"
+				android:bottomRightRadius="@dimen/toggle_button_radius"
+				/>
+			<solid android:color="@android:color/transparent" />
+			<stroke android:width="@dimen/default_stroke_width"
+				android:color="@color/stroke_shadow"/>
+		</shape>
+	</item>
+
+	<!--Emboss-->
+	<item
+		android:right="0px"
+		android:bottom="1px"
+		>
+		<shape >
+			<corners
+				android:topRightRadius="@dimen/toggle_button_radius"
+				android:bottomRightRadius="@dimen/toggle_button_radius"
+				/>
+			<solid android:color="@color/grey_emboss_top_left"  />
+		</shape>
+	</item>
+	<item
+		android:left="0px"
+		android:top="1px"
+		android:right="0px"
+		android:bottom="1px"
+		>
+		<shape
+			>
+			<corners
+				android:topRightRadius="@dimen/toggle_button_radius"
+				android:bottomRightRadius="@dimen/toggle_button_radius"
+				/>
+			<solid android:color="@color/grey_emboss_low_right"  />
+		</shape>
+	</item>
+	<!--Button-->
+	<item
+		android:left="0px"
+		android:top="0px"
+		android:bottom="1px"
+		android:right="0px"
+		>
+		<shape  >
+			<corners
+				android:topRightRadius="@dimen/toggle_button_radius"
+				android:bottomRightRadius="@dimen/toggle_button_radius"
+				/>
+			<solid android:color="@color/grey_button_p" />
+			<stroke android:width="@dimen/default_stroke_width"
+				android:color="@color/gray_button_stroke"/>
+			<padding
+				android:left="@dimen/toggle_button_padding_left"
+				android:right="@dimen/toggle_button_padding_right"
+				android:top="@dimen/toggle_button_padding_top"
+				android:bottom="@dimen/toggle_button_padding_bottom"
+				/>
+			<size android:height="@dimen/toggle_button_height"/>
+		</shape>
+	</item>
+</layer-list>
