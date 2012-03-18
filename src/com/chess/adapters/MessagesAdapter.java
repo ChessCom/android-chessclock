@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity;
+import com.chess.core.CoreActivityActionBar;
 import com.chess.model.Message;
 
 import java.util.ArrayList;
@@ -19,14 +19,14 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 	public ArrayList<Message> items;
 	private LayoutInflater vi;
 	private int resource;
-	private CoreActivity activity;
+	private CoreActivityActionBar activity;
 
 	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<Message> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.vi = LayoutInflater.from(context);
 		this.resource = textViewResourceId;
-		this.activity = (CoreActivity) context;
+		this.activity = (CoreActivityActionBar) context;
 	}
 
 	@Override
