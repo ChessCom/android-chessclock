@@ -38,25 +38,12 @@
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity" />
         <activity android:name="com.millennialmedia.android.VideoPlayer" android:configChanges="keyboardHidden|orientation|keyboard" />
 
-	    <activity android:name=".activities.Singin"  /> <!--android:screenOrientation="portrait"-->
+		<!--android:screenOrientation="portrait"-->
 
         <activity android:name=".core.Tabs" 			/>
-    	<activity android:name=".activities.Register" 	/>
-    	<activity android:name=".activities.Preferences" android:theme="@style/GreyButtonTheme"/>
-    	<activity android:name=".activities.Chat" 		/>
-	    <activity android:name=".activities.ChatLive" 	/>
-    	<activity android:name=".activities.Game" 		/>
-		<activity android:name=".activities.VideoList" />
 		<activity android:name=".activities.VideoListActivity" 	android:label="@string/label_video"/>
 
-    	<activity android:name=".activities.tabs.Home" 	/>
-    	<activity android:name=".activities.tabs.Online" />
-    	<activity android:name=".activities.tabs.Computer" />
-    	<activity android:name=".activities.tabs.Video" />
-
 		<activity android:name=".activities.OnlineNewGame" />
-		<activity android:name=".activities.FriendChallenge" />
-		<activity android:name=".activities.CreateChallenge" />
 
 		<activity android:name=".activities.ChatActivity" 		/>
 		<activity android:name=".activities.ChatLiveActivity" 	/>

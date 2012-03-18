@@ -20,7 +20,6 @@ import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
 import com.chess.engine.Board2;
 import com.chess.engine.Move;
-import com.chess.engine.MoveParser;
 import com.chess.engine.MoveParser2;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListElement;
@@ -663,7 +662,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		} else if (p == 5) {
 			f = "K";
 		}
-		String Moveto = MoveParser.positionToString(m.to);
+		String Moveto = MoveParser2.positionToString(m.to);
 		Log.d("!!!", f + " | " + Moveto + " : " + newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1]);
 		if (newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(f)
 				&& newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(Moveto)) {

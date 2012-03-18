@@ -1,6 +1,6 @@
 package com.chess.lcc.android;
 
-import com.chess.activities.Game;
+import com.chess.activities.GameBaseActivity;
 
 import java.util.TimerTask;
 
@@ -82,7 +82,7 @@ public class ChessClock {
 	}
 
 	public void paint() {
-		final Game activity = lccHolder.getAndroid().getGameActivity();
+		final GameBaseActivity activity = lccHolder.getAndroid().getGameActivity();
 		if (activity == null || activity.getWhiteClockView() == null || activity.getBlackClockView() == null) {
 			return;
 		}

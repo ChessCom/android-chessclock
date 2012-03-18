@@ -42,6 +42,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	private boolean compleated = false;
 	private int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
+	private int currentListType = 0;
 
 	public static int ONLINE_CALLBACK_CODE = 32;
 
@@ -513,7 +514,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				}
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
-			int t = mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
+			//int t = mainApp.sharedData.getInt("gamestype", 1);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
 			gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().clear();
@@ -524,13 +525,13 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			if (mainApp.isLiveChess()) {
 				tmp.addAll(lccHolder.getChallengesAndSeeksData());
 			} else {
-				if (t == 0) {
+				if (currentListType == GameListElement.LIST_TYPE_CURRENT) {
 					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
 				}
-				if (t == 1) {
+				if (currentListType == GameListElement.LIST_TYPE_CHALLENGES) {
 					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
 				}
-				if (t == 2) {
+				if (currentListType == GameListElement.LIST_TYPE_FINISHED) {
 					tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(responseRepeatable));
 				}
 			}
@@ -541,23 +542,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			}
 			gamesList.setVisibility(View.VISIBLE);
 			if (gamesAdapter == null) {
-
-//				if (t == 0 || mainApp.isLiveChess()) { //  This cases creates up to 3 instance of new OnlineGamesAdapter, replaced with else if cases
-//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				}
-//				if (t == 1 && !mainApp.isLiveChess()) {
-//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				}
-//				if (t == 2 && !mainApp.isLiveChess()) {
-//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				}
-				if (t == 0 || mainApp.isLiveChess()) { //
-					gamesAdapter = new OnlineGamesAdapter(coreContext, R.layout.gamelistelement, mainApp.getGameListItems());
-				} else if (t == 1 && !mainApp.isLiveChess()) {
-					gamesAdapter = new OnlineGamesAdapter(coreContext, R.layout.gamelistelement, mainApp.getGameListItems());
-				} else if (t == 2 && !mainApp.isLiveChess()) {
-					gamesAdapter = new OnlineGamesAdapter(coreContext, R.layout.gamelistelement, mainApp.getGameListItems());
-				}
+				gamesAdapter = new OnlineGamesAdapter(OnlineScreenActivity.this, R.layout.gamelistelement, mainApp.getGameListItems());
 				gamesList.setAdapter(gamesAdapter);
 			} /*else {*/
 			gamesAdapter.notifyDataSetChanged();

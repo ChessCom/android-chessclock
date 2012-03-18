@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
-import com.chess.activities.Game;
-import com.chess.activities.tabs.Online;
+import com.chess.activities.GameBaseActivity;
+import com.chess.activities.OnlineScreenActivity;
 import com.chess.core.AppConstants;
 import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
@@ -25,7 +25,7 @@ public class AndroidStuff {
 	private SharedPreferences.Editor sharedDataEditor;
 	private MyProgressDialog currentProgressDialog;
 	private LccHolder lccHolder;
-	private Game gameActivity;
+	private GameBaseActivity gameActivity;    // TODO check compatibility
 	private Handler clockHandler = new Handler();
 	private Handler updateBoardHandler = new Handler();
 	private MyProgressDialog connectingIndicator;
@@ -61,11 +61,11 @@ public class AndroidStuff {
 		return sharedDataEditor;
 	}
 
-	public Game getGameActivity() {
+	public GameBaseActivity getGameActivity() {
 		return gameActivity;
 	}
 
-	public void setGameActivity(Game gameActivity) {
+	public void setGameActivity(GameBaseActivity gameActivity) {
 		this.gameActivity = gameActivity;
 	}
 
@@ -127,7 +127,7 @@ public class AndroidStuff {
 	}
 
 	public void updateChallengesList() {
-		sendBroadcastIntent(Online.ONLINE_CALLBACK_CODE, "com.chess.lcc.android-challenges-list-update");
+		sendBroadcastIntent(OnlineScreenActivity.ONLINE_CALLBACK_CODE, "com.chess.lcc.android-challenges-list-update");
 	}
 
 	public void processMove(Long gameId, int moveIndex) {

@@ -55,29 +55,29 @@ public final class Move implements Comparable<Object> {
 
 		if ((bits & 32) != 0) {
 			switch (promote) {
-				case Board.KNIGHT:
+				case Board2.KNIGHT:
 					c = 'n';
 					break;
-				case Board.BISHOP:
+				case Board2.BISHOP:
 					c = 'b';
 					break;
-				case Board.ROOK:
+				case Board2.ROOK:
 					c = 'r';
 					break;
 				default:
 					c = 'q';
 					break;
 			}
-			sb.append((char) (Board.COL(from) + 'a'));
-			sb.append(8 - Board.ROW(from));
-			sb.append((char) (Board.COL(to) + 'a'));
-			sb.append(8 - Board.ROW(to));
+			sb.append((char) (Board2.COL(from) + 'a'));
+			sb.append(8 - Board2.ROW(from));
+			sb.append((char) (Board2.COL(to) + 'a'));
+			sb.append(8 - Board2.ROW(to));
 			sb.append(c);
 		} else {
-			sb.append((char) (Board.COL(from) + 'a'));
-			sb.append(8 - Board.ROW(from));
-			sb.append((char) (Board.COL(to) + 'a'));
-			sb.append(8 - Board.ROW(to));
+			sb.append((char) (Board2.COL(from) + 'a'));
+			sb.append(8 - Board2.ROW(from));
+			sb.append((char) (Board2.COL(to) + 'a'));
+			sb.append(8 - Board2.ROW(to));
 		}
 		return sb.toString();
 	}

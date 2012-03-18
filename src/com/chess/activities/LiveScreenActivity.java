@@ -556,7 +556,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 				update(ONLINE_CALLBACK_CODE);
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
-			int t = mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
+			//int t = mainApp.sharedData.getInt("gamestype", 1);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
 			gamesList.setVisibility(View.GONE);
 
@@ -574,23 +574,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			}
 			gamesList.setVisibility(View.VISIBLE);
 			if (gamesAdapter == null) {
-
-//				if (t == 0 || mainApp.isLiveChess()) { //  This cases creates up to 3 instance of new OnlineGamesAdapter, replaced with else if cases
-//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				}
-//				if (t == 1 && !mainApp.isLiveChess()) {
-//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				}
-//				if (t == 2 && !mainApp.isLiveChess()) {
-//					gamesAdapter = new OnlineGamesAdapter(Online.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				}
-				if (t == 0 || mainApp.isLiveChess()) { //
-					gamesAdapter = new OnlineGamesAdapter(coreContext, R.layout.gamelistelement, mainApp.getGameListItems());
-				} else if (t == 1 && !mainApp.isLiveChess()) {
-					gamesAdapter = new OnlineGamesAdapter(coreContext, R.layout.gamelistelement, mainApp.getGameListItems());
-				} else if (t == 2 && !mainApp.isLiveChess()) {
-					gamesAdapter = new OnlineGamesAdapter(coreContext, R.layout.gamelistelement, mainApp.getGameListItems());
-				}
+				gamesAdapter = new OnlineGamesAdapter(LiveScreenActivity.this, R.layout.gamelistelement, mainApp.getGameListItems());
 				gamesList.setAdapter(gamesAdapter);
 			} /*else {*/
 			gamesAdapter.notifyDataSetChanged();
@@ -616,6 +600,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
+			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
@@ -626,6 +611,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
+			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/"
 					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
 			try {

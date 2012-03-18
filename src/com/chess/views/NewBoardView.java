@@ -20,7 +20,6 @@ import com.chess.core.MainApp;
 import com.chess.core.interfaces.BoardFace;
 import com.chess.core.interfaces.BoardViewFace;
 import com.chess.core.interfaces.GameActivityFace;
-import com.chess.engine.Board;
 import com.chess.engine.Board2;
 import com.chess.engine.Move;
 import com.chess.engine.Search2;
@@ -202,7 +201,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			if (boardFace.inCheck(boardFace.getSide())) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
 				gameActivityFace.update(0);
-				if (boardFace.getSide() == Board.LIGHT)
+				if (boardFace.getSide() == Board2.LIGHT)
 					message = "0 - 1 Black mates";
 				else
 					message = "1 - 0 White mates";
@@ -300,9 +299,16 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		W = viewWidth;
 		H = viewHeight;
 
-		side = W / 4;
-		if (H < W) side = H / 4;
-		square = side / 2;
+		if (H < W) {
+			square = viewHeight / 8;
+			H -= viewHeight % 8;
+			//offsetY = (viewHeight % 8) / 2;
+		} else {
+			square = viewWidth / 8;
+			W -= viewWidth % 8;
+			//offsetX = (viewWidth % 8) / 2;
+		}
+		side = square * 2;
 
 		int i, j;
 		for (i = 0; i < 4; i++) {
@@ -330,8 +336,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					continue;
 				int c = boardFace.getColor()[i];
 				int p = boardFace.getPieces()[i];
-				int x = Board.COL(i, boardFace.isReside());
-				int y = Board.ROW(i, boardFace.isReside());
+				int x = Board2.COL(i, boardFace.isReside());
+				int y = Board2.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	// TODO here is the simple replace/redraw of piece
 					canvas.drawBitmap(mainApp.getPiecesBitmap()[c][p], null,
 							new Rect(x * square, y * square, x * square + square, y * square + square), null);
@@ -343,8 +349,8 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					continue;
 				int c = c_tmp[i];
 				int p = p_tmp[i];
-				int x = Board.COL(i, boardFace.isReside());
-				int y = Board.ROW(i, boardFace.isReside());
+				int x = Board2.COL(i, boardFace.isReside());
+				int y = Board2.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	 // TODO here is the simple replace/redraw of piece
 					canvas.drawBitmap(mainApp.getPiecesBitmap()[c][p], null,
 							new Rect(x * square, y * square, x * square + square, y * square + square), null);
@@ -368,17 +374,17 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 				+ AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true) && boardFace.getHply() > 0 && !compmoving) {
 			Move m = boardFace.getHistDat()[boardFace.getHply() - 1].m;
-			int x1 = Board.COL(m.from, boardFace.isReside());
-			int y1 = Board.ROW(m.from, boardFace.isReside());
+			int x1 = Board2.COL(m.from, boardFace.isReside());
+			int y1 = Board2.ROW(m.from, boardFace.isReside());
 			canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, red);
-			int x2 = Board.COL(m.to, boardFace.isReside());
-			int y2 = Board.ROW(m.to, boardFace.isReside());
+			int x2 = Board2.COL(m.to, boardFace.isReside());
+			int y2 = Board2.ROW(m.to, boardFace.isReside());
 			canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, red);
 		}
 
 		if (sel) {
-			int x = Board.COL(from, boardFace.isReside());
-			int y = Board.ROW(from, boardFace.isReside());
+			int x = Board2.COL(from, boardFace.isReside());
+			int y = Board2.ROW(from, boardFace.isReside());
 			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, white);
 		}
 		if (drag) {
@@ -406,7 +412,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			gamePanelView.dropAlivePieces();
 			for (i = 0; i < 64; i++) {
 				int pieceId = boardFace.getPiece(i);
-				if (boardFace.getColor()[i] == Board.LIGHT) {
+				if (boardFace.getColor()[i] == Board2.LIGHT) {
 					gamePanelView.addAlivePiece(true, pieceId);
 				} else {
 					gamePanelView.addAlivePiece(false, pieceId);
@@ -447,14 +453,14 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 			int col = (trackX - trackX % square) / square;
 			int row = (trackY - trackY % square) / square;
 			if (firstclick) {
-				from = Board.POS(col, row, boardFace.isReside());
+				from = Board2.POS(col, row, boardFace.isReside());
 				if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
 					sel = true;
 					firstclick = false;
 					invalidate();
 				}
 			} else {
-				to = Board.POS(col, row, boardFace.isReside());
+				to = Board2.POS(col, row, boardFace.isReside());
 				sel = false;
 				firstclick = true;
 				boolean found = false;
@@ -469,9 +475,9 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 						break;
 					}
 				}
-				if ((((to < 8) && (boardFace.getSide() == Board.LIGHT)) ||
-						((to > 55) && (boardFace.getSide() == Board.DARK))) &&
-						(boardFace.getPieces()[from] == Board.PAWN) && found) {
+				if ((((to < 8) && (boardFace.getSide() == Board2.LIGHT)) ||
+						((to > 55) && (boardFace.getSide() == Board2.DARK))) &&
+						(boardFace.getPieces()[from] == Board2.PAWN) && found) {
 //					final int col_ = col, row_ = row;
 					gameActivityFace.showChoosePieceDialog(col, row);
 //					new AlertDialog.Builder(gameActivityFace)
@@ -494,7 +500,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 				} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 					sel = true;
 					firstclick = false;
-					from = Board.POS(col, row, boardFace.isReside());
+					from = Board2.POS(col, row, boardFace.isReside());
 					invalidate();
 				} else {
 					invalidate();
@@ -541,14 +547,14 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					return false;
 				}
 				if (firstclick) {
-					from = Board.POS(col, row, boardFace.isReside());
+					from = Board2.POS(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
 						sel = true;
 						firstclick = false;
 						invalidate();
 					}
 				} else {
-					int f = Board.POS(col, row, boardFace.isReside());
+					int f = Board2.POS(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[f] != 6 && boardFace.getSide() == boardFace.getColor()[f]) {
 						from = f;
 						sel = true;
@@ -568,10 +574,10 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					return false;
 				}
 				if (!drag && !sel)
-					from = Board.POS(col, row, boardFace.isReside());
+					from = Board2.POS(col, row, boardFace.isReside());
 				if (!firstclick && boardFace.getSide() == boardFace.getColor()[from]) {
 					drag = true;
-					to = Board.POS(col, row, boardFace.isReside());
+					to = Board2.POS(col, row, boardFace.isReside());
 					invalidate();
 				}
 				return true;
@@ -586,14 +592,14 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					return false;
 				}
 				if (firstclick) {
-					from = Board.POS(col, row, boardFace.isReside());
+					from = Board2.POS(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
 						sel = true;
 						firstclick = false;
 						invalidate();
 					}
 				} else {
-					to = Board.POS(col, row, boardFace.isReside());
+					to = Board2.POS(col, row, boardFace.isReside());
 					sel = false;
 					firstclick = true;
 					boolean found = false;
@@ -608,9 +614,9 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 							break;
 						}
 					}
-					if ((((to < 8) && (boardFace.getSide() == Board.LIGHT)) ||
-							((to > 55) && (boardFace.getSide() == Board.DARK))) &&
-							(boardFace.getPieces()[from] == Board.PAWN) && found) {
+					if ((((to < 8) && (boardFace.getSide() == Board2.LIGHT)) ||
+							((to > 55) && (boardFace.getSide() == Board2.DARK))) &&
+							(boardFace.getPieces()[from] == Board2.PAWN) && found) {
 //						final int col_ = col, row_ = row;
 						gameActivityFace.showChoosePieceDialog(col, row);
 //						new AlertDialog.Builder(gameActivityFace)
@@ -633,7 +639,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 						sel = true;
 						firstclick = false;
-						from = Board.POS(col, row, boardFace.isReside());
+						from = Board2.POS(col, row, boardFace.isReside());
 					}
 					invalidate();
 
@@ -668,7 +674,7 @@ public class NewBoardView extends ImageView implements BoardViewFace {
 		} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 			sel = true;
 			firstclick = false;
-			from = Board.POS(col, row, boardFace.isReside());
+			from = Board2.POS(col, row, boardFace.isReside());
 			invalidate();
 		} else {
 			invalidate();

@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
+import com.chess.activities.GameBaseActivity;
 import com.chess.core.AppConstants;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
@@ -696,7 +697,7 @@ public class LccHolder {
 			activity.finish();
 		}
 		final ContextWrapper androidContext = android.getContext();
-		final Intent intent = new Intent(androidContext, com.chess.activities.Game.class);
+		final Intent intent = new Intent(androidContext, GameBaseActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(AppConstants.GAME_ID, "" + game.getId());

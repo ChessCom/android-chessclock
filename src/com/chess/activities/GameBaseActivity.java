@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.core.*;
 import com.chess.core.interfaces.GameActivityFace;
@@ -323,7 +324,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 							}
 							adPopup = null;
 						}
-						startActivity(new Intent(coreContext, OnlineNewGame.class));
+						// TODO determine which activity to run. move to upper level
+						Toast.makeText(coreContext,"Should start online New Game Activity",Toast.LENGTH_SHORT).show();
+//						startActivity(new Intent(coreContext, OnlineNewGame.class));
 					}
 				});
 				newGame.setVisibility(View.VISIBLE);

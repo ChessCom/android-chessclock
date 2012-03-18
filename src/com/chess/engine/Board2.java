@@ -162,6 +162,8 @@ public class Board2 implements BoardFace {
 	};
 
 	private boolean castleMask[] = {false, false, false, false};
+	private boolean whiteCanCastle = true;
+	private boolean blackCanCastle = true;
 
 	/* the values of the piecesBitmap */
 	int pieceValue[] = {
@@ -246,10 +248,10 @@ public class Board2 implements BoardFace {
 
 	private int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 
-	private final int BLACK_ROOK_1_INITIAL_POS = 0;
-	private final int BLACK_ROOK_2_INITIAL_POS = 7;
-	private final int WHITE_ROOK_1_INITIAL_POS = 56;
-	private final int WHITE_ROOK_2_INITIAL_POS = 63;
+	private int BLACK_ROOK_1_INITIAL_POS = 0;
+	private int BLACK_ROOK_2_INITIAL_POS = 7;
+	private int WHITE_ROOK_1_INITIAL_POS = 56;
+	private int WHITE_ROOK_2_INITIAL_POS = 63;
 
 	private int bRook1 = BLACK_ROOK_1_INITIAL_POS;
 	private int bKing = 4;
@@ -297,12 +299,22 @@ public class Board2 implements BoardFace {
 			if (!castling.contains("Q")) {
 				castleMask[3] = true;
 			}
+
+			if (!castling.contains("K") && !castling.contains("Q")) {
+				whiteCanCastle = false;
+			}
+
 			if (!castling.contains("k")) {
 				castleMask[0] = true;
 			}
 			if (!castling.contains("q")) {
 				castleMask[1] = true;
 			}
+
+			if (!castling.contains("k") && !castling.contains("q")) {
+				blackCanCastle = false;
+			}
+
 			Log.d(fen, "" + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
 		}
 
@@ -311,10 +323,13 @@ public class Board2 implements BoardFace {
 		boolean found = false;
 		for (i = 0; i < FEN[0].length(); i++) {
 			if (FEN[0].charAt(i) == 'r') {
-				if (!found)
+				if (!found) {
 					bRook1 = i + offset;
-				else
+					BLACK_ROOK_1_INITIAL_POS = i + offset;
+				} else {
 					bRook2 = i + offset;
+					BLACK_ROOK_2_INITIAL_POS = i + offset;
+				}
 				found = true;
 			}
 			if (FEN[0].charAt(i) == 'k') {
@@ -329,10 +344,13 @@ public class Board2 implements BoardFace {
 		found = false;
 		for (i = 0; i < FEN[7].length(); i++) {
 			if (FEN[7].charAt(i) == 'R') {
-				if (!found)
+				if (!found) {
 					wRook1 = i + offset;
-				else
+					WHITE_ROOK_1_INITIAL_POS = i + offset;
+				} else {
 					wRook2 = i + offset;
+					WHITE_ROOK_2_INITIAL_POS = i + offset;
+				}
 				found = true;
 			}
 			if (FEN[7].charAt(i) == 'K') {
@@ -546,20 +564,20 @@ public class Board2 implements BoardFace {
 		int i;
 		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 		if (side == LIGHT) {
-			if (!castleMask[2]) {
+			if (!castleMask[2] && whiteCanCastle) {
 				for (i = 0; i < wKingMoveOO.length; i++)
 					genPush(ret, wKing, wKingMoveOO[i], 2);
 			}
-			if (!castleMask[3]) {
+			if (!castleMask[3] && whiteCanCastle) {
 				for (i = 0; i < wKingMoveOOO.length; i++)
 					genPush(ret, wKing, wKingMoveOOO[i], 2);
 			}
 		} else {
-			if (!castleMask[0]) {
+			if (!castleMask[0] && blackCanCastle) {
 				for (i = 0; i < bKingMoveOO.length; i++)
 					genPush(ret, bKing, bKingMoveOO[i], 2);
 			}
-			if (!castleMask[1]) {
+			if (!castleMask[1] && blackCanCastle) {
 				for (i = 0; i < bKingMoveOOO.length; i++)
 					genPush(ret, bKing, bKingMoveOOO[i], 2);
 			}
@@ -734,7 +752,8 @@ public class Board2 implements BoardFace {
 					what = 2;
 					d = Math.abs(m.from - wRook2);
 					min = wRook2;
-					if (m.from < wRook2) min = m.from;
+					if (m.from < wRook2)
+						min = m.from;
 					break;
 				}
 			}
@@ -743,7 +762,8 @@ public class Board2 implements BoardFace {
 					what = 3;
 					d = Math.abs(m.from - wRook1);
 					min = wRook1;
-					if (m.from < wRook1) min = m.from;
+					if (m.from < wRook1)
+						min = m.from;
 					break;
 				}
 			}
@@ -752,8 +772,15 @@ public class Board2 implements BoardFace {
 				return false;
 
 			if (what == 2) {
-				if (attack(F1, xside) || attack(G1, xside))
-					return false;
+
+				int distance = Math.abs(wKing - G1);
+				int minimalSquare = Math.min(wKing, G1);
+				for (int j = 0; j <= distance; j++) {
+					if (attack(minimalSquare + j, xside)) {
+						return false;
+					}
+				}
+
 				if (color[F1] != EMPTY && pieces[F1] != KING && pieces[F1] != ROOK)
 					return false;
 				if (color[G1] != EMPTY && pieces[G1] != KING && pieces[G1] != ROOK)
@@ -766,7 +793,8 @@ public class Board2 implements BoardFace {
 
 				if (d > 1) {
 					while (d != 0) {
-						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
+						min++;
+						if (min != wRook2 && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -776,8 +804,15 @@ public class Board2 implements BoardFace {
 				from = wRook2;
 				to = F1;
 			} else if (what == 3) {
-				if (attack(C1, xside) || attack(D1, xside))
-					return false;
+
+				int distance = Math.abs(wKing - C1);
+				int minimalSquare = Math.min(wKing, C1);
+				for (int j = 0; j <= distance; j++) {
+					if (attack(minimalSquare + j, xside)) {
+						return false;
+					}
+				}
+
 				if (color[C1] != EMPTY && pieces[C1] != KING && pieces[C1] != ROOK)
 					return false;
 				if (color[D1] != EMPTY && pieces[D1] != KING && pieces[D1] != ROOK)
@@ -789,7 +824,8 @@ public class Board2 implements BoardFace {
 
 				if (d > 1) {
 					while (d != 0) {
-						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
+						min++;
+						if (min != wRook1 && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -799,8 +835,15 @@ public class Board2 implements BoardFace {
 				from = wRook1;
 				to = D1;
 			} else if (what == 1) {
-				if (attack(C8, xside) || attack(D8, xside))
-					return false;
+
+				int distance = Math.abs(bKing - C8);
+				int minimalSquare = Math.min(bKing, C8);
+				for (int j = 0; j <= distance; j++) {
+					if (attack(minimalSquare + j, xside)) {
+						return false;
+					}
+				}
+
 				if (color[C8] != EMPTY && pieces[C8] != KING && pieces[C8] != ROOK)
 					return false;
 				if (color[D8] != EMPTY && pieces[D8] != KING && pieces[D8] != ROOK)
@@ -812,7 +855,8 @@ public class Board2 implements BoardFace {
 
 				if (d > 1) {
 					while (d != 0) {
-						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
+						min++;
+						if (min != bRook1 && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -822,8 +866,15 @@ public class Board2 implements BoardFace {
 				from = bRook1;
 				to = D8;
 			} else if (what == 0) {
-				if (attack(F8, xside) || attack(G8, xside))
-					return false;
+
+				int distance = Math.abs(bKing - G8);
+				int minimalSquare = Math.min(bKing, G8);
+				for (int j = 0; j <= distance; j++) {
+					if (attack(minimalSquare + j, xside)) {
+						return false;
+					}
+				}
+
 				if (color[F8] != EMPTY && pieces[F8] != KING && pieces[F8] != ROOK)
 					return false;
 				if (color[G8] != EMPTY && pieces[G8] != KING && pieces[G8] != ROOK)
@@ -836,7 +887,8 @@ public class Board2 implements BoardFace {
 
 				if (d > 1) {
 					while (d != 0) {
-						if (pieces[++min] != ROOK && pieces[min] != KING && color[min] != EMPTY) {
+						min++;
+						if (min != bRook2 && pieces[min] != KING && color[min] != EMPTY) {
 							return false;
 						}
 						d--;
@@ -861,6 +913,8 @@ public class Board2 implements BoardFace {
 			histDat[hply].ep = ep;
 			histDat[hply].fifty = fifty;
 			histDat[hply].castleMask = castleMask.clone();
+			histDat[hply].whiteCanCastle = whiteCanCastle;
+			histDat[hply].blackCanCastle = blackCanCastle;
 			histDat[hply].what = what;
 			if (what == 0 || what == 2)
 				histDat[hply].notation = "O-O";
@@ -870,28 +924,53 @@ public class Board2 implements BoardFace {
 
 			/* update the castle, en passant, and
 					   fifty-move-draw variables */
-			if (what != -1) castleMask[what] = true;
+			if (what != -1) {
+				castleMask[what] = true;
+				if (what == 0 || what == 1) {
+					blackCanCastle = false;
+				} else if (what == 2 || what == 3) {
+					whiteCanCastle = false;
+				}
+			}
 			if (pieces[m.from] == KING) {
 				if (side == DARK) {
 					castleMask[0] = true;
 					castleMask[1] = true;
+					blackCanCastle = false;
 				} else {
 					castleMask[2] = true;
 					castleMask[3] = true;
+					whiteCanCastle = false;
 				}
 			}
 			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 			if (pieces[m.from] == ROOK) {
 				if (side == DARK) {
-					if (m.from == bRook2)
+					if (m.from == bRook2) {
 						castleMask[0] = true;
-					if (m.from == bRook1)
+						if (castleMask[1]) {
+							blackCanCastle = false;
+						}
+					}
+					if (m.from == bRook1) {
 						castleMask[1] = true;
+						if (castleMask[0]) {
+							blackCanCastle = false;
+						}
+					}
 				} else {
-					if (m.from == wRook2)
+					if (m.from == wRook2) {
 						castleMask[2] = true;
-					if (m.from == wRook1)
+						if (castleMask[3]) {
+							whiteCanCastle = false;
+						}
+					}
+					if (m.from == wRook1) {
 						castleMask[3] = true;
+						if (castleMask[2]) {
+							whiteCanCastle = false;
+						}
+					}
 				}
 			}
 
@@ -955,53 +1034,92 @@ public class Board2 implements BoardFace {
 		histDat[hply].ep = ep;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
+		histDat[hply].whiteCanCastle = whiteCanCastle;
+		histDat[hply].blackCanCastle = blackCanCastle;
 		histDat[hply].what = what;
 		histDat[hply].notation = GetMoveSAN();
 		++hply;
 
 		/* update the castle, en passant, and
 			   fifty-move-draw variables */
-		if (what != -1)
+		if (what != -1) {
 			castleMask[what] = true;
+			if (what == 0 || what == 1) {
+				blackCanCastle = false;
+			} else if (what == 2 || what == 3) {
+				whiteCanCastle = false;
+			}
+		}
 		if (pieces[m.from] == KING) {
 			if (side == DARK) {
 				castleMask[0] = true;
 				castleMask[1] = true;
+				blackCanCastle = false;
 			} else {
 				castleMask[2] = true;
 				castleMask[3] = true;
+				whiteCanCastle = false;
 			}
 		}
 		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 		if (pieces[m.from] == ROOK) {
 			if (side == DARK) {
-				if (m.from == bRook2)
+				if (m.from == bRook2) {
 					castleMask[0] = true;
-				if (m.from == bRook1)
+					if (castleMask[1]) {
+						blackCanCastle = false;
+					}
+				}
+				if (m.from == bRook1) {
 					castleMask[1] = true;
+					if (castleMask[0]) {
+						blackCanCastle = false;
+					}
+				}
 			} else {
-				if (m.from == wRook2)
+				if (m.from == wRook2) {
 					castleMask[2] = true;
-				if (m.from == wRook1)
+					if (castleMask[3]) {
+						whiteCanCastle = false;
+					}
+				}
+				if (m.from == wRook1) {
 					castleMask[3] = true;
+					if (castleMask[2]) {
+						whiteCanCastle = false;
+					}
+				}
 			}
 		}
 
+		// attacked rook
 		if (m.to == BLACK_ROOK_1_INITIAL_POS && !castleMask[1]) // q (fen castle)
 		{
 			castleMask[1] = true;
+			if (castleMask[0]) {
+				blackCanCastle = false;
+			}
 		}
 		if (m.to == BLACK_ROOK_2_INITIAL_POS && !castleMask[0]) // k (fen castle)
 		{
 			castleMask[0] = true;
+			if (castleMask[1]) {
+				blackCanCastle = false;
+			}
 		}
 		if (m.to == WHITE_ROOK_1_INITIAL_POS && !castleMask[3]) // Q (fen castle)
 		{
 			castleMask[3] = true;
+			if (castleMask[2]) {
+				whiteCanCastle = false;
+			}
 		}
 		if (m.to == WHITE_ROOK_2_INITIAL_POS && !castleMask[2]) // K (fen castle)
 		{
 			castleMask[2] = true;
+			if (castleMask[3]) {
+				whiteCanCastle = false;
+			}
 		}
 
 		if ((m.bits & 8) != 0) {
@@ -1016,7 +1134,7 @@ public class Board2 implements BoardFace {
 		else
 			++fifty;
 
-		/* move the piecesBitmap */
+		/* move the piece */
 
 		int colorFrom = color[m.from];
 		int pieceTo = pieces[m.to];
@@ -1096,6 +1214,8 @@ public class Board2 implements BoardFace {
 		ep = histDat[hply].ep;
 		fifty = histDat[hply].fifty;
 		castleMask = histDat[hply].castleMask.clone();
+		whiteCanCastle = histDat[hply].whiteCanCastle;
+		blackCanCastle = histDat[hply].blackCanCastle;
 
 		if ((m.bits & 2) != 0) {
 
@@ -1204,31 +1324,14 @@ public class Board2 implements BoardFace {
 			Move m = histDat[i].m;
 			if (i % 2 == 0)
 				output += "\n" + (i / 2 + 1) + ". ";
-			output += MoveParser.positionToString(m.from);
-			output += MoveParser.positionToString(m.to);
+			output += MoveParser2.positionToString(m.from);
+			output += MoveParser2.positionToString(m.to);
 			output += " ";
 		}
 		return output;
 	}
 
-//	public List<String> MoveListSAN() {
-//        String output = "";
-//		int i = 0;
-//        List<String> outputList = new ArrayList<String>();
-//		for (i = 0; i < hply; i++) {
-//			if (i % 2 == 0)
-//				output += "\n " + (i / 2 + 1) + ". ";
-//			output += histDat[i].notation;
-//			output += " ";
-//
-//            outputList.add(histDat[i].notation);
-//		}
-//
-//
-//		return outputList;
-//	}
-
-	public String MoveListSAN() { // TODO check for correct output after loading game
+	public String MoveListSAN() {
 		String output = "";
 		int i = 0;
 		for (i = 0; i < hply; i++) {
@@ -1258,9 +1361,9 @@ public class Board2 implements BoardFace {
 					continue;
 				if (pieces[pos] == 1 && color[pos] == side) {
 					if (COL(pos) == COL(m.from))
-						f += MoveParser.BNToNum(ROW(m.from));
+						f += MoveParser2.BNToNum(ROW(m.from));
 					else
-						f += MoveParser.BNToLetter(COL(m.from));
+						f += MoveParser2.BNToLetter(COL(m.from));
 					break;
 				}
 			}
@@ -1283,9 +1386,9 @@ public class Board2 implements BoardFace {
 					continue;
 				if (pieces[pos] == 3 && color[pos] == side) {
 					if (COL(pos) == COL(m.from))
-						f += MoveParser.BNToNum(ROW(m.from));
+						f += MoveParser2.BNToNum(ROW(m.from));
 					else
-						f += MoveParser.BNToLetter(COL(m.from));
+						f += MoveParser2.BNToLetter(COL(m.from));
 					break;
 				}
 			}
@@ -1297,7 +1400,7 @@ public class Board2 implements BoardFace {
 
 		if (histDat[hply].capture != 6) {
 			if (p == 0) {
-				f = MoveParser.BNToLetter(COL(m.from));
+				f = MoveParser2.BNToLetter(COL(m.from));
 			}
 			capture = "x";
 		}
@@ -1314,41 +1417,64 @@ public class Board2 implements BoardFace {
 				promotion = "=Q";
 		}
 
-		return f + capture + MoveParser.positionToString(m.to) + promotion;
+		return f + capture + MoveParser2.positionToString(m.to) + promotion;
 	}
 
 	private String convertMove() {
-		Move m = histDat[hply - 1].m;
+		Move m;
+		try {
+			m = histDat[hply - 1].m;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			StringBuffer result = new StringBuffer();
+			if (histDat.length > 0) {
+				result.append(histDat[0]);
+				for (int i = 1; i < histDat.length; i++) {
+					if (histDat[i] != null) {
+						result.append(", ");
+						result.append(histDat[i].m);
+					}
+				}
+			}
+			throw new ArrayIndexOutOfBoundsException(
+					"hply=" + hply +
+							", histDat=[" + result.toString() + "], " +
+							histDat.length + ", " +
+							coreActivity.getCurrentGame().values.get("move_list") + ", " +
+							coreActivity.getCurrentGame().values.get("encoded_move_string") + ", " +
+							coreActivity.getCurrentGame().values.get("starting_fen_position"));
+		}
+
+
 		String output = "";
 		try {
-			String to = MoveParser.positionToString(m.to);
+			String to = MoveParser2.positionToString(m.to);
 			if ((m.bits & 2) != 0) {
 				//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 				int what = histDat[hply - 1].what;
 
 				if (what == 0) {
 					if (chess960)
-						to = MoveParser.positionToString(bRook2);
+						to = MoveParser2.positionToString(bRook2);
 					else
 						to = "g8";
 				} else if (what == 1) {
 					if (chess960)
-						to = MoveParser.positionToString(bRook1);
+						to = MoveParser2.positionToString(bRook1);
 					else
 						to = "c8";
 				} else if (what == 2) {
 					if (chess960)
-						to = MoveParser.positionToString(wRook2);
+						to = MoveParser2.positionToString(wRook2);
 					else
 						to = "g1";
 				} else if (what == 3) {
 					if (chess960)
-						to = MoveParser.positionToString(wRook1);
+						to = MoveParser2.positionToString(wRook1);
 					else
 						to = "c1";
 				}
 			}
-			output = URLEncoder.encode(MoveParser.positionToString(m.from) + to, "UTF-8");
+			output = URLEncoder.encode(MoveParser2.positionToString(m.from) + to, "UTF-8");
 		} catch (Exception e) {
 		}
 		Log.d("move:", output);
@@ -1765,7 +1891,6 @@ public class Board2 implements BoardFace {
 
 	public static int POS(int c, int r, boolean reside) {
 		if (reside)
-
 			return 63 - (8 * r + c);
 		else
 			return (8 * r + c);
@@ -1784,7 +1909,6 @@ public class Board2 implements BoardFace {
 			  }*/
 		this.reside = reside;
 	}
-
 
 	public SoundPlayer getSoundPlayer() {
 		return coreActivity.getSoundPlayer();

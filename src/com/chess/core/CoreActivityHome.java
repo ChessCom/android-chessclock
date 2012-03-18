@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.activities.HomeScreenActivity;
 import com.chess.activities.LoginScreenActivity;
-import com.chess.activities.Singin;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.core.interfaces.CoreActivityFace;
 import com.chess.lcc.android.LccHolder;
@@ -144,7 +143,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mainApp.startActivity(intent);
 			} else {
-				startActivity(new Intent(mainApp, Singin.class));
+				startActivity(new Intent(mainApp, LoginScreenActivity.class));
 			}
 		}
 

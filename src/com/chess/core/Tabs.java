@@ -13,12 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
-import com.chess.activities.Game;
-import com.chess.activities.Register;
-import com.chess.activities.tabs.Computer;
-import com.chess.activities.tabs.Home;
-import com.chess.activities.tabs.Online;
-import com.chess.activities.tabs.Video;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.Notifications;
@@ -76,37 +70,38 @@ public class Tabs extends TabActivity implements OnClickListener {
 		moPubAdView.loadAd();*/
 		//
 
-		mainApp.setTabHost(getTabHost());
-		getTabHost().addTab(getTabHost().newTabSpec("tab1")
-				.setIndicator(getString(R.string.home), getResources().getDrawable(R.drawable.home))
-				.setContent(new Intent(this, Home.class)));
-		if (mainApp.guest) {
-			getTabHost().addTab(getTabHost().newTabSpec("tab2")
-					.setIndicator(getString(R.string.live), getResources().getDrawable(R.drawable.live))
-					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, true)));
-			getTabHost().addTab(getTabHost().newTabSpec("tab6")
-					.setIndicator(getString(R.string.online), getResources().getDrawable(R.drawable.online))
-					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, false)));
-		} else {
-			getTabHost().addTab(getTabHost().newTabSpec("tab2")
-					.setIndicator(getString(R.string.live), getResources().getDrawable(R.drawable.live))
-					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, true)));
-			getTabHost().addTab(getTabHost().newTabSpec("tab6")
-					.setIndicator(getString(R.string.online), getResources().getDrawable(R.drawable.online))
-					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, false)));
-		}
-
-		getTabHost().addTab(getTabHost().newTabSpec("tab3")
-				.setIndicator(getString(R.string.comp), getResources().getDrawable(R.drawable.computer))
-				.setContent(new Intent(this, Computer.class)));
-		getTabHost().addTab(getTabHost().newTabSpec("tab4")
-				.setIndicator(getString(R.string.tactics), getResources().getDrawable(R.drawable.tactics))
-				.setContent(new Intent(this, Game.class)
-						.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS)
-						.putExtra(AppConstants.LIVE_CHESS, false)));
-		getTabHost().addTab(getTabHost().newTabSpec("tab5")
-				.setIndicator(getString(R.string.video), getResources().getDrawable(R.drawable.video))
-				.setContent(new Intent(this, Video.class)));
+		// TODO check logic in HomeScreenActivity class
+//		mainApp.setTabHost(getTabHost());
+//		getTabHost().addTab(getTabHost().newTabSpec("tab1")
+//				.setIndicator(getString(R.string.home), getResources().getDrawable(R.drawable.home))
+//				.setContent(new Intent(this, Home.class)));
+//		if (mainApp.guest) {
+//			getTabHost().addTab(getTabHost().newTabSpec("tab2")
+//					.setIndicator(getString(R.string.live), getResources().getDrawable(R.drawable.live))
+//					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, true)));
+//			getTabHost().addTab(getTabHost().newTabSpec("tab6")
+//					.setIndicator(getString(R.string.online), getResources().getDrawable(R.drawable.online))
+//					.setContent(new Intent(this, Register.class).putExtra(AppConstants.LIVE_CHESS, false)));
+//		} else {
+//			getTabHost().addTab(getTabHost().newTabSpec("tab2")
+//					.setIndicator(getString(R.string.live), getResources().getDrawable(R.drawable.live))
+//					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, true)));
+//			getTabHost().addTab(getTabHost().newTabSpec("tab6")
+//					.setIndicator(getString(R.string.online), getResources().getDrawable(R.drawable.online))
+//					.setContent(new Intent(this, Online.class).putExtra(AppConstants.LIVE_CHESS, false)));
+//		}
+//
+//		getTabHost().addTab(getTabHost().newTabSpec("tab3")
+//				.setIndicator(getString(R.string.comp), getResources().getDrawable(R.drawable.computer))
+//				.setContent(new Intent(this, Computer.class)));
+//		getTabHost().addTab(getTabHost().newTabSpec("tab4")
+//				.setIndicator(getString(R.string.tactics), getResources().getDrawable(R.drawable.tactics))
+//				.setContent(new Intent(this, Game.class)
+//						.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS)
+//						.putExtra(AppConstants.LIVE_CHESS, false)));
+//		getTabHost().addTab(getTabHost().newTabSpec("tab5")
+//				.setIndicator(getString(R.string.video), getResources().getDrawable(R.drawable.video))
+//				.setContent(new Intent(this, Video.class)));
 
 		TabWidget tw = getTabWidget();
 		for (int i = 0; i < tw.getChildCount(); i++) {
