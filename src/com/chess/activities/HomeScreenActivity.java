@@ -73,7 +73,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			  moPubInterstitial.load();*/
 
 		/*if(interAdView == null)*/
-		interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
+		/*interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
 		interAdView.setId(MMAdViewSDK.DEFAULT_VIEWID);
 		interAdView.callForAd();
 		interAdView.setListener(new MMAdView.MMAdListener() {
@@ -104,7 +104,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 					mmAdView.display();
 				}
 			}
-		});
+		});*/
 
 		super.onResume();
 	}
