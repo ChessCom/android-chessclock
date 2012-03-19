@@ -41,7 +41,7 @@ public class LoginScreenActivity extends CoreActivity2 implements View.OnClickLi
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.singin);
+		setContentView(R.layout.login_screen);
 
 
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));

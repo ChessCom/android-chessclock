@@ -43,8 +43,6 @@
         <activity android:name=".core.Tabs" 			/>
 		<activity android:name=".activities.VideoListActivity" 	android:label="@string/label_video"/>
 
-		<activity android:name=".activities.OnlineNewGame" />
-
 		<activity android:name=".activities.ChatActivity" 		/>
 		<activity android:name=".activities.ChatLiveActivity" 	/>
 
@@ -52,7 +50,7 @@
         <activity android:name=".activities.LoginScreenActivity"
                   android:theme="@style/OrangeButtonNotitle"
                   />
-        <activity android:name=".activities.HomeScreenActivity"/>
+        <activity android:name=".activities.HomeScreenActivity" android:label=""/>
 
         <!-- todo: try this?
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
