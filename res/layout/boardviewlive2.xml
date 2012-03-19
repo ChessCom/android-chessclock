@@ -96,7 +96,7 @@
 			android:orientation="vertical"
 			android:layout_weight="1">
 
-			<com.chess.views.NewBoardView
+			<com.chess.views.ChessBoardView
 				android:id="@+id/boardview"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
 				/>
 
 		</LinearLayout>
-		<!--<com.chess.views.NewBoardView
+		<!--<com.chess.views.ChessBoardViewew
 			android:id="@+id/boardview"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

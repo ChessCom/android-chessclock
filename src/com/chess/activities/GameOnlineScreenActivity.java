@@ -19,9 +19,9 @@ import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
-import com.chess.engine.Board2;
+import com.chess.engine.ChessBoard;
 import com.chess.engine.Move;
-import com.chess.engine.MoveParser2;
+import com.chess.engine.MoveParser;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
 import com.chess.model.GameListElement;
@@ -100,7 +100,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 
 //		if (newBoardView.getBoardFace() == null) {
-		newBoardView.setBoardFace(new Board2(this));
+		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
@@ -381,7 +381,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						if (currentGames.get(i).values.get(AppConstants.GAME_ID)
 								.contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
 							if (i + 1 < currentGames.size()) {
-								newBoardView.setBoardFace(new Board2(this));
+								newBoardView.setBoardFace(new ChessBoard(this));
 								newBoardView.getBoardFace().setAnalysis(false);
 								newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 
@@ -430,9 +430,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
-									moveFT = MoveParser2.parseCoordinate(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
+									moveFT = MoveParser.parseCoordinate(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								} else {
-									moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
+									moveFT = MoveParser.Parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								}
 								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).getSeq() == Moves.length)
 										|| !mainApp.isLiveChess();
@@ -537,7 +537,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 				}
 
 				int i;
@@ -548,7 +548,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					for (i = 0; i < newBoardView.getBoardFace().getMovesCount(); i++) {
 						//System.out.println("@@@@@@@@ POINT 4 i=" + i);
 						//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
-						moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[i]);
+						moveFT = MoveParser.Parse(newBoardView.getBoardFace(), Moves[i]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2) {
@@ -638,7 +638,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			if (currentGames.get(i).values.get(AppConstants.GAME_ID).contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
 				if (i + 1 < currentGames.size()) {
 					newBoardView.getBoardFace().setAnalysis(false);
-					newBoardView.setBoardFace(new Board2(this));
+					newBoardView.setBoardFace(new ChessBoard(this));
 					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 					getOnlineGame(currentGames.get(i + 1).values.get(AppConstants.GAME_ID));
 					return;

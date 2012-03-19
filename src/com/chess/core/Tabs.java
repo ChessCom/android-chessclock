@@ -147,9 +147,7 @@ public class Tabs extends TabActivity implements OnClickListener {
 						//System.out.println("LCCLOG2: ONTABCHANGED 2");
 						MobclixHelper.hideBannerAd(mainApp, upgradeBtn);
 					}
-					//System.out.println("LCCLOG2: ONTABCHANGED 3");
 				}
-				//System.out.println("LCCLOG2: ONTABCHANGED 4");
 			}
 		});
 

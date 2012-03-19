@@ -18,9 +18,9 @@ import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
-import com.chess.engine.Board2;
+import com.chess.engine.ChessBoard;
 import com.chess.engine.Move;
-import com.chess.engine.MoveParser2;
+import com.chess.engine.MoveParser;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
@@ -101,7 +101,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 
 //		if (newBoardView.getBoardFace() == null) {
-		newBoardView.setBoardFace(new Board2(this));
+		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
@@ -420,7 +420,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	private void getTacticsGame(final String id) {
 		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
 		if (!mainApp.noInternet) {
-			newBoardView.setBoardFace(new Board2(this));
+			newBoardView.setBoardFace(new ChessBoard(this));
 			newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 			if (mainApp.getTactic() != null
@@ -429,7 +429,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 					String[] tmp2 = FEN.split(" ");
 					if (tmp2.length > 1) {
 						if (tmp2[1].trim().equals("w")) {
@@ -448,7 +448,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic().
 						values.get(AppConstants.AVG_SECONDS)));
 				startTacticsTimer();
-				int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(),
+				int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(),
 						newBoardView.getBoardFace().getTacticMoves()[0]);
 				if (moveFT.length == 4) {
 					Move m;
@@ -506,13 +506,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			return;
 		}
 
-		newBoardView.setBoardFace(new Board2(this));
+		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 		if (!FEN.equals("")) {
 			newBoardView.getBoardFace().genCastlePos(FEN);
-			MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+			MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 			String[] tmp = FEN.split(" ");
 			if (tmp.length > 1) {
 				if (tmp[1].trim().equals("w")) {
@@ -531,7 +531,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTacticsBatch()
 				.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)));
 		startTacticsTimer();
-		int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
+		int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
 		if (moveFT.length == 4) {
 			Move m;
 			if (moveFT[3] == 2)
@@ -570,7 +570,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 	private void showAnswer() {
-		newBoardView.setBoardFace(new Board2(this));
+		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 		newBoardView.getBoardFace().setRetry(true);
 
@@ -578,7 +578,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				newBoardView.getBoardFace().genCastlePos(FEN);
-				MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+				MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 				String[] tmp = FEN.split(" ");
 				if (tmp.length > 1) {
 					if (tmp[1].trim().equals("w")) {
@@ -594,7 +594,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				newBoardView.getBoardFace().genCastlePos(FEN);
-				MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+				MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 				String[] tmp2 = FEN.split(" ");
 				if (tmp2.length > 1) {
 					if (tmp2[1].trim().equals("w")) {
@@ -615,7 +615,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			public void run() {
 				int i;
 				for (i = 0; i < newBoardView.getBoardFace().getTacticMoves().length; i++) {
-					int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[i]);
+					int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[i]);
 					try {
 						Thread.sleep(1500);
 					} catch (Exception ignored) {
@@ -662,13 +662,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		} else if (p == 5) {
 			f = "K";
 		}
-		String Moveto = MoveParser2.positionToString(m.to);
+		String Moveto = MoveParser.positionToString(m.to);
 		Log.d("!!!", f + " | " + Moveto + " : " + newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1]);
 		if (newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(f)
 				&& newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(Moveto)) {
 			newBoardView.getBoardFace().increaseTacticsCorrectMoves();
 			if (newBoardView.getBoardFace().getMovesCount() < newBoardView.getBoardFace().getTacticMoves().length - 1) {
-				int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(),
+				int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(),
 						newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply()]);
 				if (moveFT.length == 4) {
 					if (moveFT[3] == 2)
@@ -860,7 +860,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 			case CALLBACK_GET_TACTICS:
 
-				newBoardView.setBoardFace(new Board2(this));
+				newBoardView.setBoardFace(new ChessBoard(this));
 				newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 				String[] tmp = response.trim().split("[|]");
@@ -874,7 +874,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 					String[] tmp2 = FEN.split(" ");
 					if (tmp2.length > 1) {
 						if (tmp2[1].trim().equals("w")) {
@@ -891,7 +891,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().setSec(0);
 				newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic().values.get(AppConstants.AVG_SECONDS)));
 				startTacticsTimer();
-				int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
+				int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
 				if (moveFT.length == 4) {
 					Move m;
 					if (moveFT[3] == 2)
@@ -947,7 +947,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						if (currentGames.get(i).values.get(AppConstants.GAME_ID)
 								.contains(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))) {
 							if (i + 1 < currentGames.size()) {
-								newBoardView.setBoardFace(new Board2(this));
+								newBoardView.setBoardFace(new ChessBoard(this));
 								newBoardView.getBoardFace().setAnalysis(false);
 								newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 
@@ -995,9 +995,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
-									moveFT = MoveParser2.parseCoordinate(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
+									moveFT = MoveParser.parseCoordinate(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								} else {
-									moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
+									moveFT = MoveParser.Parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								}
 								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).getSeq() == Moves.length)
 										|| !mainApp.isLiveChess();
@@ -1091,7 +1091,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 				}
 
 				int i;
@@ -1102,7 +1102,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					for (i = 0; i < newBoardView.getBoardFace().getMovesCount(); i++) {
 						//System.out.println("@@@@@@@@ POINT 4 i=" + i);
 						//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
-						moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[i]);
+						moveFT = MoveParser.Parse(newBoardView.getBoardFace(), Moves[i]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2) {
@@ -1368,13 +1368,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					}
 					int sec = newBoardView.getBoardFace().getSec();
 					if (mainApp.guest || mainApp.noInternet) {
-						newBoardView.setBoardFace(new Board2(this));
+						newBoardView.setBoardFace(new ChessBoard(this));
 						newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 						String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
 							newBoardView.getBoardFace().genCastlePos(FEN);
-							MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+							MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 							String[] tmp = FEN.split(" ");
 							if (tmp.length > 1) {
 								if (tmp[1].trim().equals("w")) {
@@ -1391,7 +1391,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTacticsBatch()
 								.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - sec);
 						startTacticsTimer();
-						int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
+						int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2)
@@ -1432,13 +1432,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 							openOptionsMenu();
 							return true;
 						}
-						newBoardView.setBoardFace(new Board2(this));
+						newBoardView.setBoardFace(new ChessBoard(this));
 						newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 						String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 						if (!FEN.equals("")) {
 							newBoardView.getBoardFace().genCastlePos(FEN);
-							MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+							MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 							String[] tmp2 = FEN.split(" ");
 							if (tmp2.length > 1) {
 								if (tmp2[1].trim().equals("w")) {
@@ -1454,7 +1454,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						newBoardView.getBoardFace().setSec(sec);
 						newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic()
 								.values.get(AppConstants.AVG_SECONDS)) - sec);
-						int[] moveFT = MoveParser2.Parse(newBoardView.getBoardFace(),
+						int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(),
 								newBoardView.getBoardFace().getTacticMoves()[0]);
 						if (moveFT.length == 4) {
 							Move m;

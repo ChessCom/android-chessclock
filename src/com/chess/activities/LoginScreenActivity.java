@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
 import com.chess.core.AppConstants;
-import com.chess.core.CoreActivity2;
+import com.chess.core.CoreActivity;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
@@ -29,7 +29,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends CoreActivity2 implements View.OnClickListener {
+public class LoginScreenActivity extends CoreActivity implements View.OnClickListener {
 
 	private EditText username, password;
 

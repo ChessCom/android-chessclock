@@ -16,7 +16,7 @@ import com.chess.core.interfaces.BoardFace;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class Search2 {
+public class Search {
 	final static int MAX_PLY = 32;
 
 	private BoardFace boardFace;
@@ -28,7 +28,7 @@ public class Search2 {
 	private long startTime;
 	private long stopTime;
 
-	public Search2(BoardFace boardFace1) {
+	public Search(BoardFace boardFace1) {
 		boardFace = boardFace1;
 	}
 

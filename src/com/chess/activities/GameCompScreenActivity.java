@@ -16,9 +16,9 @@ import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.IntentConstants;
 import com.chess.core.MainApp;
-import com.chess.engine.Board2;
+import com.chess.engine.ChessBoard;
 import com.chess.engine.Move;
-import com.chess.engine.MoveParser2;
+import com.chess.engine.MoveParser;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
@@ -51,7 +51,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		super.widgetsInit();
 
 //		if (newBoardView.getBoardFace() == null) {
-		newBoardView.setBoardFace(new Board2(this));
+		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);//init = true;
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
@@ -245,9 +245,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
-									moveFT = MoveParser2.parseCoordinate(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
+									moveFT = MoveParser.parseCoordinate(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								} else {
-									moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
+									moveFT = MoveParser.Parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								}
 								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).getSeq() == Moves.length)
 										|| !mainApp.isLiveChess();
@@ -341,7 +341,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser2.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
 				}
 
 				int i;
@@ -351,7 +351,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				for (i = 0; i < newBoardView.getBoardFace().getMovesCount(); i++) {
 					//System.out.println("@@@@@@@@ POINT 4 i=" + i);
 					//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
-					moveFT = MoveParser2.Parse(newBoardView.getBoardFace(), Moves[i]);
+					moveFT = MoveParser.Parse(newBoardView.getBoardFace(), Moves[i]);
 					if (moveFT.length == 4) {
 						Move m;
 						if (moveFT[3] == 2) {
@@ -468,7 +468,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
 			switch (i) {
 				case NEW_GAME_WHITE: {
-					newBoardView.setBoardFace(new Board2(GameCompScreenActivity.this));
+					newBoardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
 					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 					newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 					newBoardView.invalidate();
@@ -477,7 +477,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 				case NEW_GAME_BLACK: {
 					// TODO encapsulate
-					newBoardView.setBoardFace(new Board2(GameCompScreenActivity.this));
+					newBoardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
 					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
 					newBoardView.getBoardFace().setReside(true);
 					newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");

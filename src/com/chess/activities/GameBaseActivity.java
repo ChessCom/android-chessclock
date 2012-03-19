@@ -14,16 +14,16 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.core.*;
 import com.chess.core.interfaces.GameActivityFace;
-import com.chess.engine.Board2;
+import com.chess.engine.ChessBoard;
 import com.chess.engine.Move;
-import com.chess.engine.MoveParser2;
+import com.chess.engine.MoveParser;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MobclixAdViewListenerImpl;
 import com.chess.utilities.MobclixHelper;
 import com.chess.views.GamePanelView;
-import com.chess.views.NewBoardView;
+import com.chess.views.ChessBoardView;
 import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import java.util.Timer;
@@ -45,7 +45,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	public final static int CALLBACK_PLAYER_MOVE = 3;
 
 
-	protected NewBoardView newBoardView;
+	protected ChessBoardView newBoardView;
 	protected TextView whitePlayerLabel;
 	protected TextView blackPlayerLabel;
 	protected TextView thinking;
@@ -97,9 +97,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
-		newBoardView = (NewBoardView) findViewById(R.id.boardview);
+		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
-		newBoardView.setBoardFace((Board2) getLastNonConfigurationInstance());
+		newBoardView.setBoardFace((ChessBoard) getLastNonConfigurationInstance());
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		newBoardView.setGamePanelView(gamePanelView);
@@ -537,7 +537,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// restoring from analysis mode        /// TODO fix
 			if (newBoardView.getBoardFace().isAnalysis()) {
-				newBoardView.setBoardFace(new Board2(this));
+				newBoardView.setBoardFace(new ChessBoard(this));
 				newBoardView.getBoardFace().setInit(true);
 				newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
@@ -557,15 +557,15 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 				String FEN = mainApp.getCurrentGame().values.get("starting_fen_position");
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser2.FenParse(FEN, newBoardView.getBoardFace().getBoard());
+					MoveParser.FenParse(FEN, newBoardView.getBoardFace().getBoard());
 				}
 
 				int i;
 				for (i = 0; i < newBoardView.getBoardFace().getMovesCount(); i++) {
 
 					int[] moveFT = mainApp.isLiveChess() ?
-							MoveParser2.parseCoordinate(newBoardView.getBoardFace().getBoard(), Moves[i]) :
-							MoveParser2.Parse(newBoardView.getBoardFace().getBoard(), Moves[i]);
+							MoveParser.parseCoordinate(newBoardView.getBoardFace().getBoard(), Moves[i]) :
+							MoveParser.Parse(newBoardView.getBoardFace().getBoard(), Moves[i]);
 					if (moveFT.length == 4) {
 						Move m;
 						if (moveFT[3] == 2)

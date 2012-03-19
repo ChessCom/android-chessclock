@@ -24,7 +24,7 @@ import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
 
-public abstract class CoreActivity2 extends Activity implements CoreActivityFace {
+public abstract class CoreActivity extends Activity implements CoreActivityFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -293,7 +293,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 					Update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivity2.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -310,7 +310,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
 			final com.chess.live.client.Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
-			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity2.this)
+			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
 					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
 					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
@@ -381,7 +381,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 						@Override
 						public void onCancel(DialogInterface dialog) {
 							lccHolder.logout();
-							final Intent intent = new Intent(CoreActivity2.this, HomeScreenActivity.class);
+							final Intent intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							// reconnectingIndicator.dismiss();
 							mainApp.startActivity(intent);
@@ -394,7 +394,7 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
 					} catch (Exception e) {
 						lccHolder.logout();
-						intent = new Intent(CoreActivity2.this, HomeScreenActivity.class);
+						intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						// reconnectingIndicator.dismiss();
 						mainApp.startActivity(intent);
@@ -605,13 +605,13 @@ public abstract class CoreActivity2 extends Activity implements CoreActivityFace
 	}
 
 	private void showNetworkChangeNotification() {
-		new AlertDialog.Builder(CoreActivity2.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+		new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
 				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// mainApp.setNetworkChangedNotification(false);
-						startActivity(new Intent(CoreActivity2.this, Tabs.class));
+						startActivity(new Intent(CoreActivity.this, Tabs.class));
 					}
 				}).create().show();
 	}

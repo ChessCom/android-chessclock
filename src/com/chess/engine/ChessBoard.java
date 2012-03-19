@@ -18,7 +18,7 @@ import com.chess.utilities.SoundPlayer;
 import java.net.URLEncoder;
 import java.util.TreeSet;
 
-public class Board2 implements BoardFace {
+public class ChessBoard implements BoardFace {
 	final public static int LIGHT = 0;
 	final public static int DARK = 1;
 
@@ -270,7 +270,7 @@ public class Board2 implements BoardFace {
 	//private boolean userColorWhite;
 	private CoreActivityFace coreActivity;
 
-	public Board2(CoreActivityFace coreActivity) {
+	public ChessBoard(CoreActivityFace coreActivity) {
 		this.coreActivity = coreActivity;
 	}
 
@@ -1201,7 +1201,7 @@ public class Board2 implements BoardFace {
 
 
 	@Override
-	public Board2 getBoard() {
+	public ChessBoard getBoard() {
 		return this;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -1324,8 +1324,8 @@ public class Board2 implements BoardFace {
 			Move m = histDat[i].m;
 			if (i % 2 == 0)
 				output += "\n" + (i / 2 + 1) + ". ";
-			output += MoveParser2.positionToString(m.from);
-			output += MoveParser2.positionToString(m.to);
+			output += MoveParser.positionToString(m.from);
+			output += MoveParser.positionToString(m.to);
 			output += " ";
 		}
 		return output;
@@ -1361,9 +1361,9 @@ public class Board2 implements BoardFace {
 					continue;
 				if (pieces[pos] == 1 && color[pos] == side) {
 					if (COL(pos) == COL(m.from))
-						f += MoveParser2.BNToNum(ROW(m.from));
+						f += MoveParser.BNToNum(ROW(m.from));
 					else
-						f += MoveParser2.BNToLetter(COL(m.from));
+						f += MoveParser.BNToLetter(COL(m.from));
 					break;
 				}
 			}
@@ -1386,9 +1386,9 @@ public class Board2 implements BoardFace {
 					continue;
 				if (pieces[pos] == 3 && color[pos] == side) {
 					if (COL(pos) == COL(m.from))
-						f += MoveParser2.BNToNum(ROW(m.from));
+						f += MoveParser.BNToNum(ROW(m.from));
 					else
-						f += MoveParser2.BNToLetter(COL(m.from));
+						f += MoveParser.BNToLetter(COL(m.from));
 					break;
 				}
 			}
@@ -1400,7 +1400,7 @@ public class Board2 implements BoardFace {
 
 		if (histDat[hply].capture != 6) {
 			if (p == 0) {
-				f = MoveParser2.BNToLetter(COL(m.from));
+				f = MoveParser.BNToLetter(COL(m.from));
 			}
 			capture = "x";
 		}
@@ -1417,7 +1417,7 @@ public class Board2 implements BoardFace {
 				promotion = "=Q";
 		}
 
-		return f + capture + MoveParser2.positionToString(m.to) + promotion;
+		return f + capture + MoveParser.positionToString(m.to) + promotion;
 	}
 
 	private String convertMove() {
@@ -1447,34 +1447,34 @@ public class Board2 implements BoardFace {
 
 		String output = "";
 		try {
-			String to = MoveParser2.positionToString(m.to);
+			String to = MoveParser.positionToString(m.to);
 			if ((m.bits & 2) != 0) {
 				//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 				int what = histDat[hply - 1].what;
 
 				if (what == 0) {
 					if (chess960)
-						to = MoveParser2.positionToString(bRook2);
+						to = MoveParser.positionToString(bRook2);
 					else
 						to = "g8";
 				} else if (what == 1) {
 					if (chess960)
-						to = MoveParser2.positionToString(bRook1);
+						to = MoveParser.positionToString(bRook1);
 					else
 						to = "c8";
 				} else if (what == 2) {
 					if (chess960)
-						to = MoveParser2.positionToString(wRook2);
+						to = MoveParser.positionToString(wRook2);
 					else
 						to = "g1";
 				} else if (what == 3) {
 					if (chess960)
-						to = MoveParser2.positionToString(wRook1);
+						to = MoveParser.positionToString(wRook1);
 					else
 						to = "c1";
 				}
 			}
-			output = URLEncoder.encode(MoveParser2.positionToString(m.from) + to, "UTF-8");
+			output = URLEncoder.encode(MoveParser.positionToString(m.from) + to, "UTF-8");
 		} catch (Exception e) {
 		}
 		Log.d("move:", output);
@@ -1485,16 +1485,16 @@ public class Board2 implements BoardFace {
 		String output = convertMove();
 		final Move m = histDat[hply - 1].m;
 		switch (m.promote) {
-			case Board2.KNIGHT:
+			case ChessBoard.KNIGHT:
 				output += (color[m.from] == 0 ? "=N" : "=n");
 				break;
-			case Board2.BISHOP:
+			case ChessBoard.BISHOP:
 				output += (color[m.from] == 0 ? "=B" : "=b");
 				break;
-			case Board2.ROOK:
+			case ChessBoard.ROOK:
 				output += (color[m.from] == 0 ? "=R" : "=r");
 				break;
-			case Board2.QUEEN:
+			case ChessBoard.QUEEN:
 				output += (color[m.from] == 0 ? "=Q" : "=q");
 				break;
 			default:
@@ -1507,16 +1507,16 @@ public class Board2 implements BoardFace {
 		String output = convertMove();
 		final Move m = histDat[hply - 1].m;
 		switch (m.promote) {
-			case Board2.KNIGHT:
+			case ChessBoard.KNIGHT:
 				output += 'n';
 				break;
-			case Board2.BISHOP:
+			case ChessBoard.BISHOP:
 				output += 'b';
 				break;
-			case Board2.ROOK:
+			case ChessBoard.ROOK:
 				output += 'r';
 				break;
-			case Board2.QUEEN:
+			case ChessBoard.QUEEN:
 				output += 'q';
 				break;
 			default:

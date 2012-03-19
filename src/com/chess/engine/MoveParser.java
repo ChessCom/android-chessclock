@@ -6,11 +6,11 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-public class MoveParser2 {
+public class MoveParser {
 	String[] Pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 	String[] PromotionPices = new String[]{"N", "B", "R", "Q"};
 
-	public MoveParser2() {
+	public MoveParser() {
 	}
 
 	public static int[] parseCoordinate(BoardFace board, String move) {
@@ -120,8 +120,8 @@ public class MoveParser2 {
 		int k;
 		if ((pieceType >= 1 && pieceType <= 4)/*(pieceType == 3 || pieceType == 1)*/ && !currentmove.substring(1, 2).contains("x") && !currentmove.substring(2, 3).matches("[0-9]")) {//Rooks and Knights which?
 			for (k = 0; k < 64; k++) {
-				int l1 = (Board2.ROW(k) + 1) * 8 - LetterToBN(currentmove.substring(1, 2));
-				int l2 = NumToBN(currentmove.substring(1, 2)) * 8 - (Board2.COL(k) + 1);
+				int l1 = (ChessBoard.ROW(k) + 1) * 8 - LetterToBN(currentmove.substring(1, 2));
+				int l2 = NumToBN(currentmove.substring(1, 2)) * 8 - (ChessBoard.COL(k) + 1);
 
 				if (currentmove.substring(1, 2).matches("[abcdefgh]")) {
 					if (board.getPieces()[l1] == pieceType && board.getColor()[l1] == board.getSide()) {
@@ -146,7 +146,7 @@ public class MoveParser2 {
 							if (board.getBoardColor()[k] == board.getBoardColor()[to])
 								return new int[]{k, to, promotion};
 						} else if (pieceType == 0) {
-							if (currentmove.contains("x") && 9 - LetterToBN(currentmove.substring(0, 1)) != Board2.COL(k) + 1) {
+							if (currentmove.contains("x") && 9 - LetterToBN(currentmove.substring(0, 1)) != ChessBoard.COL(k) + 1) {
 								break;
 							}
 
@@ -225,10 +225,10 @@ public class MoveParser2 {
 	}
 
 	public static String positionToString(int pos) {
-		return BNToLetter(Board2.COL(pos)) + BNToNum(Board2.ROW(pos));
+		return BNToLetter(ChessBoard.COL(pos)) + BNToNum(ChessBoard.ROW(pos));
 	}
 
-	//    public static void FenParse(String fen, Board2 b) {
+	//    public static void FenParse(String fen, ChessBoard b) {
 	public static void FenParse(String fen, BoardFace b) {
 		String[] FEN = fen.split("[/]");
 		int i, j, p = 0;

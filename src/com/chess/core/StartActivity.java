@@ -9,7 +9,7 @@ import com.chess.activities.HomeScreenActivity;
 import com.chess.activities.LoginScreenActivity;
 import com.chess.utilities.Notifications;
 
-public class StartActivity2 extends CoreActivity2 {
+public class StartActivity extends CoreActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,6 @@
 package com.chess.core.interfaces;
 
-import com.chess.engine.Board2;
+import com.chess.engine.ChessBoard;
 import com.chess.engine.HistoryData;
 import com.chess.engine.Move;
 
@@ -69,7 +69,7 @@ public interface BoardFace {
 
 	boolean isSubmit();
 
-	Board2 getBoard();
+	ChessBoard getBoard();
 
 	void setInit(boolean init);
 
