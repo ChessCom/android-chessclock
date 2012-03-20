@@ -1,172 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/game_board_back"
+	android:orientation="vertical">
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		>
+		<com.chess.ui.views.ChessBoardView
+			android:id="@+id/boardview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:visibility="visible"
+			android:layout_weight="1"/>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#444"
-    android:orientation="horizontal" >
-<!--
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" >
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:orientation="vertical"
+			>
+			<RelativeLayout
+				android:id="@+id/statusBarLay"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				>
 
-        <com.chess.views.ChessBoardViewew
-            android:id="@+id/boardview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </FrameLayout>
+				<TextView
+					android:id="@+id/thinking"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:text="@string/Thinking"
+					android:visibility="gone"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:orientation="vertical" >
+				<TextView
+					android:id="@+id/white"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:drawablePadding="5dip"
+					android:inputType="textImeMultiLine"
+					android:layout_centerVertical="true"
+					android:text="@string/Human"
+					android:textSize="14sp"
+					android:paddingTop="2dip"
+					android:paddingLeft="8dip"
+					android:paddingBottom="2dip"
+					android:paddingRight="2dip"
+					android:drawableLeft="@drawable/whitemove"
+					/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+				<TextView
+					android:id="@+id/black"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:layout_centerVertical="true"
+					android:layout_alignParentRight="true"
+					android:text="@string/Computer"
+					android:textSize="14sp"
+					android:paddingTop="2dip"
+					android:paddingLeft="2dip"
+					android:paddingBottom="2dip"
+					android:paddingRight="8dip"
+					android:drawableRight="@drawable/blackmove"
+					android:drawablePadding="2dip"
+					/>
 
-            <LinearLayout
-                android:id="@+id/analysis"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone" >
+				<!--TODO set theme with text Size-->
+				<TextView
+					android:id="@+id/analysisTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:drawablePadding="5dip"
+					android:textSize="14sp"
+					android:layout_centerInParent="true"
+					android:padding="2dip"
+					android:visibility="gone"
+					android:text="@string/analysis_mode"
+					/>
+			</RelativeLayout>
 
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="@string/analysis"
-                    android:textColor="#fff"
-                    android:textSize="16dip"
-                    android:textStyle="bold" >
-                </TextView>
+			<com.chess.ui.views.GamePanelView
+				android:id="@+id/gamePanelView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				/>
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="5dip"
-                    android:background="#00bb00" >
-                </ImageView>
-            </LinearLayout>
+		</LinearLayout>
 
-            <TextView
-                android:id="@+id/thinking"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:inputType="textImeMultiLine"
-                android:padding="2dip"
-                android:text="@string/Thinking"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:visibility="gone" >
-            </TextView>
+	</LinearLayout>
 
-            <TextView
-                android:id="@+id/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:drawablePadding="5dip"
-                android:inputType="textMultiLine"
-                android:padding="2dip"
-                android:text="Player"
-                android:textColor="#fff"
-                android:textStyle="bold" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:drawablePadding="5dip"
-                android:inputType="textMultiLine"
-                android:padding="2dip"
-                android:text="Computer"
-                android:textColor="#fff"
-                android:textStyle="bold" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/timer"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawablePadding="5dip"
-                android:gravity="center"
-                android:inputType="textImeMultiLine"
-                android:padding="2dip"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:visibility="gone" >
-            </TextView>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/movelist"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:ellipsize="start"
-            android:gravity="bottom"
-            android:inputType="textMultiLine"
-            android:padding="1dip"
-            android:textColor="#fff"
-            android:textSize="13dip" >
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/moveButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#444"
-            android:orientation="vertical"
-            android:visibility="gone" >
-
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/submit" />
-
-            <Button
-                android:id="@+id/cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="45dip"
-                android:text="Cancel"
-                android:textColor="#222"
-                android:textSize="16dip"
-                android:textStyle="bold" >
-            </Button>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/analysisButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#444"
-            android:orientation="vertical"
-            android:visibility="gone" >
-
-            <ImageButton
-                android:id="@+id/prev"
-                android:layout_width="wrap_content"
-                android:layout_height="32px"
-                android:src="@drawable/prev" >
-            </ImageButton>
-
-            <ImageButton
-                android:id="@+id/next"
-                android:layout_width="wrap_content"
-                android:layout_height="32px"
-                android:src="@drawable/next" >
-            </ImageButton>
-        </LinearLayout>
-    </LinearLayout>-->
 
 </LinearLayout>

@@ -1,8 +1,8 @@
 package com.chess.ui.interfaces;
 
-import com.chess.ui.engine.Move;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.HistoryData;
+import com.chess.ui.engine.Move;
 
 import java.util.TreeSet;
 

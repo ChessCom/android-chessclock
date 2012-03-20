@@ -12,14 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.core.*;
-import com.chess.ui.interfaces.GameActivityFace;
-import com.chess.ui.core.*;
-import com.chess.ui.engine.MoveParser;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
+import com.chess.ui.core.*;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.engine.MoveParser;
+import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.CommonUtils;
@@ -171,10 +170,10 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		return super.onCreateDialog(id);
 	}
 
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-		return newBoardView.getBoardFace();
-	}
+//	@Override
+//	public Object onRetainNonConfigurationInstance() {
+//		return newBoardView.getBoardFace();
+//	}
 
 	protected void getOnlineGame(final String game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {

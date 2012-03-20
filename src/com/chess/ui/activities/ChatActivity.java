@@ -9,10 +9,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 

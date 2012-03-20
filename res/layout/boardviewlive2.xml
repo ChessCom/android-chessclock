@@ -109,32 +109,7 @@
 				/>
 
 		</LinearLayout>
-		<!--<com.chess.views.ChessBoardViewew
-			android:id="@+id/boardview"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"/>-->
-		<!--       <ImageView android:id="@+id/boardview" android:layout_height="320px" android:layout_width="320px" android:layout_weight="1"/>
-		 -->
 
-		<!--
-			   <RelativeLayout android:layout_height="wrap_content" android:background="#FF0000"
-							 android:layout_width="fill_parent" android:orientation="horizontal">
-				   <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#fff"
-							 android:textStyle="bold" android:id="@+id/whiteClockView" android:padding="2dip"
-							 android:drawablePadding="5dip" android:inputType="textImeMultiLine"
-							 android:drawableRight="@drawable/whitemove"
-							 android:visibility="visible" android:layout_alignParentLeft="true" android:text="white"></TextView>
-				   <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#fff"
-							 android:textStyle="bold" android:gravity="right" android:id="@+id/blackClockView" android:padding="2dip"
-							 android:drawablePadding="5dip" android:inputType="textImeMultiLine"
-							 android:visibility="visible" android:layout_alignParentRight="true" android:text="black"></TextView>
-			   </RelativeLayout>
-
-			   <TextView android:id="@+id/endOfGameMessage" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#ffffcc" android:textStyle="bold"
-						 android:gravity="center" android:padding="2dip" android:text="end of game"></TextView>
-
-				-->
 	</LinearLayout>
 
 	<RelativeLayout

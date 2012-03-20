@@ -12,11 +12,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.lcc.android.LccHolder;
+import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.lcc.android.LccHolder;
-import com.chess.model.VideoItem;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 

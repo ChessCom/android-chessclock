@@ -1,72 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:layout_width="fill_parent"
-			  android:layout_height="fill_parent"
-			  android:background="@color/game_board_back"
-			  android:orientation="vertical">
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/game_board_back"
+	android:orientation="vertical">
 
-	<!--	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_vertical">
-
-		<TextView
-			android:id="@+id/thinking"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:inputType="textImeMultiLine"
-			android:text="@string/Thinking"
-			android:visibility="gone"/>
-
-		<TextView
-			android:id="@+id/white"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:drawablePadding="5dip"
-			android:inputType="textImeMultiLine"
-			android:gravity="center_vertical"
-			android:text="@string/Human"
-			android:textSize="14sp"
-			android:paddingTop="2dip"
-			android:paddingLeft="8dip"
-			android:paddingBottom="2dip"
-			android:paddingRight="2dip"
-			android:drawableLeft="@drawable/whitemove"
-			/>
-
-		<TextView
-			android:id="@+id/black"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:gravity="right|center_vertical"
-			android:inputType="textImeMultiLine"
-			android:text="@string/Computer"
-			android:textSize="14sp"
-			android:paddingTop="2dip"
-			android:paddingLeft="2dip"
-			android:paddingBottom="2dip"
-			android:paddingRight="8dip"
-			android:drawableRight="@drawable/blackmove"
-			android:drawablePadding="2dip"
-			/>
-
-		<TextView
-			android:id="@+id/analysisTxt"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:drawablePadding="5dip"
-			android:textSize="14sp"
-			android:gravity="center"
-			android:padding="2dip"
-			android:visibility="gone"
-			android:text="@string/analysis_mode"
-			/>
-	</LinearLayout>-->
 	<RelativeLayout
 		android:id="@+id/statusBarLay"
 		android:layout_width="fill_parent"

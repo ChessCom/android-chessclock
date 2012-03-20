@@ -17,11 +17,11 @@ import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
-import com.chess.ui.interfaces.BoardViewFace;
-import com.chess.ui.engine.Move;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.Move;
 import com.chess.ui.engine.Search;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.interfaces.GameActivityFace;
 
 import java.util.Iterator;

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.net.Uri;
 import android.os.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -15,18 +17,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.tasks.CheckUpdateTask;
+import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
-import com.chess.backend.tasks.CheckUpdateTask;
+import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.CoreActivityFace;
-import com.chess.lcc.android.LccHolder;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
 
 //import com.chess.activities.Singin;
 
-public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace {
+public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,ActiveFragmentInterface {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -78,6 +81,15 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onDestroy();
 		doUnbindService();
 	}
+
+    @Override
+    public void switchFragment(Fragment fragment) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.activeContent, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 
 	/*
 	 * public boolean isConnected(){ ConnectivityManager cm =

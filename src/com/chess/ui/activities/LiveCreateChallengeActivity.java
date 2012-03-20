@@ -10,14 +10,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.ui.core.AppConstants;
+import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.flurry.android.FlurryAgent;
 

@@ -28,7 +28,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 08.02.12 7:18
  */
-public class PreferencesScreenActivity extends CoreActivityActionBar implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class PreferencesScreenFragmentActivity extends CoreActivityActionBar implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 	private Spinner actionAfterMyMove;
 	private Spinner strength;
 	private CheckBox showSubmitButton;
@@ -251,17 +251,17 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 						}
 					}).create().show();
 		}*/ else if (view.getId() == R.id.PrefInvite) {
-			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType("text/plain");
-			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
-			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invite_text) + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\". \n \n Sent from my Android");
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
+			emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text) + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\". \n \n Sent from my Android");
 			FlurryAgent.onEvent("Invite A Friend", null);
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
-			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType("plain/text");
-			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"mobile@chess.com"});
-			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Android Support");
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"mobile@chess.com"});
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		}

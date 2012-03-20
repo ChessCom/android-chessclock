@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.engine.PieceItem;
+import com.chess.ui.interfaces.BoardViewFace;
 
 import java.util.List;
 

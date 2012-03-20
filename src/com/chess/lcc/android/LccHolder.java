@@ -7,13 +7,13 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
-import com.chess.ui.activities.GameBaseActivity;
-import com.chess.ui.core.AppConstants;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameListElement;
+import com.chess.ui.activities.GameBaseActivity;
+import com.chess.ui.core.AppConstants;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 

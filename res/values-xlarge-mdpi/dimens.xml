@@ -10,4 +10,8 @@
 	<dimen name="signin_scr_side_padding">100dip</dimen>
 	<dimen name="signin_logo_margin_top">15dip</dimen>
 	<dimen name="signin_main_margin_top">36dip</dimen>
+
+	<!--Default screen-->
+	<dimen name="default_scr_top_padding">16dip</dimen>
+	<dimen name="default_scr_side_padding">100dip</dimen>
 </resources>

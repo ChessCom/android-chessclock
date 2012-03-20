@@ -8,8 +8,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
-import com.chess.ui.core.MainApp;
 import com.chess.lcc.android.LccHolder;
+import com.chess.ui.core.MainApp;
 
 public class NetworkChangeService extends Service {
 

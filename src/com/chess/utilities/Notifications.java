@@ -10,8 +10,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import com.chess.R;
-import com.chess.ui.core.AppConstants;
 import com.chess.lcc.android.LccHolder;
+import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.core.SplashActivity;
 
