@@ -43,6 +43,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public abstract void update(int code);
 
 	protected Context coreContext;
+	private Handler handler;
 
 	public void setFullscreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -55,6 +56,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 
 		coreContext = this;
+		handler = new Handler();
+
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
@@ -135,24 +138,19 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		if (mainApp.getBoardBitmap() == null || mainApp.getPiecesBitmap() == null) {
-			new Handler().post(new Runnable() {
-				@Override
-				public void run() {
-					mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 8)]);
-					mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)]);
-					mainApp.loadCapturedPieces();
-				}
-			});
-			if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
-				final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				mainApp.startActivity(intent);
-			} else {
-				startActivity(new Intent(mainApp, LoginScreenActivity.class));
-			}
+		boolean resetDetected = false;
+		if (mainApp.getBoardBitmap() == null ) {
+			handler.post(loadBoardBitmap);
+			resetDetected = true;
+		}
+
+		if (mainApp.getPiecesBitmaps() == null) {
+			handler.post(loadPiecesBitmaps);
+			resetDetected = true;
+		}
+
+		if(resetDetected){
+			checkUserTokenAndStartActivity();
 		}
 
 		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
@@ -202,6 +200,35 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		 * if (mainApp.isNetworkChangedNotification()) {
 		 * showNetworkChangeNotification(); }
 		 */
+	}
+
+	private Runnable loadBoardBitmap = new Runnable() {
+		@Override
+		public void run() {
+			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
+					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+							+ AppConstants.PREF_BOARD_TYPE, 8)],null);
+		}
+	};
+
+	private Runnable loadPiecesBitmaps = new Runnable() {
+		@Override
+		public void run() {
+			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
+					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+							+ AppConstants.PREF_PIECES_SET, 0)],null);
+		}
+	};
+
+	private void checkUserTokenAndStartActivity(){
+		if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
+			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				mainApp.startActivity(intent);
+			startActivity(intent);
+		} else {
+			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+		}
 	}
 
 	@Override

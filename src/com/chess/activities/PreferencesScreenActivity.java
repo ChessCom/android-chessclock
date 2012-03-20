@@ -38,6 +38,8 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 	private CheckBox PrefShowHighlights;
 	private CheckBox enableSounds;
 	private Context context;
+	private View boardProgressView;
+	private View piecesProgressView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,13 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		FlurryAgent.onEvent("Settings Accessed", null);
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.preferences);
+		setContentView(R.layout.preferences_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		context = this;
+
+		boardProgressView = findViewById(R.id.boardProgressView);
+		piecesProgressView = findViewById(R.id.piecesProgressView);
 
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
@@ -229,7 +234,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
 							mainApp.getSharedDataEditor().commit();
 							PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
-							mainApp.LoadBoard(mainApp.res_boards[pos]);
+							mainApp.loadBoard(mainApp.res_boards[pos]);
 						}
 					}).create().show();
 		}*//*else if(view.getId() == R.id.PrefPices){
@@ -242,7 +247,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 									.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 							mainApp.getSharedDataEditor().commit();
 							PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
-							mainApp.LoadPieces(mainApp.res_pieces[pos]);
+							mainApp.loadPieces(mainApp.res_pieces[pos]);
 						}
 					}).create().show();
 		}*/ else if (view.getId() == R.id.PrefInvite) {
@@ -273,7 +278,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
 			mainApp.getSharedDataEditor().commit();
 //			PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
-			mainApp.LoadBoard(mainApp.res_boards[pos]);
+			mainApp.loadBoard(mainApp.res_boards[pos],boardProgressView);
 		}
 
 		@Override
@@ -288,7 +293,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
 //				PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
-			mainApp.LoadPieces(mainApp.res_pieces[pos]);
+			mainApp.loadPieces(mainApp.res_pieces[pos],piecesProgressView);
 		}
 
 		@Override

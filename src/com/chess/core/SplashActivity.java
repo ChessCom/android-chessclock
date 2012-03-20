@@ -4,27 +4,30 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import com.chess.R;
 import com.chess.activities.HomeScreenActivity;
 import com.chess.activities.LoginScreenActivity;
 import com.chess.utilities.Notifications;
 
-public class StartActivity extends CoreActivity {
+public class SplashActivity extends CoreActivity {
+
+	private View progressView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.start);
+		setContentView(R.layout.splash_screen);
 //		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
+		progressView = findViewById(R.id.progressView);
 		//defaults
-		mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData()
+		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData()
 				.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_BOARD_TYPE, 8)]);
-		mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData()
+						+ AppConstants.PREF_BOARD_TYPE, 8)],progressView);
+		mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData()
 				.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_PIECES_SET, 0)]);
-		mainApp.loadCapturedPieces();
+						+ AppConstants.PREF_PIECES_SET, 0)],progressView);
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(1);

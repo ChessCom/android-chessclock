@@ -12,7 +12,7 @@ import android.os.Message;
 import com.chess.R;
 import com.chess.core.AppConstants;
 import com.chess.core.MainApp;
-import com.chess.core.StartActivity;
+import com.chess.core.SplashActivity;
 import com.chess.lcc.android.LccHolder;
 
 import java.util.Timer;
@@ -92,8 +92,8 @@ public class Notifications extends Service {
 
 						  default: break;
 					  }*/
-//							PendingIntent contentIntent = PendingIntent.getActivity(Notifications.this, 0, new Intent(Notifications.this, StartActivity.class).putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true), 0);
-							Intent intent = new Intent(Notifications.this, StartActivity.class);
+//							PendingIntent contentIntent = PendingIntent.getActivity(Notifications.this, 0, new Intent(Notifications.this, SplashActivity.class).putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true), 0);
+							Intent intent = new Intent(Notifications.this, SplashActivity.class);
 							intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
 							PendingIntent contentIntent = PendingIntent.getActivity(Notifications.this, 0, intent, 0);
 							notification.setLatestEventInfo(getApplicationContext(), "ChessCom", notification_message, contentIntent);

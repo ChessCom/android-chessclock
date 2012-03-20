@@ -41,6 +41,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	public abstract void Update(int code);
 
 	protected Context context;
+	private Handler handler;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -54,6 +55,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		super.onCreate(savedInstanceState);
 
 		context = this;
+		handler = new Handler();
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
@@ -133,27 +135,20 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		boolean resetDetected = false;
+		if (mainApp.getBoardBitmap() == null ) {
+			handler.post(loadBoardBitmap);
+			resetDetected = true;
+		}
 
-		if (mainApp.getBoardBitmap() == null || mainApp.getPiecesBitmap() == null) {
-			new Handler().post(new Runnable() {
-				@Override
-				public void run() {
-					mainApp.LoadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-									+ AppConstants.PREF_BOARD_TYPE, 8)]);
-					mainApp.LoadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
-							mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-									+ AppConstants.PREF_PIECES_SET, 0)]);
-					mainApp.loadCapturedPieces();
-				}
-			});
-			if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
-				final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				mainApp.startActivity(intent);
-			} else {
-				startActivity(new Intent(mainApp, LoginScreenActivity.class));
-			}
+		if (mainApp.getPiecesBitmaps() == null) {
+			handler.post(loadPiecesBitmaps);
+			resetDetected = true;
+		}
+
+		if(resetDetected){
+			checkUserTokenAndStartActivity();
 		}
 
 		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
@@ -203,6 +198,35 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		 * if (mainApp.isNetworkChangedNotification()) {
 		 * showNetworkChangeNotification(); }
 		 */
+	}
+
+	private Runnable loadBoardBitmap = new Runnable() {
+		@Override
+		public void run() {
+			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
+					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+							+ AppConstants.PREF_BOARD_TYPE, 8)],null);
+		}
+	};
+
+	private Runnable loadPiecesBitmaps = new Runnable() {
+		@Override
+		public void run() {
+			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
+					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+							+ AppConstants.PREF_PIECES_SET, 0)],null);
+		}
+	};
+
+	private void checkUserTokenAndStartActivity(){
+		if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
+			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				mainApp.startActivity(intent);
+			startActivity(intent);
+		} else {
+			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+		}
 	}
 
 	@Override
@@ -600,7 +624,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		mainApp.setRectangleAdview(rectangleAdview);
 	}
 
-	private void checkUpdate() {
+	private void checkUpdate() {  // TODO show progress
 		new CheckUpdateTask(this, mainApp).execute("http://www.chess.com/api/get_android_version");
 	}
 

@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.core.interfaces.BoardFace;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.Game;
@@ -52,7 +55,7 @@ public class MainApp extends Application {
 	public boolean noInternet = false;
 	public boolean offline = false;
 	public boolean acceptdraw = false;
-	private Bitmap[][] piecesBitmap;
+	private Bitmap[][] piecesBitmaps;
 	private Bitmap boardBitmap;
 	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
 	private Game currentGame;
@@ -61,7 +64,10 @@ public class MainApp extends Application {
 
 	private Tactic tactic;
 	public int currentTacticProblem = 0;
+	private Context context;
+	private Resources resources;
 
+	// TODO move to array resources
 	public int[] strength = {1000, 3000, 5000, 10000, 30000, 60000};
 	public String[] res_boards = {"blue",
 			"brown",
@@ -82,42 +88,65 @@ public class MainApp extends Application {
 			"modern",
 			"vintage"};
 
-	public Bitmap capturedBB, capturedBN, capturedBP, capturedBQ, capturedBR,
-			capturedWB, capturedWN, capturedWP, capturedWQ, capturedWR;
+//	private View progressView;
 
-	public void LoadBoard(String b) {
-		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(b, "drawable", "com.chess"));
+	public void loadBoard(String boardName,View progressView) {
+		context = this;
+//		new BitmapLoaderTask(new BitmapLoadUpdateListener(progressView)).execute(boardName);
+		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(boardName, "drawable", "com.chess"));
 	}
 
-	public void LoadPieces(String p) {
-		piecesBitmap = new Bitmap[2][6];
-		piecesBitmap[0][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wp", "drawable", "com.chess"));
-		piecesBitmap[0][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wn", "drawable", "com.chess"));
-		piecesBitmap[0][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wb", "drawable", "com.chess"));
-		piecesBitmap[0][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wr", "drawable", "com.chess"));
-		piecesBitmap[0][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wq", "drawable", "com.chess"));
-		piecesBitmap[0][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_wk", "drawable", "com.chess"));
-		piecesBitmap[1][0] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bp", "drawable", "com.chess"));
-		piecesBitmap[1][1] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bn", "drawable", "com.chess"));
-		piecesBitmap[1][2] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bb", "drawable", "com.chess"));
-		piecesBitmap[1][3] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_br", "drawable", "com.chess"));
-		piecesBitmap[1][4] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bq", "drawable", "com.chess"));
-		piecesBitmap[1][5] = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(p + "_bk", "drawable", "com.chess"));
+//	private class BitmapLoadUpdateListener extends AbstractUpdateListener<Bitmap,String>{
+//
+//		public BitmapLoadUpdateListener(View progressView) {
+//			super(context, progressView);
+//		}
+//
+//		@Override
+//		public Bitmap backgroundMethod(String params) {
+//			return BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(params, "drawable", "com.chess"));
+//		}
+//
+//		@Override
+//		public void updateData(Bitmap returnedObj) {
+//			super.updateData(returnedObj);
+//			boardBitmap = returnedObj;
+//		}
+//
+//	}
+
+	public void loadPieces(String piecesName,View progressView) {
+//		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
+		resources = getResources();
+		piecesBitmaps = new Bitmap[2][6];
+		piecesBitmaps[0][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wp", "drawable", "com.chess"));
+		piecesBitmaps[0][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wn", "drawable", "com.chess"));
+		piecesBitmaps[0][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wb", "drawable", "com.chess"));
+		piecesBitmaps[0][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wr", "drawable", "com.chess"));
+		piecesBitmaps[0][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wq", "drawable", "com.chess"));
+		piecesBitmaps[0][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wk", "drawable", "com.chess"));
+		piecesBitmaps[1][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bp", "drawable", "com.chess"));
+		piecesBitmaps[1][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bn", "drawable", "com.chess"));
+		piecesBitmaps[1][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bb", "drawable", "com.chess"));
+		piecesBitmaps[1][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_br", "drawable", "com.chess"));
+		piecesBitmaps[1][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bq", "drawable", "com.chess"));
+		piecesBitmaps[1][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bk", "drawable", "com.chess"));
+		
 	}
 
-	public void loadCapturedPieces() {
-		capturedBB = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bb", "drawable", "com.chess"));
-		capturedBN = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bn", "drawable", "com.chess"));
-		capturedBP = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bp", "drawable", "com.chess"));
-		capturedBQ = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_bq", "drawable", "com.chess"));
-		capturedBR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_br", "drawable", "com.chess"));
-		capturedWB = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wb", "drawable", "com.chess"));
-		capturedWN = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wn", "drawable", "com.chess"));
-		capturedWP = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wp", "drawable", "com.chess"));
-		capturedWQ = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wq", "drawable", "com.chess"));
-		capturedWR = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier("captured_wr", "drawable", "com.chess"));
-	}
+	private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][],String>{
 
+		public PiecesLoadUpdateListener(View progressView) {
+			super(context, progressView);
+		}
+
+		@Override
+		public void updateData(Bitmap[][] returnedObj) {
+			super.updateData(returnedObj);
+			piecesBitmaps = returnedObj;
+		}
+
+	}	
 	/*public void onCreate()
 	  {
 		soundPlayer = new SoundPlayer(this);
@@ -266,8 +295,8 @@ public class MainApp extends Application {
 		return gameListItems;
 	}
 
-	public Bitmap[][] getPiecesBitmap() {
-		return piecesBitmap;
+	public Bitmap[][] getPiecesBitmaps() {
+		return piecesBitmaps;
 	}
 
 	public SharedPreferences getSharedData() {
@@ -358,4 +387,6 @@ public class MainApp extends Application {
 	public static boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
 	}
+
+
 }

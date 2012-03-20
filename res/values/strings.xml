@@ -4,8 +4,8 @@
 	<string name="connect_with_facebook">Connect With Facebook</string>
 	<string name="lccFailedUnavailable">Live Chess server is currently unavailable.</string>
 	<string name="lccFailedKicked">You have been kicked/banned by a moderator or admin.</string>
-	<string name="hello">Hello World!</string>
 	<string name="app_name">ChessCom</string>
+	<string name="error_occurred">Error occurred</string>
 
 	<!--Dashboard labels-->
 	<string name="menuLive">Play Live</string>
@@ -98,7 +98,7 @@
 	<string name="enableSounds">Enable sounds</string>
 	<string name="strength">Strength</string>
 	<string name="interfaceP">INTERFACE</string>
-	<string name="boardViewFace">Board</string>
+	<string name="board">Board</string>
 	<string name="pieces">Pieces</string>
 	<string name="showcoords">Show coordinates</string>
 	<string name="movehighlights">Move Highlights</string>
