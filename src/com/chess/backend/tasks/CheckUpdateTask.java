@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import com.chess.R;
-import com.chess.activities.LoginScreenActivity;
-import com.chess.core.AppConstants;
-import com.chess.core.MainApp;
+import com.chess.ui.activities.LoginScreenActivity;
+import com.chess.ui.core.AppConstants;
+import com.chess.ui.core.MainApp;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.BufferedInputStream;

@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
-import com.chess.core.AppConstants;
+import com.chess.ui.core.AppConstants;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

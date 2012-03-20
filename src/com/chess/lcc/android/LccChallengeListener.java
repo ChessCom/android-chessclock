@@ -1,6 +1,6 @@
 package com.chess.lcc.android;
 
-import com.chess.core.IntentConstants;
+import com.chess.ui.core.IntentConstants;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
 

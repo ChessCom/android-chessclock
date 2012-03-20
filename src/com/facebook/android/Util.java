@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import com.chess.core.AppConstants;
+import com.chess.ui.core.AppConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 

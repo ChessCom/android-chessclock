@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
-import com.chess.activities.GameBaseActivity;
-import com.chess.activities.OnlineScreenActivity;
-import com.chess.core.AppConstants;
-import com.chess.core.IntentConstants;
-import com.chess.core.MainApp;
+import com.chess.ui.activities.GameBaseActivity;
+import com.chess.ui.activities.OnlineScreenActivity;
+import com.chess.ui.core.AppConstants;
 import com.chess.live.client.Challenge;
+import com.chess.ui.core.IntentConstants;
+import com.chess.ui.core.MainApp;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.WebService;
 

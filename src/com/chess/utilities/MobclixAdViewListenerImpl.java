@@ -1,6 +1,6 @@
 package com.chess.utilities;
 
-import com.chess.core.MainApp;
+import com.chess.ui.core.MainApp;
 import com.mobclix.android.sdk.MobclixAdView;
 import com.mobclix.android.sdk.MobclixAdViewListener;
 

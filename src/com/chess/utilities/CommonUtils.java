@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.View;
 import com.chess.R;
-import com.chess.views.BackgroundChessDrawable;
+import com.chess.ui.views.BackgroundChessDrawable;
 
 /**
  * CommonUtils class

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import com.chess.R;
-import com.chess.core.AppConstants;
+import com.chess.ui.core.AppConstants;
 
 public class SoundPlayer {
 	private Context context;

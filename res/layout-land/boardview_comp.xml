@@ -10,7 +10,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		>
-		<com.chess.views.ChessBoardView
+		<com.chess.ui.views.ChessBoardView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
 					/>
 			</RelativeLayout>
 
-			<com.chess.views.GamePanelView
+			<com.chess.ui.views.GamePanelView
 				android:id="@+id/gamePanelView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

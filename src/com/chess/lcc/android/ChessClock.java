@@ -1,6 +1,6 @@
 package com.chess.lcc.android;
 
-import com.chess.activities.GameBaseActivity;
+import com.chess.ui.activities.GameBaseActivity;
 
 import java.util.TimerTask;
 
