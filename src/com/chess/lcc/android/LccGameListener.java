@@ -47,6 +47,10 @@ public class LccGameListener implements GameListener {
 		}
 	}
 
+	public void onGameListReceived(Collection<? extends Game> games) {
+		// TODO: Implement when necessary
+	}
+
 	public void onFollowedUserListReceived(Collection<? extends User> users) {
 		// TODO: Implement when necessary
 	}
