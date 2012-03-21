@@ -28,7 +28,7 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.computer);
+		setContentView(R.layout.computer_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
 		logoutTask = new LogoutTask();
@@ -43,7 +43,7 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 						mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, pos);
 						mainApp.getSharedDataEditor().commit();
 					}
-				} catch (Exception e) {
+				} catch (Exception ignored) {
 				}
 			}
 
@@ -102,18 +102,16 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 
 	@Override
 	protected void onResume() {
-		if (mainApp.isLiveChess()) {
-			mainApp.setLiveChess(false);
-			logoutTask.execute();  // do not create new instance every time
-		}
 		super.onResume();
 
 		if (strength != null && mainApp != null && mainApp.getSharedData() != null) {
 			strength.post(new Runnable() {
+				@Override
 				public void run() {
 					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 				}
 			});
+
 			if (!mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
 				findViewById(R.id.load).setOnClickListener(this);

@@ -181,7 +181,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				LccHolder.LOG.info("Accept challenge: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(AppConstants.GAME_ID));
-				update(2);
+				update(GameBaseActivity.CALLBACK_COMP_MOVE);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(AppConstants.GAME_ID));
 				LccHolder.LOG.info("Decline challenge: " + challenge);
@@ -230,7 +230,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					update(2);
+					update(GameBaseActivity.CALLBACK_COMP_MOVE);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(LiveNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {
@@ -273,7 +273,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				LccHolder.LOG.info("Accept seek: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
 				lccHolder.removeSeek(gameListElement.values.get(AppConstants.GAME_ID));
-				update(2);
+				update(GameBaseActivity.CALLBACK_COMP_MOVE);
 			} else if (gameListElement.values.get("is_direct_challenge").equals("0")
 					&& gameListElement.values.get("is_released_by_me").equals("1")) {
 				new AlertDialog.Builder(LiveNewGameActivity.this)

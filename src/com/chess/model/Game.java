@@ -21,7 +21,7 @@ public class Game implements Serializable {
 		this.values.put(AppConstants.WHITE_USERNAME, values[4].trim());
 		this.values.put(AppConstants.BLACK_USERNAME, values[5].trim());
 		this.values.put("starting_fen_position", values[6]);
-		this.values.put("move_list", values[7]);
+		this.values.put(AppConstants.MOVE_LIST, values[7]);
 		this.values.put("user_to_move", values[8]);
 		this.values.put("white_rating", values[9]);
 		this.values.put("black_rating", values[10]);

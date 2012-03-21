@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.ui.activities.GameBaseActivity;
+import com.chess.ui.activities.GameTacticsScreenActivity;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
@@ -123,9 +124,10 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	}
 
 
-	public void afterMove() {
+	public void afterMove() {    // TODO handle here analysis moves in comp game
 		boardFace.setMovesCount(boardFace.getHply());
-		gameActivityFace.update(0);	//movelist
+		gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);	//movelist
+
 		if (MainApp.isLiveOrEchessGameMode(boardFace) && !boardFace.isAnalysis()) {
 			boolean showSubmitButtons;
 			if (mainApp.isLiveChess()) {
@@ -140,34 +142,37 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 //				gameActivityFace.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 				boardFace.setSubmit(true);
 			} else {
-				gameActivityFace.update(1);
+				gameActivityFace.update(GameBaseActivity.CALLBACK_SEND_MOVE);
 			}
 		}
-		if (!MainApp.isTacticsGameMode(boardFace) && isResult())
+
+		if (!MainApp.isTacticsGameMode(boardFace) && isGameOver())
 			return;
-		switch (boardFace.getMode()) {
-			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-				computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-				break;
+
+		if(!boardFace.isAnalysis()){
+			switch (boardFace.getMode()) {
+				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
+					computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					break;
+				}
+				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
+					computerMove(mainApp.strength[mainApp.getSharedData()
+							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					break;
+				}
+				case AppConstants.GAME_MODE_TACTICS: {
+					gameActivityFace.update(GameTacticsScreenActivity.CALLBACK_CHECK_TACTICS_MOVE);
+					break;
+				}
+				default:break;
 			}
-			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-				computerMove(mainApp.strength[mainApp.getSharedData()
-						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-				break;
-			}
-			case AppConstants.GAME_MODE_TACTICS: {
-				if (!boardFace.isAnalysis())
-					gameActivityFace.update(4);
-				break;
-			}
-			default:
-				break;
 		}
 	}
 
-	boolean isResult() {
-		//saving game
+
+	boolean isGameOver() {
+		//saving game for comp game mode if human is playing
 		if (MainApp.isComputerVsHumanGameMode(boardFace) || MainApp.isHumanVsHumanGameMode(boardFace)) {
 			String saving = "" + boardFace.getMode();
 
@@ -181,12 +186,13 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			mainApp.getSharedDataEditor().commit();
 		}
 
+		// Check available moves
 		TreeSet<Move> validMoves = boardFace.gen();
 
 		Iterator<Move> i = validMoves.iterator();
 		boolean found = false;
-		while (i.hasNext()) {   // compute move for computer
-			if (boardFace.makeMove((Move) i.next(), false)) {
+		while (i.hasNext()) {   // compute available moves
+			if (boardFace.makeMove(i.next(), false)) {
 				boardFace.takeBack();
 				found = true;
 				break;
@@ -200,7 +206,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (!found) {
 			if (boardFace.inCheck(boardFace.getSide())) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-				gameActivityFace.update(0);
+				gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+				
 				if (boardFace.getSide() == ChessBoard.LIGHT)
 					message = "0 - 1 Black mates";
 				else
@@ -214,17 +221,19 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (message != null) {
 			finished = true;
 			mainApp.ShowMessage(message);
-
-			mainApp.sendBroadcast(
-					new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP).putExtra(AppConstants.MESSAGE, "GAME OVER: " + message)
-							.putExtra(AppConstants.FINISHABLE, false));
+			Intent intent = new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP);
+			intent.putExtra(AppConstants.MESSAGE, "GAME OVER: " + message);
+			intent.putExtra(AppConstants.FINISHABLE, false);
+			mainApp.sendBroadcast(intent);
 
 			return true;
 		}
+
 		if (boardFace.inCheck(boardFace.getSide())) {
 			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
-			gameActivityFace.update(0);
-			mainApp.ShowMessage("Check!");
+			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+			
+			mainApp.ShowMessage(getContext().getResources().getString(R.string.check));
 		}
 		return false;
 	}
@@ -254,10 +263,10 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				@Override
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
-					gameActivityFace.update(0);	//movelist
+					gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);	//movelist
 					gameActivityFace.update(GameBaseActivity.CALLBACK_PLAYER_MOVE);
 					invalidate();
-					if (isResult())
+					if (isGameOver())
 						return;
 					if (MainApp.isComputerVsComputerGameMode(boardFace)
 							|| (hint && !MainApp.isHumanVsHumanGameMode(boardFace))) {
@@ -453,14 +462,14 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			int col = (trackX - trackX % square) / square;
 			int row = (trackY - trackY % square) / square;
 			if (firstclick) {
-				from = ChessBoard.POS(col, row, boardFace.isReside());
+				from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 				if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
 					sel = true;
 					firstclick = false;
 					invalidate();
 				}
 			} else {
-				to = ChessBoard.POS(col, row, boardFace.isReside());
+				to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 				sel = false;
 				firstclick = true;
 				boolean found = false;
@@ -500,7 +509,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 					sel = true;
 					firstclick = false;
-					from = ChessBoard.POS(col, row, boardFace.isReside());
+					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					invalidate();
 				} else {
 					invalidate();
@@ -547,14 +556,14 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					return false;
 				}
 				if (firstclick) {
-					from = ChessBoard.POS(col, row, boardFace.isReside());
+					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
 						sel = true;
 						firstclick = false;
 						invalidate();
 					}
 				} else {
-					int f = ChessBoard.POS(col, row, boardFace.isReside());
+					int f = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[f] != 6 && boardFace.getSide() == boardFace.getColor()[f]) {
 						from = f;
 						sel = true;
@@ -567,17 +576,17 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			case MotionEvent.ACTION_MOVE: {
 				dragX = (int) event.getX();
 				dragY = (int) event.getY() - square;
-				col = (int) (dragX - dragX % square) / square;
-				row = (int) (dragY - dragY % square) / square;
+				col = (dragX - dragX % square) / square;
+				row = (dragY - dragY % square) / square;
 				if (col > 7 || col < 0 || row > 7 || row < 0) {
 					invalidate();
 					return false;
 				}
 				if (!drag && !sel)
-					from = ChessBoard.POS(col, row, boardFace.isReside());
+					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 				if (!firstclick && boardFace.getSide() == boardFace.getColor()[from]) {
 					drag = true;
-					to = ChessBoard.POS(col, row, boardFace.isReside());
+					to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					invalidate();
 				}
 				return true;
@@ -587,19 +596,19 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				row = (int) (event.getY() - event.getY() % square) / square;
 				drag = false;
 				// if outside of the boardBitmap - return
-				if (col > 7 || col < 0 || row > 7 || row < 0) {
+				if (col > 7 || col < 0 || row > 7 || row < 0) { // if touched out of board
 					invalidate();
 					return false;
 				}
 				if (firstclick) {
-					from = ChessBoard.POS(col, row, boardFace.isReside());
+					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
 						sel = true;
 						firstclick = false;
 						invalidate();
 					}
 				} else {
-					to = ChessBoard.POS(col, row, boardFace.isReside());
+					to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					sel = false;
 					firstclick = true;
 					boolean found = false;
@@ -617,21 +626,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
 							((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
 							(boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
-//						final int col_ = col, row_ = row;
 						gameActivityFace.showChoosePieceDialog(col, row);
-//						new AlertDialog.Builder(gameActivityFace)
-//								.setTitle("Choose a piece ")
-//								.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
-//										new DialogInterface.OnClickListener() {
-//											public void onClick(DialogInterface dialog, int which) {
-//												if (which == 4) {
-//													invalidate();
-//													return;
-//												}
-//												promote(4 - which, col_, row_);
-//											}
-//										}).setCancelable(false)
-//								.create().show();
 						return true;
 					}
 					if (found && m != null && boardFace.makeMove(m)) {
@@ -639,11 +634,9 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 						sel = true;
 						firstclick = false;
-						from = ChessBoard.POS(col, row, boardFace.isReside());
+						from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					}
 					invalidate();
-
-
 				}
 				return true;
 			}
@@ -658,23 +651,23 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
 		TreeSet<Move> moves = boardFace.gen();
-		Iterator<Move> i = moves.iterator();
+		Iterator<Move> iterator = moves.iterator();
 
-		Move m = null;
-		while (i.hasNext()) {
-			m = i.next();
-			if (m.from == from && m.to == to && m.promote == promote) {
+		Move move = null;
+		while (iterator.hasNext()) {
+			move = iterator.next();
+			if (move.from == from && move.to == to && move.promote == promote) {
 				found = true;
 				break;
 			}
 		}
-		if (found && m != null && boardFace.makeMove(m)) {
+		if (found && move != null && boardFace.makeMove(move)) {
 			invalidate();
 			afterMove();
 		} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 			sel = true;
 			firstclick = false;
-			from = ChessBoard.POS(col, row, boardFace.isReside());
+			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 			invalidate();
 		} else {
 			invalidate();
@@ -705,11 +698,6 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		this.gamePanelView.setBoardViewFace(this);
 	}
 
-//	@Override // we use new game for next game in tactics mode
-//	public void nextGame() {
-//
-//	}
-
 	@Override
 	public void showOptions() {
 		gameActivityFace.showOptions();
@@ -738,8 +726,6 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
 	@Override
 	public void switchAnalysis() {
-
-//        boolean isAnalysis = getBoardFace().isAnalysis();
 		boolean isAnalysis = getBoardFace().toggleAnalysis();
 
 		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, isAnalysis);
@@ -749,7 +735,6 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	@Override
 	public void switchChat() {
 		gameActivityFace.switch2Chat();
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
