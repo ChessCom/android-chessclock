@@ -161,7 +161,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 						null,
 						challenge
 				);
-				update(0);
+				update(GameBaseActivity.CALLBACK_REPAINT_UI);
 			}
 		}
 

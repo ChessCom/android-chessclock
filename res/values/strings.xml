@@ -248,5 +248,6 @@
 	<string name="challenges">Challenges</string>
 	<string name="challenge">Challenge</string>
 	<string name="analysis_mode">Analysis Mode</string>
+	<string name="check">Check!</string>
 
 </resources>

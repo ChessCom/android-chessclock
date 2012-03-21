@@ -174,7 +174,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
 				if (result.contains("Success")) {
-					update(2);
+					update(GameBaseActivity.CALLBACK_COMP_MOVE);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
 				} else {

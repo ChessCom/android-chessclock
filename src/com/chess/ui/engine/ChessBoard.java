@@ -1439,7 +1439,7 @@ public class ChessBoard implements BoardFace {
 					"hply=" + hply +
 							", histDat=[" + result.toString() + "], " +
 							histDat.length + ", " +
-							coreActivity.getCurrentGame().values.get("move_list") + ", " +
+							coreActivity.getCurrentGame().values.get(AppConstants.MOVE_LIST) + ", " +
 							coreActivity.getCurrentGame().values.get("encoded_move_string") + ", " +
 							coreActivity.getCurrentGame().values.get("starting_fen_position"));
 		}
@@ -1889,7 +1889,7 @@ public class ChessBoard implements BoardFace {
 		this.color = color;
 	}
 
-	public static int POS(int c, int r, boolean reside) {
+	public static int getPositionIndex(int c, int r, boolean reside) {
 		if (reside)
 			return 63 - (8 * r + c);
 		else

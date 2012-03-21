@@ -89,4 +89,5 @@ public class AppConstants {
 	public final static int GAME_MODE_VIEW_FINISHED_ECHESS = 5;
 	public final static int GAME_MODE_TACTICS = 6;
 
+
 }

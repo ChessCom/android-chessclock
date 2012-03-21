@@ -282,7 +282,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 				if (result.contains("Success")) {
 					mainApp.ShowMessage(getString(R.string.accepted));
-					update(1);
+					update(GameBaseActivity.CALLBACK_SEND_MOVE);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(coreContext, "Error", result.split("[+]")[1]);
 				} else {
@@ -297,7 +297,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 						+ gameListElement.values.get(AppConstants.TIMESTAMP), "GET", null, null);
 
 				if (result.contains("Success")) {
-					update(1);
+					update(GameBaseActivity.CALLBACK_SEND_MOVE);
 				} else if (result.contains("Error+")) {
 					mainApp.ShowDialog(coreContext, "Error", result.split("[+]")[1]);
 				} else {

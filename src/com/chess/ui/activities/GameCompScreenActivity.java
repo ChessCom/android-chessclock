@@ -80,8 +80,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
 				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
-			if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
-				mainApp.setGameId(extras.getString(AppConstants.GAME_ID));
 		}
 //		}
 
@@ -91,6 +89,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	}
 
+	@Override
 	protected void init() {
 		super.init();
 		menuOptionsItems = new CharSequence[]{
@@ -145,6 +144,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 
+	@Override
 	protected void getOnlineGame(final String game_id) {
 		super.getOnlineGame(game_id);
 
@@ -158,7 +158,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public void update(int code) {
 //		int UPDATE_DELAY = 10000;
-		int[] moveFT = new int[]{};
+		int[] moveFT;
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
 				if (!MainApp.isTacticsGameMode(newBoardView.getBoardFace()))
@@ -232,16 +232,16 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				if (!mainApp.getCurrentGame().equals(game)) {
-					if (!mainApp.getCurrentGame().values.get("move_list").equals(game.values.get("move_list"))) {
+					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
 						mainApp.setCurrentGame(game);
-						String[] Moves = {};
+						String[] Moves;
 
-						if (mainApp.getCurrentGame().values.get("move_list").contains("1.")
+						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
 								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())))) {
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) ? 0 : 1;
 
-							Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -279,6 +279,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 									.setIcon(android.R.drawable.ic_dialog_alert)
 									.setTitle(getString(R.string.you_got_new_msg))
 									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
+										@Override
 										public void onClick(DialogInterface dialog, int whichButton) {
 											chat = true;
 											getOnlineGame(mainApp.getGameId());
@@ -286,6 +287,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 										}
 									})
 									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+										@Override
 										public void onClick(DialogInterface dialog, int whichButton) {
 										}
 									}).create().show();
@@ -302,22 +304,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
 
-				if (chat) {
-					if (!isUserColorWhite())
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame()
-								.values.get(AppConstants.WHITE_USERNAME));
-					else
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame()
-								.values.get(AppConstants.BLACK_USERNAME));
-					mainApp.getSharedDataEditor().commit();
-					mainApp.getCurrentGame().values.put("has_new_message", "0");
-					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
-							putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).
-							putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP)));
-					chat = false;
-					return;
-				}
-
 				if (mainApp.getCurrentGame().values.get("game_type").equals("2"))
 					newBoardView.getBoardFace().setChess960(true);
 
@@ -326,8 +312,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 				String[] Moves = {};
 
-				if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
-					Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
 					newBoardView.getBoardFace().setMovesCount(Moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					newBoardView.getBoardFace().setMovesCount(0);

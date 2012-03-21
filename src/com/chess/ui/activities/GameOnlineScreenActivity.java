@@ -107,7 +107,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		newBoardView.getBoardFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 		//newBoardView.getBoardFaceFace().genCastlePos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-		if (MainApp.isComputerGameMode(newBoardView.getBoardFace())
+		/*if (MainApp.isComputerGameMode(newBoardView.getBoardFace())
 				&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) {
 			int i;
 			String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
@@ -121,7 +121,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			}
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace()))
 				newBoardView.getBoardFace().setReside(true);
-		} else {
+		} else */{
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 				newBoardView.getBoardFace().setReside(true);
 				newBoardView.invalidate();
@@ -417,16 +417,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 				int[] moveFT;
 				if (!mainApp.getCurrentGame().equals(game)) {
-					if (!mainApp.getCurrentGame().values.get("move_list").equals(game.values.get("move_list"))) {
+					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
 						mainApp.setCurrentGame(game);
 						String[] Moves = {};
 
-						if (mainApp.getCurrentGame().values.get("move_list").contains("1.")
+						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
 								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())))) {
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) ? 0 : 1;
 
-							Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -522,8 +522,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				String[] Moves = {};
 
 
-				if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
-					Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
 					newBoardView.getBoardFace().setMovesCount(Moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					newBoardView.getBoardFace().setMovesCount(0);

@@ -69,6 +69,17 @@
 					android:drawablePadding="2dip"
 					/>
 
+				<TextView
+					android:id="@+id/timer"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:drawablePadding="5dip"
+					android:textSize="14sp"
+					android:layout_centerInParent="true"
+					android:padding="2dip"
+					android:visibility="gone"/>
+
 				<!--TODO set theme with text Size-->
 				<TextView
 					android:id="@+id/analysisTxt"

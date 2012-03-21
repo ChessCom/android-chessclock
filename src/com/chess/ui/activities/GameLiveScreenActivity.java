@@ -35,8 +35,7 @@ import java.util.ArrayList;
 public class GameLiveScreenActivity extends GameBaseActivity implements View.OnClickListener {
 
 
-	private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
-	private final static int CALLBACK_SEND_MOVE = 1;
+
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
@@ -302,16 +301,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 				int[] moveFT;
 				if (!mainApp.getCurrentGame().equals(game)) {
-					if (!mainApp.getCurrentGame().values.get("move_list").equals(game.values.get("move_list"))) {
+					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
 						mainApp.setCurrentGame(game);
 						String[] Moves = {};
 
-						if (mainApp.getCurrentGame().values.get("move_list").contains("1.")
+						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
 								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())))) {
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) ? 0 : 1;
 
-							Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -406,8 +405,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				String[] Moves = {};
 
 
-				if (mainApp.getCurrentGame().values.get("move_list").contains("1.")) {
-					Moves = mainApp.getCurrentGame().values.get("move_list").replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
 					newBoardView.getBoardFace().setMovesCount(Moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					newBoardView.getBoardFace().setMovesCount(0);

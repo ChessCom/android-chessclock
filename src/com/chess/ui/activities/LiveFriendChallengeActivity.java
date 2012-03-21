@@ -166,7 +166,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 						null,
 						challenge
 				);
-				update(1);
+				update(GameBaseActivity.CALLBACK_SEND_MOVE);
 			}
 
 		}

@@ -85,7 +85,7 @@ public class LccHolder {
 	public String networkTypeName;
 
 	public LccHolder(InputStream keyStoreInputStream, String versionName) {
-		Log.d("Chess.Com", "Start Chess.Com LCC mainApp @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		Log.d("Chess.Com", "Start Chess.Com LCC mainApp");
 		//System.setProperty("java.net.preferIPv6Addresses", "false");
 		LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
 		//InputStream keyStoreInputStream = null;
