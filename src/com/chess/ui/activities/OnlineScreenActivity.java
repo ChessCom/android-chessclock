@@ -99,6 +99,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener {
 
+		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			gameListElement = mainApp.getGameListItems().get(temp_pos);
 
@@ -428,7 +429,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		@Override
 		public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 			gameListElement = mainApp.getGameListItems().get(pos);
-			if (gameListElement.type == 0) {
+			if (gameListElement.type == GameListElement.LIST_TYPE_CHALLENGES) {
 				final String title = mainApp.isLiveChess() ?
 						gameListElement.values.get("opponent_chess_title") :
 						"Win: " + gameListElement.values.get("opponent_win_count")
@@ -472,7 +473,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 							.create().show();
 				}
 
-			} else if (gameListElement.type == 1) {
+			} else if (gameListElement.type == GameListElement.LIST_TYPE_CURRENT) {
 				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get("opponent_username"));
 				mainApp.getSharedDataEditor().commit();
 
