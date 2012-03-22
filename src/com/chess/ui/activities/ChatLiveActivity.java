@@ -17,6 +17,7 @@ import com.chess.model.Message;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
+import com.chess.ui.views.BackgroundChessDrawable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,16 +26,18 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 	public static int MESSAGE_RECEIVED = 0;
 	public static int MESSAGE_SENT = 1;
 	private EditText sendText;
-	private ListView chatLV;
+	private ListView chatListView;
 	private MessagesAdapter messages = null;
 	private ArrayList<Message> chatItems = new ArrayList<Message>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chat);
+		setContentView(R.layout.chat_screen);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+
 		sendText = (EditText) findViewById(R.id.sendText);
-		chatLV = (ListView) findViewById(R.id.chatLV);
+		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.send).setOnClickListener(this);
 	}
 
@@ -47,25 +50,25 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 			if (before != chatItems.size()) {
 				if (messages == null) {
 					messages = new MessagesAdapter(ChatLiveActivity.this, R.layout.chat_item, chatItems);
-					chatLV.setAdapter(messages);
+					chatListView.setAdapter(messages);
 				} else {
 					messages.notifyDataSetChanged();
 				}
-				chatLV.setSelection(chatItems.size() - 1);
+				chatListView.setSelection(chatItems.size() - 1);
 			}
 		} else if (code == MESSAGE_SENT) {
 			chatItems.clear();
 			chatItems.addAll(getMessagesList());
 			if (messages == null) {
 				messages = new MessagesAdapter(ChatLiveActivity.this, R.layout.chat_item, chatItems);
-				chatLV.setAdapter(messages);
+				chatListView.setAdapter(messages);
 			} else {
 				messages.notifyDataSetChanged();
 			}
 			sendText.setText("");
 			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(sendText.getWindowToken(), 0);
-			chatLV.setSelection(chatItems.size() - 1);
+			chatListView.setSelection(chatItems.size() - 1);
 		}
 	}
 

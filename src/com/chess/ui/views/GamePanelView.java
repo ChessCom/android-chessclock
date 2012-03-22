@@ -508,6 +508,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		this.boardViewFace = boardViewFace;
 	}
 
+	public void haveNewMessages(boolean newMessages) {
+
+	}
+
 	private class MovesAdapter extends ItemsAdapter<String> {
 		public MovesAdapter(Context context, List<String> itemList) {
 			super(context, itemList);

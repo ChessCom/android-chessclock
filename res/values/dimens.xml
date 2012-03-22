@@ -87,9 +87,12 @@
 	<dimen name="signin_scr_side_padding">20dip</dimen>
 	<dimen name="signin_logo_margin_top">15dip</dimen>
 	<dimen name="signin_main_margin_top">36dip</dimen>
-<!--
-	<dimen name="signin_button_margin_updown">24dip</dimen>
-	<dimen name="signin_footer_margin_bottom">10dip</dimen>
--->
+
+	<!--Game Modes-->
+	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
+	<!--
+	 <dimen name="signin_button_margin_updown">24dip</dimen>
+	 <dimen name="signin_footer_margin_bottom">10dip</dimen>
+ -->
 
 </resources>

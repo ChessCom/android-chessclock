@@ -169,7 +169,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		return super.onCreateDialog(id);
 	}
 
-//	@Override
+//	@Override        // TODO implement correctly
 //	public Object onRetainNonConfigurationInstance() {
 //		return newBoardView.getBoardFace();
 //	}
@@ -631,7 +631,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void switch2Chat() {
-
+		chat = true;
+		getOnlineGame(mainApp.getGameId());
 	}
 
 

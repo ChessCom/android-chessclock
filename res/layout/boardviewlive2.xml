@@ -1,95 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
-	>
+	android:orientation="vertical">
 
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
+	<RelativeLayout
+		android:id="@+id/statusBarLay"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
 
-		<LinearLayout
-			android:layout_width="fill_parent"
+		<com.chess.RoboTextView
+			android:id="@+id/thinking"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:paddingBottom="5dip">
+			android:layout_centerInParent="true"
+			android:inputType="textImeMultiLine"
+			android:text="@string/Thinking"
+			android:visibility="gone"/>
 
-			<LinearLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical">
+		<com.chess.RoboTextView
+			android:id="@+id/white"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawablePadding="5dip"
+			android:layout_centerVertical="true"
+			android:text="@string/Human"
+			android:textSize="14sp"
+			android:paddingTop="2dip"
+			android:paddingLeft="8dip"
+			android:paddingBottom="2dip"
+			android:paddingRight="2dip"
+			android:drawableLeft="@drawable/whitemove"
+			/>
 
-				<TextView
-					android:id="@+id/thinking"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:inputType="textImeMultiLine"
-					android:text="@string/Thinking"
-					android:visibility="gone"/>
+		<com.chess.RoboTextView
+			android:id="@+id/black"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
+			android:text="@string/Computer"
+			android:textSize="14sp"
+			android:paddingTop="2dip"
+			android:paddingLeft="2dip"
+			android:paddingBottom="2dip"
+			android:paddingRight="8dip"
+			android:drawableRight="@drawable/blackmove"
+			android:drawablePadding="2dip"
+			/>
 
-				<TextView
-					android:id="@+id/white"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:drawablePadding="5dip"
-					android:inputType="textImeMultiLine"
-					android:gravity="center_vertical"
-					android:text="@string/Human"
-					android:textSize="14sp"
-					android:paddingTop="2dip"
-					android:paddingLeft="8dip"
-					android:paddingBottom="2dip"
-					android:paddingRight="2dip"
-					android:drawableLeft="@drawable/whitemove"
-					/>
+		<com.chess.RoboTextView
+			android:id="@+id/timer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:drawablePadding="5dip"
+			android:textSize="14sp"
+			android:layout_centerInParent="true"
+			android:padding="2dip"
+			android:visibility="gone"/>
 
-				<TextView
-					android:id="@+id/black"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:gravity="right|center_vertical"
-					android:inputType="textImeMultiLine"
-					android:text="@string/Computer"
-					android:textSize="14sp"
-					android:paddingTop="2dip"
-					android:paddingLeft="2dip"
-					android:paddingBottom="2dip"
-					android:paddingRight="8dip"
-					android:drawableRight="@drawable/blackmove"
-					android:drawablePadding="2dip"
-					/>
+		<!--TODO set theme with text Size-->
+		<com.chess.RoboTextView
+			android:id="@+id/analysisTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:drawablePadding="5dip"
+			android:textSize="14sp"
+			android:layout_centerInParent="true"
+			android:padding="2dip"
+			android:visibility="gone"
+			android:text="@string/analysis_mode"
+			/>
+	</RelativeLayout>
 
-				<TextView
-					android:id="@+id/timer"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:drawablePadding="5dip"
-					android:textSize="14sp"
-					android:gravity="center"
-					android:padding="2dip"
-					android:visibility="gone"/>
-
-				<TextView
-					android:id="@+id/analysisTxt"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:drawablePadding="5dip"
-					android:textSize="14sp"
-					android:gravity="center"
-					android:padding="2dip"
-					android:visibility="gone"
-					android:text="@string/analysis_mode"
-					/>
-			</LinearLayout>
-		</LinearLayout>
-
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -109,124 +100,98 @@
 				/>
 
 		</LinearLayout>
-
-	</LinearLayout>
-
-	<RelativeLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
-		android:orientation="horizontal"
-		android:paddingBottom="12dip">
-
-		<TextView
-			android:id="@+id/whiteClockView"
-			android:layout_width="wrap_content"
+		<RelativeLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:drawablePadding="5dip"
-			android:drawableRight="@drawable/whitemove"
-			android:inputType="textImeMultiLine"
-			android:padding="2dip"
-			android:textColor="#fff"
-			android:textStyle="bold"
-			android:visibility="visible"/>
+			android:layout_gravity="bottom"
+			android:paddingBottom="12dip">
 
-		<TextView
-			android:id="@+id/blackClockView"
-			android:layout_width="wrap_content"
+			<com.chess.RoboTextView
+				android:id="@+id/whiteClockView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:drawablePadding="5dip"
+				android:drawableRight="@drawable/whitemove"
+				android:visibility="visible"/>
+
+			<com.chess.RoboTextView
+				android:id="@+id/blackClockView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:drawablePadding="5dip"
+				android:visibility="visible"/>
+		</RelativeLayout>
+
+		<LinearLayout
+			android:id="@+id/submitButtonsLay"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:drawablePadding="5dip"
-			android:gravity="right"
-			android:inputType="textImeMultiLine"
-			android:padding="2dip"
-			android:textColor="#fff"
-			android:textStyle="bold"
-			android:visibility="visible"/>
-	</RelativeLayout>
+			android:layout_gravity="bottom"
+			android:paddingBottom="@dimen/game_submit_buttons_lay_bot_padding"
+			android:visibility="invisible">
 
-	<TextView
-		android:id="@+id/movelist"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
-		android:ellipsize="start"
-		android:gravity="right"
-		android:inputType="textImeMultiLine"
-		android:padding="2dip"
-		android:textColor="#fff"
-		android:textSize="10dip"/>
+			<com.chess.RoboButton
+				android:id="@+id/submit"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dip"
+				android:layout_marginRight="10dip"
+				android:layout_weight="1"
+				android:text="@string/submit"/>
 
-	<LinearLayout
-		android:id="@+id/submitButtonsLay"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
-		android:paddingBottom="20dip"
-		android:visibility="gone">
+			<com.chess.RoboButton
+				android:id="@+id/cancel"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dip"
+				android:layout_marginRight="10dip"
+				android:layout_weight="1"
+				android:text="@string/cancel"
+				/>
+		</LinearLayout>
 
-		<Button
-			android:id="@+id/submit"
-			android:layout_width="fill_parent"
+		<!--		<RelativeLayout
+			android:id="@+id/endOfGameButtons"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dip"
-			android:layout_marginRight="10dip"
-			android:layout_weight="1"
-			android:text="@string/submit"/>
+			android:layout_gravity="bottom"
+			android:layout_marginLeft="1dip"
+			android:layout_marginRight="1dip"
+			android:paddingBottom="20dip"
+			android:visibility="visible">
 
-		<Button
-			android:id="@+id/cancel"
-			android:layout_width="fill_parent"
-			android:layout_height="45dip"
-			android:layout_marginLeft="10dip"
-			android:layout_marginRight="10dip"
-			android:layout_weight="1"
-			android:text="Cancel"
-			android:textColor="#222"
-			android:textSize="16dip"
-			android:textStyle="bold"/>
-	</LinearLayout>
+			<com.chess.RoboButton
+				android:id="@+id/newGame"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:text="New "/>
 
-	<RelativeLayout
-		android:id="@+id/endOfGameButtons"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
-		android:layout_marginLeft="1dip"
-		android:layout_marginRight="1dip"
-		android:paddingBottom="20dip"
-		android:textColor="#222"
-		android:visibility="gone">
+			<com.chess.RoboTextView
+				android:id="@+id/endOfGameMessage"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true"
+				android:layout_gravity="center"
+				android:padding="2dip"
+				/>
 
-		<Button
-			android:id="@+id/newGame"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:text="New "/>
+			<com.chess.RoboButton
+				android:id="@+id/home"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:text="Home"/>
+		</RelativeLayout>-->
 
-		<TextView
-			android:id="@+id/endOfGameMessage"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_gravity="center"
-			android:padding="2dip"
-			android:textColor="#ffffcc"
-			android:textStyle="bold"/>
+	</FrameLayout>
+</LinearLayout>
 
-		<Button
-			android:id="@+id/home"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:text="Home"/>
-	</RelativeLayout>
-
-	<RelativeLayout
+	<!--	<RelativeLayout
 		android:id="@+id/chatPanel"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
 		android:paddingBottom="17dip"
@@ -240,14 +205,5 @@
 			android:background="@drawable/button_orange_selector"
 			android:scaleType="center"
 			android:src="@drawable/chat_nm"/>
-	</RelativeLayout>
+	</RelativeLayout>-->
 
-	<!--
-			<LinearLayout android:id="@+id/analysisButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="bottom" android:visibility="visible" android:background="#444">
-				<ImageButton android:id="@+id/prev" android:src="@drawable/prev" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
-				<ImageButton android:id="@+id/next" android:src="@drawable/next" android:layout_width="wrap_content" android:layout_weight="1" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_height="32px"></ImageButton>
-			</LinearLayout>
-
-		-->
-
-</FrameLayout>

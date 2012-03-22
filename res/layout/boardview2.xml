@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
 	android:orientation="vertical">
 
 	<RelativeLayout
 		android:id="@+id/statusBarLay"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
 
-		<TextView
+		<com.chess.RoboTextView
 			android:id="@+id/thinking"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
 			android:text="@string/Thinking"
 			android:visibility="gone"/>
 
-		<TextView
+		<com.chess.RoboTextView
 			android:id="@+id/white"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
 			android:drawableLeft="@drawable/whitemove"
 			/>
 
-		<TextView
+		<com.chess.RoboTextView
 			android:id="@+id/black"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 			android:drawablePadding="2dip"
 			/>
 
-		<TextView
+		<com.chess.RoboTextView
 			android:id="@+id/timer"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
 			android:visibility="gone"/>
 
 		<!--TODO set theme with text Size-->
-		<TextView
+		<com.chess.RoboTextView
 			android:id="@+id/analysisTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -79,8 +79,8 @@
 	</RelativeLayout>
 
 	<FrameLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -99,73 +99,5 @@
 				android:layout_height="wrap_content"
 				/>
 		</LinearLayout>
-
-<!--		<TextView
-			android:id="@+id/movelist"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom"
-			android:ellipsize="start"
-			android:gravity="right"
-			android:inputType="textImeMultiLine"
-			android:padding="2dip"
-			android:textSize="12dip"/>-->
-
-		<LinearLayout
-			android:id="@+id/submitButtonsLay"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom"
-			android:background="#444"
-			android:visibility="gone">
-
-			<Button
-				android:id="@+id/submit"
-				style="@style/Text.Button"
-				android:layout_width="fill_parent"
-				android:layout_height="@dimen/default_field_height"
-				android:layout_marginLeft="10dip"
-				android:layout_marginRight="10dip"
-				android:layout_weight="1"
-				android:text="@string/submit"/>
-
-			<Button
-				android:id="@+id/cancel"
-				style="@style/Text.Button"
-				android:layout_width="fill_parent"
-				android:layout_height="@dimen/default_field_height"
-				android:layout_marginLeft="10dip"
-				android:layout_marginRight="10dip"
-				android:layout_weight="1"
-				android:text="@string/cancel"/>
-		</LinearLayout>
-
-	<!--	<LinearLayout
-			android:id="@+id/analysisButtons"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom"
-			android:background="#444"
-			android:visibility="visible">
-
-			<ImageButton
-				android:id="@+id/prev"
-				android:layout_width="wrap_content"
-				android:layout_height="32dp"
-				android:layout_marginLeft="10dip"
-				android:layout_marginRight="10dip"
-				android:layout_weight="1"
-				android:src="@drawable/prev"/>
-
-			<ImageButton
-				android:id="@+id/next"
-				android:layout_width="wrap_content"
-				android:layout_height="32dp"
-				android:layout_marginLeft="10dip"
-				android:layout_marginRight="10dip"
-				android:layout_weight="1"
-				android:src="@drawable/next"/>
-		</LinearLayout>-->
 	</FrameLayout>
-
 </LinearLayout>
