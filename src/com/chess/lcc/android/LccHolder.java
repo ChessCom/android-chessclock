@@ -460,7 +460,8 @@ public class LccHolder {
 					"+" + (challengerTimeConfig.getTimeIncrement() / 10) + "sec" : ""; // time_increment
 			challengeData[8] = challenge.getTo() != null ? "1" : "0"; // is_direct_challenge
 			challengeData[9] = isReleasedByMe ? "1" : "0";
-			output.add(new GameListElement(GameListElement.LIST_TYPE_CURRENT, challengeData, true));
+			output.add(new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, challengeData, true));
+//			output.add(new GameListElement(GameListElement.LIST_TYPE_CURRENT, challengeData, true));
 		}
 		return output;
 	}

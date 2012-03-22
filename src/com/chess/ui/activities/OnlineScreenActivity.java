@@ -6,6 +6,7 @@ import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -68,8 +69,8 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 		init();
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
+				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
 
 		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
@@ -81,6 +82,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			@Override
 			public void run() {
 				gamesTypeSpinner.setSelection(mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1));
+//				gamesTypeSpinner.setSelection(currentListType);
 			}
 		});
 		gamesTypeSpinner.setOnItemSelectedListener(gameTypesSelectedListener);
@@ -236,6 +238,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
 			gamesAdapter = null;
 			mainApp.getSharedDataEditor().putInt(AppConstants.ONLINE_GAME_LIST_TYPE, pos);
+//			currentListType = pos;
 			mainApp.getSharedDataEditor().commit();
 			if (compleated && appService != null && appService.getRepeatableTimer() != null) {
 				onPause();
@@ -502,6 +505,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
+					Log.d("web","RunRepeatableTask(ONLINE_CALLBACK_CODE");
 					appService.RunRepeatableTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
 							null/*progressDialog = MyProgressDialog
@@ -515,6 +519,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
 			//int t = mainApp.sharedData.getInt("gamestype", 1);
+			currentListType = mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
 			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
 			gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().clear();
@@ -526,17 +531,34 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 				tmp.addAll(lccHolder.getChallengesAndSeeksData());
 			} else {
 				if (currentListType == GameListElement.LIST_TYPE_CURRENT) {
-					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
+//					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
+					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
 				}
 				if (currentListType == GameListElement.LIST_TYPE_CHALLENGES) {
-					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
+					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
+//					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
 				}
 				if (currentListType == GameListElement.LIST_TYPE_FINISHED) {
 					tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(responseRepeatable));
 				}
+
+
+//				if (currentListType == GameListElementOrig.LIST_TYPE_GAMES)
+//				{
+//					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
+//				}
+//				if (currentListType == GameListElement.LIST_TYPE_CHALLENGES)
+//				{
+//					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
+//				}
+
 			}
+
 			//gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().addAll(tmp);
+			for (GameListElement gameListItem : mainApp.getGameListItems()) {
+				Log.d("GameLists", "game received" + gameListItem.toString());
+			}
 			if (gamesAdapter != null) {
 				gamesAdapter.notifyDataSetChanged();
 			}

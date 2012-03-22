@@ -54,7 +54,8 @@ public class WebService extends Service {
 		new SingleTask().execute(query, "POST", parameters[0], parameters[1], parameters[2], parameters[3]);
 	}
 
-	public void RunRepeatableTask(final int code, final int DELAY, final int INTERVAL, final String query, final MyProgressDialog progressDialog) {
+	public void RunRepeatableTask(final int code, final int DELAY, final int INTERVAL,
+								  final String query, final MyProgressDialog progressDialog) {
 		this.code = code;
 		this.progressDialog = progressDialog;
 

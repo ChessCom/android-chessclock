@@ -69,8 +69,8 @@
 	</string-array>
 
 	<string-array name="onlineSpinner">
-	    <item>Challenges</item>
 		<item>Current Games</item>
+		<item>Challenges</item>
 		<item>Finished Games</item>
 	</string-array>	
 

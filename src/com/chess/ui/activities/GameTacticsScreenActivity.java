@@ -1329,136 +1329,136 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().setAnalysis(false);
 				onBackPressed();
 
-//				if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
-//					openOptionsMenu();
-//					return true;
-//				}
-//				int sec = newBoardView.getBoardFace().getSec();
-//				if (mainApp.guest || mainApp.noInternet) {
-//					newBoardView.setBoardFace(new ChessBoard(this));
-//					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
-//
-//					String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
-//					if (!FEN.equals("")) {
-//						newBoardView.getBoardFace().genCastlePos(FEN);
-//						MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-//						String[] tmp = FEN.split(" ");
-//						if (tmp.length > 1) {
-//							if (tmp[1].trim().equals("w")) {
-//								newBoardView.getBoardFace().setReside(true);
-//							}
-//						}
-//					}
-//					if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
-//						newBoardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch()
-//								.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
-//						newBoardView.getBoardFace().setMovesCount(1);
-//					}
-//					newBoardView.getBoardFace().setSec(sec);
-//					newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTacticsBatch()
-//							.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - sec);
-//					startTacticsTimer();
-//					int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
-//					if (moveFT.length == 4) {
-//						Move m;
-//						if (moveFT[3] == 2)
-//							m = new Move(moveFT[0], moveFT[1], 0, 2);
-//						else
-//							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-//						newBoardView.getBoardFace().makeMove(m);
-//					} else {
-//						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-//						newBoardView.getBoardFace().makeMove(m);
-//					}
-//					update(CALLBACK_REPAINT_UI);
-//					newBoardView.getBoardFace().takeBack();
-//					newBoardView.invalidate();
-//
-//					//last move anim
-//					new Thread(new Runnable() {
-//						public void run() {
-//							try {
-//								Thread.sleep(1300);
-//								newBoardView.getBoardFace().takeNext();
-//								update.sendEmptyMessage(0);
-//							} catch (Exception e) {
-//							}
-//						}
-//
-//						private Handler update = new Handler() {
-//							@Override
-//							public void dispatchMessage(Message msg) {
-//								super.dispatchMessage(msg);
-//								update(CALLBACK_REPAINT_UI);
-//								newBoardView.invalidate();
-//							}
-//						};
-//					}).start();
-//				} else {
-//					if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
-//						openOptionsMenu();
-//						return true;
-//					}
-//					newBoardView.setBoardFace(new ChessBoard(this));
-//					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
-//
-//					String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-//					if (!FEN.equals("")) {
-//						newBoardView.getBoardFace().genCastlePos(FEN);
-//						MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-//						String[] tmp2 = FEN.split(" ");
-//						if (tmp2.length > 1) {
-//							if (tmp2[1].trim().equals("w")) {
-//								newBoardView.getBoardFace().setReside(true);
-//							}
-//						}
-//					}
-//
-//					if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-//						newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
-//						newBoardView.getBoardFace().setMovesCount(1);
-//					}
-//					newBoardView.getBoardFace().setSec(sec);
-//					newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic()
-//							.values.get(AppConstants.AVG_SECONDS)) - sec);
-//					int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(),
-//							newBoardView.getBoardFace().getTacticMoves()[0]);
-//					if (moveFT.length == 4) {
-//						Move m;
-//						if (moveFT[3] == 2)
-//							m = new Move(moveFT[0], moveFT[1], 0, 2);
-//						else
-//							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-//						newBoardView.getBoardFace().makeMove(m);
-//					} else {
-//						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-//						newBoardView.getBoardFace().makeMove(m);
-//					}
-//					update(CALLBACK_REPAINT_UI);
-//					newBoardView.getBoardFace().takeBack();
-//					newBoardView.invalidate();
-//
-//					//last move anim
-//					new Thread(new Runnable() {
-//						public void run() {
-//							try {
-//								Thread.sleep(1300);
-//								newBoardView.getBoardFace().takeNext();
-//								update.sendEmptyMessage(0);
-//							} catch (Exception e) {
-//							}
-//						}
-//
-//						private Handler update = new Handler() {
-//							@Override
-//							public void dispatchMessage(Message msg) {
-//								super.dispatchMessage(msg);
-//								update(CALLBACK_REPAINT_UI);
-//								newBoardView.invalidate();
-//							}
-//						};
-//					}).start();
-//				}
+				if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
+					openOptionsMenu();
+					return true;
+				}
+				int sec = newBoardView.getBoardFace().getSec();
+				if (mainApp.guest || mainApp.noInternet) {
+					newBoardView.setBoardFace(new ChessBoard(this));
+					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
+
+					String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
+					if (!FEN.equals("")) {
+						newBoardView.getBoardFace().genCastlePos(FEN);
+						MoveParser.FenParse(FEN, newBoardView.getBoardFace());
+						String[] tmp = FEN.split(" ");
+						if (tmp.length > 1) {
+							if (tmp[1].trim().equals("w")) {
+								newBoardView.getBoardFace().setReside(true);
+							}
+						}
+					}
+					if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
+						newBoardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch()
+								.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+						newBoardView.getBoardFace().setMovesCount(1);
+					}
+					newBoardView.getBoardFace().setSec(sec);
+					newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTacticsBatch()
+							.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - sec);
+					startTacticsTimer();
+					int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
+					if (moveFT.length == 4) {
+						Move m;
+						if (moveFT[3] == 2)
+							m = new Move(moveFT[0], moveFT[1], 0, 2);
+						else
+							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+						newBoardView.getBoardFace().makeMove(m);
+					} else {
+						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
+						newBoardView.getBoardFace().makeMove(m);
+					}
+					update(CALLBACK_REPAINT_UI);
+					newBoardView.getBoardFace().takeBack();
+					newBoardView.invalidate();
+
+					//last move anim
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								Thread.sleep(1300);
+								newBoardView.getBoardFace().takeNext();
+								update.sendEmptyMessage(0);
+							} catch (Exception e) {
+							}
+						}
+
+						private Handler update = new Handler() {
+							@Override
+							public void dispatchMessage(Message msg) {
+								super.dispatchMessage(msg);
+								update(CALLBACK_REPAINT_UI);
+								newBoardView.invalidate();
+							}
+						};
+					}).start();
+				} else {
+					if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
+						openOptionsMenu();
+						return true;
+					}
+					newBoardView.setBoardFace(new ChessBoard(this));
+					newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
+
+					String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
+					if (!FEN.equals("")) {
+						newBoardView.getBoardFace().genCastlePos(FEN);
+						MoveParser.FenParse(FEN, newBoardView.getBoardFace());
+						String[] tmp2 = FEN.split(" ");
+						if (tmp2.length > 1) {
+							if (tmp2[1].trim().equals("w")) {
+								newBoardView.getBoardFace().setReside(true);
+							}
+						}
+					}
+
+					if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
+						newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+						newBoardView.getBoardFace().setMovesCount(1);
+					}
+					newBoardView.getBoardFace().setSec(sec);
+					newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic()
+							.values.get(AppConstants.AVG_SECONDS)) - sec);
+					int[] moveFT = MoveParser.Parse(newBoardView.getBoardFace(),
+							newBoardView.getBoardFace().getTacticMoves()[0]);
+					if (moveFT.length == 4) {
+						Move m;
+						if (moveFT[3] == 2)
+							m = new Move(moveFT[0], moveFT[1], 0, 2);
+						else
+							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+						newBoardView.getBoardFace().makeMove(m);
+					} else {
+						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
+						newBoardView.getBoardFace().makeMove(m);
+					}
+					update(CALLBACK_REPAINT_UI);
+					newBoardView.getBoardFace().takeBack();
+					newBoardView.invalidate();
+
+					//last move anim
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								Thread.sleep(1300);
+								newBoardView.getBoardFace().takeNext();
+								update.sendEmptyMessage(0);
+							} catch (Exception e) {
+							}
+						}
+
+						private Handler update = new Handler() {
+							@Override
+							public void dispatchMessage(Message msg) {
+								super.dispatchMessage(msg);
+								update(CALLBACK_REPAINT_UI);
+								newBoardView.invalidate();
+							}
+						};
+					}).start();
+				}
 			} else {
 //				LoadPrev(MainApp.loadPrev);
 				newBoardView.getBoardFace().setTacticCanceled(true);

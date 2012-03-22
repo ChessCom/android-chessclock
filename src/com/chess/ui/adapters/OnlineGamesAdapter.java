@@ -34,7 +34,8 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 		}
 		final GameListElement el = items.get(position);
 		if (el != null) {
-			if (el.type ==  GameListElement.LIST_TYPE_CURRENT) {
+			if (el.type ==  GameListElement.LIST_TYPE_CHALLENGES) {
+//			if (el.type ==  GameListElement.LIST_TYPE_CURRENT) {
 				if (el.isLiveChess) {
 					try {	   // TODO stop eating exceptions
 
@@ -83,23 +84,27 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListElement> {
 						  }
 						  System.out.println("!!!!!!!! el.values.get(\"opponent_rating\") = " + el.values.get("opponent_rating"));*/
 
-				String opponentRating;
-				if (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) {
-					opponentRating = "";
-				} else if (!el.isLiveChess && el.values.get("rated").equals("0")) {
-					opponentRating = "(" + el.values.get("opponent_rating") + ") Unrated";
-				} else {
-					opponentRating = "(" + el.values.get("opponent_rating") + ")";
-				}
+//				String opponentRating;   // TODO investigate why rated is null
+//				if (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) {
+//					opponentRating = "";
+//				} else if (!el.isLiveChess && el.values.get("rated").equals("0")) {
+//					opponentRating = "(" + el.values.get("opponent_rating") + ") Unrated";
+//				} else {
+//					opponentRating = "(" + el.values.get("opponent_rating") + ")";
+//				}
 
-				/*final String opponentRating =
-							(el.isLiveChess && el.values.get("is_released_by_me").equals("1")) ? "" : "(" + el.values.get("opponent_rating") + ")";*/
+				final String opponentRating =
+							(el.isLiveChess && el.values.get("is_released_by_me").equals("1"))
+							? "" : "(" + el.values.get("opponent_rating") + ")";
 				final String prefix =
 						(el.isLiveChess && el.values.get("is_direct_challenge").equals("0")) && el.values.get("is_released_by_me").equals("1") ?
 								"(open)" : el.values.get("opponent_username");
 				info.setText(prefix + ' ' + opponentRating + ' ' + gametype/* + ' ' + color*/ + "  " + time);
 				//left.setText(time);
-			} else if (el.type == GameListElement.LIST_TYPE_CHALLENGES) {
+
+//			} else if (el.type == GameListElement.LIST_TYPE_CHALLENGES) {
+			} else if (el.type == GameListElement.LIST_TYPE_CURRENT) {
+
 				TextView info = (TextView) convertView.findViewById(R.id.info);
 				TextView left = (TextView) convertView.findViewById(R.id.left);
 				String gametype = "";

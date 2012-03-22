@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -47,7 +48,6 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		setContentView(R.layout.online_new_game);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
-		// TODO investigate why don't receive lists
 		if (MobclixHelper.isShowAds(mainApp)) {
 			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {
 				MobclixHelper.initializeBannerAdView(this, mainApp);
@@ -120,6 +120,11 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			} else {
 				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 			}
+			for (GameListElement gameListItem : gameListItems) {
+				Log.d("GameLists","game received" + gameListItem.toString());
+			}
+
+
 			if (gamesAdapter == null) {
 				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);
 				openChallengesListView.setAdapter(gamesAdapter);
@@ -197,7 +202,8 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
-		if (gameListElement.type == 0) {
+//		if (gameListElement.type == GameListElement.LIST_TYPE_CHALLENGES) {
+		if (gameListElement.type == GameListElement.LIST_TYPE_CURRENT) {
 			final String title = mainApp.isLiveChess() ?
 					gameListElement.values.get("opponent_chess_title") :
 					"Win: " + gameListElement.values.get("opponent_win_count")

@@ -2,11 +2,12 @@ package com.chess.utilities;
 
 import com.chess.model.Game;
 import com.chess.model.GameListElement;
+import com.chess.model.GameListElementOrig;
 import com.chess.model.Message;
 
 import java.util.ArrayList;
 
-public class ChessComApiParser {
+public class ChessComApiParserOrig {
 	//Challenge a friend
 	public static String[] GetFriendsParse(String result) {
 		if (result.trim().length() > 8)
@@ -30,7 +31,6 @@ public class ChessComApiParser {
 				tmp[a++] = s;
 			}
 			GameListElement gle = new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, tmp, false);
-//			GameListElement gle = new GameListElement(GameListElement.LIST_TYPE_CURRENT, tmp, false);
 			output.add(gle);
 		}
 		return output;
@@ -51,7 +51,6 @@ public class ChessComApiParser {
 				tmp[a++] = s;
 			}
 			output.add(new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, tmp, false));
-//			output.add(new GameListElement(GameListElement.LIST_TYPE_CURRENT, tmp, false));
 		}
 		return output;
 	}
@@ -74,8 +73,7 @@ public class ChessComApiParser {
 				for (j = 0; j < 17; j++) {
 					tmp2[j] = tmp[inc++];
 				}
-				output.add(new GameListElement(GameListElement.LIST_TYPE_CURRENT, tmp2, false));
-//				output.add(new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, tmp2, false));
+				output.add(new GameListElement(GameListElementOrig.LIST_TYPE_GAMES, tmp2, false));
 			}
 		} catch (Exception e) {
 			return output;

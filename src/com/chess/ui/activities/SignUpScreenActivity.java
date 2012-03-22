@@ -47,7 +47,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
 
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 		context = this;
 
 		COUNTRIES = getResources().getStringArray(R.array.countries);
@@ -121,6 +120,12 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			finish();
 			mainApp.ShowMessage(getString(R.string.congratulations));
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 	}
 
 	@Override

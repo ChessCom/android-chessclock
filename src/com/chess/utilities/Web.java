@@ -39,7 +39,7 @@ public class Web {
 			HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
 			httpclient = new DefaultHttpClient(httpParameters);
-
+			Log.d("WebRequest","requesting url = " + url);
 			if (method.equals("GET")) {
 				base = (HttpRequestBase) new HttpGet(url);
 			} else if (method.equals("POST")) {
@@ -80,7 +80,7 @@ public class Web {
 			i = 3;
 			reason = response.getStatusLine().getReasonPhrase();
 			i = 4;
-			Log.d("SERVER RESPONSE: ", responseBody);
+			Log.d("WebRequest SERVER RESPONSE: ", responseBody);
 			i = 5;
 		} catch (ClientProtocolException e) {
 			//responseBody = "Sorry... No Active connection (CP)" + " code=" + i;
