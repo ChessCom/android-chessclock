@@ -106,6 +106,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		});*/
 
 		super.onResume();
+//        CommonUtils.setBackground(findViewById(R.id.mainView), this);
 	}
 
 	private class MobFullScreeListener implements MobclixFullScreenAdViewListener {

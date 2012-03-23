@@ -43,7 +43,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.boardviewlive2);
+		setContentView(R.layout.boardviewlive);
 		init();
 		widgetsInit();
 		onPostCreate();

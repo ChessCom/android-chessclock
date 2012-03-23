@@ -78,7 +78,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.boardview2);
+		setContentView(R.layout.boardview);
 
 		init();
 		init();

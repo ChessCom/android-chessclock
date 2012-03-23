@@ -60,10 +60,6 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 		if (view.getId() == R.id.load) {
 			FlurryAgent.onEvent("New Game VS Computer", null);
 
-//			startActivity(new Intent(coreContext, Game.class)
-//					.putExtra(AppConstants.GAME_MODE,
-//							Integer.parseInt(mainApp.getSharedData()
-//									.getString(AppConstants.SAVED_COMPUTER_GAME, "").substring(0, 1))));
 			startActivity(new Intent(coreContext, GameCompScreenActivity.class)
 					.putExtra(AppConstants.GAME_MODE,
 							Integer.parseInt(mainApp.getSharedData()

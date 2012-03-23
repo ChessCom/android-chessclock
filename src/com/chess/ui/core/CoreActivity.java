@@ -20,6 +20,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
@@ -135,7 +136,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null ) {
 			handler.post(loadBoardBitmap);

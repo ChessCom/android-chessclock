@@ -94,13 +94,13 @@
 
 		<!--Game Board screens-->
 		<activity android:name=".ui.activities.GameTacticsScreenActivity" android:label="@string/label_tactics"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+			/>
 		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+			/>
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+			/>
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+			/>
 
         <activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
 			 android:theme="@style/GreyButtonTheme"/>

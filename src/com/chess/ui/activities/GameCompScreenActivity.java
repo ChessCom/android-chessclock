@@ -50,7 +50,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-//		if (newBoardView.getBoardFace() == null) {
 		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);//init = true;
@@ -81,7 +80,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 		}
-//		}
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
 		gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
@@ -512,6 +510,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}.execute();
 			}
 		}
+        
 	}
 
 	@Override
