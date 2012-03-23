@@ -25,6 +25,8 @@
 	<string name="label_tactics">TACTICS</string>
 	<string name="label_game_live">LIVE GAME</string>
 	<string name="label_game_online">ONLINE GAME</string>
+	<string name="label_chat_live">LIVE CHAT</string>
+	<string name="label_chat_online">ONLINE CHAT</string>
 	<string name="label_game_comp">COMP GAME</string>
 	<string name="label_sign_up">Join Now – It’s Free!</string>
 

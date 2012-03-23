@@ -24,7 +24,6 @@
     	>
         <activity android:name=".ui.core.SplashActivity"
                   android:label="@string/app_name"
-                  android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.Light.NoTitleBar"
             >
             <intent-filter>
@@ -33,18 +32,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation"/>
+        <activity android:name="com.google.ads.AdActivity"
+			android:configChanges="keyboard|keyboardHidden|orientation"/>
 
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity" />
-        <activity android:name="com.millennialmedia.android.VideoPlayer" android:configChanges="keyboardHidden|orientation|keyboard" />
+        <activity android:name="com.millennialmedia.android.VideoPlayer"
+			android:configChanges="keyboardHidden|orientation|keyboard" />
 
 		<!--android:screenOrientation="portrait"-->
 
         <activity android:name=".ui.core.Tabs" 			/>
-		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"/>
+		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-		<activity android:name=".ui.activities.ChatActivity" 		/>
-		<activity android:name=".ui.activities.ChatLiveActivity" 	/>
+		<activity android:name=".ui.activities.ChatActivity"
+			android:configChanges="keyboardHidden|keyboard|orientation" android:label="@string/label_chat_online"/>
+		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
         <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
         <activity android:name=".ui.activities.LoginScreenActivity"
@@ -74,26 +78,38 @@
 		<activity android:name=".ui.activities.OnlineCreateChallengeActivity"
 			android:label="@string/label_create_challenge_online"/>
 
-        <activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name="com.mopub.mobileads.MraidActivity" android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name="com.mopub.mobileads.MraidBrowser" android:configChanges="keyboardHidden|orientation"/>
+        <activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|keyboard|orientation"/>
+        <activity android:name="com.mopub.mobileads.MraidActivity" android:configChanges="keyboardHidden|keyboard|orientation"/>
+        <activity android:name="com.mopub.mobileads.MraidBrowser" android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-        <activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"/>
-		<activity android:name=".ui.activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"/>
+        <activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
+			/>
+		<activity android:name=".ui.activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"
+			/>
 
-		<activity android:name=".ui.activities.LiveScreenActivity" android:label="@string/label_play_live"/>
-		<activity android:name=".ui.activities.LiveNewGameActivity" android:label="@string/label_live_new_game"/>
+		<activity android:name=".ui.activities.LiveScreenActivity" android:label="@string/label_play_live"
+			/>
+		<activity android:name=".ui.activities.LiveNewGameActivity" android:label="@string/label_live_new_game"
+			/>
 
-		<activity android:name=".ui.activities.GameTacticsScreenActivity" android:label="@string/label_tactics"/>
-		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"/>
-		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"/>
-		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"/>
+		<!--Game Board screens-->
+		<activity android:name=".ui.activities.GameTacticsScreenActivity" android:label="@string/label_tactics"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+
         <activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
-            android:theme="@style/GreyButtonTheme"/>
-        <activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"/>
-        <activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"/>
+			 android:theme="@style/GreyButtonTheme"/>
+        <activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+        <activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"
+			/>
         <activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"
-            android:windowSoftInputMode="stateHidden"/>
+             android:windowSoftInputMode="stateHidden"/>
 
         <!--<activity android:name="MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 

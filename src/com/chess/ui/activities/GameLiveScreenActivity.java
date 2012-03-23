@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.*;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
@@ -34,14 +32,9 @@ import java.util.ArrayList;
  */
 public class GameLiveScreenActivity extends GameBaseActivity implements View.OnClickListener {
 
-
-
-
 	private MenuOptionsDialogListener menuOptionsDialogListener;
-
 	private CharSequence[] menuOptionsItems;
-
-	private RelativeLayout chatPanel;
+//	private RelativeLayout chatPanel;
 
 	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
@@ -59,9 +52,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
-		chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
-		ImageButton chatButton = (ImageButton) findViewById(R.id.chat);
-		chatButton.setOnClickListener(this);
+//		chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
+//		ImageButton chatButton = (ImageButton) findViewById(R.id.chat);
+//		chatButton.setOnClickListener(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
 		findViewById(R.id.submit).setOnClickListener(this);
@@ -380,17 +373,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 											   lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
 
 				if (chat) {
-					if (!isUserColorWhite())
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame()
-								.values.get(AppConstants.WHITE_USERNAME));
-					else
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame()
-								.values.get(AppConstants.BLACK_USERNAME));
+					mainApp.getSharedDataEditor().putString("opponent",mainApp.getCurrentGame().values.get(
+									isUserColorWhite()?AppConstants.BLACK_USERNAME:AppConstants.WHITE_USERNAME));
 					mainApp.getSharedDataEditor().commit();
+
 					mainApp.getCurrentGame().values.put("has_new_message", "0");
-					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
-							putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID)).
-							putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP)));
+
+					Intent intent = new Intent(coreContext, ChatLiveActivity.class);
+					intent.putExtra(AppConstants.GAME_ID, mainApp.getCurrentGame().values.get(AppConstants.GAME_ID));
+					intent.putExtra(AppConstants.TIMESTAMP, mainApp.getCurrentGame().values.get(AppConstants.TIMESTAMP));
+					startActivity(intent);
+
 					chat = false;
 					return;
 				}
@@ -466,15 +459,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
-	public void switch2Chat() {
-
-	}
-
-	@Override
 	public void newGame() {
-
+		startActivity(new Intent(this, OnlineNewGameActivity.class));
 	}
-
 
 	@Override
 	public void showOptions() {
@@ -637,14 +624,15 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	protected void onGameEndMsgReceived() {
 		showSubmitButtonsLay(false);
-		chatPanel.setVisibility(View.GONE);
+//		chatPanel.setVisibility(View.GONE);
 	}
 
 	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-			chatPanel.setVisibility(View.VISIBLE);
+//			chatPanel.setVisibility(View.VISIBLE);
+			gamePanelView.haveNewMessages(true);
 		}
 	};
 
@@ -684,23 +672,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.chat) {
+		/*if (view.getId() == R.id.chat) {
 			chat = true;
 			getOnlineGame(mainApp.getGameId());
 			chatPanel.setVisibility(View.GONE);
-//		} else if (view.getId() == R.id.prev) {
-//			newBoardView.finished = false;
-//			newBoardView.sel = false;
-//			newBoardView.getBoardFace().takeBack();
-//			newBoardView.invalidate();
-//			update(CALLBACK_REPAINT_UI);
-//			isMoveNav = true;
-//		} else if (view.getId() == R.id.next) {
-//			newBoardView.getBoardFace().takeNext();
-//			newBoardView.invalidate();
-//			update(CALLBACK_REPAINT_UI);
-//			isMoveNav = true;
-		} else if (view.getId() == R.id.cancel) {
+		} else*/ if (view.getId() == R.id.cancel) {
 			showSubmitButtonsLay(false);
 
 			newBoardView.getBoardFace().takeBack();
@@ -708,9 +684,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			newBoardView.invalidate();
 		} else if (view.getId() == R.id.submit) {
 			update(CALLBACK_SEND_MOVE);
-		} else if (view.getId() == R.id.newGame) {
+		} /*else if (view.getId() == R.id.newGame) {
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
-		}
+		}*/
 	}
 }
 
