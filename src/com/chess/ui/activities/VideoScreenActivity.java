@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -90,7 +91,13 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 		findViewById(R.id.start).setOnClickListener(this);
 	}
 
-	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+    }
+
+    private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);

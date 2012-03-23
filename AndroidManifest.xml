@@ -43,12 +43,13 @@
 
         <activity android:name=".ui.core.Tabs" 			/>
 		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+				  android:configChanges="keyboardHidden|keyboard|orientation" />                         <!--  android:configChanges="keyboardHidden|keyboard|orientation"-->
+		<!--TODO manual update background-->
 
-		<activity android:name=".ui.activities.ChatActivity"
-			android:configChanges="keyboardHidden|keyboard|orientation" android:label="@string/label_chat_online"/>
+		<activity android:name=".ui.activities.ChatActivity"   android:label="@string/label_chat_online"
+				  android:configChanges="keyboardHidden|keyboard|orientation" />
 		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+				  android:configChanges="keyboardHidden|keyboard|orientation" />
 
         <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
         <activity android:name=".ui.activities.LoginScreenActivity"
@@ -103,9 +104,9 @@
 			/>
 
         <activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
-			 android:theme="@style/GreyButtonTheme"/>
+				  android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>
         <activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+					android:configChanges="keyboardHidden|keyboard|orientation"/>
         <activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"
 			/>
         <activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"

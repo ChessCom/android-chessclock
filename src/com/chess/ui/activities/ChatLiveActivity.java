@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +41,12 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.send).setOnClickListener(this);
 	}
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+    }
 
 	@Override
 	public void update(int code) {

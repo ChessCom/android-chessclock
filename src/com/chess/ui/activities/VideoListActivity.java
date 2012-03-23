@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -52,6 +53,12 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 		videosListView.setOnScrollListener(this);
 
 	}
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+    }
 
 	@Override
 	public void update(int code) {

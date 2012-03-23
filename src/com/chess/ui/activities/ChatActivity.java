@@ -1,6 +1,7 @@
 package com.chess.ui.activities;
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,12 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.send).setOnClickListener(this);
 	}
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+    }
 
 	@Override
 	public void update(int code) {
