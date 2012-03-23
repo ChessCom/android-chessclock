@@ -22,7 +22,9 @@ import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
+import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
+import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 
@@ -48,16 +50,19 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		setContentView(R.layout.online_new_game);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
-		if (MobclixHelper.isShowAds(mainApp)) {
+		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+		if (MopubHelper.isShowAds(mainApp)) {
+			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+		}
+
+		/*if (MobclixHelper.isShowAds(mainApp)) {
 			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {
 				MobclixHelper.initializeBannerAdView(this, mainApp);
 			}
-		}
+		}*/
 
 		init();
-
-		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
 
 		openChallengesListView = (ListView) this.findViewById(R.id.openChallenges);
 		openChallengesListView.setAdapter(gamesAdapter);
@@ -72,9 +77,6 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 	}
 
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(mainApp)) {
-			MobclixHelper.showBannerAd( upgradeBtn, this, mainApp);
-		}
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter("com.chess.lcc.android-challenges-list-update"));
 		super.onResume();
 		if (lccHolder.getCurrentGameId() == null) {
@@ -146,21 +148,19 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		}
 	}
 
-	@Override
+	/*@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
 		if (hasFocus && MobclixHelper.isShowAds(mainApp) && mainApp.isForceBannerAdOnFailedLoad()) {
 			MobclixHelper.showBannerAd( upgradeBtn, this, mainApp);
 		}
-	}
+	}*/
 
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-					"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
-							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+			startActivity(mainApp.getMembershipAndroidIntent());
 
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, OnlineFriendChallengeActivity.class));

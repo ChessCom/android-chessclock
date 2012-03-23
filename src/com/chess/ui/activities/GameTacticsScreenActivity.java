@@ -149,7 +149,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 				FlurryAgent.onEvent("Upgrade From Tactics", null);
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html")));
+				startActivity(mainApp.getMembershipIntent(""));
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				newBoardView.getBoardFace().setTacticCanceled(true);
 				onBackPressed();

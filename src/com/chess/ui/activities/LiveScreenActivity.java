@@ -19,7 +19,9 @@ import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
+import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
+import com.mopub.mobileads.MoPubView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -40,6 +42,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private Button currentGame;
 	private Button start;
 	private GridView gridview;
+	private Button upgradeBtn;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -66,6 +69,12 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		setContentView(R.layout.live_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
 
+		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+		if (MopubHelper.isShowAds(mainApp)) {
+			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+		}
+
 		init();
 		queries = new String[]{
 				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
@@ -83,7 +92,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 		//}
 		gridview = (GridView) findViewById(R.id.gridview);
-
 
 		if (lccHolder.isConnected()) {
 			start.setVisibility(View.VISIBLE);
@@ -599,7 +607,10 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
+		if (view.getId() == R.id.upgradeBtn) {
+			startActivity(mainApp.getMembershipAndroidIntent());
+		}
+		else if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
 			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
 			try {

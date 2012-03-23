@@ -158,10 +158,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			FlurryAgent.onEvent("upgrade From Videos", null);
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-					+ "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-					+ "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidvideos"));
-			startActivity(intent);
+			startActivity(mainApp.getMembershipVideoIntent());
 		} else if (view.getId() == R.id.play) {
 			FlurryAgent.onEvent("Video Played", null);
 

@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -389,4 +391,16 @@ public class MainApp extends Application {
 	}
 
 
+	public Intent getMembershipIntent(String param) {
+		final String uri = "http://www." + LccHolder.HOST + "/login.html?als=" + sharedData.getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
+		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+	}
+
+	public Intent getMembershipAndroidIntent() {
+		return getMembershipIntent("?c=androidads");
+	}
+
+	public Intent getMembershipVideoIntent() {
+		return getMembershipIntent("?c=androidvideos");
+	}
 }

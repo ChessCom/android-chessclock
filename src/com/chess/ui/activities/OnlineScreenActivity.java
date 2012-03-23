@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.R;
@@ -22,7 +23,9 @@ import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
+import com.mopub.mobileads.MoPubView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -38,6 +41,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	private ListView gamesList;
 	private Spinner gamesTypeSpinner;
 	private OnlineGamesAdapter gamesAdapter = null;
+	private Button upgradeBtn;
 
 	private String[] queries;
 	private boolean compleated = false;
@@ -66,6 +70,12 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+
+		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+		if (MopubHelper.isShowAds(mainApp)) {
+			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+		}
 
 		init();
 		queries = new String[]{
@@ -590,7 +600,10 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
+		if (view.getId() == R.id.upgradeBtn) {
+			startActivity(mainApp.getMembershipAndroidIntent());
+		}
+		else if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
 			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
 			try {

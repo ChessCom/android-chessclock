@@ -228,10 +228,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			finish();
 		} else if (view.getId() == R.id.upgradeBtn) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-					"http://www." + LccHolder.HOST + "/login.html?als="
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
-							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
+			startActivity(mainApp.getMembershipAndroidIntent());
 		}/*else if(view.getId() == R.id.PrefBoard){
 			new AlertDialog.Builder(context)
 					.setTitle(getString(R.string.boards_s))

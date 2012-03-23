@@ -11,13 +11,7 @@
 
 	>
 
-	<com.chess.RoboButton
-		android:id="@+id/upgradeBtn"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		style="@style/Text.Button.Upgrade"
-		android:text="@string/preferencesUpgrade"
-		/>
+    <include layout="@layout/mopub_ad_view" />
 
 	<com.chess.RoboButton
 		android:id="@+id/currentGame"
