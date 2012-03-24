@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
+import com.chess.model.GameListElement;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
@@ -39,19 +40,19 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 		findViewById(R.id.send).setOnClickListener(this);
 	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+	}
 
 	@Override
 	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunRepeatableTask(0, 0, 60000, "http://www." + LccHolder.HOST
-						+ "/api/submit_echess_action?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="
-						+ extras.getString(AppConstants.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(AppConstants.TIMESTAMP),
+						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
+						+ extras.getString(GameListElement.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListElement.TIMESTAMP),
 						null/*
 							 * progressDialog = MyProgressDialog.show(Chat.this, null,
 							 * getString(R.string.gettingmessages), true)
@@ -101,10 +102,10 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			}
 
 			if (appService != null) {
-				String query = "http://www." + LccHolder.HOST + "/api/submit_echess_action?id="
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&chessid="
-						+ extras.getString(AppConstants.GAME_ID) + "&command=CHAT&message=" + message + "&timestamp="
-						+ extras.getString(AppConstants.TIMESTAMP);
+				String query = "http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
+						+ extras.getString(GameListElement.GAME_ID) + "&command=CHAT&message=" + message + AppConstants.TIMESTAMP_PARAMETER
+						+ extras.getString(GameListElement.TIMESTAMP);
 				appService.RunSingleTask(1, query,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(ChatActivity.this, null,
 								getString(R.string.sendingmessage), true)));

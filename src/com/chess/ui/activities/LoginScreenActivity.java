@@ -31,7 +31,8 @@ import java.net.URLEncoder;
  */
 public class LoginScreenActivity extends CoreActivity implements View.OnClickListener {
 
-	private EditText username, password;
+	private EditText username;
+	private EditText password;
 
 	private Facebook facebook;
 	private LoginButton facebookLoginButton;
@@ -78,7 +79,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			 * getString(R.string.validatePassword)); return; }
 			 */
 
-			String query = "http://www." + LccHolder.HOST + "/api/v2/login";
+			String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
 			// String query = "http://" + LccHolder.HOST + "/api/v2/login";
 			try {
 				if (appService != null) {
@@ -88,7 +89,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 																								 * ,
 																								 * "UTF-8"
 																								 * )
-																								 */, "password", /*
+																								 */, AppConstants.PASSWORD, /*
 																												 * URLEncoder
 																												 * .
 																												 * encode
@@ -148,7 +149,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		}
 		super.onResume();
 		username.setText(mainApp.getSharedData().getString(AppConstants.USERNAME, ""));
-		password.setText(mainApp.getSharedData().getString("password", ""));
+		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, ""));
 	}
 
 	// TODO handle method call
@@ -202,9 +203,9 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	}
 
 	private void doUpdate(String[] response) {
-		mainApp.getSharedDataEditor().putString("password", password.getText().toString().trim());
+		mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, password.getText().toString().trim());
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
-		mainApp.getSharedDataEditor().putString("api_version", response[1]);
+		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
 		try {
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
 		} catch (UnsupportedEncodingException e) {

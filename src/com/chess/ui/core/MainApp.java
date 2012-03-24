@@ -92,7 +92,7 @@ public class MainApp extends Application {
 
 //	private View progressView;
 
-	public void loadBoard(String boardName,View progressView) {
+	public void loadBoard(String boardName, View progressView) {
 		context = this;
 //		new BitmapLoaderTask(new BitmapLoadUpdateListener(progressView)).execute(boardName);
 		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(boardName, "drawable", "com.chess"));
@@ -117,7 +117,7 @@ public class MainApp extends Application {
 //
 //	}
 
-	public void loadPieces(String piecesName,View progressView) {
+	public void loadPieces(String piecesName, View progressView) {
 //		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
 		resources = getResources();
 		piecesBitmaps = new Bitmap[2][6];
@@ -133,10 +133,10 @@ public class MainApp extends Application {
 		piecesBitmaps[1][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_br", "drawable", "com.chess"));
 		piecesBitmaps[1][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bq", "drawable", "com.chess"));
 		piecesBitmaps[1][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bk", "drawable", "com.chess"));
-		
+
 	}
 
-	private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][],String>{
+	private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][], String> {
 
 		public PiecesLoadUpdateListener(View progressView) {
 			super(context, progressView);
@@ -148,11 +148,11 @@ public class MainApp extends Application {
 			piecesBitmaps = returnedObj;
 		}
 
-	}	
+	}
 	/*public void onCreate()
-	  {
-		soundPlayer = new SoundPlayer(this);
-	  }*/
+		  {
+			soundPlayer = new SoundPlayer(this);
+		  }*/
 
 	public void ShowMessage(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();

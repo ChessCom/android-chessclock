@@ -6,14 +6,14 @@ import com.chess.backend.statics.StaticData;
 
 import java.util.List;
 
-public abstract class AbstractUpdateTask<T,Input> extends AsyncTask<Input, Void, Integer>{
+public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void, Integer> {
 
-	protected TaskUpdateInterface<T,Input> taskFace;
+	protected TaskUpdateInterface<T, Input> taskFace;
 	protected T item;
 	protected List<T> itemList;
 	protected boolean useList;
 
-	public AbstractUpdateTask(TaskUpdateInterface<T,Input> taskFace) {
+	public AbstractUpdateTask(TaskUpdateInterface<T, Input> taskFace) {
 		this.taskFace = taskFace;
 		useList = taskFace.useList();
 	}
@@ -36,11 +36,11 @@ public abstract class AbstractUpdateTask<T,Input> extends AsyncTask<Input, Void,
 		super.onPostExecute(result);
 		taskFace.showProgress(false);
 		if (result == StaticData.RESULT_OK) {
-			if(useList)
+			if (useList)
 				taskFace.updateListData(itemList);
 			else
 				taskFace.updateData(item);
-		}else {
+		} else {
 			taskFace.errorHandle(result);
 		}
 	}

@@ -3,6 +3,7 @@ package com.chess.utilities;
 import com.chess.model.Game;
 import com.chess.model.GameListElement;
 import com.chess.model.Message;
+import com.chess.ui.core.AppConstants;
 
 import java.util.ArrayList;
 
@@ -108,7 +109,7 @@ public class ChessComApiParser {
 
 	//online game
 	public static Game GetGameParseV3(String result) {
-		if (result.contains("Success")) {
+		if (result.contains(AppConstants.SUCCESS)) {
 			return new Game(result.split(":"), false);
 		}
 		return null;

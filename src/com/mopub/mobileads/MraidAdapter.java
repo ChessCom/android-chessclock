@@ -71,6 +71,7 @@ public class MraidAdapter extends BaseAdapter {
 
 	private void initMraidListeners() {
 		mMraidView.setOnReadyListener(new MraidView.OnReadyListener() {
+			@Override
 			public void onReady(MraidView view) {
 				if (!isInvalidated()) {
 					mMoPubView.nativeAdLoaded();
@@ -80,6 +81,7 @@ public class MraidAdapter extends BaseAdapter {
 		});
 
 		mMraidView.setOnExpandListener(new MraidView.OnExpandListener() {
+			@Override
 			public void onExpand(MraidView view) {
 				if (!isInvalidated()) {
 					mPreviousAutorefreshSetting = mMoPubView.getAutorefreshEnabled();
@@ -90,6 +92,7 @@ public class MraidAdapter extends BaseAdapter {
 		});
 
 		mMraidView.setOnCloseListener(new MraidView.OnCloseListener() {
+			@Override
 			public void onClose(MraidView view, ViewState newViewState) {
 				if (!isInvalidated()) {
 					mMoPubView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
@@ -99,6 +102,7 @@ public class MraidAdapter extends BaseAdapter {
 		});
 
 		mMraidView.setOnFailureListener(new MraidView.OnFailureListener() {
+			@Override
 			public void onFailure(MraidView view) {
 				if (!isInvalidated()) mMoPubView.loadFailUrl();
 			}

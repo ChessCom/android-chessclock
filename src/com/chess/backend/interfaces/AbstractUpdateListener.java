@@ -8,7 +8,7 @@ import com.chess.backend.statics.StaticData;
 
 import java.util.List;
 
-public abstract class AbstractUpdateListener<T,Input> implements TaskUpdateInterface<T,Input> {
+public abstract class AbstractUpdateListener<T, Input> implements TaskUpdateInterface<T, Input> {
 
 	private View progressView;
 	private Context context;
@@ -21,7 +21,7 @@ public abstract class AbstractUpdateListener<T,Input> implements TaskUpdateInter
 
 	@Override
 	public void showProgress(boolean show) {
-		if(progressView != null)
+		if (progressView != null)
 			progressView.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 	}
 
@@ -49,10 +49,11 @@ public abstract class AbstractUpdateListener<T,Input> implements TaskUpdateInter
 	@Override
 	public void errorHandle(Integer resultCode) {
 		switch (resultCode) {
-		case StaticData.UNKNOWN_ERROR:
-			Toast.makeText(context, R.string.error_occurred, Toast.LENGTH_SHORT).show();
-			break;
-		default: break;
+			case StaticData.UNKNOWN_ERROR:
+				Toast.makeText(context, R.string.error_occurred, Toast.LENGTH_SHORT).show();
+				break;
+			default:
+				break;
 		}
 	}
 

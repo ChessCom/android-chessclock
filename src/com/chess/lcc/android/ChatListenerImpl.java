@@ -2,6 +2,8 @@ package com.chess.lcc.android;
 
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
+import com.chess.model.*;
+import com.chess.ui.core.AppConstants;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -11,7 +13,7 @@ public class ChatListenerImpl
 		implements ChatListener {
 	public ChatListenerImpl(LccHolder lccHolder) {
 		if (lccHolder == null) {
-			throw new NullPointerException("LccHolder is null");
+			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
 		}
 		this.lccHolder = lccHolder;
 	}
@@ -93,7 +95,7 @@ public class ChatListenerImpl
 			return;
 		}
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroid().getContext().getCurrentGame().values.put("has_new_message", "1");
+			lccHolder.getAndroid().getContext().getCurrentGame().values.put(com.chess.model.Game.HAS_NEW_MESSAGE, "1");
 			lccHolder.getAndroid().sendBroadcastIntent(0, "com.chess.lcc.android-game-chat-message");
 		}
 	}

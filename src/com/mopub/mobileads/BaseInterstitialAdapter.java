@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public abstract class BaseInterstitialAdapter {
 
+	public static final String MO_PUB = "MoPub";
+	public static final String MRAID = "mraid";
 	protected boolean mInvalidated;
 	protected MoPubInterstitial mInterstitial;
 	protected String mJsonParams;
@@ -26,7 +28,7 @@ public abstract class BaseInterstitialAdapter {
 
 	static {
 		sInterstitialAdapterMap = new HashMap<String, String>();
-		sInterstitialAdapterMap.put("mraid", "MraidInterstitialAdapter");
+		sInterstitialAdapterMap.put(MRAID, "MraidInterstitialAdapter");
 		sInterstitialAdapterMap.put("admob_full", "com.mopub.mobileads.GoogleAdMobInterstitialAdapter");
 		sInterstitialAdapterMap.put("millennial_full", "MillennialInterstitialAdapter");
 	}
@@ -67,7 +69,7 @@ public abstract class BaseInterstitialAdapter {
 					(BaseInterstitialAdapter) constructor.newInstance();
 			return nativeAdapter;
 		} catch (Exception e) {
-			Log.d("MoPub", "Couldn't create native interstitial adapter for type: " + type);
+			Log.d(MO_PUB, "Couldn't create native interstitial adapter for type: " + type);
 			return null;
 		}
 	}
@@ -79,7 +81,7 @@ public abstract class BaseInterstitialAdapter {
 	private static Class<?> classForAdapterType(String type) {
 		String className = classStringForAdapterType(type);
 		if (className == null) {
-			Log.d("MoPub", "Couldn't find a handler for this ad type: " + type + "."
+			Log.d(MO_PUB, "Couldn't find a handler for this ad type: " + type + "."
 					+ " MoPub for Android does not support it at this time.");
 			return null;
 		}
@@ -87,7 +89,7 @@ public abstract class BaseInterstitialAdapter {
 		try {
 			return (Class<?>) Class.forName(className);
 		} catch (ClassNotFoundException e) {
-			Log.d("MoPub", "Couldn't find " + className + "class."
+			Log.d(MO_PUB, "Couldn't find " + className + "class."
 					+ " Make sure the project includes the adapter library for " + className
 					+ " from the extras folder");
 			return null;

@@ -14,9 +14,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.live.client.ChatMessage;
+import com.chess.model.Game;
+import com.chess.model.GameListElement;
 import com.chess.model.Message;
 import com.chess.ui.adapters.MessagesAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.views.BackgroundChessDrawable;
 
@@ -42,11 +43,11 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 		findViewById(R.id.send).setOnClickListener(this);
 	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+	}
 
 	@Override
 	public void update(int code) {
@@ -81,7 +82,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 
 	private ArrayList<Message> getMessagesList() {
 		ArrayList<Message> output = new ArrayList<Message>();
-		Long currentGameId = new Long(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID));
+		Long currentGameId = new Long(mainApp.getCurrentGame().values.get(GameListElement.GAME_ID));
 		com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
@@ -109,7 +110,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-			mainApp.getCurrentGame().values.put("has_new_message", "0");
+			mainApp.getCurrentGame().values.put(Game.HAS_NEW_MESSAGE, "0");
 			update(ChatLiveActivity.MESSAGE_RECEIVED);
 		}
 	};
@@ -122,7 +123,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 				protected Void doInBackground(Void... voids) {
 					System.out.println("LCCLOG: SEND");
 					lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(
-							new Long(mainApp.getCurrentGame().values.get(AppConstants.GAME_ID))),
+							new Long(mainApp.getCurrentGame().values.get(GameListElement.GAME_ID))),
 							sendText.getText().toString());
 					return null;
 				}

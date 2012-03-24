@@ -18,6 +18,7 @@ import java.util.TreeSet;
 
 public class Search {
 	final static int MAX_PLY = 32;
+	public static final String SEARCH = "SEARCH";
 
 	private BoardFace boardFace;
 	private Move pv[][] = new Move[MAX_PLY][MAX_PLY];
@@ -52,14 +53,14 @@ public class Search {
 				for (int j = 0; j < 64; j++)
 					boardFace.getHistory()[i][j] = 0;
 			if (output == 1)
-				Log.d("SEARCH", "ply      nodes  score  pv");
+				Log.d(SEARCH, "ply      nodes  score  pv");
 			for (int i = 1; i <= maxDepth; ++i) {
 				followPV = true;
 				int x = search(-10000, 10000, i);
 				if (output > 0) {
-					Log.d("SEARCH", /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
+					Log.d(SEARCH, /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
 					for (int j = 0; j < pvLength[0]; ++j)
-						Log.d("SEARCH", " " + pv[0][j].toString());
+						Log.d(SEARCH, " " + pv[0][j].toString());
 				}
 				if (x > 9000 || x < -9000)
 					break;
@@ -71,7 +72,7 @@ public class Search {
 				--ply;
 			}
 		}
-		Log.d("SEARCH", "Nodes searched: " + nodes);
+		Log.d(SEARCH, "Nodes searched: " + nodes);
 		return;
 	}
 

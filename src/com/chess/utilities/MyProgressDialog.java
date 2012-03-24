@@ -18,7 +18,7 @@ public class MyProgressDialog {
 	public void dismiss() {
 		try {
 			progressDialog.dismiss();
-		} catch (Exception e) {
+		} catch (Exception e) {  // TODO remove all progress dialogs and replace with progress bars
 			// hack for android's java.lang.IllegalArgumentException: View not attached to window manager
 		}
 	}

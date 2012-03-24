@@ -43,6 +43,8 @@ public class LccHolder {
 	public static final String CONFIG_CHAT_MESSAGE =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.message"), "test!");
 	private static Integer MATCHED_COLOR = 1;
+	public static final String PKCS_12 = "PKCS12";
+	public static final String TESTTEST = "testtest";
 	private ChatListenerImpl _chatListener;
 	private ConnectionListenerImpl _connectionListener;
 	private LccGameListener _gameListener;
@@ -110,13 +112,13 @@ public class LccHolder {
 		httpClient.setConnectTimeout(10000);
 		httpClient.setTimeout(7000); //
 
-		httpClient.setKeyStoreType("PKCS12");
-		httpClient.setTrustStoreType("PKCS12");
-		httpClient.setKeyManagerPassword("testtest");
+		httpClient.setKeyStoreType(PKCS_12);
+		httpClient.setTrustStoreType(PKCS_12);
+		httpClient.setKeyManagerPassword(TESTTEST);
 		httpClient.setKeyStoreInputStream(keyStoreInputStream);
-		httpClient.setKeyStorePassword("testtest");
+		httpClient.setKeyStorePassword(TESTTEST);
 		httpClient.setTrustStoreInputStream(keyStoreInputStream);
-		httpClient.setTrustStorePassword("testtest");
+		httpClient.setTrustStorePassword(TESTTEST);
 
 		_lccClient.setHttpClient(httpClient);
 		try {
@@ -471,12 +473,12 @@ public class LccHolder {
 		final String[] gameData = new String[com.chess.model.Game.GAME_DATA_ELEMENTS_COUNT];
 		gameData[0] = lccGame.getId().toString();
 		gameData[1] = "1";
-		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve AppConstants.TIMESTAMP
+		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListElement.TIMESTAMP
 		gameData[3] = "";
 		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
 		gameData[6] = ""; // starting_fen_position
-		String moves = new String();
+		String moves = "";
 		/*int j = 0;
 			int latest = 0;
 			for (int i=0; j <= moveIndex; i++)
@@ -701,7 +703,7 @@ public class LccHolder {
 		final Intent intent = new Intent(androidContext, GameBaseActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-		intent.putExtra(AppConstants.GAME_ID, "" + game.getId());
+		intent.putExtra(GameListElement.GAME_ID, "" + game.getId());
 		androidContext.startActivity(intent);
 		/*final Game currentGame = game;
 			if(game.getSeq() > 0)
@@ -819,6 +821,7 @@ public class LccHolder {
 			return;
 		}
 		getAndroid().getGameActivity().runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				if (isWhite == null) {
 					getAndroid().getGameActivity().getWhiteClockView().

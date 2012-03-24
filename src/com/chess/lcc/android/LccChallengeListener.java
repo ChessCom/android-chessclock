@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
+import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 
 import java.util.Collection;
@@ -9,11 +10,12 @@ import java.util.Collection;
 public class LccChallengeListener implements ChallengeListener {
 	public LccChallengeListener(LccHolder lccHolder) {
 		if (lccHolder == null) {
-			throw new NullPointerException("LccHolder is null");
+			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
 		}
 		this.lccHolder = lccHolder;
 	}
 
+	@Override
 	public void onChallengeListReceived(Collection<Challenge> challenges) {
 		String text =
 				"CHALLENGE LISTENER. Private Seek/Challenge List received: user: " + lccHolder.getUser().getUsername() + ", size: " +
@@ -32,6 +34,7 @@ public class LccChallengeListener implements ChallengeListener {
 		}
 	}
 
+	@Override
 	public void onChallengeReceived(Challenge challenge) {
 		LccHolder.LOG.info("CHALLENGE LISTENER. Challenge received: " + challenge);
 		if (challenge.getFrom().isComputer()) {
@@ -147,11 +150,12 @@ public class LccChallengeListener implements ChallengeListener {
 			}*/
 	}
 
+	@Override
 	public void onChallengeAccepted(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
 		LccHolder.LOG.info(
-				"CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-						challengeId + ", by: " + by + ", warning: " + warning);
+				"CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
+						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHolder.removeChallenge(challengeId);
 		/*MatchOffer matchOffer = user.getConnection().getJinChallenge(challengeId);
 				if(matchOffer != null)
@@ -164,20 +168,22 @@ public class LccChallengeListener implements ChallengeListener {
 		showWarning(warning);
 	}
 
+	@Override
 	public void onChallengeRejected(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
 		LccHolder.LOG.info(
-				"CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-						challengeId + ", by: " + by + ", warning: " + warning);
+				"CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
+						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHolder.removeChallenge(challengeId);
 		showWarning(warning);
 	}
 
+	@Override
 	public void onChallengeCancelled(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
 		LccHolder.LOG.info(
-				"CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHolder.getUser().getUsername() + ", challenge: " +
-						challengeId + ", by: " + by + ", warning: " + warning);
+				"CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
+						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 
 		/*if(by == null) // in second onChallengeCancelled invocation the "by" field is null
 			{

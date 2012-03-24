@@ -8,13 +8,14 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.PaginationInfo;
 import com.chess.live.client.SeekListListener;
 import com.chess.live.client.SubscriptionId;
+import com.chess.ui.core.AppConstants;
 
 import java.util.Collection;
 
 public class LccSeekListListener implements SeekListListener {
 	public LccSeekListListener(LccHolder lccHolder) {
 		if (lccHolder == null) {
-			throw new NullPointerException("LccHolder is null");
+			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
 		}
 		this.lccHolder = lccHolder;
 	}
@@ -36,14 +37,16 @@ public class LccSeekListListener implements SeekListListener {
 		}
 	}
 
+	@Override
 	public void onSeekItemAdded(SubscriptionId id, Challenge challenge) {
 		//LccHolder.LOG.info("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
 		addSeek(challenge);
 	}
 
+	@Override
 	public void onSeekItemRemoved(SubscriptionId id, Long seekId) {
 		if (lccHolder.isSeekContains(seekId)) {
-			LccHolder.LOG.info("Seek item removed: user: " + lccHolder.getUser().getUsername() + ", challenge: " + seekId);
+			LccHolder.LOG.info("Seek item removed: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE + seekId);
 			/*Seek seek = user.getConnection().getJinSeek(seekId);
 				  if(seek == null)
 				  {
@@ -54,6 +57,7 @@ public class LccSeekListListener implements SeekListListener {
 		}
 	}
 
+	@Override
 	public void onPaginationInfoReceived(SubscriptionId id, PaginationInfo info) {
 		/*LccHolder.LOG.info(
 			  "PAGINATION INFO LISTENER: Pagination info received: pageCount = " + info.getPageCount() + ", itemsCount=" +

@@ -6,11 +6,12 @@ package com.chess.lcc.android;
 
 import com.chess.live.client.FriendStatusListener;
 import com.chess.live.client.User;
+import com.chess.ui.core.AppConstants;
 
 public class LccFriendStatusListener implements FriendStatusListener {
 	public LccFriendStatusListener(LccHolder lccHolder) {
 		if (lccHolder == null) {
-			throw new NullPointerException("LccHolder is null");
+			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
 		}
 		this.lccHolder = lccHolder;
 	}
@@ -20,6 +21,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 		lccHolder.putFriend(friend);
 	}
 
+	@Override
 	public void onFriendRequested(User from, User to) {
 		/*LccUser.LOG.info("FRIENDS STATUS LISTENER: onFriendRequested from " + from + " to " + to);
 
@@ -44,6 +46,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 			}*/
 	}
 
+	@Override
 	public void onFriendDeleted(User from, User to) {
 		LccHolder.LOG.info("FRIENDS STATUS LISTENER: onFriendDeleted from " + from + " to " + to);
 		User deletedFriend = null;
@@ -55,6 +58,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 		lccHolder.removeFriend(deletedFriend);
 	}
 
+	@Override
 	public void onFriendRequestAccepted(User from, User to) {
 		/*LccUser.LOG.info("FRIENDS STATUS LISTENER: onFriendRequestAccepted from " + from + " to " + to);
 			if(user.getConnection().isUserBlocked(from.getUsername()))
@@ -74,6 +78,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 			}*/
 	}
 
+	@Override
 	public void onFriendRequestDeclined(User from, User to) {
 		/*LccUser.LOG.info("FRIENDS STATUS LISTENER: onFriendRequestDeclined from " + from + " to " + to);*/
 	}

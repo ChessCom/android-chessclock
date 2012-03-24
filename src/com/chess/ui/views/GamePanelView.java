@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,7 +245,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 	private View createControlButton(int buttonId, int backId) {
 		ImageButton imageButton = new ImageButton(getContext());
-		Log.d("TEST", "buttonId = " + buttonId + " lenght = " + buttonsDrawableIds.length);
 		imageButton.setImageResource(buttonsDrawableIds[buttonId]);
 		imageButton.setBackgroundResource(backId);
 		imageButton.setOnClickListener(this);
@@ -274,12 +272,12 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	}
 
 	public void hideGameButton(int buttonId) {
-		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
+		findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.GONE);
 	}
 
 
 	public void enableGameButton(int buttonId, boolean enable) {
-		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setEnabled(enable);
+		findViewById(BUTTON_PREFIX + buttonId).setEnabled(enable);
 	}
 
 	public void changeGameButton(int buttonId, int resId) {
@@ -354,7 +352,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		return pieceDrawable;
 	}
 
-	private void addPieceItems(LinearLayout viewGroup, boolean isWhite, /*int layersCnt, */float itemWeight, int pieceId) {
+	private void addPieceItems(LinearLayout viewGroup, boolean isWhite, float itemWeight, int pieceId) {
 		int layersCnt = pieceItemCounts[pieceId];
 		// Add background image to get correct weights
 		ImageView imageView = new ImageView(getContext());

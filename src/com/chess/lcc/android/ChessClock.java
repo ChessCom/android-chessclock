@@ -99,7 +99,7 @@ public class ChessClock {
 		});
 	}
 
-	protected String createTimeString(int time) {
+	protected String createTimeString(int time) { // TODO simplify
 		//boolean isNegative = time < 0;
 		time = Math.abs(time < 0 ? 0 : time);
 		int hours = time / (1000 * 60 * 60);

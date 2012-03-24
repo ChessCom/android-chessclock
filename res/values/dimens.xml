@@ -90,6 +90,7 @@
 
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
+	<dimen name="player_name_max_width">140dip</dimen>
 	<!--
 	 <dimen name="signin_button_margin_updown">24dip</dimen>
 	 <dimen name="signin_footer_margin_bottom">10dip</dimen>

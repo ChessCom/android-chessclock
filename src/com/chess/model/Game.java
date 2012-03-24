@@ -9,24 +9,30 @@ public class Game implements Serializable {
 
 	public static int GAME_DATA_ELEMENTS_COUNT = 14;
 
+	public static final String STARTING_FEN_POSITION = "starting_fen_position";
+	public static final String WHITE_RATING = "white_rating";
+	public static final String BLACK_RATING = "black_rating";
+	public static final String ENCODED_MOVE_STRING = "encoded_move_string";
+	public static final String HAS_NEW_MESSAGE = "has_new_message";
+
 	public HashMap<String, String> values;
 
 	public Game(String[] values, boolean isLiveChess) {
 		this.values = new HashMap<String, String>();
 		final String gameId = isLiveChess ? values[0] : values[0].split("[+]")[1];
-		this.values.put(AppConstants.GAME_ID, gameId);
-		this.values.put("game_type", values[1]);
-		this.values.put(AppConstants.TIMESTAMP, values[2]);
+		this.values.put(GameListElement.GAME_ID, gameId);
+		this.values.put(GameListElement.GAME_TYPE, values[1]);
+		this.values.put(GameListElement.TIMESTAMP, values[2]);
 		this.values.put("game_name", values[3]);
 		this.values.put(AppConstants.WHITE_USERNAME, values[4].trim());
 		this.values.put(AppConstants.BLACK_USERNAME, values[5].trim());
-		this.values.put("starting_fen_position", values[6]);
+		this.values.put(STARTING_FEN_POSITION, values[6]);
 		this.values.put(AppConstants.MOVE_LIST, values[7]);
 		this.values.put("user_to_move", values[8]);
-		this.values.put("white_rating", values[9]);
-		this.values.put("black_rating", values[10]);
-		this.values.put("encoded_move_string", values[11]);
-		this.values.put("has_new_message", values[12]);
+		this.values.put(WHITE_RATING, values[9]);
+		this.values.put(BLACK_RATING, values[10]);
+		this.values.put(ENCODED_MOVE_STRING, values[11]);
+		this.values.put(HAS_NEW_MESSAGE, values[12]);
 		this.values.put("seconds_remaining", values[13]);
 		//this.values.put("move_list_coordinate", values[14]);
 	}

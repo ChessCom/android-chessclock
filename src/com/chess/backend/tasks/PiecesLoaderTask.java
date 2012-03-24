@@ -12,7 +12,7 @@ import com.chess.utilities.BitmapLoader;
  * @author alien_roger
  * @created at: 20.03.12 5:16
  */
-public class PiecesLoaderTask extends AbstractUpdateTask<Bitmap[][],String>{
+public class PiecesLoaderTask extends AbstractUpdateTask<Bitmap[][], String> {
 	private Resources resources;
 
 	public PiecesLoaderTask(TaskUpdateInterface<Bitmap[][], String> taskFace) {

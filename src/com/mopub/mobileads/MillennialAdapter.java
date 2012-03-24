@@ -112,7 +112,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
 
 		mHasAlreadyRegisteredImpression = false;
 
-		Log.d("MoPub", "Loading Millennial ad...");
+		Log.d(BaseInterstitialAdapter.MO_PUB, "Loading Millennial ad...");
 		mMillennialAdView.callForAd();
 	}
 
@@ -139,7 +139,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
 			public void run() {
 				if (isInvalidated()) return;
 
-				Log.d("MoPub", "Millennial failed. Trying another");
+				Log.d(BaseInterstitialAdapter.MO_PUB, "Millennial failed. Trying another");
 				mMoPubView.loadFailUrl();
 			}
 		});
@@ -176,7 +176,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
 			public void run() {
 				if (isInvalidated()) return;
 
-				Log.d("MoPub", "Millennial clicked");
+				Log.d(BaseInterstitialAdapter.MO_PUB, "Millennial clicked");
 				mMoPubView.registerClick();
 			}
 		});
@@ -188,7 +188,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
 			public void run() {
 				if (isInvalidated()) return;
 
-				Log.d("MoPub", "Millennial clicked");
+				Log.d(BaseInterstitialAdapter.MO_PUB, "Millennial clicked");
 				mMoPubView.registerClick();
 			}
 		});

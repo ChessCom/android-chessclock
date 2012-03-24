@@ -39,7 +39,7 @@ public class Web {
 			HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
 			httpclient = new DefaultHttpClient(httpParameters);
-			Log.d("WebRequest","requesting url = " + url);
+			Log.d("WebRequest", "requesting url = " + url);
 			if (method.equals("GET")) {
 				base = (HttpRequestBase) new HttpGet(url);
 			} else if (method.equals("POST")) {

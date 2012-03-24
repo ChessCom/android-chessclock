@@ -219,4 +219,19 @@
 	<style name="CapturedPiece">
 		<item name="android:layout_weight">1</item>
 	</style>
+
+	<style name="GameLabel">
+		<item name="android:layout_centerVertical">true</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:paddingTop">2dip</item>
+		<item name="android:paddingBottom">2dip</item>
+	</style>
+
+	<style name="GameLabel.Player">
+		<item name="android:drawablePadding">5dip</item>
+		<item name="android:ellipsize">marquee</item>
+		<item name="android:marqueeRepeatLimit">marquee_forever</item>
+		<item name="android:maxWidth">@dimen/player_name_max_width</item>
+	</style>
 </resources>

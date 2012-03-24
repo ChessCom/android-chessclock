@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -123,7 +122,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 			}
 			for (GameListElement gameListItem : gameListItems) {
-				Log.d("GameLists","game received" + gameListItem.toString());
+				Log.d("GameLists", "game received" + gameListItem.toString());
 			}
 
 
@@ -177,21 +176,21 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
-				if (result.contains("Success")) {
+				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&acceptinviteid=" + gameListElement.values.get(GameListElement.GAME_ID), "GET", null, null);
+				if (result.contains(AppConstants.SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_COMP_MOVE);
-				} else if (result.contains("Error+")) {
-					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
+				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+					mainApp.ShowDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
 				}
 			} else if (pos == 1) {
 
-				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + gameListElement.values.get(AppConstants.GAME_ID), "GET", null, null);
-				if (result.contains("Success")) {
+				String result = Web.Request("http://www." + LccHolder.HOST + "/api/echess_open_invites?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&declineinviteid=" + gameListElement.values.get(GameListElement.GAME_ID), "GET", null, null);
+				if (result.contains(AppConstants.SUCCESS)) {
 					update(3);
-				} else if (result.contains("Error+")) {
-					mainApp.ShowDialog(OnlineNewGameActivity.this, "Error", result.split("[+]")[1]);
+				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+					mainApp.ShowDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.ShowDialog(OnlineNewGame.this, "Error", result);
 				}
@@ -205,10 +204,10 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 //		if (gameListElement.type == GameListElement.LIST_TYPE_CHALLENGES) {
 		if (gameListElement.type == GameListElement.LIST_TYPE_CURRENT) {
 			final String title = mainApp.isLiveChess() ?
-					gameListElement.values.get("opponent_chess_title") :
-					"Win: " + gameListElement.values.get("opponent_win_count")
-							+ " Loss: " + gameListElement.values.get("opponent_loss_count")
-							+ " Draw: " + gameListElement.values.get("opponent_draw_count");
+					gameListElement.values.get(GameListElement.OPPONENT_CHESS_TITLE) :
+					"Win: " + gameListElement.values.get(GameListElement.OPPONENT_WIN_COUNT)
+							+ " Loss: " + gameListElement.values.get(GameListElement.OPPONENT_LOSS_COUNT)
+							+ " Draw: " + gameListElement.values.get(GameListElement.OPPONENT_DRAW_COUNT);
 
 
 			new AlertDialog.Builder(OnlineNewGameActivity.this)

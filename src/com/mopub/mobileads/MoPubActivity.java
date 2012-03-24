@@ -37,14 +37,17 @@ import com.mopub.mobileads.MoPubView.OnAdLoadedListener;
 
 public class MoPubActivity extends BaseActivity implements OnAdLoadedListener {
 	public static final int MOPUB_ACTIVITY_NO_AD = 1234;
+	public static final String COM_MOPUB_MOBILEADS_AD_UNIT_ID = "com.mopub.mobileads.AdUnitId";
+	public static final String COM_MOPUB_MOBILEADS_KEYWORDS = "com.mopub.mobileads.Keywords";
+	public static final String COM_MOPUB_MOBILEADS_CLICKTHROUGH_URL = "com.mopub.mobileads.ClickthroughUrl";
 
 	private MoPubView mMoPubView;
 
 	@Override
 	public View getAdView() {
-		String adUnitId = getIntent().getStringExtra("com.mopub.mobileads.AdUnitId");
-		String keywords = getIntent().getStringExtra("com.mopub.mobileads.Keywords");
-		String clickthroughUrl = getIntent().getStringExtra("com.mopub.mobileads.ClickthroughUrl");
+		String adUnitId = getIntent().getStringExtra(COM_MOPUB_MOBILEADS_AD_UNIT_ID);
+		String keywords = getIntent().getStringExtra(COM_MOPUB_MOBILEADS_KEYWORDS);
+		String clickthroughUrl = getIntent().getStringExtra(COM_MOPUB_MOBILEADS_CLICKTHROUGH_URL);
 		int timeout = getIntent().getIntExtra("com.mopub.mobileads.Timeout", 0);
 
 		if (adUnitId == null) {
@@ -58,7 +61,7 @@ public class MoPubActivity extends BaseActivity implements OnAdLoadedListener {
 		mMoPubView.setTimeout(timeout);
 		mMoPubView.setOnAdLoadedListener(this);
 
-		String source = getIntent().getStringExtra("com.mopub.mobileads.Source");
+		String source = getIntent().getStringExtra(MraidInterstitialAdapter.COM_MOPUB_MOBILEADS_SOURCE);
 		if (source != null) {
 			source = sourceWithImpressionTrackingDisabled(source);
 			mMoPubView.loadHtmlString(source);

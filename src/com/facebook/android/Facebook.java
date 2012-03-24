@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieSyncManager;
+import com.chess.ui.core.AppConstants;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -334,7 +335,7 @@ public class Facebook {
 		String url = endpoint + "?" + Util.encodeUrl(parameters);
 		if (context.checkCallingOrSelfPermission(Manifest.permission.INTERNET)
 				!= PackageManager.PERMISSION_GRANTED) {
-			Util.showAlert(context, "Error",
+			Util.showAlert(context, AppConstants.ERROR,
 					"Application requires permission to access the Internet");
 		} else {
 			new FbDialog(context, url, listener).show();

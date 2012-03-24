@@ -13,7 +13,10 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
-import com.chess.ui.core.*;
+import com.chess.ui.core.AppConstants;
+import com.chess.ui.core.CoreActivityActionBar;
+import com.chess.ui.core.IntentConstants;
+import com.chess.ui.core.Tabs;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
@@ -48,7 +51,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected TextView whitePlayerLabel;
 	protected TextView blackPlayerLabel;
 	protected TextView thinking;
-	//	protected TextView movelist;
+
 	protected Timer onlineGameUpdate = null;
 	protected boolean msgShowed;
 	protected boolean isMoveNav;
@@ -86,8 +89,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
+		whitePlayerLabel.setSelected(true);
+		blackPlayerLabel.setSelected(true);
 		thinking = (TextView) findViewById(R.id.thinking);
-//		movelist = (TextView) findViewById(R.id.movelist);
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
@@ -265,7 +269,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected BroadcastReceiver gameMoveReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 			game = (com.chess.model.Game) intent.getSerializableExtra(AppConstants.OBJECT);
 			update(CALLBACK_GAME_REFRESH);
 		}
@@ -274,7 +278,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected BroadcastReceiver gameEndMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 
 			final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
 			Integer newWhiteRating = null;
@@ -324,7 +328,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 							adPopup = null;
 						}
 						// TODO determine which activity to run. move to upper level
-						Toast.makeText(coreContext,"Should start online New Game Activity",Toast.LENGTH_SHORT).show();
+						Toast.makeText(coreContext, "Should start online New Game Activity", Toast.LENGTH_SHORT).show();
 //						startActivity(new Intent(coreContext, OnlineNewGame.class));
 					}
 				});
@@ -362,7 +366,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 			mainApp.ShowDialog(coreContext, intent.getExtras()
 					.getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
 		}
@@ -387,10 +391,10 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 			whitePlayerLabel.setVisibility(View.VISIBLE);
 			blackPlayerLabel.setVisibility(View.VISIBLE);
 		}
-
 		// TODO restore game state after quit from analysis mode
 	}
 
+	protected abstract void restoreGame();
 
 	protected void executePausedActivityGameEvents() {
 		if (/*lccHolder.isActivityPausedMode() && */lccHolder.getPausedActivityGameEvents().size() > 0) {
@@ -569,7 +573,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 //
 //					int[] moveFT = mainApp.isLiveChess() ?
 //							MoveParser.parseCoordinate(newBoardView.getBoardFace().getBoard(), Moves[i]) :
-//							MoveParser.Parse(newBoardView.getBoardFace().getBoard(), Moves[i]);
+//							MoveParser.parse(newBoardView.getBoardFace().getBoard(), Moves[i]);
 //					if (moveFT.length == 4) {
 //						Move m;
 //						if (moveFT[3] == 2)

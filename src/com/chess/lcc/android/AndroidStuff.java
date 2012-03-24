@@ -25,7 +25,7 @@ public class AndroidStuff {
 	private SharedPreferences.Editor sharedDataEditor;
 	private MyProgressDialog currentProgressDialog;
 	private LccHolder lccHolder;
-	private GameBaseActivity gameActivity;    // TODO check compatibility
+	private GameBaseActivity gameActivity;	// TODO check compatibility
 	private Handler clockHandler = new Handler();
 	private Handler updateBoardHandler = new Handler();
 	private MyProgressDialog connectingIndicator;
@@ -82,7 +82,7 @@ public class AndroidStuff {
 				.putExtra(AppConstants.REPEATABLE_TASK, false)
 				.putExtra(AppConstants.CALLBACK_CODE, code)
 				.putExtra(AppConstants.REQUEST_RESULT,
-						result ? "Success" : "Error+" + errorMessage[0])
+						result ? AppConstants.SUCCESS : AppConstants.ERROR_PLUS + errorMessage[0])
 		);
 		/*if(currentProgressDialog != null)
 			{
@@ -91,7 +91,7 @@ public class AndroidStuff {
 	}
 
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
-		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
+		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
@@ -103,7 +103,7 @@ public class AndroidStuff {
 	}
 
 	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
-		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
+		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
@@ -116,7 +116,7 @@ public class AndroidStuff {
 	}
 
 	public void sendBroadcastIntent(int code, String broadcastAction) {
-		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
+		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
@@ -127,7 +127,7 @@ public class AndroidStuff {
 	}
 
 	public void updateChallengesList() {
-		sendBroadcastIntent(OnlineScreenActivity.ONLINE_CALLBACK_CODE, "com.chess.lcc.android-challenges-list-update");
+		sendBroadcastIntent(OnlineScreenActivity.ONLINE_CALLBACK_CODE, IntentConstants.CHALLENGES_LIST_UPDATE);
 	}
 
 	public void processMove(Long gameId, int moveIndex) {
@@ -162,7 +162,7 @@ public class AndroidStuff {
 	}
 
 	public void manageProgressDialog(String broadcastAction, boolean enable, String message) {
-		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
+		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR, enable)
@@ -196,7 +196,7 @@ public class AndroidStuff {
 	}
 
 	public void informAndExit(String broadcastAction, String title, String message) {
-		LccHolder.LOG.info("LCCLOG ANDROID: sendBroadcastObjectIntent action=" + broadcastAction);
+		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		lccHolder.getAndroid().getContext().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.TITLE, title)

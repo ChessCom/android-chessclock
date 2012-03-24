@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -124,7 +125,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	}
 
 
-	public void afterMove() {    // TODO handle here analysis moves in comp game
+	public void afterMove() {	// TODO handle here analysis moves in comp game
 		boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);	//movelist
 
@@ -149,7 +150,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (!MainApp.isTacticsGameMode(boardFace) && isGameOver())
 			return;
 
-		if(!boardFace.isAnalysis()){
+		if (!boardFace.isAnalysis()) {
 			switch (boardFace.getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 					computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
@@ -165,7 +166,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					gameActivityFace.update(GameTacticsScreenActivity.CALLBACK_CHECK_TACTICS_MOVE);
 					break;
 				}
-				default:break;
+				default:
+					break;
 			}
 		}
 	}
@@ -173,7 +175,9 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
 	boolean isGameOver() {
 		//saving game for comp game mode if human is playing
-		if (MainApp.isComputerVsHumanGameMode(boardFace) || MainApp.isHumanVsHumanGameMode(boardFace)) {
+		if ((MainApp.isComputerVsHumanGameMode(boardFace) || MainApp.isHumanVsHumanGameMode(boardFace))
+				&& !boardFace.isAnalysis()) {
+
 			String saving = "" + boardFace.getMode();
 
 			int i;
@@ -182,6 +186,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				saving += "|" + m.from + ":" + m.to + ":" + m.promote + ":" + m.bits;
 			}
 
+			Log.d("TEST", "saving comp game");
 			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, saving);
 			mainApp.getSharedDataEditor().commit();
 		}
@@ -207,7 +212,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			if (boardFace.inCheck(boardFace.getSide())) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
 				gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
-				
+
 				if (boardFace.getSide() == ChessBoard.LIGHT)
 					message = "0 - 1 Black mates";
 				else
@@ -232,17 +237,22 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (boardFace.inCheck(boardFace.getSide())) {
 			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
 			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
-			
+
 			mainApp.ShowMessage(getContext().getResources().getString(R.string.check));
 		}
 		return false;
 	}
 
 	public void computerMove(final int time) {
+		// TODO check
+		if(boardFace.isAnalysis())
+			return;
+
 		if (MainApp.isComputerVsComputerGameMode(boardFace) && stopThinking) {
 			stopThinking = false;
 			return;
 		}
+
 		compmoving = true;
 		gameActivityFace.update(GameBaseActivity.CALLBACK_COMP_MOVE);
 		new Thread(new Runnable() {
@@ -623,12 +633,14 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 							break;
 						}
 					}
+
 					if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
 							((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
 							(boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
 						gameActivityFace.showChoosePieceDialog(col, row);
 						return true;
 					}
+
 					if (found && m != null && boardFace.makeMove(m)) {
 						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {

@@ -33,7 +33,7 @@ public class MraidActivity extends BaseActivity {
 			}
 		});
 
-		String source = getIntent().getStringExtra("com.mopub.mobileads.Source");
+		String source = getIntent().getStringExtra(MraidInterstitialAdapter.COM_MOPUB_MOBILEADS_SOURCE);
 		mAdView.loadHtmlData(source);
 
 		return mAdView;

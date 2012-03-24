@@ -309,6 +309,7 @@ class MraidDisplayController extends MraidAbstractController {
 		View dimmingView = new View(getView().getContext());
 		dimmingView.setBackgroundColor(Color.TRANSPARENT);
 		dimmingView.setOnTouchListener(new OnTouchListener() {
+			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				return true;
 			}

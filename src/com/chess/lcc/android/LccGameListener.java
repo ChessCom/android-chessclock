@@ -4,6 +4,7 @@ import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
 import com.chess.live.util.Utils;
+import com.chess.ui.core.AppConstants;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,11 +23,12 @@ public class LccGameListener implements GameListener {
 
 	public LccGameListener(LccHolder lccHolder) {
 		if (lccHolder == null) {
-			throw new NullPointerException("LccHolder is null");
+			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
 		}
 		this.lccHolder = lccHolder;
 	}
 
+	@Override
 	public void onGameListReceived(Collection<? extends Game> games) {
 		LOG.info("GAME LISTENER: Game list received.");
 		latestGameId = 0L;
@@ -67,11 +69,12 @@ public class LccGameListener implements GameListener {
 		return gameId < latestGameId;
 	}
 
+	@Override
 	public void onFullGameReceived(Game game) {
 		LOG.info("GAME LISTENER: Full Game received: " + game);
 		final Long gameId = game.getId();
 		if (isOldGame(gameId)) {
-			LOG.info("GAME LISTENER: ignore old game id=" + gameId);
+			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
 			return;
 		}
 		Game oldGame = lccHolder.getGame(gameId.toString());
@@ -100,9 +103,11 @@ public class LccGameListener implements GameListener {
 		lccHolder.processFullGame(game);
 	}
 
+	@Override
 	public void onServerStatusChanged(Game game, Game.ServerStatus oldStatus, Game.ServerStatus newStatus) {
 	}
 
+	@Override
 	public void onGameStarted(Game game) {
 		LOG.info("GAME LISTENER: onGameStarted id=" + game.getId());
 		if (lccHolder.isUserPlayingAnotherGame(game.getId())) {
@@ -134,11 +139,12 @@ public class LccGameListener implements GameListener {
 		}
 	}
 
+	@Override
 	public void onGameEnded(Game game) {
 		LOG.info("GAME LISTENER: Game ended: " + game);
 		lccHolder.putGame(game);
 		if (isOldGame(game.getId())) {
-			LOG.info("GAME LISTENER: ignore old game id=" + game.getId());
+			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
 			return;
 		}
 
@@ -212,17 +218,19 @@ public class LccGameListener implements GameListener {
 		lccHolder.getBlackClock().setRunning(false);
 	}
 
+	@Override
 	public void onGameAborted(Game game) {
 		LOG.info("GAME LISTENER: Game aborted: " + game);
 	}
 
+	@Override
 	public void onMoveMade(Game game, User moveMaker, String move) {
 		LOG.info(
 				"GAME LISTENER: The move #" + game.getSeq() + " received by user: " + lccHolder.getUser().getUsername() +
 						", game.id=" +
 						game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
 		if (isOldGame(game.getId())) {
-			LOG.info("GAME LISTENER: ignore old game id=" + game.getId());
+			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
 			return;
 		}
 		lccHolder.doMoveMade(game, moveMaker, move, /*true,*/ game.getSeq() - 1);
@@ -237,15 +245,17 @@ public class LccGameListener implements GameListener {
 		}
 	}
 
+	@Override
 	public void onResignMade(Game game, User resignMaker, User winner) {
 		LOG.info(
 				"GAME LISTENER: Game resigned: resigner=" + resignMaker.getUsername() + ", winner=" + winner.getUsername() +
 						", game=" + game);
 	}
 
+	@Override
 	public void onDrawOffered(Game game, User offerer) {
 		LOG.info(
-				"GAME LISTENER: Draw offered at the move #" + game.getSeq() + ": listener=" + lccHolder.getUser().getUsername() +
+				"GAME LISTENER: Draw offered at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
 						", game.id=" +
 						game.getId() + ", offerer=" + offerer.getUsername() + ", game=" + game);
 		if (isOldGame(game.getId())) {
@@ -265,17 +275,19 @@ public class LccGameListener implements GameListener {
 		}
 	}
 
+	@Override
 	public void onDrawAccepted(Game game, User acceptor) {
 		LOG.info(
-				"GAME LISTENER: Draw accepted at the move #" + game.getSeq() + ": listener=" + lccHolder.getUser().getUsername() +
+				"GAME LISTENER: Draw accepted at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
 						", game.id=" +
 						game.getId() + ", acceptor=" + acceptor.getUsername() + ", game=" + game);
 	}
 
+	@Override
 	public void onDrawRejected(Game game, User rejector) {
 		final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
 		LOG.info(
-				"GAME LISTENER: Draw rejected at the move #" + game.getSeq() + ": listener=" + lccHolder.getUser().getUsername() +
+				"GAME LISTENER: Draw rejected at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
 						", game.id=" +
 						game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
 		if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {

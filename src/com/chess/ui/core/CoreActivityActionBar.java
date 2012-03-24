@@ -13,6 +13,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -23,14 +24,13 @@ import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.CoreActivityFace;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
 
 //import com.chess.activities.Singin;
 
-public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,ActiveFragmentInterface {
+public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace, ActiveFragmentInterface {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -83,14 +83,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		doUnbindService();
 	}
 
-    @Override
-    public void switchFragment(Fragment fragment) {
+	@Override
+	public void switchFragment(Fragment fragment) {
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.activeContent, fragment);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
+		ft.addToBackStack(null);
+		ft.commit();
+	}
 
 	/*
 	 * public boolean isConnected(){ ConnectivityManager cm =
@@ -152,7 +152,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onResume();
 
 		boolean resetDetected = false;
-		if (mainApp.getBoardBitmap() == null ) {
+		if (mainApp.getBoardBitmap() == null) {
 			handler.post(loadBoardBitmap);
 			resetDetected = true;
 		}
@@ -162,7 +162,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			resetDetected = true;
 		}
 
-		if(resetDetected){
+		if (resetDetected) {
 			checkUserTokenAndStartActivity();
 		}
 
@@ -215,12 +215,25 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		 */
 	}
 
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home: 
+				Intent intent = new Intent(this,HomeScreenActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}	
+	
 	private Runnable loadBoardBitmap = new Runnable() {
 		@Override
 		public void run() {
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-							+ AppConstants.PREF_BOARD_TYPE, 8)],null);
+							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
 		}
 	};
 
@@ -229,11 +242,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		public void run() {
 			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
 					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-							+ AppConstants.PREF_PIECES_SET, 0)],null);
+							+ AppConstants.PREF_PIECES_SET, 0)], null);
 		}
 	};
 
-	private void checkUserTokenAndStartActivity(){
+	private void checkUserTokenAndStartActivity() {
 		if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
 			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -309,7 +322,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				mainApp.noInternet = false;
 			}
 
-			if (resp.contains("Success"))
+			if (resp.contains(AppConstants.SUCCESS))
 				update(retCode);
 			else {
 				if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
@@ -322,7 +335,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				}
 				String title = getString(R.string.error);
 				String message = resp;
-				if (resp.contains("Error+")) {
+				if (resp.contains(AppConstants.ERROR_PLUS)) {
 					message = resp.split("[+]")[1];
 				} else {
 					update(ERROR_SERVER_RESPONSE);
@@ -347,7 +360,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 			final com.chess.live.client.Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
 			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivityActionBar.this)
 					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
@@ -369,8 +382,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 												 * onClick(DialogInterface dialog, int whichButton) {
 												 * startActivity(new Intent(CoreActivity.this, Game.class).
 												 * putExtra(AppConstants.GAME_MODE, 4).
-												 * putExtra(AppConstants.GAME_ID,
-												 * el.values.get(AppConstants.GAME_ID))); } })
+												 * putExtra(GameListElement.GAME_ID,
+												 * el.values.get(GameListElement.GAME_ID))); } })
 												 */
 					.create();
 			alertDialog.setCanceledOnTouchOutside(true);
@@ -389,7 +402,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
 			}
 		}
@@ -399,7 +412,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction()
+				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
 						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
 				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
 				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
@@ -504,7 +517,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private final BroadcastReceiver infoMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 			final TextView messageView = new TextView(context);
 			messageView.setMovementMethod(LinkMovementMethod.getInstance());
 			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
@@ -531,7 +544,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private final BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info("LCCLOG ANDROID: receive broadcast intent, action=" + intent.getAction());
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 			boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
 			manageConnectingIndicator(enable, intent.getExtras().getString(AppConstants.MESSAGE));
 		}

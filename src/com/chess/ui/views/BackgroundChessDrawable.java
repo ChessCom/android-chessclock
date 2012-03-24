@@ -35,7 +35,7 @@ public class BackgroundChessDrawable extends Drawable {
 		image = (BitmapDrawable) context.getResources().getDrawable(R.drawable.chess_back);
 		image.setBounds(0, 0, width, height);
 		image.setDither(true);
-        image.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		image.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		screenOrientation = context.getResources().getConfiguration().orientation;
 	}
@@ -70,8 +70,7 @@ public class BackgroundChessDrawable extends Drawable {
 //    }
 
 
-
-    private void setCoordinates(Path path, int x0, int x1, int y0, int y1) {
+	private void setCoordinates(Path path, int x0, int x1, int y0, int y1) {
 		path.moveTo(x0, y0);
 		path.lineTo(x0, y1);
 		path.lineTo(x1, y1);
@@ -85,7 +84,6 @@ public class BackgroundChessDrawable extends Drawable {
 			createGradientPath();
 		}
 		canvas.save();
-
 
 
 		image.draw(canvas);

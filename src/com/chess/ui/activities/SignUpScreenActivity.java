@@ -90,7 +90,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	public void update(int code) {
 		if (code == 0) {
-			String query = "http://www." + LccHolder.HOST + "/api/v2/login";
+			String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
 			try {
 				if (appService != null) {
 					appService.RunSingleTaskPost(1,
@@ -98,7 +98,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 							progressDialog = new MyProgressDialog(
 									ProgressDialog.show(context, null, getString(R.string.loading), true)),
 							AppConstants.USERNAME, /*URLEncoder.encode(*/RegUsername.getText().toString()/*, "UTF-8")*/,
-							"password", /*URLEncoder.encode(*/RegPassword.getText().toString()/*, "UTF-8")*/
+							AppConstants.PASSWORD, /*URLEncoder.encode(*/RegPassword.getText().toString()/*, "UTF-8")*/
 					);
 				}
 			} catch (Exception ignored) { // TODO handle correctly

@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -275,7 +274,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
 			mainApp.getSharedDataEditor().commit();
 //			PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
-			mainApp.loadBoard(mainApp.res_boards[pos],boardProgressView);
+			mainApp.loadBoard(mainApp.res_boards[pos], boardProgressView);
 		}
 
 		@Override
@@ -290,7 +289,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
 //				PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
-			mainApp.loadPieces(mainApp.res_pieces[pos],piecesProgressView);
+			mainApp.loadPieces(mainApp.res_pieces[pos], piecesProgressView);
 		}
 
 		@Override

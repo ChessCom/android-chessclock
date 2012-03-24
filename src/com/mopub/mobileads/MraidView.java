@@ -133,7 +133,7 @@ public class MraidView extends WebView {
 
 	public void loadHtmlData(String data) {
 		// If the string data lacks the HTML boilerplate, add it.
-		if (data.indexOf("<html>") == -1) {
+		if (!data.contains("<html>")) {
 			data = "<html><head></head><body style='margin:0;padding:0;'>" + data +
 					"</body></html>";
 		}
@@ -145,6 +145,7 @@ public class MraidView extends WebView {
 		loadDataWithBaseURL(null, data, "text/html", "UTF-8", null);
 	}
 
+	@Override
 	public void loadUrl(String url) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
@@ -338,7 +339,7 @@ public class MraidView extends WebView {
 			String scheme = uri.getScheme();
 
 			if (scheme.equals("mopub")) return true;
-			if (scheme.equals("mraid")) {
+			if (scheme.equals(BaseInterstitialAdapter.MRAID)) {
 				tryCommand(URI.create(url)); // java.net.URI, not android.net.Uri
 				return true;
 			}

@@ -198,14 +198,14 @@ public class AdView extends WebView {
 				try {
 					getContext().startActivity(intent);
 				} catch (ActivityNotFoundException e) {
-					Log.w("MoPub", "Could not handle intent with URI: " + url +
+					Log.w(BaseInterstitialAdapter.MO_PUB, "Could not handle intent with URI: " + url +
 							". Is this intent unsupported on your phone?");
 				}
 				return true;
 			}
 
 			url = urlWithClickTrackingRedirect(adView, url);
-			Log.d("MoPub", "Ad clicked. Click URL: " + url);
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Ad clicked. Click URL: " + url);
 			mMoPubView.adClicked();
 
 			showBrowserForUrl(url);
@@ -236,7 +236,7 @@ public class AdView extends WebView {
 
 	public void loadAd() {
 		if (mAdUnitId == null) {
-			Log.d("MoPub", "Can't load an ad in this ad view because the ad unit ID is null. " +
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Can't load an ad in this ad view because the ad unit ID is null. " +
 					"Did you forget to call setAdUnitId()?");
 			return;
 		}
@@ -270,18 +270,18 @@ public class AdView extends WebView {
 		try {
 			gpsLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		} catch (SecurityException e) {
-			Log.d("MoPub", "Failed to retrieve GPS location: access appears to be disabled.");
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Failed to retrieve GPS location: access appears to be disabled.");
 		} catch (IllegalArgumentException e) {
-			Log.d("MoPub", "Failed to retrieve GPS location: device has no GPS provider.");
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Failed to retrieve GPS location: device has no GPS provider.");
 		}
 
 		Location networkLocation = null;
 		try {
 			networkLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		} catch (SecurityException e) {
-			Log.d("MoPub", "Failed to retrieve network location: access appears to be disabled.");
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Failed to retrieve network location: access appears to be disabled.");
 		} catch (IllegalArgumentException e) {
-			Log.d("MoPub", "Failed to retrieve network location: device has no network provider.");
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Failed to retrieve network location: device has no network provider.");
 		}
 
 		if (gpsLocation == null && networkLocation == null) {
@@ -369,7 +369,7 @@ public class AdView extends WebView {
 		}
 
 		if (mIsLoading) {
-			Log.i("MoPub", "Already loading an ad for " + mAdUnitId + ", wait to finish.");
+			Log.i(BaseInterstitialAdapter.MO_PUB, "Already loading an ad for " + mAdUnitId + ", wait to finish.");
 			return;
 		}
 
@@ -415,7 +415,7 @@ public class AdView extends WebView {
 
 			synchronized (this) {
 				if (mAdView == null || mAdView.isDestroyed()) {
-					Log.d("MoPub", "Error loading ad: AdView has already been GCed or destroyed.");
+					Log.d(BaseInterstitialAdapter.MO_PUB, "Error loading ad: AdView has already been GCed or destroyed.");
 					return null;
 				}
 
@@ -424,7 +424,7 @@ public class AdView extends WebView {
 
 				if (response == null || entity == null ||
 						response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-					Log.d("MoPub", "MoPub server returned invalid response.");
+					Log.d(BaseInterstitialAdapter.MO_PUB, "MoPub server returned invalid response.");
 					return null;
 				}
 
@@ -433,16 +433,16 @@ public class AdView extends WebView {
 				// Ensure that the ad type header is valid and not "clear".
 				Header atHeader = response.getFirstHeader("X-Adtype");
 				if (atHeader == null || atHeader.getValue().equals("clear")) {
-					Log.d("MoPub", "MoPub server returned no ad.");
+					Log.d(BaseInterstitialAdapter.MO_PUB, "MoPub server returned no ad.");
 					return null;
 				}
 
 				// Handle custom event ad type.
 				if (atHeader.getValue().equals("custom")) {
-					Log.i("MoPub", "Performing custom event.");
+					Log.i(BaseInterstitialAdapter.MO_PUB, "Performing custom event.");
 					Header cmHeader = response.getFirstHeader("X-Customselector");
 					return new PerformCustomEventTaskResult(mAdView, cmHeader);
-				} else if (atHeader.getValue().equals("mraid")) {
+				} else if (atHeader.getValue().equals(BaseInterstitialAdapter.MRAID)) {
 					HashMap<String, String> paramsHash = new HashMap<String, String>();
 					paramsHash.put("X-Adtype", atHeader.getValue());
 
@@ -457,7 +457,7 @@ public class AdView extends WebView {
 				}
 				// Handle native SDK ad type.
 				else if (!atHeader.getValue().equals("html")) {
-					Log.i("MoPub", "Loading native ad");
+					Log.i(BaseInterstitialAdapter.MO_PUB, "Loading native ad");
 
 					HashMap<String, String> paramsHash = new HashMap<String, String>();
 					paramsHash.put("X-Adtype", atHeader.getValue());
@@ -509,7 +509,7 @@ public class AdView extends WebView {
 
 			if (result == null) {
 				if (mException != null) {
-					Log.d("MoPub", "Exception caught while loading ad: " + mException);
+					Log.d(BaseInterstitialAdapter.MO_PUB, "Exception caught while loading ad: " + mException);
 				}
 				mAdView.adDidFail();
 			} else {
@@ -540,7 +540,7 @@ public class AdView extends WebView {
 	private void configureAdViewUsingHeadersFromHttpResponse(HttpResponse response) {
 		// Print the ad network type to the console.
 		Header ntHeader = response.getFirstHeader("X-Networktype");
-		if (ntHeader != null) Log.i("MoPub", "Fetching ad network type: " + ntHeader.getValue());
+		if (ntHeader != null) Log.i(BaseInterstitialAdapter.MO_PUB, "Fetching ad network type: " + ntHeader.getValue());
 
 		// Set the redirect URL prefix: navigating to any matching URLs will send us to the browser.
 		Header rdHeader = response.getFirstHeader("X-Launchpage");
@@ -606,7 +606,7 @@ public class AdView extends WebView {
 	}
 
 	private void adDidLoad() {
-		Log.i("MoPub", "Ad successfully loaded.");
+		Log.i(BaseInterstitialAdapter.MO_PUB, "Ad successfully loaded.");
 		mIsLoading = false;
 		scheduleRefreshTimerIfEnabled();
 		mMoPubView.removeAllViews();
@@ -620,7 +620,7 @@ public class AdView extends WebView {
 	}
 
 	private void adDidFail() {
-		Log.i("MoPub", "Ad failed to load.");
+		Log.i(BaseInterstitialAdapter.MO_PUB, "Ad failed to load.");
 		mIsLoading = false;
 		scheduleRefreshTimerIfEnabled();
 		mMoPubView.adFailed();
@@ -640,7 +640,7 @@ public class AdView extends WebView {
 		try {
 			getContext().startActivity(customIntent);
 		} catch (ActivityNotFoundException e) {
-			Log.w("MoPub", "Could not handle custom intent: " + action +
+			Log.w(BaseInterstitialAdapter.MO_PUB, "Could not handle custom intent: " + action +
 					". Is your intent spelled correctly?");
 		}
 	}
@@ -649,7 +649,7 @@ public class AdView extends WebView {
 		if (this.isDestroyed()) return;
 
 		if (url == null || url.equals("")) url = "about:blank";
-		Log.d("MoPub", "Final URI to show in browser: " + url);
+		Log.d(BaseInterstitialAdapter.MO_PUB, "Final URI to show in browser: " + url);
 		Intent actionIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		actionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		try {
@@ -657,11 +657,11 @@ public class AdView extends WebView {
 		} catch (ActivityNotFoundException e) {
 			String action = actionIntent.getAction();
 			if (action.startsWith("market://")) {
-				Log.w("MoPub", "Could not handle market action: " + action
+				Log.w(BaseInterstitialAdapter.MO_PUB, "Could not handle market action: " + action
 						+ ". Perhaps you're running in the emulator, which does not have "
 						+ "the Android Market?");
 			} else {
-				Log.w("MoPub", "Could not handle intent action: " + action);
+				Log.w(BaseInterstitialAdapter.MO_PUB, "Could not handle intent action: " + action);
 			}
 
 			getContext().startActivity(
@@ -700,13 +700,13 @@ public class AdView extends WebView {
 			MoPubView mpv = adView.mMoPubView;
 
 			if (mHeader == null) {
-				Log.i("MoPub", "Couldn't call custom method because the server did not specify one.");
+				Log.i(BaseInterstitialAdapter.MO_PUB, "Couldn't call custom method because the server did not specify one.");
 				mpv.adFailed();
 				return;
 			}
 
 			String methodName = mHeader.getValue();
-			Log.i("MoPub", "Trying to call method named " + methodName);
+			Log.i(BaseInterstitialAdapter.MO_PUB, "Trying to call method named " + methodName);
 
 			Class<? extends Activity> c;
 			Method method;
@@ -716,11 +716,11 @@ public class AdView extends WebView {
 				method = c.getMethod(methodName, MoPubView.class);
 				method.invoke(userActivity, mpv);
 			} catch (NoSuchMethodException e) {
-				Log.d("MoPub", "Couldn't perform custom method named " + methodName +
+				Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't perform custom method named " + methodName +
 						"(MoPubView view) because your activity class has no such method");
 				return;
 			} catch (Exception e) {
-				Log.d("MoPub", "Couldn't perform custom method named " + methodName);
+				Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't perform custom method named " + methodName);
 				return;
 			}
 		}
@@ -808,14 +808,14 @@ public class AdView extends WebView {
 
 	@Override
 	public void reload() {
-		Log.d("MoPub", "Reload ad: " + mUrl);
+		Log.d(BaseInterstitialAdapter.MO_PUB, "Reload ad: " + mUrl);
 		loadUrl(mUrl);
 	}
 
 	public void loadFailUrl() {
 		mIsLoading = false;
 		if (mFailUrl != null) {
-			Log.d("MoPub", "Loading failover url: " + mFailUrl);
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Loading failover url: " + mFailUrl);
 			loadUrl(mFailUrl);
 		} else {
 			// No other URLs to try, so signal a failure.
@@ -839,9 +839,9 @@ public class AdView extends WebView {
 				try {
 					httpclient.execute(httpget);
 				} catch (ClientProtocolException e) {
-					Log.i("MoPub", "Impression tracking failed: " + mImpressionUrl);
+					Log.i(BaseInterstitialAdapter.MO_PUB, "Impression tracking failed: " + mImpressionUrl);
 				} catch (IOException e) {
-					Log.i("MoPub", "Impression tracking failed: " + mImpressionUrl);
+					Log.i(BaseInterstitialAdapter.MO_PUB, "Impression tracking failed: " + mImpressionUrl);
 				} finally {
 					httpclient.getConnectionManager().shutdown();
 				}
@@ -860,9 +860,9 @@ public class AdView extends WebView {
 				try {
 					httpclient.execute(httpget);
 				} catch (ClientProtocolException e) {
-					Log.i("MoPub", "Click tracking failed: " + mClickthroughUrl);
+					Log.i(BaseInterstitialAdapter.MO_PUB, "Click tracking failed: " + mClickthroughUrl);
 				} catch (IOException e) {
-					Log.i("MoPub", "Click tracking failed: " + mClickthroughUrl);
+					Log.i(BaseInterstitialAdapter.MO_PUB, "Click tracking failed: " + mClickthroughUrl);
 				} finally {
 					httpclient.getConnectionManager().shutdown();
 				}
@@ -952,7 +952,7 @@ public class AdView extends WebView {
 	public void setAutorefreshEnabled(boolean enabled) {
 		mAutorefreshEnabled = enabled;
 
-		Log.d("MoPub", "Automatic refresh for " + mAdUnitId + " set to: " + enabled + ".");
+		Log.d(BaseInterstitialAdapter.MO_PUB, "Automatic refresh for " + mAdUnitId + " set to: " + enabled + ".");
 
 		if (!mAutorefreshEnabled) cancelRefreshTimer();
 		else scheduleRefreshTimerIfEnabled();

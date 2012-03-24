@@ -53,12 +53,14 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		Log.d("", "LCCLOG CONNECTION: User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
 	}
 
+	@Override
 	public void onSettingsChanged(User user, UserSettings settings) {
 		LccHolder.LOG.info("CONNECTION: onSettingsChanged");
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 	}
 
+	@Override
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
 		Log.d("", "LCCLOG CONNECTION: User connection failure:" + message + ", details=" + details);
 
@@ -93,6 +95,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		}
 	}
 
+	@Override
 	public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
 								 Throwable arg3) {
 		LccHolder.LOG.info("LCCLOG CONNECTION: Connection Lost");
@@ -102,6 +105,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		lccHolder.getAndroid().closeLoggingInIndicator();
 	}
 
+	@Override
 	public void onConnectionReestablished(User arg0) {
 		LccHolder.LOG.info("LCCLOG CONNECTION: onConnectionReestablished");
 		//lccHolder.clearGames();
@@ -121,10 +125,12 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		lccHolder.getAndroid().closeLoggingInIndicator();
 	}
 
+	@Override
 	public void onPublishFailed(User user, Throwable th) {
 		LccHolder.LOG.info("LCCLOG CONNECTION: onPublishFailed");
 	}
 
+	@Override
 	public void onConnectionRestored(User arg0) {
 		LccHolder.LOG.info("LCCLOG CONNECTION: Connection Restored");
 		lccHolder.setConnected(true);

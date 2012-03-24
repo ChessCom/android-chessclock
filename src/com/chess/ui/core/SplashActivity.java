@@ -23,10 +23,10 @@ public class SplashActivity extends CoreActivity {
 		//defaults
 		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData()
 				.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_BOARD_TYPE, 8)],progressView);
+						+ AppConstants.PREF_BOARD_TYPE, 8)], progressView);
 		mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData()
 				.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_PIECES_SET, 0)],progressView);
+						+ AppConstants.PREF_PIECES_SET, 0)], progressView);
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(1);

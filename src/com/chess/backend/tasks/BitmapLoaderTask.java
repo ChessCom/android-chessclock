@@ -11,10 +11,10 @@ import com.chess.backend.statics.StaticData;
  * @author alien_roger
  * @created at: 20.03.12 5:16
  */
-public class BitmapLoaderTask extends AbstractUpdateTask<Bitmap,String>{
+public class BitmapLoaderTask extends AbstractUpdateTask<Bitmap, String> {
 	private Resources resources;
-	
-	public BitmapLoaderTask(TaskUpdateInterface<Bitmap,String> taskFace) {
+
+	public BitmapLoaderTask(TaskUpdateInterface<Bitmap, String> taskFace) {
 		super(taskFace);
 		resources = taskFace.getMeContext().getResources();
 	}

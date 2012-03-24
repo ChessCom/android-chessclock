@@ -54,11 +54,11 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 
 	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+	}
 
 	@Override
 	public void update(int code) {

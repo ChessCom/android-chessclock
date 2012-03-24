@@ -113,10 +113,10 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
 	private void showHtmlInterstitial() {
 		String responseString = mInterstitialView.getResponseString();
 		Intent i = new Intent(mActivity, MoPubActivity.class);
-		i.putExtra("com.mopub.mobileads.AdUnitId", mAdUnitId);
-		i.putExtra("com.mopub.mobileads.Keywords", mInterstitialView.getKeywords());
-		i.putExtra("com.mopub.mobileads.Source", responseString);
-		i.putExtra("com.mopub.mobileads.ClickthroughUrl", mInterstitialView.getClickthroughUrl());
+		i.putExtra(MoPubActivity.COM_MOPUB_MOBILEADS_AD_UNIT_ID, mAdUnitId);
+		i.putExtra(MoPubActivity.COM_MOPUB_MOBILEADS_KEYWORDS, mInterstitialView.getKeywords());
+		i.putExtra(MraidInterstitialAdapter.COM_MOPUB_MOBILEADS_SOURCE, responseString);
+		i.putExtra(MoPubActivity.COM_MOPUB_MOBILEADS_CLICKTHROUGH_URL, mInterstitialView.getClickthroughUrl());
 		mActivity.startActivity(i);
 	}
 
@@ -256,11 +256,11 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
 					interstitial.getInterstitialAdapterListener();
 			String type = paramsHash.get("X-Adtype");
 
-			if (type != null && (type.equals("interstitial") || type.equals("mraid"))) {
+			if (type != null && (type.equals("interstitial") || type.equals(BaseInterstitialAdapter.MRAID))) {
 				String interstitialType = type.equals("interstitial") ?
-						paramsHash.get("X-Fulladtype") : "mraid";
+						paramsHash.get("X-Fulladtype") : BaseInterstitialAdapter.MRAID;
 
-				Log.i("MoPub", "Loading native adapter for interstitial type: " + interstitialType);
+				Log.i(BaseInterstitialAdapter.MO_PUB, "Loading native adapter for interstitial type: " + interstitialType);
 				mInterstitialAdapter =
 						BaseInterstitialAdapter.getAdapterForType(interstitialType);
 
@@ -273,12 +273,12 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
 				}
 			}
 
-			Log.i("MoPub", "Couldn't load native adapter. Trying next ad...");
+			Log.i(BaseInterstitialAdapter.MO_PUB, "Couldn't load native adapter. Trying next ad...");
 			adapterListener.onNativeInterstitialFailed(null);
 		}
 
 		protected void trackImpression() {
-			Log.d("MoPub", "Tracking impression for interstitial.");
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Tracking impression for interstitial.");
 			if (mAdView != null) mAdView.trackImpression();
 		}
 	}

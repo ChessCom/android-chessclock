@@ -51,6 +51,7 @@ class MraidCommandClose extends MraidCommand {
 		super(params, view);
 	}
 
+	@Override
 	void execute() {
 		mView.getDisplayController().close();
 	}
@@ -61,6 +62,7 @@ class MraidCommandExpand extends MraidCommand {
 		super(params, view);
 	}
 
+	@Override
 	void execute() {
 		int width = getIntFromParamsForKey("w");
 		int height = getIntFromParamsForKey("h");
@@ -81,6 +83,7 @@ class MraidCommandUseCustomClose extends MraidCommand {
 		super(params, view);
 	}
 
+	@Override
 	void execute() {
 		boolean shouldUseCustomClose = getBooleanFromParamsForKey("shouldUseCustomClose");
 		mView.getDisplayController().useCustomClose(shouldUseCustomClose);
@@ -92,6 +95,7 @@ class MraidCommandOpen extends MraidCommand {
 		super(params, view);
 	}
 
+	@Override
 	void execute() {
 		String url = getStringFromParamsForKey("url");
 		mView.getBrowserController().open(url);

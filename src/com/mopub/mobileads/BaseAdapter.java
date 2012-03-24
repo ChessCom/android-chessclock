@@ -51,7 +51,7 @@ public abstract class BaseAdapter {
 		sAdapterMap = new HashMap<String, String>();
 		sAdapterMap.put("admob_native", "com.mopub.mobileads.GoogleAdMobAdapter");
 		sAdapterMap.put("millennial_native", "MillennialAdapter");
-		sAdapterMap.put("mraid", "MraidAdapter");
+		sAdapterMap.put(BaseInterstitialAdapter.MRAID, "MraidAdapter");
 	}
 
 	public void init(MoPubView view, String jsonParams) {
@@ -80,7 +80,7 @@ public abstract class BaseAdapter {
 			BaseAdapter nativeAdapter = (BaseAdapter) constructor.newInstance();
 			return nativeAdapter;
 		} catch (Exception e) {
-			Log.d("MoPub", "Couldn't create native adapter for type: " + type);
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't create native adapter for type: " + type);
 			return null;
 		}
 	}
@@ -92,7 +92,7 @@ public abstract class BaseAdapter {
 	private static Class<?> classForAdapterType(String type) {
 		String className = classStringForAdapterType(type);
 		if (className == null) {
-			Log.d("MoPub", "Couldn't find a handler for this ad type: " + type + "."
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't find a handler for this ad type: " + type + "."
 					+ " MoPub for Android does not support it at this time.");
 			return null;
 		}
@@ -100,7 +100,7 @@ public abstract class BaseAdapter {
 		try {
 			return (Class<?>) Class.forName(className);
 		} catch (ClassNotFoundException e) {
-			Log.d("MoPub", "Couldn't find " + className + " class."
+			Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't find " + className + " class."
 					+ " Make sure the project includes the adapter library for " + className
 					+ " from the extras folder");
 			return null;

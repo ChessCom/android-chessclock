@@ -91,13 +91,13 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 		findViewById(R.id.start).setOnClickListener(this);
 	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+	}
 
-    private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
+	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
