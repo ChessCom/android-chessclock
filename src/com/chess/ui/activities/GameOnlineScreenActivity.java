@@ -600,8 +600,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				break;
 			case R.id.menu_analysis:
 				newBoardView.switchAnalysis();
-//				newBoardView.getBoardFace().setAnalysis(true);
-//				update(CALLBACK_REPAINT_UI);
 				break;
 			case R.id.menu_chat:
 				chat = true;

@@ -226,6 +226,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveSendChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		@Override
 		protected Void doInBackground(Challenge... challenge) {
 			lccHolder.getClient().sendChallenge(challenge[0], lccHolder.getChallengeListener());
 			//stopSelf();
@@ -238,6 +239,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveCancelChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		@Override
 		protected Void doInBackground(Challenge... challenge) {
 			lccHolder.getClient().cancelChallenge(challenge[0]);
 			//stopSelf();
@@ -250,6 +252,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
+		@Override
 		protected Void doInBackground(Void... voids) {
 			lccHolder.getClient().disconnect();
 			return null;
@@ -261,6 +264,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveMakeDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
 			lccHolder.getClient().makeDraw(game[0], "");
 			//stopSelf();
@@ -273,6 +277,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveMakeResignTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
 			lccHolder.getClient().makeResign(game[0], "");
 			//stopSelf();
@@ -285,6 +290,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveAbortGameTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
 			lccHolder.getClient().abortGame(game[0], "");
 			//stopSelf();
@@ -297,6 +303,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveAcceptChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		@Override
 		protected Void doInBackground(Challenge... challenge) {
 			lccHolder.getClient().acceptChallenge(challenge[0], lccHolder.getChallengeListener());
 			//stopSelf();
@@ -309,6 +316,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveRejectChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		@Override
 		protected Void doInBackground(Challenge... challenge) {
 			lccHolder.getClient().rejectChallenge(challenge[0], lccHolder.getChallengeListener());
 			//stopSelf();
@@ -321,6 +329,7 @@ public class AndroidStuff {
 	}
 
 	private class LiveRejectDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
+		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
 			lccHolder.getClient().rejectDraw(game[0], "");
 			//stopSelf();

@@ -77,13 +77,13 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private int blackAlivePiecesCount[] = new int[6];
 
 	//	prefixes
-	public static final int BUTTON_PREFIX = 0x00000000;
+	public static final int BUTTON_PREFIX = 0x00002000;
 	public static final int WHITE_FRAME_PREFIX = 0x00001000;
 	public static final int BLACK_FRAME_PREFIX = 0x00004000;
 	//	private List<String> itemList;
 	private TextView movesTextView;
 	private BoardViewFace boardViewFace;
-	private int screenOrientation;
+//	private int screenOrientation;
 
 
 	public GamePanelView(Context context) {
@@ -98,18 +98,21 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 
 	public void onCreate() {
-		screenOrientation = getContext().getResources().getConfiguration().orientation;
+//		screenOrientation = getContext().getResources().getConfiguration().orientation;
 		setOrientation(VERTICAL);
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
-
 
 		pieceIds = getResources().getIntArray(R.array.pieces_ids);
 
 		controlsLayout = new LinearLayout(getContext());
-		int paddingLeft = (int) (10 * metrics.density);
-		int paddingTop = (int) (15 * metrics.density);
-		int paddingRight = (int) (10 * metrics.density);
-		int paddingBottom = (int) (5 * metrics.density);
+		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
+		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top);
+		int paddingRight = (int) getResources().getDimension(R.dimen.game_control_padding_right);
+		int paddingBottom = (int) getResources().getDimension(R.dimen.game_control_padding_bottom);
+//		int paddingLeft = (int) (10 * metrics.density);
+//		int paddingTop = (int) (15 * metrics.density);
+//		int paddingRight = (int) (10 * metrics.density);
+//		int paddingBottom = (int) (5 * metrics.density);
 		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -139,7 +142,12 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		pieceParams.weight = 3;
 		piecesLayout.setLayoutParams(pieceParams);
 		piecesLayout.setOrientation(VERTICAL);
-		piecesLayout.setPadding(7, 2, 0, 2);
+		int pieceLayoutPaddingLeft = (int) getResources().getDimension(R.dimen.piece_layout_padding_left);
+		int pieceLayoutPaddingRight = (int) getResources().getDimension(R.dimen.piece_layout_padding_right);
+		int pieceLayoutPaddingTop = (int) getResources().getDimension(R.dimen.piece_layout_padding_top);
+		int pieceLayoutPaddingBottom = (int) getResources().getDimension(R.dimen.piece_layout_padding_bottom);
+
+		piecesLayout.setPadding(pieceLayoutPaddingLeft, pieceLayoutPaddingTop, pieceLayoutPaddingRight, pieceLayoutPaddingBottom);
 		piecesLayout.setGravity(Gravity.CENTER);
 
 		LinearLayout whiteCapturedPieces = new LinearLayout(getContext());

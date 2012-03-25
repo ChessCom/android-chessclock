@@ -32,11 +32,13 @@ public final class Move implements Comparable<Object> {
 		return from + (to << 8) + (promote << 16);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		Move m = (Move) o;
 		return (m.from == from && m.to == to && m.promote == promote);
 	}
 
+	@Override
 	public int compareTo(Object o) {
 		Move m = (Move) o;
 		int mScore = m.getScore();

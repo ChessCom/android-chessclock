@@ -588,6 +588,7 @@ public class LccHolder {
 				synchronized (opponentClockStartSync) {
 					if (nextOpponentMoveStillNotMade) {
 						opponentClockDelayTimer.schedule(new TimerTask() {
+							@Override
 							public void run() {
 								synchronized (opponentClockStartSync) {
 									if (nextOpponentMoveStillNotMade) {

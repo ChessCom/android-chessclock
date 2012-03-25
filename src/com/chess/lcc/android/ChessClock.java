@@ -87,6 +87,7 @@ public class ChessClock {
 			return;
 		}
 		activity.runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				if (isWhite) {
 					//System.out.println("@@@@@@@@@@@@@@@@@@@@ white " + createTimeString(getTime()));
@@ -132,7 +133,7 @@ public class ChessClock {
 		if (s.length() >= length) {
 			return s;
 		}
-		StringBuffer buf = new StringBuffer(s);
+		StringBuilder buf = new StringBuilder(s);
 		for (int i = s.length(); i < length; i++) {
 			buf.insert(0, c);
 		}
@@ -141,6 +142,7 @@ public class ChessClock {
 
 	//private long mStartTime = 0L;
 	private Runnable mUpdateTimeTask = new Runnable() {
+		@Override
 		public void run() {
 			/*final long start = mStartTime;
 				  long millis = SystemClock.uptimeMillis() - start;
@@ -181,7 +183,6 @@ public class ChessClock {
 
 				if (getTime() < 100) {
 					stopTimer();
-					return;
 				}
 			}
 		}, 0, 100);
