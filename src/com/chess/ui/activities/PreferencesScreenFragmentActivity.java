@@ -255,8 +255,8 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
-			emailIntent.setType("plain/text");
-			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"mobile@chess.com"});
+			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));

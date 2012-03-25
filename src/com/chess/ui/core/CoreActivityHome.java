@@ -621,17 +621,18 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	private void checkUpdate() {
-		new CheckUpdateTask(this, mainApp).execute("http://www.chess.com/api/get_android_version");
+		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	private void showNetworkChangeNotification() {
 		new AlertDialog.Builder(CoreActivityHome.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
 				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// mainApp.setNetworkChangedNotification(false);
-						startActivity(new Intent(CoreActivityHome.this, Tabs.class));
+//						startActivity(new Intent(CoreActivityHome.this, Tabs.class));
+						startActivity(new Intent(CoreActivityHome.this, HomeScreenActivity.class));
 					}
 				}).create().show();
 	}

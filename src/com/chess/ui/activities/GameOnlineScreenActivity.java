@@ -7,7 +7,6 @@ import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -64,6 +63,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		onPostCreate();
 	}
 
+	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
 
@@ -77,12 +77,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
-		if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))
-			mainApp.setGameId(extras.getString(GameListElement.GAME_ID));
+		mainApp.setGameId(extras.getString(GameListElement.GAME_ID));
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
 	}
 
+	@Override
 	protected void init() {
 		super.init();
 		menuOptionsItems = new CharSequence[]{
@@ -162,6 +162,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	}
 
 
+	@Override
 	protected void getOnlineGame(final String game_id) {
 		super.getOnlineGame(game_id);
 		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
@@ -219,14 +220,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				}
 
 
-				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.addMove2Log(newBoardView.getBoardFace().getMoveListSAN());
 				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
 								{
 								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
 								}
 								else
 								{
-								  movelist.setText(newBoardView.getBoardFaceFace().MoveListSAN());
+								  movelist.setText(newBoardView.getBoardFaceFace().getMoveListSAN());
 								}*/
 				newBoardView.invalidate();
 
@@ -286,8 +287,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 									mainApp.getCurrentGame().values.get(GameListElement.GAME_ID) + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
 									newBoardView.getBoardFace().convertMoveEchess() + AppConstants.TIMESTAMP_PARAMETER +
 									mainApp.getCurrentGame().values.get(GameListElement.TIMESTAMP),
-							progressDialog = new MyProgressDialog(
+									progressDialog = new MyProgressDialog(
 									ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
+
 					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 					mNotificationManager.cancel(1);
 					Notifications.resetCounter();
@@ -409,6 +411,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 									.setIcon(android.R.drawable.ic_dialog_alert)
 									.setTitle(getString(R.string.you_got_new_msg))
 									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
+										@Override
 										public void onClick(DialogInterface dialog, int whichButton) {
 											chat = true;
 											getOnlineGame(mainApp.getGameId());
@@ -416,6 +419,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 										}
 									})
 									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+										@Override
 										public void onClick(DialogInterface dialog, int whichButton) {
 										}
 									}).create().show();
@@ -444,7 +448,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				}
 
 				if (chat) {
-					mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(
+					mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
 							isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 
@@ -466,12 +470,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				if (!isUserColorWhite()) {
 					newBoardView.getBoardFace().setReside(true);
 				}
-				String[] Moves = {};
+				String[] moves = {};
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-					newBoardView.getBoardFace().setMovesCount(Moves.length);
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					newBoardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
@@ -484,7 +488,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				String FEN = mainApp.getCurrentGame().values.get(Game.STARTING_FEN_POSITION);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 				}
 
 				int i;
@@ -495,7 +499,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					for (i = 0; i < newBoardView.getBoardFace().getMovesCount(); i++) {
 						//System.out.println("@@@@@@@@ POINT 4 i=" + i);
 						//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
-						moveFT = MoveParser.parse(newBoardView.getBoardFace(), Moves[i]);
+						moveFT = MoveParser.parse(newBoardView.getBoardFace(), moves[i]);
 						if (moveFT.length == 4) {
 							Move m;
 							if (moveFT[3] == 2) {
@@ -515,26 +519,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				newBoardView.getBoardFace().takeBack();
 				newBoardView.invalidate();
 
-				//last move anim
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(1300);
-							newBoardView.getBoardFace().takeNext();
-							update.sendEmptyMessage(0);
-						} catch (Exception e) {
-						}
-					}
-
-					private Handler update = new Handler() {
-						@Override
-						public void dispatchMessage(Message msg) {
-							super.dispatchMessage(msg);
-							update(CALLBACK_REPAINT_UI);
-							newBoardView.invalidate();
-						}
-					};
-				}).start();
+				playLastMoveAnimation();
 
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) && appService != null && appService.getRepeatableTimer() == null) {
 					if (progressDialog != null) {
@@ -553,23 +538,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			default:
 				break;
 		}
-	}
-
-	@Override
-	public void showChoosePieceDialog(final int col, final int row) {
-		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.choose_a_piece))
-				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								if (which == 4) {
-									newBoardView.invalidate();
-									return;
-								}
-								newBoardView.promote(4 - which, col, row);
-							}
-						}).setCancelable(false)
-				.create().show();
 	}
 
 	@Override
@@ -716,7 +684,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -750,29 +717,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 //		chatPanel.setVisibility(View.GONE);
 	}
 
-
-	private BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			mainApp.ShowDialog(coreContext, intent.getExtras()
-					.getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
-		}
-	};
-
+	@Override
 	public TextView getWhiteClockView() {
 		return whiteClockView;
 	}
 
+	@Override
 	public TextView getBlackClockView() {
 		return blackClockView;
 	}
-
-	@Override
-	protected void restoreGame() {
-
-	}
-
 
 	/*public void onStop()
 		  {

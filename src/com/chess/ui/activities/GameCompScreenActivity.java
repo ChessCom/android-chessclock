@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,9 +59,11 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		if (MainApp.isComputerGameMode(newBoardView.getBoardFace())
 				&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) { // if load game
-			restoreGame();
+			loadSavedGame();
+
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace()))
 				newBoardView.getBoardFace().setReside(true);
+
 		} else {
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 				newBoardView.getBoardFace().setReside(true);
@@ -77,20 +78,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
 		gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
 		gamePanelView.addControlButton(1, GamePanelView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
-	}
-
-	@Override
-	protected void restoreGame(){
-		int i;
-		String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
-		for (i = 1; i < moves.length; i++) {
-			String[] move = moves[i].split(":");
-			newBoardView.getBoardFace().makeMove(new Move(
-					Integer.parseInt(move[0]),
-					Integer.parseInt(move[1]),
-					Integer.parseInt(move[2]),
-					Integer.parseInt(move[3])), false);
-		}
 	}
 
 	@Override
@@ -204,9 +191,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 						break;
 				}
 
-//				movelist.setText(newBoardView.getBoardFace().MoveListSAN());
+//				movelist.setText(newBoardView.getBoardFace().getMoveListSAN());
 
-				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.addMove2Log(newBoardView.getBoardFace().getMoveListSAN());
 				newBoardView.invalidate();
 
 				new Handler().post(new Runnable() {
@@ -217,13 +204,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				});
 				break;
 			}
-			case 2: {
+			case CALLBACK_COMP_MOVE: {
 				whitePlayerLabel.setVisibility(View.GONE);
 				blackPlayerLabel.setVisibility(View.GONE);
 				thinking.setVisibility(View.VISIBLE);
 				break;
 			}
-			case 3: {
+			case CALLBACK_PLAYER_MOVE: {
 				whitePlayerLabel.setVisibility(View.VISIBLE);
 				blackPlayerLabel.setVisibility(View.VISIBLE);
 				thinking.setVisibility(View.GONE);
@@ -310,7 +297,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				String FEN = mainApp.getCurrentGame().values.get(Game.STARTING_FEN_POSITION);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 				}
 
 				int i;
@@ -339,26 +326,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				newBoardView.getBoardFace().takeBack();
 				newBoardView.invalidate();
 
-				//last move anim
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(1300);
-							newBoardView.getBoardFace().takeNext();
-							update.sendEmptyMessage(0);
-						} catch (Exception e) {
-						}
-					}
-
-					private Handler update = new Handler() {
-						@Override
-						public void dispatchMessage(Message msg) {
-							super.dispatchMessage(msg);
-							update(CALLBACK_REPAINT_UI);
-							newBoardView.invalidate();
-						}
-					};
-				}).start();
+				playLastMoveAnimation();
 				break;
 			default:
 				break;
@@ -380,15 +348,39 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
-		super.switch2Analysis(isAnalysis);
 		if(isAnalysis){
 			newBoardView.stopThinking = true;
 		}else {
 //			newBoardView.stopThinking = true;
-			// TODO restore board
-			restoreGame();
+			newBoardView.compmoving = false;
+//			restoreGame();
+		}
+		super.switch2Analysis(isAnalysis);
+	}
+
+	@Override
+	protected void restoreGame(){
+		newBoardView.setBoardFace(new ChessBoard(this));
+		newBoardView.setGameActivityFace(this);
+		newBoardView.getBoardFace().setInit(true);//init = true;
+		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		loadSavedGame();
+	}
+
+	private void loadSavedGame(){
+		int i;
+		String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").split("[|]");
+		for (i = 1; i < moves.length; i++) {
+			String[] move = moves[i].split(":");
+			newBoardView.getBoardFace().makeMove(new Move(
+					Integer.parseInt(move[0]),
+					Integer.parseInt(move[1]),
+					Integer.parseInt(move[2]),
+					Integer.parseInt(move[3])), false);
 		}
 
+		playLastMoveAnimation();
 	}
 
 	@Override
@@ -474,7 +466,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 //					String moves = movelist.getText().toString();
 					String moves = "";
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-					emailIntent.setType("plain/text");
+					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
 					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
 							+ mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \""

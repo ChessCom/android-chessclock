@@ -34,6 +34,8 @@ public class MoveParser {
 	public static final String Q_SMALL = "q";
 	public static final String K_SMALL = "k";
 	public static final String W_SMALL = "w";
+	public static final String P_BIG = "P";
+	public static final String X_SMALL = "x";
 	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 //	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
 
@@ -146,7 +148,8 @@ public class MoveParser {
 		if (currentMove.substring(0, 1).contains(K_BIG)) pieceType = 5;
 		int k;
 
-		if ((pieceType >= 1 && pieceType <= 4)/*(pieceType == 3 || pieceType == 1)*/ && !currentMove.substring(1, 2).contains("x") && !currentMove.substring(2, 3).matches("[0-9]")) {//Rooks and Knights which?
+		if ((pieceType >= 1 && pieceType <= 4)/*(pieceType == 3 || pieceType == 1)*/
+				&& !currentMove.substring(1, 2).contains(X_SMALL) && !currentMove.substring(2, 3).matches("[0-9]")) {//Rooks and Knights which?
 			for (k = 0; k < 64; k++) {
 				int l1 = (ChessBoard.ROW(k) + 1) * 8 - LetterToBN(currentMove.substring(1, 2));
 				int l2 = NumToBN(currentMove.substring(1, 2)) * 8 - (ChessBoard.COL(k) + 1);
@@ -165,16 +168,17 @@ public class MoveParser {
 
 		for (k = 0; k < 64; k++) {
 			if (board.getPieces()[k] == pieceType && board.getColor()[k] == board.getSide()) {
-				Iterator<Move> itr = validMoves.iterator();
-				Move M = null;
-				while (itr.hasNext()) {
-					M = (Move) itr.next();
-					if (M.from == k && M.to == to) {
+				Iterator<Move> moveIterator = validMoves.iterator();
+				Move move1;
+				while (moveIterator.hasNext()) {
+					move1 = moveIterator.next();
+					if (move1.from == k && move1.to == to) {
 						if (pieceType == 2) {
 							if (board.getBoardColor()[k] == board.getBoardColor()[to])
 								return new int[]{k, to, promotion};
 						} else if (pieceType == 0) {
-							if (currentMove.contains("x") && 9 - LetterToBN(currentMove.substring(0, 1)) != ChessBoard.COL(k) + 1) {
+							if (currentMove.contains(X_SMALL)
+									&& 9 - LetterToBN(currentMove.substring(0, 1)) != ChessBoard.COL(k) + 1) {
 								break;
 							}
 
@@ -187,7 +191,7 @@ public class MoveParser {
 							if (currentMove.contains(N_BIG))
 								promotion = 1;
 
-							return new int[]{k, to, promotion, M.bits};
+							return new int[]{k, to, promotion, move1.bits};
 						} else return new int[]{k, to, promotion};
 					}
 				}
@@ -256,8 +260,8 @@ public class MoveParser {
 		return BNToLetter(ChessBoard.COL(pos)) + BNToNum(ChessBoard.ROW(pos));
 	}
 
-	//    public static void FenParse(String fen, ChessBoard b) {
-	public static void FenParse(String fen, BoardFace b) {
+	//    public static void fenParse(String fen, ChessBoard b) {
+	public static void fenParse(String fen, BoardFace b) {
 		String[] FEN = fen.split("[/]");
 		int i, j, p = 0;
 		for (i = 0; i < 8; i++) {
@@ -283,7 +287,7 @@ public class MoveParser {
 						cnt--;
 					}
 				}
-				if (f[j].contains("P")) {
+				if (f[j].contains(P_BIG)) {
 					b.getPieces()[p] = 0;
 					b.getColor()[p++] = 0;
 				}

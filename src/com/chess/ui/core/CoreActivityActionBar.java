@@ -654,7 +654,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	private void checkUpdate() {
-		new CheckUpdateTask(this, mainApp).execute("http://www.chess.com/api/get_android_version");
+		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	private void showNetworkChangeNotification() {

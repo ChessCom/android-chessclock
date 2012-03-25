@@ -289,6 +289,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		}).start();
 	}
 
+	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
@@ -471,6 +472,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			int col = (trackX - trackX % square) / square;
 			int row = (trackY - trackY % square) / square;
+
 			if (firstclick) {
 				from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 				if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
@@ -483,13 +485,14 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				sel = false;
 				firstclick = true;
 				boolean found = false;
-				TreeSet<Move> moves = boardFace.gen();
-				Iterator<Move> i = moves.iterator();
 
-				Move m = null;
-				while (i.hasNext()) {
-					m = i.next();
-					if (m.from == from && m.to == to) {
+				TreeSet<Move> moves = boardFace.gen();
+				Iterator<Move> moveIterator = moves.iterator();
+
+				Move move = null;
+				while (moveIterator.hasNext()) {
+					move = moveIterator.next();
+					if (move.from == from && move.to == to) {
 						found = true;
 						break;
 					}
@@ -497,23 +500,11 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
 						((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
 						(boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
-//					final int col_ = col, row_ = row;
+
 					gameActivityFace.showChoosePieceDialog(col, row);
-//					new AlertDialog.Builder(gameActivityFace)
-//							.setTitle("Choose a piece ")
-//							.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"}, new DialogInterface.OnClickListener() {
-//								public void onClick(DialogInterface dialog, int which) {
-//									if (which == 4) {
-//										invalidate();
-//										return;
-//									}
-//									promote(4 - which, c, r);
-//								}
-//							}).setCancelable(false)
-//							.create().show();
 					return true;
 				}
-				if (found && m != null && boardFace.makeMove(m)) {
+				if (found && move != null && boardFace.makeMove(move)) {
 					invalidate();
 					afterMove();
 				} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
@@ -556,7 +547,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			}
 		}
 
-		int col = 0, row = 0;
+		int col, row;
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN: {
 				col = (int) (event.getX() - event.getX() % square) / square;
@@ -604,6 +595,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			case MotionEvent.ACTION_UP: {
 				col = (int) (event.getX() - event.getX() % square) / square;
 				row = (int) (event.getY() - event.getY() % square) / square;
+
 				drag = false;
 				// if outside of the boardBitmap - return
 				if (col > 7 || col < 0 || row > 7 || row < 0) { // if touched out of board
@@ -623,12 +615,12 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					firstclick = true;
 					boolean found = false;
 					TreeSet<Move> moves = boardFace.gen();
-					Iterator<Move> i = moves.iterator();
+					Iterator<Move> moveIterator = moves.iterator();
 
-					Move m = null;
-					while (i.hasNext()) {
-						m = i.next();	 // search for move that was made
-						if (m.from == from && m.to == to) {
+					Move move = null;
+					while (moveIterator.hasNext()) {
+						move = moveIterator.next();	 // search for move that was made
+						if (move.from == from && move.to == to) {
 							found = true;
 							break;
 						}
@@ -637,11 +629,12 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
 							((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
 							(boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
+
 						gameActivityFace.showChoosePieceDialog(col, row);
 						return true;
 					}
 
-					if (found && m != null && boardFace.makeMove(m)) {
+					if (found && move != null && boardFace.makeMove(move)) {
 						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 						sel = true;
@@ -686,6 +679,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		}
 	}
 
+	@Override
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);

@@ -20,16 +20,13 @@ import com.chess.model.GameListElement;
 import com.chess.model.Tactic;
 import com.chess.model.TacticResult;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.Web;
 import com.flurry.android.FlurryAgent;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -116,7 +113,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				InputStream f = getResources().openRawResource(R.raw.tactics100batch);
 				try {
 					ByteArrayBuffer baf = new ByteArrayBuffer(50);
-					int current = 0;
+					int current;
 					while ((current = f.read()) != -1) {
 						baf.append((byte) current);
 					}
@@ -178,82 +175,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 		}
 	}
-
-	private class DrawOfferDialogListener implements DialogInterface.OnClickListener {
-		@Override
-		public void onClick(DialogInterface dialog, int whichButton) {
-			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
-					LccHolder.LOG.info(AppConstants.REQUEST_DRAW + game);
-					lccHolder.getAndroid().runMakeDrawTask(game);
-				} else {
-					String Draw = AppConstants.OFFERDRAW;
-					if (mainApp.acceptdraw)
-						Draw = AppConstants.ACCEPTDRAW;
-					String result = Web.Request("http://www." + LccHolder.HOST
-							+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-							+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListElement.GAME_ID)
-							+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
-							+ mainApp.getCurrentGame().values.get(GameListElement.TIMESTAMP), "GET", null, null);
-					if (result.contains(AppConstants.SUCCESS)) {
-						mainApp.ShowDialog(coreContext, "", getString(R.string.drawoffered));
-					} else if (result.contains(AppConstants.ERROR_PLUS)) {
-						mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-					} else {
-						//mainApp.ShowDialog(Game.this, "Error", result);
-					}
-				}
-			}
-		}
-	}
-
-	private class AbortGameDialogListener implements DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface dialog, int whichButton) {
-			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-					final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
-
-					if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
-						System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
-						LccHolder.LOG.info(AppConstants.RESIGN_GAME + game);
-						lccHolder.getAndroid().runMakeResignTask(game);
-					} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
-						LccHolder.LOG.info(AppConstants.LCCLOG_ABORT_GAME + game);
-						lccHolder.getAndroid().runAbortGameTask(game);
-					} else {
-						LccHolder.LOG.info(AppConstants.LCCLOG_RESIGN_GAME + game);
-						lccHolder.getAndroid().runMakeResignTask(game);
-					}
-					finish();
-				} else {
-					String result = Web.Request("http://www." + LccHolder.HOST
-							+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-							+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListElement.GAME_ID)
-							+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-							+ mainApp.getCurrentGame().values.get(GameListElement.TIMESTAMP), "GET", null, null);
-					if (result.contains(AppConstants.SUCCESS)) {
-						if (MobclixHelper.isShowAds(mainApp)) {
-							sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
-									.putExtra(AppConstants.MESSAGE, "GAME OVER")
-									.putExtra(AppConstants.FINISHABLE, true));
-						} else {
-							finish();
-						}
-					} else if (result.contains(AppConstants.ERROR_PLUS)) {
-						mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-					} else {
-						//mainApp.ShowDialog(Game.this, "Error", result);
-					}
-				}
-			}
-		}
-	}
-
 
 	private class CorrectDialogListener implements DialogInterface.OnClickListener {
 		@Override
@@ -364,6 +285,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		return super.onCreateDialog(id);
 	}
 
+	@Override
 	protected void init() {
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.skipproblem),
@@ -390,6 +312,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 
+	@Override
 	protected void getOnlineGame(final String game_id) {
 		super.getOnlineGame(game_id);
 		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
@@ -415,10 +338,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-					String[] tmp2 = FEN.split(" ");
+					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
+					String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
 					if (tmp2.length > 1) {
-						if (tmp2[1].trim().equals("w")) {
+						if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 							newBoardView.getBoardFace().setReside(true);
 						}
 					}
@@ -427,7 +350,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 					newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic()
 							.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
-							.replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+							.replaceAll("[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
 					newBoardView.getBoardFace().setMovesCount(1);
 				}
 				newBoardView.getBoardFace().setSec(0);
@@ -451,34 +374,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().takeBack();
 				newBoardView.invalidate();
 
-				//last move anim
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(1300);
-							newBoardView.getBoardFace().takeNext();
-							update.sendEmptyMessage(0);
-						} catch (Exception e) {
-						}
-					}
-
-					private Handler update = new Handler() {
-						@Override
-						public void dispatchMessage(Message msg) {
-							super.dispatchMessage(msg);
-							update(CALLBACK_REPAINT_UI);
-							newBoardView.invalidate();
-						}
-					};
-				}).start();
-
+				playLastMoveAnimation();
 				return;
 			}
 		}
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GET_TACTICS,
-					"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&tactics_id=" + id,
+					"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER
+							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.TACTICS_ID_PARAMETER + id,
 					progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
 			);
 		}
@@ -498,10 +401,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 		if (!FEN.equals("")) {
 			newBoardView.getBoardFace().genCastlePos(FEN);
-			MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-			String[] tmp = FEN.split(" ");
+			MoveParser.fenParse(FEN, newBoardView.getBoardFace());
+			String[] tmp = FEN.split(AppConstants.SYMBOL_SPACE);
 			if (tmp.length > 1) {
-				if (tmp[1].trim().equals("w")) {
+				if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
 					newBoardView.getBoardFace().setReside(true);
 				}
 			}
@@ -510,7 +413,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			newBoardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch()
 					.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST)
 					.replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "")
-					.replaceAll("  ", " ").substring(1).split(" "));
+					.replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
 			newBoardView.getBoardFace().setMovesCount(1);
 		}
 		newBoardView.getBoardFace().setSec(0);
@@ -533,26 +436,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		newBoardView.getBoardFace().takeBack();
 		newBoardView.invalidate();
 
-		//last move anim
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					Thread.sleep(1300);
-					newBoardView.getBoardFace().takeNext();
-					update.sendEmptyMessage(0);
-				} catch (Exception e) {
-				}
-			}
-
-			private Handler update = new Handler() {
-				@Override
-				public void dispatchMessage(Message msg) {
-					super.dispatchMessage(msg);
-					update(CALLBACK_REPAINT_UI);
-					newBoardView.invalidate();
-				}
-			};
-		}).start();
+		playLastMoveAnimation();
 	}
 
 	private void showAnswer() {
@@ -564,33 +448,33 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				newBoardView.getBoardFace().genCastlePos(FEN);
-				MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-				String[] tmp = FEN.split(" ");
+				MoveParser.fenParse(FEN, newBoardView.getBoardFace());
+				String[] tmp = FEN.split(AppConstants.SYMBOL_SPACE);
 				if (tmp.length > 1) {
-					if (tmp[1].trim().equals("w")) {
+					if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
 						newBoardView.getBoardFace().setReside(true);
 					}
 				}
 			}
 			if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				newBoardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+				newBoardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
 				newBoardView.getBoardFace().setMovesCount(1);
 			}
 		} else {
 			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				newBoardView.getBoardFace().genCastlePos(FEN);
-				MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-				String[] tmp2 = FEN.split(" ");
+				MoveParser.fenParse(FEN, newBoardView.getBoardFace());
+				String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
 				if (tmp2.length > 1) {
-					if (tmp2[1].trim().equals("w")) {
+					if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 						newBoardView.getBoardFace().setReside(true);
 					}
 				}
 			}
 
 			if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+				newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
 				newBoardView.getBoardFace().setMovesCount(1);
 			}
 		}
@@ -598,6 +482,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				int i;
 				for (i = 0; i < newBoardView.getBoardFace().getTacticMoves().length; i++) {
@@ -679,11 +564,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				} else {
 					if (appService != null) {
 						appService.RunSingleTask(CALLBACK_TACTICS_CORRECT,
-								"http://www." + LccHolder.HOST + "/api/tactics_trainer?id=" +
+								"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER +
 										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-										+ "&tactics_id=" + mainApp.getTactic().values.get(AppConstants.ID)
-										+ "&passed=" + 1 + "&correct_moves=" + newBoardView.getBoardFace().getTacticsCorrectMoves()
-										+ "&seconds=" + newBoardView.getBoardFace().getSec(),
+										+ AppConstants.TACTICS_ID_PARAMETER + mainApp.getTactic().values.get(AppConstants.ID)
+										+ AppConstants.PASSED_PARAMETER + 1 + AppConstants.CORRECT_MOVES_PARAMETER + newBoardView.getBoardFace().getTacticsCorrectMoves()
+										+ AppConstants.SECONDS_PARAMETER + newBoardView.getBoardFace().getSec(),
 								progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 					}
 					stopTacticsTimer();
@@ -699,10 +584,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			} else {
 				if (appService != null) {
 					appService.RunSingleTask(CALLBACK_TACTICS_WRONG,
-							"http://www." + LccHolder.HOST + "/api/tactics_trainer?id="
+							"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER
 									+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-									+ "&tactics_id=" + mainApp.getTactic().values.get(AppConstants.ID)
-									+ "&passed=" + 0 + "&correct_moves=" + newBoardView.getBoardFace().getTacticsCorrectMoves() + "&seconds=" + newBoardView.getBoardFace().getSec(),
+									+ AppConstants.TACTICS_ID_PARAMETER + mainApp.getTactic().values.get(AppConstants.ID)
+									+ AppConstants.PASSED_PARAMETER + 0 + AppConstants.CORRECT_MOVES_PARAMETER + newBoardView.getBoardFace().getTacticsCorrectMoves() + AppConstants.SECONDS_PARAMETER + newBoardView.getBoardFace().getSec(),
 							progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
 				}
 				stopTacticsTimer();
@@ -719,12 +604,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		} else {
 			timer.setVisibility(View.VISIBLE);
 			analysisTxt.setVisibility(View.INVISIBLE);
+			restoreGame();
 		}
 	}
 
 	@Override
 	protected void restoreGame() {
-
+		restoreLastConfig();
 	}
 
 	@Override
@@ -771,7 +657,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				break;
 			case CALLBACK_REPAINT_UI: {
 
-				newBoardView.addMove2Log(newBoardView.getBoardFace().MoveListSAN());
+				newBoardView.addMove2Log(newBoardView.getBoardFace().getMoveListSAN());
 				newBoardView.invalidate();
 				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
 								{
@@ -779,7 +665,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 								}
 								else
 								{
-								  movelist.setText(newBoardView.getBoardFaceFace().MoveListSAN());
+								  movelist.setText(newBoardView.getBoardFaceFace().getMoveListSAN());
 								}*/
 
 				new Handler().post(new Runnable() {
@@ -825,6 +711,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 								result.values.get(AppConstants.USER_RATING_CHANGE),
 								result.values.get(AppConstants.USER_RATING)))
 						.setItems(getResources().getTextArray(R.array.correcttactic), new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 1) {
 									getTacticsGame("");
@@ -850,10 +737,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-					String[] tmp2 = FEN.split(" ");
+					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
+					String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
 					if (tmp2.length > 1) {
-						if (tmp2[1].trim().equals("w")) {
+						if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 							newBoardView.getBoardFace().setReside(true);
 						}
 					}
@@ -861,7 +748,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 					newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic().
-							values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+							values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
 					newBoardView.getBoardFace().setMovesCount(1);
 				}
 				newBoardView.getBoardFace().setSec(0);
@@ -883,75 +770,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().takeBack();
 				newBoardView.invalidate();
 
-				//last move anim
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(1300);
-							newBoardView.getBoardFace().takeNext();
-							update.sendEmptyMessage(0);
-						} catch (Exception e) {
-						}
-					}
-
-					private Handler update = new Handler() {
-						@Override
-						public void dispatchMessage(Message msg) {
-							super.dispatchMessage(msg);
-							update(CALLBACK_REPAINT_UI);
-							newBoardView.invalidate();
-						}
-					};
-				}).start();
+				playLastMoveAnimation();
 				break;
-//			case CALLBACK_ECHESS_MOVE_WAS_SENT:
-//				// move was made
-//				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-//						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
-//					finish();
-//				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
-//						.getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
-//
-//					int i;
-//					ArrayList<GameListElement> currentGames = new ArrayList<GameListElement>();
-//					for (GameListElement gle : mainApp.getGameListItems()) {
-//						if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
-//							currentGames.add(gle);
-//						}
-//					}
-//					for (i = 0; i < currentGames.size(); i++) {
-//						if (currentGames.get(i).values.get(GameListElement.GAME_ID)
-//								.contains(mainApp.getCurrentGame().values.get(GameListElement.GAME_ID))) {
-//							if (i + 1 < currentGames.size()) {
-//								newBoardView.setBoardFace(new ChessBoard(this));
-//								newBoardView.getBoardFace().setAnalysis(false);
-//								newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-//
-//								if (progressDialog != null) {
-//									progressDialog.dismiss();
-//									progressDialog = null;
-//								}
-//
-//								getOnlineGame(currentGames.get(i + 1).values.get(GameListElement.GAME_ID));
-//								return;
-//							} else {
-//								finish();
-//								return;
-//							}
-//						}
-//					}
-//					finish();
-//					return;
-//				}
-//				break;
 			case CALLBACK_GAME_REFRESH:
 				if (newBoardView.getBoardFace().isAnalysis())
 					return;
 				if (!mainApp.isLiveChess()) {
 					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
 				}
-				//System.out.println("!!!!!!!! mainApp.getCurrentGame() " + mainApp.getCurrentGame());
-				//System.out.println("!!!!!!!! game " + game);
 
 				if (mainApp.getCurrentGame() == null || game == null) {
 					return;
@@ -960,14 +786,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (!mainApp.getCurrentGame().equals(game)) {
 					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
 						mainApp.setCurrentGame(game);
-						String[] Moves = {};
+						String[] Moves;
 
 						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
 								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())))) {
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) ? 0 : 1;
 
-							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(beginIndex).split(AppConstants.SYMBOL_SPACE);
 
 							if (Moves.length - newBoardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -1005,6 +831,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 									.setIcon(android.R.drawable.ic_dialog_alert)
 									.setTitle(getString(R.string.you_got_new_msg))
 									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
+										@Override
 										public void onClick(DialogInterface dialog, int whichButton) {
 											chat = true;
 											getOnlineGame(mainApp.getGameId());
@@ -1012,6 +839,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 										}
 									})
 									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+										@Override
 										public void onClick(DialogInterface dialog, int whichButton) {
 										}
 									}).create().show();
@@ -1030,9 +858,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 				if (chat) {
 					if (!isUserColorWhite())
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME));
+						mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME));
 					else
-						mainApp.getSharedDataEditor().putString("opponent", mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME));
+						mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME));
 					mainApp.getSharedDataEditor().commit();
 					mainApp.getCurrentGame().values.put(Game.HAS_NEW_MESSAGE, "0");
 					startActivity(new Intent(coreContext, mainApp.isLiveChess() ? ChatLiveActivity.class : ChatActivity.class).
@@ -1053,7 +881,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE);
 					newBoardView.getBoardFace().setMovesCount(Moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					newBoardView.getBoardFace().setMovesCount(0);
@@ -1067,7 +895,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				FEN = mainApp.getCurrentGame().values.get(Game.STARTING_FEN_POSITION);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.FenParse(FEN, newBoardView.getBoardFace());
+					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 				}
 
 				int i;
@@ -1098,47 +926,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().takeBack();
 				newBoardView.invalidate();
 
-				//last move anim
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(1300);
-							newBoardView.getBoardFace().takeNext();
-							update.sendEmptyMessage(0);
-						} catch (Exception e) {
-						}
-					}
-
-					private Handler update = new Handler() {
-						@Override
-						public void dispatchMessage(Message msg) {
-							super.dispatchMessage(msg);
-							update(CALLBACK_REPAINT_UI);
-							newBoardView.invalidate();
-						}
-					};
-				}).start();
+				playLastMoveAnimation();
 				break;
 			default:
 				break;
 		}
-	}
-
-	@Override
-	public void showChoosePieceDialog(final int col, final int row) {
-		new AlertDialog.Builder(this)
-				.setTitle("Choose a piece ")
-				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								if (which == 4) {
-									newBoardView.invalidate();
-									return;
-								}
-								newBoardView.promote(4 - which, col, row);
-							}
-						}).setCancelable(false)
-				.create().show();
 	}
 
 	@Override
@@ -1317,41 +1109,28 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}, 0, 1000);
 	}
 
-
-//	private void showAnalysisButtons() {
-//		analysisButtons.setVisibility(View.VISIBLE);
-//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
-//		/*newBoardView.getBoardFaceFace().takeBack();
-//			newBoardView.getBoardFaceFace().getMovesCount()--;
-//			newBoardView.invalidate();
-//			newBoardView.getBoardFaceFace().submit = false;*/
-//	}
-//
-//	private void hideAnalysisButtons() {
-//		analysisButtons.setVisibility(View.GONE);
-//	}
-
-
-	private void restoreLastConfig(){
+	@Override
+	protected void restoreLastConfig(){
 		if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
 			openOptionsMenu();
 			return;
 		}
 
-		int sec = newBoardView.getBoardFace().getSec();
+		int secondsSpent = newBoardView.getBoardFace().getSec();
 
 		if (mainApp.guest || mainApp.noInternet) {
+			// set new board
 			newBoardView.setBoardFace(new ChessBoard(this));
-			newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
+			newBoardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS); // set game mode
 
 			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
-				newBoardView.getBoardFace().genCastlePos(FEN);
-				MoveParser.FenParse(FEN, newBoardView.getBoardFace());
+				newBoardView.getBoardFace().genCastlePos(FEN); // restore castle position for current tactics problem
+				MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 
-				String[] tmp = FEN.split(" ");
+				String[] tmp = FEN.split(AppConstants.SYMBOL_SPACE);
 				if (tmp.length > 1) {
-					if (tmp[1].trim().equals("w")) {
+					if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
 						newBoardView.getBoardFace().setReside(true);
 					}
 				}
@@ -1361,16 +1140,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				newBoardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch()
 						.get(mainApp.currentTacticProblem).values
 						.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
-						.replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+						.replaceAll("[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE)
+						.substring(1).split(AppConstants.SYMBOL_SPACE));
 
 				newBoardView.getBoardFace().setMovesCount(1);
 			}
 
-			newBoardView.getBoardFace().setSec(sec);
+			newBoardView.getBoardFace().setSec(secondsSpent);
 			newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTacticsBatch()
-					.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - sec);
+					.get(mainApp.currentTacticProblem).values.get(AppConstants.AVG_SECONDS)) - secondsSpent);
 
 			startTacticsTimer();
+
 			int[] moveFT = MoveParser.parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
 			if (moveFT.length == 4) {
 				Move move;
@@ -1378,35 +1159,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					move = new Move(moveFT[0], moveFT[1], 0, 2);
 				else
 					move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+
 				newBoardView.getBoardFace().makeMove(move);
 			} else {
 				Move move = new Move(moveFT[0], moveFT[1], 0, 0);
 				newBoardView.getBoardFace().makeMove(move);
 			}
+
 			update(CALLBACK_REPAINT_UI);
 			newBoardView.getBoardFace().takeBack();
 			newBoardView.invalidate();
 
-			//last move anim
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(1300);
-						newBoardView.getBoardFace().takeNext();
-						update.sendEmptyMessage(0);
-					} catch (Exception e) {
-					}
-				}
-
-				private Handler update = new Handler() {
-					@Override
-					public void dispatchMessage(Message msg) {
-						super.dispatchMessage(msg);
-						update(CALLBACK_REPAINT_UI);
-						newBoardView.invalidate();
-					}
-				};
-			}).start();
+			playLastMoveAnimation();
 		} else {
 			if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
 				openOptionsMenu();
@@ -1418,77 +1182,59 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
 			if (!FEN.equals("")) {
 				newBoardView.getBoardFace().genCastlePos(FEN);
-				MoveParser.FenParse(FEN, newBoardView.getBoardFace());
-				String[] tmp2 = FEN.split(" ");
+				MoveParser.fenParse(FEN, newBoardView.getBoardFace());
+				String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
 				if (tmp2.length > 1) {
-					if (tmp2[1].trim().equals("w")) {
+					if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 						newBoardView.getBoardFace().setReside(true);
 					}
 				}
 			}
 
 			if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("[.]", "").replaceAll("  ", " ").substring(1).split(" "));
+				newBoardView.getBoardFace().setTacticMoves(mainApp.getTactic()
+						.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
+						.replaceAll("[.]", "").replaceAll("  ", AppConstants.SYMBOL_SPACE)
+						.substring(1).split(AppConstants.SYMBOL_SPACE));
 				newBoardView.getBoardFace().setMovesCount(1);
 			}
-			newBoardView.getBoardFace().setSec(sec);
+
+			newBoardView.getBoardFace().setSec(secondsSpent);
 			newBoardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic()
-					.values.get(AppConstants.AVG_SECONDS)) - sec);
-			int[] moveFT = MoveParser.parse(newBoardView.getBoardFace(),
-					newBoardView.getBoardFace().getTacticMoves()[0]);
+					.values.get(AppConstants.AVG_SECONDS)) - secondsSpent);
+
+			int[] moveFT = MoveParser.parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
+
 			if (moveFT.length == 4) {
-				Move m;
+				Move move;
 				if (moveFT[3] == 2)
-					m = new Move(moveFT[0], moveFT[1], 0, 2);
+					move = new Move(moveFT[0], moveFT[1], 0, 2);
 				else
-					m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-				newBoardView.getBoardFace().makeMove(m);
+					move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+
+				newBoardView.getBoardFace().makeMove(move);
 			} else {
-				Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-				newBoardView.getBoardFace().makeMove(m);
+				Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+				newBoardView.getBoardFace().makeMove(move);
 			}
+
 			update(CALLBACK_REPAINT_UI);
 			newBoardView.getBoardFace().takeBack();
 			newBoardView.invalidate();
 
-			//last move anim
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(1300);
-						newBoardView.getBoardFace().takeNext();
-						update.sendEmptyMessage(0);
-					} catch (Exception e) {
-					}
-				}
-
-				private Handler update = new Handler() {
-					@Override
-					public void dispatchMessage(Message msg) {
-						super.dispatchMessage(msg);
-						update(CALLBACK_REPAINT_UI);
-						newBoardView.invalidate();
-					}
-				};
-			}).start();
+			playLastMoveAnimation();
 		}
 	}
+
+
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		super.onKeyDown(keyCode, event);
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (newBoardView.getBoardFace().isAnalysis()) {   // to restore last config
-				newBoardView.getBoardFace().setAnalysis(false);
-//				onBackPressed();
-
-				restoreLastConfig();
-			} else {
-				newBoardView.getBoardFace().setTacticCanceled(true);
-				onBackPressed();
-			}
-			return true;
+			newBoardView.getBoardFace().setTacticCanceled(true);
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
+
 }

@@ -269,7 +269,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 //			final GameListElement el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
-				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, ChatActivity.class);
@@ -330,7 +330,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 								gameListItemDialogListener)
 						.create().show();
 			} else if (gameListElement.type == 2) {
-				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, ChatActivity.class);
@@ -482,7 +482,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 				}
 
 			} else if (gameListElement.type == 1) {
-				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				if (gameListElement.values.get(GameListElement.IS_DRAW_OFFER_PENDING).equals("p")) {
@@ -498,7 +498,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 					startActivity(intent);
 				}
 			} else if (gameListElement.type == 2) {
-				mainApp.getSharedDataEditor().putString("opponent", gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);

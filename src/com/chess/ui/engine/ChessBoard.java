@@ -288,31 +288,32 @@ public class ChessBoard implements BoardFace {
 		wKingMoveOOO = new int[]{58};
 	}
 
+	@Override
 	public int[] genCastlePos(String fen) {
 		//rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR
 		String[] tmp = fen.split(" ");
 
 		if (tmp.length > 2) { //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 			String castling = tmp[2].trim();
-			if (!castling.contains("K")) {
+			if (!castling.contains(MoveParser.K_BIG)) {
 				castleMask[2] = true;
 			}
-			if (!castling.contains("Q")) {
+			if (!castling.contains(MoveParser.Q_BIG)) {
 				castleMask[3] = true;
 			}
 
-			if (!castling.contains("K") && !castling.contains("Q")) {
+			if (!castling.contains(MoveParser.K_BIG) && !castling.contains(MoveParser.Q_BIG)) {
 				whiteCanCastle = false;
 			}
 
-			if (!castling.contains("k")) {
+			if (!castling.contains(MoveParser.K_SMALL)) {
 				castleMask[0] = true;
 			}
-			if (!castling.contains("q")) {
+			if (!castling.contains(MoveParser.Q_SMALL)) {
 				castleMask[1] = true;
 			}
 
-			if (!castling.contains("k") && !castling.contains("q")) {
+			if (!castling.contains(MoveParser.K_SMALL) && !castling.contains(MoveParser.Q_SMALL)) {
 				blackCanCastle = false;
 			}
 
@@ -444,10 +445,12 @@ public class ChessBoard implements BoardFace {
 	}
 
 
+	@Override
 	public int getColor(int i, int j) {
 		return color[(i << 3) + j];
 	}
 
+	@Override
 	public int getPiece(int i, int j) {
 		return pieces[(i << 3) + j];
 	}
@@ -460,6 +463,7 @@ public class ChessBoard implements BoardFace {
 		otherwise. It just scans the boardBitmap to find side s's king
 		and calls attack() to see if it's being attacked. */
 
+	@Override
 	public boolean inCheck(int s) {
 		int i;
 
@@ -606,6 +610,7 @@ public class ChessBoard implements BoardFace {
    only generate capture and promote moves. It's used by the
    quiescence search. */
 
+	@Override
 	public TreeSet<Move> genCaps() {
 		TreeSet<Move> ret = new TreeSet<Move>();
 
@@ -708,16 +713,19 @@ public class ChessBoard implements BoardFace {
 		undoes whatever it did and returns false. Otherwise, it
 		returns true. */
 
+	@Override
 	public boolean makeMove(Move m) {
 		return makeMove(m, true);
 	}
 
-	public boolean makeMove(Move m, boolean playSound) {
+	@Override
+	public boolean makeMove(Move move, boolean playSound) {
 
 		/* test to see if a castle move is legal and move the rook
 			   (the king is moved with the usual move code later) */
 		int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		if ((m.bits & 2) != 0) {
+		int distance;
+		if ((move.bits & 2) != 0) {
 			int from = -1, to = -1;
 
 			int[] piece_tmp = pieces.clone();
@@ -725,48 +733,56 @@ public class ChessBoard implements BoardFace {
 			if (inCheck(side))
 				return false;
 
-			int d = Math.abs(m.from - m.to);
-			int min = m.to;
-			if (m.from < m.to) min = m.from;
+//			distance = Math.abs(move.from - move.to);
+			int minMove = move.to;
+			if (move.from < move.to) minMove = move.from;
 
 			int i;
-			for (i = 0; i < bKingMoveOO.length; i++) {
-				if (bKingMoveOO[i] == m.to) {
+			i = 0;
+			while (i < bKingMoveOO.length) {
+				if (bKingMoveOO[i] == move.to) {
 					what = 0;
-					d = Math.abs(m.from - bRook2);
-					min = bRook2;
-					if (m.from < bRook2) min = m.from;
+//					distance = Math.abs(move.from - bRook2);
+					minMove = bRook2;
+					if (move.from < bRook2) minMove = move.from;
 					break;
 				}
+				i++;
 			}
-			for (i = 0; i < bKingMoveOOO.length; i++) {
-				if (bKingMoveOOO[i] == m.to) {
+			i = 0;
+			while (i < bKingMoveOOO.length) {
+				if (bKingMoveOOO[i] == move.to) {
 					what = 1;
-					d = Math.abs(m.from - bRook1);
-					min = bRook1;
-					if (m.from < bRook1) min = m.from;
+//					distance = Math.abs(move.from - bRook1);
+					minMove = bRook1;
+					if (move.from < bRook1) minMove = move.from;
 					break;
 				}
+				i++;
 			}
-			for (i = 0; i < wKingMoveOO.length; i++) {
-				if (wKingMoveOO[i] == m.to) {
+			i = 0;
+			while (i < wKingMoveOO.length) {
+				if (wKingMoveOO[i] == move.to) {
 					what = 2;
-					d = Math.abs(m.from - wRook2);
-					min = wRook2;
-					if (m.from < wRook2)
-						min = m.from;
+//					distance = Math.abs(move.from - wRook2);
+					minMove = wRook2;
+					if (move.from < wRook2)
+						minMove = move.from;
 					break;
 				}
+				i++;
 			}
-			for (i = 0; i < wKingMoveOOO.length; i++) {
-				if (wKingMoveOOO[i] == m.to) {
+			i = 0;
+			while (i < wKingMoveOOO.length) {
+				if (wKingMoveOOO[i] == move.to) {
 					what = 3;
-					d = Math.abs(m.from - wRook1);
-					min = wRook1;
-					if (m.from < wRook1)
-						min = m.from;
+//					distance = Math.abs(move.from - wRook1);
+					minMove = wRook1;
+					if (move.from < wRook1)
+						minMove = move.from;
 					break;
 				}
+				i++;
 			}
 
 			if (castleMask[what])
@@ -774,7 +790,7 @@ public class ChessBoard implements BoardFace {
 
 			if (what == 2) {
 
-				int distance = Math.abs(wKing - G1);
+				distance = Math.abs(wKing - G1);
 				int minimalSquare = Math.min(wKing, G1);
 				for (int j = 0; j <= distance; j++) {
 					if (attack(minimalSquare + j, xside)) {
@@ -792,13 +808,13 @@ public class ChessBoard implements BoardFace {
 					return false;
 
 
-				if (d > 1) {
-					while (d != 0) {
-						min++;
-						if (min != wRook2 && pieces[min] != KING && color[min] != EMPTY) {
+				if (distance > 1) {
+					while (distance != 0) {
+						minMove++;
+						if (minMove != wRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						d--;
+						distance--;
 					}
 				}
 
@@ -806,7 +822,7 @@ public class ChessBoard implements BoardFace {
 				to = F1;
 			} else if (what == 3) {
 
-				int distance = Math.abs(wKing - C1);
+				distance = Math.abs(wKing - C1);
 				int minimalSquare = Math.min(wKing, C1);
 				for (int j = 0; j <= distance; j++) {
 					if (attack(minimalSquare + j, xside)) {
@@ -823,13 +839,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[D1] == ROOK && D1 != wRook1)
 					return false;
 
-				if (d > 1) {
-					while (d != 0) {
-						min++;
-						if (min != wRook1 && pieces[min] != KING && color[min] != EMPTY) {
+				if (distance > 1) {
+					while (distance != 0) {
+						minMove++;
+						if (minMove != wRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						d--;
+						distance--;
 					}
 				}
 
@@ -837,7 +853,7 @@ public class ChessBoard implements BoardFace {
 				to = D1;
 			} else if (what == 1) {
 
-				int distance = Math.abs(bKing - C8);
+				distance = Math.abs(bKing - C8);
 				int minimalSquare = Math.min(bKing, C8);
 				for (int j = 0; j <= distance; j++) {
 					if (attack(minimalSquare + j, xside)) {
@@ -854,13 +870,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[D8] == ROOK && D8 != bRook1)
 					return false;
 
-				if (d > 1) {
-					while (d != 0) {
-						min++;
-						if (min != bRook1 && pieces[min] != KING && color[min] != EMPTY) {
+				if (distance > 1) {
+					while (distance != 0) {
+						minMove++;
+						if (minMove != bRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						d--;
+						distance--;
 					}
 				}
 
@@ -868,7 +884,7 @@ public class ChessBoard implements BoardFace {
 				to = D8;
 			} else if (what == 0) {
 
-				int distance = Math.abs(bKing - G8);
+				distance = Math.abs(bKing - G8);
 				int minimalSquare = Math.min(bKing, G8);
 				for (int j = 0; j <= distance; j++) {
 					if (attack(minimalSquare + j, xside)) {
@@ -886,13 +902,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[G8] == ROOK && bRook2 != G8)
 					return false;
 
-				if (d > 1) {
-					while (d != 0) {
-						min++;
-						if (min != bRook2 && pieces[min] != KING && color[min] != EMPTY) {
+				if (distance > 1) {
+					while (distance != 0) {
+						minMove++;
+						if (minMove != bRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						d--;
+						distance--;
 					}
 				}
 
@@ -909,8 +925,8 @@ public class ChessBoard implements BoardFace {
 
 			/* back up information so we can take the move back later. */
 			histDat[hply] = new HistoryData();
-			histDat[hply].m = m;
-			histDat[hply].capture = pieces[m.to];
+			histDat[hply].m = move;
+			histDat[hply].capture = pieces[move.to];
 			histDat[hply].ep = ep;
 			histDat[hply].fifty = fifty;
 			histDat[hply].castleMask = castleMask.clone();
@@ -933,7 +949,7 @@ public class ChessBoard implements BoardFace {
 					whiteCanCastle = false;
 				}
 			}
-			if (pieces[m.from] == KING) {
+			if (pieces[move.from] == KING) {
 				if (side == DARK) {
 					castleMask[0] = true;
 					castleMask[1] = true;
@@ -945,28 +961,28 @@ public class ChessBoard implements BoardFace {
 				}
 			}
 			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-			if (pieces[m.from] == ROOK) {
+			if (pieces[move.from] == ROOK) {
 				if (side == DARK) {
-					if (m.from == bRook2) {
+					if (move.from == bRook2) {
 						castleMask[0] = true;
 						if (castleMask[1]) {
 							blackCanCastle = false;
 						}
 					}
-					if (m.from == bRook1) {
+					if (move.from == bRook1) {
 						castleMask[1] = true;
 						if (castleMask[0]) {
 							blackCanCastle = false;
 						}
 					}
 				} else {
-					if (m.from == wRook2) {
+					if (move.from == wRook2) {
 						castleMask[2] = true;
 						if (castleMask[3]) {
 							whiteCanCastle = false;
 						}
 					}
-					if (m.from == wRook1) {
+					if (move.from == wRook1) {
 						castleMask[3] = true;
 						if (castleMask[2]) {
 							whiteCanCastle = false;
@@ -975,14 +991,14 @@ public class ChessBoard implements BoardFace {
 				}
 			}
 
-			if ((m.bits & 8) != 0) {
+			if ((move.bits & 8) != 0) {
 				if (side == LIGHT)
-					ep = m.to + 8;
+					ep = move.to + 8;
 				else
-					ep = m.to - 8;
+					ep = move.to - 8;
 			} else
 				ep = -1;
-			if ((m.bits & 17) != 0)
+			if ((move.bits & 17) != 0)
 				fifty = 0;
 			else
 				++fifty;
@@ -991,24 +1007,24 @@ public class ChessBoard implements BoardFace {
 			int tmp_to = -1;
 			if (what == 3) {
 				color[58] = side;
-				pieces[58] = piece_tmp[(int) m.from];
+				pieces[58] = piece_tmp[ move.from];
 				tmp_to = 58;
 			} else if (what == 2) {
 				color[62] = side;
-				pieces[62] = piece_tmp[(int) m.from];
+				pieces[62] = piece_tmp[move.from];
 				tmp_to = 62;
 			} else if (what == 1) {
 				color[2] = side;
-				pieces[2] = piece_tmp[(int) m.from];
+				pieces[2] = piece_tmp[ move.from];
 				tmp_to = 2;
 			} else if (what == 0) {
 				color[6] = side;
-				pieces[6] = piece_tmp[(int) m.from];
+				pieces[6] = piece_tmp[move.from];
 				tmp_to = 6;
 			}
-			if (pieces[m.from] != ROOK && tmp_to != m.from) {
-				color[m.from] = EMPTY;
-				pieces[m.from] = EMPTY;
+			if (pieces[move.from] != ROOK && tmp_to != move.from) {
+				color[move.from] = EMPTY;
+				pieces[move.from] = EMPTY;
 			}
 
 			/* switch sides and test for legality (if we can capture
@@ -1030,15 +1046,15 @@ public class ChessBoard implements BoardFace {
 
 		/* back up information so we can take the move back later. */
 		histDat[hply] = new HistoryData();
-		histDat[hply].m = m;
-		histDat[hply].capture = pieces[(int) m.to];
+		histDat[hply].m = move;
+		histDat[hply].capture = pieces[(int) move.to];
 		histDat[hply].ep = ep;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
 		histDat[hply].whiteCanCastle = whiteCanCastle;
 		histDat[hply].blackCanCastle = blackCanCastle;
 		histDat[hply].what = what;
-		histDat[hply].notation = GetMoveSAN();
+		histDat[hply].notation = getMoveSAN();
 		++hply;
 
 		/* update the castle, en passant, and
@@ -1051,7 +1067,7 @@ public class ChessBoard implements BoardFace {
 				whiteCanCastle = false;
 			}
 		}
-		if (pieces[m.from] == KING) {
+		if (pieces[move.from] == KING) {
 			if (side == DARK) {
 				castleMask[0] = true;
 				castleMask[1] = true;
@@ -1063,28 +1079,28 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		if (pieces[m.from] == ROOK) {
+		if (pieces[move.from] == ROOK) {
 			if (side == DARK) {
-				if (m.from == bRook2) {
+				if (move.from == bRook2) {
 					castleMask[0] = true;
 					if (castleMask[1]) {
 						blackCanCastle = false;
 					}
 				}
-				if (m.from == bRook1) {
+				if (move.from == bRook1) {
 					castleMask[1] = true;
 					if (castleMask[0]) {
 						blackCanCastle = false;
 					}
 				}
 			} else {
-				if (m.from == wRook2) {
+				if (move.from == wRook2) {
 					castleMask[2] = true;
 					if (castleMask[3]) {
 						whiteCanCastle = false;
 					}
 				}
-				if (m.from == wRook1) {
+				if (move.from == wRook1) {
 					castleMask[3] = true;
 					if (castleMask[2]) {
 						whiteCanCastle = false;
@@ -1094,28 +1110,28 @@ public class ChessBoard implements BoardFace {
 		}
 
 		// attacked rook
-		if (m.to == BLACK_ROOK_1_INITIAL_POS && !castleMask[1]) // q (fen castle)
+		if (move.to == BLACK_ROOK_1_INITIAL_POS && !castleMask[1]) // q (fen castle)
 		{
 			castleMask[1] = true;
 			if (castleMask[0]) {
 				blackCanCastle = false;
 			}
 		}
-		if (m.to == BLACK_ROOK_2_INITIAL_POS && !castleMask[0]) // k (fen castle)
+		if (move.to == BLACK_ROOK_2_INITIAL_POS && !castleMask[0]) // k (fen castle)
 		{
 			castleMask[0] = true;
 			if (castleMask[1]) {
 				blackCanCastle = false;
 			}
 		}
-		if (m.to == WHITE_ROOK_1_INITIAL_POS && !castleMask[3]) // Q (fen castle)
+		if (move.to == WHITE_ROOK_1_INITIAL_POS && !castleMask[3]) // Q (fen castle)
 		{
 			castleMask[3] = true;
 			if (castleMask[2]) {
 				whiteCanCastle = false;
 			}
 		}
-		if (m.to == WHITE_ROOK_2_INITIAL_POS && !castleMask[2]) // K (fen castle)
+		if (move.to == WHITE_ROOK_2_INITIAL_POS && !castleMask[2]) // K (fen castle)
 		{
 			castleMask[2] = true;
 			if (castleMask[3]) {
@@ -1123,43 +1139,43 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 
-		if ((m.bits & 8) != 0) {
+		if ((move.bits & 8) != 0) {
 			if (side == LIGHT)
-				ep = m.to + 8;
+				ep = move.to + 8;
 			else
-				ep = m.to - 8;
+				ep = move.to - 8;
 		} else
 			ep = -1;
-		if ((m.bits & 17) != 0)
+		if ((move.bits & 17) != 0)
 			fifty = 0;
 		else
 			++fifty;
 
 		/* move the piece */
 
-		int colorFrom = color[m.from];
-		int pieceTo = pieces[m.to];
+		int colorFrom = color[move.from];
+		int pieceTo = pieces[move.to];
 
-		color[m.to] = side;
+		color[move.to] = side;
 
-		if ((m.bits & 32) != 0) {
-			pieces[m.to] = m.promote;
+		if ((move.bits & 32) != 0) {
+			pieces[move.to] = move.promote;
 			//System.out.println("!!!!!!!! PROMOTION");
 		} else {
-			pieces[m.to] = pieces[m.from];
+			pieces[move.to] = pieces[move.from];
 		}
 
-		color[m.from] = EMPTY;
-		pieces[m.from] = EMPTY;
+		color[move.from] = EMPTY;
+		pieces[move.from] = EMPTY;
 
 		/* erase the pawn if this is an en passant move */
-		if ((m.bits & 4) != 0) {
+		if ((move.bits & 4) != 0) {
 			if (side == LIGHT) {
-				color[m.to + 8] = EMPTY;
-				pieces[m.to + 8] = EMPTY;
+				color[move.to + 8] = EMPTY;
+				pieces[move.to + 8] = EMPTY;
 			} else {
-				color[m.to - 8] = EMPTY;
-				pieces[m.to - 8] = EMPTY;
+				color[move.to - 8] = EMPTY;
+				pieces[move.to - 8] = EMPTY;
 			}
 		}
 
@@ -1206,6 +1222,7 @@ public class ChessBoard implements BoardFace {
 		return this;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	@Override
 	public void takeBack() {
 		if (hply - 1 < 0) return;
 		side ^= 1;
@@ -1311,6 +1328,7 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
+	@Override
 	public void takeNext() {
 		if (hply + 1 <= movesCount) {
 			Move m = histDat[hply].m;
@@ -1318,7 +1336,7 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
-	public String MoveList() {
+	public String getMoveList() {
 		String output = "";
 		int i = 0;
 		for (i = 0; i < hply; i++) {
@@ -1332,7 +1350,8 @@ public class ChessBoard implements BoardFace {
 		return output;
 	}
 
-	public String MoveListSAN() {
+	@Override
+	public String getMoveListSAN() {
 		String output = "";
 		int i = 0;
 		for (i = 0; i < hply; i++) {
@@ -1344,12 +1363,12 @@ public class ChessBoard implements BoardFace {
 		return output;
 	}
 
-	public String GetMoveSAN() {
+	public String getMoveSAN() {
 		Move m = histDat[hply].m;
 		int p = pieces[m.from];
 		String f = "", capture = "", promotion = "";
 		if (p == 1) {
-			f = "N";
+			f = MoveParser.N_BIG;
 			//ambigues
 			int[] positions = new int[]{
 					m.to - 17, m.to - 15, m.to - 10, m.to - 6,
@@ -1370,9 +1389,9 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 		if (p == 2)
-			f = "B";
+			f = MoveParser.B_BIG;
 		if (p == 3) {
-			f = "R";
+			f = MoveParser.R_BIG;
 			//ambigues
 			int[] positions = new int[]{
 					m.to - 8, m.to - 16, m.to - 24, m.to - 32, m.to - 40, m.to - 48, m.to - 56,
@@ -1395,9 +1414,9 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 		if (p == 4)
-			f = "Q";
+			f = MoveParser.Q_BIG;
 		if (p == 5)
-			f = "K";
+			f = MoveParser.K_BIG;
 
 		if (histDat[hply].capture != 6) {
 			if (p == 0) {
@@ -1426,7 +1445,7 @@ public class ChessBoard implements BoardFace {
 		try {
 			m = histDat[hply - 1].m;
 		} catch (ArrayIndexOutOfBoundsException e) {
-			StringBuffer result = new StringBuffer();
+			StringBuilder result = new StringBuilder();
 			if (histDat.length > 0) {
 				result.append(histDat[0]);
 				for (int i = 1; i < histDat.length; i++) {
@@ -1476,12 +1495,13 @@ public class ChessBoard implements BoardFace {
 				}
 			}
 			output = URLEncoder.encode(MoveParser.positionToString(m.from) + to, "UTF-8");
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		Log.d("move:", output);
 		return output;
 	}
 
+	@Override
 	public String convertMoveEchess() {
 		String output = convertMove();
 		final Move m = histDat[hply - 1].m;
@@ -1504,6 +1524,7 @@ public class ChessBoard implements BoardFace {
 		return output;
 	}
 
+	@Override
 	public String convertMoveLive() {
 		String output = convertMove();
 		final Move m = histDat[hply - 1].m;
@@ -1529,7 +1550,7 @@ public class ChessBoard implements BoardFace {
 	public String toString() {
 		int i;
 
-		StringBuffer sb = new StringBuffer("\n8 ");
+		StringBuilder sb = new StringBuilder("\n8 ");
 		for (i = 0; i < 64; ++i) {
 			switch (color[i]) {
 				case EMPTY:
@@ -1560,6 +1581,7 @@ public class ChessBoard implements BoardFace {
 		position has been repeated. Thanks to John Stanback
 		for this clever algorithm. */
 
+	@Override
 	public int reps() {
 		int b[] = new int[64];
 		int c = 0;  /* count of squares that are different from
@@ -1590,6 +1612,7 @@ public class ChessBoard implements BoardFace {
 		return r;
 	}
 
+	@Override
 	public int eval() {
 		int score[] = new int[2];  /* each side's score */
 
@@ -1882,6 +1905,7 @@ public class ChessBoard implements BoardFace {
 		return (x >> 3);
 	}
 
+	@Override
 	public int[] getColor() {
 		return color;
 	}
@@ -1897,6 +1921,7 @@ public class ChessBoard implements BoardFace {
 			return (8 * r + c);
 	}
 
+	@Override
 	public void setReside(boolean reside) {
 		/*System.out.println("!!!!!!!! reside current = " + this.reside);
 			  System.out.println("!!!!!!!! reside new = " + reside);
@@ -1920,18 +1945,22 @@ public class ChessBoard implements BoardFace {
 		return side;
 	}
 
+	@Override
 	public void setSide(int side) {
 		this.side = side;
 	}
 
+	@Override
 	public boolean isReside() {
 		return reside;
 	}
 
+	@Override
 	public int[] getPieces() {
 		return pieces;
 	}
 
+	@Override
 	public int getPiece(int pieceId) {
 		return pieces[pieceId];
 	}
@@ -1940,6 +1969,7 @@ public class ChessBoard implements BoardFace {
 		this.pieces = pieces;
 	}
 
+	@Override
 	public int getHply() {
 		return hply;
 	}
@@ -1948,54 +1978,67 @@ public class ChessBoard implements BoardFace {
 		this.hply = hply;
 	}
 
+	@Override
 	public int getMovesCount() {
 		return movesCount;
 	}
 
+	@Override
 	public void setMovesCount(int movesCount) {
 		this.movesCount = movesCount;
 	}
 
+	@Override
 	public void decreaseMovesCount() {
 		movesCount--;
 	}
 
+	@Override
 	public void increaseMovesCount() {
 		movesCount++;
 	}
 
+	@Override
 	public boolean isSubmit() {
 		return submit;
 	}
 
+	@Override
 	public void setSubmit(boolean submit) {
 		this.submit = submit;
 	}
 
+	@Override
 	public boolean isRetry() {
 		return retry;
 	}
 
+	@Override
 	public void setRetry(boolean retry) {
 		this.retry = retry;
 	}
 
+	@Override
 	public boolean isInit() {
 		return init;
 	}
 
+	@Override
 	public void setInit(boolean init) {
 		this.init = init;
 	}
 
+	@Override
 	public int getSec() {
 		return sec;
 	}
 
+	@Override
 	public void setSec(int sec) {
 		this.sec = sec;
 	}
 
+	@Override
 	public int getLeft() {
 		return left;
 	}
@@ -2005,6 +2048,7 @@ public class ChessBoard implements BoardFace {
 		sec++;
 	}
 
+	@Override
 	public void setLeft(int left) {
 		this.left = left;
 	}
@@ -2019,22 +2063,27 @@ public class ChessBoard implements BoardFace {
 		return mode;
 	}
 
+	@Override
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
 
+	@Override
 	public boolean isTacticCanceled() {
 		return tacticCanceled;
 	}
 
+	@Override
 	public void setTacticCanceled(boolean tacticCanceled) {
 		this.tacticCanceled = tacticCanceled;
 	}
 
+	@Override
 	public void setTacticMoves(String[] tacticMoves) {
 		this.tacticMoves = tacticMoves;
 	}
 
+	@Override
 	public String[] getTacticMoves() {
 		return tacticMoves;
 	}
@@ -2044,18 +2093,22 @@ public class ChessBoard implements BoardFace {
 		return analysis = !analysis;
 	}
 
+	@Override
 	public boolean isAnalysis() {
 		return analysis;
 	}
 
+	@Override
 	public void setAnalysis(boolean analysis) {
 		this.analysis = analysis;
 	}
 
+	@Override
 	public HistoryData[] getHistDat() {
 		return histDat;
 	}
 
+	@Override
 	public void setHistDat(HistoryData[] histDat) {
 		this.histDat = histDat;
 	}
@@ -2092,6 +2145,7 @@ public class ChessBoard implements BoardFace {
 		this.bRook1 = bRook1;
 	}
 
+	@Override
 	public int getbKing() {
 		return bKing;
 	}
@@ -2116,6 +2170,7 @@ public class ChessBoard implements BoardFace {
 		this.wRook1 = wRook1;
 	}
 
+	@Override
 	public int getwKing() {
 		return wKing;
 	}
@@ -2132,6 +2187,7 @@ public class ChessBoard implements BoardFace {
 		this.wRook2 = wRook2;
 	}
 
+	@Override
 	public int[] getbKingMoveOO() {
 		return bKingMoveOO;
 	}
@@ -2140,6 +2196,7 @@ public class ChessBoard implements BoardFace {
 		this.bKingMoveOO = bKingMoveOO;
 	}
 
+	@Override
 	public int[] getbKingMoveOOO() {
 		return bKingMoveOOO;
 	}
@@ -2148,6 +2205,7 @@ public class ChessBoard implements BoardFace {
 		this.bKingMoveOOO = bKingMoveOOO;
 	}
 
+	@Override
 	public int[] getwKingMoveOO() {
 		return wKingMoveOO;
 	}
@@ -2156,6 +2214,7 @@ public class ChessBoard implements BoardFace {
 		this.wKingMoveOO = wKingMoveOO;
 	}
 
+	@Override
 	public int[] getwKingMoveOOO() {
 		return wKingMoveOOO;
 	}
@@ -2164,6 +2223,7 @@ public class ChessBoard implements BoardFace {
 		this.wKingMoveOOO = wKingMoveOOO;
 	}
 
+	@Override
 	public int[] getBoardColor() {
 		return boardcolor;
 	}
@@ -2184,10 +2244,12 @@ public class ChessBoard implements BoardFace {
 		return chess960;
 	}
 
+	@Override
 	public void setChess960(boolean chess960) {
 		this.chess960 = chess960;
 	}
 
+	@Override
 	public int[][] getHistory() {
 		return history;
 	}
@@ -2228,6 +2290,7 @@ public class ChessBoard implements BoardFace {
 		this.rotated = rotated;
 	}
 
+	@Override
 	public int getTacticsCorrectMoves() {
 		return tacticsCorrectMoves;
 	}
@@ -2246,10 +2309,12 @@ public class ChessBoard implements BoardFace {
 		return xside;
 	}
 
+	@Override
 	public void setXside(int xside) {
 		this.xside = xside;
 	}
 
+	@Override
 	public int getFifty() {
 		return fifty;
 	}

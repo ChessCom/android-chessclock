@@ -45,7 +45,7 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.USERNAME, ""));
 				} else {
 					owner.setTextColor(Color.RED);
-					owner.setText(activity.getMainApp().getSharedData().getString("opponent", ""));
+					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.OPPONENT, ""));
 				}
 			}
 		}

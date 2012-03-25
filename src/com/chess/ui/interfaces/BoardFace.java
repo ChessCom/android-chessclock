@@ -105,8 +105,8 @@ public interface BoardFace {
 
 	void takeNext();
 
-	CharSequence MoveListSAN();
-//    List<String> MoveListSAN();
+	CharSequence getMoveListSAN();
+//    List<String> getMoveListSAN();
 
 	String convertMoveLive();
 

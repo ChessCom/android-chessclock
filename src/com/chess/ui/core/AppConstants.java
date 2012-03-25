@@ -116,4 +116,15 @@ public class AppConstants {
 	public static final String CHALLENGE = ", challenge: ";
 	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
 	public static final String LISTENER = ": listener=";
+	public static final String TACTICS_ID_PARAMETER = "&tactics_id=";
+	public static final String API_TACTICS_TRAINER_ID_PARAMETER = "/api/tactics_trainer?id=";
+	public static final String PASSED_PARAMETER = "&passed=";
+	public static final String CORRECT_MOVES_PARAMETER = "&correct_moves=";
+	public static final String SECONDS_PARAMETER = "&seconds=";
+	public static final String SYMBOL_SPACE = " ";
+	public static final String OPPONENT = "opponent";
+	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
+	public static final String MOBCLIX_EXCEPTION_IN_SHOW_GAME_END_POPUP = "MOBCLIX: EXCEPTION IN showGameEndPopup";
+	public static final String URL_GET_ANDROID_VERSION = "http://www.chess.com/api/get_android_version";
+	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
 }

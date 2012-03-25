@@ -224,8 +224,10 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 				mainApp.getSharedDataEditor().commit();
 			}
-			startActivity(new Intent(this, LoginScreenActivity.class));
-			finish();
+			Intent intent = new Intent(this, LoginScreenActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+//			finish();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(mainApp.getMembershipAndroidIntent());
 		}/*else if(view.getId() == R.id.PrefBoard){
@@ -255,15 +257,15 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 					}).create().show();
 		}*/ else if (view.getId() == R.id.PrefInvite) {
 			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-			emailIntent.setType("text/plain");
+			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
 			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invite_text) + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\". \n \n Sent from my Android");
 			FlurryAgent.onEvent("Invite A Friend", null);
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-			emailIntent.setType("plain/text");
-			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"mobile@chess.com"});
+			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
+			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
 			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Android Support");
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));

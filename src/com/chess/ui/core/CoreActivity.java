@@ -625,19 +625,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	private void checkUpdate() {  // TODO show progress
-		new CheckUpdateTask(this, mainApp).execute("http://www.chess.com/api/get_android_version");
-	}
-
-	private void showNetworkChangeNotification() {
-		new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// mainApp.setNetworkChangedNotification(false);
-						startActivity(new Intent(CoreActivity.this, Tabs.class));
-					}
-				}).create().show();
+		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	/*
