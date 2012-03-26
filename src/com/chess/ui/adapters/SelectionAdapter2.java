@@ -6,13 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.model.Selection;
+import com.chess.model.SelectionItem;
 
 import java.util.List;
 
-public class SelectionAdapter2 extends ItemsAdapter<Selection> {
+public class SelectionAdapter2 extends ItemsAdapter<SelectionItem> {
 
-	public SelectionAdapter2(Context context, List<Selection> itemList) {
+	public SelectionAdapter2(Context context, List<SelectionItem> itemList) {
 		super(context, itemList);
 	}
 
@@ -27,7 +27,7 @@ public class SelectionAdapter2 extends ItemsAdapter<Selection> {
 	}
 
 	@Override
-	protected void bindView(Selection item, int pos, View convertView) {
+	protected void bindView(SelectionItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.image.setImageDrawable(item.image);
 	}
@@ -47,7 +47,7 @@ public class SelectionAdapter2 extends ItemsAdapter<Selection> {
 		return convertView;
 	}
 
-	private void bindDropDownView(Selection item, int pos, View convertView) {
+	private void bindDropDownView(SelectionItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.image.setImageDrawable(item.image);
 		holder.text.setText(item.text);

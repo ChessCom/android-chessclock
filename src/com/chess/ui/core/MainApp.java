@@ -18,9 +18,9 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.Game;
-import com.chess.model.GameListElement;
-import com.chess.model.Tactic;
+import com.chess.model.GameItem;
+import com.chess.model.GameListItem;
+import com.chess.model.TacticItem;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.utilities.BitmapLoader;
 import com.chess.utilities.SoundPlayer;
@@ -59,12 +59,12 @@ public class MainApp extends Application {
 	public boolean acceptdraw = false;
 	private Bitmap[][] piecesBitmaps;
 	private Bitmap boardBitmap;
-	private ArrayList<GameListElement> gameListItems = new ArrayList<GameListElement>();
-	private Game currentGame;
+	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
+	private GameItem currentGame;
 	private String gameId = "";
-	private ArrayList<Tactic> tacticsBatch;
+	private ArrayList<TacticItem> tacticsBatch;
 
-	private Tactic tactic;
+	private TacticItem tactic;
 	public int currentTacticProblem = 0;
 	private Context context;
 	private Resources resources;
@@ -95,7 +95,7 @@ public class MainApp extends Application {
 	public void loadBoard(String boardName, View progressView) {
 		context = this;
 //		new BitmapLoaderTask(new BitmapLoadUpdateListener(progressView)).execute(boardName);
-		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(boardName, "drawable", "com.chess"));
+		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(boardName, "drawable", AppConstants.PACKAGE_NAME));
 	}
 
 //	private class BitmapLoadUpdateListener extends AbstractUpdateListener<Bitmap,String>{
@@ -121,18 +121,18 @@ public class MainApp extends Application {
 //		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
 		resources = getResources();
 		piecesBitmaps = new Bitmap[2][6];
-		piecesBitmaps[0][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wp", "drawable", "com.chess"));
-		piecesBitmaps[0][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wn", "drawable", "com.chess"));
-		piecesBitmaps[0][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wb", "drawable", "com.chess"));
-		piecesBitmaps[0][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wr", "drawable", "com.chess"));
-		piecesBitmaps[0][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wq", "drawable", "com.chess"));
-		piecesBitmaps[0][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wk", "drawable", "com.chess"));
-		piecesBitmaps[1][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bp", "drawable", "com.chess"));
-		piecesBitmaps[1][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bn", "drawable", "com.chess"));
-		piecesBitmaps[1][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bb", "drawable", "com.chess"));
-		piecesBitmaps[1][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_br", "drawable", "com.chess"));
-		piecesBitmaps[1][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bq", "drawable", "com.chess"));
-		piecesBitmaps[1][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bk", "drawable", "com.chess"));
+		piecesBitmaps[0][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wp", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[0][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wn", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[0][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wb", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[0][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wr", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[0][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wq", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[0][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wk", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[1][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bp", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[1][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bn", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[1][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bb", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[1][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_br", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[1][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bq", "drawable", AppConstants.PACKAGE_NAME));
+		piecesBitmaps[1][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bk", "drawable", AppConstants.PACKAGE_NAME));
 
 	}
 
@@ -154,11 +154,11 @@ public class MainApp extends Application {
 			soundPlayer = new SoundPlayer(this);
 		  }*/
 
-	public void ShowMessage(String msg) {
+	public void showToast(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 	}
 
-	public void ShowDialog(Context ctx, String title, String message) {
+	public void showDialog(Context ctx, String title, String message) {
 		if (message == null || message.trim().equals("")) {
 			return;
 		}
@@ -167,6 +167,7 @@ public class MainApp extends Application {
 				.setTitle(title)
 				.setMessage(message)
 				.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 					}
 				}).create().show();
@@ -177,7 +178,7 @@ public class MainApp extends Application {
 			try {
 				String versionName = "";
 				try {
-					versionName = getPackageManager().getPackageInfo("com.chess", 0).versionName;
+					versionName = getPackageManager().getPackageInfo(AppConstants.PACKAGE_NAME, 0).versionName;
 				} catch (NameNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -277,11 +278,11 @@ public class MainApp extends Application {
 		return boardBitmap;
 	}
 
-	public Game getCurrentGame() {
+	public GameItem getCurrentGame() {
 		return currentGame;
 	}
 
-	public void setCurrentGame(Game currentGame) {
+	public void setCurrentGame(GameItem currentGame) {
 		this.currentGame = currentGame;
 	}
 
@@ -293,7 +294,7 @@ public class MainApp extends Application {
 		this.gameId = gameId;
 	}
 
-	public ArrayList<GameListElement> getGameListItems() {
+	public ArrayList<GameListItem> getGameListItems() {
 		return gameListItems;
 	}
 
@@ -325,19 +326,19 @@ public class MainApp extends Application {
 		this.tabHost = tabHost;
 	}
 
-	public Tactic getTactic() {
+	public TacticItem getTactic() {
 		return tactic;
 	}
 
-	public void setTactic(Tactic tactic) {
+	public void setTactic(TacticItem tactic) {
 		this.tactic = tactic;
 	}
 
-	public ArrayList<Tactic> getTacticsBatch() {
+	public ArrayList<TacticItem> getTacticsBatch() {
 		return tacticsBatch;
 	}
 
-	public void setTacticsBatch(ArrayList<Tactic> tacticsBatch) {
+	public void setTacticsBatch(ArrayList<TacticItem> tacticsBatch) {
 		this.tacticsBatch = tacticsBatch;
 	}
 

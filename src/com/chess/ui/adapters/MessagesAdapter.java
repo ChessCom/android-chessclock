@@ -8,20 +8,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.model.Message;
+import com.chess.model.MessageItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 
 import java.util.ArrayList;
 
-public class MessagesAdapter extends ArrayAdapter<Message> {
+public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 
-	public ArrayList<Message> items;
+	public ArrayList<MessageItem> items;
 	private LayoutInflater vi;
 	private int resource;
 	private CoreActivityActionBar activity;
 
-	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<Message> items) {
+	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<MessageItem> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.vi = LayoutInflater.from(context);
@@ -34,7 +34,7 @@ public class MessagesAdapter extends ArrayAdapter<Message> {
 		if (convertView == null) {
 			convertView = vi.inflate(resource, null);
 		}
-		Message el = items.get(position);
+		MessageItem el = items.get(position);
 		if (el != null) {
 			TextView owner = (TextView) convertView.findViewById(R.id.owner);
 			TextView text = (TextView) convertView.findViewById(R.id.text);

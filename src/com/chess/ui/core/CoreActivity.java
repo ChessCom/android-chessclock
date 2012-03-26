@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
+import com.chess.model.GameItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.interfaces.CoreActivityFace;
@@ -288,7 +289,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			if (Web.getStatusCode() == -1)
 				mainApp.noInternet = true;
 			else {
-				if (mainApp.noInternet) { /* mainApp.ShowMessage("Online mode!"); */
+				if (mainApp.noInternet) { /* mainApp.showToast("Online mode!"); */
 					mainApp.offline = false;
 				}
 				mainApp.noInternet = false;
@@ -354,8 +355,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 												 * onClick(DialogInterface dialog, int whichButton) {
 												 * startActivity(new Intent(CoreActivity.this, Game.class).
 												 * putExtra(AppConstants.GAME_MODE, 4).
-												 * putExtra(GameListElement.GAME_ID,
-												 * el.values.get(GameListElement.GAME_ID))); } })
+												 * putExtra(GameListItem.GAME_ID,
+												 * el.values.get(GameListItem.GAME_ID))); } })
 												 */
 					.create();
 			alertDialog.setCanceledOnTouchOutside(true);
@@ -642,7 +643,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	@Override
-	public com.chess.model.Game getCurrentGame() {
+	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
 	}
 }

@@ -13,7 +13,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
-import com.chess.model.GameListElement;
+import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
@@ -51,7 +51,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 	public static int ONLINE_CALLBACK_CODE = 32;
 
-	private GameListElement gameListElement;
+	private GameListItem gameListElement;
 
 	private AcceptDrawDialogListener acceptDrawDialogListener;
 	private GameListItemClickListener gameListItemClickListener;
@@ -121,9 +121,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-										+ AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListElement.GAME_ID)
+										+ AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID)
 										+ "&command=ACCEPTDRAW&timestamp="
-										+ gameListElement.values.get(GameListElement.TIMESTAMP),
+										+ gameListElement.values.get(GameListItem.TIMESTAMP),
 								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 						);
 					}
@@ -132,7 +132,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 				case DialogInterface.BUTTON_NEUTRAL: {
 					if (appService != null) {
 						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListElement.GAME_ID) + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListElement.TIMESTAMP),
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID) + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
 								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 						);
 					}
@@ -141,7 +141,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 				case DialogInterface.BUTTON_NEGATIVE: {
 					startActivity(new Intent(coreContext, GameLiveScreenActivity.class).
 							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
-							putExtra(GameListElement.GAME_ID, gameListElement.values.get(GameListElement.GAME_ID)));
+							putExtra(GameListItem.GAME_ID, gameListElement.values.get(GameListItem.GAME_ID)));
 
 				}
 				break;
@@ -156,7 +156,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		switch (id) {
 			case 0: {
 				if (temp_pos > -1) {
-//					final GameListElement el = mainApp.getGameListItems().get(temp_pos);
+//					final GameListItem el = mainApp.getGameListItems().get(temp_pos);
 					return new AlertDialog.Builder(this)
 							.setTitle(getString(R.string.accept_draw_q))
 							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
@@ -266,50 +266,50 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListItem el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, ChatActivity.class);
-				intent.putExtra(GameListElement.GAME_ID, gameListElement.values.get(GameListElement.GAME_ID));
-				intent.putExtra(GameListElement.TIMESTAMP, gameListElement.values.get(GameListElement.TIMESTAMP));
+				intent.putExtra(GameListItem.GAME_ID, gameListElement.values.get(GameListItem.GAME_ID));
+				intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
 				startActivity(intent);
 			} else if (pos == 1) {
 				String Draw = AppConstants.OFFERDRAW;
-				if (gameListElement.values.get(GameListElement.IS_DRAW_OFFER_PENDING).equals("p"))
+				if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p"))
 					Draw = AppConstants.ACCEPTDRAW;
 
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListElement.GAME_ID)
+						+ AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID)
 						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
-						+ gameListElement.values.get(GameListElement.TIMESTAMP), "GET", null, null);
+						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
 				if (result.contains(AppConstants.SUCCESS)) {
-					mainApp.ShowMessage(getString(R.string.accepted));
+					mainApp.showToast(getString(R.string.accepted));
 					update(GameBaseActivity.CALLBACK_SEND_MOVE);
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
-					mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
-					//mainApp.ShowDialog(Online.this, "Error", result);
+					//mainApp.showDialog(Online.this, "Error", result);
 				}
 			} else if (pos == 2) {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListElement.GAME_ID)
+						+ AppConstants.CHESSID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID)
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-						+ gameListElement.values.get(GameListElement.TIMESTAMP), "GET", null, null);
+						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_SEND_MOVE);
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
-					mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
-					//mainApp.ShowDialog(Online.this, "Error", result);
+					//mainApp.showDialog(Online.this, "Error", result);
 				}
 			}
 		}
@@ -330,12 +330,12 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 								gameListItemDialogListener)
 						.create().show();
 			} else if (gameListElement.type == 2) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, ChatActivity.class);
-				intent.putExtra(GameListElement.GAME_ID, gameListElement.values.get(GameListElement.GAME_ID));
-				intent.putExtra(GameListElement.TIMESTAMP, gameListElement.values.get(GameListElement.TIMESTAMP));
+				intent.putExtra(GameListItem.GAME_ID, gameListElement.values.get(GameListItem.GAME_ID));
+				intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
 				startActivity(intent);
 			}
 			return true;
@@ -346,19 +346,19 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListItem el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				LccHolder.LOG.info("Accept challenge: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				update(2);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				LccHolder.LOG.info("Decline challenge: " + challenge);
 				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				update(3);
 			}
 		}
@@ -367,15 +367,15 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private class IsDirectDialogChallengeListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				LccHolder.LOG.info("Cancel my challenge: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				update(4);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListElement.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				LccHolder.LOG.info("Just keep my challenge: " + challenge);
 			}
 		}
@@ -384,15 +384,15 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private class IsIndirencetDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListElement.GAME_ID));
+				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListItem.GAME_ID));
 				LccHolder.LOG.info("Cancel my seek: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-				lccHolder.removeSeek(gameListElement.values.get(GameListElement.GAME_ID));
+				lccHolder.removeSeek(gameListElement.values.get(GameListItem.GAME_ID));
 				update(4);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListElement.GAME_ID));
+				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListItem.GAME_ID));
 				LccHolder.LOG.info("Just keep my seek: " + challenge);
 			}
 		}
@@ -401,32 +401,32 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private class NonLiveDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListElement el = mainApp.getGameListItems().get(pos);
+//			final GameListItem el = mainApp.getGameListItems().get(pos);
 
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST
-						+ "/api/echess_open_invites?id="
+						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ "&acceptinviteid=" + gameListElement.values.get(GameListElement.GAME_ID), "GET", null, null);
+						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID), "GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(2);
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
-					mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
-					//mainApp.ShowDialog(Online.this, "Error", result);
+					//mainApp.showDialog(Online.this, "Error", result);
 				}
 			} else if (pos == 1) {
 
 				String result = Web.Request("http://www." + LccHolder.HOST
-						+ "/api/echess_open_invites?id="
+						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ "&declineinviteid=" + gameListElement.values.get(GameListElement.GAME_ID), "GET", null, null);
+						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID), "GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(3);
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
-					mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
-					//mainApp.ShowDialog(Online.this, "Error", result);
+					//mainApp.showDialog(Online.this, "Error", result);
 				}
 			}
 		}
@@ -439,13 +439,13 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			gameListElement = mainApp.getGameListItems().get(pos);
 			if (gameListElement.type == 0) {
 				final String title = mainApp.isLiveChess() ?
-						gameListElement.values.get(GameListElement.OPPONENT_CHESS_TITLE) :
-						"Win: " + gameListElement.values.get(GameListElement.OPPONENT_WIN_COUNT)
-								+ " Loss: " + gameListElement.values.get(GameListElement.OPPONENT_LOSS_COUNT)
-								+ " Draw: " + gameListElement.values.get(GameListElement.OPPONENT_DRAW_COUNT);
+						gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :
+						"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+								+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+								+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
 				if (mainApp.isLiveChess()) {
-					if (gameListElement.values.get(GameListElement.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListElement.IS_RELEASED_BY_ME).equals("0")) {
+					if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
 						new AlertDialog.Builder(coreContext)
 								.setTitle(title)
 								.setItems(new String[]{
@@ -453,18 +453,18 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 										getString(R.string.decline)},
 										challengeDialogListener)
 								.create().show();
-					} else if (gameListElement.values.get(GameListElement.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListElement.IS_RELEASED_BY_ME).equals("1")) {
+					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
 						new AlertDialog.Builder(coreContext)
 								.setTitle(title)
 								.setItems(new String[]{"Cancel", "Keep"}, isDirectDialogChallengeListener)
 								.create().show();
-					} else if (gameListElement.values.get(GameListElement.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListElement.IS_RELEASED_BY_ME).equals("0")) {
-						final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListElement.GAME_ID));
+					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
+						final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListItem.GAME_ID));
 						LccHolder.LOG.info("Accept seek: " + challenge);
 						lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-						lccHolder.removeSeek(gameListElement.values.get(GameListElement.GAME_ID));
+						lccHolder.removeSeek(gameListElement.values.get(GameListItem.GAME_ID));
 						update(2);
-					} else if (gameListElement.values.get(GameListElement.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListElement.IS_RELEASED_BY_ME).equals("1")) {
+					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
 						new AlertDialog.Builder(coreContext)
 								.setTitle(title)
 								.setItems(new String[]{"Cancel", "Keep"}, isIndirencetDialogListener)
@@ -482,10 +482,10 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 				}
 
 			} else if (gameListElement.type == 1) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
-				if (gameListElement.values.get(GameListElement.IS_DRAW_OFFER_PENDING).equals("p")) {
+				if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
 					mainApp.acceptdraw = true;
 					temp_pos = pos;
 					showDialog(0);
@@ -494,16 +494,16 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 					Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);
 					intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-					intent.putExtra(GameListElement.GAME_ID, gameListElement.values.get(GameListElement.GAME_ID));
+					intent.putExtra(GameListItem.GAME_ID, gameListElement.values.get(GameListItem.GAME_ID));
 					startActivity(intent);
 				}
 			} else if (gameListElement.type == 2) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListElement.OPPONENT_USERNAME));
+				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);
 				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
-				intent.putExtra(GameListElement.GAME_ID, gameListElement.values.get(GameListElement.GAME_ID));
+				intent.putExtra(GameListItem.GAME_ID, gameListElement.values.get(GameListItem.GAME_ID));
 				startActivity(intent);
 			}
 		}
@@ -565,7 +565,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
 			//int t = mainApp.sharedData.getInt("gamestype", 1);
-			ArrayList<GameListElement> tmp = new ArrayList<GameListElement>();
+			ArrayList<GameListItem> tmp = new ArrayList<GameListItem>();
 			gamesList.setVisibility(View.GONE);
 
 			mainApp.getGameListItems().clear();
@@ -594,11 +594,11 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		} else if (code == 2) {
 			onPause();
 			onResume();
-			mainApp.ShowMessage(getString(R.string.challengeaccepted));
+			mainApp.showToast(getString(R.string.challengeaccepted));
 		} else if (code == 3) {
 			onPause();
 			onResume();
-			mainApp.ShowMessage(getString(R.string.challengedeclined));
+			mainApp.showToast(getString(R.string.challengedeclined));
 		} else if (code == 4) {
 			onPause();
 			onResume();

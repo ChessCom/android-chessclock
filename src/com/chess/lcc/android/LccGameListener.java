@@ -5,6 +5,7 @@ import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
 import com.chess.live.util.Utils;
 import com.chess.ui.core.AppConstants;
+import com.chess.ui.core.IntentConstants;
 
 import java.util.Collection;
 import java.util.List;
@@ -71,7 +72,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onFullGameReceived(Game game) {
-		LOG.info("GAME LISTENER: Full Game received: " + game);
+		LOG.info("GAME LISTENER: Full GameItem received: " + game);
 		final Long gameId = game.getId();
 		if (isOldGame(gameId)) {
 			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
@@ -133,7 +134,8 @@ public class LccGameListener implements GameListener {
 		if (TESTING_GAME) {
 			if (game.isMoveOf(lccHolder.getUser())) {
 				Utils.sleep(8000L);
-				LOG.info("First move by: " + lccHolder.getUser().getUsername() + ", the movie: " + TEST_MOVES_COORD[game.getSeq()]);
+				LOG.info("First move by: " + lccHolder.getUser().getUsername() + ", the movie: "
+						+ TEST_MOVES_COORD[game.getSeq()]);
 				lccHolder.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()]);
 			}
 		}
@@ -220,7 +222,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameAborted(Game game) {
-		LOG.info("GAME LISTENER: Game aborted: " + game);
+		LOG.info("GAME LISTENER: GameItem aborted: " + game);
 	}
 
 	@Override
@@ -291,7 +293,7 @@ public class LccGameListener implements GameListener {
 						", game.id=" +
 						game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
 		if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {
-			lccHolder.getAndroid().sendBroadcastMessageIntent(0, "com.chess.lcc.android-game-info", "DRAW DECLINED",
+			lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_INFO, "DRAW DECLINED",
 					rejectorUsername + " has declined a draw");
 		}
 	}

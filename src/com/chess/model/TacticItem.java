@@ -4,11 +4,11 @@ import com.chess.ui.core.AppConstants;
 
 import java.util.HashMap;
 
-public class Tactic {
+public class TacticItem {
 
 	public HashMap<String, String> values;
 
-	public Tactic(String[] values) {
+	public TacticItem(String[] values) {
 		this.values = new HashMap<String, String>();
 		this.values.put(AppConstants.ID, values[0]);
 		this.values.put(AppConstants.FEN, values[1]);

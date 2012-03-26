@@ -2,7 +2,7 @@ package com.chess.model;
 
 import java.util.HashMap;
 
-public class GameListElement {
+public class GameListItem {
 
 	public final static int LIST_TYPE_CURRENT = 0;
 	public final static int LIST_TYPE_CHALLENGES = 1;
@@ -44,7 +44,7 @@ public class GameListElement {
 	public HashMap<String, String> values;
 	public boolean isLiveChess;
 
-	public GameListElement(int type, String[] values, boolean isLiveChess) {
+	public GameListItem(int type, String[] values, boolean isLiveChess) {
 		this.type = type;
 		this.values = new HashMap<String, String>();
 		this.isLiveChess = isLiveChess;
@@ -95,7 +95,7 @@ public class GameListElement {
 				this.values.put(IS_DRAW_OFFER_PENDING, values[13]);
 				this.values.put(IS_OPPONENT_ONLINE, values[14]);
 				this.values.put(IS_MY_TURN, values[15]);
-				this.values.put(Game.HAS_NEW_MESSAGE, values[16]);
+				this.values.put(GameItem.HAS_NEW_MESSAGE, values[16]);
 				break;
 			}
 			case LIST_TYPE_FINISHED: {

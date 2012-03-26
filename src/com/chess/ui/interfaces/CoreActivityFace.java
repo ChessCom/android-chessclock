@@ -1,6 +1,6 @@
 package com.chess.ui.interfaces;
 
-import com.chess.model.Game;
+import com.chess.model.GameItem;
 import com.chess.utilities.SoundPlayer;
 
 /**
@@ -14,5 +14,5 @@ public interface CoreActivityFace {
 
 	SoundPlayer getSoundPlayer();
 
-	Game getCurrentGame();
+	GameItem getCurrentGame();
 }

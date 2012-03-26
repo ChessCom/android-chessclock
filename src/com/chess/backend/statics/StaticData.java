@@ -12,4 +12,8 @@ public class StaticData {
 	public static final int RESULT_OK = 0;
 	public static final int EMPTY_DATA = 1;
 	public static final int DATA_EXIST = 2;
+
+	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";
+
+	public static final String REQUEST_CODE = "pending_intent_request_code";
 }

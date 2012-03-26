@@ -11,7 +11,8 @@ import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.config.Config;
-import com.chess.model.GameListElement;
+import com.chess.model.GameItem;
+import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.core.AppConstants;
 import org.apache.log4j.Logger;
@@ -53,7 +54,7 @@ public class LccHolder {
 	private UserSettings _settings;
 	private ServerStats _serverStats;
 	private Chat _mainChat;
-	private static LccHolder INSTANCE;
+	private static LccHolder instance;
 	public static final Logger LOG = Logger.getLogger(LccHolder.class);
 	private AndroidStuff android = new AndroidStuff(this);
 	public static final int OWN_SEEKS_LIMIT = 3;	 // TODO move all hasmaps to DB
@@ -65,7 +66,7 @@ public class LccHolder {
 	private final LccChallengeListener challengeListener;
 	private final LccSeekListListener seekListListener;
 	private final LccFriendStatusListener friendStatusListener;
-	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, com.chess.live.client.Game>();
+	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
 
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
@@ -189,10 +190,10 @@ public class LccHolder {
 	public long previousFGGameId;
 
 	public static LccHolder getInstance(InputStream keyStoreInputStream, String versionName) {
-		if (INSTANCE == null) {
-			INSTANCE = new LccHolder(keyStoreInputStream, versionName);
+		if (instance == null) {
+			instance = new LccHolder(keyStoreInputStream, versionName);
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	public AndroidStuff getAndroid() {
@@ -293,7 +294,7 @@ public class LccHolder {
 	  }*/
 
 	public boolean isUserPlaying() {
-		for (com.chess.live.client.Game game : lccGames.values()) {
+		for (Game game : lccGames.values()) {
 			if (!game.isEnded()) {
 				return true;
 			}
@@ -302,7 +303,7 @@ public class LccHolder {
 	}
 
 	public boolean isUserPlayingAnotherGame(Long currentGameId) {
-		for (com.chess.live.client.Game game : lccGames.values()) {
+		for (Game game : lccGames.values()) {
 			if (!game.getId().equals(currentGameId) && !game.isEnded()) {
 				return true;
 			}
@@ -356,7 +357,7 @@ public class LccHolder {
 	}
 
 	public String[] getOnlineFriends() {
-		final String[] array = new String[]{""};
+		final String[] array = new String[]{""}; // TODO check for live mode
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
 
@@ -394,8 +395,8 @@ public class LccHolder {
 		lccGames.clear();
 	}
 
-	public ArrayList<GameListElement> getChallengesAndSeeksData() {
-		ArrayList<GameListElement> output = new ArrayList<GameListElement>();
+	public ArrayList<GameListItem> getChallengesAndSeeksData() {
+		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
 		final Collection<Challenge> challengesAndSeeks = new ArrayList<Challenge>();
 		challengesAndSeeks.addAll(challenges.values());
@@ -462,18 +463,18 @@ public class LccHolder {
 					"+" + (challengerTimeConfig.getTimeIncrement() / 10) + "sec" : ""; // time_increment
 			challengeData[8] = challenge.getTo() != null ? "1" : "0"; // is_direct_challenge
 			challengeData[9] = isReleasedByMe ? "1" : "0";
-			output.add(new GameListElement(GameListElement.LIST_TYPE_CHALLENGES, challengeData, true));
-//			output.add(new GameListElement(GameListElement.LIST_TYPE_CURRENT, challengeData, true));
+			output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, challengeData, true));
+//			output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, challengeData, true));
 		}
 		return output;
 	}
 
 	public String[] getGameData(String gameId, int moveIndex) {
-		final com.chess.live.client.Game lccGame = getGame(gameId);
-		final String[] gameData = new String[com.chess.model.Game.GAME_DATA_ELEMENTS_COUNT];
+		final Game lccGame = getGame(gameId);
+		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 		gameData[0] = lccGame.getId().toString();
 		gameData[1] = "1";
-		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListElement.TIMESTAMP
+		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
 		gameData[3] = "";
 		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
@@ -704,7 +705,7 @@ public class LccHolder {
 		final Intent intent = new Intent(androidContext, GameBaseActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-		intent.putExtra(GameListElement.GAME_ID, "" + game.getId());
+		intent.putExtra(GameListItem.GAME_ID, "" + game.getId());
 		androidContext.startActivity(intent);
 		/*final Game currentGame = game;
 			if(game.getSeq() > 0)
@@ -896,7 +897,7 @@ public class LccHolder {
 	}
 
 	public Boolean isFairPlayRestriction(String gameId) {
-		final com.chess.live.client.Game game = getGame(gameId);
+		final Game game = getGame(gameId);
 		if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer()) {
 			return true;
 		}

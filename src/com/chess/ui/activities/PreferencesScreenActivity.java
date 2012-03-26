@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.*;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.Selection;
+import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter2;
 import com.chess.ui.core.AppConstants;
@@ -108,27 +108,27 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		preferencesUpgrade.setOnClickListener(this);
 
 
-		List<Selection> piecesList = new ArrayList<Selection>(9);
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.cases)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_classic), getString(R.string.classicP)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_club), getString(R.string.club)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_condal), getString(R.string.condal)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_maya), getString(R.string.maya)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.modern)));
-		piecesList.add(new Selection(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.vintage)));
+		List<SelectionItem> piecesList = new ArrayList<SelectionItem>(9);
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.cases)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_classic), getString(R.string.classicP)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_club), getString(R.string.club)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_condal), getString(R.string.condal)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_maya), getString(R.string.maya)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.modern)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.vintage)));
 
-		List<Selection> boardsList = new ArrayList<Selection>(9);
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_blue), getString(R.string.blue)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_brown), getString(R.string.brown)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_green), getString(R.string.green)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_grey), getString(R.string.grey)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_marble), getString(R.string.marble)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_red), getString(R.string.red)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.woodlight)));
-		boardsList.add(new Selection(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.wooddark)));
+		List<SelectionItem> boardsList = new ArrayList<SelectionItem>(9);
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_blue), getString(R.string.blue)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_brown), getString(R.string.brown)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_green), getString(R.string.green)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_grey), getString(R.string.grey)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_marble), getString(R.string.marble)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_red), getString(R.string.red)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.woodlight)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.wooddark)));
 
 		//spinners
 		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));

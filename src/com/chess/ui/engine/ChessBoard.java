@@ -10,7 +10,7 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
-import com.chess.model.Game;
+import com.chess.model.GameItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.CoreActivityFace;
@@ -1460,8 +1460,8 @@ public class ChessBoard implements BoardFace {
 							", histDat=[" + result.toString() + "], " +
 							histDat.length + ", " +
 							coreActivity.getCurrentGame().values.get(AppConstants.MOVE_LIST) + ", " +
-							coreActivity.getCurrentGame().values.get(Game.ENCODED_MOVE_STRING) + ", " +
-							coreActivity.getCurrentGame().values.get(Game.STARTING_FEN_POSITION));
+							coreActivity.getCurrentGame().values.get(GameItem.ENCODED_MOVE_STRING) + ", " +
+							coreActivity.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION));
 		}
 
 

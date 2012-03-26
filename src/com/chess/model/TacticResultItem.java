@@ -4,10 +4,10 @@ import com.chess.ui.core.AppConstants;
 
 import java.util.HashMap;
 
-public class TacticResult {
+public class TacticResultItem {
 	public HashMap<String, String> values;
 
-	public TacticResult(String[] values) {
+	public TacticResultItem(String[] values) {
 		this.values = new HashMap<String, String>();
 		this.values.put(AppConstants.SCORE, values[0]);
 		this.values.put(AppConstants.USER_RATING_CHANGE, values[1]);

@@ -11,7 +11,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.GameListElement;
+import com.chess.model.GameListItem;
+import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
@@ -27,7 +28,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 	private EditText sendText;
 	private ListView chatListView;
 	private MessagesAdapter messages = null;
-	private final ArrayList<com.chess.model.Message> chatItems = new ArrayList<com.chess.model.Message>();
+	private final ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			if (appService != null) {
 				appService.RunRepeatableTask(0, 0, 60000, "http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
-						+ extras.getString(GameListElement.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListElement.TIMESTAMP),
+						+ extras.getString(GameListItem.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
 						null/*
 							 * progressDialog = MyProgressDialog.show(Chat.this, null,
 							 * getString(R.string.gettingmessages), true)
@@ -62,7 +63,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 		} else if (code == 0) {
 			int before = chatItems.size();
 			chatItems.clear();
-			chatItems.addAll(ChessComApiParser.ReciveMessages(responseRepeatable));
+			chatItems.addAll(ChessComApiParser.receiveMessages(responseRepeatable));
 			if (before != chatItems.size()) {
 				if (messages == null) {
 					messages = new MessagesAdapter(ChatActivity.this, R.layout.chat_item, chatItems);
@@ -74,7 +75,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			}
 		} else if (code == 1) {
 			chatItems.clear();
-			chatItems.addAll(ChessComApiParser.ReciveMessages(response));
+			chatItems.addAll(ChessComApiParser.receiveMessages(response));
 
 			if (messages == null) {
 				messages = new MessagesAdapter(ChatActivity.this, R.layout.chat_item, chatItems);
@@ -104,8 +105,8 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			if (appService != null) {
 				String query = "http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
-						+ extras.getString(GameListElement.GAME_ID) + "&command=CHAT&message=" + message + AppConstants.TIMESTAMP_PARAMETER
-						+ extras.getString(GameListElement.TIMESTAMP);
+						+ extras.getString(GameListItem.GAME_ID) + "&command=CHAT&message=" + message + AppConstants.TIMESTAMP_PARAMETER
+						+ extras.getString(GameListItem.TIMESTAMP);
 				appService.RunSingleTask(1, query,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(ChatActivity.this, null,
 								getString(R.string.sendingmessage), true)));

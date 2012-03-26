@@ -60,7 +60,7 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 	@Override
 	public void update(int code) {
 		if (code == 0) {
-			mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
+			mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
 		}
 	}
 

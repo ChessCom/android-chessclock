@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
+import com.chess.model.GameItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 
@@ -95,7 +96,7 @@ public class ChatListenerImpl
 		LccHolder.LOG.info("CHAT LISTENER: Message received: " + message);
 		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHolder.getChatMessages(chat.getId());
 		if (receivedMessages == null) {
-			receivedMessages = new LinkedHashMap();
+			receivedMessages = new LinkedHashMap<Long, ChatMessage>();
 			lccHolder.getReceivedChats().put(chat, receivedMessages);
 		}
 		if (lccHolder.isUserBlocked(message.getAuthor().getUsername())) {
@@ -103,7 +104,7 @@ public class ChatListenerImpl
 			return;
 		}
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroid().getContext().getCurrentGame().values.put(com.chess.model.Game.HAS_NEW_MESSAGE, "1");
+			lccHolder.getAndroid().getContext().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
 			lccHolder.getAndroid().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
 		}
 	}

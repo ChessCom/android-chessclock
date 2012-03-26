@@ -82,7 +82,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 			mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
 			mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
 			mainApp.getSharedDataEditor().commit();
-			//mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+			//mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
 		}
 	}
 

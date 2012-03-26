@@ -105,7 +105,7 @@ public class OnlineFriendChallengeActivity extends CoreActivityActionBar impleme
 						.create().show();
 			}
 		} else if (code == 1) {
-			mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
+			mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
 		}
 	}
 

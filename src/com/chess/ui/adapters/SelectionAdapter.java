@@ -8,17 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.model.Selection;
+import com.chess.model.SelectionItem;
 
 import java.util.ArrayList;
 
-public class SelectionAdapter extends ArrayAdapter<Selection> {
+public class SelectionAdapter extends ArrayAdapter<SelectionItem> {
 
-	public ArrayList<Selection> items;
+	public ArrayList<SelectionItem> items;
 	private LayoutInflater vi;
 	private int resource;
 
-	public SelectionAdapter(Context context, int textViewResourceId, ArrayList<Selection> items) {
+	public SelectionAdapter(Context context, int textViewResourceId, ArrayList<SelectionItem> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.vi = LayoutInflater.from(context);
@@ -30,7 +30,7 @@ public class SelectionAdapter extends ArrayAdapter<Selection> {
 		if (convertView == null) {
 			convertView = vi.inflate(resource, null);
 		}
-		Selection el = items.get(position);
+		SelectionItem el = items.get(position);
 		if (el != null) {
 			TextView text = (TextView) convertView.findViewById(R.id.text);
 			ImageView image = (ImageView) convertView.findViewById(R.id.image);

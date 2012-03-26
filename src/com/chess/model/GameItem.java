@@ -5,7 +5,7 @@ import com.chess.ui.core.AppConstants;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class Game implements Serializable {
+public class GameItem implements Serializable {
 
 	public static int GAME_DATA_ELEMENTS_COUNT = 14;
 
@@ -17,12 +17,12 @@ public class Game implements Serializable {
 
 	public HashMap<String, String> values;
 
-	public Game(String[] values, boolean isLiveChess) {
+	public GameItem(String[] values, boolean isLiveChess) {
 		this.values = new HashMap<String, String>();
 		final String gameId = isLiveChess ? values[0] : values[0].split("[+]")[1];
-		this.values.put(GameListElement.GAME_ID, gameId);
-		this.values.put(GameListElement.GAME_TYPE, values[1]);
-		this.values.put(GameListElement.TIMESTAMP, values[2]);
+		this.values.put(GameListItem.GAME_ID, gameId);
+		this.values.put(GameListItem.GAME_TYPE, values[1]);
+		this.values.put(GameListItem.TIMESTAMP, values[2]);
 		this.values.put("game_name", values[3]);
 		this.values.put(AppConstants.WHITE_USERNAME, values[4].trim());
 		this.values.put(AppConstants.BLACK_USERNAME, values[5].trim());

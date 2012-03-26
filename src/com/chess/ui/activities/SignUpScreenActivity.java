@@ -118,7 +118,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			mainApp.getSharedDataEditor().commit();
 			startActivity(new Intent(context, HomeScreenActivity.class));
 			finish();
-			mainApp.ShowMessage(getString(R.string.congratulations));
+			mainApp.showToast(getString(R.string.congratulations));
 		}
 	}
 
@@ -132,23 +132,23 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	public void onClick(View view) {
 		if (view.getId() == R.id.RegSubmitBtn) {
 			if (RegUsername.getText().toString().length() < 3) {
-				mainApp.ShowMessage(getString(R.string.wrongusername));
+				mainApp.showToast(getString(R.string.wrongusername));
 				return;
 			}
 			if (RegEmail.getText().toString().equals("")) {
-				mainApp.ShowMessage(getString(R.string.wrongemail));
+				mainApp.showToast(getString(R.string.wrongemail));
 				return;
 			}
 			if (RegPassword.getText().toString().length() < 6) {
-				mainApp.ShowMessage(getString(R.string.wrongpassword));
+				mainApp.showToast(getString(R.string.wrongpassword));
 				return;
 			}
 			if (!RegPassword.getText().toString().equals(RegRetype.getText().toString())) {
-				mainApp.ShowMessage(getString(R.string.wrongretype));
+				mainApp.showToast(getString(R.string.wrongretype));
 				return;
 			}
 			if (CID == -1) {
-				mainApp.ShowMessage(getString(R.string.wrongcountry));
+				mainApp.showToast(getString(R.string.wrongcountry));
 				return;
 			}
 

@@ -104,7 +104,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
 			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
 			mainApp.getSharedDataEditor().commit();
-			//mainApp.ShowDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+			//mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
 		}
 	}
 

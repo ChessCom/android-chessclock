@@ -3,10 +3,11 @@ package com.chess.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-public class Message {
-	public String owner = "", message = "";
+public class MessageItem {
+	public String owner = "";
+	public String message = "";
 
-	public Message(String owner, String msg) {
+	public MessageItem(String owner, String msg) {
 		this.owner = owner;
 		try {
 			this.message = URLDecoder.decode(msg, "UTF-8");

@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.Game;
-import com.chess.model.GameListElement;
+import com.chess.model.GameItem;
+import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
@@ -61,7 +61,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected boolean isMoveNav;
 	protected boolean chat;
 
-	protected com.chess.model.Game game;
+	protected GameItem game;
 
 	protected TextView whiteClockView;
 	protected TextView blackClockView;
@@ -275,7 +275,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			game = (com.chess.model.Game) intent.getSerializableExtra(AppConstants.OBJECT);
+			game = (GameItem) intent.getSerializableExtra(AppConstants.OBJECT);
 			update(CALLBACK_GAME_REFRESH);
 		}
 	};
@@ -358,7 +358,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 			}
 
 			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
-			//mainApp.ShowDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
+			//mainApp.showDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
 			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
 			findViewById(R.id.newGame).setOnClickListener(GameBaseActivity.this);
 			findViewById(R.id.home).setOnClickListener(GameBaseActivity.this);
@@ -373,7 +373,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			mainApp.ShowDialog(coreContext, intent.getExtras()
+			mainApp.showDialog(coreContext, intent.getExtras()
 					.getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
 		}
 	};
@@ -400,6 +400,13 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
+	@Override
+	public void switch2Chat() {
+		chat = true;
+		// TODO add here flag clear
+		getOnlineGame(mainApp.getGameId());
+	}
+
 	protected void restoreGame(){
 		restoreLastConfig();
 	}
@@ -409,7 +416,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
-		if (mainApp.getCurrentGame().values.get(GameListElement.GAME_TYPE).equals("2"))
+		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
 			newBoardView.getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
@@ -422,7 +429,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 			newBoardView.getBoardFace().setMovesCount(moves.length);
 		}
 
-		String FEN = mainApp.getCurrentGame().values.get(Game.STARTING_FEN_POSITION);
+		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals("")) {
 			newBoardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, newBoardView.getBoardFace().getBoard());
@@ -465,7 +472,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
 				//lccHolder.getAndroid().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				game = new com.chess.model.Game(lccHolder.getGameData(
+				game = new GameItem(lccHolder.getGameData(
 						gameEvent.getGameId().toString(), gameEvent.getMoveIndex()), true);
 				update(CALLBACK_GAME_REFRESH);
 			}
@@ -662,11 +669,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 //	}
 
 
-	@Override
-	public void switch2Chat() {
-		chat = true;
-		getOnlineGame(mainApp.getGameId());
-	}
+
 
 
 	@Override

@@ -69,13 +69,13 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		if (view.getId() == R.id.singin) {
 
 			if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
-				mainApp.ShowDialog(context, getString(R.string.error), getString(R.string.validateUsername));
+				mainApp.showDialog(context, getString(R.string.error), getString(R.string.validateUsername));
 				return;
 			}
 			/*
 			 * if(password.getText().toString().length() < 6 ||
 			 * password.getText().toString().length() > 20){
-			 * mainApp.ShowDialog(Singin.this, getString(R.string.error),
+			 * mainApp.showDialog(Singin.this, getString(R.string.error),
 			 * getString(R.string.validatePassword)); return; }
 			 */
 
@@ -118,7 +118,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			if (response.contains("Success+")) {
 				Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
 			} else if (response.contains("Error+Facebook user has no Chess.com account")) {
-				mainApp.ShowMessage("You have no Chess.com account, sign up, please.");
+				mainApp.showToast("You have no Chess.com account, sign up, please.");
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
 						+ "/register.html")));
 			}
@@ -126,19 +126,19 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		@Override
 		public void onAuthFail(String error) {
-			mainApp.ShowMessage("Login Failed: " + error);
+			mainApp.showToast("Login Failed: " + error);
 		}
 	}
 
 	public class SampleLogoutListener implements SessionEvents.LogoutListener {
 		@Override
 		public void onLogoutBegin() {
-			mainApp.ShowMessage("Logging out...");
+			mainApp.showToast("Logging out...");
 		}
 
 		@Override
 		public void onLogoutFinish() {
-			mainApp.ShowMessage("You have logged out!");
+			mainApp.showToast("You have logged out!");
 		}
 	}
 

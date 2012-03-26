@@ -225,7 +225,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					message = "1/2 - 1/2 Draw by fifty move rule";*/
 		if (message != null) {
 			finished = true;
-			mainApp.ShowMessage(message);
+			mainApp.showToast(message);
 			Intent intent = new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP);
 			intent.putExtra(AppConstants.MESSAGE, "GAME OVER: " + message);
 			intent.putExtra(AppConstants.FINISHABLE, false);
@@ -238,13 +238,12 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
 			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 
-			mainApp.ShowMessage(getContext().getResources().getString(R.string.check));
+			mainApp.showToast(getContext().getResources().getString(R.string.check));
 		}
 		return false;
 	}
 
 	public void computerMove(final int time) {
-		// TODO check
 		if(boardFace.isAnalysis())
 			return;
 
@@ -358,7 +357,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int p = boardFace.getPieces()[i];
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
-				if (c != 6 && p != 6) {	// TODO here is the simple replace/redraw of piece
+				if (c != 6 && p != 6) {	// here is the simple replace/redraw of piece
 					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
 							new Rect(x * square, y * square, x * square + square, y * square + square), null);
 				}
@@ -371,7 +370,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int p = p_tmp[i];
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
-				if (c != 6 && p != 6) {	 // TODO here is the simple replace/redraw of piece
+				if (c != 6 && p != 6) {	 // here is the simple replace/redraw of piece
 					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
 							new Rect(x * square, y * square, x * square + square, y * square + square), null);
 				}

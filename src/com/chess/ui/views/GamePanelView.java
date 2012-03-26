@@ -514,8 +514,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		this.boardViewFace = boardViewFace;
 	}
 
-	public void haveNewMessages(boolean newMessages) {
+	public void haveNewMessage(boolean newMessage) {
+		int imgId = newMessage? R.drawable.ic_chat_nm1 :R.drawable.ic_chat;
 
+		((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
 	}
 
 	private class MovesAdapter extends ItemsAdapter<String> {

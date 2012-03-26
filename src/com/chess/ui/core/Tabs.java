@@ -179,7 +179,7 @@ public class Tabs extends TabActivity implements OnClickListener {
 			//System.out.println("LCCLOG2: TABS ONRESUME 4");
 		}
 		//System.out.println("LCCLOG2: TABS ONRESUME 5");
-		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter("com.chess.lcc.android-logging-in-info"));
+		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 	}
 
 	@Override

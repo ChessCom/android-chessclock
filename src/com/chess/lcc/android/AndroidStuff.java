@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import com.chess.live.client.Challenge;
+import com.chess.model.GameItem;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.activities.OnlineScreenActivity;
 import com.chess.ui.core.AppConstants;
@@ -131,8 +132,8 @@ public class AndroidStuff {
 	}
 
 	public void processMove(Long gameId, int moveIndex) {
-		final com.chess.model.Game gameData =
-				new com.chess.model.Game(lccHolder.getGameData(gameId.toString(), moveIndex), true);
+		final GameItem gameData =
+				new GameItem(lccHolder.getGameData(gameId.toString(), moveIndex), true);
 		lccHolder.getAndroid().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
 	}
 

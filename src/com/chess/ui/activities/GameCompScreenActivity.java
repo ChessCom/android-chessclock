@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.Game;
-import com.chess.model.GameListElement;
+import com.chess.model.GameItem;
+import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
@@ -98,13 +98,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			String Draw = AppConstants.OFFERDRAW;
 			if (mainApp.acceptdraw)
 				Draw = AppConstants.ACCEPTDRAW;
-			String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListElement.GAME_ID) + AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER + mainApp.getCurrentGame().values.get(GameListElement.TIMESTAMP), "GET", null, null);
+			String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.GAME_ID) + AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 			if (result.contains(AppConstants.SUCCESS)) {
-				mainApp.ShowDialog(coreContext, "", getString(R.string.drawoffered));
+				mainApp.showDialog(coreContext, "", getString(R.string.drawoffered));
 			} else if (result.contains(AppConstants.ERROR_PLUS)) {
-				mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 			} else {
-				//mainApp.ShowDialog(Game.this, "Error", result);
+				//mainApp.showDialog(Game.this, "Error", result);
 			}
 		}
 	}
@@ -115,9 +115,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			String result = Web.Request("http://www." + LccHolder.HOST
 					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListElement.GAME_ID)
+					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)
 					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-					+ mainApp.getCurrentGame().values.get(GameListElement.TIMESTAMP), "GET", null, null);
+					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 			if (result.contains(AppConstants.SUCCESS)) {
 				if (MobclixHelper.isShowAds(mainApp)) {
 					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
@@ -127,9 +127,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					finish();
 				}
 			} else if (result.contains(AppConstants.ERROR_PLUS)) {
-				mainApp.ShowDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 			} else {
-				//mainApp.ShowDialog(Game.this, "Error", result);
+				//mainApp.showDialog(Game.this, "Error", result);
 			}
 		}
 	}
@@ -242,7 +242,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 								} else {
 									moveFT = MoveParser.parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								}
-								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(GameListElement.GAME_ID)).getSeq() == Moves.length)
+								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)).getSeq() == Moves.length)
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {
@@ -256,7 +256,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 									newBoardView.getBoardFace().makeMove(m, playSound);
 								}
-								//mainApp.ShowMessage("Move list updated!");
+								//mainApp.showToast("Move list updated!");
 								newBoardView.getBoardFace().setMovesCount(Moves.length);
 								newBoardView.invalidate();
 								update(CALLBACK_REPAINT_UI);
@@ -274,7 +274,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
 
-				if (mainApp.getCurrentGame().values.get(GameListElement.GAME_TYPE).equals("2"))
+				if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
 					newBoardView.getBoardFace().setChess960(true);
 
 				if (!isUserColorWhite()) {
@@ -294,7 +294,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					lccHolder.doReplayMoves(game);
 				}
 
-				String FEN = mainApp.getCurrentGame().values.get(Game.STARTING_FEN_POSITION);
+				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 				if (!FEN.equals("")) {
 					newBoardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, newBoardView.getBoardFace());

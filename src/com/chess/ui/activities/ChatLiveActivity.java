@@ -14,11 +14,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.live.client.ChatMessage;
-import com.chess.model.Game;
-import com.chess.model.GameListElement;
-import com.chess.model.Message;
+import com.chess.model.GameItem;
+import com.chess.model.GameListItem;
+import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.CoreActivityActionBar;
+import com.chess.ui.core.IntentConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 	private EditText sendText;
 	private ListView chatListView;
 	private MessagesAdapter messages = null;
-	private ArrayList<Message> chatItems = new ArrayList<Message>();
+	private ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +81,15 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 		}
 	}
 
-	private ArrayList<Message> getMessagesList() {
-		ArrayList<Message> output = new ArrayList<Message>();
-		Long currentGameId = new Long(mainApp.getCurrentGame().values.get(GameListElement.GAME_ID));
+	private ArrayList<MessageItem> getMessagesList() {
+		ArrayList<MessageItem> output = new ArrayList<MessageItem>();
+		Long currentGameId = new Long(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
 		com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
 			if (chatMessages != null) {
 				for (ChatMessage message : chatMessages.values()) {
-					output.add(new Message(message.getAuthor().getUsername()
+					output.add(new MessageItem(message.getAuthor().getUsername()
 							.equals(lccHolder.getUser().getUsername()) ? "0" : "1", message.getMessage()));
 				}
 			}
@@ -98,7 +99,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 
 	protected void onResume() {
 		super.onResume();
-		registerReceiver(chatMessageReceiver, new IntentFilter("com.chess.lcc.android-game-chat-message"));
+		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 	}
 
 	protected void onPause() {
@@ -110,7 +111,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-			mainApp.getCurrentGame().values.put(Game.HAS_NEW_MESSAGE, "0");
+			mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
 			update(ChatLiveActivity.MESSAGE_RECEIVED);
 		}
 	};
@@ -123,7 +124,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 				protected Void doInBackground(Void... voids) {
 					System.out.println("LCCLOG: SEND");
 					lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(
-							new Long(mainApp.getCurrentGame().values.get(GameListElement.GAME_ID))),
+							new Long(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID))),
 							sendText.getText().toString());
 					return null;
 				}

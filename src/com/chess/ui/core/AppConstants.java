@@ -127,4 +127,8 @@ public class AppConstants {
 	public static final String MOBCLIX_EXCEPTION_IN_SHOW_GAME_END_POPUP = "MOBCLIX: EXCEPTION IN showGameEndPopup";
 	public static final String URL_GET_ANDROID_VERSION = "http://www.chess.com/api/get_android_version";
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
+	public static final String PACKAGE_NAME = "com.chess";
+	public static final String API_ECHESS_OPEN_INVITES_ID = "/api/echess_open_invites?id=";
+	public static final String DECLINE_INVITEID_PARAMETER = "&declineinviteid=";
+	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
 }
