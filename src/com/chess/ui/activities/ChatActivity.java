@@ -25,10 +25,12 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class ChatActivity extends CoreActivityActionBar implements OnClickListener {
+	public static int MESSAGE_RECEIVED = 0;
+	public static int MESSAGE_SENT = 1;
 	private EditText sendText;
 	private ListView chatListView;
 	private MessagesAdapter messages = null;
-	private final ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
+	private ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 							 */
 				);
 			}
-		} else if (code == 0) {
+		} else if (code == MESSAGE_RECEIVED) {
 			int before = chatItems.size();
 			chatItems.clear();
 			chatItems.addAll(ChessComApiParser.receiveMessages(responseRepeatable));
@@ -73,7 +75,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 				}
 				chatListView.setSelection(chatItems.size() - 1);
 			}
-		} else if (code == 1) {
+		} else if (code == MESSAGE_SENT) {
 			chatItems.clear();
 			chatItems.addAll(ChessComApiParser.receiveMessages(response));
 

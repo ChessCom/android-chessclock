@@ -142,15 +142,6 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		int piecesPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
 				.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
-		//set defaults
-//		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().
-// getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData()
-// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)],
-// "drawable", "com.chess")), null, null, null);
-//		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources()
-// .getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData()
-// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)],
-// "drawable", "com.chess")), null, null, null);
 
 
 		actionAfterMyMove.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -197,9 +188,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		} else {
 			PrefVacation.setOnClickListener(this);
 		}
-		//buttons
-//		PrefBoard.setOnClickListener(this);
-//		PrefPices.setOnClickListener(this);
+
 		prefInvite.setOnClickListener(this);
 		prefContactUs.setOnClickListener(this);
 
@@ -223,11 +212,12 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 				mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, "");
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 				mainApp.getSharedDataEditor().commit();
+
+                Intent intent = new Intent(this, LoginScreenActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
 			}
-			Intent intent = new Intent(this, LoginScreenActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-//			finish();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(mainApp.getMembershipAndroidIntent());
 		}/*else if(view.getId() == R.id.PrefBoard){

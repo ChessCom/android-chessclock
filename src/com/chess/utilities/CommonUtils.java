@@ -38,7 +38,17 @@ public class CommonUtils {
 		return displayMetrics.density < MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW;
 	}
 
-	public static void showNotification(Context context, String taskTitle, int id, String sound,String body) {
+    /**
+     * Fire notification with deafined arguments
+     *
+     * @param context - Application Context for resources
+     * @param taskTitle - title that will be visible at status bar
+     * @param id - request code id
+     * @param sound - sound to play
+     * @param body - short description for notification message content
+     * @param clazz - which class to open when User press notification
+     */
+	public static void showNotification(Context context, String taskTitle, int id, String sound,String body,Class<?> clazz) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// Set the icon, for boarding flight status
 		Notification notification = new Notification(R.drawable.ic_stat_chess, taskTitle, System.currentTimeMillis());
@@ -47,7 +57,7 @@ public class CommonUtils {
 //		if (SettingsActivity.vibrate4Alarm(context)) { // TODO
 //			notification.defaults = Notification.DEFAULT_VIBRATE;
 //		}
-		Intent openList = new Intent(context, ChatActivity.class);
+		Intent openList = new Intent(context, clazz);
 		openList.putExtra(StaticData.CLEAR_CHAT_NOTIFICATION, true);
 		openList.putExtra(StaticData.REQUEST_CODE, id);
 		openList.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
@@ -56,7 +66,7 @@ public class CommonUtils {
 				|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, openList, PendingIntent.FLAG_ONE_SHOT); // TODO use flags
 
-		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.you_got_new_msg), contentIntent);
+		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), body, contentIntent);
 
 		notifyManager.notify(R.string.you_got_new_msg, notification);
 

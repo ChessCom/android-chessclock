@@ -37,14 +37,10 @@ import java.util.ArrayList;
  */
 public class GameOnlineScreenActivity extends GameBaseActivity implements View.OnClickListener {
 
-	private final static int DIALOG_TACTICS_START_TACTICS = 1;
-
 	private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
 	private final static int CALLBACK_SEND_MOVE = 1;
 	private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
 
-//	private RelativeLayout chatPanel;
-//	private ImageButton chatButton;
 	private int UPDATE_DELAY = 10000;
 	private View submitButtonsLay;
 
@@ -402,34 +398,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						return;
 					}
 
-					if (game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
-						mainApp.setCurrentGame(game);
-						// TODO show notification instead
-						gamePanelView.haveNewMessage(true);
-						CommonUtils.showNotification(coreContext, "", GamePanelView.B_CHAT_ID,"","");
-//						if (!msgShowed) {
-//							msgShowed = true;
-//							new AlertDialog.Builder(coreContext)
-//									.setIcon(android.R.drawable.ic_dialog_alert)
-//									.setTitle(getString(R.string.you_got_new_msg))
-//									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
-//										@Override
-//										public void onClick(DialogInterface dialog, int whichButton) {
-//											chat = true;
-//											getOnlineGame(mainApp.getGameId());
-//											msgShowed = false;
-//										}
-//									})
-//									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//										@Override
-//										public void onClick(DialogInterface dialog, int whichButton) {
-//										}
-//									}).create().show();
-//						}
-//						return;
-					} else {
-						msgShowed = false;
-					}
+                    checkMessages();
+
+
 				}
 				break;
 
@@ -449,20 +420,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
 				}
 
-				if (chat) {
-					mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
-							isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
-					mainApp.getSharedDataEditor().commit();
-
-					mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
-					gamePanelView.haveNewMessage(false);
-
-					Intent intent = new Intent(coreContext, ChatActivity.class);
-					intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
-					intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
-					startActivity(intent);
-
-					chat = false;
+				if (openChatActivity()) {
 					return;
 				}
 
@@ -494,8 +452,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					newBoardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 				}
-
-//				int i;
 
 				if (!mainApp.isLiveChess()) {
 					for (int i = 0,cnt = newBoardView.getBoardFace().getMovesCount(); i < cnt; i++) {
@@ -542,6 +498,58 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				break;
 		}
 	}
+
+    private boolean openChatActivity(){
+        if(!chat)
+            return false;
+
+        mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
+                isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
+        mainApp.getSharedDataEditor().commit();
+
+        mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
+
+
+        Intent intent = new Intent(coreContext, ChatLiveActivity.class);
+        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
+        intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
+        startActivity(intent);
+
+        chat = false;
+        return true;
+    }
+
+
+    private void checkMessages(){
+        if (game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+            mainApp.setCurrentGame(game);
+            // show notification instead
+            gamePanelView.haveNewMessage(true);
+            CommonUtils.showNotification(coreContext, "", GamePanelView.B_CHAT_ID,"","",ChatActivity.class);
+//						if (!msgShowed) {
+//							msgShowed = true;
+//							new AlertDialog.Builder(coreContext)
+//									.setIcon(android.R.drawable.ic_dialog_alert)
+//									.setTitle(getString(R.string.you_got_new_msg))
+//									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
+//										@Override
+//										public void onClick(DialogInterface dialog, int whichButton) {
+//											chat = true;
+//											getOnlineGame(mainApp.getGameId());
+//											msgShowed = false;
+//										}
+//									})
+//									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//										@Override
+//										public void onClick(DialogInterface dialog, int whichButton) {
+//										}
+//									}).create().show();
+//						}
+//						return;
+        } else {
+            msgShowed = false;
+        }
+    }
 
 	@Override
 	public void newGame() {

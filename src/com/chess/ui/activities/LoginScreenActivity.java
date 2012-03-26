@@ -98,7 +98,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 							password.getText().toString()/* , "UTF-8") */
 					);
 				}
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 			}
 		} else if (view.getId() == R.id.singup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
@@ -116,7 +116,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 					+ facebook.getAccessToken() + "&return=username";
 			response = Web.Request(query, "GET", null, null);
 			if (response.contains("Success+")) {
-				Update(SIGNIN_FACEBOOK_CALLBACK_CODE);
+				update(SIGNIN_FACEBOOK_CALLBACK_CODE);
 			} else if (response.contains("Error+Facebook user has no Chess.com account")) {
 				mainApp.showToast("You have no Chess.com account, sign up, please.");
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
@@ -152,41 +152,8 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, ""));
 	}
 
-	// TODO handle method call
-//	@Override
-//	public void LoadNext(int code) {
-//		switch (code) {
-//			case 0: {
-//				FlurryAgent.onEvent("Logged In", null);
-//				if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
-//					startService(new Intent(this, Notifications.class));
-//				mainApp.guest = false;
-//				startActivity(new Intent(this, Tabs.class));
-//				finish();
-//				break;
-//			}
-//			case 1: {
-//				startActivity(new Intent(this, Register.class));
-//				break;
-//			}
-//			case 2: {
-//				FlurryAgent.onEvent("Guest Login", null);
-//				mainApp.guest = true;
-//				startActivity(new Intent(this, Tabs.class));
-//				break;
-//			}
-//			default:
-//				break;
-//		}
-//	}
-
-//	@Override
-//	public void LoadPrev(int code) {
-//		finish();
-//	}
-
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 		if (response.length() > 0) {
 			final String[] responseArray = response.split(":");
 			if (responseArray.length >= 4) {
@@ -208,18 +175,21 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
 		try {
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException ignored) {
 		}
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
 
 		mainApp.getSharedDataEditor().commit();
-//		LoadNext(0);
 
 		FlurryAgent.onEvent("Logged In", null);
 		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
 				+ AppConstants.PREF_NOTIFICATION, true))
 			startService(new Intent(this, Notifications.class));
 		mainApp.guest = false;
-		startActivity(new Intent(this, HomeScreenActivity.class));
+
+        Intent intent = new Intent(this, HomeScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
 	}
 }

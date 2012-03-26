@@ -39,7 +39,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected String response = "";
 	protected String responseRepeatable = "";
 
-	public abstract void Update(int code);
+	public abstract void update(int code);
 
 	protected Context context;
 	private Handler handler;
@@ -105,7 +105,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
-			Update(INIT_ACTIVITY); // TODO send broadcast or call local method, but with readable arguments
+			update(INIT_ACTIVITY); // TODO send broadcast or call local method, but with readable arguments
 		}
 
 		@Override
@@ -282,7 +282,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 				retCode = rExtras.getInt(AppConstants.CALLBACK_CODE);
 			} catch (Exception e) {
-				Update(ERROR_SERVER_RESPONSE);
+				update(ERROR_SERVER_RESPONSE);
 				return;
 			}
 
@@ -296,14 +296,14 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			}
 
 			if (resp.contains(AppConstants.SUCCESS))
-				Update(retCode);
+				update(retCode);
 			else {
 				if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
-					Update(ERROR_SERVER_RESPONSE);
+					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
 				if (resp.length() == 0) {
-					Update(ERROR_SERVER_RESPONSE);
+					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
 				String title = getString(R.string.error);
@@ -311,11 +311,11 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 				if (resp.contains(AppConstants.ERROR_PLUS)) {
 					message = resp.split("[+]")[1];
 				} else {
-					Update(ERROR_SERVER_RESPONSE);
+					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
 				if (message == null || message.trim().equals("")) {
-					Update(ERROR_SERVER_RESPONSE);
+					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
 				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
@@ -323,7 +323,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int whichButton) {
-								Update(ERROR_SERVER_RESPONSE);
+								update(ERROR_SERVER_RESPONSE);
 							}
 						}).create().show();
 			}
@@ -376,7 +376,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		public void onReceive(Context context, Intent intent) {
 			if (mainApp.isLiveChess()) {
 				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-				Update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
+				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
 			}
 		}
 	};
@@ -626,7 +626,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	private void checkUpdate() {  // TODO show progress
-		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+        new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	/*

@@ -52,7 +52,7 @@ public class SplashActivity extends CoreActivity {
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 	}
 
 }

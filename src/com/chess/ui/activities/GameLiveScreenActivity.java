@@ -21,7 +21,9 @@ import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.CommonUtils;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private CharSequence[] menuOptionsItems;
-//	private RelativeLayout chatPanel;
 
 	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
@@ -53,9 +54,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
-//		chatPanel = (RelativeLayout) findViewById(R.id.chatPanel);
-//		ImageButton chatButton = (ImageButton) findViewById(R.id.chat);
-//		chatButton.setOnClickListener(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
 		findViewById(R.id.submit).setOnClickListener(this);
@@ -321,31 +319,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 						}
 						return;
 					}
-					if (game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
-						mainApp.setCurrentGame(game);
-						if (!msgShowed) {
-							msgShowed = true;
-							new AlertDialog.Builder(coreContext)
-									.setIcon(android.R.drawable.ic_dialog_alert)
-									.setTitle(getString(R.string.you_got_new_msg))
-									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int whichButton) {
-											chat = true;
-											getOnlineGame(mainApp.getGameId());
-											msgShowed = false;
-										}
-									})
-									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int whichButton) {
-										}
-									}).create().show();
-						}
-						return;
-					} else {
-						msgShowed = false;
-					}
+
+                    checkMessages();
 				}
 				break;
 
@@ -361,20 +336,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 											   lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
 											   lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
 
-				if (chat) {
-					mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
-							isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
-					mainApp.getSharedDataEditor().commit();
-
-					mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
-
-					Intent intent = new Intent(coreContext, ChatLiveActivity.class);
-					intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
-					intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
-					startActivity(intent);
-
-					chat = false;
-					return;
+				if (openChatActivity()) {
+                    return;
 				}
 
 				if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
@@ -427,6 +390,58 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 		}
 	}
+    
+    private boolean openChatActivity(){
+        if(!chat)
+            return false;
+
+        mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
+                isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
+        mainApp.getSharedDataEditor().commit();
+
+        mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
+
+
+        Intent intent = new Intent(coreContext, ChatLiveActivity.class);
+        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
+        intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
+        startActivity(intent);
+
+        chat = false;
+        return true;
+    }
+    
+
+    private void checkMessages(){
+        if (game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+            mainApp.setCurrentGame(game);
+            // show notification instead
+            gamePanelView.haveNewMessage(true);
+            CommonUtils.showNotification(coreContext, "", GamePanelView.B_CHAT_ID, "", "",ChatLiveActivity.class);
+//						if (!msgShowed) {
+//							msgShowed = true;
+//							new AlertDialog.Builder(coreContext)
+//									.setIcon(android.R.drawable.ic_dialog_alert)
+//									.setTitle(getString(R.string.you_got_new_msg))
+//									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
+//										@Override
+//										public void onClick(DialogInterface dialog, int whichButton) {
+//											chat = true;
+//											getOnlineGame(mainApp.getGameId());
+//											msgShowed = false;
+//										}
+//									})
+//									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//										@Override
+//										public void onClick(DialogInterface dialog, int whichButton) {
+//										}
+//									}).create().show();
+//						}
+//						return;
+        } else {
+            msgShowed = false;
+        }
+    }
 
 	@Override
 	public void newGame() {
