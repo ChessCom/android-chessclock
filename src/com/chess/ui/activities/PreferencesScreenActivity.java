@@ -185,14 +185,18 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 		if (mainApp.guest) {
 			PrefVacation.setVisibility(View.GONE);
+			findViewById(R.id.prefLogout).setVisibility(View.GONE);
 		} else {
 			PrefVacation.setOnClickListener(this);
+			findViewById(R.id.prefLogout).setVisibility(View.VISIBLE);
+			findViewById(R.id.prefLogout).setOnClickListener(this);
 		}
 
 		prefInvite.setOnClickListener(this);
 		prefContactUs.setOnClickListener(this);
 
-		findViewById(R.id.prefLogout).setOnClickListener(this);
+
+
 
 	}
 
@@ -206,9 +210,10 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 	public void onClick(View view) {
 		if (view.getId() == R.id.prefLogout) { // DO NOT turn to switch!
 			if (!mainApp.guest) {
-				if (mainApp.isLiveChess()/* && lccHolder.isConnected() */) {
+//				if (mainApp.isLiveChess()/* && lccHolder.isConnected() */) {
 					lccHolder.logout();
-				}
+//				}
+				mainApp.guest = true;
 				mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, "");
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 				mainApp.getSharedDataEditor().commit();
