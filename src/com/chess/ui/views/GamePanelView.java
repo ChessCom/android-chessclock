@@ -83,8 +83,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	//	private List<String> itemList;
 	private TextView movesTextView;
 	private BoardViewFace boardViewFace;
-//	private int screenOrientation;
-
+    private float density;
 
 	public GamePanelView(Context context) {
 		super(context);
@@ -98,21 +97,17 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 
 	public void onCreate() {
-//		screenOrientation = getContext().getResources().getConfiguration().orientation;
 		setOrientation(VERTICAL);
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
+        density = getContext().getResources().getDisplayMetrics().density;
 
-		pieceIds = getResources().getIntArray(R.array.pieces_ids);
+        pieceIds = getResources().getIntArray(R.array.pieces_ids);
 
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
 		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top);
 		int paddingRight = (int) getResources().getDimension(R.dimen.game_control_padding_right);
 		int paddingBottom = (int) getResources().getDimension(R.dimen.game_control_padding_bottom);
-//		int paddingLeft = (int) (10 * metrics.density);
-//		int paddingTop = (int) (15 * metrics.density);
-//		int paddingRight = (int) (10 * metrics.density);
-//		int paddingBottom = (int) (5 * metrics.density);
+
 		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -268,7 +263,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 	public void addControlButton(int position, int buttonId, int backId) {
 		controlsLayout.addView(createControlButton(buttonId, backId), position);
-//        ((ImageButton)findViewById(BUTTON_PREFIX + buttonId)).setVisibility(View.GONE);
 	}
 
 	public void toggleControlButton(int buttonId, boolean checked) {
@@ -389,7 +383,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		pieceItem.setPieceFrameId(getFramePrefix(isWhite) + pieceIds[pieceId]);
 
 
-		imageView.setVisibility(INVISIBLE);
+		imageView.setVisibility(INVISIBLE); // togle preview for test here
 		viewGroup.setWeightSum(16f);
 
 		// put image inside frame to get left gravity
@@ -427,11 +421,11 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		return pieceItemCounts[id];
 	}
 
-	private int shiftSize = 7;
+	private int shiftSize = 4;
 
 	private void shiftLayer(LayerDrawable pieceDrawable, int level) {
 
-		int l = level * shiftSize;
+		int l = (int) (level * shiftSize*density);
 		int r = 0;
 		int t = 0;
 		int b = 0;

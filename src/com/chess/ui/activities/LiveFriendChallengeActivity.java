@@ -89,13 +89,15 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 						.setTitle(getString(R.string.sorry))
 						.setMessage(getString(R.string.nofriends))
 						.setPositiveButton(getString(R.string.invitetitle), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
+							@Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
 								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com")));
 							}
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-//								finish();
+							@Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+								finish();
 							}
 						}).setCancelable(false)
 						.create().show();
