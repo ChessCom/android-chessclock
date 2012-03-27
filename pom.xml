@@ -168,6 +168,16 @@
 						<avd>Android8</avd><!-- todo: should be extracted to properties-->
 					</emulator>
 
+					<!--<executions>
+						<execution>
+							<id>unpack</id>
+							<phase>process-classes</phase>
+							<goals>
+								<goal>unpack</goal>
+							</goals>
+						</execution>
+					</executions>-->
+
 					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 
@@ -255,31 +265,29 @@
 				</activation>
 				<build>
 						<plugins>
-								<!-- proguard can shrink the source classes and remove unused classes and more.. -->
-								<!--<plugin>
+								<!-- todo: refactor to use new way http://code.google.com/p/maven-android-plugin/wiki/ProGuard -->
+								<plugin>
 										<groupId>com.pyx4me</groupId>
 										<artifactId>proguard-maven-plugin</artifactId>
+										<version>2.0.4</version>
 										<executions>
-												<execution>
-														<phase>process-classes</phase>
-														<goals>
-																<goal>proguard</goal>
-														</goals>
-												</execution>
+											<execution>
+												<phase>process-classes</phase>
+													<goals><goal>proguard</goal></goals>
+											</execution>
 										</executions>
-										&lt;!&ndash; we need to override the dependency of the plugin to get a newer version of proguard &ndash;&gt;
 										<dependencies>
-												<dependency>
-														<groupId>net.sf.proguard</groupId>
-														<artifactId>proguard</artifactId>
-														<version>4.4</version>
-														<scope>runtime</scope>
-												</dependency>
+											<dependency>
+												<groupId>net.sf.proguard</groupId>
+												<artifactId>proguard</artifactId>
+												<version>4.4</version>
+												<scope>runtime</scope>
+											</dependency>
 										</dependencies>
 										<configuration>
 												<proguardVersion>4.4</proguardVersion>
 												<maxMemory>256m</maxMemory>
-												<injar>android-classes</injar>
+												<injar>classes</injar>
 												<libs>
 														<lib>${rt.jar.path}</lib>
 														<lib>${jsse.jar.path}</lib>
@@ -291,7 +299,7 @@
 												<proguardInclude>${basedir}/proguard.conf</proguardInclude>
 
 										</configuration>
-								</plugin>-->
+								</plugin>
 								<plugin>
 										<groupId>org.apache.maven.plugins</groupId>
 										<artifactId>maven-jarsigner-plugin</artifactId>
