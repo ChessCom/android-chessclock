@@ -510,7 +510,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
 
 
-        Intent intent = new Intent(coreContext, ChatLiveActivity.class);
+        Intent intent = new Intent(coreContext, ChatActivity.class);
         intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
         intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
         startActivity(intent);

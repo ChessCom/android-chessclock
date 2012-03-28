@@ -223,7 +223,7 @@
 		\nNew rating %2$s </string>
 	<string name="correct_score">Correct! Score%1$s
 		\nNew rating %2$s </string>
-	<string name="you_got_new_msg">You have got a new message!</string>
+	<string name="you_got_new_msg">You have a new message!</string>
 	<string name="browse">Browse</string>
 
 
@@ -252,5 +252,6 @@
 	<string name="analysis_mode">Analysis Mode</string>
 	<string name="check">Check!</string>
 	<string name="choose_a_piece">Choose a piece</string>
+	<string name="open_app_t_see_msg">Tap here to see the message inside of app</string>
 
 </resources>

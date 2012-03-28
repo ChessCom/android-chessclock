@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.activities.ChatActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 /**
@@ -51,7 +50,7 @@ public class CommonUtils {
 	public static void showNotification(Context context, String taskTitle, int id, String sound,String body,Class<?> clazz) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// Set the icon, for boarding flight status
-		Notification notification = new Notification(R.drawable.ic_stat_chess, taskTitle, System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.ic_stat_chess, context.getString(R.string.you_got_new_msg), System.currentTimeMillis());
 //		notification.sound = Uri.parse(sound); // SettingsActivity.getAlarmRingtone(context);
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 //		if (SettingsActivity.vibrate4Alarm(context)) { // TODO
@@ -66,7 +65,7 @@ public class CommonUtils {
 				|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, openList, PendingIntent.FLAG_ONE_SHOT); // TODO use flags
 
-		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), body, contentIntent);
+		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.open_app_t_see_msg), contentIntent);
 
 		notifyManager.notify(R.string.you_got_new_msg, notification);
 

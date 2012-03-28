@@ -53,8 +53,11 @@
 	<dimen name="signin_footer_margin_bottom">5dip</dimen>
 -->
 
-	<!--GameMode-->
+	<!--Game Modes-->
+	<dimen name="game_submit_buttons_lay_bot_padding">0dip</dimen>
+	<dimen name="player_name_max_width">120dip</dimen>
 	<dimen name="game_label_padding_top">1dip</dimen>
+
 
 	<!--GamePanelView-->
 	<dimen name="game_control_padding_left">10dip</dimen>

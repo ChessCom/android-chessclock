@@ -97,11 +97,13 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 		return output;
 	}
 
+	@Override
 	protected void onResume() {
 		super.onResume();
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 	}
 
+	@Override
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(chatMessageReceiver);
