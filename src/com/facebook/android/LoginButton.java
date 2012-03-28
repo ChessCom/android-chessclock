@@ -16,138 +16,134 @@
 
 package com.facebook.android;
 
+import android.widget.Button;
+import com.chess.R;
+import com.facebook.android.SessionEvents.AuthListener;
+import com.facebook.android.SessionEvents.LogoutListener;
+import com.facebook.android.Facebook.DialogListener;
+
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
-import com.chess.R;
-import com.chess.ui.core.MainApp;
-import com.facebook.android.Facebook.DialogListener;
-import com.facebook.android.SessionEvents.AuthListener;
-import com.facebook.android.SessionEvents.LogoutListener;
 
-public class LoginButton extends /* Image */Button {
+public class LoginButton extends /*Image*/Button {
+    
+    private Facebook mFb;
+    private Handler mHandler;
+    private SessionListener mSessionListener = new SessionListener();
+    private String[] mPermissions;
+    private Activity mActivity;
+    
+    public LoginButton(Context context) {
+        super(context);
+    }
+    
+    public LoginButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+    
+    public LoginButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+    
+    public void init(final Activity activity, final Facebook fb) {
+    	init(activity, fb, new String[] {});
+    }
+    
+    public void init(final Activity activity, final Facebook fb,
+                     final String[] permissions) {
+        mActivity = activity;
+        mFb = fb;
+        mPermissions = permissions;
+        mHandler = new Handler();
 
-	private Facebook mFb;
-	private Handler mHandler;
-	private final SessionListener mSessionListener = new SessionListener();
-	private String[] mPermissions;
-
-	public LoginButton(Context context) {
-		super(context);
-	}
-
-	public LoginButton(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
-	public LoginButton(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
-
-	public void init(final Facebook fb, final String[] permissions) {
-		mFb = fb;
-		mPermissions = permissions;
-		mHandler = new Handler();
-
-//		setBackgroundColor(Color.TRANSPARENT);
-//		setAdjustViewBounds(true);
-//		setImageResource(fb.isSessionValid() ? R.drawable.logout_button
-//				: R.drawable.login_button_selector);
+		//setBackgroundColor(Color.TRANSPARENT);
+		//setAdjustViewBounds(true);
+		//setImageResource(fb.isSessionValid() ? R.drawable.logout_button
+		//: R.drawable.login_button_selector);
 		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_selector
-				: R.drawable.button_f_selector);
+			: R.drawable.button_f_selector);
 		setText(getResources().getString(
-				fb.isSessionValid() ? R.string.logout
-						: R.string.connect_with_facebook));
+			fb.isSessionValid() ? R.string.logout
+				: R.string.connect_with_facebook));
 
 		invalidate();
-//		drawableStateChanged();
+		//drawableStateChanged();
+        
+        SessionEvents.addAuthListener(mSessionListener);
+        SessionEvents.addLogoutListener(mSessionListener);
+        setOnClickListener(new ButtonOnClickListener());
+    }
+    
+    private final class ButtonOnClickListener implements OnClickListener {
+        
+        public void onClick(View arg0) {
+            if (mFb.isSessionValid()) {
+                SessionEvents.onLogoutBegin();
+                AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFb);
+                asyncRunner.logout(getContext(), new LogoutRequestListener());
+            } else {
+                mFb.authorize(mActivity, mPermissions,
+                              new LoginDialogListener());
+            }
+        }
+    }
 
-		SessionEvents.addAuthListener(mSessionListener);
-		SessionEvents.addLogoutListener(mSessionListener);
-		setOnClickListener(new ButtonOnClickListener());
-	}
+    private final class LoginDialogListener implements DialogListener {
+        public void onComplete(Bundle values) {
+            SessionEvents.onLoginSuccess();
+        }
 
-	private final class ButtonOnClickListener implements OnClickListener {
+        public void onFacebookError(FacebookError error) {
+            SessionEvents.onLoginError(error.getMessage());
+        }
+        
+        public void onError(DialogError error) {
+            SessionEvents.onLoginError(error.getMessage());
+        }
 
-		@Override
-		public void onClick(View arg0) {
-			if (mFb.isSessionValid()) {
-				SessionEvents.onLogoutBegin();
-				AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFb);
-				asyncRunner.logout(getContext(), new LogoutRequestListener());
-			} else {
-				mFb.authorize(getContext(), MainApp.APP_ID, mPermissions,
-						new LoginDialogListener());
-			}
-		}
-	}
-
-	private final class LoginDialogListener implements DialogListener {
-		@Override
-		public void onComplete(Bundle values) {
-			SessionEvents.onLoginSuccess();
-		}
-
-		@Override
-		public void onFacebookError(FacebookError error) {
-			SessionEvents.onLoginError(error.getMessage());
-		}
-
-		@Override
-		public void onError(DialogError error) {
-			SessionEvents.onLoginError(error.getMessage());
-		}
-
-		@Override
-		public void onCancel() {
-			SessionEvents.onLoginError("Action Canceled");
-		}
-	}
-
-	private class LogoutRequestListener extends BaseRequestListener {
-		@Override
-		public void onComplete(String response) {
-			// callback should be run in the original thread,
-			// not the background thread
-			mHandler.post(new Runnable() {
-				@Override
-				public void run() {
-					SessionEvents.onLogoutFinish();
-				}
-			});
-		}
-	}
-
-	private class SessionListener implements AuthListener, LogoutListener {
-
-		@Override
-		public void onAuthSucceed() {
+        public void onCancel() {
+            SessionEvents.onLoginError("Action Canceled");
+        }
+    }
+    
+    private class LogoutRequestListener extends BaseRequestListener {
+        public void onComplete(String response, final Object state) {
+            // callback should be run in the original thread, 
+            // not the background thread
+            mHandler.post(new Runnable() {
+                public void run() {
+                    SessionEvents.onLogoutFinish();
+                }
+            });
+        }
+    }
+    
+    private class SessionListener implements AuthListener, LogoutListener {
+        
+        public void onAuthSucceed() {
 			setBackgroundResource(R.drawable.button_f_selector);// ImageResource(R.drawable.button_f_logout_selector);
 			setText(getResources().getString(R.string.logout));
+            SessionStore.save(mFb, getContext());
+        }
 
-			SessionStore.save(mFb, getContext());
-		}
-
-		@Override
-		public void onAuthFail(String error) {
-		}
-
-		@Override
-		public void onLogoutBegin() {
-		}
-
-		@Override
-		public void onLogoutFinish() {
-			SessionStore.clear(getContext());
+        public void onAuthFail(String error) {
+        }
+        
+        public void onLogoutBegin() {           
+        }
+        
+        public void onLogoutFinish() {
+            SessionStore.clear(getContext());
 			setBackgroundResource(R.drawable.button_f_selector);
 			setText(getResources().getString(R.string.connect_with_facebook));
 
-//			invalidate();
-//			setImageResource(R.drawable.login_button_selector);
-		}
-	}
-
+			//invalidate();
+			//setImageResource(R.drawable.login_button_selector);
+        }
+    }
+    
 }

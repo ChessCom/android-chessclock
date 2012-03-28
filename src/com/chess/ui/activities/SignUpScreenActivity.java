@@ -100,12 +100,12 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
         facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
 
-        facebook = new Facebook();
+        facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
         SessionStore.restore(facebook, this);
 
         SessionEvents.addAuthListener(new SampleAuthListener());
         SessionEvents.addLogoutListener(new SampleLogoutListener());
-        facebookLoginButton.init(facebook, new String[]{});
+        facebookLoginButton.init(this, facebook);
 	}
 
 	@Override

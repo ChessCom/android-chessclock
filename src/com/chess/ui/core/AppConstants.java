@@ -132,5 +132,5 @@ public class AppConstants {
 	public static final String DECLINE_INVITEID_PARAMETER = "&declineinviteid=";
 	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
 
-
+	public static final String FACEBOOK_APP_ID = "2427617054";
 }
