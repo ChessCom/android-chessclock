@@ -1,6 +1,8 @@
 package com.chess.ui.activities;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,9 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 		sendText = (EditText) findViewById(R.id.sendText);
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.send).setOnClickListener(this);
+
+        NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notifyManager.cancel(R.string.you_got_new_msg);
 	}
 
 	@Override

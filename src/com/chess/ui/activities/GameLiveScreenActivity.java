@@ -400,7 +400,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         mainApp.getSharedDataEditor().commit();
 
         mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
-
+        gamePanelView.haveNewMessage(false);
 
         Intent intent = new Intent(coreContext, ChatLiveActivity.class);
         intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
@@ -417,7 +417,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            CommonUtils.showNotification(coreContext, "", GamePanelView.B_CHAT_ID, "", "",ChatLiveActivity.class);
+            CommonUtils.showNotification(coreContext, "", GameListItem.GAME_ID, "", "",ChatLiveActivity.class);
 //						if (!msgShowed) {
 //							msgShowed = true;
 //							new AlertDialog.Builder(coreContext)

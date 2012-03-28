@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@id/mainView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical">
-
-	<!--TODO recreate chat screen to be like chat and not ListView-->
-	<com.chess.RoboEditText
-		android:id="@+id/sendText"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="5dip"
-		android:layout_marginRight="5dip"
-		android:layout_marginTop="5dip"
-		android:minLines="2"/>
-
-	<com.chess.RoboButton
-		android:id="@+id/send"
-		android:layout_width="100dip"
-		android:layout_height="wrap_content"
-		android:layout_gravity="right"
-		android:layout_marginRight="5dip"
-		android:text="@string/send"/>
-
-	<ListView
+	<!--	<ListView
 		android:id="@+id/chatLV"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
-	</ListView>
+	</ListView>-->
+	<ListView
+		android:id="@+id/chatLV"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:stackFromBottom="true"
+		android:transcriptMode="alwaysScroll"
+		android:layout_weight="1"
+		/>
+	<!--TODO recreate chat screen to be like chat and not ListView-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical"
+		>
+
+		<com.chess.RoboEditText
+			android:id="@+id/sendText"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="5dip"
+			android:layout_marginRight="5dip"
+			android:layout_marginTop="5dip"
+			android:layout_marginBottom="5dip"
+			android:layout_weight="1"
+			android:minHeight="48dip"
+			android:layout_gravity="center_vertical"
+			/>
+
+		<com.chess.RoboButton
+			android:id="@+id/send"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="right"
+			android:layout_marginRight="5dip"
+			android:text="@string/send"
+			android:minWidth="60dip"/>
+	</LinearLayout>
+
 
 </LinearLayout>

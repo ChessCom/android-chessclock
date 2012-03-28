@@ -20,6 +20,8 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 	private LayoutInflater vi;
 	private int resource;
 	private CoreActivityActionBar activity;
+    private int ownerColor;
+    private int opponentColor;
 
 	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<MessageItem> items) {
 		super(context, textViewResourceId, items);
@@ -27,6 +29,8 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 		this.vi = LayoutInflater.from(context);
 		this.resource = textViewResourceId;
 		this.activity = (CoreActivityActionBar) context;
+        ownerColor = getContext().getResources().getColor(R.color.green_button);
+        opponentColor = getContext().getResources().getColor(R.color.orange_button);
 	}
 
 	@Override
@@ -41,10 +45,10 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 			if (text != null) text.setText(el.message);
 			if (owner != null) {
 				if (el.owner.equals("0")) {
-					owner.setTextColor(Color.GREEN);
+					owner.setTextColor(ownerColor/* Color.GREEN*/);
 					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.USERNAME, ""));
 				} else {
-					owner.setTextColor(Color.RED);
+					owner.setTextColor(opponentColor/*Color.RED*/);
 					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.OPPONENT, ""));
 				}
 			}

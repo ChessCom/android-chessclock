@@ -131,4 +131,6 @@ public class AppConstants {
 	public static final String API_ECHESS_OPEN_INVITES_ID = "/api/echess_open_invites?id=";
 	public static final String DECLINE_INVITEID_PARAMETER = "&declineinviteid=";
 	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
+
+
 }
