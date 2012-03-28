@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import com.chess.R;
+import com.chess.RoboButton;
 
 public class CenteredButton extends FrameLayout implements View.OnClickListener, View.OnTouchListener {
 //public class CenteredButton extends RelativeLayout {
@@ -19,7 +20,7 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 	static final String TAG = "CenteredButton";
 	private final int DEFAULT_WIDTH = 100;
 	private final int DEFAULT_HEIGHT = 100;
-	private Button button;
+	private RoboButton button;
 	private Drawable drawable;
 	private float density;
 
@@ -69,7 +70,8 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 //		getBackground()
 //		Log.i(TAG, "DraggableDot @ " + this + " : radius=" + mRadius + " legend='" + buttonText + "' anr=" + mAnrType);
 
-		button = new Button(getContext());
+		button = new RoboButton(getContext());
+        button.setFont("Bold");
 		LayoutParams buttonParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		button.setLayoutParams(buttonParams);
 		button.setText(buttonText);
