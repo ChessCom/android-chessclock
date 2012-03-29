@@ -302,7 +302,7 @@ public class LccHolder {
 		return false;
 	}
 
-	public boolean isUserPlayingAnotherGame(Long currentGameId) {
+	public boolean isUserPlayingAnotherGame(long currentGameId) {
 		for (Game game : lccGames.values()) {
 			if (!game.getId().equals(currentGameId) && !game.isEnded()) {
 				return true;
@@ -471,9 +471,10 @@ public class LccHolder {
 	}
 
 	public String[] getGameData(long gameId, int moveIndex) {
-		final Game lccGame = getGame(gameId);
+		Game lccGame = getGame(gameId);
 		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
-		gameData[0] = lccGame.getId().toString();
+		Log.d("TEST","game id = " + gameId);
+		gameData[0] = lccGame.getId().toString();  // TODO eliminate string convertion and use Objects
 		gameData[1] = "1";
 		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
 		gameData[3] = "";
@@ -554,7 +555,7 @@ public class LccHolder {
 	}
 
 	public void makeMove(long gameId, final String move) {
-		final Game game = getGame(gameId);
+		final Game game = getGame(gameId);  // TODO remove final and pass like argument
 		/*if(chessMove.isCastling())
 			{
 			  lccMove = chessMove.getWarrenSmithString().substring(0, 4);
@@ -708,7 +709,7 @@ public class LccHolder {
 		final Intent intent = new Intent(androidContext, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-		intent.putExtra(GameListItem.GAME_ID, "" + game.getId());
+		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		androidContext.startActivity(intent);
 		/*final Game currentGame = game;
 			if(game.getSeq() > 0)
@@ -901,7 +902,7 @@ public class LccHolder {
 
 	public Boolean isFairPlayRestriction(long gameId) {
 		Log.d("TEST","gameId = " + gameId);
-		final Game game = getGame(gameId);
+		Game game = getGame(gameId);
 		if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer()) {
 			return true;
 		}

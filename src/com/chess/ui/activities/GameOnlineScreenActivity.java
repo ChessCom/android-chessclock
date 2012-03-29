@@ -72,7 +72,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
-		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
+
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
 	}
@@ -80,6 +80,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void init() {
 		super.init();
+		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
+
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
 				getString(R.string.backtogamelist),
@@ -95,7 +97,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onDrawOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-				final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 				LccHolder.LOG.info(AppConstants.REQUEST_DRAW + game);
 				lccHolder.getAndroid().runMakeDrawTask(game);
 			} else {
@@ -118,7 +120,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-				final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 
 				if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 					System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
@@ -160,16 +162,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
-		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-			update(CALLBACK_GAME_STARTED);
-		} else {
+//		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
+//			update(CALLBACK_GAME_STARTED);
+//		} else {
 			if (appService != null) {
 				appService.RunSingleTask(CALLBACK_GAME_STARTED,
 						"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
 								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
 						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 			}
-		}
+//		}
 	}
 
 	@Override
@@ -442,7 +444,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
 
-				final Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 				if (game != null && game.getSeq() > 0) {
 					lccHolder.doReplayMoves(game);
 				}

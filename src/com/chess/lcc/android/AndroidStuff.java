@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import com.chess.live.client.Challenge;
+import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.activities.OnlineScreenActivity;
@@ -325,7 +326,7 @@ public class AndroidStuff {
 		}
 	}
 
-	public void runRejectDrawTask(com.chess.live.client.Game game) {
+	public void runRejectDrawTask(Game game) {
 		new LiveRejectDrawTask().execute(game);
 	}
 

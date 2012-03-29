@@ -10,10 +10,10 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.chess.R;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
@@ -68,7 +68,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected ViewGroup statusBarLay;
 
 	protected AlertDialog adPopup;
-	protected TextView endOfGameMessage;
+//	protected TextView endOfGameMessage;
 	protected LinearLayout adViewWrapper;
 
 	protected DrawOfferDialogListener drawOfferDialogListener;
@@ -102,7 +102,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
-		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
+//		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
 		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
@@ -285,7 +285,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		public void onReceive(Context context, final Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 
-			final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+			Game game = lccHolder.getGame(mainApp.getGameId());
 			Integer newWhiteRating = null;
 			Integer newBlackRating = null;
 			switch (game.getGameTimeConfig().getGameTimeClass()) {
@@ -332,8 +332,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 							}
 							adPopup = null;
 						}
-						// TODO determine which activity to run. move to upper level
-						Toast.makeText(coreContext, "Should start online New Game Activity", Toast.LENGTH_SHORT).show();
+						// determine which activity to run. move to upper level
+//						Toast.makeText(coreContext, "Should start online New Game Activity", Toast.LENGTH_SHORT).show();
+						onBackPressed();
 //						startActivity(new Intent(coreContext, OnlineNewGame.class));
 					}
 				});
@@ -350,18 +351,17 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 							}
 							adPopup = null;
 						}
-//						startActivity(new Intent(coreContext, Tabs.class));
 						startActivity(new Intent(coreContext, HomeScreenActivity.class));
 					}
 				});
 				home.setVisibility(View.VISIBLE);
 			}
 
-			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
-			//mainApp.showDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
-			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-			findViewById(R.id.newGame).setOnClickListener(GameBaseActivity.this);
-			findViewById(R.id.home).setOnClickListener(GameBaseActivity.this);
+//			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
+//			mainApp.showDialog(coreContext, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
+//			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
+//			findViewById(R.id.newGame).setOnClickListener(GameBaseActivity.this);
+//			findViewById(R.id.home).setOnClickListener(GameBaseActivity.this);
 			getSoundPlayer().playGameEnd();
 			onGameEndMsgReceived();
 		}

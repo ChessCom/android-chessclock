@@ -73,7 +73,7 @@ public class LccGameListener implements GameListener {
 	@Override
 	public void onFullGameReceived(Game game) {
 		LOG.info("GAME LISTENER: Full GameItem received: " + game);
-		final Long gameId = game.getId();
+		Long gameId = game.getId();
 		if (isOldGame(gameId)) {
 			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
 			return;
@@ -89,7 +89,7 @@ public class LccGameListener implements GameListener {
 				lccHolder.previousFGTime = lccHolder.currentFGTime;
 				lccHolder.currentFGTime = System.currentTimeMillis();
 				lccHolder.previousFGGameId = lccHolder.currentFGGameId;
-				lccHolder.currentFGGameId = game.getId().longValue();
+				lccHolder.currentFGGameId = game.getId();
 				//
 
 				lccHolder.getAndroid().setGameActivity(null);
