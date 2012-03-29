@@ -1,7 +1,7 @@
 package com.chess.ui.core;
 
 public class AppConstants {
-
+	public static final String FACEBOOK_APP_ID = "2427617054";
 	/*Sreen Features*/
 	public static final String SMALL_SCREEN = "small_screen";
 	// TODO split to GameType and Game Mode Constants
@@ -131,7 +131,6 @@ public class AppConstants {
 	public static final String API_ECHESS_OPEN_INVITES_ID = "/api/echess_open_invites?id=";
 	public static final String DECLINE_INVITEID_PARAMETER = "&declineinviteid=";
 	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
-
 
 	public static final String API_V2_GET_ECHESS_CURRENT_GAMES_ID = "/api/v2/get_echess_current_games?id=";
 	public static final String API_ECHESS_CHALLENGES_ID = "/api/echess_challenges?id=";

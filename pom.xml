@@ -168,7 +168,6 @@
 						<avd>Android8</avd><!-- todo: should be extracted to properties-->
 					</emulator>
 
-					<!--<executions>
 						<execution>
 							<id>unpack</id>
 							<phase>process-classes</phase>
@@ -176,7 +175,6 @@
 								<goal>unpack</goal>
 							</goals>
 						</execution>
-					</executions>-->
 
 					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>

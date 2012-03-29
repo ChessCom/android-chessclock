@@ -15,7 +15,6 @@ import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.ui.core.AppConstants;
-import com.facebook.android.SessionStore;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 
@@ -643,8 +642,7 @@ public class LccHolder {
 		clearOwnChallenges();
 		clearSeeks();
 		setNetworkTypeName(null);
-		SessionStore.clear(android.getContext());
-
+		//SessionStore.clear(android.getContext());
 	}
 
 	public boolean isConnectingInProgress() {
