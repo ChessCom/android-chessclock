@@ -79,9 +79,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/developLive
+=======
+>>>>>>> 2a8ff33143743012d750bd73bdadaadb34777952
 	}
 
 	@Override
@@ -112,10 +115,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	protected void init() {
 		super.init();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 =======
         mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 >>>>>>> origin/developLive
+=======
+        mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
+>>>>>>> 2a8ff33143743012d750bd73bdadaadb34777952
 		changeResigntTitle();
 
 		menuOptionsItems = new CharSequence[]{
