@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
@@ -287,7 +288,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
 
-				final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 				if (game != null && game.getSeq() > 0) {
 					lccHolder.doReplayMoves(game);
 				}

@@ -65,7 +65,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			lccHolder.getWhiteClock().paint();
 			lccHolder.getBlackClock().paint();
 
-			Game game = lccHolder.getGame(new Long(extras.getString(GameListItem.GAME_ID)));
+			Game game = lccHolder.getGame(extras.getLong(GameListItem.GAME_ID));
 			User whiteUser = game.getWhitePlayer();
 			User blackUser = game.getBlackPlayer();
 			Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
@@ -78,7 +78,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
-		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 	}
 
 	@Override
@@ -108,6 +107,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void init() {
 		super.init();
+        mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 		changeResigntTitle();
 
 		menuOptionsItems = new CharSequence[]{
@@ -123,7 +123,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void onDrawOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+			Game game = lccHolder.getGame(mainApp.getGameId());
 			LccHolder.LOG.info(AppConstants.REQUEST_DRAW + game);
 			lccHolder.getAndroid().runMakeDrawTask(game);
 		}
@@ -132,7 +132,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			final Game game = lccHolder.getGame(mainApp.getGameId());
+			Game game = lccHolder.getGame(mainApp.getGameId());
 
 			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
@@ -357,7 +357,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
 
-				final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 				if (game != null && game.getSeq() > 0) {
 					lccHolder.doReplayMoves(game);
 				}
