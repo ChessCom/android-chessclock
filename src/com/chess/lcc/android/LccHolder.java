@@ -571,6 +571,7 @@ public class LccHolder {
 		}
 		try {
 			LOG.info("MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
+            // TODO make outter task with argument
 			new AsyncTask<Void, Void, Void>() {
 				@Override
 				protected Void doInBackground(Void... voids) {
