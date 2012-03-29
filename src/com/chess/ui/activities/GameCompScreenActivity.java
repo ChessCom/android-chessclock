@@ -136,7 +136,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 
 	@Override
-	protected void getOnlineGame(final String game_id) {
+	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
 
 		if (appService != null) {
@@ -242,7 +242,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 								} else {
 									moveFT = MoveParser.parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								}
-								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)).getSeq() == Moves.length)
+								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGameId()).getSeq() == Moves.length)
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {
@@ -265,10 +265,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 						return;
 					}
 
-					msgShowed = false;
 				}
 				break;
-
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 

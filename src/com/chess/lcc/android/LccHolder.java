@@ -13,7 +13,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.activities.GameBaseActivity;
+import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.ui.core.AppConstants;
 import com.facebook.android.SessionStore;
 import org.apache.log4j.Logger;
@@ -374,11 +374,12 @@ public class LccHolder {
 		lccGames.put(lccGame.getId(), lccGame);
 	}
 
-	public Game getGame(String gameId) {
-		return getGame(new Long(gameId));
-	}
+//	public Game getGame(String gameId) {
+//		Log.d("TEST", "Game id = " + gameId);
+//		return getGame(new Long(gameId));
+//	}
 
-	public Game getGame(Long gameId) {
+	public Game getGame(long gameId) {
 		return lccGames.get(gameId);
 	}
 
@@ -470,7 +471,7 @@ public class LccHolder {
 		return output;
 	}
 
-	public String[] getGameData(String gameId, int moveIndex) {
+	public String[] getGameData(long gameId, int moveIndex) {
 		final Game lccGame = getGame(gameId);
 		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 		gameData[0] = lccGame.getId().toString();
@@ -553,7 +554,7 @@ public class LccHolder {
 		return gameData;
 	}
 
-	public void makeMove(String gameId, final String move) {
+	public void makeMove(long gameId, final String move) {
 		final Game game = getGame(gameId);
 		/*if(chessMove.isCastling())
 			{
@@ -705,7 +706,8 @@ public class LccHolder {
 			activity.finish();
 		}
 		final ContextWrapper androidContext = android.getContext();
-		final Intent intent = new Intent(androidContext, GameBaseActivity.class);
+
+		final Intent intent = new Intent(androidContext, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, "" + game.getId());
@@ -899,7 +901,8 @@ public class LccHolder {
 		return networkTypeName;
 	}
 
-	public Boolean isFairPlayRestriction(String gameId) {
+	public Boolean isFairPlayRestriction(long gameId) {
+		Log.d("TEST","gameId = " + gameId);
 		final Game game = getGame(gameId);
 		if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer()) {
 			return true;
@@ -910,7 +913,7 @@ public class LccHolder {
 		return false;
 	}
 
-	public Boolean isAbortableBySeq(String gameId) {
+	public Boolean isAbortableBySeq(long gameId) {
 		return getGame(gameId).getSeq() < 3;
 	}
 }

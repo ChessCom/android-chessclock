@@ -314,7 +314,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 
 	@Override
-	protected void getOnlineGame(final String game_id) {
+	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
 		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
 			update(CALLBACK_GAME_STARTED);
@@ -804,7 +804,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 								} else {
 									moveFT = MoveParser.parse(newBoardView.getBoardFace(), Moves[Moves.length - 1]);
 								}
-								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)).getSeq() == Moves.length)
+								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGameId()).getSeq() == Moves.length)
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {

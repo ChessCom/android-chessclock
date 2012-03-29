@@ -5,13 +5,13 @@ import android.app.Dialog;
 import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.Game;
 import com.chess.live.client.User;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
@@ -21,7 +21,6 @@ import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.CommonUtils;
 
@@ -66,10 +65,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			lccHolder.getWhiteClock().paint();
 			lccHolder.getBlackClock().paint();
 
-			final com.chess.live.client.Game game = lccHolder.getGame(new Long(extras.getString(GameListItem.GAME_ID)));
-			final User whiteUser = game.getWhitePlayer();
-			final User blackUser = game.getBlackPlayer();
-			final Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
+			Game game = lccHolder.getGame(new Long(extras.getString(GameListItem.GAME_ID)));
+			User whiteUser = game.getWhitePlayer();
+			User blackUser = game.getBlackPlayer();
+			Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
 			lccHolder.setClockDrawPointer(isWhite);
 		}
 
@@ -79,7 +78,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
-		mainApp.setGameId(extras.getString(GameListItem.GAME_ID));
+		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 	}
 
 	@Override
@@ -133,7 +132,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			final com.chess.live.client.Game game = lccHolder.getGame(mainApp.getGameId());
+			final Game game = lccHolder.getGame(mainApp.getGameId());
 
 			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
@@ -189,7 +188,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				newBoardView.addMove2Log(newBoardView.getBoardFace().getMoveListSAN());
 				newBoardView.invalidate();
 
-				new Handler().post(new Runnable() {
+				handler.post(new Runnable() {
 					@Override
 					public void run() {
 						newBoardView.requestFocus();
@@ -205,7 +204,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					final String move = newBoardView.getBoardFace().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
 					try {
-						lccHolder.makeMove(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID), move);
+						lccHolder.makeMove(mainApp.getCurrentGameId(), move);
 					} catch (IllegalArgumentException e) {
 						LccHolder.LOG.info("LCC illegal move: " + move);
 						e.printStackTrace();
@@ -253,7 +252,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 									progressDialog = null;
 								}
 
-								getOnlineGame(currentGames.get(i + 1).values.get(GameListItem.GAME_ID));
+								getOnlineGame(Long.parseLong(currentGames.get(i + 1).values.get(GameListItem.GAME_ID)));
 								return;
 							} else {
 								finish();
@@ -296,7 +295,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 									moveFT = MoveParser.parse(newBoardView.getBoardFace(), moves[moves.length - 1]);
 								}
 								boolean playSound = (mainApp.isLiveChess()
-										&& lccHolder.getGame(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)).getSeq() == moves.length)
+										&& lccHolder.getGame(mainApp.getCurrentGameId())
+										.getSeq() == moves.length)
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {
@@ -368,10 +368,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 				}
 
-				int i;
-				//System.out.println("@@@@@@@@ POINT 2 newBoardView.getBoardFace().getMovesCount() =" + newBoardView.getBoardFace().getMovesCount() );
-				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
-
 				update(CALLBACK_REPAINT_UI);
 				newBoardView.getBoardFace().takeBack();
 				newBoardView.invalidate();
@@ -417,29 +413,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            CommonUtils.showNotification(coreContext, "", GameListItem.GAME_ID, "", "",ChatLiveActivity.class);
-//						if (!msgShowed) {
-//							msgShowed = true;
-//							new AlertDialog.Builder(coreContext)
-//									.setIcon(android.R.drawable.ic_dialog_alert)
-//									.setTitle(getString(R.string.you_got_new_msg))
-//									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
-//										@Override
-//										public void onClick(DialogInterface dialog, int whichButton) {
-//											chat = true;
-//											getOnlineGame(mainApp.getGameId());
-//											msgShowed = false;
-//										}
-//									})
-//									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//										@Override
-//										public void onClick(DialogInterface dialog, int whichButton) {
-//										}
-//									}).create().show();
-//						}
-//						return;
-        } else {
-            msgShowed = false;
+            CommonUtils.showNotification(coreContext, "", mainApp.getGameId(), "", "",ChatLiveActivity.class);
         }
     }
 
@@ -566,7 +540,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 
-		if (mainApp.isLiveChess() && mainApp.getGameId() != null && !mainApp.getGameId().equals("")
+		if (mainApp.isLiveChess() && mainApp.getGameId() > 0 /* && mainApp.getGameId() != null*/ /*&& !mainApp.getGameId().equals("")*/
 				&& lccHolder.getGame(mainApp.getGameId()) != null) {
 			game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
 					lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);

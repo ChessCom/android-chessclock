@@ -234,7 +234,7 @@ public class Tabs extends TabActivity implements OnClickListener {
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-					"http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
+					"http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
 							"&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html?c=androidads")));
 
 		}

@@ -106,7 +106,8 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
 			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
 			mainApp.getSharedDataEditor().commit();
-			//mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+			mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+//			onBackPressed();
 		}
 	}
 
@@ -152,13 +153,13 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 											  color = PieceColor.UNDEFINED;
 											  break;
 										  }*/
-			final Boolean rated = isRated.isChecked();
-			final Integer initialTimeInteger = new Integer(initialTime.getText().toString());
-			final Integer bonusTimeInteger = new Integer(bonusTime.getText().toString());
-			final GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
-			final Integer minRating = null;
-			final Integer maxRating = null;
-			final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
+			boolean rated = isRated.isChecked();
+			int initialTimeInteger = Integer.parseInt(initialTime.getText().toString());
+			int bonusTimeInteger = Integer.parseInt(bonusTime.getText().toString());
+			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
+			Integer minRating = null;
+			Integer maxRating = null;
+			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 					lccHolder.getUser(), friends.getSelectedItem().toString().trim(), PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minRating, maxRating);
 			if (appService != null) {

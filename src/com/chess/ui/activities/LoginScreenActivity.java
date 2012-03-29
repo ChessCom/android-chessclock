@@ -4,8 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.core.AppConstants;
@@ -29,7 +32,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends CoreActivity implements View.OnClickListener {
+public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
 	private EditText username;
 	private EditText password;
@@ -49,6 +52,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
+		password.setOnEditorActionListener(this);
 
 		findViewById(R.id.singin).setOnClickListener(this);
 		findViewById(R.id.singup).setOnClickListener(this);
@@ -64,28 +68,26 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		facebookLoginButton.init(facebook, new String[]{});
 	}
 
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.singin) {
+	private void signInUser(){
 
-			if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
-				mainApp.showDialog(context, getString(R.string.error), getString(R.string.validateUsername));
-				return;
-			}
-			/*
-			 * if(password.getText().toString().length() < 6 ||
-			 * password.getText().toString().length() > 20){
-			 * mainApp.showDialog(Singin.this, getString(R.string.error),
-			 * getString(R.string.validatePassword)); return; }
-			 */
+		if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
+			mainApp.showDialog(context, getString(R.string.error), getString(R.string.validateUsername));
+			return;
+		}
+		/*
+					 * if(password.getText().toString().length() < 6 ||
+					 * password.getText().toString().length() > 20){
+					 * mainApp.showDialog(Singin.this, getString(R.string.error),
+					 * getString(R.string.validatePassword)); return; }
+					 */
 
-			String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
-			// String query = "http://" + LccHolder.HOST + "/api/v2/login";
-			try {
-				if (appService != null) {
-					appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
-							ProgressDialog.show(context, null, getString(R.string.signingin), true)),
-							AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
+		String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
+		// String query = "http://" + LccHolder.HOST + "/api/v2/login";
+		try {
+			if (appService != null) {
+				appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
+						ProgressDialog.show(context, null, getString(R.string.signingin), true)),
+						AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
 																								 * ,
 																								 * "UTF-8"
 																								 * )
@@ -95,18 +97,30 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 																												 * encode
 																												 * (
 																												 */
-							password.getText().toString()/* , "UTF-8") */
-					);
-				}
-			} catch (Exception ignored) {
+						password.getText().toString()/* , "UTF-8") */
+				);
 			}
+		} catch (Exception ignored) {
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == R.id.singin) {
+			signInUser();
 		} else if (view.getId() == R.id.singup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
-//			LoadNext(1);
 		} else if (view.getId() == R.id.guestplay) {
 			startActivity(new Intent(this, HomeScreenActivity.class));
-//			LoadNext(2);
 		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION){
+			signInUser();
+		}
+		return false;
 	}
 
 	public class SampleAuthListener implements SessionEvents.AuthListener {
@@ -191,5 +205,11 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		finish();
 	}
 }

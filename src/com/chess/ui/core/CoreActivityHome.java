@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
@@ -328,7 +329,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			final com.chess.live.client.Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
+			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
 			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivityHome.this)
 					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))

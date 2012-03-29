@@ -72,7 +72,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
-		mainApp.setGameId(extras.getString(GameListItem.GAME_ID));
+		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
 	}
@@ -158,7 +158,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 
 	@Override
-	protected void getOnlineGame(final String game_id) {
+	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
 		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
 			update(CALLBACK_GAME_STARTED);
@@ -241,7 +241,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					final String move = newBoardView.getBoardFace().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
 					try {
-						lccHolder.makeMove(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID), move);
+						lccHolder.makeMove(mainApp.getCurrentGameId(), move);
 					} catch (IllegalArgumentException e) {
 						LccHolder.LOG.info("LCC illegal move: " + move);
 						e.printStackTrace();
@@ -332,7 +332,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 									progressDialog = null;
 								}
 
-								getOnlineGame(currentGames.get(i + 1).values.get(GameListItem.GAME_ID));
+								getOnlineGame(Long.parseLong(currentGames.get(i + 1).values.get(GameListItem.GAME_ID)));
 								return;
 							} else {
 								finish();
@@ -375,7 +375,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 								} else {
 									moveFT = MoveParser.parse(newBoardView.getBoardFace(), moves[moves.length - 1]);
 								}
-								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)).getSeq() == moves.length)
+								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGameId()).getSeq() == moves.length)
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {
@@ -526,28 +526,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             // show notification instead
             gamePanelView.haveNewMessage(true);
             CommonUtils.showNotification(coreContext, "", mainApp.getGameId(),"","",ChatActivity.class);
-//						if (!msgShowed) {
-//							msgShowed = true;
-//							new AlertDialog.Builder(coreContext)
-//									.setIcon(android.R.drawable.ic_dialog_alert)
-//									.setTitle(getString(R.string.you_got_new_msg))
-//									.setPositiveButton(R.string.browse, new DialogInterface.OnClickListener() {
-//										@Override
-//										public void onClick(DialogInterface dialog, int whichButton) {
-//											chat = true;
-//											getOnlineGame(mainApp.getGameId());
-//											msgShowed = false;
-//										}
-//									})
-//									.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//										@Override
-//										public void onClick(DialogInterface dialog, int whichButton) {
-//										}
-//									}).create().show();
-//						}
-//						return;
-        } else {
-            msgShowed = false;
         }
     }
 

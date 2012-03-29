@@ -32,10 +32,10 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 	private Spinner actionAfterMyMove;
 	private Spinner strength;
 	private CheckBox showSubmitButton;
-	private CheckBox PrefNEnable;
-	private CheckBox PrefVacation;
-	private CheckBox PrefShowCoords;
-	private CheckBox PrefShowHighlights;
+	private CheckBox enableNotifications;
+	private CheckBox vacationCheckBox;
+	private CheckBox showCoordinates;
+	private CheckBox showHighlights;
 	private CheckBox enableSounds;
 	private Context context;
 	private View boardProgressView;
@@ -68,10 +68,10 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 		enableSounds = (CheckBox) findViewById(R.id.enableSounds);
 		showSubmitButton = (CheckBox) findViewById(R.id.PrefSSB);
-		PrefNEnable = (CheckBox) findViewById(R.id.PrefNEnable);
-		PrefVacation = (CheckBox) findViewById(R.id.PrefVacation);
-		PrefShowCoords = (CheckBox) findViewById(R.id.PrefCoords);
-		PrefShowHighlights = (CheckBox) findViewById(R.id.PrefHighlights);
+		enableNotifications = (CheckBox) findViewById(R.id.PrefNEnable);
+		vacationCheckBox = (CheckBox) findViewById(R.id.PrefVacation);
+		showCoordinates = (CheckBox) findViewById(R.id.PrefCoords);
+		showHighlights = (CheckBox) findViewById(R.id.PrefHighlights);
 
 		TextView onlineTitle = (TextView) findViewById(R.id.onlineTitle);
 		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
@@ -93,15 +93,15 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		if (mainApp.isLiveChess()) {
 			onlineTitle.setText(getString(R.string.liveTitle));
 			afterIMoveLayout.setVisibility(View.GONE);
-			PrefNEnable.setVisibility(View.GONE);
-			PrefVacation.setVisibility(View.GONE);
+			enableNotifications.setVisibility(View.GONE);
+			vacationCheckBox.setVisibility(View.GONE);
 			computerTitle.setVisibility(View.GONE);
 			prefStrengthLayout.setVisibility(View.GONE);
 		} else {
 			onlineTitle.setText(getString(R.string.onlineTitle));
 			afterIMoveLayout.setVisibility(View.VISIBLE);
-			PrefNEnable.setVisibility(View.VISIBLE);
-			PrefVacation.setVisibility(View.VISIBLE);
+			enableNotifications.setVisibility(View.VISIBLE);
+			vacationCheckBox.setVisibility(View.VISIBLE);
 			computerTitle.setVisibility(View.VISIBLE);
 			prefStrengthLayout.setVisibility(View.VISIBLE);
 		}
@@ -179,15 +179,15 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		//checkboxes
 		enableSounds.setOnCheckedChangeListener(this);
 		showSubmitButton.setOnCheckedChangeListener(this);
-		PrefNEnable.setOnCheckedChangeListener(this);
-		PrefShowCoords.setOnCheckedChangeListener(this);
-		PrefShowHighlights.setOnCheckedChangeListener(this);
+		enableNotifications.setOnCheckedChangeListener(this);
+		showCoordinates.setOnCheckedChangeListener(this);
+		showHighlights.setOnCheckedChangeListener(this);
 
 		if (mainApp.guest) {
-			PrefVacation.setVisibility(View.GONE);
+			vacationCheckBox.setVisibility(View.GONE);
 			findViewById(R.id.prefLogout).setVisibility(View.GONE);
 		} else {
-			PrefVacation.setOnClickListener(this);
+			vacationCheckBox.setOnClickListener(this);
 			findViewById(R.id.prefLogout).setVisibility(View.VISIBLE);
 			findViewById(R.id.prefLogout).setOnClickListener(this);
 		}
@@ -220,37 +220,13 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
                 Intent intent = new Intent(this, LoginScreenActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 finish();
 			}
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(mainApp.getMembershipAndroidIntent());
-		}/*else if(view.getId() == R.id.PrefBoard){
-			new AlertDialog.Builder(context)
-					.setTitle(getString(R.string.boards_s))
-					.setAdapter(boardsList, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface d, int pos) {
-							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
-							mainApp.getSharedDataEditor().commit();
-							PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
-							mainApp.loadBoard(mainApp.res_boards[pos]);
-						}
-					}).create().show();
-		}*//*else if(view.getId() == R.id.PrefPices){
-			new AlertDialog.Builder(context)
-					.setTitle(getString(R.string.pieces_s))
-					.setAdapter(piecesList, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface d, int pos) {
-							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
-									.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
-							mainApp.getSharedDataEditor().commit();
-							PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
-							mainApp.loadPieces(mainApp.res_pieces[pos]);
-						}
-					}).create().show();
-		}*/ else if (view.getId() == R.id.PrefInvite) {
+		}else if (view.getId() == R.id.PrefInvite) {
 			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
@@ -265,11 +241,6 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		}
-
-//		PrefBoard = (Button) findViewById(R.id.PrefBoard);
-//		PrefPices = (Button) findViewById(R.id.PrefPices);
-//		PrefInvite = (Button) findViewById(R.id.PrefInvite);
-//		prefContactUs = (Button) findViewById(R.id.prefContactUs);		
 	}
 
 	private class BoardSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -277,7 +248,6 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
 			mainApp.getSharedDataEditor().commit();
-//			PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
 			mainApp.loadBoard(mainApp.res_boards[pos], boardProgressView);
 		}
 
@@ -292,7 +262,6 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
 					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
-//				PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
 			mainApp.loadPieces(mainApp.res_pieces[pos], piecesProgressView);
 		}
 
@@ -304,62 +273,18 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		actionAfterMyMove.post(new Runnable() {
-//			@Override
-//			public void run() {
 		actionAfterMyMove.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
-//			}
-//		});
-		/*Notif.post(new Runnable() {
-			@Override
-			public void run() {
-				Notif.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")+"notif", 0));
-			}
-		});*/
-//		strength.post(new Runnable() {
-//			@Override
-//			public void run() {
 		strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0));
-//			}
-//		});
-//		strength.post(new Runnable() {
-//			@Override
-//			public void run() {
+
 		if (mainApp.isLiveChess()) {
 			showSubmitButton.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
 		} else {
 			showSubmitButton.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
 		}
 		enableSounds.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SOUNDS, true));
-//			}
-//		});
-//		PrefNEnable.post(new Runnable() {
-//			@Override
-//			public void run() {
-		PrefNEnable.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true));
-//			}
-//		});
-//		PrefShowCoords.post(new Runnable() {
-//			@Override
-//			public void run() {
-		PrefShowCoords.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_COORDINATES, true));
-//			}
-//		});
-//		PrefShowHighlights.post(new Runnable() {
-//			@Override
-//			public void run() {
-		PrefShowHighlights.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
-//			}
-//		});
-
-		//buttons defaults   // TODO set defaults for button
-//		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().
-// getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData()
-// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)],
-// "drawable", "com.chess")), null, null, null);
-//		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)], "drawable", "com.chess")), null, null, null);
-
-
+		enableNotifications.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true));
+		showCoordinates.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_COORDINATES, true));
+		showHighlights.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 	}
 
 
@@ -376,14 +301,14 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 			}
 		} else if (code == 0) {
 			if (!mainApp.guest && response.trim().split("[+]")[1].equals("1")) {
-				PrefVacation.setChecked(true);
-				PrefVacation.setText(getString(R.string.vacationOn));
+				vacationCheckBox.setChecked(true);
+				vacationCheckBox.setText(getString(R.string.vacationOn));
 			}
 		} else if (code == 1) {
-			if (PrefVacation.isChecked())
-				PrefVacation.setText(getString(R.string.vacationOn));
+			if (vacationCheckBox.isChecked())
+				vacationCheckBox.setText(getString(R.string.vacationOn));
 			else
-				PrefVacation.setText(getString(R.string.vacationOff));
+				vacationCheckBox.setText(getString(R.string.vacationOff));
 		}
 	}
 
@@ -409,7 +334,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 		} else if (compoundButton.getId() == R.id.PrefVacation) {
 
 			String query = "";
-			if (PrefVacation.isChecked()) {
+			if (vacationCheckBox.isChecked()) {
 				query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "");
 			} else {
 				query = "http://www." + LccHolder.HOST + "/api/vacation_return?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "");

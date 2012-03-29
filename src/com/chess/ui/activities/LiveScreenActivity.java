@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +76,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 		init();
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
+				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
+				"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_CHALLENGES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_FINISHED_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
 
 		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
 		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
@@ -112,6 +111,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener {
 
+		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			gameListElement = mainApp.getGameListItems().get(temp_pos);
 
@@ -182,6 +182,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		super.onRestart();
 	}
 
+	@Override
 	protected void onResume() {
 		/*if (isShowAds() && (!mainApp.isLiveChess() || (mainApp.isLiveChess() && lccHolder.isConnected()))) {
 			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
@@ -191,7 +192,8 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 		//}
 		if (mainApp.isLiveChess() && !lccHolder.isConnected()) {
-			new Handler().post(new Runnable() {
+			handler.post(new Runnable() {
+				@Override
 				public void run() {
 					start.setVisibility(View.GONE);
 					gridview.setVisibility(View.GONE);
@@ -206,6 +208,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 		super.onResume();
 		currentGame.post(new Runnable() {
+			@Override
 			public void run() {
 				if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
 						lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
@@ -229,7 +232,8 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			  mainApp.getGameListItems().clear();
 			}*/
 
-		new Handler().post(new Runnable() {
+		handler.post(new Runnable() {
+			@Override
 			public void run() {
 				disableScreenLock();
 			}
@@ -370,13 +374,13 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 //			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
-				LccHolder.LOG.info("Cancel my challenge: " + challenge);
+				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
-				LccHolder.LOG.info("Just keep my challenge: " + challenge);
+				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
 			}
 		}
 	}
@@ -437,7 +441,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		@Override
 		public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 			gameListElement = mainApp.getGameListItems().get(pos);
-			if (gameListElement.type == 0) {
+			if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 				final String title = mainApp.isLiveChess() ?
 						gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :
 						"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
@@ -470,18 +474,8 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 								.setItems(new String[]{"Cancel", "Keep"}, isIndirencetDialogListener)
 								.create().show();
 					}
-				} // echess
-				else {
-					new AlertDialog.Builder(coreContext)
-							.setTitle(title)
-							.setItems(new String[]{
-									getString(R.string.accept),
-									getString(R.string.decline)}, nonLiveDialogListener
-							)
-							.create().show();
 				}
-
-			} else if (gameListElement.type == 1) {
+			} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
 				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
@@ -517,18 +511,22 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			this.inflater = LayoutInflater.from(coreContext);
 		}
 
+		@Override
 		public int getCount() {
 			return StartNewGameButtonsEnum.values().length;
 		}
 
+		@Override
 		public Object getItem(int position) {
 			return null;
 		}
 
+		@Override
 		public long getItemId(int position) {
 			return position;
 		}
 
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final Button button;
 			if (convertView == null) {
@@ -540,6 +538,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			final StartNewGameButtonsEnum startNewGameButton = StartNewGameButtonsEnum.values()[position];
 			button.setText(startNewGameButton.getText());
 			button.setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View view) {
 					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, "" + startNewGameButton.getMin());
 					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, "" + startNewGameButton.getSec());
@@ -611,25 +610,25 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			startActivity(mainApp.getMembershipAndroidIntent());
 		} else if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
 			// TODO hide to RestHelper
-			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
+			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
-					+ LccHolder.HOST + "/login.html?als="
+					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			// TODO hide to RestHelper
-			String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/"
+			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
 					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-					+ "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.currentGame) {
 			/*try
@@ -694,7 +693,8 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			new Handler().post(new Runnable() {
+			handler.post(new Runnable() {
+				@Override
 				public void run() {
 					if (mainApp.isLiveChess() && !intent.getExtras()
 							.getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {

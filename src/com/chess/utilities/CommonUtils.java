@@ -10,7 +10,6 @@ import android.view.View;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 /**
@@ -49,7 +48,7 @@ public class CommonUtils {
      * @param body - short description for notification message content
      * @param clazz - which class to open when User press notification
      */
-	public static void showNotification(Context context, String taskTitle, String id, String sound,String body,Class<?> clazz) {
+	public static void showNotification(Context context, String taskTitle, long id, String sound,String body,Class<?> clazz) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// Set the icon, for boarding flight status
 		Notification notification = new Notification(R.drawable.ic_stat_chess, context.getString(R.string.you_got_new_msg), System.currentTimeMillis());
@@ -64,8 +63,8 @@ public class CommonUtils {
 		openList.putExtra(GameListItem.GAME_ID, id);
 		openList.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 				|Intent.FLAG_ACTIVITY_NEW_TASK
-				|Intent.FLAG_ACTIVITY_SINGLE_TOP
-				|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				|Intent.FLAG_ACTIVITY_SINGLE_TOP
+				/*|Intent.FLAG_ACTIVITY_CLEAR_TOP*/);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openList, PendingIntent.FLAG_ONE_SHOT); // TODO use flags
 
 		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.open_app_t_see_msg), contentIntent);

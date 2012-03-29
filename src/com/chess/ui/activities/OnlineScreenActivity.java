@@ -79,9 +79,9 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 		init();
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_current_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
-				"http://www." + LccHolder.HOST + "/api/echess_challenges?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
-				"http://www." + LccHolder.HOST + "/api/v2/get_echess_finished_games?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
+				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
+				"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_CHALLENGES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_FINISHED_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
 
 		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
 		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.onlineSpinner));
@@ -180,6 +180,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		super.onRestart();
 	}
 
+	@Override
 	protected void onResume() {
 		/*if (isShowAds() && (!mainApp.isLiveChess() || (mainApp.isLiveChess() && lccHolder.isConnected()))) {
 			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
@@ -210,6 +211,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			}*/
 
 		new Handler().post(new Runnable() {
+			@Override
 			public void run() {
 				disableScreenLock();
 			}
@@ -372,13 +374,13 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 //			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
-				LccHolder.LOG.info("Cancel my challenge: " + challenge);
+				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
-				LccHolder.LOG.info("Just keep my challenge: " + challenge);
+				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
 			}
 		}
 	}
@@ -604,81 +606,26 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			startActivity(mainApp.getMembershipAndroidIntent());
 		} else if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
 			// TODO hide to RestHelper
-			String GOTO = "http://www." + LccHolder.HOST + "/tournaments";
+			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (UnsupportedEncodingException ignored) {
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
-					+ LccHolder.HOST + "/login.html?als="
+					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			// TODO hide to RestHelper
-			String GOTO = "http://www." + LccHolder.HOST + "/echess/mobile-stats/"
+			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
 					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (UnsupportedEncodingException ignored) {
 			}
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
-		} else if (view.getId() == R.id.currentGame) {
-			/*try
-						{*/
-			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
-			}
-			/*}
-						catch(Exception e)
-						{
-						  e.printStackTrace();
-						  System.out.println("!!!!!!!! mainApp.getGameId() " + mainApp.getGameId());
-						  System.out.println("!!!!!!!! lccHolder.getGame(mainApp.getGameId()) " + lccHolder.getGame(mainApp.getGameId()));
-						}*/
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.start) {
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
-//			finish();
-//			LoadNext(0);
-		}
-	}
-
-	private enum StartNewGameButtonsEnum {
-		/*BUTTON_10_0(10, 0, "10 min"),
-			BUTTON_5_0(5, 0, "5 min"),
-			BUTTON_3_0(3, 0, "3 min"),
-			BUTTON_30_0(30, 0, "30 min"),
-			BUTTON_2_12(2, 12, "2 | 12"),
-			BUTTON_1_5(1, 5, "1 | 5");*/
-
-		BUTTON_10_0(10, 0, "10 min"),
-		BUTTON_5_2(5, 2, "5 | 2"),
-		BUTTON_15_10(15, 10, "15 | 10"),
-		BUTTON_30_0(30, 0, "30 min"),
-		BUTTON_5_0(5, 0, "5 min"),
-		BUTTON_3_0(3, 0, "3 min"),
-		BUTTON_2_1(2, 1, "2 | 1"),
-		BUTTON_1_0(1, 0, "1 min");
-
-		private int min;
-		private int sec;
-		private String text;
-
-		private StartNewGameButtonsEnum(int min, int sec, String text) {
-			this.min = min;
-			this.sec = sec;
-			this.text = text;
-		}
-
-		public int getMin() {
-			return min;
-		}
-
-		public int getSec() {
-			return sec;
-		}
-
-		public String getText() {
-			return text;
 		}
 	}
 
@@ -686,6 +633,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		@Override
 		public void onReceive(Context context, final Intent intent) {
 			new Handler().post(new Runnable() {
+				@Override
 				public void run() {
 
 				}

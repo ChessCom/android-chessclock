@@ -199,13 +199,13 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
-				LccHolder.LOG.info("Cancel my challenge: " + challenge);
+				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
 				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
 				update(4);
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
-				LccHolder.LOG.info("Just keep my challenge: " + challenge);
+				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
 			}
 		}
 	}
@@ -255,7 +255,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
-		if (gameListElement.type == 0) {
+		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 			final String title = gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE);
 
 			if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {

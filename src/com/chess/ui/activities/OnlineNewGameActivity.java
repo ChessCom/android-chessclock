@@ -35,7 +35,6 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 	private OnlineGamesAdapter gamesAdapter = null;
 	private int UPDATE_DELAY = 120000;
 	private Button challengecreate;
-	private Button currentGame;
 	private Button upgradeBtn;
 	private GameListItem gameListElement;
 	private EchessDialogListener echessDialogListener;
@@ -71,20 +70,12 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		challengecreate = (Button) findViewById(R.id.challengecreate);
 		challengecreate.setOnClickListener(this);
-
-		currentGame = (Button) findViewById(R.id.currentGame);
-		currentGame.setOnClickListener(this);
 	}
 
 	@Override
 	protected void onResume() {
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 		super.onResume();
-		if (lccHolder.getCurrentGameId() == null) {
-			currentGame.setVisibility(View.GONE);
-		} else if (mainApp.isLiveChess()) {
-			currentGame.setVisibility(View.VISIBLE);
-		}
 		disableScreenLock();
 	}
 
@@ -167,10 +158,6 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			startActivity(new Intent(this, OnlineFriendChallengeActivity.class));
 		} else if (view.getId() == R.id.challengecreate) {
 			startActivity(new Intent(this, OnlineCreateChallengeActivity.class));
-		} else if (view.getId() == R.id.currentGame) {
-			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
-			}
 		}
 	}
 

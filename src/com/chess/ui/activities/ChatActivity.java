@@ -60,7 +60,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			if (appService != null) {
 				appService.RunRepeatableTask(0, 0, 60000, "http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
-						+ extras.getString(GameListItem.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
+						+ extras.getLong(GameListItem.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
 						null/*
 							 * progressDialog = MyProgressDialog.show(Chat.this, null,
 							 * getString(R.string.gettingmessages), true)

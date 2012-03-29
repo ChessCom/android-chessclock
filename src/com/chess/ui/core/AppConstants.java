@@ -133,4 +133,12 @@ public class AppConstants {
 	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
 
 
+	public static final String API_V2_GET_ECHESS_CURRENT_GAMES_ID = "/api/v2/get_echess_current_games?id=";
+	public static final String API_ECHESS_CHALLENGES_ID = "/api/echess_challenges?id=";
+	public static final String API_V2_GET_ECHESS_FINISHED_GAMES_ID = "/api/v2/get_echess_finished_games?id=";
+	public static final String JUST_KEEP_MY_CHALLENGE = "Just keep my challenge: ";
+	public static final String CANCEL_MY_CHALLENGE = "Cancel my challenge: ";
+	public static final String LOGIN_HTML_ALS = "/login.html?als=";
+	public static final String ECHESS_MOBILE_STATS = "/echess/mobile-stats/";
+	public static final String TOURNAMENTS = "/tournaments";
 }

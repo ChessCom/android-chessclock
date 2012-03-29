@@ -131,9 +131,9 @@ public class AndroidStuff {
 		sendBroadcastIntent(OnlineScreenActivity.ONLINE_CALLBACK_CODE, IntentConstants.CHALLENGES_LIST_UPDATE);
 	}
 
-	public void processMove(Long gameId, int moveIndex) {
-		final GameItem gameData =
-				new GameItem(lccHolder.getGameData(gameId.toString(), moveIndex), true);
+	public void processMove(long gameId, int moveIndex) {
+//		final GameItem gameData = new GameItem(lccHolder.getGameData(gameId.toString(), moveIndex), true);
+		final GameItem gameData = new GameItem(lccHolder.getGameData(gameId, moveIndex), true);
 		lccHolder.getAndroid().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
 	}
 

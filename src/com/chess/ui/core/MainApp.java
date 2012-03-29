@@ -61,7 +61,8 @@ public class MainApp extends Application {
 	private Bitmap boardBitmap;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
 	private GameItem currentGame;
-	private String gameId = "";
+//	private String gameId = "";
+	private long gameId;
 	private ArrayList<TacticItem> tacticsBatch;
 
 	private TacticItem tactic;
@@ -282,17 +283,28 @@ public class MainApp extends Application {
 		return currentGame;
 	}
 
+	public long getCurrentGameId() {
+		return Long.parseLong(currentGame.values.get(GameListItem.GAME_ID));
+	}
+
 	public void setCurrentGame(GameItem currentGame) {
 		this.currentGame = currentGame;
 	}
 
-	public String getGameId() {
+	public long getGameId() {
 		return gameId;
 	}
 
-	public void setGameId(String gameId) {
+	public void setGameId(long gameId) {
 		this.gameId = gameId;
 	}
+//	public String getGameId() {
+//		return gameId;
+//	}
+//
+//	public void setGameId(String gameId) {
+//		this.gameId = gameId;
+//	}
 
 	public ArrayList<GameListItem> getGameListItems() {
 		return gameListItems;
@@ -393,7 +405,7 @@ public class MainApp extends Application {
 
 
 	public Intent getMembershipIntent(String param) {
-		final String uri = "http://www." + LccHolder.HOST + "/login.html?als=" + sharedData.getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
+		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 	}
 

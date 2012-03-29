@@ -2,6 +2,7 @@ package com.chess.model;
 
 import java.util.HashMap;
 
+// TODO eliminate hashmaps and create Objects
 public class GameListItem {
 
 	public final static int LIST_TYPE_CURRENT = 0;

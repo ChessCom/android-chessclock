@@ -78,7 +78,7 @@ public class LccGameListener implements GameListener {
 			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
 			return;
 		}
-		Game oldGame = lccHolder.getGame(gameId.toString());
+		Game oldGame = lccHolder.getGame(gameId);
 		if (oldGame != null) {
 			LOG.info("LCC: PROCESS EXTRA onFullGameReceived, game id= " + gameId);
 			// todo: do current game end?

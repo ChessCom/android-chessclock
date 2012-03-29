@@ -57,7 +57,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected TextView thinking;
 
 	protected Timer onlineGameUpdate = null;
-	protected boolean msgShowed;
 	protected boolean isMoveNav;
 	protected boolean chat;
 
@@ -95,6 +94,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
 		whitePlayerLabel.setSelected(true);
 		blackPlayerLabel.setSelected(true);
+
 		thinking = (TextView) findViewById(R.id.thinking);
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
@@ -182,7 +182,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 //		return newBoardView.getBoardFace();
 //	}
 
-	protected void getOnlineGame(final String game_id) {
+	protected void getOnlineGame(long game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.getRepeatableTimer().cancel();
 			appService.setRepeatableTimer(null);
@@ -472,8 +472,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
 				//lccHolder.getAndroid().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				game = new GameItem(lccHolder.getGameData(
-						gameEvent.getGameId().toString(), gameEvent.getMoveIndex()), true);
+				game = new GameItem(lccHolder.getGameData(gameEvent.getGameId(), gameEvent.getMoveIndex()), true);
 				update(CALLBACK_GAME_REFRESH);
 			}
 
