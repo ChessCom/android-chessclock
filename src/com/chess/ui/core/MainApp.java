@@ -91,6 +91,9 @@ public class MainApp extends Application {
 			"modern",
 			"vintage"};
 
+    private CharSequence whitePlayerName;
+    private CharSequence blackPlayerName;
+
 //	private View progressView;
 
 	public void loadBoard(String boardName, View progressView) {
@@ -121,7 +124,7 @@ public class MainApp extends Application {
 	public void loadPieces(String piecesName, View progressView) {
 //		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
 		resources = getResources();
-		piecesBitmaps = new Bitmap[2][6];
+		piecesBitmaps = new Bitmap[2][6]; // TODO refactor with more native way
 		piecesBitmaps[0][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wp", "drawable", AppConstants.PACKAGE_NAME));
 		piecesBitmaps[0][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wn", "drawable", AppConstants.PACKAGE_NAME));
 		piecesBitmaps[0][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wb", "drawable", AppConstants.PACKAGE_NAME));
@@ -137,7 +140,17 @@ public class MainApp extends Application {
 
 	}
 
-	private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][], String> {
+    public CharSequence getWhitePlayerName() {
+        whitePlayerName = getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.WHITE_RATING) + ")";
+        return whitePlayerName;
+    }
+
+    public CharSequence getBlackPlayerName() {
+        blackPlayerName = getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")";
+        return blackPlayerName;
+    }
+
+    private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][], String> {
 
 		public PiecesLoadUpdateListener(View progressView) {
 			super(context, progressView);

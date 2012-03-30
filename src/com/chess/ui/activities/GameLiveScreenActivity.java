@@ -187,8 +187,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
 					if (mainApp.getCurrentGame() != null) {
-						whitePlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get(GameItem.WHITE_RATING) + ")");
-						blackPlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get(GameItem.BLACK_RATING) + ")");
+						whitePlayerLabel.setText(mainApp.getWhitePlayerName());
+                        blackPlayerLabel.setText(mainApp.getBlackPlayerName());
 					}
 				}
 

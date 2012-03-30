@@ -111,7 +111,6 @@
 				android:layout_weight="6"
 				android:textSize="19sp"
 				/>
-			/
 
 			<Spinner
 				android:id="@+id/PrefStrength"

@@ -409,18 +409,18 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
+				/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
 					mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 					executePausedActivityGameEvents();
 					//lccHolder.setActivityPausedMode(false);
 					lccHolder.getWhiteClock().paint();
 					lccHolder.getBlackClock().paint();
-					/*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
+					*//*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
 							  lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
-							  lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
-				} else {
+							  lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*//*
+				} else {*/
 					mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
-				}
+//				}
 
 				if (openChatActivity()) {
 					return;

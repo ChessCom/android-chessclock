@@ -6,6 +6,7 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -76,8 +77,11 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected CharSequence[] menuOptionsItems;
 	protected GamePanelView gamePanelView;
+    private boolean isWhitePlayerMove;
+    private TextView whiteTimer;
+    private TextView blackTimer;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (CommonUtils.needFullScreen(this)) {
 			setFullscreen();
@@ -95,7 +99,12 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		whitePlayerLabel.setSelected(true);
 		blackPlayerLabel.setSelected(true);
 
-		thinking = (TextView) findViewById(R.id.thinking);
+        // player timers for live game
+        whiteTimer = (TextView) findViewById(R.id.whiteTimer);
+        blackTimer = (TextView) findViewById(R.id.blackTimer);
+
+
+        thinking = (TextView) findViewById(R.id.thinking);
 
 		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
 		blackClockView = (TextView) findViewById(R.id.blackClockView);
@@ -135,7 +144,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected abstract void onDrawOffered(int whichButton);
 
-	private class DrawOfferDialogListener implements DialogInterface.OnClickListener {
+
+    private class DrawOfferDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			onDrawOffered(whichButton);
@@ -379,7 +389,50 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 	};
 
-	public TextView getWhiteClockView() {
+    public void setWhitePlayerTimer(String timeString) {
+
+//        String whiteLabel = mainApp.getWhitePlayerName().toString();
+//        Log.d("TEST","Setting text to white label = " + whiteLabel + " time = " + timeString);
+        whiteTimer.setText(timeString);
+
+        if(!isWhitePlayerMove){
+            isWhitePlayerMove = true;
+            changePlayersLabelColors();
+        }
+    }
+
+    public void setBlackPlayerTimer(String timeString) {
+
+//        String blackLabel = mainApp.getBlackPlayerName().toString();
+//        Log.d("TEST", "Setting text to black label = " + blackLabel + " time = " + timeString);
+        blackTimer.setText(timeString);
+
+        if(isWhitePlayerMove){
+            isWhitePlayerMove = false;
+            changePlayersLabelColors();
+        }
+    }
+
+    private void changePlayersLabelColors(){
+
+        if(isWhitePlayerMove){
+            whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
+            whiteTimer.setTextColor(getResources().getColor(R.color.white));
+//            whitePlayerLabel.setSelected(true);
+            blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+            blackTimer.setTextColor(getResources().getColor(R.color.hint_text));
+        }else{
+            blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
+            blackTimer.setTextColor(getResources().getColor(R.color.white));
+//            whitePlayerLabel.setSelected(true);
+            whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+            whiteTimer.setTextColor(getResources().getColor(R.color.hint_text));
+        }
+    }
+
+
+
+    public TextView getWhiteClockView() {
 		return whiteClockView;
 	}
 
