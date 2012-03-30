@@ -80,15 +80,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void init() {
 		super.init();
-<<<<<<< HEAD
-<<<<<<< HEAD
-		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
-=======
         mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
->>>>>>> origin/developLive
-=======
-        mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
->>>>>>> 2a8ff33143743012d750bd73bdadaadb34777952
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -128,15 +120,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-<<<<<<< HEAD
-<<<<<<< HEAD
 				Game game = lccHolder.getGame(mainApp.getGameId());
-=======
-				final Game game = lccHolder.getGame(mainApp.getGameId());
->>>>>>> origin/developLive
-=======
-				final Game game = lccHolder.getGame(mainApp.getGameId());
->>>>>>> 2a8ff33143743012d750bd73bdadaadb34777952
 
 				if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 					System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);

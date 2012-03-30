@@ -358,15 +358,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 			}
 
 //			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
-<<<<<<< HEAD
-<<<<<<< HEAD
-//			mainApp.showDialog(coreContext, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
-=======
+
 			//mainApp.showDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
->>>>>>> origin/developLive
-=======
-			//mainApp.showDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
->>>>>>> 2a8ff33143743012d750bd73bdadaadb34777952
 //			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
 //			findViewById(R.id.newGame).setOnClickListener(GameBaseActivity.this);
 //			findViewById(R.id.home).setOnClickListener(GameBaseActivity.this);
