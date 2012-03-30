@@ -77,7 +77,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-
 	}
 
 	@Override
@@ -150,6 +149,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
+	protected void getOnlineGame(long game_id) {
+		super.getOnlineGame(game_id);
+		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
+			update(CALLBACK_GAME_STARTED);
+		}
+	}
+
+	@Override
 	public void update(int code) {
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
@@ -180,8 +187,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
 					if (mainApp.getCurrentGame() != null) {
-						whitePlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get(GameItem.WHITE_RATING) + ")");
-						blackPlayerLabel.setText(mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + mainApp.getCurrentGame().values.get(GameItem.BLACK_RATING) + ")");
+						whitePlayerLabel.setText(mainApp.getWhitePlayerName());
+                        blackPlayerLabel.setText(mainApp.getBlackPlayerName());
 					}
 				}
 
@@ -234,9 +241,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 					int i;
 					ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
-					for (GameListItem gle : mainApp.getGameListItems()) {
-						if (gle.type == 1 && gle.values.get(GameListItem.IS_MY_TURN).equals("1")) {
-							currentGames.add(gle);
+					for (GameListItem gameListItem : mainApp.getGameListItems()) {
+						if (gameListItem.type == 1 && gameListItem.values.get(GameListItem.IS_MY_TURN).equals("1")) {
+							currentGames.add(gameListItem);
 						}
 					}
 					for (i = 0; i < currentGames.size(); i++) {
@@ -267,6 +274,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			case CALLBACK_GAME_REFRESH:
 				if (newBoardView.getBoardFace().isAnalysis())
 					return;
+
 				if (!mainApp.isLiveChess()) {
 					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
 				}
@@ -544,12 +552,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				&& lccHolder.getGame(mainApp.getGameId()) != null) {
 			game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
 					lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
-//			lccHolder.getAndroid().setGameActivity(this); // TODO
+			lccHolder.getAndroid().setGameActivity(this);
 			if (lccHolder.isActivityPausedMode()) {
 				executePausedActivityGameEvents();
 				lccHolder.setActivityPausedMode(false);
 			}
-			//lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
+			lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));    // TODO check
 		}
 	}
 

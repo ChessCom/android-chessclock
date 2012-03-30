@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import android.util.Log;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
@@ -73,7 +74,7 @@ public class LccGameListener implements GameListener {
 	@Override
 	public void onFullGameReceived(Game game) {
 		LOG.info("GAME LISTENER: Full GameItem received: " + game);
-		final Long gameId = game.getId();
+		Long gameId = game.getId();
 		if (isOldGame(gameId)) {
 			LOG.info(AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
 			return;
@@ -227,6 +228,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onMoveMade(Game game, User moveMaker, String move) {
+        Log.d("TEST","onMoveMade was called ");
 		LOG.info(
 				"GAME LISTENER: The move #" + game.getSeq() + " received by user: " + lccHolder.getUser().getUsername() +
 						", game.id=" +

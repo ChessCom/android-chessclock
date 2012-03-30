@@ -851,7 +851,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
 
-				final Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 				if (game != null && game.getSeq() > 0) {
 					lccHolder.doReplayMoves(game);
 				}

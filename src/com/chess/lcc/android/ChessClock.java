@@ -89,18 +89,21 @@ public class ChessClock {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (isWhite) {
+                String timer = createTimeString(getTime());
+				if (isWhite) { // if white player move
 					//System.out.println("@@@@@@@@@@@@@@@@@@@@ white " + createTimeString(getTime()));
-					activity.getWhiteClockView().setText(createTimeString(getTime()));
+//					activity.getWhiteClockView().setText(timer);
+					activity.setWhitePlayerTimer(timer);
 				} else {
 					//System.out.println("@@@@@@@@@@@@@@@@@@@@ black " + createTimeString(getTime()));
-					activity.getBlackClockView().setText(createTimeString(getTime()));
+//					activity.getBlackClockView().setText(timer);
+                    activity.setBlackPlayerTimer(timer);
 				}
 			}
 		});
 	}
 
-	protected String createTimeString(int time) { // TODO simplify
+	protected String createTimeString(int time) { // TODO simplify . Use Calendar & SimpleDateTime formatter methods
 		//boolean isNegative = time < 0;
 		time = Math.abs(time < 0 ? 0 : time);
 		int hours = time / (1000 * 60 * 60);

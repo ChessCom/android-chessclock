@@ -302,7 +302,7 @@ public class LccHolder {
 		return false;
 	}
 
-	public boolean isUserPlayingAnotherGame(Long currentGameId) {
+	public boolean isUserPlayingAnotherGame(long currentGameId) {
 		for (Game game : lccGames.values()) {
 			if (!game.getId().equals(currentGameId) && !game.isEnded()) {
 				return true;
@@ -471,9 +471,10 @@ public class LccHolder {
 	}
 
 	public String[] getGameData(long gameId, int moveIndex) {
-		final Game lccGame = getGame(gameId);
+		Game lccGame = getGame(gameId);
 		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
-		gameData[0] = lccGame.getId().toString();
+		Log.d("TEST","game id = " + gameId);
+		gameData[0] = lccGame.getId().toString();  // TODO eliminate string convertion and use Objects
 		gameData[1] = "1";
 		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
 		gameData[3] = "";
@@ -554,7 +555,7 @@ public class LccHolder {
 	}
 
 	public void makeMove(long gameId, final String move) {
-		final Game game = getGame(gameId);
+		final Game game = getGame(gameId);  // TODO remove final and pass like argument
 		/*if(chessMove.isCastling())
 			{
 			  lccMove = chessMove.getWarrenSmithString().substring(0, 4);
@@ -772,8 +773,10 @@ public class LccHolder {
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 		setClockDrawPointer(!game.getWhitePlayer().getUsername().equals(moveMaker.getUsername()));
+
 		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
 			final boolean isOpponentMoveDone = !_user.getUsername().equals(moveMaker.getUsername());
+
 			if (isOpponentMoveDone) {
 				synchronized (opponentClockStartSync) {
 					setNextOpponentMoveStillNotMade(false);
@@ -786,26 +789,18 @@ public class LccHolder {
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
 			final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
 			final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
-			/*if(updateWhite)
-				  {*/
-			final ChessClock whiteClock = getWhiteClock();
-			/*System.out.println("@@@@@@@@@@@@@@@@@@@@ whitePlayerTime " + whitePlayerTime);
-				  System.out.println("@@@@@@@@@@@@@@@@@@@@ " + whiteClock.createTimeString(whitePlayerTime));*/
-			whiteClock.setTime(whitePlayerTime);
+
+
+            getWhiteClock().setTime(whitePlayerTime);
 			if (!game.isEnded()) {
-				whiteClock.setRunning(isBlackDone);
+                getWhiteClock().setRunning(isBlackDone);
 			}
-			//}
-			/*if(updateBlack)
-				  {*/
-			final ChessClock blackClock = getBlackClock();
-			/*System.out.println("@@@@@@@@@@@@@@@@@@@@ blackPlayerTime " + blackPlayerTime);
-				  System.out.println("@@@@@@@@@@@@@@@@@@@@ " + blackClock.createTimeString(blackPlayerTime));*/
-			blackClock.setTime(blackPlayerTime);
+
+            getBlackClock().setTime(blackPlayerTime);
 			if (!game.isEnded()) {
-				blackClock.setRunning(isWhiteDone);
+                getBlackClock().setRunning(isWhiteDone);
 			}
-			//}
+
 		}
 	}
 
@@ -820,10 +815,6 @@ public class LccHolder {
 
 	public void setClockDrawPointer(final Boolean isWhite) {
 		if (getAndroid().getGameActivity() == null) {
-			/*throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
-												 "t2-t1=" + (previousFGTime-currentFGTime)/1000 + ", " +
-												 "id1=" + previousFGGameId + ", " +
-												 "id2=" + currentFGGameId);*/
 			return;
 		}
 		getAndroid().getGameActivity().runOnUiThread(new Runnable() {
@@ -838,6 +829,7 @@ public class LccHolder {
 				}
 				int leftDrawableForBlack = 0;
 				int rightDrawableForBlack = 0;
+
 				final Configuration configuration = getAndroid().getContext().getResources().getConfiguration();
 				if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
 					leftDrawableForBlack = R.drawable.blackmove;
@@ -848,9 +840,9 @@ public class LccHolder {
 				}
 				if (getAndroid().getGameActivity() != null) {
 					if (isWhite) {
-						getAndroid().getGameActivity().getWhiteClockView().
-								setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
-						getAndroid().getGameActivity().getBlackClockView().
+                        getAndroid().getGameActivity().getWhiteClockView().
+                                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
+                        getAndroid().getGameActivity().getBlackClockView().
 								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 					} else {
 						getAndroid().getGameActivity().getWhiteClockView().

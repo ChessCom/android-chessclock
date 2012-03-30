@@ -6,6 +6,7 @@
 	android:background="@color/game_board_back"
 	android:orientation="vertical">
 
+	<!--Top Bar-->
 	<RelativeLayout
 		android:id="@+id/statusBarLay"
 		android:layout_width="match_parent"
@@ -23,7 +24,7 @@
 			/>
 
 		<com.chess.RoboTextView
-			android:id="@+id/white"
+			android:id="@+id/whiteTimer"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:paddingRight="2dip"
@@ -33,7 +34,27 @@
 			/>
 
 		<com.chess.RoboTextView
+			android:id="@+id/white"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingRight="2dip"
+			android:paddingLeft="2dip"
+			android:layout_toRightOf="@id/whiteTimer"
+			style="@style/GameLabel.Player"
+			/>
+
+		<com.chess.RoboTextView
 			android:id="@+id/black"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toLeftOf="@+id/blackTimer"
+			android:paddingLeft="2dip"
+			android:paddingRight="2dip"
+			style="@style/GameLabel.Player"
+			/>
+
+		<com.chess.RoboTextView
+			android:id="@id/blackTimer"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
@@ -64,6 +85,7 @@
 			/>
 	</RelativeLayout>
 
+	<!--Game Board and Game Panel-->
 	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
@@ -71,7 +93,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
-			android:layout_weight="1">
+			>
 
 			<com.chess.ui.views.ChessBoardView
 				android:id="@+id/boardview"
@@ -86,6 +108,8 @@
 				/>
 
 		</LinearLayout>
+
+		<!--Move time labels-->
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -96,10 +120,9 @@
 				android:id="@+id/whiteClockView"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
 				android:drawablePadding="5dip"
-				android:drawableRight="@drawable/whitemove"
-				android:visibility="visible"/>
+				android:drawableLeft="@drawable/whitemove"
+				android:visibility="gone"/>
 
 			<com.chess.RoboTextView
 				android:id="@+id/blackClockView"
@@ -107,9 +130,10 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:drawablePadding="5dip"
-				android:visibility="visible"/>
+				android:visibility="gone"/>
 		</RelativeLayout>
 
+		<!--Submit buttons layout-->
 		<LinearLayout
 			android:id="@+id/submitButtonsLay"
 			android:layout_width="match_parent"

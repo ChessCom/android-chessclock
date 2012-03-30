@@ -335,7 +335,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId());
+			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
 			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
 					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))

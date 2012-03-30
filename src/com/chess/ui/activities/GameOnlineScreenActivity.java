@@ -120,7 +120,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-				final Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 
 				if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 					System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
@@ -162,16 +162,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
-		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
-			update(CALLBACK_GAME_STARTED);
-		} else {
+//		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
+//			update(CALLBACK_GAME_STARTED);
+//		} else {
 			if (appService != null) {
 				appService.RunSingleTask(CALLBACK_GAME_STARTED,
 						"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
 								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
 						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 			}
-		}
+//		}
 	}
 
 	@Override
@@ -409,18 +409,18 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
+				/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
 					mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 					executePausedActivityGameEvents();
 					//lccHolder.setActivityPausedMode(false);
 					lccHolder.getWhiteClock().paint();
 					lccHolder.getBlackClock().paint();
-					/*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
+					*//*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
 							  lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
-							  lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
-				} else {
+							  lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*//*
+				} else {*/
 					mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
-				}
+//				}
 
 				if (openChatActivity()) {
 					return;
@@ -444,7 +444,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
 
-				final Game game = lccHolder.getGame(mainApp.getGameId());
+				Game game = lccHolder.getGame(mainApp.getGameId());
 				if (game != null && game.getSeq() > 0) {
 					lccHolder.doReplayMoves(game);
 				}
