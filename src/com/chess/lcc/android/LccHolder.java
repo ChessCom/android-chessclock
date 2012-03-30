@@ -821,10 +821,6 @@ public class LccHolder {
 
 	public void setClockDrawPointer(final Boolean isWhite) {
 		if (getAndroid().getGameActivity() == null) {
-			/*throw new NullPointerException("lastFG=" + (System.currentTimeMillis()-currentFGTime)/1000 + ", " +
-												 "t2-t1=" + (previousFGTime-currentFGTime)/1000 + ", " +
-												 "id1=" + previousFGGameId + ", " +
-												 "id2=" + currentFGGameId);*/
 			return;
 		}
 		getAndroid().getGameActivity().runOnUiThread(new Runnable() {

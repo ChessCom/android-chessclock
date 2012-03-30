@@ -552,12 +552,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				&& lccHolder.getGame(mainApp.getGameId()) != null) {
 			game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
 					lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
-//			lccHolder.getAndroid().setGameActivity(this); // TODO
+			lccHolder.getAndroid().setGameActivity(this);
 			if (lccHolder.isActivityPausedMode()) {
 				executePausedActivityGameEvents();
 				lccHolder.setActivityPausedMode(false);
 			}
-			//lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
+			lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));    // TODO check
 		}
 	}
 
