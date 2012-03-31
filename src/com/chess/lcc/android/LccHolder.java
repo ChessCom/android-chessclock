@@ -3,10 +3,8 @@ package com.chess.lcc.android;
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.chess.R;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.live.util.GameTimeConfig;
@@ -205,8 +203,8 @@ public class LccHolder {
 		android.updateChallengesList();
 	}
 
-	public Challenge getChallenge(String challengeId) {
-		return challenges.get(new Long(challengeId));
+	public Challenge getChallenge(long challengeId) {
+		return challenges.get(challengeId);
 	}
 
 	public void addOwnChallenge(Challenge challenge) {
@@ -316,11 +314,7 @@ public class LccHolder {
 		android.updateChallengesList();
 	}
 
-	public void removeChallenge(String challengeId) {
-		removeChallenge(new Long(challengeId));
-	}
-
-	public void removeChallenge(Long challengeId) {
+	public void removeChallenge(long challengeId) {
 		challenges.remove(challengeId);
 		ownChallenges.remove(challengeId);
 		android.updateChallengesList();
@@ -667,12 +661,12 @@ public class LccHolder {
 		android.updateChallengesList();
 	}
 
-	public void removeSeek(String id) {
-		removeSeek(new Long(id));
+	public void removeSeek(long gameId) {
+		removeSeek(gameId);
 	}
 
-	public Challenge getSeek(String id) {
-		return seeks.get(new Long(id));
+	public Challenge getSeek(long gameId) {
+		return seeks.get(gameId);
 	}
 
 	public boolean isActivityPausedMode() {
@@ -772,7 +766,7 @@ public class LccHolder {
 
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
-		setClockDrawPointer(!game.getWhitePlayer().getUsername().equals(moveMaker.getUsername()));
+//		setClockDrawPointer(!game.getWhitePlayer().getUsername().equals(moveMaker.getUsername()));
 
 		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
 			final boolean isOpponentMoveDone = !_user.getUsername().equals(moveMaker.getUsername());
@@ -813,47 +807,47 @@ public class LccHolder {
 			getBlackClock().setTime(blackPlayerTime);*/
 	}
 
-	public void setClockDrawPointer(final Boolean isWhite) {
-		if (getAndroid().getGameActivity() == null) {
-			return;
-		}
-		getAndroid().getGameActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				if (isWhite == null) {
-					getAndroid().getGameActivity().getWhiteClockView().
-							setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-					getAndroid().getGameActivity().getBlackClockView().
-							setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-					return;
-				}
-				int leftDrawableForBlack = 0;
-				int rightDrawableForBlack = 0;
-
-				final Configuration configuration = getAndroid().getContext().getResources().getConfiguration();
-				if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-					leftDrawableForBlack = R.drawable.blackmove;
-					rightDrawableForBlack = 0;
-				} else if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-					leftDrawableForBlack = 0;
-					rightDrawableForBlack = R.drawable.blackmove;
-				}
-				if (getAndroid().getGameActivity() != null) {
-					if (isWhite) {
-                        getAndroid().getGameActivity().getWhiteClockView().
-                                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
-                        getAndroid().getGameActivity().getBlackClockView().
-								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-					} else {
-						getAndroid().getGameActivity().getWhiteClockView().
-								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-						getAndroid().getGameActivity().getBlackClockView().
-								setCompoundDrawablesWithIntrinsicBounds(leftDrawableForBlack, 0, rightDrawableForBlack, 0);
-					}
-				}
-			}
-		});
-	}
+//	public void setClockDrawPointer(final Boolean isWhite) {
+//		if (getAndroid().getGameActivity() == null) {
+//			return;
+//		}
+//		getAndroid().getGameActivity().runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				if (isWhite == null) {
+//					getAndroid().getGameActivity().getWhiteClockView().
+//							setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//					getAndroid().getGameActivity().getBlackClockView().
+//							setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//					return;
+//				}
+//				int leftDrawableForBlack = 0;
+//				int rightDrawableForBlack = 0;
+//
+//				final Configuration configuration = getAndroid().getContext().getResources().getConfiguration();
+//				if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//					leftDrawableForBlack = R.drawable.blackmove;
+//					rightDrawableForBlack = 0;
+//				} else if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//					leftDrawableForBlack = 0;
+//					rightDrawableForBlack = R.drawable.blackmove;
+//				}
+//				if (getAndroid().getGameActivity() != null) {
+//					if (isWhite) {
+//                        getAndroid().getGameActivity().getWhiteClockView().
+//                                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
+//                        getAndroid().getGameActivity().getBlackClockView().
+//								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//					} else {
+//						getAndroid().getGameActivity().getWhiteClockView().
+//								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//						getAndroid().getGameActivity().getBlackClockView().
+//								setCompoundDrawablesWithIntrinsicBounds(leftDrawableForBlack, 0, rightDrawableForBlack, 0);
+//					}
+//				}
+//			}
+//		});
+//	}
 
 	public void setCurrentGameId(Long gameId) {
 		currentGameId = gameId;

@@ -167,7 +167,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID),
+						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(),
 						"GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_COMP_MOVE);
@@ -180,7 +180,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 
 				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID),
+						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(),
 						"GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(3);

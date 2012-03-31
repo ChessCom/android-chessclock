@@ -532,9 +532,13 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					(MainApp.isLiveOrEchessGameMode(boardFace) && boardFace.getHply() < boardFace.getMovesCount()))
 				return true;
 			if (MainApp.isLiveOrEchessGameMode(boardFace) && mainApp.getCurrentGame() != null) {
-				if (mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && boardFace.getMovesCount() % 2 != 0)
+				if (mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
+						.equals(mainApp.getSharedData().getString(AppConstants.USERNAME, ""))
+						&& boardFace.getMovesCount() % 2 != 0)
 					return true;
-				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase().equals(mainApp.getSharedData().getString(AppConstants.USERNAME, "")) && boardFace.getMovesCount() % 2 == 0)
+				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase()
+						.equals(mainApp.getSharedData().getString(AppConstants.USERNAME, ""))
+						&& boardFace.getMovesCount() % 2 == 0)
 					return true;
 			}
 			if ((MainApp.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)

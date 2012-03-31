@@ -15,7 +15,7 @@
 		android:paddingTop="@dimen/default_scr_top_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:scrollbarTrackVertical="@drawable/whitemove">
+		>
 
 		<com.chess.RoboButton
 			android:id="@+id/upgradeBtn"

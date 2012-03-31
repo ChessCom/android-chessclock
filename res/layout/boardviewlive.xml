@@ -24,22 +24,12 @@
 			/>
 
 		<com.chess.RoboTextView
-			android:id="@+id/whiteTimer"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:paddingRight="2dip"
-			android:paddingLeft="8dip"
-			android:drawableLeft="@drawable/whitemove"
-			style="@style/GameLabel.Player"
-			/>
-
-		<com.chess.RoboTextView
 			android:id="@+id/white"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:paddingRight="2dip"
-			android:paddingLeft="2dip"
-			android:layout_toRightOf="@id/whiteTimer"
+			android:paddingLeft="8dip"
+			android:drawableLeft="@drawable/player_indicator_white"
 			style="@style/GameLabel.Player"
 			/>
 
@@ -47,20 +37,10 @@
 			android:id="@+id/black"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@+id/blackTimer"
-			android:paddingLeft="2dip"
-			android:paddingRight="2dip"
-			style="@style/GameLabel.Player"
-			/>
-
-		<com.chess.RoboTextView
-			android:id="@id/blackTimer"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
 			android:paddingLeft="2dip"
 			android:paddingRight="8dip"
-			android:drawableRight="@drawable/blackmove"
+			android:drawableRight="@drawable/player_indicator_black"
 			style="@style/GameLabel.Player"
 			/>
 
@@ -110,7 +90,7 @@
 		</LinearLayout>
 
 		<!--Move time labels-->
-		<RelativeLayout
+		<!--<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="bottom"
@@ -131,7 +111,7 @@
 				android:layout_alignParentRight="true"
 				android:drawablePadding="5dip"
 				android:visibility="gone"/>
-		</RelativeLayout>
+		</RelativeLayout>-->
 
 		<!--Submit buttons layout-->
 		<LinearLayout
@@ -149,6 +129,7 @@
 				android:layout_marginLeft="10dip"
 				android:layout_marginRight="10dip"
 				android:layout_weight="1"
+				style="@style/Text.Button"
 				android:text="@string/submit"/>
 
 			<com.chess.RoboButton

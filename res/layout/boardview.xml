@@ -29,7 +29,7 @@
 			android:text="@string/Human"
 			android:paddingLeft="8dip"
 			android:paddingRight="2dip"
-			android:drawableLeft="@drawable/whitemove"
+			android:drawableLeft="@drawable/player_indicator_white"
 			style="@style/GameLabel.Player"
 			/>
 
@@ -41,7 +41,7 @@
 			android:text="@string/Computer"
 			android:paddingLeft="2dip"
 			android:paddingRight="8dip"
-			android:drawableRight="@drawable/blackmove"
+			android:drawableRight="@drawable/player_indicator_black"
 			style="@style/GameLabel.Player"
 			/>
 

@@ -27,7 +27,7 @@
 				android:layout_height="wrap_content"
 				>
 
-				<TextView
+				<com.chess.RoboTextView
 					android:id="@+id/thinking"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -37,18 +37,18 @@
 					style="@style/GameLabel"
 					/>
 
-				<TextView
+				<com.chess.RoboTextView
 					android:id="@+id/white"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/Human"
 					android:paddingLeft="8dip"
 					android:paddingRight="2dip"
-					android:drawableLeft="@drawable/whitemove"
+					android:drawableLeft="@drawable/player_indicator_white"
 					style="@style/GameLabel.Player"
 					/>
 
-				<TextView
+				<com.chess.RoboTextView
 					android:id="@+id/black"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -56,11 +56,11 @@
 					android:text="@string/Computer"
 					android:paddingLeft="2dip"
 					android:paddingRight="8dip"
-					android:drawableRight="@drawable/blackmove"
+					android:drawableRight="@drawable/player_indicator_black"
 					style="@style/GameLabel.Player"
 					/>
 
-				<TextView
+				<com.chess.RoboTextView
 					android:id="@+id/analysisTxt"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"

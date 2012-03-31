@@ -225,6 +225,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				Intent intent = new Intent(this,HomeScreenActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+				finish(); // TODO check if activity doesn't finish
 				break;
 		}
 		return super.onOptionsItemSelected(item);

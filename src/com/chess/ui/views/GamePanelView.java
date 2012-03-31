@@ -2,21 +2,19 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.RoboTextView;
 import com.chess.ui.engine.PieceItem;
 import com.chess.ui.interfaces.BoardViewFace;
-
-import java.util.List;
 
 /**
  * GamePanelTestActivity class
@@ -73,6 +71,9 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public static final int B_FORWARD_ID = 6;
 	public static final int B_HINT_ID = 7;
 
+	public static final int T_WHITE_TIMER_ID = 8;
+	public static final int T_BLACK_TIMER_ID = 9;
+
 	private int whiteAlivePiecesCount[] = new int[6];
 	private int blackAlivePiecesCount[] = new int[6];
 
@@ -84,6 +85,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private TextView movesTextView;
 	private BoardViewFace boardViewFace;
     private float density;
+	private RelativeLayout timerRelLay;
+	private RoboTextView whiteTimer;
+	private RoboTextView blackTimer;
+	private Resources resources;
 
 	public GamePanelView(Context context) {
 		super(context);
@@ -99,7 +104,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public void onCreate() {
 		setOrientation(VERTICAL);
         density = getContext().getResources().getDisplayMetrics().density;
-
+		resources = getContext().getResources();
         pieceIds = getResources().getIntArray(R.array.pieces_ids);
 
 		controlsLayout = new LinearLayout(getContext());
@@ -124,6 +129,46 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
 		addView(controlsLayout);
 
+		// create textViews for timers
+		whiteTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
+//		whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.whitemove,0,0,0);
+		whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white,0,0,0);
+		whiteTimer.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
+		int timerPaddingLeft = (int) (8*density + 0.5f);
+		int timerPaddingRight = (int) (2*density + 0.5f);
+		whiteTimer.setPadding(timerPaddingLeft, 0, timerPaddingRight, 0);
+
+		blackTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
+		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
+//		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.blackmove, 0);
+		blackTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
+
+		int timerPaddingLeft1 = (int) (2*density + 0.5f);
+		int timerPaddingRight1 = (int) (10* density + 0.5f);
+		blackTimer.setPadding(timerPaddingLeft1, 0, timerPaddingRight1, 0);
+
+		// create layout for text views
+		timerRelLay = new RelativeLayout(getContext());
+		RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		timerRelLay.setLayoutParams(relParams);
+
+		// set blackTimer params
+		RelativeLayout.LayoutParams blackTimerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		blackTimerParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		blackTimer.setLayoutParams(blackTimerParams);
+		// add to layout
+		timerRelLay.addView(blackTimer);
+		timerRelLay.addView(whiteTimer);
+
+		timerRelLay.setVisibility(View.INVISIBLE);
+		addView(timerRelLay);
+
+
+//		setBackgroundColor(resources.getColor(R.color.orange));
+//		blackTimer.setText("50:00");
+//		whiteTimer.setText("50:00");
 
 		LinearLayout infoLayout = new LinearLayout(getContext());
 		infoLayout.setLayoutParams(params);
@@ -144,6 +189,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		piecesLayout.setPadding(pieceLayoutPaddingLeft, pieceLayoutPaddingTop, pieceLayoutPaddingRight, pieceLayoutPaddingBottom);
 		piecesLayout.setGravity(Gravity.CENTER);
+//		piecesLayout.setBackgroundColor(resources.getColor(R.color.blue));
 
 		LinearLayout whiteCapturedPieces = new LinearLayout(getContext());
 		whiteCapturedPieces.setPadding(1, 1, 1, 1);
@@ -232,17 +278,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	}
 
 	private void addControlButton(int buttonId, int backId) {
-//        ImageButton imageButton = new ImageButton(getContext());
-//        imageButton.setImageResource(buttonsDrawableIds[buttonId]);
-//        imageButton.setBackgroundResource(backId);
-//        imageButton.setOnClickListener(this);
-//        imageButton.setId(BUTTON_PREFIX + buttonId);
-//
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-//
-//        params.weight = 1;
-//        imageButton.setLayoutParams(params);
 		controlsLayout.addView(createControlButton(buttonId, backId));
 	}
 
@@ -303,7 +338,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public void restorePiece(boolean isWhite, int pieceId) {
 		showPiece(false, isWhite, pieceId);
 	}
-
+	                     // TODO incapsulate
 	private void showPiece(boolean show, boolean isWhite, int pieceId) {
 		int frameId = getFramePrefix(isWhite) + pieceIds[pieceId];
 
@@ -514,22 +549,39 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
 	}
 
-	private class MovesAdapter extends ItemsAdapter<String> {
-		public MovesAdapter(Context context, List<String> itemList) {
-			super(context, itemList);
-		}
-
-		@Override
-		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.game_panel_list_item, parent, false);
-			return view;
-		}
-
-		@Override
-		protected void bindView(String item, int pos, View convertView) {
-			((TextView) convertView).setText(item);
-		}
+	public void activatePlayerTimer(boolean isWhite, boolean active) {
+		timerRelLay.setVisibility(View.VISIBLE);
+		TextView textView = isWhite? whiteTimer: blackTimer;
+		if(active)
+			textView.setTextColor(resources.getColor(R.color.white));
+		else
+			textView.setTextColor(resources.getColor(R.color.hint_text));
 	}
+
+	public void setBlackTimer(String timeString) {
+		blackTimer.setText(timeString);
+	}
+
+	public void setWhiteTimer(String timeString) {
+		whiteTimer.setText(timeString);
+	}
+
+//	private class MovesAdapter extends ItemsAdapter<String> {
+//		public MovesAdapter(Context context, List<String> itemList) {
+//			super(context, itemList);
+//		}
+//
+//		@Override
+//		protected View createView(ViewGroup parent) {
+//			View view = inflater.inflate(R.layout.game_panel_list_item, parent, false);
+//			return view;
+//		}
+//
+//		@Override
+//		protected void bindView(String item, int pos, View convertView) {
+//			((TextView) convertView).setText(item);
+//		}
+//	}
 
 
 }

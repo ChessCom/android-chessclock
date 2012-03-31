@@ -147,7 +147,14 @@
     <color name="top_bar_2">#FF5d5d5d</color>
     <color name="top_bar_3">#FF363636</color>
 
-    
+	<color name="disabled">#FF7a7a7a</color>
 
-    <color name="disabled">#FF7a7a7a</color>
+	<!--Players indicators-->
+	<color name="player_ind_white_1">#fffcfcfc</color>
+	<color name="player_ind_white_2">#FFa3a3a3</color>
+	<color name="player_ind_white_stroke">#fff5f5f5</color>
+
+	<color name="player_ind_black_1">#FF000000</color>
+	<color name="player_ind_black_2">#FF575757</color>
+	<color name="player_ind_black_stroke">#FF000000</color>
 </resources>

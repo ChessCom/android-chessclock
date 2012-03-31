@@ -6,7 +6,6 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -63,8 +62,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected GameItem game;
 
-	protected TextView whiteClockView;
-	protected TextView blackClockView;
+//	protected TextView whiteClockView;
+//	protected TextView blackClockView;
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
@@ -77,9 +76,10 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected CharSequence[] menuOptionsItems;
 	protected GamePanelView gamePanelView;
-    private boolean isWhitePlayerMove;
-    private TextView whiteTimer;
-    private TextView blackTimer;
+    private boolean isWhitePlayerMove = true;
+    private boolean initTimer = true;
+//    private TextView whiteTimer;
+//    private TextView blackTimer;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,14 +100,14 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		blackPlayerLabel.setSelected(true);
 
         // player timers for live game
-        whiteTimer = (TextView) findViewById(R.id.whiteTimer);
-        blackTimer = (TextView) findViewById(R.id.blackTimer);
+//        whiteTimer = (TextView) findViewById(R.id.whiteTimer);
+//        blackTimer = (TextView) findViewById(R.id.blackTimer);
 
 
         thinking = (TextView) findViewById(R.id.thinking);
 
-		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
-		blackClockView = (TextView) findViewById(R.id.blackClockView);
+//		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
+//		blackClockView = (TextView) findViewById(R.id.blackClockView);
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
@@ -135,11 +135,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		update(CALLBACK_REPAINT_UI);
 	}
 
-	protected void init() { // TODO call super from inheritance
-
+	protected void init() {
 		drawOfferDialogListener = new DrawOfferDialogListener();
 		abortGameDialogListener = new AbortGameDialogListener();
-
 	}
 
 	protected abstract void onDrawOffered(int whichButton);
@@ -390,22 +388,16 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
     public void setWhitePlayerTimer(String timeString) {
+		gamePanelView.setWhiteTimer(timeString);
 
-//        String whiteLabel = mainApp.getWhitePlayerName().toString();
-//        Log.d("TEST","Setting text to white label = " + whiteLabel + " time = " + timeString);
-        whiteTimer.setText(timeString);
-
-        if(!isWhitePlayerMove){
+        if(!isWhitePlayerMove || initTimer){
             isWhitePlayerMove = true;
             changePlayersLabelColors();
         }
     }
 
     public void setBlackPlayerTimer(String timeString) {
-
-//        String blackLabel = mainApp.getBlackPlayerName().toString();
-//        Log.d("TEST", "Setting text to black label = " + blackLabel + " time = " + timeString);
-        blackTimer.setText(timeString);
+		gamePanelView.setBlackTimer(timeString);
 
         if(isWhitePlayerMove){
             isWhitePlayerMove = false;
@@ -417,28 +409,31 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
         if(isWhitePlayerMove){
             whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
-            whiteTimer.setTextColor(getResources().getColor(R.color.white));
-//            whitePlayerLabel.setSelected(true);
+			gamePanelView.activatePlayerTimer(true,true);
+//            whiteTimer.setTextColor(getResources().getColor(R.color.white));
             blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-            blackTimer.setTextColor(getResources().getColor(R.color.hint_text));
+			gamePanelView.activatePlayerTimer(false,false);
+//            blackTimer.setTextColor(getResources().getColor(R.color.hint_text));
         }else{
             blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
-            blackTimer.setTextColor(getResources().getColor(R.color.white));
-//            whitePlayerLabel.setSelected(true);
+			gamePanelView.activatePlayerTimer(false,true);
+//            blackTimer.setTextColor(getResources().getColor(R.color.white));
             whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-            whiteTimer.setTextColor(getResources().getColor(R.color.hint_text));
+			gamePanelView.activatePlayerTimer(true,false);
+//            whiteTimer.setTextColor(getResources().getColor(R.color.hint_text));
         }
-    }
-
-
-
-    public TextView getWhiteClockView() {
-		return whiteClockView;
+		initTimer = false;
 	}
 
-	public TextView getBlackClockView() {
-		return blackClockView;
-	}
+
+
+//    public TextView getWhiteClockView() {
+//		return whiteClockView;
+//	}
+//
+//	public TextView getBlackClockView() {
+//		return blackClockView;
+//	}
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {

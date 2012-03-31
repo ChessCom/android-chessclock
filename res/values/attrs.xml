@@ -12,4 +12,7 @@
         <attr name="ttf" format="string" />
     </declare-styleable>
 
+	<declare-styleable name="OrangeButtonTheme">
+		<attr name="playerLabelStyle" format="reference"/>
+	</declare-styleable>
 </resources>

@@ -179,16 +179,16 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
 				LccHolder.LOG.info("Accept challenge: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.getGameId());
 				update(GameBaseActivity.CALLBACK_COMP_MOVE);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
 				LccHolder.LOG.info("Decline challenge: " + challenge);
 				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.getGameId());
 				update(3);
 			}
 		}
@@ -198,13 +198,13 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
 				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				lccHolder.removeChallenge(gameListElement.getGameId());
 				update(4);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
 				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
 			}
 		}
@@ -214,13 +214,13 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Cancel my seek: " + challenge);
 				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-				lccHolder.removeSeek(gameListElement.values.get(GameListItem.GAME_ID));
+				lccHolder.removeSeek(gameListElement.getGameId());
 				update(4);
 			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Just keep my seek: " + challenge);
 			}
 		}
@@ -230,7 +230,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID), "GET", null, null);
+				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_COMP_MOVE);
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
@@ -240,7 +240,7 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 				}
 			} else if (pos == 1) {
 
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.values.get(GameListItem.GAME_ID), "GET", null, null);
+				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					update(3);
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
@@ -271,10 +271,10 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 						.create().show();
 			} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0")
 					&& gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-				final Challenge challenge = lccHolder.getSeek(gameListElement.values.get(GameListItem.GAME_ID));
+				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Accept seek: " + challenge);
 				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeSeek(gameListElement.values.get(GameListItem.GAME_ID));
+				lccHolder.removeSeek(gameListElement.getGameId());
 				update(GameBaseActivity.CALLBACK_COMP_MOVE);
 			} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0")
 					&& gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {

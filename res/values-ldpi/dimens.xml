@@ -62,13 +62,15 @@
 	<!--GamePanelView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
 	<dimen name="game_control_padding_right">10dip</dimen>
-	<dimen name="game_control_padding_top">5dip</dimen>
-	<dimen name="game_control_padding_bottom">2dip</dimen>
+	<dimen name="game_control_padding_top">1dip</dimen>
+	<dimen name="game_control_padding_bottom">0dip</dimen>
+	<!--<dimen name="game_control_padding_top">5dip</dimen>-->
+	<!--<dimen name="game_control_padding_bottom">2dip</dimen>-->
 
-	<dimen name="piece_layout_padding_left">5dip</dimen>
+	<dimen name="piece_layout_padding_left">2dip</dimen>
 	<dimen name="piece_layout_padding_right">0dip</dimen>
 	<dimen name="piece_layout_padding_top">0dip</dimen>
-	<dimen name="piece_layout_padding_bottom">1dip</dimen>
+	<dimen name="piece_layout_padding_bottom">0dip</dimen>
 
 
 </resources>

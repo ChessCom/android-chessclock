@@ -83,7 +83,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 
 	private ArrayList<MessageItem> getMessagesList() {
 		ArrayList<MessageItem> output = new ArrayList<MessageItem>();
-		Long currentGameId = new Long(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
+		Long currentGameId = new Long(mainApp.getCurrentGameId() );
 		com.chess.live.client.Chat chat = lccHolder.getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
@@ -126,7 +126,7 @@ public class ChatLiveActivity extends CoreActivityActionBar implements OnClickLi
 				protected Void doInBackground(Void... voids) {
 					System.out.println("LCCLOG: SEND");
 					lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(
-							new Long(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID))),
+							new Long(mainApp.getCurrentGameId() )),
 							sendText.getText().toString());
 					return null;
 				}

@@ -59,8 +59,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		findViewById(R.id.cancel).setOnClickListener(this);
 
 		if (lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
-			whiteClockView.setVisibility(View.VISIBLE);
-			blackClockView.setVisibility(View.VISIBLE);
+//			whiteClockView.setVisibility(View.VISIBLE);
+//			blackClockView.setVisibility(View.VISIBLE);
 
 			lccHolder.getWhiteClock().paint();
 			lccHolder.getBlackClock().paint();
@@ -69,7 +69,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			User whiteUser = game.getWhitePlayer();
 			User blackUser = game.getBlackPlayer();
 			Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
-			lccHolder.setClockDrawPointer(isWhite);
+//			lccHolder.setClockDrawPointer(isWhite);
 		}
 
 		newBoardView.setBoardFace(new ChessBoard(this));
@@ -247,8 +247,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 						}
 					}
 					for (i = 0; i < currentGames.size(); i++) {
-						if (currentGames.get(i).values.get(GameListItem.GAME_ID)
-								.contains(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID))) {
+						if (currentGames.get(i).getGameId() == mainApp.getCurrentGameId()) {
 							if (i + 1 < currentGames.size()) {
 								newBoardView.setBoardFace(new ChessBoard(this));
 								newBoardView.getBoardFace().setAnalysis(false);
@@ -259,7 +258,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 									progressDialog = null;
 								}
 
-								getOnlineGame(Long.parseLong(currentGames.get(i + 1).values.get(GameListItem.GAME_ID)));
+								getOnlineGame(currentGames.get(i + 1).getGameId());
 								return;
 							} else {
 								finish();
@@ -407,7 +406,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         gamePanelView.haveNewMessage(false);
 
         Intent intent = new Intent(coreContext, ChatLiveActivity.class);
-        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
+        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGameId() );
         intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
         startActivity(intent);
 

@@ -99,7 +99,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			String Draw = AppConstants.OFFERDRAW;
 			if (mainApp.acceptdraw)
 				Draw = AppConstants.ACCEPTDRAW;
-			String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.GAME_ID) + AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
+			String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()  + AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 			if (result.contains(AppConstants.SUCCESS)) {
 				mainApp.showDialog(coreContext, "", getString(R.string.drawoffered));
 			} else if (result.contains(AppConstants.ERROR_PLUS)) {
@@ -116,7 +116,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			String result = Web.Request("http://www." + LccHolder.HOST
 					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)
+					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
 					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 			if (result.contains(AppConstants.SUCCESS)) {

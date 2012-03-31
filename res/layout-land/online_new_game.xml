@@ -9,42 +9,15 @@
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
 
-	android:orientation="vertical">
-
-	<include layout="@layout/mopub_ad_view"/>
-
+	android:orientation="horizontal">
 	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
-
-		<com.chess.RoboButton
-			android:id="@+id/friendchallenge"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-			android:text="@string/challengeFriend"/>
-
-		<com.chess.RoboButton
-			android:id="@+id/challengecreate"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-			android:text="@string/createNewChallenge"/>
-
-		<com.chess.RoboButton
-			android:id="@+id/currentGame"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="10dip"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-			android:text="@string/currentGame"
-			android:visibility="gone"/>
-
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:layout_weight="1"
+		>
 		<com.chess.RoboTextView
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/onlineChallenges"
 			android:paddingLeft="@dimen/default_linear_left_padding"
@@ -53,8 +26,44 @@
 
 		<ListView
 			android:id="@+id/openChallenges"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"/>
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:layout_weight="1"
+		>
+		<include layout="@layout/mopub_ad_view"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/friendchallenge"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:text="@string/challengeFriend"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/challengecreate"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:text="@string/createNewChallenge"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/currentGame"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="10dip"
+			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:text="@string/currentGame"
+			android:visibility="gone"/>
+
 	</LinearLayout>
 
 </LinearLayout>

@@ -30,6 +30,11 @@
  	<dimen name="home_main_padding_right">20dip</dimen>
 
 
+	<!--Game Modes-->
+	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
+	<dimen name="player_name_max_width">120dip</dimen>
+	<dimen name="game_label_padding_top">2dip</dimen>
+
 	<!--Dashboard-->
 	<dimen name="dashboard_padding_top">21dip</dimen>
 	<dimen name="dashboard_padding_bot">48dip</dimen>

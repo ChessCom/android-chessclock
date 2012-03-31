@@ -131,4 +131,9 @@ public class GameListItem {
 		return builder.toString();
 //		return super.toString();
 	}
+
+
+	public long getGameId(){
+		return Long.parseLong(values.get(GameListItem.GAME_ID));
+	}
 }

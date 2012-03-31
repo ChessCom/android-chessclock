@@ -83,7 +83,7 @@ public class ChessClock {
 
 	public void paint() {
 		final GameBaseActivity activity = lccHolder.getAndroid().getGameActivity();
-		if (activity == null || activity.getWhiteClockView() == null || activity.getBlackClockView() == null) {
+		if (activity == null /*|| activity.getWhiteClockView() == null || activity.getBlackClockView() == null*/) {
 			return;
 		}
 		activity.runOnUiThread(new Runnable() {

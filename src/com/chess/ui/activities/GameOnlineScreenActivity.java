@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -103,8 +102,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			} else {
 				String Draw = AppConstants.OFFERDRAW;
 				if (mainApp.acceptdraw)
-					Draw = AppConstants.ACCEPTDRAW;
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.GAME_ID) + AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
+					Draw = AppConstants.ACCEPTDRAW;               // TODO hide to resthelper
+				String result = Web.Request("http://www." + LccHolder.HOST
+						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
+						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
+						+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
 					mainApp.showDialog(coreContext, "", getString(R.string.drawoffered));
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
@@ -138,7 +142,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGame().values.get(GameListItem.GAME_ID)
+						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 						+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 				if (result.contains(AppConstants.SUCCESS)) {
@@ -262,7 +266,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID +
 										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER +
-										mainApp.getCurrentGame().values.get(GameListItem.GAME_ID) + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
+										mainApp.getCurrentGameId()  + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
 										newBoardView.getBoardFace().convertMoveEchess() + AppConstants.TIMESTAMP_PARAMETER +
 										mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP),
 								progressDialog = new MyProgressDialog(
@@ -281,7 +285,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
 							"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID +
 									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER +
-									mainApp.getCurrentGame().values.get(GameListItem.GAME_ID) + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
+									mainApp.getCurrentGameId()  + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
 									newBoardView.getBoardFace().convertMoveEchess() + AppConstants.TIMESTAMP_PARAMETER +
 									mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP),
 									progressDialog = new MyProgressDialog(
@@ -322,8 +326,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						}
 					}
 					for (i = 0; i < currentGames.size(); i++) {
-						if (currentGames.get(i).values.get(GameListItem.GAME_ID)
-								.contains(mainApp.getCurrentGame().values.get(GameListItem.GAME_ID))) {
+						if (currentGames.get(i).getGameId() == mainApp.getCurrentGameId()) {
 							if (i + 1 < currentGames.size()) {
 								newBoardView.setBoardFace(new ChessBoard(this));
 								newBoardView.getBoardFace().setAnalysis(false);
@@ -334,7 +337,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 									progressDialog = null;
 								}
 
-								getOnlineGame(Long.parseLong(currentGames.get(i + 1).values.get(GameListItem.GAME_ID)));
+								getOnlineGame(currentGames.get(i + 1).getGameId());
 								return;
 							} else {
 								finish();
@@ -513,7 +516,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         gamePanelView.haveNewMessage(false);
 
         Intent intent = new Intent(coreContext, ChatActivity.class);
-        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGame().values.get(GameListItem.GAME_ID));
+        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGameId() );
         intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
         startActivity(intent);
 
@@ -697,16 +700,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		showSubmitButtonsLay(false);
 		gamePanelView.haveNewMessage(true);
 //		chatPanel.setVisibility(View.GONE);
-	}
-
-	@Override
-	public TextView getWhiteClockView() {
-		return whiteClockView;
-	}
-
-	@Override
-	public TextView getBlackClockView() {
-		return blackClockView;
 	}
 
 	/*public void onStop()
