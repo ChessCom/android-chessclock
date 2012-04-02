@@ -188,7 +188,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 		@Override
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
-			final Integer initialTime = new Integer(textString);  // TODO
+			final Integer initialTime = Integer.parseInt(textString);
 			return !textString.equals("") && initialTime >= 1 && initialTime <= 120;
 		}
 
@@ -218,7 +218,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 		@Override
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
-			final Integer bonusTime = new Integer(textString);  // TODO
+			final Integer bonusTime = Integer.parseInt(textString);
 			if (!textString.equals("") && bonusTime >= 0 && bonusTime <= 60) {
 				return true;
 			} else {

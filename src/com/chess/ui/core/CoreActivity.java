@@ -206,7 +206,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void run() {
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+					mainApp.getUserName()
 							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
 		}
 	};
@@ -214,14 +214,16 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	private Runnable loadPiecesBitmaps = new Runnable() {
 		@Override
 		public void run() {
-			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
-					mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-							+ AppConstants.PREF_PIECES_SET, 0)], null);
+//			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
+//					mainApp.getUserName()
+//							+ AppConstants.PREF_PIECES_SET, 0)], null);
+			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+							+ AppConstants.PREF_PIECES_SET, 0), null);
 		}
 	};
 
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getSharedData().getString(AppConstants.USERNAME, "").equals("")) {
+		if (!mainApp.getUserName().equals("")) {
 			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //				mainApp.startActivity(intent);
@@ -299,10 +301,10 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			if (resp.contains(AppConstants.SUCCESS))
 				update(retCode);
 			else {
-				if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
+				/*if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
-				}
+				}*/
 				if (resp.length() == 0) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
@@ -577,7 +579,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-					.equals(mainApp.getSharedData().getString(AppConstants.USERNAME, ""));
+					.equals(mainApp.getUserName());
 		} catch (Exception e) {
 			return null;
 		}

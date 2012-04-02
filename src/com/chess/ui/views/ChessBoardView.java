@@ -74,11 +74,16 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
 	private float width;
 	private float height;
-
+	private Rect rect;
 
 	private GamePanelView gamePanelView;
 	//	private PieceItem pieceItem;
 	private Resources resources;
+	private boolean isHighlightEnabled;
+	private boolean showCoordinates;
+	private boolean showSubmitButtons;
+	private int compStrength;
+	private String userName;
 
 	public ChessBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -89,6 +94,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		white = new Paint();
 		black = new Paint();
 		red = new Paint();
+		rect = new Rect();
 		// captured piece Item
 //		pieceItem = new PieceItem();
 
@@ -113,15 +119,32 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		int opacity = resources.getInteger(R.integer.fade_opacity);
 //		blackColor ^= (opacity * 0xFF / 100) << 32;
 		image.setBounds(0, 0, (int) width, (int) height);
-
 		image.setDither(true);
-
-
 	}
 
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
 		mainApp = gameActivityFace.getMainApp();
+
+		isHighlightEnabled = mainApp.getSharedData().getBoolean(mainApp.getUserName()
+				+ AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true);
+
+		showCoordinates = mainApp.getSharedData().getBoolean(mainApp.getUserName()
+				+ AppConstants.PREF_BOARD_COORDINATES, true);
+
+
+		if (mainApp.isLiveChess()) {
+			showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getUserName()
+					+ AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
+		} else {
+			showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getUserName()
+					+ AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
+		}
+
+		compStrength = mainApp.getSharedData().getInt(mainApp.getUserName()
+				+ AppConstants.PREF_COMPUTER_STRENGTH, 0);
+
+		userName = mainApp.getUserName();
 	}
 
 
@@ -130,17 +153,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);	//movelist
 
 		if (MainApp.isLiveOrEchessGameMode(boardFace) && !boardFace.isAnalysis()) {
-			boolean showSubmitButtons;
-			if (mainApp.isLiveChess()) {
-				showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
-			} else {
-				showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
-			}
 			if (showSubmitButtons) {
 				gameActivityFace.showSubmitButtonsLay(true);
-//				gameActivityFace.findViewById(R.id.moveButtons).setVisibility(View.VISIBLE);
 				boardFace.setSubmit(true);
 			} else {
 				gameActivityFace.update(GameBaseActivity.CALLBACK_SEND_MOVE);
@@ -153,13 +167,11 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (!boardFace.isAnalysis()) {
 			switch (boardFace.getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-					computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					break;
 				}
 				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-					computerMove(mainApp.strength[mainApp.getSharedData()
-							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					computerMove(mainApp.strength[compStrength]);
 					break;
 				}
 				case AppConstants.GAME_MODE_TACTICS: {
@@ -293,21 +305,13 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-//			setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
-//					MeasureSpec.getSize(widthMeasureSpec + widthMeasureSpec / 5));
 			setMeasuredDimension(resolveSize((int) width, widthMeasureSpec),
 					resolveSize((int) width, heightMeasureSpec));
 		} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//			setMeasuredDimension(MeasureSpec.getSize(heightMeasureSpec + heightMeasureSpec / 5),
-//					MeasureSpec.getSize(heightMeasureSpec));
 			setMeasuredDimension(resolveSize((int) height, widthMeasureSpec),
 					resolveSize((int) height, heightMeasureSpec));
 		}
 	}
-
-//	private int w_pawns = 8, w_knights = 2, w_bishops = 2, w_rooks = 2, w_queen = 1;
-//	private int b_pawns = 8, b_knights = 2, b_bishops = 2, b_rooks = 2, b_queen = 1;
-
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -336,8 +340,9 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 					if (mainApp == null || mainApp.getBoardBitmap() == null) {
 						throw new Exception();
 					}
-					canvas.drawBitmap(mainApp.getBoardBitmap(), null,
-							new Rect(i * side, j * side, i * side + side, j * side + side), null);
+					rect.set(i * side, j * side, i * side + side, j * side + side);
+					canvas.drawBitmap(mainApp.getBoardBitmap(), null,rect
+							/*new Rect(i * side, j * side, i * side + side, j * side + side)*/, null);
 				} catch (Exception e) {
 					e.printStackTrace();
 //					Log.d("BoardView", "mainApp " + mainApp);
@@ -358,8 +363,11 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	// here is the simple replace/redraw of piece
-					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
-							new Rect(x * square, y * square, x * square + square, y * square + square), null);
+//					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
+//							new Rect(x * square, y * square, x * square + square, y * square + square), null);
+					rect.set(x * square, y * square, x * square + square, y * square + square); // TODO check
+					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect/*.set()
+							new Rect(x * square, y * square, x * square + square, y * square + square)*/, null);
 				}
 			}
 		} else {
@@ -371,14 +379,14 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	 // here is the simple replace/redraw of piece
-					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
-							new Rect(x * square, y * square, x * square + square, y * square + square), null);
+					rect.set(x * square, y * square, x * square + square, y * square + square); // TODO check
+					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect/*
+							new Rect(x * square, y * square, x * square + square, y * square + square)*/, null);
 				}
 			}
 		}
 
-		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-				+ AppConstants.PREF_BOARD_COORDINATES, true)) {
+		if (showCoordinates) {
 			for (i = 0; i < 8; i++) {
 				if (boardFace.isReside()) {
 					canvas.drawText(nums[i], 2, i * square + 12, black);
@@ -390,8 +398,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			}
 		}
 
-		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-				+ AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true) && boardFace.getHply() > 0 && !compmoving) {
+		if (isHighlightEnabled && boardFace.getHply() > 0 && !compmoving) {
 			Move m = boardFace.getHistDat()[boardFace.getHply() - 1].m;
 			int x1 = ChessBoard.COL(m.from, boardFace.isReside());
 			int y1 = ChessBoard.ROW(m.from, boardFace.isReside());
@@ -414,8 +421,9 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			int col = (dragX - dragX % square) / square;
 			int row = ((dragY + square) - (dragY + square) % square) / square;
 			if (c != 6 && p != 6) {
-				canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
-						new Rect(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2), null);
+				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2); // TODO check
+				canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect/*
+						new Rect(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2)*/, null);
 				canvas.drawRect(col * square - square / 2, row * square - square / 2,
 						col * square + square + square / 2, row * square + square + square / 2, white);
 			}
@@ -531,16 +539,19 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			if (compmoving || MainApp.isFinishedEchessGameMode(boardFace) || finished || boardFace.isSubmit() ||
 					(MainApp.isLiveOrEchessGameMode(boardFace) && boardFace.getHply() < boardFace.getMovesCount()))
 				return true;
+
 			if (MainApp.isLiveOrEchessGameMode(boardFace) && mainApp.getCurrentGame() != null) {
+				// TODO simplify
 				if (mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-						.equals(mainApp.getSharedData().getString(AppConstants.USERNAME, ""))
+						.equals(userName)
 						&& boardFace.getMovesCount() % 2 != 0)
 					return true;
 				if (mainApp.getCurrentGame().values.get(AppConstants.BLACK_USERNAME).toLowerCase()
-						.equals(mainApp.getSharedData().getString(AppConstants.USERNAME, ""))
+						.equals(userName)
 						&& boardFace.getMovesCount() % 2 == 0)
 					return true;
 			}
+
 			if ((MainApp.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)
 					|| (MainApp.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0)) {
 				return true;
@@ -567,9 +578,9 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 						invalidate();
 					}
 				} else {
-					int f = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-					if (boardFace.getPieces()[f] != 6 && boardFace.getSide() == boardFace.getColor()[f]) {
-						from = f;
+					int fromPosIndex = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+					if (boardFace.getPieces()[fromPosIndex] != 6 && boardFace.getSide() == boardFace.getColor()[fromPosIndex]) {
+						from = fromPosIndex;
 						sel = true;
 						firstclick = false;
 						invalidate();
@@ -725,7 +736,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				}
 				//getBoardFaceFace().mode ^= 1;
 				computerMove(mainApp.strength[mainApp.getSharedData()
-						.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+						.getInt(mainApp.getUserName()
 								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			invalidate();
@@ -775,7 +786,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (!compmoving) {
 			hint = true;
 			computerMove(mainApp.strength[mainApp.getSharedData()
-					.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+					.getInt(mainApp.getUserName()
 							+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 		}
 	}

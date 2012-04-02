@@ -27,7 +27,7 @@ public class AndroidStuff {
 	private SharedPreferences.Editor sharedDataEditor;
 	private MyProgressDialog currentProgressDialog;
 	private LccHolder lccHolder;
-	private GameBaseActivity gameActivity;	// TODO check compatibility
+	private GameBaseActivity gameActivity;
 	private Handler clockHandler = new Handler();
 	private Handler updateBoardHandler = new Handler();
 	private MyProgressDialog connectingIndicator;

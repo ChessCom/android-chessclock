@@ -18,7 +18,7 @@
 		android:transcriptMode="alwaysScroll"
 		android:layout_weight="1"
 		/>
-	<!--TODO recreate chat screen to be like chat and not ListView-->
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

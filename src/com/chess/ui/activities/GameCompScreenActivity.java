@@ -69,10 +69,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			if (MainApp.isComputerVsHumanBlackGameMode(newBoardView.getBoardFace())) {
 				newBoardView.getBoardFace().setReside(true);
 				newBoardView.invalidate();
-				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isComputerVsComputerGameMode(newBoardView.getBoardFace())) {
-				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				newBoardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 		}
 
@@ -457,7 +457,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					newBoardView.invalidate();
 					update(CALLBACK_REPAINT_UI);
 					newBoardView.computerMove(mainApp.strength[mainApp.getSharedData()
-							.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+							.getInt(mainApp.getUserName()
 									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					break;
 				}
@@ -468,8 +468,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
 					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
-							+ mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [White \""
-							+ mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\"]\n [Result \"X-X\"]\n \n \n "
+							+ mainApp.getUserName() + "\"]\n [White \""
+							+ mainApp.getUserName() + "\"]\n [Result \"X-X\"]\n \n \n "
 							+ moves + " \n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
 					break;

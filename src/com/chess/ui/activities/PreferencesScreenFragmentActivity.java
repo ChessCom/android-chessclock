@@ -144,18 +144,18 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 		//set defaults
 //		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().
 // getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData()
-// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)],
+// .getInt(mainApp.getUserName() + AppConstants.PREF_BOARD_TYPE, 0)],
 // "drawable", "com.chess")), null, null, null);
 //		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources()
 // .getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData()
-// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)],
+// .getInt(mainApp.getUserName() + AppConstants.PREF_PIECES_SET, 0)],
 // "drawable", "com.chess")), null, null, null);
 
 
 		actionAfterMyMove.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
+				mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
 				mainApp.getSharedDataEditor().commit();
 			}
 
@@ -166,7 +166,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 		/*Notif.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")+"notif", pos);
+				mainApp.getSharedDataEditor().putInt(mainApp.getUserName()+"notif", pos);
 				mainApp.getSharedDataEditor().commit();
 			}
 			@Override
@@ -175,7 +175,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 		strength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+				mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, pos);
 				mainApp.getSharedDataEditor().commit();
 			}
 
@@ -227,7 +227,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 					.setAdapter(boardsList, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface d, int pos) {
-							mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
+							mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_BOARD_TYPE, pos);
 							mainApp.getSharedDataEditor().commit();
 							PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
 							mainApp.loadBoard(mainApp.res_boards[pos]);
@@ -250,7 +250,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType("text/plain");
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
-			emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text) + mainApp.getSharedData().getString(AppConstants.USERNAME, "") + "\". \n \n Sent from my Android");
+			emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text) + mainApp.getUserName() + "\". \n \n Sent from my Android");
 			FlurryAgent.onEvent("Invite A Friend", null);
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
@@ -271,7 +271,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 	private class BoardSpinnerListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, pos);
+			mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_BOARD_TYPE, pos);
 			mainApp.getSharedDataEditor().commit();
 //			PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
 			mainApp.loadBoard(mainApp.res_boards[pos], boardProgressView);
@@ -289,7 +289,8 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
 //				PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
-			mainApp.loadPieces(mainApp.res_pieces[pos], piecesProgressView);
+//			mainApp.loadPieces(mainApp.res_pieces[pos], piecesProgressView); // TODO change to new method
+			mainApp.loadPieces(pos, piecesProgressView); // TODO change to new method
 		}
 
 		@Override
@@ -300,62 +301,17 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		actionAfterMyMove.post(new Runnable() {
-//			@Override
-//			public void run() {
-		actionAfterMyMove.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
-//			}
-//		});
-		/*Notif.post(new Runnable() {
-			@Override
-			public void run() {
-				Notif.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")+"notif", 0));
-			}
-		});*/
-//		strength.post(new Runnable() {
-//			@Override
-//			public void run() {
-		strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0));
-//			}
-//		});
-//		strength.post(new Runnable() {
-//			@Override
-//			public void run() {
+		actionAfterMyMove.setSelection(mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
+		strength.setSelection(mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 		if (mainApp.isLiveChess()) {
-			showSubmitButton.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
+			showSubmitButton.setChecked(mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
 		} else {
-			showSubmitButton.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
+			showSubmitButton.setChecked(mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
 		}
-		enableSounds.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SOUNDS, true));
-//			}
-//		});
-//		PrefNEnable.post(new Runnable() {
-//			@Override
-//			public void run() {
-		PrefNEnable.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true));
-//			}
-//		});
-//		PrefShowCoords.post(new Runnable() {
-//			@Override
-//			public void run() {
-		PrefShowCoords.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_COORDINATES, true));
-//			}
-//		});
-//		PrefShowHighlights.post(new Runnable() {
-//			@Override
-//			public void run() {
-		PrefShowHighlights.setChecked(mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
-//			}
-//		});
-
-		//buttons defaults   // TODO set defaults for button
-//		PrefBoard.setCompoundDrawablesWithIntrinsicBounds(getResources().
-// getDrawable(getResources().getIdentifier("board_" + mainApp.res_boards[mainApp.getSharedData()
-// .getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0)],
-// "drawable", "com.chess")), null, null, null);
-//		PrefPices.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(getResources().getIdentifier("pieces_" + mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0)], "drawable", "com.chess")), null, null, null);
-
-
+		enableSounds.setChecked(mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_SOUNDS, true));
+		PrefNEnable.setChecked(mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true));
+		PrefShowCoords.setChecked(mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_BOARD_COORDINATES, true));
+		PrefShowHighlights.setChecked(mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 	}
 
 
@@ -387,16 +343,16 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.PrefSSB) {
 			if (mainApp.isLiveChess()) {
-				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
+				mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
 			} else {
-				mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
+				mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
 			}
 			mainApp.getSharedDataEditor().commit();
 		} else if (compoundButton.getId() == R.id.enableSounds) {
-			mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_SOUNDS, checked);
+			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_SOUNDS, checked);
 			mainApp.getSharedDataEditor().commit();
 		} else if (compoundButton.getId() == R.id.PrefNEnable) {
-			mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, checked);
+			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, checked);
 			mainApp.getSharedDataEditor().commit();
 			if (checked)
 				startService(new Intent(context, Notifications.class));
@@ -416,10 +372,10 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 						progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true)));
 			}
 		} else if (compoundButton.getId() == R.id.PrefCoords) {
-			mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_COORDINATES, checked);
+			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_BOARD_COORDINATES, checked);
 			mainApp.getSharedDataEditor().commit();
 		} else if (compoundButton.getId() == R.id.PrefHighlights) {
-			mainApp.getSharedDataEditor().putBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, checked);
+			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, checked);
 			mainApp.getSharedDataEditor().commit();
 		}
 	}

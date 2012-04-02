@@ -40,7 +40,7 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				try {
 					if (mainApp.getSharedDataEditor() != null && mainApp.getSharedData() != null && pos >= 0) {
-						mainApp.getSharedDataEditor().putInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+						mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, pos);
 						mainApp.getSharedDataEditor().commit();
 					}
 				} catch (Exception ignored) {
@@ -104,7 +104,7 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 			strength.post(new Runnable() {
 				@Override
 				public void run() {
-					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 				}
 			});
 

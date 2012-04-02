@@ -21,12 +21,13 @@ public class SplashActivity extends CoreActivity {
 
 		progressView = findViewById(R.id.progressView);
 		//defaults
-		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData()
-				.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getUserName()
 						+ AppConstants.PREF_BOARD_TYPE, 8)], progressView);
-		mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData()
-				.getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
-						+ AppConstants.PREF_PIECES_SET, 0)], progressView);
+
+//		mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getUserName()
+//				+ AppConstants.PREF_PIECES_SET, 0)], progressView);
+		mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+				+ AppConstants.PREF_PIECES_SET, 0), progressView);
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(1);
@@ -35,7 +36,7 @@ public class SplashActivity extends CoreActivity {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {
-			if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "") + AppConstants.PREF_NOTIFICATION, true))
+			if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true))
 				startService(new Intent(this, Notifications.class));
 
 			boolean fromNotification = false;

@@ -233,7 +233,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
         mainApp.getSharedDataEditor().commit();
 
         FlurryAgent.onEvent("Logged In", null);
-        if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+        if (mainApp.getSharedData().getBoolean(mainApp.getUserName()
                 + AppConstants.PREF_NOTIFICATION, true))
             startService(new Intent(this, Notifications.class));
         mainApp.guest = false;

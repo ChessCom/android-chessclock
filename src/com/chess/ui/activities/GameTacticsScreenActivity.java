@@ -55,9 +55,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	public final static int CALLBACK_TACTICS_WRONG = 5;
 	public final static int CALLBACK_CHECK_TACTICS_MOVE = 4;
 
-//	private LinearLayout analysisLL;
-//	private LinearLayout analysisButtons;
-
 	private TextView timer;
 	private Timer tacticsTimer = null;
 	private int UPDATE_DELAY = 10000;
@@ -95,7 +92,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		whitePlayerLabel.setVisibility(View.GONE);
 		blackPlayerLabel.setVisibility(View.GONE);
 
-//		if (newBoardView.getBoardFace() == null) {
 		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);
@@ -195,7 +191,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	private class WrongDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			if (which == 0) {
+			if (which == 0) {  // Next
 				if (mainApp.guest) {
 					mainApp.currentTacticProblem++;
 					getGuestTacticsGame();
@@ -204,7 +200,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					getTacticsGame("");
 				}
 			}
-			if (which == 1) {
+			if (which == 1) {  // Retry
 				if (mainApp.guest || mainApp.noInternet) {
 					newBoardView.getBoardFace().setRetry(true);
 					getGuestTacticsGame();
@@ -212,7 +208,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					getTacticsGame(mainApp.getTactic().values.get(AppConstants.ID));
 				}
 			}
-			if (which == 2) {
+			if (which == 2) { // Stop
 				newBoardView.finished = true;
 				mainApp.getTactic().values.put(AppConstants.STOP, "1");
 			}
@@ -362,15 +358,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				int[] moveFT = MoveParser.parse(newBoardView.getBoardFace(),
 						newBoardView.getBoardFace().getTacticMoves()[0]);
 				if (moveFT.length == 4) {
-					Move m;
+					Move move;
 					if (moveFT[3] == 2)
-						m = new Move(moveFT[0], moveFT[1], 0, 2);
+						move = new Move(moveFT[0], moveFT[1], 0, 2);
 					else
-						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					newBoardView.getBoardFace().makeMove(m);
+						move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+					newBoardView.getBoardFace().makeMove(move);
 				} else {
-					Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-					newBoardView.getBoardFace().makeMove(m);
+					Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+					newBoardView.getBoardFace().makeMove(move);
 				}
 				update(CALLBACK_REPAINT_UI);
 				newBoardView.getBoardFace().takeBack();
@@ -424,20 +420,21 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		startTacticsTimer();
 		int[] moveFT = MoveParser.parse(newBoardView.getBoardFace(), newBoardView.getBoardFace().getTacticMoves()[0]);
 		if (moveFT.length == 4) {
-			Move m;
+			Move move;
 			if (moveFT[3] == 2)
-				m = new Move(moveFT[0], moveFT[1], 0, 2);
+				move = new Move(moveFT[0], moveFT[1], 0, 2);
 			else
-				m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-			newBoardView.getBoardFace().makeMove(m);
+				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+			newBoardView.getBoardFace().makeMove(move);
 		} else {
-			Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-			newBoardView.getBoardFace().makeMove(m);
+			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+			newBoardView.getBoardFace().makeMove(move);
 		}
 		update(CALLBACK_REPAINT_UI);
 		newBoardView.getBoardFace().takeBack();
 		newBoardView.invalidate();
 
+		mainApp.setTactic(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem)); // TODO check
 		playLastMoveAnimation();
 	}
 
@@ -494,16 +491,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					} catch (Exception ignored) {
 					}
 					if (moveFT.length == 4) {
-						Move m;
+						Move move;
 						if (moveFT[3] == 2)
-							m = new Move(moveFT[0], moveFT[1], 0, 2);
+							move = new Move(moveFT[0], moveFT[1], 0, 2);
 						else
-							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+							move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 
-						newBoardView.getBoardFace().makeMove(m);
+						newBoardView.getBoardFace().makeMove(move);
 					} else {
-						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-						newBoardView.getBoardFace().makeMove(m);
+						Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+						newBoardView.getBoardFace().makeMove(move);
 					}
 					handler.sendEmptyMessage(0);
 				}
@@ -521,9 +518,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 	private void checkTacticMoves() {
-		Move m = newBoardView.getBoardFace().getHistDat()[newBoardView.getBoardFace().getHply() - 1].m;
+		Move move = newBoardView.getBoardFace().getHistDat()[newBoardView.getBoardFace().getHply() - 1].m;
 		String f = "";
-		int p = newBoardView.getBoardFace().getPieces()[m.to];
+		int p = newBoardView.getBoardFace().getPieces()[move.to];
 		if (p == 1) {
 			f = "N";
 		} else if (p == 2) {
@@ -535,23 +532,24 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		} else if (p == 5) {
 			f = "K";
 		}
-		String Moveto = MoveParser.positionToString(m.to);
-		Log.d("!!!", f + " | " + Moveto + " : " + newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1]);
+		String moveTo = MoveParser.positionToString(move.to);
+		Log.d("!!!", f + " | " + moveTo + " : " + newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1]);
 		if (newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(f)
-				&& newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(Moveto)) {
+				&& newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply() - 1].contains(moveTo)) {
 			newBoardView.getBoardFace().increaseTacticsCorrectMoves();
+
 			if (newBoardView.getBoardFace().getMovesCount() < newBoardView.getBoardFace().getTacticMoves().length - 1) {
 				int[] moveFT = MoveParser.parse(newBoardView.getBoardFace(),
 						newBoardView.getBoardFace().getTacticMoves()[newBoardView.getBoardFace().getHply()]);
 				if (moveFT.length == 4) {
 					if (moveFT[3] == 2)
-						m = new Move(moveFT[0], moveFT[1], 0, 2);
+						move = new Move(moveFT[0], moveFT[1], 0, 2);
 					else
-						m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					newBoardView.getBoardFace().makeMove(m);
+						move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+					newBoardView.getBoardFace().makeMove(move);
 				} else {
-					m = new Move(moveFT[0], moveFT[1], 0, 0);
-					newBoardView.getBoardFace().makeMove(m);
+					move = new Move(moveFT[0], moveFT[1], 0, 0);
+					newBoardView.getBoardFace().makeMove(move);
 				}
 				update(CALLBACK_REPAINT_UI);
 				newBoardView.invalidate();

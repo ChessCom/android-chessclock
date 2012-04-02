@@ -604,7 +604,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		} else if (view.getId() == R.id.stats) {
 			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
-					+ mainApp.getSharedData().getString(AppConstants.USERNAME, "");
+					+ mainApp.getUserName();
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
 			} catch (UnsupportedEncodingException ignored) {

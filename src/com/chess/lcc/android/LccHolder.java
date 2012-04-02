@@ -351,7 +351,7 @@ public class LccHolder {
 	}
 
 	public String[] getOnlineFriends() {
-		final String[] array = new String[]{""}; // TODO check for live mode
+		final String[] array = new String[]{""};
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
 

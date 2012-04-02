@@ -312,7 +312,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 			case CALLBACK_ECHESS_MOVE_WAS_SENT:
 				// move was made
-				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+				if (mainApp.getSharedData().getInt(mainApp.getUserName()
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
 				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()

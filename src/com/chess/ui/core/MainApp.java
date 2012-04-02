@@ -9,11 +9,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -37,7 +37,7 @@ public class MainApp extends Application {
 	private SharedPreferences sharedData;
 	private SharedPreferences.Editor sharedDataEditor;
 
-	private TabHost tabHost;
+//	private TabHost tabHost;
 	public static int loadPrev = 0;
 
 	private LccHolder lccHolder;
@@ -81,6 +81,17 @@ public class MainApp extends Application {
 			"tan",
 			"wood_light",
 			"wood_dark"};
+	
+	public static final int P_ALPHA_ID 	= 0;
+	public static final int P_BOOK_ID 	= 1;
+	public static final int P_CASES_ID 	= 2;
+	public static final int P_CLASSIC_ID = 3;
+	public static final int P_CLUB_ID 	= 4;
+	public static final int P_CONDAL_ID = 5;
+	public static final int P_MAYA_ID 	= 6;
+	public static final int P_MODERN_ID = 7;
+	public static final int P_VINTAGE_ID = 8;
+
 	public String[] res_pieces = {"alpha",
 			"book",
 			"cases",
@@ -91,10 +102,153 @@ public class MainApp extends Application {
 			"modern",
 			"vintage"};
 
+	private int[] alphaPiecesDrawableIds = new int[]{
+			R.drawable.alpha_wp,
+			R.drawable.alpha_wn,
+			R.drawable.alpha_wb,
+			R.drawable.alpha_wr,
+			R.drawable.alpha_wq,
+			R.drawable.alpha_wk,
+			R.drawable.alpha_bp,
+			R.drawable.alpha_bn,
+			R.drawable.alpha_bb,
+			R.drawable.alpha_br,
+			R.drawable.alpha_bq,
+			R.drawable.alpha_bk,
+	};
+
+	private int[] bookPiecesDrawableIds = new int[]{
+			R.drawable.book_wp,
+			R.drawable.book_wn,
+			R.drawable.book_wb,
+			R.drawable.book_wr,
+			R.drawable.book_wq,
+			R.drawable.book_wk,
+			R.drawable.book_bp,
+			R.drawable.book_bn,
+			R.drawable.book_bb,
+			R.drawable.book_br,
+			R.drawable.book_bq,
+			R.drawable.book_bk,
+	};
+
+	private int[] casesPiecesDrawableIds = new int[]{
+			R.drawable.cases_wp,
+			R.drawable.cases_wn,
+			R.drawable.cases_wb,
+			R.drawable.cases_wr,
+			R.drawable.cases_wq,
+			R.drawable.cases_wk,
+			R.drawable.cases_bp,
+			R.drawable.cases_bn,
+			R.drawable.cases_bb,
+			R.drawable.cases_br,
+			R.drawable.cases_bq,
+			R.drawable.cases_bk,
+	};
+
+	private int[] classicPiecesDrawableIds = new int[]{
+			R.drawable.classic_wp,
+			R.drawable.classic_wn,
+			R.drawable.classic_wb,
+			R.drawable.classic_wr,
+			R.drawable.classic_wq,
+			R.drawable.classic_wk,
+			R.drawable.classic_bp,
+			R.drawable.classic_bn,
+			R.drawable.classic_bb,
+			R.drawable.classic_br,
+			R.drawable.classic_bq,
+			R.drawable.classic_bk,
+	};
+
+	private int[] clubPiecesDrawableIds = new int[]{
+			R.drawable.club_wp,
+			R.drawable.club_wn,
+			R.drawable.club_wb,
+			R.drawable.club_wr,
+			R.drawable.club_wq,
+			R.drawable.club_wk,
+			R.drawable.club_bp,
+			R.drawable.club_bn,
+			R.drawable.club_bb,
+			R.drawable.club_br,
+			R.drawable.club_bq,
+			R.drawable.club_bk,
+	};
+
+
+	private int[] condalPiecesDrawableIds = new int[]{
+			R.drawable.condal_wp,
+			R.drawable.condal_wn,
+			R.drawable.condal_wb,
+			R.drawable.condal_wr,
+			R.drawable.condal_wq,
+			R.drawable.condal_wk,
+			R.drawable.condal_bp,
+			R.drawable.condal_bn,
+			R.drawable.condal_bb,
+			R.drawable.condal_br,
+			R.drawable.condal_bq,
+			R.drawable.condal_bk,
+	};
+
+	private int[] mayaPiecesDrawableIds = new int[]{
+			R.drawable.maya_wp,
+			R.drawable.maya_wn,
+			R.drawable.maya_wb,
+			R.drawable.maya_wr,
+			R.drawable.maya_wq,
+			R.drawable.maya_wk,
+			R.drawable.maya_bp,
+			R.drawable.maya_bn,
+			R.drawable.maya_bb,
+			R.drawable.maya_br,
+			R.drawable.maya_bq,
+			R.drawable.maya_bk,
+	};
+
+	private int[] modernPiecesDrawableIds = new int[]{
+			R.drawable.modern_wp,
+			R.drawable.modern_wn,
+			R.drawable.modern_wb,
+			R.drawable.modern_wr,
+			R.drawable.modern_wq,
+			R.drawable.modern_wk,
+			R.drawable.modern_bp,
+			R.drawable.modern_bn,
+			R.drawable.modern_bb,
+			R.drawable.modern_br,
+			R.drawable.modern_bq,
+			R.drawable.modern_bk,
+	};
+
+	private int[] vintagePiecesDrawableIds = new int[]{
+			R.drawable.vintage_wp,
+			R.drawable.vintage_wn,
+			R.drawable.vintage_wb,
+			R.drawable.vintage_wr,
+			R.drawable.vintage_wq,
+			R.drawable.vintage_wk,
+			R.drawable.vintage_bp,
+			R.drawable.vintage_bn,
+			R.drawable.vintage_bb,
+			R.drawable.vintage_br,
+			R.drawable.vintage_bq,
+			R.drawable.vintage_bk,
+	};
+
     private CharSequence whitePlayerName;
     private CharSequence blackPlayerName;
 
 //	private View progressView;
+
+
+	public MainApp() {
+		piecesBitmaps = new Bitmap[2][6];
+
+
+	}
 
 	public void loadBoard(String boardName, View progressView) {
 		context = this;
@@ -121,23 +275,67 @@ public class MainApp extends Application {
 //
 //	}
 
-	public void loadPieces(String piecesName, View progressView) {
-//		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
-		resources = getResources();
-		piecesBitmaps = new Bitmap[2][6]; // TODO refactor with more native way
-		piecesBitmaps[0][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wp", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[0][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wn", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[0][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wb", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[0][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wr", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[0][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wq", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[0][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wk", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[1][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bp", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[1][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bn", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[1][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bb", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[1][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_br", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[1][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bq", "drawable", AppConstants.PACKAGE_NAME));
-		piecesBitmaps[1][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bk", "drawable", AppConstants.PACKAGE_NAME));
+//	public void loadPieces(String piecesName, View progressView) {
+////		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
+//		resources = getResources();
+////		piecesBitmaps = new Bitmap[2][6]; // TODO refactor with more native way
+//		piecesBitmaps[0][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wp", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[0][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wn", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[0][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wb", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[0][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wr", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[0][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wq", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[0][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_wk", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[1][0] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bp", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[1][1] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bn", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[1][2] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bb", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[1][3] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_br", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[1][4] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bq", "drawable", AppConstants.PACKAGE_NAME));
+//		piecesBitmaps[1][5] = BitmapLoader.loadFromResource(resources, resources.getIdentifier(piecesName + "_bk", "drawable", AppConstants.PACKAGE_NAME));
+//
+//	}
 
+	
+	private void setPieceBitmapFromArray(int[] drawableArray){
+		resources = getResources();
+		for(int j=0; j<6; j++){
+			piecesBitmaps[0][j] = ((BitmapDrawable)resources.getDrawable(drawableArray[j])).getBitmap();
+		}
+		for(int j=0; j<6; j++){
+			piecesBitmaps[1][j] = ((BitmapDrawable)resources.getDrawable(drawableArray[6+j])).getBitmap();
+		}
+	}
+	
+	public void loadPieces(int piecesSetId, View progressView) {
+//		new PiecesLoaderTask(new PiecesLoadUpdateListener(progressView)).equals(p);
+		switch (piecesSetId){
+			case P_ALPHA_ID:
+				setPieceBitmapFromArray(alphaPiecesDrawableIds);
+				break;
+			case P_BOOK_ID:
+				setPieceBitmapFromArray(bookPiecesDrawableIds);
+				break;
+			case P_CASES_ID:
+				setPieceBitmapFromArray(casesPiecesDrawableIds);
+				break;
+			case P_CLASSIC_ID:
+				setPieceBitmapFromArray(classicPiecesDrawableIds);
+				break;
+			case P_CLUB_ID:
+				setPieceBitmapFromArray(clubPiecesDrawableIds);
+				break;
+			case P_CONDAL_ID:
+				setPieceBitmapFromArray(condalPiecesDrawableIds);
+				break;
+			case P_MAYA_ID:
+				setPieceBitmapFromArray(mayaPiecesDrawableIds);
+				break;
+			case P_MODERN_ID:
+				setPieceBitmapFromArray(modernPiecesDrawableIds);
+				break;
+			case P_VINTAGE_ID:
+				setPieceBitmapFromArray(vintagePiecesDrawableIds);
+				break;
+		}
 	}
 
     public CharSequence getWhitePlayerName() {
@@ -150,7 +348,11 @@ public class MainApp extends Application {
         return blackPlayerName;
     }
 
-    private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][], String> {
+	public String getUserName() {
+		return getSharedData().getString(AppConstants.USERNAME, "");
+	}
+
+	private class PiecesLoadUpdateListener extends AbstractUpdateListener<Bitmap[][], String> {
 
 		public PiecesLoadUpdateListener(View progressView) {
 			super(context, progressView);
@@ -311,13 +513,6 @@ public class MainApp extends Application {
 	public void setGameId(long gameId) {
 		this.gameId = gameId;
 	}
-//	public String getGameId() {
-//		return gameId;
-//	}
-//
-//	public void setGameId(String gameId) {
-//		this.gameId = gameId;
-//	}
 
 	public ArrayList<GameListItem> getGameListItems() {
 		return gameListItems;
@@ -343,13 +538,13 @@ public class MainApp extends Application {
 		this.sharedDataEditor = sharedDataEditor;
 	}
 
-	public TabHost getTabHost() {
-		return tabHost;
-	}
-
-	public void setTabHost(TabHost tabHost) {
-		this.tabHost = tabHost;
-	}
+//	public TabHost getTabHost() {
+//		return tabHost;
+//	}
+//
+//	public void setTabHost(TabHost tabHost) {
+//		this.tabHost = tabHost;
+//	}
 
 	public TacticItem getTactic() {
 		return tactic;

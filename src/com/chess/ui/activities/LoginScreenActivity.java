@@ -162,7 +162,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			mainApp.setLiveChess(false);
 		}
 		super.onResume();
-		username.setText(mainApp.getSharedData().getString(AppConstants.USERNAME, ""));
+		username.setText(mainApp.getUserName());
 		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, ""));
 	}
 
@@ -196,7 +196,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().commit();
 
 		FlurryAgent.onEvent("Logged In", null);
-		if (mainApp.getSharedData().getBoolean(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+		if (mainApp.getSharedData().getBoolean(mainApp.getUserName()
 				+ AppConstants.PREF_NOTIFICATION, true))
 			startService(new Intent(this, Notifications.class));
 		mainApp.guest = false;

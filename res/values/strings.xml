@@ -16,7 +16,7 @@
 
 	<!--activities titles-->
 	<string name="label_play_live">PLAY LIVE</string>
-	<string name="label_play_online">PLAY ONLINE</string>      <!--TODO implement inside activity-->
+	<string name="label_play_online">PLAY ONLINE</string>
 	<string name="label_online_new_game">NEW ONLINE GAME</string>
 	<string name="label_live_new_game"> NEW LIVE GAME</string>
 	<string name="label_play_comp">PLAY COMP</string>

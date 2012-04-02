@@ -233,7 +233,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			}
 			case CALLBACK_ECHESS_MOVE_WAS_SENT:
 				// move was made
-				if (mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")
+				if (mainApp.getSharedData().getInt(mainApp.getUserName()
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
 				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
@@ -556,7 +556,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				executePausedActivityGameEvents();
 				lccHolder.setActivityPausedMode(false);
 			}
-			lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));    // TODO check
+			lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
 		}
 	}
 

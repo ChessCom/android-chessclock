@@ -72,7 +72,7 @@ public class Notifications extends Service {
 							NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 							Notification notification = new Notification(R.drawable.ic_stat_chess, "ChessCom", System.currentTimeMillis());
 
-							//int Notif = mainApp.getSharedData().getInt(mainApp.getSharedData().getString(AppConstants.USERNAME, "")+"notif", 0);
+							//int Notif = mainApp.getSharedData().getInt(mainApp.getUserName()+"notif", 0);
 
 							/*switch (Notif) {
 						  case 0:
