@@ -25,6 +25,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.*;
+import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import java.util.ArrayList;
 
@@ -54,7 +55,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		setContentView(R.layout.boardviewlive);
 		init();
 		widgetsInit();
-		onPostCreate();
+		//onPostCreate();
+
+		// todo: remove mobclix, integrate mopub
+		if (MobclixHelper.isShowAds(mainApp)) {
+			setRectangleAdview(new MobclixIABRectangleMAdView(this));
+			getRectangleAdview().setRefreshTime(-1);
+			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
+			mainApp.setForceRectangleAd(false);
+		}
 	}
 
 	@Override
@@ -65,11 +74,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		findViewById(R.id.submit).setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
 
-		newBoardView.setBoardFace(new ChessBoard(this));
+		/*newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);*/
 
 
 
@@ -661,8 +670,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())
-				|| MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))) {
+		if (mainApp.getCurrentGame() != null) {
 			changeChatIcon(menu);
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -686,6 +694,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
+
+		newBoardView.setBoardFace(new ChessBoard(this));
+		newBoardView.setGameActivityFace(this);
+		newBoardView.getBoardFace().setInit(true);
+		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+
+		update(CALLBACK_REPAINT_UI);
 	}
 
 	@Override

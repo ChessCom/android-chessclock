@@ -497,7 +497,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 					intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 					startActivity(intent);
 				}
-			} else if (gameListElement.type == 2) {
+			} else if (gameListElement.type == GameListItem.LIST_TYPE_FINISHED) {
 				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 

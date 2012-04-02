@@ -219,19 +219,19 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 				break;
 			}
-			case CALLBACK_COMP_MOVE: {
+			case CALLBACK_COMP_MOVE: { // todo: probably this case should be removed from Live
 				whitePlayerLabel.setVisibility(View.GONE);
 				blackPlayerLabel.setVisibility(View.GONE);
 				thinking.setVisibility(View.VISIBLE);
 				break;
 			}
-			case CALLBACK_PLAYER_MOVE: {
+			case CALLBACK_PLAYER_MOVE: { // todo: probably this case should be removed from Live
 				whitePlayerLabel.setVisibility(View.VISIBLE);
 				blackPlayerLabel.setVisibility(View.VISIBLE);
 				thinking.setVisibility(View.GONE);
 				break;
 			}
-			case CALLBACK_ECHESS_MOVE_WAS_SENT:
+			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
 				// move was made
 				if (mainApp.getSharedData().getInt(mainApp.getUserName()
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
@@ -522,8 +522,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mainApp.getCurrentGame() != null && (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())
-				|| MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace()))) {
+		if (mainApp.getCurrentGame() != null) {
 			changeChatIcon(menu);
 		}
 		return super.onPrepareOptionsMenu(menu);
