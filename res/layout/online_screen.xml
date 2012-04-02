@@ -76,15 +76,6 @@
 
 	</LinearLayout>
 
-	<com.chess.RoboTextView
-		android:id="@+id/challengesListTitle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="left"
-		android:paddingLeft="@dimen/default_linear_left_padding"
-		android:text="@string/challenges"
-		android:visibility="visible"/>
-
 	<ListView
 		android:id="@+id/GamesList"
 		android:layout_width="match_parent"
