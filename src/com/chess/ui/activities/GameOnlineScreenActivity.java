@@ -671,8 +671,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onResume() {
 		super.onResume();
 
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		if (MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
+			newBoardView.setBoardFace(new ChessBoard(this));
+			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		}
 
 		if (extras.containsKey(AppConstants.LIVE_CHESS)) {
 			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
