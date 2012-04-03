@@ -385,15 +385,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {
-									Move m;
+									Move move;
 									if (moveFT[3] == 2)
-										m = new Move(moveFT[0], moveFT[1], 0, 2);
+										move = new Move(moveFT[0], moveFT[1], 0, 2);
 									else
-										m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									newBoardView.getBoardFace().makeMove(m, playSound);
+										move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+									newBoardView.getBoardFace().makeMove(move, playSound);
 								} else {
-									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-									newBoardView.getBoardFace().makeMove(m, playSound);
+									Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+									newBoardView.getBoardFace().makeMove(move, playSound);
 								}
 								//mainApp.showToast("Move list updated!");
 								newBoardView.getBoardFace().setMovesCount(moves.length);
@@ -463,16 +463,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				for (int i = 0,cnt = newBoardView.getBoardFace().getMovesCount(); i < cnt; i++) {
 					moveFT = MoveParser.parse(newBoardView.getBoardFace(), moves[i]);
 					if (moveFT.length == 4) {
-						Move m;
+						Move move;
 						if (moveFT[3] == 2) {
-							m = new Move(moveFT[0], moveFT[1], 0, 2);
+							move = new Move(moveFT[0], moveFT[1], 0, 2);
 						} else {
-							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+							move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 						}
-						newBoardView.getBoardFace().makeMove(m, false);
+						newBoardView.getBoardFace().makeMove(move, false);
 					} else {
-						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-						newBoardView.getBoardFace().makeMove(m, false);
+						Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+						newBoardView.getBoardFace().makeMove(move, false);
 					}
 				}
 
@@ -671,8 +671,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onResume() {
 		super.onResume();
 
-        newBoardView.setBoardFace(new ChessBoard(this));
-        newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		newBoardView.setBoardFace(new ChessBoard(this));
+		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		if (extras.containsKey(AppConstants.LIVE_CHESS)) {
 			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
