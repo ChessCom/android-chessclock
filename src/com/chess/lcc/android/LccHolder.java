@@ -901,4 +901,8 @@ public class LccHolder {
 	public Boolean isAbortableBySeq(long gameId) {
 		return getGame(gameId).getSeq() < 3;
 	}
+
+	public void forceLiveGameReplay() {
+		latestMoveNumber = null;
+	}
 }

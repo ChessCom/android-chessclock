@@ -115,7 +115,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
-		newBoardView.setBoardFace((ChessBoard) getLastNonConfigurationInstance());
+		//newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		newBoardView.setGamePanelView(gamePanelView);
@@ -185,10 +185,14 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		return super.onCreateDialog(id);
 	}
 
-//	@Override        // TODO implement correctly
-//	public Object onRetainNonConfigurationInstance() {
-//		return newBoardView.getBoardFace();
-//	}
+	/*@Override        // TODO implement correctly
+	public Object onRetainNonConfigurationInstance() {
+		return newBoardView.getBoardFace();
+	}*/
+
+	/*public Object onRetainCustomNonConfigurationInstance () {
+		return newBoardView.getBoardFace();
+	}*/
 
 	protected void getOnlineGame(long game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {

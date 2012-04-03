@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +44,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.boardviewlive);
+
+		// todo: this method should be removed after introducing fragment.setRetainInstance(true)
+		// added because onRetainNonConfigurationInstance-getLastNonConfigurationInstance mechanism is deprecated in
+		// honeycomb/fragments, thus game board refreshing after screen rotates was corrupted
+		lccHolder.forceLiveGameReplay();
+		//
+
 		init();
 		widgetsInit();
 		onPostCreate();
@@ -151,7 +157,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
-		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace())) {
+		if (mainApp.isLiveChess()) {
 			update(CALLBACK_GAME_STARTED);
 		}
 	}
@@ -164,18 +170,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					onBackPressed();
 				break;
 			case INIT_ACTIVITY:
-				if (newBoardView.getBoardFace().isInit() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
-					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
+				if (newBoardView.getBoardFace().isInit()) {
 					getOnlineGame(mainApp.getGameId());
 					newBoardView.getBoardFace().setInit(false);
-				} else if (!newBoardView.getBoardFace().isInit()) {
-					if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) && appService != null
-							&& appService.getRepeatableTimer() == null) {
-						if (progressDialog != null) {
-							progressDialog.dismiss();
-							progressDialog = null;
-						}
-					}
+				} else if (!newBoardView.getBoardFace().isInit() && appService != null && appService.getRepeatableTimer() == null && progressDialog != null) {
+					progressDialog.dismiss();
+					progressDialog = null;
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
@@ -533,15 +533,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		super.onResume();
 		if (extras.containsKey(AppConstants.LIVE_CHESS)) {
 			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-			if (!mainApp.isLiveChess()) {
-				new AsyncTask<Void, Void, Void>() {
-					@Override
-					protected Void doInBackground(Void... voids) {
-						mainApp.getLccHolder().logout();
-						return null;
-					}
-				}.execute();
-			}
 		}
 
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
