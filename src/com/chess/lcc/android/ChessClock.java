@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import android.util.Log;
 import com.chess.ui.activities.GameBaseActivity;
 
 import java.util.TimerTask;
@@ -91,12 +92,8 @@ public class ChessClock {
 			public void run() {
                 String timer = createTimeString(getTime());
 				if (isWhite) { // if white player move
-					//System.out.println("@@@@@@@@@@@@@@@@@@@@ white " + createTimeString(getTime()));
-//					activity.getWhiteClockView().setText(timer);
 					activity.setWhitePlayerTimer(timer);
 				} else {
-					//System.out.println("@@@@@@@@@@@@@@@@@@@@ black " + createTimeString(getTime()));
-//					activity.getBlackClockView().setText(timer);
                     activity.setBlackPlayerTimer(timer);
 				}
 			}

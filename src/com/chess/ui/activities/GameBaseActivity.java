@@ -96,8 +96,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
-		whitePlayerLabel.setSelected(true);
-		blackPlayerLabel.setSelected(true);
+//		whitePlayerLabel.setSelected(true);
+//		blackPlayerLabel.setSelected(true);
 
         // player timers for live game
 //        whiteTimer = (TextView) findViewById(R.id.whiteTimer);
@@ -408,21 +408,16 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
     }
 
     private void changePlayersLabelColors(){
-
         if(isWhitePlayerMove){
             whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
 			gamePanelView.activatePlayerTimer(true,true);
-//            whiteTimer.setTextColor(getResources().getColor(R.color.white));
             blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
 			gamePanelView.activatePlayerTimer(false,false);
-//            blackTimer.setTextColor(getResources().getColor(R.color.hint_text));
         }else{
             blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
 			gamePanelView.activatePlayerTimer(false,true);
-//            blackTimer.setTextColor(getResources().getColor(R.color.white));
             whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
 			gamePanelView.activatePlayerTimer(true,false);
-//            whiteTimer.setTextColor(getResources().getColor(R.color.hint_text));
         }
 		initTimer = false;
 	}

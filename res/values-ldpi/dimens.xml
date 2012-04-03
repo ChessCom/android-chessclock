@@ -53,6 +53,14 @@
 	<dimen name="signin_footer_margin_bottom">5dip</dimen>
 -->
 
+	<!--LiveScreen-->
+	<dimen name="live_scr_top_padding">10dip</dimen>
+	<dimen name="live_layout_mTop">5dip</dimen>
+	<dimen name="live_challenges_textSize">17sp</dimen>
+	<dimen name="live_grid_hotizontal_spacing">5dip</dimen>
+	<dimen name="live_grid_padding_top">5dip</dimen>
+	<dimen name="live_grid_padding_bottom">5dip</dimen>
+
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">0dip</dimen>
 	<dimen name="player_name_max_width">120dip</dimen>
@@ -62,7 +70,7 @@
 	<!--GamePanelView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
 	<dimen name="game_control_padding_right">10dip</dimen>
-	<dimen name="game_control_padding_top">1dip</dimen>
+	<dimen name="game_control_padding_top">3dip</dimen>
 	<dimen name="game_control_padding_bottom">0dip</dimen>
 	<!--<dimen name="game_control_padding_top">5dip</dimen>-->
 	<!--<dimen name="game_control_padding_bottom">2dip</dimen>-->

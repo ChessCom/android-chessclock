@@ -354,12 +354,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				if (!isUserColorWhite()) {
 					newBoardView.getBoardFace().setReside(true);
 				}
-				String[] Moves = {};
+				String[] moves = {};
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-					newBoardView.getBoardFace().setMovesCount(Moves.length);
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					newBoardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					newBoardView.getBoardFace().setMovesCount(0);
 				}
@@ -426,7 +426,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public void newGame() {
-		startActivity(new Intent(this, OnlineNewGameActivity.class));
+		startActivity(new Intent(this, LiveNewGameActivity.class));
 	}
 
 	@Override

@@ -131,20 +131,23 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		// create textViews for timers
 		whiteTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
-//		whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.whitemove,0,0,0);
 		whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white,0,0,0);
 		whiteTimer.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
 		int timerPaddingLeft = (int) (8*density + 0.5f);
 		int timerPaddingRight = (int) (2*density + 0.5f);
 		whiteTimer.setPadding(timerPaddingLeft, 0, timerPaddingRight, 0);
 
+		// set whiteTimer params
+		RelativeLayout.LayoutParams whiteTimerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		whiteTimer.setLayoutParams(whiteTimerParams);
+
 		blackTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
 		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
-//		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.blackmove, 0);
 		blackTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
 
 		int timerPaddingLeft1 = (int) (2*density + 0.5f);
-		int timerPaddingRight1 = (int) (10* density + 0.5f);
+		int timerPaddingRight1 = (int) (8* density + 0.5f);
 		blackTimer.setPadding(timerPaddingLeft1, 0, timerPaddingRight1, 0);
 
 		// create layout for text views
@@ -158,17 +161,13 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		blackTimerParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		blackTimer.setLayoutParams(blackTimerParams);
+
 		// add to layout
-		timerRelLay.addView(blackTimer);
 		timerRelLay.addView(whiteTimer);
+		timerRelLay.addView(blackTimer);
 
 		timerRelLay.setVisibility(View.INVISIBLE);
 		addView(timerRelLay);
-
-
-//		setBackgroundColor(resources.getColor(R.color.orange));
-//		blackTimer.setText("50:00");
-//		whiteTimer.setText("50:00");
 
 		LinearLayout infoLayout = new LinearLayout(getContext());
 		infoLayout.setLayoutParams(params);

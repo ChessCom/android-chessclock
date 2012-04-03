@@ -230,8 +230,8 @@
 
 	<style name="GameLabel.Player">
 		<item name="android:drawablePadding">5dip</item>
-		<item name="android:ellipsize">marquee</item>
-		<item name="android:marqueeRepeatLimit">marquee_forever</item>
+		<!--<item name="android:ellipsize">marquee</item>-->
+		<!--<item name="android:marqueeRepeatLimit">marquee_forever</item>-->
 		<item name="android:maxWidth">@dimen/player_name_max_width</item>
 	</style>
 </resources>
