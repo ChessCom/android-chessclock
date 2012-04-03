@@ -55,15 +55,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		setContentView(R.layout.boardviewlive);
 		init();
 		widgetsInit();
-		//onPostCreate();
-
-		// todo: remove mobclix, integrate mopub
-		if (MobclixHelper.isShowAds(mainApp)) {
-			setRectangleAdview(new MobclixIABRectangleMAdView(this));
-			getRectangleAdview().setRefreshTime(-1);
-			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
-			mainApp.setForceRectangleAd(false);
-		}
+		onPostCreate();
 	}
 
 	@Override
@@ -74,11 +66,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		findViewById(R.id.submit).setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
 
-		/*newBoardView.setBoardFace(new ChessBoard(this));
+		newBoardView.setBoardFace(new ChessBoard(this));
 		newBoardView.setGameActivityFace(this);
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);*/
+		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
 
 
@@ -194,7 +186,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				onBackPressed();
 				break;
 			case INIT_ACTIVITY:
-				if (newBoardView.getBoardFace().isInit() && MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
+				if (newBoardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
 					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
 					getOnlineGame(mainApp.getGameId());
 					newBoardView.getBoardFace().setInit(false);
@@ -467,21 +459,20 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					MoveParser.fenParse(FEN, newBoardView.getBoardFace());
 				}
 
-				if (!mainApp.isLiveChess()) {
-					for (int i = 0,cnt = newBoardView.getBoardFace().getMovesCount(); i < cnt; i++) {
-						moveFT = MoveParser.parse(newBoardView.getBoardFace(), moves[i]);
-						if (moveFT.length == 4) {
-							Move m;
-							if (moveFT[3] == 2) {
-								m = new Move(moveFT[0], moveFT[1], 0, 2);
-							} else {
-								m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-							}
-							newBoardView.getBoardFace().makeMove(m, false);
+
+				for (int i = 0,cnt = newBoardView.getBoardFace().getMovesCount(); i < cnt; i++) {
+					moveFT = MoveParser.parse(newBoardView.getBoardFace(), moves[i]);
+					if (moveFT.length == 4) {
+						Move m;
+						if (moveFT[3] == 2) {
+							m = new Move(moveFT[0], moveFT[1], 0, 2);
 						} else {
-							Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-							newBoardView.getBoardFace().makeMove(m, false);
+							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 						}
+						newBoardView.getBoardFace().makeMove(m, false);
+					} else {
+						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
+						newBoardView.getBoardFace().makeMove(m, false);
 					}
 				}
 
@@ -680,6 +671,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onResume() {
 		super.onResume();
 
+        newBoardView.setBoardFace(new ChessBoard(this));
+        newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+
 		if (extras.containsKey(AppConstants.LIVE_CHESS)) {
 			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 			if (!mainApp.isLiveChess()) {
@@ -694,14 +688,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.setGameActivityFace(this);
-		newBoardView.getBoardFace().setInit(true);
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-
-		update(CALLBACK_REPAINT_UI);
 	}
 
 	@Override
