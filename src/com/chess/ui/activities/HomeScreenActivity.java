@@ -2,12 +2,14 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import com.chess.R;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MobclixHelper;
+import com.chess.utilities.MopubHelper;
 import com.millennialmedia.android.MMAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdView;
 import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
@@ -19,12 +21,9 @@ import com.mopub.mobileads.MoPubInterstitial;
  * @author alien_roger
  * @created at: 08.02.12 6:29
  */
-public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener {
+public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener, MoPubInterstitial.MoPubInterstitialListener {
 	static MMAdView interAdView = null;
 	private MoPubInterstitial moPubInterstitial;
-
-	private MobFullScreeListener mobFullScreeListener;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +39,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		findViewById(R.id.tacticsTrainerFrame).setOnClickListener(this);
 		findViewById(R.id.videoLessonsFrame).setOnClickListener(this);
 		findViewById(R.id.settingsFrame).setOnClickListener(this);
-
-		mobFullScreeListener = new MobFullScreeListener();
 	}
 
 	@Override
@@ -50,26 +47,9 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	protected void onResume() {
-		// integrate mopub, disable mobclix
-		/*if (MobclixHelper.isShowAds(mainApp))
-			{
-			  showFullscreenAd();
-			}*/
-
-		/*//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww");
-			  moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-			  //moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
-			  moPubInterstitial.setListener(new MoPubInterstitial.MoPubInterstitialListener() {
-				  public void OnInterstitialLoaded() {
-					  if (moPubInterstitial.isReady()) {
-						  moPubInterstitial.show();
-					  }
-				  }
-
-				  public void OnInterstitialFailed() {
-				  }
-			  });
-			  moPubInterstitial.load();*/
+		if (MobclixHelper.isShowAds(mainApp)) {
+			showFullScreenAd();
+		}
 
 		/*if(interAdView == null)*/
 		/*interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
@@ -109,7 +89,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 //        CommonUtils.setBackground(findViewById(R.id.mainView), this);
 	}
 
-	private class MobFullScreeListener implements MobclixFullScreenAdViewListener {
+	/*private class MobFullScreeListener implements MobclixFullScreenAdViewListener {
 
 		@Override
 		public String query() {
@@ -142,25 +122,23 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		public String keywords() {
 			return null;
 		}
-	}
+	}*/
 
 	private void showFullScreenAd() {
 		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
-				&& MobclixHelper.isShowAds(mainApp)) {
-			// TODO handle for support show ad on tablet in portrait mode
-//			MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
-//			fsAdView.addMobclixAdViewListener(mobFullScreeListener);
-//			fsAdView.requestAndDisplayAd();
+				&& MopubHelper.isShowAds(mainApp)) {
 
-			// MoPubInterstitial interstitial = new MoPubInterstitial(this,
-// "agltb3B1Yi1pbmNyDQsSBFNpdGUYioOrAgw");
-			/*
-			 * MoPubInterstitial interstitial = new MoPubInterstitial(this,
-			 * "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-			 * interstitial.showAd();
-			 */
-			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
-			mainApp.getSharedDataEditor().commit();
+			// TODO handle for support show ad on tablet in portrait mode
+			// TODO: add support for tablet ad units
+			moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
+			//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
+			//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+			moPubInterstitial.setListener(this);
+			moPubInterstitial.load();
+
+			/*MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
+			fsAdView.addMobclixAdViewListener(mobFullScreeListener);
+			fsAdView.requestAndDisplayAd();*/
 		}
 	}
 
@@ -208,5 +186,20 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 	}
 
+	public void OnInterstitialLoaded() {
+		if (moPubInterstitial.isReady()) {
+			Log.d("HOME", "mopub interstitial ad listener: loaded and ready");
+			moPubInterstitial.show();
+			// TODO: UNCOMMENT
+			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
+			mainApp.getSharedDataEditor().commit();
+		}
+		else {
+			Log.d("HOME", "mopub interstitial ad listener: loaded, but not ready");
+		}
+	}
 
+	public void OnInterstitialFailed() {
+		Log.d("HOME", "mopub interstitial ad listener: failed");
+	}
 }
