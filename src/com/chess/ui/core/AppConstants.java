@@ -2,6 +2,7 @@ package com.chess.ui.core;
 
 public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";
+	public static final int HOME_ACTIVITY_REQUEST_CODE = 65535;
 	/*Sreen Features*/
 	public static final String SMALL_SCREEN = "small_screen";
 	// TODO split to GameType and Game Mode Constants

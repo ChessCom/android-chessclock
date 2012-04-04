@@ -222,6 +222,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+				finishActivity(AppConstants.HOME_ACTIVITY_REQUEST_CODE);
                 finish();
 			}
 		} else if (view.getId() == R.id.upgradeBtn) {
