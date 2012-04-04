@@ -41,21 +41,21 @@ public class Web {
 			httpclient = new DefaultHttpClient(httpParameters);
 			Log.d("WebRequest", "requesting url = " + url);
 			if (method.equals("GET")) {
-				base = (HttpRequestBase) new HttpGet(url);
+				base = new HttpGet(url);
 			} else if (method.equals("POST")) {
 				HttpPost post = new HttpPost(url);
 				if (entity != null) {
 					post.setEntity(entity);
 				}
-				base = (HttpRequestBase) post;
+				base = post;
 			} else if (method.equals("PUT")) {
 				HttpPut put = new HttpPut(url);
 				if (entity != null) {
 					put.setEntity(entity);
 				}
-				base = (HttpRequestBase) put;
+				base = put;
 			} else if (method.equals("DELETE")) {
-				base = (HttpRequestBase) new HttpDelete(url);
+				base = new HttpDelete(url);
 			}
 			if (headers != null) {
 				Iterator<String> headersIterator = headers.keySet().iterator();
@@ -70,6 +70,10 @@ public class Web {
 
 		int i = 0;
 		try {
+
+			// test server login support
+			base.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
+
 			response = httpclient.execute(base);
 			i = 1;
 			if (response != null)
