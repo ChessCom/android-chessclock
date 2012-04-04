@@ -168,13 +168,13 @@
 						<avd>Android8</avd><!-- todo: should be extracted to properties-->
 					</emulator>
 
-						<execution>
-							<id>unpack</id>
-							<phase>process-classes</phase>
-							<goals>
-								<goal>unpack</goal>
-							</goals>
-						</execution>
+					<!--<execution>
+						<id>unpack</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+					</execution>-->
 
 					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
@@ -263,8 +263,7 @@
 				</activation>
 				<build>
 						<plugins>
-								<!-- todo: refactor to use new way http://code.google.com/p/maven-android-plugin/wiki/ProGuard -->
-								<plugin>
+								<!--<plugin>
 										<groupId>com.pyx4me</groupId>
 										<artifactId>proguard-maven-plugin</artifactId>
 										<version>2.0.4</version>
@@ -297,7 +296,7 @@
 												<proguardInclude>${basedir}/proguard.conf</proguardInclude>
 
 										</configuration>
-								</plugin>
+								</plugin>-->
 								<plugin>
 										<groupId>org.apache.maven.plugins</groupId>
 										<artifactId>maven-jarsigner-plugin</artifactId>
@@ -331,6 +330,15 @@
 										<artifactId>android-maven-plugin</artifactId>
 										<inherited>true</inherited>
 										<configuration>
+                                            <proguard>
+                                                <skip>false</skip>
+                                                <config>${basedir}/proguard.conf</config>
+                                                <jvmArguments>
+                                                    <jvmArgument>-Xms256m</jvmArgument>
+                                                    <jvmArgument>-Xmx512m</jvmArgument>
+                                                </jvmArguments>
+                                            </proguard>
+
 												<sign>
 														<debug>false</debug>
 												</sign>
