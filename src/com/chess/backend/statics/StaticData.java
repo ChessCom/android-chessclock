@@ -16,4 +16,7 @@ public class StaticData {
 	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";
 
 	public static final String REQUEST_CODE = "pending_intent_request_code";
+	public static final String NAVIGATION_CMD = "naviagtion_command";
+
+	public static final int NAV_FINISH_2_LOGIN = 0;
 }

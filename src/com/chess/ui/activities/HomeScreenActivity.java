@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MopubHelper;
 import com.millennialmedia.android.MMAdView;
-import com.mobclix.android.sdk.MobclixFullScreenAdView;
-import com.mobclix.android.sdk.MobclixFullScreenAdViewListener;
 import com.mopub.mobileads.MoPubInterstitial;
 
 /**
@@ -31,7 +30,20 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 		setContentView(R.layout.home_screen);
 
+
 		CommonUtils.setBackground(findViewById(R.id.mainView), this);
+
+		Bundle extras = getIntent().getExtras();
+		if(extras != null){
+			int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
+			if(cmd == StaticData.NAV_FINISH_2_LOGIN){
+				Log.d("TEST","launching login activity");
+				Intent intent = new Intent(this, LoginScreenActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				finish();
+			}
+		}
 
 		findViewById(R.id.playLiveFrame).setOnClickListener(this);
 		findViewById(R.id.playOnlineFrame).setOnClickListener(this);
@@ -86,6 +98,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		});*/
 
 		super.onResume();
+		
 //        CommonUtils.setBackground(findViewById(R.id.mainView), this);
 	}
 
