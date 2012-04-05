@@ -44,7 +44,7 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 			BufferedInputStream bis = new BufferedInputStream(is);
 			ByteArrayBuffer baf = new ByteArrayBuffer(50);
 
-			int current = 0;
+			int current;
 			while ((current = bis.read()) != -1) {
 				baf.append((byte) current);
 			}
