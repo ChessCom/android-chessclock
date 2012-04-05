@@ -37,11 +37,12 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if(extras != null){
 			int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
 			if(cmd == StaticData.NAV_FINISH_2_LOGIN){
-				Log.d("TEST","launching login activity");
+				Log.d("TEST","launching login activity from home");
 				Intent intent = new Intent(this, LoginScreenActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				finish();
+				extras.clear();
 			}
 		}
 
