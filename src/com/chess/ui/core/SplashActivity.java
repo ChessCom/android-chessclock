@@ -3,6 +3,7 @@ package com.chess.ui.core;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import com.chess.R;
 import com.chess.ui.activities.HomeScreenActivity;
@@ -33,6 +34,7 @@ public class SplashActivity extends CoreActivity {
 		mNotificationManager.cancel(1);
 
 		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "").equals("")) {
+			Log.d("TEST", "USER_TOKEN is empty");
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {

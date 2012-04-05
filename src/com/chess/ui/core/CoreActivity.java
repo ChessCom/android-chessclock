@@ -649,12 +649,4 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
 	}
-
-	protected void startHomeActivity(){
-		Intent intent = new Intent(this, HomeScreenActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		startActivity(intent);
-		startActivityForResult(intent, AppConstants.HOME_ACTIVITY_REQUEST_CODE);
-		finish();
-	}
 }

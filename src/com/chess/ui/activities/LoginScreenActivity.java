@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -111,7 +112,8 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		} else if (view.getId() == R.id.singup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
-			startHomeActivity();
+			Intent intent = new Intent(this, HomeScreenActivity.class);
+			startActivity(intent);
 		}
 	}
 
@@ -187,6 +189,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, password.getText().toString().trim());
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
+		Log.d("TEST", "response = " + response);
 		try {
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
 		} catch (UnsupportedEncodingException ignored) {
@@ -195,13 +198,18 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		mainApp.getSharedDataEditor().commit();
 
+		Log.d("TEST","USER_TOKEN saved");
 		FlurryAgent.onEvent("Logged In", null);
 		if (mainApp.getSharedData().getBoolean(mainApp.getUserName()
 				+ AppConstants.PREF_NOTIFICATION, true))
 			startService(new Intent(this, Notifications.class));
 		mainApp.guest = false;
 
-		startHomeActivity();
+		Intent intent = new Intent(this, HomeScreenActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+//		startActivityForResult(intent, AppConstants.HOME_ACTIVITY_REQUEST_CODE);
+		finish();
 
 	}
 
