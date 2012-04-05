@@ -218,12 +218,12 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
 				mainApp.getSharedDataEditor().commit();
 
-                Intent intent = new Intent(this, LoginScreenActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-				finishActivity(AppConstants.HOME_ACTIVITY_REQUEST_CODE);
-                finish();
+				Intent intent = new Intent(this, HomeScreenActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				finish();
+//				finishActivity(AppConstants.HOME_ACTIVITY_REQUEST_CODE);
+//                finish();
 			}
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(mainApp.getMembershipAndroidIntent());

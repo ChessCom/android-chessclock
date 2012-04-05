@@ -111,7 +111,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		} else if (view.getId() == R.id.singup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
-			startActivity(new Intent(this, HomeScreenActivity.class));
+			startHomeActivity();
 		}
 	}
 
@@ -201,15 +201,15 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			startService(new Intent(this, Notifications.class));
 		mainApp.guest = false;
 
-        Intent intent = new Intent(this, HomeScreenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivityForResult(intent, AppConstants.HOME_ACTIVITY_REQUEST_CODE);
-        finish();
+		startHomeActivity();
+
 	}
+
+
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+//		super.onBackPressed();
 		finish();
 	}
 }
