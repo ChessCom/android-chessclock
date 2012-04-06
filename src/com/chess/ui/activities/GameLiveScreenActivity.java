@@ -581,9 +581,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			newBoardView.invalidate();
 		} else if (view.getId() == R.id.submit) {
 			update(CALLBACK_SEND_MOVE);
-		} /*else if (view.getId() == R.id.newGame) {
-			startActivity(new Intent(this, OnlineNewGameActivity.class));
-		}*/
+		}
 	}
+
 }
 

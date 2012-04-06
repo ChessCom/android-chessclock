@@ -715,15 +715,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
-//	@Override
-//	public void update(int code) {
-//		//To change body of implemented methods use File | Settings | File Templates.
-//	}
-
-
-
-
-
 	@Override
 	public Context getMeContext() {
 		return coreContext;

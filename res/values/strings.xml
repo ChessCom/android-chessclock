@@ -6,7 +6,7 @@
 	<string name="lccFailedKicked">You have been kicked/banned by a moderator or admin.</string>
 	<string name="app_name">ChessCom</string>
 	<string name="error_occurred">Error occurred</string>
-
+	<string name="signout">Sign Out</string>
 	<!--Dashboard labels-->
 	<string name="menuLive">Play Live</string>
 	<string name="menuOnline">Play Online</string>
@@ -253,5 +253,6 @@
 	<string name="check">Check!</string>
 	<string name="choose_a_piece">Choose a piece</string>
 	<string name="open_app_t_see_msg">Tap here to see the message inside of app</string>
+
 
 </resources>

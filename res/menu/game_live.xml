@@ -16,6 +16,9 @@
 
 <menu  xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<item android:id="@+id/menu_singOut"
+		  android:title="@string/signout"
+		  android:showAsAction="always|withText" />
 	<item android:id="@+id/menu_options"
 		android:title="@string/options"
 		android:icon="@drawable/options"
