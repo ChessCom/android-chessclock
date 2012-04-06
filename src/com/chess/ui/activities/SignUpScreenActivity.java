@@ -137,8 +137,10 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			}
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
 			mainApp.getSharedDataEditor().commit();
+
 			startActivity(new Intent(context, HomeScreenActivity.class));
 			finish();
+
 			mainApp.showToast(getString(R.string.congratulations));
 		}
         if (response.length() > 0) {
@@ -238,7 +240,8 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
             startService(new Intent(this, Notifications.class));
         mainApp.guest = false;
 
-		startHomeActivity();
+
+		backToHomeActivity();
     }
 
 

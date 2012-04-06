@@ -68,7 +68,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected ViewGroup statusBarLay;
 
 	protected AlertDialog adPopup;
-//	protected TextView endOfGameMessage;
+	protected TextView endOfGameMessage;
 	protected LinearLayout adViewWrapper;
 
 	protected DrawOfferDialogListener drawOfferDialogListener;
@@ -111,7 +111,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
-//		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
+		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
 		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
@@ -365,18 +365,19 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 							}
 							adPopup = null;
 						}
-						startActivity(new Intent(coreContext, HomeScreenActivity.class));
+						backToHomeActivity();
 					}
 				});
 				home.setVisibility(View.VISIBLE);
 			}
 
-//			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
+			endOfGameMessage.setText(/*intent.getExtras().getString(AppConstants.TITLE) + ": " +*/ intent.getExtras().getString(AppConstants.MESSAGE));
 
 			//mainApp.showDialog(Game.this, intent.getExtras().getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
-//			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-//			findViewById(R.id.newGame).setOnClickListener(GameBaseActivity.this);
-//			findViewById(R.id.home).setOnClickListener(GameBaseActivity.this);
+			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
+			findViewById(R.id.newGame).setOnClickListener(GameBaseActivity.this);
+			findViewById(R.id.home).setOnClickListener(GameBaseActivity.this);
+			gamePanelView.showBottomPart(false);
 			getSoundPlayer().playGameEnd();
 			onGameEndMsgReceived();
 		}
@@ -708,7 +709,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.home) {
-			startActivity(new Intent(this, HomeScreenActivity.class));
+			backToHomeActivity();
+		}else if(view.getId() == R.id.newGame){
+			onBackPressed();
 		}
 	}
 

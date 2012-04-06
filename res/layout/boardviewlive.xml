@@ -144,15 +144,16 @@
 				/>
 		</LinearLayout>
 
-		<!--		<RelativeLayout
+		<RelativeLayout
 			android:id="@+id/endOfGameButtons"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="bottom"
-			android:layout_marginLeft="1dip"
-			android:layout_marginRight="1dip"
-			android:paddingBottom="20dip"
-			android:visibility="visible">
+			android:paddingLeft="@dimen/game_control_padding_left"
+			android:paddingRight="@dimen/game_control_padding_right"
+			android:paddingBottom="@dimen/game_end_layout_padding_bottom"
+			android:visibility="invisible">
+
 
 			<com.chess.RoboButton
 				android:id="@+id/newGame"
@@ -176,7 +177,7 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:text="Home"/>
-		</RelativeLayout>-->
+		</RelativeLayout>
 
 	</FrameLayout>
 </LinearLayout>

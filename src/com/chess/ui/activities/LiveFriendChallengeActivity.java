@@ -116,7 +116,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 		super.onResume();
 		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
 			lccHolder.logout();
-			startActivity(new Intent(this, HomeScreenActivity.class));
+			backToHomeActivity();
 		}
 	}
 

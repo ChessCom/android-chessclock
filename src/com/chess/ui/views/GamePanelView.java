@@ -77,18 +77,20 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private int whiteAlivePiecesCount[] = new int[6];
 	private int blackAlivePiecesCount[] = new int[6];
 
+	private BoardViewFace boardViewFace;
+
 	//	prefixes
 	public static final int BUTTON_PREFIX = 0x00002000;
 	public static final int WHITE_FRAME_PREFIX = 0x00001000;
 	public static final int BLACK_FRAME_PREFIX = 0x00004000;
 	//	private List<String> itemList;
-	private TextView movesTextView;
-	private BoardViewFace boardViewFace;
     private float density;
 	private RelativeLayout timerRelLay;
 	private RoboTextView whiteTimer;
 	private RoboTextView blackTimer;
 	private Resources resources;
+	private LinearLayout piecesLayout;
+	private TextView movesTextView;
 
 	public GamePanelView(Context context) {
 		super(context);
@@ -176,7 +178,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		LinearLayout.LayoutParams pieceParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		LinearLayout piecesLayout = new LinearLayout(getContext());
+		piecesLayout = new LinearLayout(getContext());
 		// Set weights to moves list and captured piecesBitmap
 		pieceParams.weight = 3;
 		piecesLayout.setLayoutParams(pieceParams);
@@ -514,6 +516,16 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		}
 	}
 
+	public void showBottomPart(boolean show){
+		if(show){
+			piecesLayout.setVisibility(View.VISIBLE);
+			movesTextView.setVisibility(View.VISIBLE);
+		}else {
+			piecesLayout.setVisibility(View.INVISIBLE);
+			movesTextView.setVisibility(View.INVISIBLE);
+		}
+	}
+
 	@Override
 	public void onClick(View view) {
 		/*if(view.getId() == BUTTON_PREFIX + B_NEXT_GAME_ID){
@@ -536,6 +548,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		} else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID) {
 			boardViewFace.moveForward();
 		}
+//		showBottomPart(true); // TODO check if we need to do anything after game is finished
 	}
 
 	public void setBoardViewFace(BoardViewFace boardViewFace) {

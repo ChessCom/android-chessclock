@@ -101,6 +101,7 @@
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
 	<dimen name="player_name_max_width">140dip</dimen>
 	<dimen name="game_label_padding_top">2dip</dimen>
+	<dimen name="game_end_layout_padding_bottom">8dip</dimen>
 	<!--
 	 <dimen name="signin_button_margin_updown">24dip</dimen>
 	 <dimen name="signin_footer_margin_bottom">10dip</dimen>
@@ -118,6 +119,7 @@
 	<dimen name="piece_layout_padding_right">0dip</dimen>
 	<dimen name="piece_layout_padding_top">1dip</dimen>
 	<dimen name="piece_layout_padding_bottom">2dip</dimen>
+
 
 
 	<!--<dimen name="piece_layout_padding_top">2dip</dimen>-->

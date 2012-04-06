@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -91,7 +90,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 		super.onResume();
 		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
 			lccHolder.logout();
-			startActivity(new Intent(this, HomeScreenActivity.class));
+			backToHomeActivity();
 		}
 	}
 

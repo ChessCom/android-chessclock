@@ -217,15 +217,18 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		 */
 	}
 
+	protected void backToHomeActivity(){
+		Intent intent = new Intent(this, HomeScreenActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		finish();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home: 
-				Intent intent = new Intent(this, HomeScreenActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				finish(); // TODO check if activity doesn't finish
+			case android.R.id.home:
+				backToHomeActivity();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -692,11 +695,4 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return mainApp.getCurrentGame();
 	}
 
-	protected void startHomeActivity(){
-		Intent intent = new Intent(this, HomeScreenActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		startActivity(intent);
-		startActivityForResult(intent, AppConstants.HOME_ACTIVITY_REQUEST_CODE);
-		finish();
-	}
 }

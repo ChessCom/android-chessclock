@@ -206,18 +206,12 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.guest = false;
 
 		Intent intent = new Intent(this, HomeScreenActivity.class);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-//		startActivityForResult(intent, AppConstants.HOME_ACTIVITY_REQUEST_CODE);
 		finish();
-
 	}
-
-
 
 	@Override
 	public void onBackPressed() {
-//		super.onBackPressed();
 		finish();
 	}
 }
