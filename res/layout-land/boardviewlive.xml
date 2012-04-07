@@ -91,30 +91,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				>
-				<!--
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_gravity="bottom"
-					android:paddingBottom="12dip">
-
-					<com.chess.RoboTextView
-						android:id="@+id/whiteClockView"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentLeft="true"
-						android:drawablePadding="5dip"
-						android:drawableRight="@drawable/whitemove"
-						android:visibility="visible"/>
-
-					<com.chess.RoboTextView
-						android:id="@+id/blackClockView"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentRight="true"
-						android:drawablePadding="5dip"
-						android:visibility="visible"/>
-				</RelativeLayout>-->
 
 				<LinearLayout
 					android:id="@+id/submitButtonsLay"
@@ -181,8 +157,6 @@
 				</RelativeLayout>
 
 			</FrameLayout>
-
-
 
 		</LinearLayout>
 	</LinearLayout>

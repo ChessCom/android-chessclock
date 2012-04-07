@@ -10,15 +10,4 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="12dip"/>
-
-	<!--    <com.chess.RoboTextView
-			android:id="@+id/text"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:padding="5dip"
-			android:text="some text"
-			android:textColor="@android:color/black"
-			/>-->
-
 </LinearLayout>

@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.support.v4.app.DialogFragment;
+import android.view.*;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -163,7 +161,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
-	public void update(int code) {
+	public void update(int code) {  // TODO eliminate
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
 				if (!MainApp.isTacticsGameMode(newBoardView.getBoardFace()))
@@ -583,6 +581,5 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			update(CALLBACK_SEND_MOVE);
 		}
 	}
-
 }
 

@@ -1,125 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-	>-->
-	<LinearLayout      xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical"
-		android:background="@color/game_board_back"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="@color/game_board_back"
 
-		>
-		<!--Control buttons-->
-		<LinearLayout
-			android:id="@+id/controlButtonsPanel"
+	>
+	<!--Control buttons-->
+	<LinearLayout
+		android:id="@+id/controlButtonsPanel"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:padding="10dip">
+		<ImageButton
+			android:id="@+id/fastForwardBtn"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:padding="10dip">
-			<ImageButton
-				android:id="@+id/fastForwardBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_next_game"
-				android:background="@drawable/button_emboss_left_selector"
-				/>
-			<ImageButton
-				android:id="@+id/optionsBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_options"
-				android:background="@drawable/button_emboss_mid_selector"
-				/>
-			<ImageButton
-				android:id="@+id/flipBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_flip"
-				android:background="@drawable/button_emboss_mid_selector"
-				/>
-			<ImageButton
-				android:id="@+id/analysisBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_analysis"
-				android:background="@drawable/button_emboss_mid_selector"
-				/>
-			<ImageButton
-				android:id="@+id/chatBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_chat"
-				android:background="@drawable/button_emboss_mid_selector"
-				/>
-			<ImageButton
-				android:id="@+id/backBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_back"
-				android:background="@drawable/button_emboss_mid_selector"
-				/>
-			<ImageButton
-				android:id="@+id/forwardBtn"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/GamePanelButton"
-				android:src="@drawable/ic_forward"
-				android:background="@drawable/button_emboss_right_selector"
-				/>
-		</LinearLayout>
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_next_game"
+			android:background="@drawable/button_emboss_left_selector"
+			/>
+		<ImageButton
+			android:id="@+id/optionsBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_options"
+			android:background="@drawable/button_emboss_mid_selector"
+			/>
+		<ImageButton
+			android:id="@+id/flipBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_flip"
+			android:background="@drawable/button_emboss_mid_selector"
+			/>
+		<ImageButton
+			android:id="@+id/analysisBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_analysis"
+			android:background="@drawable/button_emboss_mid_selector"
+			/>
+		<ImageButton
+			android:id="@+id/chatBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_chat"
+			android:background="@drawable/button_emboss_mid_selector"
+			/>
+		<ImageButton
+			android:id="@+id/backBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_back"
+			android:background="@drawable/button_emboss_mid_selector"
+			/>
+		<ImageButton
+			android:id="@+id/forwardBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/GamePanelButton"
+			android:src="@drawable/ic_forward"
+			android:background="@drawable/button_emboss_right_selector"
+			/>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="10"
+		android:visibility="visible"
+		android:background="@color/game_board_back"
+		android:paddingLeft="7dip"
+		>
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:weightSum="10"
-			android:visibility="visible"
-			android:background="@color/game_board_back"
-			android:paddingLeft="7dip"
+			android:orientation="vertical"
+			android:layout_weight="3"
 			>
-
 			<LinearLayout
+				android:id="@+id/whiteCapturedPieces"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:layout_weight="3"
 				>
-				<LinearLayout
-					android:id="@+id/whiteCapturedPieces"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					>
-				</LinearLayout>
-				<LinearLayout
-					android:id="@+id/blackCapturedPieces"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					>
-				</LinearLayout>
 			</LinearLayout>
-
-			<ListView
-				android:id="@+id/movesListView"
+			<LinearLayout
+				android:id="@+id/blackCapturedPieces"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_weight="7"
-				android:dividerHeight="0px"
-				android:divider="@android:color/transparent"
-				android:cacheColorHint="@android:color/transparent"
-				android:background="@android:color/transparent"
-				/>
-<!--
-			android:listSelector="@android:color/transparent"
-			android:fadingEdge="none"
--->
-
+				>
+			</LinearLayout>
 		</LinearLayout>
 
+		<!--			<ListView
+			  android:id="@+id/movesListView"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:layout_weight="7"
+			  android:dividerHeight="0px"
+			  android:divider="@android:color/transparent"
+			  android:cacheColorHint="@android:color/transparent"
+			  android:background="@android:color/transparent"
+			  />-->
+
 	</LinearLayout>
-<!--</ScrollView>-->
+
+</LinearLayout>

@@ -120,7 +120,11 @@
 	<dimen name="piece_layout_padding_top">1dip</dimen>
 	<dimen name="piece_layout_padding_bottom">2dip</dimen>
 
-
+	<!--Popup-->
+	<dimen name="ad_popup_width">300dip</dimen>
+	<dimen name="ad_popup_height">250dip</dimen>
+	<dimen name="popup_dialog_width">300dip</dimen>
+	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 
 	<!--<dimen name="piece_layout_padding_top">2dip</dimen>-->
 

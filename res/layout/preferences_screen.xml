@@ -63,19 +63,6 @@
 			</Spinner>
 		</LinearLayout>
 
-		<!--
-LinearLayout android:layout_height="wrap_content"
- android:layout_width="match_parent" android:gravity="center"
- android:paddingRight="5dip">
- <TextView android:layout_height="wrap_content"
-	 android:textColor="#fff"
-	 android:textStyle="bold" android:gravity="center"
-	 android:layout_width="140dip" android:textSize="16dip" android:text="@string/notification"></TextView>
- <Spinner android:layout_height="wrap_content" android:id="@+id/PrefNotif"
-	 android:layout_width="match_parent" android:entries="@array/Notif"></Spinner>
-</LinearLayout
--->
-
 		<com.chess.RoboCheckBox
 			android:id="@+id/enableSounds"
 			android:layout_width="match_parent"
@@ -254,7 +241,6 @@ LinearLayout android:layout_height="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/contactUs"
 			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-
 			/>
 
 		<com.chess.RoboButton
@@ -263,7 +249,6 @@ LinearLayout android:layout_height="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/logout"
 			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-
 			/>
 	</LinearLayout>
 </ScrollView>

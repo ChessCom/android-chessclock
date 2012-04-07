@@ -15,7 +15,9 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/actionbar_compat_item_pressed"
+	<!--<item android:drawable="@drawable/actionbar_compat_item_pressed"
+		android:state_pressed="true" />-->
+    <item android:drawable="@drawable/top_bar_grain_pressed"
         android:state_pressed="true" />
     <item android:drawable="@drawable/actionbar_compat_item_focused"
         android:state_focused="true" />

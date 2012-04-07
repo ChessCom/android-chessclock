@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -686,6 +687,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	 * showNetworkChangeNotification(); } } };
 	 */
 
+	protected void showToast(String msg){
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	}
+	
 	public MainApp getMainApp() {
 		return mainApp;
 	}

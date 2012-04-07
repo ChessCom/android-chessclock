@@ -254,5 +254,8 @@
 	<string name="choose_a_piece">Choose a piece</string>
 	<string name="open_app_t_see_msg">Tap here to see the message inside of app</string>
 
+	<!--SignOut-->
+	<string name="signout_confirm">Are you sure you want to sign out from Live Chess server?</string>
+	<string name="confirm">Confirm</string>
 
 </resources>

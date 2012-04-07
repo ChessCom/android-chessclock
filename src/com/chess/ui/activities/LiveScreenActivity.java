@@ -3,20 +3,22 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
+import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class LiveScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
+public class LiveScreenActivity extends CoreActivityActionBar implements View.OnClickListener, PopupDialogFace {
 	private ListView gamesList;
 	private OnlineGamesAdapter gamesAdapter = null;
 	private TextView challengesListTitle;
@@ -41,11 +43,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private Button currentGame;
 	private Button start;
 	private GridView gridview;
-	private Button upgradeBtn;
 
-	private String[] queries;
-	private boolean compleated = false;
-	private int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
 
 	public static int ONLINE_CALLBACK_CODE = 32;
@@ -59,26 +57,38 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private ChallengeDialogListener challengeDialogListener;
 	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
 	private IsIndirencetDialogListener isIndirencetDialogListener;
-	private NonLiveDialogListener nonLiveDialogListener;
+	private PopupDialogFragment popupDialogFragment;
+	private PopupItem popupItem;
+	private BackgroundChessDrawable backgroundChessDrawable;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		backgroundChessDrawable =  new BackgroundChessDrawable(this);
+		backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE);
+		backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_PORTRAIT);
 
-		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+
+		widgetsInit();
+		init();
+
+		gridview.setAdapter(new NewGamesButtonsAdapter());
+	}
+
+	private void widgetsInit(){
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
+
 		if (MopubHelper.isShowAds(mainApp)) {
 			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
 		}
 
-		init();
-		queries = new String[]{
-				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
-				"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_CHALLENGES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
-				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_FINISHED_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
+		popupItem = new PopupItem();
+
+		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 
 		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
 		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
@@ -86,11 +96,14 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		start = (Button) findViewById(R.id.start);
 		start.setOnClickListener(this);
 
-		/*if (!mainApp.isNetworkChangedNotification())
-			{*/
-		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-		//}
 		gridview = (GridView) findViewById(R.id.gridview);
+
+		gamesList = (ListView) findViewById(R.id.GamesList);
+		gamesList.setOnItemClickListener(gameListItemClickListener);
+		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
+
+		currentGame = (Button) findViewById(R.id.currentGame);
+		currentGame.setOnClickListener(this);
 
 		if (lccHolder.isConnected()) {
 			start.setVisibility(View.VISIBLE);
@@ -99,13 +112,29 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			startNewGameTitle.setVisibility(View.VISIBLE);
 		}
 
-		gamesList = (ListView) findViewById(R.id.GamesList);
-		gamesList.setOnItemClickListener(gameListItemClickListener);
-		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
-		currentGame = (Button) findViewById(R.id.currentGame);
-		currentGame.setOnClickListener(this);
+	}
 
-		gridview.setAdapter(new NewGamesButtonsAdapter());
+	private void init() {
+		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
+
+		acceptDrawDialogListener = new AcceptDrawDialogListener();
+		gameListItemClickListener = new GameListItemClickListener();
+		gameListItemLongClickListener = new GameListItemLongClickListener();
+		gameListItemDialogListener = new GameListItemDialogListener();
+		challengeDialogListener = new ChallengeDialogListener();
+		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
+		isIndirencetDialogListener = new IsIndirencetDialogListener();
+	}
+
+	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		lccHolder.logout();
+		backToHomeActivity();
+	}
+
+	@Override
+	public void onRightBtnClick(PopupDialogFragment fragment) {
+		fragment.getDialog().dismiss();
 	}
 
 
@@ -240,6 +269,25 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		});
 	}
 
+
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+//		popupDialogFragment.updatePopupItem(popupItem);
+
+		// Checks the orientation of the screen
+//		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//			backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE);
+//			backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_PORTRAIT);
+//		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+//
+//		}
+//		findViewById(R.id.mainView).requestLayout();
+		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+
+		super.onConfigurationChanged(newConfig);
+	}
+
 	@Override
 	protected void onPause() {
 		gamesList.setVisibility(View.GONE);
@@ -254,17 +302,28 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		enableScreenLock();
 	}
 
-	private void init() {
-		acceptDrawDialogListener = new AcceptDrawDialogListener();
-		gameListItemClickListener = new GameListItemClickListener();
-		gameListItemLongClickListener = new GameListItemLongClickListener();
-		gameListItemDialogListener = new GameListItemDialogListener();
-		challengeDialogListener = new ChallengeDialogListener();
-		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
-		isIndirencetDialogListener = new IsIndirencetDialogListener();
-		nonLiveDialogListener = new NonLiveDialogListener();
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.sign_out, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_singOut:
+				popupItem.setTitleId(R.string.confirm);
+				popupItem.setMessageId(R.string.signout_confirm);
+
+				popupDialogFragment.updatePopupItem(popupItem);
+				popupDialogFragment.show(getSupportFragmentManager(), "dialog");
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	private class GameListItemDialogListener implements DialogInterface.OnClickListener {
 
@@ -398,40 +457,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			} else if (pos == 1) {
 				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Just keep my seek: " + challenge);
-			}
-		}
-	}
-
-	private class NonLiveDialogListener implements DialogInterface.OnClickListener {
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
-
-			if (pos == 0) {
-				String result = Web.Request("http://www." + LccHolder.HOST
-						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
-					update(2);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
-					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Online.this, "Error", result);
-				}
-			} else if (pos == 1) {
-
-				String result = Web.Request("http://www." + LccHolder.HOST
-						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
-					update(3);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
-					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Online.this, "Error", result);
-				}
 			}
 		}
 	}

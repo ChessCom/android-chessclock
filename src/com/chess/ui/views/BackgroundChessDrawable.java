@@ -1,6 +1,7 @@
 package com.chess.ui.views;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,12 +20,17 @@ public class BackgroundChessDrawable extends Drawable {
 	private int width;
 
 	private int screenOrientation;
+	private Context context;
 
 	public BackgroundChessDrawable(Context context) {
 		init(context);
+		setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE | Configuration.ORIENTATION_PORTRAIT);
+//		setChangingConfigurations(Configuration.ORIENTATION_PORTRAIT);
+
 	}
 
 	private void init(Context context) {
+		this.context = context;
 		gradientPaint = new Paint();
 		gradientPaint.setDither(true);
 		gradientPaint.setAntiAlias(true);
@@ -83,7 +89,12 @@ public class BackgroundChessDrawable extends Drawable {
 		if (!pathsInitiated) {
 			createGradientPath();
 		}
+
+//		if(configChanges){  // TODO
+//
+//		}
 		canvas.save();
+		screenOrientation = context.getResources().getConfiguration().orientation;
 
 
 		image.draw(canvas);

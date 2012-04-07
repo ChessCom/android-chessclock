@@ -3,6 +3,9 @@ package com.chess.ui.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
@@ -115,6 +118,23 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 			2200,
 			2400
 	};
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.sign_out, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_singOut:
+				showToast("logout");
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
 	public void onClick(View view) {

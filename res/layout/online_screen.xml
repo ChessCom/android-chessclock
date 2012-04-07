@@ -10,15 +10,6 @@
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
 	>
-
-	<!--
-		 <MoPubView
-			 android:id="@+id/adview"
-			 android:layout_width="fill_parent"
-			 android:layout_height="50dp"
-			 android:visibility="visible"
-		 />
-	   -->
 	<include layout="@layout/mopub_ad_view"/>
 
 	<LinearLayout

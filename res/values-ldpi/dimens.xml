@@ -65,7 +65,7 @@
 	<dimen name="game_submit_buttons_lay_bot_padding">0dip</dimen>
 	<dimen name="player_name_max_width">120dip</dimen>
 	<dimen name="game_label_padding_top">1dip</dimen>
-
+	<dimen name="game_end_layout_padding_bottom">4dip</dimen>
 
 	<!--GamePanelView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
@@ -79,6 +79,12 @@
 	<dimen name="piece_layout_padding_right">0dip</dimen>
 	<dimen name="piece_layout_padding_top">0dip</dimen>
 	<dimen name="piece_layout_padding_bottom">0dip</dimen>
+
+
+	<!--Popup-->
+	<dimen name="ad_popup_width">300dip</dimen>
+	<dimen name="ad_popup_height">200dip</dimen>
+
 
 
 </resources>

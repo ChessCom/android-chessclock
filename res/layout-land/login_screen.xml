@@ -16,17 +16,6 @@
 		android:orientation="vertical"
 		android:gravity="center_vertical"
 		>
-		<!--			<ImageView
-			  android:id="@+id/logoImg"
-			  android:layout_width="wrap_content"
-			  android:layout_height="wrap_content"
-			  android:layout_centerHorizontal="true"
-			  android:layout_weight="1"
-			  android:layout_marginTop="0dip"
-			  android:adjustViewBounds="true"
-			  android:scaleType="fitXY"
-			  android:src="@drawable/logo"
-			  android:layout_gravity="center_vertical"/>-->
 
 		<com.chess.RoboEditText
 			android:id="@+id/username"
@@ -63,7 +52,6 @@
 				android:layout_height="wrap_content"
 				android:text="@string/singupButton"
 				android:layout_weight="1"
-
 				/>
 
 			<com.chess.RoboButton
@@ -73,8 +61,8 @@
 				android:layout_height="wrap_content"
 				android:text="@string/singinPlayguest"
 				android:layout_weight="1"
-
 				/>
+
 		</LinearLayout>
 		<com.facebook.android.LoginButton
 			android:id="@+id/fb_connect"

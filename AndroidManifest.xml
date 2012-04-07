@@ -42,9 +42,7 @@
         <activity android:name="com.millennialmedia.android.VideoPlayer"
 			android:configChanges="keyboardHidden|orientation|keyboard" />
 
-		<!--android:screenOrientation="portrait"-->
 
-        <activity android:name=".ui.core.Tabs" 			/>
 		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />                         <!--  android:configChanges="keyboardHidden|keyboard|orientation"-->
 
@@ -92,6 +90,7 @@
 			/>
 
 		<activity android:name=".ui.activities.LiveScreenActivity" android:label="@string/label_play_live"
+			android:configChanges="keyboardHidden|orientation|keyboard"
 			/>
 		<activity android:name=".ui.activities.LiveNewGameActivity" android:label="@string/label_live_new_game"
 			/>

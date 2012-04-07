@@ -8,26 +8,9 @@
 	android:paddingTop="@dimen/default_scr_top_padding"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
-
 	android:orientation="vertical"
 	>
 
-	<!--    <TextView
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:padding="3dip"
-			android:text="@string/videos"
-			android:textColor="#fff"
-			android:textSize="16dip"
-			android:textStyle="bold" >
-		</TextView>
-
-		<ImageView
-			android:layout_width="fill_parent"
-			android:layout_height="5dip"
-			android:background="#00bb00" >
-		</ImageView>-->
 
 	<com.chess.RoboButton
 		android:id="@+id/upgradeBtn"
@@ -36,22 +19,6 @@
 		style="@style/Text.Button.Upgrade"
 		android:text="@string/preferencesUpgrade"
 		/>
-
-	<!--    <TextView
-			android:id="@+id/videoUpgrade"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:background="#ffffcd"
-			android:drawableLeft="@drawable/star"
-			android:drawablePadding="10dp"
-			android:gravity="left"
-			android:padding="5px"
-			android:text="@string/videoUpgrade"
-			android:textColor="#0066cc"
-			android:textSize="16dip"
-			android:textStyle="bold"
-			android:visibility="gone" >
-		</TextView>-->
 
 	<ListView
 		android:id="@+id/videosLV"

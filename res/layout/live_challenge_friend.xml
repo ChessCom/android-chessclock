@@ -92,33 +92,6 @@
 				android:gravity="left|center_vertical"
 				android:text="@string/RatedGme"
 				/>
-			<!--<LinearLayout
-
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				style="@style/LinearDescription"
-				>
-
-				<com.chess.RoboTextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/RatedGme"
-					android:layout_weight="6"
-					/>
-
-
-			</LinearLayout>-->
-
-			<!--
-					 <LinearLayout android:layout_height="wrap_content"
-						 android:layout_width="fill_parent">
-						 <com.chess.RoboTextView android:layout_height="wrap_content"
-							 android:layout_gravity="center" android:layout_width="120dip" android:textColor="#fff" android:textSize="16dip" android:layout_marginLeft="10dip" android:text="@string/IplayAs"></TextView>
-						 <Spinner android:layout_width="fill_parent" android:layout_weight="1"
-							 android:layout_height="wrap_content" android:id="@+id/iplayas" android:entries="@array/playas"></Spinner>
-					 </LinearLayout>
-
-						-->
 
 			<com.chess.RoboButton
 				android:id="@+id/createchallenge"

@@ -548,7 +548,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		} else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID) {
 			boardViewFace.moveForward();
 		}
-//		showBottomPart(true); // TODO check if we need to do anything after game is finished
 	}
 
 	public void setBoardViewFace(BoardViewFace boardViewFace) {
