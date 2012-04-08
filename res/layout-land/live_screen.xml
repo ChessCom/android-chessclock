@@ -76,20 +76,20 @@
 			android:orientation="vertical"
 			>
 
-			<com.chess.RoboTextView
+<!--			<com.chess.RoboTextView
 				android:id="@+id/challengesListTitle"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="left"
 				android:text="@string/challenges"
 				android:visibility="visible"
-				/>
+				/>-->
 
-			<ListView
+<!--			<ListView
 				android:id="@+id/GamesList"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@android:color/transparent"/>
+				android:background="@android:color/transparent"/>-->
 		</LinearLayout>
 
 	</LinearLayout>

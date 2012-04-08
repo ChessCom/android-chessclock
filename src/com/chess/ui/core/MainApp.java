@@ -37,9 +37,6 @@ public class MainApp extends Application {
 	private SharedPreferences sharedData;
 	private SharedPreferences.Editor sharedDataEditor;
 
-//	private TabHost tabHost;
-	public static int loadPrev = 0;
-
 	private LccHolder lccHolder;
 	private boolean liveChess;
 	private SoundPlayer soundPlayer;
@@ -61,7 +58,7 @@ public class MainApp extends Application {
 	private Bitmap boardBitmap;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
 	private GameItem currentGame;
-//	private String gameId = "";
+
 	private long gameId;
 	private ArrayList<TacticItem> tacticsBatch;
 
@@ -91,16 +88,6 @@ public class MainApp extends Application {
 	public static final int P_MAYA_ID 	= 6;
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
-
-	public String[] res_pieces = {"alpha",
-			"book",
-			"cases",
-			"classic",
-			"club",
-			"condal",
-			"maya",
-			"modern",
-			"vintage"};
 
 	private int[] alphaPiecesDrawableIds = new int[]{
 			R.drawable.alpha_wp,
@@ -241,13 +228,8 @@ public class MainApp extends Application {
     private CharSequence whitePlayerName;
     private CharSequence blackPlayerName;
 
-//	private View progressView;
-
-
 	public MainApp() {
 		piecesBitmaps = new Bitmap[2][6];
-
-
 	}
 
 	public void loadBoard(String boardName, View progressView) {
@@ -522,7 +504,7 @@ public class MainApp extends Application {
 		return piecesBitmaps;
 	}
 
-	public SharedPreferences getSharedData() {
+	public SharedPreferences getSharedData() { // TODO eliminate, make deafult calls
 		return sharedData;
 	}
 
@@ -537,14 +519,6 @@ public class MainApp extends Application {
 	public void setSharedDataEditor(SharedPreferences.Editor sharedDataEditor) {
 		this.sharedDataEditor = sharedDataEditor;
 	}
-
-//	public TabHost getTabHost() {
-//		return tabHost;
-//	}
-//
-//	public void setTabHost(TabHost tabHost) {
-//		this.tabHost = tabHost;
-//	}
 
 	public TacticItem getTactic() {
 		return tactic;

@@ -3,23 +3,21 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
-import com.chess.model.PopupItem;
-import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.ui.interfaces.PopupDialogFace;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
@@ -34,10 +32,10 @@ import java.util.ArrayList;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class LiveScreenActivity extends CoreActivityActionBar implements View.OnClickListener, PopupDialogFace {
-	private ListView gamesList;
-	private OnlineGamesAdapter gamesAdapter = null;
-	private TextView challengesListTitle;
+public class LiveScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
+//	private ListView gamesList;
+//	private OnlineGamesAdapter gamesAdapter = null;
+//	private TextView challengesListTitle;
 	private TextView startNewGameTitle;
 
 	private Button currentGame;
@@ -51,24 +49,18 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private GameListItem gameListElement;
 
 	private AcceptDrawDialogListener acceptDrawDialogListener;
-	private GameListItemClickListener gameListItemClickListener;
-	private GameListItemLongClickListener gameListItemLongClickListener;
+//	private GameListItemClickListener gameListItemClickListener;
+//	private GameListItemLongClickListener gameListItemLongClickListener;
 	private GameListItemDialogListener gameListItemDialogListener;
 	private ChallengeDialogListener challengeDialogListener;
 	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
-	private IsIndirencetDialogListener isIndirencetDialogListener;
-	private PopupDialogFragment popupDialogFragment;
-	private PopupItem popupItem;
-	private BackgroundChessDrawable backgroundChessDrawable;
+	private IsIndirectDialogListener isIndirencetDialogListener;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_screen);
-		backgroundChessDrawable =  new BackgroundChessDrawable(this);
-		backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE);
-		backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_PORTRAIT);
 
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
@@ -86,11 +78,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
 		}
 
-		popupItem = new PopupItem();
-
-		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
-
-		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
+//		challengesListTitle = (TextView) findViewById(R.id.challengesListTitle);
 		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
 
 		start = (Button) findViewById(R.id.start);
@@ -98,9 +86,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 		gridview = (GridView) findViewById(R.id.gridview);
 
-		gamesList = (ListView) findViewById(R.id.GamesList);
-		gamesList.setOnItemClickListener(gameListItemClickListener);
-		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
+//		gamesList = (ListView) findViewById(R.id.GamesList);
+//		gamesList.setOnItemClickListener(gameListItemClickListener);
+//		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
 
 		currentGame = (Button) findViewById(R.id.currentGame);
 		currentGame.setOnClickListener(this);
@@ -108,7 +96,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		if (lccHolder.isConnected()) {
 			start.setVisibility(View.VISIBLE);
 			gridview.setVisibility(View.VISIBLE);
-			challengesListTitle.setVisibility(View.VISIBLE);
+//			challengesListTitle.setVisibility(View.VISIBLE);
 			startNewGameTitle.setVisibility(View.VISIBLE);
 		}
 
@@ -118,66 +106,12 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 
 		acceptDrawDialogListener = new AcceptDrawDialogListener();
-		gameListItemClickListener = new GameListItemClickListener();
-		gameListItemLongClickListener = new GameListItemLongClickListener();
+//		gameListItemClickListener = new GameListItemClickListener();
+//		gameListItemLongClickListener = new GameListItemLongClickListener();
 		gameListItemDialogListener = new GameListItemDialogListener();
 		challengeDialogListener = new ChallengeDialogListener();
 		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
-		isIndirencetDialogListener = new IsIndirencetDialogListener();
-	}
-
-	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		lccHolder.logout();
-		backToHomeActivity();
-	}
-
-	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
-		fragment.getDialog().dismiss();
-	}
-
-
-	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface dialog, int whichButton) {
-			gameListElement = mainApp.getGameListItems().get(temp_pos);
-
-			switch (whichButton) {
-				case DialogInterface.BUTTON_POSITIVE: {
-					if (appService != null) {
-						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
-										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
-										+ "&command=ACCEPTDRAW&timestamp="
-										+ gameListElement.values.get(GameListItem.TIMESTAMP),
-								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
-						);
-					}
-				}
-				break;
-				case DialogInterface.BUTTON_NEUTRAL: {
-					if (appService != null) {
-						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
-								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
-						);
-					}
-				}
-				break;
-				case DialogInterface.BUTTON_NEGATIVE: {
-					startActivity(new Intent(coreContext, GameLiveScreenActivity.class).
-							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
-							putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
-
-				}
-				break;
-				default:
-					break;
-			}
-		}
+		isIndirencetDialogListener = new IsIndirectDialogListener();
 	}
 
 	@Override
@@ -201,65 +135,60 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 	@Override
 	protected void onStop() {
-		gamesList.setVisibility(View.GONE);
+//		gamesList.setVisibility(View.GONE);
 		super.onStop();
 	}
 
 	@Override
 	protected void onRestart() {
-		gamesList.setVisibility(View.VISIBLE);
+//		gamesList.setVisibility(View.VISIBLE);
 		super.onRestart();
 	}
 
 	@Override
 	protected void onResume() {
-		/*if (isShowAds() && (!mainApp.isLiveChess() || (mainApp.isLiveChess() && lccHolder.isConnected()))) {
-			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
-			}*/
-		/*if (!mainApp.isNetworkChangedNotification())
-			{*/
 		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
 		//}
 		if (mainApp.isLiveChess() && !lccHolder.isConnected()) {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					start.setVisibility(View.GONE);
-					gridview.setVisibility(View.GONE);
-					challengesListTitle.setVisibility(View.GONE);
-					startNewGameTitle.setVisibility(View.GONE);
-				}
-			});
+			start.setVisibility(View.GONE);
+			gridview.setVisibility(View.GONE);
+//					challengesListTitle.setVisibility(View.GONE);
+			startNewGameTitle.setVisibility(View.GONE);
+//			handler.post(new Runnable() {
+//				@Override
+//				public void run() {
+//					start.setVisibility(View.GONE);
+//					gridview.setVisibility(View.GONE);
+////					challengesListTitle.setVisibility(View.GONE);
+//					startNewGameTitle.setVisibility(View.GONE);
+//				}
+//			});
 		}
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 
 
 		super.onResume();
-		currentGame.post(new Runnable() {
-			@Override
-			public void run() {
-				if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
-						lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-					currentGame.setVisibility(View.VISIBLE);
-				} else {
-					currentGame.setVisibility(View.GONE);
-				}
-			}
-		});
-		gamesList.setVisibility(View.VISIBLE);
+		if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
+				lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
+			currentGame.setVisibility(View.VISIBLE);
+		} else {
+			currentGame.setVisibility(View.GONE);
+		}
+//		currentGame.post(new Runnable() {
+//			@Override
+//			public void run() {
+//				if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
+//						lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
+//					currentGame.setVisibility(View.VISIBLE);
+//				} else {
+//					currentGame.setVisibility(View.GONE);
+//				}
+//			}
+//		});
+//		gamesList.setVisibility(View.VISIBLE);
 
-		/*if (gamesAdapter != null)
-			{
-			  gamesAdapter.clear();
-			  gamesAdapter = null;
-			  mainApp.getGameListItems().clear();
-			  gamesAdapter.notifyDataSetChanged();
-			}
-			else
-			{
-			  mainApp.getGameListItems().clear();
-			}*/
+
 
 		handler.post(new Runnable() {
 			@Override
@@ -269,28 +198,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		});
 	}
 
-
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-//		popupDialogFragment.updatePopupItem(popupItem);
-
-		// Checks the orientation of the screen
-//		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//			backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE);
-//			backgroundChessDrawable.setChangingConfigurations(Configuration.ORIENTATION_PORTRAIT);
-//		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-//
-//		}
-//		findViewById(R.id.mainView).requestLayout();
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
-
-		super.onConfigurationChanged(newConfig);
-	}
-
 	@Override
 	protected void onPause() {
-		gamesList.setVisibility(View.GONE);
+//		gamesList.setVisibility(View.GONE);
 		unregisterReceiver(this.lccLoggingInInfoReceiver);
 		if (mainApp.isLiveChess()) {
 			/*// if connected
@@ -302,7 +212,11 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		enableScreenLock();
 	}
 
-
+	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		lccHolder.logout();
+		backToHomeActivity();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -329,8 +243,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
-
 			if (pos == 0) {
 				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
@@ -378,39 +290,77 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		}
 	}
 
-
-	private class GameListItemLongClickListener implements AdapterView.OnItemLongClickListener {
+	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener {
 
 		@Override
-		public boolean onItemLongClick(AdapterView<?> a, View v, int pos, long id) {
-			gameListElement = mainApp.getGameListItems().get(pos);
-			if (gameListElement.type == 1) {
-				new AlertDialog.Builder(coreContext)
-						.setItems(new String[]{
-								getString(R.string.chat),
-								getString(R.string.drawoffer),
-								getString(R.string.resignorabort)},
-								gameListItemDialogListener)
-						.create().show();
-			} else if (gameListElement.type == 2) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-				mainApp.getSharedDataEditor().commit();
+		public void onClick(DialogInterface dialog, int whichButton) {
+			gameListElement = mainApp.getGameListItems().get(temp_pos);
 
-				Intent intent = new Intent(coreContext, ChatActivity.class);
-				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
-				intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
-				startActivity(intent);
+			switch (whichButton) {
+				case DialogInterface.BUTTON_POSITIVE: {
+					if (appService != null) {
+						appService.RunSingleTask(4,
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
+										+ "&command=ACCEPTDRAW&timestamp="
+										+ gameListElement.values.get(GameListItem.TIMESTAMP),
+								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
+						);
+					}
+				}
+				break;
+				case DialogInterface.BUTTON_NEUTRAL: {
+					if (appService != null) {
+						appService.RunSingleTask(4,
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
+								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
+						);
+					}
+				}
+				break;
+				case DialogInterface.BUTTON_NEGATIVE: {
+					startActivity(new Intent(coreContext, GameLiveScreenActivity.class).
+							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
+							putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
+
+				}
+				break;
+				default:
+					break;
 			}
-			return true;
 		}
 	}
 
-	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
+//	private class GameListItemLongClickListener implements AdapterView.OnItemLongClickListener {
+//
+//		@Override
+//		public boolean onItemLongClick(AdapterView<?> a, View v, int pos, long id) {
+//			gameListElement = mainApp.getGameListItems().get(pos);
+//			if (gameListElement.type == 1) {
+//				new AlertDialog.Builder(coreContext)
+//						.setItems(new String[]{
+//								getString(R.string.chat),
+//								getString(R.string.drawoffer),
+//								getString(R.string.resignorabort)},
+//								gameListItemDialogListener)
+//						.create().show();
+//			} else if (gameListElement.type == 2) {
+//				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+//				mainApp.getSharedDataEditor().commit();
+//
+//				Intent intent = new Intent(coreContext, ChatActivity.class);
+//				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
+//				intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+//				startActivity(intent);
+//			}
+//			return true;
+//		}
+//	}
 
+	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
-
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
 				LccHolder.LOG.info("Accept challenge: " + challenge);
@@ -444,7 +394,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		}
 	}
 
-	private class IsIndirencetDialogListener implements DialogInterface.OnClickListener {
+	private class IsIndirectDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 //			final GameListItem el = mainApp.getGameListItems().get(pos);
@@ -461,72 +411,72 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		}
 	}
 
-	private class GameListItemClickListener implements AdapterView.OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-			gameListElement = mainApp.getGameListItems().get(pos);
-			if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-				final String title = mainApp.isLiveChess() ?
-						gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :
-						"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-								+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-								+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
-
-				if (mainApp.isLiveChess()) {
-					if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-						new AlertDialog.Builder(coreContext)
-								.setTitle(title)
-								.setItems(new String[]{
-										getString(R.string.accept),
-										getString(R.string.decline)},
-										challengeDialogListener)
-								.create().show();
-					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
-						new AlertDialog.Builder(coreContext)
-								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"}, isDirectDialogChallengeListener)
-								.create().show();
-					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-						final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
-						LccHolder.LOG.info("Accept seek: " + challenge);
-						lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-						lccHolder.removeSeek(gameListElement.getGameId());
-						update(2);
-					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
-						new AlertDialog.Builder(coreContext)
-								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"}, isIndirencetDialogListener)
-								.create().show();
-					}
-				}
-			} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-				mainApp.getSharedDataEditor().commit();
-
-				if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
-					mainApp.acceptdraw = true;
-					temp_pos = pos;
-					showDialog(0);
-				} else {
-					mainApp.acceptdraw = false;
-
-					Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);
-					intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-					intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
-					startActivity(intent);
-				}
-			} else if (gameListElement.type == 2) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-				mainApp.getSharedDataEditor().commit();
-
-				Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);
-				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
-				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
-				startActivity(intent);
-			}
-		}
-	}
+//	private class GameListItemClickListener implements AdapterView.OnItemClickListener {
+//
+//		@Override
+//		public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
+//			gameListElement = mainApp.getGameListItems().get(pos);
+//			if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
+//				final String title = mainApp.isLiveChess() ?
+//						gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :
+//						"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+//								+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+//								+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+//
+//				if (mainApp.isLiveChess()) {
+//					if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
+//						new AlertDialog.Builder(coreContext)
+//								.setTitle(title)
+//								.setItems(new String[]{
+//										getString(R.string.accept),
+//										getString(R.string.decline)},
+//										challengeDialogListener)
+//								.create().show();
+//					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
+//						new AlertDialog.Builder(coreContext)
+//								.setTitle(title)
+//								.setItems(new String[]{"Cancel", "Keep"}, isDirectDialogChallengeListener)
+//								.create().show();
+//					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
+//						final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
+//						LccHolder.LOG.info("Accept seek: " + challenge);
+//						lccHolder.getAndroid().runAcceptChallengeTask(challenge);
+//						lccHolder.removeSeek(gameListElement.getGameId());
+//						update(2);
+//					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
+//						new AlertDialog.Builder(coreContext)
+//								.setTitle(title)
+//								.setItems(new String[]{"Cancel", "Keep"}, isIndirencetDialogListener)
+//								.create().show();
+//					}
+//				}
+//			} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
+//				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+//				mainApp.getSharedDataEditor().commit();
+//
+//				if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
+//					mainApp.acceptdraw = true;
+//					temp_pos = pos;
+//					showDialog(0);
+//				} else {
+//					mainApp.acceptdraw = false;
+//
+//					Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);
+//					intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+//					intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
+//					startActivity(intent);
+//				}
+//			} else if (gameListElement.type == 2) {
+//				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+//				mainApp.getSharedDataEditor().commit();
+//
+//				Intent intent = new Intent(coreContext, GameLiveScreenActivity.class);
+//				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
+//				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
+//				startActivity(intent);
+//			}
+//		}
+//	}
 
 	private class NewGamesButtonsAdapter extends BaseAdapter {
 
@@ -573,24 +523,18 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			});
 			return button;
 		}
-
 	}
-
 
 	@Override
 	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
-
-				/*appService.RunRepeatble(ONLINE_CALLBACK_CODE, 0, 2000,
-																	  progressDialog = MyProgressDialog
-																		.show(Online.this, null, getString(R.string.updatinggameslist), true));*/
 				update(ONLINE_CALLBACK_CODE);
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
 			//int t = mainApp.sharedData.getInt("gamestype", 1);
 			ArrayList<GameListItem> tmp = new ArrayList<GameListItem>();
-			gamesList.setVisibility(View.GONE);
+//			gamesList.setVisibility(View.GONE);
 
 			mainApp.getGameListItems().clear();
 //			if (gamesAdapter != null) {
@@ -601,15 +545,15 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 			//gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().addAll(tmp);
-			if (gamesAdapter != null) {
-				gamesAdapter.notifyDataSetChanged();
-			}
-			gamesList.setVisibility(View.VISIBLE);
-			if (gamesAdapter == null) {
-				gamesAdapter = new OnlineGamesAdapter(LiveScreenActivity.this, R.layout.gamelistelement, mainApp.getGameListItems());
-				gamesList.setAdapter(gamesAdapter);
-			} /*else {*/
-			gamesAdapter.notifyDataSetChanged();
+//			if (gamesAdapter != null) {
+//				gamesAdapter.notifyDataSetChanged();
+//			}
+//			gamesList.setVisibility(View.VISIBLE);
+//			if (gamesAdapter == null) {
+//				gamesAdapter = new OnlineGamesAdapter(LiveScreenActivity.this, R.layout.gamelistelement, mainApp.getGameListItems());
+//				gamesList.setAdapter(gamesAdapter);
+//			} /*else {*/
+//			gamesAdapter.notifyDataSetChanged();
 			//gamesList.setVisibility(View.VISIBLE);
 			/*}*/
 		} else if (code == 1) {
@@ -638,8 +582,9 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (UnsupportedEncodingException ignored) {
 			}
+
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
@@ -650,28 +595,20 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 					+ mainApp.getUserName();
 			try {
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (UnsupportedEncodingException ignored) {
 			}
+
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
 					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.currentGame) {
-			/*try
-						{*/
+
 			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
 				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
 			}
-			/*}
-						catch(Exception e)
-						{
-						  e.printStackTrace();
-						  System.out.println("!!!!!!!! mainApp.getGameId() " + mainApp.getGameId());
-						  System.out.println("!!!!!!!! lccHolder.getGame(mainApp.getGameId()) " + lccHolder.getGame(mainApp.getGameId()));
-						}*/
+
 		} else if (view.getId() == R.id.start) {
 			startActivity(new Intent(this, LiveNewGameActivity.class));
-//			finish();
-//			LoadNext(0);
 		}
 	}
 
@@ -718,21 +655,21 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					if (mainApp.isLiveChess() && !intent.getExtras()
-							.getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
+			if (mainApp.isLiveChess() && !intent.getExtras()
+					.getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
 
-						start.setVisibility(View.VISIBLE);
-						if (gridview != null) {
-							gridview.setVisibility(View.VISIBLE);
-						}
-						challengesListTitle.setVisibility(View.VISIBLE);
-						startNewGameTitle.setVisibility(View.VISIBLE);
-					}
+				start.setVisibility(View.VISIBLE);
+				if (gridview != null) {
+					gridview.setVisibility(View.VISIBLE);
 				}
-			});
+//				challengesListTitle.setVisibility(View.VISIBLE);
+				startNewGameTitle.setVisibility(View.VISIBLE);
+			}
+//			handler.post(new Runnable() {
+//				@Override
+//				public void run() {
+//				}
+//			});
 		}
 	};
 }

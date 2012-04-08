@@ -20,7 +20,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
+import com.chess.ui.fragments.PopupDialogFragment;
 import com.flurry.android.FlurryAgent;
 
 public class LiveCreateChallengeActivity extends CoreActivityActionBar implements OnClickListener {
@@ -42,7 +42,7 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 		init();
 
 		setContentView(R.layout.live_create_challenge);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
@@ -120,6 +120,12 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 	};
 
 	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		lccHolder.logout();
+		backToHomeActivity();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
@@ -130,7 +136,11 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
-				showToast("logout");
+				popupItem.setTitleId(R.string.confirm);
+				popupItem.setMessageId(R.string.signout_confirm);
+
+				popupDialogFragment.updatePopupItem(popupItem);
+				popupDialogFragment.show(getSupportFragmentManager(), "dialog");
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -166,12 +176,12 @@ public class LiveCreateChallengeActivity extends CoreActivityActionBar implement
 											  color = PieceColor.UNDEFINED;
 											  break;
 										  }*/
-			final Boolean rated = isRated.isChecked();
-			final Integer initialTimeInteger = new Integer(initialTime.getText().toString());
-			final Integer bonusTimeInteger = new Integer(bonusTime.getText().toString());
-			final GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
-			final String to = null;
-			final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
+			Boolean rated = isRated.isChecked();
+			Integer initialTimeInteger = new Integer(initialTime.getText().toString());
+			Integer bonusTimeInteger = new Integer(bonusTime.getText().toString());
+			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
+			String to = null;
+			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 					lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig, minRating, maxRating);
 			if (appService != null) {
 				FlurryAgent.onEvent("Challenge Created", null);

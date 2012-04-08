@@ -47,7 +47,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		context = this;
 

@@ -45,7 +45,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		init();
 		upgrade = (Button) findViewById(R.id.upgradeBtn);
@@ -94,7 +94,7 @@ public class VideoScreenActivity extends CoreActivityActionBar implements View.O
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {

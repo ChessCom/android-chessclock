@@ -29,7 +29,7 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		logoutTask = new LogoutTask();
 

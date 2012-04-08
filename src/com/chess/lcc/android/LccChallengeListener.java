@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import android.util.Log;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
 import com.chess.ui.core.AppConstants;
@@ -36,6 +37,7 @@ public class LccChallengeListener implements ChallengeListener {
 
 	@Override
 	public void onChallengeReceived(Challenge challenge) {
+		Log.d("TEST", "onChallengeReceived get called");
 		LccHolder.LOG.info("CHALLENGE LISTENER. Challenge received: " + challenge);
 		if (challenge.getFrom().isComputer()) {
 			LccHolder.LOG.info("Challenge received: ignore computer player");
@@ -137,6 +139,8 @@ public class LccChallengeListener implements ChallengeListener {
 			lccHolder.getAndroid().getContext().getSoundPlayer().playNotify();
 		}
 		lccHolder.putChallenge(challenge.getId(), challenge);
+		// TODO show popup dialog with challenge invitation
+
 		/*if(!challenge.getTo().equals(lccHolder.getUser().getUsername()))
 			{
 			  //Seek seek = user.getConnection().mapLccChallengeToJinSeek(challenge, challenge.getTo());

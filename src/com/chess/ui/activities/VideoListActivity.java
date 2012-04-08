@@ -34,7 +34,7 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 		boolean liveMembershipLevel =
@@ -57,7 +57,7 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import com.chess.ui.core.CoreActivityHome;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MopubHelper;
-import com.millennialmedia.android.MMAdView;
 import com.mopub.mobileads.MoPubInterstitial;
 
 /**
@@ -21,7 +20,6 @@ import com.mopub.mobileads.MoPubInterstitial;
  * @created at: 08.02.12 6:29
  */
 public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener, MoPubInterstitial.MoPubInterstitialListener {
-	static MMAdView interAdView = null;
 	private MoPubInterstitial moPubInterstitial;
 
 	@Override
@@ -29,8 +27,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.home_screen);
-
-
 		CommonUtils.setBackground(findViewById(R.id.mainView), this);
 
 		Bundle extras = getIntent().getExtras();
@@ -99,8 +95,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		});*/
 
 		super.onResume();
-		
-//        CommonUtils.setBackground(findViewById(R.id.mainView), this);
 	}
 
 	/*private class MobFullScreeListener implements MobclixFullScreenAdViewListener {

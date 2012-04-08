@@ -162,7 +162,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	protected void onResume() {
 		super.onResume();
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override

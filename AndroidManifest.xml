@@ -18,7 +18,7 @@
 	<!-- uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
-	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="14" />
 
     <application android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name=".ui.core.MainApp"
 				 android:backupAgent=".ui.core.ChessBackupAgent"
@@ -49,6 +49,7 @@
 
 		<activity android:name=".ui.activities.ChatActivity"   android:label="@string/label_chat_online"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />
+
 		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />
 
@@ -69,9 +70,11 @@
         -->
 
 		<activity android:name=".ui.activities.LiveFriendChallengeActivity"
+			android:configChanges="keyboardHidden|orientation|keyboard"
 			android:label="@string/label_friend_challenge_live" />
 
 		<activity android:name=".ui.activities.LiveCreateChallengeActivity"
+			android:configChanges="keyboardHidden|orientation|keyboard"
 			android:label="@string/label_create_challenge_live"/>
 
 		<activity android:name=".ui.activities.OnlineFriendChallengeActivity"
@@ -93,6 +96,7 @@
 			android:configChanges="keyboardHidden|orientation|keyboard"
 			/>
 		<activity android:name=".ui.activities.LiveNewGameActivity" android:label="@string/label_live_new_game"
+			android:configChanges="keyboardHidden|orientation|keyboard"
 			/>
 
 		<!--Game Board screens-->
@@ -101,6 +105,7 @@
 		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
 			/>
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
+			android:configChanges="keyboardHidden|orientation|keyboard"
 			/>
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
 			/>

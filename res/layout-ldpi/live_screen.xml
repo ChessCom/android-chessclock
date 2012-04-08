@@ -34,7 +34,7 @@
 			android:layout_marginTop="@dimen/live_layout_mTop"
 			android:orientation="vertical"
 			>
-			<com.chess.RoboTextView
+<!--			<com.chess.RoboTextView
 				android:id="@+id/challengesListTitle"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -42,13 +42,13 @@
 				android:text="@string/challenges"
 				android:paddingLeft="@dimen/default_linear_left_padding"
 				android:textSize="@dimen/live_challenges_textSize"
-				/>
+				/>-->
 
-			<ListView
+<!--			<ListView
 				android:id="@+id/GamesList"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@android:color/transparent"/>
+				android:background="@android:color/transparent"/>-->
 
 		</LinearLayout>
 

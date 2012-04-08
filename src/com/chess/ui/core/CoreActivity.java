@@ -22,6 +22,7 @@ import com.chess.model.GameItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
@@ -39,6 +40,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	private PowerManager.WakeLock wakeLock;
 	protected String response = "";
 	protected String responseRepeatable = "";
+	protected BackgroundChessDrawable backgroundChessDrawable;
 
 	public abstract void update(int code);
 
@@ -58,6 +60,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 		context = this;
 		handler = new Handler();
+		backgroundChessDrawable =  new BackgroundChessDrawable(this);
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 

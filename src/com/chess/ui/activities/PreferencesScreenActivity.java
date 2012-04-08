@@ -50,7 +50,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		context = this;
 
@@ -205,7 +205,7 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override

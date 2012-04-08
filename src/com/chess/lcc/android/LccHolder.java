@@ -44,6 +44,12 @@ public class LccHolder {
 	private static Integer MATCHED_COLOR = 1;
 	public static final String PKCS_12 = "PKCS12";
 	public static final String TESTTEST = "testtest";
+	public long previousFGTime;
+	public long currentFGTime;
+	public long currentFGGameId;
+	public long previousFGGameId;
+
+
 	private ChatListenerImpl _chatListener;
 	private ConnectionListenerImpl _connectionListener;
 	private LccGameListener _gameListener;
@@ -55,19 +61,24 @@ public class LccHolder {
 	private static LccHolder instance;
 	public static final Logger LOG = Logger.getLogger(LccHolder.class);
 	private AndroidStuff android = new AndroidStuff(this);
-	public static final int OWN_SEEKS_LIMIT = 3;	 // TODO move all hasmaps to DB
+	public static final int OWN_SEEKS_LIMIT = 3;
+	// TODO move all hasmaps to DB
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
 	private HashMap<Long, Challenge> ownChallenges = new HashMap<Long, Challenge>();
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
+	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
+	private final Map<String, User> friends = new HashMap<String, User>();
+	private final Map<String, User> onlineFriends = new HashMap<String, User>();
+	private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
+	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
+	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
+			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
+
 	private final LccChallengeListener challengeListener;
 	private final LccSeekListListener seekListListener;
 	private final LccFriendStatusListener friendStatusListener;
-	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
-
-	private final Map<String, User> friends = new HashMap<String, User>();
-	private final Map<String, User> onlineFriends = new HashMap<String, User>();
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
 	private boolean nextOpponentMoveStillNotMade;
@@ -77,12 +88,8 @@ public class LccHolder {
 	private ChessClock blackClock;
 	private boolean connectingInProgress;
 	private boolean activityPausedMode = true;
-	private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
 	private Integer latestMoveNumber;
 	private Long currentGameId;
-	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
-	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
-			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
 	public String networkTypeName;
 
 	public LccHolder(InputStream keyStoreInputStream, String versionName) {
@@ -181,11 +188,6 @@ public class LccHolder {
 	public void setConnected(boolean connected) {
 		this.connected = connected;
 	}
-
-	public long previousFGTime;
-	public long currentFGTime;
-	public long currentFGGameId;
-	public long previousFGGameId;
 
 	public static LccHolder getInstance(InputStream keyStoreInputStream, String versionName) {
 		if (instance == null) {
@@ -393,7 +395,7 @@ public class LccHolder {
 	public ArrayList<GameListItem> getChallengesAndSeeksData() {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
-		final Collection<Challenge> challengesAndSeeks = new ArrayList<Challenge>();
+		Collection<Challenge> challengesAndSeeks = new ArrayList<Challenge>();
 		challengesAndSeeks.addAll(challenges.values());
 		challengesAndSeeks.addAll(seeks.values());
 
@@ -426,7 +428,7 @@ public class LccHolder {
 				}
 			}
 			challengeData[2] = "" + challengerRating;
-			final String challengerChessTitle =
+			String challengerChessTitle =
 					challenger.getChessTitle() != null && !isReleasedByMe ? "(" + challenger.getChessTitle() + ")" : "";
 			challengeData[3] = challengerChessTitle;
 			String color = null;
@@ -458,6 +460,7 @@ public class LccHolder {
 					"+" + (challengerTimeConfig.getTimeIncrement() / 10) + "sec" : ""; // time_increment
 			challengeData[8] = challenge.getTo() != null ? "1" : "0"; // is_direct_challenge
 			challengeData[9] = isReleasedByMe ? "1" : "0";
+
 			output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, challengeData, true));
 //			output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, challengeData, true));
 		}

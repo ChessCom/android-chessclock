@@ -19,8 +19,10 @@ public class BackgroundChessDrawable extends Drawable {
 	private int height;
 	private int width;
 
-	private int screenOrientation;
+//	private int screenOrientation;
 	private Context context;
+//	private int orientation;
+	private boolean configChanged;
 
 	public BackgroundChessDrawable(Context context) {
 		init(context);
@@ -43,17 +45,12 @@ public class BackgroundChessDrawable extends Drawable {
 		image.setDither(true);
 		image.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
-		screenOrientation = context.getResources().getConfiguration().orientation;
+//		screenOrientation = context.getResources().getConfiguration().orientation;
 	}
 
 	private void createGradientPath() {
 		float border = -5;
 		gradientPath = new Path();
-//		if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-//			border = -5;
-//		} else if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
-//			border = -5;
-//		}
 		setCoordinates(gradientPath, 0, width, 0, height);
 		int blackColor = 0xB4000000;
 		gradientPaint.setShader(
@@ -61,20 +58,6 @@ public class BackgroundChessDrawable extends Drawable {
 						Shader.TileMode.CLAMP));
 		pathsInitiated = true;
 	}
-
-//    @Override
-//    protected boolean onStateChange(int[] state) {
-//        image.invalidateSelf();
-//        return super.onStateChange(state);
-//
-//    }
-//
-//    @Override
-//    protected void onBoundsChange(Rect bounds) {
-//        super.onBoundsChange(bounds);
-//        image.invalidateSelf();
-//    }
-
 
 	private void setCoordinates(Path path, int x0, int x1, int y0, int y1) {
 		path.moveTo(x0, y0);
@@ -90,11 +73,15 @@ public class BackgroundChessDrawable extends Drawable {
 			createGradientPath();
 		}
 
-//		if(configChanges){  // TODO
-//
-//		}
+		if(configChanged){
+			width = context.getResources().getDisplayMetrics().widthPixels;
+			height = context.getResources().getDisplayMetrics().heightPixels;
+			setCoordinates(gradientPath, 0, width, 0, height);
+			image.setBounds(0, 0, width, height);
+			configChanged = false;
+		}
 		canvas.save();
-		screenOrientation = context.getResources().getConfiguration().orientation;
+//		screenOrientation = context.getResources().getConfiguration().orientation;
 
 
 		image.draw(canvas);
@@ -116,5 +103,10 @@ public class BackgroundChessDrawable extends Drawable {
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
+	}
+
+	public void updateConfig() {
+		configChanged = true;
+		invalidateSelf();
 	}
 }

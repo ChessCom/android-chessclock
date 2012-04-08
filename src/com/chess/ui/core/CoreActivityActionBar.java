@@ -3,6 +3,7 @@ package com.chess.ui.core;
 import actionbarcompat.ActionBarActivity;
 import android.app.AlertDialog;
 import android.content.*;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.*;
 import android.support.v4.app.Fragment;
@@ -23,17 +24,20 @@ import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
+import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.*;
 import com.flurry.android.FlurryAgent;
 import com.mobclix.android.sdk.MobclixAdView;
 
-//import com.chess.activities.Singin;
-
-public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace, ActiveFragmentInterface {
+public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
+		ActiveFragmentInterface, PopupDialogFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -46,6 +50,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private PowerManager.WakeLock wakeLock;
 	protected String response = "";
 	protected String responseRepeatable = "";
+	protected BackgroundChessDrawable backgroundChessDrawable;
+	protected PopupDialogFragment popupDialogFragment;
+	protected PopupItem popupItem;
 
 	public abstract void update(int code);
 
@@ -64,6 +71,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		coreContext = this;
 		handler = new Handler();
+		backgroundChessDrawable = new BackgroundChessDrawable(this);
+
+		popupItem = new PopupItem();
+		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
@@ -78,6 +89,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		lccHolder = mainApp.getLccHolder();
+	}
+
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		return super.onRetainCustomNonConfigurationInstance();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		backgroundChessDrawable.updateConfig();
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override
@@ -223,6 +245,16 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();
+	}
+
+	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		showToast("left button");
+	}
+
+	@Override
+	public void onRightBtnClick(PopupDialogFragment fragment) {
+		fragment.getDialog().dismiss();
 	}
 
 	@Override
@@ -586,7 +618,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	protected void disableScreenLock() {
+	protected void disableScreenLock() { // TODO check usage
 		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
 		wakeLock.setReferenceCounted(false);

@@ -23,7 +23,6 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
@@ -46,7 +45,7 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 
 		init();
 		setContentView(R.layout.live_challenge_friend);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		friends = (Spinner) findViewById(R.id.friend);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
@@ -131,6 +130,12 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 	}
 
 	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		lccHolder.logout();
+		backToHomeActivity();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
@@ -141,7 +146,11 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
-				showToast("logout");
+				popupItem.setTitleId(R.string.confirm);
+				popupItem.setMessageId(R.string.signout_confirm);
+
+				popupDialogFragment.updatePopupItem(popupItem);
+				popupDialogFragment.show(getSupportFragmentManager(), "dialog");
 				break;
 		}
 		return super.onOptionsItemSelected(item);

@@ -40,7 +40,7 @@
 			android:text="@string/currentGame"
 			android:visibility="gone"/>
 
-		<com.chess.RoboTextView
+<!--		<com.chess.RoboTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/onlineChallenges"
@@ -52,7 +52,7 @@
 			android:id="@+id/openChallenges"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			/>
+			/>-->
 	</LinearLayout>
 
 </LinearLayout>

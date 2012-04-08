@@ -21,7 +21,6 @@ import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
@@ -69,7 +68,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
@@ -97,7 +96,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 		});
 		gamesTypeSpinner.setOnItemSelectedListener(gameTypesSelectedListener);
 
-		gamesList = (ListView) findViewById(R.id.GamesList);
+		gamesList = (ListView) findViewById(R.id.onlineGamesList);
 		gamesList.setOnItemClickListener(gameListItemClickListener);
 		gamesList.setOnItemLongClickListener(gameListItemLongClickListener);
 

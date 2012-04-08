@@ -12,7 +12,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 
 public class OnlineCreateChallengeActivity extends CoreActivityActionBar implements OnClickListener {
@@ -31,7 +30,7 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 		init();
 
 		setContentView(R.layout.online_create_challenge);
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));

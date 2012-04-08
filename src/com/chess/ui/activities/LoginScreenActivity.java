@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivity;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
 import com.chess.utilities.Web;
@@ -49,7 +48,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		setContentView(R.layout.login_screen);
 
 
-		findViewById(R.id.mainView).setBackgroundDrawable(new BackgroundChessDrawable(this));
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
