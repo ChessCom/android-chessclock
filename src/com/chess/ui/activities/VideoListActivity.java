@@ -29,6 +29,7 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 	private ListView videosListView;
 	private TextView videoUpgrade;
 	private int page = 1;
+    private boolean update;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,19 +68,20 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&page-size=20&page=" + page + skill + category,
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+                                + "&page-size=20&page=" + page + skill + category,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
 			}
 		} else if (code == 0) {
-			String[] tmp = response.trim().split("[|]");
-			if (tmp.length == 3) {
-				tmp = tmp[2].split("<--->");
+			String[] responseArray = response.trim().split("[|]");
+			if (responseArray.length == 3) {
+				responseArray = responseArray[2].split("<--->");
 			} else return;
 			if (page == 1)
 				items.clear();
-			for (String v : tmp) {
-				items.add(new VideoItem(v.split("<->")));
+			for (String responseItem : responseArray) {
+				items.add(new VideoItem(responseItem.split("<->")));
 			}
 			if (videosAdapter == null) {
 				videosAdapter = new VideosAdapter(VideoListActivity.this, R.layout.videolistelement, items);
@@ -102,11 +104,7 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(mainApp.getMembershipVideoIntent());
 		}
-
 	}
-
-
-	private boolean update;
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -116,13 +114,14 @@ public class VideoListActivity extends CoreActivityActionBar implements OnItemCl
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		if (scrollState == SCROLL_STATE_IDLE) {
+		if (scrollState == SCROLL_STATE_IDLE) {  // TODO implement pagination adapter
 			if (update) {
 				page++;
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&page-size=20&page=" + page + skill + category,
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+                                + "&page-size=20&page=" + page + skill + category,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoListActivity.this, null, getString(R.string.loading), true))
 				);
 				update = false;

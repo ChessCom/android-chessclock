@@ -395,7 +395,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private class IsDirectDialogChallengeListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
 				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
@@ -412,7 +411,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private class IsIndirectDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Cancel my seek: " + challenge);

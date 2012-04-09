@@ -77,31 +77,78 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		setContentView(R.layout.boardview);
 
 		init();
-		init();
 		widgetsInit();
 		onPostCreate();
 	}
 
+    @Override
+    protected void init() {
+        menuOptionsItems = new CharSequence[]{
+                getString(R.string.skipproblem),
+                getString(R.string.showanswer),
+                getString(R.string.settings)};
 
-	@Override
-	protected void widgetsInit() {
-		super.widgetsInit();
+        firstTacticsDialogListener = new FirstTacticsDialogListener();
+        maxTacticsDialogListener = new MaxTacticsDialogListener();
+        hundredTacticsDialogListener = new HundredTacticsDialogListener();
+        offlineModeDialogListener = new OfflineModeDialogListener();
+        correctDialogListener = new CorrectDialogListener();
+        wrongDialogListener = new WrongDialogListener();
+        wrongScoreDialogListener = new WrongScoreDialogListener();
 
-		timer = (TextView) findViewById(R.id.timer);
-		timer.setVisibility(View.VISIBLE);
-		whitePlayerLabel.setVisibility(View.GONE);
-		blackPlayerLabel.setVisibility(View.GONE);
+        menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+    }
 
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.setGameActivityFace(this);
-		newBoardView.getBoardFace().setInit(true);
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+    @Override
+    protected void widgetsInit() {
+        super.widgetsInit();
 
-		showDialog(DIALOG_TACTICS_START_TACTICS);
-		gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
-	}
+        timer = (TextView) findViewById(R.id.timer);
+        timer.setVisibility(View.VISIBLE);
+        whitePlayerLabel.setVisibility(View.GONE);
+        blackPlayerLabel.setVisibility(View.GONE);
 
+        newBoardView.setBoardFace(new ChessBoard(this));
+        newBoardView.setGameActivityFace(this);
+        newBoardView.getBoardFace().setInit(true);
+        newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+        newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+
+        showDialog(DIALOG_TACTICS_START_TACTICS);
+        gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (extras.containsKey(AppConstants.LIVE_CHESS)) {
+            mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
+            if (!mainApp.isLiveChess()) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        mainApp.getLccHolder().logout();
+                        return null;
+                    }
+                }.execute();
+            }
+        }
+
+        if (newBoardView.getBoardFace().isTacticCanceled()) {
+            newBoardView.getBoardFace().setTacticCanceled(false);
+            showDialog(DIALOG_TACTICS_START_TACTICS);    // TODO show register confirmation dialog
+            startTacticsTimer();
+        } else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
+            startTacticsTimer();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        stopTacticsTimer();
+    }
 
 	private class FirstTacticsDialogListener implements DialogInterface.OnClickListener {
 		@Override
@@ -243,7 +290,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						.setPositiveButton(getString(R.string.ok), maxTacticsDialogListener)
 						.setNegativeButton(R.string.cancel, maxTacticsDialogListener)
 						.create();
-			case DIALOG_TACTICS_START_TACTICS:
+			case DIALOG_TACTICS_START_TACTICS:   // TODO show register confirmation dialog
 				return new AlertDialog.Builder(this)
 						.setTitle(getString(R.string.ready_for_first_tackics_q))
 						.setPositiveButton(R.string.yes, firstTacticsDialogListener)
@@ -280,24 +327,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				break;
 		}
 		return super.onCreateDialog(id);
-	}
-
-	@Override
-	protected void init() {
-		menuOptionsItems = new CharSequence[]{
-				getString(R.string.skipproblem),
-				getString(R.string.showanswer),
-				getString(R.string.settings)};
-
-		firstTacticsDialogListener = new FirstTacticsDialogListener();
-		maxTacticsDialogListener = new MaxTacticsDialogListener();
-		hundredTacticsDialogListener = new HundredTacticsDialogListener();
-		offlineModeDialogListener = new OfflineModeDialogListener();
-		correctDialogListener = new CorrectDialogListener();
-		wrongDialogListener = new WrongDialogListener();
-		wrongScoreDialogListener = new WrongScoreDialogListener();
-
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 	}
 
 	@Override
@@ -929,28 +958,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				break;
 			case R.id.menu_reside:
 				newBoardView.flipBoard();
-//				newBoardView.getBoardFace().setReside(!newBoardView.getBoardFace().isReside());
-//				newBoardView.invalidate();
 				break;
 			case R.id.menu_analysis:
 				newBoardView.switchAnalysis();
-//				newBoardView.getBoardFace().setAnalysis(true);
-//				update(CALLBACK_REPAINT_UI);
 				break;
 			case R.id.menu_previous:
 				newBoardView.moveBack();
-//				newBoardView.finished = false;
-//				newBoardView.sel = false;
-//				newBoardView.getBoardFace().takeBack();
-//				newBoardView.invalidate();
-//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 			case R.id.menu_next:
 				newBoardView.moveForward();
-//				newBoardView.getBoardFace().takeNext();
-//				newBoardView.invalidate();
-//				update(CALLBACK_REPAINT_UI);
 				isMoveNav = true;
 				break;
 		}
@@ -992,43 +1009,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (/*!mainApp.isNetworkChangedNotification() && */extras.containsKey(AppConstants.LIVE_CHESS)) {
-			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-			if (!mainApp.isLiveChess()) {
-				new AsyncTask<Void, Void, Void>() {
-					@Override
-					protected Void doInBackground(Void... voids) {
-						mainApp.getLccHolder().logout();
-						return null;
-					}
-				}.execute();
-			}
-		}
-
-		if (newBoardView.getBoardFace().isTacticCanceled()) {
-			newBoardView.getBoardFace().setTacticCanceled(false);
-			showDialog(DIALOG_TACTICS_START_TACTICS);
-			startTacticsTimer();
-		} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
-			startTacticsTimer();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-		stopTacticsTimer();
-	}
-
 	@Override
 	protected void onGameEndMsgReceived() {
-//		showSubmitButtonsLay(false);
-//		findViewById(R.id.moveButtons).setVisibility(View.GONE);
 	}
 
 	public void stopTacticsTimer() {

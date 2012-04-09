@@ -264,8 +264,6 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
-
 			if (pos == 0) {
 				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
