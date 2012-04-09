@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -18,6 +20,7 @@ import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.CommonUtils;
 
@@ -81,6 +84,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		newBoardView.getBoardFace().setInit(true);
 		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+
+		// hide black dot for right label
+		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
+		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
 	@Override
@@ -185,8 +192,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 				if (MainApp.isLiveOrEchessGameMode(newBoardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(newBoardView.getBoardFace())) {
 					if (mainApp.getCurrentGame() != null) {
-						whitePlayerLabel.setText(mainApp.getWhitePlayerName());
-                        blackPlayerLabel.setText(mainApp.getBlackPlayerName());
+						updatePlayerLabels();
 					}
 				}
 
@@ -217,18 +223,18 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 				break;
 			}
-			case CALLBACK_COMP_MOVE: { // todo: probably this case should be removed from Live
-				whitePlayerLabel.setVisibility(View.GONE);
-				blackPlayerLabel.setVisibility(View.GONE);
-				thinking.setVisibility(View.VISIBLE);
-				break;
-			}
-			case CALLBACK_PLAYER_MOVE: { // todo: probably this case should be removed from Live
-				whitePlayerLabel.setVisibility(View.VISIBLE);
-				blackPlayerLabel.setVisibility(View.VISIBLE);
-				thinking.setVisibility(View.GONE);
-				break;
-			}
+//			case CALLBACK_COMP_MOVE: { // todo: probably this case should be removed from Live
+//				whitePlayerLabel.setVisibility(View.GONE);
+//				blackPlayerLabel.setVisibility(View.GONE);
+//				thinking.setVisibility(View.VISIBLE);
+//				break;
+//			}
+//			case CALLBACK_PLAYER_MOVE: { // todo: probably this case should be removed from Live
+//				whitePlayerLabel.setVisibility(View.VISIBLE);
+//				blackPlayerLabel.setVisibility(View.VISIBLE);
+//				thinking.setVisibility(View.GONE);
+//				break;
+//			}
 			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
 				// move was made
 				if (mainApp.getSharedData().getInt(mainApp.getUserName()
@@ -305,16 +311,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 										|| !mainApp.isLiveChess();
 
 								if (moveFT.length == 4) {
-									Move m;
+									Move move;
 									if (moveFT[3] == 2) {
-										m = new Move(moveFT[0], moveFT[1], 0, 2);
+										move = new Move(moveFT[0], moveFT[1], 0, 2);
 									} else {
-										m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+										move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 									}
-									newBoardView.getBoardFace().makeMove(m, playSound);
+									newBoardView.getBoardFace().makeMove(move, playSound);
 								} else {
-									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-									newBoardView.getBoardFace().makeMove(m, playSound);
+									Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+									newBoardView.getBoardFace().makeMove(move, playSound);
 								}
 								//mainApp.showToast("Move list updated!");
 								newBoardView.getBoardFace().setMovesCount(moves.length);
@@ -391,8 +397,34 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 		}
 	}
-    
-    private boolean openChatActivity(){
+
+	@Override
+	public void setWhitePlayerTimer(String timeString) {
+		blackPlayerLabel.setText(timeString);
+
+		if(!isWhitePlayerMove || initTimer){
+			isWhitePlayerMove = true;
+			changePlayersLabelColors();
+		}
+	}
+
+	@Override
+	public void setBlackPlayerTimer(String timeString) {
+		gamePanelView.setBlackTimer(timeString);
+
+		if(isWhitePlayerMove){
+			isWhitePlayerMove = false;
+			changePlayersLabelColors();
+		}
+	}
+
+	private void updatePlayerLabels() {
+		whitePlayerLabel.setText(mainApp.getWhitePlayerName());
+		gamePanelView.setWhiteTimer(mainApp.getBlackPlayerName().toString());
+
+	}
+
+	private boolean openChatActivity(){
         if(!chat)
             return false;
 
@@ -458,6 +490,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				chat = true;
 				getOnlineGame(mainApp.getGameId());
 				break;
+			case R.id.menu_singOut:
+				popupItem.setTitle(R.string.confirm);
+				popupItem.setMessage(R.string.signout_confirm);
+
+				popupDialogFragment.updatePopupItem(popupItem);
+				popupDialogFragment.show(getSupportFragmentManager(), LiveScreenActivity.LOGOUT_TAG);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -498,6 +537,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					break;
 			}
 		}
+	}
+
+	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		lccHolder.logout();
+		backToHomeActivity();
 	}
 
 	protected void changeChatIcon(Menu menu) {
@@ -546,6 +591,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			}
 			lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
 		}
+	}
+
+	@Override
+	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
+		whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+		gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
 	}
 
 	@Override

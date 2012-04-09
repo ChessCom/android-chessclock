@@ -9,6 +9,8 @@ import com.chess.ui.core.IntentConstants;
 import java.util.Collection;
 
 public class LccChallengeListener implements ChallengeListener {
+	private OuterChallengeListener outerChallengeListener;
+
 	public LccChallengeListener(LccHolder lccHolder) {
 		if (lccHolder == null) {
 			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
@@ -137,9 +139,10 @@ public class LccChallengeListener implements ChallengeListener {
 												   receiverTimeControl, isRated, variant, ratingCategoryString, color);*/
 		if (challenge.getTo().equals(lccHolder.getUser().getUsername())) {
 			lccHolder.getAndroid().getContext().getSoundPlayer().playNotify();
+			// show popup dialog with challenge invitation
+			outerChallengeListener.showDialog(challenge);
 		}
-		lccHolder.putChallenge(challenge.getId(), challenge);
-		// TODO show popup dialog with challenge invitation
+//		lccHolder.putChallenge(challenge.getId(), challenge);
 
 		/*if(!challenge.getTo().equals(lccHolder.getUser().getUsername()))
 			{
@@ -209,4 +212,8 @@ public class LccChallengeListener implements ChallengeListener {
 	}
 
 	private final LccHolder lccHolder;
+
+	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
+		this.outerChallengeListener = outerChallengeListener;
+	}
 }

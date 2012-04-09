@@ -89,29 +89,6 @@
 
 		</LinearLayout>
 
-		<!--Move time labels-->
-		<!--<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom"
-			android:paddingBottom="12dip">
-
-			<com.chess.RoboTextView
-				android:id="@+id/whiteClockView"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:drawablePadding="5dip"
-				android:drawableLeft="@drawable/whitemove"
-				android:visibility="gone"/>
-
-			<com.chess.RoboTextView
-				android:id="@+id/blackClockView"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:drawablePadding="5dip"
-				android:visibility="gone"/>
-		</RelativeLayout>-->
 
 		<!--Submit buttons layout-->
 		<LinearLayout
@@ -119,7 +96,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="bottom"
-			android:paddingBottom="@dimen/game_submit_buttons_lay_bot_padding"
+			android:paddingLeft="@dimen/game_end_layout_padding_side"
+			android:paddingRight="@dimen/game_end_layout_padding_side"
+			android:paddingBottom="@dimen/game_end_layout_padding_bottom"
 			android:visibility="invisible">
 
 			<com.chess.RoboButton
@@ -149,8 +128,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="bottom"
-			android:paddingLeft="@dimen/game_control_padding_left"
-			android:paddingRight="@dimen/game_control_padding_right"
+			android:paddingLeft="@dimen/game_end_layout_padding_side"
+			android:paddingRight="@dimen/game_end_layout_padding_side"
 			android:paddingBottom="@dimen/game_end_layout_padding_bottom"
 			android:visibility="invisible">
 

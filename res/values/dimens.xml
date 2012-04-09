@@ -102,6 +102,8 @@
 	<dimen name="player_name_max_width">140dip</dimen>
 	<dimen name="game_label_padding_top">2dip</dimen>
 	<dimen name="game_end_layout_padding_bottom">8dip</dimen>
+	<dimen name="game_end_layout_padding_side">7dip</dimen>
+
 	<!--
 	 <dimen name="signin_button_margin_updown">24dip</dimen>
 	 <dimen name="signin_footer_margin_bottom">10dip</dimen>

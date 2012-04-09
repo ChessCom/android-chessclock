@@ -133,7 +133,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		// create textViews for timers
 		whiteTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
-		whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white,0,0,0);
+		whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_black,0,0,0);
 		whiteTimer.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
 		int timerPaddingLeft = (int) (8*density + 0.5f);
 		int timerPaddingRight = (int) (2*density + 0.5f);
@@ -145,7 +145,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		whiteTimer.setLayoutParams(whiteTimerParams);
 
 		blackTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
-		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
+//		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
 		blackTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
 
 		int timerPaddingLeft1 = (int) (2*density + 0.5f);

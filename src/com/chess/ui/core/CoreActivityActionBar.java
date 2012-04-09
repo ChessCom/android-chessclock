@@ -289,7 +289,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	private void checkUserTokenAndStartActivity() {
 		if (!mainApp.getUserName().equals("")) {
-			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+			Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //				mainApp.startActivity(intent);
 			startActivity(intent);

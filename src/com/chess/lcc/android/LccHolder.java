@@ -62,6 +62,7 @@ public class LccHolder {
 	public static final Logger LOG = Logger.getLogger(LccHolder.class);
 	private AndroidStuff android = new AndroidStuff(this);
 	public static final int OWN_SEEKS_LIMIT = 3;
+
 	// TODO move all hasmaps to DB
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
@@ -907,5 +908,10 @@ public class LccHolder {
 
 	public void forceLiveGameReplay() {
 		latestMoveNumber = null;
+	}
+
+
+	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
+		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 }

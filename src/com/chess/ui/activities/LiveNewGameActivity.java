@@ -116,8 +116,8 @@ public class LiveNewGameActivity extends CoreActivityActionBar implements OnClic
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
-				popupItem.setTitleId(R.string.confirm);
-				popupItem.setMessageId(R.string.signout_confirm);
+				popupItem.setTitle(R.string.confirm);
+				popupItem.setMessage(R.string.signout_confirm);
 
 				popupDialogFragment.updatePopupItem(popupItem);
 				popupDialogFragment.show(getSupportFragmentManager(), "dialog");

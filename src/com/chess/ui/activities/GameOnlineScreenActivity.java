@@ -25,7 +25,6 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.*;
-import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
 
 import java.util.ArrayList;
 

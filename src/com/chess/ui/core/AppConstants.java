@@ -141,4 +141,5 @@ public class AppConstants {
 	public static final String LOGIN_HTML_ALS = "/login.html?als=";
 	public static final String ECHESS_MOBILE_STATS = "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = "/tournaments";
+	public static final String SYMBOL_NEW_STR = "\n";
 }

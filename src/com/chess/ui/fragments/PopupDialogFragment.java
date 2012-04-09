@@ -55,7 +55,7 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		else
 			messageTxt.setText(popupItem.getMessageId());
 
-		if(popupItem.getMessageId() == 0)
+		if(popupItem.getTitleId() == 0)
 			titleTxt.setText(popupItem.getTitle());
 		else
 			titleTxt.setText(popupItem.getTitleId());

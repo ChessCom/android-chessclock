@@ -23,6 +23,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
+import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
@@ -146,8 +147,8 @@ public class LiveFriendChallengeActivity extends CoreActivityActionBar implement
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
-				popupItem.setTitleId(R.string.confirm);
-				popupItem.setMessageId(R.string.signout_confirm);
+				popupItem.setTitle(R.string.confirm);
+				popupItem.setMessage(R.string.signout_confirm);
 
 				popupDialogFragment.updatePopupItem(popupItem);
 				popupDialogFragment.show(getSupportFragmentManager(), "dialog");

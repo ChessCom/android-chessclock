@@ -57,7 +57,7 @@ public class PopupItem {
 		return titleId;
 	}
 
-	public void setTitleId(int titleId) {
+	public void setTitle(int titleId) {
 		this.titleId = titleId;
 	}
 
@@ -65,7 +65,7 @@ public class PopupItem {
 		return messageId;
 	}
 
-	public void setMessageId(int messageId) {
+	public void setMessage(int messageId) {
 		this.messageId = messageId;
 	}
 }

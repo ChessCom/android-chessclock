@@ -257,5 +257,11 @@
 	<!--SignOut-->
 	<string name="signout_confirm">Are you sure you want to sign out from Live Chess server?</string>
 	<string name="confirm">Confirm</string>
+	<string name="you_been_challenged">You\'ve Been Challenged!</string>
+	<string name="opponent_">Opponent:</string>
+	<string name="time_">Time:</string>
+	<string name="rated">Rated</string>
+	<string name="unrated">Unrated</string>
+	<string name="you_play">You Play:</string>
 
 </resources>

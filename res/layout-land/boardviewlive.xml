@@ -97,7 +97,9 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
-					android:paddingBottom="@dimen/game_submit_buttons_lay_bot_padding"
+					android:paddingLeft="@dimen/game_end_layout_padding_side"
+					android:paddingRight="@dimen/game_end_layout_padding_side"
+					android:paddingBottom="@dimen/game_end_layout_padding_bottom"
 					android:visibility="invisible">
 
 					<com.chess.RoboButton
@@ -127,8 +129,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
-					android:paddingLeft="@dimen/game_control_padding_left"
-					android:paddingRight="@dimen/game_control_padding_right"
+					android:paddingLeft="@dimen/game_end_layout_padding_side"
+					android:paddingRight="@dimen/game_end_layout_padding_side"
 					android:paddingBottom="@dimen/game_end_layout_padding_bottom"
 					android:visibility="invisible">
 

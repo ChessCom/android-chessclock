@@ -891,8 +891,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-
-
 	@Override
 	public void newGame() {
 		if (mainApp.guest) {

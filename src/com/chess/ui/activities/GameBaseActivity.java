@@ -76,8 +76,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected CharSequence[] menuOptionsItems;
 	protected GamePanelView gamePanelView;
-    private boolean isWhitePlayerMove = true;
-    private boolean initTimer = true;
+	protected boolean isWhitePlayerMove = true;
+	protected boolean initTimer = true;
 //    private TextView whiteTimer;
 //    private TextView blackTimer;
 
@@ -325,8 +325,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 								 final String blackRating =
 								   (newBlackRating != null && newBlackRating != 0) ?
 								   newBlackRating.toString() : mainApp.getCurrentGame().values.get("black_rating");*/
-			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-			blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+			updatePlayerLabels(game, newWhiteRating, newBlackRating);
 			newBoardView.finished = true;
 
 			if (MobclixHelper.isShowAds(mainApp)) {
@@ -383,6 +382,11 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 	};
 
+	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
+		whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+		blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+	}
+
 	protected abstract void onGameEndMsgReceived();
 
 	protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
@@ -412,17 +416,17 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
         }
     }
 
-    private void changePlayersLabelColors(){
+    protected void changePlayersLabelColors(){
         if(isWhitePlayerMove){
             whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
-			gamePanelView.activatePlayerTimer(true,true);
-            blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+			gamePanelView.activatePlayerTimer(true,false);
+            blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
 			gamePanelView.activatePlayerTimer(false,false);
         }else{
-            blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
+            blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
 			gamePanelView.activatePlayerTimer(false,true);
             whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-			gamePanelView.activatePlayerTimer(true,false);
+			gamePanelView.activatePlayerTimer(true,true);
         }
 		initTimer = false;
 	}

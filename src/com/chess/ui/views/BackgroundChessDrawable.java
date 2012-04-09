@@ -19,16 +19,12 @@ public class BackgroundChessDrawable extends Drawable {
 	private int height;
 	private int width;
 
-//	private int screenOrientation;
 	private Context context;
-//	private int orientation;
 	private boolean configChanged;
 
 	public BackgroundChessDrawable(Context context) {
 		init(context);
 		setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE | Configuration.ORIENTATION_PORTRAIT);
-//		setChangingConfigurations(Configuration.ORIENTATION_PORTRAIT);
-
 	}
 
 	private void init(Context context) {
@@ -44,8 +40,6 @@ public class BackgroundChessDrawable extends Drawable {
 		image.setBounds(0, 0, width, height);
 		image.setDither(true);
 		image.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-
-//		screenOrientation = context.getResources().getConfiguration().orientation;
 	}
 
 	private void createGradientPath() {
