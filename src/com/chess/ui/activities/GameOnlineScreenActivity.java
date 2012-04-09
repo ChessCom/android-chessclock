@@ -675,19 +675,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		}
 
-		if (extras.containsKey(AppConstants.LIVE_CHESS)) {
-			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-			if (!mainApp.isLiveChess()) {
-				new AsyncTask<Void, Void, Void>() {
-					@Override
-					protected Void doInBackground(Void... voids) {
-						mainApp.getLccHolder().logout();
-						return null;
-					}
-				}.execute();
-			}
-		}
-
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 	}
 

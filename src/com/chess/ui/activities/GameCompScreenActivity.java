@@ -483,25 +483,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		}
 	}
 
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (/*!mainApp.isNetworkChangedNotification() && */extras.containsKey(AppConstants.LIVE_CHESS)) {
-			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-			if (!mainApp.isLiveChess()) {
-				new AsyncTask<Void, Void, Void>() {
-					@Override
-					protected Void doInBackground(Void... voids) {
-						mainApp.getLccHolder().logout();
-						return null;
-					}
-				}.execute();
-			}
-		}
-
-	}
-
 	@Override
 	protected void onGameEndMsgReceived() {
 	}

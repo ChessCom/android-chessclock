@@ -121,18 +121,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
-        if (extras.containsKey(AppConstants.LIVE_CHESS)) {
-            mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-            if (!mainApp.isLiveChess()) {
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        mainApp.getLccHolder().logout();
-                        return null;
-                    }
-                }.execute();
-            }
-        }
 
         if (newBoardView.getBoardFace().isTacticCanceled()) {
             newBoardView.getBoardFace().setTacticCanceled(false);

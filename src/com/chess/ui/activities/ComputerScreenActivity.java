@@ -23,15 +23,12 @@ import com.flurry.android.FlurryAgent;
 public class ComputerScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
 
 	private Spinner strength;
-	private LogoutTask logoutTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
-
-		logoutTask = new LogoutTask();
 
 		strength = (Spinner) findViewById(R.id.PrefStrength);
 		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
@@ -85,14 +82,6 @@ public class ComputerScreenActivity extends CoreActivityActionBar implements Vie
 			FlurryAgent.onEvent("New Game VS Computer", null);
 //			startActivity(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, mode));
 			startActivity(new Intent(this, GameCompScreenActivity.class).putExtra(AppConstants.GAME_MODE, mode));
-		}
-	}
-
-	private class LogoutTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... voids) {
-			mainApp.getLccHolder().logout();
-			return null;
 		}
 	}
 

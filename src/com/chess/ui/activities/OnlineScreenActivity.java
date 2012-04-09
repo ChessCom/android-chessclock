@@ -190,9 +190,6 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 
-		// if connected
-		//System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
-		lccHolder.logout();
 		super.onResume();
 
 		gamesList.setVisibility(View.VISIBLE);
