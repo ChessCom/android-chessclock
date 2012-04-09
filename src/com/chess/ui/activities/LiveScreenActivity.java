@@ -227,9 +227,11 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 
 	@Override
 	public void onRightBtnClick(PopupDialogFragment fragment) {
-		LccHolder.LOG.info("Decline challenge: " + currentChallenge);
-		lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
-		update(3);
+		if (fragment.getTag().equals(CHALLENGE_TAG)) {
+			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
+			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
+			update(3);
+		}
 		fragment.getDialog().dismiss();
 	}
 
@@ -580,12 +582,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		} else if (code == 3) {
 			onPause();   // TODO investigate what for this wrong initialization
 			onResume();
-			System.out.println("TESTTEST ");
-			try {
-				throw new Exception();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			mainApp.showToast(getString(R.string.challengedeclined));
 		} else if (code == 4) {
 			onPause();
