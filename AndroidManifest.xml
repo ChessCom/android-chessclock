@@ -105,8 +105,9 @@
 		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
 			/>
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
-			android:configChanges="keyboardHidden|orientation|keyboard"
+
 			/>
+		android:configChanges="keyboardHidden|orientation|keyboard"
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
 			/>
 

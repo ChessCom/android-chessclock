@@ -490,13 +490,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				chat = true;
 				getOnlineGame(mainApp.getGameId());
 				break;
-			case R.id.menu_singOut:
-				popupItem.setTitle(R.string.confirm);
-				popupItem.setMessage(R.string.signout_confirm);
-
-				popupDialogFragment.updatePopupItem(popupItem);
-				popupDialogFragment.show(getSupportFragmentManager(), LiveScreenActivity.LOGOUT_TAG);
-				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

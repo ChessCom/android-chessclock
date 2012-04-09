@@ -233,9 +233,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(mainApp)
-				/*&& mainApp.getTabHost() != null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4") */
-				&& adViewWrapper != null && getRectangleAdview() != null) {
+		if (MobclixHelper.isShowAds(mainApp) && adViewWrapper != null && getRectangleAdview() != null) {
 			adViewWrapper.addView(getRectangleAdview());
 			if (mainApp.isForceRectangleAd()) {
 				getRectangleAdview().getAd();
@@ -399,6 +397,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
     public void setWhitePlayerTimer(String timeString) {
+		// TODO determine player color
 		gamePanelView.setWhiteTimer(timeString);
 
         if(!isWhitePlayerMove || initTimer){
