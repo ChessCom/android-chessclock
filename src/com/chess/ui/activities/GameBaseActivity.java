@@ -62,8 +62,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected GameItem game;
 
-//	protected TextView whiteClockView;
-//	protected TextView blackClockView;
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
@@ -78,8 +76,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected GamePanelView gamePanelView;
 	protected boolean isWhitePlayerMove = true;
 	protected boolean initTimer = true;
-//    private TextView whiteTimer;
-//    private TextView blackTimer;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +92,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
-//		whitePlayerLabel.setSelected(true);
-//		blackPlayerLabel.setSelected(true);
-
-        // player timers for live game
-//        whiteTimer = (TextView) findViewById(R.id.whiteTimer);
-//        blackTimer = (TextView) findViewById(R.id.blackTimer);
-
 
         thinking = (TextView) findViewById(R.id.thinking);
-
-//		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
-//		blackClockView = (TextView) findViewById(R.id.blackClockView);
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
@@ -115,7 +101,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
-		//newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
+		//newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());  // TODO
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		newBoardView.setGamePanelView(gamePanelView);

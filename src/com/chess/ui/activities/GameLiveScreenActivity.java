@@ -66,16 +66,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		findViewById(R.id.cancel).setOnClickListener(this);
 
 		if (lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
-//			whiteClockView.setVisibility(View.VISIBLE);
-//			blackClockView.setVisibility(View.VISIBLE);
-
 			lccHolder.getWhiteClock().paint();
 			lccHolder.getBlackClock().paint();
 
 			Game game = lccHolder.getGame(extras.getLong(GameListItem.GAME_ID));
 			User whiteUser = game.getWhitePlayer();
 			User blackUser = game.getBlackPlayer();
-			Boolean isWhite = (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser)) ? null : game.isMoveOf(whiteUser);
+			Boolean isWhite;
+			if (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser))
+				isWhite = null;
+			else
+				isWhite = game.isMoveOf(whiteUser);
 //			lccHolder.setClockDrawPointer(isWhite);
 		}
 
