@@ -36,6 +36,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
 import android.util.Log;
+
+import com.mopub.mobileads.Utils;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -46,72 +49,69 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 
 public class MoPubConversionTracker {
-	public static final String MOPUB_SETTINGS = "mopubSettings";
-	public static final String TRACKED = " tracked";
-	private Context mContext;
-	private String mPackageName;
+    private Context mContext;
+    private String mPackageName;
 
-	static private String TRACK_HOST = "ads.mopub.com";
-	static private String TRACK_HANDLER = "/m/open";
+    static private String TRACK_HOST = "ads.mopub.com";
+    static private String TRACK_HANDLER = "/m/open";
 
-	public void reportAppOpen(Context context) {
-		if (context == null) {
-			return;
-		}
-		mContext = context;
-		mPackageName = mContext.getPackageName();
+    public void reportAppOpen(Context context) {
+        if (context == null) {
+            return;
+        }
+        mContext = context;
+        mPackageName = mContext.getPackageName();
 
-		SharedPreferences settings = mContext.getSharedPreferences(MOPUB_SETTINGS, 0);
-		if (settings.getBoolean(mPackageName + TRACKED, false) == false) {
-			new Thread(mTrackOpen).start();
-		} else {
-			Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion already tracked");
-		}
-	}
+        SharedPreferences settings = mContext.getSharedPreferences("mopubSettings", 0);
+        if (settings.getBoolean(mPackageName+" tracked", false) == false) {
+            new Thread(mTrackOpen).start();
+        } else {
+            Log.d("MoPub", "Conversion already tracked");
+        }
+    }
 
-	Runnable mTrackOpen = new Runnable() {
-		@Override
-		public void run() {
-			StringBuilder sz = new StringBuilder("http://" + TRACK_HOST + TRACK_HANDLER);
-			sz.append("?v=6&id=").append(mPackageName);
+    Runnable mTrackOpen = new Runnable() {
+        public void run() {
+            StringBuilder sz = new StringBuilder("http://"+TRACK_HOST+TRACK_HANDLER);
+            sz.append("?v=6&id=" + mPackageName);
+            
+            String udid = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
+            String udidDigest = (udid == null) ? "" : Utils.sha1(udid);
+            sz.append("&udid=sha:" + udidDigest);
+            String url = sz.toString();
+            Log.d("MoPub", "Conversion track: " + url);
 
-			String udid = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
-			String udidDigest = (udid == null) ? "" : Utils.sha1(udid);
-			sz.append("&udid=sha:").append(udidDigest);
-			String url = sz.toString();
-			Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion track: " + url);
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpget = new HttpGet(url);
+            HttpResponse response;
+            try {
+                response = httpclient.execute(httpget);
+            } catch (ClientProtocolException e) {
+                // Just fail silently. We'll try the next time the app opens
+                Log.d("MoPub", "Conversion track failed: ClientProtocolException (no signal?)");
+                return;
+            } catch (IOException e) {
+                // Just fail silently. We'll try the next time the app opens
+                Log.d("MoPub", "Conversion track failed: IOException (no signal?)");
+                return;
+            }
 
-			DefaultHttpClient httpclient = new DefaultHttpClient();
-			HttpGet httpget = new HttpGet(url);
-			HttpResponse response;
-			try {
-				response = httpclient.execute(httpget);
-			} catch (ClientProtocolException e) {
-				// Just fail silently. We'll try the next time the app opens
-				Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion track failed: ClientProtocolException (no signal?)");
-				return;
-			} catch (IOException e) {
-				// Just fail silently. We'll try the next time the app opens
-				Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion track failed: IOException (no signal?)");
-				return;
-			}
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("MoPub", "Conversion track failed: Status code != 200");
+                return;
+            }
 
-			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-				Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion track failed: Status code != 200");
-				return;
-			}
+            HttpEntity entity = response.getEntity();
+            if (entity == null || entity.getContentLength() == 0) {
+                Log.d("MoPub", "Conversion track failed: Response was empty");
+                return;
+            }
 
-			HttpEntity entity = response.getEntity();
-			if (entity == null || entity.getContentLength() == 0) {
-				Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion track failed: Response was empty");
-				return;
-			}
-
-			// If we made it here, the request has been tracked
-			Log.d(BaseInterstitialAdapter.MO_PUB, "Conversion track successful");
-			SharedPreferences.Editor editor
-					= mContext.getSharedPreferences(MOPUB_SETTINGS, 0).edit();
-			editor.putBoolean(mPackageName + TRACKED, true).commit();
-		}
-	};
+            // If we made it here, the request has been tracked
+            Log.d("MoPub", "Conversion track successful");
+            SharedPreferences.Editor editor
+            = mContext.getSharedPreferences("mopubSettings", 0).edit();
+            editor.putBoolean(mPackageName+" tracked", true).commit();
+        }
+    };
 }

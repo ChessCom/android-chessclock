@@ -38,11 +38,11 @@ import java.security.NoSuchAlgorithmException;
 public class Utils {
 
 	public static String sha1(String s) {
-		try {
+		try { 
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
 			digest.update(s.getBytes());
 			byte messageDigest[] = digest.digest();
-
+			
 			StringBuffer hexString = new StringBuffer();
 			for (int i = 0; i < messageDigest.length; i++) {
 				hexString.append(Integer.toHexString((0xFF & messageDigest[i]) | 0x100).substring(1));

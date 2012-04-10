@@ -33,55 +33,53 @@
 package com.mopub.mobileads;
 
 import android.view.View;
+
 import com.mopub.mobileads.MoPubView.OnAdLoadedListener;
 
 public class MoPubActivity extends BaseActivity implements OnAdLoadedListener {
-	public static final int MOPUB_ACTIVITY_NO_AD = 1234;
-	public static final String COM_MOPUB_MOBILEADS_AD_UNIT_ID = "com.mopub.mobileads.AdUnitId";
-	public static final String COM_MOPUB_MOBILEADS_KEYWORDS = "com.mopub.mobileads.Keywords";
-	public static final String COM_MOPUB_MOBILEADS_CLICKTHROUGH_URL = "com.mopub.mobileads.ClickthroughUrl";
+    public static final int MOPUB_ACTIVITY_NO_AD = 1234;
 
-	private MoPubView mMoPubView;
+    private MoPubView mMoPubView;
+    
+    @Override
+    public View getAdView() {
+        String adUnitId = getIntent().getStringExtra("com.mopub.mobileads.AdUnitId");
+        String keywords = getIntent().getStringExtra("com.mopub.mobileads.Keywords");
+        String clickthroughUrl = getIntent().getStringExtra("com.mopub.mobileads.ClickthroughUrl");
+        int timeout = getIntent().getIntExtra("com.mopub.mobileads.Timeout", 0);
+        
+        if (adUnitId == null) {
+            throw new RuntimeException("AdUnitId isn't set in com.mopub.mobileads.MoPubActivity");
+        }
+        
+        mMoPubView = new MoPubView(this);
+        mMoPubView.setAdUnitId(adUnitId);
+        mMoPubView.setKeywords(keywords);
+        mMoPubView.setClickthroughUrl(clickthroughUrl);
+        mMoPubView.setTimeout(timeout);
+        mMoPubView.setOnAdLoadedListener(this); 
+        
+        String source = getIntent().getStringExtra("com.mopub.mobileads.Source");
+        if (source != null) {
+            source = sourceWithImpressionTrackingDisabled(source);
+            mMoPubView.loadHtmlString(source);
+        }
+        
+        return mMoPubView;
+    }
+    
+    @Override
+    protected void onDestroy() {
+        mMoPubView.destroy();
+        super.onDestroy();
+    }
+    
+    private String sourceWithImpressionTrackingDisabled(String source) {
+        // TODO: Temporary fix. Disables impression tracking by renaming the pixel tracker's URL.
+        return source.replaceAll("http://ads.mopub.com/m/imp", "mopub://null");
+    }
 
-	@Override
-	public View getAdView() {
-		String adUnitId = getIntent().getStringExtra(COM_MOPUB_MOBILEADS_AD_UNIT_ID);
-		String keywords = getIntent().getStringExtra(COM_MOPUB_MOBILEADS_KEYWORDS);
-		String clickthroughUrl = getIntent().getStringExtra(COM_MOPUB_MOBILEADS_CLICKTHROUGH_URL);
-		int timeout = getIntent().getIntExtra("com.mopub.mobileads.Timeout", 0);
-
-		if (adUnitId == null) {
-			throw new RuntimeException("AdUnitId isn't set in MoPubActivity");
-		}
-
-		mMoPubView = new MoPubView(this);
-		mMoPubView.setAdUnitId(adUnitId);
-		mMoPubView.setKeywords(keywords);
-		mMoPubView.setClickthroughUrl(clickthroughUrl);
-		mMoPubView.setTimeout(timeout);
-		mMoPubView.setOnAdLoadedListener(this);
-
-		String source = getIntent().getStringExtra(MraidInterstitialAdapter.COM_MOPUB_MOBILEADS_SOURCE);
-		if (source != null) {
-			source = sourceWithImpressionTrackingDisabled(source);
-			mMoPubView.loadHtmlString(source);
-		}
-
-		return mMoPubView;
-	}
-
-	@Override
-	protected void onDestroy() {
-		mMoPubView.destroy();
-		super.onDestroy();
-	}
-
-	private String sourceWithImpressionTrackingDisabled(String source) {
-		// TODO: Temporary fix. Disables impression tracking by renaming the pixel tracker's URL.
-		return source.replaceAll("http://ads.mopub.com/m/imp", "mopub://null");
-	}
-
-	public void OnAdLoaded(MoPubView m) {
-		m.adAppeared();
-	}
+    public void OnAdLoaded(MoPubView m) {
+        m.adAppeared();
+    }
 }

@@ -38,72 +38,71 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
 public abstract class BaseAdapter {
-
-	protected boolean mInvalidated;
-	protected MoPubView mMoPubView;
-	protected String mJsonParams;
-
-	public abstract void loadAd();
-
-	private static final HashMap<String, String> sAdapterMap;
-
-	static {
-		sAdapterMap = new HashMap<String, String>();
-		sAdapterMap.put("admob_native", "com.mopub.mobileads.GoogleAdMobAdapter");
-		sAdapterMap.put("millennial_native", "MillennialAdapter");
-		sAdapterMap.put(BaseInterstitialAdapter.MRAID, "MraidAdapter");
-	}
-
-	public void init(MoPubView view, String jsonParams) {
-		mMoPubView = view;
-		mJsonParams = jsonParams;
-		mInvalidated = false;
-	}
-
-	public void invalidate() {
-		mMoPubView = null;
-		mInvalidated = true;
-	}
-
-	public boolean isInvalidated() {
-		return mInvalidated;
-	}
-
-	public static BaseAdapter getAdapterForType(String type) {
-		if (type == null) return null;
-
-		Class<?> adapterClass = classForAdapterType(type);
-		if (adapterClass == null) return null;
-
-		try {
-			Constructor<?> constructor = adapterClass.getConstructor();
-			BaseAdapter nativeAdapter = (BaseAdapter) constructor.newInstance();
-			return nativeAdapter;
-		} catch (Exception e) {
-			Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't create native adapter for type: " + type);
-			return null;
-		}
-	}
-
-	private static String classStringForAdapterType(String type) {
-		return sAdapterMap.get(type);
-	}
-
-	private static Class<?> classForAdapterType(String type) {
-		String className = classStringForAdapterType(type);
-		if (className == null) {
-			Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't find a handler for this ad type: " + type + "."
-					+ " MoPub for Android does not support it at this time.");
-			return null;
-		}
-
-		try {
-			return (Class<?>) Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			Log.d(BaseInterstitialAdapter.MO_PUB, "Couldn't find " + className + " class."
-					+ " Make sure the project includes the adapter library for " + className
-					+ " from the extras folder");
-			return null;
-		}
-	}
+    
+    protected boolean mInvalidated;
+    protected MoPubView mMoPubView;
+    protected String mJsonParams;
+    
+    public abstract void loadAd();
+    
+    private static final HashMap<String, String> sAdapterMap;
+    static {
+        sAdapterMap = new HashMap<String, String>();
+        sAdapterMap.put("admob_native", "com.mopub.mobileads.GoogleAdMobAdapter");
+        sAdapterMap.put("millennial_native", "com.mopub.mobileads.MillennialAdapter");
+        sAdapterMap.put("mraid", "com.mopub.mobileads.MraidAdapter");
+    }
+    
+    public void init(MoPubView view, String jsonParams) {
+        mMoPubView = view;
+        mJsonParams = jsonParams;
+        mInvalidated = false;
+    }
+    
+    public void invalidate() {
+        mMoPubView = null;
+        mInvalidated = true;
+    }
+    
+    public boolean isInvalidated() {
+        return mInvalidated;
+    }
+    
+    public static BaseAdapter getAdapterForType(String type) {
+        if (type == null) return null;
+        
+        Class<?> adapterClass = classForAdapterType(type);
+        if (adapterClass == null) return null;
+    
+        try {
+            Constructor<?> constructor = adapterClass.getConstructor();
+            BaseAdapter nativeAdapter = (BaseAdapter) constructor.newInstance();
+            return nativeAdapter;
+        } catch (Exception e) {
+            Log.d("MoPub", "Couldn't create native adapter for type: " + type);
+            return null;
+        }
+    }
+    
+    private static String classStringForAdapterType(String type) {
+        return sAdapterMap.get(type);
+    }
+    
+    private static Class<?> classForAdapterType(String type) {
+        String className = classStringForAdapterType(type);
+        if (className == null) {
+            Log.d("MoPub", "Couldn't find a handler for this ad type: " + type + "."
+                    + " MoPub for Android does not support it at this time.");
+            return null;
+        }
+    
+        try {
+            return (Class<?>) Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            Log.d("MoPub", "Couldn't find " + className + " class."
+                    + " Make sure the project includes the adapter library for " + className
+                    + " from the extras folder");
+            return null;
+        }
+    }
 }

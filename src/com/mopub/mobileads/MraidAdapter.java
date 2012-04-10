@@ -32,80 +32,78 @@
 
 package com.mopub.mobileads;
 
-import android.view.Gravity;
-import android.widget.FrameLayout;
 import com.mopub.mobileads.MraidView.ViewState;
 
+import android.view.Gravity;
+import android.widget.FrameLayout;
+
 public class MraidAdapter extends BaseAdapter {
+    
+    private MraidView mMraidView;
+    private boolean mPreviousAutorefreshSetting;
+    
+    public void init(MoPubView view, String jsonParams) {
+        super.init(view, jsonParams);
+        mPreviousAutorefreshSetting = false;
+    }
+    
+    @Override
+    public void loadAd() {
+        if (isInvalidated()) return;
 
-	private MraidView mMraidView;
-	private boolean mPreviousAutorefreshSetting;
+        mMraidView = new MraidView(mMoPubView.getContext());
+        mMraidView.loadHtmlData(mJsonParams);
+        initMraidListeners();
+        
+        mMoPubView.removeAllViews();
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.FILL_PARENT, 
+                FrameLayout.LayoutParams.FILL_PARENT);
+        layoutParams.gravity = Gravity.CENTER;
+        mMoPubView.addView(mMraidView, layoutParams);
+    }
 
-	public void init(MoPubView view, String jsonParams) {
-		super.init(view, jsonParams);
-		mPreviousAutorefreshSetting = false;
-	}
+    @Override
+    public void invalidate() {
+        mMoPubView = null;
+        if (mMraidView != null) mMraidView.destroy();
+        super.invalidate();
+    }
+    
+    private void initMraidListeners() {
+        mMraidView.setOnReadyListener(new MraidView.OnReadyListener() {
+            public void onReady(MraidView view) {
+                if (!isInvalidated()) {
+                    mMoPubView.nativeAdLoaded();
+                    mMoPubView.trackNativeImpression();
+                }
+            }
+        });
+        
+        mMraidView.setOnExpandListener(new MraidView.OnExpandListener() {
+            public void onExpand(MraidView view) {
+                if (!isInvalidated()) {
+                    mPreviousAutorefreshSetting = mMoPubView.getAutorefreshEnabled();
+                    mMoPubView.setAutorefreshEnabled(false);
+                    mMoPubView.adPresentedOverlay();
+                    mMoPubView.registerClick();
+                }
+            }
+        });
+        
+        mMraidView.setOnCloseListener(new MraidView.OnCloseListener() {
+            public void onClose(MraidView view, ViewState newViewState) {
+                if (!isInvalidated()) {
+                    mMoPubView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
+                    mMoPubView.adClosed();
+                }
+            }
+        });
 
-	@Override
-	public void loadAd() {
-		if (isInvalidated()) return;
-
-		mMraidView = new MraidView(mMoPubView.getContext());
-		mMraidView.loadHtmlData(mJsonParams);
-		initMraidListeners();
-
-		mMoPubView.removeAllViews();
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.FILL_PARENT,
-				FrameLayout.LayoutParams.FILL_PARENT);
-		layoutParams.gravity = Gravity.CENTER;
-		mMoPubView.addView(mMraidView, layoutParams);
-	}
-
-	@Override
-	public void invalidate() {
-		mMoPubView = null;
-		if (mMraidView != null) mMraidView.destroy();
-		super.invalidate();
-	}
-
-	private void initMraidListeners() {
-		mMraidView.setOnReadyListener(new MraidView.OnReadyListener() {
-			@Override
-			public void onReady(MraidView view) {
-				if (!isInvalidated()) {
-					mMoPubView.nativeAdLoaded();
-					mMoPubView.trackNativeImpression();
-				}
-			}
-		});
-
-		mMraidView.setOnExpandListener(new MraidView.OnExpandListener() {
-			@Override
-			public void onExpand(MraidView view) {
-				if (!isInvalidated()) {
-					mPreviousAutorefreshSetting = mMoPubView.getAutorefreshEnabled();
-					mMoPubView.setAutorefreshEnabled(false);
-					mMoPubView.registerClick();
-				}
-			}
-		});
-
-		mMraidView.setOnCloseListener(new MraidView.OnCloseListener() {
-			@Override
-			public void onClose(MraidView view, ViewState newViewState) {
-				if (!isInvalidated()) {
-					mMoPubView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
-					mMoPubView.adClosed();
-				}
-			}
-		});
-
-		mMraidView.setOnFailureListener(new MraidView.OnFailureListener() {
-			@Override
-			public void onFailure(MraidView view) {
-				if (!isInvalidated()) mMoPubView.loadFailUrl();
-			}
-		});
-	}
+        mMraidView.setOnFailureListener(new MraidView.OnFailureListener() {
+           public void onFailure(MraidView view) {
+               if (!isInvalidated()) mMoPubView.loadFailUrl();
+           } 
+        });
+    }
 }
