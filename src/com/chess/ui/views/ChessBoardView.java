@@ -363,11 +363,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	// here is the simple replace/redraw of piece
-//					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,
-//							new Rect(x * square, y * square, x * square + square, y * square + square), null);
 					rect.set(x * square, y * square, x * square + square, y * square + square); // TODO check
-					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect/*.set()
-							new Rect(x * square, y * square, x * square + square, y * square + square)*/, null);
+					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect, null);
 				}
 			}
 		} else {
@@ -380,8 +377,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int y = ChessBoard.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	 // here is the simple replace/redraw of piece
 					rect.set(x * square, y * square, x * square + square, y * square + square); // TODO check
-					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect/*
-							new Rect(x * square, y * square, x * square + square, y * square + square)*/, null);
+					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect, null);
 				}
 			}
 		}
@@ -422,8 +418,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			int row = ((dragY + square) - (dragY + square) % square) / square;
 			if (c != 6 && p != 6) {
 				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2); // TODO check
-				canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect/*
-						new Rect(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2)*/, null);
+				canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect, null);
 				canvas.drawRect(col * square - square / 2, row * square - square / 2,
 						col * square + square + square / 2, row * square + square + square / 2, white);
 			}

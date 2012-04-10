@@ -471,7 +471,7 @@ public class LccHolder {
 	public String[] getGameData(long gameId, int moveIndex) {
 		Game lccGame = getGame(gameId);
 		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
-		Log.d("TEST","game id = " + gameId);
+//		Log.d("TEST","game id = " + gameId);
 		gameData[0] = lccGame.getId().toString();  // TODO eliminate string convertion and use Objects
 		gameData[1] = "1";
 		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
@@ -663,10 +663,6 @@ public class LccHolder {
 		}
 		ownChallenges.remove(id);
 		android.updateChallengesList();
-	}
-
-	public void removeSeek(long gameId) {
-		removeSeek(gameId);
 	}
 
 	public Challenge getSeek(long gameId) {

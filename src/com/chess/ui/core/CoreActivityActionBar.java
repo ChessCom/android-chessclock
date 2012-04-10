@@ -178,12 +178,19 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null) {
-			handler.post(loadBoardBitmap);
+//			handler.post(loadBoardBitmap); // handled post starts too late
+			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
+					mainApp.getUserName()
+							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
+
 			resetDetected = true;
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
-			handler.post(loadPiecesBitmaps);
+//			handler.post(loadPiecesBitmaps); // handled post starts too late
+			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+					+ AppConstants.PREF_PIECES_SET, 0), null);
+
 			resetDetected = true;
 		}
 
@@ -267,25 +274,22 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}	
 	
-	private Runnable loadBoardBitmap = new Runnable() {
-		@Override
-		public void run() {
-			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-					mainApp.getUserName()
-							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
-		}
-	};
-
-	private Runnable loadPiecesBitmaps = new Runnable() {
-		@Override
-		public void run() {
-//			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
+//	private Runnable loadBoardBitmap = new Runnable() {
+//		@Override
+//		public void run() {
+//			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 //					mainApp.getUserName()
-//							+ AppConstants.PREF_PIECES_SET, 0)], null);
-			mainApp.loadPieces(mainApp.getSharedData().getInt(
-					mainApp.getUserName() + AppConstants.PREF_PIECES_SET, 0), null);
-		}
-	};
+//							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
+//		}
+//	};
+
+//	private Runnable loadPiecesBitmaps = new Runnable() {
+//		@Override
+//		public void run() {
+//			mainApp.loadPieces(mainApp.getSharedData().getInt(
+//					mainApp.getUserName() + AppConstants.PREF_PIECES_SET, 0), null);
+//		}
+//	};
 
 	private void checkUserTokenAndStartActivity() {
 		if (!mainApp.getUserName().equals("")) {
@@ -646,7 +650,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
 					.equals(mainApp.getUserName());
-		} catch (Exception e) {
+		} catch (Exception e) {     // TODO remove NPE check
 			return null;
 		}
 	}

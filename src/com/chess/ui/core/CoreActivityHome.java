@@ -133,15 +133,22 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		super.onResume();
 
 		boolean resetDetected = false;
-		if (mainApp.getBoardBitmap() == null) {
-			handler.post(loadBoardBitmap);
-			resetDetected = true;
-		}
-
-		if (mainApp.getPiecesBitmaps() == null) {
-			handler.post(loadPiecesBitmaps);
-			resetDetected = true;
-		}
+//		if (mainApp.getBoardBitmap() == null) {
+////			handler.post(loadBoardBitmap); // handled post starts too late
+//			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
+//					mainApp.getUserName()
+//							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
+//
+//			resetDetected = true;
+//		}
+//
+//		if (mainApp.getPiecesBitmaps() == null) {
+////			handler.post(loadPiecesBitmaps); // handled post starts too late
+//			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+//					+ AppConstants.PREF_PIECES_SET, 0), null);
+//
+//			resetDetected = true;
+//		}
 
 		if (resetDetected) {
 			checkUserTokenAndStartActivity();
@@ -196,25 +203,22 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		 */
 	}
 
-	private Runnable loadBoardBitmap = new Runnable() {
-		@Override
-		public void run() {
-			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-					mainApp.getUserName()
-							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
-		}
-	};
-
-	private Runnable loadPiecesBitmaps = new Runnable() {
-		@Override
-		public void run() {
-//			mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(
+//	private Runnable loadBoardBitmap = new Runnable() {
+//		@Override
+//		public void run() {
+//			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 //					mainApp.getUserName()
-//							+ AppConstants.PREF_PIECES_SET, 0)], null);
-			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
-					+ AppConstants.PREF_PIECES_SET, 0), null);
-		}
-	};
+//							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
+//		}
+//	};
+
+//	private Runnable loadPiecesBitmaps = new Runnable() {
+//		@Override
+//		public void run() {
+//			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+//					+ AppConstants.PREF_PIECES_SET, 0), null);
+//		}
+//	};
 
 	private void checkUserTokenAndStartActivity() {
 		if (!mainApp.getUserName().equals("")) {

@@ -53,7 +53,7 @@
 		android:id="@+id/gridview"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:columnWidth="70dp"
+		android:columnWidth="90dp"
 		android:gravity="center"
 		android:horizontalSpacing="@dimen/live_grid_hotizontal_spacing"
 		android:numColumns="auto_fit"

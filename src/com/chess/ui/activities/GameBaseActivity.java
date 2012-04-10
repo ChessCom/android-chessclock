@@ -62,8 +62,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected GameItem game;
 
-//	protected TextView whiteClockView;
-//	protected TextView blackClockView;
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
@@ -78,8 +76,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected GamePanelView gamePanelView;
 	protected boolean isWhitePlayerMove = true;
 	protected boolean initTimer = true;
-//    private TextView whiteTimer;
-//    private TextView blackTimer;
+    protected boolean userPlayWhite;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +93,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
-//		whitePlayerLabel.setSelected(true);
-//		blackPlayerLabel.setSelected(true);
-
-        // player timers for live game
-//        whiteTimer = (TextView) findViewById(R.id.whiteTimer);
-//        blackTimer = (TextView) findViewById(R.id.blackTimer);
-
 
         thinking = (TextView) findViewById(R.id.thinking);
-
-//		whiteClockView = (TextView) findViewById(R.id.whiteClockView);
-//		blackClockView = (TextView) findViewById(R.id.blackClockView);
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
@@ -115,7 +102,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
-		//newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
+		//newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());  // TODO
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		newBoardView.setGamePanelView(gamePanelView);
@@ -133,6 +120,17 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 
 		update(CALLBACK_REPAINT_UI);
+
+
+        // change labels and label's drawables according player color
+        // so current player(user) name must be always at the bottom
+        if(lccHolder.getUser().getUsername().equals(mainApp.getBlackPlayerName())){
+            // the current user plays black pieces, so change the icon for label
+        }
+        
+//        CurrentGame()
+//        mainApp.getBlackPlayerName() lccHolder.getCurrentGameId()
+//        game.getWhitePlayer().getUsername()
 	}
 
 	protected void init() {
@@ -202,15 +200,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		mainApp.setGameId(game_id);
 	}
 
-//	protected void LoadPrev(int code) {
-//		if (newBoardView.getBoardFace() != null && MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
-//			newBoardView.getBoardFace().setTacticCanceled(true);
-//			onBackPressed();
-//		} else {
-//			onBackPressed();
-//		}
-//	}
-
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		newBoardView.requestFocus();
@@ -233,9 +222,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(mainApp)
-				/*&& mainApp.getTabHost() != null && !mainApp.getTabHost().getCurrentTabTag().equals("tab4") */
-				&& adViewWrapper != null && getRectangleAdview() != null) {
+		if (MobclixHelper.isShowAds(mainApp) && adViewWrapper != null && getRectangleAdview() != null) {
 			adViewWrapper.addView(getRectangleAdview());
 			if (mainApp.isForceRectangleAd()) {
 				getRectangleAdview().getAd();
@@ -383,8 +370,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
 	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-		whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-		blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+        whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+        blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
 	}
 
 	protected abstract void onGameEndMsgReceived();
@@ -399,6 +386,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
     public void setWhitePlayerTimer(String timeString) {
+		// TODO determine player color
 		gamePanelView.setWhiteTimer(timeString);
 
         if(!isWhitePlayerMove || initTimer){

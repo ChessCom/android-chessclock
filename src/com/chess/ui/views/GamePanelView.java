@@ -138,6 +138,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		int timerPaddingLeft = (int) (8*density + 0.5f);
 		int timerPaddingRight = (int) (2*density + 0.5f);
 		whiteTimer.setPadding(timerPaddingLeft, 0, timerPaddingRight, 0);
+		whiteTimer.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 
 		// set whiteTimer params
 		RelativeLayout.LayoutParams whiteTimerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,

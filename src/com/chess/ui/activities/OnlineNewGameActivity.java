@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,7 +18,6 @@ import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MopubHelper;
@@ -114,9 +112,9 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 			} else {
 				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 			}
-			for (GameListItem gameListItem : gameListItems) {
-				Log.d("GameLists", "game received" + gameListItem.toString());
-			}
+//			for (GameListItem gameListItem : gameListItems) {
+//				Log.d("GameLists", "game received" + gameListItem.toString());
+//			}
 
 
 			if (gamesAdapter == null) {

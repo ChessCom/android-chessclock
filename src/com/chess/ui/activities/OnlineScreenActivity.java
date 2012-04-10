@@ -549,9 +549,9 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 
 			//gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().addAll(tmp);
-			for (GameListItem gameListItem : mainApp.getGameListItems()) {
-				Log.d("GameLists", "game received" + gameListItem.toString());
-			}
+//			for (GameListItem gameListItem : mainApp.getGameListItems()) {
+//				Log.d("GameLists", "game received" + gameListItem.toString());
+//			}
 			if (gamesAdapter != null) {
 				gamesAdapter.notifyDataSetChanged();
 			}

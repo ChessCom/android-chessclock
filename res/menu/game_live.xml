@@ -16,10 +16,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<item android:id="@+id/menu_singOut"
+	<!--We don't need to allow user to logout during the game-->
+<!--	<item android:id="@+id/menu_singOut"
 		android:title="@string/signout"
 		android:icon="@drawable/ic_action_sign_out"
-		android:showAsAction="ifRoom"/>
+		android:showAsAction="ifRoom"/>-->
 	<item android:id="@+id/menu_options"
 		android:title="@string/options"
 		android:icon="@drawable/options"

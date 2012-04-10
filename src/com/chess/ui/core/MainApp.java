@@ -228,10 +228,6 @@ public class MainApp extends Application {
     private CharSequence whitePlayerName;
     private CharSequence blackPlayerName;
 
-	public MainApp() {
-		piecesBitmaps = new Bitmap[2][6];
-	}
-
 	public void loadBoard(String boardName, View progressView) {
 		context = this;
 //		new BitmapLoaderTask(new BitmapLoadUpdateListener(progressView)).execute(boardName);
@@ -278,6 +274,7 @@ public class MainApp extends Application {
 
 	
 	private void setPieceBitmapFromArray(int[] drawableArray){
+		piecesBitmaps = new Bitmap[2][6];
 		resources = getResources();
 		for(int j=0; j<6; j++){
 			piecesBitmaps[0][j] = ((BitmapDrawable)resources.getDrawable(drawableArray[j])).getBitmap();
