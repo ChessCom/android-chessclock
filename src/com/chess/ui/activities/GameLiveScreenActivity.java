@@ -359,7 +359,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				if (!isUserColorWhite()) {
 					newBoardView.getBoardFace().setReside(true);
 				}
-				String[] moves = {};
+				String[] moves;
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
@@ -399,30 +399,35 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		}
 	}
 
-	@Override
-	public void setWhitePlayerTimer(String timeString) {
-		blackPlayerLabel.setText(timeString);
 
-		if(!isWhitePlayerMove || initTimer){
-			isWhitePlayerMove = true;
-			changePlayersLabelColors();
-		}
-	}
 
-	@Override
-	public void setBlackPlayerTimer(String timeString) {
-		gamePanelView.setBlackTimer(timeString);
 
-		if(isWhitePlayerMove){
-			isWhitePlayerMove = false;
-			changePlayersLabelColors();
-		}
-	}
+
+
+
+    protected void changePlayersLabelColors(){
+        if(isWhitePlayerMove){
+            whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
+            gamePanelView.activatePlayerTimer(true,false);
+            blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
+            gamePanelView.activatePlayerTimer(false,false);
+        }else{
+            blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+            gamePanelView.activatePlayerTimer(false,true);
+            whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+            gamePanelView.activatePlayerTimer(true,true);
+        }
+        initTimer = false;
+    }
 
 	private void updatePlayerLabels() {
-		whitePlayerLabel.setText(mainApp.getWhitePlayerName());
-		gamePanelView.setWhiteTimer(mainApp.getBlackPlayerName().toString());
-
+        if(userPlayWhite){
+            whitePlayerLabel.setText(mainApp.getBlackPlayerName());
+            gamePanelView.setWhiteTimer(mainApp.getWhitePlayerName().toString());
+        }else{
+            whitePlayerLabel.setText(mainApp.getWhitePlayerName());
+            gamePanelView.setWhiteTimer(mainApp.getBlackPlayerName().toString());
+        }
 	}
 
 	private boolean openChatActivity(){
@@ -589,8 +594,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-		whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-		gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+        if(userPlayWhite){
+            whitePlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+            gamePanelView.setWhiteTimer(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")"); // always at the bottom
+        }else{
+            whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+            gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+        }
 	}
 
 	@Override

@@ -39,7 +39,6 @@ public class LccChallengeListener implements ChallengeListener {
 
 	@Override
 	public void onChallengeReceived(Challenge challenge) {
-		Log.d("TEST", "onChallengeReceived get called");
 		LccHolder.LOG.info("CHALLENGE LISTENER. Challenge received: " + challenge);
 		if (challenge.getFrom().isComputer()) {
 			LccHolder.LOG.info("Challenge received: ignore computer player");

@@ -650,7 +650,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
 					.equals(mainApp.getUserName());
-		} catch (Exception e) {
+		} catch (Exception e) {     // TODO remove NPE check
 			return null;
 		}
 	}

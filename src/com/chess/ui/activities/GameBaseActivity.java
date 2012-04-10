@@ -76,6 +76,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected GamePanelView gamePanelView;
 	protected boolean isWhitePlayerMove = true;
 	protected boolean initTimer = true;
+    protected boolean userPlayWhite;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,17 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 
 		update(CALLBACK_REPAINT_UI);
+
+
+        // change labels and label's drawables according player color
+        // so current player(user) name must be always at the bottom
+        if(lccHolder.getUser().getUsername().equals(mainApp.getBlackPlayerName())){
+            // the current user plays black pieces, so change the icon for label
+        }
+        
+//        CurrentGame()
+//        mainApp.getBlackPlayerName() lccHolder.getCurrentGameId()
+//        game.getWhitePlayer().getUsername()
 	}
 
 	protected void init() {
@@ -187,15 +199,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 		mainApp.setGameId(game_id);
 	}
-
-//	protected void LoadPrev(int code) {
-//		if (newBoardView.getBoardFace() != null && MainApp.isTacticsGameMode(newBoardView.getBoardFace())) {
-//			newBoardView.getBoardFace().setTacticCanceled(true);
-//			onBackPressed();
-//		} else {
-//			onBackPressed();
-//		}
-//	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
@@ -367,8 +370,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
 	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-		whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-		blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+        whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+        blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
 	}
 
 	protected abstract void onGameEndMsgReceived();
