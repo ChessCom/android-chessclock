@@ -67,7 +67,6 @@
 					style="@style/GameLabel"
 					/>
 
-				<!--TODO set theme with text Size-->
 				<com.chess.RoboTextView
 					android:id="@+id/analysisTxt"
 					android:layout_width="wrap_content"

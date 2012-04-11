@@ -15,7 +15,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.MobclixHelper;
@@ -24,9 +23,7 @@ import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
 
 public class LiveNewGameActivity extends LiveBaseActivity implements OnClickListener {
-//	private ListView openChallengesLictView;
-//	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
-//	private OnlineGamesAdapter gamesAdapter = null;
+
 	private int UPDATE_DELAY = 120000;
 	private Button challengecreate;
 	private Button currentGame;
@@ -36,13 +33,11 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 	private DirectChallengeDialogListener directChallengeDialogListener;
 	private ReleasedByMeDialogListener releasedByMeDialogListener;
 	private MoPubView moPubAdView;
-//	private EchessDialogListener echessDialogListener;
 
 	private void init() {
 		challengeDialogListener = new ChallengeDialogListener();
 		directChallengeDialogListener = new DirectChallengeDialogListener();
 		releasedByMeDialogListener = new ReleasedByMeDialogListener();
-//		echessDialogListener = new EchessDialogListener();
 	}
 
 	@Override
@@ -62,12 +57,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 				MobclixHelper.initializeBannerAdView(this, mainApp);
 			}
 		}*/
-		// TODO investigate why don't receive lists
 		init();
-
-//		openChallengesLictView = (ListView) findViewById(R.id.openChallenges);
-//		openChallengesLictView.setAdapter(gamesAdapter);
-//		openChallengesLictView.setOnItemClickListener(this);
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		challengecreate = (Button) findViewById(R.id.challengecreate);

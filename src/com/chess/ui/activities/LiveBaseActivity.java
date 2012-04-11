@@ -38,7 +38,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {  // TODO catch dialog
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
 		if(fragment.getTag().equals(LOGOUT_TAG)){
 			lccHolder.logout();
 			backToHomeActivity();

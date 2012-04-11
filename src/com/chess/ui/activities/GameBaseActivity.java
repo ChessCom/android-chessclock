@@ -76,9 +76,9 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected GamePanelView gamePanelView;
 	protected boolean isWhitePlayerMove = true;
 	protected boolean initTimer = true;
-    protected boolean userPlayWhite = true;
+	protected boolean userPlayWhite = true;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (CommonUtils.needFullScreen(this)) {
 			setFullscreen();
@@ -94,7 +94,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
 
-        thinking = (TextView) findViewById(R.id.thinking);
+		thinking = (TextView) findViewById(R.id.thinking);
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 
@@ -132,9 +132,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 
 		update(CALLBACK_REPAINT_UI);
-
-
-
 	}
 
 	protected void init() {
@@ -144,14 +141,14 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 
-	public Object onRetainCustomNonConfigurationInstance () {
-	    return newBoardView.getBoardFace();
+	public Object onRetainCustomNonConfigurationInstance() {
+		return newBoardView.getBoardFace();
 	}
 
 	protected abstract void onDrawOffered(int whichButton);
 
 
-    private class DrawOfferDialogListener implements DialogInterface.OnClickListener {
+	private class DrawOfferDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			onDrawOffered(whichButton);
@@ -371,8 +368,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
 	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-        whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-        blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
+		whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
+		blackPlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
 	}
 
 	protected abstract void onGameEndMsgReceived();
@@ -386,70 +383,54 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 	};
 
-    public void setWhitePlayerTimer(String timeString) {
-		if(userPlayWhite){
+	public void setWhitePlayerTimer(String timeString) {
+		if (userPlayWhite) {
 			gamePanelView.setBlackTimer(timeString);
-		}else{
+		} else {
 			blackPlayerLabel.setText(timeString);
 		}
 
-        if(!isWhitePlayerMove || initTimer){
-            isWhitePlayerMove = true;
-            changePlayersLabelColors();
-        }
-    }
-
-    public void setBlackPlayerTimer(String timeString) {
-		if(userPlayWhite){
-			blackPlayerLabel.setText(timeString);
-		}else{
-			gamePanelView.setBlackTimer(timeString);
+		if (!isWhitePlayerMove || initTimer) {
+			isWhitePlayerMove = true;
+			changePlayersLabelColors();
 		}
-
-        if(isWhitePlayerMove){
-            isWhitePlayerMove = false;
-            changePlayersLabelColors();
-        }
-    }
-
-    protected void changePlayersLabelColors(){
-        if(isWhitePlayerMove){      // TODO simplify
-			if(userPlayWhite){
-				whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-				blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-				gamePanelView.activatePlayerTimer(false,true); // bottom is player, so true
-				gamePanelView.activatePlayerTimer(true,true);				
-			}else{
-				whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
-				blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
-				gamePanelView.activatePlayerTimer(true,false);
-				gamePanelView.activatePlayerTimer(false,false);
-			}
-        }else{// black player move
-			if(userPlayWhite){
-				whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
-				blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
-				gamePanelView.activatePlayerTimer(true,false);
-				gamePanelView.activatePlayerTimer(false,false);
-			}else {// user is black player
-				blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-				whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-				gamePanelView.activatePlayerTimer(false,true);
-				gamePanelView.activatePlayerTimer(true,true);
-			}
-        }
-		initTimer = false;
 	}
 
+	public void setBlackPlayerTimer(String timeString) {
+		if (userPlayWhite) {
+			blackPlayerLabel.setText(timeString);
+		} else {
+			gamePanelView.setBlackTimer(timeString);
+		}
 
+		if (isWhitePlayerMove) {
+			isWhitePlayerMove = false;
+			changePlayersLabelColors();
+		}
+	}
 
-//    public TextView getWhiteClockView() {
-//		return whiteClockView;
-//	}
-//
-//	public TextView getBlackClockView() {
-//		return blackClockView;
-//	}
+	protected void changePlayersLabelColors() {
+		int hintColor = getResources().getColor(R.color.hint_text);
+		int whiteColor = getResources().getColor(R.color.white);
+
+		int topPlayerColor;
+
+		if(isWhitePlayerMove){
+			topPlayerColor = userPlayWhite? hintColor: whiteColor;
+		}else{
+			topPlayerColor = userPlayWhite? whiteColor: hintColor;
+		}
+
+		whitePlayerLabel.setTextColor(topPlayerColor);
+		blackPlayerLabel.setTextColor(topPlayerColor);
+
+		boolean activate = isWhitePlayerMove? userPlayWhite: !userPlayWhite;
+
+		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always player
+		gamePanelView.activatePlayerTimer(activate, activate);
+
+		initTimer = false;
+	}
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
@@ -472,7 +453,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		getOnlineGame(mainApp.getGameId());
 	}
 
-	protected void restoreGame(){
+	protected void restoreGame() {
 		restoreLastConfig();
 	}
 
@@ -724,7 +705,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	public void onClick(View view) {
 		if (view.getId() == R.id.home) {
 			backToHomeActivity();
-		}else if(view.getId() == R.id.newGame){
+		} else if (view.getId() == R.id.newGame) {
 			onBackPressed();
 		}
 	}

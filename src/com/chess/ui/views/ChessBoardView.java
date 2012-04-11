@@ -139,9 +139,10 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	}
 
 	private boolean need2ShowSubmitButtons(){
-		String sharedKey = mainApp.isLiveChess()?AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE :AppConstants.PREF_SHOW_SUBMIT_MOVE;
+		String sharedKey;
+		sharedKey = mainApp.isLiveChess() ? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
 		return mainApp.getSharedData().getBoolean(mainApp.getUserName()
-				+ sharedKey, false);
+				+ sharedKey, !mainApp.isLiveChess());
 	}
 
 	public void afterMove() {	// TODO handle here analysis moves in comp game

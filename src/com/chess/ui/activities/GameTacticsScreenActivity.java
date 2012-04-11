@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -454,7 +453,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		newBoardView.getBoardFace().takeBack();
 		newBoardView.invalidate();
 
-		mainApp.setTactic(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem)); // TODO check
+		mainApp.setTactic(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem));
 		playLastMoveAnimation();
 	}
 
