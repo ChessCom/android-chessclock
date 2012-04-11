@@ -51,7 +51,6 @@
 				android:id="@+id/title"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="Live sessions; An Opposite Coloured "
 				android:minHeight="52dip"
 				android:layout_toLeftOf="@+id/play"
 				android:gravity="center_vertical"
@@ -71,7 +70,6 @@
 				android:layout_height="wrap_content"
 				android:maxLines="4"
 				android:textSize="15sp"
-				android:text="After erqualizing quickly against the English opening, IM Danny Rensch finds himself playing an unstable middlegame with neither side possessing a clear plan."
 				android:textColor="@color/hint_text"
 				android:paddingLeft="@dimen/default_linear_left_padding"
 				/>
