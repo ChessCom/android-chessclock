@@ -23,7 +23,7 @@ import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.flurry.android.FlurryAgent;
 
-public class LiveCreateChallengeActivity extends CoreActivityActionBar implements OnClickListener {
+public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
 	private Spinner minrating;
 	private Spinner maxrating;
 	private CheckBox isRated;

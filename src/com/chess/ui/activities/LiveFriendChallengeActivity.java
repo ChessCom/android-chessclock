@@ -28,7 +28,7 @@ import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
-public class LiveFriendChallengeActivity extends CoreActivityActionBar implements OnClickListener {
+public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
 	private Spinner iplayas, dayspermove, friends;
 	private AutoCompleteTextView initialTime;
 	private AutoCompleteTextView bonusTime;
