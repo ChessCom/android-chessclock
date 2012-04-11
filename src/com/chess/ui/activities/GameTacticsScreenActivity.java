@@ -108,13 +108,19 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
         whitePlayerLabel.setVisibility(View.GONE);
         blackPlayerLabel.setVisibility(View.GONE);
 
-        newBoardView.setBoardFace(new ChessBoard(this));
-        newBoardView.setGameActivityFace(this);
-        newBoardView.getBoardFace().setInit(true);
-        newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-        newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+        final ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
 
-        showDialog(DIALOG_TACTICS_START_TACTICS);
+        if (chessBoard != null) {
+            newBoardView.setBoardFace(chessBoard);
+        } else {
+            newBoardView.setBoardFace(new ChessBoard(this));
+            newBoardView.getBoardFace().setInit(true);
+            newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+            newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+            showDialog(DIALOG_TACTICS_START_TACTICS);
+        }
+        newBoardView.setGameActivityFace(this);
+
         gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
     }
 
@@ -136,6 +142,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
         super.onPause();
 
         stopTacticsTimer();
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance () {
+        return newBoardView.getBoardFace();
     }
 
 	private class FirstTacticsDialogListener implements DialogInterface.OnClickListener {
