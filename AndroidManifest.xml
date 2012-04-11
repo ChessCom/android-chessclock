@@ -38,9 +38,11 @@
         <activity android:name="com.google.ads.AdActivity"
 			android:configChanges="keyboard|keyboardHidden|orientation"/>
 
-        <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity" />
+        <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:configChanges="keyboardHidden|orientation|keyboard" />
         <activity android:name="com.millennialmedia.android.VideoPlayer"
-			android:configChanges="keyboardHidden|orientation|keyboard" />
+                  android:configChanges="keyboardHidden|orientation|keyboard" />
 
 
 		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
