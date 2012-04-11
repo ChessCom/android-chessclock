@@ -108,18 +108,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
         whitePlayerLabel.setVisibility(View.GONE);
         blackPlayerLabel.setVisibility(View.GONE);
 
-        final ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
 
-        if (chessBoard != null) {
-            newBoardView.setBoardFace(chessBoard);
-        } else {
-            newBoardView.setBoardFace(new ChessBoard(this));
-            newBoardView.getBoardFace().setInit(true);
-            newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-            newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-            showDialog(DIALOG_TACTICS_START_TACTICS);
-        }
-        newBoardView.setGameActivityFace(this);
+		if (getLastCustomNonConfigurationInstance() == null) {
+			showDialog(DIALOG_TACTICS_START_TACTICS);
+		}
 
         gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
     }

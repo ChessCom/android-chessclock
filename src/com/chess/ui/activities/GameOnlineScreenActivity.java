@@ -65,14 +65,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		findViewById(R.id.submit).setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
 
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.setGameActivityFace(this);
-		newBoardView.getBoardFace().setInit(true);
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-
-
-
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
 	}
 

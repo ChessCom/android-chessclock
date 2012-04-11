@@ -52,12 +52,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.setGameActivityFace(this);
-		newBoardView.getBoardFace().setInit(true);//init = true;
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-
 		if (MainApp.isComputerGameMode(newBoardView.getBoardFace())
 				&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, "").equals("")) { // if load game
 			loadSavedGame();

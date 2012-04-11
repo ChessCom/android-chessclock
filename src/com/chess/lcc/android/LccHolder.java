@@ -902,11 +902,6 @@ public class LccHolder {
 		return getGame(gameId).getSeq() < 3;
 	}
 
-	public void forceLiveGameReplay() {
-		latestMoveNumber = null;
-	}
-
-
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}

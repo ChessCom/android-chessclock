@@ -46,12 +46,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 		setContentView(R.layout.boardviewlive);
 
-		// todo: this method should be removed after introducing fragment.setRetainInstance(true)
-		// added because onRetainNonConfigurationInstance-getLastNonConfigurationInstance mechanism is deprecated in
-		// honeycomb/fragments, thus game board refreshing after screen rotates was corrupted
-		lccHolder.forceLiveGameReplay();
-		//
-
 		init();
 		widgetsInit();
 		onPostCreate();
@@ -89,12 +83,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				isWhite = game.isMoveOf(whiteUser);
 //			lccHolder.setClockDrawPointer(isWhite);
 		}
-
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.setGameActivityFace(this);
-		newBoardView.getBoardFace().setInit(true);
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
 		// hide black dot for right label
 		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);

@@ -102,11 +102,23 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
 		newBoardView.setFocusable(true);
-		//newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());  // TODO
+
+		newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		newBoardView.setGamePanelView(gamePanelView);
 
+		final ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
+		if (chessBoard != null) {
+			newBoardView.setBoardFace(chessBoard);
+		} else {
+			newBoardView.setBoardFace(new ChessBoard(this));
+			newBoardView.setGameActivityFace(this);
+			newBoardView.getBoardFace().setInit(true);
+			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+			newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		}
+		newBoardView.setGameActivityFace(this);
 
 		lccHolder = mainApp.getLccHolder();
 	}
@@ -128,6 +140,12 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected void init() {
 		drawOfferDialogListener = new DrawOfferDialogListener();
 		abortGameDialogListener = new AbortGameDialogListener();
+	}
+
+	@Override
+
+	public Object onRetainCustomNonConfigurationInstance () {
+	    return newBoardView.getBoardFace();
 	}
 
 	protected abstract void onDrawOffered(int whichButton);
@@ -174,15 +192,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		}
 		return super.onCreateDialog(id);
 	}
-
-	/*@Override        // TODO implement correctly
-	public Object onRetainNonConfigurationInstance() {
-		return newBoardView.getBoardFace();
-	}*/
-
-	/*public Object onRetainCustomNonConfigurationInstance () {
-		return newBoardView.getBoardFace();
-	}*/
 
 	protected void getOnlineGame(long game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {
