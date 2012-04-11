@@ -5,21 +5,19 @@ import android.app.Dialog;
 import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
-import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
-import com.chess.live.util.GameTimeConfig;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
@@ -34,9 +32,7 @@ import java.util.ArrayList;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class LiveScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
-	private static final String CHALLENGE_TAG = "challenge_tag";
-	public static final String LOGOUT_TAG = "logout_tag";
+public class LiveScreenActivity extends LiveBaseActivity implements View.OnClickListener {
 
 //	private ListView gamesList;
 //	private OnlineGamesAdapter gamesAdapter = null;
@@ -60,8 +56,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 	private ChallengeDialogListener challengeDialogListener;
 	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
 	private IsIndirectDialogListener isIndirencetDialogListener;
-	private LiveOuterChallengeListener outerChallengeListener;
-	private Challenge currentChallenge;
 
 
 	@Override
@@ -120,9 +114,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
 		isIndirencetDialogListener = new IsIndirectDialogListener();
 
-		// set listener to lccHolder
-		outerChallengeListener = new LiveOuterChallengeListener();
-		lccHolder.setOuterChallengeListener(outerChallengeListener);
 	}
 
 	@Override
@@ -174,20 +165,6 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		} else {
 			currentGame.setVisibility(View.GONE);
 		}
-//		currentGame.post(new Runnable() {
-//			@Override
-//			public void run() {
-//				if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
-//						lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-//					currentGame.setVisibility(View.VISIBLE);
-//				} else {
-//					currentGame.setVisibility(View.GONE);
-//				}
-//			}
-//		});
-//		gamesList.setVisibility(View.VISIBLE);
-
-
 
 		handler.post(new Runnable() {
 			@Override
@@ -211,50 +188,7 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		enableScreenLock();
 	}
 
-	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {  // TODO catch dialog
-		if(fragment.getTag().equals(LOGOUT_TAG)){
-			lccHolder.logout();
-			backToHomeActivity();
-		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
 
-			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
-			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
-			update(2);
-		}
-		fragment.getDialog().dismiss();
-	}
-
-	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
-		if (fragment.getTag().equals(CHALLENGE_TAG)) {
-			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
-			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
-			update(3);
-		}
-		fragment.getDialog().dismiss();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.sign_out, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_singOut:
-				popupItem.setTitle(R.string.confirm);
-				popupItem.setMessage(R.string.signout_confirm);
-
-				popupDialogFragment.updatePopupItem(popupItem);
-				popupDialogFragment.show(getSupportFragmentManager(), LOGOUT_TAG);
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	private class GameListItemDialogListener implements DialogInterface.OnClickListener {
 
@@ -689,61 +623,5 @@ public class LiveScreenActivity extends CoreActivityActionBar implements View.On
 		}
 	};
 
-	private class LiveOuterChallengeListener implements OuterChallengeListener{
 
-		@Override
-		public void showDialog(Challenge challenge) {
-
-			currentChallenge = challenge;
-
-			popupItem.setTitle(R.string.you_been_challenged);
-			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
-
-			popupDialogFragment.updatePopupItem(popupItem);
-			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-		}
-		
-		private String composeMessage(Challenge challenge){
-			String rated = challenge.isRated()? getString(R.string.rated): getString(R.string.unrated);
-			GameTimeConfig config = challenge.getGameTimeConfig();
-			String blitz = "";
-			if(config.isBlitz()){
-				blitz = "(Blitz)";
-			}else if(config.isLightning()){
-				blitz = "(Lightning)";
-			}else if(config.isStandard()){
-
-			}
-			String timeMode = config.getBaseTime()/10/60 + " | "+ config.getBaseTime()/10/60
-					+ AppConstants.SYMBOL_SPACE + blitz;
-			String playerColor;
-
-			switch (challenge.getColor()) {
-				case UNDEFINED:
-					playerColor = getString(R.string.random);
-					break;
-				case WHITE:
-					playerColor = getString(R.string.white);
-					break;
-				case BLACK:
-					playerColor = getString(R.string.black);
-					break;
-				default:
-					playerColor = getString(R.string.random);
-					break;
-			}			
-			
-			return new StringBuilder()
-					.append(getString(R.string.opponent_)).append(AppConstants.SYMBOL_SPACE)
-					.append(challenge.getFrom().getUsername()).append(AppConstants.SYMBOL_NEW_STR)
-					.append(getString(R.string.time_)).append(AppConstants.SYMBOL_SPACE)
-					.append(timeMode).append(AppConstants.SYMBOL_NEW_STR)
-					.append(getString(R.string.you_play)).append(AppConstants.SYMBOL_SPACE)
-					.append(playerColor).append(AppConstants.SYMBOL_NEW_STR)
-					.append(rated)
-					.toString();
-		}
-	}
 }

@@ -55,6 +55,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		init();
 		widgetsInit();
 		onPostCreate();
+
+		// change labels and label's drawables according player color
+		// so current player(user) name must be always at the bottom
+		String blackPlayerName = lccHolder.getGame(mainApp.getGameId()).getBlackPlayer().getUsername();
+		String userName = lccHolder.getUser().getUsername();
+		userPlayWhite = !userName.equals(blackPlayerName);
+		int opponentIndicator = userPlayWhite? R.drawable.player_indicator_black: R.drawable.player_indicator_white;
+		
+		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator,0,0,0);
+		gamePanelView.setWhiteIndicator(userPlayWhite);
 	}
 
 	@Override
@@ -398,27 +408,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 		}
 	}
-
-
-
-
-
-
-
-    protected void changePlayersLabelColors(){
-        if(isWhitePlayerMove){
-            whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
-            gamePanelView.activatePlayerTimer(true,false);
-            blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
-            gamePanelView.activatePlayerTimer(false,false);
-        }else{
-            blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-            gamePanelView.activatePlayerTimer(false,true);
-            whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-            gamePanelView.activatePlayerTimer(true,true);
-        }
-        initTimer = false;
-    }
 
 	private void updatePlayerLabels() {
         if(userPlayWhite){

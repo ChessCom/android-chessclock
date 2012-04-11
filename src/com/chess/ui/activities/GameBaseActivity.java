@@ -76,7 +76,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected GamePanelView gamePanelView;
 	protected boolean isWhitePlayerMove = true;
 	protected boolean initTimer = true;
-    protected boolean userPlayWhite;
+    protected boolean userPlayWhite = true;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,15 +122,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		update(CALLBACK_REPAINT_UI);
 
 
-        // change labels and label's drawables according player color
-        // so current player(user) name must be always at the bottom
-        if(lccHolder.getUser().getUsername().equals(mainApp.getBlackPlayerName())){
-            // the current user plays black pieces, so change the icon for label
-        }
-        
-//        CurrentGame()
-//        mainApp.getBlackPlayerName() lccHolder.getCurrentGameId()
-//        game.getWhitePlayer().getUsername()
+
 	}
 
 	protected void init() {
@@ -386,8 +378,11 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
     public void setWhitePlayerTimer(String timeString) {
-		// TODO determine player color
-		gamePanelView.setWhiteTimer(timeString);
+		if(userPlayWhite){
+			gamePanelView.setBlackTimer(timeString);
+		}else{
+			blackPlayerLabel.setText(timeString);
+		}
 
         if(!isWhitePlayerMove || initTimer){
             isWhitePlayerMove = true;
@@ -396,7 +391,11 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
     }
 
     public void setBlackPlayerTimer(String timeString) {
-		gamePanelView.setBlackTimer(timeString);
+		if(userPlayWhite){
+			blackPlayerLabel.setText(timeString);
+		}else{
+			gamePanelView.setBlackTimer(timeString);
+		}
 
         if(isWhitePlayerMove){
             isWhitePlayerMove = false;
@@ -405,16 +404,30 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
     }
 
     protected void changePlayersLabelColors(){
-        if(isWhitePlayerMove){
-            whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
-			gamePanelView.activatePlayerTimer(true,false);
-            blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
-			gamePanelView.activatePlayerTimer(false,false);
-        }else{
-            blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-			gamePanelView.activatePlayerTimer(false,true);
-            whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
-			gamePanelView.activatePlayerTimer(true,true);
+        if(isWhitePlayerMove){      // TODO simplify
+			if(userPlayWhite){
+				whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+				blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+				gamePanelView.activatePlayerTimer(false,true); // bottom is player, so true
+				gamePanelView.activatePlayerTimer(true,true);				
+			}else{
+				whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
+				blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
+				gamePanelView.activatePlayerTimer(true,false);
+				gamePanelView.activatePlayerTimer(false,false);
+			}
+        }else{// black player move
+			if(userPlayWhite){
+				whitePlayerLabel.setTextColor(getResources().getColor(R.color.white));
+				blackPlayerLabel.setTextColor(getResources().getColor(R.color.white));
+				gamePanelView.activatePlayerTimer(true,false);
+				gamePanelView.activatePlayerTimer(false,false);
+			}else {// user is black player
+				blackPlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+				whitePlayerLabel.setTextColor(getResources().getColor(R.color.hint_text));
+				gamePanelView.activatePlayerTimer(false,true);
+				gamePanelView.activatePlayerTimer(true,true);
+			}
         }
 		initTimer = false;
 	}

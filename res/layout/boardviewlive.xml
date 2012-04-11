@@ -105,7 +105,6 @@
 				android:id="@+id/submit"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="10dip"
 				android:layout_marginRight="10dip"
 				android:layout_weight="1"
 				style="@style/Text.Button"
@@ -117,7 +116,6 @@
 				android:layout_height="wrap_content"
 				style="@style/Text.Button.Grey"
 				android:layout_marginLeft="10dip"
-				android:layout_marginRight="10dip"
 				android:layout_weight="1"
 				android:text="@string/cancel"
 				/>

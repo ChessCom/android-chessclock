@@ -595,5 +595,11 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 //		}
 //	}
 
-
+	public void setWhiteIndicator(boolean userPlayWhite) {
+		if(userPlayWhite){
+			whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white,0,0,0);
+		}else{
+			whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_black,0,0,0);
+		}
+	}
 }

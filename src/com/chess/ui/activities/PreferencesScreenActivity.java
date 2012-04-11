@@ -16,7 +16,6 @@ import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter2;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Notifications;
 import com.flurry.android.FlurryAgent;
@@ -319,11 +318,8 @@ public class PreferencesScreenActivity extends CoreActivityActionBar implements 
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.PrefSSB) {
-			if (mainApp.isLiveChess()) {
-				mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
-			} else {
-				mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
-			}
+			String sharedKey = mainApp.isLiveChess()?AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
+			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + sharedKey, checked);
 			mainApp.getSharedDataEditor().commit();
 		} else if (compoundButton.getId() == R.id.enableSounds) {
 			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_SOUNDS, checked);

@@ -81,7 +81,6 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	private Resources resources;
 	private boolean isHighlightEnabled;
 	private boolean showCoordinates;
-	private boolean showSubmitButtons;
 	private int compStrength;
 	private String userName;
 
@@ -133,27 +132,24 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				+ AppConstants.PREF_BOARD_COORDINATES, true);
 
 
-		if (mainApp.isLiveChess()) {
-			showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getUserName()
-					+ AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
-		} else {
-			showSubmitButtons = mainApp.getSharedData().getBoolean(mainApp.getUserName()
-					+ AppConstants.PREF_SHOW_SUBMIT_MOVE, true);
-		}
-
 		compStrength = mainApp.getSharedData().getInt(mainApp.getUserName()
 				+ AppConstants.PREF_COMPUTER_STRENGTH, 0);
 
 		userName = mainApp.getUserName();
 	}
 
+	private boolean need2ShowSubmitButtons(){
+		String sharedKey = mainApp.isLiveChess()?AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE :AppConstants.PREF_SHOW_SUBMIT_MOVE;
+		return mainApp.getSharedData().getBoolean(mainApp.getUserName()
+				+ sharedKey, false);
+	}
 
 	public void afterMove() {	// TODO handle here analysis moves in comp game
 		boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);	//movelist
 
 		if (MainApp.isLiveOrEchessGameMode(boardFace) && !boardFace.isAnalysis()) {
-			if (showSubmitButtons) {
+			if (need2ShowSubmitButtons()) {
 				gameActivityFace.showSubmitButtonsLay(true);
 				boardFace.setSubmit(true);
 			} else {

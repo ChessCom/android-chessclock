@@ -23,7 +23,7 @@ import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
 
-public class LiveNewGameActivity extends CoreActivityActionBar implements OnClickListener {
+public class LiveNewGameActivity extends LiveBaseActivity implements OnClickListener {
 //	private ListView openChallengesLictView;
 //	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
 //	private OnlineGamesAdapter gamesAdapter = null;
