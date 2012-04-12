@@ -126,27 +126,6 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.sign_out, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_singOut:
-				popupItem.setTitle(R.string.confirm);
-				popupItem.setMessage(R.string.signout_confirm);
-
-				popupDialogFragment.updatePopupItem(popupItem);
-				popupDialogFragment.show(getSupportFragmentManager(), "dialog");
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
 
