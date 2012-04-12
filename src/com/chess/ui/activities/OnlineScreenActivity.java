@@ -206,12 +206,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			  mainApp.getGameListItems().clear();
 			}*/
 
-		new Handler().post(new Runnable() {
-			@Override
-			public void run() {
-				disableScreenLock();
-			}
-		});
+//		disableScreenLock();
 	}
 
 	@Override
@@ -222,7 +217,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			unregisterReceiver(challengesListUpdateReceiver);
 		}*/
 		super.onPause();
-		enableScreenLock();
+//		enableScreenLock();
 	}
 
 	private void init() {

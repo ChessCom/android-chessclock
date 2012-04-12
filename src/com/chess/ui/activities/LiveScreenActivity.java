@@ -166,12 +166,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			currentGame.setVisibility(View.GONE);
 		}
 
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				disableScreenLock();
-			}
-		});
+//		disableScreenLock();
 	}
 
 	@Override
@@ -185,7 +180,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			unregisterReceiver(challengesListUpdateReceiver);
 		}
 		super.onPause();
-		enableScreenLock();
+//		enableScreenLock();
 	}
 
 

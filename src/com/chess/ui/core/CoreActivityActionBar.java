@@ -12,6 +12,7 @@ import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -32,9 +34,11 @@ import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.CoreActivityFace;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
-import com.chess.utilities.*;
+import com.chess.utilities.MyProgressDialog;
+import com.chess.utilities.SoundPlayer;
+import com.chess.utilities.Web;
+import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
-import com.mobclix.android.sdk.MobclixAdView;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
 		ActiveFragmentInterface, PopupDialogFace {
@@ -624,16 +628,37 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	protected void disableScreenLock() { // TODO check usage
-		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
-		wakeLock.setReferenceCounted(false);
-		wakeLock.acquire();
+
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+//		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
+//		wakeLock.setReferenceCounted(false);
+//		wakeLock.acquire();
 	}
 
 	protected void enableScreenLock() {
-		if (wakeLock != null) {
-			wakeLock.release();
-		}
+		Log.d("TEST","keep screen on");
+//		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
+//		wakeLock.setReferenceCounted(false);
+//		wakeLock.acquire();
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				Log.d("TEST","keep screen off");
+//				wakeLock.release();
+				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			}
+		}, StaticData.WAKE_SCREEN_TIMEOUT);
+
+
+
+//		if (wakeLock != null) {
+//			wakeLock.release();
+//		}
 	}
 
 	@Override

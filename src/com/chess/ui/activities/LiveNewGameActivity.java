@@ -4,9 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -75,7 +72,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		} else if (mainApp.isLiveChess()) {
 			currentGame.setVisibility(View.VISIBLE);
 		}
-		disableScreenLock();
+//		disableScreenLock();
 	}
 
 	@Override
@@ -85,7 +82,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		}*/
 		unregisterReceiver(challengesListUpdateReceiver);
 		super.onPause();
-		enableScreenLock();
+//		enableScreenLock();
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -195,7 +194,6 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				saving += "|" + m.from + ":" + m.to + ":" + m.promote + ":" + m.bits;
 			}
 
-			Log.d("TEST", "saving comp game");
 			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, saving);
 			mainApp.getSharedDataEditor().commit();
 		}
