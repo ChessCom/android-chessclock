@@ -40,14 +40,7 @@ public class MainApp extends Application {
 	private LccHolder lccHolder;
 	private boolean liveChess;
 	private SoundPlayer soundPlayer;
-	private MobclixAdView rectangleAdview;
-	private MobclixAdView bannerAdview;
-	private LinearLayout bannerAdviewWrapper;
-	private boolean adviewPaused;
 	private boolean networkChangedNotification;
-	private boolean forceBannerAdOnFailedLoad;
-	private boolean forceBannerAdFirstLoad;
-	private boolean forceRectangleAd;
 	private static Drawable backgroundImage;
 
 	public boolean guest = false;
@@ -404,22 +397,6 @@ public class MainApp extends Application {
 		return soundPlayer;
 	}
 
-	public MobclixAdView getBannerAdview() {
-		return bannerAdview;
-	}
-
-	public void setBannerAdview(MobclixAdView bannerAdview) {
-		this.bannerAdview = bannerAdview;
-	}
-
-	public MobclixAdView getRectangleAdview() {  // TODO comment back
-		return rectangleAdview;
-	}
-
-	public void setRectangleAdview(MobclixAdView rectangleAdview) {
-		this.rectangleAdview = rectangleAdview;
-	}
-
 
 	public boolean isNetworkChangedNotification() {
 		return networkChangedNotification;
@@ -427,46 +404,6 @@ public class MainApp extends Application {
 
 	public void setNetworkChangedNotification(boolean networkChangedNotification) {
 		this.networkChangedNotification = networkChangedNotification;
-	}
-
-	public boolean isAdviewPaused() {
-		return adviewPaused;
-	}
-
-	public void setAdviewPaused(boolean adviewPaused) {
-		this.adviewPaused = adviewPaused;
-	}
-
-	public LinearLayout getBannerAdviewWrapper() {
-		return bannerAdviewWrapper;
-	}
-
-	public void setBannerAdviewWrapper(LinearLayout bannerAdviewWrapper) {
-		this.bannerAdviewWrapper = bannerAdviewWrapper;
-	}
-
-	public void setForceBannerAdOnFailedLoad(boolean forceBannerAdOnFailedLoad) {
-		this.forceBannerAdOnFailedLoad = forceBannerAdOnFailedLoad;
-	}
-
-	public boolean isForceBannerAdOnFailedLoad() {
-		return forceBannerAdOnFailedLoad;
-	}
-
-	public boolean isForceRectangleAd() {
-		return forceRectangleAd;
-	}
-
-	public void setForceRectangleAd(boolean forceRectangleAd) {
-		this.forceRectangleAd = forceRectangleAd;
-	}
-
-	public boolean isForceBannerAdFirstLoad() {
-		return forceBannerAdFirstLoad;
-	}
-
-	public void setForceBannerAdFirstLoad(boolean forceBannerAdFirstLoad) {
-		this.forceBannerAdFirstLoad = forceBannerAdFirstLoad;
 	}
 
 	public Bitmap getBoardBitmap() {

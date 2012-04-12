@@ -125,7 +125,6 @@ public class AppConstants {
 	public static final String SYMBOL_SPACE = " ";
 	public static final String OPPONENT = "opponent";
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
-	public static final String MOBCLIX_EXCEPTION_IN_SHOW_GAME_END_POPUP = "MOBCLIX: EXCEPTION IN showGameEndPopup";
 	public static final String URL_GET_ANDROID_VERSION = "http://www.chess.com/api/get_android_version";
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
 	public static final String PACKAGE_NAME = "com.chess";

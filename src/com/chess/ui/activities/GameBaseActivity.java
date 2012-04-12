@@ -26,9 +26,8 @@ import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.CommonUtils;
-import com.chess.utilities.MobclixAdViewListenerImpl;
-import com.chess.utilities.MobclixHelper;
-import com.mobclix.android.sdk.MobclixIABRectangleMAdView;
+import com.chess.utilities.MopubHelper;
+import com.mopub.mobileads.MoPubView;
 
 import java.util.Timer;
 
@@ -67,7 +66,6 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	protected AlertDialog adPopup;
 	protected TextView endOfGameMessage;
-	protected LinearLayout adViewWrapper;
 
 	protected DrawOfferDialogListener drawOfferDialogListener;
 	protected AbortGameDialogListener abortGameDialogListener;
@@ -124,12 +122,16 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void onPostCreate() {
-		if (MobclixHelper.isShowAds(mainApp)) {
+		/*if (MobclixHelper.isShowAds(mainApp)) {
 			setRectangleAdview(new MobclixIABRectangleMAdView(this));
 			getRectangleAdview().setRefreshTime(-1);
 			getRectangleAdview().addMobclixAdViewListener(new MobclixAdViewListenerImpl(true, mainApp));
 			mainApp.setForceRectangleAd(false);
-		}
+		}*/
+
+        if (MopubHelper.isShowAds(mainApp)) {
+            MopubHelper.createRectangleAd(this);
+        }
 
 		update(CALLBACK_REPAINT_UI);
 	}
@@ -220,44 +222,37 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(mainApp) && adViewWrapper != null && getRectangleAdview() != null) {
+		super.onResume();
+		/*if (MobclixHelper.isShowAds(mainApp) && adViewWrapper != null && getRectangleAdview() != null) {
 			adViewWrapper.addView(getRectangleAdview());
 			if (mainApp.isForceRectangleAd()) {
 				getRectangleAdview().getAd();
 			}
-		}
-
-
-		super.onResume();
+		}*/
 
 		registerReceiver(gameMoveReceiver, new IntentFilter(IntentConstants.ACTION_GAME_MOVE));
 		registerReceiver(gameEndMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_END));
 		registerReceiver(gameInfoMessageReceived, new IntentFilter(IntentConstants.ACTION_GAME_INFO));
 		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
 
-		MobclixHelper.pauseAdview(mainApp.getBannerAdview(), mainApp);
+		//MobclixHelper.pauseAdview(mainApp.getBannerAdview(), mainApp);
 
 		disableScreenLock();
 	}
 
 	@Override
 	protected void onPause() {
-		System.out.println("LCCLOG2: GAME ONPAUSE");
 		unregisterReceiver(gameMoveReceiver);
 		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
 		unregisterReceiver(showGameEndPopupReceiver);
 
 		super.onPause();
-		System.out.println("LCCLOG2: GAME ONPAUSE adViewWrapper="
-				+ adViewWrapper + ", getRectangleAdview() " + getRectangleAdview());
-		if (adViewWrapper != null && getRectangleAdview() != null) {
-			System.out.println("LCCLOG2: GAME ONPAUSE 1");
+
+		/*if (adViewWrapper != null && getRectangleAdview() != null) {
 			getRectangleAdview().cancelAd();
-			System.out.println("LCCLOG2: GAME ONPAUSE 2");
 			adViewWrapper.removeView(getRectangleAdview());
-			System.out.println("LCCLOG2: GAME ONPAUSE 3");
-		}
+		}*/
 		lccHolder.setActivityPausedMode(true);
 		lccHolder.getPausedActivityGameEvents().clear();
 
@@ -313,7 +308,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 			updatePlayerLabels(game, newWhiteRating, newBlackRating);
 			newBoardView.finished = true;
 
-			if (MobclixHelper.isShowAds(mainApp)) {
+			if (MopubHelper.isShowAds(mainApp)) {
 				final LayoutInflater inflater = (LayoutInflater) coreContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.ad_popup,
 						(ViewGroup) findViewById(R.id.layout_root));
@@ -552,7 +547,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			if (!MobclixHelper.isShowAds(mainApp)) {
+			if (!MopubHelper.isShowAds(mainApp)) {
 				return;
 			}
 
@@ -582,54 +577,47 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	};
 
 	protected void showGameEndPopup(final View layout, final String message) {
-		if (!MobclixHelper.isShowAds(mainApp)) {
+		if (!MopubHelper.isShowAds(mainApp)) {
 			return;
 		}
 
 		if (adPopup != null) {
-			try {
 				adPopup.dismiss();
-			} catch (Exception e) {
-				System.out.println(AppConstants.MOBCLIX_EXCEPTION_IN_SHOW_GAME_END_POPUP);
-				e.printStackTrace();
-			}
 			adPopup = null;
 		}
 
-		try {
-			if (adViewWrapper != null && getRectangleAdview() != null) {
-				adViewWrapper.removeView(getRectangleAdview());
+		/*if (adViewWrapper != null && getRectangleAdview() != null) {
+			adViewWrapper.removeView(getRectangleAdview());
+		}*/
+		/*adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		System.out.println("MOBCLIX: GET WRAPPER " + adViewWrapper);
+		adViewWrapper.addView(getRectangleAdview());
+
+		adViewWrapper.setVisibility(View.VISIBLE);
+		//showGameEndAds(adViewWrapper);*/
+
+		TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
+		endOfGameMessagePopup.setText(message);
+		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, mainApp);
+
+		/*adPopup.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialogInterface) {
+				if (adViewWrapper != null && getRectangleAdview() != null) {
+					adViewWrapper.removeView(getRectangleAdview());
+				}
 			}
-			adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-			System.out.println("MOBCLIX: GET WRAPPER " + adViewWrapper);
-			adViewWrapper.addView(getRectangleAdview());
-
-			adViewWrapper.setVisibility(View.VISIBLE);
-			//showGameEndAds(adViewWrapper);
-
-			TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
-			endOfGameMessagePopup.setText(message);
-
-			adPopup.setOnCancelListener(new DialogInterface.OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialogInterface) {
-					if (adViewWrapper != null && getRectangleAdview() != null) {
-						adViewWrapper.removeView(getRectangleAdview());
-					}
+		});
+		adPopup.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialogInterface) {
+				if (adViewWrapper != null && getRectangleAdview() != null) {
+					adViewWrapper.removeView(getRectangleAdview());
 				}
-			});
-			adPopup.setOnDismissListener(new DialogInterface.OnDismissListener() {
-				@Override
-				public void onDismiss(DialogInterface dialogInterface) {
-					if (adViewWrapper != null && getRectangleAdview() != null) {
-						adViewWrapper.removeView(getRectangleAdview());
-					}
-				}
-			});
-		} catch (Exception e) {
-			System.out.println(AppConstants.MOBCLIX_EXCEPTION_IN_SHOW_GAME_END_POPUP);
-			e.printStackTrace();
-		}
+			}
+		});*/
+
 
 		new Handler().postDelayed(new Runnable() {
 			@Override

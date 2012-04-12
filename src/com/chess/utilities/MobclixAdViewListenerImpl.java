@@ -17,18 +17,18 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 	public void onSuccessfulLoad(MobclixAdView view) {
 		//view.setVisibility(View.VISIBLE);
 		System.out.println("MobclixAdViewListener: onSuccessfulLoad" + (isRectangle ? " Rectangle ad" : ""));
-		if (!isRectangle && mainApp.isForceBannerAdFirstLoad()) {
+		/*if (!isRectangle && mainApp.isForceBannerAdFirstLoad()) {
 			mainApp.setForceBannerAdFirstLoad(false);
 			MobclixHelper.pauseAdview(view, mainApp);
 			MobclixHelper.resumeAdview(view, mainApp);
-		}
+		}*/
 	}
 
 	public void onFailedLoad(MobclixAdView view, int errorCode) {
 		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode + (isRectangle ? " Rectangle ad" : ""));
 
-		if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND) {
-			mainApp.setForceBannerAdOnFailedLoad(true);
+		//if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND) {
+			//mainApp.setForceBannerAdOnFailedLoad(true);
 			/*new Handler().postDelayed(new Runnable()
 				{
 					public void run()
@@ -36,7 +36,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 						MobclixHelper.showBannerAd();
 					}
 				}, 3000);*/
-		}
+		//}
 	}
 
 	public boolean onOpenAllocationLoad(MobclixAdView adView,
@@ -61,7 +61,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 	public void onAdClick(MobclixAdView adView) {
 		System.out.println("MobclixAdViewListener: onAdClick");
 		if (isRectangle) {
-			mainApp.setForceRectangleAd(true);
+			//mainApp.setForceRectangleAd(true);
 		}
 	}
 

@@ -9,7 +9,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.utilities.CommonUtils;
-import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubInterstitial;
 
@@ -56,7 +55,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	protected void onResume() {
-		if (MobclixHelper.isShowAds(mainApp)) {
+		if (MopubHelper.isShowAds(mainApp)) {
 			showFullScreenAd();
 		}
 

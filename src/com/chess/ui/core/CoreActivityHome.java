@@ -258,7 +258,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		mainApp.getSharedDataEditor().commit();
-		mainApp.setForceBannerAdOnFailedLoad(false);
+
+		//mainApp.setForceBannerAdOnFailedLoad(false);
 
 		if (progressDialog != null)
 			progressDialog.dismiss();
@@ -397,10 +398,10 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				}
 				/* else */
 				if (enable) {
-					if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
 							&& !mainApp.isAdviewPaused()) {
 						MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-					}
+					}*/
 					reconnectingIndicator = new MyProgressDialog(context);
 					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
 					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -426,10 +427,10 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 						mainApp.startActivity(intent);
 					}
 				} else {
-					if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
 							&& mainApp.isAdviewPaused()) {
 						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-					}
+					}*/
 				}
 			}
 		}
@@ -619,14 +620,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 * //adview.setAdUnitId("agltb3B1Yi1pbmNyDAsSBFNpdGUYkaoMDA"); //test
 	 * //adview.loadAd(); } }
 	 */
-
-	public MobclixAdView getRectangleAdview() {
-		return mainApp.getRectangleAdview();
-	}
-
-	public void setRectangleAdview(MobclixAdView rectangleAdview) {
-		mainApp.setRectangleAdview(rectangleAdview);
-	}
 
 	private void checkUpdate() {
 		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);

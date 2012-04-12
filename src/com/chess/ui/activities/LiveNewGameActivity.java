@@ -17,7 +17,6 @@ import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.utilities.MobclixHelper;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
@@ -81,9 +80,9 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 
 	@Override
 	protected void onPause() {
-		if (MobclixHelper.isShowAds(mainApp)) {
+		/*if (MobclixHelper.isShowAds(mainApp)) {
 			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-		}
+		}*/
 		unregisterReceiver(challengesListUpdateReceiver);
 		super.onPause();
 		enableScreenLock();

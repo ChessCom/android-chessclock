@@ -24,10 +24,9 @@ import java.util.TimerTask;
  */
 public class MobclixHelper {
 
-	private static java.util.Timer adTimer;
+/*	private static java.util.Timer adTimer;
 
 	public static void initializeBannerAdView(Activity activity, MainApp app) {
-		// TODO  restore
 		if (true) {
 //		if (!isShowAds(app)) {
 			return;
@@ -90,9 +89,9 @@ public class MobclixHelper {
 		}
 
 		if (adsShowCounter == 10) {
-			/*if (!app.adviewPaused) {
-				pauseAdview(bannerAdview, app);
-			}*/
+			//if (!app.adviewPaused) {
+			//	pauseAdview(bannerAdview, app);
+			//}
 			//adviewWrapper.setVisibility(View.GONE);
 			upgradeBtn.setVisibility(View.VISIBLE);
 			app.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
@@ -132,8 +131,9 @@ public class MobclixHelper {
 			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
 					app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 1;
 
-			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
-				(7 * 24 * 60 * 60 * 1000)) && */;
+			result = liveMembershipLevel || echessMembershipLevel
+			//((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
+			//	(7 * 24 * 60 * 60 * 1000))
 		} catch (Exception e) {
 			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.getSharedData() " + app.getSharedData() + ", app.getSharedData().getString(\"premium_status\", \"0\") " + app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0"));
 		}
@@ -193,5 +193,5 @@ public class MobclixHelper {
 
 	public static Timer getAdTimer() {
 		return adTimer;
-	}
+	}*/
 }

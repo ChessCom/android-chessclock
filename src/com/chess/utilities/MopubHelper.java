@@ -1,8 +1,9 @@
 package com.chess.utilities;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import com.chess.live.client.User;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.MainApp;
@@ -10,20 +11,22 @@ import com.mopub.mobileads.MoPubView;
 
 public class MopubHelper {
 
+	private static final String MOPUB_AD_BANNER_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww";
+	private static final String MOPUB_AD_RECTANGLE_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYtfH_Egw";
+
+	private static MoPubView rectangleAdView;
+
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, MainApp app) {
 		if (!isShowAds(app)) {
 			return;
 		}
-
-		/*upgradeBtn.setVisibility(View.VISIBLE);
-		moPubAdView.setVisibility(View.VISIBLE);*/
 
 		int adsShowCounter = app.getSharedData().getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 
 		if (adsShowCounter != 10) {
 			upgradeBtn.setVisibility(View.GONE);
 			moPubAdView.setVisibility(View.VISIBLE);
-			moPubAdView.setAdUnitId("agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww");
+			moPubAdView.setAdUnitId(MOPUB_AD_BANNER_ID);
 			moPubAdView.loadAd();
 			app.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
 			app.getSharedDataEditor().commit();
@@ -33,6 +36,30 @@ public class MopubHelper {
 			app.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			app.getSharedDataEditor().commit();
 		}
+	}
+
+	public static void createRectangleAd(Context context) {
+		rectangleAdView = new MoPubView(context);
+		rectangleAdView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
+	}
+
+	public static void showRectangleAd(LinearLayout wrapper, MainApp app) {
+		if (!isShowAds(app) || rectangleAdView == null) {
+			return;
+		}
+
+		/*if (rectangleAdView == null) {
+			createRectangleAd(app);
+		}*/
+
+		//moPubAdView.setVisibility(View.VISIBLE);
+		wrapper.addView(rectangleAdView);
+		rectangleAdView.loadAd();
+
+		int adsShowCounter = app.getSharedData().getInt(AppConstants.ADS_SHOW_COUNTER, 0);
+		app.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
+		app.getSharedDataEditor().commit();
+
 	}
 
 	public static boolean isShowAds(MainApp app) {

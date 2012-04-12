@@ -24,7 +24,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MobclixHelper;
+import com.chess.utilities.MopubHelper;
 import com.chess.utilities.Web;
 
 /**
@@ -114,7 +114,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 			if (result.contains(AppConstants.SUCCESS)) {
-				if (MobclixHelper.isShowAds(mainApp)) {
+				if (MopubHelper.isShowAds(mainApp)) {
 					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
 							.putExtra(AppConstants.MESSAGE, "GAME OVER")
 							.putExtra(AppConstants.FINISHABLE, true));

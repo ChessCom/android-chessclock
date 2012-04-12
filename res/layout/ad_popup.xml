@@ -9,19 +9,17 @@
 		android:id="@+id/endOfGameMessage"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
 		android:layout_gravity="center"
 		android:layout_margin="2dip"
 		android:textColor="#ffffcc"
-		android:textStyle="bold"
-		/>
+		android:textStyle="bold" />
 
 
 	<LinearLayout
 		android:id="@+id/adview_wrapper"
 		android:layout_width="@dimen/ad_popup_width"
 		android:layout_height="@dimen/ad_popup_height"
-		android:layout_gravity="center"/>
+		android:layout_gravity="center" />
 
 	<LinearLayout
 		android:id="@+id/endOfGameButtons"
@@ -38,8 +36,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="New Game"
-			android:visibility="gone"/>
+			android:text="New Game" />
 
 
 		<com.chess.RoboButton
@@ -48,8 +45,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="Home"
-			android:visibility="gone"
-			/>
+			android:visibility="gone" />
 
 	</LinearLayout>
 
