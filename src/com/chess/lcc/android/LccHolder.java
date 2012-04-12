@@ -63,7 +63,7 @@ public class LccHolder {
 	private AndroidStuff android = new AndroidStuff(this);
 	public static final int OWN_SEEKS_LIMIT = 3;
 
-	// TODO move all hasmaps to DB
+	// TODO move all hashMaps to DB
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
 	private HashMap<Long, Challenge> ownChallenges = new HashMap<Long, Challenge>();

@@ -7,4 +7,5 @@ package com.chess.backend;
  * @created at: 14.03.12 5:47
  */
 public class RestHelper {
+
 }

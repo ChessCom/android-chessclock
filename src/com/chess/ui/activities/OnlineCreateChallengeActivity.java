@@ -27,8 +27,6 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		init();
-
 		setContentView(R.layout.online_create_challenge);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
@@ -50,10 +48,6 @@ public class OnlineCreateChallengeActivity extends CoreActivityActionBar impleme
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
 		findViewById(R.id.createchallenge).setOnClickListener(this);
-	}
-
-	private void init() {
-
 	}
 
 	@Override

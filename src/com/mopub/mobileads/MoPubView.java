@@ -211,7 +211,7 @@ public class MoPubView extends FrameLayout {
         try {
             mContext.unregisterReceiver(mScreenStateReceiver);
         } catch (Exception IllegalArgumentException) {
-            Log.d("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
+            Log.e("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
         }
     }
     

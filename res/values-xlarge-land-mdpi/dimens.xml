@@ -15,4 +15,8 @@
 	<dimen name="default_scr_top_padding">16dip</dimen>
 	<dimen name="default_scr_side_padding">340dip</dimen>
 
+	<!--Popup-->
+	<dimen name="popup_dialog_width">200dip</dimen>
+	<dimen name="popup_dialog_text_max_width">150dip</dimen>
+
 </resources>
