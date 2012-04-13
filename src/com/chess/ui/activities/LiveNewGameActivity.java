@@ -72,7 +72,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		} else if (mainApp.isLiveChess()) {
 			currentGame.setVisibility(View.VISIBLE);
 		}
-//		disableScreenLock();
+//		enableScreenLockTimer();
 	}
 
 	@Override

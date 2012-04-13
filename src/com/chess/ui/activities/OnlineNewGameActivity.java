@@ -73,7 +73,7 @@ public class OnlineNewGameActivity extends CoreActivityActionBar implements OnCl
 	protected void onResume() {
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 		super.onResume();
-//		disableScreenLock();
+//		enableScreenLockTimer();
 	}
 
 	@Override

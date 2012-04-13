@@ -6,6 +6,7 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -27,8 +28,8 @@ import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MopubHelper;
-import com.mopub.mobileads.MoPubView;
 
+import java.util.Calendar;
 import java.util.Timer;
 
 /**
@@ -50,7 +51,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	public final static int CALLBACK_SEND_MOVE = 1;
 
 
-	protected ChessBoardView newBoardView;
+	protected ChessBoardView boardView;
 	protected TextView whitePlayerLabel;
 	protected TextView blackPlayerLabel;
 	protected TextView thinking;
@@ -98,25 +99,25 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
-		newBoardView = (ChessBoardView) findViewById(R.id.boardview);
-		newBoardView.setFocusable(true);
+		boardView = (ChessBoardView) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
 
-		newBoardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
+		boardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
-		newBoardView.setGamePanelView(gamePanelView);
+		boardView.setGamePanelView(gamePanelView);
 
 		final ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
 		if (chessBoard != null) {
-			newBoardView.setBoardFace(chessBoard);
+			boardView.setBoardFace(chessBoard);
 		} else {
-			newBoardView.setBoardFace(new ChessBoard(this));
-			newBoardView.setGameActivityFace(this);
-			newBoardView.getBoardFace().setInit(true);
-			newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-			newBoardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+			boardView.setBoardFace(new ChessBoard(this));
+			boardView.setGameActivityFace(this);
+			boardView.getBoardFace().setInit(true);
+			boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+			boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
-		newBoardView.setGameActivityFace(this);
+		boardView.setGameActivityFace(this);
 
 		lccHolder = mainApp.getLccHolder();
 	}
@@ -144,7 +145,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	@Override
 
 	public Object onRetainCustomNonConfigurationInstance() {
-		return newBoardView.getBoardFace();
+		return boardView.getBoardFace();
 	}
 
 	protected abstract void onDrawOffered(int whichButton);
@@ -195,14 +196,14 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	protected void getOnlineGame(long game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.getRepeatableTimer().cancel();
-			appService.setRepeatableTimer(null);
+            appService.setRepeatableTimer(null);
 		}
 		mainApp.setGameId(game_id);
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		newBoardView.requestFocus();
+		boardView.requestFocus();
 		super.onWindowFocusChanged(hasFocus);
 	}
 
@@ -237,7 +238,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 		//MobclixHelper.pauseAdview(mainApp.getBannerAdview(), mainApp);
 
-		disableScreenLock();
+		enableScreenLockTimer();
 	}
 
 	@Override
@@ -256,14 +257,38 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		lccHolder.setActivityPausedMode(true);
 		lccHolder.getPausedActivityGameEvents().clear();
 
-		newBoardView.stopThinking = true;
+		boardView.stopThinking = true;
 
 		if (onlineGameUpdate != null)
 			onlineGameUpdate.cancel();
 
-		enableScreenLock();
+//		enableScreenLock();
+        Log.d("TEST","onPause() called at " + Calendar.getInstance().getTime().toGMTString());
 	}
 
+    @Override
+    public void turnScreenOff() {
+        Log.d("TEST","turnScreenOff() called at " + Calendar.getInstance().getTime().toGMTString());
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+
+    protected void enableScreenLockTimer() { // TODO check usage
+        // set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
+        boardView.enableTouchTimer();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+//		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
+//		wakeLock.setReferenceCounted(false);
+//		wakeLock.acquire();
+    }
+
+//	protected void enableScreenLock() {
+//		if (wakeLock != null) {
+//			wakeLock.release();
+//		}
+//	}
 
 	protected BroadcastReceiver gameMoveReceiver = new BroadcastReceiver() {
 		@Override
@@ -306,7 +331,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 								   (newBlackRating != null && newBlackRating != 0) ?
 								   newBlackRating.toString() : mainApp.getCurrentGame().values.get("black_rating");*/
 			updatePlayerLabels(game, newWhiteRating, newBlackRating);
-			newBoardView.finished = true;
+			boardView.finished = true;
 
 			if (MopubHelper.isShowAds(mainApp)) {
 				final LayoutInflater inflater = (LayoutInflater) coreContext.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -444,8 +469,8 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public void switch2Chat() {
 		chat = true;
-		// TODO add here flag clear
-		getOnlineGame(mainApp.getGameId());
+        // TODO add here flag clear
+        getOnlineGame(mainApp.getGameId());
 	}
 
 	protected void restoreGame() {
@@ -453,35 +478,35 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void restoreLastConfig() {
-		newBoardView.setBoardFace(new ChessBoard(this));
-		newBoardView.getBoardFace().setInit(true);
-		newBoardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		boardView.setBoardFace(new ChessBoard(this));
+		boardView.getBoardFace().setInit(true);
+		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
-			newBoardView.getBoardFace().setChess960(true);
+			boardView.getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
-			newBoardView.getBoardFace().setReside(true);
+			boardView.getBoardFace().setReside(true);
 		}
 		String[] moves = {};
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
 					.replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-			newBoardView.getBoardFace().setMovesCount(moves.length);
+			boardView.getBoardFace().setMovesCount(moves.length);
 		}
 
-		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
+        String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals("")) {
-			newBoardView.getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, newBoardView.getBoardFace().getBoard());
+			boardView.getBoardFace().genCastlePos(FEN);
+			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
 		}
 
 		int i;
-		for (i = 0; i < newBoardView.getBoardFace().getMovesCount(); i++) {
+		for (i = 0; i < boardView.getBoardFace().getMovesCount(); i++) {
 
 			int[] moveFT = mainApp.isLiveChess() ?
-					MoveParser.parseCoordinate(newBoardView.getBoardFace().getBoard(), moves[i]) :
-					MoveParser.parse(newBoardView.getBoardFace().getBoard(), moves[i]);
+					MoveParser.parseCoordinate(boardView.getBoardFace().getBoard(), moves[i]) :
+					MoveParser.parse(boardView.getBoardFace().getBoard(), moves[i]);
 			if (moveFT.length == 4) {
 				Move move;
 				if (moveFT[3] == 2)
@@ -489,15 +514,15 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 				else
 					move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 
-				newBoardView.getBoardFace().makeMove(move, false);
+				boardView.getBoardFace().makeMove(move, false);
 			} else {
 				Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-				newBoardView.getBoardFace().makeMove(m, false);
+				boardView.getBoardFace().makeMove(m, false);
 			}
 		}
 		update(CALLBACK_REPAINT_UI);
-		newBoardView.getBoardFace().takeBack();
-		newBoardView.invalidate();
+		boardView.getBoardFace().takeBack();
+		boardView.invalidate();
 
 		playLastMoveAnimation();
 	}
@@ -641,7 +666,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			newBoardView.getBoardFace().setAnalysis(false);
+			boardView.getBoardFace().setAnalysis(false);
 			onBackPressed();
 			return true;
 		}
@@ -650,17 +675,17 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void showChoosePieceDialog(final int col, final int row) {
-		new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.choose_a_piece))
 				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 4) {
-									newBoardView.invalidate();
+									boardView.invalidate();
 									return;
 								}
-								newBoardView.promote(4 - which, col, row);
+								boardView.promote(4 - which, col, row);
 							}
 						}).setCancelable(false)
 				.create().show();
@@ -672,7 +697,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 			public void run() {
 				try {
 					Thread.sleep(1300);
-					newBoardView.getBoardFace().takeNext();
+					boardView.getBoardFace().takeNext();
 					update.sendEmptyMessage(0);
 				} catch (Exception ignored) {
 				}
@@ -683,7 +708,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
 					update(CALLBACK_REPAINT_UI);
-					newBoardView.invalidate();
+					boardView.invalidate();
 				}
 			};
 		}).start();

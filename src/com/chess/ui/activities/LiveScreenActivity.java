@@ -166,7 +166,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			currentGame.setVisibility(View.GONE);
 		}
 
-//		disableScreenLock();
+//		enableScreenLockTimer();
 	}
 
 	@Override

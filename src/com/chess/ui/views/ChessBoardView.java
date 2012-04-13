@@ -10,9 +10,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.activities.GameTacticsScreenActivity;
 import com.chess.ui.core.AppConstants;
@@ -25,6 +28,7 @@ import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.interfaces.GameActivityFace;
 
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -43,7 +47,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	private GameActivityFace gameActivityFace;
 	private MainApp mainApp;
 
-	//	private ChessBoard newBoardView;
+	//	private ChessBoard boardView;
 	private BoardFace boardFace;
 	public boolean hint;
 	public boolean firstclick = true;
@@ -82,12 +86,16 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	private boolean showCoordinates;
 	private int compStrength;
 	private String userName;
+    private boolean useTouchTimer;
+    private Handler handler;
+    private boolean userActive;
 
-	public ChessBoardView(Context context, AttributeSet attrs) {
+
+    public ChessBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		resources = context.getResources();
-
+        handler = new Handler();
 		green = new Paint();
 		white = new Paint();
 		black = new Paint();
@@ -118,6 +126,10 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 //		blackColor ^= (opacity * 0xFF / 100) << 32;
 		image.setBounds(0, 0, (int) width, (int) height);
 		image.setDither(true);
+
+        Log.d("TEST", "ChessBoardView created, start active timer at " + Calendar.getInstance().getTime().toGMTString());
+        handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
+        userActive = false;
 	}
 
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {
@@ -341,7 +353,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				} catch (Exception e) {
 					e.printStackTrace();
 //					Log.d("BoardView", "mainApp " + mainApp);
-//					Log.d("BoardView", "mainApp.newBoardView " + mainApp.getBoardBitmap());
+//					Log.d("BoardView", "mainApp.boardView " + mainApp.getBoardBitmap());
 					return;
 				}
 			}
@@ -446,6 +458,11 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
+        if(useTouchTimer){ // start count before next touch
+            handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
+            userActive = true;
+        }
+
 		float sens = 0.3f;
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			track = true;
@@ -519,6 +536,11 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+        if(useTouchTimer){ // start count before next touch
+            Log.d("TEST", "onTouchEvent() called in chessboard at " + Calendar.getInstance().getTime().toGMTString());
+            handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
+            userActive = true;
+        }
 
 		if (square == 0) {
 			return super.onTouchEvent(event);
@@ -656,6 +678,19 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		return super.onTouchEvent(event);
 	}
 
+    private Runnable checkUserIsActive = new Runnable() {
+        @Override
+        public void run() {
+            if(userActive){
+                userActive = false;
+                Log.d("TEST", "checkUserIsActive user is active, postpone at " + Calendar.getInstance().getTime().toGMTString());
+                handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
+            }else
+                gameActivityFace.turnScreenOff();
+
+        }
+    };
+    
 
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
@@ -789,4 +824,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 	public void addMove2Log(CharSequence move) {
 		gamePanelView.addMoveLog(move);
 	}
+
+    public void enableTouchTimer() {
+        useTouchTimer = true;
+    }
 }

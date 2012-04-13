@@ -102,7 +102,7 @@ public class Search {
 		if (ply >= MAX_PLY - 1)
 			return boardFace.eval();
 /*	if (hply >= HIST_STACK - 1)
-            return newBoardView.eval();
+            return boardView.eval();
 FIXME!!! We could in principle overflow the move history stack.
 */
 		/* are we in check? if so, we want to search deeper */
@@ -177,7 +177,7 @@ FIXME!!! We could in principle overflow the move history stack.
 		if (ply >= MAX_PLY - 1)
 			return boardFace.eval();
 /*	if (hply >= HIST_STACK - 1)
-            return newBoardView.eval();
+            return boardView.eval();
 FIXME!! see above */
 		/* check with the evaluation function */
 		int x = boardFace.eval();

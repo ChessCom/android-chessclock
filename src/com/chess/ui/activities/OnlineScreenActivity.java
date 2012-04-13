@@ -206,7 +206,7 @@ public class OnlineScreenActivity extends CoreActivityActionBar implements View.
 			  mainApp.getGameListItems().clear();
 			}*/
 
-//		disableScreenLock();
+//		enableScreenLockTimer();
 	}
 
 	@Override

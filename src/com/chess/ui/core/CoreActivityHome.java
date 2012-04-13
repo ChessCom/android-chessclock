@@ -551,19 +551,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		}
 	}
 
-	protected void disableScreenLock() {
-		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
-		wakeLock.setReferenceCounted(false);
-		wakeLock.acquire();
-	}
-
-	protected void enableScreenLock() {
-		if (wakeLock != null) {
-			wakeLock.release();
-		}
-	}
-
 	@Override
 	public void unregisterReceiver(BroadcastReceiver receiver) {
 		try {

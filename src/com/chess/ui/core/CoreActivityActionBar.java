@@ -627,40 +627,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	protected void disableScreenLock() { // TODO check usage
-
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-//		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-//		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
-//		wakeLock.setReferenceCounted(false);
-//		wakeLock.acquire();
-	}
-
-	protected void enableScreenLock() {
-		Log.d("TEST","keep screen on");
-//		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-//		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
-//		wakeLock.setReferenceCounted(false);
-//		wakeLock.acquire();
-
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				Log.d("TEST","keep screen off");
-//				wakeLock.release();
-				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-			}
-		}, StaticData.WAKE_SCREEN_TIMEOUT);
-
-
-
-//		if (wakeLock != null) {
-//			wakeLock.release();
-//		}
-	}
-
 	@Override
 	public void unregisterReceiver(BroadcastReceiver receiver) {// TODO don't do any hacks
 		try {
