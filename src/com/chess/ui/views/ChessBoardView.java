@@ -684,6 +684,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
             if(userActive){
                 userActive = false;
                 Log.d("TEST", "checkUserIsActive user is active, postpone at " + Calendar.getInstance().getTime().toGMTString());
+                handler.removeCallbacks(this);
                 handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
             }else
                 gameActivityFace.turnScreenOff();
