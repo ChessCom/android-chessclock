@@ -126,7 +126,6 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		image.setBounds(0, 0, (int) width, (int) height);
 		image.setDither(true);
 
-        Log.d("TEST", "ChessBoardView created, start active timer at " + Calendar.getInstance().getTime().toGMTString());
         handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
         userActive = false;
 	}

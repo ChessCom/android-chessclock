@@ -146,7 +146,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		whiteTimer.setLayoutParams(whiteTimerParams);
 
 		blackTimer = new RoboTextView(getContext(), null,R.attr.playerLabelStyle);
-//		blackTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
 		blackTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
 
 		int timerPaddingLeft1 = (int) (2*density + 0.5f);
@@ -191,7 +190,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		piecesLayout.setPadding(pieceLayoutPaddingLeft, pieceLayoutPaddingTop, pieceLayoutPaddingRight, pieceLayoutPaddingBottom);
 		piecesLayout.setGravity(Gravity.CENTER);
-//		piecesLayout.setBackgroundColor(resources.getColor(R.color.blue));
 
 		LinearLayout whiteCapturedPieces = new LinearLayout(getContext());
 		whiteCapturedPieces.setPadding(1, 1, 1, 1);
@@ -229,10 +227,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 //        infoLayout.addView(movesListView);
 
 		movesTextView = new TextView(getContext());
-//        android:inputType="textImeMultiLine"
-//        android:ellipsize="start"
-//        movesTextView.setEllipsize(TextUtils.TruncateAt.START);
-//        movesTextView.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		movesTextView.setLayoutParams(listParams);
 		movesTextView.setGravity(Gravity.BOTTOM);
 		movesTextView.setTextSize(13);

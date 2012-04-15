@@ -210,6 +210,12 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		facebook.authorizeCallback(requestCode, resultCode, data);
+	}
+
+	@Override
 	public void onBackPressed() {
 		finish();
 	}

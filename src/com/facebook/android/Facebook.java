@@ -954,6 +954,11 @@ public class Facebook {
         public void onError(Error e);
 
     }
+	
+	public static int getAuthCode(){
+		return DEFAULT_AUTH_ACTIVITY_CODE;
+	}
+
 
     public static final String FB_APP_SIGNATURE =
         "30820268308201d102044a9c4610300d06092a864886f70d0101040500307a310"
