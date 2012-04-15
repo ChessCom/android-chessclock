@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
@@ -20,6 +24,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.Web;
+import com.chess.backend.WebService;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -34,8 +40,6 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
-import com.chess.utilities.Web;
-import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
@@ -57,6 +61,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	protected Context coreContext;
 	protected Handler handler;
+	protected SharedPreferences preferences;
 
 	public abstract void update(int code);
 
@@ -90,6 +95,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		lccHolder = mainApp.getLccHolder();
+
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
 	@Override

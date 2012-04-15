@@ -1,4 +1,4 @@
-package com.chess.utilities;
+package com.chess.backend;
 
 import android.util.Log;
 import org.apache.http.HttpEntity;

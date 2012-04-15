@@ -2,10 +2,10 @@ package com.chess.backend.tasks;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import com.chess.backend.BitmapLoader;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
-import com.chess.utilities.BitmapLoader;
 
 /**
  * BitmapLoaderTask class

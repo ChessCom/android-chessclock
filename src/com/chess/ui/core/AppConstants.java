@@ -112,27 +112,27 @@ public class AppConstants {
 
 
 	/* REST LINKS*/
-	public static final String API_V2_LOGIN = "/api/v2/login";
+	public static final String URL_GET_ANDROID_VERSION = "http://www.chess.com/api/get_android_version";
+	public static final String API_ECHESS_OPEN_INVITES_ID = "/api/echess_open_invites?id=";
 	public static final String API_SUBMIT_ECHESS_ACTION_ID = "/api/submit_echess_action?id=";
+	public static final String API_TACTICS_TRAINER_ID_PARAMETER = "/api/tactics_trainer?id=";
+	public static final String API_V2_LOGIN = "/api/v2/login";
+	public static final String API_V2_GET_ECHESS_CURRENT_GAMES_ID = "/api/v2/get_echess_current_games?id=";
+	public static final String API_V2_GET_ECHESS_FINISHED_GAMES_ID = "/api/v2/get_echess_finished_games?id=";
+	public static final String API_ECHESS_CHALLENGES_ID = "/api/echess_challenges?id=";
+	public static final String API_V3_GET_GAME_ID = "/api/v3/get_game?id=";
 	public static final String CHESSID_PARAMETER = "&chessid=";
 	public static final String COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER = "&command=RESIGN&timestamp=";
-	public static final String API_V3_GET_GAME_ID = "/api/v3/get_game?id=";
 	public static final String COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER = "&command=SUBMIT&newmove=";
 	public static final String TIMESTAMP_PARAMETER = "&timestamp=";
 	public static final String COMMAND_PARAMETER = "&command=";
 	public static final String TACTICS_ID_PARAMETER = "&tactics_id=";
-	public static final String API_TACTICS_TRAINER_ID_PARAMETER = "/api/tactics_trainer?id=";
 	public static final String PASSED_PARAMETER = "&passed=";
 	public static final String CORRECT_MOVES_PARAMETER = "&correct_moves=";
 	public static final String SECONDS_PARAMETER = "&seconds=";
-	public static final String URL_GET_ANDROID_VERSION = "http://www.chess.com/api/get_android_version";
-	public static final String API_ECHESS_OPEN_INVITES_ID = "/api/echess_open_invites?id=";
 	public static final String DECLINE_INVITEID_PARAMETER = "&declineinviteid=";
 	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
 
-	public static final String API_V2_GET_ECHESS_CURRENT_GAMES_ID = "/api/v2/get_echess_current_games?id=";
-	public static final String API_ECHESS_CHALLENGES_ID = "/api/echess_challenges?id=";
-	public static final String API_V2_GET_ECHESS_FINISHED_GAMES_ID = "/api/v2/get_echess_finished_games?id=";
 	public static final String LOGIN_HTML_ALS = "/login.html?als=";
 	public static final String ECHESS_MOBILE_STATS = "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = "/tournaments";

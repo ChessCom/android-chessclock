@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineGamesAdapter;
@@ -20,7 +21,6 @@ import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
-import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;

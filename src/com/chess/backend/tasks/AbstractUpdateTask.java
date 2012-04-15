@@ -12,10 +12,12 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 	protected T item;
 	protected List<T> itemList;
 	protected boolean useList;
+	protected int result;
 
 	public AbstractUpdateTask(TaskUpdateInterface<T, Input> taskFace) {
 		this.taskFace = taskFace;
 		useList = taskFace.useList();
+		result = StaticData.EMPTY_DATA;
 	}
 
 	@Override
@@ -26,6 +28,8 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 
 	@Override
 	protected Integer doInBackground(Input... params) {
+		if(isCancelled())
+			result = StaticData.EMPTY_DATA;
 		return doTheTask(params);
 	}
 

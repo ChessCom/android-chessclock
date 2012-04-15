@@ -1,4 +1,4 @@
-package com.chess.utilities;
+package com.chess.backend;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

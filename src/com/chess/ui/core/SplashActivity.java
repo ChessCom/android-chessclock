@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.Notifications;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
-import com.chess.utilities.Notifications;
 
 public class SplashActivity extends CoreActivity {
 

@@ -1,4 +1,4 @@
-package com.chess.utilities;
+package com.chess.backend;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.core.AppConstants;
+import com.chess.utilities.MyProgressDialog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;

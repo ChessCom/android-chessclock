@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.chess.R;
+import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
@@ -15,7 +16,6 @@ import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.MopubHelper;
-import com.chess.utilities.Web;
 import com.mopub.mobileads.MoPubView;
 
 public class LiveNewGameActivity extends LiveBaseActivity implements OnClickListener {

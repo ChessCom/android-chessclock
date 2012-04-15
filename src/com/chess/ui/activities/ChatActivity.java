@@ -70,7 +70,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 	public void update(int code) { // TODO Replace with named methods calls
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
-				appService.RunRepeatableTask(0, 0, 60000, "http://www." + LccHolder.HOST
+				appService.RunRepeatableTask(MESSAGE_RECEIVED, 0, 60000, "http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER
 						+ extras.getLong(GameListItem.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
 						null);
@@ -118,11 +118,18 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			}
 
 			if (appService != null) {
+				// Use rest-helper and async task
+//				LoadItem loadItem = new LoadItem();  // TODO
+//				loadItem.setLoadPath(RestHelper.SUBMIT_ECHESS_ACTION);
+//				loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance(this).getUserToken());
+//				loadItem.addRequestParams(RestHelper.P_CHESSID, AppData.getInstance(this).getUserToken());
+
 				String query = "http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER
-						+ extras.getLong(GameListItem.GAME_ID) + "&command=CHAT&message=" + message + AppConstants.TIMESTAMP_PARAMETER
-						+ extras.getString(GameListItem.TIMESTAMP);
-				appService.RunSingleTask(1, query,
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+						+ AppConstants.CHESSID_PARAMETER + extras.getLong(GameListItem.GAME_ID)
+						+ "&command=CHAT&message=" + message
+						+ AppConstants.TIMESTAMP_PARAMETER + extras.getString(GameListItem.TIMESTAMP);
+				appService.RunSingleTask(MESSAGE_SENT, query,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(ChatActivity.this, null,
 								getString(R.string.sendingmessage), true)));
 			}

@@ -15,16 +15,26 @@ import java.util.List;
 public class RestHelper {
 
 	private static final String BASE_URL = "http://www.chess.com/";
+	public static final String API_V3 = "/api/v3";
 	public static final String API_V2 = "/api/v2";
 	public static final String API = "/api";
 
 	/* Methods calls*/
-	public static final String LOGIN= "/login";
-	public static final String SUBMIT_ECHESS_ACTION = "/submit_echess_action";
-	public static final String LOGIN_HTML_ALS = "/login.html?als=";
-	public static final String ECHESS_MOBILE_STATS = "/echess/mobile-stats/";
-	public static final String TOURNAMENTS = "/tournaments";
+	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
+	public static final String ECHESS_MOBILE_STATS = BASE_URL + "/echess/mobile-stats/";
+	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
 
+	public static final String GET_ANDROID_VERSION = BASE_URL + API + "/get_android_version";
+	public static final String SUBMIT_ECHESS_ACTION = BASE_URL + API + "/submit_echess_action";
+	public static final String TACTICS_TRAINER = BASE_URL + API + "/tactics_trainer";
+	public static final String ECHESS_OPEN_INVITES = BASE_URL + API + "/echess_open_invites";
+	public static final String ECHESS_CHALLENGES = BASE_URL + API + "/echess_challenges";
+
+	public static final String LOGIN = BASE_URL + API_V2 + "/login";
+	public static final String GET_ECHESS_CURRENT_GAMES = BASE_URL + API_V2 + "/get_echess_current_games";
+	public static final String GET_ECHESS_FINISHED_GAMES = BASE_URL + API_V2 + "/get_echess_finished_games";
+
+	public static final String GET_GAME = BASE_URL + API_V3 + "/get_game";
 
 	/* Parameters */
 	public static final String P_USER_NAME = "username";

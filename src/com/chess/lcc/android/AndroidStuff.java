@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
+import com.chess.backend.WebService;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
@@ -17,7 +18,6 @@ import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.WebService;
 
 import java.io.Serializable;
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.Notifications;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.SelectionItem;
@@ -17,7 +18,6 @@ import com.chess.ui.adapters.SelectionAdapter2;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.Notifications;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;

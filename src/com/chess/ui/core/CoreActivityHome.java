@@ -13,6 +13,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.Web;
+import com.chess.backend.WebService;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -22,8 +24,6 @@ import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.interfaces.CoreActivityFace;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
-import com.chess.utilities.Web;
-import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
 
 public abstract class CoreActivityHome extends ActionBarActivityHome implements CoreActivityFace {
