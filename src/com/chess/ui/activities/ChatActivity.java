@@ -18,7 +18,6 @@ import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 
@@ -54,18 +53,27 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
+
+	public void initActivity(){
+
+	}
+
+	public void onMessageReceived(){
+
+	}
+
+	public void onMessageSent(){
+
+	}
+
 	@Override
-	public void update(int code) {
+	public void update(int code) { // TODO Replace with named methods calls
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunRepeatableTask(0, 0, 60000, "http://www." + LccHolder.HOST
-						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
+						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER
 						+ extras.getLong(GameListItem.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
-						null/*
-							 * progressDialog = MyProgressDialog.show(Chat.this, null,
-							 * getString(R.string.gettingmessages), true)
-							 */
-				);
+						null);
 			}
 		} else if (code == MESSAGE_RECEIVED) {
 			int before = chatItems.size();
@@ -90,7 +98,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 			} else {
 				messages.notifyDataSetChanged();
 			}
-			sendText.setText("");
+			sendText.setText(AppConstants.SYMBOL_EMPTY);
 			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(sendText.getWindowToken(), 0);
 			chatListView.setSelection(chatItems.size() - 1);
@@ -100,7 +108,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.send) {
-			String message = "";
+			String message = AppConstants.SYMBOL_EMPTY;
 			try {
 				message = URLEncoder.encode(sendText.getText().toString(), "UTF-8");
 			} catch (UnsupportedEncodingException e) {
@@ -111,7 +119,7 @@ public class ChatActivity extends CoreActivityActionBar implements OnClickListen
 
 			if (appService != null) {
 				String query = "http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER
 						+ extras.getLong(GameListItem.GAME_ID) + "&command=CHAT&message=" + message + AppConstants.TIMESTAMP_PARAMETER
 						+ extras.getString(GameListItem.TIMESTAMP);
 				appService.RunSingleTask(1, query,

@@ -91,43 +91,41 @@ public class AppConstants {
 	public final static int GAME_MODE_TACTICS = 6;
 
 
-	public static final String API_V2_LOGIN = "/api/v2/login";
 	public static final String DEFAULT_GAMEBOARD_CASTLE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 	public static final String REQUEST_DRAW = "Request draw: ";
 	public static final String OFFERDRAW = "OFFERDRAW";
 	public static final String ACCEPTDRAW = "ACCEPTDRAW";
 	public static final String SUCCESS = "Success";
-	public static final String API_SUBMIT_ECHESS_ACTION_ID = "/api/submit_echess_action?id=";
 	public static final String ERROR_PLUS = "Error+";
 	public static final String ERROR = "Error";
 	public static final String LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION = "LCCLOG: resign game by fair play restriction: ";
 	public static final String RESIGN_GAME = "Resign game: ";
+
+	/* LCC LOG */
 	public static final String LCCLOG_RESIGN_GAME = "LCCLOG: resign game: ";
 	public static final String LCCLOG_ABORT_GAME = "LCCLOG: abort game: ";
+
+	public static final String LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION = "LCCLOG ANDROID: receive broadcast intent, action=";
+	public static final String LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION = "LCCLOG ANDROID: sendBroadcastObjectIntent action=";
+	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
+	public static final String LCC_HOLDER_IS_NULL = "LccHolder is null";
+
+
+	/* REST LINKS*/
+	public static final String API_V2_LOGIN = "/api/v2/login";
+	public static final String API_SUBMIT_ECHESS_ACTION_ID = "/api/submit_echess_action?id=";
 	public static final String CHESSID_PARAMETER = "&chessid=";
 	public static final String COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER = "&command=RESIGN&timestamp=";
 	public static final String API_V3_GET_GAME_ID = "/api/v3/get_game?id=";
 	public static final String COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER = "&command=SUBMIT&newmove=";
 	public static final String TIMESTAMP_PARAMETER = "&timestamp=";
-	public static final String LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION = "LCCLOG ANDROID: receive broadcast intent, action=";
 	public static final String COMMAND_PARAMETER = "&command=";
-	public static final String LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION = "LCCLOG ANDROID: sendBroadcastObjectIntent action=";
-	public static final String LCC_HOLDER_IS_NULL = "LccHolder is null";
-	public static final String WARNING = ", warning: ";
-	public static final String CHALLENGE = ", challenge: ";
-	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
-	public static final String LISTENER = ": listener=";
 	public static final String TACTICS_ID_PARAMETER = "&tactics_id=";
 	public static final String API_TACTICS_TRAINER_ID_PARAMETER = "/api/tactics_trainer?id=";
 	public static final String PASSED_PARAMETER = "&passed=";
 	public static final String CORRECT_MOVES_PARAMETER = "&correct_moves=";
 	public static final String SECONDS_PARAMETER = "&seconds=";
-	public static final String SYMBOL_SPACE = " ";
-	public static final String OPPONENT = "opponent";
-	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 	public static final String URL_GET_ANDROID_VERSION = "http://www.chess.com/api/get_android_version";
-	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
-	public static final String PACKAGE_NAME = "com.chess";
 	public static final String API_ECHESS_OPEN_INVITES_ID = "/api/echess_open_invites?id=";
 	public static final String DECLINE_INVITEID_PARAMETER = "&declineinviteid=";
 	public static final String ACCEPT_INVITEID_PARAMETER = "&acceptinviteid=";
@@ -135,10 +133,27 @@ public class AppConstants {
 	public static final String API_V2_GET_ECHESS_CURRENT_GAMES_ID = "/api/v2/get_echess_current_games?id=";
 	public static final String API_ECHESS_CHALLENGES_ID = "/api/echess_challenges?id=";
 	public static final String API_V2_GET_ECHESS_FINISHED_GAMES_ID = "/api/v2/get_echess_finished_games?id=";
-	public static final String JUST_KEEP_MY_CHALLENGE = "Just keep my challenge: ";
-	public static final String CANCEL_MY_CHALLENGE = "Cancel my challenge: ";
 	public static final String LOGIN_HTML_ALS = "/login.html?als=";
 	public static final String ECHESS_MOBILE_STATS = "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = "/tournaments";
+
+	/* Messages */
+	public static final String CANCEL_MY_CHALLENGE = "Cancel my challenge: ";
+	public static final String JUST_KEEP_MY_CHALLENGE = "Just keep my challenge: ";
+	public static final String OPPONENT = "opponent";
+	public static final String WARNING = ", warning: ";
+	public static final String CHALLENGE = ", challenge: ";
+	public static final String LISTENER = ": listener=";
+
+	/* String constants*/
+	public static final String SYMBOL_SPACE = " ";
 	public static final String SYMBOL_NEW_STR = "\n";
+	public static final String SYMBOL_EMPTY = "";
+
+	/* Stuff */
+	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
+	public static final String PACKAGE_NAME = "com.chess";
+	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
+
+
 }

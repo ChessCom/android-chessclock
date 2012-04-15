@@ -5,7 +5,10 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -23,9 +26,11 @@ import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.interfaces.CoreActivityFace;
 import com.chess.ui.views.BackgroundChessDrawable;
-import com.chess.utilities.*;
+import com.chess.utilities.MyProgressDialog;
+import com.chess.utilities.SoundPlayer;
+import com.chess.utilities.Web;
+import com.chess.utilities.WebService;
 import com.flurry.android.FlurryAgent;
-import com.mobclix.android.sdk.MobclixAdView;
 
 public abstract class CoreActivity extends Activity implements CoreActivityFace {
 
@@ -37,15 +42,16 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	private PowerManager.WakeLock wakeLock;
 	protected String response = "";
 	protected String responseRepeatable = "";
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
-	public abstract void update(int code);
-
 	protected Context context;
 	private Handler handler;
+	public boolean mIsBound;
+	public WebService appService = null;
+
+	public abstract void update(int code);
 
 	@Override
 	public void onAttachedToWindow() {
@@ -76,11 +82,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		lccHolder = mainApp.getLccHolder();
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		doUnbindService();
-	}
+
 
 	/*
 	 * public boolean isConnected(){ ConnectivityManager cm =
@@ -89,8 +91,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	 * NI.isConnectedOrConnecting(); }
 	 */
 
-	public boolean mIsBound;
-	public WebService appService = null;
+
 
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
@@ -142,15 +143,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		super.onResume();
 
 		boolean resetDetected = false;
-//		if (mainApp.getBoardBitmap() == null) {
-//			handler.post(loadBoardBitmap);
-//			resetDetected = true;
-//		}
-//
-//		if (mainApp.getPiecesBitmaps() == null) {
-//			handler.post(loadPiecesBitmaps);
-//			resetDetected = true;
-//		}
 
 		if (resetDetected) {
 			checkUserTokenAndStartActivity();
@@ -166,27 +158,11 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			// lccHolder.getAndroid().showConnectingIndicator();
 			manageConnectingIndicator(true, "Loading Live Chess");
 
-			// startService(new Intent(getApplicationContext(),
-// NetworkChangeService.class));
-
 			new ReconnectTask().execute();
 		}
 		doBindService();
-		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
-		/*
-		 * if (mainApp.isLiveChess()) {
-		 */
+		registerReceivers();
 
-		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
-		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
-		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
-		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
-		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
-
-		// registerReceiver(networkChangeNotificationReceiver, new
-// IntentFilter("com.chess.lcc.android-network-change"));
-		/* } */
 		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
 			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
 			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
@@ -199,38 +175,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			mainApp.getSharedDataEditor().commit();
 			checkUpdate();
 		}
-		/*
-		 * if (mainApp.isNetworkChangedNotification()) {
-		 * showNetworkChangeNotification(); }
-		 */
-	}
 
-//	private Runnable loadBoardBitmap = new Runnable() {
-//		@Override
-//		public void run() {
-//			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-//					mainApp.getUserName()
-//							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
-//		}
-//	};
-//
-//	private Runnable loadPiecesBitmaps = new Runnable() {
-//		@Override
-//		public void run() {
-//			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
-//							+ AppConstants.PREF_PIECES_SET, 0), null);
-//		}
-//	};
-
-	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals("")) {
-			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				mainApp.startActivity(intent);
-			startActivity(intent);
-		} else {
-			startActivity(new Intent(mainApp, LoginScreenActivity.class));
-		}
 	}
 
 	@Override
@@ -242,14 +187,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			appService.getRepeatableTimer().cancel();
 			appService = null;
 		}
-		unregisterReceiver(receiver);
-		unregisterReceiver(drawOfferedMessageReceiver);
-		unregisterReceiver(lccLoggingInInfoReceiver);
-		unregisterReceiver(lccReconnectingInfoReceiver);
-		unregisterReceiver(informAndExitReceiver);
-		unregisterReceiver(obsoleteProtocolVersionReceiver);
-		unregisterReceiver(infoMessageReceiver);
-		// unregisterReceiver(networkChangeNotificationReceiver);
+
+		unRegisterReceivers();
 
 		// todo: how to logout user when he/she is switching to another
 // activity?
@@ -267,6 +206,37 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			progressDialog.dismiss();
 	}
 
+
+	private void registerReceivers(){
+		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
+		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
+		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
+		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
+		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
+		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
+		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
+	}
+
+	private void unRegisterReceivers(){
+		unregisterReceiver(receiver);
+		unregisterReceiver(drawOfferedMessageReceiver);
+		unregisterReceiver(lccLoggingInInfoReceiver);
+		unregisterReceiver(lccReconnectingInfoReceiver);
+		unregisterReceiver(informAndExitReceiver);
+		unregisterReceiver(obsoleteProtocolVersionReceiver);
+		unregisterReceiver(infoMessageReceiver);
+	}
+
+	private void checkUserTokenAndStartActivity() {
+		if (!mainApp.getUserName().equals("")) {
+			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				mainApp.startActivity(intent);
+			startActivity(intent);
+		} else {
+			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+		}
+	}
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -593,6 +563,11 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		FlurryAgent.onEndSession(this);
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		doUnbindService();
+	}
 	/*
 	 * protected void showGameEndAds(LinearLayout adviewWrapper) { if
 	 * (mainApp.isAdviewPaused()) {

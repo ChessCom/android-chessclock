@@ -13,7 +13,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -24,7 +23,6 @@ import com.chess.model.TacticItem;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.utilities.BitmapLoader;
 import com.chess.utilities.SoundPlayer;
-import com.mobclix.android.sdk.MobclixAdView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -361,7 +359,7 @@ public class MainApp extends Application {
 				}).create().show();
 	}
 
-	public LccHolder getLccHolder() {
+	public LccHolder getLccHolder() { // TODO make async call, because it's very slow
 		if (lccHolder == null) {
 			try {
 				String versionName = "";

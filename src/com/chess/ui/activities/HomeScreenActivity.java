@@ -50,7 +50,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}
 
 	@Override
-	public void Update(int code) {
+	public void update(int code) {
 	}
 
 	@Override

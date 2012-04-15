@@ -12,7 +12,6 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
@@ -370,7 +369,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	// here is the simple replace/redraw of piece
-					rect.set(x * square, y * square, x * square + square, y * square + square); // TODO check
+					rect.set(x * square, y * square, x * square + square, y * square + square);
 					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect, null);
 				}
 			}
@@ -383,7 +382,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 				int x = ChessBoard.COL(i, boardFace.isReside());
 				int y = ChessBoard.ROW(i, boardFace.isReside());
 				if (c != 6 && p != 6) {	 // here is the simple replace/redraw of piece
-					rect.set(x * square, y * square, x * square + square, y * square + square); // TODO check
+					rect.set(x * square, y * square, x * square + square, y * square + square);
 					canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect, null);
 				}
 			}
@@ -424,7 +423,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			int col = (dragX - dragX % square) / square;
 			int row = ((dragY + square) - (dragY + square) % square) / square;
 			if (c != 6 && p != 6) {
-				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2); // TODO check
+				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2);
 				canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null,rect, null);
 				canvas.drawRect(col * square - square / 2, row * square - square / 2,
 						col * square + square + square / 2, row * square + square + square / 2, white);

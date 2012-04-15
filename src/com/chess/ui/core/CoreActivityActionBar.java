@@ -12,7 +12,6 @@ import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -51,17 +49,16 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	private PowerManager.WakeLock wakeLock;
 	protected String response = "";
 	protected String responseRepeatable = "";
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
 
-	public abstract void update(int code);
-
 	protected Context coreContext;
 	protected Handler handler;
+
+	public abstract void update(int code);
 
 	public void setFullscreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -182,7 +179,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null) {
-//			handler.post(loadBoardBitmap); // handled post starts too late
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 					mainApp.getUserName()
 							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
@@ -191,7 +187,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
-//			handler.post(loadPiecesBitmaps); // handled post starts too late
 			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
 					+ AppConstants.PREF_PIECES_SET, 0), null);
 
@@ -212,27 +207,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			// lccHolder.getAndroid().showConnectingIndicator();
 			manageConnectingIndicator(true, "Loading Live Chess");
 
-			// startService(new Intent(getApplicationContext(),
-// NetworkChangeService.class));
-
 			new ReconnectTask().execute();
 		}
 		doBindService();
-		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
-		/*
-		 * if (mainApp.isLiveChess()) {
-		 */
+		registerReceivers();
 
-		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
-		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
-		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
-		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
-		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
-
-		// registerReceiver(networkChangeNotificationReceiver, new
-// IntentFilter("com.chess.lcc.android-network-change"));
-		/* } */
 		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
 			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
 			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
@@ -251,6 +230,53 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		 */
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		doUnbindService();
+		if (appService != null && appService.getRepeatableTimer() != null) {
+			appService.stopSelf();
+			appService.getRepeatableTimer().cancel();
+			appService = null;
+		}
+		unRegisterReceivers();
+
+		// todo: how to logout user when he/she is switching to another
+// activity?
+		/*
+		 * if (mainApp.isLiveChess() && lccHolder.isConnected()) {
+		 * lccHolder.logout(); }
+		 */
+
+		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		mainApp.getSharedDataEditor().commit();
+
+		//mainApp.setForceBannerAdOnFailedLoad(false);
+
+		if (progressDialog != null)
+			progressDialog.dismiss();
+	}
+
+	private void registerReceivers(){
+		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
+		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
+		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
+		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
+		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
+		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
+		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
+	}
+
+	private void unRegisterReceivers(){
+		unregisterReceiver(receiver);
+		unregisterReceiver(drawOfferedMessageReceiver);
+		unregisterReceiver(lccLoggingInInfoReceiver);
+		unregisterReceiver(lccReconnectingInfoReceiver);
+		unregisterReceiver(informAndExitReceiver);
+		unregisterReceiver(obsoleteProtocolVersionReceiver);
+		unregisterReceiver(infoMessageReceiver);
+	}
+
 	protected void backToHomeActivity(){
 		Intent intent = new Intent(this, HomeScreenActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -260,7 +286,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		showToast("left button");
+		fragment.getDialog().dismiss();
 	}
 
 	@Override
@@ -278,23 +304,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}	
 	
-//	private Runnable loadBoardBitmap = new Runnable() {
-//		@Override
-//		public void run() {
-//			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-//					mainApp.getUserName()
-//							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
-//		}
-//	};
-
-//	private Runnable loadPiecesBitmaps = new Runnable() {
-//		@Override
-//		public void run() {
-//			mainApp.loadPieces(mainApp.getSharedData().getInt(
-//					mainApp.getUserName() + AppConstants.PREF_PIECES_SET, 0), null);
-//		}
-//	};
-
 	private void checkUserTokenAndStartActivity() {
 		if (!mainApp.getUserName().equals("")) {
 			Intent intent = new Intent(mainApp, HomeScreenActivity.class);
@@ -306,39 +315,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		doUnbindService();
-		if (appService != null && appService.getRepeatableTimer() != null) {
-			appService.stopSelf();
-			appService.getRepeatableTimer().cancel();
-			appService = null;
-		}
-		unregisterReceiver(receiver);
-		unregisterReceiver(drawOfferedMessageReceiver);
-		unregisterReceiver(lccLoggingInInfoReceiver);
-		unregisterReceiver(lccReconnectingInfoReceiver);
-		unregisterReceiver(informAndExitReceiver);
-		unregisterReceiver(obsoleteProtocolVersionReceiver);
-		unregisterReceiver(infoMessageReceiver);
-		// unregisterReceiver(networkChangeNotificationReceiver);
 
-		// todo: how to logout user when he/she is switching to another
-// activity?
-		/*
-		 * if (mainApp.isLiveChess() && lccHolder.isConnected()) {
-		 * lccHolder.logout(); }
-		 */
-
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
-
-		//mainApp.setForceBannerAdOnFailedLoad(false);
-
-		if (progressDialog != null)
-			progressDialog.dismiss();
-	}
 
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
@@ -412,6 +389,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
+			// TODO make popUpFragmentDialog
 			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivityActionBar.this)
 					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
 					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))

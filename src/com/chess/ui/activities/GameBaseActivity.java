@@ -6,7 +6,6 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,7 +28,6 @@ import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.CommonUtils;
 import com.chess.utilities.MopubHelper;
 
-import java.util.Calendar;
 import java.util.Timer;
 
 /**
@@ -262,33 +260,19 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 		if (onlineGameUpdate != null)
 			onlineGameUpdate.cancel();
 
-//		enableScreenLock();
-        Log.d("TEST","onPause() called at " + Calendar.getInstance().getTime().toGMTString());
 	}
 
     @Override
     public void turnScreenOff() {
-        Log.d("TEST","turnScreenOff() called at " + Calendar.getInstance().getTime().toGMTString());
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
 
-    protected void enableScreenLockTimer() { // TODO check usage
+    protected void enableScreenLockTimer() {
         // set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
         boardView.enableTouchTimer();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-//		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-//		wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "CoreActivity");
-//		wakeLock.setReferenceCounted(false);
-//		wakeLock.acquire();
     }
-
-//	protected void enableScreenLock() {
-//		if (wakeLock != null) {
-//			wakeLock.release();
-//		}
-//	}
 
 	protected BroadcastReceiver gameMoveReceiver = new BroadcastReceiver() {
 		@Override
@@ -350,10 +334,7 @@ public abstract class GameBaseActivity extends CoreActivityActionBar implements 
 							}
 							adPopup = null;
 						}
-						// determine which activity to run. move to upper level
-//						Toast.makeText(coreContext, "Should start online New Game Activity", Toast.LENGTH_SHORT).show();
 						onBackPressed();
-//						startActivity(new Intent(coreContext, OnlineNewGame.class));
 					}
 				});
 				newGame.setVisibility(View.VISIBLE);
