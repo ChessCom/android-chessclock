@@ -8,9 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -22,7 +19,6 @@ import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
@@ -72,7 +68,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+						"http://www." + LccHolder.HOST + "/api/get_friends?id="
+								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(LiveFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
