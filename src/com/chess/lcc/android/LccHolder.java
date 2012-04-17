@@ -37,12 +37,9 @@ public class LccHolder {
 	public static final Integer CONFIG_PORT = 80;
 	public static final String CONFIG_URI =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
-	public static final String CONFIG_AUTH_KEY =
+	/*public static final String CONFIG_AUTH_KEY =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
-					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");
-	public static final String CONFIG_CHAT_MESSAGE =
-			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.message"), "test!");
-	private static Integer MATCHED_COLOR = 1;
+					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
 	public static final String PKCS_12 = "PKCS12";
 	public static final String TESTTEST = "testtest";
 	public long previousFGTime;
@@ -50,15 +47,11 @@ public class LccHolder {
 	public long currentFGGameId;
 	public long previousFGGameId;
 
-
 	private ChatListenerImpl _chatListener;
 	private ConnectionListenerImpl _connectionListener;
 	private LccGameListener _gameListener;
 	private LiveChessClient _lccClient;
 	private User _user;
-	private UserSettings _settings;
-	private ServerStats _serverStats;
-	private Chat _mainChat;
 	private static LccHolder instance;
 	public static final Logger LOG = Logger.getLogger(LccHolder.class);
 	private AndroidStuff android = new AndroidStuff(this);
@@ -157,14 +150,6 @@ public class LccHolder {
 		return _connectionListener;
 	}
 
-	public Chat getMainChat() {
-		return _mainChat;
-	}
-
-	public void setMainChat(Chat mainChat) {
-		_mainChat = mainChat;
-	}
-
 	public User getUser() {
 		return _user;
 	}
@@ -175,14 +160,6 @@ public class LccHolder {
 
 	public LiveChessClient getClient() {
 		return _lccClient;
-	}
-
-	public void setSettings(UserSettings settings) {
-		_settings = settings;
-	}
-
-	public void setServerStats(ServerStats serverStats) {
-		_serverStats = serverStats;
 	}
 
 	public boolean isConnected() {
@@ -358,6 +335,10 @@ public class LccHolder {
 	public void removeFriend(User friend) {
 		friends.remove(friend.getUsername());
 		onlineFriends.remove(friend.getUsername());
+	}
+
+	public void clearOnlineFriends() {
+		onlineFriends.clear();
 	}
 
 	public String[] getOnlineFriends() {
@@ -649,6 +630,7 @@ public class LccHolder {
 		clearChallenges();
 		clearOwnChallenges();
 		clearSeeks();
+		clearOnlineFriends();
 		setNetworkTypeName(null);
 		//SessionStore.clear(android.getContext());
 	}

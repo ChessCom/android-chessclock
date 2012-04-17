@@ -27,8 +27,6 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		lccHolder.setUser(user);
 		lccHolder.setConnected(true);
 		lccHolder.setConnectingInProgress(false);
-		lccHolder.setSettings(settings);
-		lccHolder.setServerStats(stats);
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 		lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
