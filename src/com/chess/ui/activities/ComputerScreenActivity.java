@@ -1,7 +1,6 @@
 package com.chess.ui.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,8 +9,6 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -20,7 +17,7 @@ import com.flurry.android.FlurryAgent;
  * @author alien_roger
  * @created at: 08.02.12 7:21
  */
-public class ComputerScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
+public class ComputerScreenActivity extends LiveBaseActivity implements View.OnClickListener {
 
 	private Spinner strength;
 

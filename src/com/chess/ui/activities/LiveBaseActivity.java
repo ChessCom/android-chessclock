@@ -36,12 +36,18 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 		lccHolder.setOuterChallengeListener(outerChallengeListener);
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
+	}
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
 		if(fragment.getTag().equals(LOGOUT_TAG)){
 			lccHolder.logout();
 			backToHomeActivity();
+			
 		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
 
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
@@ -65,6 +71,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
+		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected(), menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

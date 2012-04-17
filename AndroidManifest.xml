@@ -27,7 +27,7 @@
     	>
         <activity android:name=".ui.core.SplashActivity"
                   android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Light.NoTitleBar"
+                  android:theme="@android:style/Theme.Black.NoTitleBar"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,7 +59,8 @@
         <activity android:name=".ui.activities.LoginScreenActivity"
                   android:theme="@style/OrangeButtonNotitle"
                   />
-        <activity android:name=".ui.activities.HomeScreenActivity" android:label=""/>
+        <activity android:name=".ui.activities.HomeScreenActivity" android:label=""
+			/>
 
         <!-- todo: try this?
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"

@@ -25,7 +25,7 @@ import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 
-public class OnlineNewGameActivity extends CoreActivityActionBar implements OnClickListener, OnItemClickListener {
+public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickListener, OnItemClickListener {
 
 	private ListView openChallengesListView;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();

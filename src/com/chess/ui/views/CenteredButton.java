@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import com.chess.R;
 import com.chess.RoboButton;
@@ -72,7 +71,7 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 
 		button = new RoboButton(getContext());
         button.setFont("Bold");
-		LayoutParams buttonParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		LayoutParams buttonParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		button.setLayoutParams(buttonParams);
 		button.setText(buttonText);
 		button.setTextAppearance(getContext(), R.style.DashboardItemText);
@@ -82,7 +81,7 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 		button.setShadowLayer(shadowRadius, shadowDx, shadowDy, Color.BLACK);
 		button.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
 		button.setBackgroundColor(Color.TRANSPARENT);
-		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		params.gravity = Gravity.CENTER;
 
 		addView(button, params);

@@ -20,7 +20,6 @@ import com.chess.model.GameListItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
  * @author alien_roger
  * @created at: 08.02.12 7:12
  */
-public class OnlineScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
+public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener {
 	private ListView gamesList;
 	private Spinner gamesTypeSpinner;
 	private OnlineGamesAdapter gamesAdapter = null;

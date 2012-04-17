@@ -13,6 +13,7 @@ import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.ui.core.AppConstants;
+import com.chess.ui.interfaces.LccConnectionListener;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 
@@ -92,6 +93,7 @@ public class LccHolder {
 	private Integer latestMoveNumber;
 	private Long currentGameId;
 	public String networkTypeName;
+	private LccConnectionListener externalConnectionListener;
 
 	public LccHolder(InputStream keyStoreInputStream, String versionName) {
 		Log.d("Chess.Com", "Start Chess.Com LCC mainApp");
@@ -904,5 +906,13 @@ public class LccHolder {
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
+	}
+
+	public void setExternalConnectionListener(LccConnectionListener externalConnectionListener) {
+		this.externalConnectionListener = externalConnectionListener;
+	}
+
+	public void updateConnectionState() {
+		externalConnectionListener.onConnected(connected);
 	}
 }

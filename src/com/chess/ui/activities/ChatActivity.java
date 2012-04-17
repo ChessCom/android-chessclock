@@ -17,7 +17,6 @@ import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 
@@ -25,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class ChatActivity extends CoreActivityActionBar implements OnClickListener {
+public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 	public static int MESSAGE_RECEIVED = 0;
 	public static int MESSAGE_SENT = 1;
 	private EditText sendText;

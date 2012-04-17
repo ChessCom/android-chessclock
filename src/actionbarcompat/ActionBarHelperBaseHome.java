@@ -81,7 +81,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		}
 
 		LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(0,
-				ViewGroup.LayoutParams.FILL_PARENT);
+				ViewGroup.LayoutParams.MATCH_PARENT);
 		springLayoutParams.weight = 1;
 
 		// Add Home button
@@ -115,6 +115,10 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		}
 	}
 
+	@Override
+	public void hideMenuItemById(int id, boolean show){
+		getActionBarCompat().findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
+	}
 	/**
 	 * Action bar helper code to be run in
 	 * {@link android.app.Activity#onCreateOptionsMenu(android.view.Menu)}.
@@ -150,6 +154,11 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		return new WrappedMenuInflater(mActivity, superMenuInflater);
 	}
 
+	@Override
+	public void hideMenuItemById(int itemId, boolean connected, Menu menu) {
+
+	}
+
 	/**
 	 * Returns the {@link android.view.ViewGroup} for the action bar on phones
 	 * (compatibility action bar). Can return null, and will return null on
@@ -166,6 +175,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 	 * loading spinner using
 	 * {@link ActionBarHelperBaseHome#setRefreshActionItemState(boolean)}
 	 * .
+	 * @param item
 	 */
 	private View addActionItemCompatFromMenuItem(final MenuItem item) {
 		final int itemId = item.getItemId();
@@ -182,7 +192,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		if (itemId == android.R.id.home) {
 			float density = mActivity.getResources().getDisplayMetrics().density;
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) mActivity.getResources().getDimension(
-					R.dimen.actionbar_my_compat_button_home_width), ViewGroup.LayoutParams.FILL_PARENT);
+					R.dimen.actionbar_my_compat_button_home_width), ViewGroup.LayoutParams.MATCH_PARENT);
 			int left = (int) (12 * density + 0.5f);
 			params.setMargins(0, 0, 2, 0);
 			actionButton.setPadding(left, 1, 3, 1);
@@ -190,7 +200,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		} else {
 			actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
 					R.dimen.actionbar_compat_button_width),
-					ViewGroup.LayoutParams.FILL_PARENT));
+					ViewGroup.LayoutParams.MATCH_PARENT));
 		}
 
 
@@ -200,6 +210,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		actionButton.setImageDrawable(item.getIcon());
 		actionButton.setScaleType(ImageView.ScaleType.CENTER);
 		actionButton.setContentDescription(item.getTitle());
+		actionButton.setId(itemId);
 		actionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

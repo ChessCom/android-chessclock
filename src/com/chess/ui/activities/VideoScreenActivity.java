@@ -15,8 +15,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
@@ -26,7 +24,7 @@ import com.flurry.android.FlurryAgent;
  * @author alien_roger
  * @created at: 08.02.12 7:19
  */
-public class VideoScreenActivity extends CoreActivityActionBar implements View.OnClickListener {
+public class VideoScreenActivity extends LiveBaseActivity implements View.OnClickListener {
 	private VideoItem item;
 	private View recent;
 	private Button upgrade;

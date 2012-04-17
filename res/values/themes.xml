@@ -19,7 +19,7 @@
     </style>
 
 
-    <style name="OrangeButtonNotitle" parent="android:style/Theme.Light.NoTitleBar">
+    <style name="OrangeButtonNotitle" parent="android:style/Theme.Black.NoTitleBar">
         <item name="android:buttonStyle">@style/Text.Button</item>
         <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>

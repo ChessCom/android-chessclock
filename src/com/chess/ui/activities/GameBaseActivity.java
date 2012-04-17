@@ -36,7 +36,7 @@ import java.util.Timer;
  * @author alien_roger
  * @created at: 05.03.12 21:18
  */
-public abstract class GameBaseActivity extends CoreActivityActionBar implements View.OnClickListener, GameActivityFace {
+public abstract class GameBaseActivity extends LiveBaseActivity implements View.OnClickListener, GameActivityFace {
 
 	protected final static int DIALOG_DRAW_OFFER = 4;
 	protected final static int DIALOG_ABORT_OR_RESIGN = 5;

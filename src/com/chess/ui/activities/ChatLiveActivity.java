@@ -25,7 +25,7 @@ import com.chess.ui.views.BackgroundChessDrawable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class ChatLiveActivity extends CoreActivityActionBar implements OnClickListener {
+public class ChatLiveActivity extends LiveBaseActivity implements OnClickListener {
 	public static int MESSAGE_RECEIVED = 0;
 	public static int MESSAGE_SENT = 1;
 	private EditText sendText;

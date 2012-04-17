@@ -23,7 +23,7 @@ import com.chess.utilities.MyProgressDialog;
 
 import java.util.ArrayList;
 
-public class VideoListActivity extends CoreActivityActionBar implements OnItemClickListener, View.OnClickListener, OnScrollListener {
+public class VideoListActivity extends LiveBaseActivity implements OnItemClickListener, View.OnClickListener, OnScrollListener {
 	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
 	private VideosAdapter videosAdapter = null;
 	private ListView videosListView;

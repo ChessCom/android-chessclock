@@ -121,7 +121,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		switch (id) {
 			case 0: {
 				if (temp_pos > -1) {
-//					final GameListItem el = mainApp.getGameListItems().get(temp_pos);
 					return new AlertDialog.Builder(this)
 							.setTitle(getString(R.string.accept_draw_q))
 							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)

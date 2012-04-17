@@ -83,7 +83,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		}
 
 		LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(0,
-				ViewGroup.LayoutParams.FILL_PARENT);
+				ViewGroup.LayoutParams.MATCH_PARENT);
 		springLayoutParams.weight = 1;
 
 		// Add Home button
@@ -114,6 +114,16 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		if (refreshIndicator != null) {
 			refreshIndicator.setVisibility(refreshing ? View.VISIBLE : View.GONE);
 		}
+	}
+
+	@Override
+	public void hideMenuItemById(int id, boolean show){
+		getActionBarCompat().findViewById(id).setVisibility(show? View.VISIBLE: View.GONE);
+	}
+
+	@Override
+	public void hideMenuItemById(int itemId, boolean connected, Menu menu) {
+
 	}
 
 	/**
@@ -181,13 +191,14 @@ public class ActionBarHelperBase extends ActionBarHelper {
 				itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
 		actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
 				itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
-						: R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.FILL_PARENT));
+						: R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.MATCH_PARENT));
 		if (itemId == R.id.menu_refresh) {
 			actionButton.setId(R.id.actionbar_compat_item_refresh);
 		}
 		actionButton.setImageDrawable(item.getIcon());
 		actionButton.setScaleType(ImageView.ScaleType.CENTER);
 		actionButton.setContentDescription(item.getTitle());
+		actionButton.setId(itemId);
 		actionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
