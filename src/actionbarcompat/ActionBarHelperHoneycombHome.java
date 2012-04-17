@@ -69,6 +69,23 @@ public class ActionBarHelperHoneycombHome extends ActionBarHelperHome {
 	}
 
 	/**
+	 * Hide actionbar item at specified id
+	 *
+	 * @param id   of item to show/hide
+	 * @param show
+	 */
+	@Override
+	public void hideMenuItemById(int id, boolean show) {
+		if(mActivity != null)
+			mActivity.invalidateOptionsMenu();
+	}
+
+	@Override
+	public void hideMenuItemById(int itemId, boolean visible, Menu menu) {
+		menu.findItem(itemId).setVisible(visible);
+	}
+
+	/**
 	 * Returns a {@link android.content.Context} suitable for inflating layouts
 	 * for the action bar. The implementation for this method in
 	 * {@link actionbarcompat.ActionBarHelperICS} asks the action bar for a themed coreContext.

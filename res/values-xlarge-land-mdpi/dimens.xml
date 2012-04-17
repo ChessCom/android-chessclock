@@ -17,6 +17,6 @@
 
 	<!--Popup-->
 	<dimen name="popup_dialog_width">200dip</dimen>
-	<dimen name="popup_dialog_text_max_width">150dip</dimen>
+	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 
 </resources>

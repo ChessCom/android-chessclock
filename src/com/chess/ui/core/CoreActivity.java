@@ -4,18 +4,25 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.Html;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.WindowManager;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
@@ -34,7 +41,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
-//	protected LccHolder lccHolder;
+	protected LccHolder lccHolder;
 	protected String response = "";
 	protected String responseRepeatable = "";
 	protected BackgroundChessDrawable backgroundChessDrawable;
@@ -72,7 +79,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-//		lccHolder = mainApp.getLccHolder();
+		lccHolder = mainApp.getLccHolder();
 	}
 
 
@@ -129,6 +136,12 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 								 */
 			return null;
 		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			lccHolder.updateConnectionState();
+		}
 	}
 
 	@Override
@@ -141,20 +154,20 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			checkUserTokenAndStartActivity();
 		}
 
-//		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-//		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
-//			reconnectingIndicator.dismiss();
-//			lccHolder.getAndroid().setReconnectingIndicator(null);
-//		}
-//
-//		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
-//			// lccHolder.getAndroid().showConnectingIndicator();
-//			manageConnectingIndicator(true, "Loading Live Chess");
-//
-//			new ReconnectTask().execute();
-//		}
+		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
+			reconnectingIndicator.dismiss();
+			lccHolder.getAndroid().setReconnectingIndicator(null);
+		}
+
+		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
+			// lccHolder.getAndroid().showConnectingIndicator();
+			manageConnectingIndicator(true, "Loading Live Chess");
+
+			new ReconnectTask().execute();
+		}
 		doBindService();
-//		registerReceivers();
+		registerReceivers();
 
 		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
 			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
@@ -181,7 +194,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			appService = null;
 		}
 
-//		unRegisterReceivers();
+		unRegisterReceivers();
 
 		// todo: how to logout user when he/she is switching to another
 // activity?
@@ -200,25 +213,25 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 
-//	private void registerReceivers(){
-//		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
-//		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-//		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
-//		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
-//		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
-//		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
-//		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
-//	}
+	private void registerReceivers(){
+		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
+		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
+		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
+		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
+		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
+		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
+		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
+	}
 
-//	private void unRegisterReceivers(){
-//		unregisterReceiver(receiver);
-//		unregisterReceiver(drawOfferedMessageReceiver);
-//		unregisterReceiver(lccLoggingInInfoReceiver);
-//		unregisterReceiver(lccReconnectingInfoReceiver);
-//		unregisterReceiver(informAndExitReceiver);
-//		unregisterReceiver(obsoleteProtocolVersionReceiver);
-//		unregisterReceiver(infoMessageReceiver);
-//	}
+	private void unRegisterReceivers(){
+		unregisterReceiver(receiver);
+		unregisterReceiver(drawOfferedMessageReceiver);
+		unregisterReceiver(lccLoggingInInfoReceiver);
+		unregisterReceiver(lccReconnectingInfoReceiver);
+		unregisterReceiver(informAndExitReceiver);
+		unregisterReceiver(obsoleteProtocolVersionReceiver);
+		unregisterReceiver(infoMessageReceiver);
+	}
 
 	private void checkUserTokenAndStartActivity() {
 		if (!mainApp.getUserName().equals("")) {
@@ -297,224 +310,224 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		}
 	};
 
-//	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-//			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
-//			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
-//					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
-//					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
-//					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
-//						}
-//					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//							lccHolder.getAndroid().runRejectDrawTask(game);
-//						}
-//					})
-//							/*
-//												 * .setNegativeButton(getString(R.string.cancel), new
-//												 * DialogInterface.OnClickListener() { public void
-//												 * onClick(DialogInterface dialog, int whichButton) {
-//												 * startActivity(new Intent(CoreActivity.this, Game.class).
-//												 * putExtra(AppConstants.GAME_MODE, 4).
-//												 * putExtra(GameListItem.GAME_ID,
-//												 * el.values.get(GameListItem.GAME_ID))); } })
-//												 */
-//					.create();
-//			alertDialog.setCanceledOnTouchOutside(true);
-//			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//				@Override
-//				public void onCancel(DialogInterface dialogInterface) {
-//					lccHolder.getAndroid().runRejectDrawTask(game);
-//				}
-//			});
-//			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-//			alertDialog.show();
-//		}
-//	};
-//
-//	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			if (mainApp.isLiveChess()) {
-//				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-//				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-//			}
-//		}
-//	};
-//
-//	public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			if (mainApp.isLiveChess()) {
-//				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
-//						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
-//				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-//				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
-//
-//				if (reconnectingIndicator != null) {
-//					reconnectingIndicator.dismiss();
-//					lccHolder.getAndroid().setReconnectingIndicator(null);
-//				}
-//				/* else */
-//				if (enable) {
-//					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
-//							&& !mainApp.isAdviewPaused()) {
-//						MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-//					}*/
-//					reconnectingIndicator = new MyProgressDialog(context);
-//					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
-//					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//						@Override
-//						public void onCancel(DialogInterface dialog) {
-//							lccHolder.logout();
-//							final Intent intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
-//							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//							// reconnectingIndicator.dismiss();
-//							mainApp.startActivity(intent);
-//						}
-//					});
-//					reconnectingIndicator.setCancelable(true);
-//					reconnectingIndicator.setIndeterminate(true);
-//					try {
-//						reconnectingIndicator.show();
-//						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
-//					} catch (Exception e) {
-//						lccHolder.logout();
-//						intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
-//						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//						// reconnectingIndicator.dismiss();
-//						mainApp.startActivity(intent);
-//					}
-//				} else {
-//					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
-//							&& mainApp.isAdviewPaused()) {
-//						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-//					}*/
-//				}
-//			}
-//		}
-//	};
-//
-//	public BroadcastReceiver informAndExitReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-//			if (message == null || message.trim().equals("")) {
-//				return;
-//			}
-//			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-//					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
-//					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//							if (mainApp.isLiveChess()/*
-//													 * &&
-//													 * lccHolder.isConnected()
-//													 */) {
-//								lccHolder.logout();
-//							}
-//							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
-//							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//							mainApp.startActivity(intent);
-//						}
-//					}).create().show();
-//		}
-//	};
-//
-//	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-//					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
-//					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//							final Handler handler = new Handler();
-//							handler.post(new Runnable() {
-//								@Override
-//								public void run() {
-//									mainApp.setLiveChess(false);
-//									lccHolder.setConnected(false);
-//									startActivity(new Intent(Intent.ACTION_VIEW, Uri
-//											.parse("http://www.chess.com/play/android.html")));
-//								}
-//							});
-//							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
-//							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//							mainApp.startActivity(intent);
-//						}
-//					}).create().show();
-//		}
-//	};
-//
-//	private final BroadcastReceiver infoMessageReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-//			final TextView messageView = new TextView(context);
-//			messageView.setMovementMethod(LinkMovementMethod.getInstance());
-//			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
-//			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-//			messageView.setGravity(Gravity.CENTER);
-//
-//			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
-//					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
-//					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(final DialogInterface dialog, int whichButton) {
-//							final Handler handler = new Handler();
-//							handler.post(new Runnable() {
-//								@Override
-//								public void run() {
-//									dialog.dismiss();
-//								}
-//							});
-//						}
-//					}).create().show();
-//		}
-//	};
-//
-//	private final BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-//			boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
-//			manageConnectingIndicator(enable, intent.getExtras().getString(AppConstants.MESSAGE));
-//		}
-//	};
-//
-//	private void manageConnectingIndicator(boolean enable, String message) {
-//		if (mainApp.isLiveChess()) {
-//			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
-//			if (connectingIndicator != null) {
-//				connectingIndicator.dismiss();
-//				lccHolder.getAndroid().setConnectingIndicator(null);
-//			} else if (enable) {
-//				connectingIndicator = new MyProgressDialog(this);
-//				connectingIndicator.setMessage(message);
-//				/*
-//				 * connectingIndicator.setOnCancelListener(new
-//				 * DialogInterface.OnCancelListener() { public void
-//				 * onCancel(DialogInterface dialog) {
-//				 *
-//				 * final Intent intent = new Intent(mainApp, Singin.class);
-//				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				 * //connectingIndicator.dismiss(); lccHolder.logout();
-//				 * mainApp.startActivity(intent); } });
-//				 */
-//				connectingIndicator.setCancelable(true);
-//				connectingIndicator.setIndeterminate(true);
-//				connectingIndicator.show();
-//				lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
-//			}
-//		}
-//	}
+	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
+			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
+					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
+					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int whichButton) {
+							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
+						}
+					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int whichButton) {
+							lccHolder.getAndroid().runRejectDrawTask(game);
+						}
+					})
+							/*
+												 * .setNegativeButton(getString(R.string.cancel), new
+												 * DialogInterface.OnClickListener() { public void
+												 * onClick(DialogInterface dialog, int whichButton) {
+												 * startActivity(new Intent(CoreActivity.this, Game.class).
+												 * putExtra(AppConstants.GAME_MODE, 4).
+												 * putExtra(GameListItem.GAME_ID,
+												 * el.values.get(GameListItem.GAME_ID))); } })
+												 */
+					.create();
+			alertDialog.setCanceledOnTouchOutside(true);
+			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialogInterface) {
+					lccHolder.getAndroid().runRejectDrawTask(game);
+				}
+			});
+			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+			alertDialog.show();
+		}
+	};
+
+	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (mainApp.isLiveChess()) {
+				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
+			}
+		}
+	};
+
+	public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (mainApp.isLiveChess()) {
+				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
+						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
+				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
+
+				if (reconnectingIndicator != null) {
+					reconnectingIndicator.dismiss();
+					lccHolder.getAndroid().setReconnectingIndicator(null);
+				}
+				/* else */
+				if (enable) {
+					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+							&& !mainApp.isAdviewPaused()) {
+						MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
+					}*/
+					reconnectingIndicator = new MyProgressDialog(context);
+					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
+					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
+						@Override
+						public void onCancel(DialogInterface dialog) {
+							lccHolder.logout();
+							final Intent intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							// reconnectingIndicator.dismiss();
+							mainApp.startActivity(intent);
+						}
+					});
+					reconnectingIndicator.setCancelable(true);
+					reconnectingIndicator.setIndeterminate(true);
+					try {
+						reconnectingIndicator.show();
+						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
+					} catch (Exception e) {
+						lccHolder.logout();
+						intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						// reconnectingIndicator.dismiss();
+						mainApp.startActivity(intent);
+					}
+				} else {
+					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+							&& mainApp.isAdviewPaused()) {
+						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
+					}*/
+				}
+			}
+		}
+	};
+
+	public BroadcastReceiver informAndExitReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
+			if (message == null || message.trim().equals("")) {
+				return;
+			}
+			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int whichButton) {
+							if (mainApp.isLiveChess()/*
+													 * &&
+													 * lccHolder.isConnected()
+													 */) {
+								lccHolder.logout();
+							}
+							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							mainApp.startActivity(intent);
+						}
+					}).create().show();
+		}
+	};
+
+	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int whichButton) {
+							final Handler handler = new Handler();
+							handler.post(new Runnable() {
+								@Override
+								public void run() {
+									mainApp.setLiveChess(false);
+									lccHolder.setConnected(false);
+									startActivity(new Intent(Intent.ACTION_VIEW, Uri
+											.parse("http://www.chess.com/play/android.html")));
+								}
+							});
+							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							mainApp.startActivity(intent);
+						}
+					}).create().show();
+		}
+	};
+
+	private final BroadcastReceiver infoMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+			final TextView messageView = new TextView(context);
+			messageView.setMovementMethod(LinkMovementMethod.getInstance());
+			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
+			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+			messageView.setGravity(Gravity.CENTER);
+
+			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(final DialogInterface dialog, int whichButton) {
+							final Handler handler = new Handler();
+							handler.post(new Runnable() {
+								@Override
+								public void run() {
+									dialog.dismiss();
+								}
+							});
+						}
+					}).create().show();
+		}
+	};
+
+	private final BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+			boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
+			manageConnectingIndicator(enable, intent.getExtras().getString(AppConstants.MESSAGE));
+		}
+	};
+
+	private void manageConnectingIndicator(boolean enable, String message) {
+		if (mainApp.isLiveChess()) {
+			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
+			if (connectingIndicator != null) {
+				connectingIndicator.dismiss();
+				lccHolder.getAndroid().setConnectingIndicator(null);
+			} else if (enable) {
+				connectingIndicator = new MyProgressDialog(this);
+				connectingIndicator.setMessage(message);
+				/*
+				 * connectingIndicator.setOnCancelListener(new
+				 * DialogInterface.OnCancelListener() { public void
+				 * onCancel(DialogInterface dialog) {
+				 *
+				 * final Intent intent = new Intent(mainApp, Singin.class);
+				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				 * //connectingIndicator.dismiss(); lccHolder.logout();
+				 * mainApp.startActivity(intent); } });
+				 */
+				connectingIndicator.setCancelable(true);
+				connectingIndicator.setIndeterminate(true);
+				connectingIndicator.show();
+				lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
+			}
+		}
+	}
 
 	@Override
 	public void unregisterReceiver(BroadcastReceiver receiver) {

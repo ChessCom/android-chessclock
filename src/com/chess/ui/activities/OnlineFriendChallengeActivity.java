@@ -16,12 +16,10 @@ import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 
-public class OnlineFriendChallengeActivity extends CoreActivityActionBar implements OnClickListener {
+public class OnlineFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
 	private Spinner iPlayAsSpinner;
 	private Spinner daysPerMoveSpinner;
 	private Spinner friendsSpinner;

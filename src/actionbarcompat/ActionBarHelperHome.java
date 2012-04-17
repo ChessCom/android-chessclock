@@ -93,6 +93,13 @@ public abstract class ActionBarHelperHome {
 	public abstract void setRefreshActionItemState(boolean refreshing);
 
 	/**
+	 * Hide actionbar item at specified id
+	 * @param id of item to show/hide
+	 * @param show
+	 */
+	public abstract void hideMenuItemById(int id, boolean show);
+
+	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
 	 * The implementation of this method in {@link actionbarcompat.ActionBarHelperBase} returns
 	 * a wrapped menu inflater that can read action bar metadata from a menu
@@ -101,4 +108,6 @@ public abstract class ActionBarHelperHome {
 	public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
 		return superMenuInflater;
 	}
+
+	public abstract void hideMenuItemById(int itemId, boolean connected, Menu menu);
 }

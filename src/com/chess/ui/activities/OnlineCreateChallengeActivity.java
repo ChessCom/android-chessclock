@@ -11,10 +11,9 @@ import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.utilities.MyProgressDialog;
 
-public class OnlineCreateChallengeActivity extends CoreActivityActionBar implements OnClickListener {
+public class OnlineCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
 	private Spinner iplayas;
 	private Spinner daysPerMoveSpinner;
 	private Spinner minrating;

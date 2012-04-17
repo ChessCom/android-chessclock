@@ -32,12 +32,9 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		return frag;
 	}
 
-
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setStyle(STYLE_NO_TITLE, 0);
 		setStyle(STYLE_NO_FRAME, 0);
 	}
 
@@ -49,6 +46,13 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		titleTxt = (TextView)v.findViewById(R.id.popupTitle);
 		leftBtn = (Button)v.findViewById(R.id.okBtn);
 		rightBtn = (Button)v.findViewById(R.id.cancelBtn);
+
+		leftBtn.setOnClickListener(this);
+		rightBtn.setOnClickListener(this);
+
+		if(popupItem == null){ // TODO handle NPE
+			return v;
+		}
 
 		if(popupItem.getMessageId() == 0)
 			messageTxt.setText(popupItem.getMessage());
@@ -63,13 +67,16 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		leftBtn.setText(popupItem.getLeftBtnId());
 		rightBtn.setText(popupItem.getRightBtnId());
 
-		leftBtn.setOnClickListener(this);
-		rightBtn.setOnClickListener(this);
 		return v;
 	}
 
 	@Override
 	public void onClick(View view) {
+		if(listener == null){  // TODO handle NPE
+			dismiss();
+			return;
+		}
+
 		if(view.getId() == R.id.okBtn){
 			listener.onLeftBtnClick(this);
 		}else if(view.getId() == R.id.cancelBtn){

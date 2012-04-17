@@ -16,9 +16,9 @@
 
 package actionbarcompat;
 
-import android.app.Activity;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.WindowManager;
@@ -32,7 +32,7 @@ import android.view.WindowManager;
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivityHome extends Activity {
+public abstract class ActionBarActivityHome extends FragmentActivity{
 	final ActionBarHelperHome mActionBarHelperMy = ActionBarHelperHome.createInstance(this);
 
 	@Override

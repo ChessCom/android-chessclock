@@ -1,13 +1,5 @@
 package com.mopub.mobileads;
 
-import java.util.ArrayList;
-
-import com.chess.R;
-import com.mopub.mobileads.MraidView.ExpansionStyle;
-import com.mopub.mobileads.MraidView.NativeCloseButtonStyle;
-import com.mopub.mobileads.MraidView.PlacementType;
-import com.mopub.mobileads.MraidView.ViewState;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,19 +12,21 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import com.chess.R;
+import com.mopub.mobileads.MraidView.ExpansionStyle;
+import com.mopub.mobileads.MraidView.NativeCloseButtonStyle;
+import com.mopub.mobileads.MraidView.PlacementType;
+import com.mopub.mobileads.MraidView.ViewState;
+
+import java.util.ArrayList;
 
 class MraidDisplayController extends MraidAbstractController {
     private static final String LOGTAG = "MraidDisplayController";
@@ -272,7 +266,7 @@ class MraidDisplayController extends MraidAbstractController {
         ViewGroup expansionViewContainer = createExpansionViewContainer(expansionContentView, 
                 (int) (width * mDensity), (int) (height * mDensity));
         mRootView.addView(expansionViewContainer, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         
         if (mNativeCloseButtonStyle == MraidView.NativeCloseButtonStyle.ALWAYS_VISIBLE || 
                 (!mAdWantsCustomCloseButton && 
@@ -321,13 +315,13 @@ class MraidDisplayController extends MraidAbstractController {
         });
         
         expansionLayout.addView(dimmingView, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         
         FrameLayout adContainerLayout = new FrameLayout(getView().getContext());
         adContainerLayout.setId(MraidView.AD_CONTAINER_LAYOUT_ID);
         
         adContainerLayout.addView(expansionContentView, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(expandWidth, expandHeight);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);

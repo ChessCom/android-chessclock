@@ -36,6 +36,7 @@ import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
@@ -43,7 +44,7 @@ import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
-		ActiveFragmentInterface, PopupDialogFace {
+		ActiveFragmentInterface, PopupDialogFace,LccConnectionListener {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -63,6 +64,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected Handler handler;
 	protected SharedPreferences preferences;
 
+	public boolean mIsBound;
+	public WebService appService = null;
+
+	
 	public abstract void update(int code);
 
 	public void setFullscreen() {
@@ -95,7 +100,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		lccHolder = mainApp.getLccHolder();
-
+		lccHolder.setExternalConnectionListener(this);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
@@ -132,8 +137,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	 * NI.isConnectedOrConnecting(); }
 	 */
 
-	public boolean mIsBound;
-	public WebService appService = null;
 
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
@@ -177,6 +180,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 								 * getString(R.string.updatinggameslist), true));
 								 */
 			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			lccHolder.updateConnectionState();
 		}
 	}
 
@@ -289,6 +298,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();
+	}
+
+	@Override
+	public void onConnected(boolean connected) {
+		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, connected);
 	}
 
 	@Override
@@ -591,6 +605,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			if (connectingIndicator != null) {
 				connectingIndicator.dismiss();
 				lccHolder.getAndroid().setConnectingIndicator(null);
+				lccHolder.updateConnectionState();
 			} else if (enable) {
 				connectingIndicator = new MyProgressDialog(this);
 				connectingIndicator.setMessage(message);

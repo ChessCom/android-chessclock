@@ -26,8 +26,8 @@ public class HTML5AdView extends AdView {
     
     static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER = 
         new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.FILL_PARENT, 
-                FrameLayout.LayoutParams.FILL_PARENT, 
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
     
     public HTML5AdView(Context context, MoPubView view) {

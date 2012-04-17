@@ -16,7 +16,6 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter2;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
@@ -29,7 +28,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 08.02.12 7:18
  */
-public class PreferencesScreenActivity extends CoreActivityActionBar implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class PreferencesScreenActivity extends LiveBaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 	private Spinner actionAfterMyMove;
 	private Spinner strength;
 	private CheckBox showSubmitButton;
