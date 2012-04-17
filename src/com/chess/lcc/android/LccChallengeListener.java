@@ -1,6 +1,5 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
 import com.chess.ui.core.AppConstants;
@@ -141,7 +140,7 @@ public class LccChallengeListener implements ChallengeListener {
 			// show popup dialog with challenge invitation
 			outerChallengeListener.showDialog(challenge);
 		}
-//		lccHolder.putChallenge(challenge.getId(), challenge);
+		lccHolder.putChallenge(challenge.getId(), challenge);
 
 		/*if(!challenge.getTo().equals(lccHolder.getUser().getUsername()))
 			{
@@ -214,5 +213,9 @@ public class LccChallengeListener implements ChallengeListener {
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
 		this.outerChallengeListener = outerChallengeListener;
+	}
+
+	public OuterChallengeListener getOuterChallengeListener() {
+		return outerChallengeListener;
 	}
 }

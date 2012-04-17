@@ -57,8 +57,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private GameListItemLongClickListener gameListItemLongClickListener;
 	//	private NewGamesButtonsAdapter newGamesButtonsAdapter;
 	private GameListItemDialogListener gameListItemDialogListener;
-	private ChallengeDialogListener challengeDialogListener;
-	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
+//	private ChallengeDialogListener challengeDialogListener;
+//	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
 	private IsIndirectDialogListener indirectDialogListener;
 	private NonLiveDialogListener nonLiveDialogListener;
 
@@ -225,8 +225,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gameListItemClickListener = new GameListItemClickListener();
 		gameListItemLongClickListener = new GameListItemLongClickListener();
 		gameListItemDialogListener = new GameListItemDialogListener();
-		challengeDialogListener = new ChallengeDialogListener();
-		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
+//		challengeDialogListener = new ChallengeDialogListener();
+//		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
 		indirectDialogListener = new IsIndirectDialogListener();
 		nonLiveDialogListener = new NonLiveDialogListener();
 	}
@@ -329,45 +329,45 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
-
-			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info("Accept challenge: " + challenge);
-				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.getGameId());
-				update(2);
-			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info("Decline challenge: " + challenge);
-				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.getGameId());
-				update(3);
-			}
-		}
-	}
-
-	private class IsDirectDialogChallengeListener implements DialogInterface.OnClickListener {
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
-			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
-				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.getGameId());
-				update(4);
-			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
-			}
-		}
-	}
+//	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
+//
+//		@Override
+//		public void onClick(DialogInterface d, int pos) {
+//
+////			final GameListItem el = mainApp.getGameListItems().get(pos);
+//
+//			if (pos == 0) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info("Accept challenge: " + challenge);
+//				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
+//				lccHolder.removeChallenge(gameListElement.getGameId());
+//				update(2);
+//			} else if (pos == 1) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info("Decline challenge: " + challenge);
+//				lccHolder.getAndroid().runRejectChallengeTask(challenge);
+//				lccHolder.removeChallenge(gameListElement.getGameId());
+//				update(3);
+//			}
+//		}
+//	}
+//
+//	private class IsDirectDialogChallengeListener implements DialogInterface.OnClickListener {
+//		@Override
+//		public void onClick(DialogInterface d, int pos) {
+////			final GameListItem el = mainApp.getGameListItems().get(pos);
+//			if (pos == 0) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
+//				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+//				lccHolder.removeChallenge(gameListElement.getGameId());
+//				update(4);
+//			} else if (pos == 1) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
+//			}
+//		}
+//	}
 
 	private class IsIndirectDialogListener implements DialogInterface.OnClickListener {
 		@Override

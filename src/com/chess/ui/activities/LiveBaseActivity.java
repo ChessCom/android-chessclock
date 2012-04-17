@@ -48,21 +48,23 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 			lccHolder.logout();
 			backToHomeActivity();
 			
-		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
+		}else if(fragment.getTag().equals(CHALLENGE_TAG)){// Challenge accepted!
 
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
-			update(2);
+			lccHolder.declineAllChallenges(currentChallenge);
+//			update(2);  // TODO verify
 		}
 		fragment.getDialog().dismiss();
 	}
 
 	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
+	public void onRightBtnClick(PopupDialogFragment fragment) {// Challenge declined!
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
-			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
-			update(3);
+//			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
+			lccHolder.declineCurrentChallenge(currentChallenge);
+//			update(3); // TODO verify
 		}
 		fragment.getDialog().dismiss();
 	}

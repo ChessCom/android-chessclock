@@ -25,14 +25,14 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 	private Button currentGame;
 	private Button upgradeBtn;
 	private GameListItem gameListElement;
-	private ChallengeDialogListener challengeDialogListener;
-	private DirectChallengeDialogListener directChallengeDialogListener;
+//	private ChallengeDialogListener challengeDialogListener;
+//	private DirectChallengeDialogListener directChallengeDialogListener;
 	private ReleasedByMeDialogListener releasedByMeDialogListener;
 	private MoPubView moPubAdView;
 
 	private void init() {
-		challengeDialogListener = new ChallengeDialogListener();
-		directChallengeDialogListener = new DirectChallengeDialogListener();
+//		challengeDialogListener = new ChallengeDialogListener();
+//		directChallengeDialogListener = new DirectChallengeDialogListener();
 		releasedByMeDialogListener = new ReleasedByMeDialogListener();
 	}
 
@@ -164,40 +164,40 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		}
 	}
 
-	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info("Accept challenge: " + challenge);
-				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.getGameId());
-				update(GameBaseActivity.CALLBACK_COMP_MOVE);
-			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info("Decline challenge: " + challenge);
-				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.getGameId());
-				update(3);
-			}
-		}
-	}
-
-	private class DirectChallengeDialogListener implements DialogInterface.OnClickListener {
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-			if (pos == 0) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
-				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-				lccHolder.removeChallenge(gameListElement.getGameId());
-				update(4);
-			} else if (pos == 1) {
-				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
-			}
-		}
-	}
+//	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
+//		@Override
+//		public void onClick(DialogInterface d, int pos) {
+//			if (pos == 0) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info("Accept challenge: " + challenge);
+//				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
+//				lccHolder.removeChallenge(gameListElement.getGameId());
+//				update(GameBaseActivity.CALLBACK_COMP_MOVE);
+//			} else if (pos == 1) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info("Decline challenge: " + challenge);
+//				lccHolder.getAndroid().runRejectChallengeTask(challenge);
+//				lccHolder.removeChallenge(gameListElement.getGameId());
+//				update(3);
+//			}
+//		}
+//	}
+//
+//	private class DirectChallengeDialogListener implements DialogInterface.OnClickListener {
+//		@Override
+//		public void onClick(DialogInterface d, int pos) {
+//			if (pos == 0) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
+//				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+//				lccHolder.removeChallenge(gameListElement.getGameId());
+//				update(4);
+//			} else if (pos == 1) {
+//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
+//				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
+//			}
+//		}
+//	}
 
 	private class ReleasedByMeDialogListener implements DialogInterface.OnClickListener {
 		@Override

@@ -65,7 +65,8 @@ public class LccHolder {
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 	// TODO move all hashMaps to DB
-	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
+//	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
+	private List<Challenge> challenges = new ArrayList<Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
 	private HashMap<Long, Challenge> ownChallenges = new HashMap<Long, Challenge>();
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
@@ -208,8 +209,11 @@ public class LccHolder {
 		android.updateChallengesList();
 	}
 
-	public Challenge getChallenge(long challengeId) {
-		return challenges.get(challengeId);
+//	public Challenge getChallenge(long challengeId) {
+//		return challenges.get(challengeId);
+//	}
+	public Challenge getLastChallenge() {
+		return challenges.get(challenges.size()-1);
 	}
 
 	public void addOwnChallenge(Challenge challenge) {
@@ -315,7 +319,8 @@ public class LccHolder {
 	}
 
 	public void putChallenge(Long challengeId, Challenge lccChallenge) {
-		challenges.put(challengeId, lccChallenge);
+//		challenges.put(challengeId, lccChallenge);
+		challenges.add(lccChallenge);
 		android.updateChallengesList();
 	}
 
@@ -399,7 +404,8 @@ public class LccHolder {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
 		Collection<Challenge> challengesAndSeeks = new ArrayList<Challenge>();
-		challengesAndSeeks.addAll(challenges.values());
+//		challengesAndSeeks.addAll(challenges.values());
+		challengesAndSeeks.addAll(challenges);
 		challengesAndSeeks.addAll(seeks.values());
 
 		boolean isReleasedByMe;
@@ -914,5 +920,40 @@ public class LccHolder {
 
 	public void updateConnectionState() {
 		externalConnectionListener.onConnected(connected);
+	}
+
+	public void declineAllChallenges(Challenge acceptedChallenge) {
+		// TODO decline all challenges except acceptedChallenge
+		
+		List<Challenge> removeMe = new ArrayList<Challenge>();
+		for (Challenge challenge : challenges) {
+			if(!challenge.equals(acceptedChallenge))
+				removeMe.add(challenge);
+		}
+		Challenge[] declinedChallenges = new Challenge[removeMe.size()];
+		for (int i = 0, removeMeSize = removeMe.size(); i < removeMeSize; i++) {
+			Challenge challenge = removeMe.get(i);
+			declinedChallenges[i] = challenge;
+		}
+
+		getAndroid().runRejectBatchChallengeTask(declinedChallenges);
+	}
+
+	public void declineCurrentChallenge(Challenge currentChallenge) {
+		getAndroid().runRejectChallengeTask(currentChallenge);
+		final List<Challenge> retainMe = new ArrayList<Challenge>();
+		for (Challenge challenge : challenges) {
+			if(!challenge.equals(currentChallenge))
+				 retainMe.add(challenge);
+		}
+
+//		new Handler().postDelayed(new Runnable() { // TODO
+//			@Override
+//			public void run() {
+//				if (retainMe.size() > 0)
+//					challengeListener.getOuterChallengeListener().showDialog(retainMe.get(retainMe.size() - 1));
+//			}
+//		}, 3 * 1000);
+		// show next challenge if exist
 	}
 }

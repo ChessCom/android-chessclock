@@ -326,6 +326,22 @@ public class AndroidStuff {
 		}
 	}
 
+	public void runRejectBatchChallengeTask(Challenge[] challenge) {
+		new LiveRejectBatchChallengeTask().execute(challenge);
+	}
+	
+	private class LiveRejectBatchChallengeTask extends AsyncTask<Challenge, Void, Void> {
+		@Override
+		protected Void doInBackground(Challenge... challenges) {
+			for (Challenge challenge : challenges) {
+				lccHolder.getClient().rejectChallenge(challenge, lccHolder.getChallengeListener());
+			}
+			return null;
+		}
+	}
+
+	
+	
 	public void runRejectDrawTask(Game game) {
 		new LiveRejectDrawTask().execute(game);
 	}
