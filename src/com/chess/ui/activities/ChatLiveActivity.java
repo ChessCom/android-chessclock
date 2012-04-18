@@ -15,12 +15,9 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.live.client.ChatMessage;
 import com.chess.model.GameItem;
-import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
-import com.chess.ui.views.BackgroundChessDrawable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

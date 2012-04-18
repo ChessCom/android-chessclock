@@ -11,7 +11,6 @@ import android.view.View;
 import com.chess.R;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
-import com.chess.live.client.User;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
@@ -71,19 +70,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		findViewById(R.id.submit).setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
 
-		if (lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) {
+		if (lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) { // TODO check if needed
 			lccHolder.getWhiteClock().paint();
 			lccHolder.getBlackClock().paint();
-
-			Game game = lccHolder.getGame(extras.getLong(GameListItem.GAME_ID));
-			User whiteUser = game.getWhitePlayer();
-			User blackUser = game.getBlackPlayer();
-			Boolean isWhite;
-			if (!game.isMoveOf(whiteUser) && !game.isMoveOf(blackUser))
-				isWhite = null;
-			else
-				isWhite = game.isMoveOf(whiteUser);
-//			lccHolder.setClockDrawPointer(isWhite);
 		}
 
 		// hide black dot for right label
@@ -482,7 +471,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {
-//			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
 			switch (i) {
 				case LIVE_SETTINGS:
 					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));

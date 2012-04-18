@@ -53,6 +53,7 @@ public class MopubHelper {
 		}*/
 
 		//moPubAdView.setVisibility(View.VISIBLE);
+		wrapper.removeAllViews(); // TODO check. because it throws java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
 		wrapper.addView(rectangleAdView);
 		rectangleAdView.loadAd();
 

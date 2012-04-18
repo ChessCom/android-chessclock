@@ -13,6 +13,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.model.PopupItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.ui.fragments.PopupDialogFragment;
@@ -124,12 +125,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
 		if(fragment.getTag().equals(LOGOUT_TAG)){
 			lccHolder.logout();
+			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
 		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
-
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);
-//			update(2);  // TODO verify
 		}
 		fragment.getDialog().dismiss();
 	}
@@ -138,9 +138,8 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onRightBtnClick(PopupDialogFragment fragment) {// Challenge declined!
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
-			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
+//			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
 			lccHolder.declineCurrentChallenge(currentChallenge);
-//			update(3); // TODO verify
 		}
 		fragment.getDialog().dismiss();
 	}
@@ -157,30 +156,55 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
+				PopupItem popupItem = new PopupItem();
 				popupItem.setTitle(R.string.confirm);
 				popupItem.setMessage(R.string.signout_confirm);
 
-				popupDialogFragment.updatePopupItem(popupItem);
+//				popupDialogFragment.updatePopupItem(popupItem);
+				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 				popupDialogFragment.show(getSupportFragmentManager(), LOGOUT_TAG);
+//				popupManager.add(popupDialogFragment);
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {
-
 		@Override
-		public void showDialog(Challenge challenge) {
-
+		public void showDelayedDialog(Challenge challenge) {
 			currentChallenge = challenge;
-
+			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
 			popupItem.setRightBtnId(R.string.decline);
 			popupItem.setLeftBtnId(R.string.accept);
 
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
+//			popupDialogFragment.updatePopupItem(popupItem);
+			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+		}
+
+		@Override
+		public void showDialog(Challenge challenge) {
+			if(popupDialogFragment.getDialog() != null && popupDialogFragment.getDialog().isShowing()){
+				return;
+			}
+
+			currentChallenge = challenge;
+//			PopupItem popupItem = new PopupItem();
+			popupItem.setTitle(R.string.you_been_challenged);
+			popupItem.setMessage(composeMessage(challenge));
+			popupItem.setRightBtnId(R.string.decline);
+			popupItem.setLeftBtnId(R.string.accept);
+
+//			PopupDialogFragment popupFragment = PopupDialogFragment.newInstance(popupItem, LiveBaseActivity.this);
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+		}
+
+		@Override
+		public void hidePopups() {
+			dismissAllPopups();
 		}
 
 		private String composeMessage(Challenge challenge){

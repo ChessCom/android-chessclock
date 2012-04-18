@@ -10,4 +10,8 @@ import com.chess.live.client.Challenge;
  */
 public interface OuterChallengeListener {
 	void showDialog(Challenge challenge);
+
+	void hidePopups();
+
+	void showDelayedDialog(Challenge challenge);
 }

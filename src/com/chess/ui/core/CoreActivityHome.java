@@ -33,6 +33,9 @@ import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class CoreActivityHome extends ActionBarActivityHome implements CoreActivityFace
 		, PopupDialogFace, LccConnectionListener {
 
@@ -54,6 +57,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
+	protected List<PopupDialogFragment> popupManager;
 
 	public abstract void update(int code);
 
@@ -81,6 +85,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		
 		popupItem = new PopupItem();
 		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+		popupManager = new ArrayList<PopupDialogFragment>();
 	}
 
 	@Override
@@ -123,6 +128,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			appService = null;
 		}
 	};
+
+	public void dismissAllPopups(){
+		for (PopupDialogFragment fragment : popupManager) {
+			fragment.getDialog().dismiss();
+		}
+	}
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {

@@ -43,6 +43,9 @@ import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
 		ActiveFragmentInterface, PopupDialogFace,LccConnectionListener {
 
@@ -59,6 +62,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
+	protected List<PopupDialogFragment> popupManager;
 
 	protected Context coreContext;
 	protected Handler handler;
@@ -86,6 +90,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		popupItem = new PopupItem();
 		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+		popupManager = new ArrayList<PopupDialogFragment>();
 
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
@@ -298,6 +303,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();
+	}
+
+	public void dismissAllPopups(){
+		for (PopupDialogFragment fragment : popupManager) {
+			fragment.getDialog().dismiss();
+		}
 	}
 
 	@Override

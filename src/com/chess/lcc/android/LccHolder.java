@@ -58,8 +58,8 @@ public class LccHolder {
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 	// TODO move all hashMaps to DB
-//	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
-	private List<Challenge> challenges = new ArrayList<Challenge>();
+	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
+//	private List<Challenge> challenges = new ArrayList<Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
 	private HashMap<Long, Challenge> ownChallenges = new HashMap<Long, Challenge>();
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
@@ -296,8 +296,8 @@ public class LccHolder {
 	}
 
 	public void putChallenge(Long challengeId, Challenge lccChallenge) {
-//		challenges.put(challengeId, lccChallenge);
-		challenges.add(lccChallenge);
+		challenges.put(challengeId, lccChallenge);
+//		challenges.add(lccChallenge);
 		android.updateChallengesList();
 	}
 
@@ -385,8 +385,8 @@ public class LccHolder {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
 		Collection<Challenge> challengesAndSeeks = new ArrayList<Challenge>();
-//		challengesAndSeeks.addAll(challenges.values());
-		challengesAndSeeks.addAll(challenges);
+		challengesAndSeeks.addAll(challenges.values());
+//		challengesAndSeeks.addAll(challenges);
 		challengesAndSeeks.addAll(seeks.values());
 
 		boolean isReleasedByMe;
@@ -908,7 +908,7 @@ public class LccHolder {
 		// TODO decline all challenges except acceptedChallenge
 		
 		List<Challenge> removeMe = new ArrayList<Challenge>();
-		for (Challenge challenge : challenges) {
+		for (Challenge challenge : challenges.values()) {
 			if(!challenge.equals(acceptedChallenge))
 				removeMe.add(challenge);
 		}
@@ -919,23 +919,18 @@ public class LccHolder {
 		}
 
 		getAndroid().runRejectBatchChallengeTask(declinedChallenges);
+		challengeListener.getOuterChallengeListener().hidePopups();
 	}
 
 	public void declineCurrentChallenge(Challenge currentChallenge) {
 		getAndroid().runRejectChallengeTask(currentChallenge);
 		final List<Challenge> retainMe = new ArrayList<Challenge>();
-		for (Challenge challenge : challenges) {
+		for (Challenge challenge : challenges.values()) {
 			if(!challenge.equals(currentChallenge))
 				 retainMe.add(challenge);
 		}
 
-//		new Handler().postDelayed(new Runnable() { // TODO
-//			@Override
-//			public void run() {
-//				if (retainMe.size() > 0)
-//					challengeListener.getOuterChallengeListener().showDialog(retainMe.get(retainMe.size() - 1));
-//			}
-//		}, 3 * 1000);
-		// show next challenge if exist
+		if (retainMe.size() > 0)
+			challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
 	}
 }
