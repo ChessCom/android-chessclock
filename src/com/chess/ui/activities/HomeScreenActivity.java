@@ -139,9 +139,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
 //			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
-			lccHolder.declineCurrentChallenge(currentChallenge);
-		}
-		fragment.getDialog().dismiss();
+            fragment.getDialog().dismiss();
+            lccHolder.declineCurrentChallenge(currentChallenge);
+//			update(3); // TODO verify
+        }else
+            fragment.getDialog().dismiss();
 	}
 
 	@Override

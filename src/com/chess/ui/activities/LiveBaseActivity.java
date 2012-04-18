@@ -67,7 +67,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 			fragment.getDialog().dismiss();
 			lccHolder.declineCurrentChallenge(currentChallenge);
 //			update(3); // TODO verify
-		}
+		}else
+            fragment.getDialog().dismiss();
 	}
 
 	@Override
