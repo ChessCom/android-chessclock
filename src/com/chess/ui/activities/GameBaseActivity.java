@@ -512,9 +512,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		if (/*lccHolder.isActivityPausedMode() && */lccHolder.getPausedActivityGameEvents().size() > 0) {
 			//boolean fullGameProcessed = false;
 			GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);
-			if (gameEvent != null &&
-					(lccHolder.getCurrentGameId() == null
-							|| lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
+			if (gameEvent != null && (lccHolder.getCurrentGameId() == null
+                    || lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
 				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);

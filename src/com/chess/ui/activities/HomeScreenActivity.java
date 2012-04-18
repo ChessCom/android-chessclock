@@ -317,37 +317,28 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
-			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class
-					: LiveScreenActivity.class;
-			Intent intent = new Intent(context, clazz);
-			intent.putExtra(AppConstants.LIVE_CHESS, true);
-			startActivity(intent);
+			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : LiveScreenActivity.class;
+			startActivity(new Intent(context, clazz));
 
 		} else if (v.getId() == R.id.playOnlineFrame) {
-			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class
-					: OnlineScreenActivity.class;
-			Intent intent = new Intent(context, clazz);
-			intent.putExtra(AppConstants.LIVE_CHESS, false);
-			startActivity(intent);
+			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : OnlineScreenActivity.class;
+			startActivity(new Intent(context, clazz));
 
 		} else if (v.getId() == R.id.playComputerFrame) {
 			startActivity(new Intent(context, ComputerScreenActivity.class));
 
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
-			Intent intent = new Intent(context, GameTacticsScreenActivity.class);
-			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
-			intent.putExtra(AppConstants.LIVE_CHESS, false);
-			startActivity(intent);
+//			Intent intent = new Intent(context, GameTacticsScreenActivity.class);
+//			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
+//			intent.putExtra(AppConstants.LIVE_CHESS, false); // TODO remove
+//			startActivity(intent);
+			startActivity(new Intent(context, GameTacticsScreenActivity.class));
 
 		} else if (v.getId() == R.id.videoLessonsFrame) {
 			startActivity(new Intent(context, VideoScreenActivity.class));
 
 		} else if (v.getId() == R.id.settingsFrame) {
 			startActivity(new Intent(context, PreferencesScreenActivity.class));
-//			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + "/login.html?als="
-//					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST
-//					+ "%2Fmembership.html?c=androidads")));
-//		} else if (v.getId() == R.id.logOutFrame) {
 		}
 	}
 

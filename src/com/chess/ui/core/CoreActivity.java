@@ -41,7 +41,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
-	protected LccHolder lccHolder;
+//	protected LccHolder lccHolder;
 	protected String response = "";
 	protected String responseRepeatable = "";
 	protected BackgroundChessDrawable backgroundChessDrawable;
@@ -79,7 +79,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-		lccHolder = mainApp.getLccHolder();
+//		lccHolder = mainApp.getLccHolder();
 	}
 
 
@@ -137,11 +137,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			return null;
 		}
 
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			super.onPostExecute(aVoid);
-			lccHolder.updateConnectionState();
-		}
 	}
 
 	@Override
@@ -154,18 +149,18 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			checkUserTokenAndStartActivity();
 		}
 
-		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
-			reconnectingIndicator.dismiss();
-			lccHolder.getAndroid().setReconnectingIndicator(null);
-		}
+//		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+//		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
+//			reconnectingIndicator.dismiss();
+//			lccHolder.getAndroid().setReconnectingIndicator(null);
+//		}
 
-		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
-			// lccHolder.getAndroid().showConnectingIndicator();
-			manageConnectingIndicator(true, "Loading Live Chess");
-
-			new ReconnectTask().execute();
-		}
+//		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
+//			// lccHolder.getAndroid().showConnectingIndicator();
+//			manageConnectingIndicator(true, "Loading Live Chess");
+//
+//			new ReconnectTask().execute();
+//		}
 		doBindService();
 		registerReceivers();
 
@@ -217,7 +212,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
-		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
+//		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
 		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
 		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
 		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
@@ -225,7 +220,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 	private void unRegisterReceivers(){
 		unregisterReceiver(receiver);
-		unregisterReceiver(drawOfferedMessageReceiver);
+//		unregisterReceiver(drawOfferedMessageReceiver);
 		unregisterReceiver(lccLoggingInInfoReceiver);
 		unregisterReceiver(lccReconnectingInfoReceiver);
 		unregisterReceiver(informAndExitReceiver);
@@ -298,7 +293,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+//				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -310,107 +306,94 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		}
 	};
 
-	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
-			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
-					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
-					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
-					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
-						}
-					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							lccHolder.getAndroid().runRejectDrawTask(game);
-						}
-					})
-							/*
-												 * .setNegativeButton(getString(R.string.cancel), new
-												 * DialogInterface.OnClickListener() { public void
-												 * onClick(DialogInterface dialog, int whichButton) {
-												 * startActivity(new Intent(CoreActivity.this, Game.class).
-												 * putExtra(AppConstants.GAME_MODE, 4).
-												 * putExtra(GameListItem.GAME_ID,
-												 * el.values.get(GameListItem.GAME_ID))); } })
-												 */
-					.create();
-			alertDialog.setCanceledOnTouchOutside(true);
-			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialogInterface) {
-					lccHolder.getAndroid().runRejectDrawTask(game);
-				}
-			});
-			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-			alertDialog.show();
-		}
-	};
+//	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+//			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
+//			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
+//					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
+//					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
+//					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
+//						@Override
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
+//						}
+//					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
+//						@Override
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//							lccHolder.getAndroid().runRejectDrawTask(game);
+//						}
+//					})
+//					.create();
+//			alertDialog.setCanceledOnTouchOutside(true);
+//			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//				@Override
+//				public void onCancel(DialogInterface dialogInterface) {
+//					lccHolder.getAndroid().runRejectDrawTask(game);
+//				}
+//			});
+//			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+//			alertDialog.show();
+//		}
+//	};
 
-	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-			}
-		}
-	};
+//	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			if (mainApp.isLiveChess()) {
+//				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+//				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
+//			}
+//		}
+//	};
 
 	public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
-						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
-				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
-
-				if (reconnectingIndicator != null) {
-					reconnectingIndicator.dismiss();
-					lccHolder.getAndroid().setReconnectingIndicator(null);
-				}
-				/* else */
-				if (enable) {
-					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
-							&& !mainApp.isAdviewPaused()) {
-						MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-					}*/
-					reconnectingIndicator = new MyProgressDialog(context);
-					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
-					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
-						@Override
-						public void onCancel(DialogInterface dialog) {
-							lccHolder.logout();
-							final Intent intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
-							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							// reconnectingIndicator.dismiss();
-							mainApp.startActivity(intent);
-						}
-					});
-					reconnectingIndicator.setCancelable(true);
-					reconnectingIndicator.setIndeterminate(true);
-					try {
-						reconnectingIndicator.show();
-						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
-					} catch (Exception e) {
-						lccHolder.logout();
-						intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						// reconnectingIndicator.dismiss();
-						mainApp.startActivity(intent);
-					}
-				} else {
-					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
-							&& mainApp.isAdviewPaused()) {
-						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-					}*/
-				}
-			}
+//			if (mainApp.isLiveChess()) { // TODO here it can't be live chess
+//				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
+//						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
+//				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+//				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
+//
+//				if (reconnectingIndicator != null) {
+//					reconnectingIndicator.dismiss();
+//					lccHolder.getAndroid().setReconnectingIndicator(null);
+//				}
+//
+//				if (enable) {
+//					reconnectingIndicator = new MyProgressDialog(context);
+//					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
+//					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//						@Override
+//						public void onCancel(DialogInterface dialog) {
+//							lccHolder.logout();
+//							final Intent intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
+//							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//							// reconnectingIndicator.dismiss();
+//							mainApp.startActivity(intent);
+//						}
+//					});
+//					reconnectingIndicator.setCancelable(true);
+//					reconnectingIndicator.setIndeterminate(true);
+//					try {
+//						reconnectingIndicator.show();
+//						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
+//					} catch (Exception e) {
+//						lccHolder.logout();
+//						intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
+//						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//						// reconnectingIndicator.dismiss();
+//						mainApp.startActivity(intent);
+//					}
+//				} else {
+//					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
+//							&& mainApp.isAdviewPaused()) {
+//						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
+//					}*/
+//				}
+//			}
 		}
 	};
 
@@ -426,12 +409,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							if (mainApp.isLiveChess()/*
-													 * &&
-													 * lccHolder.isConnected()
-													 */) {
-								lccHolder.logout();
-							}
 							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
@@ -452,8 +429,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 							handler.post(new Runnable() {
 								@Override
 								public void run() {
-									mainApp.setLiveChess(false);
-									lccHolder.setConnected(false);
+//									mainApp.setLiveChess(false);
+//									lccHolder.setConnected(false);
 									startActivity(new Intent(Intent.ACTION_VIEW, Uri
 											.parse("http://www.chess.com/play/android.html")));
 								}
@@ -503,34 +480,24 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	};
 
 	private void manageConnectingIndicator(boolean enable, String message) {
-		if (mainApp.isLiveChess()) {
-			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
-			if (connectingIndicator != null) {
-				connectingIndicator.dismiss();
-				lccHolder.getAndroid().setConnectingIndicator(null);
-			} else if (enable) {
-				connectingIndicator = new MyProgressDialog(this);
-				connectingIndicator.setMessage(message);
-				/*
-				 * connectingIndicator.setOnCancelListener(new
-				 * DialogInterface.OnCancelListener() { public void
-				 * onCancel(DialogInterface dialog) {
-				 *
-				 * final Intent intent = new Intent(mainApp, Singin.class);
-				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				 * //connectingIndicator.dismiss(); lccHolder.logout();
-				 * mainApp.startActivity(intent); } });
-				 */
-				connectingIndicator.setCancelable(true);
-				connectingIndicator.setIndeterminate(true);
-				connectingIndicator.show();
-				lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
-			}
-		}
+//		if (mainApp.isLiveChess()) {  // TODO it can't be live chess here
+//			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
+//			if (connectingIndicator != null) {
+//				connectingIndicator.dismiss();
+//				lccHolder.getAndroid().setConnectingIndicator(null);
+//			} else if (enable) {
+//				connectingIndicator = new MyProgressDialog(this);
+//				connectingIndicator.setMessage(message);
+//				connectingIndicator.setCancelable(true);
+//				connectingIndicator.setIndeterminate(true);
+//				connectingIndicator.show();
+//				lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
+//			}
+//		}
 	}
 
 	@Override
-	public void unregisterReceiver(BroadcastReceiver receiver) {
+	public void unregisterReceiver(BroadcastReceiver receiver) { // TODO handle unregister receiver correctly
 		try {
 			super.unregisterReceiver(receiver);
 		} catch (IllegalArgumentException e) {

@@ -188,19 +188,16 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, password.getText().toString().trim());
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
-		Log.d("TEST", "response = " + response);
 		try {
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
 		} catch (UnsupportedEncodingException ignored) {
 		}
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
-
 		mainApp.getSharedDataEditor().commit();
 
 		Log.d("TEST","USER_TOKEN saved");
 		FlurryAgent.onEvent("Logged In", null);
-		if (mainApp.getSharedData().getBoolean(mainApp.getUserName()
-				+ AppConstants.PREF_NOTIFICATION, true))
+		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true))
 			startService(new Intent(this, Notifications.class));
 		mainApp.guest = false;
 

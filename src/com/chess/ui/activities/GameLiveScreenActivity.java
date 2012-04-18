@@ -120,6 +120,27 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 	}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (extras.containsKey(AppConstants.LIVE_CHESS)) {
+            mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
+        }
+
+        registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
+
+        if (mainApp.isLiveChess() && mainApp.getGameId() > 0 && lccHolder.getGame(mainApp.getGameId()) != null) {
+            game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
+                    lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
+            lccHolder.getAndroid().setGameActivity(this);
+            if (lccHolder.isActivityPausedMode()) {
+                executePausedActivityGameEvents();
+                lccHolder.setActivityPausedMode(false);
+            }
+            lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
+        }
+    }
+
 	@Override
 	protected void onDrawOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
@@ -523,28 +544,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			changeChatIcon(menu);
 		}
 		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (extras.containsKey(AppConstants.LIVE_CHESS)) {
-			mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-		}
-
-		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-
-		if (mainApp.isLiveChess() && mainApp.getGameId() > 0 /* && mainApp.getGameId() != null*/ /*&& !mainApp.getGameId().equals("")*/
-				&& lccHolder.getGame(mainApp.getGameId()) != null) {
-			game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
-					lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
-			lccHolder.getAndroid().setGameActivity(this);
-			if (lccHolder.isActivityPausedMode()) {
-				executePausedActivityGameEvents();
-				lccHolder.setActivityPausedMode(false);
-			}
-			lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
-		}
 	}
 
 	@Override

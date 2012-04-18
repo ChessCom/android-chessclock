@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.Notifications;
 import com.chess.backend.Web;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
@@ -171,7 +172,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.showToast(getString(R.string.wrongusername));
 				return;
 			}
-			if (emailEdt.getText().toString().equals("")) {
+			if (emailEdt.getText().toString().equals(AppConstants.SYMBOL_EMPTY)) {
 				mainApp.showToast(getString(R.string.wrongemail));
 				return;
 			}
@@ -190,7 +191,9 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 			String query = "";
 			try {
-				query = "http://www." + LccHolder.HOST + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), "UTF-8") + "&password=" + URLEncoder.encode(passwordEdt.getText().toString(), "UTF-8")
+				query = "http://www." + LccHolder.HOST
+                        + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), "UTF-8")
+                        + "&password=" + URLEncoder.encode(passwordEdt.getText().toString(), "UTF-8")
 						+ "&email=" + URLEncoder.encode(emailEdt.getText().toString(), "UTF-8")
 						+ "&country_id=" + CID + "&app_type=android";
 			} catch (Exception e) {   // TODO handle correctly
@@ -208,7 +211,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
 		int i = 0;
-		while (i < COUNTRIES.length) {
+		while (i < COUNTRIES.length) {   // TODO use predefined strings
 			if (COUNTRIES[i].equals(tmp2[pos])) {
 				break;
 			}

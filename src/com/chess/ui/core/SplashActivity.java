@@ -23,8 +23,6 @@ public class SplashActivity extends CoreActivity {
 		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getUserName()
 						+ AppConstants.PREF_BOARD_TYPE, 8)], progressView);
 
-//		mainApp.loadPieces(mainApp.res_pieces[mainApp.getSharedData().getInt(mainApp.getUserName()
-//				+ AppConstants.PREF_PIECES_SET, 0)], progressView);
 		mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
 				+ AppConstants.PREF_PIECES_SET, 0), progressView);
 
