@@ -300,7 +300,7 @@ public class LccGameListener implements GameListener {
 		}
 	}
 
-	@Override
+//	@Override
 	public void onClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment)
 	{
 		// TODO: Implement if necessary

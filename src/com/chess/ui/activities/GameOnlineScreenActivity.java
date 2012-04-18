@@ -116,7 +116,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
+			/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
 				Game game = lccHolder.getGame(mainApp.getGameId());
 
 				if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
@@ -131,7 +131,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					lccHolder.getAndroid().runMakeResignTask(game);
 				}
 				finish();
-			} else {
+			} else {*/
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
@@ -151,7 +151,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				} else {
 					//mainApp.showDialog(Game.this, "Error", result);
 				}
-			}
+//			}
 		}
 	}
 
@@ -159,16 +159,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
-//		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-//			update(CALLBACK_GAME_STARTED);
-//		} else {
-			if (appService != null) {
-				appService.RunSingleTask(CALLBACK_GAME_STARTED,
-						"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
-						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
-			}
-//		}
+		if (appService != null) {
+			appService.RunSingleTask(CALLBACK_GAME_STARTED,
+					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
+							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
+					null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
+		}
 	}
 
 	@Override
@@ -314,7 +310,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					int i;
 					ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
 					for (GameListItem gle : mainApp.getGameListItems()) {
-						if (gle.type == 1 && gle.values.get(GameListItem.IS_MY_TURN).equals("1")) {
+						if (gle.type == GameListItem.LIST_TYPE_CURRENT && gle.values.get(GameListItem.IS_MY_TURN).equals("1")) {
 							currentGames.add(gle);
 						}
 					}

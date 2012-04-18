@@ -15,12 +15,6 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<!--
-	menu.add(0, MENU_ECHESS_NEXT_GAME, 0, getString(R.string.nextgame)).setIcon(R.drawable.forward);
-	menu.add(0, MENU_ECHESS_ANALYSIS, 0, getString(R.string.analysis)).setIcon(R.drawable.analysis);
-	menu.add(0, MENU_ECHESS_PREVIOUS, 0, getString(R.string.prev)).setIcon(R.drawable.prev);
-	menu.add(0, MENU_ECHESS_NEXT, 0, getString(R.string.next)).setIcon(R.drawable.next);
--->
 	<item android:id="@+id/menu_next_game"
 		android:title="@string/nextgame"
 		android:icon="@drawable/forward"
