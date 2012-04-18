@@ -4,8 +4,8 @@
 		>
 		<shape
 			android:shape="oval">
-			<size android:height="10dip"
-				  android:width="10dip"/>
+			<size android:height="@dimen/player_indicator_size"
+				  android:width="@dimen/player_indicator_size"/>
 			<solid android:color="@color/player_ind_black_stroke"/>
 		</shape>
 	</item>
@@ -28,8 +28,8 @@
 		>
 		<shape
 			android:shape="oval">
-			<size android:height="9dip"
-				android:width="9dip"/>
+			<size android:height="@dimen/player_indicator_size1"
+				android:width="@dimen/player_indicator_size1"/>
 			<gradient
 				android:angle="270"
 				android:startColor="@color/player_ind_black_1"

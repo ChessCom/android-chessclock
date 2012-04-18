@@ -192,14 +192,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		piecesLayout.setGravity(Gravity.CENTER);
 
 		LinearLayout whiteCapturedPieces = new LinearLayout(getContext());
-		whiteCapturedPieces.setPadding(1, 1, 1, 1);
+		whiteCapturedPieces.setPadding(1, (int)(1*density), 1, (int)(1*density));
 		whiteCapturedPieces.setLayoutParams(params);
 		whiteCapturedPieces.setGravity(Gravity.LEFT);
 
 		piecesLayout.addView(whiteCapturedPieces);
 
 		LinearLayout blackCapturedPieces = new LinearLayout(getContext());
-		blackCapturedPieces.setPadding(1, 1, 1, 1);
+		blackCapturedPieces.setPadding(1, (int)(1*density), 1, (int)(1*density));
 		blackCapturedPieces.setLayoutParams(params);
 		blackCapturedPieces.setGravity(Gravity.LEFT);
 

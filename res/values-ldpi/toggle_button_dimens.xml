@@ -3,7 +3,8 @@
 <resources>
     <dimen name="toggle_button_radius">4px</dimen>
     <dimen name="toggle_button_stroke_width">1px</dimen>
-    <dimen name="toggle_button_height">25dip</dimen>
+    <!--<dimen name="toggle_button_height">25dip</dimen>-->
+    <dimen name="toggle_button_height">20dip</dimen>
     <dimen name="blue_button_big_height">42dip</dimen>
     <dimen name="blue_button_min_width">46dip</dimen>
 

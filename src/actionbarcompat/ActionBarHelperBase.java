@@ -40,6 +40,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
+	private boolean noActionBar;
 
 	protected ActionBarHelperBase(Activity activity) {
 		super(activity);
@@ -52,6 +53,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	public void onCreate(Bundle savedInstanceState) {
 		if (savedInstanceState == null || !savedInstanceState.getBoolean(AppConstants.SMALL_SCREEN))
 			mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		else
+			noActionBar = true;
 	}
 
 	/**
@@ -118,7 +121,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 	@Override
 	public void hideMenuItemById(int id, boolean show){
-		getActionBarCompat().findViewById(id).setVisibility(show? View.VISIBLE: View.GONE);
+		if(!noActionBar)
+			getActionBarCompat().findViewById(id).setVisibility(show? View.VISIBLE: View.GONE);
 	}
 
 	@Override

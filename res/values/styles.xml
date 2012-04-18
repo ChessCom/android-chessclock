@@ -202,7 +202,7 @@
 
 	<style name="GameLabel">
 		<item name="android:layout_centerVertical">true</item>
-		<item name="android:textSize">14sp</item>
+		<item name="android:textSize">@dimen/game_label_text_size</item>
 		<item name="android:singleLine">true</item>
 		<item name="android:paddingTop">@dimen/game_label_padding_top</item>
 		<item name="android:paddingBottom">@dimen/game_label_padding_top</item>
