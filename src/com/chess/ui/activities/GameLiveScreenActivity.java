@@ -123,9 +123,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        if (extras.containsKey(AppConstants.LIVE_CHESS)) {
-            mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-        }
+        mainApp.setLiveChess(true);
 
         registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 

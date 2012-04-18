@@ -104,7 +104,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	}
 
 	private void init() {
-		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
+		mainApp.setLiveChess(true);
 
 		acceptDrawDialogListener = new AcceptDrawDialogListener();
 //		gameListItemClickListener = new GameListItemClickListener();
@@ -136,22 +136,11 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 	@Override
 	protected void onResume() {
-		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
-		//}
+		mainApp.setLiveChess(true);
 		if (mainApp.isLiveChess() && !lccHolder.isConnected()) {
 			start.setVisibility(View.GONE);
 			gridview.setVisibility(View.GONE);
-//					challengesListTitle.setVisibility(View.GONE);
 			startNewGameTitle.setVisibility(View.GONE);
-//			handler.post(new Runnable() {
-//				@Override
-//				public void run() {
-//					start.setVisibility(View.GONE);
-//					gridview.setVisibility(View.GONE);
-////					challengesListTitle.setVisibility(View.GONE);
-//					startNewGameTitle.setVisibility(View.GONE);
-//				}
-//			});
 		}
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));

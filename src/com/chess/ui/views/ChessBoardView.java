@@ -170,7 +170,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 		if (!MainApp.isTacticsGameMode(boardFace) && isGameOver())
 			return;
 
-		if (!boardFace.isAnalysis()) {
+		if (!boardFace.isAnalysis()) {  // TODO eliminate game mode switches
 			switch (boardFace.getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 					computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);

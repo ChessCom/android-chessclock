@@ -84,7 +84,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
 		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.onlineSpinner));
 
-		mainApp.setLiveChess(extras.getBoolean(AppConstants.LIVE_CHESS));
+		mainApp.setLiveChess(false);
 
 		gamesTypeSpinner.post(new Runnable() {
 			@Override
