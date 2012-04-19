@@ -109,6 +109,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
+    protected void widgetsInit(){
+
+    }
+
 	@Override
 	public Object onRetainCustomNonConfigurationInstance() {
 		return super.onRetainCustomNonConfigurationInstance();
@@ -202,14 +206,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if (mainApp.getBoardBitmap() == null) {
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 					mainApp.getUserName()
-							+ AppConstants.PREF_BOARD_TYPE, 8)], null);
+							+ AppConstants.PREF_BOARD_TYPE, 8)]);
 
 			resetDetected = true;
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
 			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
-					+ AppConstants.PREF_PIECES_SET, 0), null);
+					+ AppConstants.PREF_PIECES_SET, 0));
 
 			resetDetected = true;
 		}
@@ -337,10 +341,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}	
 	
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals("")) {
+		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
 			Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				mainApp.startActivity(intent);
 			startActivity(intent);
 		} else {
 			startActivity(new Intent(mainApp, LoginScreenActivity.class));
@@ -355,8 +358,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			// getting extras
 			Bundle rExtras = intent.getExtras();
 			boolean repeatable;
-			String resp = "";
-			int retCode = ERROR_SERVER_RESPONSE;
+			String resp;
+			int retCode;
 			try {
 				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE_TASK);
 				resp = rExtras.getString(AppConstants.REQUEST_RESULT);
@@ -375,7 +378,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			if (Web.getStatusCode() == -1)
 				mainApp.noInternet = true;
 			else {
-				if (mainApp.noInternet) { /* mainApp.showToast("Online mode!"); */
+				if (mainApp.noInternet) {
 					mainApp.offline = false;
 				}
 				mainApp.noInternet = false;
@@ -384,10 +387,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			if (resp.contains(AppConstants.SUCCESS))
 				update(retCode);
 			else {
-				/*if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
-					update(ERROR_SERVER_RESPONSE);
-					return;
-				}*/
 				if (resp.length() == 0) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
@@ -481,7 +480,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					reconnectingIndicator.dismiss();
 					lccHolder.getAndroid().setReconnectingIndicator(null);
 				}
-				/* else */
 				if (enable) {
 					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
 							&& !mainApp.isAdviewPaused()) {
@@ -533,13 +531,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							if (mainApp.isLiveChess()/*
-													 * &&
-													 * lccHolder.isConnected()
-													 */) {
+							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-//							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
 							final Intent intent = new Intent(coreContext, LoginScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
@@ -644,8 +638,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			super.unregisterReceiver(receiver);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			// hack for Android's IllegalArgumentException: Receiver not
-// registered
+			// hack for Android's IllegalArgumentException: Receiver not registered
 		}
 	}
 
@@ -696,27 +689,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private void checkUpdate() {
 		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
-
-	private void showNetworkChangeNotification() {
-		new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-				.setTitle("Logout").setMessage("Network was changed. Please relogin to Live")
-				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// mainApp.setNetworkChangedNotification(false);
-						startActivity(new Intent(CoreActivityActionBar.this, HomeScreenActivity.class));
-					}
-				}).create().show();
-	}
-
-	/*
-	 * private BroadcastReceiver networkChangeNotificationReceiver = new
-	 * BroadcastReceiver() {
-	 * 
-	 * @Override public void onReceive(Context coreContext, Intent intent) { if
-	 * (mainApp.isNetworkChangedNotification()) {
-	 * showNetworkChangeNotification(); } } };
-	 */
 
 	protected void showToast(String msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

@@ -152,7 +152,6 @@ public class AppConstants {
 
 	/* Stuff */
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
-	public static final String PACKAGE_NAME = "com.chess";
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 
 

@@ -71,7 +71,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		gridview.setAdapter(new NewGamesButtonsAdapter());
 	}
 
-	private void widgetsInit(){
+	@Override
+    protected void widgetsInit(){
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 

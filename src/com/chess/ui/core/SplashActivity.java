@@ -11,20 +11,17 @@ import com.chess.ui.activities.LoginScreenActivity;
 
 public class SplashActivity extends CoreActivity {
 
-	private View progressView;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_screen);
 
-		progressView = findViewById(R.id.progressView);
 		//defaults
 		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(mainApp.getUserName()
-						+ AppConstants.PREF_BOARD_TYPE, 8)], progressView);
+						+ AppConstants.PREF_BOARD_TYPE, 8)]);
 
 		mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
-				+ AppConstants.PREF_PIECES_SET, 0), progressView);
+				+ AppConstants.PREF_PIECES_SET, 0));
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(1);

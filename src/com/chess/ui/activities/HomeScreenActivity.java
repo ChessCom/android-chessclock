@@ -48,7 +48,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if(extras != null){
 			int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
 			if(cmd == StaticData.NAV_FINISH_2_LOGIN){
-				Log.d("TEST","launching login activity from home");
 				Intent intent = new Intent(this, LoginScreenActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
@@ -138,7 +137,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onRightBtnClick(PopupDialogFragment fragment) {// Challenge declined!
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
-//			lccHolder.getAndroid().runRejectChallengeTask(currentChallenge);
             fragment.getDialog().dismiss();
             lccHolder.declineCurrentChallenge(currentChallenge);
 //			update(3); // TODO verify
@@ -182,7 +180,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			popupItem.setLeftBtnId(R.string.accept);
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
-//			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 		}
 
@@ -193,13 +190,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			}
 
 			currentChallenge = challenge;
-//			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
 			popupItem.setRightBtnId(R.string.decline);
 			popupItem.setLeftBtnId(R.string.accept);
 
-//			PopupDialogFragment popupFragment = PopupDialogFragment.newInstance(popupItem, LiveBaseActivity.this);
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 		}
@@ -214,11 +209,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			GameTimeConfig config = challenge.getGameTimeConfig();
 			String blitz = "";
 			if(config.isBlitz()){
-				blitz = "(Blitz)";
+				blitz = getString(R.string.blitz_game);
 			}else if(config.isLightning()){
-				blitz = "(Lightning)";
+				blitz = getString(R.string.lighthning_game);
 			}else if(config.isStandard()){
-				blitz = "(Standard)";
+				blitz = getString(R.string.standard_game);
 			}
 
 			String timeIncrement = "";

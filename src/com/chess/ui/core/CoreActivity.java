@@ -41,14 +41,12 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
-//	protected LccHolder lccHolder;
 	protected String response = "";
 	protected String responseRepeatable = "";
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
 	protected Context context;
-	private Handler handler;
-	public boolean mIsBound;
+    public boolean mIsBound;
 	public WebService appService = null;
 
 	public abstract void update(int code);
@@ -65,7 +63,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		super.onCreate(savedInstanceState);
 
 		context = this;
-		handler = new Handler();
 		backgroundChessDrawable =  new BackgroundChessDrawable(this);
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
@@ -81,17 +78,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 //		lccHolder = mainApp.getLccHolder();
 	}
-
-
-
-	/*
-	 * public boolean isConnected(){ ConnectivityManager cm =
-	 * (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE); NetworkInfo
-	 * NI = cm.getActiveNetworkInfo(); if(NI == null) return false; else return
-	 * NI.isConnectedOrConnecting(); }
-	 */
-
-
 
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
@@ -119,26 +105,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		}
 	};
 
-	private class ReconnectTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... voids) {
-			final LccHolder lccHolder = mainApp.getLccHolder();
-			// lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().disconnect();
-			lccHolder.setNetworkTypeName(null);
-			lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, ""),
-					lccHolder.getConnectionListener());
-			/*
-								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
-								 * MyProgressDialog.show(this, null,
-								 * getString(R.string.updatinggameslist), true));
-								 */
-			return null;
-		}
-
-	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -149,18 +115,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			checkUserTokenAndStartActivity();
 		}
 
-//		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-//		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
-//			reconnectingIndicator.dismiss();
-//			lccHolder.getAndroid().setReconnectingIndicator(null);
-//		}
-
-//		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
-//			// lccHolder.getAndroid().showConnectingIndicator();
-//			manageConnectingIndicator(true, "Loading Live Chess");
-//
-//			new ReconnectTask().execute();
-//		}
 		doBindService();
 		registerReceivers();
 
@@ -212,15 +166,13 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
-//		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
-		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
+ 		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));
 		registerReceiver(obsoleteProtocolVersionReceiver, new IntentFilter(IntentConstants.FILTER_PROTOCOL_VERSION));
 		registerReceiver(infoMessageReceiver, new IntentFilter(IntentConstants.FILTER_INFO));
 	}
 
 	private void unRegisterReceivers(){
 		unregisterReceiver(receiver);
-//		unregisterReceiver(drawOfferedMessageReceiver);
 		unregisterReceiver(lccLoggingInInfoReceiver);
 		unregisterReceiver(lccReconnectingInfoReceiver);
 		unregisterReceiver(informAndExitReceiver);
@@ -232,7 +184,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		if (!mainApp.getUserName().equals("")) {
 			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				mainApp.startActivity(intent);
 			startActivity(intent);
 		} else {
 			startActivity(new Intent(mainApp, LoginScreenActivity.class));
@@ -244,8 +195,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			// getting extras
 			Bundle rExtras = intent.getExtras();
 			boolean repeatable;
-			String resp = "";
-			int retCode = ERROR_SERVER_RESPONSE;
+			String resp;
+			int retCode;
 			try {
 				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE_TASK);
 				resp = rExtras.getString(AppConstants.REQUEST_RESULT);
@@ -273,16 +224,12 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			if (resp.contains(AppConstants.SUCCESS))
 				update(retCode);
 			else {
-				/*if (mainApp.getTabHost() != null && mainApp.getTabHost().getCurrentTab() == 3) {
-					update(ERROR_SERVER_RESPONSE);
-					return;
-				}*/
 				if (resp.length() == 0) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
 				String title = getString(R.string.error);
-				String message = resp;
+				String message;
 				if (resp.contains(AppConstants.ERROR_PLUS)) {
 					message = resp.split("[+]")[1];
 				} else {
@@ -293,7 +240,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-//				new AlertDialog.Builder(CoreActivity.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
 				new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -306,94 +252,10 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		}
 	};
 
-//	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-//			final Game game = mainApp.getLccHolder().getGame(mainApp.getGameId()); // TODO remove final and pass like argument
-//			final AlertDialog alertDialog = new AlertDialog.Builder(CoreActivity.this)
-//					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
-//					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
-//					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
-//						}
-//					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//							lccHolder.getAndroid().runRejectDrawTask(game);
-//						}
-//					})
-//					.create();
-//			alertDialog.setCanceledOnTouchOutside(true);
-//			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//				@Override
-//				public void onCancel(DialogInterface dialogInterface) {
-//					lccHolder.getAndroid().runRejectDrawTask(game);
-//				}
-//			});
-//			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-//			alertDialog.show();
-//		}
-//	};
-
-//	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			if (mainApp.isLiveChess()) {
-//				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-//				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-//			}
-//		}
-//	};
 
 	public BroadcastReceiver lccReconnectingInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-//			if (mainApp.isLiveChess()) { // TODO here it can't be live chess
-//				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
-//						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
-//				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-//				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
-//
-//				if (reconnectingIndicator != null) {
-//					reconnectingIndicator.dismiss();
-//					lccHolder.getAndroid().setReconnectingIndicator(null);
-//				}
-//
-//				if (enable) {
-//					reconnectingIndicator = new MyProgressDialog(context);
-//					reconnectingIndicator.setMessage(intent.getExtras().getString(AppConstants.MESSAGE));
-//					reconnectingIndicator.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//						@Override
-//						public void onCancel(DialogInterface dialog) {
-//							lccHolder.logout();
-//							final Intent intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
-//							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//							// reconnectingIndicator.dismiss();
-//							mainApp.startActivity(intent);
-//						}
-//					});
-//					reconnectingIndicator.setCancelable(true);
-//					reconnectingIndicator.setIndeterminate(true);
-//					try {
-//						reconnectingIndicator.show();
-//						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
-//					} catch (Exception e) {
-//						lccHolder.logout();
-//						intent = new Intent(CoreActivity.this, HomeScreenActivity.class);
-//						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//						// reconnectingIndicator.dismiss();
-//						mainApp.startActivity(intent);
-//					}
-//				} else {
-//					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
-//							&& mainApp.isAdviewPaused()) {
-//						MobclixHelper.resumeAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-//					}*/
-//				}
-//			}
 		}
 	};
 
@@ -429,8 +291,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 							handler.post(new Runnable() {
 								@Override
 								public void run() {
-//									mainApp.setLiveChess(false);
-//									lccHolder.setConnected(false);
 									startActivity(new Intent(Intent.ACTION_VIEW, Uri
 											.parse("http://www.chess.com/play/android.html")));
 								}
@@ -455,7 +315,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
 					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
@@ -480,20 +340,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	};
 
 	private void manageConnectingIndicator(boolean enable, String message) {
-//		if (mainApp.isLiveChess()) {  // TODO it can't be live chess here
-//			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
-//			if (connectingIndicator != null) {
-//				connectingIndicator.dismiss();
-//				lccHolder.getAndroid().setConnectingIndicator(null);
-//			} else if (enable) {
-//				connectingIndicator = new MyProgressDialog(this);
-//				connectingIndicator.setMessage(message);
-//				connectingIndicator.setCancelable(true);
-//				connectingIndicator.setIndeterminate(true);
-//				connectingIndicator.show();
-//				lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
-//			}
-//		}
+
 	}
 
 	@Override
@@ -502,8 +349,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 			super.unregisterReceiver(receiver);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			// hack for Android's IllegalArgumentException: Receiver not
-// registered
+			// hack for Android's IllegalArgumentException: Receiver not registered
 		}
 	}
 
@@ -554,19 +400,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 	private void checkUpdate() {  // TODO show progress
         new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
-	}
-
-	/*
-	 * private BroadcastReceiver networkChangeNotificationReceiver = new
-	 * BroadcastReceiver() {
-	 * 
-	 * @Override public void onReceive(Context coreContext, Intent intent) { if
-	 * (mainApp.isNetworkChangedNotification()) {
-	 * showNetworkChangeNotification(); } } };
-	 */
-
-	public MainApp getMainApp() {
-		return mainApp;
 	}
 
 	@Override

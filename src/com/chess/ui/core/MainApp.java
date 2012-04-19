@@ -38,7 +38,6 @@ public class MainApp extends Application {
 	private boolean liveChess;
 	private SoundPlayer soundPlayer;
 	private boolean networkChangedNotification;
-	private static Drawable backgroundImage;
 
 	public boolean guest = false;
 	public boolean noInternet = false;
@@ -54,10 +53,8 @@ public class MainApp extends Application {
 
 	private TacticItem tactic;
 	public int currentTacticProblem = 0;
-	private Context context;
-	private Resources resources;
 
-	// TODO move to array resources
+    // TODO move to array resources
 	public int[] strength = {1000, 3000, 5000, 10000, 30000, 60000};
 	public String[] res_boards = {"blue",
 			"brown",
@@ -215,26 +212,22 @@ public class MainApp extends Application {
 			R.drawable.vintage_bk,
 	};
 
-    private CharSequence whitePlayerName;
-    private CharSequence blackPlayerName;
-
-	public void loadBoard(String boardName, View progressView) {
-		context = this;
-		boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(boardName, "drawable", AppConstants.PACKAGE_NAME));
+    public void loadBoard(String boardName) {
+        boardBitmap = BitmapLoader.loadFromResource(getResources(), getResources().getIdentifier(boardName, "drawable", getPackageName()));
 	}
 
 	private void setPieceBitmapFromArray(int[] drawableArray){
 		piecesBitmaps = new Bitmap[2][6];
-		resources = getResources();
+        Resources resources = getResources();
 		for(int j=0; j<6; j++){
-			piecesBitmaps[0][j] = ((BitmapDrawable)resources.getDrawable(drawableArray[j])).getBitmap();
+			piecesBitmaps[0][j] = ((BitmapDrawable) resources.getDrawable(drawableArray[j])).getBitmap();
 		}
 		for(int j=0; j<6; j++){
-			piecesBitmaps[1][j] = ((BitmapDrawable)resources.getDrawable(drawableArray[6+j])).getBitmap();
+			piecesBitmaps[1][j] = ((BitmapDrawable) resources.getDrawable(drawableArray[6 + j])).getBitmap();
 		}
 	}
 	
-	public void loadPieces(int piecesSetId, View progressView) {
+	public void loadPieces(int piecesSetId) {
 		switch (piecesSetId){
 			case P_ALPHA_ID:
 				setPieceBitmapFromArray(alphaPiecesDrawableIds);
@@ -267,13 +260,11 @@ public class MainApp extends Application {
 	}
 
     public CharSequence getWhitePlayerName() {
-        whitePlayerName = getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.WHITE_RATING) + ")";
-        return whitePlayerName;
+        return getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.WHITE_RATING) + ")";
     }
 
     public CharSequence getBlackPlayerName() {
-        blackPlayerName = getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")";
-        return blackPlayerName;
+        return getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")";
     }
 
 	public String getUserName() {
@@ -304,7 +295,7 @@ public class MainApp extends Application {
 			try {
 				String versionName = "";
 				try {
-					versionName = getPackageManager().getPackageInfo(AppConstants.PACKAGE_NAME, 0).versionName;
+					versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 				} catch (NameNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -312,7 +303,6 @@ public class MainApp extends Application {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//lccClient = lccHolder.getClient();
 			lccHolder.getAndroid().setContext(this);
 		}
 
@@ -459,7 +449,8 @@ public class MainApp extends Application {
 
 
 	public Intent getMembershipIntent(String param) {
-		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, "") + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
+		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, "")
+                + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 	}
 

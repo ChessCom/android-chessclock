@@ -73,7 +73,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 		// get global Shared Preferences
 		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences("sharedData", 0));
+			mainApp.setSharedData(getSharedPreferences("sharedData", 0)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
+                                                                            // that will simplify every call, where you need to get access token for every preference change and access
 			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
 		}
 

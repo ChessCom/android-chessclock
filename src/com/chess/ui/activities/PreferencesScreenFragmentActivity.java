@@ -36,8 +36,6 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 	private CheckBox PrefShowHighlights;
 	private CheckBox enableSounds;
 	private Context context;
-	private View boardProgressView;
-	private View piecesProgressView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +47,6 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		context = this;
-
-		boardProgressView = findViewById(R.id.boardProgressView);
-		piecesProgressView = findViewById(R.id.piecesProgressView);
 
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
@@ -273,7 +268,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 			mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_BOARD_TYPE, pos);
 			mainApp.getSharedDataEditor().commit();
 //			PrefBoard.setCompoundDrawables(boardsList.items.get(pos).image, null, null, null);
-			mainApp.loadBoard(mainApp.res_boards[pos], boardProgressView);
+			mainApp.loadBoard(mainApp.res_boards[pos]);
 		}
 
 		@Override
@@ -287,9 +282,7 @@ public class PreferencesScreenFragmentActivity extends CoreActivityActionBar imp
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
 					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
-//				PrefPices.setCompoundDrawables(piecesList.items.get(pos).image, null, null, null);
-//			mainApp.loadPieces(mainApp.res_pieces[pos], piecesProgressView); // TODO change to new method
-			mainApp.loadPieces(pos, piecesProgressView); // TODO change to new method
+			mainApp.loadPieces(pos);
 		}
 
 		@Override

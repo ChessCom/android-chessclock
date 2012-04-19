@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * TaskUpdateInterface.java
  *
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @version 1.0.1
  * @created 07.11.2011
  * @modified 07.11.2011
  */
-public interface TaskUpdateInterface<T, Input> {
+public interface TaskUpdateInterface<T> {
 	boolean useList();
 
 	void showProgress(boolean show);
@@ -20,8 +20,6 @@ public interface TaskUpdateInterface<T, Input> {
 	void updateListData(List<T> itemsList);
 
 	void updateData(T returnedObj);
-
-	T backgroundMethod(Input params);
 
 	void errorHandle(Integer resultCode);
 

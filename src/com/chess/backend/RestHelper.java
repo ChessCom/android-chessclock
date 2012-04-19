@@ -54,6 +54,7 @@ public class RestHelper {
 	public static final String GET_TACTICS_PROBLEM_BATCH = BASE_URL + API + "/get_tactics_problem_batch";
 
 	// Echess methods
+    public static final String ECHESS_SUBMIT_ACTION = BASE_URL + API + "/submit_echess_action";
 	public static final String ECHESS_OPEN_INVITES = BASE_URL + API + "/echess_open_invites";
 	public static final String ECHESS_OPEN_INVITES_V2 = BASE_URL + API_V2 + "/echess_open_invites";
 	public static final String ECHESS_CHALLENGES = BASE_URL + API + "/echess_challenges";
@@ -62,7 +63,6 @@ public class RestHelper {
 	public static final String GET_ECHESS_CURRENT_GAMES = BASE_URL + API_V2 + "/get_echess_current_games";
 	public static final String GET_ECHESS_FINISHED_GAMES = BASE_URL + API_V2 + "/get_echess_finished_games";
 	public static final String GET_ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
-	public static final String SUBMIT_ECHESS_ACTION = BASE_URL + API + "/submit_echess_action";
 
 	public static final String LOGIN = BASE_URL + API_V2 + "/login";
 	public static final String GET_FRIENDS = BASE_URL + API_V2 + "/get_friends";
@@ -209,18 +209,6 @@ public class RestHelper {
 	public static final String P_THEME = "theme";
 	public static final String P_PAGE = "page";
 	public static final String P_PAGE_SIZE = "page-size";
-
-
-//	      (optional - 1 or 0, defaults to 0)
-//	     (optional)
-//	    (optional)
-//	 (optional)
-//	     (optional)
-//	      (optional)
-//	       (optional)
-//	        (optional - defaults to 1)
-//	        (optional - defaults to 20)
-
 
 	/* Values */
 	public static final String V_RESIGN = "RESIGN";

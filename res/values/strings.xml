@@ -263,5 +263,10 @@
 	<string name="rated">Rated</string>
 	<string name="unrated">Unrated</string>
 	<string name="you_play">You Play:</string>
+	<string name="standard_game">(Standard)</string>
+	<string name="blitz_game">(Blitz)</string>
+	<string name="lightning_game">(Lightning)</string>
+	<string name="lighthning_game">(Lightning)</string>
+	<string name="network_was_changed_please_relogin">Network was changed. Please relogin to Live</string>
 
 </resources>

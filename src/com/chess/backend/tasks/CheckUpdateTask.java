@@ -52,7 +52,7 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 			final String s = new String(baf.toByteArray());
 			String[] valuesArray = s.trim().split("\\|", 2);
 
-			int actualVersion = context.getPackageManager().getPackageInfo(AppConstants.PACKAGE_NAME, 0).versionCode;
+			int actualVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
 			System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
 
 			int minimumVersion = Integer.valueOf(valuesArray[0].trim());

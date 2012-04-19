@@ -25,8 +25,6 @@ public class WebService extends Service {
 	private MyProgressDialog progressDialog;
 	public static final String BROADCAST_ACTION = "GetServerResponse";
 
-	private LccHolder lccHolder;
-
 	public void onCreate() {
 	}
 

@@ -8,13 +8,13 @@ import java.util.List;
 
 public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void, Integer> {
 
-	protected TaskUpdateInterface<T, Input> taskFace;
+	protected TaskUpdateInterface<T> taskFace;
 	protected T item;
 	protected List<T> itemList;
 	protected boolean useList;
 	protected int result;
 
-	public AbstractUpdateTask(TaskUpdateInterface<T, Input> taskFace) {
+	public AbstractUpdateTask(TaskUpdateInterface<T> taskFace) {
 		this.taskFace = taskFace;
 		useList = taskFace.useList();
 		result = StaticData.EMPTY_DATA;

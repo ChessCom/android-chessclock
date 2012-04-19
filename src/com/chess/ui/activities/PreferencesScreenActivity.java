@@ -38,8 +38,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	private CheckBox showHighlights;
 	private CheckBox enableSounds;
 	private Context context;
-	private View boardProgressView;
-	private View piecesProgressView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +49,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		context = this;
-
-		boardProgressView = findViewById(R.id.boardProgressView);
-		piecesProgressView = findViewById(R.id.piecesProgressView);
 
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
@@ -249,7 +244,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_BOARD_TYPE, pos);
 			mainApp.getSharedDataEditor().commit();
-			mainApp.loadBoard(mainApp.res_boards[pos], boardProgressView);
+			mainApp.loadBoard(mainApp.res_boards[pos]);
 		}
 
 		@Override
@@ -263,8 +258,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
 					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
-//			mainApp.loadPieces(mainApp.res_pieces[pos], piecesProgressView);   // TODO change to new method
-			mainApp.loadPieces(pos, piecesProgressView);   // TODO change to new method
+			mainApp.loadPieces(pos);
 		}
 
 		@Override
@@ -332,13 +326,13 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 				stopService(new Intent(context, Notifications.class));
 		} else if (compoundButton.getId() == R.id.PrefVacation) {
 
-			String query = "";
+			String query;
 			if (vacationCheckBox.isChecked()) {
 				query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "");
 			} else {
 				query = "http://www." + LccHolder.HOST + "/api/vacation_return?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "");
 			}
-			if (appService != null) {
+			if (appService != null) {    // TODO change to rest helper
 				appService.RunSingleTask(1,
 						query,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true)));

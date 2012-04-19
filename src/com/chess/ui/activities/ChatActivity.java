@@ -4,14 +4,21 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.ChatItem;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.tasks.GetCustomObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
@@ -31,30 +38,67 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 	private ListView chatListView;
 	private MessagesAdapter messages = null;
 	private ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
+    private AsyncTask<LoadItem, Void, Integer> submitDataTask;
+    private ChatUpdateListener chatUpdateListener;
+    private View progressBar;
+    private Button sendBtn;
+    private long gameId;
+    private String timeStamp;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		sendText = (EditText) findViewById(R.id.sendText);
-		chatListView = (ListView) findViewById(R.id.chatLV);
-		findViewById(R.id.send).setOnClickListener(this);
+        widgetsInit();
 
         NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifyManager.cancel(R.string.you_got_new_msg);
+
+        chatUpdateListener = new ChatUpdateListener();
+        gameId = extras.getLong(GameListItem.GAME_ID);
+        timeStamp = extras.getString(GameListItem.TIMESTAMP);
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
-	}
+    @Override
+    protected void widgetsInit(){
+        findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
+        sendText = (EditText) findViewById(R.id.sendText);
+        chatListView = (ListView) findViewById(R.id.chatLV);
+        
+        progressBar = findViewById(R.id.progressBar);
 
-	public void initActivity(){
+        sendBtn = (Button) findViewById(R.id.send);
+        sendBtn.setOnClickListener(this);
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        backgroundChessDrawable.updateConfig();
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        initActivity();
+    }
+
+    public void initActivity(){
+        // submit echess action
+//        appService.RunRepeatableTask(MESSAGE_RECEIVED, 0, 60000, "http://www." + LccHolder.HOST
+//                + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//                + AppConstants.CHESSID_PARAMETER +
+//                + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
+//                null);
+        LoadItem loadItem = new LoadItem();
+        loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
+        loadItem.addRequestParams(RestHelper.P_ID, mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY));
+        loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+        loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
+        loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
+        submitDataTask = new GetCustomObjTask<ChatItem>(chatUpdateListener).execute(loadItem);
 	}
 
 	public void onMessageReceived(){
@@ -65,13 +109,30 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 
 	}
 
+    private class ChatUpdateListener extends AbstractUpdateListener<ChatItem>{
+
+        public ChatUpdateListener() {
+            super(coreContext);
+        }
+
+        @Override
+        public void showProgress(boolean show) {
+            // TODO show progress on send button
+            progressBar.setVisibility(show? View.VISIBLE: View.INVISIBLE);
+            sendBtn.setEnabled(!show);
+        }
+
+
+    }
+
 	@Override
 	public void update(int code) { // TODO Replace with named methods calls
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunRepeatableTask(MESSAGE_RECEIVED, 0, 60000, "http://www." + LccHolder.HOST
-						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER
-						+ extras.getLong(GameListItem.GAME_ID) + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
+						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+                        + AppConstants.CHESSID_PARAMETER + extras.getLong(GameListItem.GAME_ID)
+                        + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
 						null);
 			}
 		} else if (code == MESSAGE_RECEIVED) {
@@ -134,4 +195,10 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 			}
 		}
 	}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        submitDataTask.cancel(true);
+    }
 }

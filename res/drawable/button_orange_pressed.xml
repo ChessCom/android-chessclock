@@ -9,19 +9,7 @@
         android:drawable="@drawable/button_orange_p">
 
     </item>
-<!--    <item >
-        <shape android:dither="true">
-            <corners android:radius="@dimen/button_pressed_stroke_radius"  />
-            <solid android:color="@android:color/transparent"/>
-            <stroke
-                android:width="@dimen/button_pressed_stroke_width_2"
-                android:color="@color/orange_button_pressed_stroke_2"/>
-        </shape>
-
-    </item>-->
-    <item
-
-        >
+    <item >
         <shape android:dither="true">
             <corners android:radius="@dimen/button_pressed_stroke_radius"  />
             <solid android:color="@android:color/transparent"/>
@@ -32,33 +20,7 @@
 
     </item>
 
-
-
-</layer-list >
+</layer-list>
 
 
 
-<!--
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <gradient
-        android:startColor="@color/dark_orange"
-        android:endColor="@color/dark_orange_1"
-        android:angle="270"
-        />
-    <stroke android:width="@dimen/default_stroke_width"
-        android:color="@android:color/black"/>
-    <corners
-        android:topLeftRadius="@dimen/rounded_button_radius"
-        android:topRightRadius="@dimen/rounded_button_radius"
-        android:bottomLeftRadius="@dimen/rounded_button_radius"
-        android:bottomRightRadius="@dimen/rounded_button_radius"
-       />
-    <padding
-        android:left="@dimen/rounded_button_padding"
-        android:right="@dimen/rounded_button_padding"
-        android:top="@dimen/rounded_button_padding"
-        android:bottom="@dimen/rounded_button_padding"
-        />
-	<size android:height="@dimen/default_button_height"/>
-
-</shape>-->

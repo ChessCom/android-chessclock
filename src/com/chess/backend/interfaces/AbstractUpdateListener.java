@@ -8,21 +8,17 @@ import com.chess.backend.statics.StaticData;
 
 import java.util.List;
 
-public abstract class AbstractUpdateListener<T, Input> implements TaskUpdateInterface<T, Input> {
+public abstract class AbstractUpdateListener<T> implements TaskUpdateInterface<T> {
 
-	private View progressView;
 	private Context context;
 	protected boolean useList;
 
-	public AbstractUpdateListener(Context context, View progressView) {
-		this.progressView = progressView;
+	public AbstractUpdateListener(Context context) {
 		this.context = context;
 	}
 
 	@Override
 	public void showProgress(boolean show) {
-		if (progressView != null)
-			progressView.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	@Override
@@ -33,11 +29,6 @@ public abstract class AbstractUpdateListener<T, Input> implements TaskUpdateInte
 	@Override
 	public void updateListData(List<T> itemsList) {
 
-	}
-
-	@Override
-	public T backgroundMethod(Input params) {
-		return null;
 	}
 
 	@Override

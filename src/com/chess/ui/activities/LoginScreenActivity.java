@@ -82,23 +82,13 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 					 */
 
 		String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
-		// String query = "http://" + LccHolder.HOST + "/api/v2/login";
+
 		try {
 			if (appService != null) {
 				appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
 						ProgressDialog.show(context, null, getString(R.string.signingin), true)),
-						AppConstants.USERNAME, /* URLEncoder.encode( */username.getText().toString()/*
-																								 * ,
-																								 * "UTF-8"
-																								 * )
-																								 */, AppConstants.PASSWORD, /*
-																												 * URLEncoder
-																												 * .
-																												 * encode
-																												 * (
-																												 */
-						password.getText().toString()/* , "UTF-8") */
-				);
+						AppConstants.USERNAME, username.getText().toString(), AppConstants.PASSWORD,
+						password.getText().toString());
 			}
 		} catch (Exception ignored) {
 		}
