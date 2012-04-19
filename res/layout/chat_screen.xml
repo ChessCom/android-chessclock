@@ -53,7 +53,7 @@
 				android:id="@+id/progressBar"
 				android:layout_width="25dip"
 				android:layout_height="25dip"
-				android:visibility="visible"
+				android:visibility="invisible"
 				android:layout_gravity="center"
 				/>
 
