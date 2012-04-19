@@ -14,6 +14,8 @@ public class MopubHelper {
 	private static final String MOPUB_AD_BANNER_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww";
 	private static final String MOPUB_AD_RECTANGLE_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYtfH_Egw";
 
+
+	private static LinearLayout rectangleAdWrapper;
 	private static MoPubView rectangleAdView;
 
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, MainApp app) {
@@ -52,8 +54,12 @@ public class MopubHelper {
 			createRectangleAd(app);
 		}*/
 
+		if (rectangleAdWrapper != null && rectangleAdView != null) {
+			rectangleAdWrapper.removeView(rectangleAdView);
+		}
+		rectangleAdWrapper = wrapper;
+
 		//moPubAdView.setVisibility(View.VISIBLE);
-		wrapper.removeAllViews(); // TODO check. because it throws java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
 		wrapper.addView(rectangleAdView);
 		rectangleAdView.loadAd();
 
