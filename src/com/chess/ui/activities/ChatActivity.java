@@ -199,6 +199,6 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        submitDataTask.cancel(true);
+//        submitDataTask.cancel(true);
     }
 }
