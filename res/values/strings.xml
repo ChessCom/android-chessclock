@@ -1,242 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lccFailedUnavailable">Live Chess server is currently unavailable.</string>
-    <string name="lccFailedKicked">You have been kicked/banned by a moderator or admin.</string>
-    <string name="hello">Hello World!</string>
-    <string name="app_name">ChessCom</string>
-<string name="menuLive">Play Live</string>
-<string name="menuOnline">Play Online</string>
-<string name="menuComp">Play Computer</string>
-<string name="menuTactics">Tactics Trainer</string>
-<string name="menuVideo">Video Lessons</string>
-<string name="menuSettings">Settings</string>
-<string name="onlineTitle">Online Game</string>
-<string name="startNewGameButton">Start new game</string>
-<string name="singinUsername">Username</string>
-<string name="singinPassword">Password</string>
-<string name="singinButton">Sign In</string>
-<string name="singupButton">Sign Up</string>
-<string name="singinPlayguest">Play as Guest</string>
-<string name="computerTitle">Computer Play</string>
-<string name="computerWhite">White:</string>
-<string name="computerBlack">Black:</string>
-<string name="Human">Human</string>
-<string name="Computer">Computer</string>
 
-<string name="Thinking">Thinking...</string>
-<string name="menuSite">www.chess.com</string>
-<string name="onlineNewGametitle">New Game</string>
-<string name="onlineChallenges">Open challenges:</string>
-<string name="challengeFriend">Challenge a friend</string>
-<string name="createNewChallenge">Create open challenge</string>
-<string name="currentGame">Current Live Game</string>
+	<string name="connect_with_facebook">Connect With Facebook</string>
+	<string name="lccFailedUnavailable">Live Chess server is currently unavailable.</string>
+	<string name="lccFailedKicked">You have been kicked/banned by a moderator or admin.</string>
+	<string name="app_name">ChessCom</string>
+	<string name="error_occurred">Error occurred</string>
+	<string name="signout">Sign Out</string>
+	<!--Dashboard labels-->
+	<string name="menuLive">Play Live</string>
+	<string name="menuOnline">Play Online</string>
+	<string name="menuComp">Play Computer</string>
+	<string name="menuTactics">Tactics Trainer</string>
+	<string name="menuVideo">Video Lessons</string>
 
-<string name="GameType">Game type:</string>
-<string name="classic">Classic chess</string>
-<string name="chess960">Chess 960</string>
-<string name="Friend">Friend:</string>
-<string name="initialTime">Initial Time:</string>
-<string name="bonusTime">Bonus Time:</string>
-<string name="RatedGme">Rated Game:</string>
-<string name="IplayAs">I play as:</string>
-<string name="DaysPerMove">Days per move:</string>
-<string name="ChallengeCreate">Create Challenge</string>
-<string name="onoff">ON / OFF</string>
-<string name="minrating">Min rating:</string>
-<string name="maxrating">Max rating:</string>
-<string-array name="playas">
-<item>Random</item><item>White</item>
-<item>Black</item>
+	<!--activities titles-->
+	<string name="label_play_live">PLAY LIVE</string>
+	<string name="label_play_online">PLAY ONLINE</string>
+	<string name="label_online_new_game">NEW ONLINE GAME</string>
+	<string name="label_live_new_game"> NEW LIVE GAME</string>
+	<string name="label_play_comp">PLAY COMP</string>
+	<string name="label_video">VIDEO</string>
+	<string name="label_settings">SETTINGS</string>
+	<string name="label_tactics">TACTICS</string>
+	<string name="label_game_live">LIVE GAME</string>
+	<string name="label_game_online">ONLINE GAME</string>
+	<string name="label_chat_live">LIVE CHAT</string>
+	<string name="label_chat_online">ONLINE CHAT</string>
+	<string name="label_game_comp">COMP GAME</string>
+	<string name="label_sign_up">Join Now – It’s Free!</string>
 
-</string-array>
-<string-array name="dayspermove"><item>1 day</item>
-<item>2 days</item>
-<item>3 days</item>
-<item>5 days</item>
-<item>7 days</item>
-<item>14 days</item>
-</string-array>
-<string-array name="minRating">
-<item>None</item>
-<item>1000</item>
-<item>1200</item>
-<item>1400</item>
-<item>1600</item>
-<item>1800</item>
-<item>2000</item>
-</string-array>
-<string-array name="maxRating">
-<item>None</item>
-<item>1000</item>
-<item>1200</item>
-<item>1400</item>
-<item>1600</item>
-<item>1800</item>
-<item>2000</item>
-<item>2200</item>
-<item>2400</item>
-</string-array>
-<string name="email">Email</string>
-<string name="retype">Re-type</string>
-<string name="country">Country</string>
-<string-array name="AIM"><item>Go to Next Ready Game</item>
-<item>Stay on Same Game</item>
-<item>Return to Game List</item>
-</string-array>
-<string-array name="Notif"><item>None</item>
-<item>Vibrate</item>
-<item>Ring</item>
-<item>Blinking LED</item>
-</string-array>
-<string-array name="Strength"><item>1 sec</item>
-<item>3 sec</item>
-<item>5 sec</item>
-<item>10 sec</item>
-<item>30 sec</item>
-<item>1 min</item>
-</string-array>
-<string name="blue">Blue</string>
-<string name="brown">Brown</string>
-<string name="green">Green</string>
-<string name="grey">Grey</string>
-<string name="marble">Marble</string>
-<string name="red">Red</string>
-<string name="tan">Tan</string>
-<string name="woodlight">Wood light</string>
-<string name="wooddark">Wood dark</string>
-<string name="alpha">Alpha</string>
-<string name="book">Book</string>
-<string name="cases">Cases</string>
-<string name="classicP">Classic</string>
-<string name="club">Club</string>
-<string name="condal">Condal</string>
-<string name="maya">Maya</string>
-<string name="modern">Modern</string>
-<string name="vintage">Vintage</string>
-<string name="aim">After I move</string>
-<string name="notification">Notification</string>
-<string name="notificationE">Enable notifications</string>
-<string name="ssb">Show submit button</string>
-<string name="enableSounds">Enable sounds</string>
-<string name="strength">Strength</string>
-<string name="interfaceP">Interface</string>
-<string name="board">Board</string>
-<string name="pieces">Pieces</string>
-<string name="showcoords">Show coordinates</string>
-<string name="movehighlights">Move highlights</string>
-<string name="invite">Invite a friend</string>
-<string name="contactUs">Contact Us</string>
-<string name="logout">Logout</string>
-<string name="vacationOn">On vacation</string>
-<string name="vacationOff">Not on vacation</string>
-<string name="ngwhite">New game (white)</string>
-<string name="ngblack">New game (black)</string>
-<string name="emailgame">Email game</string>
-<string name="load">Load saved game</string>
-<string name="backtogamelist">Back to game list</string>
-<string name="messages">Messages</string>
-<string name="analysis">Analysis board</string>
-<string name="drawoffer">Offer (or Accept) a Draw</string>
-<string name="resignorabort">Resign (or Abort)</string>
-<string name="resign">Resign</string>
-<string name="abort">Abort</string>
-<string name="cancel">Cancel</string>
-<string name="game">Game</string>
-<string name="newgame">New game</string>
-<string name="options">Options</string>
-<string name="reside">Flip</string>
-<string name="hint">Hint</string>
-<string name="prev">Prev</string>
-<string name="next">Next</string>
-<string name="nextgame">Next game</string>
-<string name="chat">Chat</string>
+	<string name="label_friend_challenge_live">FRIEND CHALLENGE LIVE</string>
+	<string name="label_create_challenge_live">CREATE LIVE CHALLENGE</string>
+	<string name="label_friend_challenge_online">FRIEND CHALLENGE ONLINE</string>
+	<string name="label_create_challenge_online">CREATE ONLINE CHALLENGE</string>
+
+	<string name="settings">Settings</string>
+	<string name="onlineTitle">ONLINE GAME</string>
+	<string name="liveTitle">LIVE GAME</string>
+	<string name="start_new_game">Start New Game</string>
+	<string name="dont_have_account_q">Don\'t have an account?</string>
+	<string name="singinUsername">Username</string>
+	<string name="singinPassword">Password</string>
+	<string name="singinButton">Sign In</string>
+	<string name="singupButton">Sign Up</string>
+	<string name="complete_singupButton">Complete Signup</string>
+	<string name="singinPlayguest">Play As Guest</string>
+	<string name="computerTitle">COMPUTER PLAY</string>
+	<string name="computerWhite">White</string>
+	<string name="computerBlack">Black</string>
+	<string name="Human">Human</string>
+	<string name="Comp">Comp</string>
+	<string name="Computer">Computer</string>
+	<string name="Thinking">Thinking...</string>
+	<string name="menuSite">www.chess.com</string>
+	<string name="onlineNewGametitle">New Game</string>
+	<string name="onlineChallenges">Open Challenges</string>
+	<string name="challengeFriend">Challenge A Friend</string>
+	<string name="createNewChallenge">Create Open Challenge</string>
+	<string name="currentGame">Current Live Game</string>
+	<string name="GameType">Game Type</string>
+	<string name="classic">Classic Chess</string>
+	<string name="chess960">Chess 960</string>
+	<string name="Friend">Friend</string>
+	<string name="initialTime">Initial Time</string>
+	<string name="bonusTime">Bonus Time</string>
+	<string name="RatedGme">Rated Game</string>
+	<string name="IplayAs">I Play As</string>
+	<string name="DaysPerMove">Days Per Move</string>
+	<string name="ChallengeCreate">Create Challenge</string>
+	<string name="onoff">ON / OFF</string>
+	<string name="minrating">Min Rating</string>
+	<string name="maxrating">Max Rating</string>
+	<string name="email">Email</string>
+	<string name="retype">Re-type</string>
+	<string name="country">Country</string>
+	<string name="blue">Blue</string>
+	<string name="brown">Brown</string>
+	<string name="green">Green</string>
+	<string name="grey">Grey</string>
+	<string name="marble">Marble</string>
+	<string name="red">Red</string>
+	<string name="tan">Tan</string>
+	<string name="woodlight">Wood Light</string>
+	<string name="wooddark">Wood Dark</string>
+	<string name="alpha">Alpha</string>
+	<string name="book">Book</string>
+	<string name="cases">Cases</string>
+	<string name="classicP">Classic</string>
+	<string name="club">Club</string>
+	<string name="condal">Condal</string>
+	<string name="maya">Maya</string>
+	<string name="modern">Modern</string>
+	<string name="vintage">Vintage</string>
+	<string name="aim">After I Move</string>
+	<string name="notification">Notification</string>
+	<string name="notificationE">Enable Notifications</string>
+	<string name="ssb">Show Submit Button</string>
+	<string name="enableSounds">Enable sounds</string>
+	<string name="strength">Strength</string>
+	<string name="interfaceP">INTERFACE</string>
+	<string name="board">Board</string>
+	<string name="pieces">Pieces</string>
+	<string name="showcoords">Show coordinates</string>
+	<string name="movehighlights">Move Highlights</string>
+	<string name="invite">Invite A Friend</string>
+	<string name="contactUs">Contact Us</string>
+	<string name="logout">Logout</string>
+	<string name="vacationOn">On Vacation</string>
+	<string name="vacationOff">Not on Vacation</string>
+	<string name="ngwhite">New Game (white)</string>
+	<string name="ngblack">New Game (black)</string>
+	<string name="emailgame">Email Game</string>
+	<string name="load">Load Saved Game</string>
+	<string name="backtogamelist">Back To Game List</string>
+	<string name="messages">Messages</string>
+	<string name="analysis">Analysis Board</string>
+	<string name="drawoffer">Offer (Or Accept) A Draw</string>
+	<string name="resignorabort">Resign (Or Abort)</string>
+	<string name="resign">Resign</string>
+	<string name="abort">Abort</string>
+	<string name="cancel">Cancel</string>
+	<string name="send">Send</string>
+	<string name="help">Help</string>
+	<string name="game">Game</string>
+	<string name="newgame">New Game</string>
+	<string name="options">Options</string>
+	<string name="reside">Flip</string>
+	<string name="hint">Hint</string>
+	<string name="prev">Prev</string>
+	<string name="next">Next</string>
+	<string name="nextgame">Next Game</string>
+	<string name="chat">Chat</string>
+	<string name="skill">Skill Level</string>
+	<string name="category">Category</string>
+	<string name="search">Search</string>
+	<string name="play">Play</string>
+	<string name="videos">Videos</string>
+	<string name="congratulations">Congratulations!</string>
+	<string name="onlinegamecreated">Online game created!</string>
+	<string name="challengeSent">Challenge Sent!</string>
+	<string name="creating">Creating...</string>
+	<string name="gettingfriends">Getting Friends List...</string>
+	<string name="sorry">Sorry</string>
+	<string name="nofriends">You have no friends yet. You can invite them via www.chess.com.</string>
+	<string name="invitetitle">Invite</string>
+	<string name="drawaccepted">Draw accepted!</string>
+	<string name="accept">Accept</string>
+	<string name="challengeaccepted">Challenge Accepted!</string>
+	<string name="challengedeclined">Challenge Declined!</string>
+	<string name="decline">Decline</string>
+	<string name="updatinggameslist">Updating Games List...</string>
+	<string name="challengetitle">Challenge</string>
+	<string name="loadinggames">Loading Games...</string>
+	<string name="drawoffered">Draw Offered</string>
+	<string name="gettingmessages">Getting Messages...</string>
+	<string name="sendingmessage">Sending Message...</string>
+	<string name="ok">OK</string>
+	<string name="submit">Submit</string>
+	<string name="login">Login</string>
+	<string name="title">Title</string>
+	<string name="error">Error</string>
+	<string name="loading">Loading...</string>
+	<string name="wrongcountry">You must select your country!</string>
+	<string name="wrongpassword">Your password must be at least 6 characters long!</string>
+	<string name="wrongusername">Your Username must be at least 3 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
+	<string name="wrongemail">You will need to confirm your membership by email.</string>
+	<string name="wrongretype">Wrong retyped password!</string>
+	<string name="signingin">Signing In...</string>
+	<string name="videoslistupdated">Videos list updated!</string>
+	<string name="showanswer">Show Answer</string>
+	<string name="skipproblem">Skip Problem</string>
+	<string name="sendinggameinfo">Sending game info...</string>
+	<string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
+	<string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
+	<string name="black">Black</string>
+	<string name="white">White</string>
+	<string name="hours">hours</string>
+	<string name="days">days</string>
+	<string name="playeronline">Player Online!</string>
+	<string name="playeroffline">Player Offline!</string>
+	<string name="mymove">My Move!</string>
+	<string name="theirmove">Their Move!</string>
+	<string name="gamefinish">Finish this game</string>
+	<string name="random">Random</string>
+	<string name="won">won</string>
+	<string name="lost">lost</string>
+	<string name="draw">draw</string>
+	<string name="duration">Duration</string>
+	<string name="published">Published</string>
+	<string name="details">Details</string>
+	<string name="playvideo">Play Video</string>
+	<string name="accepted">Accepted!</string>
+	<string name="upgrade">Upgrade</string>
+	<string name="preferencesUpgrade">Upgrade My Account</string>
+	<string name="videoUpgrade">Upgrade for full access to videos!</string>
+	<string name="removeAds">Upgrade And Remove Ads!</string>
+	<string name="accept_draw_q">Accept Draw?</string>
+	<string name="ready_for_first_tackics_q">Are you ready for your first tactic?</string>
+	<string name="daily_limit_exceeded">Daily Limit Exceeded</string>
+	<string name="max_tackics_for_today_reached">You have hit your maximum number of tactics for today. Would you like
+		to be able to do more tactics?
+	</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="okay">OK</string>
+	<string name="hundred_tackics_completed">100 tactics complited!</string>
+	<string name="offline_mode">Offline mode</string>
+	<string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating
+		will not change after completing problems until your Internet connection returns.
+	</string>
+	<string name="abort_resign_game">Abort/Resign a game:</string>
+	<string name="are_you_sure_q">Are You sure?</string>
+	<string name="correct_ex">Correct!</string>
+	<string name="wrong_ex">Wrong!</string>
+	<!--
+	 + result.values.get("user_rating_change")
+	 +
+	 + result.values.get("user_rating")
+ -->
+	<string name="wrong_score">Wrong! Score %1$s
+		\nNew rating %2$s </string>
+	<string name="correct_score">Correct! Score%1$s
+		\nNew rating %2$s </string>
+	<string name="you_got_new_msg">You have a new message!</string>
+	<string name="browse">Browse</string>
 
 
+	<string name="bonus_time_left">Bonus Time Left %1$s Time Spent %2$s</string>
 
-<string name="skill">Skill level</string>
-<string name="category">Category</string>
-<string-array name="skill"><item>Not set</item><item>Beginner</item>
-<item>Intermediate</item>
-<item>Advanced</item>
+	<string name="pieces_s">Pieces:</string>
+	<string name="home">Home</string>
+	<string name="live">Live</string>
+	<string name="online">Online</string>
+	<string name="comp">Comp</string>
+	<string name="tactics">Tactics</string>
+	<string name="video">Video</string>
+	<string name="boards_s">Boards</string>
+	<string name="invite_subject">Play Chess with me</string>
+	<string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app
+		here:
+		http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"
+	</string>
+	<string name="live_game">Live Game</string>
+	<string name="online_game">Online Game</string>
+	<string name="send_mail">Send mail...</string>
+	<string name="tournaments">Tournaments</string>
+	<string name="stats">Stats</string>
+	<string name="challenges">Challenges</string>
+	<string name="challenge">Challenge</string>
+	<string name="analysis_mode">Analysis Mode</string>
+	<string name="check">Check!</string>
+	<string name="choose_a_piece">Choose a piece</string>
+	<string name="open_app_t_see_msg">Tap here to see the message inside of app</string>
 
-</string-array>
-<string-array name="category"><item>Not set</item><item>Amazing games</item>
-<item>Endgames</item>
-<item>Openings</item>
-<item>Rules basics</item>
-<item>Strategy</item>
-<item>Tactics</item>
-</string-array>
-<string name="search">Search</string>
-<string name="play">Play</string>
-<string name="videos">Videos</string>
-<string name="congratulations">Congratulations!</string>
-<string name="onlinegamecreated">Online game created!</string>
-<string name="challengeSent">Challenge sent!</string>
-<string name="creating">Creating...</string>
-<string name="gettingfriends">Getting friends list...</string>
-<string name="sorry">Sorry</string>
-<string name="nofriends">You have no friends yet. You can invite them via www.chess.com.</string>
-<string name="invitetitle">Invite</string>
-<string name="drawaccepted">Draw accepted!</string>
-<string name="accept">Accept</string>
-<string name="challengeaccepted">Challenge accepted!</string>
-<string name="challengedeclined">Challenge declined!</string>
-<string name="decline">Decline</string>
-<string name="updatinggameslist">Updating games list...</string>
-<string name="challengetitle">Challenge:</string>
-<string name="loadinggames">Loading games...</string>
-<string name="drawoffered">Draw offered</string>
-<string name="gettingmessages">Getting messages...</string>
-<string name="sendingmessage">Sending message...</string>
-<string name="ok">OK</string>
-<string name="error">Error</string>
-<string name="loading">Loading...</string>
-<string name="wrongcountry">You must select your country!</string>
-<string name="wrongpassword">Your password must be at least 6 characters long!</string>
-<string name="wrongusername">Your Username must be at least 3 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
-<string name="wrongemail">You will need to confirm your membership by email.</string>
-<string name="wrongretype">Wrong retyped password!</string>
-<string name="signingin">Signing In...</string>
-<string name="videoslistupdated">Videos list updated!</string>
-<string name="showanswer">Show answer</string>
-<string name="skipproblem">Skip problem</string>
-<string-array name="wrongtactic"><item>Next</item>
-<item>Retry</item>
-<item>Stop</item>
-</string-array>
-<string-array name="correcttactic"><item>Stop</item>
-<item>Next</item>
-</string-array>
-<string name="sendinggameinfo">Sending game info...</string>
-<string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
-<string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
-<string-array name="onlineSpinner">
-    <item>Current games</item>
-    <item>Challenges</item>
-    <item>Finished games</item>
-</string-array>
-<string name="black">Black</string>
-<string name="white">White</string>
-<string name="hours">hours</string>
-<string name="days">days</string>
-<string name="playeronline">Player online!</string>
-<string name="playeroffline">Player offline!</string>
-<string name="mymove">My move!</string>
-<string name="theirmove">Their move!</string>
-<string name="gamefinish">Finish this game</string>
-<string name="random">Random</string>
-<string name="won">won</string>
-<string name="lost">lost</string>
-<string name="draw">draw</string>
-<string name="duration">Duration:</string>
-<string name="published">Published:</string>
-<string name="details">Details</string>
-<string name="playvideo">Play Video</string>
-<string name="accepted">Accepted!</string>
-
-<string name="preferencesUpgrade">Upgrade My Account</string>
-<string name="videoUpgrade">Upgrade for full access to videos!</string>
-<string name="removeAds">Upgrade and remove ads!</string>
+	<!--SignOut-->
+	<string name="signout_confirm">Are you sure you want to sign out from Live Chess server?</string>
+	<string name="confirm">Confirm</string>
+	<string name="you_been_challenged">You\'ve Been Challenged!</string>
+	<string name="opponent_">Opponent:</string>
+	<string name="time_">Time:</string>
+	<string name="rated">Rated</string>
+	<string name="unrated">Unrated</string>
+	<string name="you_play">You Play:</string>
 
 </resources>

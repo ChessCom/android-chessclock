@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center"
+	android:paddingTop="@dimen/signin_scr_top_padding"
+	android:paddingBottom="@dimen/signin_scr_bottom_padding"
+	android:paddingLeft="@dimen/signin_scr_side_padding"
+	android:paddingRight="@dimen/signin_scr_side_padding"
+	>
+
+	<ImageView
+		android:id="@+id/logoImg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="@dimen/signin_logo_margin_top"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY"
+		android:src="@drawable/logo"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/signin_main_margin_top"
+			android:layout_below="@id/logoImg"
+			android:orientation="vertical">
+
+			<com.chess.RoboEditText
+				android:id="@+id/username"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/singinUsername"
+				android:singleLine="true"
+				/>
+
+			<com.chess.RoboEditText
+				android:id="@+id/password"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/singinPassword"
+				android:inputType="textPersonName"
+				android:password="true"
+				android:singleLine="true"
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/singin"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singinButton"
+				/>
+
+			<com.facebook.android.LoginButton
+				android:id="@+id/fb_connect"
+				style="@style/Text.Button.Login"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:drawableLeft="@drawable/facebook_icon"
+
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/singup"
+				style="@style/Text.Button.Green"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singupButton"
+
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/guestplay"
+				style="@style/Text.Button.Grey"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singinPlayguest"
+
+				/>
+		</LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:cb="http://schemas.android.com/apk/res/com.chess"
+	android:id="@id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<com.chess.ui.views.DashBoardLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<com.chess.ui.views.CenteredButton
+			android:id="@id/playLiveFrame"
+			style="@style/DashboardItem"
+			cb:buttonDrawable="@drawable/dashboard_play_live_selector"
+			android:clickable="true"
+			cb:buttonText="@string/menuLive"/>
+
+		<com.chess.ui.views.CenteredButton
+			android:id="@id/playOnlineFrame"
+			style="@style/DashboardItem"
+			cb:buttonDrawable="@drawable/dashboard_play_online_selector"
+			cb:buttonText="@string/menuOnline"/>
+
+		<com.chess.ui.views.CenteredButton
+			android:id="@id/playComputerFrame"
+			style="@style/DashboardItem"
+			cb:buttonDrawable="@drawable/dashboard_play_comp_selector"
+			cb:buttonText="@string/menuComp"/>
+
+		<com.chess.ui.views.CenteredButton
+			android:id="@id/tacticsTrainerFrame"
+			style="@style/DashboardItem"
+			cb:buttonDrawable="@drawable/dashboard_tactics_selector"
+			cb:buttonText="@string/menuTactics"/>
+
+		<com.chess.ui.views.CenteredButton
+			android:id="@id/videoLessonsFrame"
+			style="@style/DashboardItem"
+			cb:buttonDrawable="@drawable/dashboard_video_selector"
+			cb:buttonText="@string/menuVideo"/>
+
+		<com.chess.ui.views.CenteredButton
+			android:id="@id/settingsFrame"
+			style="@style/DashboardItem"
+			cb:buttonDrawable="@drawable/dashboard_settings_selector"
+			cb:buttonText="@string/settings"/>
+	</com.chess.ui.views.DashBoardLayout>
+
+	<TextView
+		android:id="@+id/adView"
+		android:layout_width="fill_parent"
+		android:layout_height="48dip"
+		android:layout_marginTop="20dip"
+		android:background="@android:color/black"
+		android:textColor="#FF434343"
+		android:text="Advertisment"
+		android:layout_weight="1"
+		/>
+
+</LinearLayout>

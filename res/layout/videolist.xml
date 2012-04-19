@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
 
-	<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:padding="3dip"
-	  android:gravity="center" android:textStyle="bold" android:textSize="16dip" android:textColor="#fff"
-	  android:text="@string/videos"></TextView>
-	<ImageView android:layout_width="fill_parent" android:layout_height="5dip" android:background="#00bb00"></ImageView>
+	android:id="@id/mainView"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:paddingTop="@dimen/default_scr_top_padding"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	android:orientation="vertical"
+	>
 
-	<TextView android:layout_height="wrap_content"
-			android:layout_width="fill_parent" android:id="@+id/videoUpgrade"
-			android:text="@string/videoUpgrade" android:background="#ffffcd"
-			android:textColor="#0066cc" android:textStyle="bold"
-			android:drawableLeft="@drawable/star" android:padding="5px"
-			android:drawablePadding="10dp" android:visibility="gone"
-			android:textSize="16dip" android:gravity="left"></TextView>
 
-	<ListView android:id="@+id/videosLV" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+	<com.chess.RoboButton
+		android:id="@+id/upgradeBtn"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		style="@style/Text.Button.Upgrade"
+		android:text="@string/preferencesUpgrade"
+		/>
+
+	<ListView
+		android:id="@+id/videosLV"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:fadingEdge="none"
+		android:background="@android:color/transparent"
+		android:cacheColorHint="@android:color/transparent"
+		android:divider="@color/underline_color_grey"
+		android:dividerHeight="2px"
+		android:paddingLeft="@dimen/default_linear_left_padding"/>
 
 </LinearLayout>

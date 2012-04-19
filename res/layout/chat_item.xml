@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
-<TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/owner" android:padding="3dip" android:textStyle="bold" android:textColor="#00bb00" android:text="Owner:"></TextView><TextView android:layout_height="wrap_content" android:id="@+id/text" android:text="some text" android:textStyle="bold" android:textSize="16dip" android:layout_width="fill_parent" android:padding="5dip" android:textColor="#ccc"></TextView>
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:paddingLeft="7dip"
+	android:paddingRight="7dip">
 
+	<com.chess.RoboTextView
+		android:id="@+id/owner"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="3dip"
+		robo:ttf="Bold"
+		android:textSize="13sp"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/text"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:padding="3dip"
+		android:text="some text"
+		android:textSize="16sp"
+		/>
 
 </LinearLayout>
