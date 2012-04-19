@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
-import com.chess.backend.Notifications;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -25,7 +24,10 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.*;
+import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.CommonUtils;
+import com.chess.utilities.MopubHelper;
+import com.chess.utilities.MyProgressDialog;
 
 import java.util.ArrayList;
 
@@ -262,8 +264,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 										ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 
 						NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-						mNotificationManager.cancel(1);
-						Notifications.resetCounter();
+						mNotificationManager.cancel(R.id.notification_message);
+
 					}
 				}
 				break;
@@ -281,8 +283,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 									ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
 
 					NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-					mNotificationManager.cancel(1);
-					Notifications.resetCounter();
+					mNotificationManager.cancel(R.id.notification_message);
+					
 				}
 				break;
 			}

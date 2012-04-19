@@ -5,6 +5,9 @@
     <item name="mainView" type="id"/>
     <item name="glow_layer" type="id"/>
 
+	<!--Notification-->
+	<item name="notification_message" type="id"/>
+
     <!--Home screens-->
     <item name="playLive" type="id"/>
     <item name="playOnline" type="id"/>
