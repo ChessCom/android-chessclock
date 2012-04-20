@@ -132,7 +132,7 @@ public class MoPubView extends FrameLayout {
     }
     
     private void initVersionDependentAdView(Context context) {
-        int sdkVersion = (new Integer(Build.VERSION.SDK)).intValue();
+        int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < 7) {
         	mAdView = new AdView(context, this);
         } else {

@@ -49,7 +49,9 @@ public class Notifications extends Service {
 			}
 			if (/*(counter <= 5 || (counter%15 == 0 && counter <= 60) || counter%60 == 0) && */
 					!mainApp.guest && !mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "").equals("")) {
-				response = Web.Request("http://www." + LccHolder.HOST + "/api/get_move_status?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""), "GET", null, null);
+				response = Web.Request("http://www." + LccHolder.HOST
+                        + "/api/get_move_status?id="
+                        + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""), "GET", null, null);
 				if (response.trim().contains("Success+1")) {
 
 					handler.sendEmptyMessage(0);

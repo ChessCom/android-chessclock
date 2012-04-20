@@ -141,7 +141,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	}
 
 	@Override
-
 	public Object onRetainCustomNonConfigurationInstance() {
 		return boardView.getBoardFace();
 	}
@@ -245,6 +244,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
 		unregisterReceiver(showGameEndPopupReceiver);
+        // unregister mobup broadcastReceiver
+        if (MopubHelper.isShowAds(mainApp)) {// TODO check
+            MopubHelper.destroyRectangleAd();
+        }
 
 		super.onPause();
 

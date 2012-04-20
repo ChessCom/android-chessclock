@@ -45,6 +45,11 @@ public class MopubHelper {
 		rectangleAdView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
 	}
 
+    public static void destroyRectangleAd(){ // used to call inregisterBroadCastReceiver
+        if(rectangleAdView != null)
+            rectangleAdView.destroy();
+    }
+
 	public static void showRectangleAd(LinearLayout wrapper, MainApp app) {
 		if (!isShowAds(app) || rectangleAdView == null) {
 			return;
