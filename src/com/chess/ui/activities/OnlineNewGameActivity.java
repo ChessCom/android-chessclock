@@ -73,7 +73,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	protected void onResume() {
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 		super.onResume();
-//		enableScreenLockTimer();
 	}
 
 	@Override
@@ -83,7 +82,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		}*/
 		unregisterReceiver(challengesListUpdateReceiver);
 		super.onPause();
-//		enableScreenLock();
 	}
 
 	@Override
@@ -171,7 +169,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
 					mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
-					//mainApp.showDialog(OnlineNewGame.this, "Error", result);
 				}
 			} else if (pos == 1) {
 
@@ -184,7 +181,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 				} else if (result.contains(AppConstants.ERROR_PLUS)) {
 					mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
-					//mainApp.showDialog(OnlineNewGame.this, "Error", result);
 				}
 			}
 		}
@@ -193,8 +189,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
-//		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-		if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
+		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 			final String title = mainApp.isLiveChess() ?
 					gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :
 					"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
