@@ -248,9 +248,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
 		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
-			mainApp.getSharedDataEditor().commit();
 			checkUpdate();
 		}
 		/*

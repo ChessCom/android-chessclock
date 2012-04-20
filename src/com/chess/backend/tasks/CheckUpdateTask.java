@@ -53,21 +53,24 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 			String[] valuesArray = s.trim().split("\\|", 2);
 
 			int actualVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-			System.out.println("LCCLOG: valuesArray[1].trim() " + valuesArray[1].trim());
-
 			int minimumVersion = Integer.valueOf(valuesArray[0].trim());
-			int prefferedVersion = Integer.valueOf(valuesArray[1].trim());
+			int preferredVersion = Integer.valueOf(valuesArray[1].trim());
 
-
-			if (actualVersion < prefferedVersion) {
+			if (actualVersion < preferredVersion) {
 				force = false;
 			}
 			if (actualVersion < minimumVersion) {
 				force = true;
 			}
 
-
 		} catch (Exception e) {
+			return force;
+		}
+
+		if (force != null && !force) {
+			mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, System.currentTimeMillis());
+			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
+			mainApp.getSharedDataEditor().commit();
 		}
 		return force;
 	}
@@ -78,7 +81,7 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 
 		if (result != null) {
 			final boolean forceFlag = result;
-			new AlertDialog.Builder(context).setIcon(R.drawable.ic_launcher).setTitle("update Check")
+			new AlertDialog.Builder(context).setIcon(R.drawable.ic_launcher).setTitle("Update Check")
 					.setMessage("An update is available! Please update").setCancelable(false)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
