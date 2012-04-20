@@ -39,9 +39,11 @@ import com.chess.ui.interfaces.CoreActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
+import com.chess.utilities.MopubHelper;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
+import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +73,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean mIsBound;
 	public WebService appService = null;
 
-	
+    // we may have this add on every screen, so control it on the lowest level
+    protected MoPubView moPubView;
+
 	public abstract void update(int code);
 
 	public void setFullscreen() {
@@ -300,6 +304,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		unregisterReceiver(informAndExitReceiver);
 		unregisterReceiver(obsoleteProtocolVersionReceiver);
 		unregisterReceiver(infoMessageReceiver);
+
+        // unregister mobup broadcastReceiver
+        if (moPubView != null) {
+            moPubView.destroy();
+        }
 	}
 
 	protected void backToHomeActivity(){

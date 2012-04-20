@@ -87,7 +87,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 				new AlertDialog.Builder(LiveFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(getString(R.string.sorry))
-						.setMessage(getString(R.string.nofriends))
+						.setMessage(getString(R.string.nofriends_online))
 						.setPositiveButton(getString(R.string.invitetitle), new DialogInterface.OnClickListener() {
 							@Override
                             public void onClick(DialogInterface dialog, int whichButton) {

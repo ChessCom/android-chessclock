@@ -63,7 +63,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private NonLiveDialogListener nonLiveDialogListener;
 
 
-	@Override
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
@@ -71,8 +72,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
+
 		if (MopubHelper.isShowAds(mainApp)) {
-			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+            moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
 		}
 
 		init();

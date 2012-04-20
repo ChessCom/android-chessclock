@@ -144,6 +144,7 @@
 	<string name="gettingfriends">Getting Friends List...</string>
 	<string name="sorry">Sorry</string>
 	<string name="nofriends">You have no friends yet. You can invite them via www.chess.com.</string>
+	<string name="nofriends_online">Your friends are not online. If You didn\'t invite them yet, go to www.chess.com.</string>
 	<string name="invitetitle">Invite</string>
 	<string name="drawaccepted">Draw accepted!</string>
 	<string name="accept">Accept</string>
