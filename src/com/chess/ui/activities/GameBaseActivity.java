@@ -17,7 +17,6 @@ import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -25,7 +24,7 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.CommonUtils;
+import com.chess.utilities.Utils;
 import com.chess.utilities.MopubHelper;
 
 import java.util.Timer;
@@ -77,7 +76,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if (CommonUtils.needFullScreen(this)) {
+		if (Utils.needFullScreen(this)) {
 			setFullscreen();
 			savedInstanceState = new Bundle();
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);

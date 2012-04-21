@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
@@ -14,14 +15,16 @@ import com.chess.ui.core.AppConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 /**
- * CommonUtils class
+ * Utils class
  *
  * @author alien_roger
  * @created at: 01.02.12 7:50
  */
-public class CommonUtils {
+public class Utils {
 
 	private static final int MDPI_DENSITY = 1;
+	private static boolean ENABLE_LOG = true;
+
 
 	public static void setBackground(View mainView, Context context) {
 		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
@@ -97,5 +100,17 @@ public class CommonUtils {
 		notification.setLatestEventInfo(context, title, body, contentIntent);
 
 		notifyManager.notify(R.id.notification_message, notification);
+	}
+
+	/**
+	 * Use default android.util.Log with Flag trigger
+	 * Use this method to track changes, but avoid to use in uncertain cases,
+	 * where release version can tell where some bugs were born
+	 * @param tag
+	 * @param message
+	 */
+	public static void logD(String tag, String message){
+		if(ENABLE_LOG) // can be set false for release version.
+			Log.d(tag, message);
 	}
 }

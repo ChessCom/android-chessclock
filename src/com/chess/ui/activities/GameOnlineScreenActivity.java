@@ -26,7 +26,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.CommonUtils;
+import com.chess.utilities.Utils;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.MyProgressDialog;
 
@@ -521,7 +521,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            CommonUtils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(),AppConstants.SYMBOL_EMPTY,AppConstants.SYMBOL_EMPTY,ChatActivity.class);
+            Utils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(), AppConstants.SYMBOL_EMPTY, AppConstants.SYMBOL_EMPTY, ChatActivity.class);
         }
     }
 
