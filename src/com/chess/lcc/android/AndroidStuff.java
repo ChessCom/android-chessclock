@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
+import com.chess.backend.RestHelper;
 import com.chess.backend.WebService;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
@@ -84,12 +85,8 @@ public class AndroidStuff {
 				.putExtra(AppConstants.REPEATABLE_TASK, false)
 				.putExtra(AppConstants.CALLBACK_CODE, code)
 				.putExtra(AppConstants.REQUEST_RESULT,
-						result ? AppConstants.SUCCESS : AppConstants.ERROR_PLUS + errorMessage[0])
+						result ? RestHelper.R_SUCCESS : RestHelper.R_ERROR + errorMessage[0])
 		);
-		/*if(currentProgressDialog != null)
-			{
-			  currentProgressDialog.dismiss();
-			}*/
 	}
 
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {

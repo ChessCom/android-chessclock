@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
@@ -198,10 +199,10 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					mainApp.showToast(getString(R.string.accepted));
 					update(GameBaseActivity.CALLBACK_SEND_MOVE);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.showDialog(Online.this, "Error", result);
@@ -214,9 +215,9 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_SEND_MOVE);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.showDialog(Online.this, "Error", result);

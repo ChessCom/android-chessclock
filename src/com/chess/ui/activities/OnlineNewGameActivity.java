@@ -12,12 +12,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -164,9 +164,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(),
 						"GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_COMP_MOVE);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 				}
@@ -176,9 +176,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(),
 						"GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(3);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 				}

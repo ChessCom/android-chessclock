@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
 import com.chess.backend.tasks.CheckUpdateTask;
@@ -39,7 +40,6 @@ import com.chess.ui.interfaces.CoreActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
-import com.chess.utilities.MopubHelper;
 import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
@@ -101,7 +101,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		// get global Shared Preferences
 		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences("sharedData", 0));
+			mainApp.setSharedData(getSharedPreferences("sharedData", MODE_PRIVATE));
 			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
 		}
 
@@ -390,7 +390,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				mainApp.noInternet = false;
 			}
 
-			if (resp.contains(AppConstants.SUCCESS))
+			if (resp.contains(RestHelper.R_SUCCESS))
 				update(retCode);
 			else {
 				if (resp.length() == 0) {
@@ -399,7 +399,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				}
 				String title = getString(R.string.error);
 				String message = resp;
-				if (resp.contains(AppConstants.ERROR_PLUS)) {
+				if (resp.contains(RestHelper.R_ERROR)) {
 					message = resp.split("[+]")[1];
 				} else {
 					update(ERROR_SERVER_RESPONSE);

@@ -11,9 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.Notifications;
+import com.chess.backend.StatusHelper;
 import com.chess.backend.Web;
-import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
@@ -236,10 +235,11 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
         mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
         mainApp.getSharedDataEditor().commit();
 
-        FlurryAgent.onEvent("Logged In", null);
-        if (mainApp.getSharedData().getBoolean(mainApp.getUserName()
-                + AppConstants.PREF_NOTIFICATION, true))
-            startService(new Intent(this, Notifications.class));
+        FlurryAgent.onEvent("Logged In");
+        if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)) {
+//			startService(new Intent(this, Notifications.class));
+			StatusHelper.checkStatusUpdate(mainApp, context);
+		}
         mainApp.guest = false;
 
 

@@ -269,5 +269,8 @@
 	<string name="lightning_game">(Lightning)</string>
 	<string name="lighthning_game">(Lightning)</string>
 	<string name="network_was_changed_please_relogin">Network was changed. Please relogin to Live</string>
+	<string name="ches_com">ChessCom</string>
+	<string name="your_move">It's Your Move</string>
+	<string name="online_challenge_wait">Your challenge is waiting for You!</string>
 
 </resources>

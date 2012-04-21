@@ -95,8 +95,8 @@ public class AppConstants {
 	public static final String REQUEST_DRAW = "Request draw: ";
 	public static final String OFFERDRAW = "OFFERDRAW";
 	public static final String ACCEPTDRAW = "ACCEPTDRAW";
-	public static final String SUCCESS = "Success";
-	public static final String ERROR_PLUS = "Error+";
+//	public static final String SUCCESS = "Success";
+//	public static final String ERROR_PLUS = "Error+";
 	public static final String ERROR = "Error";
 	public static final String LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION = "LCCLOG: resign game by fair play restriction: ";
 	public static final String RESIGN_GAME = "Resign game: ";

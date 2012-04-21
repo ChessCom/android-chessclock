@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -99,9 +100,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
 					+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-			if (result.contains(AppConstants.SUCCESS)) {
+			if (result.contains(RestHelper.R_SUCCESS)) {
 				mainApp.showDialog(coreContext, "", getString(R.string.drawoffered));
-			} else if (result.contains(AppConstants.ERROR_PLUS)) {
+			} else if (result.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 			} else {
 				//mainApp.showDialog(Game.this, "Error", result);
@@ -118,7 +119,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
 					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-			if (result.contains(AppConstants.SUCCESS)) {
+			if (result.contains(RestHelper.R_SUCCESS)) {
 				if (MopubHelper.isShowAds(mainApp)) {
 					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
 							.putExtra(AppConstants.MESSAGE, "GAME OVER")
@@ -126,7 +127,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				} else {
 					finish();
 				}
-			} else if (result.contains(AppConstants.ERROR_PLUS)) {
+			} else if (result.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 			} else {
 				//mainApp.showDialog(Game.this, "Error", result);

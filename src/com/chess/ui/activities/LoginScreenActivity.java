@@ -11,7 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.Notifications;
+import com.chess.backend.StatusHelper;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.core.AppConstants;
@@ -186,9 +186,12 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().commit();
 
 		Log.d("TEST","USER_TOKEN saved");
-		FlurryAgent.onEvent("Logged In", null);
-		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true))
-			startService(new Intent(this, Notifications.class));
+		FlurryAgent.onEvent("Logged In");
+		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
+//			startService(new Intent(this, Notifications.class));
+			StatusHelper.checkStatusUpdate(mainApp, context);
+		}
+
 		mainApp.guest = false;
 
 		Intent intent = new Intent(this, HomeScreenActivity.class);

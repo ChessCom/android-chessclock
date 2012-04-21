@@ -33,7 +33,7 @@ public class HTML5AdView extends AdView {
     public HTML5AdView(Context context, MoPubView view) {
         super(context, view);
         
-        int sdkVersion = (new Integer(Build.VERSION.SDK)).intValue();
+        int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion > 7) {
             setWebChromeClient(new HTML5WebChromeClient());
         }

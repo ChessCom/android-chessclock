@@ -1,13 +1,14 @@
 package com.chess.utilities;
 
+import com.chess.backend.RestHelper;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
-import com.chess.ui.core.AppConstants;
 
 import java.util.ArrayList;
 
 public class ChessComApiParser {
+
 	//Challenge a friend
 	public static String[] GetFriendsParse(String result) {
 		if (result.trim().length() > 8)
@@ -27,7 +28,7 @@ public class ChessComApiParser {
 		for (i = 1; i <= count; i++) {
 			String[] tmp = new String[11];
 			a = 0;
-			for (String s : g[i].split(":")) {
+			for (String s : g[i].split(RestHelper.SYMBOL_PARAMS_SPLIT)) {
 				tmp[a++] = s;
 			}
 			GameListItem gle = new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp, false);
@@ -48,7 +49,7 @@ public class ChessComApiParser {
 		for (i = 1; i <= count; i++) {
 			String[] tmp = new String[11];
 			a = 0;
-			for (String s : g[i].split(":")) {
+			for (String s : g[i].split(RestHelper.SYMBOL_PARAMS_SPLIT)) {
 				tmp[a++] = s;
 			}
 			output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp, false));
@@ -64,11 +65,11 @@ public class ChessComApiParser {
 			return output;
 		}
 
-		String[] GamesArray = result.split(":", 2);
+		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		try {
 			int gamescount = new Integer(GamesArray[0].substring(8));
 			int i, j, inc = 0;
-			String[] tmp = GamesArray[1].split(":");
+			String[] tmp = GamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 
 			for (i = 0; i < gamescount; i++) {
 				String[] tmp2 = new String[17];
@@ -87,7 +88,7 @@ public class ChessComApiParser {
 	public static ArrayList<GameListItem> GetFinishedOnlineGamesParse(String result) {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
-		String[] GamesArray = result.split(":", 2);
+		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		int gamescount;
 		try {
 			gamescount = Integer.parseInt(GamesArray[0].substring(8));
@@ -96,7 +97,7 @@ public class ChessComApiParser {
 		}
 
 		int i, j, inc = 0;
-		String[] tmp = GamesArray[1].split(":");
+		String[] tmp = GamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 		for (i = 0; i < gamescount; i++) {
 			String[] tmp2 = new String[15];
 			for (j = 0; j < 15; j++) {
@@ -109,15 +110,15 @@ public class ChessComApiParser {
 
 	//online game
 	public static GameItem GetGameParseV3(String result) {
-		if (result.contains(AppConstants.SUCCESS)) {
-			return new GameItem(result.split(":"), false);
+		if (result.contains(RestHelper.R_SUCCESS)) {
+			return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
 		}
 		return null;
 	}
 
 	public static ArrayList<MessageItem> receiveMessages(String result) {
 		ArrayList<MessageItem> output = new ArrayList<MessageItem>();
-		String[] tmp = result.substring(8).split(":");
+		String[] tmp = result.substring(8).split(RestHelper.SYMBOL_PARAMS_SPLIT);
 		int i;
 		for (i = 0; i < tmp.length; i++) {
 			if (tmp[i].length() > 1)

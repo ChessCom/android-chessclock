@@ -10,6 +10,7 @@ import android.view.View;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListItem;
+import com.chess.ui.core.AppConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 /**
@@ -25,7 +26,6 @@ public class CommonUtils {
 	public static void setBackground(View mainView, Context context) {
 		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
 
-//		int padding = getResources().getDrawable(R.drawable.chess_cell).getIntrinsicWidth() / 2;
 		int paddingTop = (int) context.getResources().getDimension(R.dimen.dashboard_padding_top);
 		int paddingLeft = (int) context.getResources().getDimension(R.dimen.dashboard_padding_side);
 		int paddingRight = (int) context.getResources().getDimension(R.dimen.dashboard_padding_side);
@@ -39,18 +39,19 @@ public class CommonUtils {
 	}
 
     /**
-     * Fire notification with deafined arguments
+     * Fire notification with defined arguments
      *
      * @param context - Application Context for resources
-     * @param taskTitle - title that will be visible at status bar
+     * @param title - title that will be visible at status bar
      * @param id - request code id
      * @param sound - sound to play
      * @param body - short description for notification message content
      * @param clazz - which class to open when User press notification
      */
-	public static void showNotification(Context context, String taskTitle, long id, String sound,String body,Class<?> clazz) {
+	public static void showNotification(Context context, String title, long id,
+										String sound,String body,Class<?> clazz) { // TODO unify
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		// Set the icon, for boarding flight status
+
 		Notification notification = new Notification(R.drawable.ic_stat_chess, context.getString(R.string.you_got_new_msg), System.currentTimeMillis());
 //		notification.sound = Uri.parse(sound); // SettingsActivity.getAlarmRingtone(context);
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -70,6 +71,31 @@ public class CommonUtils {
 		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.open_app_t_see_msg), contentIntent);
 
 		notifyManager.notify(R.string.you_got_new_msg, notification);
+	}
 
+	/**
+	 * Fire simplified notification with defined arguments
+	 *
+	 * @param context - Application Context for resources
+	 * @param title - title that will be visible at status bar
+	 * @param id - request code id
+	 * @param body - short description for notification message content
+	 * @param clazz - which class to open when User press notification
+	 */
+	public static void showMoveStatusNotification(Context context, String title,  String body, int id, Class<?> clazz) {
+		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		Intent intent = new Intent(context, clazz);
+		intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
+
+		notification.setLatestEventInfo(context, title, body, contentIntent);
+
+		notifyManager.notify(R.id.notification_message, notification);
 	}
 }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
@@ -278,7 +279,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					mainApp.showToast(getString(R.string.accepted));
 					update(1);
 				} else if (result.contains("Error+")) {
@@ -294,7 +295,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(1);
 				} else if (result.contains("Error+")) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
@@ -399,9 +400,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(2);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.showDialog(Online.this, "Error", result);
@@ -412,9 +413,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
 						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(3);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.showDialog(Online.this, "Error", result);

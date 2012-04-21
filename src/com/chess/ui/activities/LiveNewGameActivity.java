@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
@@ -220,9 +221,9 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(GameBaseActivity.CALLBACK_COMP_MOVE);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(LiveNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.showDialog(OnlineNewGame.this, "Error", result);
@@ -230,9 +231,9 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 			} else if (pos == 1) {
 
 				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(AppConstants.SUCCESS)) {
+				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(3);
-				} else if (result.contains(AppConstants.ERROR_PLUS)) {
+				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(LiveNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
 					//mainApp.showDialog(OnlineNewGame.this, "Error", result);

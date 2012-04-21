@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.Notifications;
+import com.chess.backend.StatusHelper;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.SelectionItem;
@@ -321,9 +321,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, checked);
 			mainApp.getSharedDataEditor().commit();
 			if (checked)
-				startService(new Intent(context, Notifications.class));
-			else
-				stopService(new Intent(context, Notifications.class));
+				StatusHelper.checkStatusUpdate(mainApp, context);
+//				startService(new Intent(context, Notifications.class));
+//			else
+//				stopService(new Intent(context, Notifications.class));
 		} else if (compoundButton.getId() == R.id.PrefVacation) {
 
 			String query;

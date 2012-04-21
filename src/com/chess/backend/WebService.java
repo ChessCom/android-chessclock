@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import com.chess.lcc.android.LccHolder;
 import com.chess.ui.core.AppConstants;
 import com.chess.utilities.MyProgressDialog;
 import org.apache.http.NameValuePair;
@@ -141,7 +140,7 @@ public class WebService extends Service {
 				sendBroadcast(new Intent(BROADCAST_ACTION)
 						.putExtra(AppConstants.REPEATABLE_TASK, true)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
-						.putExtra(AppConstants.REQUEST_RESULT, AppConstants.SUCCESS)
+						.putExtra(AppConstants.REQUEST_RESULT, RestHelper.R_SUCCESS)
 				);
 				if (progressDialog != null)
 					progressDialog.dismiss();

@@ -15,10 +15,12 @@ import java.util.List;
 public class RestHelper {
 
 	/* Results */
-	private static final String SUCCESS = "Success+";
-	private static final String ERROR = "Error+";
+	public static final String R_SUCCESS = "Success+";
+	public static final String R_ERROR = "Error+";
+	public static final String R_YOUR_MOVE = "Success+1";
+	public static final String R_OPPONENT_MOVE = "Success+0";
 
-
+//	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
 	private static final String BASE_URL = "http://www.chess.com/";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
@@ -115,8 +117,11 @@ public class RestHelper {
 	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
 
 	/* Returned Values */
-	public static final String ERROR_MESSAGE = "error_message";
-	public static final String USER_TOKEN = "user_token";
+	public static final String R_ERROR_MESSAGE = "error_message";
+	public static final String R_USER_TOKEN = "user_token";
+	public static final String SYMBOL_PARAMS_SPLIT = ":";
+
+
 
 //	The eches challenges response looks like the following:
 //	<
