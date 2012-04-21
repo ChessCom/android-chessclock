@@ -207,7 +207,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		private String composeMessage(Challenge challenge){
 			String rated = challenge.isRated()? getString(R.string.rated): getString(R.string.unrated);
 			GameTimeConfig config = challenge.getGameTimeConfig();
-			String blitz = "";
+			String blitz = AppConstants.SYMBOL_EMPTY;
 			if(config.isBlitz()){
 				blitz = getString(R.string.blitz_game);
 			}else if(config.isLightning()){
@@ -216,7 +216,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 				blitz = getString(R.string.standard_game);
 			}
 
-			String timeIncrement = "";
+			String timeIncrement = AppConstants.SYMBOL_EMPTY;
 
 			if(config.getTimeIncrement() > 0){
 				timeIncrement = " | "+ String.valueOf(config.getTimeIncrement()/10);

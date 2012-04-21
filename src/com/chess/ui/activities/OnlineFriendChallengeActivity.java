@@ -53,7 +53,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		iPlayAsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
 		friendsSpinner = (Spinner) findViewById(R.id.friend);
-		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{""}));
+		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{AppConstants.SYMBOL_EMPTY}));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
@@ -67,7 +67,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(OnlineFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
@@ -85,7 +85,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 //			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
 			friendsSpinner.setAdapter(friendsAdapter);
-			if (friendsSpinner.getSelectedItem().equals("")) {
+			if (friendsSpinner.getSelectedItem().equals(AppConstants.SYMBOL_EMPTY)) {
 				new AlertDialog.Builder(OnlineFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(getString(R.string.sorry))
@@ -132,7 +132,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 			if (chess960.isChecked()) {
 				gametype = 2;
 			}
-			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
+			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

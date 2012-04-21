@@ -57,4 +57,7 @@
 	<dimen name="signin_scr_bottom_padding">20dip</dimen>
 	<dimen name="signin_scr_side_padding">20dip</dimen>
 
+	<!--Popup-->
+	<dimen name="ad_popup_width">300dip</dimen>
+	<dimen name="ad_popup_height">150dip</dimen>
 </resources>

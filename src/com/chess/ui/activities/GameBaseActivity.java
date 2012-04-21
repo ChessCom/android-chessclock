@@ -475,12 +475,12 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		String[] moves = {};
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
 			boardView.getBoardFace().setMovesCount(moves.length);
 		}
 
         String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals("")) {
+		if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
 		}

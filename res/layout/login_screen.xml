@@ -3,8 +3,8 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/mainView"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:gravity="center"
 	android:paddingTop="@dimen/signin_scr_top_padding"
 	android:paddingBottom="@dimen/signin_scr_bottom_padding"
@@ -31,7 +31,7 @@
 
 			<com.chess.RoboEditText
 				android:id="@+id/username"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/singinUsername"
 				android:singleLine="true"
@@ -39,7 +39,7 @@
 
 			<com.chess.RoboEditText
 				android:id="@+id/password"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/singinPassword"
 				android:inputType="textPersonName"
@@ -49,7 +49,7 @@
 
 			<com.chess.RoboButton
 				android:id="@+id/singin"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/singinButton"
 				/>
@@ -57,7 +57,7 @@
 			<com.facebook.android.LoginButton
 				android:id="@+id/fb_connect"
 				style="@style/Text.Button.Login"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@drawable/facebook_icon"
 
@@ -66,7 +66,7 @@
 			<com.chess.RoboButton
 				android:id="@+id/singup"
 				style="@style/Text.Button.Green"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/singupButton"
 
@@ -75,7 +75,7 @@
 			<com.chess.RoboButton
 				android:id="@+id/guestplay"
 				style="@style/Text.Button.Grey"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/singinPlayguest"
 

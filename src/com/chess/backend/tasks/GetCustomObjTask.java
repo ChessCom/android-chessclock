@@ -4,6 +4,7 @@ import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.ui.core.AppConstants;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,7 +22,7 @@ import java.util.Iterator;
 
 public class GetCustomObjTask<T> extends AbstractUpdateTask<T,LoadItem> {
     private static int statusCode = -1;
-    private static String reason = "";
+    private static String reason = AppConstants.SYMBOL_EMPTY;
 
 	public GetCustomObjTask(TaskUpdateInterface<T> taskFace) {
 		super(taskFace);
@@ -37,8 +38,8 @@ public class GetCustomObjTask<T> extends AbstractUpdateTask<T,LoadItem> {
 
     private String request(String url, String method, HashMap<String, String> headers, HttpEntity entity) {
         statusCode = -1;
-        reason = "";
-        String responseBody = "";
+        reason = AppConstants.SYMBOL_EMPTY;
+        String responseBody = AppConstants.SYMBOL_EMPTY;
 
         HttpParams httpParameters = null;
         HttpResponse response = null;

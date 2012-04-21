@@ -40,8 +40,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
-	protected String response = "";
-	protected String responseRepeatable = "";
+	protected String response = AppConstants.SYMBOL_EMPTY;
+	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
 	protected Context context;
@@ -177,7 +177,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals("")) {
+		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
 			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
@@ -232,7 +232,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals("")) {
+				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
@@ -259,7 +259,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals("")) {
+			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 				return;
 			}
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)

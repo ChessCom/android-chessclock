@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import com.chess.ui.core.AppConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ public final class Util {
      * @return a string of the post body
      */
     public static String encodePostBody(Bundle parameters, String boundary) {
-        if (parameters == null) return "";
+        if (parameters == null) return AppConstants.SYMBOL_EMPTY;
         StringBuilder sb = new StringBuilder();
 
         for (String key : parameters.keySet()) {
@@ -69,7 +70,7 @@ public final class Util {
 
     public static String encodeUrl(Bundle parameters) {
         if (parameters == null) {
-            return "";
+            return AppConstants.SYMBOL_EMPTY;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -190,7 +191,7 @@ public final class Util {
             os.flush();
         }
 
-        String response = "";
+        String response;
         try {
             response = read(conn.getInputStream());
         } catch (FileNotFoundException e) {
@@ -260,11 +261,11 @@ public final class Util {
                     error.getString("message"), error.getString("type"), 0);
         }
         if (json.has("error_code") && json.has("error_msg")) {
-            throw new FacebookError(json.getString("error_msg"), "",
+            throw new FacebookError(json.getString("error_msg"), AppConstants.SYMBOL_EMPTY,
                     Integer.parseInt(json.getString("error_code")));
         }
         if (json.has("error_code")) {
-            throw new FacebookError("request failed", "",
+            throw new FacebookError("request failed", AppConstants.SYMBOL_EMPTY,
                     Integer.parseInt(json.getString("error_code")));
         }
         if (json.has("error_msg")) {

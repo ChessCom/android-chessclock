@@ -32,6 +32,8 @@
 
 package com.mopub.mobileads;
 
+import com.chess.ui.core.AppConstants;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -49,7 +51,7 @@ public class Utils {
 			}
 			return hexString.toString();
 		} catch (NoSuchAlgorithmException e) {
-			return "";
+			return AppConstants.SYMBOL_EMPTY;
 		}
 	}
 }

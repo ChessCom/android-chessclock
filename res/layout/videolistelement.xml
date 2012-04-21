@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
+	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	style="@style/LinearDescription"
@@ -8,7 +8,7 @@
 
 	<TextView
 		android:id="@+id/title"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/title"
 		android:textStyle="bold"
@@ -16,7 +16,7 @@
 
 	<com.chess.RoboTextView
 		android:id="@+id/desc"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:maxLines="4"
 		android:text="desc"
@@ -25,7 +25,7 @@
 
 	<com.chess.RoboTextView
 		android:id="@+id/times"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="9dip"
 		android:text="32 min Published 11.11.11"
@@ -34,7 +34,7 @@
 		/>
 
 	<LinearLayout
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical">
 

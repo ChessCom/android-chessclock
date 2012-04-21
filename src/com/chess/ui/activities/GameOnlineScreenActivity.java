@@ -101,12 +101,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					Draw = AppConstants.ACCEPTDRAW;               // TODO hide to resthelper
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
 						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 						+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
 				if (result.contains(RestHelper.R_SUCCESS)) {
-					mainApp.showDialog(coreContext, "", getString(R.string.drawoffered));
+					mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
 				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 				} else {
@@ -137,7 +137,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			} else {*/
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 						+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -165,7 +165,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GAME_STARTED,
 					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + game_id,
+							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + game_id,
 					null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 		}
 	}
@@ -190,7 +190,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						}
 						if (!mainApp.isLiveChess()) {
 							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
+									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
 									null/*progressDialog*/
 							);
 						}
@@ -252,12 +252,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						}
 						appService.RunSingleTask(CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE,
 								"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID +
-										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&gid=" + mainApp.getGameId(),
+										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
 								null);
 					} else {
 						appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID +
-										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER +
+										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER +
 										mainApp.getCurrentGameId()  + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
 										boardView.getBoardFace().convertMoveEchess() + AppConstants.TIMESTAMP_PARAMETER +
 										mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP),
@@ -276,7 +276,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				if (!mainApp.isLiveChess() && appService != null) {
 					appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
 							"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID +
-									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER +
+									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER +
 									mainApp.getCurrentGameId()  + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
 									boardView.getBoardFace().convertMoveEchess() + AppConstants.TIMESTAMP_PARAMETER +
 									mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP),
@@ -308,7 +308,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
 				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
-						.getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
+						.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
 
 					int i;
 					ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
@@ -364,7 +364,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
 
-							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -432,7 +432,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY)
 							.replaceAll("  ", " ").substring(1).split(" ");
 					boardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
@@ -445,7 +445,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				}
 
 				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals("")) {
+				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
 				}
@@ -482,7 +482,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					if (!mainApp.isLiveChess()) {
 						appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
 								"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 										+ "&gid=" + mainApp.getGameId(),
 								null/*progressDialog*/
 						);
@@ -521,7 +521,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            CommonUtils.showNotification(coreContext, "", mainApp.getGameId(),"","",ChatActivity.class);
+            CommonUtils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(),AppConstants.SYMBOL_EMPTY,AppConstants.SYMBOL_EMPTY,ChatActivity.class);
         }
     }
 

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:orientation="vertical">
 
 		<TextView
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
 			android:padding="3dip"
@@ -17,13 +17,13 @@
 			/>
 
 		<LinearLayout
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			android:gravity="center"
 			android:orientation="vertical">
 
 			<TextView
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="5dip"
 				android:padding="5dip"
@@ -31,13 +31,13 @@
 				/>
 
 			<RadioGroup
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal">
 
 				<com.chess.RoboRadioButton
 					android:id="@+id/classic"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="10dip"
 					android:layout_weight="1"
@@ -47,7 +47,7 @@
 
 				<com.chess.RoboRadioButton
 					android:id="@+id/chess960"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="10dip"
 					android:layout_weight="1"
@@ -58,7 +58,7 @@
 			</RadioGroup>
 
 			<LinearLayout
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 
 				<TextView
@@ -71,14 +71,14 @@
 
 				<Spinner
 					android:id="@+id/friend"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1">
 				</Spinner>
 			</LinearLayout>
 
 			<LinearLayout
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 
 				<TextView
@@ -91,7 +91,7 @@
 
 				<com.chess.RoboCheckBox
 					android:id="@+id/ratedGame"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					android:gravity="center"
@@ -100,7 +100,7 @@
 			</LinearLayout>
 
 			<LinearLayout
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 
 				<TextView
@@ -113,7 +113,7 @@
 
 				<Spinner
 					android:id="@+id/iplayas"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					android:entries="@array/playas">
@@ -121,7 +121,7 @@
 			</LinearLayout>
 
 			<LinearLayout
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 
 				<TextView
@@ -134,7 +134,7 @@
 
 				<Spinner
 					android:id="@+id/dayspermove"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					android:entries="@array/dayspermove">
@@ -143,7 +143,7 @@
 
 			<Button
 				android:id="@+id/createchallenge"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_margin="25dip"
 				android:text="@string/ChallengeCreate"/>

@@ -81,9 +81,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		init();
 		queries = new String[]{
-				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&all=1",
-				"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_CHALLENGES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
-				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_FINISHED_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")};
+				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&all=1",
+				"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_CHALLENGES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_FINISHED_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)};
 
 		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
 		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.onlineSpinner));
@@ -120,7 +120,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					if (appService != null) {
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 										+ "&command=ACCEPTDRAW&timestamp="
 										+ gameListElement.values.get(GameListItem.TIMESTAMP),
@@ -132,7 +132,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				case DialogInterface.BUTTON_NEUTRAL: {
 					if (appService != null) {
 						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
 								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 						);
 					}
@@ -274,7 +274,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -290,7 +290,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			} else if (pos == 2) {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -398,7 +398,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
 				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(2);
@@ -411,7 +411,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
 				if (result.contains(RestHelper.R_SUCCESS)) {
 					update(3);
@@ -591,7 +591,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			// TODO hide to RestHelper
@@ -601,7 +601,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				GOTO = URLEncoder.encode(GOTO, "UTF-8");
 			} catch (UnsupportedEncodingException ignored) {
 			}
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + "&goto=" + GOTO)));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.start) {
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}

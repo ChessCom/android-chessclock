@@ -39,19 +39,19 @@ public class Notifications extends Service {
 	}
 
 	private TimerTask notificationTimerTask = new TimerTask() {
-		private String response = "";
-		private String notification_message = "";
-		private String timestamp = "";
+		private String response = AppConstants.SYMBOL_EMPTY;
+		private String notification_message = AppConstants.SYMBOL_EMPTY;
+		private String timestamp = AppConstants.SYMBOL_EMPTY;
 
 		public void run() {
 			if (mainApp == null || mainApp.getSharedData() == null) {
 				return;
 			}
 			if (/*(counter <= 5 || (counter%15 == 0 && counter <= 60) || counter%60 == 0) && */
-					!mainApp.guest && !mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "").equals("")) {
+					!mainApp.guest && !mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY).equals(AppConstants.SYMBOL_EMPTY)) {
 				response = Web.Request("http://www." + LccHolder.HOST
                         + "/api/get_move_status?id="
-                        + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""), "GET", null, null);
+                        + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY), "GET", null, null);
 				if (response.trim().contains("Success+1")) {
 
 					handler.sendEmptyMessage(0);

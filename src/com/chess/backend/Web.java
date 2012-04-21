@@ -1,6 +1,7 @@
 package com.chess.backend;
 
 import android.util.Log;
+import com.chess.ui.core.AppConstants;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -20,12 +21,12 @@ import java.util.Iterator;
 
 public class Web {
 	private static int statusCode = -1;
-	private static String reason = "";
+	private static String reason = AppConstants.SYMBOL_EMPTY;
 
 	public static String Request(String url, String method, HashMap<String, String> headers, HttpEntity entity) {
 		statusCode = -1;
-		reason = "";
-		String responseBody = "";
+		reason = AppConstants.SYMBOL_EMPTY;
+		String responseBody = AppConstants.SYMBOL_EMPTY;
 
 		HttpParams httpParameters = null;
 		HttpResponse response = null;

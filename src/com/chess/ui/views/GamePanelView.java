@@ -35,7 +35,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public static final int BISHOP_ID = 2;
 	public static final int ROOK_ID = 3;
 	public static final int QUEEN_ID = 4;
-	public static final int KING_ID = 5;
+//	public static final int KING_ID = 5;
 	public static final int EMPTY_ID = 6;
 
 
@@ -83,7 +83,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public static final int BUTTON_PREFIX = 0x00002000;
 	public static final int WHITE_FRAME_PREFIX = 0x00001000;
 	public static final int BLACK_FRAME_PREFIX = 0x00004000;
-	//	private List<String> itemList;
+
     private float density;
 	private RelativeLayout timerRelLay;
 	private RoboTextView whiteTimer;
@@ -91,6 +91,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private Resources resources;
 	private LinearLayout piecesLayout;
 	private TextView movesTextView;
+	private ScrollView movesScroll;
 
 	public GamePanelView(Context context) {
 		super(context);
@@ -117,10 +118,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+		LinearLayout.LayoutParams defaultLinLayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		controlsLayout.setLayoutParams(params);
+		controlsLayout.setLayoutParams(defaultLinLayParams);
 
 		addControlButton(B_NEW_GAME_ID, R.drawable.button_emboss_left_selector);
 		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_mid_selector);
@@ -171,8 +172,11 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		timerRelLay.setVisibility(View.INVISIBLE);
 		addView(timerRelLay);
 
+		LinearLayout.LayoutParams infoLayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+
 		LinearLayout infoLayout = new LinearLayout(getContext());
-		infoLayout.setLayoutParams(params);
+		infoLayout.setLayoutParams(infoLayParams);
 
 		// add captured piecesBitmap layout
 		LinearLayout.LayoutParams pieceParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -180,7 +184,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		piecesLayout = new LinearLayout(getContext());
 		// Set weights to moves list and captured piecesBitmap
-		pieceParams.weight = 3;
+		pieceParams.weight = 3.5f;
 		piecesLayout.setLayoutParams(pieceParams);
 		piecesLayout.setOrientation(VERTICAL);
 		int pieceLayoutPaddingLeft = (int) getResources().getDimension(R.dimen.piece_layout_padding_left);
@@ -193,14 +197,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		LinearLayout whiteCapturedPieces = new LinearLayout(getContext());
 		whiteCapturedPieces.setPadding(1, (int)(1*density), 1, (int)(1*density));
-		whiteCapturedPieces.setLayoutParams(params);
+		whiteCapturedPieces.setLayoutParams(defaultLinLayParams);
 		whiteCapturedPieces.setGravity(Gravity.LEFT);
 
 		piecesLayout.addView(whiteCapturedPieces);
 
 		LinearLayout blackCapturedPieces = new LinearLayout(getContext());
 		blackCapturedPieces.setPadding(1, (int)(1*density), 1, (int)(1*density));
-		blackCapturedPieces.setLayoutParams(params);
+		blackCapturedPieces.setLayoutParams(defaultLinLayParams);
 		blackCapturedPieces.setGravity(Gravity.LEFT);
 
 		piecesLayout.addView(blackCapturedPieces);
@@ -210,33 +214,22 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		// add moves list view
 		LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		listParams.weight = 7;
+		listParams.weight = 6.5f;
 		listParams.gravity = Gravity.RIGHT;
-//        android:gravity="right"
 
 
-		// change to TextView
-//		ListView movesListView = new ListView(getContext());
-//		movesListView.setPadding(1, 1, 0, 1);
-//		movesListView.setLayoutParams(listParams);
-//
-//		movesListView.setCacheColorHint(Color.TRANSPARENT);
-//		movesListView.setBackgroundColor(Color.TRANSPARENT);
-//		movesListView.setDividerHeight(0);
-//		movesListView.setDivider(getResources().getDrawable(android.R.color.transparent));
-//        infoLayout.addView(movesListView);
-
+		// set MovesList
 		movesTextView = new TextView(getContext());
-		movesTextView.setLayoutParams(listParams);
 		movesTextView.setGravity(Gravity.BOTTOM);
 		movesTextView.setTextSize(13);
-		infoLayout.addView(movesTextView);
+
+		movesScroll = new ScrollView(getContext());
+		movesScroll.addView(movesTextView);
+		movesScroll.setLayoutParams(listParams);
+
+		infoLayout.addView(movesScroll);
 
 		addView(infoLayout);
-
-//		itemList = new ArrayList<String>();
-
-//		movesListView.setAdapter(new MovesAdapter(getContext(), itemList));
 
 		whitePieceDrawableIds = new int[]{
 				R.drawable.captured_wp,
@@ -261,16 +254,15 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		addPieceItems(whiteCapturedPieces, true, 1.0f, BISHOP_ID);
 		addPieceItems(whiteCapturedPieces, true, 1.0f, KNIGHT_ID);
 		addPieceItems(whiteCapturedPieces, true, 1.0f, PAWN_ID);
-		addPieceItems(whiteCapturedPieces, true, 1.0f, KING_ID);
+//		addPieceItems(whiteCapturedPieces, true, 1.0f, KING_ID);
 
 		addPieceItems(blackCapturedPieces, false, 1.0f, QUEEN_ID);
 		addPieceItems(blackCapturedPieces, false, 1.0f, ROOK_ID);
 		addPieceItems(blackCapturedPieces, false, 1.0f, BISHOP_ID);
 		addPieceItems(blackCapturedPieces, false, 1.0f, KNIGHT_ID);
 		addPieceItems(blackCapturedPieces, false, 1.0f, PAWN_ID);
-		addPieceItems(blackCapturedPieces, false, 1.0f, KING_ID);
+//		addPieceItems(blackCapturedPieces, false, 1.0f, KING_ID);
 
-//		movesListView.setSelection(movesListView.getAdapter().getCount() - 1);
 	}
 
 	private void addControlButton(int buttonId, int backId) {
@@ -318,9 +310,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	}
 
 	public void addMoveLog(CharSequence move) {
-//		itemList.clear();
-//		itemList.add(move.toString());
 		movesTextView.setText(move);
+		movesScroll.scrollTo(0, getResources().getDisplayMetrics().heightPixels);
 	}
 
 	private int getFramePrefix(boolean isWhite) {
@@ -334,7 +325,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	public void restorePiece(boolean isWhite, int pieceId) {
 		showPiece(false, isWhite, pieceId);
 	}
-	                     // TODO incapsulate
+	                     // TODO encapsulate
 	private void showPiece(boolean show, boolean isWhite, int pieceId) {
 		int frameId = getFramePrefix(isWhite) + pieceIds[pieceId];
 

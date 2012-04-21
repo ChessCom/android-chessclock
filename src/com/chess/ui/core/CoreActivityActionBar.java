@@ -59,8 +59,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	protected String response = "";
-	protected String responseRepeatable = "";
+	protected String response = AppConstants.SYMBOL_EMPTY;
+	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
@@ -185,7 +185,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.getClient().disconnect();
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, ""),
+			lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
 			/*
 								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
@@ -405,7 +405,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals("")) {
+				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
@@ -529,7 +529,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals("")) {
+			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 				return;
 			}
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)

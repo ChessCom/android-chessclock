@@ -87,7 +87,7 @@ public class ChatListenerImpl
 		for (ChatMember member : members) {
 			str += "\n\tMember: " + member;
 		}
-		str += (headMember != null ? ("\n\tHead: " + headMember) : "");
+		str += (headMember != null ? ("\n\tHead: " + headMember) : AppConstants.SYMBOL_EMPTY);
 		LccHolder.LOG.info(str);
 	}
 

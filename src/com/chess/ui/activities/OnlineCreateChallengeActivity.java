@@ -110,7 +110,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 			if (chess960.isChecked())
 				gametype = 2;
 
-			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") +
+			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

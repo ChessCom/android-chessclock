@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@id/mainView"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:gravity="center"
 		android:orientation="vertical"
 		android:paddingTop="@dimen/default_scr_top_padding"
@@ -35,7 +35,7 @@
 
 				<com.chess.RoboRadioButton
 					android:id="@+id/classic"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					android:checked="true"
@@ -44,7 +44,7 @@
 
 				<com.chess.RoboRadioButton
 					android:id="@+id/chess960"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="10dip"
 					android:layout_weight="1"
@@ -55,7 +55,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearDescription"
 			>
@@ -70,7 +70,7 @@
 
 			<Spinner
 				android:id="@+id/iplayas"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="4"
 				android:entries="@array/playas"/>
@@ -78,7 +78,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearDescription"
 			>
@@ -101,7 +101,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearDescription"
 			>
@@ -123,7 +123,7 @@
 		</LinearLayout>
 
 		<LinearLayout
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearDescription"
 			>
@@ -155,7 +155,7 @@
 
 		<com.chess.RoboButton
 			android:id="@+id/createchallenge"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ChallengeCreate"
 			android:layout_marginTop="@dimen/margin_top_beween_buttons"

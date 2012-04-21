@@ -57,10 +57,8 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-
+import com.chess.ui.core.AppConstants;
 import com.mopub.mobileads.MoPubView.LocationAwareness;
-import com.mopub.mobileads.Utils;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -80,7 +78,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TimeZone;
 
 public class AdView extends WebView {
     public static final String AD_ORIENTATION_PORTRAIT_ONLY = "p";
@@ -344,7 +344,7 @@ public class AdView extends WebView {
         sz.append("&nv=" + MoPub.SDK_VERSION);
         
         String udid = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-        String udidDigest = (udid == null) ? "" : Utils.sha1(udid);
+        String udidDigest = (udid == null) ? AppConstants.SYMBOL_EMPTY : Utils.sha1(udid);
         sz.append("&udid=sha:" + udidDigest);
 
         if (mKeywords != null) sz.append("&q=" + Uri.encode(mKeywords));
@@ -424,7 +424,7 @@ public class AdView extends WebView {
         
         private LoadUrlTask(AdView adView) {
             this.mAdView = adView;
-            this.mUserAgent = (adView.mUserAgent != null) ? new String(adView.mUserAgent) : "";
+            this.mUserAgent = (adView.mUserAgent != null) ? new String(adView.mUserAgent) : AppConstants.SYMBOL_EMPTY;
             this.mHttpClient = adView.getAdViewHttpClient();
         }
         
@@ -683,7 +683,7 @@ public class AdView extends WebView {
     private void showBrowserForUrl(String url) {
         if (this.isDestroyed()) return;
         
-        if (url == null || url.equals("")) url = "about:blank";
+        if (url == null || url.equals(AppConstants.SYMBOL_EMPTY)) url = "about:blank";
         Log.d("MoPub", "Final URI to show in browser: " + url);
         Intent actionIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         actionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

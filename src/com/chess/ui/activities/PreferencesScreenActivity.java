@@ -129,13 +129,13 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));
 		boardsSpinner.setOnItemSelectedListener(new BoardSpinnerListener());
 		int boardsPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
-				.getString(AppConstants.USERNAME, "") + AppConstants.PREF_BOARD_TYPE, 0);
+				.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 
 		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
 		piecesSpinner.setOnItemSelectedListener(new PiecesSpinnerListener());
 		int piecesPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
-				.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, 0);
+				.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 
 
@@ -209,8 +209,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 					lccHolder.logout();
 //				}
 				mainApp.guest = true;
-				mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, "");
-				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, "");
+				mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
+				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -256,7 +256,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
-					.getString(AppConstants.USERNAME, "") + AppConstants.PREF_PIECES_SET, pos);
+					.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
 			mainApp.loadPieces(pos);
 		}
@@ -290,7 +290,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			if (!mainApp.guest && !mainApp.isLiveChess()) {
 				if (appService != null) {
 					appService.RunSingleTask(0,
-							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
 							progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true))
 					);
 				}
@@ -329,9 +329,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 
 			String query;
 			if (vacationCheckBox.isChecked()) {
-				query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "");
+				query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 			} else {
-				query = "http://www." + LccHolder.HOST + "/api/vacation_return?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "");
+				query = "http://www." + LccHolder.HOST + "/api/vacation_return?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 			}
 			if (appService != null) {    // TODO change to rest helper
 				appService.RunSingleTask(1,

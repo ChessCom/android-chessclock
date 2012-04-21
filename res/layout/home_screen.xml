@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:cb="http://schemas.android.com/apk/res/com.chess"
 	android:id="@id/mainView"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:orientation="vertical">
 
 	<com.chess.ui.views.DashBoardLayout
@@ -50,7 +50,7 @@
 
 	<TextView
 		android:id="@+id/adView"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="48dip"
 		android:layout_marginTop="20dip"
 		android:background="@android:color/black"

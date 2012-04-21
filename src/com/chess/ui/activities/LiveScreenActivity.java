@@ -194,7 +194,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -210,7 +210,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			} else if (pos == 2) {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -237,7 +237,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 					if (appService != null) {
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 										+ "&command=ACCEPTDRAW&timestamp="
 										+ gameListElement.values.get(GameListItem.TIMESTAMP),
@@ -249,7 +249,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 				case DialogInterface.BUTTON_NEUTRAL: {
 					if (appService != null) {
 						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "") + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
 								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
 						);
 					}
@@ -449,8 +449,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, "" + startNewGameButton.getMin());
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, "" + startNewGameButton.getSec());
+					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, AppConstants.SYMBOL_EMPTY + startNewGameButton.getMin());
+					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, AppConstants.SYMBOL_EMPTY + startNewGameButton.getSec());
 					mainApp.getSharedDataEditor().commit();
 					startActivity(new Intent(coreContext, LiveCreateChallengeActivity.class));
 				}
@@ -522,7 +522,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			// TODO hide to RestHelper
@@ -534,7 +534,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			}
 
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.currentGame) {
 

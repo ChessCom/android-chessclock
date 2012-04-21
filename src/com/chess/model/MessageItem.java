@@ -1,11 +1,13 @@
 package com.chess.model;
 
+import com.chess.ui.core.AppConstants;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 public class MessageItem {
-	public String owner = "";
-	public String message = "";
+	public String owner = AppConstants.SYMBOL_EMPTY;
+	public String message = AppConstants.SYMBOL_EMPTY;
 
 	public MessageItem(String owner, String msg) {
 		this.owner = owner;

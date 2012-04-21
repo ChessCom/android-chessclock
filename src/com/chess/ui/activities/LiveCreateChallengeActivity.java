@@ -197,7 +197,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer initialTime = Integer.parseInt(textString);
-			return !textString.equals("") && initialTime >= 1 && initialTime <= 120;
+			return !textString.equals(AppConstants.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
 		}
 
 		@Override
@@ -227,7 +227,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer bonusTime = Integer.parseInt(textString);
-			if (!textString.equals("") && bonusTime >= 0 && bonusTime <= 60) {
+			if (!textString.equals(AppConstants.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60) {
 				return true;
 			} else {
 				return false;

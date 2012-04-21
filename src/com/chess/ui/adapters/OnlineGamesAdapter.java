@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.model.GameListItem;
+import com.chess.ui.core.AppConstants;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
-						Log.d("OnlineGamesAdapter", "" + e);
+						Log.d("OnlineGamesAdapter", AppConstants.SYMBOL_EMPTY + e);
 					}
 				}
 
@@ -69,7 +70,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 				final String time = el.isLiveChess ?
 						el.values.get(GameListItem.IS_RATED) + ' ' + el.values.get(GameListItem.BASE_TIME) + el.values.get(GameListItem.TIME_INCREMENT)
 						: el.values.get(GameListItem.DAYS_PER_MOVE) + CTX.getString(R.string.days);
-				String gametype = "";
+				String gametype = AppConstants.SYMBOL_EMPTY;
 				if (el.values.get(GameListItem.GAME_TYPE) != null && el.values.get(GameListItem.GAME_TYPE).equals("2")) {
 					gametype = " (960)";
 				}
@@ -86,7 +87,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 
 //				String opponentRating;   // TODO investigate why rated is null
 //				if (el.isLiveChess && el.values.get("is_released_by_me").equals("1")) {
-//					opponentRating = "";
+//					opponentRating = AppConstants.SYMBOL_EMPTY;
 //				} else if (!el.isLiveChess && el.values.get("rated").equals("0")) {
 //					opponentRating = "(" + el.values.get("opponent_rating") + ") Unrated";
 //				} else {
@@ -95,7 +96,7 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 
 				final String opponentRating =
 						(el.isLiveChess && el.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1"))
-								? "" : "(" + el.values.get(GameListItem.OPPONENT_RATING) + ")";
+								? AppConstants.SYMBOL_EMPTY : "(" + el.values.get(GameListItem.OPPONENT_RATING) + ")";
 				final String prefix =
 						(el.isLiveChess && el.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0")) && el.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1") ?
 								"(open)" : el.values.get(GameListItem.OPPONENT_USERNAME);
@@ -107,10 +108,10 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 
 				TextView info = (TextView) convertView.findViewById(R.id.info);
 				TextView left = (TextView) convertView.findViewById(R.id.left);
-				String gametype = "";
+				String gametype = AppConstants.SYMBOL_EMPTY;
 				if (el.values.get(GameListItem.GAME_TYPE) != null && el.values.get(GameListItem.GAME_TYPE).equals("2"))
 					gametype = " (960)";
-				String draw = "";
+				String draw = AppConstants.SYMBOL_EMPTY;
 				if (el.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p"))
 					draw = "\n" + CTX.getString(R.string.drawoffered);
 				info.setText(el.values.get(GameListItem.OPPONENT_USERNAME) + gametype + draw);
@@ -125,14 +126,14 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 						left.setText(amount + CTX.getString(R.string.days));
 				} else {
 					left.setVisibility(View.GONE);
-					left.setText("");
+					left.setText(AppConstants.SYMBOL_EMPTY);
 				}
 
 			} else if (el.type == GameListItem.LIST_TYPE_FINISHED) {
 				TextView info = (TextView) convertView.findViewById(R.id.info);
 				TextView left = (TextView) convertView.findViewById(R.id.left);
 
-				String gametype = "";
+				String gametype = AppConstants.SYMBOL_EMPTY;
 				if (el.values.get(GameListItem.GAME_TYPE) != null && el.values.get(GameListItem.GAME_TYPE).equals("2"))
 					gametype = " (960)";
 

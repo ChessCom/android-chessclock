@@ -317,7 +317,7 @@ public class ChessBoard implements BoardFace {
 				blackCanCastle = false;
 			}
 
-			Log.d(fen, "" + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
+			Log.d(fen, AppConstants.SYMBOL_EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
 		}
 
 		String[] FEN = tmp[0].split("[/]");
@@ -1337,7 +1337,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	public String getMoveList() {
-		String output = "";
+		String output = AppConstants.SYMBOL_EMPTY;
 		int i = 0;
 		for (i = 0; i < hply; i++) {
 			Move m = histDat[i].m;
@@ -1352,13 +1352,13 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public String getMoveListSAN() {
-		String output = "";
+		String output = AppConstants.SYMBOL_EMPTY;
 		int i = 0;
 		for (i = 0; i < hply; i++) {
 			if (i % 2 == 0)
 				output += "\n " + (i / 2 + 1) + ". ";
 			output += histDat[i].notation;
-			output += " ";
+			output += AppConstants.SYMBOL_SPACE;
 		}
 		return output;
 	}
@@ -1366,7 +1366,9 @@ public class ChessBoard implements BoardFace {
 	public String getMoveSAN() {
 		Move m = histDat[hply].m;
 		int p = pieces[m.from];
-		String f = "", capture = "", promotion = "";
+		String f = AppConstants.SYMBOL_EMPTY;
+		String capture = AppConstants.SYMBOL_EMPTY;
+		String promotion = AppConstants.SYMBOL_EMPTY;
 		if (p == 1) {
 			f = MoveParser.N_BIG;
 			//ambigues
@@ -1465,7 +1467,7 @@ public class ChessBoard implements BoardFace {
 		}
 
 
-		String output = "";
+		String output = AppConstants.SYMBOL_EMPTY;
 		try {
 			String to = MoveParser.positionToString(m.to);
 			if ((m.bits & 2) != 0) {
@@ -1644,7 +1646,7 @@ public class ChessBoard implements BoardFace {
 				try {
 					pieceMat[color[i]] += pieceValue[pieces[i]];
 				} catch (Exception e) {
-					Log.d("I!!!!!!!!:", "" + i);
+					Log.d("I!!!!!!!!:", AppConstants.SYMBOL_EMPTY + i);
 				}
 			}
 		}

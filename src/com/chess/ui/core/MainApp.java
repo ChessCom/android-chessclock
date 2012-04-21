@@ -268,7 +268,7 @@ public class MainApp extends Application {
     }
 
 	public String getUserName() {
-		return getSharedData().getString(AppConstants.USERNAME, "");
+		return getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
 	}
 
 	public void showToast(String msg) {
@@ -276,7 +276,7 @@ public class MainApp extends Application {
 	}
 
 	public void showDialog(Context ctx, String title, String message) {
-		if (message == null || message.trim().equals("")) {
+		if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 			return;
 		}
 		new AlertDialog.Builder(ctx)
@@ -293,7 +293,7 @@ public class MainApp extends Application {
 	public LccHolder getLccHolder() { // TODO make async call, because it's very slow
 		if (lccHolder == null) {
 			try {
-				String versionName = "";
+				String versionName = AppConstants.SYMBOL_EMPTY;
 				try {
 					versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 				} catch (NameNotFoundException e) {
@@ -449,7 +449,7 @@ public class MainApp extends Application {
 
 
 	public Intent getMembershipIntent(String param) {
-		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, "")
+		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
                 + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 	}

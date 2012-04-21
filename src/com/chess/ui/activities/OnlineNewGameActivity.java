@@ -91,7 +91,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 				if (!mainApp.isLiveChess()) {
 					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, ""),
+									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
 							null/*progressDialog = MyProgressDialog
                                         .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
 				} else {
@@ -161,7 +161,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
 				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(),
 						"GET", null, null);
 				if (result.contains(RestHelper.R_SUCCESS)) {
@@ -173,7 +173,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			} else if (pos == 1) {
 
 				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(),
 						"GET", null, null);
 				if (result.contains(RestHelper.R_SUCCESS)) {

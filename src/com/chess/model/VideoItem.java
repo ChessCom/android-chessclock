@@ -21,6 +21,6 @@ public class VideoItem {
 		this.values.put(AppConstants.AUTHOR_LAST_NAME, values[8]);
 		this.values.put(AppConstants.MINUTES, values[9]);
 		this.values.put(AppConstants.PUBLISH_TIMESTAMP, values[10]);
-		this.values.put(AppConstants.VIEW_URL, values[11].replaceAll("<--->", ""));
+		this.values.put(AppConstants.VIEW_URL, values[11].replaceAll("<--->", AppConstants.SYMBOL_EMPTY));
 	}
 }

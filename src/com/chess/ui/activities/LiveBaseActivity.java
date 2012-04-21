@@ -142,7 +142,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 		private String composeMessage(Challenge challenge){
 			String rated = challenge.isRated()? getString(R.string.rated): getString(R.string.unrated);
 			GameTimeConfig config = challenge.getGameTimeConfig();
-			String blitz = "";
+			String blitz = AppConstants.SYMBOL_EMPTY;
 			if(config.isBlitz()){
 				blitz = "(Blitz)";
 			}else if(config.isLightning()){
@@ -151,7 +151,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 				blitz = "(Standard)";
 			}
 
-			String timeIncrement = "";
+			String timeIncrement = AppConstants.SYMBOL_EMPTY;
 			
 			if(config.getTimeIncrement() > 0){
 				timeIncrement = " | "+ String.valueOf(config.getTimeIncrement()/10);

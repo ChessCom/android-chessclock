@@ -1,5 +1,6 @@
 package com.chess.utilities;
 
+import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.MainApp;
 import com.mobclix.android.sdk.MobclixAdView;
 import com.mobclix.android.sdk.MobclixAdViewListener;
@@ -16,7 +17,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 
 	public void onSuccessfulLoad(MobclixAdView view) {
 		//view.setVisibility(View.VISIBLE);
-		System.out.println("MobclixAdViewListener: onSuccessfulLoad" + (isRectangle ? " Rectangle ad" : ""));
+		System.out.println("MobclixAdViewListener: onSuccessfulLoad" + (isRectangle ? " Rectangle ad" : AppConstants.SYMBOL_EMPTY));
 		/*if (!isRectangle && mainApp.isForceBannerAdFirstLoad()) {
 			mainApp.setForceBannerAdFirstLoad(false);
 			MobclixHelper.pauseAdview(view, mainApp);
@@ -25,7 +26,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 	}
 
 	public void onFailedLoad(MobclixAdView view, int errorCode) {
-		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode + (isRectangle ? " Rectangle ad" : ""));
+		System.out.println("MobclixAdViewListener: onFailedLoad errorCode=" + errorCode + (isRectangle ? " Rectangle ad" : AppConstants.SYMBOL_EMPTY));
 
 		//if (!mainApp.isAdviewPaused() && errorCode == MobclixAdViewListener.APP_NOT_IN_FOREGROUND) {
 			//mainApp.setForceBannerAdOnFailedLoad(true);
@@ -43,7 +44,7 @@ public class MobclixAdViewListenerImpl implements MobclixAdViewListener {
 										int openAllocationCode) {
 
 		System.out.println("MobclixAdViewListener: onOpenAllocationLoad openAllocationCode="
-				+ openAllocationCode + (isRectangle ? " Rectangle ad" : ""));
+				+ openAllocationCode + (isRectangle ? " Rectangle ad" : AppConstants.SYMBOL_EMPTY));
 		/*
 		if (openAllocationCode == MobclixAdViewListener.SUBALLOCATION_ADMOB
 				|| openAllocationCode == MobclixAdViewListener.SUBALLOCATION_GOOGLE

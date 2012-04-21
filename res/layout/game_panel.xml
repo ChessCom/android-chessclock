@@ -2,8 +2,8 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:background="@color/game_board_back"
 
@@ -11,12 +11,12 @@
 	<!--Control buttons-->
 	<LinearLayout
 		android:id="@+id/controlButtonsPanel"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:padding="10dip">
 		<ImageButton
 			android:id="@+id/fastForwardBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_next_game"
@@ -24,7 +24,7 @@
 			/>
 		<ImageButton
 			android:id="@+id/optionsBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_options"
@@ -32,7 +32,7 @@
 			/>
 		<ImageButton
 			android:id="@+id/flipBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_flip"
@@ -40,7 +40,7 @@
 			/>
 		<ImageButton
 			android:id="@+id/analysisBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_analysis"
@@ -48,7 +48,7 @@
 			/>
 		<ImageButton
 			android:id="@+id/chatBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_chat"
@@ -56,7 +56,7 @@
 			/>
 		<ImageButton
 			android:id="@+id/backBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_back"
@@ -64,7 +64,7 @@
 			/>
 		<ImageButton
 			android:id="@+id/forwardBtn"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_forward"

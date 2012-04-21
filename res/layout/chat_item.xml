@@ -2,7 +2,7 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
-	android:layout_width="fill_parent"
+	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:paddingLeft="7dip"
@@ -19,7 +19,7 @@
 
 	<com.chess.RoboTextView
 		android:id="@+id/text"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:padding="3dip"
 		android:text="some text"

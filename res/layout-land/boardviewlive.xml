@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
 	android:orientation="vertical">
 	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		>
 		<com.chess.ui.views.ChessBoardView
 			android:id="@+id/boardview"
@@ -78,24 +78,22 @@
 					/>
 			</RelativeLayout>
 
-			<com.chess.ui.views.GamePanelView
-				android:id="@+id/gamePanelView"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				/>
-
-
-
-			<FrameLayout
+			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				>
+
+				<com.chess.ui.views.GamePanelView
+					android:id="@+id/gamePanelView"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					/>
 
 				<LinearLayout
 					android:id="@+id/submitButtonsLay"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_gravity="bottom"
+					android:layout_alignParentBottom="true"
 					android:paddingLeft="@dimen/game_end_layout_padding_side"
 					android:paddingRight="@dimen/game_end_layout_padding_side"
 					android:paddingBottom="@dimen/game_end_layout_padding_bottom"
@@ -125,7 +123,7 @@
 					android:id="@+id/endOfGameButtons"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_gravity="bottom"
+					android:layout_alignParentBottom="true"
 					android:paddingLeft="@dimen/game_end_layout_padding_side"
 					android:paddingRight="@dimen/game_end_layout_padding_side"
 					android:paddingBottom="@dimen/game_end_layout_padding_bottom"
@@ -155,7 +153,7 @@
 						android:text="Home"/>
 				</RelativeLayout>
 
-			</FrameLayout>
+			</RelativeLayout>
 
 		</LinearLayout>
 	</LinearLayout>

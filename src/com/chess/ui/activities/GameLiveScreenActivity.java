@@ -238,7 +238,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
 				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
-						.getString(AppConstants.USERNAME, "") + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
+						.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
 
 					int i;
 					ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
@@ -294,7 +294,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
 
-							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -359,7 +359,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
 					boardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					boardView.getBoardFace().setMovesCount(0);
@@ -371,7 +371,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals("")) {
+				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
 				}
@@ -431,7 +431,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            CommonUtils.showNotification(coreContext, "", mainApp.getGameId(), "", "",ChatLiveActivity.class);
+            CommonUtils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(), AppConstants.SYMBOL_EMPTY, AppConstants.SYMBOL_EMPTY,ChatLiveActivity.class);
         }
     }
 

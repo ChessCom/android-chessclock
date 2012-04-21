@@ -188,7 +188,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				return;
 			}
 
-			String query = "";
+			String query = AppConstants.SYMBOL_EMPTY;
 			try {
 				query = "http://www." + LccHolder.HOST
                         + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), "UTF-8")

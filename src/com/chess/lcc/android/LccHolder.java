@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.*;
 
 public class LccHolder {
-	final static Config CONFIG = new Config("", "assets/my.properties", true);
+	final static Config CONFIG = new Config(AppConstants.SYMBOL_EMPTY, "assets/my.properties", true);
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
@@ -342,7 +342,7 @@ public class LccHolder {
 	}
 
 	public String[] getOnlineFriends() {
-		final String[] array = new String[]{""};
+		final String[] array = new String[]{AppConstants.SYMBOL_EMPTY};
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
 
@@ -395,7 +395,7 @@ public class LccHolder {
 			final User challenger = challenge.getFrom();
 			isReleasedByMe = challenger.getUsername().equals(_user.getUsername());
 			final GameTimeConfig challengerTimeConfig = challenge.getGameTimeConfig();
-			challengeData[0] = "" + challenge.getId();
+			challengeData[0] = AppConstants.SYMBOL_EMPTY + challenge.getId();
 			challengeData[1] = isReleasedByMe ? challenge.getTo() : challenger.getUsername();
 			Integer challengerRating = 0;
 			if (!isReleasedByMe) {
@@ -417,9 +417,9 @@ public class LccHolder {
 					challengerRating = 0;
 				}
 			}
-			challengeData[2] = "" + challengerRating;
+			challengeData[2] = AppConstants.SYMBOL_EMPTY + challengerRating;
 			String challengerChessTitle =
-					challenger.getChessTitle() != null && !isReleasedByMe ? "(" + challenger.getChessTitle() + ")" : "";
+					challenger.getChessTitle() != null && !isReleasedByMe ? "(" + challenger.getChessTitle() + ")" : AppConstants.SYMBOL_EMPTY;
 			challengeData[3] = challengerChessTitle;
 			String color = null;
 			switch (challenge.getColor()) {
@@ -437,7 +437,7 @@ public class LccHolder {
 					break;
 			}
 			challengeData[4] = color;
-			challengeData[5] = challenge.isRated() ? "" : "Unrated"; // is_rated
+			challengeData[5] = challenge.isRated() ? AppConstants.SYMBOL_EMPTY : "Unrated"; // is_rated
 
 			/*int time = challengerTimeConfig.getBaseTime() * 100;
 				  int hours = time / (1000 * 60 * 60);
@@ -447,7 +447,7 @@ public class LccHolder {
 
 			//challengeData[6] = (challengerTimeConfig.getBaseTime() / 10) + "sec"; // base_time
 			challengeData[7] = challengerTimeConfig.getTimeIncrement() != 0 ?
-					"+" + (challengerTimeConfig.getTimeIncrement() / 10) + "sec" : ""; // time_increment
+					"+" + (challengerTimeConfig.getTimeIncrement() / 10) + "sec" : AppConstants.SYMBOL_EMPTY; // time_increment
 			challengeData[8] = challenge.getTo() != null ? "1" : "0"; // is_direct_challenge
 			challengeData[9] = isReleasedByMe ? "1" : "0";
 
@@ -463,12 +463,12 @@ public class LccHolder {
 //		Log.d("TEST","game id = " + gameId);
 		gameData[0] = lccGame.getId().toString();  // TODO eliminate string convertion and use Objects
 		gameData[1] = "1";
-		gameData[2] = "" + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
-		gameData[3] = "";
+		gameData[2] = AppConstants.SYMBOL_EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
+		gameData[3] = AppConstants.SYMBOL_EMPTY;
 		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
-		gameData[6] = ""; // starting_fen_position
-		String moves = "";
+		gameData[6] = AppConstants.SYMBOL_EMPTY; // starting_fen_position
+		String moves = AppConstants.SYMBOL_EMPTY;
 		/*int j = 0;
 			int latest = 0;
 			for (int i=0; j <= moveIndex; i++)
@@ -499,11 +499,11 @@ public class LccHolder {
 			moves += movesIterator.next() + " ";
 		}
 		if (moveIndex == -1) {
-			moves = "";
+			moves = AppConstants.SYMBOL_EMPTY;
 		}
 		gameData[7] = moves; // move_list
 
-		gameData[8] = ""; // user_to_move
+		gameData[8] = AppConstants.SYMBOL_EMPTY; // user_to_move
 
 		Integer whiteRating = 0;
 		Integer blackRating = 0;
@@ -534,9 +534,9 @@ public class LccHolder {
 		gameData[9] = whiteRating.toString();
 		gameData[10] = blackRating.toString();
 
-		gameData[11] = ""; // todo: encoded_move_string
-		gameData[12] = ""; // has_new_message
-		gameData[13] = "" + (lccGame.getGameTimeConfig().getBaseTime() / 10); // seconds_remaining
+		gameData[11] = AppConstants.SYMBOL_EMPTY; // todo: encoded_move_string
+		gameData[12] = AppConstants.SYMBOL_EMPTY; // has_new_message
+		gameData[13] = AppConstants.SYMBOL_EMPTY + (lccGame.getGameTimeConfig().getBaseTime() / 10); // seconds_remaining
 
 		return gameData;
 	}
@@ -550,7 +550,7 @@ public class LccHolder {
 			else
 			{
 			  lccMove = move.getMoveString();
-			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", "") : lccMove;
+			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", AppConstants.SYMBOL_EMPTY) : lccMove;
 			}*/
 		final long delay = game.getOpponentClockDelay() * 100;
 		synchronized (opponentClockStartSync) {

@@ -170,7 +170,7 @@ public class LccGameListener implements GameListener {
 		} else {
 			result = whitePlayerResult;
 		}
-		String message = "";
+		String message = AppConstants.SYMBOL_EMPTY;
 		switch (result) {
 			case TIMEOUT:
 				message = winnerUsername + " \nwon on time";

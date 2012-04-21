@@ -68,7 +68,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
                                 + "&page-size=20&page=" + page + skill + category,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
@@ -120,7 +120,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, "")
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
                                 + "&page-size=20&page=" + page + skill + category,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoListActivity.this, null, getString(R.string.loading), true))
 				);

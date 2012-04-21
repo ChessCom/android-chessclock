@@ -154,7 +154,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		}
 		super.onResume();
 		username.setText(mainApp.getUserName());
-		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, ""));
+		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY));
 	}
 
 	@Override
