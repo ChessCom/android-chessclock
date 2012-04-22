@@ -40,7 +40,7 @@ public class ChessComApiParser {
 	}
 
 	//online game
-	public static ArrayList<GameListItem> ViewChallengeParse(String result) {
+	public static ArrayList<GameListItem> getChallengesGames(String result) {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
 		String[] g = result.split("[|]");
@@ -59,7 +59,7 @@ public class ChessComApiParser {
 		return output;
 	}
 
-	public static ArrayList<GameListItem> GetCurrentOnlineGamesParse(String result) {
+	public static ArrayList<GameListItem> getCurrentOnlineGames(String result) {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
 		if (result.contains("|")) {
@@ -86,7 +86,7 @@ public class ChessComApiParser {
 		return output;
 	}
 
-	public static ArrayList<GameListItem> GetFinishedOnlineGamesParse(String result) {
+	public static ArrayList<GameListItem> getFinishedOnlineGames(String result) {
 		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
 
 		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);

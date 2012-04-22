@@ -97,15 +97,11 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 
 
 			int color = iplayas.getSelectedItemPosition();
-			int days = 1;
-			days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
-			int israted = 0;
+			int days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
+			int israted;
 			int gametype = 0;
 
-			if (isRated.isChecked())
-				israted = 1;
-			else
-				israted = 0;
+			israted = isRated.isChecked() ? 1 : 0;
 
 			if (chess960.isChecked())
 				gametype = 2;

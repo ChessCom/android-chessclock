@@ -62,8 +62,8 @@ public class RestHelper {
 	public static final String ECHESS_CHALLENGES = BASE_URL + API + "/echess_challenges";
 	public static final String ECHESS_CHALLENGES_V2 = BASE_URL + API_V2 + "/echess_challenges";
 	public static final String ECHESS_NEW_GAME = BASE_URL + API + "/echess_new_game";
-	public static final String GET_ECHESS_CURRENT_GAMES = BASE_URL + API_V2 + "/get_echess_current_games";
-	public static final String GET_ECHESS_FINISHED_GAMES = BASE_URL + API_V2 + "/get_echess_finished_games";
+	public static final String ECHESS_CURRENT_GAMES = BASE_URL + API_V2 + "/get_echess_current_games";
+	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V2 + "/get_echess_finished_games";
 	public static final String GET_ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
 
 	public static final String LOGIN = BASE_URL + API_V2 + "/login";
@@ -102,6 +102,7 @@ public class RestHelper {
 
 	public static final String P_ID = "id"; // user token
 	public static final String P_GID = "gid"; // game id
+	public static final String P_ALL = "all";
 	public static final String P_GET_GAME = "get_game";
 	public static final String P_TACTICS_ID = "tactics_id";
 	public static final String P_TACTICS_TRAINER = "tactics_trainer";
@@ -225,9 +226,14 @@ public class RestHelper {
 
 	public static final String V_ENCODED_MOVES = "encoded_moves";
 	public static final String V_TACTICS_ID = "tactics_id";
-	public static final String V_PASSED = "passed";
+//	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";
 	public static final String V_SECONDS = "seconds";
+
+	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
+	public static final String V_ALL_USERS_GAMES = "1";
+	public static final String V_ONLY_USER_TURN = "0";
+
 	private static final String TAG = "Encode";
 
 

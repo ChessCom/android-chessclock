@@ -350,21 +350,13 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			if (mainApp.isLiveChess() && !intent.getExtras()
-					.getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
-
+			if (!intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
 				start.setVisibility(View.VISIBLE);
 				if (gridview != null) {
 					gridview.setVisibility(View.VISIBLE);
 				}
-//				challengesListTitle.setVisibility(View.VISIBLE);
 				startNewGameTitle.setVisibility(View.VISIBLE);
 			}
-//			handler.post(new Runnable() {
-//				@Override
-//				public void run() {
-//				}
-//			});
 		}
 	};
 

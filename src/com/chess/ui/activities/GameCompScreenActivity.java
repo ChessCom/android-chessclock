@@ -11,21 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MopubHelper;
 
 /**
  * GameTacticsScreenActivity class
@@ -89,48 +85,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	protected void onDrawOffered(int whichButton) {
-		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			String Draw = AppConstants.OFFERDRAW;
-			if (mainApp.acceptdraw)
-				Draw = AppConstants.ACCEPTDRAW;
-			String result = Web.Request("http://www."
-					+ LccHolder.HOST
-					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
-					+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
-					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-			if (result.contains(RestHelper.R_SUCCESS)) {
-				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
-			} else if (result.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-			} else {
-				//mainApp.showDialog(Game.this, "Error", result);
-			}
-		}
 	}
 
 	@Override
 	protected void onAbortOffered(int whichButton) {
-		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			String result = Web.Request("http://www." + LccHolder.HOST
-					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
-					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-			if (result.contains(RestHelper.R_SUCCESS)) {
-				if (MopubHelper.isShowAds(mainApp)) {
-					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
-							.putExtra(AppConstants.MESSAGE, "GAME OVER")
-							.putExtra(AppConstants.FINISHABLE, true));
-				} else {
-					finish();
-				}
-			} else if (result.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-			}
-		}
 	}
 
 

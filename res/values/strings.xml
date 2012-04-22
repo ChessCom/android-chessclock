@@ -281,5 +281,7 @@
 	<string name="united_states">United States</string>
 	<string name="no_chess_account_signup_please">You have no Chess.com account, sign up, please.</string>
 	<string name="pass_dont_match">password do not match</string>
+	<string name="username_cannot_be_encoded">Your Username can not be encoded to send request</string>
+	<string name="menu_refresh">refresh</string>
 
 </resources>

@@ -16,9 +16,16 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<item android:id="@id/menu_refresh"
+		android:title="@string/menu_refresh"
+		android:icon="@drawable/empty"
+		android:orderInCategory="0"
+		android:showAsAction="always" />
+
 	<item android:id="@+id/menu_singOut"
 		android:title="@string/signout"
+		android:orderInCategory="1"
 		android:icon="@drawable/ic_action_sign_out"
-		android:showAsAction="ifRoom"/>
+		android:showAsAction="always"/>
 
 </menu>

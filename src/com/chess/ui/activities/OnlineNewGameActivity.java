@@ -33,12 +33,13 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	private ListView openChallengesListView;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
 	private OnlineGamesAdapter gamesAdapter = null;
-	private int UPDATE_DELAY = 120000;
+	private static final int UPDATE_DELAY = 120000;
 	private GameListItem gameListElement;
-	private EchessDialogListener echessDialogListener;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
-	private static final int CHALLENGE_RSULT_SENT = 2;
+	private static final int CHALLENGE_RESULT_SENT = 2;
 	private int successToastMsgId;
+	private static final int ACCEPT_DRAW = 0;
+	private static final int DECLINE_DRAW = 1;
 
 
 	@Override
@@ -70,7 +71,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	}
 
 	private void init() {
-		echessDialogListener = new EchessDialogListener();
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 	}
 
@@ -93,14 +93,10 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
-				if (!mainApp.isLiveChess()) {
-					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
-							null);
-				} else {
-					update(OnlineScreenActivity.ONLINE_CALLBACK_CODE);
-				}
+				appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
+						"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
+								mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+						null);
 			}
 		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
 			openChallengesListView.setVisibility(View.GONE);
@@ -116,7 +112,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			gamesAdapter.notifyDataSetChanged();
 			openChallengesListView.setVisibility(View.VISIBLE);
 
-		} else if (code == CHALLENGE_RSULT_SENT) {
+		} else if (code == CHALLENGE_RESULT_SENT) {
 			showToast(successToastMsgId);
 			onPause();
 			onResume();
@@ -147,24 +143,24 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		}
 	}
 
-	private class EchessDialogListener implements DialogInterface.OnClickListener {// TODO change to PopupDialog
+	private DialogInterface.OnClickListener echessDialogListener = new DialogInterface.OnClickListener() {// TODO change to PopupDialog
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
 
-			if (pos == 0) {
+			if (pos == ACCEPT_DRAW) {
 				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
 				successToastMsgId = R.string.challengeaccepted;
-			} else if (pos == 1) {
+			} else if (pos == DECLINE_DRAW) {
 				loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
 				successToastMsgId = R.string.challengedeclined;
 			}
 
 			new GetStringObjTask(challengeInviteUpdateListener).execute(loadItem);
 		}
-	}
+	};
 
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
@@ -190,7 +186,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				update(CHALLENGE_RSULT_SENT);
+				update(CHALLENGE_RESULT_SENT);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}

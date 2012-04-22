@@ -39,8 +39,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		init();
-
 		setContentView(R.layout.online_challenge_friend);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
@@ -107,10 +105,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		}
 	}
 
-	private void init() {
-
-	}
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
@@ -119,9 +113,9 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 			}
 
 			int color = iPlayAsSpinner.getSelectedItemPosition();
-			int days = 1;
+			int days;
 			days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
-			int israted = 0;
+			int israted;
 			int gametype = 0;
 
 			if (isRated.isChecked()) {
@@ -132,7 +126,8 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 			if (chess960.isChecked()) {
 				gametype = 2;
 			}
-			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) +
+			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id="
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

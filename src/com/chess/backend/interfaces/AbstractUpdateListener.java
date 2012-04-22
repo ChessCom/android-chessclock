@@ -1,7 +1,6 @@
 package com.chess.backend.interfaces;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
