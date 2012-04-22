@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.*;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.Web;
+import com.chess.backend.entity.AppData;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
@@ -26,9 +28,9 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.Utils;
 import com.chess.utilities.MopubHelper;
 import com.chess.utilities.MyProgressDialog;
+import com.chess.utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
+	private AbortGameUpdateListener abortGameUpdateListener;
+	private DrawOfferUpdateListener drawOfferUpdateListener;
 
 
 	@Override
@@ -86,78 +90,116 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				getString(R.string.resignorabort)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		abortGameUpdateListener = new AbortGameUpdateListener();
+		drawOfferUpdateListener = new DrawOfferUpdateListener();
 	}
 
 	@Override
 	protected void onDrawOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-				Game game = lccHolder.getGame(mainApp.getGameId());
-				LccHolder.LOG.info(AppConstants.REQUEST_DRAW + game);
-				lccHolder.getAndroid().runMakeDrawTask(game);
-			} else {
-				String Draw = AppConstants.OFFERDRAW;
-				if (mainApp.acceptdraw)
-					Draw = AppConstants.ACCEPTDRAW;               // TODO hide to resthelper
-				String result = Web.Request("http://www." + LccHolder.HOST
-						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
-						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
-						+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-				if (result.contains(RestHelper.R_SUCCESS)) {
-					mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
-				} else if (result.contains(RestHelper.R_ERROR)) {
-					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Game.this, "Error", result);
-				}
-			}
+			String draw = AppConstants.OFFERDRAW;
+			if (mainApp.acceptdraw)
+				draw = AppConstants.ACCEPTDRAW;               // TODO hide to resthelper
+
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+
+			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
+			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
+
+			new GetStringObjTask(drawOfferUpdateListener).execute(loadItem);
+
+
+//			String result = Web.Request("http://www." + LccHolder.HOST
+//					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+//					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
+//					+ AppConstants.COMMAND_PARAMETER + draw
+//					+ AppConstants.TIMESTAMP_PARAMETER
+//					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
+//			if (result.contains(RestHelper.R_SUCCESS)) {
+//				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
+//			} else if (result.contains(RestHelper.R_ERROR)) {
+//				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+//			}
 		}
 	}
 
 	@Override
 	protected void onAbortOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-				Game game = lccHolder.getGame(mainApp.getGameId());
 
-				if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
-					System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
-					LccHolder.LOG.info(AppConstants.RESIGN_GAME + game);
-					lccHolder.getAndroid().runMakeResignTask(game);
-				} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
-					LccHolder.LOG.info(AppConstants.LCCLOG_ABORT_GAME + game);
-					lccHolder.getAndroid().runAbortGameTask(game);
-				} else {
-					LccHolder.LOG.info(AppConstants.LCCLOG_RESIGN_GAME + game);
-					lccHolder.getAndroid().runMakeResignTask(game);
-				}
-				finish();
-			} else {*/
-				String result = Web.Request("http://www." + LccHolder.HOST
-						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-						+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
-						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-						+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-				if (result.contains(RestHelper.R_SUCCESS)) {
-					if (MopubHelper.isShowAds(mainApp)) {
-						sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
-								.putExtra(AppConstants.MESSAGE, "GAME OVER")
-								.putExtra(AppConstants.FINISHABLE, true));
-					} else {
-						finish();
-					}
-				} else if (result.contains(RestHelper.R_ERROR)) {
-					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Game.this, "Error", result);
-				}
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+
+			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
+			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
+
+			new GetStringObjTask(abortGameUpdateListener).execute(loadItem);
+			
+//			String result = Web.Request("http://www." + LccHolder.HOST
+//					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+//					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
+//					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
+//					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
+//
+//
+//
+//			if (result.contains(RestHelper.R_SUCCESS)) {
+//				if (MopubHelper.isShowAds(mainApp)) {
+//					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
+//							.putExtra(AppConstants.MESSAGE, "GAME OVER")
+//							.putExtra(AppConstants.FINISHABLE, true));
+//				} else {
+//					finish();
+//				}
+//			} else if (result.contains(RestHelper.R_ERROR)) {
+//				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
 //			}
 		}
 	}
 
+	private class AbortGameUpdateListener extends AbstractUpdateListener<String> {
+		public AbortGameUpdateListener() {
+			super(coreContext);
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				if (MopubHelper.isShowAds(mainApp)) {
+					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
+							.putExtra(AppConstants.MESSAGE, "GAME OVER")
+							.putExtra(AppConstants.FINISHABLE, true));
+				} else {
+					finish();
+				}
+			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+			}
+		}
+	}
+
+	private class DrawOfferUpdateListener extends AbstractUpdateListener<String> {
+		public DrawOfferUpdateListener() {
+			super(coreContext);
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
+			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+			}
+		}
+	}
 
 	@Override
 	protected void getOnlineGame(long game_id) {
@@ -165,8 +207,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GAME_STARTED,
 					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + game_id,
-					null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+					+ "&gid=" + game_id, null);
 		}
 	}
 
@@ -178,7 +220,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				break;
 			case INIT_ACTIVITY:
 				if (boardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
-					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
 					getOnlineGame(mainApp.getGameId());
 					boardView.getBoardFace().setInit(false);
 				} else if (!boardView.getBoardFace().isInit()) {
@@ -188,12 +229,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 							progressDialog.dismiss();
 							progressDialog = null;
 						}
-						if (!mainApp.isLiveChess()) {
-							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
-									null/*progressDialog*/
-							);
-						}
+//						if (!mainApp.isLiveChess()) {
+//							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
+//									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
+//									null);
+//						}
 					}
 				}
 				break;
@@ -214,22 +254,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
-								{
-								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
-								}
-								else
-								{
-								  movelist.setText(boardView.getBoardFaceFace().getMoveListSAN());
-								}*/
 				boardView.invalidate();
-
-				new Handler().post(new Runnable() {
-					@Override
-					public void run() {
-						boardView.requestFocus();
-					}
-				});
+				boardView.requestFocus();
 				break;
 			}
 			case CALLBACK_SEND_MOVE: {
@@ -404,18 +430,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
-				/*if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-					mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
-					executePausedActivityGameEvents();
-					//lccHolder.setActivityPausedMode(false);
-					lccHolder.getWhiteClock().paint();
-					lccHolder.getBlackClock().paint();
-					*//*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
-							  lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
-							  lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*//*
-				} else {*/
-					mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
-//				}
+				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
 
 				if (openChatActivity()) {
 					return;
@@ -484,8 +499,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 								"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
 										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 										+ "&gid=" + mainApp.getGameId(),
-								null/*progressDialog*/
-						);
+								null);
 					}
 				}
 				break;

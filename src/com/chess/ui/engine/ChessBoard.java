@@ -1496,7 +1496,7 @@ public class ChessBoard implements BoardFace {
 						to = "c1";
 				}
 			}
-			output = URLEncoder.encode(MoveParser.positionToString(m.from) + to, "UTF-8");
+			output = URLEncoder.encode(MoveParser.positionToString(m.from) + to, AppConstants.UTF_8);
 		} catch (Exception ignored) {
 		}
 		Log.d("move:", output);

@@ -29,4 +29,8 @@ public interface GameActivityFace {
 	void switch2Analysis(boolean isAnalysis);
 
     void turnScreenOff();
+	
+	void showToast2User(String msg);
+
+	void showToast2User(int msgId);
 }

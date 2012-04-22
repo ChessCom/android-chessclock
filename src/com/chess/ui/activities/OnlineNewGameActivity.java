@@ -13,7 +13,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.Web;
+import com.chess.backend.entity.AppData;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineGamesAdapter;
@@ -31,14 +34,12 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
 	private OnlineGamesAdapter gamesAdapter = null;
 	private int UPDATE_DELAY = 120000;
-	private Button challengecreate;
-	private Button upgradeBtn;
 	private GameListItem gameListElement;
 	private EchessDialogListener echessDialogListener;
+	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
+	private static final int CHALLENGE_RSULT_SENT = 2;
+	private int successToastMsgId;
 
-	private void init() {
-		echessDialogListener = new EchessDialogListener();
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		setContentView(R.layout.online_new_game);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 		if (MopubHelper.isShowAds(mainApp)) {
 			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
@@ -65,8 +66,12 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		openChallengesListView.setOnItemClickListener(this);
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
-		challengecreate = (Button) findViewById(R.id.challengecreate);
-		challengecreate.setOnClickListener(this);
+		findViewById(R.id.challengecreate).setOnClickListener(this);
+	}
+
+	private void init() {
+		echessDialogListener = new EchessDialogListener();
+		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 	}
 
 	@Override
@@ -92,41 +97,27 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
 									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
-							null/*progressDialog = MyProgressDialog
-                                        .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
+							null);
 				} else {
-					/*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,
-													  progressDialog = MyProgressDialog
-														.show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
 					update(OnlineScreenActivity.ONLINE_CALLBACK_CODE);
 				}
 			}
 		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
 			openChallengesListView.setVisibility(View.GONE);
 			gameListItems.clear();
-			if (mainApp.isLiveChess()) {
-				gameListItems.addAll(lccHolder.getChallengesAndSeeksData());
-			} else {
-				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
-			}
-//			for (GameListItem gameListItem : gameListItems) {
-//				Log.d("GameLists", "game received" + gameListItem.toString());
-//			}
 
+			gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 
 			if (gamesAdapter == null) {
 				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);
 				openChallengesListView.setAdapter(gamesAdapter);
-			} /*else{*/
+			}
+
 			gamesAdapter.notifyDataSetChanged();
 			openChallengesListView.setVisibility(View.VISIBLE);
-			/*}*/
-		} else if (code == 2) {
-			mainApp.showToast(getString(R.string.challengeaccepted));
-			onPause();
-			onResume();
-		} else if (code == 3) {
-			mainApp.showToast(getString(R.string.challengedeclined));
+
+		} else if (code == CHALLENGE_RSULT_SENT) {
+			showToast(successToastMsgId);
 			onPause();
 			onResume();
 		} else if (code == 4) {
@@ -156,33 +147,22 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		}
 	}
 
-	private class EchessDialogListener implements DialogInterface.OnClickListener {
+	private class EchessDialogListener implements DialogInterface.OnClickListener {// TODO change to PopupDialog
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-			if (pos == 0) {
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-						+ AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(),
-						"GET", null, null);
-				if (result.contains(RestHelper.R_SUCCESS)) {
-					update(GameBaseActivity.CALLBACK_COMP_MOVE);
-				} else if (result.contains(RestHelper.R_ERROR)) {
-					mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-				}
-			} else if (pos == 1) {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
 
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-						+ AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(),
-						"GET", null, null);
-				if (result.contains(RestHelper.R_SUCCESS)) {
-					update(3);
-				} else if (result.contains(RestHelper.R_ERROR)) {
-					mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-				}
+			if (pos == 0) {
+				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
+				successToastMsgId = R.string.challengeaccepted;
+			} else if (pos == 1) {
+				loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
+				successToastMsgId = R.string.challengedeclined;
 			}
+
+			new GetStringObjTask(challengeInviteUpdateListener).execute(loadItem);
 		}
 	}
 
@@ -190,17 +170,30 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-			final String title = mainApp.isLiveChess() ?
-					gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :
-					"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-							+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-							+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+			final String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+					+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+					+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
-			new AlertDialog.Builder(OnlineNewGameActivity.this)
+			new AlertDialog.Builder(OnlineNewGameActivity.this)  // TODO change to PopupDialog
 					.setTitle(title)
 					.setItems(new String[]{getString(R.string.accept),
 							getString(R.string.decline)}, echessDialogListener)
 					.create().show();
+		}
+	}
+
+	private class ChallengeInviteUpdateListener extends AbstractUpdateListener<String> {
+		public ChallengeInviteUpdateListener() {
+			super(coreContext);
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				update(CHALLENGE_RSULT_SENT);
+			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+				mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import com.chess.backend.RestHelper;
 import com.chess.backend.WebService;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
@@ -52,7 +53,7 @@ public class AndroidStuff {
 
 	public SharedPreferences getSharedData() {
 		if (sharedData == null) {
-			sharedData = context.getSharedPreferences("sharedData", 0);
+			sharedData = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, 0);
 		}
 		return sharedData;
 	}

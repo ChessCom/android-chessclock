@@ -10,10 +10,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.view.View;
-import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.BitmapLoader;
 import com.chess.lcc.android.LccHolder;
@@ -271,10 +268,13 @@ public class MainApp extends Application {
 		return getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
 	}
 
-	public void showToast(String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-	}
-
+	/**
+	 * Use PopUpDialog Fragment as AlertDialog.show() is now deprecated
+	 * @param ctx
+	 * @param title
+	 * @param message
+	 */
+	@Deprecated
 	public void showDialog(Context ctx, String title, String message) {
 		if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 			return;

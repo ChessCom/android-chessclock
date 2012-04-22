@@ -73,7 +73,7 @@
 	<string name="minrating">Min Rating</string>
 	<string name="maxrating">Max Rating</string>
 	<string name="email">Email</string>
-	<string name="retype">Re-type</string>
+	<string name="retype">Re-type Password</string>
 	<string name="country">Country</string>
 	<string name="blue">Blue</string>
 	<string name="brown">Brown</string>
@@ -173,6 +173,7 @@
 	<string name="showanswer">Show Answer</string>
 	<string name="skipproblem">Skip Problem</string>
 	<string name="sendinggameinfo">Sending game info...</string>
+	<string name="check_field">Check Field</string>
 	<string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 	<string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
 	<string name="black">Black</string>
@@ -272,5 +273,13 @@
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - It\'s Your Move</string>
 	<string name="online_challenge_wait">Your Turn!</string>
+	<string name="login_failed">Login Failed:</string>
+	<string name="loggin_out">Logging out...</string>
+	<string name="you_logged_out">You have logged out!</string>
+	<string name="too_short">Too short</string>
+	<string name="can_not_be_empty">Can\'t be empty</string>
+	<string name="united_states">United States</string>
+	<string name="no_chess_account_signup_please">You have no Chess.com account, sign up, please.</string>
+	<string name="pass_dont_match">password do not match</string>
 
 </resources>

@@ -170,7 +170,7 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 		if (view.getId() == R.id.send) {
 			String message = AppConstants.SYMBOL_EMPTY;
 			try {
-				message = URLEncoder.encode(sendText.getText().toString(), "UTF-8");
+				message = URLEncoder.encode(sendText.getText().toString(), AppConstants.UTF_8);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 				Log.e("Chat", e.toString());	 // TODO handle exception

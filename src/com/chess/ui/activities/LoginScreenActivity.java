@@ -4,15 +4,16 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.StatusHelper;
 import com.chess.backend.Web;
+import com.chess.backend.statics.FlurryData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivity;
@@ -34,11 +35,10 @@ import java.net.URLEncoder;
  */
 public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
-	private EditText username;
+	private EditText usernameEdt;
 	private EditText password;
 
 	private Facebook facebook;
-	private LoginButton facebookLoginButton;
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 
@@ -50,7 +50,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		username = (EditText) findViewById(R.id.username);
+		usernameEdt = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
 		password.setOnEditorActionListener(this);
 
@@ -58,7 +58,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		findViewById(R.id.singup).setOnClickListener(this);
 		findViewById(R.id.guestplay).setOnClickListener(this);
 
-		facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
+		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
 
 		facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
 		SessionStore.restore(facebook, this);
@@ -70,7 +70,9 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 	private void signInUser(){
 
-		if (username.getText().toString().length() < 3 || username.getText().toString().length() > 20) {
+		if (usernameEdt.getText().toString().length() < 3 || usernameEdt.getText().toString().length() > 20) {
+			usernameEdt.setError(getString(R.string.check_field));
+			usernameEdt.requestFocus();
 			mainApp.showDialog(context, getString(R.string.error), getString(R.string.validateUsername));
 			return;
 		}
@@ -87,7 +89,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			if (appService != null) {
 				appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
 						ProgressDialog.show(context, null, getString(R.string.signingin), true)),
-						AppConstants.USERNAME, username.getText().toString(), AppConstants.PASSWORD,
+						AppConstants.USERNAME, usernameEdt.getText().toString(), AppConstants.PASSWORD,
 						password.getText().toString());
 			}
 		} catch (Exception ignored) {
@@ -120,10 +122,10 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="
 					+ facebook.getAccessToken() + "&return=username";
 			response = Web.Request(query, "GET", null, null);
-			if (response.contains("Success+")) {
+			if (response.contains(RestHelper.R_SUCCESS)) {
 				update(SIGNIN_FACEBOOK_CALLBACK_CODE);
 			} else if (response.contains("Error+Facebook user has no Chess.com account")) {
-				mainApp.showToast("You have no Chess.com account, sign up, please.");
+				showToast(R.string.no_chess_account_signup_please);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
 						+ "/register.html")));
 			}
@@ -131,19 +133,19 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		@Override
 		public void onAuthFail(String error) {
-			mainApp.showToast("Login Failed: " + error);
+			showToast(getString(R.string.login_failed)+ AppConstants.SYMBOL_SPACE + error);
 		}
 	}
 
 	public class SampleLogoutListener implements SessionEvents.LogoutListener {
 		@Override
 		public void onLogoutBegin() {
-			mainApp.showToast("Logging out...");
+			showToast(R.string.loggin_out);
 		}
 
 		@Override
 		public void onLogoutFinish() {
-			mainApp.showToast("You have logged out!");
+			showToast(R.string.you_logged_out);
 		}
 	}
 
@@ -153,7 +155,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			mainApp.setLiveChess(false);
 		}
 		super.onResume();
-		username.setText(mainApp.getUserName());
+		usernameEdt.setText(mainApp.getUserName());
 		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY));
 	}
 
@@ -163,10 +165,10 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			final String[] responseArray = response.split(":");
 			if (responseArray.length >= 4) {
 				if (code == SIGNIN_CALLBACK_CODE) {
-					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, username.getText().toString().trim().toLowerCase());
+					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
 					doUpdate(responseArray);
 				} else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-					FlurryAgent.onEvent("FB Login", null);
+					FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
 					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 					doUpdate(responseArray);
 				}
@@ -179,13 +181,12 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
 		try {
-			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
+			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
 		}
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
 		mainApp.getSharedDataEditor().commit();
 
-		Log.d("TEST","USER_TOKEN saved");
 		FlurryAgent.onEvent("Logged In");
 		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
 //			startService(new Intent(this, Notifications.class));

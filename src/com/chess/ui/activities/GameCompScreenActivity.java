@@ -129,8 +129,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 			} else if (result.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-			} else {
-				//mainApp.showDialog(Game.this, "Error", result);
 			}
 		}
 	}

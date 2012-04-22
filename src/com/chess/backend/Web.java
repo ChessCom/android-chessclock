@@ -11,21 +11,23 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Iterator;
 
+/**
+ * Use RestHelper and GetCustomObjectTask instead
+ */
+@Deprecated
 public class Web {
 	private static int statusCode = -1;
-	private static String reason = AppConstants.SYMBOL_EMPTY;
+	private static final String TAG = "Web";
 
+	@Deprecated
 	public static String Request(String url, String method, HashMap<String, String> headers, HttpEntity entity) {
 		statusCode = -1;
-		reason = AppConstants.SYMBOL_EMPTY;
+		String reason = AppConstants.SYMBOL_EMPTY;
 		String responseBody = AppConstants.SYMBOL_EMPTY;
 
 		HttpParams httpParameters = null;
@@ -59,9 +61,7 @@ public class Web {
 				base = new HttpDelete(url);
 			}
 			if (headers != null) {
-				Iterator<String> headersIterator = headers.keySet().iterator();
-				while (headersIterator.hasNext()) {
-					String key = headersIterator.next();
+				for (String key : headers.keySet()) {
 					base.addHeader(key, headers.get(key));
 				}
 			}
@@ -69,69 +69,35 @@ public class Web {
 			responseBody = "Sorry... " + e.getMessage();
 		}
 
-		int i = 0;
 		try {
-
 			// test server login support
 			base.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
 
 			response = httpclient.execute(base);
-			i = 1;
-			if (response != null)
-				responseBody = convertStreamToString(response.getEntity().getContent());
-			i = 2;
+			if (response != null){
+				responseBody = EntityUtils.toString(response.getEntity());
+				Log.d(TAG,"WebRequest SERVER RESPONSE: " + responseBody);
+			}
 
 			statusCode = response.getStatusLine().getStatusCode();
-			i = 3;
 			reason = response.getStatusLine().getReasonPhrase();
-			i = 4;
-			Log.d("WebRequest SERVER RESPONSE: ", responseBody);
-			i = 5;
+			Log.d(TAG,"Reason of response: " + reason);
 		} catch (ClientProtocolException e) {
-			//responseBody = "Sorry... No Active connection (CP)" + " code=" + i;
-			e.printStackTrace();
-			Log.d("WEB", "!!!!!!!! " + i);
+			Log.e(TAG, "HTTP protocol error happen, while retrieving data from  " + url, e);
 		} catch (java.net.SocketTimeoutException e) {
 			e.printStackTrace();
-			//responseBody = "Sorry... No Active connection (Timeout)" + " code=" + i;
-			Log.d("WEB", "!!!!!!!! " + i);
 		} catch (IOException e) {
-			e.printStackTrace();
-			//responseBody = "Sorry... No Active connection (IO)" + " code=" + i;
-			Log.d("WEB", "BASE: " + base.getMethod());
-			Log.d("WEB", "BASE: " + base.getParams());
-			Log.d("WEB", "BASE: " + base.getAllHeaders());
-			Log.d("WEB", "BASE: " + base.getProtocolVersion());
-			Log.d("WEB", "BASE: " + base.getRequestLine());
-			Log.d("WEB", "BASE: " + base.getURI());
-			Log.d("WEB", "!!!!!!!! " + i);
+			Log.e(TAG, "I/O error while retrieving data from " + url, e);
+			Log.d(TAG, "BASE: " + base.getMethod());
+			Log.d(TAG, "BASE: " + base.getParams());
+			Log.d(TAG, "BASE: " + base.getAllHeaders());
+			Log.d(TAG, "BASE: " + base.getProtocolVersion());
+			Log.d(TAG, "BASE: " + base.getRequestLine());
+			Log.d(TAG, "BASE: " + base.getURI());
 		} catch (Exception e) {
-			e.printStackTrace();
-			//responseBody = "Sorry... "+e.getMessage() + " code=" + i;
-			Log.d("WEB", "!!!!!!!! " + i);
+			Log.e(TAG, "Error while retrieving data from " + url, e);
 		}
 		return responseBody;
-	}
-
-	private static String convertStreamToString(InputStream is) {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is), 8000);
-		StringBuilder sb = new StringBuilder();
-
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return sb.toString();
 	}
 
 	public static int getStatusCode() {

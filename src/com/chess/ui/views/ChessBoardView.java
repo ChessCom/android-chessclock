@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -27,7 +26,6 @@ import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.interfaces.GameActivityFace;
 
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -242,7 +240,9 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                       message = "1/2 - 1/2 Draw by fifty move rule";*/
         if (message != null) {
             finished = true;
-            mainApp.showToast(message);
+
+			gameActivityFace.showToast2User(message);
+
             Intent intent = new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP);
             intent.putExtra(AppConstants.MESSAGE, "GAME OVER: " + message);
             intent.putExtra(AppConstants.FINISHABLE, false);
@@ -255,7 +255,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
             boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
             gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 
-            mainApp.showToast(getContext().getResources().getString(R.string.check));
+			gameActivityFace.showToast2User(R.string.check);
         }
         return false;
     }

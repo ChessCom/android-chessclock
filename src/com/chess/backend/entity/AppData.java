@@ -2,7 +2,7 @@ package com.chess.backend.entity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
 
 /**
@@ -13,20 +13,19 @@ import com.chess.ui.core.AppConstants;
  */
 public class AppData {
 	private static AppData instance;
-	private SharedPreferences preferences;
 
-	public static AppData getInstance(Context context) {
+	public static AppData getInstance() {
 		if(instance == null){
-			instance = new AppData(context);
+			instance = new AppData();
 		}
 		return instance;
 	}
 
-	private AppData(Context context) {
-		preferences = PreferenceManager.getDefaultSharedPreferences(context);
+	private AppData() {
 	}
 
-	public String getUserToken() {
+	public String getUserToken(Context context) {
+		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 		return preferences.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 	}
 }

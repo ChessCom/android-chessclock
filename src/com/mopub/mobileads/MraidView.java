@@ -142,7 +142,7 @@ public class MraidView extends WebView {
         String mraid = "file:/" + copyRawResourceToFilesDir(R.raw.mraid, "mraid.js");
         data = data.replace("<head>", "<head><script src='" + mraid + "'></script>");
         
-        loadDataWithBaseURL(null, data, "text/html", "UTF-8", null);
+        loadDataWithBaseURL(null, data, "text/html", AppConstants.UTF_8, null);
     }
 
     public void loadUrl(String url) {
@@ -273,7 +273,7 @@ public class MraidView extends WebView {
     
     private boolean tryCommand(URI uri) {
         String commandType = uri.getHost();
-        List<NameValuePair> list = URLEncodedUtils.parse(uri, "UTF-8");
+        List<NameValuePair> list = URLEncodedUtils.parse(uri, AppConstants.UTF_8);
         Map<String, String> params = new HashMap<String, String>();
         for (NameValuePair pair : list) {
             params.put(pair.getName(), pair.getValue());

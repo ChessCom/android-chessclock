@@ -16,10 +16,12 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameItem;
@@ -68,7 +70,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 		// get global Shared Preferences
 		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences("sharedData", MODE_PRIVATE));
+			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
 			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
 		}
 
@@ -140,13 +142,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		}
 
 		unRegisterReceivers();
-
-		// todo: how to logout user when he/she is switching to another
-// activity?
-		/*
-		 * if (mainApp.isLiveChess() && lccHolder.isConnected()) {
-		 * lccHolder.logout(); }
-		 */
 
 		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		mainApp.getSharedDataEditor().commit();
@@ -396,6 +391,14 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 	private void checkUpdate() {  // TODO show progress
         new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+	}
+
+	protected void showToast(String msg){
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	}
+
+	protected void showToast(int msgId){
+		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

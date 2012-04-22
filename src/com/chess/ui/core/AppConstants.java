@@ -155,4 +155,5 @@ public class AppConstants {
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 
 
+	public static final String UTF_8 = "UTF-8";
 }

@@ -10,17 +10,19 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class GetCustomObjTask<T> extends AbstractUpdateTask<T,LoadItem> {
+public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
 	private static final String TAG = "GetCustomObjTask";
-
     private static int statusCode = -1;
     private static String reason = AppConstants.SYMBOL_EMPTY;
 
-	public GetCustomObjTask(TaskUpdateInterface<T> taskFace) {
+	public GetStringObjTask(TaskUpdateInterface<String> taskFace) {
 		super(taskFace);
 	}
 
@@ -34,12 +36,18 @@ public class GetCustomObjTask<T> extends AbstractUpdateTask<T,LoadItem> {
 
 	private int getData(String url) {
 		// Instantiate the custom HttpClient
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
+
+		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 
 		Log.d(TAG, "retrieving from url = " + url);
 
 		final HttpGet httpGet = new HttpGet(url);
 		try {
+			// test server login support
+			httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
 			HttpResponse response = httpClient.execute(httpGet);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
@@ -47,7 +55,8 @@ public class GetCustomObjTask<T> extends AbstractUpdateTask<T,LoadItem> {
 				return StaticData.UNKNOWN_ERROR;
 			}
 			if (response != null){
-				item = (T) EntityUtils.toString(response.getEntity());
+				item = EntityUtils.toString(response.getEntity());
+				result = StaticData.RESULT_OK;
 				Log.d(TAG,"WebRequest SERVER RESPONSE: " + item);
 			}
 

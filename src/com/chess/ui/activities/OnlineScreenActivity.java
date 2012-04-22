@@ -280,13 +280,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
 
 				if (result.contains(RestHelper.R_SUCCESS)) {
-					mainApp.showToast(getString(R.string.accepted));
+					showToast(R.string.accepted);
 					update(1);
 				} else if (result.contains("Error+")) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Online.this, "Error", result);
 				}
+
 			} else if (pos == 2) {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
@@ -299,13 +298,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					update(1);
 				} else if (result.contains("Error+")) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Online.this, "Error", result);
 				}
+
 			}
 		}
 	}
-
 
 	private class GameListItemLongClickListener implements AdapterView.OnItemLongClickListener {
 
@@ -376,7 +373,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private class IsIndirectDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Cancel my seek: " + challenge);
@@ -393,9 +389,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private class NonLiveDialogListener implements DialogInterface.OnClickListener {
 		@Override
 		public void onClick(DialogInterface d, int pos) {
-//			final GameListItem el = mainApp.getGameListItems().get(pos);
 
-			if (pos == 0) {
+//			if (pos == 0) {
+			if (pos == GameListItem.LIST_TYPE_CURRENT) {
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
 						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
@@ -404,10 +400,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					update(2);
 				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Online.this, "Error", result);
 				}
-			} else if (pos == 1) {
+
+//			} else if (pos == 1) {
+			} else if (pos == GameListItem.LIST_TYPE_CHALLENGES) {
 
 				String result = Web.Request("http://www." + LccHolder.HOST
 						+ AppConstants.API_ECHESS_OPEN_INVITES_ID
@@ -417,8 +413,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					update(3);
 				} else if (result.contains(RestHelper.R_ERROR)) {
 					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(Online.this, "Error", result);
 				}
 			}
 		}
@@ -430,48 +424,17 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 			gameListElement = mainApp.getGameListItems().get(pos);
 			if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-				final String title = /*mainApp.isLiveChess() ?
-						gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE) :*/
-						"Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+				final String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
 								+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
 								+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
-				/*if (mainApp.isLiveChess()) {
-					if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-						new AlertDialog.Builder(coreContext)
-								.setTitle(title)
-								.setItems(new String[]{
-										getString(R.string.accept),
-										getString(R.string.decline)},
-										challengeDialogListener)
-								.create().show();
-					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
-						new AlertDialog.Builder(coreContext)
-								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"}, isDirectDialogChallengeListener)
-								.create().show();
-					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-						final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
-						LccHolder.LOG.info("Accept seek: " + challenge);
-						lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-						lccHolder.removeSeek(gameListElement.getGameId());
-						update(2);
-					} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
-						new AlertDialog.Builder(coreContext)
-								.setTitle(title)
-								.setItems(new String[]{"Cancel", "Keep"}, indirectDialogListener)
-								.create().show();
-					}
-				} // echess
-				else { */
-					new AlertDialog.Builder(coreContext)
-							.setTitle(title)
-							.setItems(new String[]{
-									getString(R.string.accept),
-									getString(R.string.decline)}, nonLiveDialogListener
-							)
-							.create().show();
-//				}
+				new AlertDialog.Builder(coreContext)
+						.setTitle(title)
+						.setItems(new String[]{
+								getString(R.string.accept),
+								getString(R.string.decline)}, nonLiveDialogListener
+						)
+						.create().show();
 
 			} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
 				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
@@ -567,11 +530,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (code == 2) {
 			onPause();
 			onResume();
-			mainApp.showToast(getString(R.string.challengeaccepted));
+			showToast(R.string.challengeaccepted);
 		} else if (code == 3) {
 			onPause();
 			onResume();
-			mainApp.showToast(getString(R.string.challengedeclined));
+			showToast(R.string.challengedeclined);
 		} else if (code == 4) {
 			onPause();
 			onResume();
@@ -586,7 +549,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			try {
-				GOTO = URLEncoder.encode(GOTO, "UTF-8");
+				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
 			} catch (UnsupportedEncodingException ignored) {
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
@@ -598,7 +561,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
 					+ mainApp.getUserName();
 			try {
-				GOTO = URLEncoder.encode(GOTO, "UTF-8");
+				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
 			} catch (UnsupportedEncodingException ignored) {
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&goto=" + GOTO)));

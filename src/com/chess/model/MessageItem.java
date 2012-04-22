@@ -12,7 +12,7 @@ public class MessageItem {
 	public MessageItem(String owner, String msg) {
 		this.owner = owner;
 		try {
-			this.message = URLDecoder.decode(msg, "UTF-8");
+			this.message = URLDecoder.decode(msg, AppConstants.UTF_8);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

@@ -27,6 +27,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -101,7 +102,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		// get global Shared Preferences
 		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences("sharedData", MODE_PRIVATE));
+			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
 			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
 		}
 
@@ -699,7 +700,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void showToast(String msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
-	
+
+	protected void showToast(int msgId){
+		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
+	}
+
 	public MainApp getMainApp() {
 		return mainApp;
 	}

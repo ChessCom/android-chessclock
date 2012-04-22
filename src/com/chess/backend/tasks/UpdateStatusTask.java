@@ -25,7 +25,7 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 
 	public UpdateStatusTask(Context context) {
 		this.context = context;
-		preferences = context.getSharedPreferences("sharedData", Context.MODE_PRIVATE);
+		preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 	}
 
 	@Override

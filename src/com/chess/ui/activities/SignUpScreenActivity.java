@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.StatusHelper;
 import com.chess.backend.Web;
+import com.chess.backend.statics.FlurryData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
@@ -40,7 +43,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	private EditText emailEdt;
 	private EditText passwordEdt;
 	private EditText regRetypeEdt;
-	private Spinner countrySpinner;
 	private Button regSubmit;
 	private int CID = -1;
 	private Context context;
@@ -62,19 +64,42 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		COUNTRIES = getResources().getStringArray(R.array.countries);
 		COUNTRIES_ID = getResources().getStringArray(R.array.countries_id);
+		
 		userNameEdt = (EditText) findViewById(R.id.RegUsername);
 		emailEdt = (EditText) findViewById(R.id.RegEmail);
 		passwordEdt = (EditText) findViewById(R.id.RegPassword);
 		regRetypeEdt = (EditText) findViewById(R.id.RegRetype);
 		regSubmit = (Button) findViewById(R.id.RegSubmitBtn);
-		countrySpinner = (Spinner) findViewById(R.id.country);
 
+		userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
+		emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
+		passwordEdt.addTextChangedListener(new FieldChangeWatcher(passwordEdt));
+		regRetypeEdt.addTextChangedListener(new FieldChangeWatcher(regRetypeEdt));
+		
 
+		getCountryCode();
+		Spinner countrySpinner = (Spinner) findViewById(R.id.country);
+		countrySpinner.setAdapter(new ChessSpinnerAdapter(this, tmp2));
+		countrySpinner.setOnItemSelectedListener(this);
+		
+		regSubmit.setOnClickListener(this);
+
+        facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
+
+        facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+        SessionStore.restore(facebook, this);
+        SessionEvents.addAuthListener(new SampleAuthListener());
+        SessionEvents.addLogoutListener(new SampleLogoutListener());
+		
+        facebookLoginButton.init(this, facebook);
+	}
+
+	private void getCountryCode(){
 		String[] tmp = COUNTRIES.clone();
 		java.util.Arrays.sort(tmp);
 		int i = 0, k = 0;
 		for (i = 0; i < tmp.length; i++) {
-			if (tmp[i].equals("United States")) {
+			if (tmp[i].equals(getString(R.string.united_states))) {
 				k = i;
 				break;
 			}
@@ -88,25 +113,8 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				tmp2[i] = tmp[i];
 			}
 		}
-
-//		ArrayAdapter<String> adapterF = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tmp2);
-//		adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		countrySpinner.setAdapter(adapterF);
-		countrySpinner.setAdapter(new ChessSpinnerAdapter(this, tmp2));
-
-		countrySpinner.setOnItemSelectedListener(this);
-		regSubmit.setOnClickListener(this);
-
-        facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
-
-        facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-        SessionStore.restore(facebook, this);
-
-        SessionEvents.addAuthListener(new SampleAuthListener());
-        SessionEvents.addLogoutListener(new SampleLogoutListener());
-        facebookLoginButton.init(this, facebook);
 	}
-
+	
 	@Override
 	public void update(int code) {
 		if (code == 0) {
@@ -117,21 +125,21 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
                             query,
                             progressDialog = new MyProgressDialog(
                                     ProgressDialog.show(context, null, getString(R.string.loading), true)),
-                            AppConstants.USERNAME, /*URLEncoder.encode(*/userNameEdt.getText().toString()/*, "UTF-8")*/,
-                            AppConstants.PASSWORD, /*URLEncoder.encode(*/passwordEdt.getText().toString()/*, "UTF-8")*/
+                            AppConstants.USERNAME, userNameEdt.getText().toString(),
+                            AppConstants.PASSWORD, passwordEdt.getText().toString()
                     );
 				}
 			} catch (Exception ignored) { // TODO handle correctly
 			}
 		} else if (code == 1) {
-			FlurryAgent.onEvent("New Account Created", null);
+			FlurryAgent.onEvent("New Account Created", null);  // TODO
 			String[] r = response.split(":");
 			mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
 			mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
 			mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, r[1]);
 			try {
-				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], "UTF-8"));
+				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
 			} catch (UnsupportedEncodingException ignored) {
 			}
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
@@ -140,7 +148,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			startActivity(new Intent(context, HomeScreenActivity.class));
 			finish();
 
-			mainApp.showToast(getString(R.string.congratulations));
+			showToast(R.string.congratulations);
 		}
         if (response.length() > 0) {
             final String[] responseArray = response.split(":");
@@ -149,7 +157,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
                     mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, userNameEdt.getText().toString().trim().toLowerCase());
                     doUpdate(responseArray);
                 } else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-                    FlurryAgent.onEvent("FB Login", null);
+                    FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
                     mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
                     doUpdate(responseArray);
                 }
@@ -168,32 +176,40 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	public void onClick(View view) {
 		if (view.getId() == R.id.RegSubmitBtn) {
 			if (userNameEdt.getText().toString().length() < 3) {
-				mainApp.showToast(getString(R.string.wrongusername));
+				userNameEdt.setError(getString(R.string.too_short));
+				userNameEdt.requestFocus();
+				showToast(getString(R.string.wrongusername));
 				return;
 			}
 			if (emailEdt.getText().toString().equals(AppConstants.SYMBOL_EMPTY)) {
-				mainApp.showToast(getString(R.string.wrongemail));
+				emailEdt.setError(getString(R.string.can_not_be_empty));
+				emailEdt.requestFocus();
+				showToast(getString(R.string.wrongemail));
 				return;
 			}
 			if (passwordEdt.getText().toString().length() < 6) {
-				mainApp.showToast(getString(R.string.wrongpassword));
+				passwordEdt.setError(getString(R.string.too_short));
+				passwordEdt.requestFocus();
+				showToast(getString(R.string.wrongpassword));
 				return;
 			}
 			if (!passwordEdt.getText().toString().equals(regRetypeEdt.getText().toString())) {
-				mainApp.showToast(getString(R.string.wrongretype));
+				passwordEdt.setError(getString(R.string.pass_dont_match));
+				passwordEdt.requestFocus();
+				showToast(getString(R.string.wrongretype));
 				return;
 			}
 			if (CID == -1) {
-				mainApp.showToast(getString(R.string.wrongcountry));
+				showToast(getString(R.string.wrongcountry));
 				return;
 			}
 
 			String query = AppConstants.SYMBOL_EMPTY;
 			try {
 				query = "http://www." + LccHolder.HOST
-                        + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), "UTF-8")
-                        + "&password=" + URLEncoder.encode(passwordEdt.getText().toString(), "UTF-8")
-						+ "&email=" + URLEncoder.encode(emailEdt.getText().toString(), "UTF-8")
+                        + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), AppConstants.UTF_8)
+                        + "&password=" + URLEncoder.encode(passwordEdt.getText().toString(), AppConstants.UTF_8)
+						+ "&email=" + URLEncoder.encode(emailEdt.getText().toString(), AppConstants.UTF_8)
 						+ "&country_id=" + CID + "&app_type=android";
 			} catch (Exception e) {   // TODO handle correctly
 			}
@@ -204,6 +220,29 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 						progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true))
 				);
 			}
+		}
+	}
+
+	private class FieldChangeWatcher implements TextWatcher {
+		private EditText editText;
+
+		public FieldChangeWatcher(EditText editText) {
+			this.editText = editText;
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			if (s.length() > 1) {
+				editText.setError(null);
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
 		}
 	}
 
@@ -229,7 +268,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
         mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
         mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
         try {
-            mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], "UTF-8"));
+            mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
         } catch (UnsupportedEncodingException ignored) {
         }
         mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
@@ -257,7 +296,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
             if (response.contains("Success+")) {
                 update(SIGNIN_FACEBOOK_CALLBACK_CODE);
             } else if (response.contains("Error+Facebook user has no Chess.com account")) {
-                mainApp.showToast("You have no Chess.com account, sign up, please.");
+                showToast(R.string.no_chess_account_signup_please);
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
                         + "/register.html")));
             }
@@ -265,19 +304,19 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
         @Override
         public void onAuthFail(String error) {
-            mainApp.showToast("Login Failed: " + error);
+            showToast(getString(R.string.login_failed) + AppConstants.SYMBOL_SPACE + error);
         }
     }
 
     public class SampleLogoutListener implements SessionEvents.LogoutListener {
         @Override
         public void onLogoutBegin() {
-            mainApp.showToast("Logging out...");
+            showToast(R.string.loggin_out);
         }
 
         @Override
         public void onLogoutFinish() {
-            mainApp.showToast("You have logged out!");
+            showToast(R.string.you_logged_out);
         }
     }
 

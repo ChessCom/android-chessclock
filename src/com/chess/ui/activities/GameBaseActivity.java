@@ -714,4 +714,12 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	public void showSubmitButtonsLay(boolean show) {
 
 	}
+	
+	public void showToast2User(String message){
+		showToast(message);
+	}
+
+	public void showToast2User(int messageId){
+		showToast(messageId);
+	}
 }

@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.Web;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
@@ -21,19 +19,12 @@ import com.mopub.mobileads.MoPubView;
 
 public class LiveNewGameActivity extends LiveBaseActivity implements OnClickListener {
 
-	private int UPDATE_DELAY = 120000;
-	private Button challengecreate;
 	private Button currentGame;
-	private Button upgradeBtn;
 	private GameListItem gameListElement;
-//	private ChallengeDialogListener challengeDialogListener;
-//	private DirectChallengeDialogListener directChallengeDialogListener;
 	private ReleasedByMeDialogListener releasedByMeDialogListener;
 	private MoPubView moPubAdView;
 
 	private void init() {
-//		challengeDialogListener = new ChallengeDialogListener();
-//		directChallengeDialogListener = new DirectChallengeDialogListener();
 		releasedByMeDialogListener = new ReleasedByMeDialogListener();
 	}
 
@@ -43,7 +34,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		setContentView(R.layout.live_new_game);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 		if (MopubHelper.isShowAds(mainApp)) {
 			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
@@ -57,8 +48,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		init();
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
-		challengecreate = (Button) findViewById(R.id.challengecreate);
-		challengecreate.setOnClickListener(this);
+		findViewById(R.id.challengecreate).setOnClickListener(this);
 
 		currentGame = (Button) findViewById(R.id.currentGame);
 		currentGame.setOnClickListener(this);
@@ -97,41 +87,24 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
+					int UPDATE_DELAY = 120000;
 					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
 									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
-							null/*progressDialog = MyProgressDialog
-                                        .show(OnlineNewGame.this, null, getString(R.string.loadinggames), true)*/);
+							null);
 				} else {
-					/*appService.RunRepeatble(Online.ONLINE_CALLBACK_CODE, 0, 2000,
-													  progressDialog = MyProgressDialog
-														.show(OnlineNewGame.this, null, getString(R.string.updatinggameslist), true));*/
 					update(OnlineScreenActivity.ONLINE_CALLBACK_CODE);
 				}
 			}
 		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
-			// TODO show popup dialog
 
-//			openChallengesLictView.setVisibility(View.GONE);
-//			gameListItems.clear();
-//			if (mainApp.isLiveChess()) {
-//				gameListItems.addAll(lccHolder.getChallengesAndSeeksData());
-//			} else {
-//				gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
-//			}
-//			if (gamesAdapter == null) {
-//				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);
-//				openChallengesLictView.setAdapter(gamesAdapter);
-//			}
-//			gamesAdapter.notifyDataSetChanged();
-//			openChallengesLictView.setVisibility(View.VISIBLE);
 
 		} else if (code == 2) {
-			mainApp.showToast(getString(R.string.challengeaccepted));
+			showToast(R.string.challengeaccepted);
 			onPause();
 			onResume();
 		} else if (code == 3) {
-			mainApp.showToast(getString(R.string.challengedeclined));
+			showToast(R.string.challengedeclined);
 			onPause();
 			onResume();
 		} else if (code == 4) {
@@ -165,40 +138,6 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		}
 	}
 
-//	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface d, int pos) {
-//			if (pos == 0) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info("Accept challenge: " + challenge);
-//				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-//				lccHolder.removeChallenge(gameListElement.getGameId());
-//				update(GameBaseActivity.CALLBACK_COMP_MOVE);
-//			} else if (pos == 1) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info("Decline challenge: " + challenge);
-//				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-//				lccHolder.removeChallenge(gameListElement.getGameId());
-//				update(3);
-//			}
-//		}
-//	}
-//
-//	private class DirectChallengeDialogListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface d, int pos) {
-//			if (pos == 0) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
-//				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-//				lccHolder.removeChallenge(gameListElement.getGameId());
-//				update(4);
-//			} else if (pos == 1) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
-//			}
-//		}
-//	}
 
 	private class ReleasedByMeDialogListener implements DialogInterface.OnClickListener {
 		@Override
@@ -216,64 +155,5 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		}
 	}
 
-	private class EchessDialogListener implements DialogInterface.OnClickListener {
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-			if (pos == 0) {
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.ACCEPT_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(RestHelper.R_SUCCESS)) {
-					update(GameBaseActivity.CALLBACK_COMP_MOVE);
-				} else if (result.contains(RestHelper.R_ERROR)) {
-					mainApp.showDialog(LiveNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(OnlineNewGame.this, "Error", result);
-				}
-			} else if (pos == 1) {
 
-				String result = Web.Request("http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.DECLINE_INVITEID_PARAMETER + gameListElement.getGameId(), "GET", null, null);
-				if (result.contains(RestHelper.R_SUCCESS)) {
-					update(3);
-				} else if (result.contains(RestHelper.R_ERROR)) {
-					mainApp.showDialog(LiveNewGameActivity.this, AppConstants.ERROR, result.split("[+]")[1]);
-				} else {
-					//mainApp.showDialog(OnlineNewGame.this, "Error", result);
-				}
-			}
-		}
-	}
-
-//	@Override
-//	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-//		gameListElement = gameListItems.get(pos);
-//		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-//			final String title = gameListElement.values.get(GameListItem.OPPONENT_CHESS_TITLE);
-//
-//			if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-//				new AlertDialog.Builder(LiveNewGameActivity.this)
-//						.setTitle(title)
-//						.setItems(new String[]{getString(R.string.accept),
-//								getString(R.string.decline)}, challengeDialogListener)
-//						.create().show();
-//			} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("1") && gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
-//				new AlertDialog.Builder(LiveNewGameActivity.this)
-//						.setTitle(title)
-//						.setItems(new String[]{"Cancel", "Keep"}, directChallengeDialogListener)
-//						.create().show();
-//			} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0")
-//					&& gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("0")) {
-//				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
-//				LccHolder.LOG.info("Accept seek: " + challenge);
-//				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-//				lccHolder.removeSeek(gameListElement.getGameId());
-//				update(GameBaseActivity.CALLBACK_COMP_MOVE);
-//			} else if (gameListElement.values.get(GameListItem.IS_DIRECT_CHALLENGE).equals("0")
-//					&& gameListElement.values.get(GameListItem.IS_RELEASED_BY_ME).equals("1")) {
-//				new AlertDialog.Builder(LiveNewGameActivity.this)
-//						.setTitle(title)
-//						.setItems(new String[]{"Cancel", "Keep"}, releasedByMeDialogListener)
-//						.create().show();
-//			}
-//
-//		}
-//	}
 }

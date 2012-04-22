@@ -15,10 +15,12 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -74,7 +76,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 		// get global Shared Preferences
 		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences("sharedData", MODE_PRIVATE)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
+			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
                                                                             // that will simplify every call, where you need to get access token for every preference change and access
 			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
 		}
@@ -640,8 +642,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 * showNetworkChangeNotification(); } } };
 	 */
 
-	public MainApp getMainApp() {
-		return mainApp;
+	protected void showToast(String msg){
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	}
+
+	protected void showToast(int msgId){
+		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
