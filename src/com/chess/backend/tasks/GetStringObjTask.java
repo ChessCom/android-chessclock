@@ -8,7 +8,9 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -40,11 +42,11 @@ public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
-		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 
 		Log.d(TAG, "retrieving from url = " + url);
 
-		final HttpGet httpGet = new HttpGet(url);
+		HttpRequestBase httpGet = new HttpGet(url);
 		try {
 			// test server login support
 			httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");

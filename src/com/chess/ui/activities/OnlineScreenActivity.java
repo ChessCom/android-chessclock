@@ -6,7 +6,6 @@ import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,6 +23,7 @@ import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
+import com.chess.utilities.Utils;
 import com.mopub.mobileads.MoPubView;
 
 import java.io.UnsupportedEncodingException;
@@ -58,8 +58,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private GameListItemLongClickListener gameListItemLongClickListener;
 	//	private NewGamesButtonsAdapter newGamesButtonsAdapter;
 	private GameListItemDialogListener gameListItemDialogListener;
-//	private ChallengeDialogListener challengeDialogListener;
-//	private IsDirectDialogChallengeListener isDirectDialogChallengeListener;
 	private IsIndirectDialogListener indirectDialogListener;
 	private NonLiveDialogListener nonLiveDialogListener;
 
@@ -124,8 +122,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 										+ "&command=ACCEPTDRAW&timestamp="
 										+ gameListElement.values.get(GameListItem.TIMESTAMP),
-								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
-						);
+								null);
 					}
 				}
 				break;
@@ -229,8 +226,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gameListItemClickListener = new GameListItemClickListener();
 		gameListItemLongClickListener = new GameListItemLongClickListener();
 		gameListItemDialogListener = new GameListItemDialogListener();
-//		challengeDialogListener = new ChallengeDialogListener();
-//		isDirectDialogChallengeListener = new IsDirectDialogChallengeListener();
 		indirectDialogListener = new IsIndirectDialogListener();
 		nonLiveDialogListener = new NonLiveDialogListener();
 	}
@@ -330,45 +325,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-//	private class ChallengeDialogListener implements DialogInterface.OnClickListener {
-//
-//		@Override
-//		public void onClick(DialogInterface d, int pos) {
-//
-////			final GameListItem el = mainApp.getGameListItems().get(pos);
-//
-//			if (pos == 0) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info("Accept challenge: " + challenge);
-//				lccHolder.getAndroid().runAcceptChallengeTask(challenge);
-//				lccHolder.removeChallenge(gameListElement.getGameId());
-//				update(2);
-//			} else if (pos == 1) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info("Decline challenge: " + challenge);
-//				lccHolder.getAndroid().runRejectChallengeTask(challenge);
-//				lccHolder.removeChallenge(gameListElement.getGameId());
-//				update(3);
-//			}
-//		}
-//	}
-//
-//	private class IsDirectDialogChallengeListener implements DialogInterface.OnClickListener {
-//		@Override
-//		public void onClick(DialogInterface d, int pos) {
-////			final GameListItem el = mainApp.getGameListItems().get(pos);
-//			if (pos == 0) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info(AppConstants.CANCEL_MY_CHALLENGE + challenge);
-//				lccHolder.getAndroid().runCancelChallengeTask(challenge);
-//				lccHolder.removeChallenge(gameListElement.getGameId());
-//				update(4);
-//			} else if (pos == 1) {
-//				final Challenge challenge = lccHolder.getChallenge(gameListElement.getGameId());
-//				LccHolder.LOG.info(AppConstants.JUST_KEEP_MY_CHALLENGE + challenge);
-//			}
-//		}
-//	}
 
 	private class IsIndirectDialogListener implements DialogInterface.OnClickListener {
 		@Override
@@ -469,17 +425,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				if (!mainApp.isLiveChess()) {
-					Log.d("web", "RunRepeatableTask(ONLINE_CALLBACK_CODE");
+					Utils.logD("web", "RunRepeatableTask(ONLINE_CALLBACK_CODE");
 					appService.RunRepeatableTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
-							null/*progressDialog = MyProgressDialog
-									.show(Online.this, null, getString(R.string.updatinggameslist), true)*/);
-				}/* else {
-					*//*appService.RunRepeatble(ONLINE_CALLBACK_CODE, 0, 2000,
-													  progressDialog = MyProgressDialog
-														.show(Online.this, null, getString(R.string.updatinggameslist), true));*//*
-					update(ONLINE_CALLBACK_CODE);
-				}*/
+							null);
+				}
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
 			//int t = mainApp.sharedData.getInt("gamestype", 1);
@@ -490,29 +440,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (gamesAdapter != null) {
 				gamesAdapter.notifyDataSetChanged();
 			}
-			//gamesList.setVisibility(View.VISIBLE);
-			/*if (mainApp.isLiveChess()) {
-				tmp.addAll(lccHolder.getChallengesAndSeeksData());
-			} else {*/
-				if (currentListType == GameListItem.LIST_TYPE_CURRENT) {
-//					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
-					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
-				}
-				if (currentListType == GameListItem.LIST_TYPE_CHALLENGES) {
-					tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
-//					tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
-				}
-				if (currentListType == GameListItem.LIST_TYPE_FINISHED) {
-					tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(responseRepeatable));
-				}
+			if (currentListType == GameListItem.LIST_TYPE_CURRENT) {
+				tmp.addAll(ChessComApiParser.GetCurrentOnlineGamesParse(responseRepeatable));
+			}
+			if (currentListType == GameListItem.LIST_TYPE_CHALLENGES) {
+				tmp.addAll(ChessComApiParser.ViewChallengeParse(responseRepeatable));
+			}
+			if (currentListType == GameListItem.LIST_TYPE_FINISHED) {
+				tmp.addAll(ChessComApiParser.GetFinishedOnlineGamesParse(responseRepeatable));
+			}
 
-//			}
-
-			//gamesList.setVisibility(View.GONE);
 			mainApp.getGameListItems().addAll(tmp);
-//			for (GameListItem gameListItem : mainApp.getGameListItems()) {
-//				Log.d("GameLists", "game received" + gameListItem.toString());
-//			}
+
 			if (gamesAdapter != null) {
 				gamesAdapter.notifyDataSetChanged();
 			}

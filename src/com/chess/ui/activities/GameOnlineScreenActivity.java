@@ -172,7 +172,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				if (MopubHelper.isShowAds(mainApp)) {
 					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
 							.putExtra(AppConstants.MESSAGE, "GAME OVER")
@@ -193,7 +193,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);

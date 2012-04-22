@@ -3,7 +3,6 @@ package com.chess.backend;
 import com.chess.backend.entity.LoadItem;
 import org.apache.http.NameValuePair;
 
-import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -16,12 +15,13 @@ public class RestHelper {
 
 	/* Results */
 	public static final String R_SUCCESS = "Success+";
+	public static final String R_SUCCESS_ = "Success";
 	public static final String R_ERROR = "Error+";
 	public static final String R_YOUR_MOVE = "Success+1";
 	public static final String R_OPPONENT_MOVE = "Success+0";
 
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
-	private static final String BASE_URL = "http://www.chess.com/";
+	private static final String BASE_URL = "http://www.chess.com";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
 	public static final String API_V2 = "/api/v2";
@@ -228,7 +228,7 @@ public class RestHelper {
 	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";
 	public static final String V_SECONDS = "seconds";
-
+	private static final String TAG = "Encode";
 
 
 //	  (optional, 1 or 0)
@@ -246,7 +246,11 @@ public class RestHelper {
 	private static String formUrl(List<NameValuePair> nameValuePairs ) {
 		String url = "?";
 		for (NameValuePair pair: nameValuePairs) {
-			url += pair.getName() + "=" + URLEncoder.encode(pair.getValue());
+//			try {
+				url += pair.getName() + "=" + /*URLEncoder.encode(*/pair.getValue()/*, AppConstants.UTF_8)*/;
+//			} catch (UnsupportedEncodingException e) {
+//				Utils.logD(TAG, e.toString());
+//			}
 			url += "&";
 		}
 		return url.substring(0, url.length()-1);

@@ -327,9 +327,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
 			Intent intent = new Intent(context, GameTacticsScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
-//			intent.putExtra(AppConstants.LIVE_CHESS, false); // TODO remove
 			startActivity(intent);
-//			startActivity(new Intent(context, GameTacticsScreenActivity.class));
 
 		} else if (v.getId() == R.id.videoLessonsFrame) {
 			startActivity(new Intent(context, VideoScreenActivity.class));

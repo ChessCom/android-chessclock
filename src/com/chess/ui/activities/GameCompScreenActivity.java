@@ -298,21 +298,17 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				int i;
-				//System.out.println("@@@@@@@@ POINT 2 boardView.getBoardFaceFace().movesCount=" + boardView.getBoardFaceFace().movesCount);
-				//System.out.println("@@@@@@@@ POINT 3 Moves=" + Moves);
 
 				for (i = 0; i < boardView.getBoardFace().getMovesCount(); i++) {
-					//System.out.println("@@@@@@@@ POINT 4 i=" + i);
-					//System.out.println("================ POINT 5 Moves[i]=" + Moves[i]);
 					moveFT = MoveParser.parse(boardView.getBoardFace(), moves[i]);
 					if (moveFT.length == 4) {
-						Move m;
+						Move move;
 						if (moveFT[3] == 2) {
-							m = new Move(moveFT[0], moveFT[1], 0, 2);
+							move = new Move(moveFT[0], moveFT[1], 0, 2);
 						} else {
-							m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+							move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 						}
-						boardView.getBoardFace().makeMove(m, false);
+						boardView.getBoardFace().makeMove(move, false);
 					} else {
 						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
 						boardView.getBoardFace().makeMove(m, false);
