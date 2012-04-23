@@ -229,11 +229,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 							progressDialog.dismiss();
 							progressDialog = null;
 						}
-//						if (!mainApp.isLiveChess()) {
-//							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-//									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
-//									null);
-//						}
+						if (!mainApp.isLiveChess()) {
+							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
+									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
+									null);
+						}
 					}
 				}
 				break;
@@ -260,17 +260,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			}
 			case CALLBACK_SEND_MOVE: {
 				showSubmitButtonsLay(false);
-				//String myMove = boardView.getBoardFaceFace().MoveSubmit();
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-					final String move = boardView.getBoardFace().convertMoveLive();
-					LccHolder.LOG.info("LCC make move: " + move);
-					try {
-						lccHolder.makeMove(mainApp.getCurrentGameId(), move);
-					} catch (IllegalArgumentException e) {
-						LccHolder.LOG.info("LCC illegal move: " + move);
-						e.printStackTrace();
-					}
-				} else if (!mainApp.isLiveChess() && appService != null) {
+
+				if (appService != null) {
 					if (mainApp.getCurrentGame() == null) {
 						if (appService.getRepeatableTimer() != null) {
 							appService.getRepeatableTimer().cancel();

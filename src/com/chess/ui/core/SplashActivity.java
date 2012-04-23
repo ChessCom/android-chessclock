@@ -26,7 +26,7 @@ public class SplashActivity extends CoreActivity {
 			mainApp.guest = true;
 		} else {
 			if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)) {
-				StatusHelper.checkStatusUpdate(mainApp, coreContext);
+				startService(new Intent(this, StatusHelper.class));
 			}
 
 			startActivity(new Intent(this, HomeScreenActivity.class));

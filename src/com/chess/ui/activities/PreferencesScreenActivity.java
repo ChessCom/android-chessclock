@@ -321,10 +321,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, checked);
 			mainApp.getSharedDataEditor().commit();
 			if (checked)
-				StatusHelper.checkStatusUpdate(mainApp, context);
-//				startService(new Intent(context, Notifications.class));
-//			else
-//				stopService(new Intent(context, Notifications.class));
+				startService(new Intent(this, StatusHelper.class));
+			else
+				stopService(new Intent(context, StatusHelper.class));
 		} else if (compoundButton.getId() == R.id.PrefVacation) {
 
 			String query;

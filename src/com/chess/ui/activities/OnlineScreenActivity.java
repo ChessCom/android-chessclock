@@ -115,6 +115,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
 			}*/
 		super.onResume();
+		updateList();
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
 
