@@ -162,7 +162,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			lccHolder.getClient().disconnect();
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().connect(mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
+			lccHolder.getClient().connect(
+					mainApp.getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY),
+					mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
 			/*
 								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
@@ -465,7 +467,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 													 */) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
+							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}

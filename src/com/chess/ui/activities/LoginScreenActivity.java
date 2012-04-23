@@ -212,7 +212,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
 		}
-		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
+		//mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
 		mainApp.getSharedDataEditor().commit();
 
 		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data

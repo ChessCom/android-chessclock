@@ -31,7 +31,6 @@ public class AndroidStuff {
 	private LccHolder lccHolder;
 	private GameBaseActivity gameActivity;
 	private Handler clockHandler = new Handler();
-	private Handler updateBoardHandler = new Handler();
 	private MyProgressDialog connectingIndicator;
 	private MyProgressDialog reconnectingIndicator;
 
@@ -77,18 +76,18 @@ public class AndroidStuff {
 		return clockHandler;
 	}
 
-	public Handler getUpdateBoardHandler() {
+	/*public Handler getUpdateBoardHandler() {
 		return updateBoardHandler;
-	}
+	}*/
 
-	public void sendConnectionBroadcastIntent(boolean result, int code, String... errorMessage) {
+	/*public void sendConnectionBroadcastIntent(boolean result, int code, String... errorMessage) {
 		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(WebService.BROADCAST_ACTION)
 				.putExtra(AppConstants.REPEATABLE_TASK, false)
 				.putExtra(AppConstants.CALLBACK_CODE, code)
 				.putExtra(AppConstants.REQUEST_RESULT,
 						result ? RestHelper.R_SUCCESS : RestHelper.R_ERROR + errorMessage[0])
 		);
-	}
+	}*/
 
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);

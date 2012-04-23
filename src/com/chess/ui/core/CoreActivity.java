@@ -262,7 +262,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							final Intent intent = new Intent(mainApp, LoginScreenActivity.class);
+							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
