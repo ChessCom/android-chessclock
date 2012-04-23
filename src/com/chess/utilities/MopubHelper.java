@@ -45,7 +45,7 @@ public class MopubHelper {
 		rectangleAdView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
 	}
 
-    public static void destroyRectangleAd(){ // used to call inregisterBroadCastReceiver
+    public static void destroyRectangleAd(){
         if(rectangleAdView != null)
             rectangleAdView.destroy();
     }

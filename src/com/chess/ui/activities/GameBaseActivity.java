@@ -243,10 +243,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
 		unregisterReceiver(showGameEndPopupReceiver);
-        // unregister mobup broadcastReceiver
-        if (MopubHelper.isShowAds(mainApp)) {// TODO check
-            MopubHelper.destroyRectangleAd();
-        }
 
 		super.onPause();
 
@@ -262,6 +258,15 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		if (onlineGameUpdate != null)
 			onlineGameUpdate.cancel();
 
+	}
+
+	protected void onDestroy() {
+		// try to destroy ad here as Mopub team suggested
+		if (MopubHelper.isShowAds(mainApp)) {// TODO check
+			MopubHelper.destroyRectangleAd();
+		}
+
+		super.onDestroy();
 	}
 
     @Override

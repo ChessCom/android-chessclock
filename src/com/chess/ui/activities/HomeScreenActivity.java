@@ -29,10 +29,11 @@ import com.mopub.mobileads.MoPubInterstitial;
  */
 public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener,
 		MoPubInterstitial.MoPubInterstitialListener {
-	private MoPubInterstitial moPubInterstitial;
 
 	protected static final String CHALLENGE_TAG = "challenge_tag";
 	protected static final String LOGOUT_TAG = "logout_tag";
+
+	protected MoPubInterstitial moPubInterstitial;
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -341,7 +342,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (moPubInterstitial.isReady()) {
 			Log.d("HOME", "mopub interstitial ad listener: loaded and ready");
 			moPubInterstitial.show();
-			// TODO: UNCOMMENT
 			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
 			mainApp.getSharedDataEditor().commit();
 		}

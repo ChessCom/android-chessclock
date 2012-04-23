@@ -132,6 +132,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+
+		// try to destroy ad here as Mopub team suggested
+		if (moPubView != null) {
+			moPubView.destroy();
+		}
+
 		doUnbindService();
 	}
 
@@ -302,11 +308,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		unregisterReceiver(informAndExitReceiver);
 		unregisterReceiver(obsoleteProtocolVersionReceiver);
 		unregisterReceiver(infoMessageReceiver);
-
-        // unregister mobup broadcastReceiver
-        if (moPubView != null) {
-            moPubView.destroy();
-        }
 	}
 
 	protected void backToHomeActivity(){
