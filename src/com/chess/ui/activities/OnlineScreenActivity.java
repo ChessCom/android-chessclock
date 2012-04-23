@@ -42,8 +42,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineGamesAdapter gamesAdapter;
 	private Button upgradeBtn;
 
-	private String[] queries;
-	private boolean compleated = false;
 	private static final int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
 	private int currentListType;
@@ -77,10 +75,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		init();
-		queries = new String[]{
-				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&all=1",
-				"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_CHALLENGES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
-				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_FINISHED_GAMES_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)};
 
 		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
 		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.onlineSpinner));
@@ -437,18 +431,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gameListElement = (GameListItem) adapterView.getItemAtPosition(pos);
 
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-			final String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-					+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-					+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
-
-			new AlertDialog.Builder(coreContext)
-					.setTitle(title)
-					.setItems(new String[]{
-							getString(R.string.accept),
-							getString(R.string.decline)}, nonLiveDialogListener
-					)
-					.create().show();
-
+			clickOnChallenge();
 		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
 			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 			mainApp.getSharedDataEditor().commit();
@@ -480,7 +463,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
 		gameListElement = (GameListItem) adapterView.getItemAtPosition(pos);
 
-		if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
+		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
+			clickOnChallenge();
+		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
 			new AlertDialog.Builder(coreContext)
 					.setItems(new String[]{
 							getString(R.string.chat),
@@ -498,6 +483,20 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			startActivity(intent);
 		}
 		return true;
+	}
+
+	private void clickOnChallenge() {
+		final String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+				+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+				+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+
+		new AlertDialog.Builder(coreContext)
+				.setTitle(title)
+				.setItems(new String[]{
+						getString(R.string.accept),
+						getString(R.string.decline)}, nonLiveDialogListener
+				)
+				.create().show();
 	}
 
 	@Override
