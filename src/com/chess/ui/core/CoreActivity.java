@@ -46,7 +46,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
-	protected Context context;
+	protected Context coreContext;
     public boolean mIsBound;
 	public WebService appService = null;
 
@@ -63,7 +63,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		context = this;
+		coreContext = this;
 		backgroundChessDrawable =  new BackgroundChessDrawable(this);
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();

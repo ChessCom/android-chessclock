@@ -37,6 +37,7 @@ public class RestHelper {
 //	Example: http://www.chess.com/login.html?als=kFCMJsY4%2BiWfnCKH7%2F%2FG45myelPMhTDTN0UTho3j99KlppWfbj6Dz7oBtjLRM5elPYxo1Q0m2qWvY3EeQ44x6A%3D%3D&goto=%2Fhome%2Finvite_friends.html
 	/* Methods calls*/
 	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
+	public static final String REGISTER_HTML = BASE_URL + "/register.html";
 	public static final String ECHESS_MOBILE_STATS = BASE_URL + "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
 
@@ -103,6 +104,7 @@ public class RestHelper {
 	public static final String P_ID = "id"; // user token
 	public static final String P_GID = "gid"; // game id
 	public static final String P_ALL = "all";
+	public static final String P_RETURN = "return";
 	public static final String P_GET_GAME = "get_game";
 	public static final String P_TACTICS_ID = "tactics_id";
 	public static final String P_TACTICS_TRAINER = "tactics_trainer";
@@ -120,6 +122,7 @@ public class RestHelper {
 	/* Returned Values */
 	public static final String R_ERROR_MESSAGE = "error_message";
 	public static final String R_USER_TOKEN = "user_token";
+	public static final String R_FB_USER_HAS_ACCOUNT = "Facebook user has no Chess.com account";
 	public static final String SYMBOL_PARAMS_SPLIT = ":";
 
 
@@ -229,6 +232,7 @@ public class RestHelper {
 //	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";
 	public static final String V_SECONDS = "seconds";
+	public static final String V_USERNAME = "username";
 
 	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
 	public static final String V_ALL_USERS_GAMES = "1";
@@ -247,6 +251,10 @@ public class RestHelper {
 
 		String fullUrl = formUrl(loadItem.getRequestParams());
 		return loadItem.getLoadPath() + fullUrl;
+	}
+
+	public static String formPostRequest(LoadItem loadItem) {
+		return loadItem.getLoadPath() ;
 	}
 
 	private static String formUrl(List<NameValuePair> nameValuePairs ) {

@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.StatusHelper;
-import com.chess.backend.Web;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.FlurryData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivity;
-import com.chess.utilities.MyProgressDialog;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
@@ -36,11 +36,14 @@ import java.net.URLEncoder;
 public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
 	private EditText usernameEdt;
-	private EditText password;
+	private EditText passwordEdt;
 
 	private Facebook facebook;
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
+	private LoginUpdateListener loginUpdateListener;
+	private int loginReturnCode;
+	private ProgressDialog loginUpdateDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +54,8 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		usernameEdt = (EditText) findViewById(R.id.username);
-		password = (EditText) findViewById(R.id.password);
-		password.setOnEditorActionListener(this);
+		passwordEdt = (EditText) findViewById(R.id.password);
+		passwordEdt.setOnEditorActionListener(this);
 
 		findViewById(R.id.singin).setOnClickListener(this);
 		findViewById(R.id.singup).setOnClickListener(this);
@@ -66,34 +69,33 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		SessionEvents.addAuthListener(new SampleAuthListener());
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
 		facebookLoginButton.init(this, facebook);
+
+		loginUpdateListener = new LoginUpdateListener();
+
+		loginUpdateDialog = new ProgressDialog(this);
+		loginUpdateDialog.setMessage(getString(R.string.signingin));
+		loginUpdateDialog.setIndeterminate(true);
+		loginUpdateDialog.setCancelable(false);
 	}
 
 	private void signInUser(){
 
-		if (usernameEdt.getText().toString().length() < 3 || usernameEdt.getText().toString().length() > 20) {
+		if (usernameEdt.getText().toString().length() < 3
+				|| usernameEdt.getText().toString().length() > 20) {
 			usernameEdt.setError(getString(R.string.check_field));
 			usernameEdt.requestFocus();
-			mainApp.showDialog(context, getString(R.string.error), getString(R.string.validateUsername));
+			mainApp.showDialog(coreContext, getString(R.string.error), getString(R.string.validateUsername));
 			return;
 		}
-		/*
-					 * if(password.getText().toString().length() < 6 ||
-					 * password.getText().toString().length() > 20){
-					 * mainApp.showDialog(Singin.this, getString(R.string.error),
-					 * getString(R.string.validatePassword)); return; }
-					 */
 
-		String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.LOGIN);
+		loadItem.addRequestParams(RestHelper.P_USER_NAME, usernameEdt.getText().toString());
+		loadItem.addRequestParams(RestHelper.P_PASSWORD, passwordEdt.getText().toString());
 
-		try {
-			if (appService != null) {
-				appService.RunSingleTaskPost(SIGNIN_CALLBACK_CODE, query, progressDialog = new MyProgressDialog(
-						ProgressDialog.show(context, null, getString(R.string.signingin), true)),
-						AppConstants.USERNAME, usernameEdt.getText().toString(), AppConstants.PASSWORD,
-						password.getText().toString());
-			}
-		} catch (Exception ignored) {
-		}
+		new GetStringObjTask(loginUpdateListener).execute(loadItem);
+
+		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
 
 	@Override
@@ -119,16 +121,15 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
-			String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="
-					+ facebook.getAccessToken() + "&return=username";
-			response = Web.Request(query, "GET", null, null);
-			if (response.contains(RestHelper.R_SUCCESS)) {
-				update(SIGNIN_FACEBOOK_CALLBACK_CODE);
-			} else if (response.contains("Error+Facebook user has no Chess.com account")) {
-				showToast(R.string.no_chess_account_signup_please);
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-						+ "/register.html")));
-			}
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.LOGIN);
+			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
+			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
+
+			new GetStringObjTask(loginUpdateListener).execute(loadItem);
+
+			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
 
 		@Override
@@ -149,6 +150,45 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		}
 	}
 
+	private class LoginUpdateListener extends AbstractUpdateListener<String> {
+		public LoginUpdateListener() {
+			super(coreContext);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (LoginScreenActivity.this.isFinishing())
+				return;
+
+			if(show){
+				loginUpdateDialog.show();
+			}else
+				loginUpdateDialog.dismiss();
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				if (returnedObj.length() > 0) {
+					final String[] responseArray = returnedObj.split(":");
+					if (responseArray.length >= 4) {
+						if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
+							mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
+							doUpdate(responseArray);
+						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
+							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
+							mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+							doUpdate(responseArray);
+						}
+					}
+				}
+			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_ACCOUNT)) {
+				showToast(R.string.no_chess_account_signup_please);
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
+			}
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		if (mainApp.isLiveChess()) {
@@ -156,28 +196,16 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		}
 		super.onResume();
 		usernameEdt.setText(mainApp.getUserName());
-		password.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY));
+		passwordEdt.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY));
 	}
 
 	@Override
 	public void update(int code) {
-		if (response.length() > 0) {
-			final String[] responseArray = response.split(":");
-			if (responseArray.length >= 4) {
-				if (code == SIGNIN_CALLBACK_CODE) {
-					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
-					doUpdate(responseArray);
-				} else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-					FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
-					mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-					doUpdate(responseArray);
-				}
-			}
-		}
+
 	}
 
 	private void doUpdate(String[] response) {
-		mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, password.getText().toString().trim());
+		mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
 		try {
@@ -187,10 +215,9 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
 		mainApp.getSharedDataEditor().commit();
 
-		FlurryAgent.onEvent("Logged In");
+		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
 		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
-//			startService(new Intent(this, Notifications.class));
-			StatusHelper.checkStatusUpdate(mainApp, context);
+			StatusHelper.checkStatusUpdate(mainApp, coreContext);
 		}
 
 		mainApp.guest = false;

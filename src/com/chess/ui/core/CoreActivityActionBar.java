@@ -358,8 +358,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-
-
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
