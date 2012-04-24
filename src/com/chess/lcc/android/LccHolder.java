@@ -53,10 +53,10 @@ public class LccHolder {
 	private LiveChessClient _lccClient;
 	private User _user;
 	private static LccHolder instance;
-	/**
-	 * Use android.util.Log instead
-	 */
-	@Deprecated 
+//	/**
+//	 * Use android.util.Log instead
+//	 */
+//	@Deprecated
 	public static final Logger LOG = Logger.getLogger(LccHolder.class);
 	private AndroidStuff android = new AndroidStuff(this);
 	public static final int OWN_SEEKS_LIMIT = 3;

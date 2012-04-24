@@ -78,14 +78,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 
 	@Override
 	public void update(int code) {
-		if (code == 0) {
-			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-			mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
-			mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
-			mainApp.getSharedDataEditor().commit();
-			//mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
-		}
+
 	}
 
 	@Override
@@ -169,7 +162,13 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 						null,
 						challenge
 				);
-				update(GameBaseActivity.CALLBACK_REPAINT_UI);
+                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+                mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
+                mainApp.getSharedDataEditor().putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
+                mainApp.getSharedDataEditor().commit();
+                //mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+
 			}
 		}
 

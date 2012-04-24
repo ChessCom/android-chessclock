@@ -627,7 +627,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-	@Override
+    @Override
+    public void updateAfterMove() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	protected void restoreGame() {
 		restoreLastConfig();
 	}
@@ -679,21 +684,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
 				boardView.invalidate();
-				/*if(mainApp.getCurrentGame() != null && mainApp.getCurrentGame().values.get("move_list") != null)
-								{
-								  movelist.setText(mainApp.getCurrentGame().values.get("move_list"));
-								}
-								else
-								{
-								  movelist.setText(boardView.getBoardFaceFace().getMoveListSAN());
-								}*/
-
-				new Handler().post(new Runnable() {
-					@Override
-					public void run() {
-						boardView.requestFocus();
-					}
-				});
+                boardView.requestFocus();
 				break;
 			}
 			case CALLBACK_CHECK_TACTICS_MOVE: {

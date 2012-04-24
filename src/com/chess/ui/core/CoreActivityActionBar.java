@@ -60,8 +60,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	protected String response = AppConstants.SYMBOL_EMPTY;
-	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
+	protected String response = AppConstants.SYMBOL_EMPTY; // TODO remove
+	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY; // TODO remove
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;

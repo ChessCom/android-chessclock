@@ -176,53 +176,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	public void update(int code) {
-		if (code == INIT_ACTIVITY) {
-
-
-//			if (appService != null) {
-//				if (!mainApp.isLiveChess()) {
-//					Utils.logD("web", "RunRepeatableTask(ONLINE_CALLBACK_CODE");
-//					appService.RunRepeatableTask(ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-//							queries[mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1)],
-//							null);
-//				}
-//			}
-		} else if (code == ONLINE_CALLBACK_CODE) {
-//			currentListType = mainApp.getSharedData().getInt(AppConstants.ONLINE_GAME_LIST_TYPE, 1);
-//			ArrayList<GameListItem> tmp = new ArrayList<GameListItem>();
-//
-//			mainApp.getGameListItems().clear();
-//
-//			if (currentListType == GameListItem.LIST_TYPE_CURRENT) {
-//				tmp.addAll(ChessComApiParser.getCurrentOnlineGames(responseRepeatable));
-//			}
-//			if (currentListType == GameListItem.LIST_TYPE_CHALLENGES) {
-//				tmp.addAll(ChessComApiParser.getChallengesGames(responseRepeatable));
-//			}
-//			if (currentListType == GameListItem.LIST_TYPE_FINISHED) {
-//				tmp.addAll(ChessComApiParser.getFinishedOnlineGames(responseRepeatable));
-//			}
-//
-//			mainApp.getGameListItems().addAll(tmp);
-//
-//			if (gamesAdapter == null) {
-//				gamesAdapter = new OnlineGamesAdapter(OnlineScreenActivity.this, R.layout.gamelistelement, mainApp.getGameListItems());
-//				gamesList.setAdapter(gamesAdapter);
-//			}else{
-//
-//				gamesAdapter.notifyDataSetChanged();
-//			}
-		} else if (code == 1) {
-			onPause();
-			onResume();
-		} else if (code == CHALLENGE_RESULT_SENT) {
-//			onPause();
-//			onResume();
-		} else if (code == 4) {
-			gamesAdapter.notifyDataSetChanged();
-//			onPause();
-//			onResume();
-		}
 	}
 
 	private class ChallengeInviteUpdateListener extends AbstractUpdateListener<String> {
@@ -250,7 +203,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				updateList();
-//				update(CHALLENGE_RESULT_SENT);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}

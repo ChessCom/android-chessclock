@@ -257,14 +257,17 @@ public class MainApp extends Application {
 	}
 
     public CharSequence getWhitePlayerName() {
-        return getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.WHITE_RATING) + ")";
+//        return getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.WHITE_RATING) + ")";
+        return getCurrentGame().values.get(AppConstants.WHITE_USERNAME) + "(" + getCurrentGame().values.get(GameItem.WHITE_RATING) + ")";  // TODO check
     }
 
     public CharSequence getBlackPlayerName() {
-        return getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")";
+        return getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")";
+//        return getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")"; // TODO check
     }
 
-	public String getUserName() {
+    @Deprecated
+	public String getUserName() {  // TODO change to AppData.getUserName()
 		return getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
 	}
 
@@ -274,7 +277,7 @@ public class MainApp extends Application {
 	 * @param title
 	 * @param message
 	 */
-	@Deprecated
+//	@Deprecated
 	public void showDialog(Context ctx, String title, String message) {
 		if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
 			return;

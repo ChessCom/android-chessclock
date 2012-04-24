@@ -35,8 +35,9 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	private InitialTimeValidator initialTimeValidator;
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
 	private BonusTimeValidator bonusTimeValidator;
+    private static final int CHALLENGE_WAS_SENT = 1;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -102,12 +103,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 						}).setCancelable(false)
 						.create().show();
 			}
-		} else if (code == 1) {
-			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-			mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-			mainApp.getSharedDataEditor().commit();
-			mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
-//			onBackPressed();
+		} else if (code == CHALLENGE_WAS_SENT) {
+		    throw new IllegalArgumentException(" called deprecated method");    // TODO check
 		}
 	}
 
@@ -143,41 +140,31 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 				initialTime.setText("10");
 				bonusTime.setText("0");
 			}
-			/*PieceColor color;
-										  switch(iplayas.getSelectedItemPosition())
-										  {
-											case 0:
-											  color = PieceColor.UNDEFINED;
-											  break;
-											case 1:
-											  color = PieceColor.WHITE;
-											  break;
-											case 2:
-											  color = PieceColor.BLACK;
-											  break;
-											default:
-											  color = PieceColor.UNDEFINED;
-											  break;
-										  }*/
+
 			boolean rated = isRated.isChecked();
+
 			int initialTimeInteger = Integer.parseInt(initialTime.getText().toString());
 			int bonusTimeInteger = Integer.parseInt(bonusTime.getText().toString());
+
 			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
+
 			Integer minRating = null;
 			Integer maxRating = null;
+
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 					lccHolder.getUser(), friends.getSelectedItem().toString().trim(), PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minRating, maxRating);
+
 			if (appService != null) {
 				FlurryAgent.onEvent("Challenge Created", null);
-				lccHolder.getAndroid().runSendChallengeTask(
-						//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
-						null,
-						challenge
-				);
-				update(GameBaseActivity.CALLBACK_SEND_MOVE);
-			}
+				lccHolder.getAndroid().runSendChallengeTask(null, challenge);
 
+                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+                mainApp.getSharedDataEditor().commit();
+                mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+    //			onBackPressed();
+			}
 		}
 	}
 

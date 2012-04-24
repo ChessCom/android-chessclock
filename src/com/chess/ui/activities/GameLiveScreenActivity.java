@@ -440,7 +440,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		startActivity(new Intent(this, LiveNewGameActivity.class));
 	}
 
-	@Override
+    @Override
+    public void updateAfterMove() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void showOptions() {
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)

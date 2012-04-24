@@ -65,16 +65,16 @@ public class RestHelper {
 	public static final String ECHESS_NEW_GAME = BASE_URL + API + "/echess_new_game";
 	public static final String ECHESS_CURRENT_GAMES = BASE_URL + API_V2 + "/get_echess_current_games";
 	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V2 + "/get_echess_finished_games";
-	public static final String GET_ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
+	public static final String ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
 
 	public static final String LOGIN = BASE_URL + API_V2 + "/login";
 	public static final String GET_FRIENDS = BASE_URL + API_V2 + "/get_friends";
-	public static final String GET_VIDEOS = BASE_URL + API_V2 + "/get_videos";
-	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
+	public static final String GET_VIDEOS  = BASE_URL + API_V2 + "/get_videos";
 
-	public static final String GET_USER_INFO_V3 = BASE_URL + API_V3 + "/get_game";
-	public static final String GET_GAME_V3 = BASE_URL + API_V3 + "/get_user_info";
-	/* Version 4 methods */
+	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
+	public static final String GET_USER_INFO_V3 = BASE_URL + API_V3 + "/get_user_info";
+
+	public static final String GET_GAME_V3 = BASE_URL + API_V3 + "/get_game";
 	public static final String GET_GAME_V4 = BASE_URL + API_V4 + "/get_game";
 
 	/* Parameters */

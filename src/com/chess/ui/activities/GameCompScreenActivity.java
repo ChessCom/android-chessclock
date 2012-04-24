@@ -99,7 +99,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GAME_STARTED,
 					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + game_id,
-					null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
+					null);
 		}
 	}
 
@@ -308,6 +308,11 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		}
 		super.switch2Analysis(isAnalysis);
 	}
+
+    @Override
+    public void updateAfterMove() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
     @Override
 	protected void restoreGame(){

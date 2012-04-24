@@ -40,7 +40,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	protected final static int DIALOG_DRAW_OFFER = 4;
 	protected final static int DIALOG_ABORT_OR_RESIGN = 5;
 	public final static int CALLBACK_GAME_STARTED = 10;
-	public final static int CALLBACK_REPAINT_UI = 0;
+	public final static int CALLBACK_REPAINT_UI = 0; // TODO eliminate
 	public final static int CALLBACK_GAME_REFRESH = 9;
 	public final static int CALLBACK_COMP_MOVE = 2;
 	public final static int CALLBACK_PLAYER_MOVE = 3;
@@ -382,7 +382,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected abstract void onGameEndMsgReceived();
 
-	protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
+    protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());

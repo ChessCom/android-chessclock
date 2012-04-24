@@ -218,7 +218,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
 		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
 			startService(new Intent(this, StatusHelper.class));
-
 		}
 
 		mainApp.guest = false;

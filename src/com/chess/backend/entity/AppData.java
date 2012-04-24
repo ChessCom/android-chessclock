@@ -28,4 +28,17 @@ public class AppData {
 		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 		return preferences.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 	}
+
+    public int getAfterMoveAction(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+        String userName = preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
+        preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
+        return 0;
+    }
+    
+    public String getUserName(Context context){
+        SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+        return preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
+    }
+    
 }

@@ -162,6 +162,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                 boardFace.setSubmit(true);
             } else {
                 gameActivityFace.update(GameBaseActivity.CALLBACK_SEND_MOVE);
+                gameActivityFace.updateAfterMove();
             }
         }
 

@@ -33,4 +33,6 @@ public interface GameActivityFace {
 	void showToast2User(String msg);
 
 	void showToast2User(int msgId);
+
+    void updateAfterMove();
 }
