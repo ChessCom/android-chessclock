@@ -171,7 +171,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
-	}
+
+        @Override
+        public void errorHandle(Integer resultCode) {
+            gamesTypeSpinner.setEnabled(true);
+        }
+    }
 
 
 	@Override

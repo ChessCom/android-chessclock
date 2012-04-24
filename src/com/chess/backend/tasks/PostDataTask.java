@@ -32,7 +32,7 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 	protected Integer doTheTask(LoadItem... loadItem) {
 
 		String url = RestHelper.formPostRequest(loadItem[0]);
-		postData(url, loadItem[0]);
+        result = postData(url, loadItem[0]);
 		return result;
 	}
 

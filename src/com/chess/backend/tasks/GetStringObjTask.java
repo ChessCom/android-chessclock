@@ -20,7 +20,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
 public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
-	private static final String TAG = "GetCustomObjTask";
+	private static final String TAG = "GetStringObjTask";
     private static int statusCode = -1;
     private static String reason = AppConstants.SYMBOL_EMPTY;
 

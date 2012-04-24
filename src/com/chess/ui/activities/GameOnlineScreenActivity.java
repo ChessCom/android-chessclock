@@ -71,7 +71,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         init();
         widgetsInit();
         onPostCreate();
-
     }
 
     @Override
@@ -128,7 +127,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
         updateGameSate();
         handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
-
     }
 
     private Runnable updateGameStateOrder = new Runnable() {
@@ -184,16 +182,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         LoadItem loadItem = new LoadItem();
         loadItem.setLoadPath(RestHelper.GET_GAME_V3);
         loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
-        loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(mainApp.getGameId()));
+        loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(game_id));
 
         new GetStringObjTask(startGameUpdateListener).execute(loadItem);
 
-        if (appService != null) {
-            appService.RunSingleTask(CALLBACK_GAME_STARTED,
-                    "http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-                            + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-                            + "&gid=" + game_id, null);
-        }
+//        if (appService != null) {
+//            appService.RunSingleTask(CALLBACK_GAME_STARTED,
+//                    "http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
+//                            + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//                            + "&gid=" + game_id, null);
+//        }
     }
 
     private class StartGameUpdateListener extends AbstractUpdateListener<String> { // TODO hide logic to Game Manager class
@@ -206,7 +204,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         public void updateData(String returnedObj) {
             getSoundPlayer().playGameStart();
 
-//            mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
             mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
 
             if (openChatActivity()) {
@@ -258,7 +255,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                 }
             }
 
-//				update(CALLBACK_REPAINT_UI);
             invalidateGameScreen();
             boardView.getBoardFace().takeBack();
             boardView.invalidate();
@@ -329,10 +325,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                     Move move = new Move(moveFT[0], moveFT[1], 0, 0);
                     boardView.getBoardFace().makeMove(move, playSound);
                 }
-                //mainApp.showToast("Move list updated!");
+
                 boardView.getBoardFace().setMovesCount(moves.length);
                 boardView.invalidate();
-//                update(CALLBACK_REPAINT_UI);
                 invalidateGameScreen();
             }
         }
@@ -342,12 +337,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         if (boardView.getBoardFace().isSubmit())
             showSubmitButtonsLay(true);
 
-//        if (MainApp.isLiveOrEchessGameMode(boardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
         if (mainApp.getCurrentGame() != null) {
             whitePlayerLabel.setText(mainApp.getWhitePlayerName());
             blackPlayerLabel.setText(mainApp.getBlackPlayerName());
         }
-//        }
 
         boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
         boardView.invalidate();
@@ -520,117 +513,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
     @Override
     public void update(int code) {
-        switch (code) {
-            case ERROR_SERVER_RESPONSE:
-//                mainApp.showDialog(this,getString(R.string.), );
-                onBackPressed();
-                break;
-            case INIT_ACTIVITY:
-//				if (boardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
-//					getOnlineGame(mainApp.getGameId());
-//					boardView.getBoardFace().setInit(false);
-//				} else if (!boardView.getBoardFace().isInit()) {
-//                    // run repeatable task
-//
-//					if (MainApp.isLiveOrEchessGameMode(boardView.getBoardFace()) && appService != null
-//							&& appService.getRepeatableTimer() == null) {
-//						if (progressDialog != null) {
-//							progressDialog.dismiss();
-//							progressDialog = null;
-//						}
-//                        appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-//                                "http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-//                                        + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-//                                        + "&gid=" + mainApp.getGameId(),
-//                                null);
-//					}
-//				}
-                break;
-//			case CALLBACK_REPAINT_UI: {
-//              // Use invalidateGameScreen();
-//				break;
-//			}
-//			case CALLBACK_SEND_MOVE: {
-//				 // Use updateAfterMove();
-//				break;
-//			}
-//            case CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE: {
-//                mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
-//                if (!mainApp.isLiveChess() && appService != null) {
-//                    appService.RunSingleTask(CALLBACK_ECHESS_MOVE_WAS_SENT,
-//                            "http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID +
-//                                    mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER +
-//                                    mainApp.getCurrentGameId() + AppConstants.COMMAND_SUBMIT_AND_NEWMOVE_PARAMETER +
-//                                    boardView.getBoardFace().convertMoveEchess() + AppConstants.TIMESTAMP_PARAMETER +
-//                                    mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP),
-//                            progressDialog = new MyProgressDialog(
-//                                    ProgressDialog.show(this, null, getString(R.string.sendinggameinfo), true)));
-//
-//                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                    mNotificationManager.cancel(R.id.notification_message);
-//
-//                }
-//                break;
-//            }
-            case CALLBACK_ECHESS_MOVE_WAS_SENT:
-                // move was made
-                if (mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
-                    finish();
-                } else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
-                        .getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
 
-                    int i;
-                    ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
-                    for (GameListItem gle : mainApp.getGameListItems()) {
-                        if (gle.type == GameListItem.LIST_TYPE_CURRENT && gle.values.get(GameListItem.IS_MY_TURN).equals("1")) {
-                            currentGames.add(gle);
-                        }
-                    }
-                    for (i = 0; i < currentGames.size(); i++) {
-                        if (currentGames.get(i).getGameId() == mainApp.getCurrentGameId()) {
-                            if (i + 1 < currentGames.size()) {
-                                boardView.setBoardFace(new ChessBoard(this));
-                                boardView.getBoardFace().setAnalysis(false);
-                                boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-
-                                if (progressDialog != null) {
-                                    progressDialog.dismiss();
-                                    progressDialog = null;
-                                }
-
-                                getOnlineGame(currentGames.get(i + 1).getGameId());
-                                return;
-                            } else {
-                                finish();
-                                return;
-                            }
-                        }
-                    }
-                    finish();
-                    return;
-                }
-                break;
-//			case CALLBACK_GAME_REFRESH:
-//				if (boardView.getBoardFace().isAnalysis())
-//					return;
-//				if (!mainApp.isLiveChess()) {
-//					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
-//				}
-//
-//				if (mainApp.getCurrentGame() == null || game == null) {
-//					return;
-//				}
-//              updateGameBoardMoves();
-//              ...
-
-            case CALLBACK_GAME_STARTED:  // TODO eliminate
-
-
-                break;
-
-            default:
-                break;
-        }
     }
 
     private boolean openChatActivity() {
@@ -814,20 +697,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
 
             new GetStringObjTask(drawOfferUpdateListener).execute(loadItem);
-
-
-//			String result = Web.Request("http://www." + LccHolder.HOST
-//					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-//					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
-//					+ AppConstants.COMMAND_PARAMETER + draw
-//					+ AppConstants.TIMESTAMP_PARAMETER
-//					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-//			if (result.contains(RestHelper.R_SUCCESS)) {
-//				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
-//			} else if (result.contains(RestHelper.R_ERROR)) {
-//				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-//			}
         }
     }
 
@@ -844,27 +713,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
 
             new GetStringObjTask(abortGameUpdateListener).execute(loadItem);
-
-//			String result = Web.Request("http://www." + LccHolder.HOST
-//					+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-//					+ AppConstants.CHESSID_PARAMETER + mainApp.getCurrentGameId()
-//					+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-//					+ mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP), "GET", null, null);
-//
-//
-//
-//			if (result.contains(RestHelper.R_SUCCESS)) {
-//				if (MopubHelper.isShowAds(mainApp)) {
-//					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
-//							.putExtra(AppConstants.MESSAGE, "GAME OVER")
-//							.putExtra(AppConstants.FINISHABLE, true));
-//				} else {
-//					finish();
-//				}
-//			} else if (result.contains(RestHelper.R_ERROR)) {
-//				mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
-//			}
         }
     }
 
@@ -912,22 +760,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     protected void onGameEndMsgReceived() {
         showSubmitButtonsLay(false);
         gamePanelView.haveNewMessage(true);
-//		chatPanel.setVisibility(View.GONE);
     }
-
-    /*public void onStop()
-           {
-             mainApp.getCurrentGame() = null;
-             boardView.boardBitmap = null;
-             super.onStop();
-           }*/
 
     private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//			LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-//			chatPanel.setVisibility(View.VISIBLE);
-            Log.d("TEST", "new message");
             gamePanelView.haveNewMessage(true);
         }
     };
@@ -936,11 +773,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        /*if (view.getId() == R.id.chat) {
-              chat = true;
-              getOnlineGame(mainApp.getGameId());
-              chatPanel.setVisibility(View.GONE);
-          } else */
         if (view.getId() == R.id.cancel) {
             showSubmitButtonsLay(false);
 
@@ -948,7 +780,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             boardView.getBoardFace().decreaseMovesCount();
             boardView.invalidate();
         } else if (view.getId() == R.id.submit) {
-//            update(CALLBACK_SEND_MOVE);
             sendMove();
         }
     }

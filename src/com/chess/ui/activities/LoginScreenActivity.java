@@ -16,6 +16,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivity;
 import com.facebook.android.Facebook;
@@ -93,7 +94,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, usernameEdt.getText().toString());
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, passwordEdt.getText().toString());
 
-		new GetStringObjTask(loginUpdateListener).execute(loadItem);
+		new PostDataTask(loginUpdateListener).execute(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
