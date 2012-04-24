@@ -294,10 +294,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
-	public void showChoosePieceDialog(int col, int row) {
-	}
-
-	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		if(isAnalysis){
 			boardView.stopThinking = true;
