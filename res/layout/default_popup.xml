@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="@dimen/popup_dialog_width"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:minWidth="@dimen/popup_dialog_width"
+	android:paddingTop="@dimen/default_scr_top_padding"
+	android:paddingBottom="@dimen/live_grid_padding_bottom"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	android:background="@drawable/dashboard_single_back">
+
+	<TextView
+		android:id="@+id/popupTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:maxWidth="@dimen/popup_dialog_text_max_width"
+		android:text="Confirm"
+		android:gravity="center"
+		android:textStyle="bold"
+		android:textSize="19sp"
+		style="@style/DarkShadowBottom"
+		/>
+
+	<TextView
+		android:id="@+id/popupMessage"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:maxWidth="@dimen/popup_dialog_text_max_width"
+		android:text="@string/signout_confirm"
+		android:gravity="center"
+		android:paddingTop="@dimen/live_grid_padding_bottom"
+		android:paddingBottom="@dimen/default_scr_top_padding"
+		style="@style/DarkShadowBottom"
+		/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<Button
+			android:id="@+id/okBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Text.Button"
+			android:text="@string/ok"
+			android:layout_gravity="center_horizontal"
+			android:layout_weight="1"
+			/>
+
+		<Button
+			android:id="@+id/cancelBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Text.Button.Grey"
+			android:text="@string/cancel"
+			android:layout_gravity="center_horizontal"
+			/>
+	</LinearLayout>	
+
+</LinearLayout>

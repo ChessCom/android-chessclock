@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/mainView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:paddingTop="@dimen/default_scr_top_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				style="@style/LinearDescription"
+				>
+
+				<com.chess.RoboTextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text="@string/Friend"
+					android:layout_weight="6"
+					/>
+
+				<Spinner
+					android:id="@+id/friend"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="4"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				style="@style/LinearDescription"
+				>
+
+				<com.chess.RoboTextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="6"
+					android:text="@string/initialTime"
+					/>
+
+				<com.chess.RoboAutoCompleteTextView
+					android:id="@+id/initialTime"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="4"
+					android:inputType="number"
+					android:text=""/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				style="@style/LinearDescription"
+				>
+
+				<com.chess.RoboTextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="6"
+					android:text="@string/bonusTime"
+					/>
+
+				<com.chess.RoboAutoCompleteTextView
+					android:id="@+id/bonusTime"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="4"
+					android:inputType="number"
+					/>
+			</LinearLayout>
+
+			<com.chess.RoboCheckBox
+				android:id="@+id/ratedGame"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:checked="true"
+				android:gravity="left|center_vertical"
+				android:text="@string/RatedGme"
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/createchallenge"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/button_orange_selector"
+				android:layout_marginTop="@dimen/margin_top_beween_buttons"
+
+				android:text="@string/ChallengeCreate"/>
+		</LinearLayout>
+	</LinearLayout>
+
+</ScrollView>

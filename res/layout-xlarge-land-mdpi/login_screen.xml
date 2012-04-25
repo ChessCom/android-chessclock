@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/mainView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center"
+	android:paddingLeft="@dimen/signin_scr_side_padding"
+	android:paddingRight="@dimen/signin_scr_side_padding"
+	>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:gravity="center_vertical"
+		>
+		<ImageView
+			android:id="@+id/logoImg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="0dip"
+			android:adjustViewBounds="true"
+			android:scaleType="center"
+			android:src="@drawable/logo"
+			android:layout_gravity="center"/>
+
+		<com.chess.RoboEditText
+			android:id="@+id/username"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/singinUsername"
+			android:singleLine="true"
+			/>
+
+		<com.chess.RoboEditText
+			android:id="@+id/password"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/singinPassword"
+			android:inputType="textPersonName"
+			android:password="true"
+			android:singleLine="true"
+			/>
+
+		<com.chess.RoboButton
+			android:id="@+id/singin"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/singinButton"
+			/>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+			<com.chess.RoboButton
+				android:id="@+id/singup"
+				style="@style/Text.Button.Green"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singupButton"
+				android:layout_weight="1"
+
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/guestplay"
+				style="@style/Text.Button.Grey"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/singinPlayguest"
+				android:layout_weight="1"
+
+				/>
+		</LinearLayout>
+		<com.facebook.android.LoginButton
+			android:id="@+id/fb_connect"
+			style="@style/Text.Button.Login"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/facebook_icon"
+			android:drawablePadding="3dip"
+			/>
+	</LinearLayout>
+</LinearLayout>
