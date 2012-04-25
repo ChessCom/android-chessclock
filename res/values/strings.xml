@@ -223,7 +223,7 @@
  -->
 	<string name="wrong_score">Wrong! Score %1$s
 		\nNew rating %2$s </string>
-	<string name="correct_score">Correct! Score%1$s
+	<string name="correct_score">Correct! Score %1$s
 		\nNew rating %2$s </string>
 	<string name="you_got_new_msg">You have a new message!</string>
 	<string name="browse">Browse</string>
