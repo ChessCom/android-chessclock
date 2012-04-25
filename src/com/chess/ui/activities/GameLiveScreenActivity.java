@@ -20,6 +20,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.Utils;
 
@@ -335,6 +336,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
+				gamePanelView.hideGameButton(GamePanelView.B_ANALYSIS_ID);
+
 				mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 				executePausedActivityGameEvents();
 				//lccHolder.setActivityPausedMode(false);
@@ -563,6 +566,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void onGameEndMsgReceived() {
 		showSubmitButtonsLay(false);
+		gamePanelView.showGameButton(GamePanelView.B_ANALYSIS_ID);
 //		chatPanel.setVisibility(View.GONE);
 	}
 

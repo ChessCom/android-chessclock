@@ -300,6 +300,9 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.GONE);
 	}
 
+	public void showGameButton(int buttonId) {
+		findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.VISIBLE);
+	}
 
 	public void enableGameButton(int buttonId, boolean enable) {
 		findViewById(BUTTON_PREFIX + buttonId).setEnabled(enable);
