@@ -223,12 +223,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
 					final String move = boardView.getBoardFace().convertMoveLive();
 					LccHolder.LOG.info("LCC make move: " + move);
-					try {
+					/*try {*/
 						lccHolder.makeMove(mainApp.getCurrentGameId(), move);
-					} catch (IllegalArgumentException e) {
+					/*} catch (IllegalArgumentException e) {
 						LccHolder.LOG.info("LCC illegal move: " + move);
 						e.printStackTrace();
-					}
+					}*/
 				}
 				break;
 			}

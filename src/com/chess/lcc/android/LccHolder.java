@@ -561,43 +561,55 @@ public class LccHolder {
 		synchronized (opponentClockStartSync) {
 			nextOpponentMoveStillNotMade = true;
 		}
-		try {
-			LOG.info("MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
-            // TODO make outter task with argument
-			new AsyncTask<Void, Void, Void>() {
-				@Override
-				protected Void doInBackground(Void... voids) {
+
+		LOG.info("MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
+		// TODO make outter task with argument
+
+		/*try {*/
+
+		new Thread(new Runnable() {
+			public void run() {
+				try {
 					_lccClient.makeMove(game, move);
-					return null;
-				}
-			}.execute();
-			if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
-			{
-				final boolean isWhiteRunning =
-						_user.getUsername().equals(game.getWhitePlayer().getUsername());
-				final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
-				final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
-				if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
-				{
-					clockToBePaused.setRunning(false);
-				}
-				synchronized (opponentClockStartSync) {
-					if (nextOpponentMoveStillNotMade) {
-						opponentClockDelayTimer.schedule(new TimerTask() {
-							@Override
-							public void run() {
-								synchronized (opponentClockStartSync) {
-									if (nextOpponentMoveStillNotMade) {
-										clockToBeStarted.setRunning(true);
-									}
-								}
-							}
-						}, delay);
-					}
+				} catch (IllegalArgumentException e) {
+					Log.d("LccHolder", "Illegal move: " + move);
+					/*e.printStackTrace();
+					Toast.makeText(android.getContext(), "Illegal move", Toast.LENGTH_SHORT).show();*/
+					// todo: still helps debugging that in market/user stacktraces
+					throw new IllegalArgumentException(e);
 				}
 			}
-		} catch (IllegalArgumentException e) {
-			//fireGameEvent(new IllegalMoveEvent(this, null, game, move, IllegalMoveEvent.ILLEGAL_MOVE));
+		}).start();
+
+		/*} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			Log.d("ILLEGAL move", move);
+		}*/
+
+		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
+		{
+			final boolean isWhiteRunning =
+					_user.getUsername().equals(game.getWhitePlayer().getUsername());
+			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
+			final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
+			if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
+			{
+				clockToBePaused.setRunning(false);
+			}
+			synchronized (opponentClockStartSync) {
+				if (nextOpponentMoveStillNotMade) {
+					opponentClockDelayTimer.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							synchronized (opponentClockStartSync) {
+								if (nextOpponentMoveStillNotMade) {
+									clockToBeStarted.setRunning(true);
+								}
+							}
+						}
+					}, delay);
+				}
+			}
 		}
 	}
 
@@ -884,12 +896,21 @@ public class LccHolder {
 	public Boolean isFairPlayRestriction(long gameId) {
 		Log.d("TEST","gameId = " + gameId);
 		Game game = getGame(gameId);
-		if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer()) {
-			return true;
+		try {
+			if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer()) {
+				return true;
+			}
+			if (game.getBlackPlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByBlackPlayer()) {
+				return true;
+			}
 		}
-		if (game.getBlackPlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByBlackPlayer()) {
-			return true;
+
+		catch (NullPointerException e) {
+			// helps debug isuue
+			final String message = "gameId=" + gameId + ", game != null " + (game != null) + ", username=" + _user.getUsername();
+			throw new NullPointerException(message);
 		}
+
 		return false;
 	}
 
