@@ -81,7 +81,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         findViewById(R.id.submit).setOnClickListener(this);
         findViewById(R.id.cancel).setOnClickListener(this);
 
-        gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
+		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
     }
 
     @Override
@@ -482,26 +482,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                         currentGames.add(gle);
                     }
                 }
-                for (i = 0; i < currentGames.size(); i++) {
-                    if (currentGames.get(i).getGameId() == mainApp.getCurrentGameId()) {
-                        if (i + 1 < currentGames.size()) {
-                            boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
-                            boardView.getBoardFace().setAnalysis(false);
-                            boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-
-                            if (progressDialog != null) {
-                                progressDialog.dismiss();
-                                progressDialog = null;
-                            }
-
-                            getOnlineGame(currentGames.get(i + 1).getGameId());
-                            return;
-                        } else {
-                            finish();
-                            return;
-                        }
-                    }
-                }
+				for (GameListItem currentGame : currentGames) {
+					if(currentGame.getGameId() != mainApp.getCurrentGameId()){
+						showSubmitButtonsLay(false);
+						boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
+						boardView.getBoardFace().setAnalysis(false);
+						boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+						getOnlineGame(currentGame.getGameId()); // if next game
+						return;
+					}
+				}
                 finish();
 
 
@@ -548,31 +538,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
     @Override
     public void newGame() {
-        // TODO investigate where this came from
-//		int i;
-//		ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
-//		for (GameListItem gle : mainApp.getGameListItems()) {
-//			if (gle.type == 1 && gle.values.get("is_my_turn").equals("1")) {
-//				currentGames.add(gle);
-//			}
-//		}
-//		for (i = 0; i < currentGames.size(); i++) {
-//			if (currentGames.get(i).values.get(GameListItem.GAME_ID).contains(mainApp.getCurrentGame()
-//																	.values.get(GameListItem.GAME_ID))) {
-//				if (i + 1 < currentGames.size()) {
-//					boardView.getBoardFace().setAnalysis(false);
-//					boardView.setBoardFace(new ChessBoard(this));
-//					boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-//					getOnlineGame(currentGames.get(i + 1).values.get(GameListItem.GAME_ID));
-//					return;
-//				} else {
-//					onBackPressed();
-//					return;
-//				}
-//			}
-//		}
-//		onBackPressed();
-        startActivity(new Intent(this, OnlineNewGameActivity.class));
+		updateList();
     }
 
 
