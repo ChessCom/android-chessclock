@@ -54,6 +54,7 @@ public class YourMoveUpdateService extends Service {
 		@Override
 		public void run() {
 			new UpdateStatusTask(YourMoveUpdateService.this).execute(userToken);
+			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_TIMEOUT);
 		}
 	};

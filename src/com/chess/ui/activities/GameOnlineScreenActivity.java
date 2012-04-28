@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,11 +16,9 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
@@ -31,7 +28,6 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
-import com.chess.utilities.MyProgressDialog;
 import com.chess.utilities.Utils;
 
 import java.util.ArrayList;
@@ -47,7 +43,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
     private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
 
-    private int UPDATE_DELAY = 20000;
+    private int UPDATE_DELAY = 120000;
     private View submitButtonsLay;
 
 
