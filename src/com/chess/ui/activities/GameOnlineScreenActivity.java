@@ -47,7 +47,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     private final static int CALLBACK_ECHESS_MOVE_WAS_SENT = 8;
     private final static int CALLBACK_GET_ECHESS_GAME_AND_SEND_MOVE = 12;
 
-    private int UPDATE_DELAY = 10000;
+    private int UPDATE_DELAY = 20000;
     private View submitButtonsLay;
 
 
@@ -142,6 +142,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     protected void onPause() {
         super.onPause();
 
+		handler.removeCallbacks(updateGameStateOrder);
         unregisterReceiver(chatMessageReceiver);
     }
 

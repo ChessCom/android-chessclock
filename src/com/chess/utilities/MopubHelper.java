@@ -75,7 +75,8 @@ public class MopubHelper {
 	}
 
 	public static boolean isShowAds(MainApp app) {
-		boolean result;
+		return false;
+		/*boolean result;
 		User lccUser = null;
 		try {
 			lccUser = app.getLccHolder().getUser();
@@ -85,11 +86,11 @@ public class MopubHelper {
 			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
 					app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 1;
 
-			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
-				(7 * 24 * 60 * 60 * 1000)) && */;
+			result = liveMembershipLevel || echessMembershipLevel*//*((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
+				(7 * 24 * 60 * 60 * 1000)) && *//*;
 		} catch (Exception e) {
 			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.getSharedData() " + app.getSharedData() + ", app.getSharedData().getString(\"premium_status\", \"0\") " + app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0"));
 		}
-		return result;
+		return result;*/
 	}
 }
