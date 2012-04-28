@@ -566,4 +566,12 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
             whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_black, 0, 0, 0);
         }
     }
+
+	public void showAnalysisGameButton() {
+		showGameButton(GamePanelView.B_ANALYSIS_ID);
+	}
+
+	public void hideAnalysisGameButton() {
+		hideGameButton(GamePanelView.B_ANALYSIS_ID);
+	}
 }
