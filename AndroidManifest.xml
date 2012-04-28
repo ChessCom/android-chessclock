@@ -126,7 +126,7 @@
         <!--<activity android:name="MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 
 		<service android:name=".backend.WebService" />
-		<service android:name=".backend.StatusHelper" android:enabled="true" />
+		<service android:name=".backend.YourMoveUpdateService" android:enabled="true" />
 
         <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
 

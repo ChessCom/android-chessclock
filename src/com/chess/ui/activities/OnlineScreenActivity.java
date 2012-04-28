@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -119,6 +120,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		handler.removeCallbacks(updateListOrder);
+	}
+
 	private void updateList(){
 		new GetStringObjTask(listUpdateListener).execute(listLoadItem);
 	}
@@ -168,7 +176,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				String status = returnedObj.split("[+]")[1];
+				mainApp.showDialog(coreContext, AppConstants.ERROR, status);
+
+				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN))
+					stopService(new Intent(coreContext, YourMoveUpdateService.class));
 			}
 		}
 

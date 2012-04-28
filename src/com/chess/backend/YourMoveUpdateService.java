@@ -1,7 +1,6 @@
 package com.chess.backend;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -10,15 +9,24 @@ import com.chess.backend.tasks.UpdateStatusTask;
 import com.chess.ui.core.AppConstants;
 
 /**
- * StatusHelper class
+ * YourMoveUpdateService class
  *
  * @author alien_roger
  * @created at: 21.04.12 7:06
  */
-public class StatusHelper extends Service {
-
+public class YourMoveUpdateService extends Service {
 
 	private static final long UPDATE_TIMEOUT = 60000; // 1 minute
+
+	private Handler handler;
+	private String userToken;
+
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		handler = new Handler();
+	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -26,12 +34,13 @@ public class StatusHelper extends Service {
 		return START_STICKY_COMPATIBILITY;
 	}
 
-	private void checkStatusUpdate(/*MainApp mainApp, Context context*/String userToken){
-//		String userToken = mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
-		if(/*!mainApp.guest && */!userToken.equals(AppConstants.SYMBOL_EMPTY)){
+	private void checkStatusUpdate(String userToken){
+		this.userToken = userToken;
+		if(!userToken.equals(AppConstants.SYMBOL_EMPTY)){
 			new UpdateStatusTask(this).execute(userToken);
-			new Handler().postDelayed(new UpdateRunnable(this, userToken), UPDATE_TIMEOUT);
-		}
+			handler.postDelayed(updateRunnable, UPDATE_TIMEOUT);
+		}else
+			 handler.removeCallbacks(updateRunnable);
 	}
 
 	@Override
@@ -39,18 +48,13 @@ public class StatusHelper extends Service {
 		return null;
 	}
 
-	private class UpdateRunnable implements Runnable {
-		private Context context;
-		private String userToken;
 
-		private UpdateRunnable(Context context, String userToken) {
-			this.context = context;
-			this.userToken = userToken;
-		}
+	private Runnable updateRunnable = new  Runnable() {
 
 		@Override
 		public void run() {
-			new UpdateStatusTask(context).execute(userToken);
+			new UpdateStatusTask(YourMoveUpdateService.this).execute(userToken);
+			handler.postDelayed(this, UPDATE_TIMEOUT);
 		}
-	}
+	};
 }
