@@ -39,8 +39,9 @@ public class YourMoveUpdateService extends Service {
 		if(!userToken.equals(AppConstants.SYMBOL_EMPTY)){
 			new UpdateStatusTask(this).execute(userToken);
 			handler.postDelayed(updateRunnable, UPDATE_TIMEOUT);
-		}else
-			 handler.removeCallbacks(updateRunnable);
+		}else {
+			handler.removeCallbacks(updateRunnable);
+		}
 	}
 
 	@Override
@@ -48,11 +49,19 @@ public class YourMoveUpdateService extends Service {
 		return null;
 	}
 
+	
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		handler.removeCallbacks(updateRunnable);
+	}
 
 	private Runnable updateRunnable = new  Runnable() {
 
 		@Override
 		public void run() {
+
 			new UpdateStatusTask(YourMoveUpdateService.this).execute(userToken);
 			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_TIMEOUT);
