@@ -41,7 +41,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private ListView gamesList;
 	private Spinner gamesTypeSpinner;
 	private OnlineGamesAdapter gamesAdapter;
-	private Button upgradeBtn;
 
 	private static final int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
@@ -50,7 +49,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	public static int ONLINE_CALLBACK_CODE = 32;
 
 	private GameListItem gameListElement;
-	private static final int CHALLENGE_RESULT_SENT = 2;
 	private static final int ACCEPT_DRAW = 0;
 	private static final int DECLINE_DRAW = 1;
 	private int successToastMsgId;
@@ -67,7 +65,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		setContentView(R.layout.online_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 
 		if (MopubHelper.isShowAds(mainApp)) {
@@ -135,6 +133,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void run() {
 			updateList();
+
+			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_DELAY);
 		}
 	};

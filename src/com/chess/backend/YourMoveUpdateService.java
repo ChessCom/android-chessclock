@@ -19,7 +19,7 @@ public class YourMoveUpdateService extends Service {
 	private static final long UPDATE_TIMEOUT = 60000; // 1 minute
 
 	private Handler handler;
-	private String userToken;
+	private String savedUserToken;
 
 
 	@Override
@@ -35,12 +35,14 @@ public class YourMoveUpdateService extends Service {
 	}
 
 	private void checkStatusUpdate(String userToken){
-		this.userToken = userToken;
-		if(!userToken.equals(AppConstants.SYMBOL_EMPTY)){
-			new UpdateStatusTask(this).execute(userToken);
-			handler.postDelayed(updateRunnable, UPDATE_TIMEOUT);
-		}else {
-			handler.removeCallbacks(updateRunnable);
+		if(!userToken.equals(savedUserToken)){
+			this.savedUserToken = userToken;
+			if(!userToken.equals(AppConstants.SYMBOL_EMPTY)){
+				new UpdateStatusTask(this).execute(userToken);
+				handler.postDelayed(updateRunnable, UPDATE_TIMEOUT);
+			}else {
+				handler.removeCallbacks(updateRunnable);
+			}
 		}
 	}
 
@@ -49,12 +51,10 @@ public class YourMoveUpdateService extends Service {
 		return null;
 	}
 
-	
-	
 	@Override
 	public void onDestroy() {
-		super.onDestroy();
 		handler.removeCallbacks(updateRunnable);
+		super.onDestroy();
 	}
 
 	private Runnable updateRunnable = new  Runnable() {
@@ -62,7 +62,7 @@ public class YourMoveUpdateService extends Service {
 		@Override
 		public void run() {
 
-			new UpdateStatusTask(YourMoveUpdateService.this).execute(userToken);
+			new UpdateStatusTask(YourMoveUpdateService.this).execute(savedUserToken);
 			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_TIMEOUT);
 		}

@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.YourMoveUpdateService;
+import com.chess.backend.entity.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.SelectionItem;
@@ -39,11 +41,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	private CheckBox enableSounds;
 	private Context context;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		FlurryAgent.onEvent("Settings Accessed", null);
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
@@ -57,9 +57,13 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 
 		actionAfterMyMove = (Spinner) findViewById(R.id.PrefAIM);
 		actionAfterMyMove.setAdapter(new ChessSpinnerAdapter(this, R.array.AIM));
+		actionAfterMyMove.setSelection(AppData.getInstance().getAfterMoveAction(coreContext));
+		actionAfterMyMove.setOnItemSelectedListener(afterIMoveSelectedListener);
+
 		//Notif =  (Spinner)findViewById(R.id.PrefNotif);
 		strength = (Spinner) findViewById(R.id.PrefStrength);
 		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
+		strength.setOnItemSelectedListener(strengthSelectedListener);
 
 		enableSounds = (CheckBox) findViewById(R.id.enableSounds);
 		showSubmitButton = (CheckBox) findViewById(R.id.PrefSSB);
@@ -127,49 +131,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 
 		//spinners
 		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));
-		boardsSpinner.setOnItemSelectedListener(new BoardSpinnerListener());
+		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
 		int boardsPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
 				.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 
 		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
-		piecesSpinner.setOnItemSelectedListener(new PiecesSpinnerListener());
+		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
+
 		int piecesPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
 				.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
-
-
-		actionAfterMyMove.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
-				mainApp.getSharedDataEditor().commit();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> a) {
-			}
-		});
-		/*Notif.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(mainApp.getUserName()+"notif", pos);
-				mainApp.getSharedDataEditor().commit();
-			}
-			@Override
-			public void onNothingSelected(AdapterView<?> a) {}
-		});*/
-		strength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, pos);
-				mainApp.getSharedDataEditor().commit();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> a) {
-			}
-		});
 
 		//checkboxes
 		enableSounds.setOnCheckedChangeListener(this);
@@ -190,9 +162,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		prefInvite.setOnClickListener(this);
 		prefContactUs.setOnClickListener(this);
 
-
-
-
+		FlurryAgent.onEvent("Settings Accessed");
 	}
 
 	@Override
@@ -240,7 +210,35 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		}
 	}
 
-	private class BoardSpinnerListener implements AdapterView.OnItemSelectedListener {
+	private AdapterView.OnItemSelectedListener strengthSelectedListener = new AdapterView.OnItemSelectedListener() {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+			mainApp.getSharedDataEditor().commit();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
+	};
+
+
+	private AdapterView.OnItemSelectedListener afterIMoveSelectedListener = new AdapterView.OnItemSelectedListener() {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			Log.d("TEST", "on selected SHP_USER_NAME = " + mainApp.getUserName() + " pos =" + pos);
+			SharedPreferences.Editor editor = AppData.getPreferences(coreContext).edit();
+
+			editor.putInt(mainApp.getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
+			editor.commit();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
+	};
+
+	private AdapterView.OnItemSelectedListener boardSpinnerListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_BOARD_TYPE, pos);
@@ -251,9 +249,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onNothingSelected(AdapterView<?> adapterView) {
 		}
-	}
+	};
 
-	private class PiecesSpinnerListener implements AdapterView.OnItemSelectedListener {
+	private AdapterView.OnItemSelectedListener piecesSpinnerListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
@@ -265,7 +263,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onNothingSelected(AdapterView<?> adapterView) {
 		}
-	}
+	};
 
 	@Override
 	protected void onResume() {
