@@ -38,9 +38,7 @@ public class AppData {
     public int getAfterMoveAction(Context context) {
 		SharedPreferences preferences = getPreferences(context);
         String userName = preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
-		Log.d("TEST", "SHP_USER_NAME = " + userName);
-        preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
-        return 0;
+        return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
     }
     
     public String getUserName(Context context){

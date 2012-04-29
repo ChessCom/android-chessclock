@@ -226,10 +226,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	private AdapterView.OnItemSelectedListener afterIMoveSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			Log.d("TEST", "on selected SHP_USER_NAME = " + mainApp.getUserName() + " pos =" + pos);
 			SharedPreferences.Editor editor = AppData.getPreferences(coreContext).edit();
-
-			editor.putInt(mainApp.getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
+			editor.putInt(AppData.getInstance().getUserName(coreContext) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
 			editor.commit();
 		}
 

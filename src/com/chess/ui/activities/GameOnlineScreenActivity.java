@@ -176,6 +176,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
         @Override
         public void updateData(String returnedObj) {
+			showSubmitButtonsLay(false);
             getSoundPlayer().playGameStart();
 
             mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
@@ -404,6 +405,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     }
 
     private void moveWasSent(){
+		showSubmitButtonsLay(false);
         int action = AppData.getInstance().getAfterMoveAction(coreContext);
         if(action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
             finish();
