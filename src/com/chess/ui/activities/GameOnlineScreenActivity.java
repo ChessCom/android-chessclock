@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -176,6 +177,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
         @Override
         public void updateData(String returnedObj) {
+			Log.d("TEST", "returnedObj " + returnedObj);
 			showSubmitButtonsLay(false);
             getSoundPlayer().playGameStart();
 
@@ -264,6 +266,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                 }
                 checkMessages();
             }
+			invalidateGameScreen();
         }
     }
 
