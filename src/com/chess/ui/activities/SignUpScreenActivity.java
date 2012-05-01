@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.StatusHelper;
+import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.Web;
 import com.chess.backend.statics.FlurryData;
 import com.chess.lcc.android.LccHolder;
@@ -276,7 +276,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
         FlurryAgent.onEvent("Logged In");
         if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)) {
-			startService(new Intent(this, StatusHelper.class));
+			startService(new Intent(this, YourMoveUpdateService.class));
 		}
         mainApp.guest = false;
 

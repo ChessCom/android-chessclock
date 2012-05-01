@@ -431,13 +431,15 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         }
 
         // Count captured piecesBitmap
-        gamePanelView.dropAlivePieces();
-        for (i = 0; i < 64; i++) {
-            int pieceId = boardFace.getPiece(i);
-            if (boardFace.getColor()[i] == ChessBoard.LIGHT) {
-                gamePanelView.addAlivePiece(true, pieceId);
-            } else {
-                gamePanelView.addAlivePiece(false, pieceId);
+        if(!compmoving){
+            gamePanelView.dropAlivePieces();
+            for (i = 0; i < 64; i++) {
+                int pieceId = boardFace.getPiece(i);
+                if (boardFace.getColor()[i] == ChessBoard.LIGHT) {
+                    gamePanelView.addAlivePiece(true, pieceId);
+                } else {
+                    gamePanelView.addAlivePiece(false, pieceId);
+                }
             }
         }
 

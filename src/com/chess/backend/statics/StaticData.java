@@ -24,7 +24,7 @@ public class StaticData {
 	
 	/* Notification requests codes */
 	public static final int MOVE_REQUEST_CODE = 22;
-	public static final String SHP_USER_LAST_MOVE_UPDATE_TIME = "user_last_saw_your_move_time";
+//	public static final String SHP_USER_LAST_MOVE_UPDATE_TIME = "user_last_saw_your_move_time";
 	public static final String SHARED_DATA_NAME = "sharedData";
 
     /* After move actions */

@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:versionCode="86"
-    android:versionName="1.984" package="com.chess" android:installLocation="auto">
+    android:versionCode="89"
+    android:versionName="1.9851" package="com.chess" android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -126,7 +126,7 @@
         <!--<activity android:name="MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 
 		<service android:name=".backend.WebService" />
-		<service android:name=".backend.StatusHelper" android:enabled="true" />
+		<service android:name=".backend.YourMoveUpdateService" android:enabled="true" />
 
         <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
 

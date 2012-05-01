@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.StatusHelper;
+import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.FlurryData;
@@ -218,7 +218,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
 		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
-			startService(new Intent(this, StatusHelper.class));
+			startService(new Intent(this, YourMoveUpdateService.class));
 		}
 
 		mainApp.guest = false;
