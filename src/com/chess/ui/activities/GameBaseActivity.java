@@ -479,7 +479,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		String[] moves = {};
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
+					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ")
+					.substring(1).split(" ");
 			boardView.getBoardFace().setMovesCount(moves.length);
 		}
 

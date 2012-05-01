@@ -2,6 +2,7 @@ package com.chess.backend.entity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
 
@@ -24,20 +25,24 @@ public class AppData {
 	private AppData() {
 	}
 
+	public static SharedPreferences getPreferences(Context context){
+		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+	}
+
+
 	public String getUserToken(Context context) {
-		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 	}
 
     public int getAfterMoveAction(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = getPreferences(context);
         String userName = preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
-        preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
-        return 0;
+        return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
     }
     
     public String getUserName(Context context){
-        SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = getPreferences(context);
         return preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
     }
     

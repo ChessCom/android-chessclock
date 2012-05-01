@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -40,7 +41,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private ListView gamesList;
 	private Spinner gamesTypeSpinner;
 	private OnlineGamesAdapter gamesAdapter;
-	private Button upgradeBtn;
 
 	private static final int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
@@ -49,7 +49,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	public static int ONLINE_CALLBACK_CODE = 32;
 
 	private GameListItem gameListElement;
-	private static final int CHALLENGE_RESULT_SENT = 2;
 	private static final int ACCEPT_DRAW = 0;
 	private static final int DECLINE_DRAW = 1;
 	private int successToastMsgId;
@@ -66,7 +65,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		setContentView(R.layout.online_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 
 		if (MopubHelper.isShowAds(mainApp)) {
@@ -119,6 +118,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		handler.removeCallbacks(updateListOrder);
+	}
+
 	private void updateList(){
 		new GetStringObjTask(listUpdateListener).execute(listLoadItem);
 	}
@@ -127,6 +133,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void run() {
 			updateList();
+
+			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_DELAY);
 		}
 	};
@@ -168,7 +176,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				String status = returnedObj.split("[+]")[1];
+				mainApp.showDialog(coreContext, AppConstants.ERROR, status);
+
+				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN))
+					stopService(new Intent(coreContext, YourMoveUpdateService.class));
 			}
 		}
 
