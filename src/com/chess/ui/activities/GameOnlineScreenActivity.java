@@ -119,14 +119,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
         registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 
-        updateGameSate();
+        updateGameState();
 		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
     }
 
     private Runnable updateGameStateOrder = new Runnable() {
         @Override
         public void run() {
-            updateGameSate();
+            updateGameState();
             handler.removeCallbacks(this);
             handler.postDelayed(this, UPDATE_DELAY);
         }
@@ -141,7 +141,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     }
 
 
-    private void updateGameSate() {
+    private void updateGameState() {
 
         if (boardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
             getOnlineGame(mainApp.getGameId());
@@ -238,7 +238,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
             playLastMoveAnimation();
 
-            updateGameSate();
+            updateGameState();
         }
     }
 
