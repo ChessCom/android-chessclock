@@ -56,7 +56,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
 	private ListUpdateListener listUpdateListener;
-	private LoadItem listLoadItem;
+//	private LoadItem listLoadItem;
 
 
 	@Override
@@ -97,10 +97,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 //				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID
 //				+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 //				+ "&all=1",
-		listLoadItem = new LoadItem();
-		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
-		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
 
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
@@ -126,8 +122,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private void updateList(){
+		LoadItem listLoadItem = new LoadItem();
+		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
+		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
+
+		updateList(listLoadItem);
+	}
+
+	private void updateList(LoadItem listLoadItem){
 		new GetStringObjTask(listUpdateListener).execute(listLoadItem);
 	}
+
 
 	private Runnable updateListOrder = new Runnable() {
 		@Override
@@ -479,7 +485,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
 		currentListType = pos;
-
+		LoadItem listLoadItem = new LoadItem();
 		if (pos == GameListItem.LIST_TYPE_CURRENT){
 			listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
@@ -494,7 +500,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
 		}
 
-		updateList();
+		updateList(listLoadItem);
 	}
 
 	@Override
