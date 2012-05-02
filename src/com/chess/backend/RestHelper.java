@@ -259,7 +259,7 @@ public class RestHelper {
 		return loadItem.getLoadPath() ;
 	}
 
-	private static String formUrl(List<NameValuePair> nameValuePairs ) {
+	private static String formUrl(List<NameValuePair> nameValuePairs) {
 		String url = "?";
 		for (NameValuePair pair: nameValuePairs) {
 //			try {

@@ -78,6 +78,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		// hide black dot for right label
 		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
 		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+
+		gamePanelView.hideAnalysisGameButtons();
 	}
 
 	@Override
@@ -334,8 +336,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
-
-				gamePanelView.hideAnalysisGameButton();
 
 				mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 				executePausedActivityGameEvents();

@@ -906,8 +906,11 @@ public class LccHolder {
 		}
 
 		catch (NullPointerException e) {
-			// helps debug isuue
-			final String message = "gameId=" + gameId + ", game != null " + (game != null) + ", username=" + _user.getUsername();
+			// helps debug issue
+			String message = "gameId=" + gameId + ", game != null " + (game != null) + ", _user" + _user;
+			if (_user != null) {
+				message +=  ", username=" + _user.getUsername();
+			}
 			throw new NullPointerException(message);
 		}
 
