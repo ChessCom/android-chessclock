@@ -284,11 +284,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                     AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
             if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
-                if (mainApp.isLiveChess()) {
+                /*if (mainApp.isLiveChess()) {
                     moveFT = MoveParser.parseCoordinate(boardView.getBoardFace(), moves[moves.length - 1]);
-                } else {
+                } else {*/
                     moveFT = MoveParser.parse(boardView.getBoardFace(), moves[moves.length - 1]);
-                }
+//                }
                 boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGameId()).getSeq() == moves.length)
                         || !mainApp.isLiveChess();
 

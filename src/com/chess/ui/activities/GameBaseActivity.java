@@ -505,8 +505,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 				boardView.getBoardFace().makeMove(move, false);
 			} else {
-				Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-				boardView.getBoardFace().makeMove(m, false);
+				Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+				boardView.getBoardFace().makeMove(move, false);
 			}
 		}
 		update(CALLBACK_REPAINT_UI);
