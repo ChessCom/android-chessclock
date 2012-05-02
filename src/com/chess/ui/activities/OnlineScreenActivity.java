@@ -435,9 +435,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 			mainApp.getSharedDataEditor().commit();
 
-			Intent intent = new Intent(coreContext, GameOnlineScreenActivity.class);
-			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
-			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId()); // TODO eliminate strings parameters
+//			Intent intent = new Intent(coreContext, GameOnlineScreenActivity.class);
+			Intent intent = new Intent(coreContext, GameFinishedScreenActivity.class);
+//			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
+			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 			startActivity(intent);
 		}
 	}

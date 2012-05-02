@@ -159,7 +159,8 @@ public class OnlineGamesAdapter extends ArrayAdapter<GameListItem> {
 			TextView left = (TextView) convertView.findViewById(R.id.left);
 
 			String gametype = AppConstants.SYMBOL_EMPTY;
-			if (gameListItem.values.get(GameListItem.GAME_TYPE) != null && gameListItem.values.get(GameListItem.GAME_TYPE).equals("2"))
+			if (gameListItem.values.get(GameListItem.GAME_TYPE) != null
+					&& gameListItem.values.get(GameListItem.GAME_TYPE).equals("2"))
 				gametype = " (960)";
 
 

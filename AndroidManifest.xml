@@ -113,6 +113,8 @@
 		<!--android:configChanges="keyboardHidden|orientation|keyboard"-->
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
 			/>
+		<activity android:name=".ui.activities.GameFinishedScreenActivity" android:label="@string/label_game_online"
+			/>
 
         <activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
 				  android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>

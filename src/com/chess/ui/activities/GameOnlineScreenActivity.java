@@ -54,10 +54,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     private SendMoveUpdateListener sendMoveUpdateListener;
     private GamesListUpdateListener gamesListUpdateListener;
     private ProgressDialog sendMoveUpdateDialog;
+	private boolean isFinishedGame;
 
 
-
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -65,6 +65,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         init();
         widgetsInit();
         onPostCreate();
+
+		isFinishedGame = MainApp.isFinishedEchessGameMode(boardView.getBoardFace());
     }
 
     @Override
@@ -76,12 +78,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         findViewById(R.id.cancel).setOnClickListener(this);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+
     }
 
     @Override
     protected void init() {
         super.init();
         mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
+
 
         menuOptionsItems = new CharSequence[]{
                 getString(R.string.settings),
@@ -112,7 +116,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     protected void onResume() {
         super.onResume();
 
-        if (MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
+        if (isFinishedGame) {
             boardView.setBoardFace(new ChessBoard(this));
             boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
         }
@@ -143,7 +147,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
     private void updateGameSate() {
 
-        if (boardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
+        if (boardView.getBoardFace().isInit() ||isFinishedGame) {
             getOnlineGame(mainApp.getGameId());
             boardView.getBoardFace().setInit(false);
         } else if (!boardView.getBoardFace().isInit()) {
@@ -237,8 +241,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             boardView.invalidate();
 
             playLastMoveAnimation();
-
-            updateGameSate();
         }
     }
 
