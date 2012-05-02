@@ -177,7 +177,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				String status = returnedObj.split("[+]")[1];
-				mainApp.showDialog(coreContext, AppConstants.ERROR, status);
+				if(!isFinishing())
+					mainApp.showDialog(coreContext, AppConstants.ERROR, status);
 
 				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN))
 					stopService(new Intent(coreContext, YourMoveUpdateService.class));
@@ -202,6 +203,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
+			if(isFinishing())
+				return;
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
 				updateList();
@@ -218,6 +222,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
+			if(isFinishing())
+				return;
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				updateList();
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {

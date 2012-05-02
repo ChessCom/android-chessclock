@@ -185,6 +185,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 
 		@Override
 		public void updateData(String returnedObj) {
+			if(isFinishing())
+				return;
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				update(CHALLENGE_RESULT_SENT);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {

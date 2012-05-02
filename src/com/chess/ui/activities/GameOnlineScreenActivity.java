@@ -461,7 +461,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                 finish();
 
             } else if (returnedObj.contains(RestHelper.R_ERROR)) {
-                mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				if(!isFinishing())
+	                mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
             }
         }
     }
@@ -662,7 +663,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
                     finish();
                 }
             } else if (returnedObj.contains(RestHelper.R_ERROR)) {
-                mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				if(!isFinishing())
+	                mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
             }
         }
     }
@@ -674,6 +676,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
         @Override
         public void updateData(String returnedObj) {
+			if(isFinishing())
+			   return;
+
             if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
                 mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
             } else if (returnedObj.contains(RestHelper.R_ERROR)) {
