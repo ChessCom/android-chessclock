@@ -569,9 +569,13 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 	public void showAnalysisGameButton() {
 		showGameButton(GamePanelView.B_ANALYSIS_ID);
+		showGameButton(GamePanelView.B_FORWARD_ID);
+		showGameButton(GamePanelView.B_BACK_ID);
 	}
 
-	public void hideAnalysisGameButton() {
+	public void hideAnalysisGameButtons() {
 		hideGameButton(GamePanelView.B_ANALYSIS_ID);
+		hideGameButton(GamePanelView.B_FORWARD_ID);
+		hideGameButton(GamePanelView.B_BACK_ID);
 	}
 }
