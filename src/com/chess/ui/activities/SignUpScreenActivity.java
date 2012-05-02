@@ -142,7 +142,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
 			} catch (UnsupportedEncodingException ignored) {
 			}
-			//mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
+			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
 			mainApp.getSharedDataEditor().commit();
 
 			startActivity(new Intent(context, HomeScreenActivity.class));

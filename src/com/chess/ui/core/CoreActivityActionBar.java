@@ -192,10 +192,19 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.getClient().disconnect();
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().connect(
+
+			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
+			if (password == null || password.isEmpty()) {
+				lccHolder.getClient().connect(
+					mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
+					lccHolder.getConnectionListener());
+			}
+			else {
+				lccHolder.getClient().connect(
 					mainApp.getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY),
 					mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
+			}
 			/*
 								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
 								 * MyProgressDialog.show(this, null,
@@ -542,7 +551,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(coreContext, HomeScreenActivity.class);
+							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
+							final Class clazz = (password == null || password.equals("")) ? LoginScreenActivity.class : HomeScreenActivity.class;
+							final Intent intent = new Intent(coreContext, clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
