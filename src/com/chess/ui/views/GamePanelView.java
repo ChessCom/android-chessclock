@@ -277,6 +277,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         imageButton.setBackgroundResource(backId);
         imageButton.setOnClickListener(this);
         imageButton.setId(BUTTON_PREFIX + buttonId);
+//		imageButton.setEnabled(false);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -574,9 +575,9 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
 	public void enableAnalysisMode(boolean enable) {
-		showGameButton(GamePanelView.B_ANALYSIS_ID, enable);
-		showGameButton(GamePanelView.B_FORWARD_ID, enable);
-		showGameButton(GamePanelView.B_BACK_ID, enable);
+		enableGameButton(GamePanelView.B_ANALYSIS_ID, enable);
+		enableGameButton(GamePanelView.B_FORWARD_ID, enable);
+		enableGameButton(GamePanelView.B_BACK_ID, enable);
 	}
 
 }

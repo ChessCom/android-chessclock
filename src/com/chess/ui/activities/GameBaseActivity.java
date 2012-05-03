@@ -434,7 +434,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 		boolean activate = isWhitePlayerMove? userPlayWhite: !userPlayWhite;
 
-		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always player
+		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
 		gamePanelView.activatePlayerTimer(activate, activate);
 
 		initTimer = false;

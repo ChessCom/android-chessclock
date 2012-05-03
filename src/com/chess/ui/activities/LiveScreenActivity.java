@@ -39,9 +39,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 	private int temp_pos = -1;
 	public static int ONLINE_CALLBACK_CODE = 32;
-	private GameListItem gameListElement;
-	private AcceptDrawDialogListener acceptDrawDialogListener;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +59,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		upgradeBtn.setOnClickListener(this);
 
 		if (MopubHelper.isShowAds(mainApp)) {
-			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+			moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
 		}
 
 		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
@@ -78,7 +76,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		if (lccHolder.isConnected()) {
 			start.setVisibility(View.VISIBLE);
 			gridview.setVisibility(View.VISIBLE);
-//			challengesListTitle.setVisibility(View.VISIBLE);
 			startNewGameTitle.setVisibility(View.VISIBLE);
 		}
 
@@ -86,36 +83,16 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 	private void init() {
 		mainApp.setLiveChess(true);
-
-		acceptDrawDialogListener = new AcceptDrawDialogListener();
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-			case 0: {
-				if (temp_pos > -1) {
-					return new AlertDialog.Builder(this)
-							.setTitle(getString(R.string.accept_draw_q))
-							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
-							.setNeutralButton(getString(R.string.decline), acceptDrawDialogListener)
-							.setNegativeButton(getString(R.string.game), acceptDrawDialogListener).create();
-				}
-			}
-			default:
-				break;
-		}
-		return super.onCreateDialog(id);
 	}
 
 	@Override
 	protected void onResume() {
-		mainApp.setLiveChess(true);
-		if (mainApp.isLiveChess() && !lccHolder.isConnected()) {
+		if (!lccHolder.isConnected()) {
 			start.setVisibility(View.GONE);
 			gridview.setVisibility(View.GONE);
 			startNewGameTitle.setVisibility(View.GONE);
 		}
+
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 
@@ -127,13 +104,10 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		} else {
 			currentGame.setVisibility(View.GONE);
 		}
-
-//		enableScreenLockTimer();
 	}
 
 	@Override
 	protected void onPause() {
-//		gamesList.setVisibility(View.GONE);
 		unregisterReceiver(this.lccLoggingInInfoReceiver);
 		if (mainApp.isLiveChess()) {
 			/*// if connected
@@ -142,52 +116,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			unregisterReceiver(challengesListUpdateReceiver);
 		}
 		super.onPause();
-//		enableScreenLock();
-	}
-
-
-
-
-	private class AcceptDrawDialogListener implements DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface dialog, int whichButton) {
-			gameListElement = mainApp.getGameListItems().get(temp_pos);
-
-			switch (whichButton) {
-				case DialogInterface.BUTTON_POSITIVE: {
-					if (appService != null) {
-						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
-										+ "&command=ACCEPTDRAW&timestamp="
-										+ gameListElement.values.get(GameListItem.TIMESTAMP),
-								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
-						);
-					}
-				}
-				break;
-				case DialogInterface.BUTTON_NEUTRAL: {
-					if (appService != null) {
-						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
-								null/*progressDialog = MyProgressDialog.show(Online.this, null, getString(R.string.loading), true)*/
-						);
-					}
-				}
-				break;
-				case DialogInterface.BUTTON_NEGATIVE: {
-					startActivity(new Intent(coreContext, GameLiveScreenActivity.class).
-							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
-							putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
-
-				}
-				break;
-				default:
-					break;
-			}
-		}
 	}
 
 	private class NewGamesButtonsAdapter extends BaseAdapter {
@@ -244,12 +172,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 				update(ONLINE_CALLBACK_CODE);
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
-//			ArrayList<GameListItem> tmp = new ArrayList<GameListItem>();
-//			mainApp.getGameListItems().clear();
-//
-//			tmp.addAll(lccHolder.getChallengesAndSeeksData());
-//
-//			mainApp.getGameListItems().addAll(tmp);
 
 		} else if (code == 1) { // TODO investigate what for this wrong initialization
 			onPause();
@@ -269,11 +191,68 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	}
 
 	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+			case 0: {
+				if (temp_pos > -1) {
+					return new AlertDialog.Builder(this)
+							.setTitle(getString(R.string.accept_draw_q))
+							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
+							.setNeutralButton(getString(R.string.decline), acceptDrawDialogListener)
+							.setNegativeButton(getString(R.string.game), acceptDrawDialogListener).create();
+				}
+			}
+			default:
+				break;
+		}
+		return super.onCreateDialog(id);
+	}
+
+	private  DialogInterface.OnClickListener acceptDrawDialogListener = new DialogInterface.OnClickListener() {
+
+		@Override
+		public void onClick(DialogInterface dialog, int whichButton) {
+			GameListItem gameListElement = mainApp.getGameListItems().get(temp_pos);
+
+			switch (whichButton) {
+				case DialogInterface.BUTTON_POSITIVE: {
+					if (appService != null) {
+						appService.RunSingleTask(4,
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
+										+ "&command=ACCEPTDRAW&timestamp="
+										+ gameListElement.values.get(GameListItem.TIMESTAMP),
+								null);
+					}
+				}
+				break;
+				case DialogInterface.BUTTON_NEUTRAL: {
+					if (appService != null) {
+						appService.RunSingleTask(4,
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
+								null);
+					}
+				}
+				break;
+				case DialogInterface.BUTTON_NEGATIVE: {
+					startActivity(new Intent(coreContext, GameLiveScreenActivity.class).
+							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
+							putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
+
+				}
+				break;
+				default:
+					break;
+			}
+		}
+	};
+
+	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(mainApp.getMembershipAndroidIntent());
-		} else if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
-			// TODO hide to RestHelper
+		} else if (view.getId() == R.id.tournaments) {
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			try {
 				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
@@ -285,7 +264,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
-			// TODO hide to RestHelper
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
 					+ mainApp.getUserName();
 			try {

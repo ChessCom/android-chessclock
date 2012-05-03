@@ -25,6 +25,7 @@
 	<string name="label_tactics">TACTICS</string>
 	<string name="label_game_live">LIVE GAME</string>
 	<string name="label_game_online">ONLINE GAME</string>
+	<string name="label_game_finished">FINISHED GAME</string>
 	<string name="label_chat_live">LIVE CHAT</string>
 	<string name="label_chat_online">ONLINE CHAT</string>
 	<string name="label_game_comp">COMP GAME</string>
@@ -283,5 +284,7 @@
 	<string name="pass_dont_match">password do not match</string>
 	<string name="username_cannot_be_encoded">Your Username can not be encoded to send request</string>
 	<string name="menu_refresh">refresh</string>
+	<string name="version_check">Version Check</string>
+	<string name="version_is_obsolete_update">The client version is obsolete. Please update</string>
 
 </resources>

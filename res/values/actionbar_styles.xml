@@ -27,7 +27,7 @@
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
         
         <item name="android:textSize">17sp</item>
-        </style>
+	</style>
 
     <style name="TaskTextAppearance" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/black</item>

@@ -37,7 +37,8 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 		if (MopubHelper.isShowAds(mainApp)) {
-			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+			moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
 		}
 
 		/*if (MobclixHelper.isShowAds(mainApp)) {

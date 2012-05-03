@@ -3,11 +3,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<!--Shadow-->
-	<item
-		android:right="0px">
+	<item >
 		<shape >
 			<corners
-				android:topRightRadius="@dimen/toggle_button_radius"
+				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@android:color/transparent" />
@@ -23,22 +22,22 @@
 		>
 		<shape >
 			<corners
-				android:topRightRadius="@dimen/toggle_button_radius"
+				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@color/grey_emboss_top_left"  />
 		</shape>
 	</item>
 	<item
-		android:left="0px"
-		android:top="1px"
+		android:left="1px"
 		android:right="0px"
+		android:top="1px"
 		android:bottom="1px"
 		>
 		<shape
 			>
 			<corners
-				android:topRightRadius="@dimen/toggle_button_radius"
+				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@color/grey_emboss_low_right"  />
@@ -49,14 +48,14 @@
 		android:left="1px"
 		android:top="1px"
 		android:bottom="2px"
-		android:right="1px"
+		android:right="0px"
 		>
 		<shape  >
+			<solid android:color="@color/grey_button_d" />
 			<corners
-				android:topRightRadius="@dimen/toggle_button_radius"
+				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
-			<solid android:color="@color/grey_button_p" />
 			<padding
 				android:left="@dimen/toggle_button_padding_left"
 				android:right="@dimen/toggle_button_padding_right"
@@ -66,4 +65,5 @@
 			<size android:height="@dimen/toggle_button_height"/>
 		</shape>
 	</item>
+
 </layer-list>

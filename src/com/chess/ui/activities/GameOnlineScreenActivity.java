@@ -112,12 +112,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     protected void onResume() {
         super.onResume();
 
-        if (MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
-            boardView.setBoardFace(new ChessBoard(this));
-            boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-        }
-
-        registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
+		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 
         updateGameState();
 		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
@@ -143,10 +138,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
     private void updateGameState() {
 
-        if (boardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
+        if (boardView.getBoardFace().isInit()) {
             getOnlineGame(mainApp.getGameId());
             boardView.getBoardFace().setInit(false);
-        } else if (!boardView.getBoardFace().isInit()) {
+        } else{
 
             LoadItem loadItem = new LoadItem();
             loadItem.setLoadPath(RestHelper.GET_GAME_V3);

@@ -194,7 +194,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.setConnectingInProgress(true);
 
 			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-			if (password == null || password.isEmpty()) {
+			if (password == null || password.equals(AppConstants.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
 					mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
@@ -552,7 +552,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 								lccHolder.logout();
 							}
 							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-							final Class clazz = (password == null || password.equals("")) ? LoginScreenActivity.class : HomeScreenActivity.class;
+							final Class clazz = (password == null || password.equals(AppConstants.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
 							final Intent intent = new Intent(coreContext, clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
@@ -565,25 +565,26 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
+					.setTitle(getString(R.string.version_check))
+					.setMessage(getString(R.string.version_is_obsolete_update))
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int whichButton) {
+					final Handler handler = new Handler();
+					handler.post(new Runnable() {
 						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							final Handler handler = new Handler();
-							handler.post(new Runnable() {
-								@Override
-								public void run() {
-									mainApp.setLiveChess(false);
-									lccHolder.setConnected(false);
-									startActivity(new Intent(Intent.ACTION_VIEW, Uri
-											.parse("http://www.chess.com/play/android.html")));
-								}
-							});
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
-							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							mainApp.startActivity(intent);
+						public void run() {
+							mainApp.setLiveChess(false);
+							lccHolder.setConnected(false);
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri
+									.parse("http://www.chess.com/play/android.html")));
 						}
-					}).create().show();
+					});
+					final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					mainApp.startActivity(intent);
+				}
+			}).create().show();
 		}
 	};
 

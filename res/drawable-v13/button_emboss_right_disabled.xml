@@ -56,7 +56,7 @@
 				android:topRightRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
-			<solid android:color="@color/grey_button_p" />
+			<solid android:color="@color/grey_button_d" />
 			<padding
 				android:left="@dimen/toggle_button_padding_left"
 				android:right="@dimen/toggle_button_padding_right"

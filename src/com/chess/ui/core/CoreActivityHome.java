@@ -164,7 +164,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			lccHolder.setConnectingInProgress(true);
 
 			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-			if (password == null || password.isEmpty()) {
+			if (password == null || password.equals(AppConstants.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
 						mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
 						lccHolder.getConnectionListener());

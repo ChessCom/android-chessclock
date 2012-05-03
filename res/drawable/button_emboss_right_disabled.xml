@@ -8,7 +8,7 @@
 		<shape >
 			<corners
 				android:topRightRadius="@dimen/toggle_button_radius"
-				android:bottomRightRadius="@dimen/toggle_button_radius"
+				android:bottomLeftRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@android:color/transparent" />
 			<stroke android:width="@dimen/default_stroke_width"
@@ -24,7 +24,7 @@
 		<shape >
 			<corners
 				android:topRightRadius="@dimen/toggle_button_radius"
-				android:bottomRightRadius="@dimen/toggle_button_radius"
+				android:bottomLeftRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@color/grey_emboss_top_left"  />
 		</shape>
@@ -39,7 +39,7 @@
 			>
 			<corners
 				android:topRightRadius="@dimen/toggle_button_radius"
-				android:bottomRightRadius="@dimen/toggle_button_radius"
+				android:bottomLeftRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@color/grey_emboss_low_right"  />
 		</shape>
@@ -54,9 +54,9 @@
 		<shape  >
 			<corners
 				android:topRightRadius="@dimen/toggle_button_radius"
-				android:bottomRightRadius="@dimen/toggle_button_radius"
+				android:bottomLeftRadius="@dimen/toggle_button_radius"
 				/>
-			<solid android:color="@color/grey_button_p" />
+			<solid android:color="@color/grey_button_d" />
 			<padding
 				android:left="@dimen/toggle_button_padding_left"
 				android:right="@dimen/toggle_button_padding_right"
