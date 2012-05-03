@@ -113,12 +113,6 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 	};
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		lccHolder.logout();
-		backToHomeActivity();
-	}
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
 

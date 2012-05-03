@@ -46,11 +46,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		if(fragment.getTag().equals(LOGOUT_TAG)){
+		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
 			backToHomeActivity();
-		}else if(fragment.getTag().equals(CHALLENGE_TAG)){// Challenge accepted!
-
+		} else if(fragment.getTag().equals(CHALLENGE_TAG)) { // Challenge accepted!
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);

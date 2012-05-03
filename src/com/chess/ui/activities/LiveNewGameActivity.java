@@ -77,12 +77,6 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		lccHolder.logout();
-		backToHomeActivity();
-	}
-
-	@Override
 	public void update(int code) {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
