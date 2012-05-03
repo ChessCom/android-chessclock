@@ -54,10 +54,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     private SendMoveUpdateListener sendMoveUpdateListener;
     private GamesListUpdateListener gamesListUpdateListener;
     private ProgressDialog sendMoveUpdateDialog;
-	private boolean isFinishedGame;
 
 
-	@Override
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -65,8 +65,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         init();
         widgetsInit();
         onPostCreate();
-
-		isFinishedGame = MainApp.isFinishedEchessGameMode(boardView.getBoardFace());
     }
 
     @Override
@@ -78,14 +76,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
         findViewById(R.id.cancel).setOnClickListener(this);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-
     }
 
     @Override
     protected void init() {
         super.init();
         mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
-
 
         menuOptionsItems = new CharSequence[]{
                 getString(R.string.settings),
@@ -116,21 +112,21 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     protected void onResume() {
         super.onResume();
 
-        if (isFinishedGame) {
+        if (MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
             boardView.setBoardFace(new ChessBoard(this));
             boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
         }
 
         registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 
-        updateGameSate();
+        updateGameState();
 		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
     }
 
     private Runnable updateGameStateOrder = new Runnable() {
         @Override
         public void run() {
-            updateGameSate();
+            updateGameState();
             handler.removeCallbacks(this);
             handler.postDelayed(this, UPDATE_DELAY);
         }
@@ -145,9 +141,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
     }
 
 
-    private void updateGameSate() {
+    private void updateGameState() {
 
-        if (boardView.getBoardFace().isInit() ||isFinishedGame) {
+        if (boardView.getBoardFace().isInit() || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
             getOnlineGame(mainApp.getGameId());
             boardView.getBoardFace().setInit(false);
         } else if (!boardView.getBoardFace().isInit()) {
@@ -241,6 +237,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             boardView.invalidate();
 
             playLastMoveAnimation();
+
+            updateGameState();
         }
     }
 
