@@ -781,6 +781,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
             getBoardFace().takeBack();
             invalidate();
             gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+            gameActivityFace.invalidateGameScreen();
         }
     }
 
@@ -792,6 +793,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
             getBoardFace().takeNext();
             invalidate();
             gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+            gameActivityFace.invalidateGameScreen();
         }
     }
 

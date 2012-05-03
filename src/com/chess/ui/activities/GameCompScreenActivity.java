@@ -311,6 +311,11 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
     }
 
     @Override
+    public void invalidateGameScreen() {
+        //TODO To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	protected void restoreGame(){
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);

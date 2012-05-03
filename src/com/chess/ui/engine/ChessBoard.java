@@ -109,7 +109,7 @@ public class ChessBoard implements BoardFace {
 			0, 0, 0, 0, 0, 0, 0, 0
 	};
 
-	//	Example: PieceItem.R = 3
+
 	private int pieces[] = {
 			3, 1, 2, 4, 5, 2, 1, 3,
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -1365,6 +1365,7 @@ public class ChessBoard implements BoardFace {
 
 	public String getMoveSAN() {
 		Move m = histDat[hply].m;
+        Log.d("TEST" ," getMoveSAN -> move = " + m);
 		int p = pieces[m.from];
 		String f = AppConstants.SYMBOL_EMPTY;
 		String capture = AppConstants.SYMBOL_EMPTY;

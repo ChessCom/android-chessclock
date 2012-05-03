@@ -448,6 +448,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
     }
 
     @Override
+    public void invalidateGameScreen() {
+        //TODO To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void showOptions() {
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)

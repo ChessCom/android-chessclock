@@ -237,8 +237,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
             boardView.invalidate();
 
             playLastMoveAnimation();
-
-            updateGameState();
         }
     }
 

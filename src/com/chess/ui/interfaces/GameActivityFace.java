@@ -35,4 +35,6 @@ public interface GameActivityFace {
 	void showToast2User(int msgId);
 
     void updateAfterMove();
+
+    void invalidateGameScreen();
 }

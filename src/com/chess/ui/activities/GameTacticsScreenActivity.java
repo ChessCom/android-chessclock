@@ -633,6 +633,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
     }
 
     @Override
+    public void invalidateGameScreen() {
+        //TODO To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	protected void restoreGame() {
 		restoreLastConfig();
 	}
