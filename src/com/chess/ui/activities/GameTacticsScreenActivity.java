@@ -112,7 +112,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			showDialog(DIALOG_TACTICS_START_TACTICS);
 		}
 
-        gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
+        gamePanelView.hideChatButton();
     }
 
     @Override

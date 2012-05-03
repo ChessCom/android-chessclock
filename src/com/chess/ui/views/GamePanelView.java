@@ -298,12 +298,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-    public void hideGameButton(int buttonId) {
-        findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.GONE);
-    }
-
-    public void showGameButton(int buttonId) {
-        findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.VISIBLE);
+    private void showGameButton(int buttonId, boolean show) {
+        findViewById(BUTTON_PREFIX + buttonId).setVisibility(show? View.VISIBLE: View.GONE);
     }
 
     public void enableGameButton(int buttonId, boolean enable) {
@@ -567,15 +563,20 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-	public void showAnalysisGameButton() {
-		showGameButton(GamePanelView.B_ANALYSIS_ID);
-		showGameButton(GamePanelView.B_FORWARD_ID);
-		showGameButton(GamePanelView.B_BACK_ID);
+    public void hideChatButton() {
+        showGameButton(GamePanelView.B_CHAT_ID, false);
+    }
+
+    public void turnCompMode() {
+        changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
+        hideChatButton();
+        addControlButton(1, GamePanelView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
+    }
+
+	public void enableAnalysisMode(boolean enable) {
+		showGameButton(GamePanelView.B_ANALYSIS_ID, enable);
+		showGameButton(GamePanelView.B_FORWARD_ID, enable);
+		showGameButton(GamePanelView.B_BACK_ID, enable);
 	}
 
-	public void hideAnalysisGameButtons() {
-		hideGameButton(GamePanelView.B_ANALYSIS_ID);
-		hideGameButton(GamePanelView.B_FORWARD_ID);
-		hideGameButton(GamePanelView.B_BACK_ID);
-	}
 }

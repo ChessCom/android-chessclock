@@ -1365,7 +1365,7 @@ public class ChessBoard implements BoardFace {
 
 	public String getMoveSAN() {
 		Move m = histDat[hply].m;
-        Log.d("TEST" ," getMoveSAN -> move = " + m);
+//        Log.d("TEST" ," getMoveSAN -> move = " + m);
 		int p = pieces[m.from];
 		String f = AppConstants.SYMBOL_EMPTY;
 		String capture = AppConstants.SYMBOL_EMPTY;

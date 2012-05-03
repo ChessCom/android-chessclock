@@ -49,13 +49,11 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private AbortGameUpdateListener abortGameUpdateListener;
 	private DrawOfferUpdateListener drawOfferUpdateListener;
-	private GameStateUpdateListener gameStateUpdateListener;
 	private StartGameUpdateListener startGameUpdateListener;
 	private GetGameUpdateListener getGameUpdateListener;
 	private SendMoveUpdateListener sendMoveUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
 	private ProgressDialog sendMoveUpdateDialog;
-	private boolean isFinishedGame;
 
 
 	@Override
@@ -66,8 +64,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		init();
 		widgetsInit();
 		onPostCreate();
-
-		isFinishedGame = MainApp.isFinishedEchessGameMode(boardView.getBoardFace());
 	}
 
 	@Override
@@ -79,6 +75,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		findViewById(R.id.cancel).setOnClickListener(this);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+        gamePanelView.hideChatButton();
 
 	}
 
@@ -100,7 +97,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		abortGameUpdateListener = new AbortGameUpdateListener();
 		drawOfferUpdateListener = new DrawOfferUpdateListener();
 
-		gameStateUpdateListener = new GameStateUpdateListener();
 		startGameUpdateListener = new StartGameUpdateListener();
 		getGameUpdateListener = new GetGameUpdateListener();
 		sendMoveUpdateListener = new SendMoveUpdateListener();
@@ -208,34 +204,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 			boardView.invalidate();
 
 			playLastMoveAnimation();
-		}
-	}
-
-	private class GameStateUpdateListener extends AbstractUpdateListener<String> {
-
-		public GameStateUpdateListener() {
-			super(coreContext);
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			if (boardView.getBoardFace().isAnalysis())
-				return;
-
-			game = ChessComApiParser.GetGameParseV3(returnedObj);
-
-			if (mainApp.getCurrentGame() == null || game == null) {
-				return;
-			}
-
-			if (!mainApp.getCurrentGame().equals(game)) {
-				// check if moves on board was changed
-				if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
-					updateGameBoardMoves();
-				}
-				checkMessages();
-			}
-			invalidateGameScreen();
 		}
 	}
 

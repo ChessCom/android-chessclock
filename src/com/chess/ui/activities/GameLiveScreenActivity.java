@@ -79,7 +79,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
 		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 
-		gamePanelView.hideAnalysisGameButtons();
+		gamePanelView.enableAnalysisMode(false);
 	}
 
 	@Override
@@ -570,8 +570,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void onGameEndMsgReceived() {
 		showSubmitButtonsLay(false);
-		gamePanelView.showAnalysisGameButton();
-//		chatPanel.setVisibility(View.GONE);
+		gamePanelView.enableAnalysisMode(true);
 	}
 
 	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {

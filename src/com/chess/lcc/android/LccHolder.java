@@ -903,9 +903,7 @@ public class LccHolder {
 			if (game.getBlackPlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByBlackPlayer()) {
 				return true;
 			}
-		}
-
-		catch (NullPointerException e) {
+		}catch (NullPointerException e) {
 			// helps debug issue
 			String message = "gameId=" + gameId + ", game != null " + (game != null) + ", _user" + _user;
 			if (_user != null) {

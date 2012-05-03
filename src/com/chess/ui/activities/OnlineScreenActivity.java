@@ -56,7 +56,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
 	private ListUpdateListener listUpdateListener;
-//	private LoadItem listLoadItem;
+	private LoadItem selectedLoadItem;
 
 
 	@Override
@@ -80,8 +80,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		mainApp.setLiveChess(false);
 
-//		gamesTypeSpinner.setSelection(currentListType);
+		gamesTypeSpinner.setSelection(currentListType);
 		gamesTypeSpinner.setOnItemSelectedListener(this);
+        selectUpdateType(gamesTypeSpinner.getSelectedItemPosition());
 
 		gamesList = (ListView) findViewById(R.id.onlineGamesList);
 		gamesList.setOnItemClickListener(this);
@@ -98,6 +99,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 //				+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
 //				+ "&all=1",
 
+        selectedLoadItem = new LoadItem();
 
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
@@ -110,7 +112,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
 			}*/
 		super.onResume();
-		updateList();
+		updateList(selectedLoadItem);
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
 
@@ -121,24 +123,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		handler.removeCallbacks(updateListOrder);
 	}
 
-	private void updateList(){
-		LoadItem listLoadItem = new LoadItem();
-		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
-		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
-
-		updateList(listLoadItem);
-	}
-
 	private void updateList(LoadItem listLoadItem){
 		new GetStringObjTask(listUpdateListener).execute(listLoadItem);
 	}
 
-
 	private Runnable updateListOrder = new Runnable() {
 		@Override
 		public void run() {
-			updateList();
+            updateList(selectedLoadItem);
 
 			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_DELAY);
@@ -180,6 +172,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					gamesAdapter.setItemsList(listItems);
 				}
 
+                gamesTypeSpinner.setSelection(currentListType);  // TODO handle mess later
 				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				String status = returnedObj.split("[+]")[1];
@@ -214,7 +207,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
-				updateList();
+				updateList(selectedLoadItem);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
@@ -232,7 +225,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				updateList();
+				updateList(selectedLoadItem);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
@@ -485,24 +478,28 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-		currentListType = pos;
-		LoadItem listLoadItem = new LoadItem();
-		if (pos == GameListItem.LIST_TYPE_CURRENT){
-			listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
-			listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
-
-		}else if(pos == GameListItem.LIST_TYPE_CHALLENGES){
-			listLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
-			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
-
-		}else if(pos == GameListItem.LIST_TYPE_FINISHED){
-			listLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
-			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
-		}
-
-		updateList(listLoadItem);
+        selectUpdateType(pos);
 	}
+
+    private void selectUpdateType(int pos) {
+        currentListType = pos;
+        if (pos == GameListItem.LIST_TYPE_CURRENT) {
+            selectedLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+            selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
+
+        } else if (pos == GameListItem.LIST_TYPE_CHALLENGES){
+            selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+
+        } else if (pos == GameListItem.LIST_TYPE_FINISHED) {
+            selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+        }
+
+        updateList(selectedLoadItem);
+
+    }
 
 	@Override
 	public void onNothingSelected(AdapterView<?> adapterView) {
