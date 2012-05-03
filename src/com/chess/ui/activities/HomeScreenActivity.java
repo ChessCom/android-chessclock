@@ -123,10 +123,10 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		if(fragment.getTag().equals(LOGOUT_TAG)){
+		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
 			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
-		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
+		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);

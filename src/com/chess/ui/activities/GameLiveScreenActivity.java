@@ -526,8 +526,15 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		lccHolder.logout();
-		backToHomeActivity();
+		if (fragment.getTag().equals(LOGOUT_TAG)) {
+			lccHolder.logout();
+			backToHomeActivity();
+		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
+			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
+			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
+			lccHolder.declineAllChallenges(currentChallenge);
+		}
+		fragment.getDialog().dismiss();
 	}
 
 	protected void changeChatIcon(Menu menu) {
