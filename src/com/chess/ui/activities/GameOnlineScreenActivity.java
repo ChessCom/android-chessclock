@@ -255,10 +255,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 	}
 
-	private void updateGameBoardMoves() { // TODO hide logic to Game Manager class
+	private void updateGameBoardMoves() {
 		mainApp.setCurrentGame(game);
 		String[] moves;
-		int[] moveFT;
 
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
 				|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())))) {
