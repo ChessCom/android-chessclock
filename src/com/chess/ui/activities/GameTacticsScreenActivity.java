@@ -24,7 +24,6 @@ import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
@@ -678,9 +677,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						}
 						if (!mainApp.isLiveChess()) {
 							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
-									null/*progressDialog*/
-							);
+									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
+											+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
+									null );
 						}
 					}
 				}
@@ -688,8 +687,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			case CALLBACK_REPAINT_UI: {
 
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				boardView.invalidate();
-                boardView.requestFocus();
 				break;
 			}
 			case CALLBACK_CHECK_TACTICS_MOVE: {

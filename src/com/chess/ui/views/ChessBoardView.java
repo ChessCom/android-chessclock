@@ -21,6 +21,7 @@ import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.engine.MoveParser;
 import com.chess.ui.engine.Search;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewFace;
@@ -815,9 +816,27 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
     public void addMove2Log(CharSequence move) {
         gamePanelView.addMoveLog(move);
+		invalidate();
+		requestFocus();
     }
 
     public void enableTouchTimer() {
         useTouchTimer = true;
     }
+
+	public void updateMoves(String newMove) {
+		int[] moveFT = MoveParser.parse(getBoardFace().getBoard(), newMove);
+		if (moveFT.length == 4) {
+			Move move;
+			if (moveFT[3] == 2)
+				move = new Move(moveFT[0], moveFT[1], 0, 2);
+			else
+				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+
+			getBoardFace().makeMove(move, false);
+		} else {
+			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+			getBoardFace().makeMove(move, false);
+		}
+	}
 }

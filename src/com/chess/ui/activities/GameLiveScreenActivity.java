@@ -208,14 +208,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				boardView.invalidate();
-
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						boardView.requestFocus();
-					}
-				});
 				break;
 			}
 			case CALLBACK_SEND_MOVE: {

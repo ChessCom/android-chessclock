@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +19,6 @@ import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 
 /**
@@ -146,17 +144,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 						break;
 				}
 
-//				movelist.setText(boardView.getBoardFace().getMoveListSAN());
-
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				boardView.invalidate();
-
-				new Handler().post(new Runnable() {
-					@Override
-					public void run() {
-						boardView.requestFocus();
-					}
-				});
 				break;
 			}
 			case CALLBACK_COMP_MOVE: {

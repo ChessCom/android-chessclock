@@ -253,8 +253,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		}
 
 		boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-		boardView.invalidate();
-		boardView.requestFocus();
 	}
 
 

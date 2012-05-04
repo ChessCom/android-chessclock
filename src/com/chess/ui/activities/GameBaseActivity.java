@@ -467,7 +467,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected void restoreLastConfig() {
 		boardView.setBoardFace(new ChessBoard(this));
-		boardView.getBoardFace().setInit(true);
+//		boardView.getBoardFace().setInit(true);
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
