@@ -3,6 +3,7 @@ package com.chess.backend;
 import com.chess.backend.entity.LoadItem;
 import org.apache.http.NameValuePair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -260,8 +261,10 @@ public class RestHelper {
 	}
 
 	private static String formUrl(List<NameValuePair> nameValuePairs) {
+		List<NameValuePair> safeList = new ArrayList<NameValuePair> ();
+		safeList.addAll(nameValuePairs);
 		String url = "?";
-		for (NameValuePair pair: nameValuePairs) {
+		for (NameValuePair pair: safeList) {
 //			try {
 				url += pair.getName() + "=" + /*URLEncoder.encode(*/pair.getValue()/*, AppConstants.UTF_8)*/;
 //			} catch (UnsupportedEncodingException e) {
