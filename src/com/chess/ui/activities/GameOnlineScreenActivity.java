@@ -659,7 +659,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 	};
 
-
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
