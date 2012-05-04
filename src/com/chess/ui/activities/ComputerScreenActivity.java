@@ -27,7 +27,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 		setContentView(R.layout.computer_screen);
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		strength = (Spinner) findViewById(R.id.PrefStrength);
+		strength = (Spinner) findViewById(R.id.strengthSpinner);
 		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
 		strength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
