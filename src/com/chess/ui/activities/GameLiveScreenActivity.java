@@ -142,6 +142,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
     }
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(chatMessageReceiver);
+	}
+
+	@Override
 	protected void onDrawOffered(int whichButton) {
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 			Game game = lccHolder.getGame(mainApp.getGameId());
