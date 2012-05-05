@@ -121,8 +121,11 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 	@Override
 	public void hideMenuItemById(int id, boolean show){
-		if(!noActionBar)
-			getActionBarCompat().findViewById(id).setVisibility(show? View.VISIBLE: View.GONE);
+		if(!noActionBar) {
+            View view = getActionBarCompat();
+            if(view != null)
+                view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
+        }
 	}
 
 	@Override
