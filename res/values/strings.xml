@@ -286,5 +286,10 @@
 	<string name="menu_refresh">refresh</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">The client version is obsolete. Please update</string>
+	<string name="zero_one_black_mates">0 - 1 Black mates</string>
+	<string name="on_zero_white_mates">1 - 0 White mates</string>
+	<string name="slatemate">0 - 0 Stalemate</string>
+	<string name="draw_by_repetition">1/2 - 1/2 Draw by repetition</string>
+	<string name="game_over_">GAME OVER:</string>
 
 </resources>

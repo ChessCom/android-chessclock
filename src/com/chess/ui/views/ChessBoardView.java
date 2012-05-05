@@ -231,13 +231,13 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                 gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 
                 if (boardFace.getSide() == ChessBoard.LIGHT)
-                    message = "0 - 1 Black mates";
+                    message = getContext().getResources().getString(R.string.zero_one_black_mates);
                 else
-                    message = "1 - 0 White mates";
+                    message = getContext().getResources().getString(R.string.on_zero_white_mates);
             } else
-                message = "0 - 0 Stalemate";
+                message = getContext().getResources().getString(R.string.slatemate);
         } else if (boardFace.reps() == 3 && !mainApp.isLiveChess())
-            message = "1/2 - 1/2 Draw by repetition";
+            message = getContext().getResources().getString(R.string.draw_by_repetition);
         /*else if (fifty >= 100)
                       message = "1/2 - 1/2 Draw by fifty move rule";*/
         if (message != null) {
@@ -246,7 +246,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 			gameActivityFace.showToast2User(message);
 
             Intent intent = new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP);
-            intent.putExtra(AppConstants.MESSAGE, "GAME OVER: " + message);
+            intent.putExtra(AppConstants.MESSAGE, getContext().getResources().getString(R.string.game_over_) + message);
             intent.putExtra(AppConstants.FINISHABLE, false);
             mainApp.sendBroadcast(intent);
 

@@ -65,7 +65,7 @@ public class Utils {
 		openList.putExtra(StaticData.CLEAR_CHAT_NOTIFICATION, true);
 //		openList.putExtra(StaticData.REQUEST_CODE, id);
 		openList.putExtra(GameListItem.GAME_ID, id);
-		openList.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+		openList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
 				|Intent.FLAG_ACTIVITY_NEW_TASK
 //				|Intent.FLAG_ACTIVITY_SINGLE_TOP
 				/*|Intent.FLAG_ACTIVITY_CLEAR_TOP*/);
@@ -93,7 +93,7 @@ public class Utils {
 
 		Intent intent = new Intent(context, clazz);
 		intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
-		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
 

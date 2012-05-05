@@ -187,6 +187,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	}
 
 	private void adjustBoardForGame() {
+		boardView.finished = false;
+
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
 			boardView.getBoardFace().setChess960(true);
 
