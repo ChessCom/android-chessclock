@@ -42,7 +42,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		init();
 
 		setContentView(R.layout.live_create_challenge);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);

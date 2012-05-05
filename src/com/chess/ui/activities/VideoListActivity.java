@@ -35,7 +35,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 		boolean liveMembershipLevel =
@@ -53,12 +53,6 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		videosListView.setOnItemClickListener(this);
 		videosListView.setOnScrollListener(this);
 
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override

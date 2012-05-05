@@ -63,7 +63,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);

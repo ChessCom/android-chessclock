@@ -50,7 +50,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		context = this;
 
@@ -167,12 +167,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		prefContactUs.setOnClickListener(this);
 
 		FlurryAgent.onEvent("Settings Accessed");
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override

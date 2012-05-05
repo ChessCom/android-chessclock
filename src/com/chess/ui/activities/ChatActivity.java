@@ -49,6 +49,7 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_screen);
+        findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
         widgetsInit();
 
@@ -62,7 +63,6 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 
     @Override
     protected void widgetsInit(){
-        findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
         sendText = (EditText) findViewById(R.id.sendText);
         chatListView = (ListView) findViewById(R.id.chatLV);
@@ -71,12 +71,6 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 
         sendBtn = (Button) findViewById(R.id.send);
         sendBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        backgroundChessDrawable.updateConfig();
-        super.onConfigurationChanged(newConfig);
     }
 
     @Override

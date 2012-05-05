@@ -27,7 +27,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.online_create_challenge);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));

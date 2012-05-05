@@ -43,7 +43,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 		init();
 		setContentView(R.layout.live_challenge_friend);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		friends = (Spinner) findViewById(R.id.friend);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);

@@ -32,7 +32,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_new_game);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);

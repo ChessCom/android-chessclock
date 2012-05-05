@@ -35,17 +35,10 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		sendText = (EditText) findViewById(R.id.sendText);
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.send).setOnClickListener(this);
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override

@@ -17,10 +17,7 @@ import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
@@ -114,14 +111,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        View mainView = findViewById(R.id.mainView);
+        if(mainView != null)
+            mainView.setBackgroundDrawable(backgroundChessDrawable);
+    }
+
     protected void widgetsInit(){
 
     }
-
-	@Override
-	public Object onRetainCustomNonConfigurationInstance() {
-		return super.onRetainCustomNonConfigurationInstance();
-	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {

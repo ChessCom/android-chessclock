@@ -40,7 +40,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.online_challenge_friend);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));

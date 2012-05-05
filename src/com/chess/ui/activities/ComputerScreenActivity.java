@@ -25,7 +25,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer_screen);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		strength = (Spinner) findViewById(R.id.strengthSpinner);
 		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
