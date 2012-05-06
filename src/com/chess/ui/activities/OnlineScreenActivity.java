@@ -2,8 +2,7 @@ package com.chess.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.chess.model.GameListItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.OnlineGamesAdapter;
 import com.chess.ui.core.AppConstants;
+import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -113,6 +113,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}*/
 		super.onResume();
 		updateList(selectedLoadItem);
+		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
 
@@ -120,6 +121,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	protected void onPause() {
 		super.onPause();
 
+		unregisterReceiver(challengesUpdateReceiver);
 		handler.removeCallbacks(updateListOrder);
 	}
 
@@ -461,6 +463,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 		return true;
 	}
+
+	private BroadcastReceiver challengesUpdateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateList(selectedLoadItem);
+		}
+	};
 
 	private void clickOnChallenge() {
 		final String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)

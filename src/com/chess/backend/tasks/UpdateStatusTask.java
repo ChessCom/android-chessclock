@@ -1,6 +1,7 @@
 package com.chess.backend.tasks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
@@ -9,6 +10,7 @@ import com.chess.backend.Web;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.OnlineScreenActivity;
+import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.Utils;
 
 /**
@@ -43,6 +45,8 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 					context.getString(R.string.online_challenge_wait),
 					StaticData.MOVE_REQUEST_CODE,
 					OnlineScreenActivity.class);
+
+			context.sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 		}else{
 			Log.d("TEST", "No pending moves");
 		}
