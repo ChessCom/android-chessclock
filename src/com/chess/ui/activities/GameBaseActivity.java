@@ -24,8 +24,8 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.Utils;
 import com.chess.utilities.MopubHelper;
+import com.chess.utilities.Utils;
 
 import java.util.Timer;
 
@@ -89,6 +89,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
+		whitePlayerLabel.setSelected(true);
+		blackPlayerLabel.setSelected(true);
 
 		thinking = (TextView) findViewById(R.id.thinking);
 
@@ -467,7 +469,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected void restoreLastConfig() {
 		boardView.setBoardFace(new ChessBoard(this));
-//		boardView.getBoardFace().setInit(true);
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
@@ -696,6 +697,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
 					update(CALLBACK_REPAINT_UI);
+					invalidateGameScreen();
 					boardView.invalidate();
 				}
 			};

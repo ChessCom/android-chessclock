@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +48,6 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_screen);
-        findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
         widgetsInit();
 

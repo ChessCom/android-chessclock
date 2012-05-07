@@ -14,6 +14,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,8 +77,14 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	}
 
-//		lccHolder = mainApp.getLccHolder();
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		View mainView = findViewById(R.id.mainView);
+		if(mainView != null)
+			mainView.setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	public boolean doBindService() {

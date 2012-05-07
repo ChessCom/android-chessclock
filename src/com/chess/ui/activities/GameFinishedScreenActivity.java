@@ -16,7 +16,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.live.client.Game;
@@ -133,10 +133,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 		new GetStringObjTask(startGameUpdateListener).execute(loadItem);
 	}
-	private class StartGameUpdateListener extends AbstractUpdateListener<String> {
+	private class StartGameUpdateListener extends ChessUpdateListener {
 
 		public StartGameUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -243,9 +243,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	}
 
 
-	private class GetGameUpdateListener extends AbstractUpdateListener<String> {
+	private class GetGameUpdateListener extends ChessUpdateListener {
 		public GetGameUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -255,9 +255,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		}
 	}
 
-	private class SendMoveUpdateListener extends AbstractUpdateListener<String> {
+	private class SendMoveUpdateListener extends ChessUpdateListener {
 		public SendMoveUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -303,9 +303,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		new GetStringObjTask(gamesListUpdateListener).execute(listLoadItem);
 	}
 
-	private class GamesListUpdateListener extends AbstractUpdateListener<String> {
+	private class GamesListUpdateListener extends ChessUpdateListener {
 		public GamesListUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -493,9 +493,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		}
 	}
 
-	private class AbortGameUpdateListener extends AbstractUpdateListener<String> {
+	private class AbortGameUpdateListener extends ChessUpdateListener {
 		public AbortGameUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -515,9 +515,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		}
 	}
 
-	private class DrawOfferUpdateListener extends AbstractUpdateListener<String> {
+	private class DrawOfferUpdateListener extends ChessUpdateListener {
 		public DrawOfferUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override

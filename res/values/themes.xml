@@ -15,7 +15,7 @@
         <item name="android:checkboxStyle">@style/check_Box</item>
         <item name="android:radioButtonStyle">@style/radio_Button</item>
 		<item name="android:listViewStyle">@style/DefaultListView</item>
-		<item name="playerLabelStyle">@style/GameLabel.Player</item>
+		<item name="playerLabelStyle">@style/GameLabel.Timer</item>
     </style>
 
 

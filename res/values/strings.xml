@@ -291,5 +291,8 @@
 	<string name="slatemate">0 - 0 Stalemate</string>
 	<string name="draw_by_repetition">1/2 - 1/2 Draw by repetition</string>
 	<string name="game_over_">GAME OVER:</string>
+	<string name="blitz_mod">(Blitz)</string>
+	<string name="lightning_mod">(Lightning)</string>
+	<string name="standard_mod">(Standard)</string>
 
 </resources>

@@ -3,7 +3,6 @@ package com.chess.lcc.android;
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
@@ -62,9 +61,7 @@ public class LccHolder {
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 
-	// TODO move all hashMaps to DB
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
-//	private List<Challenge> challenges = new ArrayList<Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
 	private HashMap<Long, Challenge> ownChallenges = new HashMap<Long, Challenge>();
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
@@ -248,12 +245,6 @@ public class LccHolder {
 		return false;
 	}
 
-	/*public void removeOwnChallenge(Long challengeId)
-	  {
-		//ownSeeksCount--;
-		ownChallenges.remove(challengeId);
-	  }*/
-
 	public int getOwnSeeksCount() {
 		int ownSeeksCount = 0;
 		for (Challenge challenge : ownChallenges.values()) {
@@ -302,7 +293,6 @@ public class LccHolder {
 
 	public void putChallenge(Long challengeId, Challenge lccChallenge) {
 		challenges.put(challengeId, lccChallenge);
-//		challenges.add(lccChallenge);
 		android.updateChallengesList();
 	}
 
@@ -465,8 +455,8 @@ public class LccHolder {
 	public String[] getGameData(long gameId, int moveIndex) {
 		Game lccGame = getGame(gameId);
 		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
-//		Log.d("TEST","game id = " + gameId);
-		gameData[0] = lccGame.getId().toString();  // TODO eliminate string convertion and use Objects
+
+		gameData[0] = lccGame.getId().toString();  // TODO eliminate string conversion and use Objects
 		gameData[1] = "1";
 		gameData[2] = AppConstants.SYMBOL_EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
 		gameData[3] = AppConstants.SYMBOL_EMPTY;
@@ -692,12 +682,10 @@ public class LccHolder {
 		latestMoveNumber = null;
 		putGame(game);
 		int time = game.getGameTimeConfig().getBaseTime() * 100;
-		if (whiteClock != null /*&& game.getWhitePlayer().getUsername().equals(game.getWhitePlayer().getUsername())*/
-				&& whiteClock.isRunning()) {
+		if (whiteClock != null && whiteClock.isRunning()) {
 			whiteClock.setRunning(false);
 		}
-		if (blackClock != null /*&& game.getBlackPlayer().getUsername().equals(game.getBlackPlayer().getUsername())*/
-				&& blackClock.isRunning()) {
+		if (blackClock != null && blackClock.isRunning()) {
 			blackClock.setRunning(false);
 		}
 		setWhiteClock(new ChessClock(this, true, time));
@@ -814,48 +802,6 @@ public class LccHolder {
 			getBlackClock().setTime(blackPlayerTime);*/
 	}
 
-//	public void setClockDrawPointer(final Boolean isWhite) {
-//		if (getAndroid().getGameActivity() == null) {
-//			return;
-//		}
-//		getAndroid().getGameActivity().runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				if (isWhite == null) {
-//					getAndroid().getGameActivity().getWhiteClockView().
-//							setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//					getAndroid().getGameActivity().getBlackClockView().
-//							setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//					return;
-//				}
-//				int leftDrawableForBlack = 0;
-//				int rightDrawableForBlack = 0;
-//
-//				final Configuration configuration = getAndroid().getContext().getResources().getConfiguration();
-//				if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//					leftDrawableForBlack = R.drawable.blackmove;
-//					rightDrawableForBlack = 0;
-//				} else if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//					leftDrawableForBlack = 0;
-//					rightDrawableForBlack = R.drawable.blackmove;
-//				}
-//				if (getAndroid().getGameActivity() != null) {
-//					if (isWhite) {
-//                        getAndroid().getGameActivity().getWhiteClockView().
-//                                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.whitemove, 0);
-//                        getAndroid().getGameActivity().getBlackClockView().
-//								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//					} else {
-//						getAndroid().getGameActivity().getWhiteClockView().
-//								setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//						getAndroid().getGameActivity().getBlackClockView().
-//								setCompoundDrawablesWithIntrinsicBounds(leftDrawableForBlack, 0, rightDrawableForBlack, 0);
-//					}
-//				}
-//			}
-//		});
-//	}
-
 	public void setCurrentGameId(Long gameId) {
 		currentGameId = gameId;
 	}
@@ -932,8 +878,7 @@ public class LccHolder {
 	}
 
 	public void declineAllChallenges(Challenge acceptedChallenge) {
-		// TODO decline all challenges except acceptedChallenge
-		
+		// decline all challenges except acceptedChallenge
 		List<Challenge> removeMe = new ArrayList<Challenge>();
 		for (Challenge challenge : challenges.values()) {
 			if(!challenge.equals(acceptedChallenge))

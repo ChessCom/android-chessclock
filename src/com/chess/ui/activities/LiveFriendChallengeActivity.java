@@ -19,7 +19,6 @@ import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
@@ -43,7 +42,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 		init();
 		setContentView(R.layout.live_challenge_friend);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		friends = (Spinner) findViewById(R.id.friend);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);

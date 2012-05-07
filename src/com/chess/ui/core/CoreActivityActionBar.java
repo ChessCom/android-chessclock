@@ -1,6 +1,7 @@
 package com.chess.ui.core;
 
 import actionbarcompat.ActionBarActivity;
+import actionbarcompat.ActionBarHelper;
 import android.app.AlertDialog;
 import android.content.*;
 import android.content.res.Configuration;
@@ -91,7 +92,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
 		popupItem = new PopupItem();
-		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+//		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 		popupManager = new ArrayList<PopupDialogFragment>();
 
 		mainApp = (MainApp) getApplication();
@@ -332,6 +333,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		for (PopupDialogFragment fragment : popupManager) {
 			fragment.getDialog().dismiss();
 		}
+		popupManager.clear();
 	}
 
 	@Override
@@ -623,6 +625,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			manageConnectingIndicator(enable, intent.getExtras().getString(AppConstants.MESSAGE));
 		}
 	};
+
+	public ActionBarHelper provideActionBarHelper(){
+		return getActionBarHelper();
+	}
+
+	protected CoreActivityActionBar getInstance(){
+		return this;
+	}
 
 	private void manageConnectingIndicator(boolean enable, String message) {
 		if (mainApp.isLiveChess()) {

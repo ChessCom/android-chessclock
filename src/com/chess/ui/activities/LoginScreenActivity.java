@@ -51,9 +51,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
 
-
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
-
 		usernameEdt = (EditText) findViewById(R.id.username);
 		passwordEdt = (EditText) findViewById(R.id.password);
 		passwordEdt.setOnEditorActionListener(this);

@@ -19,4 +19,7 @@
 	<dimen name="popup_dialog_width">200dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 
+	<!--Game Modes-->
+	<dimen name="player_name_max_width">400dip</dimen>
+
 </resources>

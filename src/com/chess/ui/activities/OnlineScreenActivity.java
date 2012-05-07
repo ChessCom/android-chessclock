@@ -15,7 +15,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
@@ -139,14 +139,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	};
 
-	private class ListUpdateListener extends AbstractUpdateListener<String> {
+	private class ListUpdateListener extends ChessUpdateListener {
 		public ListUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
 		public void showProgress(boolean show) {
-			getActionBarHelper().setRefreshActionItemState(show);
+			super.showProgress(show);
 			gamesTypeSpinner.setEnabled(false);
 		}
 
@@ -197,9 +197,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	public void update(int code) {
 	}
 
-	private class ChallengeInviteUpdateListener extends AbstractUpdateListener<String> {
+	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
 		public ChallengeInviteUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -216,9 +216,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-	private class AcceptDrawUpdateListener extends AbstractUpdateListener<String> {
+	private class AcceptDrawUpdateListener extends ChessUpdateListener {
 		public AcceptDrawUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
@@ -494,16 +494,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
         currentListType = pos;
         if (pos == GameListItem.LIST_TYPE_CURRENT) {
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));
             selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
         } else if (pos == GameListItem.LIST_TYPE_CHALLENGES){
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
-            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));
 
         } else if (pos == GameListItem.LIST_TYPE_FINISHED) {
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
-            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));
         }
 
         updateList(selectedLoadItem);

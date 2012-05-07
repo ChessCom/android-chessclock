@@ -15,4 +15,6 @@
 	<dimen name="default_scr_top_padding">16dip</dimen>
 	<dimen name="default_scr_side_padding">100dip</dimen>
 
+	<!--Game Modes-->
+	<dimen name="player_name_max_width">400dip</dimen>
 </resources>

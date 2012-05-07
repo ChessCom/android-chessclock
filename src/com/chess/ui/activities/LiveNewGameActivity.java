@@ -13,7 +13,6 @@ import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 
@@ -32,7 +31,6 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_new_game);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);

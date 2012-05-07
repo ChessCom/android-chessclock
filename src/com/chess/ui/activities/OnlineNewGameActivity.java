@@ -15,7 +15,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
@@ -179,9 +179,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		}
 	}
 
-	private class ChallengeInviteUpdateListener extends AbstractUpdateListener<String> {
+	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
 		public ChallengeInviteUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override

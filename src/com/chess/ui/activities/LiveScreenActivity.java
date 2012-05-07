@@ -45,8 +45,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_screen);
 
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
-
 		widgetsInit();
 		init();
 

@@ -63,7 +63,7 @@
 
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">0dip</dimen>
-	<dimen name="player_name_max_width">120dip</dimen>
+	<dimen name="player_name_max_width">140dip</dimen>
 	<!--<dimen name="game_label_padding_top">1dip</dimen>-->
 	<dimen name="game_label_padding_top">1dip</dimen>
 	<dimen name="game_label_text_size">12sp</dimen>

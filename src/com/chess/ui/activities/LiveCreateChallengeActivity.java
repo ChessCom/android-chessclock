@@ -3,9 +3,6 @@ package com.chess.ui.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
@@ -19,8 +16,6 @@ import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.flurry.android.FlurryAgent;
 
 public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
@@ -42,7 +37,6 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		init();
 
 		setContentView(R.layout.live_create_challenge);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
