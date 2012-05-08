@@ -19,8 +19,7 @@ import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
-import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.adapters.OnlineGamesAdapter;
+import com.chess.ui.adapters.*;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
@@ -30,6 +29,7 @@ import com.mopub.mobileads.MoPubView;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * OnlineScreenActivity class
@@ -40,7 +40,6 @@ import java.util.ArrayList;
 public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
 	private ListView gamesList;
 	private Spinner gamesTypeSpinner;
-	private OnlineGamesAdapter gamesAdapter;
 
 	private static final int UPDATE_DELAY = 120000;
 	private int temp_pos = -1;
@@ -57,6 +56,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
 	private ListUpdateListener listUpdateListener;
 	private LoadItem selectedLoadItem;
+	private OnlineCurrentGamesAdapter currentGamesAdapter;
+	private OnlineChallengesGamesAdapter challengesGamesAdapter;
+	private OnlineFinishedGamesAdapter finishedGamesAdapter;
 
 
 	@Override
@@ -104,6 +106,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
 		listUpdateListener = new ListUpdateListener();
+
+		// init adapters
+		List<GameListItem> itemList = new ArrayList<GameListItem>();
+
+		currentGamesAdapter = new OnlineCurrentGamesAdapter(coreContext, itemList);
+		challengesGamesAdapter = new OnlineChallengesGamesAdapter(coreContext, itemList);
+		finishedGamesAdapter = new OnlineFinishedGamesAdapter(coreContext, itemList);
 	}
 
 	@Override
@@ -154,27 +163,27 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
-				ArrayList<GameListItem> listItems = new ArrayList<GameListItem>();
+				OnlineGamesAdapter gamesAdapter = null;
 
-				if (currentListType == GameListItem.LIST_TYPE_CURRENT) {
-					listItems.addAll(ChessComApiParser.getCurrentOnlineGames(returnedObj));
-				}
-				if (currentListType == GameListItem.LIST_TYPE_CHALLENGES) {
-					listItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
-				}
-				if (currentListType == GameListItem.LIST_TYPE_FINISHED) {
-					listItems.addAll(ChessComApiParser.getFinishedOnlineGames(returnedObj));
-				}
-
-				if (gamesAdapter == null) {
-					gamesAdapter = new OnlineGamesAdapter(OnlineScreenActivity.this,
-							R.layout.gamelistelement, listItems);
-					gamesList.setAdapter(gamesAdapter);
-				}else{
-					gamesAdapter.setItemsList(listItems);
+				switch (currentListType){
+					case GameListItem.LIST_TYPE_CURRENT:
+						currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
+						gamesAdapter = currentGamesAdapter;
+						break;
+					case GameListItem.LIST_TYPE_CHALLENGES:
+						challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
+						gamesAdapter = challengesGamesAdapter;
+						break;
+					case GameListItem.LIST_TYPE_FINISHED:
+						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
+						gamesAdapter = finishedGamesAdapter;
+						break;
+					default: break;
 				}
 
-                gamesTypeSpinner.setSelection(currentListType);  // TODO handle mess later
+				gamesList.setAdapter(gamesAdapter);
+
+                gamesTypeSpinner.setSelection(currentListType);
 				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				String status = returnedObj.split("[+]")[1];

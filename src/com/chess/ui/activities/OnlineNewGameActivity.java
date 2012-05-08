@@ -19,7 +19,7 @@ import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
-import com.chess.ui.adapters.OnlineGamesAdapter;
+import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
@@ -32,7 +32,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 
 	private ListView openChallengesListView;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
-	private OnlineGamesAdapter gamesAdapter = null;
+	private OnlineChallengesGamesAdapter gamesAdapter = null;
 	private static final int UPDATE_DELAY = 120000;
 	private GameListItem gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
@@ -106,7 +106,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 
 			if (gamesAdapter == null) {
-				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);
+				gamesAdapter = new OnlineChallengesGamesAdapter(this, gameListItems);
 				openChallengesListView.setAdapter(gamesAdapter);
 			}
 
