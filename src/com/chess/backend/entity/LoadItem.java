@@ -56,4 +56,8 @@ public class LoadItem {
 	public String getLoadPath() {
 		return loadPath;
 	}
+
+	public void clearParams() {
+		nameValuePairs.clear();
+	}
 }

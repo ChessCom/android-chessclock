@@ -501,6 +501,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
     private void selectUpdateType(int pos) {
         currentListType = pos;
+		selectedLoadItem.clearParams();
         if (pos == GameListItem.LIST_TYPE_CURRENT) {
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
             selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));

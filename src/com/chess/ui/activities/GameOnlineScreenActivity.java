@@ -346,8 +346,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void showProgress(boolean show) {
-
-			getActionBarHelper().setRefreshActionItemState(show);
+			super.showProgress(show);
 			if (GameOnlineScreenActivity.this.isFinishing())
 				return;
 
