@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.util.Log;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.tasks.UpdateStatusTask;
-import com.chess.ui.core.AppConstants;
 
 /**
  * YourMoveUpdateService class
@@ -20,8 +19,6 @@ public class YourMoveUpdateService extends Service {
 	private static final long UPDATE_TIMEOUT = 120000; // 2 minutes
 
 	private Handler handler;
-	private String savedUserToken;
-
 
 	@Override
 	public void onCreate() {
@@ -32,20 +29,14 @@ public class YourMoveUpdateService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d("YourMoveUpdateService", "starting service");
-		checkStatusUpdate(AppData.getUserToken(this));
+		checkStatusUpdate();
 		return START_REDELIVER_INTENT;
 	}
 
-	private void checkStatusUpdate(String userToken){
-		if(!userToken.equals(savedUserToken)){
-			this.savedUserToken = userToken;
-			if(!userToken.equals(AppConstants.SYMBOL_EMPTY)){
-				new UpdateStatusTask(this).execute(userToken);
-				handler.postDelayed(updateRunnable, UPDATE_TIMEOUT);
-			}else {
-				handler.removeCallbacks(updateRunnable);
-			}
-		}
+	private void checkStatusUpdate(){
+		new UpdateStatusTask(this).execute(AppData.getUserToken(this));
+		handler.removeCallbacks(updateRunnable);
+		handler.postDelayed(updateRunnable, UPDATE_TIMEOUT);
 	}
 
 	@Override
@@ -55,7 +46,6 @@ public class YourMoveUpdateService extends Service {
 
 	@Override
 	public void onDestroy() {
-		Log.d("YourMoveUpdateService", "killing service");
 		handler.removeCallbacks(updateRunnable);
 		super.onDestroy();
 	}
@@ -64,8 +54,7 @@ public class YourMoveUpdateService extends Service {
 
 		@Override
 		public void run() {
-
-			new UpdateStatusTask(YourMoveUpdateService.this).execute(savedUserToken);
+			new UpdateStatusTask(YourMoveUpdateService.this).execute(AppData.getUserToken(YourMoveUpdateService.this));
 			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_TIMEOUT);
 		}

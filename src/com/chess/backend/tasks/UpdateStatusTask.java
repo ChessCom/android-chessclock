@@ -32,6 +32,9 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 		String response = Web.Request("http://www." + LccHolder.HOST
 				+ "/api/get_move_status?id=" + tokens[0], "GET", null, null);
 
+		Log.d("YourMoveUpdateService","token = " + tokens[0]);  //TODO remove before release
+		Log.d("YourMoveUpdateService","response = " + response);
+
 		return response.contains(RestHelper.R_YOUR_MOVE);
 	}
 

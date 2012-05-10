@@ -21,7 +21,8 @@ public class SplashActivity extends CoreActivity {
 		mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
 				+ AppConstants.PREF_PIECES_SET, 0));
 
-		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY).equals(AppConstants.SYMBOL_EMPTY)) {
+		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+				.equals(AppConstants.SYMBOL_EMPTY)) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {

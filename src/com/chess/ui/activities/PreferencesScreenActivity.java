@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +49,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		context = this;
 
