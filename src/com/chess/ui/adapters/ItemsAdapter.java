@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import com.chess.R;
 
 import java.util.List;
 
@@ -13,14 +14,13 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 	protected List<T> itemsList;
 	protected Context context;
 	protected final LayoutInflater inflater;
-
-	// protected ImageLoader mImageLoader;
+	protected final int itemListId;
 
 	public ItemsAdapter(Context context, List<T> itemList) {
 		itemsList = itemList;
 		this.context = context;
 		inflater = LayoutInflater.from(context);
-		// mImageLoader = ImageLoader.getInstance(context);
+		itemListId = R.id.list_item_id;
 	}
 
 	public void setItemsList(List<T> list) {

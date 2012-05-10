@@ -47,6 +47,7 @@
 
 		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />                         <!--  android:configChanges="keyboardHidden|keyboard|orientation"-->
+		<!--  android:configChanges="keyboardHidden|keyboard|orientation"-->
 
 
 		<activity android:name=".ui.activities.ChatActivity"   android:label="@string/label_chat_online"

@@ -1,5 +1,6 @@
 package com.chess.backend;
 
+import android.util.Log;
 import com.chess.backend.entity.LoadItem;
 import org.apache.http.NameValuePair;
 
@@ -242,6 +243,7 @@ public class RestHelper {
 	public static final String V_ONLY_USER_TURN = "0";
 
 	private static final String TAG = "Encode";
+	public static final int MAX_ITEMS_CNT = 2000;
 
 
 //	  (optional, 1 or 0)
@@ -275,4 +277,10 @@ public class RestHelper {
 		return url.substring(0, url.length()-1);
 	}
 
+	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
+		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
+		String fullUrl = formUrl(loadItem.getRequestParams());
+		Log.d("TEST", "pagination part = " + fullUrl);
+		return loadItem.getLoadPath() + fullUrl;
+	}
 }

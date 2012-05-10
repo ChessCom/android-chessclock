@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -20,7 +18,8 @@ import com.chess.utilities.MyProgressDialog;
 
 import java.util.ArrayList;
 
-public class VideoListActivity extends LiveBaseActivity implements OnItemClickListener, View.OnClickListener, OnScrollListener {
+public class VideoListActivity2 extends LiveBaseActivity implements OnItemClickListener,
+		View.OnClickListener {
 	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
 	private VideosAdapter videosAdapter = null;
 	private ListView videosListView;
@@ -47,7 +46,6 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 		videosListView = (ListView) findViewById(R.id.videosLV);
 		videosListView.setOnItemClickListener(this);
-		videosListView.setOnScrollListener(this);
 
 	}
 
@@ -74,7 +72,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 				items.add(new VideoItem(responseItem.split("<->")));
 			}
 			if (videosAdapter == null) {
-				videosAdapter = new VideosAdapter(VideoListActivity.this, R.layout.videolistelement, items);
+				videosAdapter = new VideosAdapter(VideoListActivity2.this, R.layout.videolistelement, items);
 				videosListView.setAdapter(videosAdapter);
 			} else
 				videosAdapter.notifyDataSetChanged();
@@ -96,26 +94,5 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		}
 	}
 
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		if (firstVisibleItem == totalItemCount - visibleItemCount)
-			update = true;
-	}
 
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		if (scrollState == SCROLL_STATE_IDLE) {  // TODO implement pagination adapter
-			if (update) {
-				page++;
-				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
-				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
-				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-                                + "&page-size=20&page=" + page + skill + category,
-						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoListActivity.this, null, getString(R.string.loading), true))
-				);
-				update = false;
-			}
-		}
-	}
 }
