@@ -30,7 +30,7 @@ public class AppData {
 	}
 
 
-	public String getUserToken(Context context) {
+	public static String getUserToken(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
 	}

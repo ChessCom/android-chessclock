@@ -102,7 +102,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
 		if (responseArray.length == 3) {
 			responseArray = responseArray[2].split("<--->");
 		} else {
-			result = StaticData.UNKNOWN_ERROR;
+			result = StaticData.MAX_REACHED;
 			return itemList;
 		}
 

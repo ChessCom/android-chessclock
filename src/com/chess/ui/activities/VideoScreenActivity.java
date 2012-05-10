@@ -161,8 +161,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			int s = skills.getSelectedItemPosition();
 			int c = categories.getSelectedItemPosition();
 
-//			Intent i = new Intent(coreContext, VideoList.class);
-			Intent i = new Intent(coreContext, VideoListActivity.class);
+//			Intent i = new Intent(coreContext, VideoListActivity.class);
+			Intent i = new Intent(coreContext, VideoListActivity2.class);
 			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, AppConstants.SYMBOL_EMPTY);
 			i.putExtra(AppConstants.VIDEO_CATEGORY, AppConstants.SYMBOL_EMPTY);
 
