@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.tasks.UpdateStatusTask;
 import com.chess.ui.core.AppConstants;
@@ -16,7 +17,7 @@ import com.chess.ui.core.AppConstants;
  */
 public class YourMoveUpdateService extends Service {
 
-	private static final long UPDATE_TIMEOUT = 60000; // 1 minute
+	private static final long UPDATE_TIMEOUT = 120000; // 2 minutes
 
 	private Handler handler;
 	private String savedUserToken;
@@ -30,8 +31,9 @@ public class YourMoveUpdateService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		checkStatusUpdate(AppData.getInstance().getUserToken(this));
-		return START_STICKY_COMPATIBILITY;
+		Log.d("YourMoveUpdateService", "starting service");
+		checkStatusUpdate(AppData.getUserToken(this));
+		return START_REDELIVER_INTENT;
 	}
 
 	private void checkStatusUpdate(String userToken){
@@ -53,6 +55,7 @@ public class YourMoveUpdateService extends Service {
 
 	@Override
 	public void onDestroy() {
+		Log.d("YourMoveUpdateService", "killing service");
 		handler.removeCallbacks(updateRunnable);
 		super.onDestroy();
 	}

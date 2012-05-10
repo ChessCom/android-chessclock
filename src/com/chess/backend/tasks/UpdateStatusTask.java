@@ -46,9 +46,10 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 					StaticData.MOVE_REQUEST_CODE,
 					OnlineScreenActivity.class);
 
+			Log.d("YourMoveUpdateService", " -> It's Your turn!");
 			context.sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 		}else{
-			Log.d("TEST", "No pending moves");
+			Log.d("YourMoveUpdateService", " -> No pending moves");
 		}
 	}
 }
