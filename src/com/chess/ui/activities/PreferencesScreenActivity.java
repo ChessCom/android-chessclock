@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
@@ -18,6 +17,7 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter2;
 import com.chess.ui.core.AppConstants;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
@@ -184,7 +184,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 				intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				stopService(new Intent(coreContext, YourMoveUpdateService.class));
+				AppUtils.stopNotificationsUpdate(this);
 				finish();
 			}
 		} else if (view.getId() == R.id.upgradeBtn) {
@@ -320,9 +320,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, checked);
 			mainApp.getSharedDataEditor().commit();
 			if (checked)
-				startService(new Intent(this, YourMoveUpdateService.class));
+				AppUtils.startNotificationsUpdate(this);
 			else
-				stopService(new Intent(context, YourMoveUpdateService.class));
+				AppUtils.stopNotificationsUpdate(this);
+
 		} else if (compoundButton.getId() == R.id.prefCoords) {
 			mainApp.getSharedDataEditor().putBoolean(mainApp.getUserName() + AppConstants.PREF_BOARD_COORDINATES, checked);
 			mainApp.getSharedDataEditor().commit();

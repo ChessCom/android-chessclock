@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.FlurryData;
@@ -19,6 +18,7 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivity;
+import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
@@ -215,7 +215,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
 		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
-			startService(new Intent(this, YourMoveUpdateService.class));
+			AppUtils.startNotificationsUpdate(this);
 		}
 
 		mainApp.guest = false;

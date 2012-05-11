@@ -21,7 +21,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 
@@ -431,7 +431,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            Utils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(), AppConstants.SYMBOL_EMPTY, AppConstants.SYMBOL_EMPTY, ChatLiveActivity.class);
+            AppUtils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(), AppConstants.SYMBOL_EMPTY, AppConstants.SYMBOL_EMPTY, ChatLiveActivity.class);
         }
     }
 

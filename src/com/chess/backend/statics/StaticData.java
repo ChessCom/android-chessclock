@@ -33,4 +33,9 @@ public class StaticData {
     public static final int AFTER_MOVE_GO_TO_NEXT_GAME = 0;
     public static final int AFTER_MOVE_STAY_ON_SAME_GAME = 1;
     public static final int AFTER_MOVE_RETURN_TO_GAME_LIST = 2;
+	
+	/* Alarm notification update interval */
+	public static final long REMIND_ALARM_INTERVAL = 5*60*1000; // 5 minutes
+//	public static final long REMIND_ALARM_INTERVAL = 10*1000; // 10 sec
+	public static final int YOUR_MOVE_UPDATE_ID = 33;
 }

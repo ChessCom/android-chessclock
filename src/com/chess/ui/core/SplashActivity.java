@@ -3,9 +3,9 @@ package com.chess.ui.core;
 import android.content.Intent;
 import android.os.Bundle;
 import com.chess.R;
-import com.chess.backend.YourMoveUpdateService;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
+import com.chess.utilities.AppUtils;
 
 public class SplashActivity extends CoreActivity {
 
@@ -27,7 +27,7 @@ public class SplashActivity extends CoreActivity {
 			mainApp.guest = true;
 		} else {
 			if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)) {
-				startService(new Intent(this, YourMoveUpdateService.class));
+				AppUtils.startNotificationsUpdate(this);
 			}
 
 			startActivity(new Intent(this, HomeScreenActivity.class));

@@ -25,7 +25,7 @@ import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.MopubHelper;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 
 import java.util.Timer;
 
@@ -76,7 +76,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if (Utils.needFullScreen(this)) {
+		if (AppUtils.needFullScreen(this)) {
 			setFullscreen();
 			savedInstanceState = new Bundle();
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);

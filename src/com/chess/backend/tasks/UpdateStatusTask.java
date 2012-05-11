@@ -11,7 +11,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.OnlineScreenActivity;
 import com.chess.ui.core.IntentConstants;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 
 /**
  * UpdateStatusTask class
@@ -43,7 +43,7 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 		super.onPostExecute(need2Update);
 
 		if(need2Update){
-			Utils.showMoveStatusNotification(context,
+			AppUtils.showMoveStatusNotification(context,
 					context.getString(R.string.your_move),
 					context.getString(R.string.online_challenge_wait),
 					StaticData.MOVE_REQUEST_CODE,

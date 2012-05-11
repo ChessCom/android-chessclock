@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
@@ -22,6 +21,7 @@ import com.chess.model.GameListItem;
 import com.chess.ui.adapters.*;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -190,8 +190,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				if(!isFinishing())
 					mainApp.showDialog(coreContext, AppConstants.ERROR, status);
 
-				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN))
-					stopService(new Intent(coreContext, YourMoveUpdateService.class));
+				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN)) {
+					AppUtils.stopNotificationsUpdate(coreContext);
+				}
 			}
 		}
 

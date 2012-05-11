@@ -273,7 +273,7 @@ public class RestHelper {
 //			try {
 				url += pair.getName() + "=" + /*URLEncoder.encode(*/pair.getValue()/*, AppConstants.UTF_8)*/;
 //			} catch (UnsupportedEncodingException e) {
-//				Utils.logD(TAG, e.toString());
+//				AppUtils.logD(TAG, e.toString());
 //			}
 			url += "&";
 		}

@@ -13,13 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.Web;
 import com.chess.backend.statics.FlurryData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MyProgressDialog;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
@@ -270,7 +270,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
         FlurryAgent.onEvent("Logged In");
         if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)) {
-			startService(new Intent(this, YourMoveUpdateService.class));
+			AppUtils.startNotificationsUpdate(this);
 		}
         mainApp.guest = false;
 

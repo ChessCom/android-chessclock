@@ -1,5 +1,6 @@
 package com.chess.utilities;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,18 +10,19 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.AlarmReceiver;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 /**
- * Utils class
+ * AppUtils class
  *
  * @author alien_roger
  * @created at: 01.02.12 7:50
  */
-public class Utils {
+public class AppUtils {
 
 	private static final int MDPI_DENSITY = 1;
 	private static boolean ENABLE_LOG = true;
@@ -113,4 +115,25 @@ public class Utils {
 		if(ENABLE_LOG) // can be set false for release version.
 			Log.d(tag, message);
 	}
+
+	public static void startNotificationsUpdate(Context context){
+		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
+				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		// schedule the service for updating
+		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarms.setRepeating(AlarmManager.RTC,  System.currentTimeMillis() , StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
+	}
+
+	public static void stopNotificationsUpdate(Context context){
+		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarms.cancel(pendingIntent);
+	}
+
 }

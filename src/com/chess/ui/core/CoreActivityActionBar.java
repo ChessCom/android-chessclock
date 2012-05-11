@@ -61,7 +61,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected String response = AppConstants.SYMBOL_EMPTY; // TODO remove
 	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY; // TODO remove
 	protected BackgroundChessDrawable backgroundChessDrawable;
-	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
 	protected List<PopupDialogFragment> popupManager;
 
@@ -92,7 +91,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
 		popupItem = new PopupItem();
-//		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 		popupManager = new ArrayList<PopupDialogFragment>();
 
 		mainApp = (MainApp) getApplication();
@@ -269,10 +267,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
-		/*
-		 * if (mainApp.isNetworkChangedNotification()) {
-		 * showNetworkChangeNotification(); }
-		 */
 	}
 
 	@Override
@@ -411,7 +405,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					return;
 				}
 				String title = getString(R.string.error);
-				String message = resp;
+				String message;
 				if (resp.contains(RestHelper.R_ERROR)) {
 					message = resp.split("[+]")[1];
 				} else {

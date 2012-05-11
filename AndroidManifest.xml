@@ -10,12 +10,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-	<!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
-
-	<!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->  <!--Don not need anymore-->
-
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<!-- uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
@@ -132,7 +128,7 @@
         <!--<activity android:name="MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 
 		<service android:name=".backend.WebService" />
-		<service android:name=".backend.YourMoveUpdateService" android:enabled="true" />
+		<receiver android:name=".backend.AlarmReceiver"/>
 
         <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
 

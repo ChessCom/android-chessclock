@@ -5,7 +5,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -51,7 +51,7 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(loadItem.getRequestParams()));
 		} catch (UnsupportedEncodingException e) {
-			Utils.logD(TAG, e.toString());
+			AppUtils.logD(TAG, e.toString());
 		}
 
 		try {

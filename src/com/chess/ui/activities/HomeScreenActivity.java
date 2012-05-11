@@ -17,7 +17,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubInterstitial;
 
@@ -43,7 +43,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.home_screen);
-		Utils.setBackground(findViewById(R.id.mainView), this);
+		AppUtils.setBackground(findViewById(R.id.mainView), this);
 
 		Bundle extras = getIntent().getExtras();
 		if(extras != null){
