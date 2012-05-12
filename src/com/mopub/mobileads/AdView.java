@@ -440,8 +440,6 @@ public class AdView extends WebView {
         
         private LoadUrlTaskResult loadAdFromNetwork(String url) throws Exception {
             HttpGet httpget = new HttpGet(url);
-			Log.d("TEST", "AdView LoadTask , url = " + url);
-			Log.d("TEST", "AdView LoadTask , mUserAgent = " + mUserAgent);
             httpget.addHeader("User-Agent", mUserAgent);
             
             synchronized(this) {
@@ -453,8 +451,7 @@ public class AdView extends WebView {
                 HttpResponse response = mHttpClient.execute(httpget);
                 HttpEntity entity = response.getEntity();
 
-				Log.d("TEST", "AdView LoadTask , data received " + url);
-                if (response == null || entity == null || 
+                if (response == null || entity == null ||
                         response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                     Log.d("MoPub", "MoPub server returned invalid response.");
                     return null;
