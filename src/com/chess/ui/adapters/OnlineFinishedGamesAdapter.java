@@ -3,8 +3,8 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class OnlineFinishedGamesAdapter extends OnlineGamesAdapter {
 	protected void bindView(GameListItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		String gameType = AppConstants.SYMBOL_EMPTY;
+		String gameType = StaticData.SYMBOL_EMPTY;
 
 		if (item.values.get(GameListItem.GAME_TYPE) != null && item.values.get(GameListItem.GAME_TYPE).equals("2")) {
 			gameType = " (960)";

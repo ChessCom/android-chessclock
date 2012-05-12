@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.core.AppConstants;
@@ -153,8 +154,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, AppConstants.SYMBOL_EMPTY + startNewGameButton.getMin());
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, AppConstants.SYMBOL_EMPTY + startNewGameButton.getSec());
+					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getMin());
+					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getSec());
 					mainApp.getSharedDataEditor().commit();
 					startActivity(new Intent(coreContext, LiveCreateChallengeActivity.class));
 				}
@@ -217,7 +218,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 					if (appService != null) {
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 										+ "&command=ACCEPTDRAW&timestamp="
 										+ gameListElement.values.get(GameListItem.TIMESTAMP),
@@ -228,7 +229,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 				case DialogInterface.BUTTON_NEUTRAL: {
 					if (appService != null) {
 						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
+								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
 								null);
 					}
 				}
@@ -259,7 +260,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
@@ -270,7 +271,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			}
 
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.currentGame) {
 

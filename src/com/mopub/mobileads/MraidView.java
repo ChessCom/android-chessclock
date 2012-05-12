@@ -13,6 +13,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.core.AppConstants;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -303,7 +304,7 @@ public class MraidView extends WebView {
         try {
             fos = new FileOutputStream(destinationFile);
         } catch (FileNotFoundException e) {
-            return AppConstants.SYMBOL_EMPTY;
+            return StaticData.SYMBOL_EMPTY;
         }
         
         byte[] b = new byte[8192];
@@ -312,7 +313,7 @@ public class MraidView extends WebView {
                 fos.write(b, 0, n);
             }
         } catch (IOException e) {
-            return AppConstants.SYMBOL_EMPTY;
+            return StaticData.SYMBOL_EMPTY;
         } finally {
             try { is.close(); fos.close(); } catch (IOException e) { }
         }

@@ -15,6 +15,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
@@ -59,13 +60,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
+	private GetStringObjTask getDataTask;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
@@ -98,7 +99,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private void init() {
 		// set default load item to load current games // TODO must be adjustable
 //				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID
-//				+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//				+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //				+ "&all=1",
 
         selectedLoadItem = new LoadItem();
@@ -305,7 +306,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 //				String result = Web.Request("http://www." + LccHolder.HOST
 //						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 //						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 //						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -330,7 +331,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 //				String result = Web.Request("http://www." + LccHolder.HOST
 //						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 //						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 //						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -394,7 +395,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + tournamentsUrl)));
 		} else if (view.getId() == R.id.stats) {
 
@@ -407,7 +408,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.start) {
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
@@ -477,7 +478,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private BroadcastReceiver challengesUpdateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			updateList(selectedLoadItem);
+//			updateList(selectedLoadItem);
 		}
 	};
 

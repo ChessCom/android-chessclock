@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import com.chess.R;
 import com.chess.backend.BitmapLoader;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
@@ -268,7 +269,7 @@ public class MainApp extends Application {
 
     @Deprecated
 	public String getUserName() {  // TODO change to AppData.getUserName()
-		return getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
+		return getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
 	}
 
 	/**
@@ -279,7 +280,7 @@ public class MainApp extends Application {
 	 */
 //	@Deprecated
 	public void showDialog(Context ctx, String title, String message) {
-		if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+		if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 			return;
 		}
 		new AlertDialog.Builder(ctx)
@@ -296,7 +297,7 @@ public class MainApp extends Application {
 	public LccHolder getLccHolder() { // TODO make async call, because it's very slow
 		if (lccHolder == null) {
 			try {
-				String versionName = AppConstants.SYMBOL_EMPTY;
+				String versionName = StaticData.SYMBOL_EMPTY;
 				try {
 					versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 				} catch (NameNotFoundException e) {
@@ -452,7 +453,7 @@ public class MainApp extends Application {
 
 
 	public Intent getMembershipIntent(String param) {
-		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
                 + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 	}

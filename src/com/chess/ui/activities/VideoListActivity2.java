@@ -82,7 +82,7 @@ public class VideoListActivity2 extends LiveBaseActivity implements OnItemClickL
 
     private void updateList() {
 //		"http://www." + LccHolder.HOST + "/api/get_videos?id="
-//				+ preferences.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//				+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //				+ "&page-size=20&page=" + page + skill + category,
 
         LoadItem loadItem = new LoadItem();

@@ -1,13 +1,13 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.MessageItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
@@ -46,10 +46,10 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 			if (owner != null) {
 				if (el.owner.equals("0")) {
 					owner.setTextColor(ownerColor/* Color.GREEN*/);
-					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY));
+					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY));
 				} else {
 					owner.setTextColor(opponentColor/*Color.RED*/);
-					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.OPPONENT, AppConstants.SYMBOL_EMPTY));
+					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.OPPONENT, StaticData.SYMBOL_EMPTY));
 				}
 			}
 		}

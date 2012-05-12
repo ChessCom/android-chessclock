@@ -5,8 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
-import com.chess.ui.core.AppConstants;
 
 /**
  * Created by IntelliJ IDEA. User: Vova Date: 28.02.2010 Time: 15:50:16 To change this template use File | Settings |
@@ -40,7 +40,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
 
 		//lccHolder.getAndroid().sendConnectionBroadcastIntent(true, 0);
-		/*lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", AppConstants.SYMBOL_EMPTY + user.getMembershipLevel());
+		/*lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", StaticData.SYMBOL_EMPTY + user.getMembershipLevel());
 			lccHolder.getAndroid().getSharedDataEditor().commit();*/
 		lccHolder.getAndroid().closeLoggingInIndicator();
 
@@ -63,7 +63,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
 		Log.d("CONNECTION", "User connection failure:" + message + ", details=" + details);
 
-		String detailsMessage = AppConstants.SYMBOL_EMPTY;
+		String detailsMessage = StaticData.SYMBOL_EMPTY;
 		if (details != null) {
 			lccHolder.setConnected(false);
 			lccHolder.setConnectingInProgress(false);
@@ -88,7 +88,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 					detailsMessage = message;
 				}
 			}
-			lccHolder.getAndroid().informAndExit(AppConstants.SYMBOL_EMPTY, detailsMessage);
+			lccHolder.getAndroid().informAndExit(StaticData.SYMBOL_EMPTY, detailsMessage);
 		} else {
 			Log.d("CONNECTION", "User connection failure: IGNORING");
 		}

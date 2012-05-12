@@ -76,6 +76,7 @@ public class MopubHelper {
 
 	public static boolean isShowAds(MainApp app) {
 		boolean result;
+//		return false;
 		User lccUser = null;
 		try {
 			lccUser = app.getLccHolder().getUser();

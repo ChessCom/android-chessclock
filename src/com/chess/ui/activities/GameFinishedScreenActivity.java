@@ -165,7 +165,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY)
+					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(1).split(" ");
 
 			boardView.getBoardFace().setMovesCount(moves.length);
@@ -179,7 +179,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		}
 
 		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace());
 		}
@@ -526,7 +526,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
+				mainApp.showDialog(coreContext, StaticData.SYMBOL_EMPTY, getString(R.string.drawoffered));
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}

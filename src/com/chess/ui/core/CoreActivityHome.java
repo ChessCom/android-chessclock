@@ -50,8 +50,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	protected String response = AppConstants.SYMBOL_EMPTY;
-	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
+	protected String response = StaticData.SYMBOL_EMPTY;
+	protected String responseRepeatable = StaticData.SYMBOL_EMPTY;
 
 	protected Context context;
 	private Handler handler;
@@ -163,16 +163,16 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
 
-			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-			if (password == null || password.equals(AppConstants.SYMBOL_EMPTY)) {
+			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
-						mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
+						mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 						lccHolder.getConnectionListener());
 			}
 			else {
 				lccHolder.getClient().connect(
-						mainApp.getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY),
-						mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY),
+						mainApp.getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
+						mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
 						lccHolder.getConnectionListener());
 			}
 			/*
@@ -278,7 +278,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
+		if (!mainApp.getUserName().equals(StaticData.SYMBOL_EMPTY)) {
 			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
@@ -293,7 +293,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			// getting extras
 			Bundle rExtras = intent.getExtras();
 			boolean repeatable;
-			String resp = AppConstants.SYMBOL_EMPTY;
+			String resp = StaticData.SYMBOL_EMPTY;
 			int retCode = ERROR_SERVER_RESPONSE;
 			try {
 				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE_TASK);
@@ -338,7 +338,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
@@ -462,7 +462,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
@@ -476,7 +476,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 													 */) {
 								lccHolder.logout();
 							}
-							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
+							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 							final Class clazz = (password == null || password.equals("")) ? LoginScreenActivity.class : HomeScreenActivity.class;
 							final Intent intent = new Intent(mainApp, clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

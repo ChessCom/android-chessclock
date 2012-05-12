@@ -58,8 +58,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	protected String response = AppConstants.SYMBOL_EMPTY; // TODO remove
-	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY; // TODO remove
+	protected String response = StaticData.SYMBOL_EMPTY; // TODO remove
+	protected String responseRepeatable = StaticData.SYMBOL_EMPTY; // TODO remove
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	protected PopupItem popupItem;
 	protected List<PopupDialogFragment> popupManager;
@@ -192,16 +192,16 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
 
-			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-			if (password == null || password.equals(AppConstants.SYMBOL_EMPTY)) {
+			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
-					mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, AppConstants.SYMBOL_EMPTY),
+					mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
 			}
 			else {
 				lccHolder.getClient().connect(
-					mainApp.getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY),
-					mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY),
+					mainApp.getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
+					mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
 			}
 			/*
@@ -356,7 +356,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}	
 	
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
+		if (!mainApp.getUserName().equals(StaticData.SYMBOL_EMPTY)) {
 			Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
@@ -412,7 +412,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
@@ -536,7 +536,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
@@ -547,8 +547,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-							final Class clazz = (password == null || password.equals(AppConstants.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
+							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+							final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
 							final Intent intent = new Intent(coreContext, clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);

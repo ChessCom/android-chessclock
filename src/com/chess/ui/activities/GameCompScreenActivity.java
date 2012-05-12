@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
@@ -47,7 +48,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		super.widgetsInit();
 
 		if (MainApp.isComputerGameMode(boardView.getBoardFace())
-				&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, AppConstants.SYMBOL_EMPTY).equals(AppConstants.SYMBOL_EMPTY)) { // if load game
+				&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) { // if load game
 			loadSavedGame();
 
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace()))
@@ -94,7 +95,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GAME_STARTED,
-					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + game_id,
+					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + game_id,
 					null);
 		}
 	}
@@ -177,7 +178,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 									&& MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
 
 							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-									.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
+									.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (Moves.length - boardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -224,7 +225,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				String[] moves = {};
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
 					boardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					boardView.getBoardFace().setMovesCount(0);
@@ -236,7 +237,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
 				}
@@ -313,7 +314,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	private void loadSavedGame(){
 		int i;
-		String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, AppConstants.SYMBOL_EMPTY).split("[|]");
+		String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).split("[|]");
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
 			boardView.getBoardFace().makeMove(new Move(
@@ -407,7 +408,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				}
 				case EMAIL_GAME: {
 //					String moves = movelist.getText().toString();
-					String moves = AppConstants.SYMBOL_EMPTY;
+					String moves = StaticData.SYMBOL_EMPTY;
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");

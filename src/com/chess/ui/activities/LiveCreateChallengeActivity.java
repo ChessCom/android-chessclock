@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
@@ -184,7 +185,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer initialTime = Integer.parseInt(textString);
-			return !textString.equals(AppConstants.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
+			return !textString.equals(StaticData.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
 		}
 
 		@Override
@@ -214,7 +215,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer bonusTime = Integer.parseInt(textString);
-			if (!textString.equals(AppConstants.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60) {
+			if (!textString.equals(StaticData.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60) {
 				return true;
 			} else {
 				return false;

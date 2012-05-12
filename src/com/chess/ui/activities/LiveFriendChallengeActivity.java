@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
@@ -68,7 +69,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_friends?id="
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(LiveFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
@@ -82,7 +83,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
 			friends.setAdapter(friendsAdapter);
-			if (friends.getSelectedItem().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (friends.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 				new AlertDialog.Builder(LiveFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(getString(R.string.sorry))
@@ -182,7 +183,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer initialTime = new Integer(textString);
-			return !textString.equals(AppConstants.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
+			return !textString.equals(StaticData.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
 		}
 
 		@Override
@@ -212,7 +213,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString();
 			final Integer bonusTime = Integer.parseInt(textString);
-			return !textString.equals(AppConstants.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60;
+			return !textString.equals(StaticData.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60;
 		}
 
 		@Override

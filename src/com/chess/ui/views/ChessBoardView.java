@@ -196,7 +196,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         if ((MainApp.isComputerVsHumanGameMode(boardFace) || MainApp.isHumanVsHumanGameMode(boardFace))
                 && !boardFace.isAnalysis()) {
 
-            String saving = AppConstants.SYMBOL_EMPTY + boardFace.getMode();
+            String saving = StaticData.SYMBOL_EMPTY + boardFace.getMode();
 
             int i;
             for (i = 0; i < boardFace.getMovesCount(); i++) {

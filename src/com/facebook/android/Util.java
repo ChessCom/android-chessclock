@@ -22,7 +22,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.StaticData;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +53,7 @@ public final class Util {
      * @return a string of the post body
      */
     public static String encodePostBody(Bundle parameters, String boundary) {
-        if (parameters == null) return AppConstants.SYMBOL_EMPTY;
+        if (parameters == null) return StaticData.SYMBOL_EMPTY;
         StringBuilder sb = new StringBuilder();
 
         for (String key : parameters.keySet()) {
@@ -70,16 +71,24 @@ public final class Util {
 
     public static String encodeUrl(Bundle parameters) {
         if (parameters == null) {
-            return AppConstants.SYMBOL_EMPTY;
+            return StaticData.SYMBOL_EMPTY;
         }
 
         StringBuilder sb = new StringBuilder();
         boolean first = true;
         for (String key : parameters.keySet()) {
-            if (first) first = false; else sb.append("&");
-            sb.append(URLEncoder.encode(key) + "=" +
-                      URLEncoder.encode(parameters.getString(key)));
-        }
+            if (first)
+				first = false;
+			else
+				sb.append("&");
+			try {
+				sb.append(URLEncoder.encode(key, HTTP.UTF_8))
+				.append("=")
+				.append(URLEncoder.encode(parameters.getString(key), HTTP.UTF_8));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
         return sb.toString();
     }
 
@@ -178,7 +187,7 @@ public final class Util {
             os.write((encodePostBody(params, strBoundary)).getBytes());
             os.write((endLine + "--" + strBoundary + endLine).getBytes());
 
-            if (!dataparams.equals(AppConstants.SYMBOL_EMPTY)) {
+            if (!dataparams.equals(StaticData.SYMBOL_EMPTY)) {
 
                 for (String key: dataparams.keySet()){
                     os.write(("Content-Disposition: form-data; filename=\"" + key + "\"" + endLine).getBytes());
@@ -261,11 +270,11 @@ public final class Util {
                     error.getString("message"), error.getString("type"), 0);
         }
         if (json.has("error_code") && json.has("error_msg")) {
-            throw new FacebookError(json.getString("error_msg"), AppConstants.SYMBOL_EMPTY,
+            throw new FacebookError(json.getString("error_msg"), StaticData.SYMBOL_EMPTY,
                     Integer.parseInt(json.getString("error_code")));
         }
         if (json.has("error_code")) {
-            throw new FacebookError("request failed", AppConstants.SYMBOL_EMPTY,
+            throw new FacebookError("request failed", StaticData.SYMBOL_EMPTY,
                     Integer.parseInt(json.getString("error_code")));
         }
         if (json.has("error_msg")) {

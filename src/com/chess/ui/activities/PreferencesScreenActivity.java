@@ -135,14 +135,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));
 		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
 		int boardsPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
-				.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_BOARD_TYPE, 0);
+				.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 
 		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
 		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
 
 		int piecesPosition = mainApp.getSharedData().getInt(mainApp.getSharedData()
-				.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, 0);
+				.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 
 		//checkboxes
@@ -175,8 +175,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 					lccHolder.logout();
 //				}
 				mainApp.guest = true;
-				mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY);
-				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
+				mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 				mainApp.getSharedDataEditor().commit();
 
 				Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -205,7 +205,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefVacation) {
 			String query = vacationCheckBox.isChecked() ? RestHelper.VACATION_LEAVE : RestHelper.VACATION_RETURN;
-			query += mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
+			query += mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 			if (appService != null) {    // TODO change to rest helper
 				appService.RunSingleTask(SET_VACATION_STATUS_CALLBACK_CODE,
 					query,
@@ -256,7 +256,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			mainApp.getSharedDataEditor().putInt(mainApp.getSharedData()
-					.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, pos);
+					.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_PIECES_SET, pos);
 			mainApp.getSharedDataEditor().commit();
 			mainApp.loadPieces(pos);
 		}
@@ -289,7 +289,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			if (!mainApp.guest && !mainApp.isLiveChess()) {
 				if (appService != null) {
 					appService.RunSingleTask(GET_VACATION_STATUS_CALLBACK_CODE,
-							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+							"http://www." + LccHolder.HOST + "/api/get_vacation_status?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 							progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true))
 					);
 				}

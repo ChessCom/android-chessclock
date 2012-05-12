@@ -1,6 +1,6 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
@@ -170,7 +170,7 @@ public class LccGameListener implements GameListener {
 		} else {
 			result = whitePlayerResult;
 		}
-		String message = AppConstants.SYMBOL_EMPTY;
+		String message = StaticData.SYMBOL_EMPTY;
 		switch (result) {
 			case TIMEOUT:
 				message = winnerUsername + " \nwon on time";

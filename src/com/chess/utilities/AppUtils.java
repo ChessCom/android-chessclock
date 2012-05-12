@@ -1,6 +1,5 @@
 package com.chess.utilities;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -123,8 +122,8 @@ public class AppUtils {
 				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// schedule the service for updating
-		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarms.setRepeating(AlarmManager.RTC,  System.currentTimeMillis() , StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
+//		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//		alarms.setInexactRepeating(AlarmManager.RTC,  System.currentTimeMillis() , StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
 	}
 
 	public static void stopNotificationsUpdate(Context context){
@@ -132,8 +131,8 @@ public class AppUtils {
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
 				PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarms.cancel(pendingIntent);
+//		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//		alarms.cancel(pendingIntent);
 	}
 
 }

@@ -32,18 +32,18 @@ public class AppData {
 
 	public static String getUserToken(Context context) {
 		SharedPreferences preferences = getPreferences(context);
-		return preferences.getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
+		return preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 	}
 
     public int getAfterMoveAction(Context context) {
 		SharedPreferences preferences = getPreferences(context);
-        String userName = preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
+        String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
         return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
     }
     
     public String getUserName(Context context){
 		SharedPreferences preferences = getPreferences(context);
-        return preferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY);
+        return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
     }
     
 }

@@ -14,6 +14,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.core.AppConstants;
@@ -132,7 +133,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		@Override
 		public void onAuthFail(String error) {
-			showToast(getString(R.string.login_failed)+ AppConstants.SYMBOL_SPACE + error);
+			showToast(getString(R.string.login_failed)+ StaticData.SYMBOL_SPACE + error);
 		}
 	}
 
@@ -194,7 +195,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		}
 		super.onResume();
 		usernameEdt.setText(mainApp.getUserName());
-		passwordEdt.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY));
+		passwordEdt.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY));
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +12,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.ChatMessage;
 import com.chess.model.GameItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 			} else {
 				messages.notifyDataSetChanged();
 			}
-			sendText.setText(AppConstants.SYMBOL_EMPTY);
+			sendText.setText(StaticData.SYMBOL_EMPTY);
 			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(sendText.getWindowToken(), 0);
 			chatListView.setSelection(chatItems.size() - 1);

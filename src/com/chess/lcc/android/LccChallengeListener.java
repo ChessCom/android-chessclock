@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
 import com.chess.ui.core.AppConstants;
@@ -79,8 +80,8 @@ public class LccChallengeListener implements ChallengeListener {
 
 		/*User challenger = challenge.getFrom();
 			User receiver = lccHolder.getUser();
-			String challengerChessTitle = challenger.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : AppConstants.SYMBOL_EMPTY;
-			String receiverChessTitle = receiver.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : AppConstants.SYMBOL_EMPTY;
+			String challengerChessTitle = challenger.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : StaticData.SYMBOL_EMPTY;
+			String receiverChessTitle = receiver.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : StaticData.SYMBOL_EMPTY;
 			boolean isChallengerProvisional = false; // todo
 			boolean isReceiverProvisional = false; // todo
 			GameTimeConfig challengerTimeConfig = challenge.getGameTimeConfig();
@@ -121,7 +122,7 @@ public class LccChallengeListener implements ChallengeListener {
 			  receiverRating = 0;
 			}
 			WildVariant variant = Chess.getInstance();
-			String ratingCategoryString = AppConstants.SYMBOL_EMPTY;
+			String ratingCategoryString = StaticData.SYMBOL_EMPTY;
 			Player color = null;
 			switch(challenge.getColor())
 			{
@@ -204,7 +205,7 @@ public class LccChallengeListener implements ChallengeListener {
 	}
 
 	private void showWarning(String warning) {
-		if (warning != null && !warning.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (warning != null && !warning.equals(StaticData.SYMBOL_EMPTY)) {
 			lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.FILTER_INFO, "WARNING", warning);
 		}
 	}

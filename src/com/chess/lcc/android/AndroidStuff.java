@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
-import com.chess.backend.RestHelper;
-import com.chess.backend.WebService;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
@@ -175,7 +173,7 @@ public class AndroidStuff {
 	  }*/
 
 	public void closeLoggingInIndicator() {
-		manageProgressDialog(IntentConstants.FILTER_LOGINING_INFO, false, AppConstants.SYMBOL_EMPTY);
+		manageProgressDialog(IntentConstants.FILTER_LOGINING_INFO, false, StaticData.SYMBOL_EMPTY);
 	}
 
 	public void showReconnectingIndicator() {
@@ -183,7 +181,7 @@ public class AndroidStuff {
 	}
 
 	public void closeReconnectingIndicator() {
-		manageProgressDialog(IntentConstants.FILTER_RECONNECT_INFO, false, AppConstants.SYMBOL_EMPTY);
+		manageProgressDialog(IntentConstants.FILTER_RECONNECT_INFO, false, StaticData.SYMBOL_EMPTY);
 	}
 
 	public void informAndExit(String title, String message) {
@@ -191,7 +189,7 @@ public class AndroidStuff {
 	}
 
 	public void processOtherClientEntered() {
-		informAndExit(IntentConstants.FILTER_EXIT_INFO, AppConstants.SYMBOL_EMPTY, "Another login has been detected.");
+		informAndExit(IntentConstants.FILTER_EXIT_INFO, StaticData.SYMBOL_EMPTY, "Another login has been detected.");
 	}
 
 	public void informAndExit(String broadcastAction, String title, String message) {
@@ -209,8 +207,8 @@ public class AndroidStuff {
 
 	/*public void startSigninActivity()
 	  {
-		coreContext.getSharedDataEditor().putString("password", AppConstants.SYMBOL_EMPTY);
-		coreContext.getSharedDataEditor().putString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
+		coreContext.getSharedDataEditor().putString("password", StaticData.SYMBOL_EMPTY);
+		coreContext.getSharedDataEditor().putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 		coreContext.getSharedDataEditor().commit();
 		final Intent intent = new Intent(mainApp, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -265,7 +263,7 @@ public class AndroidStuff {
 	private class LiveMakeDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().makeDraw(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().makeDraw(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}
@@ -278,7 +276,7 @@ public class AndroidStuff {
 	private class LiveMakeResignTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().makeResign(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().makeResign(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}
@@ -291,7 +289,7 @@ public class AndroidStuff {
 	private class LiveAbortGameTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().abortGame(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().abortGame(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}
@@ -346,7 +344,7 @@ public class AndroidStuff {
 	private class LiveRejectDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().rejectDraw(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().rejectDraw(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}

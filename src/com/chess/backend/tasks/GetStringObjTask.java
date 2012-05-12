@@ -5,7 +5,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.core.AppConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -22,7 +21,7 @@ import java.io.IOException;
 public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
 	private static final String TAG = "GetStringObjTask";
     private static int statusCode = -1;
-    private static String reason = AppConstants.SYMBOL_EMPTY;
+    private static String reason = StaticData.SYMBOL_EMPTY;
 
 	public GetStringObjTask(TaskUpdateInterface<String> taskFace) {
 		super(taskFace);

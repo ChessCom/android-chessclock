@@ -199,7 +199,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY)
+					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(1).split(" ");
 
 			boardView.getBoardFace().setMovesCount(moves.length);
@@ -213,7 +213,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 
 		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace());
 		}
@@ -267,7 +267,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
 
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]",
-					AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
+					StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 			if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
 				boardView.updateMoves(moves[moves.length - 1]);
@@ -456,7 +456,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			mainApp.setCurrentGame(game);
 			// show notification instead
 			gamePanelView.haveNewMessage(true);
-			AppUtils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(), AppConstants.SYMBOL_EMPTY, AppConstants.SYMBOL_EMPTY, ChatActivity.class);
+			AppUtils.showNotification(coreContext, StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatActivity.class);
 		}
 	}
 
@@ -639,7 +639,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				mainApp.showDialog(coreContext, AppConstants.SYMBOL_EMPTY, getString(R.string.drawoffered));
+				mainApp.showDialog(coreContext, StaticData.SYMBOL_EMPTY, getString(R.string.drawoffered));
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}

@@ -14,6 +14,10 @@ public class StaticData {
 	public static final int DATA_EXIST = 2;
 	public static final int MAX_REACHED = 3;
 
+	/* String constants*/
+	public static final String SYMBOL_SPACE = " ";
+	public static final String SYMBOL_NEW_STR = "\n";
+	public static final String SYMBOL_EMPTY = "";
 
 	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";
 

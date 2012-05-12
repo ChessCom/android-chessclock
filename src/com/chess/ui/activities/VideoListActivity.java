@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter;
@@ -58,7 +59,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
                                 + "&page-size=20&page=" + page + skill + category,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
@@ -110,7 +111,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
 				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
                                 + "&page-size=20&page=" + page + skill + category,
 						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoListActivity.this, null, getString(R.string.loading), true))
 				);

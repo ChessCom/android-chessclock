@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.VideoItem;
 import com.chess.ui.core.AppConstants;
 
@@ -62,7 +63,7 @@ public class VideosAdapter2 extends ItemsAdapter<VideoItem> {
 		holder.timesTxt.setText(el.values.get("minutes") + " min " + " | " + date);
 
 		holder.descTxt.setText(el.values.get(AppConstants.DESCRIPTION));
-		holder.addInfoTxt.setText(el.values.get(AppConstants.AUTHOR_FIRST_GAME) + AppConstants.SYMBOL_SPACE
+		holder.addInfoTxt.setText(el.values.get(AppConstants.AUTHOR_FIRST_GAME) + StaticData.SYMBOL_SPACE
 				+ el.values.get(AppConstants.AUTHOR_LAST_NAME));
 
 	}

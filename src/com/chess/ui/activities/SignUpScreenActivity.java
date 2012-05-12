@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.Web;
 import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
@@ -175,7 +176,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				showToast(getString(R.string.wrongusername));
 				return;
 			}
-			if (emailEdt.getText().toString().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (emailEdt.getText().toString().equals(StaticData.SYMBOL_EMPTY)) {
 				emailEdt.setError(getString(R.string.can_not_be_empty));
 				emailEdt.requestFocus();
 				showToast(getString(R.string.wrongemail));
@@ -198,7 +199,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				return;
 			}
 
-			String query = AppConstants.SYMBOL_EMPTY;
+			String query = StaticData.SYMBOL_EMPTY;
 			try {
 				query = "http://www." + LccHolder.HOST
                         + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), AppConstants.UTF_8)
@@ -297,7 +298,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
         @Override
         public void onAuthFail(String error) {
-            showToast(getString(R.string.login_failed) + AppConstants.SYMBOL_SPACE + error);
+            showToast(getString(R.string.login_failed) + StaticData.SYMBOL_SPACE + error);
         }
     }
 

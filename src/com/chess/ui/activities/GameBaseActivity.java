@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -24,8 +25,8 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.MopubHelper;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.MopubHelper;
 
 import java.util.Timer;
 
@@ -480,13 +481,13 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		String[] moves = {};
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ")
+					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ")
 					.substring(1).split(" ");
 			boardView.getBoardFace().setMovesCount(moves.length);
 		}
 
         String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
 		}

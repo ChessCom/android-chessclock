@@ -16,6 +16,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
@@ -96,7 +97,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			if (appService != null) {
 				appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 						"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-								mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+								mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						null);
 			}
 		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {

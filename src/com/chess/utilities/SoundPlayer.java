@@ -60,7 +60,7 @@ public class SoundPlayer {
 
 	private void playSound(int soundResource) {
 		final SharedPreferences sharedPreferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, 0);
-		if (sharedPreferences.getBoolean(sharedPreferences.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_SOUNDS, true)) {
+		if (sharedPreferences.getBoolean(sharedPreferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_SOUNDS, true)) {
 			try {
 				MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
 				mediaPlayer.setVolume(0.1f, 0.1f);

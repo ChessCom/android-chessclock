@@ -111,7 +111,7 @@ public class ChessClock {
 		time -= seconds * 1000;
 		int tenths = time / 100;
 		time -= tenths * 100;
-		//String signString = isNegative ? "-" : AppConstants.SYMBOL_EMPTY;
+		//String signString = isNegative ? "-" : StaticData.SYMBOL_EMPTY;
 		switch (getActualDisplayMode()) {
 			case HOUR_MINUTE_DISPLAY_MODE:
 				String sepString = (Math.abs(tenths) > 4) || !isRunning() ? ":" : " ";
@@ -150,9 +150,9 @@ public class ChessClock {
 				  int minutes = seconds / 60;
 				  seconds = seconds % 60;*/
 			/*if (seconds < 10) {
-					  mTimeLabel.setText(AppConstants.SYMBOL_EMPTY + minutes + ":0" + seconds);
+					  mTimeLabel.setText(StaticData.SYMBOL_EMPTY + minutes + ":0" + seconds);
 				  } else {
-					  mTimeLabel.setText(AppConstants.SYMBOL_EMPTY + minutes + ":" + seconds);
+					  mTimeLabel.setText(StaticData.SYMBOL_EMPTY + minutes + ":" + seconds);
 				  }*/
 			paint();
 			if (getTime() < 100) {

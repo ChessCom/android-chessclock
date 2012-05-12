@@ -3,6 +3,7 @@ package com.chess.ui.core;
 import android.content.Intent;
 import android.os.Bundle;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.utilities.AppUtils;
@@ -21,8 +22,8 @@ public class SplashActivity extends CoreActivity {
 		mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
 				+ AppConstants.PREF_PIECES_SET, 0));
 
-		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
-				.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+				.equals(StaticData.SYMBOL_EMPTY)) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {

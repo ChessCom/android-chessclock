@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.core.AppConstants;
 import com.flurry.android.FlurryAgent;
@@ -56,7 +57,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 			startActivity(new Intent(coreContext, GameCompScreenActivity.class)
 					.putExtra(AppConstants.GAME_MODE,
 							Integer.parseInt(mainApp.getSharedData()
-									.getString(AppConstants.SAVED_COMPUTER_GAME, AppConstants.SYMBOL_EMPTY).substring(0, 1))));
+									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
 		} else if (view.getId() == R.id.start) {
 			RadioButton whiteHuman, blackHuman;
 			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
@@ -72,7 +73,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
 				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 
-			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, AppConstants.SYMBOL_EMPTY);
+			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			mainApp.getSharedDataEditor().commit();
 
 			FlurryAgent.onEvent("New Game VS Computer", null);
@@ -93,7 +94,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 				}
 			});
 
-			if (!mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, AppConstants.SYMBOL_EMPTY).equals(AppConstants.SYMBOL_EMPTY)) {
+			if (!mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
 				findViewById(R.id.load).setOnClickListener(this);
 			} else {

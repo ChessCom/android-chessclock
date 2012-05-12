@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
@@ -131,7 +131,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_videos?id="
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 								+ "&page-size=1",
 						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
@@ -163,11 +163,11 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 
 //			Intent i = new Intent(coreContext, VideoListActivity.class);
 			Intent i = new Intent(coreContext, VideoListActivity2.class);
-			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, AppConstants.SYMBOL_EMPTY);
-			i.putExtra(AppConstants.VIDEO_CATEGORY, AppConstants.SYMBOL_EMPTY);
+			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, StaticData.SYMBOL_EMPTY);
+			i.putExtra(AppConstants.VIDEO_CATEGORY, StaticData.SYMBOL_EMPTY);
 
 			if (s > 0) {
-				String skill = AppConstants.SYMBOL_EMPTY;
+				String skill = StaticData.SYMBOL_EMPTY;
 				switch (s) {
 					case 1:
 						skill = "beginner";
@@ -185,7 +185,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 				i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
 			}
 			if (c > 0) {
-				String category = AppConstants.SYMBOL_EMPTY;
+				String category = StaticData.SYMBOL_EMPTY;
 				switch (c) {
 					case 1:
 						category = "amazing-games";

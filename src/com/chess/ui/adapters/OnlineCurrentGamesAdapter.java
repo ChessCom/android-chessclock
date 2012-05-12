@@ -3,8 +3,8 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 
 import java.util.List;
 
@@ -19,18 +19,18 @@ public class OnlineCurrentGamesAdapter extends OnlineGamesAdapter {
 	protected void bindView(GameListItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		String gameType = AppConstants.SYMBOL_EMPTY;
+		String gameType = StaticData.SYMBOL_EMPTY;
 		if (item.values.get(GameListItem.GAME_TYPE) != null && item.values.get(GameListItem.GAME_TYPE).equals("2")) {
 			gameType = " (960)";
 		}
 
-		String draw = AppConstants.SYMBOL_EMPTY;
+		String draw = StaticData.SYMBOL_EMPTY;
 		if (item.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p"))
 			draw = "\n" + context.getString(R.string.drawoffered);
 
 		holder.playerTxt.setText(item.values.get(GameListItem.OPPONENT_USERNAME) + gameType + draw);
 
-		String infoText = AppConstants.SYMBOL_EMPTY;
+		String infoText = StaticData.SYMBOL_EMPTY;
 		if (item.values.get(GameListItem.IS_MY_TURN).equals("1")) {
 
 			String amount = item.values.get(GameListItem.TIME_REMAINING_AMOUNT);

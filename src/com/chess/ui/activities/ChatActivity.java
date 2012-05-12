@@ -17,6 +17,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.ChatItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetCustomObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
@@ -80,13 +81,13 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
     public void initActivity(){
         // submit echess action
 //        appService.RunRepeatableTask(MESSAGE_RECEIVED, 0, 60000, "http://www." + LccHolder.HOST
-//                + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+//                + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //                + AppConstants.CHESSID_PARAMETER +
 //                + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
 //                null);
         LoadItem loadItem = new LoadItem();
         loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-        loadItem.addRequestParams(RestHelper.P_ID, mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY));
+        loadItem.addRequestParams(RestHelper.P_ID, mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY));
         loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
         loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
         loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
@@ -122,7 +123,7 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 		if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunRepeatableTask(MESSAGE_RECEIVED, 0, 60000, "http://www." + LccHolder.HOST
-						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
                         + AppConstants.CHESSID_PARAMETER + extras.getLong(GameListItem.GAME_ID)
                         + "&command=CHAT&timestamp=" + extras.getString(GameListItem.TIMESTAMP),
 						null);
@@ -150,7 +151,7 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 			} else {
 				messages.notifyDataSetChanged();
 			}
-			sendText.setText(AppConstants.SYMBOL_EMPTY);
+			sendText.setText(StaticData.SYMBOL_EMPTY);
 			InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(sendText.getWindowToken(), 0);
 			chatListView.setSelection(chatItems.size() - 1);
@@ -160,7 +161,7 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.send) {
-			String message = AppConstants.SYMBOL_EMPTY;
+			String message = StaticData.SYMBOL_EMPTY;
 			try {
 				message = URLEncoder.encode(sendText.getText().toString(), AppConstants.UTF_8);
 			} catch (UnsupportedEncodingException e) {
@@ -177,7 +178,7 @@ public class ChatActivity extends LiveBaseActivity implements OnClickListener {
 //				loadItem.addRequestParams(RestHelper.P_CHESSID, AppData.getInstance(this).getUserToken());
 
 				String query = "http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 						+ AppConstants.CHESSID_PARAMETER + extras.getLong(GameListItem.GAME_ID)
 						+ "&command=CHAT&message=" + message
 						+ AppConstants.TIMESTAMP_PARAMETER + extras.getString(GameListItem.TIMESTAMP);

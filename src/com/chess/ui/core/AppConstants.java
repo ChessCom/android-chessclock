@@ -2,7 +2,7 @@ package com.chess.ui.core;
 
 public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";
-	public static final int HOME_ACTIVITY_REQUEST_CODE = 65535;
+
 	/*Sreen Features*/
 	public static final String SMALL_SCREEN = "small_screen";
 	// TODO split to GameType and Game Mode Constants
@@ -144,11 +144,6 @@ public class AppConstants {
 	public static final String WARNING = ", warning: ";
 	public static final String CHALLENGE = ", challenge: ";
 	public static final String LISTENER = ": listener=";
-
-	/* String constants*/
-	public static final String SYMBOL_SPACE = " ";
-	public static final String SYMBOL_NEW_STR = "\n";
-	public static final String SYMBOL_EMPTY = "";
 
 	/* Stuff */
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";

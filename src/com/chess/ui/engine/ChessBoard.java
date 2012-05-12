@@ -10,6 +10,7 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.GameItem;
 import com.chess.ui.core.AppConstants;
 import com.chess.ui.interfaces.BoardFace;
@@ -317,7 +318,7 @@ public class ChessBoard implements BoardFace {
 				blackCanCastle = false;
 			}
 
-			Log.d(fen, AppConstants.SYMBOL_EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
+			Log.d(fen, StaticData.SYMBOL_EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
 		}
 
 		String[] FEN = tmp[0].split("[/]");
@@ -1337,7 +1338,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	public String getMoveList() {
-		String output = AppConstants.SYMBOL_EMPTY;
+		String output = StaticData.SYMBOL_EMPTY;
 		int i = 0;
 		for (i = 0; i < hply; i++) {
 			Move m = histDat[i].m;
@@ -1352,13 +1353,13 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public String getMoveListSAN() {
-		String output = AppConstants.SYMBOL_EMPTY;
+		String output = StaticData.SYMBOL_EMPTY;
 		int i = 0;
 		for (i = 0; i < hply; i++) {
 			if (i % 2 == 0)
 				output += "\n " + (i / 2 + 1) + ". ";
 			output += histDat[i].notation;
-			output += AppConstants.SYMBOL_SPACE;
+			output += StaticData.SYMBOL_SPACE;
 		}
 		return output;
 	}
@@ -1367,9 +1368,9 @@ public class ChessBoard implements BoardFace {
 		Move m = histDat[hply].m;
 //        Log.d("TEST" ," getMoveSAN -> move = " + m);
 		int p = pieces[m.from];
-		String f = AppConstants.SYMBOL_EMPTY;
-		String capture = AppConstants.SYMBOL_EMPTY;
-		String promotion = AppConstants.SYMBOL_EMPTY;
+		String f = StaticData.SYMBOL_EMPTY;
+		String capture = StaticData.SYMBOL_EMPTY;
+		String promotion = StaticData.SYMBOL_EMPTY;
 		if (p == 1) {
 			f = MoveParser.N_BIG;
 			//ambigues
@@ -1468,7 +1469,7 @@ public class ChessBoard implements BoardFace {
 		}
 
 
-		String output = AppConstants.SYMBOL_EMPTY;
+		String output = StaticData.SYMBOL_EMPTY;
 		try {
 			String to = MoveParser.positionToString(m.to);
 			if ((m.bits & 2) != 0) {
@@ -1647,7 +1648,7 @@ public class ChessBoard implements BoardFace {
 				try {
 					pieceMat[color[i]] += pieceValue[pieces[i]];
 				} catch (Exception e) {
-					Log.d("I!!!!!!!!:", AppConstants.SYMBOL_EMPTY + i);
+					Log.d("I!!!!!!!!:", StaticData.SYMBOL_EMPTY + i);
 				}
 			}
 		}
