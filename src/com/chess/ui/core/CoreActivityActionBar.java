@@ -25,6 +25,8 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -64,9 +66,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected PopupItem popupItem;
 	protected List<PopupDialogFragment> popupManager;
 
-	protected Context coreContext;
 	protected Handler handler;
 	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
 
 	public boolean mIsBound;
 	public WebService appService = null;
@@ -86,7 +88,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		coreContext = this;
 		handler = new Handler();
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
@@ -107,7 +108,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		lccHolder = mainApp.getLccHolder();
 		lccHolder.setExternalConnectionListener(this);
+
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferencesEditor = preferences.edit();
 	}
 
     @Override
@@ -226,14 +229,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null) {
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-					mainApp.getUserName()
+					AppData.getUserName(getContext())
 							+ AppConstants.PREF_BOARD_TYPE, 8)]);
 
 			resetDetected = true;
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
-			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+			mainApp.loadPieces(mainApp.getSharedData().getInt(AppData.getUserName(getContext())
 					+ AppConstants.PREF_PIECES_SET, 0));
 
 			resetDetected = true;
@@ -356,7 +359,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}	
 	
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(StaticData.SYMBOL_EMPTY)) {
+		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
 			Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
@@ -549,7 +552,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 							}
 							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 							final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
-							final Intent intent = new Intent(coreContext, clazz);
+							final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -669,7 +672,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-					.equals(mainApp.getUserName());
+					.equals(AppData.getUserName(getContext()));
 		} catch (Exception e) {     // TODO remove NPE check
 			return null;
 		}
@@ -729,6 +732,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
+	}
+
+	protected Context getContext(){
+		return this;
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.chess.model;
 
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.core.AppConstants;
 
 import java.util.HashMap;
 

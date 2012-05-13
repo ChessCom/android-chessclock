@@ -13,10 +13,11 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -122,7 +123,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		private LayoutInflater inflater;
 
 		private NewGamesButtonsAdapter() {
-			this.inflater = LayoutInflater.from(coreContext);
+			this.inflater = LayoutInflater.from(getContext());
 		}
 
 		@Override
@@ -157,7 +158,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getMin());
 					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getSec());
 					mainApp.getSharedDataEditor().commit();
-					startActivity(new Intent(coreContext, LiveCreateChallengeActivity.class));
+					startActivity(new Intent(getContext(), LiveCreateChallengeActivity.class));
 				}
 			});
 			return button;
@@ -235,7 +236,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 				}
 				break;
 				case DialogInterface.BUTTON_NEGATIVE: {
-					startActivity(new Intent(coreContext, GameLiveScreenActivity.class).
+					startActivity(new Intent(getContext(), GameLiveScreenActivity.class).
 							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
 							putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
 
@@ -264,7 +265,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
-					+ mainApp.getUserName();
+					+ AppData.getUserName(getContext());
 			try {
 				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
 			} catch (UnsupportedEncodingException ignored) {

@@ -7,9 +7,10 @@ import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -34,7 +35,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 				try {
 					if (mainApp.getSharedDataEditor() != null && mainApp.getSharedData() != null && pos >= 0) {
-						mainApp.getSharedDataEditor().putInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+						mainApp.getSharedDataEditor().putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
 						mainApp.getSharedDataEditor().commit();
 					}
 				} catch (Exception ignored) {
@@ -54,7 +55,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 		if (view.getId() == R.id.load) {
 			FlurryAgent.onEvent("New Game VS Computer", null);
 
-			startActivity(new Intent(coreContext, GameCompScreenActivity.class)
+			startActivity(new Intent(getContext(), GameCompScreenActivity.class)
 					.putExtra(AppConstants.GAME_MODE,
 							Integer.parseInt(mainApp.getSharedData()
 									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
@@ -90,7 +91,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 			strength.post(new Runnable() {
 				@Override
 				public void run() {
-					strength.setSelection(mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+					strength.setSelection(mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 				}
 			});
 

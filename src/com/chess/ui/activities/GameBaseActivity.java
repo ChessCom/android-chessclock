@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -56,7 +56,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected Timer onlineGameUpdate = null;
 	protected boolean isMoveNav;
-	protected boolean chat;
 
 	protected GameItem game;
 
@@ -328,7 +327,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			boardView.finished = true;
 
 			if (MopubHelper.isShowAds(mainApp)) {
-				final LayoutInflater inflater = (LayoutInflater) coreContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.ad_popup,
 						(ViewGroup) findViewById(R.id.layout_root));
 				showGameEndPopup(layout, intent.getExtras().getString(AppConstants.TITLE) + ": " + intent.getExtras().getString(AppConstants.MESSAGE));
@@ -389,7 +388,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			mainApp.showDialog(coreContext, intent.getExtras()
+			mainApp.showDialog(getContext(), intent.getExtras()
 					.getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
 		}
 	};
@@ -458,10 +457,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	}
 
 	@Override
-	public void switch2Chat() {
-		chat = true;
-        // TODO add here flag clear
-        getOnlineGame(mainApp.getGameId());
+	public void switch2Chat(){
 	}
 
 	protected void restoreGame() {
@@ -566,7 +562,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 				return;
 			}
 
-			final LayoutInflater inflater = (LayoutInflater) coreContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+			final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 			final View layout = inflater.inflate(R.layout.ad_popup, (ViewGroup) findViewById(R.id.layout_root));
 			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.MESSAGE));
 
@@ -639,7 +635,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			public void run() {
 				AlertDialog.Builder builder;
 				//Context mContext = getApplicationContext();
-				builder = new AlertDialog.Builder(coreContext);
+				builder = new AlertDialog.Builder(getContext());
 				builder.setView(layout);
 				adPopup = builder.create();
 				adPopup.setCancelable(true);
@@ -716,7 +712,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	public Context getMeContext() {
-		return coreContext;
+		return this;
 	}
 
 	@Override

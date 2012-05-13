@@ -13,11 +13,12 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivity;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
@@ -83,7 +84,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 				|| usernameEdt.getText().toString().length() > 20) {
 			usernameEdt.setError(getString(R.string.check_field));
 			usernameEdt.requestFocus();
-			mainApp.showDialog(coreContext, getString(R.string.error), getString(R.string.validateUsername));
+			mainApp.showDialog(getContext(), getString(R.string.error), getString(R.string.validateUsername));
 			return;
 		}
 
@@ -151,7 +152,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 	private class LoginUpdateListener extends AbstractUpdateListener<String> {
 		public LoginUpdateListener() {
-			super(coreContext);
+			super(getContext());
 		}
 
 		@Override
@@ -194,7 +195,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			mainApp.setLiveChess(false);
 		}
 		super.onResume();
-		usernameEdt.setText(mainApp.getUserName());
+		usernameEdt.setText(AppData.getUserName(getContext()));
 		passwordEdt.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY));
 	}
 
@@ -215,7 +216,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		mainApp.getSharedDataEditor().commit();
 
 		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
-		if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)){
+		if (mainApp.getSharedData().getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)){
 			AppUtils.startNotificationsUpdate(this);
 		}
 

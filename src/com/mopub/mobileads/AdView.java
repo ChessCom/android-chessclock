@@ -93,8 +93,9 @@ public class AdView extends WebView {
     public static final String EXTRA_AD_CLICK_DATA = "com.mopub.intent.extra.AD_CLICK_DATA";
     
     private static final int MINIMUM_REFRESH_TIME_MILLISECONDS = 10000;
-    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
-    
+//    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
+    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 2*1000;
+
     private String mAdUnitId;
     private String mKeywords;
     private String mUrl;
@@ -441,13 +442,16 @@ public class AdView extends WebView {
         private LoadUrlTaskResult loadAdFromNetwork(String url) throws Exception {
             HttpGet httpget = new HttpGet(url);
             httpget.addHeader("User-Agent", mUserAgent);
-            
+            Log.d("MoPub","loading url" + url);
+			
             synchronized(this) {
                 if (mAdView == null || mAdView.isDestroyed()) {
                     Log.d("MoPub", "Error loading ad: AdView has already been GCed or destroyed.");
                     return null;
                 }
-                
+
+
+
                 HttpResponse response = mHttpClient.execute(httpget);
                 HttpEntity entity = response.getEntity();
 

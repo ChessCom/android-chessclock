@@ -9,12 +9,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
@@ -39,6 +40,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
+	private boolean chat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -235,7 +237,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			}
 			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
 				// move was made
-				if (mainApp.getSharedData().getInt(mainApp.getUserName()
+				if (mainApp.getSharedData().getInt(AppData.getUserName(getContext())
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
 				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
@@ -406,6 +408,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         }
 	}
 
+	@Override
+	public void switch2Chat() {
+		openChatActivity();
+	}
+
 	private boolean openChatActivity(){
         if(!chat)
             return false;
@@ -417,7 +424,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
         gamePanelView.haveNewMessage(false);
 
-        Intent intent = new Intent(coreContext, ChatLiveActivity.class);
+        Intent intent = new Intent(this, ChatLiveActivity.class);
         intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGameId() );
         intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
         startActivity(intent);
@@ -432,7 +439,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            AppUtils.showNotification(coreContext, StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatLiveActivity.class);
+            AppUtils.showNotification(getContext(), StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatLiveActivity.class);
         }
     }
 
@@ -503,7 +510,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		public void onClick(DialogInterface dialogInterface, int i) {
 			switch (i) {
 				case LIVE_SETTINGS:
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
 				case LIVE_RESIDE:
 					boardView.getBoardFace().setReside(!boardView.getBoardFace().isReside());

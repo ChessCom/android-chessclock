@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
@@ -161,8 +161,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			int s = skills.getSelectedItemPosition();
 			int c = categories.getSelectedItemPosition();
 
-//			Intent i = new Intent(coreContext, VideoListActivity.class);
-			Intent i = new Intent(coreContext, VideoListActivity2.class);
+			Intent i = new Intent(getContext(), VideoListActivity.class);
 			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, StaticData.SYMBOL_EMPTY);
 			i.putExtra(AppConstants.VIDEO_CATEGORY, StaticData.SYMBOL_EMPTY);
 

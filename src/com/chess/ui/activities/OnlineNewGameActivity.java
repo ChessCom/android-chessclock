@@ -13,7 +13,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.AppData;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.StaticData;
@@ -21,7 +22,6 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -150,7 +150,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		public void onClick(DialogInterface d, int pos) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			if (pos == ACCEPT_DRAW) {
 				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));

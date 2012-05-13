@@ -83,7 +83,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	/**
 	 * Returns a {@link android.content.Context} suitable for inflating layouts
 	 * for the action bar. The implementation for this method in
-	 * {@link ActionBarHelperICS} asks the action bar for a themed coreContext.
+	 * {@link ActionBarHelperICS} asks the action bar for a themed getContext().
 	 */
 	protected Context getActionBarThemedContext() {
 		return mActivity;

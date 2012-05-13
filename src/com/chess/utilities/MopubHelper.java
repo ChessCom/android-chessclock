@@ -4,8 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import com.chess.live.client.User;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.AppConstants;
 import com.chess.ui.core.MainApp;
 import com.mopub.mobileads.MoPubView;
 
@@ -76,21 +75,21 @@ public class MopubHelper {
 
 	public static boolean isShowAds(MainApp app) {
 		boolean result;
-//		return false;
-		User lccUser = null;
-		try {
-			lccUser = app.getLccHolder().getUser();
-			boolean liveMembershipLevel =
-					lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) && !app.getLccHolder().isConnectingInProgress() : false;
-
-			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
-					app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 1;
-
-			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
-				(7 * 24 * 60 * 60 * 1000)) && */;
-		} catch (Exception e) {
-			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.getSharedData() " + app.getSharedData() + ", app.getSharedData().getString(\"premium_status\", \"0\") " + app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0"));
-		}
-		return result;
+		return false;
+//		User lccUser = null;
+//		try {
+//			lccUser = app.getLccHolder().getUser();
+//			boolean liveMembershipLevel =
+//					lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) && !app.getLccHolder().isConnectingInProgress() : false;
+//
+//			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
+//					app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 1;
+//
+//			result = liveMembershipLevel || echessMembershipLevel/*((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
+//				(7 * 24 * 60 * 60 * 1000)) && */;
+//		} catch (Exception e) {
+//			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.getSharedData() " + app.getSharedData() + ", app.getSharedData().getString(\"premium_status\", \"0\") " + app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0"));
+//		}
+//		return result;
 	}
 }

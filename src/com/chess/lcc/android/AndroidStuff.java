@@ -8,13 +8,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.activities.OnlineScreenActivity;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.utilities.MyProgressDialog;
@@ -207,12 +207,12 @@ public class AndroidStuff {
 
 	/*public void startSigninActivity()
 	  {
-		coreContext.getSharedDataEditor().putString("password", StaticData.SYMBOL_EMPTY);
-		coreContext.getSharedDataEditor().putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-		coreContext.getSharedDataEditor().commit();
+		getContext().getSharedDataEditor().putString("password", StaticData.SYMBOL_EMPTY);
+		getContext().getSharedDataEditor().putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+		getContext().getSharedDataEditor().commit();
 		final Intent intent = new Intent(mainApp, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		coreContext.startActivity(intent);
+		getContext().startActivity(intent);
 	  }*/
 
 	public void runSendChallengeTask(MyProgressDialog PD, Challenge challenge) {

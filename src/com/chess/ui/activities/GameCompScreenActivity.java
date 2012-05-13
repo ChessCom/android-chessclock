@@ -10,12 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -58,10 +59,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
 				boardView.getBoardFace().setReside(true);
 				boardView.invalidate();
-				boardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				boardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isComputerVsComputerGameMode(boardView.getBoardFace())) {
-				boardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				boardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 		}
 
@@ -402,7 +403,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					boardView.invalidate();
 					update(CALLBACK_REPAINT_UI);
 					boardView.computerMove(mainApp.strength[mainApp.getSharedData()
-							.getInt(mainApp.getUserName()
+							.getInt(AppData.getUserName(getContext())
 									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					break;
 				}
@@ -413,15 +414,15 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
 					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
-							+ mainApp.getUserName() + "\"]\n [White \""
-							+ mainApp.getUserName() + "\"]\n [Result \"X-X\"]\n \n \n "
+							+ AppData.getUserName(getContext()) + "\"]\n [White \""
+							+ AppData.getUserName(getContext()) + "\"]\n [Result \"X-X\"]\n \n \n "
 							+ moves + " \n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
 					break;
 				}
 
 				case SETTINGS: {
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
 				}
 			}

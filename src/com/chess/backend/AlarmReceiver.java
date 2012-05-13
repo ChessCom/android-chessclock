@@ -3,7 +3,7 @@ package com.chess.backend;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.chess.backend.entity.AppData;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.UpdateStatusTask;
 
 

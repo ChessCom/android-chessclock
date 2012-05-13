@@ -121,6 +121,8 @@ public class RestHelper {
 	public static final String P_ECHESS_CHALLENGES = "echess_challenges";
 	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
 
+	private static final String GOTO = "&goto=";
+
 	/* Returned Values */
 	public static final String R_ERROR_MESSAGE = "error_message";
 	public static final String R_USER_TOKEN = "user_token";
@@ -280,6 +282,20 @@ public class RestHelper {
 		return url.substring(0, url.length()-1);
 	}
 
+	public static String formTournamentsLink(String userToken) {
+		return LOGIN_HTML_ALS + userToken + GOTO + TOURNAMENTS;
+	}
+
+	public static String formStatsLink(String userToken) {
+		return LOGIN_HTML_ALS + userToken + GOTO + ECHESS_MOBILE_STATS;
+	}
+
+	public static String getMembershipLink(String userToken, String param) {
+		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
+//				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//				+ "&goto=http%3A%2F%2Fwww."
+//				+ LccHolder.HOST + "%2Fmembership.html" + param;
+	}
 	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 		String fullUrl = formUrl(loadItem.getRequestParams());

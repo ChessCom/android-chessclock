@@ -1,6 +1,6 @@
 package com.chess.model;
 
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.AppConstants;
 
 import java.io.Serializable;
 import java.util.HashMap;

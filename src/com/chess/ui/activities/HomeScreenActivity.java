@@ -8,13 +8,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
@@ -140,7 +140,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
             fragment.getDialog().dismiss();
             lccHolder.declineCurrentChallenge(currentChallenge);
-//			update(3); // TODO verify
         }else
             fragment.getDialog().dismiss();
 	}
@@ -316,25 +315,25 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
 			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : LiveScreenActivity.class;
-			startActivity(new Intent(context, clazz));
+			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playOnlineFrame) {
 			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : OnlineScreenActivity.class;
-			startActivity(new Intent(context, clazz));
+			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playComputerFrame) {
-			startActivity(new Intent(context, ComputerScreenActivity.class));
+			startActivity(new Intent(this, ComputerScreenActivity.class));
 
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
-			Intent intent = new Intent(context, GameTacticsScreenActivity.class);
+			Intent intent = new Intent(this, GameTacticsScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
 			startActivity(intent);
 
 		} else if (v.getId() == R.id.videoLessonsFrame) {
-			startActivity(new Intent(context, VideoScreenActivity.class));
+			startActivity(new Intent(this, VideoScreenActivity.class));
 
 		} else if (v.getId() == R.id.settingsFrame) {
-			startActivity(new Intent(context, PreferencesScreenActivity.class));
+			startActivity(new Intent(this, PreferencesScreenActivity.class));
 		}
 	}
 

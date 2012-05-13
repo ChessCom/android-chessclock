@@ -1,4 +1,4 @@
-package com.chess.ui.core;
+package com.chess.backend.statics;
 
 public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";

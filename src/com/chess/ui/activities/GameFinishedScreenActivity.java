@@ -14,7 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.AppData;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.StaticData;
@@ -22,7 +23,6 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
@@ -128,7 +128,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V3);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(game_id));
 
 		new GetStringObjTask(startGameUpdateListener).execute(loadItem);
@@ -221,7 +221,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 			// get game entity
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V3);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(mainApp.getGameId()));
 
 			new GetStringObjTask(getGameUpdateListener).execute(loadItem);
@@ -233,7 +233,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	private void sendMove() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, boardView.getBoardFace().convertMoveEchess());
@@ -262,8 +262,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 		@Override
 		public void showProgress(boolean show) {
+			super.showProgress(show);
 
-			getActionBarHelper().setRefreshActionItemState(show);
 			if (GameFinishedScreenActivity.this.isFinishing())
 				return;
 
@@ -285,7 +285,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 	private void moveWasSent(){
 		showSubmitButtonsLay(false);
-		int action = AppData.getInstance().getAfterMoveAction(coreContext);
+		int action = AppData.getAfterMoveAction(getContext());
 		if(action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 			finish();
 		else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
@@ -297,7 +297,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	private void getGamesList(){
 		LoadItem listLoadItem = new LoadItem();
 		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
 		new GetStringObjTask(gamesListUpdateListener).execute(listLoadItem);
@@ -306,11 +306,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	private class GamesListUpdateListener extends ChessUpdateListener {
 		public GamesListUpdateListener() {
 			super(getInstance());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			getActionBarHelper().setRefreshActionItemState(show);
 		}
 
 		@Override
@@ -338,7 +333,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				if(!isFinishing())
-					mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+					mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -386,7 +381,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 				boardView.switchAnalysis();
 				break;
 			case R.id.menu_chat:
-				chat = true;
 				getOnlineGame(mainApp.getGameId());
 				break;
 			case R.id.menu_previous:
@@ -418,13 +412,12 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		public void onClick(DialogInterface dialogInterface, int i) {
 			switch (i) {
 				case ECHESS_SETTINGS:
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
 				case ECHESS_BACK_TO_GAME_LIST:
 					onBackPressed();
 					break;
 				case ECHESS_MESSAGES:
-					chat = true;
 					getOnlineGame(mainApp.getGameId());
 					break;
 				case ECHESS_RESIDE:
@@ -467,7 +460,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
@@ -483,7 +476,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
@@ -510,7 +503,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 				}
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				if(!isFinishing())
-					mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+					mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -526,9 +519,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				mainApp.showDialog(coreContext, StaticData.SYMBOL_EMPTY, getString(R.string.drawoffered));
+				mainApp.showDialog(getContext(), StaticData.SYMBOL_EMPTY, getString(R.string.drawoffered));
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}

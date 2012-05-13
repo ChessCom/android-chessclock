@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import com.chess.R;
 import com.chess.backend.BitmapLoader;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameItem;
@@ -54,15 +55,17 @@ public class MainApp extends Application {
 
     // TODO move to array resources
 	public int[] strength = {1000, 3000, 5000, 10000, 30000, 60000};
-	public String[] res_boards = {"blue",
+	public String[] res_boards = {
+			"wood_dark",
+			"wood_light",
+			"blue",
 			"brown",
 			"green",
 			"grey",
 			"marble",
 			"red",
 			"tan",
-			"wood_light",
-			"wood_dark"};
+	};
 	
 	public static final int P_ALPHA_ID 	= 0;
 	public static final int P_BOOK_ID 	= 1;

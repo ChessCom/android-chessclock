@@ -10,9 +10,9 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.CoreActivityFace;
 import com.chess.utilities.SoundPlayer;

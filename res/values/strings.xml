@@ -7,6 +7,7 @@
 	<string name="app_name">ChessCom</string>
 	<string name="error_occurred">Error occurred</string>
 	<string name="signout">Sign Out</string>
+
 	<!--Dashboard labels-->
 	<string name="menuLive">Play Live</string>
 	<string name="menuOnline">Play Online</string>
@@ -295,4 +296,17 @@
 	<string name="lightning_mod">(Lightning)</string>
 	<string name="standard_mod">(Standard)</string>
 
+	<string name="encoding_unsopported">Encoding unsopported</string>
+	<string name="unsopported_encoding">Unsopported encoding</string>
+	<string name="error_occurred_while_login">Error occurred while login, please relogin!</string>
+	<string name="update_available_please_update">An update is available! Please update</string>
+	<string name="update_check">Update Check</string>
+	<string name="won_on_time">won on time</string>
+	<string name="won_by_resignation">won by resignation</string>
+	<string name="won_by_checkmate">won by checkmate</string>
+	<string name="game_over">GAME OVER</string>
+	<string name="draw_game">DRAW OFFER</string>
+	<string name="has_offered_draw">has offered a draw</string>
+	<string name="reconnecting">Reconnecting...</string>
+	<string name="another_login_detected">Another login has been detected.</string>
 </resources>

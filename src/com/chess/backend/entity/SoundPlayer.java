@@ -1,8 +1,4 @@
-/*
- * SoundPlayer.java
- */
-
-package com.chess.utilities;
+package com.chess.backend.entity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,10 +7,25 @@ import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 
+/**
+ * SoundPlayer class
+ *
+ * @author alien_roger
+ * @created at: 26.04.12 6:29
+ */
 public class SoundPlayer {
+	private static SoundPlayer ourInstance;
+
+	public static SoundPlayer getInstance(Context context) {
+		if(ourInstance == null){
+			ourInstance = new SoundPlayer(context);
+		}
+		return ourInstance;
+	}
+
 	private Context context;
 
-	public SoundPlayer(Context context) {
+	private SoundPlayer(Context context) {
 		this.context = context;
 	}
 
@@ -70,10 +81,9 @@ public class SoundPlayer {
 						mediaPlayer.release();
 					}
 				});
-			} catch (Exception e) {
+			} catch (Exception e) { // TODO eliminate
 				e.printStackTrace();
 			}
 		}
 	}
 }
-

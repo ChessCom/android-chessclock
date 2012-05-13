@@ -12,7 +12,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.AppData;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.StaticData;
@@ -20,7 +21,6 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.*;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
@@ -111,9 +111,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		// init adapters
 		List<GameListItem> itemList = new ArrayList<GameListItem>();
 
-		currentGamesAdapter = new OnlineCurrentGamesAdapter(coreContext, itemList);
-		challengesGamesAdapter = new OnlineChallengesGamesAdapter(coreContext, itemList);
-		finishedGamesAdapter = new OnlineFinishedGamesAdapter(coreContext, itemList);
+		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, itemList);
+		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, itemList);
+		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, itemList);
 	}
 
 	@Override
@@ -189,10 +189,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				String status = returnedObj.split("[+]")[1];
 				if(!isFinishing())
-					mainApp.showDialog(coreContext, AppConstants.ERROR, status);
+					mainApp.showDialog(getContext(), AppConstants.ERROR, status);
 
 				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN)) {
-					AppUtils.stopNotificationsUpdate(coreContext);
+					AppUtils.stopNotificationsUpdate(getContext());
 				}
 			}
 		}
@@ -222,7 +222,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				showToast(successToastMsgId);
 				updateList(selectedLoadItem);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -240,7 +240,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				updateList(selectedLoadItem);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -251,7 +251,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if(whichButton == DialogInterface.BUTTON_POSITIVE){
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-				loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
@@ -260,7 +260,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}else if(whichButton == DialogInterface.BUTTON_NEUTRAL){
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-				loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
@@ -268,7 +268,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				new GetStringObjTask(acceptDrawUpdateListener).execute(loadItem);
 
 			}else  if(whichButton == DialogInterface.BUTTON_NEGATIVE){
-				startActivity(new Intent(coreContext, GameOnlineScreenActivity.class).
+				startActivity(new Intent(getContext(), GameOnlineScreenActivity.class).
 					putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
 					putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
 			}
@@ -285,7 +285,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				mainApp.getSharedDataEditor().commit();
 
-				Intent intent = new Intent(coreContext, ChatActivity.class);
+				Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 				intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
 				startActivity(intent);
@@ -296,7 +296,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-				loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
 				loadItem.addRequestParams(RestHelper.P_COMMAND, Draw);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
@@ -315,14 +315,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 //					showToast(R.string.accepted);   // TODO
 //					update(1);
 //				} else if (result.contains("Error+")) {
-//					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+//					mainApp.showDialog(getContext(), AppConstants.ERROR, result.split("[+]")[1]);
 //				}
 
 			} else if (pos == 2) {
 
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-				loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
@@ -339,7 +339,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 //				if (result.contains(RestHelper.R_SUCCESS)) {
 //					update(1);
 //				} else if (result.contains("Error+")) {
-//					mainApp.showDialog(coreContext, AppConstants.ERROR, result.split("[+]")[1]);
+//					mainApp.showDialog(getContext(), AppConstants.ERROR, result.split("[+]")[1]);
 //				}
 
 			}
@@ -352,7 +352,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void onClick(DialogInterface d, int pos) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			if (pos == ACCEPT_DRAW) {
 				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
@@ -400,7 +400,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (view.getId() == R.id.stats) {
 
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
-					+ mainApp.getUserName();
+					+ AppData.getUserName(getContext());
 			try {
 				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
 			} catch (UnsupportedEncodingException ignored) {
@@ -432,7 +432,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			} else {
 				mainApp.acceptdraw = false;
 
-				Intent intent = new Intent(coreContext, GameOnlineScreenActivity.class);
+				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 				startActivity(intent);
@@ -441,8 +441,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 			mainApp.getSharedDataEditor().commit();
 
-//			Intent intent = new Intent(coreContext, GameOnlineScreenActivity.class);
-			Intent intent = new Intent(coreContext, GameFinishedScreenActivity.class);
+//			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
+			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
 //			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 			startActivity(intent);
@@ -456,7 +456,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 			clickOnChallenge();
 		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
-			new AlertDialog.Builder(coreContext)
+			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
 							getString(R.string.chat),
 							getString(R.string.drawoffer),
@@ -467,7 +467,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 			mainApp.getSharedDataEditor().commit();
 
-			Intent intent = new Intent(coreContext, ChatActivity.class);
+			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 			intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
 			startActivity(intent);
@@ -487,7 +487,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
 				+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
-		new AlertDialog.Builder(coreContext)
+		new AlertDialog.Builder(getContext())
 				.setTitle(title)
 				.setItems(new String[]{
 						getString(R.string.accept),
@@ -506,16 +506,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		selectedLoadItem.clearParams();
         if (pos == GameListItem.LIST_TYPE_CURRENT) {
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
             selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
         } else if (pos == GameListItem.LIST_TYPE_CHALLENGES){
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
-            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 
         } else if (pos == GameListItem.LIST_TYPE_FINISHED) {
             selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
-            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(this));
+            selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
         }
 
         updateList(selectedLoadItem);

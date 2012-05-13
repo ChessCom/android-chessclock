@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.AppConstants;
 import com.chess.utilities.MyProgressDialog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;

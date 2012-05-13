@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.model.VideoItem;
-import com.chess.ui.core.AppConstants;
 
 import java.util.ArrayList;
 

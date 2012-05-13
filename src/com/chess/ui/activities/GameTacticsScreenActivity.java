@@ -13,6 +13,7 @@ import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -20,7 +21,6 @@ import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -985,7 +985,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					break;
 				}
 				case TACTICS_SETTINGS: {
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 
 					break;
 				}

@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.MessageItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
 
 import java.util.ArrayList;

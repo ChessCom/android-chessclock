@@ -22,6 +22,8 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -47,7 +49,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected String responseRepeatable = StaticData.SYMBOL_EMPTY;
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
-	protected Context coreContext;
     public boolean mIsBound;
 	public WebService appService = null;
 
@@ -64,7 +65,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		coreContext = this;
 		backgroundChessDrawable =  new BackgroundChessDrawable(this);
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
@@ -179,7 +179,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(StaticData.SYMBOL_EMPTY)) {
+		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
 			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
@@ -356,7 +356,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-					.equals(mainApp.getUserName());
+					.equals(AppData.getUserName(getContext()));
 		} catch (Exception e) {
 			return null;
 		}
@@ -413,5 +413,9 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	@Override
 	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
+	}
+
+	protected Context getContext(){
+		return this;
 	}
 }

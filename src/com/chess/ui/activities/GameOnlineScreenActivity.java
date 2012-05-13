@@ -11,21 +11,20 @@ import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 
@@ -109,8 +108,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	protected void onResume() {
 		super.onResume();
 
-		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-
 		updateGameState();
 		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
 	}
@@ -127,14 +124,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void onPause() {
 		super.onPause();
-
 		handler.removeCallbacks(updateGameStateOrder);
-		unregisterReceiver(chatMessageReceiver);
 	}
 
-
 	private void updateGameState() {
-
 		if (boardView.getBoardFace().isInit()) {
 			getOnlineGame(mainApp.getGameId());
 			boardView.getBoardFace().setInit(false);
@@ -142,7 +135,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V3);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(mainApp.getGameId()));
 
 			new GetStringObjTask(gameStateUpdateListener).execute(loadItem);
@@ -155,14 +148,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V3);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(game_id));
 
 		new GetStringObjTask(startGameUpdateListener).execute(loadItem);
 	}
 
-	private class StartGameUpdateListener extends ChessUpdateListener { // TODO hide logic to Game Manager class
-
+	private class StartGameUpdateListener extends ChessUpdateListener {
 		public StartGameUpdateListener() {
 			super(getInstance());
 		}
@@ -177,11 +169,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		showSubmitButtonsLay(false);
 		getSoundPlayer().playGameStart();
 
-		mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
+		game = ChessComApiParser.GetGameParseV3(returnedObj);
+		mainApp.setCurrentGame(game);
 
-		if (openChatActivity()) {
-			return;
-		}
+		checkMessages();
 
 		adjustBoardForGame();
 	}
@@ -229,7 +220,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		playLastMoveAnimation();
 	}
 
-	private class GameStateUpdateListener extends ChessUpdateListener { // TODO hide logic to Game Manager class
+	private class GameStateUpdateListener extends ChessUpdateListener {
 
 		public GameStateUpdateListener() {
 			super(getInstance());
@@ -279,7 +270,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 	}
 
-	public void invalidateGameScreen() {  // TODO hide logic to Game Manager class
+	public void invalidateGameScreen() {
 		if (boardView.getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
@@ -293,7 +284,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 
 	@Override
-	public void updateAfterMove() { // TODO hide logic to Game Manager class
+	public void updateAfterMove() {
 		showSubmitButtonsLay(false);
 
 		if (mainApp.getCurrentGame() == null) { // if we don't have Game entity
@@ -305,7 +296,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			// get game entity
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V3);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(mainApp.getGameId()));
 
 			new GetStringObjTask(getGameUpdateListener).execute(loadItem);
@@ -314,10 +305,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		}
 	}
 
-	private void sendMove() { // TODO hide logic to Game Manager class
+	private void sendMove() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, boardView.getBoardFace().convertMoveEchess());
@@ -356,7 +347,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				sendMoveUpdateDialog.dismiss();
 		}
 
-
 		@Override
 		public void updateData(String returnedObj) {
 			moveWasSent();
@@ -368,7 +358,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 	private void moveWasSent() {
 		showSubmitButtonsLay(false);
-		int action = AppData.getInstance().getAfterMoveAction(coreContext);
+		int action = AppData.getAfterMoveAction(getContext());
 		if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 			finish();
 		else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
@@ -380,7 +370,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	private void getGamesList() {
 		LoadItem listLoadItem = new LoadItem();
 		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
 		new GetStringObjTask(gamesListUpdateListener).execute(listLoadItem);
@@ -389,11 +379,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	private class GamesListUpdateListener extends ChessUpdateListener {
 		public GamesListUpdateListener() {
 			super(getInstance());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			getActionBarHelper().setRefreshActionItemState(show);
 		}
 
 		@Override
@@ -421,7 +406,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				if (!isFinishing())
-					mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+					mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -431,8 +416,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	}
 
 	private boolean openChatActivity() {
-		if (!chat)
-			return false;
+//		if (!game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1"))
+//			return false;
 
 		mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
 				isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
@@ -441,12 +426,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
 		gamePanelView.haveNewMessage(false);
 
-		Intent intent = new Intent(coreContext, ChatActivity.class);
+		Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 		intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGameId());
 		intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
 		startActivity(intent);
 
-		chat = false;
 		return true;
 	}
 
@@ -456,8 +440,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			mainApp.setCurrentGame(game);
 			// show notification instead
 			gamePanelView.haveNewMessage(true);
-			AppUtils.showNotification(coreContext, StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatActivity.class);
+//			AppUtils.showNotification(getContext(), StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatOnlineActivity.class);
 		}
+	}
+
+	@Override
+	public void switch2Chat() {
+		openChatActivity();
 	}
 
 	@Override
@@ -489,18 +478,17 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_next_game: // TODO move to action bar
+			case R.id.menu_next_game:
 				newGame();
 				break;
-			case R.id.menu_options: // TODO move to action bar
+			case R.id.menu_options:
 				showOptions();
 				break;
 			case R.id.menu_analysis:
 				boardView.switchAnalysis();
 				break;
 			case R.id.menu_chat:
-				chat = true;
-				getOnlineGame(mainApp.getGameId());
+				openChatActivity();
 				break;
 			case R.id.menu_previous:
 				boardView.moveBack();
@@ -531,14 +519,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		public void onClick(DialogInterface dialogInterface, int i) {
 			switch (i) {
 				case ECHESS_SETTINGS:
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
 				case ECHESS_BACK_TO_GAME_LIST:
 					onBackPressed();
 					break;
 				case ECHESS_MESSAGES:
-					chat = true;
-					getOnlineGame(mainApp.getGameId());
+					openChatActivity();
 					break;
 				case ECHESS_RESIDE:
 					boardView.getBoardFace().setReside(!boardView.getBoardFace().isReside());
@@ -580,7 +567,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
@@ -596,7 +583,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
@@ -623,7 +610,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				}
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				if (!isFinishing())
-					mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+					mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -639,9 +626,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				mainApp.showDialog(coreContext, StaticData.SYMBOL_EMPTY, getString(R.string.drawoffered));
+				mainApp.showDialog(getContext(), StaticData.SYMBOL_EMPTY, getString(R.string.drawoffered));
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(coreContext, AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -651,13 +638,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		showSubmitButtonsLay(false);
 		gamePanelView.haveNewMessage(true);
 	}
-
-	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			gamePanelView.haveNewMessage(true);
-		}
-	};
 
 	@Override
 	public void onClick(View view) {

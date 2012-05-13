@@ -40,15 +40,12 @@
         <activity android:name="com.millennialmedia.android.VideoPlayer"
                   android:configChanges="keyboardHidden|orientation|keyboard" />
 
-
 		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />
-		<activity android:name=".ui.activities.VideoListActivity2" 	android:label="@string/label_video"
-				  android:configChanges="keyboardHidden|keyboard|orientation" />
 
 
 
-		<activity android:name=".ui.activities.ChatActivity"   android:label="@string/label_chat_online"
+		<activity android:name=".ui.activities.ChatOnlineActivity"   android:label="@string/label_chat_online"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />
 
 		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
@@ -116,8 +113,9 @@
 		<activity android:name=".ui.activities.GameFinishedScreenActivity" android:label="@string/label_game_finished"
 			/>
 
-        <activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
+		<activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
 				  android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>
+
         <activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"
 					android:configChanges="keyboardHidden|keyboard|orientation"/>
         <activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"

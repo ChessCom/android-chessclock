@@ -13,10 +13,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.activities.GameTacticsScreenActivity;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
@@ -133,23 +134,22 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         this.gameActivityFace = gameActivityFace;
         mainApp = gameActivityFace.getMainApp();
 
-        isHighlightEnabled = mainApp.getSharedData().getBoolean(mainApp.getUserName()
+        isHighlightEnabled = mainApp.getSharedData().getBoolean(AppData.getUserName(getContext())
                 + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true);
 
-        showCoordinates = mainApp.getSharedData().getBoolean(mainApp.getUserName()
-                + AppConstants.PREF_BOARD_COORDINATES, true);
+        showCoordinates = AppData.showCoordinates(getContext());
 
 
-        compStrength = mainApp.getSharedData().getInt(mainApp.getUserName()
+        compStrength = mainApp.getSharedData().getInt(AppData.getUserName(getContext())
                 + AppConstants.PREF_COMPUTER_STRENGTH, 0);
 
-        userName = mainApp.getUserName();
+        userName = AppData.getUserName(getContext());
     }
 
     private boolean need2ShowSubmitButtons() {
         String sharedKey;
         sharedKey = mainApp.isLiveChess() ? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
-        return mainApp.getSharedData().getBoolean(mainApp.getUserName()
+        return mainApp.getSharedData().getBoolean(AppData.getUserName(getContext())
                 + sharedKey, !mainApp.isLiveChess());
     }
 
@@ -173,7 +173,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         if (!boardFace.isAnalysis()) {  // TODO eliminate game mode switches
             switch (boardFace.getMode()) {
                 case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
-                    computerMove(mainApp.strength[mainApp.getSharedData().getInt(mainApp.getUserName() + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+                    computerMove(mainApp.strength[mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
                     break;
                 }
                 case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
@@ -752,7 +752,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                 }
                 //getBoardFaceFace().mode ^= 1;
                 computerMove(mainApp.strength[mainApp.getSharedData()
-                        .getInt(mainApp.getUserName()
+                        .getInt(AppData.getUserName(getContext())
                                 + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
             }
             invalidate();
@@ -804,7 +804,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         if (!compmoving) {
             hint = true;
             computerMove(mainApp.strength[mainApp.getSharedData()
-                    .getInt(mainApp.getUserName()
+                    .getInt(AppData.getUserName(getContext())
                             + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
         }
     }

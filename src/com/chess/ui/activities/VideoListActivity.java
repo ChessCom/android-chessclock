@@ -1,122 +1,116 @@
 package com.chess.ui.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.model.VideoItem;
-import com.chess.ui.adapters.VideosAdapter;
-import com.chess.ui.core.AppConstants;
-import com.chess.utilities.MyProgressDialog;
+import com.chess.ui.adapters.VideosAdapter2;
+import com.chess.ui.adapters.VideosPaginationAdapter;
 
 import java.util.ArrayList;
 
-public class VideoListActivity extends LiveBaseActivity implements OnItemClickListener, View.OnClickListener, OnScrollListener {
-	private ArrayList<VideoItem> items = new ArrayList<VideoItem>();
-	private VideosAdapter videosAdapter = null;
-	private ListView videosListView;
-	private TextView videoUpgrade;
-	private int page = 1;
-    private boolean update;
+public class VideoListActivity extends LiveBaseActivity implements OnItemClickListener,
+        View.OnClickListener{
+    private ListView listView;
+	private String skill;
+    private String category;
+    private VideosListItemsUpdateListener videosListItemUpdateListener;
+
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.videolist);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.videolist);
 
-		videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
-		boolean liveMembershipLevel =
-				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
-		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
-			videoUpgrade.setVisibility(View.VISIBLE);
-			videoUpgrade.setOnClickListener(this);
+		TextView videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
+        boolean liveMembershipLevel = lccHolder.getUser() != null && mainApp.isLiveChess()
+                && (lccHolder.getUser().getMembershipLevel() < 50);
+        if (liveMembershipLevel
+                || (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+            videoUpgrade.setVisibility(View.VISIBLE);
+            videoUpgrade.setOnClickListener(this);
 
-		} else {
-			videoUpgrade.setVisibility(View.GONE);
-		}
+        } else {
+            videoUpgrade.setVisibility(View.GONE);
+        }
 
-		videosListView = (ListView) findViewById(R.id.videosLV);
-		videosListView.setOnItemClickListener(this);
-		videosListView.setOnScrollListener(this);
+        listView = (ListView) findViewById(R.id.videosLV);
+        listView.setOnItemClickListener(this);
 
-	}
+        skill = extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
+        category = extras.getString(AppConstants.VIDEO_CATEGORY);
 
-	@Override
-	public void update(int code) {
-		if (code == INIT_ACTIVITY) {
-			if (appService != null && videosAdapter == null) {
-				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
-				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
-				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-                                + "&page-size=20&page=" + page + skill + category,
-						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
-				);
-			}
-		} else if (code == 0) {
-			String[] responseArray = response.trim().split("[|]");
-			if (responseArray.length == 3) {
-				responseArray = responseArray[2].split("<--->");
-			} else return;
-			if (page == 1)
-				items.clear();
-			for (String responseItem : responseArray) {
-				items.add(new VideoItem(responseItem.split("<->")));
-			}
-			if (videosAdapter == null) {
-				videosAdapter = new VideosAdapter(VideoListActivity.this, R.layout.videolistelement, items);
-				videosListView.setAdapter(videosAdapter);
-			} else
-				videosAdapter.notifyDataSetChanged();
+        videosListItemUpdateListener = new VideosListItemsUpdateListener();
+    }
 
-		}
-	}
+    @Override
+    public void update(int code) {
+    }
 
-	@Override
-	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setDataAndType(Uri.parse(items.get(pos).values.get(AppConstants.VIEW_URL).trim()), "video/*");
-		startActivity(i);
-	}
 
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(mainApp.getMembershipVideoIntent());
-		}
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		if (firstVisibleItem == totalItemCount - visibleItemCount)
-			update = true;
-	}
+        updateList();
+    }
 
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		if (scrollState == SCROLL_STATE_IDLE) {  // TODO implement pagination adapter
-			if (update) {
-				page++;
-				String skill = "&skill_level=" + extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
-				String category = "&category=" + extras.getString(AppConstants.VIDEO_CATEGORY);
-				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-                                + "&page-size=20&page=" + page + skill + category,
-						progressDialog = new MyProgressDialog(ProgressDialog.show(VideoListActivity.this, null, getString(R.string.loading), true))
-				);
-				update = false;
-			}
-		}
-	}
+    private void updateList() {
+        LoadItem loadItem = new LoadItem();
+        loadItem.setLoadPath(RestHelper.GET_VIDEOS);
+        loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+        loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);
+        loadItem.addRequestParams(RestHelper.P_PAGE, String.valueOf(0));
+        loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, skill);
+        loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
+
+        //set Pagination adapter params
+        ArrayList<VideoItem> itemsList = new ArrayList<VideoItem>();
+        VideosAdapter2 videosAdapter2 = new VideosAdapter2(this, itemsList);
+
+		VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(this, videosAdapter2, videosListItemUpdateListener, loadItem);
+
+        listView.setAdapter(paginationAdapter);
+    }
+
+    private class VideosListItemsUpdateListener extends AbstractUpdateListener<VideoItem> {
+        public VideosListItemsUpdateListener() {
+            super(getContext());
+        }
+
+        @Override
+        public void showProgress(boolean show) {
+            getActionBarHelper().setRefreshActionItemState(show);
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
+		VideoItem videoItem = (VideoItem) adapter.getItemAtPosition(pos);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+		String videoUrl = videoItem.values.get(AppConstants.VIEW_URL).trim();
+        intent.setDataAndType(Uri.parse(videoUrl), "video/*");
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.upgradeBtn) {
+            startActivity(mainApp.getMembershipVideoIntent());
+        }
+    }
+
+
 }

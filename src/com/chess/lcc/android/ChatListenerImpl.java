@@ -1,10 +1,10 @@
 package com.chess.lcc.android;
 
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
 import com.chess.model.GameItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 
 import java.util.Collection;
