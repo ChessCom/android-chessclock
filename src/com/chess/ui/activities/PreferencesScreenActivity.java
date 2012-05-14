@@ -203,13 +203,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
-		} /*else if (view.getId() == R.id.prefVacation) {
-			String query = vacationCheckBox.isChecked() ? RestHelper.VACATION_LEAVE : RestHelper.VACATION_RETURN;
-			query += mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-			if (appService != null) {    // TODO change to rest helper
-				appService.RunSingleTask(SET_VACATION_STATUS_CALLBACK_CODE,
-					query,null);
-		}*/
+		} else if (view.getId() == R.id.prefVacation) {
+            updateVacationLeaveStatus();
+		}
 	}
 
 	private AdapterView.OnItemSelectedListener strengthSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -317,12 +313,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		} else if (compoundButton.getId() == R.id.prefNEnable) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 			preferencesEditor.commit();
+
 			if (checked)
 				AppUtils.startNotificationsUpdate(this);
 			else
 				AppUtils.stopNotificationsUpdate(this);
-		} else if (compoundButton.getId() == R.id.prefVacation) {
-			updateVacationLeaveStatus();
 
 		} else if (compoundButton.getId() == R.id.prefCoords) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, checked);
@@ -334,23 +329,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	}
 
 	private void updateVacationLeaveStatus(){
-//		String query;
 		LoadItem listLoadItem = new LoadItem();
 		if (vacationCheckBox.isChecked()) {
 			listLoadItem.setLoadPath(RestHelper.VACATION_LEAVE);
-//			query = "http://www." + LccHolder.HOST + "/api/vacation_leave?id="
-//					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 		} else {
 			listLoadItem.setLoadPath(RestHelper.VACATION_RETURN);
-//			query = "http://www." + LccHolder.HOST + "/api/vacation_return?id="
-//					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-		}
-//		if (appService != null) {    // TODO change to rest helper
-//			appService.RunSingleTask(1,
-//					query,
-//					progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true)));
-//		}
-
+        }
 
 		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
