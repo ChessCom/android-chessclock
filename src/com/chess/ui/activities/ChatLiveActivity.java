@@ -43,12 +43,11 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 		gameId = getIntent().getExtras().getLong(GameListItem.GAME_ID);
 	}
 
-
-
 	@Override
 	protected void onResume() {
 		super.onResume();
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
+		updateList();
 	}
 
 	@Override
@@ -57,7 +56,14 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 		unregisterReceiver(chatMessageReceiver);
 	}
 
-	public void onMessageReceived(){
+	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateList();
+		}
+	};
+
+	public void updateList(){
 		int before = chatItems.size();
 		chatItems.clear();
 		chatItems.addAll(getMessagesList());
@@ -88,14 +94,6 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 		return output;
 	}
 
-
-	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			onMessageReceived();
-		}
-	};
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.send) {
@@ -123,7 +121,6 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 	private class SendMessageTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
-
 			lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(gameId), sendEdt.getText().toString());
 			return null;
 		}

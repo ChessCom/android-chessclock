@@ -301,12 +301,21 @@
 	<string name="error_occurred_while_login">Error occurred while login, please relogin!</string>
 	<string name="update_available_please_update">An update is available! Please update</string>
 	<string name="update_check">Update Check</string>
-	<string name="won_on_time">won on time</string>
-	<string name="won_by_resignation">won by resignation</string>
-	<string name="won_by_checkmate">won by checkmate</string>
+	<string name="won_on_time">\nwon on time</string>
+	<string name="won_by_resignation">\nwon by resignation</string>
+	<string name="won_by_checkmate">\nwon by checkmate</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW OFFER</string>
 	<string name="has_offered_draw">has offered a draw</string>
 	<string name="reconnecting">Reconnecting...</string>
 	<string name="another_login_detected">Another login has been detected.</string>
+
+	<string name="game_draw_by_repetition">Game drawn \nby repetition</string>
+	<string name="game_drawn_by_agreement">Game drawn \nby agreement</string>
+	<string name="game_drawn_by_stalemate">Game drawn \nby stalemate</string>
+	<string name="game_drawn_insufficient_material">Game drawn -\ninsufficient material</string>
+	<string name="game_drawn_by_fifty_move_rule">Game drawn \nby 50-move rule</string>
+	<string name="won_game_abandoned">won - \ngame abandoned</string>
+	<string name="game_aborted">Game aborted</string>
+
 </resources>

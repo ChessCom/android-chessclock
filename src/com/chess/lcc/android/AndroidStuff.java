@@ -4,6 +4,7 @@
 
 package com.chess.lcc.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -22,7 +23,7 @@ import com.chess.utilities.MyProgressDialog;
 import java.io.Serializable;
 
 public class AndroidStuff {
-	private MainApp context;
+	private MainApp mainApp;
 	private SharedPreferences sharedData;
 	private SharedPreferences.Editor sharedDataEditor;
 	private MyProgressDialog currentProgressDialog;
@@ -36,21 +37,25 @@ public class AndroidStuff {
 		this.lccHolder = lccHolder;
 	}
 
-	public MainApp getContext() {
-		return context;
+	public MainApp getMainApp() {
+		return mainApp;
 	}
 
-	public void setContext(final MainApp context) {
-		this.context = context;
+	public void setMainApp(MainApp mainApp) {
+		this.mainApp = mainApp;
 	}
 
+	public Context getContext(){
+		return mainApp.getApplicationContext();
+	}
+	
 	public void setCurrentProgressDialog(MyProgressDialog currentProgressDialog) {
 		this.currentProgressDialog = currentProgressDialog;
 	}
 
 	public SharedPreferences getSharedData() {
 		if (sharedData == null) {
-			sharedData = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, 0);
+			sharedData = mainApp.getSharedPreferences(StaticData.SHARED_DATA_NAME, 0);
 		}
 		return sharedData;
 	}
@@ -89,7 +94,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.OBJECT, object)
@@ -101,7 +106,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.TITLE, title)
@@ -114,7 +119,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastIntent(int code, String broadcastAction) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 		);
@@ -160,7 +165,7 @@ public class AndroidStuff {
 
 	public void manageProgressDialog(String broadcastAction, boolean enable, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR, enable)
 						.putExtra(AppConstants.MESSAGE, message)
@@ -194,7 +199,7 @@ public class AndroidStuff {
 
 	public void informAndExit(String broadcastAction, String title, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.TITLE, title)
 						.putExtra(AppConstants.MESSAGE, message)
@@ -202,7 +207,7 @@ public class AndroidStuff {
 	}
 
 	public void processObsoleteProtocolVersion() {
-		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
+		lccHolder.getAndroid().getMainApp().sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
 	}
 
 	/*public void startSigninActivity()

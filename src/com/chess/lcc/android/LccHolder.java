@@ -1,6 +1,7 @@
 package com.chess.lcc.android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.chess.ui.interfaces.LccConnectionListener;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.client.HttpClient;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -53,6 +55,8 @@ public class LccHolder {
 	private LiveChessClient _lccClient;
 	private User _user;
 	private static LccHolder instance;
+	
+	private Context context;
 //	/**
 //	 * Use android.util.Log instead
 //	 */
@@ -92,7 +96,10 @@ public class LccHolder {
 	public String networkTypeName;
 	private LccConnectionListener externalConnectionListener;
 
-	public LccHolder(InputStream keyStoreInputStream, String versionName) {
+//	public LccHolder(InputStream keyStoreInputStream, String versionName) {
+	public LccHolder(Context context, String versionName) throws IOException {
+		InputStream	keyStoreInputStream = context.getAssets().open("chesscom.pkcs12");
+		this.context = context;
 		Log.d("Chess.Com", "Start Chess.Com LCC mainApp");
 		//System.setProperty("java.net.preferIPv6Addresses", "false");
 		LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
@@ -173,9 +180,9 @@ public class LccHolder {
 		this.connected = connected;
 	}
 
-	public static LccHolder getInstance(InputStream keyStoreInputStream, String versionName) {
+	public static LccHolder getInstance(Context context, String versionName) throws IOException {
 		if (instance == null) {
-			instance = new LccHolder(keyStoreInputStream, versionName);
+			instance = new LccHolder(context, versionName);
 		}
 		return instance;
 	}
@@ -192,9 +199,6 @@ public class LccHolder {
 //	public Challenge getChallenge(long challengeId) {
 //		return challenges.get(challengeId);
 //	}
-	public Challenge getLastChallenge() {
-		return challenges.get(challenges.size()-1);
-	}
 
 	public void addOwnChallenge(Challenge challenge) {
 		for (Challenge oldChallenge : ownChallenges.values()) {
@@ -626,7 +630,7 @@ public class LccHolder {
 
 	public void logout() {
 		LOG.info("USER LOGOUT");
-		android.getContext().setLiveChess(false);
+		android.getMainApp().setLiveChess(false);
 		setCurrentGameId(null);
 		setUser(null);
 		android.closeLoggingInIndicator();
@@ -695,7 +699,7 @@ public class LccHolder {
 		if (activity != null) {
 			activity.finish();
 		}
-		final ContextWrapper androidContext = android.getContext();
+		final ContextWrapper androidContext = android.getMainApp();
 
 		final Intent intent = new Intent(androidContext, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -905,5 +909,9 @@ public class LccHolder {
 
 		if (retainMe.size() > 0)
 			challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
+	}
+
+	public Context getContext() {
+		return context;
 	}
 }

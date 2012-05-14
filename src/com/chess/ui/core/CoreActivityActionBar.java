@@ -27,6 +27,7 @@ import com.chess.backend.Web;
 import com.chess.backend.WebService;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -576,7 +577,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 							mainApp.setLiveChess(false);
 							lccHolder.setConnected(false);
 							startActivity(new Intent(Intent.ACTION_VIEW, Uri
-									.parse("http://www.chess.com/play/android.html")));
+									.parse(RestHelper.PLAY_ANDROID_HTML)));
 						}
 					});
 					final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
@@ -689,7 +690,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
 	}
 
 	@Override

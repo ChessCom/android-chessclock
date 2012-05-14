@@ -1,5 +1,7 @@
 package com.chess.lcc.android;
 
+import android.content.Context;
+import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
@@ -22,12 +24,14 @@ public class LccGameListener implements GameListener {
 
 	private LccHolder lccHolder;
 	private Long latestGameId;
+	private Context context;
 
 	public LccGameListener(LccHolder lccHolder) {
 		if (lccHolder == null) {
 			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
 		}
 		this.lccHolder = lccHolder;
+		context = lccHolder.getContext();
 	}
 
 	@Override
@@ -173,34 +177,34 @@ public class LccGameListener implements GameListener {
 		String message = StaticData.SYMBOL_EMPTY;
 		switch (result) {
 			case TIMEOUT:
-				message = winnerUsername + " \nwon on time";
+				message = winnerUsername + context.getString(R.string.won_on_time);
 				break;
 			case RESIGNED:
-				message = winnerUsername + " \nwon by resignation";
+				message = winnerUsername + context.getString(R.string.won_by_resignation);
 				break;
 			case CHECKMATED:
-				message = winnerUsername + " \nwon by checkmate";
+				message = winnerUsername + context.getString(R.string.won_by_checkmate);
 				break;
 			case DRAW_BY_REPETITION:
-				message = "Game drawn \nby repetition";
+				message = context.getString(R.string.game_draw_by_repetition);
 				break;
 			case DRAW_AGREED:
-				message = "Game drawn \nby agreement";
+				message = context.getString(R.string.game_drawn_by_agreement);
 				break;
 			case STALEMATE:
-				message = "Game drawn \nby stalemate";
+				message = context.getString(R.string.game_drawn_by_stalemate);
 				break;
 			case DRAW_BY_INSUFFICIENT_MATERIAL:
-				message = "Game drawn - \ninsufficient material";
+				message = context.getString(R.string.game_drawn_insufficient_material);
 				break;
 			case DRAW_BY_50_MOVE:
-				message = "Game drawn \nby 50-move rule";
+				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
 				break;
 			case ABANDONED:
-				message = winnerUsername + " won - \ngame abandoned";
+				message = winnerUsername + context.getString(R.string.won_game_abandoned);
 				break;
 			case ABORTED:
-				message = "Game aborted";
+				message = context.getString(R.string.game_aborted);
 				break;
 		}
 		//message = whiteUsername + " vs. " + blackUsername + " - " + message;

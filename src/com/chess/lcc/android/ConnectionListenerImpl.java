@@ -45,7 +45,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		lccHolder.getAndroid().closeLoggingInIndicator();
 
 		final ConnectivityManager connectivityManager = (ConnectivityManager)
-				lccHolder.getAndroid().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+				lccHolder.getAndroid().getMainApp().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		lccHolder.setNetworkTypeName(activeNetworkInfo.getTypeName());
 
@@ -71,17 +71,17 @@ public class ConnectionListenerImpl implements ConnectionListener {
 
 			switch (details) {
 				case USER_KICKED: {
-					detailsMessage = lccHolder.getAndroid().getContext().getString(R.string.lccFailedKicked);
+					detailsMessage = lccHolder.getAndroid().getMainApp().getString(R.string.lccFailedKicked);
 					break;
 				}
 				case ACCOUNT_FAILED: {
 					// todo: improve handling if Connection fix is not enough and cleanup
-					detailsMessage = "Account error. " + lccHolder.getAndroid().getContext().getString(R.string.lccFailedUnavailable);
+					detailsMessage = "Account error. " + lccHolder.getAndroid().getMainApp().getString(R.string.lccFailedUnavailable);
 					break;
 				}
 				case SERVER_STOPPED: {
 					// todo: improve handling if Connection fix is not enough and cleanup
-					detailsMessage = "Server stopped. " + lccHolder.getAndroid().getContext().getString(R.string.lccFailedUnavailable);
+					detailsMessage = "Server stopped. " + lccHolder.getAndroid().getMainApp().getString(R.string.lccFailedUnavailable);
 					break;
 				}
 				default: {

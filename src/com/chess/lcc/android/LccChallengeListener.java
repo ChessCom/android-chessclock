@@ -137,7 +137,7 @@ public class LccChallengeListener implements ChallengeListener {
 												   receiverRating, isReceiverProvisional, challengerTimeControl,
 												   receiverTimeControl, isRated, variant, ratingCategoryString, color);*/
 		if (challenge.getTo().equals(lccHolder.getUser().getUsername())) {
-			lccHolder.getAndroid().getContext().getSoundPlayer().playNotify();
+			lccHolder.getAndroid().getMainApp().getSoundPlayer().playNotify();
 			// show popup dialog with challenge invitation
 			outerChallengeListener.showDialog(challenge);
 		}

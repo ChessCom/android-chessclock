@@ -105,7 +105,7 @@ public class ChatListenerImpl
 			return;
 		}
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroid().getContext().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
+			lccHolder.getAndroid().getMainApp().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
 			lccHolder.getAndroid().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
 		}
 	}

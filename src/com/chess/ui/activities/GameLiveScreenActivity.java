@@ -40,7 +40,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
-	private boolean chat;
+//	private boolean chat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -347,9 +347,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 											   lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
 											   lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
 
-				if (openChatActivity()) {
-                    return;
-				}
+				checkMessages();
 
 				if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
 					boardView.getBoardFace().setChess960(true);
@@ -414,9 +412,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	private boolean openChatActivity(){
-        if(!chat)
-            return false;
-
         mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
                 isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
         mainApp.getSharedDataEditor().commit();
@@ -429,7 +424,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
         startActivity(intent);
 
-        chat = false;
         return true;
     }
     
@@ -450,7 +444,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
     @Override
     public void updateAfterMove() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -486,8 +479,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 			case R.id.menu_chat:
 				// test
-				chat = true;
-				getOnlineGame(mainApp.getGameId());
+//				chat = true;
+//				getOnlineGame(mainApp.getGameId());
+				openChatActivity();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -523,8 +517,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					showDialog(DIALOG_ABORT_OR_RESIGN);
 					break;
 				case LIVE_MESSAGES:
-					chat = true;
-					getOnlineGame(mainApp.getGameId());
+//					chat = true;
+//					getOnlineGame(mainApp.getGameId());
+					openChatActivity();
 					break;
 			}
 		}
@@ -598,11 +593,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		/*if (view.getId() == R.id.chat) {
-			chat = true;
-			getOnlineGame(mainApp.getGameId());
-			chatPanel.setVisibility(View.GONE);
-		} else*/
 		if (view.getId() == R.id.cancel) {
 			showSubmitButtonsLay(false);
 

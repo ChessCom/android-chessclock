@@ -299,18 +299,17 @@ public class MainApp extends Application {
 
 	public LccHolder getLccHolder() { // TODO make async call, because it's very slow
 		if (lccHolder == null) {
+			String versionName = StaticData.SYMBOL_EMPTY;
 			try {
-				String versionName = StaticData.SYMBOL_EMPTY;
-				try {
-					versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-				} catch (NameNotFoundException e) {
-					e.printStackTrace();
-				}
-				lccHolder = LccHolder.getInstance(getAssets().open("chesscom.pkcs12"), versionName);
+				versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+
+				lccHolder = LccHolder.getInstance(getApplicationContext(), versionName);
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			lccHolder.getAndroid().setContext(this);
+			lccHolder.getAndroid().setMainApp(this);
 		}
 
 		return lccHolder;

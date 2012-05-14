@@ -65,7 +65,7 @@ public class NetworkChangeService extends Service {
 					if (lccHolder.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHolder.getNetworkTypeName())) {
 						lccHolder.logout();
 						//mainApp.setNetworkChangedNotification(true);
-						lccHolder.getAndroid().getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
+						lccHolder.getAndroid().getMainApp().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
 					} else {
 						lccHolder.setNetworkTypeName(networkInfo[i].getTypeName());
 					}

@@ -24,6 +24,7 @@ import com.chess.backend.Web;
 import com.chess.backend.WebService;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -270,7 +271,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
                             final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-                            final Class clazz = (password == null || password.equals("")) ? LoginScreenActivity.class : HomeScreenActivity.class;
+                            final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
                             final Intent intent = new Intent(mainApp, clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
@@ -283,7 +284,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
+					.setTitle(R.string.version_check)
+					.setMessage(R.string.version_is_obsolete_update)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
@@ -292,7 +294,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 								@Override
 								public void run() {
 									startActivity(new Intent(Intent.ACTION_VIEW, Uri
-											.parse("http://www.chess.com/play/android.html")));
+											.parse(RestHelper.PLAY_ANDROID_HTML)));
 								}
 							});
 							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
@@ -369,7 +371,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
 	}
 
 	@Override

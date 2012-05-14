@@ -40,6 +40,7 @@ public class RestHelper {
 	/* Methods calls*/
 	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
 	public static final String REGISTER_HTML = BASE_URL + "/register.html";
+	public static final String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
 	public static final String ECHESS_MOBILE_STATS = BASE_URL + "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
 

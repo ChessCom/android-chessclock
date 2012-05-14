@@ -173,7 +173,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			}
 		} else if (code == ONLINE_CALLBACK_CODE) {
 
-		} else if (code == 1) { // TODO investigate what for this wrong initialization
+		} else if (code == 1) {
 			onPause();
 			onResume();
 		} else if (code == 2) {
@@ -181,7 +181,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			onResume();
 			showToast(R.string.challengeaccepted);
 		} else if (code == 3) {
-			onPause();   // TODO investigate what for this wrong initialization
+			onPause();
 			onResume();
 			showToast(R.string.challengedeclined);
 		} else if (code == 4) {
@@ -230,7 +230,12 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 				case DialogInterface.BUTTON_NEUTRAL: {
 					if (appService != null) {
 						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + AppConstants.CHESSID_PARAMETER + gameListElement.getGameId() + "&command=DECLINEDRAW&timestamp=" + gameListElement.values.get(GameListItem.TIMESTAMP),
+								"http://www." + LccHolder.HOST
+										+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
+										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
+										+ "&command=DECLINEDRAW&timestamp="
+										+ gameListElement.values.get(GameListItem.TIMESTAMP),
 								null);
 					}
 				}
@@ -286,13 +291,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	}
 
 	private enum StartNewGameButtonsEnum {
-		/*BUTTON_10_0(10, 0, "10 min"),
-			BUTTON_5_0(5, 0, "5 min"),
-			BUTTON_3_0(3, 0, "3 min"),
-			BUTTON_30_0(30, 0, "30 min"),
-			BUTTON_2_12(2, 12, "2 | 12"),
-			BUTTON_1_5(1, 5, "1 | 5");*/
-
 		BUTTON_10_0(10, 0, "10 min"),
 		BUTTON_5_2(5, 2, "5 | 2"),
 		BUTTON_15_10(15, 10, "15 | 10"),
@@ -337,6 +335,5 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			}
 		}
 	};
-
 
 }
