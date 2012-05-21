@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,7 +12,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 
@@ -56,7 +54,6 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 
 	@Override
 	protected void onResume() {
-		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 		super.onResume();
 		if (lccHolder.getCurrentGameId() == null) {
 			currentGame.setVisibility(View.GONE);
@@ -71,9 +68,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 		/*if (MobclixHelper.isShowAds(mainApp)) {
 			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 		}*/
-		unregisterReceiver(challengesListUpdateReceiver);
 		super.onPause();
-//		enableScreenLock();
 	}
 
 	@Override

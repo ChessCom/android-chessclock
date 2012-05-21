@@ -10,6 +10,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.SelectionItem;
@@ -136,8 +137,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
 		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
 
-		int piecesPosition = preferences.getInt(AppData.getUserName(this)
-				+ AppConstants.PREF_PIECES_SET, 0);
+		int piecesPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 
 		//checkboxes
@@ -162,7 +162,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		vacationStatusUpdateListener = new VacationStatusUpdateListener();
 		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
 
-		FlurryAgent.onEvent("Settings Accessed");
+		FlurryAgent.onEvent(FlurryData.SETTINGS_ACCESSED);
 	}
 
 	@Override
@@ -172,7 +172,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 				lccHolder.logout();
 
 				mainApp.guest = true;
-
 
 				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
@@ -194,7 +193,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
 			emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text)
 					+ userName + "\". \n \n Sent from my Android");
-			FlurryAgent.onEvent("Invite A Friend", null);
+			FlurryAgent.onEvent(FlurryData.INVITE_A_FRIEND, null);
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);

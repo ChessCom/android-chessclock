@@ -159,8 +159,8 @@ public class LccChallengeListener implements ChallengeListener {
 	@Override
 	public void onChallengeAccepted(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
-		LccHolder.LOG.info(
-				"CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
+		LccHolder.LOG.info("CHALLENGE LISTENER. Seek/Challenge accepted: user: "
+				+ lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
 						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHolder.removeChallenge(challengeId);
 		/*MatchOffer matchOffer = user.getConnection().getJinChallenge(challengeId);

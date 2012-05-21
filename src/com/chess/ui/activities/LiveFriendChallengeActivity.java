@@ -1,7 +1,6 @@
 package com.chess.ui.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,15 +12,13 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
 public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
@@ -65,21 +62,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	public void update(int code) {
 		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
-		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
-			if (appService != null) {
-				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id="
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
-						progressDialog = new MyProgressDialog(ProgressDialog.show(LiveFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
-				);
-			}
-		} else if (code == 0 || (code == INIT_ACTIVITY && mainApp.isLiveChess())) {
-			String[] FRIENDS;
-			if (mainApp.isLiveChess()) {
-				FRIENDS = lccHolder.getOnlineFriends();
-			} else {
-				FRIENDS = ChessComApiParser.GetFriendsParse(response);
-			}
+		} else if (code == 0 || (code == INIT_ACTIVITY)) {
+			String[] FRIENDS = lccHolder.getOnlineFriends();
 
 			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
 			friends.setAdapter(friendsAdapter);
@@ -110,7 +94,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
+		if (lccHolder.getUser() == null) {
 			lccHolder.logout();
 			backToHomeActivity();
 		}
@@ -149,7 +133,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 					minRating, maxRating);
 
 			if (appService != null) {
-				FlurryAgent.onEvent("Challenge Created", null);
+				FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
 				lccHolder.getAndroid().runSendChallengeTask(null, challenge);
 
                 mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());

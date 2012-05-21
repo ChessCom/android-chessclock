@@ -478,7 +478,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private BroadcastReceiver challengesUpdateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-//			updateList(selectedLoadItem);
+			updateList(selectedLoadItem);
 		}
 	};
 

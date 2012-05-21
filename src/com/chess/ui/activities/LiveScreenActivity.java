@@ -94,8 +94,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 		}
 
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
-
 
 		super.onResume();
 		if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
@@ -109,12 +107,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	@Override
 	protected void onPause() {
 		unregisterReceiver(this.lccLoggingInInfoReceiver);
-		if (mainApp.isLiveChess()) {
-			/*// if connected
-				  System.out.println("MARKER++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGOUT");
-				  lccHolder.logout();*/
-			unregisterReceiver(challengesListUpdateReceiver);
-		}
 		super.onPause();
 	}
 

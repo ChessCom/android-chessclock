@@ -40,7 +40,7 @@ public class StaticData {
 
 	/* Alarm notification update interval */
 	public static final long REMIND_ALARM_INTERVAL = 5*60*1000; // 5 minutes
-	//	public static final long REMIND_ALARM_INTERVAL = 10*1000; // 10 sec
+//		public static final long REMIND_ALARM_INTERVAL = 10*1000; // 10 sec
 	public static final int YOUR_MOVE_UPDATE_ID = 33;
 
 //	public static final String SAVED_STATE = "saved_state";

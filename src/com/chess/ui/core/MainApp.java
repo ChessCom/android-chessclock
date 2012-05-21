@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.util.Log;
 import com.chess.R;
 import com.chess.backend.BitmapLoader;
 import com.chess.backend.statics.AppConstants;
@@ -286,6 +287,7 @@ public class MainApp extends Application {
 		if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 			return;
 		}
+		Log.d("TEST", "Main app Info = " + message);
 		new AlertDialog.Builder(ctx)
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(title)

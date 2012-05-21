@@ -14,9 +14,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.TextView;
@@ -231,7 +233,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if (mainApp.getBoardBitmap() == null) {
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 					AppData.getUserName(getContext())
-							+ AppConstants.PREF_BOARD_TYPE, 8)]);
+							+ AppConstants.PREF_BOARD_TYPE, 0)]);
 
 			resetDetected = true;
 		}
@@ -420,7 +422,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(CoreActivityActionBar.this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -471,16 +475,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			});
 			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
 			alertDialog.show();
-		}
-	};
-
-	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-			}
 		}
 	};
 
@@ -543,8 +537,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setMessage(message)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
@@ -564,7 +561,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
 					.setTitle(getString(R.string.version_check))
 					.setMessage(getString(R.string.version_is_obsolete_update))
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -592,14 +591,22 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+
+			Spanned message = Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE));
+			Log.d("TEST", "Info message = " + message);
 			final TextView messageView = new TextView(context);
 			messageView.setMovementMethod(LinkMovementMethod.getInstance());
-			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
+
+//			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
+			messageView.setText(message);
 			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			messageView.setGravity(Gravity.CENTER);
 
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(true)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setView(messageView)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {

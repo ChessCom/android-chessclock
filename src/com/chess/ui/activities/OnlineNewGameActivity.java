@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,16 +12,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
-import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -77,17 +75,10 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	}
 
 	@Override
-	protected void onResume() {
-		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
-		super.onResume();
-	}
-
-	@Override
 	protected void onPause() {
 		/*if (MobclixHelper.isShowAds(mainApp)) {
 			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 		}*/
-		unregisterReceiver(challengesListUpdateReceiver);
 		super.onPause();
 	}
 

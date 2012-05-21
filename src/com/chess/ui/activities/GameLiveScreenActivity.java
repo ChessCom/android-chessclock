@@ -113,7 +113,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	protected void init() {
 		super.init();
         mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
-		changeResigntTitle();
+		changeResignTitle();
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -546,7 +546,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		}
 	}
 
-	protected void changeResigntTitle() {
+	protected void changeResignTitle() {
 		if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 			resignOrAbort = R.string.resign;
 		} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {

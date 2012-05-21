@@ -343,7 +343,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivityHome.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(CoreActivityHome.this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -393,16 +395,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			});
 			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
 			alertDialog.show();
-		}
-	};
-
-	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-			}
 		}
 	};
 
@@ -466,19 +458,20 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setMessage(message)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							if (mainApp.isLiveChess()/*
-													 * &&
-													 * lccHolder.isConnected()
-													 */) {
+							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
 							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-							final Class clazz = (password == null || password.equals("")) ? LoginScreenActivity.class : HomeScreenActivity.class;
+							final Class clazz = (password == null
+									|| password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
 							final Intent intent = new Intent(mainApp, clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
@@ -490,9 +483,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(R.string.version_check)
+					.setMessage(R.string.version_is_obsolete_update)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
@@ -523,9 +519,11 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			messageView.setGravity(Gravity.CENTER);
 
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(true)
 					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();

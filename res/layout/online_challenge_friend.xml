@@ -130,6 +130,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="left|center_vertical"
 			android:text="@string/RatedGme"
+			android:checked="true"
 			/>
 
 		<com.chess.RoboButton

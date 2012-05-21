@@ -18,18 +18,17 @@ public class SplashActivity extends CoreActivity {
 		setContentView(R.layout.splash_screen);
 
 		//defaults
-		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(AppData.getUserName(getContext())
-						+ AppConstants.PREF_BOARD_TYPE, 8)]);
+//		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(AppData.getUserName(getContext())
+//						+ AppConstants.PREF_BOARD_TYPE, 8)]);
+//
+//		mainApp.loadPieces(mainApp.getSharedData().getInt(AppData.getUserName(getContext())
+//				+ AppConstants.PREF_PIECES_SET, 0));
 
-		mainApp.loadPieces(mainApp.getSharedData().getInt(AppData.getUserName(getContext())
-				+ AppConstants.PREF_PIECES_SET, 0));
-
-		if (mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-				.equals(StaticData.SYMBOL_EMPTY)) {
+		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {
-			if (mainApp.getSharedData().getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
+			if (mainApp.getSharedData().getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
 				AppUtils.startNotificationsUpdate(this);
 			}
 

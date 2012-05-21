@@ -63,25 +63,16 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	public void update(int code) {
 		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
-		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
+		} else if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(OnlineFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
-		} else if (code == 0 || (code == INIT_ACTIVITY && mainApp.isLiveChess())) {
-			String[] FRIENDS;
-			if (mainApp.isLiveChess()) {
-				FRIENDS = lccHolder.getOnlineFriends();
-			} else {
-				FRIENDS = ChessComApiParser.GetFriendsParse(response);
-			}
+		} else if (code == 0) {
+			String[] FRIENDS = ChessComApiParser.GetFriendsParse(response);
 
-//			ArrayAdapter<String> adapterF = new ArrayAdapter<String>(OnlineFriendChallengeActivity.this,
-//					android.R.layout.simple_spinner_item,
-//					FRIENDS);
-//			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
 			friendsSpinner.setAdapter(friendsAdapter);
 			if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
