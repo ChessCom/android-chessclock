@@ -70,6 +70,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if(savedInstanceState != null){
+			if(savedInstanceState.getBoolean(StaticData.SAVED_STATE)){
+				checkUserTokenAndStartActivity();
+			}
+		}
+
 		handler = new Handler();
 
 		mainApp = (MainApp) getApplication();
@@ -125,7 +131,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
-			update(INIT_ACTIVITY); // TODO send broadcast or call local method, but with readable arguments
+			update(INIT_ACTIVITY);
 		}
 
 		@Override
@@ -194,12 +200,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		boolean resetDetected = false;
-
-		if (resetDetected) {
-			checkUserTokenAndStartActivity();
-		}
 
 		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
 		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {

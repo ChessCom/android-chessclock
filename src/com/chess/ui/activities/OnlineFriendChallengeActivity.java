@@ -41,7 +41,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.online_challenge_friend);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
@@ -87,7 +86,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-//								finish();
+								finish();
 							}
 						}).setCancelable(false)
 						.create().show();

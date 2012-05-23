@@ -42,7 +42,7 @@ public final class Util {
      * Set this to true to enable log output.  Remember to turn this back off
      * before releasing.  Sending sensitive data to log is a security risk.
      */
-    private static boolean ENABLE_LOG = false;
+    private static final boolean ENABLE_LOG = true;
 
     /**
      * Generate the multi-part post body providing the parameters and boundary

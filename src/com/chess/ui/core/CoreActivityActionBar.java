@@ -91,6 +91,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if(savedInstanceState != null){
+			if(savedInstanceState.getBoolean(StaticData.SAVED_STATE)){
+				checkUserTokenAndStartActivity();
+			}
+		}
+
 		handler = new Handler();
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
@@ -127,6 +133,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
     protected void widgetsInit(){
 
     }
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(StaticData.SAVED_STATE, true);
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -203,8 +215,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				lccHolder.getClient().connect(
 					mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
-			}
-			else {
+			}else {
 				lccHolder.getClient().connect(
 					mainApp.getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
 					mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
@@ -229,25 +240,25 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		boolean resetDetected = false;
+//		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null) {
 			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
 					AppData.getUserName(getContext())
 							+ AppConstants.PREF_BOARD_TYPE, 0)]);
 
-			resetDetected = true;
+//			resetDetected = true;
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
 			mainApp.loadPieces(mainApp.getSharedData().getInt(AppData.getUserName(getContext())
 					+ AppConstants.PREF_PIECES_SET, 0));
 
-			resetDetected = true;
+//			resetDetected = true;
 		}
 
-		if (resetDetected) {
-			checkUserTokenAndStartActivity();
-		}
+//		if (resetDetected) {
+//			checkUserTokenAndStartActivity();
+//		}
 
 		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
 		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {

@@ -118,12 +118,6 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected void onResume() {
 		super.onResume();
 
-		boolean resetDetected = false;
-
-		if (resetDetected) {
-			checkUserTokenAndStartActivity();
-		}
-
 		doBindService();
 		registerReceivers();
 
