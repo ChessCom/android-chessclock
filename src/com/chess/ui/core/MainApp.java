@@ -299,9 +299,10 @@ public class MainApp extends Application {
 				}).create().show();
 	}
 
-	public LccHolder getLccHolder() { // TODO make async call, because it's very slow
+    @Deprecated
+	public LccHolder getLccHolder() {
 		if (lccHolder == null) {
-			String versionName = StaticData.SYMBOL_EMPTY;
+			String versionName;
 			try {
 				versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 
