@@ -173,8 +173,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	 * NI = cm.getActiveNetworkInfo(); if(NI == null) return false; else return
 	 * NI.isConnectedOrConnecting(); }
 	 */
-
-
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
 				Context.BIND_AUTO_CREATE);
@@ -192,7 +190,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
-			update(INIT_ACTIVITY); // TODO send broadcast or call local method, but with readable arguments
+			update(INIT_ACTIVITY);
 		}
 
 		@Override

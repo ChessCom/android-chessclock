@@ -100,9 +100,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		doUnbindService();
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(StaticData.SAVED_STATE, true);
 	}
 
 	/*
@@ -111,9 +111,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 * NI = cm.getActiveNetworkInfo(); if(NI == null) return false; else return
 	 * NI.isConnectedOrConnecting(); }
 	 */
-
-
-
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
 				Context.BIND_AUTO_CREATE);
@@ -147,13 +144,34 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		fragment.getDialog().dismiss();
-	}
+	protected void onResume() {
+		super.onResume();
 
-	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
-		fragment.getDialog().dismiss();
+		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
+			reconnectingIndicator.dismiss();
+			lccHolder.getAndroid().setReconnectingIndicator(null);
+		}
+
+		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
+			// lccHolder.getAndroid().showConnectingIndicator();
+			manageConnectingIndicator(true, "Loading Live Chess");
+
+			new ReconnectTask().execute();
+		}
+		doBindService();
+		registerReceivers();
+
+		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			mainApp.getSharedDataEditor().commit();
+		}
+		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
+		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+			checkUpdate();
+		}
+
 	}
 
 	@Override
@@ -196,39 +214,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			lccHolder.updateConnectionState();
 		}
 	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
-		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
-			reconnectingIndicator.dismiss();
-			lccHolder.getAndroid().setReconnectingIndicator(null);
-		}
-
-		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
-			// lccHolder.getAndroid().showConnectingIndicator();
-			manageConnectingIndicator(true, "Loading Live Chess");
-
-			new ReconnectTask().execute();
-		}
-		doBindService();
-		registerReceivers();
-
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
-		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
-			checkUpdate();
-		}
-
-	}
-
-
 
 	@Override
 	protected void onPause() {
@@ -602,6 +587,16 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		fragment.getDialog().dismiss();
+	}
+
+	@Override
+	public void onRightBtnClick(PopupDialogFragment fragment) {
+		fragment.getDialog().dismiss();
+	}
+
+	@Override
 	protected void onStart() {
 		super.onStart();
 		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
@@ -611,6 +606,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		doUnbindService();
 	}
 
 	/*
