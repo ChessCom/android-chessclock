@@ -1,7 +1,7 @@
 <resources>
 	<!--Dashboard-->
-	<dimen name="dashboard_padding_top">88dip</dimen>
-	<dimen name="dashboard_padding_bot">209dip</dimen>
+	<dimen name="dashboard_padding_top">100dip</dimen>
+	<dimen name="dashboard_padding_bot">197dip</dimen>
 	<dimen name="dashboard_padding_side">260dip</dimen>
 
 	<!--SigIn-->

@@ -27,7 +27,7 @@
 
 	<!--Dashboard-->
 	<dimen name="dashboard_padding_top">21dip</dimen>
-	<dimen name="dashboard_padding_bot">30dip</dimen>
+	<dimen name="dashboard_padding_bot">21dip</dimen>
 	<dimen name="dashboard_padding_side">31dip</dimen>
 
  	<dimen name="smallLogo_width">100dip</dimen>

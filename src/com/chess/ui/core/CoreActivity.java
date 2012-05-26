@@ -175,11 +175,11 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 	private void checkUserTokenAndStartActivity() {
 		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
-			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+			final Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} else {
-			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 		}
 	}
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -266,7 +266,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 						public void onClick(DialogInterface dialog, int whichButton) {
                             final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
                             final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
-                            final Intent intent = new Intent(mainApp, clazz);
+                            final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -291,7 +291,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 											.parse(RestHelper.PLAY_ANDROID_HTML)));
 								}
 							});
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+							final Intent intent = new Intent(getContext(), HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}

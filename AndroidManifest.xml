@@ -34,6 +34,11 @@
             </intent-filter>
         </activity>
 
+		<activity android:name=".ui.activities.HomeScreenActivity"
+			android:logo="@drawable/ic_logo_bar"
+			android:label=""
+			/>
+
         <activity android:name="com.google.ads.AdActivity"
 			android:configChanges="keyboard|keyboardHidden|orientation"/>
 
@@ -58,8 +63,6 @@
         <activity android:name=".ui.activities.LoginScreenActivity"
                   android:theme="@style/OrangeButtonNotitle"
                   />
-        <activity android:name=".ui.activities.HomeScreenActivity" android:label=""
-			/>
 
         <!-- todo: try this?
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"

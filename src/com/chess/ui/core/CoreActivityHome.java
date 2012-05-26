@@ -265,11 +265,11 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 	private void checkUserTokenAndStartActivity() {
 		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
-			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+			final Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} else {
-			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 		}
 	}
 
@@ -457,7 +457,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 							final Class clazz = (password == null
 									|| password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
-							final Intent intent = new Intent(mainApp, clazz);
+							final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -486,7 +486,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 											.parse(RestHelper.PLAY_ANDROID_HTML)));
 								}
 							});
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+							final Intent intent = new Intent(getContext(), HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -547,7 +547,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				 * DialogInterface.OnCancelListener() { public void
 				 * onCancel(DialogInterface dialog) {
 				 *
-				 * final Intent intent = new Intent(mainApp, Singin.class);
+				 * final Intent intent = new Intent(this, Singin.class);
 				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				 * //connectingIndicator.dismiss(); lccHolder.logout();
 				 * mainApp.startActivity(intent); } });

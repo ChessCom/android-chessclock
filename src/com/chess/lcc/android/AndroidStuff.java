@@ -215,7 +215,7 @@ public class AndroidStuff {
 		getContext().getSharedDataEditor().putString("password", StaticData.SYMBOL_EMPTY);
 		getContext().getSharedDataEditor().putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 		getContext().getSharedDataEditor().commit();
-		final Intent intent = new Intent(mainApp, Singin.class);
+		final Intent intent = new Intent(this, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		getContext().startActivity(intent);
 	  }*/

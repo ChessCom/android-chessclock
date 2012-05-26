@@ -1,5 +1,8 @@
 package com.chess.ui.activities;
 
+import android.app.ActionBar;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +29,17 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+			getActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
+					| ActionBar.DISPLAY_USE_LOGO
+					| ActionBar.DISPLAY_SHOW_HOME
+					| ActionBar.DISPLAY_SHOW_TITLE	);
+		}
+	}
 
 	@Override
 	protected void onResume() {
