@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
@@ -27,6 +26,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -40,19 +40,18 @@ import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
-import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
+public abstract class CoreActivityActionBar extends ActionBarActivity implements BoardToGameActivityFace,
 		ActiveFragmentInterface, PopupDialogFace,LccConnectionListener {
 
 	protected final static int INIT_ACTIVITY = -1;
@@ -81,7 +80,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	public abstract void update(int code);
 
-	public void setFullscreen() {
+	public void setFullScreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -90,12 +89,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if(savedInstanceState != null){
-			if(savedInstanceState.getBoolean(StaticData.SAVED_STATE)){
-				checkUserTokenAndStartActivity();
-			}
-		}
 
 		handler = new Handler();
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
@@ -107,10 +100,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		extras = getIntent().getExtras();
 
 		// get global Shared Preferences
-		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
-			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
-		}
+//		if (preferences == null) {
+//			mainApp.setSharedData(AppData.getPreferences(this));
+//			mainApp.setSharedDataEditor(preferences.edit());
+//		}
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -118,7 +111,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		lccHolder = mainApp.getLccHolder();
 		lccHolder.setExternalConnectionListener(this);
 
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences = AppData.getPreferences(this);
 		preferencesEditor = preferences.edit();
 	}
 
@@ -133,12 +126,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
     protected void widgetsInit(){
 
     }
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(StaticData.SAVED_STATE, true);
-	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -208,15 +195,18 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
 
-			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
-					mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
+					preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
 			}else {
 				lccHolder.getClient().connect(
-					mainApp.getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
-					mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
+						AppData.getUserName(getContext()),
+								AppData.getPassword(getContext())
+
+					/*preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
+					preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY)*/,
 					lccHolder.getConnectionListener());
 			}
 			/*
@@ -240,7 +230,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 //		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null) {
-			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
+			mainApp.loadBoard(mainApp.res_boards[preferences.getInt(
 					AppData.getUserName(getContext())
 							+ AppConstants.PREF_BOARD_TYPE, 0)]);
 
@@ -248,7 +238,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
-			mainApp.loadPieces(mainApp.getSharedData().getInt(AppData.getUserName(getContext())
+			mainApp.loadPieces(preferences.getInt(AppData.getUserName(getContext())
 					+ AppConstants.PREF_PIECES_SET, 0));
 
 //			resetDetected = true;
@@ -273,13 +263,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		doBindService();
 		registerReceivers();
 
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
 		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
 	}
@@ -302,8 +292,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		 * lccHolder.logout(); }
 		 */
 
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -371,6 +361,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}	
 	
 	private void checkUserTokenAndStartActivity() {
+		Log.d("TEST", "Reset detected!");
 		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -557,7 +548,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+							final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 							final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
 							final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -696,7 +687,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	public SoundPlayer getSoundPlayer() {
-		return mainApp.getSoundPlayer();
+		return SoundPlayer.getInstance(this);
 	}
 
 	public LccHolder getLccHolder() {
@@ -731,7 +722,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	 */
 
 	private void checkUpdate() {
-		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+		new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	protected void showToast(String msg){

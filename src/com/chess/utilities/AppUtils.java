@@ -11,8 +11,12 @@ import android.util.Log;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.AlarmReceiver;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.User;
 import com.chess.model.GameListItem;
 import com.chess.ui.views.BackgroundChessDrawable;
 
@@ -38,9 +42,27 @@ public class AppUtils {
 		mainView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBot);
 	}
 
+	/**
+	 * For QVGA screens we don't need a title bar and Action bar
+	 * @param context
+	 * @return
+	 */
 	public static boolean needFullScreen(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-		return displayMetrics.density < MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW;
+		return displayMetrics.density < MDPI_DENSITY
+				|| displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW;
+	}
+
+	/**
+	 * For mdpi normal screens we don't need a action bar only
+	 * @param context
+	 * @return
+	 */
+	public static boolean noNeedTitleBar(Context context) {
+		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+		return (displayMetrics.density == MDPI_DENSITY
+				|| displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
+				&& displayMetrics.heightPixels <= 480;
 	}
 
     /**
@@ -134,6 +156,17 @@ public class AppUtils {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		alarms.cancel(pendingIntent);
+	}
+
+
+	public static boolean isNeedToUpgrade(Context context){
+		boolean liveMembershipLevel = false;
+		User user = LccHolder.getInstance(context).getUser();
+		if (user != null) {
+			liveMembershipLevel = DataHolder.getInstance().isLiveChess() && (user.getMembershipLevel() < 50);
+		}
+		return liveMembershipLevel
+				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < 3);
 	}
 
 }

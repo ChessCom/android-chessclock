@@ -287,7 +287,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}*/
 
 	private void showFullScreenAd() {
-		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
+		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
 				&& MopubHelper.isShowAds(mainApp)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
@@ -341,8 +341,8 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (moPubInterstitial.isReady()) {
 			Log.d("HOME", "mopub interstitial ad listener: loaded and ready");
 			moPubInterstitial.show();
-			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
+			preferencesEditor.commit();
 		}
 		else {
 			Log.d("HOME", "mopub interstitial ad listener: loaded, but not ready");

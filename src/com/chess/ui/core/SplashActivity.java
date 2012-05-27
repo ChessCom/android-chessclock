@@ -28,7 +28,7 @@ public class SplashActivity extends CoreActivity {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
 		} else {
-			if (mainApp.getSharedData().getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
+			if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
 				AppUtils.startNotificationsUpdate(this);
 			}
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -182,7 +183,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 				FlurryAgent.onEvent("Upgrade From Tactics", null);
-				startActivity(mainApp.getMembershipIntent(StaticData.SYMBOL_EMPTY));
+				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				boardView.getBoardFace().setTacticCanceled(true);
 				onBackPressed();
@@ -337,7 +338,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (appService != null) {
 				appService.RunSingleTask(CALLBACK_GAME_STARTED,
 						"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + game_id,
+								+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + game_id,
 						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
 			}
 		}
@@ -398,7 +399,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GET_TACTICS,
 					"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + AppConstants.TACTICS_ID_PARAMETER + id,
+							+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + AppConstants.TACTICS_ID_PARAMETER + id,
 					progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
 			);
 		}
@@ -584,7 +585,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					if (appService != null) {
 						appService.RunSingleTask(CALLBACK_TACTICS_CORRECT,
 								"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER +
-										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+										preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 										+ AppConstants.TACTICS_ID_PARAMETER + mainApp.getTactic().values.get(AppConstants.ID)
 										+ AppConstants.PASSED_PARAMETER + 1 + AppConstants.CORRECT_MOVES_PARAMETER + boardView.getBoardFace().getTacticsCorrectMoves()
 										+ AppConstants.SECONDS_PARAMETER + boardView.getBoardFace().getSec(),
@@ -604,7 +605,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (appService != null) {
 					appService.RunSingleTask(CALLBACK_TACTICS_WRONG,
 							"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER
-									+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+									+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 									+ AppConstants.TACTICS_ID_PARAMETER + mainApp.getTactic().values.get(AppConstants.ID)
 									+ AppConstants.PASSED_PARAMETER + 0 + AppConstants.CORRECT_MOVES_PARAMETER + boardView.getBoardFace().getTacticsCorrectMoves() + AppConstants.SECONDS_PARAMETER + boardView.getBoardFace().getSec(),
 							progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
@@ -679,7 +680,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						if (!mainApp.isLiveChess()) {
 							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
 									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-											+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
+											+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
 									null );
 						}
 					}

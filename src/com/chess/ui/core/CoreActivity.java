@@ -22,6 +22,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -31,13 +32,12 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
-import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
-public abstract class CoreActivity extends Activity implements CoreActivityFace {
+public abstract class CoreActivity extends Activity implements BoardToGameActivityFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -52,6 +52,9 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
     public boolean mIsBound;
 	public WebService appService = null;
+	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
+
 
 	public abstract void update(int code);
 
@@ -71,10 +74,14 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		extras = getIntent().getExtras();
 
 		// get global Shared Preferences
-		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
-			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
-		}
+//		if (preferences == null) {
+//			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
+//			mainApp.setSharedDataEditor(preferences.edit());
+//		}
+
+		preferences = AppData.getPreferences(this);
+		preferencesEditor = preferences.edit();
+
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -121,13 +128,13 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		doBindService();
 		registerReceivers();
 
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
 		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
 
@@ -145,8 +152,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 		unRegisterReceivers();
 
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -264,7 +271,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-                            final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+                            final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
                             final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
                             final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -359,7 +366,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	public SoundPlayer getSoundPlayer() {
-		return mainApp.getSoundPlayer();
+		return SoundPlayer.getInstance(this);
 	}
 
 	@Override
@@ -395,7 +402,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	 */
 
 	private void checkUpdate() {  // TODO show progress
-        new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+        new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	protected void showToast(String msg){

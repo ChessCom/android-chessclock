@@ -99,7 +99,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private void init() {
 		// set default load item to load current games // TODO must be adjustable
 //				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID
-//				+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//				+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //				+ "&all=1",
 
         selectedLoadItem = new LoadItem();
@@ -282,8 +282,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-				mainApp.getSharedDataEditor().commit();
+				preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+				preferencesEditor.commit();
 
 				Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
@@ -306,7 +306,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 //				String result = Web.Request("http://www." + LccHolder.HOST
 //						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//						+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 //						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
 //						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -331,7 +331,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 //				String result = Web.Request("http://www." + LccHolder.HOST
 //						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//						+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//						+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 //						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
 //						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
@@ -388,14 +388,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(mainApp.getMembershipAndroidIntent());
+			startActivity(AppData.getMembershipAndroidIntent(this));
 		} else if (view.getId() == R.id.tournaments) {
 			
 			String tournamentsUrl = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + tournamentsUrl)));
 		} else if (view.getId() == R.id.stats) {
 
@@ -408,7 +408,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.start) {
 			startActivity(new Intent(this, OnlineNewGameActivity.class));
@@ -422,8 +422,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 			clickOnChallenge();
 		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
-			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+			preferencesEditor.commit();
 
 			if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
 				mainApp.acceptdraw = true;
@@ -438,8 +438,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				startActivity(intent);
 			}
 		} else if (gameListElement.type == GameListItem.LIST_TYPE_FINISHED) {
-			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+			preferencesEditor.commit();
 
 //			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
@@ -464,8 +464,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 							gameListItemDialogListener)
 					.create().show();
 		} else if (gameListElement.type == GameListItem.LIST_TYPE_FINISHED) {
-			mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+			preferencesEditor.commit();
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());

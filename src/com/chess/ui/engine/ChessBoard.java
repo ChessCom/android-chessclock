@@ -10,12 +10,12 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameItem;
 import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.CoreActivityFace;
-import com.chess.utilities.SoundPlayer;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 
 import java.net.URLEncoder;
 import java.util.TreeSet;
@@ -270,10 +270,12 @@ public class ChessBoard implements BoardFace {
 	private int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	private CoreActivityFace coreActivity;
+	private BoardToGameActivityFace coreActivity;
+	private SoundPlayer soundPlayer;
 
-	public ChessBoard(CoreActivityFace coreActivity) {
-		this.coreActivity = coreActivity;
+	public ChessBoard(BoardToGameActivityFace gameActivityFace) {
+		this.coreActivity = gameActivityFace;
+		soundPlayer = gameActivityFace.getSoundPlayer();
 	}
 
 	public void resetCastlePos() {
@@ -1039,7 +1041,7 @@ public class ChessBoard implements BoardFace {
 			}
 
 			if (playSound) {
-				getSoundPlayer().playCastle();
+				soundPlayer.playCastle();
 			}
 
 			return true;
@@ -1048,7 +1050,7 @@ public class ChessBoard implements BoardFace {
 		/* back up information so we can take the move back later. */
 		histDat[hply] = new HistoryData();
 		histDat[hply].m = move;
-		histDat[hply].capture = pieces[(int) move.to];
+		histDat[hply].capture = pieces[ move.to];
 		histDat[hply].ep = ep;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
@@ -1190,19 +1192,19 @@ public class ChessBoard implements BoardFace {
 		if (playSound && userColorWhite != null) {
 			if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
 				if (inCheck(side)) {
-					getSoundPlayer().playMoveOpponentCheck();
+					soundPlayer.playMoveOpponentCheck();
 				} else if (pieceTo != 6) {
-					getSoundPlayer().playCapture();
+					soundPlayer.playCapture();
 				} else {
-					getSoundPlayer().playMoveOpponent();
+					soundPlayer.playMoveOpponent();
 				}
 			} else if ((userColorWhite && colorFrom == 0) || (!userColorWhite && colorFrom == 1)) {
 				if (inCheck(side)) {
-					getSoundPlayer().playMoveSelfCheck();
+					soundPlayer.playMoveSelfCheck();
 				} else if (pieceTo != 6) {
-					getSoundPlayer().playCapture();
+					soundPlayer.playCapture();
 				} else {
-					getSoundPlayer().playMoveSelf();
+					soundPlayer.playMoveSelf();
 				}
 			}
 		}
@@ -1928,10 +1930,6 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void setReside(boolean reside) {
 		this.reside = reside;
-	}
-
-	public SoundPlayer getSoundPlayer() {
-		return coreActivity.getSoundPlayer();
 	}
 
 	@Override

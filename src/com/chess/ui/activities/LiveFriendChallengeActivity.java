@@ -46,12 +46,12 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
-		initialTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
+		initialTime.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
 		initialTime.addTextChangedListener(initialTimeTextWatcher);
 		initialTime.setValidator(initialTimeValidator);
 		initialTime.setOnEditorActionListener(null);
 
-		bonusTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
+		bonusTime.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
 		bonusTime.addTextChangedListener(bonusTimeTextWatcher);
 		bonusTime.setValidator(bonusTimeValidator);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
@@ -136,9 +136,9 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 				FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
 				lccHolder.getAndroid().runSendChallengeTask(null, challenge);
 
-                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-                mainApp.getSharedDataEditor().commit();
+                preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+                preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+                preferencesEditor.commit();
                 mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
     //			onBackPressed();
 			}
@@ -172,7 +172,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 		@Override
 		public CharSequence fixText(CharSequence invalidText) {
-			return mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5");
+			return preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5");
 		}
 	}
 
@@ -202,7 +202,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 		@Override
 		public CharSequence fixText(CharSequence invalidText) {
-			return mainApp.getSharedData().getString(AppConstants.CHALLENGE_BONUS_TIME, "0");
+			return preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0");
 		}
 	}
 

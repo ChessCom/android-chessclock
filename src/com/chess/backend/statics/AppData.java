@@ -14,19 +14,6 @@ import com.chess.ui.interfaces.BoardFace;
  * @created at: 15.04.12 21:36
  */
 public class AppData {
-//	private static AppData instance;
-//
-//	public static AppData getInstance() {
-//		if(instance == null){
-//			instance = new AppData();
-//		}
-//		return instance;
-//	}
-//
-//	private AppData() {
-//	}
-
-
 
 	public static SharedPreferences getPreferences(Context context){
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
@@ -53,6 +40,11 @@ public class AppData {
 	public static String getPassword(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+	}
+
+	public static String getOpponentName(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		return preferences.getString(AppConstants.OPPONENT, StaticData.SYMBOL_EMPTY);
 	}
 
 	public static boolean isHighlightEnabled(Context context) {
@@ -84,6 +76,13 @@ public class AppData {
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
 		return preferences.getInt(userName + AppConstants.PREF_PIECES_SET, 0);
 	}
+
+	public static boolean playSounds(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true);
+	}
+
 
 //	public static boolean isTacticsGameMode(int mode) {
 //		return mode == AppConstants.GAME_MODE_TACTICS;
@@ -132,6 +131,9 @@ public class AppData {
 		return boardFace.getMode() == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
 	}
 
+	public static int getUserPremiumStatus(Context context){
+		return Integer.parseInt(getPreferences(context).getString(AppConstants.USER_PREMIUM_STATUS, "0"));
+	}
 
 	public static Intent getMembershipAndroidIntent(Context context) {
 		return getMembershipIntent("?c=androidads", context);

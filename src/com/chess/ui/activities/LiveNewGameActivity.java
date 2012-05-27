@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
@@ -79,7 +80,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 					int UPDATE_DELAY = 120000;
 					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 							"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-									mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
+									preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 							null);
 				} else {
 					update(OnlineScreenActivity.ONLINE_CALLBACK_CODE);
@@ -114,7 +115,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(mainApp.getMembershipAndroidIntent());
+			startActivity(AppData.getMembershipAndroidIntent(this));
 
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, LiveFriendChallengeActivity.class));

@@ -33,13 +33,8 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 		strength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				try {
-					if (mainApp.getSharedDataEditor() != null && mainApp.getSharedData() != null && pos >= 0) {
-						mainApp.getSharedDataEditor().putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
-						mainApp.getSharedDataEditor().commit();
-					}
-				} catch (Exception ignored) {
-				}
+				preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+				preferencesEditor.commit();
 			}
 
 			@Override
@@ -57,7 +52,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 
 			startActivity(new Intent(getContext(), GameCompScreenActivity.class)
 					.putExtra(AppConstants.GAME_MODE,
-							Integer.parseInt(mainApp.getSharedData()
+							Integer.parseInt(preferences
 									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
 		} else if (view.getId() == R.id.start) {
 			RadioButton whiteHuman, blackHuman;
@@ -74,8 +69,8 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
 				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 
-			mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.commit();
 
 			FlurryAgent.onEvent("New Game VS Computer", null);
 //			startActivity(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, mode));
@@ -87,15 +82,15 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 	protected void onResume() {
 		super.onResume();
 
-		if (strength != null && mainApp != null && mainApp.getSharedData() != null) {
+		if (strength != null && mainApp != null && preferences != null) {
 			strength.post(new Runnable() {
 				@Override
 				public void run() {
-					strength.setSelection(mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+					strength.setSelection(preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 				}
 			});
 
-			if (!mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
+			if (!preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);
 				findViewById(R.id.load).setOnClickListener(this);
 			} else {

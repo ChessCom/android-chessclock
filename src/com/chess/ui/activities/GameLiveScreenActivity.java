@@ -237,10 +237,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			}
 			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
 				// move was made
-				if (mainApp.getSharedData().getInt(AppData.getUserName(getContext())
+				if (preferences.getInt(AppData.getUserName(getContext())
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
-				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
+				} else if (preferences.getInt(preferences
 						.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
 
 					int i;
@@ -412,9 +412,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	private boolean openChatActivity(){
-        mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
+        preferencesEditor.putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
                 isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
-        mainApp.getSharedDataEditor().commit();
+        preferencesEditor.commit();
 
         mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
         gamePanelView.haveNewMessage(false);

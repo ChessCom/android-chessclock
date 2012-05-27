@@ -173,11 +173,11 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 					final String[] responseArray = returnedObj.split(":");
 					if (responseArray.length >= 4) {
 						if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-							mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
+							preferencesEditor.putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
 							doUpdate(responseArray);
 						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
 							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
-							mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 							doUpdate(responseArray);
 						}
 					}
@@ -196,7 +196,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		}
 		super.onResume();
 		usernameEdt.setText(AppData.getUserName(getContext()));
-		passwordEdt.setText(mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY));
+		passwordEdt.setText(preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY));
 	}
 
 	@Override
@@ -205,18 +205,18 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	}
 
 	private void doUpdate(String[] response) {
-		mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-		mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
-		mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
+		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
+		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
-			mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
 		}
-		mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
+		preferencesEditor.commit();
 
 		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
-		if (mainApp.getSharedData().getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)){
+		if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)){
 			AppUtils.startNotificationsUpdate(this);
 		}
 

@@ -77,12 +77,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
 		TextView preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
-//		boolean liveMembershipLevel =
-//				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
+
 		boolean liveMembershipLevel =
 				lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
 		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
 			preferencesUpgrade.setVisibility(View.VISIBLE);
 		} else {
 			preferencesUpgrade.setVisibility(View.GONE);
@@ -210,8 +209,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 	private AdapterView.OnItemSelectedListener strengthSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			mainApp.getSharedDataEditor().putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+			preferencesEditor.commit();
 		}
 
 		@Override

@@ -365,11 +365,11 @@ public class AdView extends WebView {
         } else if (orientation == Configuration.ORIENTATION_SQUARE) {
             orString = DEVICE_ORIENTATION_SQUARE;
         }
-        sz.append("&o=" + orString);
+		sz.append("&o=").append(orString);
         
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
-        sz.append("&sc_a=" + metrics.density);
+		sz.append("&sc_a=").append(metrics.density);
         
         boolean mraid = true;
         try {
@@ -442,7 +442,7 @@ public class AdView extends WebView {
         private LoadUrlTaskResult loadAdFromNetwork(String url) throws Exception {
             HttpGet httpget = new HttpGet(url);
             httpget.addHeader("User-Agent", mUserAgent);
-            Log.d("MoPub","loading url" + url);
+            Log.d("MoPub","loading url = " + url);
 			
             synchronized(this) {
                 if (mAdView == null || mAdView.isDestroyed()) {

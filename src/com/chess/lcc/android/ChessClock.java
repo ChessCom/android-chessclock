@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.ui.activities.GameBaseActivity;
 
 import java.util.TimerTask;
@@ -177,7 +178,7 @@ public class ChessClock {
 
 				if (getTime() <= secondTenthsThreshold && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
-					lccHolder.getAndroid().getMainApp().getSoundPlayer().playTenSeconds();
+					SoundPlayer.getInstance(lccHolder.getContext()).playTenSeconds();
 				}
 
 				if (getTime() < 100) {

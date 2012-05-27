@@ -49,7 +49,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		super.widgetsInit();
 
 		if (MainApp.isComputerGameMode(boardView.getBoardFace())
-				&& !mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) { // if load game
+				&& !preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) { // if load game
 			loadSavedGame();
 
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace()))
@@ -59,10 +59,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
 				boardView.getBoardFace().setReside(true);
 				boardView.invalidate();
-				boardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 			if (MainApp.isComputerVsComputerGameMode(boardView.getBoardFace())) {
-				boardView.computerMove(mainApp.strength[mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 		}
 
@@ -96,7 +96,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GAME_STARTED,
-					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + game_id,
+					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + game_id,
 					null);
 		}
 	}
@@ -307,7 +307,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void restoreGame(){
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);
-		boardView.getBoardFace().setInit(true);//init = true;
+		boardView.getBoardFace().setInit(true);
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		loadSavedGame();
@@ -315,7 +315,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	private void loadSavedGame(){
 		int i;
-		String[] moves = mainApp.getSharedData().getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).split("[|]");
+		String[] moves = preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).split("[|]");
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
 			boardView.getBoardFace().makeMove(new Move(
@@ -402,7 +402,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 					update(CALLBACK_REPAINT_UI);
-					boardView.computerMove(mainApp.strength[mainApp.getSharedData()
+					boardView.computerMove(mainApp.strength[preferences
 							.getInt(AppData.getUserName(getContext())
 									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 					break;

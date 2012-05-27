@@ -1,18 +1,16 @@
 package com.chess.ui.interfaces;
 
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.model.GameItem;
-import com.chess.utilities.SoundPlayer;
 
 /**
- * CoreActivityFace class
+ * BoardToGameActivityFace class
  *
  * @author alien_roger
  * @created at: 05.03.12 5:25
  */
-public interface CoreActivityFace {
+public interface BoardToGameActivityFace {
 	Boolean isUserColorWhite();
-
 	SoundPlayer getSoundPlayer();
-
 	GameItem getCurrentGame();
 }

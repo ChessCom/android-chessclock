@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
@@ -137,7 +138,7 @@ public class LccChallengeListener implements ChallengeListener {
 												   receiverRating, isReceiverProvisional, challengerTimeControl,
 												   receiverTimeControl, isRated, variant, ratingCategoryString, color);*/
 		if (challenge.getTo().equals(lccHolder.getUser().getUsername())) {
-			lccHolder.getAndroid().getMainApp().getSoundPlayer().playNotify();
+			SoundPlayer.getInstance(lccHolder.getContext()).playNotify();
 			// show popup dialog with challenge invitation
 			outerChallengeListener.showDialog(challenge);
 		}

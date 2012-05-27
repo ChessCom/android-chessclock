@@ -4,16 +4,13 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.BitmapLoader;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
@@ -21,9 +18,7 @@ import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.TacticItem;
 import com.chess.ui.interfaces.BoardFace;
-import com.chess.utilities.SoundPlayer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -31,12 +26,11 @@ public class MainApp extends Application {
 
 	public static String APP_ID = "2427617054";
 
-	private SharedPreferences sharedData;
-	private SharedPreferences.Editor sharedDataEditor;
+//	private SharedPreferences sharedData;
+//	private SharedPreferences.Editor sharedDataEditor;
 
 	private LccHolder lccHolder;
 	private boolean liveChess;
-	private SoundPlayer soundPlayer;
 	private boolean networkChangedNotification;
 
 	public boolean guest = false;
@@ -271,10 +265,10 @@ public class MainApp extends Application {
 //        return getCurrentGame().values.get(AppConstants.BLACK_USERNAME) + "\n(" + getCurrentGame().values.get(GameItem.BLACK_RATING) + ")"; // TODO check
     }
 
-    @Deprecated
-	public String getUserName() {  // TODO change to AppData.getUserName()
-		return getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-	}
+//    @Deprecated
+//	public String getUserName() {  // TODO change to AppData.getUserName()
+//		return getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+//	}
 
 	/**
 	 * Use PopUpDialog Fragment as AlertDialog.show() is now deprecated
@@ -302,16 +296,7 @@ public class MainApp extends Application {
     @Deprecated
 	public LccHolder getLccHolder() {
 		if (lccHolder == null) {
-			String versionName;
-			try {
-				versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-
-				lccHolder = LccHolder.getInstance(getApplicationContext(), versionName);
-			} catch (NameNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			lccHolder = LccHolder.getInstance(getApplicationContext());
 			lccHolder.getAndroid().setMainApp(this);
 		}
 
@@ -325,15 +310,8 @@ public class MainApp extends Application {
 	public void setLiveChess(boolean liveChess) {
 		LccHolder.LOG.info("LCCLOG: Set Live Chess mode to: " + liveChess);
 		this.liveChess = liveChess;
+		DataHolder.getInstance().setLiveChess(liveChess);
 	}
-
-	public SoundPlayer getSoundPlayer() {
-		if (soundPlayer == null) {
-			soundPlayer = new SoundPlayer(this);
-		}
-		return soundPlayer;
-	}
-
 
 	public boolean isNetworkChangedNotification() {
 		return networkChangedNotification;
@@ -375,21 +353,21 @@ public class MainApp extends Application {
 		return piecesBitmaps;
 	}
 
-	public SharedPreferences getSharedData() { // TODO eliminate, make deafult calls
-		return sharedData;
-	}
-
-	public void setSharedData(SharedPreferences sharedData) {
-		this.sharedData = sharedData;
-	}
-
-	public SharedPreferences.Editor getSharedDataEditor() {
-		return sharedDataEditor;
-	}
-
-	public void setSharedDataEditor(SharedPreferences.Editor sharedDataEditor) {
-		this.sharedDataEditor = sharedDataEditor;
-	}
+//	public SharedPreferences getSharedData() { // TODO eliminate, make deafult calls
+//		return sharedData;
+//	}
+//
+//	public void setSharedData(SharedPreferences sharedData) {
+//		this.sharedData = sharedData;
+//	}
+//
+//	public SharedPreferences.Editor getSharedDataEditor() {
+//		return sharedDataEditor;
+//	}
+//
+//	public void setSharedDataEditor(SharedPreferences.Editor sharedDataEditor) {
+//		this.sharedDataEditor = sharedDataEditor;
+//	}
 
 	public TacticItem getTactic() {
 		return tactic;
@@ -457,17 +435,17 @@ public class MainApp extends Application {
 	}
 
 
-	public Intent getMembershipIntent(String param) {
-		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-                + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
-		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-	}
+//	public Intent getMembershipIntent(String param) {
+//		final String uri = "http://www." + LccHolder.HOST + AppConstants.LOGIN_HTML_ALS + sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//                + "&goto=http%3A%2F%2Fwww." + LccHolder.HOST + "%2Fmembership.html" + param;
+//		return new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//	}
 
-	public Intent getMembershipAndroidIntent() {
-		return getMembershipIntent("?c=androidads");
-	}
-
-	public Intent getMembershipVideoIntent() {
-		return getMembershipIntent("?c=androidvideos");
-	}
+//	public Intent getMembershipAndroidIntent() {
+//		return getMembershipIntent("?c=androidads");
+//	}
+//
+//	public Intent getMembershipVideoIntent() {
+//		return getMembershipIntent("?c=androidvideos");
+//	}
 }

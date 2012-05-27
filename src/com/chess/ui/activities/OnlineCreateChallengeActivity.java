@@ -39,11 +39,11 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 
 		minrating = (Spinner) findViewById(R.id.minRating);
 		minrating.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
-		minrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+		minrating.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxrating = (Spinner) findViewById(R.id.maxRating);
 		maxrating.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
-		maxrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxrating.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
@@ -107,7 +107,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 			if (chess960.isChecked())
 				gametype = 2;
 
-			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
+			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

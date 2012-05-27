@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.ui.activities.LoginScreenActivity;
-import com.chess.ui.core.MainApp;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.BufferedInputStream;
@@ -26,12 +27,12 @@ import java.net.URLConnection;
 public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 
 	private Activity context;
-	private MainApp mainApp;
+	private SharedPreferences.Editor preferencesEditor;
+	private boolean forceFlag;
 
-	public CheckUpdateTask(Activity context, MainApp mainApp) {
-
+	public CheckUpdateTask(Activity context) {
 		this.context = context;
-		this.mainApp = mainApp;
+		preferencesEditor = AppData.getPreferences(context).edit();
 	}
 
 	@Override
@@ -68,9 +69,9 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 		}
 
 		if (force != null && !force) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
+			preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
+			preferencesEditor.commit();
 		}
 		return force;
 	}
@@ -80,27 +81,28 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 		super.onPostExecute(result);
 
 		if (result != null) {
-			final boolean forceFlag = result;
-			new AlertDialog.Builder(context).setIcon(R.drawable.ic_launcher).setTitle("Update Check")
-					.setMessage("An update is available! Please update").setCancelable(false)
-					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							// Intent intent = new
-// Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:com.chess"));
-							if (forceFlag) {
-								mainApp.getSharedDataEditor().putLong(AppConstants.START_DAY, 0);
-								mainApp.getSharedDataEditor().commit();
-								context.startActivity(new Intent(context, LoginScreenActivity.class));
-								context.finish();
-							}
-							Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-									.parse("market://details?id=com.chess"));
-							context.startActivity(intent);
-
-						}
-					}).show();
+			forceFlag = result;
+			new AlertDialog.Builder(context).setIcon(R.drawable.ic_launcher)
+					.setTitle(R.string.update_check)
+					.setMessage(R.string.update_available_please_update)
+					.setCancelable(false)
+					.setPositiveButton(R.string.ok, updateClickListener).show();
 		}
-
 	}
+
+	private DialogInterface.OnClickListener updateClickListener =  new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int whichButton) {
+			if (forceFlag) {
+
+				preferencesEditor.putLong(AppConstants.START_DAY, 0);
+				preferencesEditor.commit();
+
+				context.startActivity(new Intent(context, LoginScreenActivity.class));
+				context.finish();
+			}
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri .parse("market://details?id=com.chess"));
+			context.startActivity(intent);
+		}
+	};
 }

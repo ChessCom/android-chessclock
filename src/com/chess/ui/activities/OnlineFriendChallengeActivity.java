@@ -65,7 +65,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		} else if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
+						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(OnlineFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
@@ -118,7 +118,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 				gametype = 2;
 			}
 			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id="
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
+					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

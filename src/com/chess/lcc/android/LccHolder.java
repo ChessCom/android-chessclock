@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
@@ -97,9 +98,11 @@ public class LccHolder {
 	private LccConnectionListener externalConnectionListener;
 
 //	public LccHolder(InputStream keyStoreInputStream, String versionName) {
-	public LccHolder(Context context, String versionName) throws IOException {
-		InputStream	keyStoreInputStream = context.getAssets().open("chesscom.pkcs12");
+	public LccHolder(Context context) throws IOException, PackageManager.NameNotFoundException {
 		this.context = context;
+		String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+
+		InputStream	keyStoreInputStream = context.getAssets().open("chesscom.pkcs12");
 		Log.d("Chess.Com", "Start Chess.Com LCC mainApp");
 		//System.setProperty("java.net.preferIPv6Addresses", "false");
 		LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
@@ -180,9 +183,15 @@ public class LccHolder {
 		this.connected = connected;
 	}
 
-	public static LccHolder getInstance(Context context, String versionName) throws IOException {
+	public static LccHolder getInstance(Context context){
 		if (instance == null) {
-			instance = new LccHolder(context, versionName);
+			try {
+				instance = new LccHolder(context);
+			} catch (PackageManager.NameNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return instance;
 	}

@@ -136,16 +136,16 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		} else if (code == 1) {
 			FlurryAgent.onEvent("New Account Created", null);  // TODO
 			String[] r = response.split(":");
-			mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
-			mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
-			mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
-			mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, r[1]);
+			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
+			preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
+			preferencesEditor.putString(AppConstants.API_VERSION, r[1]);
 			try {
-				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
+				preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
 			} catch (UnsupportedEncodingException ignored) {
 			}
-			mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putString(AppConstants.USER_SESSION_ID, r[3]);
+			preferencesEditor.commit();
 
 			startActivity(new Intent(context, HomeScreenActivity.class));
 			finish();
@@ -156,11 +156,11 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
             final String[] responseArray = response.split(":");
             if (responseArray.length >= 4) {
                 if (code == SIGNIN_CALLBACK_CODE) {
-                    mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, userNameEdt.getText().toString().trim().toLowerCase());
+                    preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().trim().toLowerCase());
                     doUpdate(responseArray);
                 } else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
                     FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
-                    mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+                    preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
                     doUpdate(responseArray);
                 }
             }
@@ -260,18 +260,18 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
     private void doUpdate(String[] response) {
-        mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-        mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
-        mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
+        preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
+        preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+        preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
         try {
-            mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
+            preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
         } catch (UnsupportedEncodingException ignored) {
         }
-        //mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
-        mainApp.getSharedDataEditor().commit();
+        //preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
+        preferencesEditor.commit();
 
         FlurryAgent.onEvent("Logged In");
-        if (mainApp.getSharedData().getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
+        if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
 			AppUtils.startNotificationsUpdate(this);
 		}
         mainApp.guest = false;

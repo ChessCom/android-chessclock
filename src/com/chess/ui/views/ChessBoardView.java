@@ -2,6 +2,7 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.*;
@@ -88,9 +89,11 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
     private boolean useTouchTimer;
     private Handler handler;
     private boolean userActive;
+	private SharedPreferences preferences;
+	private SharedPreferences.Editor preferencesEditor;
 
 
-    public ChessBoardView(Context context, AttributeSet attrs) {
+	public ChessBoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         resources = context.getResources();
@@ -128,19 +131,22 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
         handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
         userActive = false;
+
+		preferences = AppData.getPreferences(getContext());
+		preferencesEditor = preferences.edit();
     }
 
     public void setGameActivityFace(GameActivityFace gameActivityFace) {
         this.gameActivityFace = gameActivityFace;
         mainApp = gameActivityFace.getMainApp();
 
-        isHighlightEnabled = mainApp.getSharedData().getBoolean(AppData.getUserName(getContext())
+        isHighlightEnabled = preferences.getBoolean(AppData.getUserName(getContext())
                 + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true);
 
         showCoordinates = AppData.showCoordinates(getContext());
 
 
-        compStrength = mainApp.getSharedData().getInt(AppData.getUserName(getContext())
+        compStrength = preferences.getInt(AppData.getUserName(getContext())
                 + AppConstants.PREF_COMPUTER_STRENGTH, 0);
 
         userName = AppData.getUserName(getContext());
@@ -149,7 +155,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
     private boolean need2ShowSubmitButtons() {
         String sharedKey;
         sharedKey = mainApp.isLiveChess() ? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
-        return mainApp.getSharedData().getBoolean(AppData.getUserName(getContext())
+        return preferences.getBoolean(AppData.getUserName(getContext())
                 + sharedKey, !mainApp.isLiveChess());
     }
 
@@ -173,7 +179,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         if (!boardFace.isAnalysis()) {  // TODO eliminate game mode switches
             switch (boardFace.getMode()) {
                 case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
-                    computerMove(mainApp.strength[mainApp.getSharedData().getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+                    computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
                     break;
                 }
                 case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
@@ -204,8 +210,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                 saving += "|" + m.from + ":" + m.to + ":" + m.promote + ":" + m.bits;
             }
 
-            mainApp.getSharedDataEditor().putString(AppConstants.SAVED_COMPUTER_GAME, saving);
-            mainApp.getSharedDataEditor().commit();
+            preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, saving);
+			preferencesEditor.commit();
         }
 
         // Check available moves
@@ -751,7 +757,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
                 }
                 //getBoardFaceFace().mode ^= 1;
-                computerMove(mainApp.strength[mainApp.getSharedData()
+                computerMove(mainApp.strength[preferences
                         .getInt(AppData.getUserName(getContext())
                                 + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
             }
@@ -803,7 +809,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         stopThinking = true;
         if (!compmoving) {
             hint = true;
-            computerMove(mainApp.strength[mainApp.getSharedData()
+            computerMove(mainApp.strength[preferences
                     .getInt(AppData.getUserName(getContext())
                             + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
         }

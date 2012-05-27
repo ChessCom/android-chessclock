@@ -419,9 +419,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 //		if (!game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1"))
 //			return false;
 
-		mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
+		preferencesEditor.putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
 				isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.commit();
 
 		mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
 		gamePanelView.haveNewMessage(false);

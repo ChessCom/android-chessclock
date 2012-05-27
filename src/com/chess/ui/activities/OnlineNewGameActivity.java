@@ -88,7 +88,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			if (appService != null) {
 				appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 						"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-								mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
+								preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						null);
 			}
 		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
@@ -127,7 +127,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(mainApp.getMembershipAndroidIntent());
+			startActivity(AppData.getMembershipAndroidIntent(this));
 
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, OnlineFriendChallengeActivity.class));

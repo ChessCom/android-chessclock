@@ -147,9 +147,9 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getMin());
-					mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getSec());
-					mainApp.getSharedDataEditor().commit();
+					preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getMin());
+					preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, StaticData.SYMBOL_EMPTY + startNewGameButton.getSec());
+					preferencesEditor.commit();
 					startActivity(new Intent(getContext(), LiveCreateChallengeActivity.class));
 				}
 			});
@@ -211,7 +211,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 					if (appService != null) {
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+										+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 										+ "&command=ACCEPTDRAW&timestamp="
 										+ gameListElement.values.get(GameListItem.TIMESTAMP),
@@ -224,7 +224,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 						appService.RunSingleTask(4,
 								"http://www." + LccHolder.HOST
 										+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+										+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
 										+ "&command=DECLINEDRAW&timestamp="
 										+ gameListElement.values.get(GameListItem.TIMESTAMP),
@@ -248,7 +248,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(mainApp.getMembershipAndroidIntent());
+			startActivity(AppData.getMembershipAndroidIntent(this));
 		} else if (view.getId() == R.id.tournaments) {
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
 			try {
@@ -258,7 +258,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
 					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.stats) {
 			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
@@ -269,7 +269,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			}
 
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-					+ AppConstants.LOGIN_HTML_ALS + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+					+ AppConstants.LOGIN_HTML_ALS + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.currentGame) {
 

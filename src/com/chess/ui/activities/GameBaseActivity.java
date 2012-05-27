@@ -77,10 +77,15 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (AppUtils.needFullScreen(this)) {
-			setFullscreen();
+			setFullScreen();
+			savedInstanceState = new Bundle();
+			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
+		} else if (AppUtils.noNeedTitleBar(this)) {
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			savedInstanceState = new Bundle();
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		}
+
 		super.onCreate(savedInstanceState);
 	}
 
@@ -100,8 +105,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 		boardView = (ChessBoardView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-
-		boardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		boardView.setGamePanelView(gamePanelView);
@@ -129,9 +132,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			mainApp.setForceRectangleAd(false);
 		}*/
 
-        if (MopubHelper.isShowAds(mainApp)) {
-            MopubHelper.createRectangleAd(this);
-        }
+		if (MopubHelper.isShowAds(mainApp)) {
+			MopubHelper.createRectangleAd(this);
+		}
 
 		update(CALLBACK_REPAINT_UI);
 	}
@@ -153,7 +156,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			onDrawOffered(whichButton);
-
 		}
 	}
 
@@ -194,7 +196,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	protected void getOnlineGame(long game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.getRepeatableTimer().cancel();
-            appService.setRepeatableTimer(null);
+			appService.setRepeatableTimer(null);
 		}
 		mainApp.setGameId(game_id);
 	}
@@ -271,17 +273,17 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		super.onDestroy();
 	}
 
-    @Override
-    public void turnScreenOff() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
+	@Override
+	public void turnScreenOff() {
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
 
 
-    protected void enableScreenLockTimer() {
-        // set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
-        boardView.enableTouchTimer();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
+	protected void enableScreenLockTimer() {
+		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
+		boardView.enableTouchTimer();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
 
 	protected BroadcastReceiver gameMoveReceiver = new BroadcastReceiver() {
 		@Override
@@ -384,7 +386,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected abstract void onGameEndMsgReceived();
 
-    protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
+	protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
@@ -425,16 +427,16 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 		int topPlayerColor;
 
-		if(isWhitePlayerMove){
-			topPlayerColor = userPlayWhite? hintColor: whiteColor;
-		}else{
-			topPlayerColor = userPlayWhite? whiteColor: hintColor;
+		if (isWhitePlayerMove) {
+			topPlayerColor = userPlayWhite ? hintColor : whiteColor;
+		} else {
+			topPlayerColor = userPlayWhite ? whiteColor : hintColor;
 		}
 
 		whitePlayerLabel.setTextColor(topPlayerColor);
 		blackPlayerLabel.setTextColor(topPlayerColor);
 
-		boolean activate = isWhitePlayerMove? userPlayWhite: !userPlayWhite;
+		boolean activate = isWhitePlayerMove ? userPlayWhite : !userPlayWhite;
 
 		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
 		gamePanelView.activatePlayerTimer(activate, activate);
@@ -457,7 +459,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	}
 
 	@Override
-	public void switch2Chat(){
+	public void switch2Chat() {
 	}
 
 	protected void restoreGame() {
@@ -482,7 +484,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			boardView.getBoardFace().setMovesCount(moves.length);
 		}
 
-        String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
+		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
@@ -519,7 +521,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			//boolean fullGameProcessed = false;
 			GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);
 			if (gameEvent != null && (lccHolder.getCurrentGameId() == null
-                    || lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
+					|| lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
 				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
@@ -593,7 +595,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		}
 
 		if (adPopup != null) {
-				adPopup.dismiss();
+			adPopup.dismiss();
 			adPopup = null;
 		}
 
@@ -661,7 +663,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	public void showChoosePieceDialog(final int col, final int row) {
-        new AlertDialog.Builder(this)
+		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.choose_a_piece))
 				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
 						new DialogInterface.OnClickListener() {
@@ -719,12 +721,12 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	public void showSubmitButtonsLay(boolean show) {
 
 	}
-	
-	public void showToast2User(String message){
+
+	public void showToast2User(String message) {
 		showToast(message);
 	}
 
-	public void showToast2User(int messageId){
+	public void showToast2User(int messageId) {
 		showToast(messageId);
 	}
 }

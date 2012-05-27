@@ -20,6 +20,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -32,17 +33,16 @@ import com.chess.model.PopupItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CoreActivityHome extends ActionBarActivityHome implements CoreActivityFace
+public abstract class CoreActivityHome extends ActionBarActivityHome implements BoardToGameActivityFace
 		, PopupDialogFace, LccConnectionListener {
 
 	protected final static int INIT_ACTIVITY = -1;
@@ -64,17 +64,15 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected PopupItem popupItem;
 	protected List<PopupDialogFragment> popupManager;
 
+	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
+
+
 	public abstract void update(int code);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if(savedInstanceState != null){
-			if(savedInstanceState.getBoolean(StaticData.SAVED_STATE)){
-				checkUserTokenAndStartActivity();
-			}
-		}
 
 		handler = new Handler();
 
@@ -82,12 +80,15 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		extras = getIntent().getExtras();
 
 		// get global Shared Preferences
-		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
-                                                                            // that will simplify every call, where you need to get access token for every preference change and access
-			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
-		}
+//		if (preferences == null) {
+//			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
+//                                                                            // that will simplify every call, where you need to get access token for every preference change and access
+//			mainApp.setSharedDataEditor(preferences.edit());
+//		}
 
+		preferences = AppData.getPreferences(this);
+		preferencesEditor = preferences.edit();
+		
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -97,12 +98,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		popupItem = new PopupItem();
 		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 		popupManager = new ArrayList<PopupDialogFragment>();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(StaticData.SAVED_STATE, true);
 	}
 
 	/*
@@ -162,13 +157,13 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		doBindService();
 		registerReceivers();
 
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
 		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
 
@@ -188,16 +183,16 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
 
-			final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
-						mainApp.getSharedData().getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
+						preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 						lccHolder.getConnectionListener());
 			}
 			else {
 				lccHolder.getClient().connect(
-						mainApp.getSharedData().getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
-						mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
+						preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
+						preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
 						lccHolder.getConnectionListener());
 			}
 			/*
@@ -234,8 +229,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		 * lccHolder.logout(); }
 		 */
 
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -454,7 +449,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-							final String password = mainApp.getSharedData().getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+							final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 							final Class clazz = (password == null
 									|| password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
 							final Intent intent = new Intent(getContext(), clazz);
@@ -581,9 +576,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		}
 	}
 
-	@Override
 	public SoundPlayer getSoundPlayer() {
-		return mainApp.getSoundPlayer();
+		return SoundPlayer.getInstance(this);
 	}
 
 	@Override
@@ -630,7 +624,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 */
 
 	private void checkUpdate() {
-		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+		new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	private void showNetworkChangeNotification() {

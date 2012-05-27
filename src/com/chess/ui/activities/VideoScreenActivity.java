@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
@@ -54,7 +55,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 //		boolean liveMembershipLevel =
 //				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(mainApp.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
 			upgrade.setVisibility(View.VISIBLE);
 			upgrade.setOnClickListener(this);
 		} else {
@@ -69,19 +70,19 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 //		skills.post(new Runnable() {
 //			@Override
 //			public void run() {
-//				skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+//				skills.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
 //			}
 //		});
-		skills.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+		skills.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
 		skills.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
 		skills.setOnItemSelectedListener(skillsItemSelectedListener);
 		categories = (Spinner) findViewById(R.id.categories);
 		categories.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
-		categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
+		categories.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
 //		categories.post(new Runnable() {
 //			@Override
 //			public void run() {
-//				categories.setSelection(mainApp.getSharedData().getInt(AppConstants.VIDEO_CATEGORY, 0));
+//				categories.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
 //			}
 //		});
 		categories.setOnItemSelectedListener(categoriesItemSelectedListener);
@@ -92,8 +93,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
+			preferencesEditor.commit();
 		}
 
 		@Override
@@ -104,8 +105,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	private class CategoriesItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			mainApp.getSharedDataEditor().putInt(AppConstants.VIDEO_CATEGORY, pos);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putInt(AppConstants.VIDEO_CATEGORY, pos);
+			preferencesEditor.commit();
 		}
 
 		@Override
@@ -131,7 +132,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			if (appService != null) {
 				appService.RunSingleTask(0,
 						"http://www." + LccHolder.HOST + "/api/get_videos?id="
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+								+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 								+ "&page-size=1",
 						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
 				);
@@ -150,7 +151,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			FlurryAgent.onEvent("upgrade From Videos", null);
-			startActivity(mainApp.getMembershipVideoIntent());
+			startActivity(AppData.getMembershipVideoIntent(this));
 		} else if (view.getId() == R.id.play) {
 			FlurryAgent.onEvent("Video Played", null);
 

@@ -108,7 +108,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.upgradeBtn) {
-            startActivity(mainApp.getMembershipVideoIntent());
+            startActivity(AppData.getMembershipVideoIntent(this));
         }
     }
 
