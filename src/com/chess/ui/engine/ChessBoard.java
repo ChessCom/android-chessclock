@@ -59,6 +59,10 @@ public class ChessBoard implements BoardFace {
 	final static int ROOK_ON_SEVENTH_BONUS = 20;
 
 	public final static int HIST_STACK = 1000;
+	public static final String EQUALS_N = "=N";
+	public static final String EQUALS_B = "=B";
+	public static final String EQUALS_R = "=R";
+	public static final String EQUALS_Q = "=Q";
 
 	private boolean init;
 	private boolean chess960;
@@ -324,7 +328,7 @@ public class ChessBoard implements BoardFace {
 		}
 
 		String[] FEN = tmp[0].split("[/]");
-		int offset = 0, i = 0;
+		int offset = 0, i;
 		boolean found = false;
 		for (i = 0; i < FEN[0].length(); i++) {
 			if (FEN[0].charAt(i) == 'r') {
@@ -920,9 +924,11 @@ public class ChessBoard implements BoardFace {
 			}
 
 			color[to] = color[from];
+			Log.d("TEST_PIECE", "pieces[to] = pieces[from]; pieces[to] = " + pieces[to]+
+						"pieces[from] = " + pieces[from]);
 			pieces[to] = pieces[from];
 			if (to != from) {
-				color[from] = EMPTY;
+				color[from] = EMPTY;  // error not here too
 				pieces[from] = EMPTY;
 			}
 
@@ -1027,7 +1033,7 @@ public class ChessBoard implements BoardFace {
 			}
 			if (pieces[move.from] != ROOK && tmp_to != move.from) {
 				color[move.from] = EMPTY;
-				pieces[move.from] = EMPTY;
+				pieces[move.from] = EMPTY; // not here either
 			}
 
 			/* switch sides and test for legality (if we can capture
@@ -1169,6 +1175,9 @@ public class ChessBoard implements BoardFace {
 		}
 
 		color[move.from] = EMPTY;
+//		Log.d("TEST_PIECE","pieces[to] = EMPTY; piece[to] = " + pieces[to] + ", to = " + to);
+		Log.d("TEST_PIECE","pieces[move.from] = EMPTY; piece[move.from] = "
+				+ pieces[move.from] + ", to = " + move.from);
 		pieces[move.from] = EMPTY;
 
 		/* erase the pawn if this is an en passant move */
@@ -1218,16 +1227,16 @@ public class ChessBoard implements BoardFace {
 
 
 /* takeBack() is very similar to makeMove(), only backwards :)  */
-
-
 	@Override
 	public ChessBoard getBoard() {
-		return this;  //To change body of implemented methods use File | Settings | File Templates.
+		return this;  
 	}
 
 	@Override
 	public void takeBack() {
-		if (hply - 1 < 0) return;
+		if (hply - 1 < 0) 
+			return;
+		
 		side ^= 1;
 		xside ^= 1;
 		--hply;
@@ -1279,7 +1288,7 @@ public class ChessBoard implements BoardFace {
 			color[m.from] = side;
 			pieces[m.from] = pt;
 			if (m.from != to) {
-				color[to] = EMPTY;
+				color[to] = EMPTY; // Error not here
 				pieces[to] = EMPTY;
 			}
 
@@ -1308,17 +1317,17 @@ public class ChessBoard implements BoardFace {
 		}
 
 
-		color[(int) m.from] = side;
+		color[ m.from] = side;
 		if ((m.bits & 32) != 0)
-			pieces[(int) m.from] = PAWN;
+			pieces[ m.from] = PAWN;
 		else
-			pieces[(int) m.from] = pieces[(int) m.to];
+			pieces[m.from] = pieces[m.to];
 		if (histDat[hply].capture == EMPTY) {
-			color[(int) m.to] = EMPTY;
-			pieces[(int) m.to] = EMPTY;
+			color[m.to] = EMPTY;
+			pieces[m.to] = EMPTY;
 		} else {
-			color[(int) m.to] = xside;
-			pieces[(int) m.to] = histDat[hply].capture;
+			color[m.to] = xside;
+			pieces[m.to] = histDat[hply].capture;
 		}
 		if ((m.bits & 4) != 0) {
 			if (side == LIGHT) {
@@ -1341,7 +1350,7 @@ public class ChessBoard implements BoardFace {
 
 	public String getMoveList() {
 		String output = StaticData.SYMBOL_EMPTY;
-		int i = 0;
+		int i;
 		for (i = 0; i < hply; i++) {
 			Move m = histDat[i].m;
 			if (i % 2 == 0)
@@ -1356,7 +1365,7 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public String getMoveListSAN() {
 		String output = StaticData.SYMBOL_EMPTY;
-		int i = 0;
+		int i;
 		for (i = 0; i < hply; i++) {
 			if (i % 2 == 0)
 				output += "\n " + (i / 2 + 1) + ". ";
@@ -1434,13 +1443,13 @@ public class ChessBoard implements BoardFace {
 		if (m.promote > 0) {
 			int pr = m.promote;
 			if (pr == 1)
-				promotion = "=N";
+				promotion = EQUALS_N;
 			if (pr == 2)
-				promotion = "=B";
+				promotion = EQUALS_B;
 			if (pr == 3)
-				promotion = "=R";
+				promotion = EQUALS_R;
 			if (pr == 4)
-				promotion = "=Q";
+				promotion = EQUALS_Q;
 		}
 
 		return f + capture + MoveParser.positionToString(m.to) + promotion;
@@ -1513,16 +1522,16 @@ public class ChessBoard implements BoardFace {
 		final Move m = histDat[hply - 1].m;
 		switch (m.promote) {
 			case ChessBoard.KNIGHT:
-				output += (color[m.from] == 0 ? "=N" : "=n");
+				output += (color[m.from] == 0 ? EQUALS_N : "=n");
 				break;
 			case ChessBoard.BISHOP:
-				output += (color[m.from] == 0 ? "=B" : "=b");
+				output += (color[m.from] == 0 ? EQUALS_B : "=b");
 				break;
 			case ChessBoard.ROOK:
-				output += (color[m.from] == 0 ? "=R" : "=r");
+				output += (color[m.from] == 0 ? EQUALS_R : "=r");
 				break;
 			case ChessBoard.QUEEN:
-				output += (color[m.from] == 0 ? "=Q" : "=q");
+				output += (color[m.from] == 0 ? EQUALS_Q : "=q");
 				break;
 			default:
 				break;
@@ -1623,7 +1632,7 @@ public class ChessBoard implements BoardFace {
 		int score[] = new int[2];  /* each side's score */
 
 		/* this is the first pass: set up pawnRank, pieceMat, and pawnMat. */
-		int i = 0;
+		int i;
 		for (i = 0; i < 10; ++i) {
 			pawnRank[LIGHT][i] = 0;
 			pawnRank[DARK][i] = 7;

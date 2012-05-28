@@ -148,4 +148,9 @@ public class AppData {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(memberShipUrl));
 	}
 
+	public static boolean haveSavedCompGame(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		return !preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
+				.equals(StaticData.SYMBOL_EMPTY);
+	}
 }

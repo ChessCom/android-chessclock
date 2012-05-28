@@ -48,14 +48,17 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		if (MainApp.isComputerGameMode(boardView.getBoardFace())
-				&& !preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) { // if load game
+		if (MainApp.isComputerGameMode(boardView.getBoardFace()) && AppData.haveSavedCompGame(this)) { // if load game
 			loadSavedGame();
 
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace()))
 				boardView.getBoardFace().setReside(true);
 
 		} else {
+			// drop saved game at start
+//			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+//			preferencesEditor.commit();
+
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
 				boardView.getBoardFace().setReside(true);
 				boardView.invalidate();
@@ -66,6 +69,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			}
 		}
 
+//		loadSavedGame();
         gamePanelView.turnCompMode();
     }
 
@@ -112,12 +116,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 			case INIT_ACTIVITY:
 
-				if (boardView.getBoardFace().isInit() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())
-						|| MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
-					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
-					getOnlineGame(mainApp.getGameId());
-					boardView.getBoardFace().setInit(false);
-				}
 				break;
 			case CALLBACK_REPAINT_UI: {
 				switch (boardView.getBoardFace().getMode()) {

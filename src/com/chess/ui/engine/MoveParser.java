@@ -37,6 +37,9 @@ public class MoveParser {
 	public static final String W_SMALL = "w";
 	public static final String P_BIG = "P";
 	public static final String X_SMALL = "x";
+	private static final String FEN_DIVIDER = "[/]";
+	private static final String REGEXP_NUMBERS = "[0-9]";
+
 	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 //	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
 
@@ -68,7 +71,7 @@ public class MoveParser {
 
 		int end = currentmove.length() - 1;
 		while (end != 0) {
-			if (Pattern.matches("[0-9]", currentmove.substring(end, end + 1))) {
+			if (Pattern.matches(REGEXP_NUMBERS, currentmove.substring(end, end + 1))) {
 				MoveTo[0] = currentmove.substring(end - 1, end);
 				MoveTo[1] = currentmove.substring(end, end + 1);
 				break;
@@ -128,7 +131,7 @@ public class MoveParser {
 
 		int end = currentMove.length() - 1;
 		while (end != 0) {
-			if (Pattern.matches("[0-9]", currentMove.substring(end, end + 1))) {
+			if (Pattern.matches(REGEXP_NUMBERS, currentMove.substring(end, end + 1))) {
 				moveTo[0] = currentMove.substring(end - 1, end);
 				moveTo[1] = currentMove.substring(end, end + 1);
 				break;
@@ -150,7 +153,7 @@ public class MoveParser {
 		int k;
 
 		if ((pieceType >= 1 && pieceType <= 4)/*(pieceType == 3 || pieceType == 1)*/
-				&& !currentMove.substring(1, 2).contains(X_SMALL) && !currentMove.substring(2, 3).matches("[0-9]")) {//Rooks and Knights which?
+				&& !currentMove.substring(1, 2).contains(X_SMALL) && !currentMove.substring(2, 3).matches(REGEXP_NUMBERS)) {//Rooks and Knights which?
 			for (k = 0; k < 64; k++) {
 				int l1 = (ChessBoard.ROW(k) + 1) * 8 - LetterToBN(currentMove.substring(1, 2));
 				int l2 = NumToBN(currentMove.substring(1, 2)) * 8 - (ChessBoard.COL(k) + 1);
@@ -160,7 +163,7 @@ public class MoveParser {
 						return new int[]{l1, to, promotion};
 					}
 				}
-				if (currentMove.substring(1, 2).matches("[0-9]")) {
+				if (currentMove.substring(1, 2).matches(REGEXP_NUMBERS)) {
 					if (board.getPieces()[l2] == pieceType && board.getColor()[l2] == board.getSide())
 						return new int[]{l2, to, promotion};
 				}
@@ -263,12 +266,12 @@ public class MoveParser {
 
 	//    public static void fenParse(String fen, ChessBoard b) {
 	public static void fenParse(String fen, BoardFace b) {
-		String[] FEN = fen.split("[/]");
+		String[] FEN = fen.split(FEN_DIVIDER);
 		int i, j, p = 0;
 		for (i = 0; i < 8; i++) {
 			String pos = FEN[i];
 			if (i == 7) {
-				String[] tmp2 = FEN[i].split(" ");
+				String[] tmp2 = FEN[i].split(StaticData.SYMBOL_SPACE);
 				pos = tmp2[0];
 				if (tmp2[1].contains(W_SMALL)) {
 					b.setSide(0);
@@ -280,8 +283,8 @@ public class MoveParser {
 			}
 			String[] f = pos.trim().split("|");
 			for (j = 1; j < f.length; j++) {
-				if (f[j].matches("[0-9]")) {
-					int cnt = new Integer(f[j]);
+				if (f[j].matches(REGEXP_NUMBERS)) {
+					int cnt = Integer.parseInt(f[j]);
 					while (cnt > 0) {
 						b.getPieces()[p] = 6;
 						b.getColor()[p++] = 6;

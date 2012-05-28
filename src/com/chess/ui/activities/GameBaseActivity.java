@@ -112,6 +112,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		final ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
 		if (chessBoard != null) {
 			boardView.setBoardFace(chessBoard);
+//			boardView.getBoardFace().setInit(false);
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			boardView.setGameActivityFace(this);
@@ -162,7 +163,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	protected abstract void onAbortOffered(int whichButton);
 
 	private class AbortGameDialogListener implements DialogInterface.OnClickListener {
-
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			onAbortOffered(whichButton);

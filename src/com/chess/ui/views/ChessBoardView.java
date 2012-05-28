@@ -147,7 +147,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
 
         compStrength = preferences.getInt(AppData.getUserName(getContext())
-                + AppConstants.PREF_COMPUTER_STRENGTH, 0);
+				+ AppConstants.PREF_COMPUTER_STRENGTH, 0);
 
         userName = AppData.getUserName(getContext());
     }
@@ -179,7 +179,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         if (!boardFace.isAnalysis()) {  // TODO eliminate game mode switches
             switch (boardFace.getMode()) {
                 case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
-                    computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+                    computerMove(mainApp.strength[compStrength]);
                     break;
                 }
                 case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
