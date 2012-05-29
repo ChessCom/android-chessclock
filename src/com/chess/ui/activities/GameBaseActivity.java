@@ -110,7 +110,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		final ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
 		if (chessBoard != null) {
 			boardView.setBoardFace(chessBoard);
-//			boardView.getBoardFace().setInit(false);
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			boardView.setGameActivityFace(this);

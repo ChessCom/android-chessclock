@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
@@ -46,39 +47,6 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 	}
 
 	@Override
-	public void onClick(View view) { // make code more clear
-		if (view.getId() == R.id.load) {
-			FlurryAgent.onEvent("New Game VS Computer", null);
-
-			startActivity(new Intent(getContext(), GameCompScreenActivity.class)
-					.putExtra(AppConstants.GAME_MODE,
-							Integer.parseInt(preferences
-									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
-		} else if (view.getId() == R.id.start) {
-			RadioButton whiteHuman, blackHuman;
-			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
-			blackHuman = (RadioButton) findViewById(R.id.bHuman);
-
-			// TODO replace with bit shifts
-			// TODO init mode on changes
-			int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
-			if (!whiteHuman.isChecked() && blackHuman.isChecked())
-				mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
-			else if (whiteHuman.isChecked() && blackHuman.isChecked())
-				mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
-			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
-				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
-
-			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.commit();
-
-			FlurryAgent.onEvent("New Game VS Computer", null);
-//			startActivity(new Intent(this, Game.class).putExtra(AppConstants.GAME_MODE, mode));
-			startActivity(new Intent(this, GameCompScreenActivity.class).putExtra(AppConstants.GAME_MODE, mode));
-		}
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -99,12 +67,37 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 		}
 	}
 
+	@Override
+	public void onClick(View view) { // make code more clear
+		if (view.getId() == R.id.load) {
+			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
 
-//	@Override
-//	public void LoadPrev(int code) {
-//		//finish();
-//		mainApp.getTabHost().setCurrentTab(0);
-//	}
+			startActivity(new Intent(getContext(), GameCompScreenActivity.class)
+					.putExtra(AppConstants.GAME_MODE,
+							Integer.parseInt(preferences
+									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
+		} else if (view.getId() == R.id.start) {
+			RadioButton whiteHuman, blackHuman;
+			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
+			blackHuman = (RadioButton) findViewById(R.id.bHuman);
+
+			int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+			if (!whiteHuman.isChecked() && blackHuman.isChecked())
+				mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+			else if (whiteHuman.isChecked() && blackHuman.isChecked())
+				mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
+				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+
+			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.commit();
+
+			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
+			startActivity(new Intent(this, GameCompScreenActivity.class).putExtra(AppConstants.GAME_MODE, mode));
+		}
+	}
+
+
 
 	@Override
 	public void update(int code) {

@@ -42,6 +42,12 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void widgetsInit() {
 		super.widgetsInit();
 
+		boardView.setBoardFace(new ChessBoard(this));
+		boardView.setGameActivityFace(this);
+		boardView.getBoardFace().setInit(true);
+		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+
 		if (MainApp.isComputerGameMode(boardView.getBoardFace()) && AppData.haveSavedCompGame(this)) { // if load game
 			loadSavedGame();
 
@@ -49,10 +55,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				boardView.getBoardFace().setReside(true);
 
 		} else {
-			// drop saved game at start
-//			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
-//			preferencesEditor.commit();
-
 			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
 				boardView.getBoardFace().setReside(true);
 				boardView.invalidate();
@@ -62,8 +64,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 		}
-
-//		loadSavedGame();
         gamePanelView.turnCompMode();
     }
 
