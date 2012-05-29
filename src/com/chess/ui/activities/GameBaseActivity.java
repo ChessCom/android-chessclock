@@ -98,9 +98,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		blackPlayerLabel.setSelected(true);
 
 		thinking = (TextView) findViewById(R.id.thinking);
-
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
-
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
 		boardView = (ChessBoardView) findViewById(R.id.boardview);

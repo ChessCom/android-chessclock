@@ -13,15 +13,9 @@ import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
-import com.chess.live.client.Game;
-import com.chess.model.GameItem;
-import com.chess.model.GameListItem;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.MoveParser;
-import com.chess.utilities.ChessComApiParser;
 
 /**
  * GameTacticsScreenActivity class
@@ -93,44 +87,27 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void onAbortOffered(int whichButton) {
 	}
 
-
 	@Override
 	protected void getOnlineGame(long game_id) {
-		super.getOnlineGame(game_id);
-
-		if (appService != null) {
-			appService.RunSingleTask(CALLBACK_GAME_STARTED,
-					"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + "&gid=" + game_id,
-					null);
-		}
 	}
 
 	@Override
 	public void update(int code) {
-//		int UPDATE_DELAY = 10000;
-		int[] moveFT;
 		switch (code) {
-			case ERROR_SERVER_RESPONSE:
-				if (!MainApp.isTacticsGameMode(boardView.getBoardFace()))
-					onBackPressed();
-				break;
-			case INIT_ACTIVITY:
-
-				break;
 			case CALLBACK_REPAINT_UI: {
 				switch (boardView.getBoardFace().getMode()) {
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-						whitePlayerLabel.setText(getString(R.string.Human));
+						whitePlayerLabel.setText(AppData.getUserName(this));
 						blackPlayerLabel.setText(getString(R.string.Computer));
 						break;
 					}
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
 						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(getString(R.string.Human));
+						blackPlayerLabel.setText(AppData.getUserName(this));
 						break;
 					}
 					case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-						whitePlayerLabel.setText(getString(R.string.Human));
+						whitePlayerLabel.setText(AppData.getUserName(this)/*getString(R.string.Human)*/);
 						blackPlayerLabel.setText(getString(R.string.Human));
 						break;
 					}
@@ -159,112 +136,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				thinking.setVisibility(View.GONE);
 				break;
 			}
-			case CALLBACK_GAME_REFRESH:
-
-				if (mainApp.getCurrentGame() == null || game == null) {
-					return;
-				}
-
-				if (!mainApp.getCurrentGame().equals(game)) {
-					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
-						mainApp.setCurrentGame(game);
-						String[] Moves;
-
-						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
-								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())))) {
-
-							int beginIndex = (mainApp.isLiveChess()
-									&& MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
-
-							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-									.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
-
-							if (Moves.length - boardView.getBoardFace().getMovesCount() == 1) {
-								if (mainApp.isLiveChess()) {
-									moveFT = MoveParser.parseCoordinate(boardView.getBoardFace(), Moves[Moves.length - 1]);
-								} else {
-									moveFT = MoveParser.parse(boardView.getBoardFace(), Moves[Moves.length - 1]);
-								}
-								boolean playSound = (mainApp.isLiveChess() && lccHolder.getGame(mainApp.getCurrentGameId()).getSeq() == Moves.length)
-										|| !mainApp.isLiveChess();
-
-								if (moveFT.length == 4) {
-									Move m;
-									if (moveFT[3] == 2)
-										m = new Move(moveFT[0], moveFT[1], 0, 2);
-									else
-										m = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									boardView.getBoardFace().makeMove(m, playSound);
-								} else {
-									Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-									boardView.getBoardFace().makeMove(m, playSound);
-								}
-								//mainApp.showToast("Move list updated!");
-								boardView.getBoardFace().setMovesCount(Moves.length);
-								boardView.invalidate();
-								update(CALLBACK_REPAINT_UI);
-							}
-						}
-						return;
-					}
-
-				}
-				break;
-			case CALLBACK_GAME_STARTED:
-				getSoundPlayer().playGameStart();
-
-				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(response));
-
-				if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
-					boardView.getBoardFace().setChess960(true);
-
-				if (!isUserColorWhite()) {
-					boardView.getBoardFace().setReside(true);
-				}
-				String[] moves = {};
-
-				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
-					boardView.getBoardFace().setMovesCount(moves.length);
-				} else if (!mainApp.isLiveChess()) {
-					boardView.getBoardFace().setMovesCount(0);
-				}
-
-				Game game = lccHolder.getGame(mainApp.getGameId());
-				if (game != null && game.getSeq() > 0) {
-					lccHolder.doReplayMoves(game);
-				}
-
-				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-					boardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.fenParse(FEN, boardView.getBoardFace());
-				}
-
-				int i;
-
-				for (i = 0; i < boardView.getBoardFace().getMovesCount(); i++) {
-					moveFT = MoveParser.parse(boardView.getBoardFace(), moves[i]);
-					if (moveFT.length == 4) {
-						Move move;
-						if (moveFT[3] == 2) {
-							move = new Move(moveFT[0], moveFT[1], 0, 2);
-						} else {
-							move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-						}
-						boardView.getBoardFace().makeMove(move, false);
-					} else {
-						Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-						boardView.getBoardFace().makeMove(m, false);
-					}
-				}
-
-				update(CALLBACK_REPAINT_UI);
-				boardView.getBoardFace().takeBack();
-				boardView.invalidate();
-
-				playLastMoveAnimation();
-				break;
 			default:
 				break;
 		}
@@ -350,15 +221,12 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 			case R.id.menu_reside:
 				boardView.flipBoard();
-
 				break;
 			case R.id.menu_hint:
 				boardView.showHint();
-
 				break;
 			case R.id.menu_previous:
 				boardView.moveBack();
-
 				isMoveNav = true;
 				break;
 			case R.id.menu_next:
@@ -400,9 +268,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 					update(CALLBACK_REPAINT_UI);
-					boardView.computerMove(mainApp.strength[preferences
-							.getInt(AppData.getUserName(getContext())
-									+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+					boardView.computerMove(mainApp.strength[AppData.getCompStrength(getContext())]);
 					break;
 				}
 				case EMAIL_GAME: {

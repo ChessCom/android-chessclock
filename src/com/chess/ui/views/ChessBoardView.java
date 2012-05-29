@@ -206,7 +206,7 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
             int i;
             for (i = 0; i < boardFace.getMovesCount(); i++) {
-                Move m = boardFace.getHistDat()[i].m;
+                Move m = boardFace.getHistDat()[i].move;
                 saving += "|" + m.from + ":" + m.to + ":" + m.promote + ":" + m.bits;
             }
 
@@ -368,8 +368,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                     continue;
                 int c = boardFace.getColor()[i];
                 int p = boardFace.getPieces()[i];
-                int x = ChessBoard.COL(i, boardFace.isReside());
-                int y = ChessBoard.ROW(i, boardFace.isReside());
+                int x = ChessBoard.getColumn(i, boardFace.isReside());
+                int y = ChessBoard.getRow(i, boardFace.isReside());
                 if (c != 6 && p != 6) {    // here is the simple replace/redraw of piece
                     rect.set(x * square, y * square, x * square + square, y * square + square);
                     canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null, rect, null);
@@ -381,8 +381,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                     continue;
                 int c = c_tmp[i];
                 int p = p_tmp[i];
-                int x = ChessBoard.COL(i, boardFace.isReside());
-                int y = ChessBoard.ROW(i, boardFace.isReside());
+                int x = ChessBoard.getColumn(i, boardFace.isReside());
+                int y = ChessBoard.getRow(i, boardFace.isReside());
                 if (c != 6 && p != 6) {     // here is the simple replace/redraw of piece
                     rect.set(x * square, y * square, x * square + square, y * square + square);
                     canvas.drawBitmap(mainApp.getPiecesBitmaps()[c][p], null, rect, null);
@@ -403,18 +403,18 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
         }
 
         if (isHighlightEnabled && boardFace.getHply() > 0 && !compmoving) {
-            Move m = boardFace.getHistDat()[boardFace.getHply() - 1].m;
-            int x1 = ChessBoard.COL(m.from, boardFace.isReside());
-            int y1 = ChessBoard.ROW(m.from, boardFace.isReside());
+            Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
+            int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
+            int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
             canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, red);
-            int x2 = ChessBoard.COL(m.to, boardFace.isReside());
-            int y2 = ChessBoard.ROW(m.to, boardFace.isReside());
+            int x2 = ChessBoard.getColumn(m.to, boardFace.isReside());
+            int y2 = ChessBoard.getRow(m.to, boardFace.isReside());
             canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, red);
         }
 
         if (sel) {
-            int x = ChessBoard.COL(from, boardFace.isReside());
-            int y = ChessBoard.ROW(from, boardFace.isReside());
+            int x = ChessBoard.getColumn(from, boardFace.isReside());
+            int y = ChessBoard.getRow(from, boardFace.isReside());
             canvas.drawRect(x * square, y * square, x * square + square, y * square + square, white);
         }
         if (drag) {
