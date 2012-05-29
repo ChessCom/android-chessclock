@@ -4,15 +4,6 @@
 
 
   	<!-- Rounded buttons -->
-
-<!--
-	<dimen name="rounded_button_radius">4px</dimen>
-	<dimen name="button_pressed_stroke_radius">4px</dimen>
-	<dimen name="button_pressed_stroke_width_1">8px</dimen>
-	<dimen name="button_pressed_stroke_width_2">8px</dimen>
-	<dimen name="button_margin4stroke">6px</dimen>
--->
-
 	<dimen name="rounded_button_radius">3dip</dimen>
 	<dimen name="button_pressed_stroke_radius">3dip</dimen>
 	<dimen name="button_pressed_stroke_width_1">5dip</dimen>
@@ -84,6 +75,7 @@
 	<!--Default margins between screen widgets-->
 
 	<dimen name="margin_top_beween_buttons">10dip</dimen>
+
 	<!--Linear Description paddings-->
 	<dimen name="default_linear_bottom_padding">2dip</dimen>
 	<dimen name="default_linear_top_padding">2dip</dimen>
@@ -105,19 +97,11 @@
 	<dimen name="game_end_layout_padding_side">7dip</dimen>
 	<dimen name="game_label_text_size">12sp</dimen>
 
-
-	<!--
-	 <dimen name="signin_button_margin_updown">24dip</dimen>
-	 <dimen name="signin_footer_margin_bottom">10dip</dimen>
- -->
-
 	<!--GamePanelView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
 	<dimen name="game_control_padding_right">10dip</dimen>
-	<!--<dimen name="game_control_padding_top">15dip</dimen>-->
 	<dimen name="game_control_padding_top">5dip</dimen>
 	<dimen name="game_control_padding_bottom">0dip</dimen>
-	<!--<dimen name="game_control_padding_bottom">5dip</dimen>-->
 
 	<dimen name="piece_layout_padding_left">7dip</dimen>
 	<dimen name="piece_layout_padding_right">0dip</dimen>
@@ -135,8 +119,6 @@
 
 	<!--Pending load-->
 	<dimen name="pending_progress_bar_size">40dip</dimen>
-
-	<!--<dimen name="piece_layout_padding_top">2dip</dimen>-->
 
 
 </resources>

@@ -3,7 +3,6 @@ package com.chess.backend.tasks;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
@@ -32,9 +31,6 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 		String response = Web.Request("http://www." + LccHolder.HOST
 				+ "/api/get_move_status?id=" + tokens[0], "GET", null, null);
 
-		Log.d("YourMoveUpdateService","token = " + tokens[0]);  //TODO remove before release
-		Log.d("YourMoveUpdateService","response = " + response);
-
 		return response.contains(RestHelper.R_YOUR_MOVE);
 	}
 
@@ -49,10 +45,8 @@ public class UpdateStatusTask extends AsyncTask<String, Void, Boolean>{
 					StaticData.MOVE_REQUEST_CODE,
 					OnlineScreenActivity.class);
 
-			Log.d("YourMoveUpdateService", " -> It's Your turn!");
 			context.sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 		}else{
-			Log.d("YourMoveUpdateService", " -> No pending moves");
 		}
 	}
 }
