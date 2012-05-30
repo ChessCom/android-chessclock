@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.mopub.mobileads.MoPubView;
+import android.os.Build.VERSION;
 
 public class MopubHelper {
 

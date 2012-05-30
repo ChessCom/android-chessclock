@@ -108,6 +108,12 @@
 			<version>3.2.0</version>
 		</dependency>
 
+        <dependency>
+            <groupId>com.commonsware</groupId>
+            <artifactId>cwac-endless</artifactId>
+            <version>1.0</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>
