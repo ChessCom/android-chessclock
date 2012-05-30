@@ -85,8 +85,8 @@ public class MopubHelper {
 //	public static boolean isShowAds(MainApp app) {
 	public static boolean isShowAds(Context context) {
 		boolean result;
-		return true;
-//			result = AppUtils.isNeedToUpgrade(context);
+//		return true;
+			return AppUtils.isNeedToUpgrade(context);
 
 
 /*
