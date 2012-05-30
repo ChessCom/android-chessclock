@@ -931,8 +931,6 @@ public class ChessBoard implements BoardFace {
 			}
 
 			color[to] = color[from];
-			Log.d("TEST_PIECE", "pieces[to] = pieces[from]; pieces[to] = " + pieces[to]+
-						"pieces[from] = " + pieces[from]);
 			pieces[to] = pieces[from];
 			if (to != from) {
 				color[from] = EMPTY;  // error not here too
@@ -1181,21 +1179,15 @@ public class ChessBoard implements BoardFace {
 		}
 
 		color[move.from] = EMPTY;
-//		Log.d("TEST_PIECE","pieces[to] = EMPTY; piece[to] = " + pieces[to] + ", to = " + to);
-
 		pieces[move.from] = EMPTY;
 
 		/* erase the pawn if this is an en passant move */
 		if ((move.bits & 4) != 0) {
 			if (side == LIGHT) {
 				color[move.to + 8] = EMPTY;
-				Log.d("TEST_PIECE","pieces[move.to + 8] = EMPTY; piece[move.to + 8] = "
-						+ pieces[move.to + 8] + ", move.to + 8 = " + (move.to + 8) );
 				pieces[move.to + 8] = EMPTY;
 			} else {
 				color[move.to - 8] = EMPTY;
-				Log.d("TEST_PIECE","pieces[move.to - 8] = EMPTY; piece[move.to - 8] = "
-						+ pieces[move.to - 8] + ", move.to - 8 = "  + (move.to - 8) );
 				pieces[move.to - 8] = EMPTY;
 			}
 		}

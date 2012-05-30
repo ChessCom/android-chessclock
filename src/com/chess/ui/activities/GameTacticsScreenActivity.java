@@ -81,65 +81,65 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		onPostCreate();
 	}
 
-    @Override
-    protected void init() {
-        menuOptionsItems = new CharSequence[]{
-                getString(R.string.skipproblem),
-                getString(R.string.showanswer),
-                getString(R.string.settings)};
+	@Override
+	protected void init() {
+		menuOptionsItems = new CharSequence[]{
+				getString(R.string.skipproblem),
+				getString(R.string.showanswer),
+				getString(R.string.settings)};
 
-        firstTacticsDialogListener = new FirstTacticsDialogListener();
-        maxTacticsDialogListener = new MaxTacticsDialogListener();
-        hundredTacticsDialogListener = new HundredTacticsDialogListener();
-        offlineModeDialogListener = new OfflineModeDialogListener();
-        correctDialogListener = new CorrectDialogListener();
-        wrongDialogListener = new WrongDialogListener();
-        wrongScoreDialogListener = new WrongScoreDialogListener();
+		firstTacticsDialogListener = new FirstTacticsDialogListener();
+		maxTacticsDialogListener = new MaxTacticsDialogListener();
+		hundredTacticsDialogListener = new HundredTacticsDialogListener();
+		offlineModeDialogListener = new OfflineModeDialogListener();
+		correctDialogListener = new CorrectDialogListener();
+		wrongDialogListener = new WrongDialogListener();
+		wrongScoreDialogListener = new WrongScoreDialogListener();
 
-        menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
-    }
+		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+	}
 
-    @Override
-    protected void widgetsInit() {
-        super.widgetsInit();
+	@Override
+	protected void widgetsInit() {
+		super.widgetsInit();
 
-        timer = (TextView) findViewById(R.id.timer);
-        timer.setVisibility(View.VISIBLE);
-        whitePlayerLabel.setVisibility(View.GONE);
-        blackPlayerLabel.setVisibility(View.GONE);
+		timer = (TextView) findViewById(R.id.timer);
+		timer.setVisibility(View.VISIBLE);
+		whitePlayerLabel.setVisibility(View.GONE);
+		blackPlayerLabel.setVisibility(View.GONE);
 
 
 		if (getLastCustomNonConfigurationInstance() == null) {
 			showDialog(DIALOG_TACTICS_START_TACTICS);
 		}
 
-        gamePanelView.hideChatButton();
-    }
+		gamePanelView.hideChatButton();
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+	@Override
+	protected void onResume() {
+		super.onResume();
 
-        if (boardView.getBoardFace().isTacticCanceled()) {
-            boardView.getBoardFace().setTacticCanceled(false);
-            showDialog(DIALOG_TACTICS_START_TACTICS);    // TODO show register confirmation dialog
-            startTacticsTimer();
-        } else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
-            startTacticsTimer();
-        }
-    }
+		if (boardView.getBoardFace().isTacticCanceled()) {
+			boardView.getBoardFace().setTacticCanceled(false);
+			showDialog(DIALOG_TACTICS_START_TACTICS);	// TODO show register confirmation dialog
+			startTacticsTimer();
+		} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
+			startTacticsTimer();
+		}
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+	@Override
+	protected void onPause() {
+		super.onPause();
 
-        stopTacticsTimer();
-    }
+		stopTacticsTimer();
+	}
 
-    @Override
-    public Object onRetainCustomNonConfigurationInstance () {
-        return boardView.getBoardFace();
-    }
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		return boardView.getBoardFace();
+	}
 
 	private class FirstTacticsDialogListener implements DialogInterface.OnClickListener {
 		@Override
@@ -621,17 +621,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		}
 	}
 
-    @Override
-    public void updateAfterMove() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void updateAfterMove() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
 
-    @Override
-    public void invalidateGameScreen() {
-        //TODO To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void invalidateGameScreen() {
+		//TODO To change body of implemented methods use File | Settings | File Templates.
+	}
 
-    @Override
+	@Override
 	protected void restoreGame() {
 		restoreLastConfig();
 	}
@@ -666,8 +666,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
-				}
-				else if (tmp.length < 2 || tmp[1].trim().equals("")){
+				} else if (tmp.length < 2 || tmp[1].trim().equals("")) {
 					// TODO: remove after debug
 					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
 					//return;
@@ -688,8 +687,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
-				}
-				else if (tmp.length < 2 || tmp[1].trim().equals("")){
+				} else if (tmp.length < 2 || tmp[1].trim().equals("")) {
 					// TODO: remove after debug
 					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
 					//return;
@@ -721,8 +719,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
-				}
-				else if (tmp.length < 2 || tmp[2].trim().equals("")){
+				} else if (tmp.length < 2 || tmp[2].trim().equals("")) {
 					// TODO: remove after debug
 					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
 					//return;
@@ -819,7 +816,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						}
 						return;
 					}
-					
+
 				}
 				break;
 
@@ -834,7 +831,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (!isUserColorWhite()) {
 					boardView.getBoardFace().setReside(true);
 				}
-				
+
 				String[] moves = {};
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
@@ -1016,7 +1013,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 	@Override
-	protected void restoreLastConfig(){
+	protected void restoreLastConfig() {
 		if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("1")) {
 			openOptionsMenu();
 			return;
@@ -1131,7 +1128,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			playLastMoveAnimation();
 		}
 	}
-
 
 
 	@Override

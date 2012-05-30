@@ -110,7 +110,6 @@ public class DashBoardLayout extends RelativeLayout {
 	@Override
 	protected void onLayout(boolean changed, int layoutLeft, int layoutTop, int layoutRight, int layoutBottom) {
 		int width = layoutRight - layoutLeft;
-//		Log.d("TEST", "Width = " + width);
 		int height = layoutBottom - layoutTop;
 
 		final int count = getChildCount();

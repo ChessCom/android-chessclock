@@ -257,22 +257,28 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 					boardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 					boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
+
 					update(CALLBACK_REPAINT_UI);
+
+					getIntent().putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
+
 					break;
 				}
 				case NEW_GAME_BLACK: {
 					// TODO encapsulate
 					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
 					boardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
+					boardView.computerMove(mainApp.strength[AppData.getCompStrength(getContext())]);
 					boardView.getBoardFace().setReside(true);
 					boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
+
 					update(CALLBACK_REPAINT_UI);
-					boardView.computerMove(mainApp.strength[AppData.getCompStrength(getContext())]);
+
+					getIntent().putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
 					break;
 				}
 				case EMAIL_GAME: {
-//					String moves = movelist.getText().toString();
 					String moves = StaticData.SYMBOL_EMPTY;
 					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
