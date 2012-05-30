@@ -55,7 +55,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 //		boolean liveMembershipLevel =
 //				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
 		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
 			upgrade.setVisibility(View.VISIBLE);
 			upgrade.setOnClickListener(this);
 		} else {

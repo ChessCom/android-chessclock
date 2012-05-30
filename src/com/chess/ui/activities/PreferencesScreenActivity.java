@@ -81,7 +81,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		boolean liveMembershipLevel =
 				lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
 		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+				|| (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
 			preferencesUpgrade.setVisibility(View.VISIBLE);
 		} else {
 			preferencesUpgrade.setVisibility(View.GONE);

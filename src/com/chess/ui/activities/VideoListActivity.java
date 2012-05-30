@@ -37,7 +37,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
         boolean liveMembershipLevel = lccHolder.getUser() != null && mainApp.isLiveChess()
                 && (lccHolder.getUser().getMembershipLevel() < 50);
         if (liveMembershipLevel
-                || (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+                || (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
             videoUpgrade.setVisibility(View.VISIBLE);
             videoUpgrade.setOnClickListener(this);
 

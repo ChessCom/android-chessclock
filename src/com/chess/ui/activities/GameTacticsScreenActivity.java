@@ -663,9 +663,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 			case CALLBACK_TACTICS_WRONG: {
 				String[] tmp = response.split("[|]");
-				if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
+				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
+				}
+				else if (tmp.length < 2 || tmp[1].trim().equals("")){
+					// TODO: remove after debug
+					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
+					//return;
 				}
 
 				TacticResultItem result = new TacticResultItem(tmp[1].split(":"));
@@ -680,9 +685,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 			case CALLBACK_TACTICS_CORRECT: {
 				String[] tmp = response.split("[|]");
-				if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
+				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
+				}
+				else if (tmp.length < 2 || tmp[1].trim().equals("")){
+					// TODO: remove after debug
+					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
+					//return;
 				}
 
 				TacticResultItem result = new TacticResultItem(tmp[1].split(":"));
@@ -708,9 +718,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				boardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 				String[] tmp = response.trim().split("[|]");
-				if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
+				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
+				}
+				else if (tmp.length < 2 || tmp[2].trim().equals("")){
+					// TODO: remove after debug
+					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
+					//return;
 				}
 
 				mainApp.setTactic(new TacticItem(tmp[2].split(":")));
