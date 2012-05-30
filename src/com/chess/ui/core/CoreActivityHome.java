@@ -20,6 +20,10 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -29,17 +33,16 @@ import com.chess.model.PopupItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CoreActivityHome extends ActionBarActivityHome implements CoreActivityFace
+public abstract class CoreActivityHome extends ActionBarActivityHome implements BoardToGameActivityFace
 		, PopupDialogFace, LccConnectionListener {
 
 	protected final static int INIT_ACTIVITY = -1;
@@ -50,10 +53,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	protected String response = AppConstants.SYMBOL_EMPTY;
-	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
+	protected String response = StaticData.SYMBOL_EMPTY;
+	protected String responseRepeatable = StaticData.SYMBOL_EMPTY;
 
-	protected Context context;
 	private Handler handler;
 	public boolean mIsBound;
 	public WebService appService = null;
@@ -62,25 +64,31 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected PopupItem popupItem;
 	protected List<PopupDialogFragment> popupManager;
 
+	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
+
+
 	public abstract void update(int code);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		context = this;
 		handler = new Handler();
 
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
 		// get global Shared Preferences
-		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
-                                                                            // that will simplify every call, where you need to get access token for every preference change and access
-			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
-		}
+//		if (preferences == null) {
+//			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE)); // TODO we may use personalized shared preferences. TO use it pass usertoken as an argument to init
+//                                                                            // that will simplify every call, where you need to get access token for every preference change and access
+//			mainApp.setSharedDataEditor(preferences.edit());
+//		}
 
+		preferences = AppData.getPreferences(this);
+		preferencesEditor = preferences.edit();
+		
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -92,21 +100,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		popupManager = new ArrayList<PopupDialogFragment>();
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		doUnbindService();
-	}
-
 	/*
 	 * public boolean isConnected(){ ConnectivityManager cm =
 	 * (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE); NetworkInfo
 	 * NI = cm.getActiveNetworkInfo(); if(NI == null) return false; else return
 	 * NI.isConnectedOrConnecting(); }
 	 */
-
-
-
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
 				Context.BIND_AUTO_CREATE);
@@ -124,7 +123,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
-			update(INIT_ACTIVITY); // TODO send broadcast or call local method, but with readable arguments
+			update(INIT_ACTIVITY);
 		}
 
 		@Override
@@ -140,56 +139,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		fragment.getDialog().dismiss();
-	}
-
-	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
-		fragment.getDialog().dismiss();
-	}
-
-	@Override
-	public void onConnected(boolean connected) {
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, connected);
-	}
-
-	private class ReconnectTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... voids) {
-			final LccHolder lccHolder = mainApp.getLccHolder();
-			// lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().disconnect();
-			lccHolder.setNetworkTypeName(null);
-			lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().connect(
-					mainApp.getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY),
-					mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY),
-					lccHolder.getConnectionListener());
-			/*
-								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
-								 * MyProgressDialog.show(this, null,
-								 * getString(R.string.updatinggameslist), true));
-								 */
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			super.onPostExecute(aVoid);
-			lccHolder.updateConnectionState();
-		}
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
-
-		boolean resetDetected = false;
-
-		if (resetDetected) {
-			checkUserTokenAndStartActivity();
-		}
 
 		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
 		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
@@ -206,19 +157,58 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		doBindService();
 		registerReceivers();
 
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
 		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
 
 	}
 
+	@Override
+	public void onConnected(boolean connected) {
+		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, connected);
+	}
 
+	private class ReconnectTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			final LccHolder lccHolder = mainApp.getLccHolder();
+			// lccHolder.setConnectingInProgress(true);
+			lccHolder.getClient().disconnect();
+			lccHolder.setNetworkTypeName(null);
+			lccHolder.setConnectingInProgress(true);
+
+			final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
+				lccHolder.getClient().connect(
+						preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
+						lccHolder.getConnectionListener());
+			}
+			else {
+				lccHolder.getClient().connect(
+						preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
+						preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY),
+						lccHolder.getConnectionListener());
+			}
+			/*
+								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
+								 * MyProgressDialog.show(this, null,
+								 * getString(R.string.updatinggameslist), true));
+								 */
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			lccHolder.updateConnectionState();
+		}
+	}
 
 	@Override
 	protected void onPause() {
@@ -239,8 +229,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		 * lccHolder.logout(); }
 		 */
 
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -269,12 +259,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
-			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
+			final Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} else {
-			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 		}
 	}
 
@@ -284,7 +274,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			// getting extras
 			Bundle rExtras = intent.getExtras();
 			boolean repeatable;
-			String resp = AppConstants.SYMBOL_EMPTY;
+			String resp = StaticData.SYMBOL_EMPTY;
 			int retCode = ERROR_SERVER_RESPONSE;
 			try {
 				repeatable = rExtras.getBoolean(AppConstants.REPEATABLE_TASK);
@@ -329,11 +319,13 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivityHome.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(CoreActivityHome.this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -383,16 +375,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			});
 			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
 			alertDialog.show();
-		}
-	};
-
-	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-			}
 		}
 	};
 
@@ -453,21 +435,24 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setMessage(message)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							if (mainApp.isLiveChess()/*
-													 * &&
-													 * lccHolder.isConnected()
-													 */) {
+							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+							final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+							final Class clazz = (password == null
+									|| password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
+							final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -478,9 +463,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(R.string.version_check)
+					.setMessage(R.string.version_is_obsolete_update)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
@@ -490,10 +478,10 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 									mainApp.setLiveChess(false);
 									lccHolder.setConnected(false);
 									startActivity(new Intent(Intent.ACTION_VIEW, Uri
-											.parse("http://www.chess.com/play/android.html")));
+											.parse(RestHelper.PLAY_ANDROID_HTML)));
 								}
 							});
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+							final Intent intent = new Intent(getContext(), HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -511,9 +499,11 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			messageView.setGravity(Gravity.CENTER);
 
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(true)
 					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {
 							final Handler handler = new Handler();
@@ -552,7 +542,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				 * DialogInterface.OnCancelListener() { public void
 				 * onCancel(DialogInterface dialog) {
 				 *
-				 * final Intent intent = new Intent(mainApp, Singin.class);
+				 * final Intent intent = new Intent(this, Singin.class);
 				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				 * //connectingIndicator.dismiss(); lccHolder.logout();
 				 * mainApp.startActivity(intent); } });
@@ -580,27 +570,42 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-					.equals(mainApp.getUserName());
+					.equals(AppData.getUserName(getContext()));
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	@Override
 	public SoundPlayer getSoundPlayer() {
-		return mainApp.getSoundPlayer();
+		return SoundPlayer.getInstance(this);
+	}
+
+	@Override
+	public void onLeftBtnClick(PopupDialogFragment fragment) {
+		fragment.getDialog().dismiss();
+	}
+
+	@Override
+	public void onRightBtnClick(PopupDialogFragment fragment) {
+		fragment.getDialog().dismiss();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		doUnbindService();
 	}
 
 	/*
@@ -619,7 +624,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 */
 
 	private void checkUpdate() {
-		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+		new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	private void showNetworkChangeNotification() {
@@ -639,7 +644,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 * private BroadcastReceiver networkChangeNotificationReceiver = new
 	 * BroadcastReceiver() {
 	 * 
-	 * @Override public void onReceive(Context coreContext, Intent intent) { if
+	 * @Override public void onReceive(Context getContext(), Intent intent) { if
 	 * (mainApp.isNetworkChangedNotification()) {
 	 * showNetworkChangeNotification(); } } };
 	 */
@@ -655,5 +660,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	@Override
 	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
+	}
+
+	protected Context getContext(){
+		return this;
 	}
 }

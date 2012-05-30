@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.AppConstants;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -121,8 +121,11 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 	@Override
 	public void hideMenuItemById(int id, boolean show){
-		if(!noActionBar)
-			getActionBarCompat().findViewById(id).setVisibility(show? View.VISIBLE: View.GONE);
+		if(!noActionBar) {
+            View view = getActionBarCompat();
+            if(view != null)
+                view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
+        }
 	}
 
 	@Override

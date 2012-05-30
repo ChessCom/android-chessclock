@@ -5,7 +5,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.core.AppConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -18,7 +17,7 @@ public class GetCustomObjTask<T> extends AbstractUpdateTask<T,LoadItem> {
 	private static final String TAG = "GetCustomObjTask";
 
     private static int statusCode = -1;
-    private static String reason = AppConstants.SYMBOL_EMPTY;
+    private static String reason = StaticData.SYMBOL_EMPTY;
 
 	public GetCustomObjTask(TaskUpdateInterface<T> taskFace) {
 		super(taskFace);

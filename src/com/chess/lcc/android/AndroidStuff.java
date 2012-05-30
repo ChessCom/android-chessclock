@@ -4,19 +4,18 @@
 
 package com.chess.lcc.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
-import com.chess.backend.RestHelper;
-import com.chess.backend.WebService;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.GameBaseActivity;
 import com.chess.ui.activities.OnlineScreenActivity;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.utilities.MyProgressDialog;
@@ -24,7 +23,7 @@ import com.chess.utilities.MyProgressDialog;
 import java.io.Serializable;
 
 public class AndroidStuff {
-	private MainApp context;
+	private MainApp mainApp;
 	private SharedPreferences sharedData;
 	private SharedPreferences.Editor sharedDataEditor;
 	private MyProgressDialog currentProgressDialog;
@@ -38,21 +37,25 @@ public class AndroidStuff {
 		this.lccHolder = lccHolder;
 	}
 
-	public MainApp getContext() {
-		return context;
+	public MainApp getMainApp() {
+		return mainApp;
 	}
 
-	public void setContext(final MainApp context) {
-		this.context = context;
+	public void setMainApp(MainApp mainApp) {
+		this.mainApp = mainApp;
 	}
 
+	public Context getContext(){
+		return mainApp.getApplicationContext();
+	}
+	
 	public void setCurrentProgressDialog(MyProgressDialog currentProgressDialog) {
 		this.currentProgressDialog = currentProgressDialog;
 	}
 
 	public SharedPreferences getSharedData() {
 		if (sharedData == null) {
-			sharedData = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, 0);
+			sharedData = mainApp.getSharedPreferences(StaticData.SHARED_DATA_NAME, 0);
 		}
 		return sharedData;
 	}
@@ -91,7 +94,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.OBJECT, object)
@@ -103,7 +106,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.TITLE, title)
@@ -116,7 +119,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastIntent(int code, String broadcastAction) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 		);
@@ -162,7 +165,7 @@ public class AndroidStuff {
 
 	public void manageProgressDialog(String broadcastAction, boolean enable, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR, enable)
 						.putExtra(AppConstants.MESSAGE, message)
@@ -175,7 +178,7 @@ public class AndroidStuff {
 	  }*/
 
 	public void closeLoggingInIndicator() {
-		manageProgressDialog(IntentConstants.FILTER_LOGINING_INFO, false, AppConstants.SYMBOL_EMPTY);
+		manageProgressDialog(IntentConstants.FILTER_LOGINING_INFO, false, StaticData.SYMBOL_EMPTY);
 	}
 
 	public void showReconnectingIndicator() {
@@ -183,7 +186,7 @@ public class AndroidStuff {
 	}
 
 	public void closeReconnectingIndicator() {
-		manageProgressDialog(IntentConstants.FILTER_RECONNECT_INFO, false, AppConstants.SYMBOL_EMPTY);
+		manageProgressDialog(IntentConstants.FILTER_RECONNECT_INFO, false, StaticData.SYMBOL_EMPTY);
 	}
 
 	public void informAndExit(String title, String message) {
@@ -191,12 +194,12 @@ public class AndroidStuff {
 	}
 
 	public void processOtherClientEntered() {
-		informAndExit(IntentConstants.FILTER_EXIT_INFO, AppConstants.SYMBOL_EMPTY, "Another login has been detected.");
+		informAndExit(IntentConstants.FILTER_EXIT_INFO, StaticData.SYMBOL_EMPTY, "Another login has been detected.");
 	}
 
 	public void informAndExit(String broadcastAction, String title, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getContext().sendBroadcast(
+		lccHolder.getAndroid().getMainApp().sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.TITLE, title)
 						.putExtra(AppConstants.MESSAGE, message)
@@ -204,17 +207,17 @@ public class AndroidStuff {
 	}
 
 	public void processObsoleteProtocolVersion() {
-		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
+		lccHolder.getAndroid().getMainApp().sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
 	}
 
 	/*public void startSigninActivity()
 	  {
-		coreContext.getSharedDataEditor().putString("password", AppConstants.SYMBOL_EMPTY);
-		coreContext.getSharedDataEditor().putString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY);
-		coreContext.getSharedDataEditor().commit();
-		final Intent intent = new Intent(mainApp, Singin.class);
+		getContext().getSharedDataEditor().putString("password", StaticData.SYMBOL_EMPTY);
+		getContext().getSharedDataEditor().putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+		getContext().getSharedDataEditor().commit();
+		final Intent intent = new Intent(this, Singin.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		coreContext.startActivity(intent);
+		getContext().startActivity(intent);
 	  }*/
 
 	public void runSendChallengeTask(MyProgressDialog PD, Challenge challenge) {
@@ -265,7 +268,7 @@ public class AndroidStuff {
 	private class LiveMakeDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().makeDraw(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().makeDraw(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}
@@ -278,7 +281,7 @@ public class AndroidStuff {
 	private class LiveMakeResignTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().makeResign(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().makeResign(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}
@@ -291,7 +294,7 @@ public class AndroidStuff {
 	private class LiveAbortGameTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().abortGame(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().abortGame(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}
@@ -346,7 +349,7 @@ public class AndroidStuff {
 	private class LiveRejectDrawTask extends AsyncTask<com.chess.live.client.Game, Void, Void> {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
-			lccHolder.getClient().rejectDraw(game[0], AppConstants.SYMBOL_EMPTY);
+			lccHolder.getClient().rejectDraw(game[0], StaticData.SYMBOL_EMPTY);
 			//stopSelf();
 			return null;
 		}

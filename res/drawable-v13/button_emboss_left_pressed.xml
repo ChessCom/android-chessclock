@@ -52,8 +52,6 @@
 		>
 		<shape  >
 			<solid android:color="@color/grey_button_p" />
-<!--			<stroke android:width="@dimen/default_stroke_width"
-				android:color="@color/gray_button_stroke"/>-->
 			<corners
 				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomLeftRadius="@dimen/toggle_button_radius"

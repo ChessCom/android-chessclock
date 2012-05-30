@@ -99,7 +99,7 @@
 
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
-	<dimen name="player_name_max_width">140dip</dimen>
+	<dimen name="player_name_max_width">150dip</dimen>
 	<dimen name="game_label_padding_top">2dip</dimen>
 	<dimen name="game_end_layout_padding_bottom">8dip</dimen>
 	<dimen name="game_end_layout_padding_side">7dip</dimen>
@@ -133,6 +133,8 @@
 	<dimen name="popup_dialog_width">300dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 
+	<!--Pending load-->
+	<dimen name="pending_progress_bar_size">40dip</dimen>
 
 	<!--<dimen name="piece_layout_padding_top">2dip</dimen>-->
 

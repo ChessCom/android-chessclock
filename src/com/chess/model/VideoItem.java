@@ -1,6 +1,7 @@
 package com.chess.model;
 
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 
 import java.util.HashMap;
 
@@ -21,6 +22,6 @@ public class VideoItem {
 		this.values.put(AppConstants.AUTHOR_LAST_NAME, values[8]);
 		this.values.put(AppConstants.MINUTES, values[9]);
 		this.values.put(AppConstants.PUBLISH_TIMESTAMP, values[10]);
-		this.values.put(AppConstants.VIEW_URL, values[11].replaceAll("<--->", AppConstants.SYMBOL_EMPTY));
+		this.values.put(AppConstants.VIEW_URL, values[11].replaceAll("<--->", StaticData.SYMBOL_EMPTY));
 	}
 }

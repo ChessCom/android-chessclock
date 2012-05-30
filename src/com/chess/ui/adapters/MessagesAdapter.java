@@ -1,16 +1,14 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppData;
 import com.chess.model.MessageItem;
-import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.CoreActivityActionBar;
 
 import java.util.ArrayList;
 
@@ -19,18 +17,22 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 	public ArrayList<MessageItem> items;
 	private LayoutInflater vi;
 	private int resource;
-	private CoreActivityActionBar activity;
-    private int ownerColor;
+	private int ownerColor;
     private int opponentColor;
+
+	private String userName;
+	private String opponentName;
 
 	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<MessageItem> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.vi = LayoutInflater.from(context);
 		this.resource = textViewResourceId;
-		this.activity = (CoreActivityActionBar) context;
         ownerColor = getContext().getResources().getColor(R.color.green_button);
         opponentColor = getContext().getResources().getColor(R.color.orange_button);
+
+		userName =  AppData.getUserName(getContext());
+		opponentName =  AppData.getOpponentName(getContext());
 	}
 
 	@Override
@@ -45,11 +47,11 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 			if (text != null) text.setText(el.message);
 			if (owner != null) {
 				if (el.owner.equals("0")) {
-					owner.setTextColor(ownerColor/* Color.GREEN*/);
-					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY));
+					owner.setTextColor(ownerColor);
+					owner.setText(userName);
 				} else {
-					owner.setTextColor(opponentColor/*Color.RED*/);
-					owner.setText(activity.getMainApp().getSharedData().getString(AppConstants.OPPONENT, AppConstants.SYMBOL_EMPTY));
+					owner.setTextColor(opponentColor);
+					owner.setText(opponentName);
 				}
 			}
 		}

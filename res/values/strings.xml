@@ -7,6 +7,7 @@
 	<string name="app_name">ChessCom</string>
 	<string name="error_occurred">Error occurred</string>
 	<string name="signout">Sign Out</string>
+
 	<!--Dashboard labels-->
 	<string name="menuLive">Play Live</string>
 	<string name="menuOnline">Play Online</string>
@@ -25,6 +26,7 @@
 	<string name="label_tactics">TACTICS</string>
 	<string name="label_game_live">LIVE GAME</string>
 	<string name="label_game_online">ONLINE GAME</string>
+	<string name="label_game_finished">FINISHED GAME</string>
 	<string name="label_chat_live">LIVE CHAT</string>
 	<string name="label_chat_online">ONLINE CHAT</string>
 	<string name="label_game_comp">COMP GAME</string>
@@ -283,5 +285,37 @@
 	<string name="pass_dont_match">password do not match</string>
 	<string name="username_cannot_be_encoded">Your Username can not be encoded to send request</string>
 	<string name="menu_refresh">refresh</string>
+	<string name="version_check">Version Check</string>
+	<string name="version_is_obsolete_update">The client version is obsolete. Please update</string>
+	<string name="zero_one_black_mates">0 - 1 Black mates</string>
+	<string name="on_zero_white_mates">1 - 0 White mates</string>
+	<string name="slatemate">0 - 0 Stalemate</string>
+	<string name="draw_by_repetition">1/2 - 1/2 Draw by repetition</string>
+	<string name="game_over_">GAME OVER:</string>
+	<string name="blitz_mod">(Blitz)</string>
+	<string name="lightning_mod">(Lightning)</string>
+	<string name="standard_mod">(Standard)</string>
+
+	<string name="encoding_unsopported">Encoding unsopported</string>
+	<string name="unsopported_encoding">Unsopported encoding</string>
+	<string name="error_occurred_while_login">Error occurred while login, please relogin!</string>
+	<string name="update_available_please_update">An update is available! Please update</string>
+	<string name="update_check">Update Check</string>
+	<string name="won_on_time">\nwon on time</string>
+	<string name="won_by_resignation">\nwon by resignation</string>
+	<string name="won_by_checkmate">\nwon by checkmate</string>
+	<string name="game_over">GAME OVER</string>
+	<string name="draw_game">DRAW OFFER</string>
+	<string name="has_offered_draw">has offered a draw</string>
+	<string name="reconnecting">Reconnecting...</string>
+	<string name="another_login_detected">Another login has been detected.</string>
+
+	<string name="game_draw_by_repetition">Game drawn \nby repetition</string>
+	<string name="game_drawn_by_agreement">Game drawn \nby agreement</string>
+	<string name="game_drawn_by_stalemate">Game drawn \nby stalemate</string>
+	<string name="game_drawn_insufficient_material">Game drawn -\ninsufficient material</string>
+	<string name="game_drawn_by_fifty_move_rule">Game drawn \nby 50-move rule</string>
+	<string name="won_game_abandoned">won - \ngame abandoned</string>
+	<string name="game_aborted">Game aborted</string>
 
 </resources>

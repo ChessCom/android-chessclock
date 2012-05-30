@@ -13,13 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.YourMoveUpdateService;
 import com.chess.backend.Web;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityActionBar;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MyProgressDialog;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
@@ -134,16 +136,16 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		} else if (code == 1) {
 			FlurryAgent.onEvent("New Account Created", null);  // TODO
 			String[] r = response.split(":");
-			mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
-			mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
-			mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
-			mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, r[1]);
+			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
+			preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
+			preferencesEditor.putString(AppConstants.API_VERSION, r[1]);
 			try {
-				mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
+				preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
 			} catch (UnsupportedEncodingException ignored) {
 			}
-			//mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putString(AppConstants.USER_SESSION_ID, r[3]);
+			preferencesEditor.commit();
 
 			startActivity(new Intent(context, HomeScreenActivity.class));
 			finish();
@@ -154,22 +156,16 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
             final String[] responseArray = response.split(":");
             if (responseArray.length >= 4) {
                 if (code == SIGNIN_CALLBACK_CODE) {
-                    mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, userNameEdt.getText().toString().trim().toLowerCase());
+                    preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().trim().toLowerCase());
                     doUpdate(responseArray);
                 } else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
                     FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
-                    mainApp.getSharedDataEditor().putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+                    preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
                     doUpdate(responseArray);
                 }
             }
         }
 
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	@Override
@@ -181,7 +177,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				showToast(getString(R.string.wrongusername));
 				return;
 			}
-			if (emailEdt.getText().toString().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (emailEdt.getText().toString().equals(StaticData.SYMBOL_EMPTY)) {
 				emailEdt.setError(getString(R.string.can_not_be_empty));
 				emailEdt.requestFocus();
 				showToast(getString(R.string.wrongemail));
@@ -204,7 +200,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				return;
 			}
 
-			String query = AppConstants.SYMBOL_EMPTY;
+			String query = StaticData.SYMBOL_EMPTY;
 			try {
 				query = "http://www." + LccHolder.HOST
                         + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), AppConstants.UTF_8)
@@ -264,19 +260,19 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
     private void doUpdate(String[] response) {
-        mainApp.getSharedDataEditor().putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-        mainApp.getSharedDataEditor().putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
-        mainApp.getSharedDataEditor().putString(AppConstants.API_VERSION, response[1]);
+        preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
+        preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+        preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
         try {
-            mainApp.getSharedDataEditor().putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
+            preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
         } catch (UnsupportedEncodingException ignored) {
         }
-        //mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, response[3]);
-        mainApp.getSharedDataEditor().commit();
+        //preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
+        preferencesEditor.commit();
 
         FlurryAgent.onEvent("Logged In");
-        if (mainApp.getSharedData().getBoolean(mainApp.getUserName() + AppConstants.PREF_NOTIFICATION, true)) {
-			startService(new Intent(this, YourMoveUpdateService.class));
+        if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
+			AppUtils.startNotificationsUpdate(this);
 		}
         mainApp.guest = false;
 
@@ -303,7 +299,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
         @Override
         public void onAuthFail(String error) {
-            showToast(getString(R.string.login_failed) + AppConstants.SYMBOL_SPACE + error);
+            showToast(getString(R.string.login_failed) + StaticData.SYMBOL_SPACE + error);
         }
     }
 

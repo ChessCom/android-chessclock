@@ -55,7 +55,7 @@
 				/>
 
 			<Spinner
-				android:id="@+id/PrefAIM"
+				android:id="@+id/prefAIM"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:entries="@array/AIM"
@@ -71,21 +71,21 @@
 			/>
 
 		<com.chess.RoboCheckBox
-			android:id="@+id/PrefSSB"
+			android:id="@+id/prefSSB"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ssb"
 			/>
 
 		<com.chess.RoboCheckBox
-			android:id="@+id/PrefNEnable"
+			android:id="@+id/prefNEnable"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/notificationE"
 			/>
 
 		<com.chess.RoboCheckBox
-			android:id="@+id/PrefVacation"
+			android:id="@+id/prefVacation"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/vacationOff"
@@ -123,7 +123,7 @@
 				/>
 
 			<Spinner
-				android:id="@+id/PrefStrength"
+				android:id="@+id/prefStrength"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:entries="@array/strength"
@@ -191,20 +191,20 @@
 		</LinearLayout>
 
 		<com.chess.RoboCheckBox
-			android:id="@+id/PrefCoords"
+			android:id="@+id/prefCoords"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
 			android:text="@string/showcoords"/>
 
 		<com.chess.RoboCheckBox
-			android:id="@+id/PrefHighlights"
+			android:id="@+id/prefHighlights"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/movehighlights"/>
 
 		<com.chess.RoboButton
-			android:id="@+id/PrefInvite"
+			android:id="@+id/prefInvite"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/invite"

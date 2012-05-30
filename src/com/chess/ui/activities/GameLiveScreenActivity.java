@@ -9,19 +9,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -38,6 +40,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
+//	private boolean chat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		// hide black dot for right label
 		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
 		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+
+		gamePanelView.enableAnalysisMode(false);
 	}
 
 	@Override
@@ -108,7 +113,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	protected void init() {
 		super.init();
         mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
-		changeResigntTitle();
+		changeResignTitle();
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -138,6 +143,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
         }
     }
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(chatMessageReceiver);
+	}
 
 	@Override
 	protected void onDrawOffered(int whichButton) {
@@ -206,14 +217,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				boardView.invalidate();
-
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						boardView.requestFocus();
-					}
-				});
 				break;
 			}
 			case CALLBACK_SEND_MOVE: {
@@ -234,11 +237,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			}
 			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
 				// move was made
-				if (mainApp.getSharedData().getInt(mainApp.getUserName()
+				if (preferences.getInt(AppData.getUserName(getContext())
 						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
 					finish();
-				} else if (mainApp.getSharedData().getInt(mainApp.getSharedData()
-						.getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
+				} else if (preferences.getInt(preferences
+						.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
 
 					int i;
 					ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
@@ -294,7 +297,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
 
-							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
+							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 							if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -335,8 +338,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			case CALLBACK_GAME_STARTED:
 				getSoundPlayer().playGameStart();
 
-				gamePanelView.hideAnalysisGameButton();
-
 				mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
 				executePausedActivityGameEvents();
 				//lccHolder.setActivityPausedMode(false);
@@ -346,9 +347,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 											   lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
 											   lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
 
-				if (openChatActivity()) {
-                    return;
-				}
+				checkMessages();
 
 				if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
 					boardView.getBoardFace().setChess960(true);
@@ -361,7 +360,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
 					boardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					boardView.getBoardFace().setMovesCount(0);
@@ -373,7 +372,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				}
 
 				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
 				}
@@ -407,23 +406,24 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         }
 	}
 
-	private boolean openChatActivity(){
-        if(!chat)
-            return false;
+	@Override
+	public void switch2Chat() {
+		openChatActivity();
+	}
 
-        mainApp.getSharedDataEditor().putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
+	private boolean openChatActivity(){
+        preferencesEditor.putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
                 isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
-        mainApp.getSharedDataEditor().commit();
+        preferencesEditor.commit();
 
         mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
         gamePanelView.haveNewMessage(false);
 
-        Intent intent = new Intent(coreContext, ChatLiveActivity.class);
+        Intent intent = new Intent(this, ChatLiveActivity.class);
         intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGameId() );
         intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
         startActivity(intent);
 
-        chat = false;
         return true;
     }
     
@@ -433,7 +433,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
             mainApp.setCurrentGame(game);
             // show notification instead
             gamePanelView.haveNewMessage(true);
-            Utils.showNotification(coreContext, AppConstants.SYMBOL_EMPTY, mainApp.getGameId(), AppConstants.SYMBOL_EMPTY, AppConstants.SYMBOL_EMPTY, ChatLiveActivity.class);
+            AppUtils.showNotification(getContext(), StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatLiveActivity.class);
         }
     }
 
@@ -444,7 +444,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
     @Override
     public void updateAfterMove() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void invalidateGameScreen() {
+        //TODO To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -475,8 +479,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				break;
 			case R.id.menu_chat:
 				// test
-				chat = true;
-				getOnlineGame(mainApp.getGameId());
+//				chat = true;
+//				getOnlineGame(mainApp.getGameId());
+				openChatActivity();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -499,7 +504,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		public void onClick(DialogInterface dialogInterface, int i) {
 			switch (i) {
 				case LIVE_SETTINGS:
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
 				case LIVE_RESIDE:
 					boardView.getBoardFace().setReside(!boardView.getBoardFace().isReside());
@@ -512,8 +517,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 					showDialog(DIALOG_ABORT_OR_RESIGN);
 					break;
 				case LIVE_MESSAGES:
-					chat = true;
-					getOnlineGame(mainApp.getGameId());
+//					chat = true;
+//					getOnlineGame(mainApp.getGameId());
+					openChatActivity();
 					break;
 			}
 		}
@@ -521,8 +527,15 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		lccHolder.logout();
-		backToHomeActivity();
+		if (fragment.getTag().equals(LOGOUT_TAG)) {
+			lccHolder.logout();
+			backToHomeActivity();
+		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
+			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
+			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
+			lccHolder.declineAllChallenges(currentChallenge);
+		}
+		fragment.getDialog().dismiss();
 	}
 
 	protected void changeChatIcon(Menu menu) {
@@ -533,7 +546,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		}
 	}
 
-	protected void changeResigntTitle() {
+	protected void changeResignTitle() {
 		if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 			resignOrAbort = R.string.resign;
 		} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
@@ -565,8 +578,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void onGameEndMsgReceived() {
 		showSubmitButtonsLay(false);
-		gamePanelView.showAnalysisGameButton();
-//		chatPanel.setVisibility(View.GONE);
+		gamePanelView.enableAnalysisMode(true);
 	}
 
 	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
@@ -581,11 +593,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		/*if (view.getId() == R.id.chat) {
-			chat = true;
-			getOnlineGame(mainApp.getGameId());
-			chatPanel.setVisibility(View.GONE);
-		} else*/
 		if (view.getId() == R.id.cancel) {
 			showSubmitButtonsLay(false);
 

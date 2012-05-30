@@ -1,7 +1,6 @@
 package com.chess.ui.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,16 +11,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
-import com.chess.lcc.android.LccHolder;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
-import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
 public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
@@ -43,19 +40,18 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 		init();
 		setContentView(R.layout.live_challenge_friend);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		friends = (Spinner) findViewById(R.id.friend);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
-		initialTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
+		initialTime.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
 		initialTime.addTextChangedListener(initialTimeTextWatcher);
 		initialTime.setValidator(initialTimeValidator);
 		initialTime.setOnEditorActionListener(null);
 
-		bonusTime.setText(mainApp.getSharedData().getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
+		bonusTime.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
 		bonusTime.addTextChangedListener(bonusTimeTextWatcher);
 		bonusTime.setValidator(bonusTimeValidator);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
@@ -66,25 +62,12 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	public void update(int code) {
 		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
-		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
-			if (appService != null) {
-				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id="
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
-						progressDialog = new MyProgressDialog(ProgressDialog.show(LiveFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
-				);
-			}
-		} else if (code == 0 || (code == INIT_ACTIVITY && mainApp.isLiveChess())) {
-			String[] FRIENDS;
-			if (mainApp.isLiveChess()) {
-				FRIENDS = lccHolder.getOnlineFriends();
-			} else {
-				FRIENDS = ChessComApiParser.GetFriendsParse(response);
-			}
+		} else if (code == 0 || (code == INIT_ACTIVITY)) {
+			String[] FRIENDS = lccHolder.getOnlineFriends();
 
 			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
 			friends.setAdapter(friendsAdapter);
-			if (friends.getSelectedItem().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (friends.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 				new AlertDialog.Builder(LiveFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(getString(R.string.sorry))
@@ -111,7 +94,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
+		if (lccHolder.getUser() == null) {
 			lccHolder.logout();
 			backToHomeActivity();
 		}
@@ -122,12 +105,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		initialTimeValidator = new InitialTimeValidator();
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
-	}
-
-	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		lccHolder.logout();
-		backToHomeActivity();
 	}
 
 	@Override
@@ -156,12 +133,12 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 					minRating, maxRating);
 
 			if (appService != null) {
-				FlurryAgent.onEvent("Challenge Created", null);
+				FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
 				lccHolder.getAndroid().runSendChallengeTask(null, challenge);
 
-                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-                mainApp.getSharedDataEditor().putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-                mainApp.getSharedDataEditor().commit();
+                preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+                preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+                preferencesEditor.commit();
                 mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
     //			onBackPressed();
 			}
@@ -190,12 +167,12 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer initialTime = new Integer(textString);
-			return !textString.equals(AppConstants.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
+			return !textString.equals(StaticData.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
 		}
 
 		@Override
 		public CharSequence fixText(CharSequence invalidText) {
-			return mainApp.getSharedData().getString(AppConstants.CHALLENGE_INITIAL_TIME, "5");
+			return preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5");
 		}
 	}
 
@@ -220,12 +197,12 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString();
 			final Integer bonusTime = Integer.parseInt(textString);
-			return !textString.equals(AppConstants.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60;
+			return !textString.equals(StaticData.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60;
 		}
 
 		@Override
 		public CharSequence fixText(CharSequence invalidText) {
-			return mainApp.getSharedData().getString(AppConstants.CHALLENGE_BONUS_TIME, "0");
+			return preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0");
 		}
 	}
 

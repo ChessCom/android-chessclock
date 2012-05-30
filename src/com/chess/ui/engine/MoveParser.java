@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.BoardFace;
 
 import java.util.Iterator;
@@ -8,12 +8,23 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 public class MoveParser {
-	public static final String Q_BIG = "Q";
-	public static final String R_BIG = "R";
-	public static final String B_BIG = "B";
-	public static final String N_BIG = "N";
+	// white pieces
+	public static final String WHITE_QUEEN = "Q";
+	public static final String WHITE_ROOK = "R";
+	public static final String WHITE_BISHOP = "B";
+	public static final String WHITE_KNIGHT = "N";
+	public static final String WHITE_KING = "K";
+	public static final String WHITE_PAWN = "P";
+	// black pieces
+	public static final String BLACK_QUEEN = "q";
+	public static final String BLACK_ROOK = "r";
+	public static final String BLACK_BISHOP = "b";
+	public static final String BLACK_KNIGHT = "n";
+	public static final String BLACK_KING = "k";
+	public static final String BLACK_PAWN = "p";
+
+	public static final String W_SMALL = "w";
 	public static final String A_SMALL = "a";
-	public static final String B_SMALL = "b";
 	public static final String C_SMALL = "c";
 	public static final String D_SMALL = "d";
 	public static final String E_SMALL = "e";
@@ -28,15 +39,12 @@ public class MoveParser {
 	public static final String NUMB_6 = "6";
 	public static final String NUMB_7 = "7";
 	public static final String NUMB_8 = "8";
-	public static final String K_BIG = "K";
-	public static final String P_SMALL = "p";
-	public static final String N_SMALL = "n";
-	public static final String R_SMALL = "r";
-	public static final String Q_SMALL = "q";
-	public static final String K_SMALL = "k";
-	public static final String W_SMALL = "w";
-	public static final String P_BIG = "P";
 	public static final String X_SMALL = "x";
+	private static final String FEN_DIVIDER = "[/]";
+	private static final String REGEXP_NUMBERS = "[0-9]";
+	public static final String KINGSIDE_CASTLING = "O-O";
+	public static final String QUEENSIDE_CASTLING = "O-O-O";
+
 	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 //	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
 
@@ -51,14 +59,14 @@ public class MoveParser {
 		String[] MoveTo = new String[2];
 		String currentmove = move.trim();
 
-		if (currentmove.equals("O-O") || currentmove.equals("O-O+")) {
+		if (currentmove.equals(KINGSIDE_CASTLING) || currentmove.equals("O-O+")) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
 				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
 			}
 		}
-		if (currentmove.equals("O-O-O") || currentmove.equals("O-O-O+")) {
+		if (currentmove.equals(QUEENSIDE_CASTLING) || currentmove.equals("O-O-O+")) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
@@ -68,7 +76,7 @@ public class MoveParser {
 
 		int end = currentmove.length() - 1;
 		while (end != 0) {
-			if (Pattern.matches("[0-9]", currentmove.substring(end, end + 1))) {
+			if (Pattern.matches(REGEXP_NUMBERS, currentmove.substring(end, end + 1))) {
 				MoveTo[0] = currentmove.substring(end - 1, end);
 				MoveTo[1] = currentmove.substring(end, end + 1);
 				break;
@@ -79,7 +87,7 @@ public class MoveParser {
 		int i = LetterToBN(MoveTo[0]);
 		int j = NumToBN(MoveTo[1]);
 		int to = j * 8 - i;
-		int from = NumToBN(AppConstants.SYMBOL_EMPTY + currentmove.charAt(1)) * 8 - LetterToBN(AppConstants.SYMBOL_EMPTY + currentmove.charAt(0));
+		int from = NumToBN(StaticData.SYMBOL_EMPTY + currentmove.charAt(1)) * 8 - LetterToBN(StaticData.SYMBOL_EMPTY + currentmove.charAt(0));
 
 		Iterator<Move> itr = validMoves.iterator();
 		Move M;
@@ -111,14 +119,14 @@ public class MoveParser {
 		String[] moveTo = new String[2];
 		String currentMove = move.trim();
 
-		if (currentMove.equals("O-O") || currentMove.equals("O-O+")) {
+		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals("O-O+")) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
 				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
 			}
 		}
-		if (currentMove.equals("O-O-O") || currentMove.equals("O-O-O+")) {
+		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals("O-O-O+")) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
@@ -128,7 +136,7 @@ public class MoveParser {
 
 		int end = currentMove.length() - 1;
 		while (end != 0) {
-			if (Pattern.matches("[0-9]", currentMove.substring(end, end + 1))) {
+			if (Pattern.matches(REGEXP_NUMBERS, currentMove.substring(end, end + 1))) {
 				moveTo[0] = currentMove.substring(end - 1, end);
 				moveTo[1] = currentMove.substring(end, end + 1);
 				break;
@@ -142,25 +150,25 @@ public class MoveParser {
 		int to = j * 8 - i;
 
 		int pieceType = 0;
-		if (currentMove.substring(0, 1).contains(N_BIG)) pieceType = 1;
-		if (currentMove.substring(0, 1).contains(B_BIG)) pieceType = 2;
-		if (currentMove.substring(0, 1).contains(R_BIG)) pieceType = 3;
-		if (currentMove.substring(0, 1).contains(Q_BIG)) pieceType = 4;
-		if (currentMove.substring(0, 1).contains(K_BIG)) pieceType = 5;
+		if (currentMove.substring(0, 1).contains(WHITE_KNIGHT)) pieceType = 1;
+		if (currentMove.substring(0, 1).contains(WHITE_BISHOP)) pieceType = 2;
+		if (currentMove.substring(0, 1).contains(WHITE_ROOK)) pieceType = 3;
+		if (currentMove.substring(0, 1).contains(WHITE_QUEEN)) pieceType = 4;
+		if (currentMove.substring(0, 1).contains(WHITE_KING)) pieceType = 5;
 		int k;
 
 		if ((pieceType >= 1 && pieceType <= 4)/*(pieceType == 3 || pieceType == 1)*/
-				&& !currentMove.substring(1, 2).contains(X_SMALL) && !currentMove.substring(2, 3).matches("[0-9]")) {//Rooks and Knights which?
+				&& !currentMove.substring(1, 2).contains(X_SMALL) && !currentMove.substring(2, 3).matches(REGEXP_NUMBERS)) {//Rooks and Knights which?
 			for (k = 0; k < 64; k++) {
-				int l1 = (ChessBoard.ROW(k) + 1) * 8 - LetterToBN(currentMove.substring(1, 2));
-				int l2 = NumToBN(currentMove.substring(1, 2)) * 8 - (ChessBoard.COL(k) + 1);
+				int l1 = (ChessBoard.getRow(k) + 1) * 8 - LetterToBN(currentMove.substring(1, 2));
+				int l2 = NumToBN(currentMove.substring(1, 2)) * 8 - (ChessBoard.getColumn(k) + 1);
 
 				if (currentMove.substring(1, 2).matches("[abcdefgh]")) {
 					if (board.getPieces()[l1] == pieceType && board.getColor()[l1] == board.getSide()) {
 						return new int[]{l1, to, promotion};
 					}
 				}
-				if (currentMove.substring(1, 2).matches("[0-9]")) {
+				if (currentMove.substring(1, 2).matches(REGEXP_NUMBERS)) {
 					if (board.getPieces()[l2] == pieceType && board.getColor()[l2] == board.getSide())
 						return new int[]{l2, to, promotion};
 				}
@@ -179,17 +187,17 @@ public class MoveParser {
 								return new int[]{k, to, promotion};
 						} else if (pieceType == 0) {
 							if (currentMove.contains(X_SMALL)
-									&& 9 - LetterToBN(currentMove.substring(0, 1)) != ChessBoard.COL(k) + 1) {
+									&& 9 - LetterToBN(currentMove.substring(0, 1)) != ChessBoard.getColumn(k) + 1) {
 								break;
 							}
 
-							if (currentMove.contains(Q_BIG))
+							if (currentMove.contains(WHITE_QUEEN))
 								promotion = 4;
-							if (currentMove.contains(R_BIG))
+							if (currentMove.contains(WHITE_ROOK))
 								promotion = 3;
-							if (currentMove.contains(B_BIG))
+							if (currentMove.contains(WHITE_BISHOP))
 								promotion = 2;
-							if (currentMove.contains(N_BIG))
+							if (currentMove.contains(WHITE_KNIGHT))
 								promotion = 1;
 
 							return new int[]{k, to, promotion, move1.bits};
@@ -205,7 +213,7 @@ public class MoveParser {
 	public static int LetterToBN(String l) {
 		int i = 0;
 		if (l.toLowerCase().contains(A_SMALL)) i = 8;
-		if (l.toLowerCase().contains(B_SMALL)) i = 7;
+		if (l.toLowerCase().contains(BLACK_BISHOP)) i = 7;
 		if (l.toLowerCase().contains(C_SMALL)) i = 6;
 		if (l.toLowerCase().contains(D_SMALL)) i = 5;
 		if (l.toLowerCase().contains(E_SMALL)) i = 4;
@@ -230,21 +238,21 @@ public class MoveParser {
 	}
 
 	public static String BNToLetter(int i) {
-		String l = AppConstants.SYMBOL_EMPTY;
+		String l = StaticData.SYMBOL_EMPTY;
 		if (i == 7) l = H_SMALL;
 		if (i == 6) l = G_SMALL;
 		if (i == 5) l = F_SMALL;
 		if (i == 4) l = E_SMALL;
 		if (i == 3) l = D_SMALL;
 		if (i == 2) l = C_SMALL;
-		if (i == 1) l = B_SMALL;
+		if (i == 1) l = BLACK_BISHOP;
 		if (i == 0) l = A_SMALL;
 
 		return l;
 	}
 
 	public static String BNToNum(int j) {
-		String l = AppConstants.SYMBOL_EMPTY;
+		String l = StaticData.SYMBOL_EMPTY;
 		if (j == 7) l = NUMB_1;
 		if (j == 6) l = NUMB_2;
 		if (j == 5) l = NUMB_3;
@@ -258,17 +266,17 @@ public class MoveParser {
 	}
 
 	public static String positionToString(int pos) {
-		return BNToLetter(ChessBoard.COL(pos)) + BNToNum(ChessBoard.ROW(pos));
+		return BNToLetter(ChessBoard.getColumn(pos)) + BNToNum(ChessBoard.getRow(pos));
 	}
 
 	//    public static void fenParse(String fen, ChessBoard b) {
 	public static void fenParse(String fen, BoardFace b) {
-		String[] FEN = fen.split("[/]");
+		String[] FEN = fen.split(FEN_DIVIDER);
 		int i, j, p = 0;
 		for (i = 0; i < 8; i++) {
 			String pos = FEN[i];
 			if (i == 7) {
-				String[] tmp2 = FEN[i].split(" ");
+				String[] tmp2 = FEN[i].split(StaticData.SYMBOL_SPACE);
 				pos = tmp2[0];
 				if (tmp2[1].contains(W_SMALL)) {
 					b.setSide(0);
@@ -280,59 +288,59 @@ public class MoveParser {
 			}
 			String[] f = pos.trim().split("|");
 			for (j = 1; j < f.length; j++) {
-				if (f[j].matches("[0-9]")) {
-					int cnt = new Integer(f[j]);
+				if (f[j].matches(REGEXP_NUMBERS)) {
+					int cnt = Integer.parseInt(f[j]);
 					while (cnt > 0) {
 						b.getPieces()[p] = 6;
 						b.getColor()[p++] = 6;
 						cnt--;
 					}
 				}
-				if (f[j].contains(P_BIG)) {
+				if (f[j].contains(WHITE_PAWN)) {
 					b.getPieces()[p] = 0;
 					b.getColor()[p++] = 0;
 				}
-				if (f[j].contains(N_BIG)) {
+				if (f[j].contains(WHITE_KNIGHT)) {
 					b.getPieces()[p] = 1;
 					b.getColor()[p++] = 0;
 				}
-				if (f[j].contains(B_BIG)) {
+				if (f[j].contains(WHITE_BISHOP)) {
 					b.getPieces()[p] = 2;
 					b.getColor()[p++] = 0;
 				}
-				if (f[j].contains(R_BIG)) {
+				if (f[j].contains(WHITE_ROOK)) {
 					b.getPieces()[p] = 3;
 					b.getColor()[p++] = 0;
 				}
-				if (f[j].contains(Q_BIG)) {
+				if (f[j].contains(WHITE_QUEEN)) {
 					b.getPieces()[p] = 4;
 					b.getColor()[p++] = 0;
 				}
-				if (f[j].contains(K_BIG)) {
+				if (f[j].contains(WHITE_KING)) {
 					b.getPieces()[p] = 5;
 					b.getColor()[p++] = 0;
 				}
-				if (f[j].contains(P_SMALL)) {
+				if (f[j].contains(BLACK_PAWN)) {
 					b.getPieces()[p] = 0;
 					b.getColor()[p++] = 1;
 				}
-				if (f[j].contains(N_SMALL)) {
+				if (f[j].contains(BLACK_KNIGHT)) {
 					b.getPieces()[p] = 1;
 					b.getColor()[p++] = 1;
 				}
-				if (f[j].contains(B_SMALL)) {
+				if (f[j].contains(BLACK_BISHOP)) {
 					b.getPieces()[p] = 2;
 					b.getColor()[p++] = 1;
 				}
-				if (f[j].contains(R_SMALL)) {
+				if (f[j].contains(BLACK_ROOK)) {
 					b.getPieces()[p] = 3;
 					b.getColor()[p++] = 1;
 				}
-				if (f[j].contains(Q_SMALL)) {
+				if (f[j].contains(BLACK_QUEEN)) {
 					b.getPieces()[p] = 4;
 					b.getColor()[p++] = 1;
 				}
-				if (f[j].contains(K_SMALL)) {
+				if (f[j].contains(BLACK_KING)) {
 					b.getPieces()[p] = 5;
 					b.getColor()[p++] = 1;
 				}

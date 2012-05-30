@@ -113,7 +113,7 @@
 				/>
 
 			<Spinner
-				android:id="@+id/PrefStrength"
+				android:id="@+id/strengthSpinner"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:entries="@array/strength"

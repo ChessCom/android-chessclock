@@ -277,6 +277,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         imageButton.setBackgroundResource(backId);
         imageButton.setOnClickListener(this);
         imageButton.setId(BUTTON_PREFIX + buttonId);
+//		imageButton.setEnabled(false);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -298,12 +299,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-    public void hideGameButton(int buttonId) {
-        findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.GONE);
-    }
-
-    public void showGameButton(int buttonId) {
-        findViewById(BUTTON_PREFIX + buttonId).setVisibility(View.VISIBLE);
+    private void showGameButton(int buttonId, boolean show) {
+        findViewById(BUTTON_PREFIX + buttonId).setVisibility(show? View.VISIBLE: View.GONE);
     }
 
     public void enableGameButton(int buttonId, boolean enable) {
@@ -567,11 +564,20 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-	public void showAnalysisGameButton() {
-		showGameButton(GamePanelView.B_ANALYSIS_ID);
+    public void hideChatButton() {
+        showGameButton(GamePanelView.B_CHAT_ID, false);
+    }
+
+    public void turnCompMode() {
+        changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
+        hideChatButton();
+        addControlButton(1, GamePanelView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
+    }
+
+	public void enableAnalysisMode(boolean enable) {
+		enableGameButton(GamePanelView.B_ANALYSIS_ID, enable);
+		enableGameButton(GamePanelView.B_FORWARD_ID, enable);
+		enableGameButton(GamePanelView.B_BACK_ID, enable);
 	}
 
-	public void hideAnalysisGameButton() {
-		hideGameButton(GamePanelView.B_ANALYSIS_ID);
-	}
 }

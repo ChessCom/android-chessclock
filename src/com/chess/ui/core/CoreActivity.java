@@ -14,6 +14,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,19 +22,22 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
-import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 
-public abstract class CoreActivity extends Activity implements CoreActivityFace {
+public abstract class CoreActivity extends Activity implements BoardToGameActivityFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
@@ -42,13 +46,15 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
-	protected String response = AppConstants.SYMBOL_EMPTY;
-	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY;
+	protected String response = StaticData.SYMBOL_EMPTY;
+	protected String responseRepeatable = StaticData.SYMBOL_EMPTY;
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
-	protected Context coreContext;
     public boolean mIsBound;
 	public WebService appService = null;
+	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
+
 
 	public abstract void update(int code);
 
@@ -63,21 +69,30 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		coreContext = this;
 		backgroundChessDrawable =  new BackgroundChessDrawable(this);
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
 		// get global Shared Preferences
-		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
-			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
-		}
+//		if (preferences == null) {
+//			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
+//			mainApp.setSharedDataEditor(preferences.edit());
+//		}
+
+		preferences = AppData.getPreferences(this);
+		preferencesEditor = preferences.edit();
+
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	}
 
-//		lccHolder = mainApp.getLccHolder();
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		View mainView = findViewById(R.id.mainView);
+		if(mainView != null)
+			mainView.setBackgroundDrawable(backgroundChessDrawable);
 	}
 
 	public boolean doBindService() {
@@ -110,22 +125,16 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	protected void onResume() {
 		super.onResume();
 
-		boolean resetDetected = false;
-
-		if (resetDetected) {
-			checkUserTokenAndStartActivity();
-		}
-
 		doBindService();
 		registerReceivers();
 
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
 		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
 
@@ -143,8 +152,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 
 		unRegisterReceivers();
 
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -172,12 +181,12 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	}
 
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
-			final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
+			final Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} else {
-			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 		}
 	}
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -227,7 +236,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
@@ -254,7 +263,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
@@ -262,7 +271,9 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+                            final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+                            final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
+                            final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -274,7 +285,8 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
+					.setTitle(R.string.version_check)
+					.setMessage(R.string.version_is_obsolete_update)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
@@ -283,10 +295,10 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 								@Override
 								public void run() {
 									startActivity(new Intent(Intent.ACTION_VIEW, Uri
-											.parse("http://www.chess.com/play/android.html")));
+											.parse(RestHelper.PLAY_ANDROID_HTML)));
 								}
 							});
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+							final Intent intent = new Intent(getContext(), HomeScreenActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -347,20 +359,20 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-					.equals(mainApp.getUserName());
+					.equals(AppData.getUserName(getContext()));
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public SoundPlayer getSoundPlayer() {
-		return mainApp.getSoundPlayer();
+		return SoundPlayer.getInstance(this);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
 	}
 
 	@Override
@@ -390,7 +402,7 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	 */
 
 	private void checkUpdate() {  // TODO show progress
-        new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+        new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	protected void showToast(String msg){
@@ -404,5 +416,9 @@ public abstract class CoreActivity extends Activity implements CoreActivityFace 
 	@Override
 	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
+	}
+
+	protected Context getContext(){
+		return this;
 	}
 }

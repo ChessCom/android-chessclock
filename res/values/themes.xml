@@ -3,6 +3,7 @@
 <resources>
     <style name="MyAppTheme" parent="AppTheme">
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
+
     </style>
 
 
@@ -15,7 +16,8 @@
         <item name="android:checkboxStyle">@style/check_Box</item>
         <item name="android:radioButtonStyle">@style/radio_Button</item>
 		<item name="android:listViewStyle">@style/DefaultListView</item>
-		<item name="playerLabelStyle">@style/GameLabel.Player</item>
+		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
+		<item name="playerLabelStyle">@style/GameLabel.Timer</item>
     </style>
 
 
@@ -28,15 +30,8 @@
         <item name="android:radioButtonStyle">@style/radio_Button</item>
     </style>
 
-	<!-- 	<item name="android:panelFullBackground">@color/mytheme_color</item> -->
-	
 	<style name="GreyButtonTheme" parent="OrangeButtonTheme">
 		<item name="android:buttonStyle">@style/Text.Button.Grey</item>
 	</style>
 		
-<!-- 	<style name="MyTheme" parent="android:Theme">
-		<item name="android:panelFullBackground">@color/mytheme_color</item>
-	</style> -->
-	
-
 </resources>

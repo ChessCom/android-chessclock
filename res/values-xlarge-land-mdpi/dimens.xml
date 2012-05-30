@@ -1,7 +1,7 @@
 <resources>
 	<!--Dashboard-->
-	<dimen name="dashboard_padding_top">88dip</dimen>
-	<dimen name="dashboard_padding_bot">209dip</dimen>
+	<dimen name="dashboard_padding_top">100dip</dimen>
+	<dimen name="dashboard_padding_bot">197dip</dimen>
 	<dimen name="dashboard_padding_side">260dip</dimen>
 
 	<!--SigIn-->
@@ -18,5 +18,8 @@
 	<!--Popup-->
 	<dimen name="popup_dialog_width">200dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
+
+	<!--Game Modes-->
+	<dimen name="player_name_max_width">400dip</dimen>
 
 </resources>

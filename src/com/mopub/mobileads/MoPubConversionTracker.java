@@ -36,7 +36,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
 import android.util.Log;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.StaticData;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -74,7 +74,7 @@ public class MoPubConversionTracker {
             sz.append("?v=6&id=" + mPackageName);
             
             String udid = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
-            String udidDigest = (udid == null) ? AppConstants.SYMBOL_EMPTY : Utils.sha1(udid);
+            String udidDigest = (udid == null) ? StaticData.SYMBOL_EMPTY : Utils.sha1(udid);
             sz.append("&udid=sha:" + udidDigest);
             String url = sz.toString();
             Log.d("MoPub", "Conversion track: " + url);

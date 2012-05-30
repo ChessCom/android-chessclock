@@ -1,7 +1,7 @@
 package com.chess.backend;
 
 import android.util.Log;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.StaticData;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -27,8 +27,8 @@ public class Web {
 	@Deprecated
 	public static String Request(String url, String method, HashMap<String, String> headers, HttpEntity entity) {
 		statusCode = -1;
-		String reason = AppConstants.SYMBOL_EMPTY;
-		String responseBody = AppConstants.SYMBOL_EMPTY;
+		String reason = StaticData.SYMBOL_EMPTY;
+		String responseBody = StaticData.SYMBOL_EMPTY;
 
 		HttpParams httpParameters = null;
 		HttpResponse response = null;

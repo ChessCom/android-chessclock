@@ -1,7 +1,7 @@
 package com.chess.ui.engine;
 
 final public class HistoryData {
-	public Move m;
+	public Move move;
 	public int capture;
 	int ep;
 	int fifty;

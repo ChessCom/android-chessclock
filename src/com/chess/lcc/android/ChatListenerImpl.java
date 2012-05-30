@@ -1,9 +1,10 @@
 package com.chess.lcc.android;
 
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
 import com.chess.model.GameItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 
 import java.util.Collection;
@@ -87,7 +88,7 @@ public class ChatListenerImpl
 		for (ChatMember member : members) {
 			str += "\n\tMember: " + member;
 		}
-		str += (headMember != null ? ("\n\tHead: " + headMember) : AppConstants.SYMBOL_EMPTY);
+		str += (headMember != null ? ("\n\tHead: " + headMember) : StaticData.SYMBOL_EMPTY);
 		LccHolder.LOG.info(str);
 	}
 
@@ -104,7 +105,7 @@ public class ChatListenerImpl
 			return;
 		}
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroid().getContext().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
+			lccHolder.getAndroid().getMainApp().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
 			lccHolder.getAndroid().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
 		}
 	}

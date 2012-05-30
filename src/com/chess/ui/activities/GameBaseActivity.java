@@ -11,12 +11,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.GameEvent;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -24,7 +25,7 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
 import java.util.Timer;
@@ -55,7 +56,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected Timer onlineGameUpdate = null;
 	protected boolean isMoveNav;
-	protected boolean chat;
 
 	protected GameItem game;
 
@@ -76,11 +76,16 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if (Utils.needFullScreen(this)) {
-			setFullscreen();
+		if (AppUtils.needFullScreen(this)) {
+			setFullScreen();
+			savedInstanceState = new Bundle();
+			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
+		} else if (AppUtils.noNeedTitleBar(this)) {
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			savedInstanceState = new Bundle();
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		}
+
 		super.onCreate(savedInstanceState);
 	}
 
@@ -89,17 +94,15 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
+		whitePlayerLabel.setSelected(true);
+		blackPlayerLabel.setSelected(true);
 
 		thinking = (TextView) findViewById(R.id.thinking);
-
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
-
 		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 
 		boardView = (ChessBoardView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-
-		boardView.setBoardFace((ChessBoard) getLastCustomNonConfigurationInstance());
 
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 		boardView.setGamePanelView(gamePanelView);
@@ -127,9 +130,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			mainApp.setForceRectangleAd(false);
 		}*/
 
-        if (MopubHelper.isShowAds(mainApp)) {
-            MopubHelper.createRectangleAd(this);
-        }
+		if (MopubHelper.isShowAds(mainApp)) {
+			MopubHelper.createRectangleAd(this);
+		}
 
 		update(CALLBACK_REPAINT_UI);
 	}
@@ -151,14 +154,12 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			onDrawOffered(whichButton);
-
 		}
 	}
 
 	protected abstract void onAbortOffered(int whichButton);
 
 	private class AbortGameDialogListener implements DialogInterface.OnClickListener {
-
 		@Override
 		public void onClick(DialogInterface dialog, int whichButton) {
 			onAbortOffered(whichButton);
@@ -192,7 +193,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	protected void getOnlineGame(long game_id) {
 		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.getRepeatableTimer().cancel();
-            appService.setRepeatableTimer(null);
+			appService.setRepeatableTimer(null);
 		}
 		mainApp.setGameId(game_id);
 	}
@@ -269,17 +270,17 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		super.onDestroy();
 	}
 
-    @Override
-    public void turnScreenOff() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
+	@Override
+	public void turnScreenOff() {
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
 
 
-    protected void enableScreenLockTimer() {
-        // set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
-        boardView.enableTouchTimer();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
+	protected void enableScreenLockTimer() {
+		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
+		boardView.enableTouchTimer();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
 
 	protected BroadcastReceiver gameMoveReceiver = new BroadcastReceiver() {
 		@Override
@@ -325,7 +326,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			boardView.finished = true;
 
 			if (MopubHelper.isShowAds(mainApp)) {
-				final LayoutInflater inflater = (LayoutInflater) coreContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.ad_popup,
 						(ViewGroup) findViewById(R.id.layout_root));
 				showGameEndPopup(layout, intent.getExtras().getString(AppConstants.TITLE) + ": " + intent.getExtras().getString(AppConstants.MESSAGE));
@@ -382,11 +383,11 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected abstract void onGameEndMsgReceived();
 
-    protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
+	protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			mainApp.showDialog(coreContext, intent.getExtras()
+			mainApp.showDialog(getContext(), intent.getExtras()
 					.getString(AppConstants.TITLE), intent.getExtras().getString(AppConstants.MESSAGE));
 		}
 	};
@@ -423,18 +424,18 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 		int topPlayerColor;
 
-		if(isWhitePlayerMove){
-			topPlayerColor = userPlayWhite? hintColor: whiteColor;
-		}else{
-			topPlayerColor = userPlayWhite? whiteColor: hintColor;
+		if (isWhitePlayerMove) {
+			topPlayerColor = userPlayWhite ? hintColor : whiteColor;
+		} else {
+			topPlayerColor = userPlayWhite ? whiteColor : hintColor;
 		}
 
 		whitePlayerLabel.setTextColor(topPlayerColor);
 		blackPlayerLabel.setTextColor(topPlayerColor);
 
-		boolean activate = isWhitePlayerMove? userPlayWhite: !userPlayWhite;
+		boolean activate = isWhitePlayerMove ? userPlayWhite : !userPlayWhite;
 
-		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always player
+		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
 		gamePanelView.activatePlayerTimer(activate, activate);
 
 		initTimer = false;
@@ -456,9 +457,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	public void switch2Chat() {
-		chat = true;
-        // TODO add here flag clear
-        getOnlineGame(mainApp.getGameId());
 	}
 
 	protected void restoreGame() {
@@ -467,7 +465,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected void restoreLastConfig() {
 		boardView.setBoardFace(new ChessBoard(this));
-		boardView.getBoardFace().setInit(true);
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
@@ -479,13 +476,13 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		String[] moves = {};
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", " ")
+					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ")
 					.substring(1).split(" ");
 			boardView.getBoardFace().setMovesCount(moves.length);
 		}
 
-        String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
 		}
@@ -505,8 +502,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 				boardView.getBoardFace().makeMove(move, false);
 			} else {
-				Move m = new Move(moveFT[0], moveFT[1], 0, 0);
-				boardView.getBoardFace().makeMove(m, false);
+				Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+				boardView.getBoardFace().makeMove(move, false);
 			}
 		}
 		update(CALLBACK_REPAINT_UI);
@@ -521,7 +518,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			//boolean fullGameProcessed = false;
 			GameEvent gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.Move);
 			if (gameEvent != null && (lccHolder.getCurrentGameId() == null
-                    || lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
+					|| lccHolder.getCurrentGameId().equals(gameEvent.getGameId()))) {
 				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
@@ -564,7 +561,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 				return;
 			}
 
-			final LayoutInflater inflater = (LayoutInflater) coreContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+			final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 			final View layout = inflater.inflate(R.layout.ad_popup, (ViewGroup) findViewById(R.id.layout_root));
 			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.MESSAGE));
 
@@ -595,7 +592,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		}
 
 		if (adPopup != null) {
-				adPopup.dismiss();
+			adPopup.dismiss();
 			adPopup = null;
 		}
 
@@ -637,7 +634,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			public void run() {
 				AlertDialog.Builder builder;
 				//Context mContext = getApplicationContext();
-				builder = new AlertDialog.Builder(coreContext);
+				builder = new AlertDialog.Builder(getContext());
 				builder.setView(layout);
 				adPopup = builder.create();
 				adPopup.setCancelable(true);
@@ -663,7 +660,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	public void showChoosePieceDialog(final int col, final int row) {
-        new AlertDialog.Builder(this)
+		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.choose_a_piece))
 				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
 						new DialogInterface.OnClickListener() {
@@ -696,6 +693,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 				public void dispatchMessage(Message msg) {
 					super.dispatchMessage(msg);
 					update(CALLBACK_REPAINT_UI);
+					invalidateGameScreen();
 					boardView.invalidate();
 				}
 			};
@@ -713,19 +711,19 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	public Context getMeContext() {
-		return coreContext;
+		return this;
 	}
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 
 	}
-	
-	public void showToast2User(String message){
+
+	public void showToast2User(String message) {
 		showToast(message);
 	}
 
-	public void showToast2User(int messageId){
+	public void showToast2User(int messageId) {
 		showToast(messageId);
 	}
 }

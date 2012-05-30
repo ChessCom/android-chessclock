@@ -24,5 +24,6 @@
     <item name="logOutFrame" type="id"/>
     <item name="settingsFrame" type="id"/>
 
+	<item name="list_item_id" type="id"/>
 
 </resources>

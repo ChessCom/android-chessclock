@@ -1,10 +1,10 @@
 package com.chess.utilities;
 
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
-import com.chess.ui.core.AppConstants;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class ChessComApiParser {
 		if (result.trim().length() > 8)
 			return result.substring(9).trim().split("[|]");
 		else
-			return new String[]{AppConstants.SYMBOL_EMPTY};
+			return new String[]{StaticData.SYMBOL_EMPTY};
 	}
 
 	//online new game

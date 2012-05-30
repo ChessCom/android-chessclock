@@ -57,7 +57,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import com.chess.ui.core.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.mopub.mobileads.MoPubView.LocationAwareness;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -93,8 +93,9 @@ public class AdView extends WebView {
     public static final String EXTRA_AD_CLICK_DATA = "com.mopub.intent.extra.AD_CLICK_DATA";
     
     private static final int MINIMUM_REFRESH_TIME_MILLISECONDS = 10000;
-    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
-    
+//    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
+    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 2*1000;
+
     private String mAdUnitId;
     private String mKeywords;
     private String mUrl;
@@ -340,20 +341,20 @@ public class AdView extends WebView {
     
     private String generateAdUrl() {
         StringBuilder sz = new StringBuilder("http://" + MoPubView.HOST + MoPubView.AD_HANDLER);
-        sz.append("?v=6&id=" + mAdUnitId);
+		sz.append("?v=6&id=").append(mAdUnitId);
         sz.append("&nv=" + MoPub.SDK_VERSION);
         
         String udid = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
-        String udidDigest = (udid == null) ? AppConstants.SYMBOL_EMPTY : Utils.sha1(udid);
-        sz.append("&udid=sha:" + udidDigest);
+        String udidDigest = (udid == null) ? StaticData.SYMBOL_EMPTY : Utils.sha1(udid);
+		sz.append("&udid=sha:").append(udidDigest);
 
-        if (mKeywords != null) sz.append("&q=" + Uri.encode(mKeywords));
+        if (mKeywords != null) sz.append("&q=").append(Uri.encode(mKeywords));
         
         if (mLocation != null) {
-            sz.append("&ll=" + mLocation.getLatitude() + "," + mLocation.getLongitude());
+			sz.append("&ll=").append(mLocation.getLatitude()).append(",").append(mLocation.getLongitude());
         }
-        
-        sz.append("&z=" + getTimeZoneOffsetString());
+
+		sz.append("&z=").append(getTimeZoneOffsetString());
         
         int orientation = getResources().getConfiguration().orientation;
         String orString = DEVICE_ORIENTATION_UNKNOWN;
@@ -364,11 +365,11 @@ public class AdView extends WebView {
         } else if (orientation == Configuration.ORIENTATION_SQUARE) {
             orString = DEVICE_ORIENTATION_SQUARE;
         }
-        sz.append("&o=" + orString);
+		sz.append("&o=").append(orString);
         
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
-        sz.append("&sc_a=" + metrics.density);
+		sz.append("&sc_a=").append(metrics.density);
         
         boolean mraid = true;
         try {
@@ -424,7 +425,7 @@ public class AdView extends WebView {
         
         private LoadUrlTask(AdView adView) {
             this.mAdView = adView;
-            this.mUserAgent = (adView.mUserAgent != null) ? new String(adView.mUserAgent) : AppConstants.SYMBOL_EMPTY;
+            this.mUserAgent = (adView.mUserAgent != null) ? adView.mUserAgent : StaticData.SYMBOL_EMPTY;
             this.mHttpClient = adView.getAdViewHttpClient();
         }
         
@@ -441,17 +442,20 @@ public class AdView extends WebView {
         private LoadUrlTaskResult loadAdFromNetwork(String url) throws Exception {
             HttpGet httpget = new HttpGet(url);
             httpget.addHeader("User-Agent", mUserAgent);
-            
+            Log.d("MoPub","loading url = " + url);
+			
             synchronized(this) {
                 if (mAdView == null || mAdView.isDestroyed()) {
                     Log.d("MoPub", "Error loading ad: AdView has already been GCed or destroyed.");
                     return null;
                 }
-                
+
+
+
                 HttpResponse response = mHttpClient.execute(httpget);
                 HttpEntity entity = response.getEntity();
-                
-                if (response == null || entity == null || 
+
+                if (response == null || entity == null ||
                         response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                     Log.d("MoPub", "MoPub server returned invalid response.");
                     return null;
@@ -683,7 +687,7 @@ public class AdView extends WebView {
     private void showBrowserForUrl(String url) {
         if (this.isDestroyed()) return;
         
-        if (url == null || url.equals(AppConstants.SYMBOL_EMPTY)) url = "about:blank";
+        if (url == null || url.equals(StaticData.SYMBOL_EMPTY)) url = "about:blank";
         Log.d("MoPub", "Final URI to show in browser: " + url);
         Intent actionIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         actionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

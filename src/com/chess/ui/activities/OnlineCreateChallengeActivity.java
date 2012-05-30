@@ -8,9 +8,10 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.utilities.MyProgressDialog;
 
 public class OnlineCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
@@ -27,7 +28,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.online_create_challenge);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
@@ -38,11 +39,11 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 
 		minrating = (Spinner) findViewById(R.id.minRating);
 		minrating.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
-		minrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+		minrating.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxrating = (Spinner) findViewById(R.id.maxRating);
 		maxrating.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
-		maxrating.setSelection(mainApp.getSharedData().getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxrating.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
@@ -106,7 +107,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 			if (chess960.isChecked())
 				gametype = 2;
 
-			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) +
+			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

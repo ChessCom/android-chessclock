@@ -1,8 +1,10 @@
 package com.chess.lcc.android;
 
+import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.IntentConstants;
 
 import java.util.Collection;
@@ -79,8 +81,8 @@ public class LccChallengeListener implements ChallengeListener {
 
 		/*User challenger = challenge.getFrom();
 			User receiver = lccHolder.getUser();
-			String challengerChessTitle = challenger.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : AppConstants.SYMBOL_EMPTY;
-			String receiverChessTitle = receiver.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : AppConstants.SYMBOL_EMPTY;
+			String challengerChessTitle = challenger.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : StaticData.SYMBOL_EMPTY;
+			String receiverChessTitle = receiver.getChessTitle() != null ? "(" + challenger.getChessTitle() + ")" : StaticData.SYMBOL_EMPTY;
 			boolean isChallengerProvisional = false; // todo
 			boolean isReceiverProvisional = false; // todo
 			GameTimeConfig challengerTimeConfig = challenge.getGameTimeConfig();
@@ -121,7 +123,7 @@ public class LccChallengeListener implements ChallengeListener {
 			  receiverRating = 0;
 			}
 			WildVariant variant = Chess.getInstance();
-			String ratingCategoryString = AppConstants.SYMBOL_EMPTY;
+			String ratingCategoryString = StaticData.SYMBOL_EMPTY;
 			Player color = null;
 			switch(challenge.getColor())
 			{
@@ -136,7 +138,7 @@ public class LccChallengeListener implements ChallengeListener {
 												   receiverRating, isReceiverProvisional, challengerTimeControl,
 												   receiverTimeControl, isRated, variant, ratingCategoryString, color);*/
 		if (challenge.getTo().equals(lccHolder.getUser().getUsername())) {
-			lccHolder.getAndroid().getContext().getSoundPlayer().playNotify();
+			SoundPlayer.getInstance(lccHolder.getContext()).playNotify();
 			// show popup dialog with challenge invitation
 			outerChallengeListener.showDialog(challenge);
 		}
@@ -158,8 +160,8 @@ public class LccChallengeListener implements ChallengeListener {
 	@Override
 	public void onChallengeAccepted(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
-		LccHolder.LOG.info(
-				"CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
+		LccHolder.LOG.info("CHALLENGE LISTENER. Seek/Challenge accepted: user: "
+				+ lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
 						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHolder.removeChallenge(challengeId);
 		/*MatchOffer matchOffer = user.getConnection().getJinChallenge(challengeId);
@@ -204,7 +206,7 @@ public class LccChallengeListener implements ChallengeListener {
 	}
 
 	private void showWarning(String warning) {
-		if (warning != null && !warning.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (warning != null && !warning.equals(StaticData.SYMBOL_EMPTY)) {
 			lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.FILTER_INFO, "WARNING", warning);
 		}
 	}

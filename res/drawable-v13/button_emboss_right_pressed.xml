@@ -57,8 +57,6 @@
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
 			<solid android:color="@color/grey_button_p" />
-<!--			<stroke android:width="@dimen/default_stroke_width"
-				android:color="@color/gray_button_stroke"/>-->
 			<padding
 				android:left="@dimen/toggle_button_padding_left"
 				android:right="@dimen/toggle_button_padding_right"

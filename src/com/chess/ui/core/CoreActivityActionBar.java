@@ -1,6 +1,7 @@
 package com.chess.ui.core;
 
 import actionbarcompat.ActionBarActivity;
+import actionbarcompat.ActionBarHelper;
 import android.app.AlertDialog;
 import android.content.*;
 import android.content.res.Configuration;
@@ -9,24 +10,26 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
+import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
@@ -37,19 +40,18 @@ import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
-import com.chess.ui.interfaces.CoreActivityFace;
+import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
-import com.chess.utilities.SoundPlayer;
 import com.flurry.android.FlurryAgent;
 import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CoreActivityActionBar extends ActionBarActivity implements CoreActivityFace,
+public abstract class CoreActivityActionBar extends ActionBarActivity implements BoardToGameActivityFace,
 		ActiveFragmentInterface, PopupDialogFace,LccConnectionListener {
 
 	protected final static int INIT_ACTIVITY = -1;
@@ -60,16 +62,15 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected DisplayMetrics metrics;
 	protected MyProgressDialog progressDialog;
 	protected LccHolder lccHolder;
-	protected String response = AppConstants.SYMBOL_EMPTY; // TODO remove
-	protected String responseRepeatable = AppConstants.SYMBOL_EMPTY; // TODO remove
+	protected String response = StaticData.SYMBOL_EMPTY; // TODO remove
+	protected String responseRepeatable = StaticData.SYMBOL_EMPTY; // TODO remove
 	protected BackgroundChessDrawable backgroundChessDrawable;
-	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
 	protected List<PopupDialogFragment> popupManager;
 
-	protected Context coreContext;
 	protected Handler handler;
 	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
 
 	public boolean mIsBound;
 	public WebService appService = null;
@@ -79,7 +80,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	public abstract void update(int code);
 
-	public void setFullscreen() {
+	public void setFullScreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -89,39 +90,42 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		coreContext = this;
 		handler = new Handler();
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
 		popupItem = new PopupItem();
-		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 		popupManager = new ArrayList<PopupDialogFragment>();
 
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
 
 		// get global Shared Preferences
-		if (mainApp.getSharedData() == null) {
-			mainApp.setSharedData(getSharedPreferences(StaticData.SHARED_DATA_NAME, MODE_PRIVATE));
-			mainApp.setSharedDataEditor(mainApp.getSharedData().edit());
-		}
+//		if (preferences == null) {
+//			mainApp.setSharedData(AppData.getPreferences(this));
+//			mainApp.setSharedDataEditor(preferences.edit());
+//		}
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		lccHolder = mainApp.getLccHolder();
 		lccHolder.setExternalConnectionListener(this);
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		preferences = AppData.getPreferences(this);
+		preferencesEditor = preferences.edit();
 	}
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        View mainView = findViewById(R.id.mainView);
+        if(mainView != null)
+            mainView.setBackgroundDrawable(backgroundChessDrawable);
+    }
 
     protected void widgetsInit(){
 
     }
-
-	@Override
-	public Object onRetainCustomNonConfigurationInstance() {
-		return super.onRetainCustomNonConfigurationInstance();
-	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -156,8 +160,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	 * NI = cm.getActiveNetworkInfo(); if(NI == null) return false; else return
 	 * NI.isConnectedOrConnecting(); }
 	 */
-
-
 	public boolean doBindService() {
 		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
 				Context.BIND_AUTO_CREATE);
@@ -175,7 +177,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder rawBinder) {
 			appService = ((WebService.LocalBinder) rawBinder).getService();
-			update(INIT_ACTIVITY); // TODO send broadcast or call local method, but with readable arguments
+			update(INIT_ACTIVITY);
 		}
 
 		@Override
@@ -192,10 +194,21 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.getClient().disconnect();
 			lccHolder.setNetworkTypeName(null);
 			lccHolder.setConnectingInProgress(true);
-			lccHolder.getClient().connect(
-					mainApp.getSharedData().getString(AppConstants.USERNAME, AppConstants.SYMBOL_EMPTY),
-					mainApp.getSharedData().getString(AppConstants.PASSWORD, AppConstants.SYMBOL_EMPTY),
+
+			final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
+				lccHolder.getClient().connect(
+					preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
+			}else {
+				lccHolder.getClient().connect(
+						AppData.getUserName(getContext()),
+								AppData.getPassword(getContext())
+
+					/*preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY),
+					preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY)*/,
+					lccHolder.getConnectionListener());
+			}
 			/*
 								 * appService.RunRepeatble(0, 0, 120000, progressDialog =
 								 * MyProgressDialog.show(this, null,
@@ -215,25 +228,25 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		boolean resetDetected = false;
+//		boolean resetDetected = false;
 		if (mainApp.getBoardBitmap() == null) {
-			mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(
-					mainApp.getUserName()
-							+ AppConstants.PREF_BOARD_TYPE, 8)]);
+			mainApp.loadBoard(mainApp.res_boards[preferences.getInt(
+					AppData.getUserName(getContext())
+							+ AppConstants.PREF_BOARD_TYPE, 0)]);
 
-			resetDetected = true;
+//			resetDetected = true;
 		}
 
 		if (mainApp.getPiecesBitmaps() == null) {
-			mainApp.loadPieces(mainApp.getSharedData().getInt(mainApp.getUserName()
+			mainApp.loadPieces(preferences.getInt(AppData.getUserName(getContext())
 					+ AppConstants.PREF_PIECES_SET, 0));
 
-			resetDetected = true;
+//			resetDetected = true;
 		}
 
-		if (resetDetected) {
-			checkUserTokenAndStartActivity();
-		}
+//		if (resetDetected) {
+//			checkUserTokenAndStartActivity();
+//		}
 
 		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
 		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
@@ -250,19 +263,15 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		doBindService();
 		registerReceivers();
 
-		if (mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			mainApp.getSharedDataEditor().putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			mainApp.getSharedDataEditor().putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			mainApp.getSharedDataEditor().commit();
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
 		}
-		long startDay = mainApp.getSharedData().getLong(AppConstants.START_DAY, 0);
-		if (mainApp.getSharedData().getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
-		/*
-		 * if (mainApp.isNetworkChangedNotification()) {
-		 * showNetworkChangeNotification(); }
-		 */
 	}
 
 	@Override
@@ -283,8 +292,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		 * lccHolder.logout(); }
 		 */
 
-		mainApp.getSharedDataEditor().putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		mainApp.getSharedDataEditor().commit();
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 
@@ -323,6 +332,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		for (PopupDialogFragment fragment : popupManager) {
 			fragment.getDialog().dismiss();
 		}
+		popupManager.clear();
 	}
 
 	@Override
@@ -351,12 +361,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}	
 	
 	private void checkUserTokenAndStartActivity() {
-		if (!mainApp.getUserName().equals(AppConstants.SYMBOL_EMPTY)) {
-			Intent intent = new Intent(mainApp, HomeScreenActivity.class);
+		Log.d("TEST", "Reset detected!");
+		if (!AppData.getUserName(getContext()).equals(StaticData.SYMBOL_EMPTY)) {
+			Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} else {
-			startActivity(new Intent(mainApp, LoginScreenActivity.class));
+			startActivity(new Intent(this, LoginScreenActivity.class));
 		}
 	}
 
@@ -400,18 +411,20 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					return;
 				}
 				String title = getString(R.string.error);
-				String message = resp;
+				String message;
 				if (resp.contains(RestHelper.R_ERROR)) {
 					message = resp.split("[+]")[1];
 				} else {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 					update(ERROR_SERVER_RESPONSE);
 					return;
 				}
-				new AlertDialog.Builder(CoreActivityActionBar.this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
+				new AlertDialog.Builder(CoreActivityActionBar.this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(title)
 						.setMessage(message)
 						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
@@ -462,16 +475,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			});
 			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
 			alertDialog.show();
-		}
-	};
-
-	protected BroadcastReceiver challengesListUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (mainApp.isLiveChess()) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-				update(intent.getExtras().getInt(AppConstants.CALLBACK_CODE));
-			}
 		}
 	};
 
@@ -531,18 +534,23 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String message = intent.getExtras().getString(AppConstants.MESSAGE);
-			if (message == null || message.trim().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (message == null || message.trim().equals(StaticData.SYMBOL_EMPTY)) {
 				return;
 			}
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setMessage(message)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setMessage(message)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
 							if (mainApp.isLiveChess()) {
 								lccHolder.logout();
 							}
-							final Intent intent = new Intent(coreContext, HomeScreenActivity.class);
+							final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+							final Class clazz = (password == null || password.equals(StaticData.SYMBOL_EMPTY)) ? LoginScreenActivity.class : HomeScreenActivity.class;
+							final Intent intent = new Intent(getContext(), clazz);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mainApp.startActivity(intent);
 						}
@@ -553,26 +561,29 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public BroadcastReceiver obsoleteProtocolVersionReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false)
-					.setTitle("Version Check").setMessage("The client version is obsolete. Please update")
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(false)
+					.setTitle(getString(R.string.version_check))
+					.setMessage(getString(R.string.version_is_obsolete_update))
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int whichButton) {
+					final Handler handler = new Handler();
+					handler.post(new Runnable() {
 						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							final Handler handler = new Handler();
-							handler.post(new Runnable() {
-								@Override
-								public void run() {
-									mainApp.setLiveChess(false);
-									lccHolder.setConnected(false);
-									startActivity(new Intent(Intent.ACTION_VIEW, Uri
-											.parse("http://www.chess.com/play/android.html")));
-								}
-							});
-							final Intent intent = new Intent(mainApp, HomeScreenActivity.class);
-							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							mainApp.startActivity(intent);
+						public void run() {
+							mainApp.setLiveChess(false);
+							lccHolder.setConnected(false);
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri
+									.parse(RestHelper.PLAY_ANDROID_HTML)));
 						}
-					}).create().show();
+					});
+					final Intent intent = new Intent(getContext(), HomeScreenActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					mainApp.startActivity(intent);
+				}
+			}).create().show();
 		}
 	};
 
@@ -580,14 +591,22 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
+
+			Spanned message = Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE));
+			Log.d("TEST", "Info message = " + message);
 			final TextView messageView = new TextView(context);
 			messageView.setMovementMethod(LinkMovementMethod.getInstance());
-			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
+
+//			messageView.setText(Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE)));
+			messageView.setText(message);
 			messageView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			messageView.setGravity(Gravity.CENTER);
 
-			new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(true)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE)).setView(messageView)
+			new AlertDialog.Builder(context)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setCancelable(true)
+					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setView(messageView)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(final DialogInterface dialog, int whichButton) {
@@ -612,6 +631,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	};
 
+	public ActionBarHelper provideActionBarHelper(){
+		return getActionBarHelper();
+	}
+
+	protected CoreActivityActionBar getInstance(){
+		return this;
+	}
+
 	private void manageConnectingIndicator(boolean enable, String message) {
 		if (mainApp.isLiveChess()) {
 			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
@@ -627,7 +654,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				 * DialogInterface.OnCancelListener() { public void
 				 * onCancel(DialogInterface dialog) {
 				 * 
-				 * final Intent intent = new Intent(mainApp, Singin.class);
+				 * final Intent intent = new Intent(this, Singin.class);
 				 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				 * //connectingIndicator.dismiss(); lccHolder.logout();
 				 * mainApp.startActivity(intent); } });
@@ -653,14 +680,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public Boolean isUserColorWhite() {
 		try {
 			return mainApp.getCurrentGame().values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-					.equals(mainApp.getUserName());
+					.equals(AppData.getUserName(getContext()));
 		} catch (Exception e) {     // TODO remove NPE check
 			return null;
 		}
 	}
 
 	public SoundPlayer getSoundPlayer() {
-		return mainApp.getSoundPlayer();
+		return SoundPlayer.getInstance(this);
 	}
 
 	public LccHolder getLccHolder() {
@@ -670,7 +697,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.onStartSession(this, "M5ID55IB7UP9SAC88D3M");
+		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
 	}
 
 	@Override
@@ -695,7 +722,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	 */
 
 	private void checkUpdate() {
-		new CheckUpdateTask(this, mainApp).execute(AppConstants.URL_GET_ANDROID_VERSION);
+		new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
 	protected void showToast(String msg){
@@ -713,6 +740,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	public GameItem getCurrentGame() {
 		return mainApp.getCurrentGame();
+	}
+
+	protected Context getContext(){
+		return this;
 	}
 
 }

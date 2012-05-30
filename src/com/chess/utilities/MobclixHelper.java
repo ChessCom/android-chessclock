@@ -1,20 +1,5 @@
 package com.chess.utilities;
 
-import android.app.Activity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import com.chess.R;
-import com.chess.live.client.User;
-import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.MainApp;
-import com.mobclix.android.sdk.MobclixAdView;
-import com.mobclix.android.sdk.MobclixMMABannerXLAdView;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Created by IntelliJ IDEA.
  * User: vm

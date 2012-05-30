@@ -1,8 +1,10 @@
 package com.chess.backend;
 
+import android.util.Log;
 import com.chess.backend.entity.LoadItem;
 import org.apache.http.NameValuePair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +40,7 @@ public class RestHelper {
 	/* Methods calls*/
 	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
 	public static final String REGISTER_HTML = BASE_URL + "/register.html";
+	public static final String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
 	public static final String ECHESS_MOBILE_STATS = BASE_URL + "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
 
@@ -118,6 +121,8 @@ public class RestHelper {
 	public static final String P_GET_ECHESS_CURRENT_GAMES = "get_echess_current_games";
 	public static final String P_ECHESS_CHALLENGES = "echess_challenges";
 	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
+
+	private static final String GOTO = "&goto=";
 
 	/* Returned Values */
 	public static final String R_ERROR_MESSAGE = "error_message";
@@ -237,10 +242,14 @@ public class RestHelper {
 	public static final String V_USERNAME = "username";
 
 	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
-	public static final String V_ALL_USERS_GAMES = "1";
-	public static final String V_ONLY_USER_TURN = "0";
+    public static final String V_ALL_USERS_GAMES = "1";
+    public static final String V_ONLY_USER_TURN = "0";
+    public static final String V_VIDEO_LIST_CNT = "20";
+    public static final String V_VIDEO_ITEM_ONE = "1";
+    public static final String V_ANDROID = "android";
 
 	private static final String TAG = "Encode";
+	public static final int MAX_ITEMS_CNT = 2000;
 
 
 //	  (optional, 1 or 0)
@@ -259,17 +268,39 @@ public class RestHelper {
 		return loadItem.getLoadPath() ;
 	}
 
-	private static String formUrl(List<NameValuePair> nameValuePairs ) {
+	private static String formUrl(List<NameValuePair> nameValuePairs) {
+		List<NameValuePair> safeList = new ArrayList<NameValuePair> ();
+		safeList.addAll(nameValuePairs);
 		String url = "?";
-		for (NameValuePair pair: nameValuePairs) {
+		for (NameValuePair pair: safeList) {
 //			try {
 				url += pair.getName() + "=" + /*URLEncoder.encode(*/pair.getValue()/*, AppConstants.UTF_8)*/;
 //			} catch (UnsupportedEncodingException e) {
-//				Utils.logD(TAG, e.toString());
+//				AppUtils.logD(TAG, e.toString());
 //			}
 			url += "&";
 		}
 		return url.substring(0, url.length()-1);
 	}
 
+	public static String formTournamentsLink(String userToken) {
+		return LOGIN_HTML_ALS + userToken + GOTO + TOURNAMENTS;
+	}
+
+	public static String formStatsLink(String userToken) {
+		return LOGIN_HTML_ALS + userToken + GOTO + ECHESS_MOBILE_STATS;
+	}
+
+	public static String getMembershipLink(String userToken, String param) {
+		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
+//				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//				+ "&goto=http%3A%2F%2Fwww."
+//				+ LccHolder.HOST + "%2Fmembership.html" + param;
+	}
+	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
+		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
+		String fullUrl = formUrl(loadItem.getRequestParams());
+		Log.d("TEST", "pagination part = " + fullUrl);
+		return loadItem.getLoadPath() + fullUrl;
+	}
 }

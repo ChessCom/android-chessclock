@@ -13,18 +13,19 @@ import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
@@ -112,7 +113,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			showDialog(DIALOG_TACTICS_START_TACTICS);
 		}
 
-        gamePanelView.hideGameButton(GamePanelView.B_CHAT_ID);
+        gamePanelView.hideChatButton();
     }
 
     @Override
@@ -168,7 +169,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (mainApp.guest)
 					getGuestTacticsGame();
 				else
-					getTacticsGame(AppConstants.SYMBOL_EMPTY);
+					getTacticsGame(StaticData.SYMBOL_EMPTY);
 
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				boardView.getBoardFace().setTacticCanceled(true);
@@ -182,7 +183,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		public void onClick(DialogInterface dialog, int whichButton) {
 			if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 				FlurryAgent.onEvent("Upgrade From Tactics", null);
-				startActivity(mainApp.getMembershipIntent(AppConstants.SYMBOL_EMPTY));
+				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 			} else if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
 				boardView.getBoardFace().setTacticCanceled(true);
 				onBackPressed();
@@ -219,7 +220,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					getGuestTacticsGame();
 				} else {
 					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					getTacticsGame(AppConstants.SYMBOL_EMPTY);
+					getTacticsGame(StaticData.SYMBOL_EMPTY);
 				}
 			}
 		}
@@ -234,7 +235,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					getGuestTacticsGame();
 				} else {
 					if (mainApp.noInternet) mainApp.currentTacticProblem++;
-					getTacticsGame(AppConstants.SYMBOL_EMPTY);
+					getTacticsGame(StaticData.SYMBOL_EMPTY);
 				}
 			}
 			if (which == 1) {  // Retry
@@ -256,7 +257,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			if (which == 0) {
-				getTacticsGame(AppConstants.SYMBOL_EMPTY);
+				getTacticsGame(StaticData.SYMBOL_EMPTY);
 			}
 			if (which == 1) {
 				boardView.getBoardFace().setRetry(true);
@@ -330,17 +331,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 	@Override
 	protected void getOnlineGame(long game_id) {
-		super.getOnlineGame(game_id);
-		if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-			update(CALLBACK_GAME_STARTED);
-		} else {
-			if (appService != null) {
-				appService.RunSingleTask(CALLBACK_GAME_STARTED,
-						"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID
-								+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + game_id,
-						null/*progressDialog = MyProgressDialog.show(this, null, getString(R.string.loading), true)*/);
-			}
-		}
 	}
 
 	private void getTacticsGame(final String id) {
@@ -349,14 +339,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			boardView.setBoardFace(new ChessBoard(this));
 			boardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
-			if (mainApp.getTactic() != null
-					&& id.equals(mainApp.getTactic().values.get(AppConstants.ID))) {
+			if (mainApp.getTactic() != null && id.equals(mainApp.getTactic().values.get(AppConstants.ID))) {
 				boardView.getBoardFace().setRetry(true);
+
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
+
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
-					String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
+					String[] tmp2 = FEN.split(StaticData.SYMBOL_SPACE);
 					if (tmp2.length > 1) {
 						if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 							boardView.getBoardFace().setReside(true);
@@ -366,16 +357,19 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 					boardView.getBoardFace().setTacticMoves(mainApp.getTactic()
-							.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY)
-							.replaceAll("[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
+							.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+							.replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE)
+							.substring(1).split(StaticData.SYMBOL_SPACE));
 					boardView.getBoardFace().setMovesCount(1);
 				}
+
 				boardView.getBoardFace().setSec(0);
 				boardView.getBoardFace().setLeft(Integer.parseInt(mainApp.getTactic().
 						values.get(AppConstants.AVG_SECONDS)));
+
 				startTacticsTimer();
-				int[] moveFT = MoveParser.parse(boardView.getBoardFace(),
-						boardView.getBoardFace().getTacticMoves()[0]);
+
+				int[] moveFT = MoveParser.parse(boardView.getBoardFace(), boardView.getBoardFace().getTacticMoves()[0]);
 				if (moveFT.length == 4) {
 					Move move;
 					if (moveFT[3] == 2)
@@ -398,7 +392,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		if (appService != null) {
 			appService.RunSingleTask(CALLBACK_GET_TACTICS,
 					"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER
-							+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + AppConstants.TACTICS_ID_PARAMETER + id,
+							+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) + AppConstants.TACTICS_ID_PARAMETER + id,
 					progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), false))
 			);
 		}
@@ -416,10 +410,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		boardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 		String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
-		if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace());
-			String[] tmp = FEN.split(AppConstants.SYMBOL_SPACE);
+			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
 			if (tmp.length > 1) {
 				if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
 					boardView.getBoardFace().setReside(true);
@@ -429,8 +423,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			boardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch()
 					.get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST)
-					.replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("[.]", AppConstants.SYMBOL_EMPTY)
-					.replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
+					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY)
+					.replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
 			boardView.getBoardFace().setMovesCount(1);
 		}
 		boardView.getBoardFace().setSec(0);
@@ -464,10 +458,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 		if (mainApp.guest || mainApp.noInternet) {
 			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
-			if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+			if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 				boardView.getBoardFace().genCastlePos(FEN);
 				MoveParser.fenParse(FEN, boardView.getBoardFace());
-				String[] tmp = FEN.split(AppConstants.SYMBOL_SPACE);
+				String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
 				if (tmp.length > 1) {
 					if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
 						boardView.getBoardFace().setReside(true);
@@ -475,15 +469,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 			}
 			if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				boardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
+				boardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
 				boardView.getBoardFace().setMovesCount(1);
 			}
 		} else {
 			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-			if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+			if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 				boardView.getBoardFace().genCastlePos(FEN);
 				MoveParser.fenParse(FEN, boardView.getBoardFace());
-				String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
+				String[] tmp2 = FEN.split(StaticData.SYMBOL_SPACE);
 				if (tmp2.length > 1) {
 					if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 						boardView.getBoardFace().setReside(true);
@@ -492,7 +486,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 
 			if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				boardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
+				boardView.getBoardFace().setTacticMoves(mainApp.getTactic().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
 				boardView.getBoardFace().setMovesCount(1);
 			}
 		}
@@ -537,19 +531,19 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	}
 
 	private void checkTacticMoves() {
-		Move move = boardView.getBoardFace().getHistDat()[boardView.getBoardFace().getHply() - 1].m;
-		String f = AppConstants.SYMBOL_EMPTY;
+		Move move = boardView.getBoardFace().getHistDat()[boardView.getBoardFace().getHply() - 1].move;
+		String f = StaticData.SYMBOL_EMPTY;
 		int p = boardView.getBoardFace().getPieces()[move.to];
 		if (p == 1) {
-			f = "N";
+			f = MoveParser.WHITE_KNIGHT;
 		} else if (p == 2) {
-			f = "B";
+			f = MoveParser.WHITE_BISHOP;
 		} else if (p == 3) {
-			f = "R";
+			f = MoveParser.WHITE_ROOK;
 		} else if (p == 4) {
-			f = "Q";
+			f = MoveParser.WHITE_QUEEN;
 		} else if (p == 5) {
-			f = "K";
+			f = MoveParser.WHITE_KING;
 		}
 		String moveTo = MoveParser.positionToString(move.to);
 		Log.d("!!!", f + " | " + moveTo + " : " + boardView.getBoardFace().getTacticMoves()[boardView.getBoardFace().getHply() - 1]);
@@ -584,7 +578,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					if (appService != null) {
 						appService.RunSingleTask(CALLBACK_TACTICS_CORRECT,
 								"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER +
-										mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+										preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 										+ AppConstants.TACTICS_ID_PARAMETER + mainApp.getTactic().values.get(AppConstants.ID)
 										+ AppConstants.PASSED_PARAMETER + 1 + AppConstants.CORRECT_MOVES_PARAMETER + boardView.getBoardFace().getTacticsCorrectMoves()
 										+ AppConstants.SECONDS_PARAMETER + boardView.getBoardFace().getSec(),
@@ -604,7 +598,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (appService != null) {
 					appService.RunSingleTask(CALLBACK_TACTICS_WRONG,
 							"http://www." + LccHolder.HOST + AppConstants.API_TACTICS_TRAINER_ID_PARAMETER
-									+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY)
+									+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 									+ AppConstants.TACTICS_ID_PARAMETER + mainApp.getTactic().values.get(AppConstants.ID)
 									+ AppConstants.PASSED_PARAMETER + 0 + AppConstants.CORRECT_MOVES_PARAMETER + boardView.getBoardFace().getTacticsCorrectMoves() + AppConstants.SECONDS_PARAMETER + boardView.getBoardFace().getSec(),
 							progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true)));
@@ -633,6 +627,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
     }
 
     @Override
+    public void invalidateGameScreen() {
+        //TODO To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	protected void restoreGame() {
 		restoreLastConfig();
 	}
@@ -641,50 +640,21 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	public void update(int code) {
 		switch (code) {
 			case ERROR_SERVER_RESPONSE:
-				if (!MainApp.isTacticsGameMode(boardView.getBoardFace()))
-					finish();
-				else if (MainApp.isTacticsGameMode(boardView.getBoardFace())) {
-					/*onBackPressed();
-					boardView.getBoardFaceFace().getTactic()Canceled = true;*/
-					if (mainApp.noInternet) {
-						if (mainApp.offline) {
-							getGuestTacticsGame();
-						} else {
-							mainApp.offline = true;
-							showDialog(DIALOG_TACTICS_OFFLINE_RATING);
-						}
-						return;
+				/*onBackPressed();
+				boardView.getBoardFaceFace().getTactic()Canceled = true;*/
+				if (mainApp.noInternet) {
+					if (mainApp.offline) {
+						getGuestTacticsGame();
+					} else {
+						mainApp.offline = true;
+						showDialog(DIALOG_TACTICS_OFFLINE_RATING);
 					}
-				}
-				//finish();
-				break;
-			case INIT_ACTIVITY:
-				if (boardView.getBoardFace().isInit() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())
-						|| MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
-					//System.out.println("@@@@@@@@ POINT 1 mainApp.getGameId()=" + mainApp.getGameId());
-					getOnlineGame(mainApp.getGameId());
-					boardView.getBoardFace().setInit(false);
-				} else if (!boardView.getBoardFace().isInit()) {
-					if (MainApp.isLiveOrEchessGameMode(boardView.getBoardFace()) && appService != null
-							&& appService.getRepeatableTimer() == null) {
-						if (progressDialog != null) {
-							progressDialog.dismiss();
-							progressDialog = null;
-						}
-						if (!mainApp.isLiveChess()) {
-							appService.RunRepeatableTask(CALLBACK_GAME_REFRESH, UPDATE_DELAY, UPDATE_DELAY,
-									"http://www." + LccHolder.HOST + AppConstants.API_V3_GET_GAME_ID + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) + "&gid=" + mainApp.getGameId(),
-									null/*progressDialog*/
-							);
-						}
-					}
+					return;
 				}
 				break;
 			case CALLBACK_REPAINT_UI: {
 
 				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				boardView.invalidate();
-                boardView.requestFocus();
 				break;
 			}
 			case CALLBACK_CHECK_TACTICS_MOVE: {
@@ -693,7 +663,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 			case CALLBACK_TACTICS_WRONG: {
 				String[] tmp = response.split("[|]");
-				if (tmp.length < 2 || tmp[1].trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
 				}
@@ -710,7 +680,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			}
 			case CALLBACK_TACTICS_CORRECT: {
 				String[] tmp = response.split("[|]");
-				if (tmp.length < 2 || tmp[1].trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
 				}
@@ -725,7 +695,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								if (which == 1) {
-									getTacticsGame(AppConstants.SYMBOL_EMPTY);
+									getTacticsGame(StaticData.SYMBOL_EMPTY);
 								}
 							}
 						})
@@ -738,7 +708,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				boardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 				String[] tmp = response.trim().split("[|]");
-				if (tmp.length < 3 || tmp[2].trim().equals(AppConstants.SYMBOL_EMPTY)) {
+				if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
 				}
@@ -746,10 +716,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				mainApp.setTactic(new TacticItem(tmp[2].split(":")));
 
 				String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
-					String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
+					String[] tmp2 = FEN.split(StaticData.SYMBOL_SPACE);
 					if (tmp2.length > 1) {
 						if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 							boardView.getBoardFace().setReside(true);
@@ -759,7 +729,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 				if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 					boardView.getBoardFace().setTacticMoves(mainApp.getTactic().
-							values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE));
+							values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
 					boardView.getBoardFace().setMovesCount(1);
 				}
 				boardView.getBoardFace().setSec(0);
@@ -804,7 +774,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
 
-							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(beginIndex).split(AppConstants.SYMBOL_SPACE);
+							Moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(beginIndex).split(StaticData.SYMBOL_SPACE);
 
 							if (Moves.length - boardView.getBoardFace().getMovesCount() == 1) {
 								if (mainApp.isLiveChess()) {
@@ -853,7 +823,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				String[] moves = {};
 
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE).substring(1).split(AppConstants.SYMBOL_SPACE);
+					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);
 					boardView.getBoardFace().setMovesCount(moves.length);
 				} else if (!mainApp.isLiveChess()) {
 					boardView.getBoardFace().setMovesCount(0);
@@ -865,7 +835,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				}
 
 				FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 					boardView.getBoardFace().genCastlePos(FEN);
 					MoveParser.fenParse(FEN, boardView.getBoardFace());
 				}
@@ -909,7 +879,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 		} else {
 			if (mainApp.noInternet) mainApp.currentTacticProblem++;
 			closeOptionsMenu();
-			getTacticsGame(AppConstants.SYMBOL_EMPTY);
+			getTacticsGame(StaticData.SYMBOL_EMPTY);
 		}
 	}
 
@@ -974,7 +944,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						mainApp.currentTacticProblem++;
 						getGuestTacticsGame();
 					} else
-						getTacticsGame(AppConstants.SYMBOL_EMPTY);
+						getTacticsGame(StaticData.SYMBOL_EMPTY);
 					break;
 				}
 				case TACTICS_SHOW_ANSWER: {
@@ -982,7 +952,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					break;
 				}
 				case TACTICS_SETTINGS: {
-					startActivity(new Intent(coreContext, PreferencesScreenActivity.class));
+					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 
 					break;
 				}
@@ -1045,11 +1015,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			boardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS); // set game mode
 
 			String FEN = mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.FEN);
-			if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+			if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 				boardView.getBoardFace().genCastlePos(FEN); // restore castle position for current tactics problem
 				MoveParser.fenParse(FEN, boardView.getBoardFace());
 
-				String[] tmp = FEN.split(AppConstants.SYMBOL_SPACE);
+				String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
 				if (tmp.length > 1) {
 					if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
 						boardView.getBoardFace().setReside(true);
@@ -1060,9 +1030,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			if (mainApp.getTacticsBatch().get(mainApp.currentTacticProblem).values.get(AppConstants.MOVE_LIST).contains("1.")) {
 				boardView.getBoardFace().setTacticMoves(mainApp.getTacticsBatch()
 						.get(mainApp.currentTacticProblem).values
-						.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY)
-						.replaceAll("[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE)
-						.substring(1).split(AppConstants.SYMBOL_SPACE));
+						.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE)
+						.substring(1).split(StaticData.SYMBOL_SPACE));
 
 				boardView.getBoardFace().setMovesCount(1);
 			}
@@ -1101,10 +1071,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 			boardView.getBoardFace().setMode(AppConstants.GAME_MODE_TACTICS);
 
 			String FEN = mainApp.getTactic().values.get(AppConstants.FEN);
-			if (!FEN.equals(AppConstants.SYMBOL_EMPTY)) {
+			if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 				boardView.getBoardFace().genCastlePos(FEN);
 				MoveParser.fenParse(FEN, boardView.getBoardFace());
-				String[] tmp2 = FEN.split(AppConstants.SYMBOL_SPACE);
+				String[] tmp2 = FEN.split(StaticData.SYMBOL_SPACE);
 				if (tmp2.length > 1) {
 					if (tmp2[1].trim().equals(MoveParser.W_SMALL)) {
 						boardView.getBoardFace().setReside(true);
@@ -1114,9 +1084,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 
 			if (mainApp.getTactic().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 				boardView.getBoardFace().setTacticMoves(mainApp.getTactic()
-						.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", AppConstants.SYMBOL_EMPTY)
-						.replaceAll("[.]", AppConstants.SYMBOL_EMPTY).replaceAll("  ", AppConstants.SYMBOL_SPACE)
-						.substring(1).split(AppConstants.SYMBOL_SPACE));
+						.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE)
+						.substring(1).split(StaticData.SYMBOL_SPACE));
 				boardView.getBoardFace().setMovesCount(1);
 			}
 

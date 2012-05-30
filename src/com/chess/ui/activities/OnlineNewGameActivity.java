@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,15 +12,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.AppData;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
-import com.chess.ui.adapters.OnlineGamesAdapter;
-import com.chess.ui.core.AppConstants;
-import com.chess.ui.core.IntentConstants;
+import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -32,7 +31,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 
 	private ListView openChallengesListView;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
-	private OnlineGamesAdapter gamesAdapter = null;
+	private OnlineChallengesGamesAdapter gamesAdapter = null;
 	private static final int UPDATE_DELAY = 120000;
 	private GameListItem gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
@@ -46,12 +45,13 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_new_game);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 		if (MopubHelper.isShowAds(mainApp)) {
-			MopubHelper.showBannerAd(upgradeBtn, (MoPubView) findViewById(R.id.mopub_adview), mainApp);
+			moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
 		}
 
 		/*if (MobclixHelper.isShowAds(mainApp)) {
@@ -75,17 +75,10 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	}
 
 	@Override
-	protected void onResume() {
-		registerReceiver(challengesListUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
-		super.onResume();
-	}
-
-	@Override
 	protected void onPause() {
 		/*if (MobclixHelper.isShowAds(mainApp)) {
 			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
 		}*/
-		unregisterReceiver(challengesListUpdateReceiver);
 		super.onPause();
 	}
 
@@ -95,7 +88,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			if (appService != null) {
 				appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
 						"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-								mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+								preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						null);
 			}
 		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
@@ -105,7 +98,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
 
 			if (gamesAdapter == null) {
-				gamesAdapter = new OnlineGamesAdapter(this, R.layout.gamelistelement, gameListItems);
+				gamesAdapter = new OnlineChallengesGamesAdapter(this, gameListItems);
 				openChallengesListView.setAdapter(gamesAdapter);
 			}
 
@@ -134,7 +127,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(mainApp.getMembershipAndroidIntent());
+			startActivity(AppData.getMembershipAndroidIntent(this));
 
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, OnlineFriendChallengeActivity.class));
@@ -148,7 +141,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		public void onClick(DialogInterface d, int pos) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getInstance().getUserToken(coreContext));
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			if (pos == ACCEPT_DRAW) {
 				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
@@ -178,13 +171,16 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		}
 	}
 
-	private class ChallengeInviteUpdateListener extends AbstractUpdateListener<String> {
+	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
 		public ChallengeInviteUpdateListener() {
-			super(coreContext);
+			super(getInstance());
 		}
 
 		@Override
 		public void updateData(String returnedObj) {
+			if(isFinishing())
+				return;
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				update(CHALLENGE_RESULT_SENT);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {

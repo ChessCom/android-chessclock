@@ -8,16 +8,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
-import com.chess.ui.core.AppConstants;
 import com.chess.ui.core.CoreActivityHome;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.utilities.Utils;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubInterstitial;
 
@@ -43,7 +43,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.home_screen);
-		Utils.setBackground(findViewById(R.id.mainView), this);
+		AppUtils.setBackground(findViewById(R.id.mainView), this);
 
 		Bundle extras = getIntent().getExtras();
 		if(extras != null){
@@ -123,10 +123,10 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		if(fragment.getTag().equals(LOGOUT_TAG)){
+		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
 			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
-		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
+		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);
@@ -140,7 +140,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
             fragment.getDialog().dismiss();
             lccHolder.declineCurrentChallenge(currentChallenge);
-//			update(3); // TODO verify
         }else
             fragment.getDialog().dismiss();
 	}
@@ -208,7 +207,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		private String composeMessage(Challenge challenge){
 			String rated = challenge.isRated()? getString(R.string.rated): getString(R.string.unrated);
 			GameTimeConfig config = challenge.getGameTimeConfig();
-			String blitz = AppConstants.SYMBOL_EMPTY;
+			String blitz = StaticData.SYMBOL_EMPTY;
 			if(config.isBlitz()){
 				blitz = getString(R.string.blitz_game);
 			}else if(config.isLightning()){
@@ -217,13 +216,13 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 				blitz = getString(R.string.standard_game);
 			}
 
-			String timeIncrement = AppConstants.SYMBOL_EMPTY;
+			String timeIncrement = StaticData.SYMBOL_EMPTY;
 
 			if(config.getTimeIncrement() > 0){
 				timeIncrement = " | "+ String.valueOf(config.getTimeIncrement()/10);
 			}
 
-			String timeMode = config.getBaseTime()/10/60 + timeIncrement + AppConstants.SYMBOL_SPACE + blitz;
+			String timeMode = config.getBaseTime()/10/60 + timeIncrement + StaticData.SYMBOL_SPACE + blitz;
 			String playerColor;
 
 			switch (challenge.getColor()) {
@@ -242,12 +241,12 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			}
 
 			return new StringBuilder()
-					.append(getString(R.string.opponent_)).append(AppConstants.SYMBOL_SPACE)
-					.append(challenge.getFrom().getUsername()).append(AppConstants.SYMBOL_NEW_STR)
-					.append(getString(R.string.time_)).append(AppConstants.SYMBOL_SPACE)
-					.append(timeMode).append(AppConstants.SYMBOL_NEW_STR)
-					.append(getString(R.string.you_play)).append(AppConstants.SYMBOL_SPACE)
-					.append(playerColor).append(AppConstants.SYMBOL_NEW_STR)
+					.append(getString(R.string.opponent_)).append(StaticData.SYMBOL_SPACE)
+					.append(challenge.getFrom().getUsername()).append(StaticData.SYMBOL_NEW_STR)
+					.append(getString(R.string.time_)).append(StaticData.SYMBOL_SPACE)
+					.append(timeMode).append(StaticData.SYMBOL_NEW_STR)
+					.append(getString(R.string.you_play)).append(StaticData.SYMBOL_SPACE)
+					.append(playerColor).append(StaticData.SYMBOL_NEW_STR)
 					.append(rated)
 					.toString();
 		}
@@ -288,7 +287,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}*/
 
 	private void showFullScreenAd() {
-		if (!mainApp.getSharedData().getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
+		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
 				&& MopubHelper.isShowAds(mainApp)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
@@ -316,25 +315,25 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
 			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : LiveScreenActivity.class;
-			startActivity(new Intent(context, clazz));
+			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playOnlineFrame) {
 			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : OnlineScreenActivity.class;
-			startActivity(new Intent(context, clazz));
+			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playComputerFrame) {
-			startActivity(new Intent(context, ComputerScreenActivity.class));
+			startActivity(new Intent(this, ComputerScreenActivity.class));
 
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
-			Intent intent = new Intent(context, GameTacticsScreenActivity.class);
+			Intent intent = new Intent(this, GameTacticsScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
 			startActivity(intent);
 
 		} else if (v.getId() == R.id.videoLessonsFrame) {
-			startActivity(new Intent(context, VideoScreenActivity.class));
+			startActivity(new Intent(this, VideoScreenActivity.class));
 
 		} else if (v.getId() == R.id.settingsFrame) {
-			startActivity(new Intent(context, PreferencesScreenActivity.class));
+			startActivity(new Intent(this, PreferencesScreenActivity.class));
 		}
 	}
 
@@ -342,8 +341,8 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (moPubInterstitial.isReady()) {
 			Log.d("HOME", "mopub interstitial ad listener: loaded and ready");
 			moPubInterstitial.show();
-			mainApp.getSharedDataEditor().putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
-			mainApp.getSharedDataEditor().commit();
+			preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
+			preferencesEditor.commit();
 		}
 		else {
 			Log.d("HOME", "mopub interstitial ad listener: loaded, but not ready");

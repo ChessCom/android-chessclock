@@ -4,9 +4,9 @@
 
 package com.chess.lcc.android;
 
+import com.chess.backend.statics.AppConstants;
 import com.chess.live.client.FriendStatusListener;
 import com.chess.live.client.User;
-import com.chess.ui.core.AppConstants;
 
 public class LccFriendStatusListener implements FriendStatusListener {
 	public LccFriendStatusListener(LccHolder lccHolder) {

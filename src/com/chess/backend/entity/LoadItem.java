@@ -42,10 +42,6 @@ public class LoadItem {
 		nameValuePairs.add(pairNew);
 	}
 
-	public void dropParams(){
-		nameValuePairs.clear();
-	}
-
 	public List<NameValuePair> getRequestParams(){
 		return nameValuePairs;
 	}
@@ -55,5 +51,9 @@ public class LoadItem {
 	}
 	public String getLoadPath() {
 		return loadPath;
+	}
+
+	public void clearParams() {
+		nameValuePairs.clear();
 	}
 }

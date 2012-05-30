@@ -208,9 +208,16 @@
 		<item name="android:paddingBottom">@dimen/game_label_padding_top</item>
 	</style>
 
+	<style name="GameLabel.Timer">
+		<item name="android:drawablePadding">5dip</item>
+		<item name="android:maxWidth">@dimen/player_name_max_width</item>
+	</style>
+
 	<style name="GameLabel.Player">
 		<item name="android:drawablePadding">5dip</item>
 		<item name="android:maxWidth">@dimen/player_name_max_width</item>
+		<item name="android:ellipsize">marquee</item>
+		<item name="android:marqueeRepeatLimit">marquee_forever</item>
 	</style>
 
 	<style name="DarkShadowBottom">

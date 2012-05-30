@@ -13,9 +13,10 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.AppConstants;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MyProgressDialog;
 
@@ -40,7 +41,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.online_challenge_friend);
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
@@ -51,7 +51,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		iPlayAsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
 		friendsSpinner = (Spinner) findViewById(R.id.friend);
-		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{AppConstants.SYMBOL_EMPTY}));
+		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{StaticData.SYMBOL_EMPTY}));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
@@ -62,28 +62,19 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	public void update(int code) {
 		if (code == ERROR_SERVER_RESPONSE) {
 			finish();
-		} else if (code == INIT_ACTIVITY && !mainApp.isLiveChess()) {
+		} else if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY),
+						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(OnlineFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}
-		} else if (code == 0 || (code == INIT_ACTIVITY && mainApp.isLiveChess())) {
-			String[] FRIENDS;
-			if (mainApp.isLiveChess()) {
-				FRIENDS = lccHolder.getOnlineFriends();
-			} else {
-				FRIENDS = ChessComApiParser.GetFriendsParse(response);
-			}
+		} else if (code == 0) {
+			String[] FRIENDS = ChessComApiParser.GetFriendsParse(response);
 
-//			ArrayAdapter<String> adapterF = new ArrayAdapter<String>(OnlineFriendChallengeActivity.this,
-//					android.R.layout.simple_spinner_item,
-//					FRIENDS);
-//			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
 			friendsSpinner.setAdapter(friendsAdapter);
-			if (friendsSpinner.getSelectedItem().equals(AppConstants.SYMBOL_EMPTY)) {
+			if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 				new AlertDialog.Builder(OnlineFriendChallengeActivity.this)
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(getString(R.string.sorry))
@@ -95,7 +86,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 						})
 						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-//								finish();
+								finish();
 							}
 						}).setCancelable(false)
 						.create().show();
@@ -127,7 +118,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 				gametype = 2;
 			}
 			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id="
-					+ mainApp.getSharedData().getString(AppConstants.USER_TOKEN, AppConstants.SYMBOL_EMPTY) +
+					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
 					"&timepermove=" + days +
 					"&iplayas=" + color +
 					"&israted=" + israted +

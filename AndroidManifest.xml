@@ -2,25 +2,24 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:versionCode="89"
-    android:versionName="1.9851" package="com.chess" android:installLocation="auto">
+    android:versionCode="91"
+    android:versionName="1.987" package="com.chess" android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-	<!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
-
-	<!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->  <!--Don not need anymore-->
-
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<!-- uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+	<!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--uses-permission android:name="android.permission.VIBRATE" /-->
 	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
 	<!--android:backupAgent=".ui.core.ChessBackupAgent"-->
-    <application android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name=".ui.core.MainApp"
+    <application
+		android:icon="@drawable/ic_launcher"
+		android:logo="@drawable/ic_home"
+		android:label="@string/app_name" android:name=".ui.core.MainApp"
 
     	android:debuggable="true"
         android:theme="@style/OrangeButtonTheme"
@@ -35,6 +34,11 @@
             </intent-filter>
         </activity>
 
+		<activity android:name=".ui.activities.HomeScreenActivity"
+			android:logo="@drawable/ic_logo_bar"
+			android:label=""
+			/>
+
         <activity android:name="com.google.ads.AdActivity"
 			android:configChanges="keyboard|keyboardHidden|orientation"/>
 
@@ -44,12 +48,12 @@
         <activity android:name="com.millennialmedia.android.VideoPlayer"
                   android:configChanges="keyboardHidden|orientation|keyboard" />
 
-
 		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
-				  android:configChanges="keyboardHidden|keyboard|orientation" />                         <!--  android:configChanges="keyboardHidden|keyboard|orientation"-->
+				  android:configChanges="keyboardHidden|keyboard|orientation" />
 
 
-		<activity android:name=".ui.activities.ChatActivity"   android:label="@string/label_chat_online"
+
+		<activity android:name=".ui.activities.ChatOnlineActivity"   android:label="@string/label_chat_online"
 				  android:configChanges="keyboardHidden|keyboard|orientation" />
 
 		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
@@ -59,8 +63,6 @@
         <activity android:name=".ui.activities.LoginScreenActivity"
                   android:theme="@style/OrangeButtonNotitle"
                   />
-        <activity android:name=".ui.activities.HomeScreenActivity" android:label=""
-			/>
 
         <!-- todo: try this?
         <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
@@ -91,6 +93,7 @@
         <activity android:name="com.mopub.mobileads.MraidBrowser" android:configChanges="keyboardHidden|keyboard|orientation"/>
 
         <activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
+				  android:configChanges="keyboardHidden|keyboard|orientation"
 			/>
 		<activity android:name=".ui.activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"
 			/>
@@ -113,9 +116,12 @@
 		<!--android:configChanges="keyboardHidden|orientation|keyboard"-->
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
 			/>
+		<activity android:name=".ui.activities.GameFinishedScreenActivity" android:label="@string/label_game_finished"
+			/>
 
-        <activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
+		<activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
 				  android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>
+
         <activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"
 					android:configChanges="keyboardHidden|keyboard|orientation"/>
         <activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"
@@ -126,7 +132,7 @@
         <!--<activity android:name="MoPubActivity" android:configChanges="keyboardHidden|orientation"/>-->
 
 		<service android:name=".backend.WebService" />
-		<service android:name=".backend.YourMoveUpdateService" android:enabled="true" />
+		<receiver android:name=".backend.AlarmReceiver"/>
 
         <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
 

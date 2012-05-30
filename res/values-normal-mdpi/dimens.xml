@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+
+  	<!-- Rounded buttons -->
+	<dimen name="rounded_button_radius">3dip</dimen>
+	<dimen name="button_pressed_stroke_radius">3dip</dimen>
+	<dimen name="button_pressed_stroke_width_1">5dip</dimen>
+	<dimen name="button_pressed_stroke_width_2">5dip</dimen>
+	<dimen name="button_margin4stroke">4dip</dimen> <!--Must be less than stroke width_1 by 2 px-->
+
+  	<dimen name="small_button_height">35dip</dimen>
+  	<dimen name="rounded_button_height">48dip</dimen>
+	<dimen name="rounded_button_padding_disabled">0dip</dimen>
+	<dimen name="rounded_button_padding_top">0dip</dimen>
+	<dimen name="rounded_button_padding_left">0dip</dimen>
+	<dimen name="rounded_button_padding_right">0dip</dimen>
+	<dimen name="rounded_button_padding_bottom">0dip</dimen>
+
+  	<dimen name="default_field_height">48dip</dimen>
+  	<dimen name="default_button_height">40dip</dimen>    <!--Plus glow borders-->
+ 	<dimen name="signin_button_height">50dip</dimen>
+    <dimen name="default_stroke_width">1dip</dimen>
+
+    <!--Upgrade Button-->
+    <dimen name="button_upgrade_left_padding">43dip</dimen>
+    <dimen name="button_upgrade_right_padding">46dip</dimen>
+
+
+    <dimen name="list_item_image_size">27dip</dimen>
+ 	<dimen name="list_item_stroke_width">1px</dimen>
+ 	
+
+				
+ 	<dimen name="home_main_padding_top">20dip</dimen>
+ 	<dimen name="home_main_padding_bot">20dip</dimen>
+ 	<dimen name="home_main_padding_left">20dip</dimen>
+ 	<dimen name="home_main_padding_right">20dip</dimen>
+
+	<!--Dashboard-->
+	<dimen name="dashboard_padding_top">21dip</dimen>
+	<dimen name="dashboard_padding_bot">68dip</dimen>
+	<dimen name="dashboard_padding_side">21dip</dimen>
+
+ 	<dimen name="smallLogo_width">218dip</dimen>
+	<dimen name="smallLogo_height">89dip</dimen>
+	 	
+	<dimen name="pressed_text_size">16sp</dimen>
+		
+	
+	<dimen name="list_item_padding">5dip</dimen>
+	<dimen name="list_item_image_marging">5dip</dimen>
+	
+	<dimen name="list_item_text_size">17sp</dimen>
+				
+	<dimen name="list_item_height">48dip</dimen>
+	<dimen name="list_padding_top">10dip</dimen>
+		
+    <dimen name="text_size_small">16sp</dimen>
+
+	<!--LiveScreen-->
+	<dimen name="live_scr_top_padding">16dip</dimen>
+	<dimen name="live_layout_mTop">10dip</dimen>
+	<dimen name="live_challenges_textSize">16sp</dimen>
+	<dimen name="live_grid_hotizontal_spacing">10dip</dimen>
+	<dimen name="live_grid_padding_top">10dip</dimen>
+	<dimen name="live_grid_padding_bottom">10dip</dimen>
+
+
+    <!--Default screen-->
+    <dimen name="default_scr_top_padding">16dip</dimen>
+    <dimen name="default_scr_side_padding">16dip</dimen>
+
+	<!--Default margins between screen widgets-->
+
+	<dimen name="margin_top_beween_buttons">10dip</dimen>
+
+	<!--Linear Description paddings-->
+	<dimen name="default_linear_bottom_padding">2dip</dimen>
+	<dimen name="default_linear_top_padding">2dip</dimen>
+	<dimen name="default_linear_left_padding">5dip</dimen>
+	<dimen name="default_linear_right_padding">5dip</dimen>
+
+	<!--SigIn-->
+	<dimen name="signin_scr_top_padding">20dip</dimen>
+	<dimen name="signin_scr_bottom_padding">20dip</dimen>
+	<dimen name="signin_scr_side_padding">20dip</dimen>
+	<dimen name="signin_logo_margin_top">15dip</dimen>
+	<dimen name="signin_main_margin_top">36dip</dimen>
+
+	<!--Game Modes-->
+	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
+	<dimen name="player_name_max_width">150dip</dimen>
+	<dimen name="game_label_padding_top">0dip</dimen>
+	<dimen name="game_end_layout_padding_bottom">8dip</dimen>
+	<dimen name="game_end_layout_padding_side">7dip</dimen>
+	<dimen name="game_label_text_size">12sp</dimen>
+
+	<!--GamePanelView-->
+	<dimen name="game_control_padding_left">10dip</dimen>
+	<dimen name="game_control_padding_right">10dip</dimen>
+	<dimen name="game_control_padding_top">5dip</dimen>
+	<dimen name="game_control_padding_bottom">0dip</dimen>
+
+	<dimen name="piece_layout_padding_left">7dip</dimen>
+	<dimen name="piece_layout_padding_right">0dip</dimen>
+	<dimen name="piece_layout_padding_top">0dip</dimen>
+	<dimen name="piece_layout_padding_bottom">1dip</dimen>
+
+	<dimen name="player_indicator_size">10dip</dimen>
+	<dimen name="player_indicator_size1">9dip</dimen>
+
+	<!--Popup-->
+	<dimen name="ad_popup_width">300dip</dimen>
+	<dimen name="ad_popup_height">250dip</dimen>
+	<dimen name="popup_dialog_width">300dip</dimen>
+	<dimen name="popup_dialog_text_max_width">250dip</dimen>
+
+	<!--Pending load-->
+	<dimen name="pending_progress_bar_size">40dip</dimen>
+
+
+</resources>

@@ -31,7 +31,7 @@
 
 	<!--Dashboard-->
 	<dimen name="dashboard_padding_top">19dip</dimen>
-	<dimen name="dashboard_padding_bot">30dip</dimen>
+	<dimen name="dashboard_padding_bot">19dip</dimen>
 	<dimen name="dashboard_padding_side">31dip</dimen>
 
  	<dimen name="smallLogo_width">100dip</dimen>
@@ -53,4 +53,7 @@
 	<dimen name="signin_scr_bottom_padding">20dip</dimen>
 	<dimen name="signin_scr_side_padding">20dip</dimen>
 
+
+	<!--Game Mode-->
+	<dimen name="player_name_max_width">100dip</dimen>
 </resources>
