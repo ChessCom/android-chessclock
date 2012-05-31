@@ -2096,6 +2096,12 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
+	public boolean lastMoveContains(String piece, String moveTo) {
+		return tacticMoves[hply - 1].contains(piece)
+				&& tacticMoves[hply - 1].contains(moveTo);
+	}
+
+	@Override
 	public boolean isAnalysis() {
 		return analysis;
 	}

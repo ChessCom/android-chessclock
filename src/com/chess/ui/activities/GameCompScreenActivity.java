@@ -44,23 +44,23 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);
-		boardView.getBoardFace().setInit(true);
-		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		getBoardFace().setInit(true);
+		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 
-		if (MainApp.isComputerGameMode(boardView.getBoardFace()) && AppData.haveSavedCompGame(this)) { // if load game
+		if (MainApp.isComputerGameMode(getBoardFace()) && AppData.haveSavedCompGame(this)) { // if load game
 			loadSavedGame();
 
-			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace()))
-				boardView.getBoardFace().setReside(true);
+			if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace()))
+				getBoardFace().setReside(true);
 
 		} else {
-			if (MainApp.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
-				boardView.getBoardFace().setReside(true);
+			if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace())) {
+				getBoardFace().setReside(true);
 				boardView.invalidate();
 				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
-			if (MainApp.isComputerVsComputerGameMode(boardView.getBoardFace())) {
+			if (MainApp.isComputerVsComputerGameMode(getBoardFace())) {
 				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
 			}
 		}
@@ -95,7 +95,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	public void update(int code) {
 		switch (code) {
 			case CALLBACK_REPAINT_UI: {
-				switch (boardView.getBoardFace().getMode()) {
+				switch (getBoardFace().getMode()) {
 					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 						whitePlayerLabel.setText(AppData.getUserName(this));
 						blackPlayerLabel.setText(getString(R.string.Computer));
@@ -121,7 +121,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 						break;
 				}
 
-				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
+				boardView.addMove2Log(getBoardFace().getMoveListSAN());
 				break;
 			}
 			case CALLBACK_COMP_MOVE: {
@@ -176,9 +176,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	protected void restoreGame(){
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);
-		boardView.getBoardFace().setInit(true);
-		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		getBoardFace().setInit(true);
+		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		loadSavedGame();
 	}
 
@@ -187,7 +187,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		String[] moves = preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).split("[|]");
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
-			boardView.getBoardFace().makeMove(new Move(
+			getBoardFace().makeMove(new Move(
 					Integer.parseInt(move[0]),
 					Integer.parseInt(move[1]),
 					Integer.parseInt(move[2]),
@@ -254,8 +254,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 			switch (i) {
 				case NEW_GAME_WHITE: {
 					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
-					boardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-					boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
+					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 
 					update(CALLBACK_REPAINT_UI);
@@ -267,10 +267,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				case NEW_GAME_BLACK: {
 					// TODO encapsulate
 					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
-					boardView.getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
 					boardView.computerMove(mainApp.strength[AppData.getCompStrength(getContext())]);
-					boardView.getBoardFace().setReside(true);
-					boardView.getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+					getBoardFace().setReside(true);
+					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 
 					update(CALLBACK_REPAINT_UI);

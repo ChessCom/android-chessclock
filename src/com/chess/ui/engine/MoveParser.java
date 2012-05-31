@@ -31,6 +31,8 @@ public class MoveParser {
 	public static final String F_SMALL = "f";
 	public static final String G_SMALL = "g";
 	public static final String H_SMALL = "h";
+	public static final String X_SMALL = "x";
+
 	public static final String NUMB_1 = "1";
 	public static final String NUMB_2 = "2";
 	public static final String NUMB_3 = "3";
@@ -39,7 +41,6 @@ public class MoveParser {
 	public static final String NUMB_6 = "6";
 	public static final String NUMB_7 = "7";
 	public static final String NUMB_8 = "8";
-	public static final String X_SMALL = "x";
 	private static final String FEN_DIVIDER = "[/]";
 	private static final String REGEXP_NUMBERS = "[0-9]";
 	public static final String KINGSIDE_CASTLING = "O-O";

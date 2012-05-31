@@ -14,10 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.live.client.Game;
@@ -26,6 +26,7 @@ import com.chess.model.GameListItem;
 import com.chess.ui.core.IntentConstants;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -112,14 +113,14 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		super.onResume();
 
 		boardView.setBoardFace(new ChessBoard(this));
-		boardView.getBoardFace().setMode( AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
+		getBoardFace().setMode( AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
 		updateGameSate();
 	}
 
 	private void updateGameSate() {
 		getOnlineGame(mainApp.getGameId());
-		boardView.getBoardFace().setInit(false);
+		getBoardFace().setInit(false);
 	}
 
 	@Override
@@ -156,10 +157,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 	private void adjustBoardForGame() {
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
-			boardView.getBoardFace().setChess960(true);
+			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
-			boardView.getBoardFace().setReside(true);
+			getBoardFace().setReside(true);
 		}
 		String[] moves = {};
 
@@ -168,9 +169,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(1).split(" ");
 
-			boardView.getBoardFace().setMovesCount(moves.length);
+			getBoardFace().setMovesCount(moves.length);
 		} else if (!mainApp.isLiveChess()) {
-			boardView.getBoardFace().setMovesCount(0);
+			getBoardFace().setMovesCount(0);
 		}
 
 		Game game = lccHolder.getGame(mainApp.getGameId());
@@ -180,23 +181,23 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			boardView.getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, boardView.getBoardFace());
+			getBoardFace().genCastlePos(FEN);
+			MoveParser.fenParse(FEN, getBoardFace());
 		}
 
-		for (int i = 0, cnt = boardView.getBoardFace().getMovesCount(); i < cnt; i++) {
+		for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
 			boardView.updateMoves(moves[i]);
 		}
 
 		invalidateGameScreen();
-		boardView.getBoardFace().takeBack();
+		getBoardFace().takeBack();
 		boardView.invalidate();
 
 		playLastMoveAnimation();
 	}
 
 	public void invalidateGameScreen() {
-		if (boardView.getBoardFace().isSubmit())
+		if (getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
 		if (mainApp.getCurrentGame() != null) {
@@ -204,7 +205,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 			blackPlayerLabel.setText(mainApp.getBlackPlayerName());
 		}
 
-		boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
+		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}
 
 
@@ -236,7 +237,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
-		loadItem.addRequestParams(RestHelper.P_NEWMOVE, boardView.getBoardFace().convertMoveEchess());
+		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
 
 		new GetStringObjTask(sendMoveUpdateListener).execute(loadItem);
@@ -323,8 +324,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 					if(currentGame.getGameId() != mainApp.getCurrentGameId()){
 						showSubmitButtonsLay(false);
 						boardView.setBoardFace(new ChessBoard(GameFinishedScreenActivity.this));
-						boardView.getBoardFace().setAnalysis(false);
-						boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+						getBoardFace().setAnalysis(false);
+						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 						getOnlineGame(currentGame.getGameId()); // if next game
 						return;
 					}
@@ -358,7 +359,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-		boardView.getBoardFace().setSubmit(show);
+		getBoardFace().setSubmit(show);
 	}
 
 	@Override
@@ -421,7 +422,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 					getOnlineGame(mainApp.getGameId());
 					break;
 				case ECHESS_RESIDE:
-					boardView.getBoardFace().setReside(!boardView.getBoardFace().isReside());
+					getBoardFace().setReside(!getBoardFace().isReside());
 					boardView.invalidate();
 					break;
 				case ECHESS_DRAW_OFFER:
@@ -542,8 +543,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		if (view.getId() == R.id.cancel) {
 			showSubmitButtonsLay(false);
 
-			boardView.getBoardFace().takeBack();
-			boardView.getBoardFace().decreaseMovesCount();
+			getBoardFace().takeBack();
+			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.submit) {
 			sendMove();

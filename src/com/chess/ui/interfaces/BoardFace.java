@@ -141,4 +141,6 @@ public interface BoardFace {
 	void increaseTacticsCorrectMoves();
 
 	boolean toggleAnalysis();
+
+	boolean lastMoveContains(String piece, String moveTo);
 }

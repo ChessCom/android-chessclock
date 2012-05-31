@@ -24,6 +24,7 @@ import com.chess.ui.core.IntentConstants;
 import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -128,9 +129,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	}
 
 	private void updateGameState() {
-		if (boardView.getBoardFace().isInit()) {
+		if (getBoardFace().isInit()) {
 			getOnlineGame(mainApp.getGameId());
-			boardView.getBoardFace().setInit(false);
+			getBoardFace().setInit(false);
 		} else {
 
 			LoadItem loadItem = new LoadItem();
@@ -181,10 +182,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		boardView.finished = false;
 
 		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
-			boardView.getBoardFace().setChess960(true);
+			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
-			boardView.getBoardFace().setReside(true);
+			getBoardFace().setReside(true);
 		}
 		String[] moves = {};
 
@@ -193,9 +194,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(1).split(" ");
 
-			boardView.getBoardFace().setMovesCount(moves.length);
+			getBoardFace().setMovesCount(moves.length);
 		} else if (!mainApp.isLiveChess()) {
-			boardView.getBoardFace().setMovesCount(0);
+			getBoardFace().setMovesCount(0);
 		}
 
 		Game game = lccHolder.getGame(mainApp.getGameId());
@@ -205,16 +206,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			boardView.getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, boardView.getBoardFace());
+			getBoardFace().genCastlePos(FEN);
+			MoveParser.fenParse(FEN, getBoardFace());
 		}
 
-		for (int i = 0, cnt = boardView.getBoardFace().getMovesCount(); i < cnt; i++) {
+		for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
 			boardView.updateMoves(moves[i]);
 		}
 
 		invalidateGameScreen();
-		boardView.getBoardFace().takeBack();
+		getBoardFace().takeBack();
 		boardView.invalidate();
 
 		playLastMoveAnimation();
@@ -228,7 +229,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (boardView.getBoardFace().isAnalysis())
+			if (getBoardFace().isAnalysis())
 				return;
 
 			game = ChessComApiParser.GetGameParseV3(returnedObj);
@@ -253,17 +254,17 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		String[] moves;
 
 		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
-				|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())))) {
+				|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())))) {
 
-			int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
+			int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())) ? 0 : 1;
 
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]",
 					StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
 
-			if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
+			if (moves.length - getBoardFace().getMovesCount() == 1) {
 				boardView.updateMoves(moves[moves.length - 1]);
 
-				boardView.getBoardFace().setMovesCount(moves.length);
+				getBoardFace().setMovesCount(moves.length);
 				boardView.invalidate();
 				invalidateGameScreen();
 			}
@@ -271,7 +272,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	}
 
 	public void invalidateGameScreen() {
-		if (boardView.getBoardFace().isSubmit())
+		if (getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
 		if (mainApp.getCurrentGame() != null) {
@@ -279,7 +280,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 			blackPlayerLabel.setText(mainApp.getBlackPlayerName());
 		}
 
-		boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
+		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}
 
 
@@ -311,7 +312,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
-		loadItem.addRequestParams(RestHelper.P_NEWMOVE, boardView.getBoardFace().convertMoveEchess());
+		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
 
 		new GetStringObjTask(sendMoveUpdateListener).execute(loadItem);
@@ -396,8 +397,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					if (currentGame.getGameId() != mainApp.getCurrentGameId()) {
 						showSubmitButtonsLay(false);
 						boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
-						boardView.getBoardFace().setAnalysis(false);
-						boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+						getBoardFace().setAnalysis(false);
+						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 						getOnlineGame(currentGame.getGameId()); // if next game
 						return;
 					}
@@ -465,7 +466,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-		boardView.getBoardFace().setSubmit(show);
+		getBoardFace().setSubmit(show);
 	}
 
 	@Override
@@ -528,7 +529,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					openChatActivity();
 					break;
 				case ECHESS_RESIDE:
-					boardView.getBoardFace().setReside(!boardView.getBoardFace().isReside());
+					getBoardFace().setReside(!getBoardFace().isReside());
 					boardView.invalidate();
 					break;
 				case ECHESS_DRAW_OFFER:
@@ -645,8 +646,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		if (view.getId() == R.id.cancel) {
 			showSubmitButtonsLay(false);
 
-			boardView.getBoardFace().takeBack();
-			boardView.getBoardFace().decreaseMovesCount();
+			getBoardFace().takeBack();
+			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.submit) {
 			sendMove();

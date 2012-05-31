@@ -22,6 +22,7 @@ import com.chess.ui.core.IntentConstants;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardView;
 import com.chess.ui.views.GamePanelView;
@@ -712,6 +713,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	@Override
 	public Context getMeContext() {
 		return this;
+	}
+
+	protected BoardFace getBoardFace(){
+		return boardView.getBoardFace();
 	}
 
 	@Override
