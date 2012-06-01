@@ -16,6 +16,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
@@ -48,14 +49,12 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 
 		init();
 		upgrade = (Button) findViewById(R.id.upgradeBtn);
-		boolean liveMembershipLevel = false;
-		if (lccHolder.getUser() != null) {
-			liveMembershipLevel = mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
-		}
-//		boolean liveMembershipLevel =
-//				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
-		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
+//		boolean liveMembershipLevel = false;
+//		if (lccHolder.getUser() != null) {
+//			liveMembershipLevel = mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
+//		}
+//		if (liveMembershipLevel || (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			upgrade.setVisibility(View.VISIBLE);
 			upgrade.setOnClickListener(this);
 		} else {

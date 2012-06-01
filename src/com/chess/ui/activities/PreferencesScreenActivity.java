@@ -78,10 +78,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 
 		TextView preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 
-		boolean liveMembershipLevel =
-				lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
-		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
+//		boolean liveMembershipLevel = lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
+//		if (liveMembershipLevel || (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			preferencesUpgrade.setVisibility(View.VISIBLE);
 		} else {
 			preferencesUpgrade.setVisibility(View.GONE);

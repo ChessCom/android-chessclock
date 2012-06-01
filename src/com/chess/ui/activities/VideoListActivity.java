@@ -17,6 +17,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter2;
 import com.chess.ui.adapters.VideosPaginationAdapter;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,9 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
         setContentView(R.layout.videolist);
 
 		TextView videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
-        boolean liveMembershipLevel = lccHolder.getUser() != null && mainApp.isLiveChess()
-                && (lccHolder.getUser().getMembershipLevel() < 50);
-        if (liveMembershipLevel
-                || (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
+//        boolean liveMembershipLevel = lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
+//        if (liveMembershipLevel || (!mainApp.isLiveChess() && AppData.getUserPremiumStatus(getContext()) < 3)) {
+        if (AppUtils.isNeedToUpgrade(this)) {
             videoUpgrade.setVisibility(View.VISIBLE);
             videoUpgrade.setOnClickListener(this);
 

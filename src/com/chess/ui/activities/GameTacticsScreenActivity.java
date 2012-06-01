@@ -729,7 +729,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 					return;
 				} else if (tmp.length < 2 || tmp[2].trim().equals("")) {
 					// TODO: remove after debug
-					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
+					throw new RuntimeException("Tactics: response=" + response + ", userMembership="
+							+ AppData.getUserPremiumStatus(getContext()));
 					//return;
 				}
 
