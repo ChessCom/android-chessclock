@@ -128,6 +128,10 @@ public class AndroidStuff {
 		}
 	}
 
+	/**
+	 * This method is not used anymore as we don't have list of live games
+	 */
+	@Deprecated
 	public void updateChallengesList() {
 		sendBroadcastIntent(OnlineScreenActivity.ONLINE_CALLBACK_CODE, IntentConstants.CHALLENGES_LIST_UPDATE);
 	}

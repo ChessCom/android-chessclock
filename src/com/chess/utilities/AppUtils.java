@@ -32,6 +32,7 @@ public class AppUtils {
 	private static boolean ENABLE_LOG = true;
 
 
+
 	public static void setBackground(View mainView, Context context) {
 		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
 
@@ -167,7 +168,7 @@ public class AppUtils {
 					&& !LccHolder.getInstance(context).isConnectingInProgress();
 		}
 		return liveMembershipLevel
-				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < 1);
+				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);
 	}
 
 }

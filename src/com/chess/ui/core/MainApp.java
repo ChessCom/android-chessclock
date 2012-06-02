@@ -293,6 +293,11 @@ public class MainApp extends Application {
 				}).create().show();
 	}
 
+	/**
+	 * Use  {@link com.chess.lcc.android.LccHolder#getInstance(android.content.Context)}
+	 * instead
+	 * @return  initialized instance of LccHolder
+	 */
     @Deprecated
 	public LccHolder getLccHolder() {
 		if (lccHolder == null) {

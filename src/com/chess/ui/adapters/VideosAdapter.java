@@ -17,12 +17,12 @@ import com.chess.model.VideoItem;
 
 import java.util.List;
 
-public class VideosAdapter2 extends ItemsAdapter<VideoItem> {
+public class VideosAdapter extends ItemsAdapter<VideoItem> {
 
 	private PlayClickListener playClickListener;
 	private FullDescClickListener fullDescClickListener;
 
-	public VideosAdapter2(Context context, List<VideoItem> items) {
+	public VideosAdapter(Context context, List<VideoItem> items) {
 		super(context, items);
 		playClickListener = new PlayClickListener();
 		fullDescClickListener = new FullDescClickListener();

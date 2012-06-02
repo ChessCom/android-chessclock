@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		}
 
 		if(popupItem.getMessageId() == 0)
-			messageTxt.setText(popupItem.getMessage());
+			messageTxt.setText(Html.fromHtml(popupItem.getMessage()));
 		else
 			messageTxt.setText(popupItem.getMessageId());
 

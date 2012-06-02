@@ -12,8 +12,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -56,6 +54,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
+	private static final String INFO_MSG_TAG = "info message";
+
 
 	protected MainApp mainApp;
 	protected Bundle extras;
@@ -592,8 +592,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		public void onReceive(Context context, Intent intent) {
 			LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 
-			Spanned message = Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE));
-			Log.d("TEST", "Info message = " + message);
+//			Spanned message = Html.fromHtml(intent.getExtras().getString(AppConstants.MESSAGE));
+			String message = intent.getExtras().getString(AppConstants.MESSAGE);
+			String title = intent.getExtras().getString(AppConstants.TITLE);
+//
+//			PopupItem popupItem = new PopupItem();
+//			popupItem.setTitle(title);
+//			popupItem.setMessage(message);
+//
+//			PopupDialogFragment popupFragment = PopupDialogFragment.newInstance(popupItem, CoreActivityActionBar.this);
+//			popupFragment.show(getSupportFragmentManager(), INFO_MSG_TAG);
+
 			final TextView messageView = new TextView(context);
 			messageView.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -605,7 +614,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			new AlertDialog.Builder(context)
 					.setIcon(android.R.drawable.ic_dialog_alert)
 					.setCancelable(true)
-					.setTitle(intent.getExtras().getString(AppConstants.TITLE))
+					.setTitle(title)
 					.setView(messageView)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
@@ -621,6 +630,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					}).create().show();
 		}
 	};
+
+
 
 	private final BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
 		@Override

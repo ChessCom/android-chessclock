@@ -56,4 +56,11 @@ public class StaticData {
 //	public static final int B_RED_ID 		= 7;
 //	public static final int B_TAN_ID 		= 8;
 
+	/* User types */
+	public static final int BASIC_USER = 0;
+	public static final int GOLD_USER = 1;
+	public static final int PLATINUM_USER = 2;
+	public static final int DIAMOND_USER = 3;
+
+
 }

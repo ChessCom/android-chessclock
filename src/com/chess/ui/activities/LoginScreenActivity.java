@@ -185,6 +185,9 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_ACCOUNT)) {
 				showToast(R.string.no_chess_account_signup_please);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
+			} else if(returnedObj.contains(RestHelper.R_ERROR)){
+				// Error+<error_message>
+				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 		}
 	}

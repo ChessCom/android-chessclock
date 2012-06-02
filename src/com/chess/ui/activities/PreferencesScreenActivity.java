@@ -15,7 +15,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.adapters.SelectionAdapter2;
+import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
@@ -127,12 +127,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
 
 		//spinners
-		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));
+		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
 		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
 		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 
-		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
+		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
 		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
 
 		int piecesPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_PIECES_SET, 0);

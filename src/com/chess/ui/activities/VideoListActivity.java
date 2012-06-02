@@ -15,7 +15,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.model.VideoItem;
-import com.chess.ui.adapters.VideosAdapter2;
+import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.utilities.AppUtils;
 
@@ -77,9 +77,9 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
         //set Pagination adapter params
         ArrayList<VideoItem> itemsList = new ArrayList<VideoItem>();
-        VideosAdapter2 videosAdapter2 = new VideosAdapter2(this, itemsList);
+        VideosAdapter videosAdapter = new VideosAdapter(this, itemsList);
 
-		VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(this, videosAdapter2, videosListItemUpdateListener, loadItem);
+		VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(this, videosAdapter, videosListItemUpdateListener, loadItem);
 
         listView.setAdapter(paginationAdapter);
     }
