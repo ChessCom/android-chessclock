@@ -12,13 +12,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Chat;
 import com.chess.live.client.ChatMessage;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
-import com.chess.ui.core.IntentConstants;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

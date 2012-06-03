@@ -21,10 +21,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
 import com.chess.backend.WebService;
 import com.chess.backend.entity.SoundPlayer;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.*;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
@@ -163,7 +160,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			preferencesEditor.commit();
 		}
 		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
-		if (preferences.getLong(AppConstants.START_DAY, 0) == 0 || !DateUtils.isToday(startDay)) {
+		if (startDay == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
 

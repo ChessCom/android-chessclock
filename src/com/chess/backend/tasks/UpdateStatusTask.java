@@ -6,10 +6,10 @@ import android.os.AsyncTask;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.Web;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.OnlineScreenActivity;
-import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.AppUtils;
 
 /**

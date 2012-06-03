@@ -15,10 +15,10 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 
