@@ -40,6 +40,10 @@ public class NetworkChangeService extends Service {
 				return;
 			}
 
+//			if(!DataHolder.getInstance().isLiveChess()) {
+//				return;
+//			}
+
 			LccHolder lccHolder = mainApp.getLccHolder();
 
 			/*boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
@@ -65,7 +69,7 @@ public class NetworkChangeService extends Service {
 					if (lccHolder.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHolder.getNetworkTypeName())) {
 						lccHolder.logout();
 						//mainApp.setNetworkChangedNotification(true);
-						lccHolder.getAndroid().getMainApp().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
+						lccHolder.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
 					} else {
 						lccHolder.setNetworkTypeName(networkInfo[i].getTypeName());
 					}

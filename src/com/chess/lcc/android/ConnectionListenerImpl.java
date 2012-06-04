@@ -21,7 +21,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 
 	public void onOtherClientEntered(User user) {
 		Log.d("CONNECTION", "Another client entered: user=" + user.getUsername());
-		lccHolder.getAndroid().processOtherClientEntered();
+		lccHolder.getAndroidStuff().processOtherClientEntered();
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
@@ -39,13 +39,13 @@ public class ConnectionListenerImpl implements ConnectionListener {
 
 		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
 
-		//lccHolder.getAndroid().sendConnectionBroadcastIntent(true, 0);
-		/*lccHolder.getAndroid().getSharedDataEditor().putString("premium_status", StaticData.SYMBOL_EMPTY + user.getMembershipLevel());
-			lccHolder.getAndroid().getSharedDataEditor().commit();*/
-		lccHolder.getAndroid().closeLoggingInIndicator();
+		//lccHolder.getAndroidStuff().sendConnectionBroadcastIntent(true, 0);
+		/*lccHolder.getAndroidStuff().getSharedDataEditor().putString("premium_status", StaticData.SYMBOL_EMPTY + user.getMembershipLevel());
+			lccHolder.getAndroidStuff().getSharedDataEditor().commit();*/
+		lccHolder.getAndroidStuff().closeLoggingInIndicator();
 
 		final ConnectivityManager connectivityManager = (ConnectivityManager)
-				lccHolder.getAndroid().getMainApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+				lccHolder.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		lccHolder.setNetworkTypeName(activeNetworkInfo.getTypeName());
 
@@ -67,28 +67,28 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		if (details != null) {
 			lccHolder.setConnected(false);
 			lccHolder.setConnectingInProgress(false);
-			lccHolder.getAndroid().closeLoggingInIndicator();
+			lccHolder.getAndroidStuff().closeLoggingInIndicator();
 
 			switch (details) {
 				case USER_KICKED: {
-					detailsMessage = lccHolder.getAndroid().getMainApp().getString(R.string.lccFailedKicked);
+					detailsMessage = lccHolder.getContext().getString(R.string.lccFailedKicked);
 					break;
 				}
 				case ACCOUNT_FAILED: {
 					// todo: improve handling if Connection fix is not enough and cleanup
-					detailsMessage = "Account error. " + lccHolder.getAndroid().getMainApp().getString(R.string.lccFailedUnavailable);
+					detailsMessage = "Account error. " + lccHolder.getContext().getString(R.string.lccFailedUnavailable);
 					break;
 				}
 				case SERVER_STOPPED: {
 					// todo: improve handling if Connection fix is not enough and cleanup
-					detailsMessage = "Server stopped. " + lccHolder.getAndroid().getMainApp().getString(R.string.lccFailedUnavailable);
+					detailsMessage = "Server stopped. " + lccHolder.getContext().getString(R.string.lccFailedUnavailable);
 					break;
 				}
 				default: {
 					detailsMessage = message;
 				}
 			}
-			lccHolder.getAndroid().informAndExit(StaticData.SYMBOL_EMPTY, detailsMessage);
+			lccHolder.getAndroidStuff().informAndExit(StaticData.SYMBOL_EMPTY, detailsMessage);
 		} else {
 			Log.d("CONNECTION", "User connection failure: IGNORING");
 		}
@@ -100,8 +100,8 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		Log.d("CONNECTION", "Connection Lost");
 		lccHolder.setConnected(false);
 		lccHolder.setConnectingInProgress(true);
-		lccHolder.getAndroid().showReconnectingIndicator();
-		lccHolder.getAndroid().closeLoggingInIndicator();
+		lccHolder.getAndroidStuff().showReconnectingIndicator();
+		lccHolder.getAndroidStuff().closeLoggingInIndicator();
 	}
 
 	@Override
@@ -120,8 +120,8 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		/*lccHolder.getClient()
 			  .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
 		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
-		lccHolder.getAndroid().closeReconnectingIndicator();
-		lccHolder.getAndroid().closeLoggingInIndicator();
+		lccHolder.getAndroidStuff().closeReconnectingIndicator();
+		lccHolder.getAndroidStuff().closeLoggingInIndicator();
 	}
 
 	@Override
@@ -142,20 +142,20 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		/*lccHolder.getClient()
 			  .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
 		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
-		lccHolder.getAndroid().closeReconnectingIndicator();
-		lccHolder.getAndroid().closeLoggingInIndicator();
+		lccHolder.getAndroidStuff().closeReconnectingIndicator();
+		lccHolder.getAndroidStuff().closeLoggingInIndicator();
 	}
 
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
 		Log.d("CONNECTION",
 				"Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
 						clientProtocolVersion + ")");
-		lccHolder.getAndroid().processObsoleteProtocolVersion();
+		lccHolder.getAndroidStuff().processObsoleteProtocolVersion();
 	}
 
 	public void onKicked(User user, String reason, String message) {
 		Log.d("CONNECTION", "user kicked");
-		lccHolder.getAndroid().informAndExit(reason, "You have been kicked/banned");
+		lccHolder.getAndroidStuff().informAndExit(reason, "You have been kicked/banned");
 		lccHolder.setNetworkTypeName(null);
 	}
 

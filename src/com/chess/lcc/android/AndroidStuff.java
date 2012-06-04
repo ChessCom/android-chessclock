@@ -32,10 +32,16 @@ public class AndroidStuff {
 	private Handler clockHandler = new Handler();
 	private MyProgressDialog connectingIndicator;
 	private MyProgressDialog reconnectingIndicator;
+	private Context context;
 
 	public AndroidStuff(LccHolder lccHolder) {
 		this.lccHolder = lccHolder;
+		context = lccHolder.getContext();
 	}
+
+//	public AndroidStuff(Context context) {
+//		this.context = context;
+//	}
 
 	public MainApp getMainApp() {
 		return mainApp;
@@ -45,9 +51,9 @@ public class AndroidStuff {
 		this.mainApp = mainApp;
 	}
 
-	public Context getContext(){
-		return mainApp.getApplicationContext();
-	}
+//	public Context getContext(){
+//		return mainApp.getApplicationContext();
+//	}
 	
 	public void setCurrentProgressDialog(MyProgressDialog currentProgressDialog) {
 		this.currentProgressDialog = currentProgressDialog;
@@ -84,7 +90,7 @@ public class AndroidStuff {
 	}*/
 
 	/*public void sendConnectionBroadcastIntent(boolean result, int code, String... errorMessage) {
-		lccHolder.getAndroid().getContext().sendBroadcast(new Intent(WebService.BROADCAST_ACTION)
+		lccHolder.getAndroidStuff().getContext().sendBroadcast(new Intent(WebService.BROADCAST_ACTION)
 				.putExtra(AppConstants.REPEATABLE_TASK, false)
 				.putExtra(AppConstants.CALLBACK_CODE, code)
 				.putExtra(AppConstants.REQUEST_RESULT,
@@ -94,7 +100,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getMainApp().sendBroadcast(
+		context.sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.OBJECT, object)
@@ -106,7 +112,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getMainApp().sendBroadcast(
+		context.sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.TITLE, title)
@@ -119,7 +125,7 @@ public class AndroidStuff {
 
 	public void sendBroadcastIntent(int code, String broadcastAction) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getMainApp().sendBroadcast(
+		context.sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 		);
@@ -139,16 +145,16 @@ public class AndroidStuff {
 	public void processMove(long gameId, int moveIndex) {
 //		final GameItem gameData = new GameItem(lccHolder.getGameData(gameId.toString(), moveIndex), true);
 		final GameItem gameData = new GameItem(lccHolder.getGameData(gameId, moveIndex), true);
-		lccHolder.getAndroid().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
+		sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
 	}
 
 	public void processDrawOffered(String offererUsername) {
-		lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, "DRAW OFFER",
+		sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, "DRAW OFFER",
 				offererUsername + " has offered a draw");
 	}
 
 	public void processGameEnd(String message) {
-		lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, "GAME OVER", message);
+		sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, "GAME OVER", message);
 	}
 
 	public void setConnectingIndicator(MyProgressDialog connectingIndicator) {
@@ -169,7 +175,7 @@ public class AndroidStuff {
 
 	public void manageProgressDialog(String broadcastAction, boolean enable, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getMainApp().sendBroadcast(
+		context.sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR, enable)
 						.putExtra(AppConstants.MESSAGE, message)
@@ -203,7 +209,7 @@ public class AndroidStuff {
 
 	public void informAndExit(String broadcastAction, String title, String message) {
 		LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		lccHolder.getAndroid().getMainApp().sendBroadcast(
+		context.sendBroadcast(
 				new Intent(broadcastAction)
 						.putExtra(AppConstants.TITLE, title)
 						.putExtra(AppConstants.MESSAGE, message)
@@ -211,7 +217,7 @@ public class AndroidStuff {
 	}
 
 	public void processObsoleteProtocolVersion() {
-		lccHolder.getAndroid().getMainApp().sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
+		context.sendBroadcast(new Intent(IntentConstants.FILTER_PROTOCOL_VERSION));
 	}
 
 	/*public void startSigninActivity()
@@ -227,7 +233,7 @@ public class AndroidStuff {
 	public void runSendChallengeTask(MyProgressDialog PD, Challenge challenge) {
 		//this.CODE = CODE;
 		//this.progressDialog = progressDialog;
-		lccHolder.getAndroid().setCurrentProgressDialog(PD);
+		lccHolder.getAndroidStuff().setCurrentProgressDialog(PD);
 		new LiveSendChallengeTask().execute(challenge);
 	}
 

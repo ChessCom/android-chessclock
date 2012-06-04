@@ -302,7 +302,7 @@ public class MainApp extends Application {
 	public LccHolder getLccHolder() {
 		if (lccHolder == null) {
 			lccHolder = LccHolder.getInstance(getApplicationContext());
-			lccHolder.getAndroid().setMainApp(this);
+			lccHolder.getAndroidStuff().setMainApp(this);
 		}
 
 		return lccHolder;

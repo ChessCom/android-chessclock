@@ -50,13 +50,8 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 	protected void onResume() {
 		super.onResume();
 
-		if (strength != null && mainApp != null && preferences != null) {
-			strength.post(new Runnable() {
-				@Override
-				public void run() {
-					strength.setSelection(preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
-				}
-			});
+		if (strength != null /*&& mainApp != null*/ && preferences != null) {
+			strength.setSelection(AppData.getCompStrength(this));
 
 			if (!preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
 				findViewById(R.id.load).setVisibility(View.VISIBLE);

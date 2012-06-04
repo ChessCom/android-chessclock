@@ -49,8 +49,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
-		if (MopubHelper.isShowAds(mainApp)) {
-			moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+
+		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+		if (MopubHelper.isShowAds(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
 		}
 

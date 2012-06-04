@@ -77,7 +77,7 @@ public class LccChallengeListener implements ChallengeListener {
 			return;
 		}
 
-		//lccHolder.getAndroid().sendBroadcastIntent(true, 1);
+		//lccHolder.getAndroidStuff().sendBroadcastIntent(true, 1);
 
 		/*User challenger = challenge.getFrom();
 			User receiver = lccHolder.getUser();
@@ -207,7 +207,7 @@ public class LccChallengeListener implements ChallengeListener {
 
 	private void showWarning(String warning) {
 		if (warning != null && !warning.equals(StaticData.SYMBOL_EMPTY)) {
-			lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.FILTER_INFO, "WARNING", warning);
+			lccHolder.getAndroidStuff().sendBroadcastMessageIntent(0, IntentConstants.FILTER_INFO, "WARNING", warning);
 		}
 	}
 

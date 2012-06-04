@@ -83,7 +83,7 @@ public class ChessClock {
 	}
 
 	public void paint() {
-		final GameBaseActivity activity = lccHolder.getAndroid().getGameActivity();
+		final GameBaseActivity activity = lccHolder.getAndroidStuff().getGameActivity();
 		if (activity == null /*|| activity.getWhiteClockView() == null || activity.getBlackClockView() == null*/) {
 			return;
 		}
@@ -160,7 +160,7 @@ public class ChessClock {
 				return;
 			}
 			//long time = start + (((minutes * 60) + seconds) * 1000);
-			lccHolder.getAndroid().getClockHandler().postDelayed(this, 100);
+			lccHolder.getAndroidStuff().getClockHandler().postDelayed(this, 100);
 		}
 	};
 
@@ -168,8 +168,8 @@ public class ChessClock {
 		/*if(mStartTime == 0L)
 			{*/
 		//mStartTime = System.currentTimeMillis();
-		/*lccHolder.getAndroid().getClockHandler().removeCallbacks(mUpdateTimeTask);
-			lccHolder.getAndroid().getClockHandler().postDelayed(mUpdateTimeTask, 0);*/
+		/*lccHolder.getAndroidStuff().getClockHandler().removeCallbacks(mUpdateTimeTask);
+			lccHolder.getAndroidStuff().getClockHandler().postDelayed(mUpdateTimeTask, 0);*/
 		myTimer = new java.util.Timer();
 		myTimer.schedule(new TimerTask() {
 			@Override
@@ -191,7 +191,7 @@ public class ChessClock {
 	}
 
 	private void stopTimer() {
-		//lccHolder.getAndroid().getClockHandler().removeCallbacks(mUpdateTimeTask);
+		//lccHolder.getAndroidStuff().getClockHandler().removeCallbacks(mUpdateTimeTask);
 		myTimer.cancel();
 	}
 }

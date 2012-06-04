@@ -135,7 +135,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
         if (mainApp.isLiveChess() && mainApp.getGameId() > 0 && lccHolder.getGame(mainApp.getGameId()) != null) {
             game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
                     lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
-            lccHolder.getAndroid().setGameActivity(this);
+            lccHolder.getAndroidStuff().setGameActivity(this);
             if (lccHolder.isActivityPausedMode()) {
                 executePausedActivityGameEvents();
                 lccHolder.setActivityPausedMode(false);
@@ -155,7 +155,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
 			Game game = lccHolder.getGame(mainApp.getGameId());
 			LccHolder.LOG.info(AppConstants.REQUEST_DRAW + game);
-			lccHolder.getAndroid().runMakeDrawTask(game);
+			lccHolder.getAndroidStuff().runMakeDrawTask(game);
 		}
 	}
 
@@ -167,13 +167,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
 				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
 				LccHolder.LOG.info(AppConstants.RESIGN_GAME + game);
-				lccHolder.getAndroid().runMakeResignTask(game);
+				lccHolder.getAndroidStuff().runMakeResignTask(game);
 			} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
 				LccHolder.LOG.info(AppConstants.LCCLOG_ABORT_GAME + game);
-				lccHolder.getAndroid().runAbortGameTask(game);
+				lccHolder.getAndroidStuff().runAbortGameTask(game);
 			} else {
 				LccHolder.LOG.info(AppConstants.LCCLOG_RESIGN_GAME + game);
-				lccHolder.getAndroid().runMakeResignTask(game);
+				lccHolder.getAndroidStuff().runMakeResignTask(game);
 			}
 			finish();
 		}
@@ -185,6 +185,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		if (mainApp.isLiveChess()) {
 			update(CALLBACK_GAME_STARTED);
 		}
+		
+//		if(DataHolder.getInstance().isLiveChess()) {
+//			update(CALLBACK_GAME_STARTED);
+//		}
 	}
 
 	@Override
@@ -532,7 +536,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 			backToHomeActivity();
 		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
-			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
+			lccHolder.getAndroidStuff().runAcceptChallengeTask(currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);
 		}
 		fragment.getDialog().dismiss();
@@ -584,8 +588,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-//			chatPanel.setVisibility(View.VISIBLE);
 			gamePanelView.haveNewMessage(true);
 		}
 	};

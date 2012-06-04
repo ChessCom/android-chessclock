@@ -146,7 +146,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 					lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig, minRating, maxRating);
 			if (appService != null) {
 				FlurryAgent.onEvent("Challenge Created", null);
-				lccHolder.getAndroid().runSendChallengeTask(
+				lccHolder.getAndroidStuff().runSendChallengeTask(
 						//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
 						null,
 						challenge

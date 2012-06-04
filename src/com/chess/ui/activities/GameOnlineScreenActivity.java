@@ -601,7 +601,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				if (MopubHelper.isShowAds(mainApp)) {
+				if (MopubHelper.isShowAds(getContext())) {
 					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
 							.putExtra(AppConstants.MESSAGE, "GAME OVER")
 							.putExtra(AppConstants.FINISHABLE, true));

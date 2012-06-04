@@ -134,7 +134,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 			if (appService != null) {
 				FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
-				lccHolder.getAndroid().runSendChallengeTask(null, challenge);
+				lccHolder.getAndroidStuff().runSendChallengeTask(null, challenge);
 
                 preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
                 preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());

@@ -131,7 +131,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			mainApp.setForceRectangleAd(false);
 		}*/
 
-		if (MopubHelper.isShowAds(mainApp)) {
+		if (MopubHelper.isShowAds(this)) {
 			MopubHelper.createRectangleAd(this);
 		}
 
@@ -264,7 +264,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected void onDestroy() {
 		// try to destroy ad here as Mopub team suggested
-		if (MopubHelper.isShowAds(mainApp)) {// TODO check
+		if (MopubHelper.isShowAds(this)) {// TODO check
 			MopubHelper.destroyRectangleAd();
 		}
 
@@ -326,7 +326,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 			updatePlayerLabels(game, newWhiteRating, newBlackRating);
 			boardView.finished = true;
 
-			if (MopubHelper.isShowAds(mainApp)) {
+			if (MopubHelper.isShowAds(context)) {
 				final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.ad_popup,
 						(ViewGroup) findViewById(R.id.layout_root));
@@ -523,7 +523,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-				//lccHolder.getAndroid().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
+				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
 				game = new GameItem(lccHolder.getGameData(gameEvent.getGameId(), gameEvent.getMoveIndex()), true);
 				update(CALLBACK_GAME_REFRESH);
 			}
@@ -538,7 +538,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 											  fullGameProcessed = true;
 											}*/
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-				lccHolder.getAndroid().processDrawOffered(gameEvent.getDrawOffererUsername());
+				lccHolder.getAndroidStuff().processDrawOffered(gameEvent.getDrawOffererUsername());
 			}
 
 			gameEvent = lccHolder.getPausedActivityGameEvents().get(GameEvent.Event.EndOfGame);
@@ -550,7 +550,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 											  fullGameProcessed = true;
 											}*/
 				lccHolder.getPausedActivityGameEvents().remove(gameEvent);
-				lccHolder.getAndroid().processGameEnd(gameEvent.getGameEndedMessage());
+				lccHolder.getAndroidStuff().processGameEnd(gameEvent.getGameEndedMessage());
 			}
 		}
 	}
@@ -558,7 +558,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
-			if (!MopubHelper.isShowAds(mainApp)) {
+			if (!MopubHelper.isShowAds(context)) {
 				return;
 			}
 
@@ -588,7 +588,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 	};
 
 	protected void showGameEndPopup(final View layout, final String message) {
-		if (!MopubHelper.isShowAds(mainApp)) {
+		if (!MopubHelper.isShowAds(this)) {
 			return;
 		}
 

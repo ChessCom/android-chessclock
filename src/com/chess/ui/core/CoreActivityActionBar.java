@@ -53,7 +53,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected final static int ERROR_SERVER_RESPONSE = -2;
 	private static final String INFO_MSG_TAG = "info message";
 
-
+	/**
+	 * Use context instead
+	 */
+//	@Deprecated
 	protected MainApp mainApp;
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
@@ -245,14 +248,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 //			checkUserTokenAndStartActivity();
 //		}
 
-		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+		final MyProgressDialog reconnectingIndicator = lccHolder.getAndroidStuff().getReconnectingIndicator();
 		if (!lccHolder.isConnectingInProgress() && reconnectingIndicator != null) {
 			reconnectingIndicator.dismiss();
-			lccHolder.getAndroid().setReconnectingIndicator(null);
+			lccHolder.getAndroidStuff().setReconnectingIndicator(null);
 		}
 
 		if (mainApp.isLiveChess() && !lccHolder.isConnected() && !lccHolder.isConnectingInProgress()) {
-			// lccHolder.getAndroid().showConnectingIndicator();
+			// lccHolder.getAndroidStuff().showConnectingIndicator();
 			manageConnectingIndicator(true, "Loading Live Chess");
 
 			new ReconnectTask().execute();
@@ -299,7 +302,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	private void registerReceivers(){
-		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
+		registerReceiver(receiver, new IntentFilter(IntentConstants.BROADCAST_ACTION));
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
 		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
@@ -445,12 +448,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							mainApp.getLccHolder().getAndroid().runMakeDrawTask(game);
+							mainApp.getLccHolder().getAndroidStuff().runMakeDrawTask(game);
 						}
 					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int whichButton) {
-							lccHolder.getAndroid().runRejectDrawTask(game);
+							lccHolder.getAndroidStuff().runRejectDrawTask(game);
 						}
 					})
 							/*
@@ -467,7 +470,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialogInterface) {
-					lccHolder.getAndroid().runRejectDrawTask(game);
+					lccHolder.getAndroidStuff().runRejectDrawTask(game);
 				}
 			});
 			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -481,12 +484,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			if (mainApp.isLiveChess()) {
 				LccHolder.LOG.info(AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction()
 						+ ", enable=" + intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR));
-				MyProgressDialog reconnectingIndicator = lccHolder.getAndroid().getReconnectingIndicator();
+				MyProgressDialog reconnectingIndicator = lccHolder.getAndroidStuff().getReconnectingIndicator();
 				boolean enable = intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR);
 
 				if (reconnectingIndicator != null) {
 					reconnectingIndicator.dismiss();
-					lccHolder.getAndroid().setReconnectingIndicator(null);
+					lccHolder.getAndroidStuff().setReconnectingIndicator(null);
 				}
 				if (enable) {
 					/*if (MobclixHelper.isShowAds(mainApp) && MobclixHelper.getBannerAdview(mainApp) != null
@@ -510,7 +513,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 					try {
 						if(!isFinishing()) // TODO check
 							reconnectingIndicator.show();
-						lccHolder.getAndroid().setReconnectingIndicator(reconnectingIndicator);
+						lccHolder.getAndroidStuff().setReconnectingIndicator(reconnectingIndicator);
 					} catch (Exception e) {
 						lccHolder.logout();
 						intent = new Intent(CoreActivityActionBar.this, HomeScreenActivity.class);
@@ -650,10 +653,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	private void manageConnectingIndicator(boolean enable, String message) {
 		if (mainApp.isLiveChess()) {
-			MyProgressDialog connectingIndicator = lccHolder.getAndroid().getConnectingIndicator();
+			MyProgressDialog connectingIndicator = lccHolder.getAndroidStuff().getConnectingIndicator();
 			if (connectingIndicator != null) {
 				connectingIndicator.dismiss();
-				lccHolder.getAndroid().setConnectingIndicator(null);
+				lccHolder.getAndroidStuff().setConnectingIndicator(null);
 				lccHolder.updateConnectionState();
 			} else if (enable) {
 				connectingIndicator = new MyProgressDialog(this);
@@ -671,7 +674,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				connectingIndicator.setCancelable(true);
 				connectingIndicator.setIndeterminate(true);
 				connectingIndicator.show();
-				lccHolder.getAndroid().setConnectingIndicator(connectingIndicator);
+				lccHolder.getAndroidStuff().setConnectingIndicator(connectingIndicator);
 			}
 		}
 	}

@@ -79,7 +79,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	protected void onResume() {
 		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
 
-		if (MopubHelper.isShowAds(mainApp)) {
+		if (MopubHelper.isShowAds(this)) {
 			showFullScreenAd();
 		}
 
@@ -128,7 +128,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
 		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
-			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
+			lccHolder.getAndroidStuff().runAcceptChallengeTask(currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);
 		}
 		fragment.getDialog().dismiss();
@@ -288,7 +288,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	private void showFullScreenAd() {
 		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
-				&& MopubHelper.isShowAds(mainApp)) {
+				&& MopubHelper.isShowAds(this)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
 			// TODO: add support for tablet ad units

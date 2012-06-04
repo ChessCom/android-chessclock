@@ -21,4 +21,7 @@ public class IntentConstants {
 	public static final String ACTION_GAME_END = "com.chess.lcc.android-game-end";
 	public static final String ACTION_GAME_INFO = "com.chess.lcc.android-game-info";
 	public static final String ACTION_GAME_CHAT_MSG = "com.chess.lcc.android-game-chat-message";
+
+	public static final String BROADCAST_ACTION = "GetServerResponse";
+
 }

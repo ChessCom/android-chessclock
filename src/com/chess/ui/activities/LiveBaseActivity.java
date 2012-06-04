@@ -58,7 +58,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 		} else if(fragment.getTag().contains(CHALLENGE_TAG)) { // Challenge accepted!
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.declineAllChallenges(currentChallenge);
-			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
+			lccHolder.getAndroidStuff().runAcceptChallengeTask(currentChallenge);
 		}
 
 	}

@@ -34,8 +34,9 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
-		if (MopubHelper.isShowAds(mainApp)) {
-			moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+
+		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+		if (MopubHelper.isShowAds(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
 		}
 
@@ -135,7 +136,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 			if (pos == 0) {
 				final Challenge challenge = lccHolder.getSeek(gameListElement.getGameId());
 				LccHolder.LOG.info("Cancel my seek: " + challenge);
-				lccHolder.getAndroid().runCancelChallengeTask(challenge);
+				lccHolder.getAndroidStuff().runCancelChallengeTask(challenge);
 				lccHolder.removeSeek(gameListElement.getGameId());
 				update(4);
 			} else if (pos == 1) {

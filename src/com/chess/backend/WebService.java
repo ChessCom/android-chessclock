@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.utilities.MyProgressDialog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -23,7 +24,6 @@ public class WebService extends Service {
 	private Timer repeatableTimer = null;
 	private int code = 0;
 	private MyProgressDialog progressDialog;
-	public static final String BROADCAST_ACTION = "GetServerResponse";
 
 	public void onCreate() {
 	}
@@ -67,7 +67,7 @@ public class WebService extends Service {
 		repeatableTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				sendBroadcast(new Intent(BROADCAST_ACTION)
+				sendBroadcast(new Intent(IntentConstants.BROADCAST_ACTION)
 						.putExtra(AppConstants.REPEATABLE_TASK, true)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(query, "GET", null, null))
@@ -91,7 +91,7 @@ public class WebService extends Service {
 
 			}
 			try {
-				sendBroadcast(new Intent(BROADCAST_ACTION)
+				sendBroadcast(new Intent(IntentConstants.BROADCAST_ACTION)
 						.putExtra(AppConstants.REPEATABLE_TASK, false)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.REQUEST_RESULT, Web.Request(options[0], options[1], null,
@@ -111,7 +111,7 @@ public class WebService extends Service {
 	  	//this.code = code;
 		//this.progressDialog = progressDialog;
     this.lccHolder = lccHolder;
-    //lccHolder.getAndroid().setCurrentProgressDialog(progressDialog);
+    //lccHolder.getAndroidStuff().setCurrentProgressDialog(progressDialog);
 	new ChesscomConnectionTask().execute(credentials);
   }
 
@@ -138,7 +138,7 @@ public class WebService extends Service {
 		repeatableTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				sendBroadcast(new Intent(BROADCAST_ACTION)
+				sendBroadcast(new Intent(IntentConstants.BROADCAST_ACTION)
 						.putExtra(AppConstants.REPEATABLE_TASK, true)
 						.putExtra(AppConstants.CALLBACK_CODE, code)
 						.putExtra(AppConstants.REQUEST_RESULT, RestHelper.R_SUCCESS)

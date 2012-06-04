@@ -63,7 +63,7 @@ public class LccHolder {
 //	 */
 //	@Deprecated
 	public static final Logger LOG = Logger.getLogger(LccHolder.class);
-	private AndroidStuff android = new AndroidStuff(this);
+	private AndroidStuff androidStuff;
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 
@@ -100,6 +100,7 @@ public class LccHolder {
 //	public LccHolder(InputStream keyStoreInputStream, String versionName) {
 	public LccHolder(Context context) throws IOException, PackageManager.NameNotFoundException {
 		this.context = context;
+		androidStuff = new AndroidStuff(this);
 		String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 
 		InputStream	keyStoreInputStream = context.getAssets().open("chesscom.pkcs12");
@@ -196,13 +197,13 @@ public class LccHolder {
 		return instance;
 	}
 
-	public AndroidStuff getAndroid() {
-		return android;
+	public AndroidStuff getAndroidStuff() {
+		return androidStuff;
 	}
 
 	public void clearChallenges() {
 		challenges.clear();
-		android.updateChallengesList();
+		androidStuff.updateChallengesList();
 	}
 
 //	public Challenge getChallenge(long challengeId) {
@@ -307,18 +308,18 @@ public class LccHolder {
 
 	public void putChallenge(Long challengeId, Challenge lccChallenge) {
 		challenges.put(challengeId, lccChallenge);
-		android.updateChallengesList();
+		androidStuff.updateChallengesList();
 	}
 
 	public void removeChallenge(long challengeId) {
 		challenges.remove(challengeId);
 		ownChallenges.remove(challengeId);
-		android.updateChallengesList();
+		androidStuff.updateChallengesList();
 	}
 
 	public void putSeek(Challenge challenge) {
 		seeks.put(challenge.getId(), challenge);
-		android.updateChallengesList();
+		androidStuff.updateChallengesList();
 	}
 
 	public void setFriends(Collection<? extends User> friends) {
@@ -378,7 +379,7 @@ public class LccHolder {
 
 	public void clearSeeks() {
 		seeks.clear();
-		android.updateChallengesList();
+		androidStuff.updateChallengesList();
 	}
 
 	/*public void removeGame(Long id)
@@ -578,7 +579,7 @@ public class LccHolder {
 				} catch (IllegalArgumentException e) {
 					Log.d("LccHolder", "Illegal move: " + move);
 					/*e.printStackTrace();
-					Toast.makeText(android.getContext(), "Illegal move", Toast.LENGTH_SHORT).show();*/
+					Toast.makeText(androidStuff.getContext(), "Illegal move", Toast.LENGTH_SHORT).show();*/
 					// todo: still helps debugging that in market/user stacktraces
 					throw new IllegalArgumentException(e);
 				}
@@ -639,12 +640,12 @@ public class LccHolder {
 
 	public void logout() {
 		LOG.info("USER LOGOUT");
-		android.getMainApp().setLiveChess(false);
+		androidStuff.getMainApp().setLiveChess(false);
 		setCurrentGameId(null);
 		setUser(null);
-		android.closeLoggingInIndicator();
-		android.closeReconnectingIndicator();
-		getAndroid().runDisconnectTask();
+		androidStuff.closeLoggingInIndicator();
+		androidStuff.closeReconnectingIndicator();
+		getAndroidStuff().runDisconnectTask();
 		setConnected(false);
 		setConnectingInProgress(false);
 		clearGames();
@@ -653,7 +654,7 @@ public class LccHolder {
 		clearSeeks();
 		clearOnlineFriends();
 		setNetworkTypeName(null);
-		//SessionStore.clear(android.getContext());
+		//SessionStore.clear(androidStuff.getContext());
 	}
 
 	public boolean isConnectingInProgress() {
@@ -673,7 +674,7 @@ public class LccHolder {
 			seeks.remove(id);
 		}
 		ownChallenges.remove(id);
-		android.updateChallengesList();
+		androidStuff.updateChallengesList();
 	}
 
 	public Challenge getSeek(long gameId) {
@@ -704,11 +705,11 @@ public class LccHolder {
 		}
 		setWhiteClock(new ChessClock(this, true, time));
 		setBlackClock(new ChessClock(this, false, time));
-		final Activity activity = getAndroid().getGameActivity();
+		final Activity activity = getAndroidStuff().getGameActivity();
 		if (activity != null) {
 			activity.finish();
 		}
-		final ContextWrapper androidContext = android.getMainApp();
+		final ContextWrapper androidContext = androidStuff.getMainApp();
 
 		final Intent intent = new Intent(androidContext, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -718,7 +719,7 @@ public class LccHolder {
 		/*final Game currentGame = game;
 			if(game.getSeq() > 0)
 			{
-			  android.getUpdateBoardHandler().postDelayed(new Runnable()
+			  androidStuff.getUpdateBoardHandler().postDelayed(new Runnable()
 			  {
 				public void run()
 				{
@@ -768,7 +769,7 @@ public class LccHolder {
 			moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-			android.processMove(game.getId(), moveIndex);
+			androidStuff.processMove(game.getId(), moveIndex);
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);
 	}
@@ -904,12 +905,12 @@ public class LccHolder {
 			declinedChallenges[i] = challenge;
 		}
 
-		getAndroid().runRejectBatchChallengeTask(declinedChallenges);
+		getAndroidStuff().runRejectBatchChallengeTask(declinedChallenges);
 		challengeListener.getOuterChallengeListener().hidePopups();
 	}
 
 	public void declineCurrentChallenge(Challenge currentChallenge) {
-		getAndroid().runRejectChallengeTask(currentChallenge);
+		getAndroidStuff().runRejectChallengeTask(currentChallenge);
 		final List<Challenge> retainMe = new ArrayList<Challenge>();
 		for (Challenge challenge : challenges.values()) {
 			if(!challenge.equals(currentChallenge))

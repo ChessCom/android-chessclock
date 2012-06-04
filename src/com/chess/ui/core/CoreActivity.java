@@ -160,7 +160,7 @@ public abstract class CoreActivity extends Activity implements BoardToGameActivi
 
 
 	private void registerReceivers(){
-		registerReceiver(receiver, new IntentFilter(WebService.BROADCAST_ACTION));
+		registerReceiver(receiver, new IntentFilter(IntentConstants.BROADCAST_ACTION));
 		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
 		registerReceiver(lccReconnectingInfoReceiver, new IntentFilter(IntentConstants.FILTER_RECONNECT_INFO));
  		registerReceiver(informAndExitReceiver, new IntentFilter(IntentConstants.FILTER_EXIT_INFO));

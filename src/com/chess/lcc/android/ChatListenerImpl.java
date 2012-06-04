@@ -5,7 +5,6 @@ import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
-import com.chess.model.GameItem;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -105,8 +104,9 @@ public class ChatListenerImpl
 			return;
 		}
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroid().getMainApp().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
-			lccHolder.getAndroid().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
+			// don't need this as we send a broadcast
+//			lccHolder.getAndroidStuff().getMainApp().getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "1");
+			lccHolder.getAndroidStuff().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
 		}
 	}
 

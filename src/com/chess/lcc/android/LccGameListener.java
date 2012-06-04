@@ -87,8 +87,8 @@ public class LccGameListener implements GameListener {
 		if (oldGame != null) {
 			LOG.info("LCC: PROCESS EXTRA onFullGameReceived, game id= " + gameId);
 			// todo: do current game end?
-			if (lccHolder.getAndroid().getGameActivity() != null) {
-				lccHolder.getAndroid().getGameActivity().finish(); // todo: refactoring, finish or just reinitialize
+			if (lccHolder.getAndroidStuff().getGameActivity() != null) {
+				lccHolder.getAndroidStuff().getGameActivity().finish(); // todo: refactoring, finish or just reinitialize
 
 				//
 				lccHolder.previousFGTime = lccHolder.currentFGTime;
@@ -97,7 +97,7 @@ public class LccGameListener implements GameListener {
 				lccHolder.currentFGGameId = game.getId();
 				//
 
-				lccHolder.getAndroid().setGameActivity(null);
+				lccHolder.getAndroidStuff().setGameActivity(null);
 			}
 			//lccHolder.putGame(game);
 		}
@@ -215,11 +215,11 @@ public class LccGameListener implements GameListener {
 			gameEndedEvent.setEvent(GameEvent.Event.EndOfGame);
 			gameEndedEvent.setGameEndedMessage(message);
 			lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-			if (lccHolder.getAndroid().getGameActivity() == null) {
+			if (lccHolder.getAndroidStuff().getGameActivity() == null) {
 				lccHolder.processFullGame(game);
 			}
 		} else {
-			lccHolder.getAndroid().processGameEnd(message);
+			lccHolder.getAndroidStuff().processGameEnd(message);
 		}
 		lccHolder.getWhiteClock().setRunning(false);
 		lccHolder.getBlackClock().setRunning(false);
@@ -278,7 +278,7 @@ public class LccGameListener implements GameListener {
 			drawOfferedEvent.setDrawOffererUsername(offerer.getUsername());
 			lccHolder.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
 		} else {
-			lccHolder.getAndroid().processDrawOffered(offerer.getUsername());
+			lccHolder.getAndroidStuff().processDrawOffered(offerer.getUsername());
 		}
 	}
 
@@ -298,7 +298,7 @@ public class LccGameListener implements GameListener {
 						", game.id=" +
 						game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
 		if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {
-			lccHolder.getAndroid().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_INFO, "DRAW DECLINED",
+			lccHolder.getAndroidStuff().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_INFO, "DRAW DECLINED",
 					rejectorUsername + " has declined a draw");
 		}
 	}
