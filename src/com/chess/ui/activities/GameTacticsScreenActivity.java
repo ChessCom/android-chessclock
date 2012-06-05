@@ -120,14 +120,23 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 	protected void onResume() {
 		super.onResume();
 
-		if (getBoardFace().isTacticCanceled()) {
-			getBoardFace().setTacticCanceled(false);
-			showDialog(DIALOG_TACTICS_START_TACTICS);	// TODO show register confirmation dialog
-			startTacticsTimer();
-		} else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
-			startTacticsTimer();
+        if (getBoardFace().isTacticCanceled()) {
+            getBoardFace().setTacticCanceled(false);
+            showDialog(DIALOG_TACTICS_START_TACTICS);    // TODO show register confirmation dialog
+            startTacticsTimer();
+        }
+		else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
+			if (getBoardFace().getBoard().getMovesCount() == 0) {
+				getTacticsGame(StaticData.SYMBOL_EMPTY);
+			} else {
+				update(CALLBACK_REPAINT_UI);
+				getBoardFace().takeBack();
+				boardView.invalidate();
+				startTacticsTimer();
+				playLastMoveAnimation();
+			}
 		}
-	}
+    }
 
 	@Override
 	protected void onPause() {
@@ -672,10 +681,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
-				} else if (tmp.length < 2 || tmp[1].trim().equals("")) {
-					// TODO: remove after debug
-					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
-					//return;
+				}
+				else if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)){
+					return;
 				}
 
 				TacticResultItem result = new TacticResultItem(tmp[1].split(":"));
@@ -689,16 +697,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				break;
 			}
 			case CALLBACK_TACTICS_CORRECT: {
-				Log.d("TEST", "response for wrong tactics = "+ response);
+				Log.d("TEST", "response for correct tactics = "+ response);
 
 				String[] tmp = response.split("[|]");
 				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
-				} else if (tmp.length < 2 || tmp[1].trim().equals("")) {
-					// TODO: remove after debug
-					throw new RuntimeException("Tactics: response=" + response + ", userMembership=" + AppData.getUserPremiumStatus(getContext()));
-					//return;
+				}
+				else if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)){
+					return;
 				}
 
 				TacticResultItem result = new TacticResultItem(tmp[1].split(":"));
@@ -727,11 +734,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 				if (response.trim().equals("Success+||")) {
 					showDialog(DIALOG_TACTICS_LIMIT);
 					return;
-				} else if (tmp.length < 2 || tmp[2].trim().equals("")) {
-					// TODO: remove after debug
-					throw new RuntimeException("Tactics: response=" + response + ", userMembership="
-							+ AppData.getUserPremiumStatus(getContext()));
-					//return;
+				}
+                else if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)){
+					return;
 				}
 
 				mainApp.setTactic(new TacticItem(tmp[2].split(":")));
