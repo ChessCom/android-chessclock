@@ -485,15 +485,19 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
+//			MoveParser.fenParse(FEN, boardView.getBoardFace().getBoard());
+			MoveParser.fenParse(FEN, boardView.getBoardFace());
 		}
 
 		int i;
 		for (i = 0; i < boardView.getBoardFace().getMovesCount(); i++) {
 
+//			int[] moveFT = mainApp.isLiveChess() ?
+//					MoveParser.parseCoordinate(boardView.getBoardFace().getBoard(), moves[i]) :
+//					MoveParser.parse(boardView.getBoardFace().getBoard(), moves[i]);
 			int[] moveFT = mainApp.isLiveChess() ?
-					MoveParser.parseCoordinate(boardView.getBoardFace().getBoard(), moves[i]) :
-					MoveParser.parse(boardView.getBoardFace().getBoard(), moves[i]);
+					MoveParser.parseCoordinate(boardView.getBoardFace(), moves[i]) :
+					MoveParser.parse(boardView.getBoardFace(), moves[i]);
 			if (moveFT.length == 4) {
 				Move move;
 				if (moveFT[3] == 2)

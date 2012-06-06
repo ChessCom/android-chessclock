@@ -831,7 +831,8 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
     }
 
 	public void updateMoves(String newMove) {
-		int[] moveFT = MoveParser.parse(getBoardFace().getBoard(), newMove);
+//		int[] moveFT = MoveParser.parse(getBoardFace().getBoard(), newMove);
+		int[] moveFT = MoveParser.parse(getBoardFace(), newMove);
 		if (moveFT.length == 4) {
 			Move move;
 			if (moveFT[3] == 2)

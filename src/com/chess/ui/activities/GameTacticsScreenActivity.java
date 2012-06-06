@@ -124,9 +124,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
             getBoardFace().setTacticCanceled(false);
             showDialog(DIALOG_TACTICS_START_TACTICS);    // TODO show register confirmation dialog
             startTacticsTimer();
-        }
-		else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
-			if (getBoardFace().getBoard().getMovesCount() == 0) {
+        } else if (mainApp.getTactic() != null && mainApp.getTactic().values.get(AppConstants.STOP).equals("0")) {
+			if (getBoardFace().getMovesCount() == 0) {
 				getTacticsGame(StaticData.SYMBOL_EMPTY);
 			} else {
 				update(CALLBACK_REPAINT_UI);
