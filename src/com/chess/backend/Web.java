@@ -71,10 +71,10 @@ public class Web {
 
 		try {
 			// test server login support
-			base.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
+			//base.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
 
 			response = httpclient.execute(base);
-			if (response != null){
+			if (response != null) {
 				responseBody = EntityUtils.toString(response.getEntity());
 				Log.d(TAG,"WebRequest SERVER RESPONSE: " + responseBody);
 			}

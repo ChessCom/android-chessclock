@@ -60,6 +60,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.boardviewlive);
+
+		if (savedInstanceState == null) {
+			mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
+		}
+
 		init();
 		widgetsInit();
 		onPostCreate();
@@ -79,7 +84,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void init() {
 		super.init();
-		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -103,7 +107,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		sendMoveUpdateDialog.setMessage(getString(R.string.sendinggameinfo));
 		sendMoveUpdateDialog.setIndeterminate(true);
 		sendMoveUpdateDialog.setCancelable(false);
-
 	}
 
 	@Override
