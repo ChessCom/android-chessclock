@@ -3,7 +3,9 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -338,7 +340,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			if (GameOnlineScreenActivity.this.isFinishing())
+			if (isFinishing())
 				return;
 
 			if (show) {

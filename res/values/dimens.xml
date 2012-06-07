@@ -130,8 +130,6 @@
 	<!--Popup-->
 	<dimen name="ad_popup_width">300dip</dimen>
 	<dimen name="ad_popup_height">250dip</dimen>
-	<dimen name="popup_dialog_width">300dip</dimen>
-	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 
 	<!--Pending load-->
 	<dimen name="pending_progress_bar_size">40dip</dimen>

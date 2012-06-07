@@ -302,22 +302,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
 
 				new GetStringObjTask(acceptDrawUpdateListener).execute(loadItem);
-
-
-//				String result = Web.Request("http://www." + LccHolder.HOST
-//						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//						+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-//						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
-//						+ AppConstants.COMMAND_PARAMETER + Draw + AppConstants.TIMESTAMP_PARAMETER
-//						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
-
-//				if (result.contains(RestHelper.R_SUCCESS)) {
-//					showToast(R.string.accepted);   // TODO
-//					update(1);
-//				} else if (result.contains("Error+")) {
-//					mainApp.showDialog(getContext(), AppConstants.ERROR, result.split("[+]")[1]);
-//				}
-
 			} else if (pos == 2) {
 
 				LoadItem loadItem = new LoadItem();
@@ -328,20 +312,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
 
 				new GetStringObjTask(acceptDrawUpdateListener).execute(loadItem);
-
-//				String result = Web.Request("http://www." + LccHolder.HOST
-//						+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-//						+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-//						+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
-//						+ AppConstants.COMMAND_RESIGN__AND_TIMESTAMP_PARAMETER
-//						+ gameListElement.values.get(GameListItem.TIMESTAMP), "GET", null, null);
-//
-//				if (result.contains(RestHelper.R_SUCCESS)) {
-//					update(1);
-//				} else if (result.contains("Error+")) {
-//					mainApp.showDialog(getContext(), AppConstants.ERROR, result.split("[+]")[1]);
-//				}
-
 			}
 		}
 	};
