@@ -464,15 +464,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		restoreLastConfig();
 	}
 
-//	Here is how to reproduce it :
-//			- When it's your turn, move the piece, but do not submit it yet.
-//			- The submit button is displayed, but click on the analyze board icon.
-//	- The analyze board displays and the submit button is still displayed.
-//	- Make a few moves in analyze mode. Make a last move with your pieces in analyze mode,
-// which would also be a legal move in the initial position.
-//			- Click submit => I expected that the first move of the analyzed line would be submitted.
-// But the last move is submitted (and accepted because it is legal in the initial position) !!
-
 	protected void restoreLastConfig() {
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
