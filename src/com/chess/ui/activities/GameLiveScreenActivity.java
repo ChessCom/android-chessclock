@@ -463,6 +463,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
+	public void switch2Analysis(boolean isAnalysis) {
+		super.switch2Analysis(isAnalysis);
+		showSubmitButtonsLay(false);
+	}
+
+	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
 		getBoardFace().setSubmit(show);
