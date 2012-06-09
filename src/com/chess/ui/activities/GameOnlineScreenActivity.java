@@ -507,12 +507,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void switch2Analysis(boolean isAnalysis) {
-		super.switch2Analysis(isAnalysis);
-		showSubmitButtonsLay(false);
-	}
-
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;

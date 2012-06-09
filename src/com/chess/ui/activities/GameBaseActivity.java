@@ -444,6 +444,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
+		showSubmitButtonsLay(false);
 		if (isAnalysis) {
 			analysisTxt.setVisibility(View.VISIBLE);
 			whitePlayerLabel.setVisibility(View.INVISIBLE);
