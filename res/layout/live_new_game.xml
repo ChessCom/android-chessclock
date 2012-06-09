@@ -40,19 +40,6 @@
 			android:text="@string/currentGame"
 			android:visibility="gone"/>
 
-<!--		<com.chess.RoboTextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/onlineChallenges"
-			android:paddingTop="@dimen/margin_top_beween_buttons"
-			android:paddingLeft="@dimen/default_linear_left_padding"
-			/>
-
-		<ListView
-			android:id="@+id/openChallenges"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			/>-->
 	</LinearLayout>
 
 </LinearLayout>

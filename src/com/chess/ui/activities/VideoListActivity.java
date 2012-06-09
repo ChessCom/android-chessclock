@@ -32,7 +32,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.videolist);
+        setContentView(R.layout.video_list_screen);
 
 		TextView videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
 //        boolean liveMembershipLevel = lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);

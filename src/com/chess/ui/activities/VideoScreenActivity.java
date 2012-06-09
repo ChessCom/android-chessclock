@@ -44,7 +44,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.video);
+		setContentView(R.layout.video_screen);
 //		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		init();
@@ -155,7 +155,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			FlurryAgent.onEvent("Video Played", null);
 
 			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video/*");
+			i.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video_screen/*");
 			startActivity(i);
 		} else if (view.getId() == R.id.start) {
 			int s = skills.getSelectedItemPosition();

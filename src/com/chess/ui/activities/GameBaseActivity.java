@@ -264,7 +264,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 
 	protected void onDestroy() {
 		// try to destroy ad here as Mopub team suggested
-		if (MopubHelper.isShowAds(this)) {// TODO check
+		if (MopubHelper.isShowAds(this)) {
 			MopubHelper.destroyRectangleAd();
 		}
 

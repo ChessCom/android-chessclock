@@ -317,5 +317,5 @@
 	<string name="game_drawn_by_fifty_move_rule">Game drawn \nby 50-move rule</string>
 	<string name="won_game_abandoned">won - \ngame abandoned</string>
 	<string name="game_aborted">Game aborted</string>
-
+	<string name="new_game">New Game</string>
 </resources>
