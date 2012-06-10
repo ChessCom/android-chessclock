@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,7 +51,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
+	public void onPositiveBtnClick(DialogFragment fragment) {
 		fragment.getDialog().dismiss();
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
@@ -64,7 +65,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 	}
 
 	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
+	public void onNegativeBtnClick(DialogFragment fragment) {
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {// Challenge declined!
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
 			fragment.getDialog().dismiss();

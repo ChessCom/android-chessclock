@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -578,12 +579,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
+	public void onPositiveBtnClick(DialogFragment fragment) {
 		fragment.getDialog().dismiss();
 	}
 
 	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {
+	public void onNegativeBtnClick(DialogFragment fragment) {
 		fragment.getDialog().dismiss();
 	}
 

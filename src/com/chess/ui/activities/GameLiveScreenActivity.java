@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +22,6 @@ import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 
@@ -530,7 +530,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
+	public void onPositiveBtnClick(DialogFragment fragment) {
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
 			backToHomeActivity();

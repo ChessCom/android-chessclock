@@ -79,9 +79,9 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		}
 
 		if(view.getId() == R.id.okBtn){
-			listener.onLeftBtnClick(this);
+			listener.onPositiveBtnClick(this);
 		}else if(view.getId() == R.id.cancelBtn){
-			listener.onRightBtnClick(this);
+			listener.onNegativeBtnClick(this);
 		}
 	}
 

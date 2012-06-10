@@ -262,6 +262,8 @@
 	<string name="signout_confirm">Are you sure you want to sign out from Live Chess server?</string>
 	<string name="confirm">Confirm</string>
 	<string name="you_been_challenged">You\'ve Been Challenged!</string>
+
+	<!--Game-->
 	<string name="opponent_">Opponent:</string>
 	<string name="time_">Time:</string>
 	<string name="rated">Rated</string>
@@ -318,4 +320,8 @@
 	<string name="won_game_abandoned">won - \ngame abandoned</string>
 	<string name="game_aborted">Game aborted</string>
 	<string name="new_game">New Game</string>
+
+	<!--Preferences-->
+	<string name="confirm_vacation_title">Confirm Vacation</string>
+	<string name="confirm_vacation_msg">Do you really want to go on vacation now?</string>
 </resources>

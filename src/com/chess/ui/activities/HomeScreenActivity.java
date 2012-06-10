@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -122,7 +123,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
+	public void onPositiveBtnClick(DialogFragment fragment) {
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
 			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
@@ -135,7 +136,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}
 
 	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {// Challenge declined!
+	public void onNegativeBtnClick(DialogFragment fragment) {// Challenge declined!
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
             fragment.getDialog().dismiss();
