@@ -71,16 +71,14 @@ public class ConnectionListenerImpl implements ConnectionListener {
 
 			switch (details) {
 				case USER_KICKED: {
-					detailsMessage = lccHolder.getContext().getString(R.string.lccFailedKicked);
+					detailsMessage = lccHolder.getContext().getString(R.string.lccFailedUpgrading);
 					break;
 				}
 				case ACCOUNT_FAILED: {
-					// todo: improve handling if Connection fix is not enough and cleanup
 					detailsMessage = "Account error. " + lccHolder.getContext().getString(R.string.lccFailedUnavailable);
 					break;
 				}
 				case SERVER_STOPPED: {
-					// todo: improve handling if Connection fix is not enough and cleanup
 					detailsMessage = "Server stopped. " + lccHolder.getContext().getString(R.string.lccFailedUnavailable);
 					break;
 				}
