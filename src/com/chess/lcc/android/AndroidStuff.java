@@ -305,7 +305,6 @@ public class AndroidStuff {
 		@Override
 		protected Void doInBackground(com.chess.live.client.Game... game) {
 			lccHolder.getClient().abortGame(game[0], StaticData.SYMBOL_EMPTY);
-			//stopSelf();
 			return null;
 		}
 	}
@@ -318,7 +317,6 @@ public class AndroidStuff {
 		@Override
 		protected Void doInBackground(Challenge... challenge) {
 			lccHolder.getClient().acceptChallenge(challenge[0], lccHolder.getChallengeListener());
-			//stopSelf();
 			return null;
 		}
 	}
@@ -331,7 +329,6 @@ public class AndroidStuff {
 		@Override
 		protected Void doInBackground(Challenge... challenge) {
 			lccHolder.getClient().rejectChallenge(challenge[0], lccHolder.getChallengeListener());
-			//stopSelf();
 			return null;
 		}
 	}

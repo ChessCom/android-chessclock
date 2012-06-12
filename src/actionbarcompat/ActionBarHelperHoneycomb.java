@@ -69,13 +69,13 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	}
 
 	@Override
-	public void hideMenuItemById(int id, boolean show) {
+	public void showMenuItemById(int id, boolean show) {
 		if(mActivity != null)
 			mActivity.invalidateOptionsMenu();
 	}
 
 	@Override
-	public void hideMenuItemById(int itemId, boolean visible, Menu menu) {
+	public void showMenuItemById(int itemId, boolean visible, Menu menu) {
 		menu.findItem(itemId).setVisible(visible);
 	}
 

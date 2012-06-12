@@ -197,7 +197,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			lccHolder.setConnectingInProgress(true);
 
 			final String password = preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-			if (password == null || password.equals(StaticData.SYMBOL_EMPTY)) {
+			if (password.equals(StaticData.SYMBOL_EMPTY)) {
 				lccHolder.getClient().connect(
 					preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY),
 					lccHolder.getConnectionListener());
@@ -338,7 +338,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public void onConnected(boolean connected) {
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, connected);
+		Log.d("TEST", "Live Screen onLccConnected, lcc connect state = "
+				+ LccHolder.getInstance(this).isConnected());
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, connected);
 	}
 
 	@Override
