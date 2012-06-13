@@ -48,7 +48,7 @@ public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
 		HttpRequestBase httpGet = new HttpGet(url);
 		try {
 			// test server login support
-			httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
+			//httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
 			HttpResponse response = httpClient.execute(httpGet);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
