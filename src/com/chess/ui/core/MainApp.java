@@ -32,6 +32,7 @@ public class MainApp extends Application {
 	private LccHolder lccHolder;
 	private boolean liveChess;
 	private boolean networkChangedNotification;
+	private boolean pendingTacticsLoad;
 
 	public boolean guest = false;
 	public boolean noInternet = false;
@@ -453,4 +454,12 @@ public class MainApp extends Application {
 //	public Intent getMembershipVideoIntent() {
 //		return getMembershipIntent("?c=androidvideos");
 //	}
+
+	public boolean isPendingTacticsLoad() {
+		return pendingTacticsLoad;
+	}
+
+	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {
+		this.pendingTacticsLoad = pendingTacticsLoad;
+	}
 }
