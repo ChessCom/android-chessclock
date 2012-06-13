@@ -347,7 +347,7 @@ public class AndroidStuff {
 		}
 	}
 
-	
+
 	
 	public void runRejectDrawTask(Game game) {
 		new LiveRejectDrawTask().execute(game);
