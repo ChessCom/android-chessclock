@@ -301,21 +301,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements View.
 						.setPositiveButton(R.string.okay, offlineModeDialogListener)
 						.setNegativeButton(R.string.cancel, offlineModeDialogListener)
 						.create();
-			case DIALOG_DRAW_OFFER:
-				return new AlertDialog.Builder(this)
-						.setTitle(R.string.drawoffer)
-						.setMessage(getString(R.string.are_you_sure_q))
-						.setPositiveButton(getString(R.string.ok), drawOfferDialogListener)
-						.setNegativeButton(getString(R.string.cancel), drawOfferDialogListener)
-						.create();
-			case DIALOG_ABORT_OR_RESIGN:
-				return new AlertDialog.Builder(this)
-						.setTitle(R.string.abort_resign_game)
-						.setMessage(getString(R.string.are_you_sure_q))
-						.setPositiveButton(R.string.ok, abortGameDialogListener)
-						.setNegativeButton(R.string.cancel, abortGameDialogListener)
-						.create();
-
 			default:
 				break;
 		}
