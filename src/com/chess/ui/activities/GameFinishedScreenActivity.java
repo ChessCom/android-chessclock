@@ -114,10 +114,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		boardView.setBoardFace(new ChessBoard(this));
 		getBoardFace().setMode( AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
-		updateGameSate();
+		updateGameState();
 	}
 
-	private void updateGameSate() {
+	private void updateGameState() {
 		getOnlineGame(mainApp.getGameId());
 		getBoardFace().setInit(false);
 	}
