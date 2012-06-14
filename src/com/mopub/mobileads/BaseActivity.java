@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.chess.R;
 
 public abstract class BaseActivity extends Activity {
@@ -27,7 +28,7 @@ public abstract class BaseActivity extends Activity {
         
         mLayout = new RelativeLayout(this);
         final RelativeLayout.LayoutParams adViewLayout = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         adViewLayout.addRule(RelativeLayout.CENTER_IN_PARENT);
         mLayout.addView(getAdView(), adViewLayout);
         setContentView(mLayout);

@@ -161,8 +161,8 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
                 mMillennialAdView.setHorizontalScrollBarEnabled(false);
                 mMillennialAdView.setVerticalScrollBarEnabled(false);
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT);
+                        FrameLayout.LayoutParams.FILL_PARENT, 
+                        FrameLayout.LayoutParams.FILL_PARENT);
                 layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
                 mMoPubView.addView(mMillennialAdView, layoutParams);
                 

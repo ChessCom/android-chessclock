@@ -1,12 +1,11 @@
 package com.mopub.mobileads;
 
-import com.chess.backend.statics.StaticData;
 import com.mopub.mobileads.MraidView.PlacementType;
 import com.mopub.mobileads.MraidView.ViewState;
 
 abstract class MraidProperty {
     private String sanitize(String str) {
-        return (str != null) ? str.replaceAll("[^a-zA-Z0-9_,:\\s\\{\\}\\\'\\\"]", StaticData.SYMBOL_EMPTY) : StaticData.SYMBOL_EMPTY;
+        return (str != null) ? str.replaceAll("[^a-zA-Z0-9_,:\\s\\{\\}\\\'\\\"]", "") : "";
     }
 
     @Override

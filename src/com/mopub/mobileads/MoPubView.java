@@ -87,7 +87,7 @@ public class MoPubView extends FrameLayout {
     protected BaseAdapter mAdapter;
     
     private Context mContext;
-//    private BroadcastReceiver mScreenStateReceiver;
+    private BroadcastReceiver mScreenStateReceiver;
     private boolean mIsInForeground;
     private LocationAwareness mLocationAwareness;
     private int mLocationPrecision;
@@ -132,7 +132,7 @@ public class MoPubView extends FrameLayout {
     }
     
     private void initVersionDependentAdView(Context context) {
-        int sdkVersion = Build.VERSION.SDK_INT;
+        int sdkVersion = (new Integer(Build.VERSION.SDK)).intValue();
         if (sdkVersion < 7) {
         	mAdView = new AdView(context, this);
         } else {
@@ -177,7 +177,31 @@ public class MoPubView extends FrameLayout {
     private void registerScreenStateBroadcastReceiver() {
         if (mAdView == null) return;
         
-
+        mScreenStateReceiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                    if (mIsInForeground) {
+                        Log.d("MoPub", "Screen sleep with ad in foreground, disable refresh");
+                        if (mAdView != null) {
+                            mPreviousAutorefreshSetting = mAdView.getAutorefreshEnabled();
+                            mAdView.setAutorefreshEnabled(false);
+                        }
+                    } else {
+                        Log.d("MoPub", "Screen sleep but ad in background; " + 
+                                "refresh should already be disabled");
+                    }
+                } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                    if (mIsInForeground) {
+                        Log.d("MoPub", "Screen wake / ad in foreground, reset refresh");
+                        if (mAdView != null) {
+                            mAdView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
+                        }
+                    } else {
+                        Log.d("MoPub", "Screen wake but ad in background; don't enable refresh");
+                    }
+                }
+            }
+        };
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
         mContext.registerReceiver(mScreenStateReceiver, filter);
@@ -187,36 +211,10 @@ public class MoPubView extends FrameLayout {
         try {
             mContext.unregisterReceiver(mScreenStateReceiver);
         } catch (Exception IllegalArgumentException) {
-            Log.e("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
+            Log.d("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
         }
     }
-
-    private BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                if (mIsInForeground) {
-                    Log.d("MoPub", "Screen sleep with ad in foreground, disable refresh");
-                    if (mAdView != null) {
-                        mPreviousAutorefreshSetting = mAdView.getAutorefreshEnabled();
-                        mAdView.setAutorefreshEnabled(false);
-                    }
-                } else {
-                    Log.d("MoPub", "Screen sleep but ad in background; " +
-                            "refresh should already be disabled");
-                }
-            } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-                if (mIsInForeground) {
-                    Log.d("MoPub", "Screen wake / ad in foreground, reset refresh");
-                    if (mAdView != null) {
-                        mAdView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
-                    }
-                } else {
-                    Log.d("MoPub", "Screen wake but ad in background; don't enable refresh");
-                }
-            }
-        }
-    };
-
+    
     public void loadAd() {
         if (mAdView != null) mAdView.loadAd();
     }

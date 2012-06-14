@@ -1,5 +1,27 @@
 package com.mopub.mobileads;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.chess.R;
+
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -12,24 +34,6 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.chess.R;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MraidView extends WebView {
     private static final String LOGTAG = "MraidView";
@@ -143,15 +147,15 @@ public class MraidView extends WebView {
         String mraid = "file:/" + copyRawResourceToFilesDir(R.raw.mraid, "mraid.js");
         data = data.replace("<head>", "<head><script src='" + mraid + "'></script>");
         
-        loadDataWithBaseURL(null, data, "text/html", AppConstants.UTF_8, null);
+        loadDataWithBaseURL(null, data, "text/html", "UTF-8", null);
     }
 
     public void loadUrl(String url) {
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
         StringBuffer out = new StringBuffer();
         
         try {
+            HttpGet httpGet = new HttpGet(url);
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
     
@@ -162,6 +166,10 @@ public class MraidView extends WebView {
                     out.append(new String(b, 0, n));
                 }
             }
+        } catch (IllegalArgumentException e) {
+            Log.d("MoPub", "Mraid loadUrl failed (IllegalArgumentException): "+url);
+            notifyOnFailureListener();
+            return;
         } catch (ClientProtocolException e) {
             notifyOnFailureListener();
             return;
@@ -274,7 +282,7 @@ public class MraidView extends WebView {
     
     private boolean tryCommand(URI uri) {
         String commandType = uri.getHost();
-        List<NameValuePair> list = URLEncodedUtils.parse(uri, AppConstants.UTF_8);
+        List<NameValuePair> list = URLEncodedUtils.parse(uri, "UTF-8");
         Map<String, String> params = new HashMap<String, String>();
         for (NameValuePair pair : list) {
             params.put(pair.getName(), pair.getValue());
@@ -304,7 +312,7 @@ public class MraidView extends WebView {
         try {
             fos = new FileOutputStream(destinationFile);
         } catch (FileNotFoundException e) {
-            return StaticData.SYMBOL_EMPTY;
+            return "";
         }
         
         byte[] b = new byte[8192];
@@ -313,7 +321,7 @@ public class MraidView extends WebView {
                 fos.write(b, 0, n);
             }
         } catch (IOException e) {
-            return StaticData.SYMBOL_EMPTY;
+            return "";
         } finally {
             try { is.close(); fos.close(); } catch (IOException e) { }
         }
@@ -357,7 +365,8 @@ public class MraidView extends WebView {
         public void onPageFinished(WebView view, String url) {
             if (!mHasFiredReadyEvent) {
                 mDisplayController.initializeJavaScriptState();
-                fireChangeEventForProperty(MraidPlacementTypeProperty.createWithType(mPlacementType));
+                fireChangeEventForProperty(
+                        MraidPlacementTypeProperty.createWithType(mPlacementType));
                 fireReadyEvent();
                 if (getOnReadyListener() != null) getOnReadyListener().onReady(MraidView.this);
                 mHasFiredReadyEvent = true;

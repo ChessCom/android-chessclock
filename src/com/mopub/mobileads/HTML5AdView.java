@@ -14,6 +14,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.widget.FrameLayout;
+
 import com.chess.R;
 
 public class HTML5AdView extends AdView {
@@ -26,14 +27,14 @@ public class HTML5AdView extends AdView {
     
     static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER = 
         new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.FILL_PARENT, 
+                FrameLayout.LayoutParams.FILL_PARENT, 
                 Gravity.CENTER);
     
     public HTML5AdView(Context context, MoPubView view) {
         super(context, view);
         
-        int sdkVersion = Build.VERSION.SDK_INT;
+        int sdkVersion = (new Integer(Build.VERSION.SDK)).intValue();
         if (sdkVersion > 7) {
             setWebChromeClient(new HTML5WebChromeClient());
         }
