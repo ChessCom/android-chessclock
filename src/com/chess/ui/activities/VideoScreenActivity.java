@@ -155,7 +155,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			FlurryAgent.onEvent("Video Played", null);
 
 			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video_screen/*");
+			i.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video/*");
 			startActivity(i);
 		} else if (view.getId() == R.id.start) {
 			int s = skills.getSelectedItemPosition();
