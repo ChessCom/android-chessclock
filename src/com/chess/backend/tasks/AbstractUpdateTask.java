@@ -1,6 +1,7 @@
 package com.chess.backend.tasks;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 
@@ -38,6 +39,10 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 	@Override
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
+		if(isCancelled()) {
+			Log.d("AbstractUpdateTask", "onPostExecute -> Task was canceled, ");
+			return;
+		}
 		taskFace.showProgress(false);
 		if (result == StaticData.RESULT_OK) {
 			if (useList)

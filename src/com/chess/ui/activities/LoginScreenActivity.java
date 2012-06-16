@@ -1,9 +1,12 @@
 package com.chess.ui.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -36,7 +39,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener, DialogInterface.OnDismissListener {
 
 	private EditText usernameEdt;
 	private EditText passwordEdt;
@@ -47,6 +50,9 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
 	private ProgressDialog loginUpdateDialog;
+	private AsyncTask<LoadItem, Void, Integer> loginTask;
+	private AsyncTask<LoadItem, Void, Integer> postDataTask;
+	private boolean dialogDismissed = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +72,15 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
 		SessionStore.restore(facebook, this);
 
+		SessionEvents.dropAuthListeners();
 		SessionEvents.addAuthListener(new SampleAuthListener());
+		SessionEvents.dropLogoutListeners();
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
 		facebookLoginButton.init(this, facebook);
 
 		loginUpdateListener = new LoginUpdateListener();
 
-		loginUpdateDialog = new ProgressDialog(this);
-		loginUpdateDialog.setMessage(getString(R.string.signingin));
-		loginUpdateDialog.setIndeterminate(true);
-		loginUpdateDialog.setCancelable(false);
+
 	}
 
 	private void signInUser(){
@@ -93,7 +98,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, usernameEdt.getText().toString());
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, passwordEdt.getText().toString());
 
-		new PostDataTask(loginUpdateListener).execute(loadItem);
+		postDataTask = new PostDataTask(loginUpdateListener).execute(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
@@ -118,6 +123,12 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		return false;
 	}
 
+	@Override
+	public void onDismiss(DialogInterface dialogInterface) {
+		dialogDismissed = true;
+
+	}
+
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
@@ -127,7 +138,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
 			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
 
-			new GetStringObjTask(loginUpdateListener).execute(loadItem);
+			loginTask = new GetStringObjTask(loginUpdateListener).execute(loadItem);
 
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
@@ -157,13 +168,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		@Override
 		public void showProgress(boolean show) {
-			if (LoginScreenActivity.this.isFinishing())
-				return;
-
-			if(show){
-				loginUpdateDialog.show();
-			}else
-				loginUpdateDialog.dismiss();
+			showLoginProgress(show);
 		}
 
 		@Override
@@ -190,6 +195,29 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+		}
+	}
+
+	private void showLoginProgress(boolean show){
+		if (isFinishing())
+			return;
+
+		loginUpdateDialog = new ProgressDialog(this);
+		loginUpdateDialog.setMessage(getString(R.string.signingin));
+		loginUpdateDialog.setIndeterminate(true);
+		loginUpdateDialog.setCancelable(false);
+
+		if(!dialogDismissed)
+			return;
+		if(show){
+			loginUpdateDialog.show();
+		}else
+			loginUpdateDialog.dismiss();
 	}
 
 	@Override
@@ -236,6 +264,23 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		facebook.authorizeCallback(requestCode, resultCode, data);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		if(loginTask != null)
+			loginTask.cancel(true);
+		if(postDataTask != null)
+			postDataTask.cancel(true);
+
+		if(loginUpdateDialog != null) {
+			Log.d("TEST", "setOnDismissListener set, dismiss called");
+			loginUpdateDialog.dismiss();
+			loginUpdateDialog.setOnDismissListener(this);
+		}
+	}
+	
+	
 	@Override
 	public void onBackPressed() {
 		finish();

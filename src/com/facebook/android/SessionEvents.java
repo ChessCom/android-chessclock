@@ -49,6 +49,13 @@ public class SessionEvents {
         mAuthListeners.remove(listener);
     }
 
+	/**
+	 * Drop all listeners as they are may be overlapped due to static usage.
+	 */
+	public static void dropAuthListeners() {
+		mAuthListeners.clear();
+	}
+
     /**
      * Associate the given listener with this Facebook object. The listener's
      * callback interface will be invoked when logout occurs.
@@ -72,6 +79,15 @@ public class SessionEvents {
     public static void removeLogoutListener(LogoutListener listener) {
         mLogoutListeners.remove(listener);
     }
+
+	/**
+	 * Drop all listeners as they are may be overlapped due to static usage.
+	 */
+	public static void dropLogoutListeners() {
+		mLogoutListeners.clear();
+	}
+
+
     
     public static void onLoginSuccess() {
         for (AuthListener listener : mAuthListeners) {
@@ -96,8 +112,9 @@ public class SessionEvents {
             l.onLogoutFinish();
         }   
     }
-    
-    /**
+
+
+	/**
      * Callback interface for authorization events.
      *
      */

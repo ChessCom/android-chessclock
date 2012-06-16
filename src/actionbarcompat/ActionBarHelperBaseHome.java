@@ -117,7 +117,8 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 
 	@Override
 	public void hideMenuItemById(int id, boolean show){
-		getActionBarCompat().findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
+		if(getActionBarCompat() != null && getActionBarCompat().findViewById(id) != null)
+			getActionBarCompat().findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 	/**
 	 * Action bar helper code to be run in
