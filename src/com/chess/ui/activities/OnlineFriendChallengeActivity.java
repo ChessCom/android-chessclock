@@ -65,7 +65,8 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		} else if (code == INIT_ACTIVITY) {
 			if (appService != null) {
 				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_friends?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
+						"http://www." + LccHolder.HOST + "/api/get_friends?id="
+								+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
 						progressDialog = new MyProgressDialog(ProgressDialog.show(OnlineFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
 				);
 			}

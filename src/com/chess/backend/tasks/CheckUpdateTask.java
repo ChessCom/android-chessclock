@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -14,6 +15,7 @@ import com.chess.ui.activities.LoginScreenActivity;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -26,6 +28,7 @@ import java.net.URLConnection;
  */
 public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 
+	public static final String TAG = "CheckUpdateTask";
 	private Activity context;
 	private SharedPreferences.Editor preferencesEditor;
 	private boolean forceFlag;
@@ -64,8 +67,10 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 				force = true;
 			}
 
+		} catch (IOException e) {
+			Log.e(TAG, e.toString());
 		} catch (Exception e) {
-			return force;
+			Log.e(TAG, e.toString());
 		}
 
 		if (force != null && !force) {

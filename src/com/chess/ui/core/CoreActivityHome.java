@@ -105,14 +105,14 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	 * NI.isConnectedOrConnecting(); }
 	 */
 	public boolean doBindService() {
-		mIsBound = getApplicationContext().bindService(new Intent(this, WebService.class), onService,
+		mIsBound = bindService(new Intent(this, WebService.class), onService,
 				Context.BIND_AUTO_CREATE);
 		return mIsBound;
 	}
 
 	public void doUnbindService() {
 		if (mIsBound) {
-			getApplicationContext().unbindService(onService);
+			unbindService(onService);
 			mIsBound = false;
 		}
 	}

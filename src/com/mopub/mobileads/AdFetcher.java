@@ -34,15 +34,10 @@
 
 package com.mopub.mobileads;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.concurrent.Executor;
-
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.util.Log;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -55,10 +50,11 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.util.Log;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 
 /*
  * AdFetcher is a delegate of an AdView that handles loading ad data over a
@@ -95,27 +91,30 @@ public class AdFetcher {
         }
         
         mCurrentTask = new AdFetchTask(this);
-        
-        if (Build.VERSION.SDK_INT >= VERSION_CODE_ICE_CREAM_SANDWICH) {
-            Class<?> cls = AdFetchTask.class;
-            Class<?>[] parameterTypes = {Executor.class, Object[].class};
-            
-            String[] parameters = {url};
-            
-            try {
-                Method method = cls.getMethod("executeOnExecutor", parameterTypes);
-                Field field = cls.getField("THREAD_POOL_EXECUTOR");
-                method.invoke(mCurrentTask, field.get(cls), parameters);
-            } catch (NoSuchMethodException exception) {
-                Log.d("MoPub", "Error executing AdFetchTask on ICS+, method not found.");
-            } catch (InvocationTargetException exception) {
-                Log.d("MoPub", "Error executing AdFetchTask on ICS+, thrown by executeOnExecutor.");
-            } catch (Exception exception) {
-                Log.d("MoPub", "Error executing AdFetchTask on ICS+: " + exception.toString());
-            }
-        } else {
-            mCurrentTask.execute(url);
-        }
+		mCurrentTask.executeTask(url);
+		/*
+		if (Build.VERSION.SDK_INT >= VERSION_CODE_ICE_CREAM_SANDWICH) { // WARN! - unsafe method,
+		doesn't work on motorola devices, which throws MethodNotFoundException
+			Class<?> cls = AdFetchTask.class;
+			Class<?>[] parameterTypes = {Executor.class, Object[].class};
+
+			String[] parameters = {url};
+
+			try {
+				Method method = cls.getMethod("executeOnExecutor", parameterTypes);
+				Field field = cls.getField("THREAD_POOL_EXECUTOR");
+				method.invoke(mCurrentTask, field.get(cls), parameters);
+			} catch (NoSuchMethodException exception) {
+				Log.d("MoPub", "Error executing AdFetchTask on ICS+, method not found.");
+			} catch (InvocationTargetException exception) {
+				Log.d("MoPub", "Error executing AdFetchTask on ICS+, thrown by executeOnExecutor.");
+			} catch (Exception exception) {
+				Log.d("MoPub", "Error executing AdFetchTask on ICS+: " + exception.toString());
+			}
+		} else {
+			mCurrentTask.execute(url);
+		}*/
+
     }
     
     public void cancelFetch() {
@@ -339,6 +338,14 @@ public class AdFetcher {
         private boolean isMostCurrentTask() {
             return mTaskId >= mAdFetcher.mLastCompletedTaskId;
         }
+
+		public AsyncTask<String, Void, AdFetchResult>  executeTask(String... input){
+			if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
+				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
+			}else
+				execute(input);
+			return this;
+		}
     }
 
     private static abstract class AdFetchResult {

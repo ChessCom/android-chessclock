@@ -23,6 +23,7 @@
 			android:layout_height="wrap_content"
 			android:hint="@string/singinUsername"
 			android:singleLine="true"
+			android:imeOptions="actionNext"
 			/>
 
 		<com.chess.RoboEditText
@@ -33,6 +34,7 @@
 			android:inputType="textPersonName"
 			android:password="true"
 			android:singleLine="true"
+			android:imeOptions="actionDone"
 			/>
 
 		<com.chess.RoboButton
