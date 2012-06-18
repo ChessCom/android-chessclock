@@ -75,22 +75,7 @@ public class LiveNewGameActivity extends LiveBaseActivity implements OnClickList
 
 	@Override
 	public void update(int code) {
-		if (code == INIT_ACTIVITY) {
-			if (appService != null) {
-				if (!mainApp.isLiveChess()) {
-					int UPDATE_DELAY = 120000;
-					appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-							"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-									preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
-							null);
-				} else {
-					update(OnlineScreenActivity.ONLINE_CALLBACK_CODE);
-				}
-			}
-		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
-
-
-		} else if (code == 2) {
+		if (code == 2) {
 			showToast(R.string.challengeaccepted);
 			onPause();
 			onResume();

@@ -69,7 +69,6 @@ public class LccChallengeListener implements ChallengeListener {
 			LccHolder.LOG.info("CHALLENGE LISTENER. Challenge received: blocked user");
 			return;
 		}
-		// todo: fix!
 		if (lccHolder.isUserPlaying()) {
 			lccHolder.getClient().rejectChallenge(challenge, this);
 			LccHolder.LOG

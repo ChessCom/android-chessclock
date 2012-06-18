@@ -1,6 +1,7 @@
 package com.chess.ui.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -146,21 +147,27 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 					lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minMemberShipLevel, minRating, maxRating);
-			if (appService != null) {
-				FlurryAgent.onEvent("Challenge Created", null);
-				lccHolder.getAndroidStuff().runSendChallengeTask(
-						//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
-						null,
-						challenge
-				);
-                preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-                preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+
+			FlurryAgent.onEvent("Challenge Created", null);
+			lccHolder.getAndroidStuff().runSendChallengeTask(
+					//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
+					null,
+					challenge
+			);
+            preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+            preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
                 preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
                 preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
-                preferencesEditor.commit();
-                //mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+            preferencesEditor.commit();
+            //mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
 
-			}
+			findViewById(R.id.createchallenge).setEnabled(false);
+			new Handler().postDelayed(new Runnable() {
+				public void run() {
+					findViewById(R.id.createchallenge).setEnabled(true);
+				}
+			}, 2000);
+
 		}
 
 	}
