@@ -568,8 +568,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			new AlertDialog.Builder(context)
 					.setIcon(android.R.drawable.ic_dialog_alert)
 					.setCancelable(false)
-					.setTitle(getString(R.string.version_check))
-					.setMessage(getString(R.string.version_is_obsolete_update))
+					.setTitle(R.string.version_check)
+					.setMessage(R.string.version_is_obsolete_update)
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int whichButton) {

@@ -113,6 +113,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 
 			Integer minRating = minRatings[minrating.getSelectedItemPosition()];
 			Integer maxRating = maxRatings[maxrating.getSelectedItemPosition()];
+			Integer minMemberShipLevel = 0;
 
 			if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
 				initialTime.setText("10");
@@ -143,7 +144,8 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
 			String to = null;
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-					lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig, minRating, maxRating);
+					lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig,
+					minMemberShipLevel, minRating, maxRating);
 			if (appService != null) {
 				FlurryAgent.onEvent("Challenge Created", null);
 				lccHolder.getAndroidStuff().runSendChallengeTask(

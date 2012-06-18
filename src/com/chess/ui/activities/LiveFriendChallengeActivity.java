@@ -127,10 +127,22 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 
 			Integer minRating = null;
 			Integer maxRating = null;
+			Integer minMemberShipLevel = 0;
+
+//
+//			public static Challenge createCustomSeekOrChallenge(User from
+//					, String         to
+//					, PieceColor     color
+//					, Boolean        rated
+//					, GameTimeConfig gameTimeConfig
+//					, Integer        minMembershipLevel
+//					, Integer        minRating
+//					, Integer        maxRating
 
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-					lccHolder.getUser(), friends.getSelectedItem().toString().trim(), PieceColor.UNDEFINED, rated, gameTimeConfig,
-					minRating, maxRating);
+					lccHolder.getUser(), friends.getSelectedItem().toString().trim(),
+					PieceColor.UNDEFINED, rated, gameTimeConfig,
+					minMemberShipLevel, minRating, maxRating);
 
 			if (appService != null) {
 				FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
