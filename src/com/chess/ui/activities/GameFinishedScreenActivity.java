@@ -2,9 +2,7 @@ package com.chess.ui.activities;
 
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,9 +36,8 @@ import java.util.ArrayList;
  * @author alien_roger
  * @created at: 03.05.12 5:52
  */
-public class GameFinishedScreenActivity extends GameBaseActivity implements View.OnClickListener {
+public class GameFinishedScreenActivity extends GameBaseActivity{
 
-//	private int UPDATE_DELAY = 120000;
 	private View submitButtonsLay;
 
 
@@ -48,8 +45,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 	private AbortGameUpdateListener abortGameUpdateListener;
 	private DrawOfferUpdateListener drawOfferUpdateListener;
 	private StartGameUpdateListener startGameUpdateListener;
-	private GetGameUpdateListener getGameUpdateListener;
-	private SendMoveUpdateListener sendMoveUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
 	private ProgressDialog sendMoveUpdateDialog;
 
@@ -96,8 +91,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		drawOfferUpdateListener = new DrawOfferUpdateListener();
 
 		startGameUpdateListener = new StartGameUpdateListener();
-		getGameUpdateListener = new GetGameUpdateListener();
-		sendMoveUpdateListener = new SendMoveUpdateListener();
 		gamesListUpdateListener = new GamesListUpdateListener();
 
 		sendMoveUpdateDialog = new ProgressDialog(this);
@@ -210,89 +203,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 
 	@Override
 	public void updateAfterMove() {
-		showSubmitButtonsLay(false);
 
-		if (mainApp.getCurrentGame() == null) { // if we don't have Game entity
-			if (appService.getRepeatableTimer() != null) {
-				appService.getRepeatableTimer().cancel();
-				appService.setRepeatableTimer(null);
-			}
-
-			// get game entity
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.GET_GAME_V3);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(mainApp.getGameId()));
-
-			new GetStringObjTask(getGameUpdateListener).execute(loadItem);
-		} else {
-			sendMove();
-		}
 	}
-
-	private void sendMove() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(mainApp.getCurrentGameId()));
-		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
-		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
-
-		new GetStringObjTask(sendMoveUpdateListener).execute(loadItem);
-	}
-
-
-	private class GetGameUpdateListener extends ChessUpdateListener {
-		public GetGameUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
-			sendMove();
-		}
-	}
-
-	private class SendMoveUpdateListener extends ChessUpdateListener {
-		public SendMoveUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-
-			if (GameFinishedScreenActivity.this.isFinishing())
-				return;
-
-			if (show) {
-				sendMoveUpdateDialog.show();
-			} else
-				sendMoveUpdateDialog.dismiss();
-		}
-
-
-		@Override
-		public void updateData(String returnedObj) {
-			moveWasSent();
-
-			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.cancel(R.id.notification_message);
-		}
-	}
-
-	private void moveWasSent(){
-		showSubmitButtonsLay(false);
-		int action = AppData.getAfterMoveAction(getContext());
-		if(action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
-			finish();
-		else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
-			getGamesList();
-		}
-	}
-
 
 	private void getGamesList(){
 		LoadItem listLoadItem = new LoadItem();
@@ -536,17 +448,4 @@ public class GameFinishedScreenActivity extends GameBaseActivity implements View
 		gamePanelView.haveNewMessage(true);
 	}
 
-	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-		if (view.getId() == R.id.cancel) {
-			showSubmitButtonsLay(false);
-
-			getBoardFace().takeBack();
-			getBoardFace().decreaseMovesCount();
-			boardView.invalidate();
-		} else if (view.getId() == R.id.submit) {
-			sendMove();
-		}
-	}
 }
