@@ -53,6 +53,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	private SendMoveUpdateListener sendMoveUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
 	private ProgressDialog sendMoveUpdateDialog;
+	private boolean isPaused;
 
 
 	@Override
@@ -112,6 +113,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void onResume() {
 		super.onResume();
+		isPaused = false;
 
 		updateGameState();
 		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
@@ -129,6 +131,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	@Override
 	protected void onPause() {
 		super.onPause();
+		isPaused = true;
+
 		handler.removeCallbacks(updateGameStateOrder);
 	}
 
@@ -346,7 +350,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			if (isFinishing())
+			if (isPaused)
 				return;
 
 			if (show) {

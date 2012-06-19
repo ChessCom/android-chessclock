@@ -149,6 +149,7 @@
     <color name="top_bar_2">#FF5d5d5d</color>
     <color name="top_bar_3">#FF363636</color>
 
+	<color name="transparent">#00000000</color>
 	<color name="disabled">#FF7a7a7a</color>
 
 	<!--Players indicators-->

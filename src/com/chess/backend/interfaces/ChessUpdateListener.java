@@ -19,6 +19,7 @@ public abstract class ChessUpdateListener extends AbstractUpdateListener<String>
 
 	@Override
 	public void showProgress(boolean show) {
-		actionBarHelper.setRefreshActionItemState(show);
+		if(actionBarHelper != null)
+			actionBarHelper.setRefreshActionItemState(show);
 	}
 }

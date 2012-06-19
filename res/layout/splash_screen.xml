@@ -5,6 +5,6 @@
 	android:layout_height="match_parent"
 	android:gravity="center"
 	android:orientation="vertical"
-	android:background="@android:color/black">
+	android:background="@color/black">
 
 </LinearLayout>
