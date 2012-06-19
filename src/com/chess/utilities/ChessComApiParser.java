@@ -111,10 +111,7 @@ public class ChessComApiParser {
 
 	//online game
 	public static GameItem GetGameParseV3(String result) {
-		if (result.contains(RestHelper.R_SUCCESS)) {
-			return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
-		}
-		return null;
+		return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
 	}
 
 	public static ArrayList<MessageItem> receiveMessages(String result) {

@@ -166,7 +166,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void updateData(String returnedObj) {
-			onGameStarted(returnedObj);
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				onGameStarted(returnedObj);
+			}else
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 		}
 	}
 
