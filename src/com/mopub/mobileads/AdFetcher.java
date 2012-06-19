@@ -38,6 +38,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+import com.chess.backend.statics.StaticData;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -66,8 +67,6 @@ import java.util.HashMap;
  */
 public class AdFetcher {
     private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
-    // This is equivalent to Build.VERSION_CODES.ICE_CREAM_SANDWICH
-    private static final int VERSION_CODE_ICE_CREAM_SANDWICH = 14;
 
     private AdView mAdView;
     private AdFetchTask mCurrentTask;
@@ -345,7 +344,7 @@ public class AdFetcher {
         }
 
 		public AsyncTask<String, Void, AdFetchResult>  executeTask(String... input){
-			if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
+			if(Build.VERSION.SDK_INT > StaticData.HONEYCOMB){
 				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 			}else
 				execute(input);

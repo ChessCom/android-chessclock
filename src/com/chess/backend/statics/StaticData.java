@@ -73,4 +73,6 @@ public class StaticData {
 	public static final int STAFF_LEVEL = 90;
 
 
+	public static final int ICE_CREAM_SANDWICH = 14;
+	public static final int HONEYCOMB = 11;
 }

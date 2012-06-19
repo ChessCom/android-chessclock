@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import com.chess.backend.statics.StaticData;
 
 /**
  * An abstract class that handles some common action bar-related functionality
@@ -41,9 +42,9 @@ public abstract class ActionBarHelper {
 	 * helper or Honeycomb-specific helper will be returned.
 	 */
 	public static ActionBarHelper createInstance(Activity activity) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if (Build.VERSION.SDK_INT >= StaticData.ICE_CREAM_SANDWICH) {
 			return new ActionBarHelperICS(activity);
-		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		} else if (Build.VERSION.SDK_INT >= StaticData.HONEYCOMB) {
 			return new ActionBarHelperHoneycomb(activity);
 		} else {
 			return new ActionBarHelperBase(activity);
