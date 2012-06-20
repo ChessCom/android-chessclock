@@ -33,7 +33,6 @@ public class ChessComApiParser {
 				tmp[a++] = s;
 			}
 			GameListItem gle = new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp, false);
-//			GameListItem gle = new GameListItem(GameListItem.LIST_TYPE_CURRENT, tmp, false);
 			output.add(gle);
 		}
 		return output;
@@ -54,7 +53,6 @@ public class ChessComApiParser {
 				tmp[a++] = s;
 			}
 			output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp, false));
-//			output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, tmp, false));
 		}
 		return output;
 	}

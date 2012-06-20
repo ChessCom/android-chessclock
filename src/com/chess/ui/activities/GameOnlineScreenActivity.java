@@ -172,8 +172,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				onGameStarted(returnedObj);
-			}else
+			}else {
 				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
+			}
 		}
 	}
 
@@ -240,23 +241,27 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (getBoardFace().isAnalysis())
-				return;
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				if (getBoardFace().isAnalysis())
+					return;
 
-			game = ChessComApiParser.GetGameParseV3(returnedObj);
+				game = ChessComApiParser.GetGameParseV3(returnedObj);
 
-			if (mainApp.getCurrentGame() == null || game == null) {
-				return;
-			}
-
-			if (!mainApp.getCurrentGame().equals(game)) {
-				// check if moves on board was changed
-				if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
-					updateGameBoardMoves();
+				if (mainApp.getCurrentGame() == null || game == null) {
+					return;
 				}
-				checkMessages();
+
+				if (!mainApp.getCurrentGame().equals(game)) {
+					// check if moves on board was changed
+					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
+						updateGameBoardMoves();
+					}
+					checkMessages();
+				}
+				invalidateGameScreen();
+			}else {
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
-			invalidateGameScreen();
 		}
 	}
 
@@ -337,8 +342,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 
 		@Override
 		public void updateData(String returnedObj) {
-			mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
-			sendMove();
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
+				sendMove();
+			}else {
+				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
+			}
 		}
 	}
 
@@ -450,9 +459,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	private void checkMessages() {
 		if (game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
 			mainApp.setCurrentGame(game);
-			// show notification instead
 			gamePanelView.haveNewMessage(true);
-//			AppUtils.showNotification(getContext(), StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatOnlineActivity.class);
 		}
 	}
 
@@ -465,7 +472,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	public void newGame() {
 		getGamesList();
 	}
-
 
 	@Override
 	public void showOptions() {
