@@ -561,22 +561,10 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
                     return true;
             }
 
-//            if ((MainApp.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)
-//                    || (MainApp.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0)) {
-//                return true;
-//            }
-
-			if ((AppData.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0
-					&& !boardFace.isReside())
-					||(AppData.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 == 0
-					&& boardFace.isReside())
-					|| (AppData.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0
-					&& !boardFace.isReside())
-					|| (AppData.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 != 0
-					&& boardFace.isReside())
-					) {
-				return true;
-			}
+            if ((MainApp.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)
+                    || (MainApp.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0)) {
+                return true;
+            }
             if (MainApp.isTacticsGameMode(boardFace) && boardFace.getHply() % 2 == 0) {
                 return true;
             }
@@ -759,23 +747,23 @@ public class ChessBoardView extends ImageView implements BoardViewFace {
 
     @Override
     public void flipBoard() {
-//        stopThinking = true;
-//        if (!compmoving) {
-            getBoardFace().setReside(!getBoardFace().isReside());
-            if (MainApp.isComputerVsHumanGameMode(getBoardFace())) {
-                if (MainApp.isComputerVsHumanWhiteGameMode(getBoardFace())) {
-                    getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-                } else if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace())) {
-                    getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-                }
-                //getBoardFaceFace().mode ^= 1;
-//                computerMove(mainApp.strength[preferences
-//                        .getInt(AppData.getUserName(getContext())
-//                                + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
-            }
-            invalidate();
-            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
-//        }
+		// stopThinking = true;
+		if (!compmoving) {
+			getBoardFace().setReside(!getBoardFace().isReside());
+			if (MainApp.isComputerVsHumanGameMode(getBoardFace())) {
+				if (MainApp.isComputerVsHumanWhiteGameMode(getBoardFace())) {
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
+				} else if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace())) {
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
+				}
+				//getBoardFaceFace().mode ^= 1;
+				computerMove(mainApp.strength[preferences
+						.getInt(AppData.getUserName(getContext())
+								+ AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+			}
+			invalidate();
+			gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
+		}
     }
 
     @Override
