@@ -14,7 +14,7 @@ public interface GameActivityFace {
 
 	void showOptions();
 
-	Context getMeContext();
+//	Context getMeContext();
 
 	MainApp getMainApp();
 

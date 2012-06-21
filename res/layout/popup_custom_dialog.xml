@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="@dimen/popup_dialog_width"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:minWidth="@dimen/popup_dialog_width"
+	android:paddingBottom="@dimen/default_scr_bottom_padding"
+	android:background="@drawable/dashboard_single_back"
+	>
+
+
+	<FrameLayout
+		android:id="@+id/customView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="@dimen/default_scr_bottom_padding"
+		/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		>
+
+		<Button
+			android:id="@+id/positiveBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Text.Button"
+			android:text="@string/ok"
+			android:layout_gravity="center_horizontal"
+			android:layout_weight="1"
+			/>
+
+		<Button
+			android:id="@+id/positiveBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Text.Button.Grey"
+			android:text="@string/cancel"
+			android:layout_gravity="center_horizontal"
+			/>
+	</LinearLayout>
+
+</LinearLayout>

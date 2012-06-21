@@ -177,8 +177,8 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
@@ -193,8 +193,8 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			currentChallenge = challenge;
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
 
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);

@@ -1,6 +1,9 @@
 package com.chess.model;
 
+import android.content.Context;
+import android.view.View;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 
 /**
  * PopupItem class
@@ -9,63 +12,91 @@ import com.chess.R;
  * @created at: 07.04.12 7:14
  */
 public class PopupItem {
-	private int titleId;
-	private int messageId;
-	private String title;
-	private String message;
-	private int leftBtnId;
-	private int rightBtnId;
+    private int titleId;
+    private int messageId;
+    private String title;
+    private String message;
+    private int positiveBtnId;
+    private int neutralBtnId;
+    private int negativeBtnId;
+    private View customView;
 
-	public PopupItem() {
-		this.leftBtnId = R.string.ok;
-		this.rightBtnId = R.string.cancel;
-	}
+    public PopupItem() {
+        this.positiveBtnId = R.string.ok;
+        this.negativeBtnId = R.string.cancel;
+        title = StaticData.SYMBOL_EMPTY;
+        message = StaticData.SYMBOL_EMPTY;
+    }
 
-	public int getLeftBtnId() {
-		return leftBtnId;
-	}
+    public int getPositiveBtnId() {
+        return positiveBtnId;
+    }
 
-	public void setLeftBtnId(int leftBtnId) {
-		this.leftBtnId = leftBtnId;
-	}
+    public void setPositiveBtnId(int leftBtnId) {
+        this.positiveBtnId = leftBtnId;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public int getNeutralBtnId() {
+        return neutralBtnId;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setNeutralBtnId(int neutralBtnId) {
+        this.neutralBtnId = neutralBtnId;
+    }
 
-	public int getRightBtnId() {
-		return rightBtnId;
-	}
+    public String getMessage(Context context) {
+        if(message.equals(StaticData.SYMBOL_EMPTY) && messageId != 0){
+            return context.getString(messageId);
+        }else{
+            return message;
+        }
+    }
 
-	public void setRightBtnId(int rightBtnId) {
-		this.rightBtnId = rightBtnId;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public int getNegativeBtnId() {
+        return negativeBtnId;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setNegativeBtnId(int rightBtnId) {
+        this.negativeBtnId = rightBtnId;
+    }
 
-	public int getTitleId() {
-		return titleId;
-	}
+    public String getTitle(Context context) {
+        if(title.equals(StaticData.SYMBOL_EMPTY) && titleId != 0){
+            return context.getString(titleId);
+        }else{
+            return title;
+        }
+    }
 
-	public void setTitle(int titleId) {
-		this.titleId = titleId;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public int getMessageId() {
-		return messageId;
-	}
+    public int getTitleId() {
+        return titleId;
+    }
 
-	public void setMessage(int messageId) {
-		this.messageId = messageId;
-	}
+    public void setTitle(int titleId) {
+        this.titleId = titleId;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessage(int messageId) {
+        this.messageId = messageId;
+    }
+
+    public View getCustomView() {
+        return customView;
+    }
+
+    public void setCustomView(View customView) {
+        this.customView = customView;
+    }
 }

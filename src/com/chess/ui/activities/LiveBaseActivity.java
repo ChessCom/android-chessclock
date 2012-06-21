@@ -107,8 +107,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, LiveBaseActivity.this);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
@@ -123,8 +123,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 			currentChallenge = challenge;
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, LiveBaseActivity.this);
 			popupDialogFragment.updatePopupItem(popupItem);

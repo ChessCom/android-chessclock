@@ -10,6 +10,6 @@ import android.support.v4.app.DialogFragment;
  */
 public interface PopupDialogFace {
 	void onPositiveBtnClick(DialogFragment fragment);
-
+    void onNeutralBtnCLick(DialogFragment fragment);
 	void onNegativeBtnClick(DialogFragment fragment);
 }

@@ -19,73 +19,90 @@ import com.chess.ui.interfaces.PopupDialogFace;
  * @created at: 07.04.12 7:13
  */
 public class PopupDialogFragment extends DialogFragment implements View.OnClickListener {
-	private PopupDialogFace listener;
-	private PopupItem popupItem;
-	private TextView titleTxt;
-	private TextView messageTxt;
-	private Button leftBtn;
-	private Button rightBtn;
+    private PopupDialogFace listener;
+    private PopupItem popupItem;
+    private TextView titleTxt;
+    private TextView messageTxt;
+    private Button leftBtn;
+    private Button middleBtn;
+    private Button rightBtn;
+    private int buttonsNumber;
 
-	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
-		PopupDialogFragment frag = new PopupDialogFragment();
-		frag.popupItem = popupItem;
-		frag.listener = listener;
-		return frag;
-	}
+    public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
+        PopupDialogFragment frag = new PopupDialogFragment();
+        frag.popupItem = popupItem;
+        frag.listener = listener;
+        return frag;
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NO_FRAME, 0);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_FRAME, 0);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.default_popup, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.popup_default, container, false);
 
-		messageTxt = (TextView)v.findViewById(R.id.popupMessage);
-		titleTxt = (TextView)v.findViewById(R.id.popupTitle);
-		leftBtn = (Button)v.findViewById(R.id.okBtn);
-		rightBtn = (Button)v.findViewById(R.id.cancelBtn);
+        messageTxt = (TextView)view.findViewById(R.id.popupMessage);
+        titleTxt = (TextView)view.findViewById(R.id.popupTitle);
 
-		leftBtn.setOnClickListener(this);
-		rightBtn.setOnClickListener(this);
+        leftBtn = (Button)view.findViewById(R.id.positiveBtn);
+        middleBtn = (Button)view.findViewById(R.id.middleBtn);
+        rightBtn = (Button)view.findViewById(R.id.negativeBtn);
 
-		if(popupItem == null){ // TODO handle NPE
-			return v;
-		}
+        leftBtn.setOnClickListener(this);
+        middleBtn.setOnClickListener(this);
+        rightBtn.setOnClickListener(this);
 
-		if(popupItem.getMessageId() == 0)
-			messageTxt.setText(Html.fromHtml(popupItem.getMessage()));
-		else
-			messageTxt.setText(popupItem.getMessageId());
+        if(popupItem == null){ // TODO handle NPE
+            return view;
+        }
 
-		if(popupItem.getTitleId() == 0)
-			titleTxt.setText(popupItem.getTitle());
-		else
-			titleTxt.setText(popupItem.getTitleId());
+        messageTxt.setText(Html.fromHtml(popupItem.getMessage(getActivity())));
+        titleTxt.setText(popupItem.getTitle(getActivity()));
 
-		leftBtn.setText(popupItem.getLeftBtnId());
-		rightBtn.setText(popupItem.getRightBtnId());
+        leftBtn.setText(popupItem.getPositiveBtnId());
+        middleBtn.setText(popupItem.getNegativeBtnId());
+        rightBtn.setText(popupItem.getNegativeBtnId());
 
-		return v;
-	}
+        middleBtn.setVisibility(View.GONE);
+        return view;
+    }
 
-	@Override
-	public void onClick(View view) {
-		if(listener == null){  // TODO handle NPE
-			dismiss();
-			return;
-		}
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        switch (buttonsNumber){
+            case 1:
+                rightBtn.setVisibility(View.GONE);
+                break;
+            case 3:
+                middleBtn.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 
-		if(view.getId() == R.id.okBtn){
-			listener.onPositiveBtnClick(this);
-		}else if(view.getId() == R.id.cancelBtn){
-			listener.onNegativeBtnClick(this);
-		}
-	}
+    @Override
+    public void onClick(View view) {
+        if(listener == null){  // TODO handle NPE
+            dismiss();
+            return;
+        }
 
-	public void updatePopupItem(PopupItem popupItem) {
-		this.popupItem = popupItem;
-	}
+        if(view.getId() == R.id.positiveBtn){
+            listener.onPositiveBtnClick(this);
+        }else if(view.getId() == R.id.negativeBtn){
+            listener.onNegativeBtnClick(this);
+        }
+    }
+
+    public void updatePopupItem(PopupItem popupItem) {
+        this.popupItem = popupItem;
+    }
+
+    public void setButtons(int buttonsNumber){
+        this.buttonsNumber = buttonsNumber;
+    }
 }

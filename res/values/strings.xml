@@ -320,8 +320,15 @@
 	<string name="won_game_abandoned">won - \ngame abandoned</string>
 	<string name="game_aborted">Game aborted</string>
 	<string name="new_game">New Game</string>
+	<string name="language">Language</string>
+	<string name="not_now">Not now</string>
 
 	<!--Preferences-->
 	<string name="confirm_vacation_title">Confirm Vacation</string>
 	<string name="confirm_vacation_msg">Do you really want to go on vacation now?</string>
+	<string name="warning">Warning!</string>
+	<string name="account_error">Account error.</string>
+	<string name="server_stopped">Server stopped.</string>
+	<string name="reason_">Reason:</string>
+	<string name="message_">Message:</string>
 </resources>
