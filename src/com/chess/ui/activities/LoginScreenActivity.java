@@ -39,7 +39,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener, DialogInterface.OnDismissListener {
+public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener/*, DialogInterface.OnDismissListener*/ {
 
 	private EditText usernameEdt;
 	private EditText passwordEdt;
@@ -49,10 +49,10 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
-	private ProgressDialog loginUpdateDialog;
+//	private ProgressDialog loginUpdateDialog;
 	private AsyncTask<LoadItem, Void, Integer> loginTask;
 	private AsyncTask<LoadItem, Void, Integer> postDataTask;
-	private boolean dialogDismissed = true;
+//	private boolean dialogDismissed = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,17 +117,18 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 	@Override
 	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION){
+		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+                || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
 			signInUser();
 		}
 		return false;
 	}
 
-	@Override
-	public void onDismiss(DialogInterface dialogInterface) {
-		dialogDismissed = true;
-
-	}
+//	@Override
+//	public void onDismiss(DialogInterface dialogInterface) {
+//		dialogDismissed = true;
+//
+//	}
 
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
@@ -204,20 +205,17 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	}
 
 	private void showLoginProgress(boolean show){
-		if (isFinishing())
+		if (isPaused)
 			return;
 
-		loginUpdateDialog = new ProgressDialog(this);
-		loginUpdateDialog.setMessage(getString(R.string.signingin));
-		loginUpdateDialog.setIndeterminate(true);
-		loginUpdateDialog.setCancelable(false);
+//		if(!dialogDismissed)
+//			return;
 
-		if(!dialogDismissed)
-			return;
 		if(show){
-			loginUpdateDialog.show();
-		}else
-			loginUpdateDialog.dismiss();
+            showPopupHardProgressDialog(R.string.signingin);
+		}else {
+            dismissProgressDialog();
+        }
 	}
 
 	@Override
@@ -273,11 +271,11 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		if(postDataTask != null)
 			postDataTask.cancel(true);
 
-		if(loginUpdateDialog != null) {
-			Log.d("TEST", "setOnDismissListener set, dismiss called");
-			loginUpdateDialog.dismiss();
-			loginUpdateDialog.setOnDismissListener(this);
-		}
+//		if(loginUpdateDialog != null) {
+//			Log.d("TEST", "setOnDismissListener set, dismiss called");
+//			loginUpdateDialog.dismiss();
+//			loginUpdateDialog.setOnDismissListener(this);
+//		}
 	}
 	
 	

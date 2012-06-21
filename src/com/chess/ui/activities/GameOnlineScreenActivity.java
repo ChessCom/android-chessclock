@@ -52,7 +52,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 	private GetGameUpdateListener getGameUpdateListener;
 	private SendMoveUpdateListener sendMoveUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
-	private ProgressDialog sendMoveUpdateDialog;
+//	private ProgressDialog sendMoveUpdateDialog;
 	private boolean isPaused;
 
 
@@ -104,10 +104,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		sendMoveUpdateListener = new SendMoveUpdateListener();
 		gamesListUpdateListener = new GamesListUpdateListener();
 
-		sendMoveUpdateDialog = new ProgressDialog(this);
-		sendMoveUpdateDialog.setMessage(getString(R.string.sendinggameinfo));
-		sendMoveUpdateDialog.setIndeterminate(true);
-		sendMoveUpdateDialog.setCancelable(false);
 	}
 
 	@Override
@@ -116,7 +112,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		isPaused = false;
 
 		updateGameState();
-		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
+		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task gnbxrbcbybxrb
 	}
 
 	private Runnable updateGameStateOrder = new Runnable() {
@@ -363,9 +359,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 				return;
 
 			if (show) {
-				sendMoveUpdateDialog.show();
+                showPopupHardProgressDialog(R.string.sendinggameinfo);
 			} else
-				sendMoveUpdateDialog.dismiss();
+				dismissProgressDialog();
 		}
 
 		@Override

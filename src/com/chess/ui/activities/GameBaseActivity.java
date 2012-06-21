@@ -19,6 +19,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
+import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
@@ -716,10 +717,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		}
 	}
 
-	@Override
-	public Context getMeContext() {
-		return this;
-	}
+    @Override
+    public MainApp getMainApp(){
+        return mainApp;
+    }
 
 	protected BoardFace getBoardFace(){
 		return boardView.getBoardFace();

@@ -1,6 +1,5 @@
 package com.chess.ui.core;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.PixelFormat;
@@ -8,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -16,6 +17,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
@@ -27,17 +29,24 @@ import com.chess.backend.statics.*;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
+import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.ui.fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
+import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.MyProgressDialog;
 import com.flurry.android.FlurryAgent;
 
-public abstract class CoreActivity extends Activity implements BoardToGameActivityFace {
+public abstract class CoreActivity extends FragmentActivity implements BoardToGameActivityFace, PopupDialogFace {
 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
+
+    private static final String INFO_POPUP_TAG = "information popup";
+    private static final String PROGRESS_TAG = "progress dialog popup";
 
 	protected MainApp mainApp;
 	protected Bundle extras;
@@ -47,13 +56,19 @@ public abstract class CoreActivity extends Activity implements BoardToGameActivi
 	protected String responseRepeatable = StaticData.SYMBOL_EMPTY;
 	protected BackgroundChessDrawable backgroundChessDrawable;
 
+    protected PopupDialogFragment popupDialogFragment;
+    protected PopupItem popupItem;
+    protected PopupItem popupProgressItem;
+    protected PopupProgressFragment popupProgressDialogFragment;
+
     public boolean mIsBound;
 	public WebService appService = null;
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
+    protected boolean isPaused;
 
 
-	public abstract void update(int code);
+    public abstract void update(int code);
 
 	@Override
 	public void onAttachedToWindow() {
@@ -69,6 +84,11 @@ public abstract class CoreActivity extends Activity implements BoardToGameActivi
 		backgroundChessDrawable =  new BackgroundChessDrawable(this);
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
+
+        popupItem = new PopupItem();
+        popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+        popupProgressItem = new PopupItem();
+        popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
 
 		// get global Shared Preferences
 //		if (preferences == null) {
@@ -121,7 +141,7 @@ public abstract class CoreActivity extends Activity implements BoardToGameActivi
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+        isPaused = false;
 		doBindService();
 		registerReceivers();
 
@@ -140,6 +160,7 @@ public abstract class CoreActivity extends Activity implements BoardToGameActivi
 	@Override
 	protected void onPause() {
 		super.onPause();
+        isPaused = true;
 		doUnbindService();
 		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.stopSelf();
@@ -402,13 +423,122 @@ public abstract class CoreActivity extends Activity implements BoardToGameActivi
         new CheckUpdateTask(this).execute(AppConstants.URL_GET_ANDROID_VERSION);
 	}
 
-	protected void showToast(String msg){
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-	}
+    @Override
+    public void onPositiveBtnClick(DialogFragment fragment) {
+        fragment.getDialog().dismiss();
+    }
 
-	protected void showToast(int msgId){
-		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
-	}
+    @Override
+    public void onNeutralBtnCLick(DialogFragment fragment) {
+        fragment.getDialog().dismiss();
+    }
+
+    @Override
+    public void onNegativeBtnClick(DialogFragment fragment) {
+        fragment.getDialog().dismiss();
+    }
+
+    protected void showToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    // Single button no callback dialogs
+    protected void showSinglePopupDialog(int titleId, int messageId) {
+        showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(String title, String message) {
+        showPopupDialog(title, message, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(int titleId, String message) {
+        showPopupDialog(titleId, message, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(String message) {
+        showPopupDialog(message, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(int messageId) {
+        showPopupDialog(messageId, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    // Default Dialogs
+    protected void showPopupDialog(int titleId, int messageId, String tag) {
+        popupItem.setTitle(titleId);
+        popupItem.setMessage(messageId);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    protected void showPopupDialog(int titleId, String messageId, String tag) {
+        popupItem.setTitle(titleId);
+        popupItem.setMessage(messageId);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+
+    protected void showPopupDialog(String title, String message, String tag) {
+        popupItem.setTitle(title);
+        popupItem.setMessage(message);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    protected void showPopupDialog(int titleId, String tag) {
+        popupItem.setTitle(titleId);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    protected void showPopupDialog(String title, String tag) {
+        popupItem.setTitle(title);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    // Progress Dialogs
+    protected void showPopupProgressDialog(String title) {
+        popupProgressItem.setTitle(title);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void showPopupProgressDialog(String title, String message) {
+        popupProgressItem.setTitle(title);
+        popupProgressItem.setMessage(message);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void showPopupProgressDialog(int titleId) {
+        popupProgressItem.setTitle(titleId);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void showPopupHardProgressDialog(int titleId) {
+        popupProgressItem.setTitle(titleId);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+        popupProgressDialogFragment.setNotCancelable();
+    }
+
+    protected void showPopupProgressDialog(int titleId, int messageId) {
+        popupProgressItem.setTitle(titleId);
+        popupProgressItem.setMessage(messageId);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void dismissProgressDialog(){
+        if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
+            popupProgressDialogFragment.getDialog().dismiss();
+    }
+
+    protected String getTextFromField(EditText editText) {
+        return editText.getText().toString().trim();
+    }
+
+    protected void showToast(int msgId){
+        Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
+    }
 
 	@Override
 	public GameItem getCurrentGame() {

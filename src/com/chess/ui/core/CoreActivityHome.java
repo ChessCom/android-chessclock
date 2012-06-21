@@ -31,6 +31,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.chess.ui.activities.LoginScreenActivity;
 import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.ui.fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.LccConnectionListener;
 import com.chess.ui.interfaces.PopupDialogFace;
@@ -46,6 +47,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected final static int INIT_ACTIVITY = -1;
 	protected final static int ERROR_SERVER_RESPONSE = -2;
 
+    private static final String INFO_POPUP_TAG = "information popup";
+    private static final String PROGRESS_TAG = "progress dialog popup";
+
 	protected MainApp mainApp;
 	protected Bundle extras;
 	protected DisplayMetrics metrics;
@@ -54,12 +58,13 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected String response = StaticData.SYMBOL_EMPTY;
 	protected String responseRepeatable = StaticData.SYMBOL_EMPTY;
 
-	private Handler handler;
 	public boolean mIsBound;
 	public WebService appService = null;
 
+    protected PopupItem popupItem;
 	protected PopupDialogFragment popupDialogFragment;
-	protected PopupItem popupItem;
+    protected PopupItem popupProgressItem;
+    protected PopupProgressFragment popupProgressDialogFragment;
 	protected List<PopupDialogFragment> popupManager;
 
 	protected SharedPreferences preferences;
@@ -71,8 +76,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		handler = new Handler();
 
 		mainApp = (MainApp) getApplication();
 		extras = getIntent().getExtras();
@@ -92,10 +95,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 		lccHolder = mainApp.getLccHolder();
 		lccHolder.setExternalConnectionListener(this);
-		
-		popupItem = new PopupItem();
-		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
-		popupManager = new ArrayList<PopupDialogFragment>();
+
+        popupItem = new PopupItem();
+        popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+        popupProgressItem = new PopupItem();
+        popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
+        popupManager = new ArrayList<PopupDialogFragment>();
 	}
 
 	/*
@@ -583,7 +588,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		fragment.getDialog().dismiss();
 	}
 
-	@Override
+    @Override
+    public void onNeutralBtnCLick(DialogFragment fragment) {
+        fragment.getDialog().dismiss();
+    }
+
+    @Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		fragment.getDialog().dismiss();
 	}
@@ -654,6 +664,97 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void showToast(int msgId){
 		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
 	}
+
+
+    // Single button no callback dialogs
+    protected void showSinglePopupDialog(int titleId, int messageId) {
+        showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(String title, String message) {
+        showPopupDialog(title, message, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(int titleId, String message) {
+        showPopupDialog(titleId, message, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(String message) {
+        showPopupDialog(message, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    protected void showSinglePopupDialog(int messageId) {
+        showPopupDialog(messageId, INFO_POPUP_TAG);
+        popupDialogFragment.setButtons(1);
+    }
+
+    // Default Dialogs
+    protected void showPopupDialog(int titleId, int messageId, String tag) {
+        popupItem.setTitle(titleId);
+        popupItem.setMessage(messageId);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    protected void showPopupDialog(int titleId, String messageId, String tag) {
+        popupItem.setTitle(titleId);
+        popupItem.setMessage(messageId);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+
+    protected void showPopupDialog(String title, String message, String tag) {
+        popupItem.setTitle(title);
+        popupItem.setMessage(message);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    protected void showPopupDialog(int titleId, String tag) {
+        popupItem.setTitle(titleId);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    protected void showPopupDialog(String title, String tag) {
+        popupItem.setTitle(title);
+        popupDialogFragment.show(getSupportFragmentManager(), tag);
+    }
+
+    // Progress Dialogs
+    protected void showPopupProgressDialog(String title) {
+        popupProgressItem.setTitle(title);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void showPopupProgressDialog(String title, String message) {
+        popupProgressItem.setTitle(title);
+        popupProgressItem.setMessage(message);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void showPopupProgressDialog(int titleId) {
+        popupProgressItem.setTitle(titleId);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void showPopupHardProgressDialog(int titleId) {
+        popupProgressItem.setTitle(titleId);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+        popupProgressDialogFragment.setNotCancelable();
+    }
+
+    protected void showPopupProgressDialog(int titleId, int messageId) {
+        popupProgressItem.setTitle(titleId);
+        popupProgressItem.setMessage(messageId);
+        popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+    }
+
+    protected void dismissProgressDialog(){
+        if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
+            popupProgressDialogFragment.getDialog().dismiss();
+    }
 
 	@Override
 	public GameItem getCurrentGame() {
