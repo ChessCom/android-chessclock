@@ -5,13 +5,15 @@ import android.view.View;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 
+import java.io.Serializable;
+
 /**
  * PopupItem class
  *
  * @author alien_roger
  * @created at: 07.04.12 7:14
  */
-public class PopupItem {
+public class PopupItem implements Serializable{
     private int titleId;
     private int messageId;
     private String title;

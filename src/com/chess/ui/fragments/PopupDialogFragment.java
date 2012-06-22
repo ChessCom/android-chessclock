@@ -19,6 +19,9 @@ import com.chess.ui.interfaces.PopupDialogFace;
  * @created at: 07.04.12 7:13
  */
 public class PopupDialogFragment extends DialogFragment implements View.OnClickListener {
+
+	private static final String POPUP_ITEM = "popup item";
+
     private PopupDialogFace listener;
     private PopupItem popupItem;
     private TextView titleTxt;
@@ -30,8 +33,10 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 
     public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
         PopupDialogFragment frag = new PopupDialogFragment();
-        frag.popupItem = popupItem;
-        frag.listener = listener;
+		Bundle arguments = new Bundle();
+		arguments.putSerializable(POPUP_ITEM, popupItem);
+		frag.setArguments(arguments);
+		frag.listener = listener;
         return frag;
     }
 
@@ -56,17 +61,6 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
         middleBtn.setOnClickListener(this);
         rightBtn.setOnClickListener(this);
 
-        if(popupItem == null){ // TODO handle NPE
-            return view;
-        }
-
-        messageTxt.setText(Html.fromHtml(popupItem.getMessage(getActivity())));
-        titleTxt.setText(popupItem.getTitle(getActivity()));
-
-        leftBtn.setText(popupItem.getPositiveBtnId());
-        middleBtn.setText(popupItem.getNegativeBtnId());
-        rightBtn.setText(popupItem.getNegativeBtnId());
-
         middleBtn.setVisibility(View.GONE);
         return view;
     }
@@ -84,7 +78,28 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
         }
     }
 
-    @Override
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if(getArguments() != null){
+			popupItem = (PopupItem) getArguments().getSerializable(POPUP_ITEM);
+		}else{
+			popupItem = (PopupItem) savedInstanceState.getSerializable(POPUP_ITEM);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		messageTxt.setText(Html.fromHtml(popupItem.getMessage(getActivity())));
+		titleTxt.setText(popupItem.getTitle(getActivity()));
+
+		leftBtn.setText(popupItem.getPositiveBtnId());
+		middleBtn.setText(popupItem.getNegativeBtnId());
+		rightBtn.setText(popupItem.getNegativeBtnId());
+	}
+
+	@Override
     public void onClick(View view) {
         if(listener == null){  // TODO handle NPE
             dismiss();

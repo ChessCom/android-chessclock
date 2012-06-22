@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 
 
@@ -16,13 +17,19 @@ import com.chess.model.PopupItem;
  */
 public class PopupProgressFragment extends DialogFragment {
 
+	private static final String POPUP_ITEM = "popup item";
+
 	private PopupItem popupItem;
     private boolean cancelable;
+	private TextView titleTxt;
+	private TextView messageTxt;
 
 
-    public static PopupProgressFragment newInstance(PopupItem popupItem) {
+	public static PopupProgressFragment newInstance(PopupItem popupItem) {
 		PopupProgressFragment frag = new PopupProgressFragment();
-		frag.popupItem = popupItem;
+		Bundle arguments = new Bundle();
+		arguments.putSerializable(POPUP_ITEM, popupItem);
+		frag.setArguments(arguments);
 		return frag;
 	}
 
@@ -36,12 +43,8 @@ public class PopupProgressFragment extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.popup_progress, container, false);
 
-		TextView titleTxt = (TextView) view.findViewById(R.id.popupTitle);
-		TextView messageTxt = (TextView) view.findViewById(R.id.popupMessage);
-
-		messageTxt.setText(popupItem.getMessage(getActivity()));
-		titleTxt.setText(popupItem.getTitle(getActivity()));
-
+		titleTxt = (TextView) view.findViewById(R.id.popupTitle);
+		messageTxt = (TextView) view.findViewById(R.id.popupMessage);
 		return view;
 	}
 
@@ -52,7 +55,29 @@ public class PopupProgressFragment extends DialogFragment {
             getDialog().setCancelable(false);
     }
 
-    public void setNotCancelable(){
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if(getArguments() != null){
+			popupItem = (PopupItem) getArguments().getSerializable(POPUP_ITEM);
+		}else{
+			popupItem = (PopupItem) savedInstanceState.getSerializable(POPUP_ITEM);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		String message = popupItem.getMessage(getActivity());
+		if(!message.equals(StaticData.SYMBOL_EMPTY)){
+			messageTxt.setVisibility(View.VISIBLE);
+			messageTxt.setText(message);
+
+		}
+		titleTxt.setText(popupItem.getTitle(getActivity()));
+	}
+
+	public void setNotCancelable(){
         cancelable = false;
     }
 
@@ -61,4 +86,10 @@ public class PopupProgressFragment extends DialogFragment {
         super.onDestroyView();
         cancelable = true;
     }
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable(POPUP_ITEM, popupItem);
+	}
 }

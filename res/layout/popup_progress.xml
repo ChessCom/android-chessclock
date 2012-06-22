@@ -36,6 +36,7 @@
 		android:paddingBottom="@dimen/default_scr_top_padding"
 		style="@style/DarkShadowBottom"
 		cb:ttf="Bold"
+		android:visibility="gone"
 		/>
 
 	<ProgressBar
@@ -43,7 +44,11 @@
 		android:layout_height="wrap_content"
 		android:indeterminate="true"
 		style="?android:attr/progressBarStyleHorizontal"
-		android:padding="10dip"
+		android:paddingTop="10dip"
+		android:paddingBottom="10dip"
+		android:paddingLeft="25dip"
+		android:paddingRight="25dip"
+		android:layout_gravity="center_horizontal"
 		/>
 
 </LinearLayout>

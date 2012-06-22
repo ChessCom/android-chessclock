@@ -16,26 +16,25 @@
 
 package com.facebook.android;
 
-import android.widget.Button;
-import com.chess.R;
-import com.facebook.android.SessionEvents.AuthListener;
-import com.facebook.android.SessionEvents.LogoutListener;
-import com.facebook.android.Facebook.DialogListener;
-
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
+import com.chess.R;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.SessionEvents.AuthListener;
+import com.facebook.android.SessionEvents.LogoutListener;
 
-public class LoginButton extends /*Image*/Button {
+public class LoginButton extends Button {
     
     private Facebook mFb;
     private Handler mHandler;
     private SessionListener mSessionListener = new SessionListener();
     private String[] mPermissions;
-    private Activity mActivity;
+    private FragmentActivity mActivity;
     
     public LoginButton(Context context) {
         super(context);
@@ -49,11 +48,11 @@ public class LoginButton extends /*Image*/Button {
         super(context, attrs, defStyle);
     }
     
-    public void init(final Activity activity, final Facebook fb) {
+    public void init(final FragmentActivity activity, final Facebook fb) {
     	init(activity, fb, new String[] {});
     }
     
-    public void init(final Activity activity, final Facebook fb,
+    public void init(final FragmentActivity activity, final Facebook fb,
                      final String[] permissions) {
         mActivity = activity;
         mFb = fb;

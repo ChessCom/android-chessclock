@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -33,9 +34,9 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.chess.utilities.MyProgressDialog;
-
 import com.chess.R;
+import com.chess.model.PopupItem;
+import com.chess.ui.fragments.PopupProgressFragment;
 import com.facebook.android.Facebook.DialogListener;
 
 public class FbDialog extends Dialog {
@@ -51,25 +52,35 @@ public class FbDialog extends Dialog {
     static final String DISPLAY_STRING = "touch";
     static final String FB_ICON = "icon.png";
 
+	private static final String PROGRESS_TAG = "popup progress dialog";
+
+
     private String mUrl;
     private DialogListener mListener;
-    private MyProgressDialog mSpinner;
+//    private MyProgressDialog mSpinner;
+	protected PopupItem popupProgressItem;
+	protected PopupProgressFragment popupProgressDialogFragment;
     private ImageView mCrossImage;
     private WebView mWebView;
     private FrameLayout mContent;
+	private FragmentActivity fragmentActivity;
 
-    public FbDialog(Context context, String url, DialogListener listener) {
+	public FbDialog(Context context, String url, DialogListener listener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         mUrl = url;
         mListener = listener;
+		fragmentActivity = (FragmentActivity) context;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSpinner = new MyProgressDialog(getContext());
-        mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mSpinner.setMessage("Loading...");
+//        mSpinner = new MyProgressDialog(getContext());
+//        mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        mSpinner.setMessage("Loading...");
+
+		popupProgressItem = new PopupItem();
+		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         mContent = new FrameLayout(getContext());
@@ -177,13 +188,19 @@ public class FbDialog extends Dialog {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Util.logd("Facebook-WebView", "Webview loading URL: " + url);
             super.onPageStarted(view, url, favicon);
-            mSpinner.show();
+			popupProgressItem.setTitle(R.string.loading);
+			popupProgressDialogFragment.show(fragmentActivity.getSupportFragmentManager(),
+					PROGRESS_TAG);
+//            mSpinner.show();
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            mSpinner.dismiss();
+			if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
+				popupProgressDialogFragment.getDialog().dismiss();
+
+//            mSpinner.dismiss();
             /* 
              * Once webview is fully loaded, set the mContent background to be transparent
              * and make visible the 'x' image. 
@@ -193,4 +210,13 @@ public class FbDialog extends Dialog {
             mCrossImage.setVisibility(View.VISIBLE);
         }
     }
+
+	@Override
+	public void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null) {
+			popupProgressDialogFragment.getDialog().dismiss();
+			popupProgressDialogFragment = null;
+		}
+	}
 }
