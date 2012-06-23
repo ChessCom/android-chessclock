@@ -42,9 +42,9 @@ public abstract class ActionBarHelper {
 	 * helper or Honeycomb-specific helper will be returned.
 	 */
 	public static ActionBarHelper createInstance(Activity activity) {
-		if (Build.VERSION.SDK_INT >= StaticData.ICE_CREAM_SANDWICH) {
+		if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH) {
 			return new ActionBarHelperICS(activity);
-		} else if (Build.VERSION.SDK_INT >= StaticData.HONEYCOMB) {
+		} else if (Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB) {
 			return new ActionBarHelperHoneycomb(activity);
 		} else {
 			return new ActionBarHelperBase(activity);

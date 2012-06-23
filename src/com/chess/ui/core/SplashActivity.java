@@ -3,6 +3,7 @@ package com.chess.ui.core;
 import android.content.Intent;
 import android.os.Bundle;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -17,16 +18,10 @@ public class SplashActivity extends CoreActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_screen);
 
-		//defaults
-//		mainApp.loadBoard(mainApp.res_boards[mainApp.getSharedData().getInt(AppData.getUserName(getContext())
-//						+ AppConstants.PREF_BOARD_TYPE, 8)]);
-//
-//		mainApp.loadPieces(mainApp.getSharedData().getInt(AppData.getUserName(getContext())
-//				+ AppConstants.PREF_PIECES_SET, 0));
-
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			mainApp.guest = true;
+			DataHolder.getInstance().setGuest(true);
 		} else {
 			if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
 				AppUtils.startNotificationsUpdate(this);
@@ -34,6 +29,7 @@ public class SplashActivity extends CoreActivity {
 
 			startActivity(new Intent(this, HomeScreenActivity.class));
 			mainApp.guest = false;
+			DataHolder.getInstance().setGuest(false);
 		}
 		finish();
 	}

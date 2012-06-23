@@ -21,7 +21,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/onlineChallenges"
 			android:paddingLeft="@dimen/default_linear_left_padding"
-			android:paddingTop="@dimen/margin_top_beween_buttons"
+			android:paddingTop="@dimen/margin_top_between_buttons"
 			/>
 
 		<ListView
@@ -44,7 +44,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/challengeFriend"/>
 
 		<com.chess.RoboButton
@@ -52,7 +52,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/createNewChallenge"/>
 
 		<com.chess.RoboButton
@@ -60,7 +60,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dip"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/currentGame"
 			android:visibility="gone"/>
 

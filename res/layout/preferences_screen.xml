@@ -208,8 +208,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/invite"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 
 		<com.chess.RoboButton
@@ -217,7 +216,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/contactUs"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 
 		<com.chess.RoboButton
@@ -225,7 +224,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/logout"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 	</LinearLayout>
 </ScrollView>

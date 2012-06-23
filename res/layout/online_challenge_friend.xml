@@ -137,7 +137,7 @@
 			android:id="@+id/createchallenge"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/ChallengeCreate"/>
 	</LinearLayout>
 

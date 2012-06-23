@@ -42,9 +42,9 @@ public abstract class ActionBarHelperHome {
 	 * helper or Honeycomb-specific helper will be returned.
 	 */
 	public static ActionBarHelperHome createInstance(Activity activity) {
-		if (Build.VERSION.SDK_INT >= StaticData.ICE_CREAM_SANDWICH) {
+		if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH) {
 			return new ActionBarHelperICSHome(activity);
-		} else if (Build.VERSION.SDK_INT >= StaticData.HONEYCOMB) {
+		} else if (Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB) {
 			return new ActionBarHelperHoneycombHome(activity);
 		} else {
 			return new ActionBarHelperBaseHome(activity);
@@ -98,8 +98,9 @@ public abstract class ActionBarHelperHome {
 	 * @param id of item to show/hide
 	 * @param show
 	 */
-	public abstract void hideMenuItemById(int id, boolean show);
+	public abstract void showMenuItemById(int id, boolean show);
 
+	public abstract void showMenuItemById(int itemId, boolean connected, Menu menu);
 	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
 	 * The implementation of this method in {@link actionbarcompat.ActionBarHelperBase} returns
@@ -110,5 +111,4 @@ public abstract class ActionBarHelperHome {
 		return superMenuInflater;
 	}
 
-	public abstract void hideMenuItemById(int itemId, boolean connected, Menu menu);
 }

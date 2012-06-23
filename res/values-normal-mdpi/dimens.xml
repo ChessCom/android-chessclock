@@ -74,7 +74,7 @@
 
 	<!--Default margins between screen widgets-->
 
-	<dimen name="margin_top_beween_buttons">10dip</dimen>
+	<dimen name="margin_top_between_buttons">10dip</dimen>
 
 	<!--Linear Description paddings-->
 	<dimen name="default_linear_bottom_padding">2dip</dimen>

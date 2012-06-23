@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string-array name="languages">
+		<item>English</item>
+		<item>Русский</item>
+	</string-array>
+
+	<string-array name="languages_codes">
+		<item>en</item>
+		<item>ru</item>
+	</string-array>
+
+
+	<integer-array name="comp_strength">
+		<item>1000</item>
+		<item>3000</item>
+		<item>5000</item>
+		<item>10000</item>
+		<item>30000</item>
+		<item>60000</item>
+	</integer-array>
 
 
 	<string-array name="playas">
@@ -590,4 +609,6 @@
         <item>Western Sahara</item>
         <item>British Virgin Islands</item>
     </string-array>
+
+
 </resources>

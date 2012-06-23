@@ -116,7 +116,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 	}
 
 	@Override
-	public void hideMenuItemById(int id, boolean show){
+	public void showMenuItemById(int id, boolean show){
 		if(getActionBarCompat() != null && getActionBarCompat().findViewById(id) != null)
 			getActionBarCompat().findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
 	}
@@ -156,7 +156,7 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 	}
 
 	@Override
-	public void hideMenuItemById(int itemId, boolean connected, Menu menu) {
+	public void showMenuItemById(int itemId, boolean connected, Menu menu) {
 
 	}
 

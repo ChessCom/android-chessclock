@@ -126,14 +126,14 @@
 			android:id="@+id/start"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/start_new_game"/>
 
 		<com.chess.RoboButton
 			android:id="@+id/load"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/load"
 			android:visibility="gone"/>
 

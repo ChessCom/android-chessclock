@@ -23,7 +23,7 @@ public class RestHelper {
 	public static final String R_OPPONENT_MOVE = "Success+0";
 
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
-	private static final String BASE_URL = "http://www.chess.com";
+	public static final String BASE_URL = "http://www.chess.com";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
 	public static final String API_V2 = "/api/v2";
@@ -43,6 +43,7 @@ public class RestHelper {
 	public static final String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
 	public static final String ECHESS_MOBILE_STATS = BASE_URL + "/echess/mobile-stats/";
 	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
+	public static final String GOOGLE_PLAY_URI = "market://details?id=com.chess";
 
 	public static final String VACATION_LEAVE = BASE_URL + API + "/vacation_leave";
 	public static final String VACATION_RETURN = BASE_URL + API + "/vacation_return";
@@ -71,7 +72,8 @@ public class RestHelper {
 	public static final String ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
 
 	public static final String LOGIN = BASE_URL + API_V2 + "/login";
-	public static final String GET_FRIENDS = BASE_URL + API_V2 + "/get_friends";
+	public static final String GET_FRIENDS_ONLINE = BASE_URL + API_V2 + "/get_friends";
+	public static final String GET_FRIENDS = BASE_URL + API + "/get_friends";
 	public static final String GET_VIDEOS  = BASE_URL + API_V2 + "/get_videos";
 
 	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
@@ -269,15 +271,11 @@ public class RestHelper {
 	}
 
 	private static String formUrl(List<NameValuePair> nameValuePairs) {
-		List<NameValuePair> safeList = new ArrayList<NameValuePair> ();
+		List<NameValuePair> safeList = new ArrayList<NameValuePair>();
 		safeList.addAll(nameValuePairs);
 		String url = "?";
 		for (NameValuePair pair: safeList) {
-//			try {
-				url += pair.getName() + "=" + /*URLEncoder.encode(*/pair.getValue()/*, AppConstants.UTF_8)*/;
-//			} catch (UnsupportedEncodingException e) {
-//				AppUtils.logD(TAG, e.toString());
-//			}
+            url += pair.getName() + "=" + pair.getValue();
 			url += "&";
 		}
 		return url.substring(0, url.length()-1);
@@ -297,10 +295,11 @@ public class RestHelper {
 //				+ "&goto=http%3A%2F%2Fwww."
 //				+ LccHolder.HOST + "%2Fmembership.html" + param;
 	}
+
 	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 		String fullUrl = formUrl(loadItem.getRequestParams());
-		Log.d("TEST", "pagination part = " + fullUrl);
+        Log.d("TEST", "pagination part = " + fullUrl);
 		return loadItem.getLoadPath() + fullUrl;
 	}
 }

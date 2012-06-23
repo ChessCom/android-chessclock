@@ -26,16 +26,16 @@ public class AppData {
 		return preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 	}
 
-	public static int getAfterMoveAction(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
-	}
+    public static int getAfterMoveAction(Context context) {
+        SharedPreferences preferences = getPreferences(context);
+        String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+        return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
+    }
 
-	public static String getUserName(Context context){
-		SharedPreferences preferences = getPreferences(context);
-		return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-	}
+    public static String getUserName(Context context){
+        SharedPreferences preferences = getPreferences(context);
+        return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+    }
 
 	public static String getPassword(Context context) {
 		SharedPreferences preferences = getPreferences(context);
@@ -77,6 +77,17 @@ public class AppData {
 		return preferences.getInt(userName + AppConstants.PREF_PIECES_SET, 0);
 	}
 
+	public static int getLanguageCode(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getInt(userName + StaticData.SHP_LANGUAGE, 0);
+	}
+
+	public static String getUserSessionId(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		return preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY);
+	}
+
 	public static boolean playSounds(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
@@ -91,6 +102,8 @@ public class AppData {
 //	public static boolean isTacticsGameMode(BoardFace boardFace) {
 //		return isTacticsGameMode(boardFace.getMode());
 //	}
+
+	/* Game modes */
 
 	public static boolean isFinishedEchessGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;

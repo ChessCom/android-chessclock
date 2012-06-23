@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,7 +20,10 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
 import com.chess.model.GameListItem;
+import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
+
+import java.util.Locale;
 
 /**
  * AppUtils class
@@ -31,7 +35,6 @@ public class AppUtils {
 
 	private static final int MDPI_DENSITY = 1;
 	private static boolean ENABLE_LOG = true;
-
 
 
 	public static void setBackground(View mainView, Context context) {
@@ -92,7 +95,7 @@ public class AppUtils {
 		openList.putExtra(GameListItem.GAME_ID, id);
 		openList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
 				|Intent.FLAG_ACTIVITY_NEW_TASK);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openList, PendingIntent.FLAG_ONE_SHOT); // TODO use flags
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openList, PendingIntent.FLAG_ONE_SHOT);
 
 		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.open_app_t_see_msg), contentIntent);
 
@@ -119,7 +122,7 @@ public class AppUtils {
 
 		Intent intent = new Intent(context, clazz);
 		intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -133,6 +136,25 @@ public class AppUtils {
 			}
 		});
 		player.start();
+	}
+
+	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id, long gameId) {
+		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
+		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+		intent.putExtra(GameListItem.GAME_ID, gameId);
+		intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
+
+		notification.setLatestEventInfo(context, title, body, contentIntent);
+
+		notifyManager.notify(R.id.notification_message, notification);
 	}
 
 	/**
@@ -171,7 +193,6 @@ public class AppUtils {
 		notifyManager.cancel(R.id.notification_message);
 	}
 
-
 	public static boolean isNeedToUpgrade(Context context){
 		boolean liveMembershipLevel = false;
 		User user = LccHolder.getInstance(context).getUser();
@@ -181,6 +202,32 @@ public class AppUtils {
 		}
 		return liveMembershipLevel
 				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);
+	}
+
+	/**
+	 *
+	 * @param context
+	 * @return true if locale was changed
+	 */
+	public static boolean changeLocale(Context context){
+		String prevLang = context.getResources().getConfiguration().locale.getLanguage();
+//		Log.d("TEST", " used locale = " + prevLang);
+//		Log.d("TEST", " def locale = " + Locale.ENGLISH.getLanguage());
+		String[] languageCodes = context.getResources().getStringArray(R.array.languages_codes);
+
+		String setLocale = languageCodes[AppData.getLanguageCode(context)];
+//		Log.d("TEST", " setLocale = " + setLocale);
+		boolean changed = false;
+		if(!prevLang.equals(setLocale)) {
+			changed = true;
+			Locale locale = new Locale(setLocale);
+			Locale.setDefault(locale);
+			Configuration config = new Configuration();
+			config.locale = locale;
+			context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+		}
+
+		return changed;
 	}
 
 }

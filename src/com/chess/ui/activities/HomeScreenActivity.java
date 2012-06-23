@@ -78,7 +78,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	protected void onResume() {
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
 
 		if (MopubHelper.isShowAds(this)) {
 			showFullScreenAd();
@@ -126,7 +126,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			lccHolder.logout();
-			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
+			getActionBarHelper().showMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
 		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
 			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
 			lccHolder.getAndroidStuff().runAcceptChallengeTask(currentChallenge);
@@ -149,7 +149,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected(), menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, lccHolder.isConnected(), menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

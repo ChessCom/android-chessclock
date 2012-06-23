@@ -4,9 +4,6 @@ import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
@@ -35,7 +32,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 	@Override
 	protected void  onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(Build.VERSION.SDK_INT >= StaticData.ICE_CREAM_SANDWICH && getActionBar() != null){
+		if(Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH && getActionBar() != null){
 			getActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
 					| ActionBar.DISPLAY_USE_LOGO
 					| ActionBar.DISPLAY_SHOW_HOME
@@ -62,7 +59,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 			lccHolder.declineAllChallenges(currentChallenge);
 			lccHolder.getAndroidStuff().runAcceptChallengeTask(currentChallenge);
 		}
-
 	}
 
 	@Override
@@ -74,15 +70,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar{
 			popupManager.remove(fragment);
 		}else
             fragment.getDialog().dismiss();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.sign_out, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, lccHolder.isConnected(), menu);
-		Log.d("TEST", "onCreateOptionsMenu called ");
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

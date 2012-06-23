@@ -8,6 +8,7 @@ package com.chess.backend.statics;
  */
 public class StaticData {
 	/*Result constatnts*/
+	public static final int NO_NETWORK = -4;
 	public static final int UNKNOWN_ERROR = -1;
 	public static final int RESULT_OK = 0;
 	public static final int EMPTY_DATA = 1;
@@ -18,10 +19,13 @@ public class StaticData {
 	public static final String SYMBOL_SPACE = " ";
 	public static final String SYMBOL_NEW_STR = "\n";
 	public static final String SYMBOL_EMPTY = "";
+	public static final String SYMBOL_LEFT_PAR = "(";
+	public static final String SYMBOL_RIGHT_PAR = ")";
+
 
 	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";
 
-//	public static final String SAVED_STATE = "saved_state";
+	public static final String SAVED_STATE = "saved_state";
 	public static final String REQUEST_CODE = "pending_intent_request_code";
 	public static final String NAVIGATION_CMD = "navigation_command";
 
@@ -31,7 +35,7 @@ public class StaticData {
 
 	/* Notification requests codes */
 	public static final int MOVE_REQUEST_CODE = 22;
-	//	public static final String SHP_USER_LAST_MOVE_UPDATE_TIME = "user_last_saw_your_move_time";
+//	public static final String SHP_USER_LAST_MOVE_UPDATE_TIME = "user_last_saw_your_move_time";
 	public static final String SHARED_DATA_NAME = "sharedData";
 
 	/* After move actions */
@@ -41,7 +45,7 @@ public class StaticData {
 
 	/* Alarm notification update interval */
 	public static final long REMIND_ALARM_INTERVAL = 5*60*1000; // 5 minutes
-//		public static final long REMIND_ALARM_INTERVAL = 10*1000; // 10 sec
+	//	public static final long REMIND_ALARM_INTERVAL = 10*1000; // 10 sec
 	public static final int YOUR_MOVE_UPDATE_ID = 33;
 
 //	public static final String SAVED_STATE = "saved_state";
@@ -55,6 +59,9 @@ public class StaticData {
 //	public static final int B_MARBLE_ID 	= 6;
 //	public static final int B_RED_ID 		= 7;
 //	public static final int B_TAN_ID 		= 8;
+
+
+	public static final String SHP_LANGUAGE = "application language";
 
 	/* User types */
 	public static final int BASIC_USER = 0;
@@ -73,6 +80,6 @@ public class StaticData {
 	public static final int STAFF_LEVEL = 90;
 
 
-	public static final int ICE_CREAM_SANDWICH = 14;
-	public static final int HONEYCOMB = 11;
+	public static final int SDK_ICE_CREAM_SANDWICH = 14;
+	public static final int SDK_HONEYCOMB = 11;
 }

@@ -1,6 +1,7 @@
 package com.chess.backend.tasks;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
@@ -54,4 +55,11 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 		}
 	}
 
+	public AbstractUpdateTask<T, Input> executeTask(Input... input){
+		if(Build.VERSION.SDK_INT > StaticData.SDK_HONEYCOMB){
+			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
+		}else
+			execute(input);
+		return this;
+	}
 }

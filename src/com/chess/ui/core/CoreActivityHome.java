@@ -174,7 +174,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 	@Override
 	public void onConnected(boolean connected) {
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, connected);
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, connected);
 	}
 
 	private class ReconnectTask extends AsyncTask<Void, Void, Void> {

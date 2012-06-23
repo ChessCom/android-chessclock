@@ -30,7 +30,7 @@ public class VideosAdapter extends ItemsAdapter<VideoItem> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.videolistelement, parent, false);
+		View view = inflater.inflate(R.layout.video_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.title);
 		holder.timesTxt = (TextView) view.findViewById(R.id.times);

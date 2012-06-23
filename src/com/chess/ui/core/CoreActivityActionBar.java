@@ -356,6 +356,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, connected);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.sign_out, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
