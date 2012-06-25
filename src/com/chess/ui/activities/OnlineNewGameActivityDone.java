@@ -22,7 +22,7 @@ import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 
-public class OnlineNewGameActivity2 extends LiveBaseActivity2 implements OnItemClickListener {
+public class OnlineNewGameActivityDone extends LiveBaseActivity2 implements OnItemClickListener {
 
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
@@ -126,25 +126,6 @@ public class OnlineNewGameActivity2 extends LiveBaseActivity2 implements OnItemC
 	}
 
 	@Override
-	protected void onPause() {
-		/*if (MobclixHelper.isShowAds(mainApp)) {
-			MobclixHelper.pauseAdview(MobclixHelper.getBannerAdview(mainApp), mainApp);
-		}*/
-		super.onPause();
-	}
-
-
-
-	/*@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		System.out.println("LCCLOG: onWindowFocusChanged hasFocus " + hasFocus);
-		if (hasFocus && MobclixHelper.isShowAds(mainApp) && mainApp.isForceBannerAdOnFailedLoad()) {
-			MobclixHelper.showBannerAd( upgradeBtn, this, mainApp);
-		}
-	}*/
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
@@ -195,6 +176,14 @@ public class OnlineNewGameActivity2 extends LiveBaseActivity2 implements OnItemC
 					+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
 			showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
+			popupItem.setPositiveBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+
+//			new AlertDialog.Builder(OnlineNewGameActivity.this)
+//					.setTitle(title)
+//					.setItems(new String[]{getString(R.string.accept),
+//							getString(R.string.decline)}, echessDialogListener)
+//					.create().show();
 		}
 	}
 
@@ -205,6 +194,9 @@ public class OnlineNewGameActivity2 extends LiveBaseActivity2 implements OnItemC
 
 		@Override
 		public void updateData(String returnedObj) {
+			if(isPaused)
+				return;
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {

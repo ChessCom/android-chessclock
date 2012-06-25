@@ -35,7 +35,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 08.02.12 7:12
  */
-public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnClickListener,
+public class OnlineScreenActivityDone extends LiveBaseActivity2 implements View.OnClickListener,
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
 	public static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private ListView gamesList;
@@ -49,7 +49,6 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 	public static int ONLINE_CALLBACK_CODE = 32;
 
 	private GameListItem gameListElement;
-	private static final int CHALLENGE_RESULT_SENT = 2;
 	private static final int ACCEPT_DRAW = 0;
 	private static final int DECLINE_DRAW = 1;
 	private int successToastMsgId;
@@ -85,7 +84,7 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 
 		gamesTypeSpinner.setSelection(currentListType);
 		gamesTypeSpinner.setOnItemSelectedListener(this);
-		selectUpdateType(gamesTypeSpinner.getSelectedItemPosition());
+        selectUpdateType(gamesTypeSpinner.getSelectedItemPosition());
 
 		gamesList = (ListView) findViewById(R.id.onlineGamesList);
 		gamesList.setOnItemClickListener(this);
@@ -130,6 +129,7 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 	@Override
 	protected void onPause() {
 		super.onPause();
+
 		unregisterReceiver(challengesUpdateReceiver);
 		handler.removeCallbacks(updateListOrder);
 	}
@@ -141,7 +141,9 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 	private Runnable updateListOrder = new Runnable() {
 		@Override
 		public void run() {
-			updateList(selectedLoadItem);
+            updateList(selectedLoadItem);
+
+			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_DELAY);
 		}
 	};
@@ -181,12 +183,12 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 
 				gamesList.setAdapter(gamesAdapter);
 
-				gamesTypeSpinner.setSelection(currentListType);
+                gamesTypeSpinner.setSelection(currentListType);
 				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				String status = returnedObj.split("[+]")[1];
-				
-				showSinglePopupDialog(R.string.error, status);
+				if(!isPaused)
+				    showSinglePopupDialog(R.string.error, status);
 
 				if(status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN))
 					AppUtils.stopNotificationsUpdate(getContext());
@@ -274,7 +276,6 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-
 				preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 				preferencesEditor.commit();
 
@@ -333,7 +334,7 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
-		} else if (view.getId() == R.id.tournaments) {// !_Important_! Use instead of switch due issue of ADT14
+		} else if (view.getId() == R.id.tournaments) {
 
 			String playerTournamentsLink = RestHelper.formTournamentsLink(AppData.getUserToken(this));
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(playerTournamentsLink));
@@ -353,7 +354,6 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
 		gameListElement = (GameListItem) adapterView.getItemAtPosition(pos);
 
-
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 			clickOnChallenge();
 		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
@@ -370,12 +370,6 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 				popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_PENDING_TAG);
 				popupDialogFragment.setButtons(3);
 
-//				new AlertDialog.Builder(this)
-//						.setTitle(getString(R.string.accept_draw_q))
-//						.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
-//						.setNeutralButton(getString(R.string.decline), acceptDrawDialogListener)
-//						.setNegativeButton(getString(R.string.game), acceptDrawDialogListener).create();
-
 			} else {
 				DataHolder.getInstance().setAcceptdraw(false);
 
@@ -388,9 +382,8 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
 			preferencesEditor.commit();
 
-			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
-			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId()); // TODO eliminate strings parameters
+			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
+			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
 			startActivity(intent);
 		}
 	}
@@ -398,7 +391,6 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
 		gameListElement = (GameListItem) adapterView.getItemAtPosition(pos);
-
 
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
 			clickOnChallenge();
@@ -421,7 +413,6 @@ public class OnlineScreenActivity2 extends LiveBaseActivity2 implements View.OnC
 		}
 		return true;
 	}
-
 
 	private BroadcastReceiver challengesUpdateReceiver = new BroadcastReceiver() {
 		@Override

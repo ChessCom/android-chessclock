@@ -1,12 +1,11 @@
 package com.chess.ui.activities;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.DialogFragment;
+import android.text.format.DateUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,12 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.CheckUpdateTask2;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.core.CoreActivity;
@@ -41,18 +42,24 @@ import java.net.URLEncoder;
  */
 public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener/*, DialogInterface.OnDismissListener*/ {
 
+	private static final String CHECK_UPDATE_TAG = "check update";
+	private static int SIGNIN_CALLBACK_CODE = 16;
+	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
+	private static final int MIN_USERNAME_LENGTH = 3;
+	private static final int MAX_USERNAME_LENGTH = 20;
+
+
 	private EditText usernameEdt;
 	private EditText passwordEdt;
 
 	private Facebook facebook;
-	private static int SIGNIN_CALLBACK_CODE = 16;
-	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
 //	private ProgressDialog loginUpdateDialog;
 	private AsyncTask<LoadItem, Void, Integer> loginTask;
 	private AsyncTask<LoadItem, Void, Integer> postDataTask;
 //	private boolean dialogDismissed = true;
+    private boolean forceFlag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,26 +86,23 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		facebookLoginButton.init(this, facebook);
 
 		loginUpdateListener = new LoginUpdateListener();
-
-
 	}
 
 	private void signInUser(){
-
-		if (usernameEdt.getText().toString().length() < 3
-				|| usernameEdt.getText().toString().length() > 20) {
-			usernameEdt.setError(getString(R.string.check_field));
+		String userName = getTextFromField(usernameEdt);
+		if (userName.length() < MIN_USERNAME_LENGTH || userName.length() > MAX_USERNAME_LENGTH) {
+			usernameEdt.setError(getString(R.string.validateUsername));
 			usernameEdt.requestFocus();
-			mainApp.showDialog(getContext(), getString(R.string.error), getString(R.string.validateUsername));
+//			mainApp.showDialog(getContext(), getString(R.string.error), getString(R.string.validateUsername));
 			return;
 		}
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.LOGIN);
-		loadItem.addRequestParams(RestHelper.P_USER_NAME, usernameEdt.getText().toString());
-		loadItem.addRequestParams(RestHelper.P_PASSWORD, passwordEdt.getText().toString());
+		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 
-		postDataTask = new PostDataTask(loginUpdateListener).execute(loadItem);
+		postDataTask = new PostDataTask(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
@@ -124,12 +128,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		return false;
 	}
 
-//	@Override
-//	public void onDismiss(DialogInterface dialogInterface) {
-//		dialogDismissed = true;
-//
-//	}
-
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
@@ -139,7 +137,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
 			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
 
-			loginTask = new GetStringObjTask(loginUpdateListener).execute(loadItem);
+			loginTask = new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
 
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
@@ -180,11 +178,11 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 					if (responseArray.length >= 4) {
 						if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
 							preferencesEditor.putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
-							doUpdate(responseArray);
+							processLogin(responseArray);
 						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
 							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
 							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-							doUpdate(responseArray);
+							processLogin(responseArray);
 						}
 					}
 				}
@@ -193,23 +191,14 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){
 				// Error+<error_message>
-				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
+				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-
 		}
 	}
 
 	private void showLoginProgress(boolean show){
 		if (isPaused)
 			return;
-
-//		if(!dialogDismissed)
-//			return;
 
 		if(show){
             showPopupHardProgressDialog(R.string.signingin);
@@ -220,20 +209,28 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 	@Override
 	protected void onResume() {
+		super.onResume();
 		if (mainApp.isLiveChess()) {
 			mainApp.setLiveChess(false);
+			DataHolder.getInstance().setLiveChess(false);
 		}
-		super.onResume();
-		usernameEdt.setText(AppData.getUserName(getContext()));
-		passwordEdt.setText(preferences.getString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY));
+
+		usernameEdt.setText(AppData.getUserName(this));
+		passwordEdt.setText(AppData.getPassword(this));
+
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		if (startDay == 0 || !DateUtils.isToday(startDay)) {
+			checkUpdate();
+		}
 	}
+
 
 	@Override
 	public void update(int code) {
 
 	}
 
-	private void doUpdate(String[] response) {
+	private void processLogin(String[] response) {
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
@@ -244,16 +241,67 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
 		preferencesEditor.commit();
 
-		FlurryAgent.onEvent("Logged In"); // TODO hide to Flurry Data
-		if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)){
+		FlurryAgent.onEvent(FlurryData.LOGGED_IN);
+		if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)){
 			AppUtils.startNotificationsUpdate(this);
 		}
 
 		mainApp.guest = false;
+		DataHolder.getInstance().setGuest(false);
 
 		Intent intent = new Intent(this, HomeScreenActivity.class);
 		startActivity(intent);
 		finish();
+	}
+
+	private void checkUpdate() {
+//        new CheckUpdateTask(this).execute(RestHelper.GET_ANDROID_VERSION);
+		new CheckUpdateTask2(new CheckUpdateListener()).executeTask(RestHelper.GET_ANDROID_VERSION);
+//		new CheckUpdateTaskHttp(new CheckUpdateListener()).executeTask(RestHelper.GET_ANDROID_VERSION);
+	}
+
+
+
+	private class CheckUpdateListener extends AbstractUpdateListener<Boolean> {
+		public CheckUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+		}
+
+		@Override
+		public void updateData(Boolean returnedObj) {
+			showToast("Login check update finished");
+
+			forceFlag = returnedObj;
+			if (isPaused)
+				return;
+
+			showPopupDialog(R.string.update_check, R.string.update_available_please_update,
+					CHECK_UPDATE_TAG);
+			popupDialogFragment.setButtons(1);
+		}
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+
+		if(fragment.getTag().equals(CHECK_UPDATE_TAG)){
+			if (forceFlag) {
+				// drop start day
+				preferencesEditor.putLong(AppConstants.START_DAY, 0);
+				preferencesEditor.commit();
+
+				// as we are already on login screen, we don't need to open it again
+//				startActivity(new Intent(getContext(), LoginScreenActivity.class));
+//				finish();
+			}
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
+			startActivity(intent);
+		}
 	}
 
 	@Override
@@ -261,6 +309,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		super.onActivityResult(requestCode, resultCode, data);
 		facebook.authorizeCallback(requestCode, resultCode, data);
 	}
+
 
 	@Override
 	protected void onPause() {
@@ -271,14 +320,8 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		if(postDataTask != null)
 			postDataTask.cancel(true);
 
-//		if(loginUpdateDialog != null) {
-//			Log.d("TEST", "setOnDismissListener set, dismiss called");
-//			loginUpdateDialog.dismiss();
-//			loginUpdateDialog.setOnDismissListener(this);
-//		}
 	}
-	
-	
+
 	@Override
 	public void onBackPressed() {
 		finish();

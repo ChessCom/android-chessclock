@@ -22,10 +22,10 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.utilities.ChessComApiParser;
 
-public class OnlineFriendChallengeActivity2 extends LiveBaseActivity2 implements OnClickListener {
+public class OnlineFriendChallengeActivityDone extends LiveBaseActivity2 implements OnClickListener {
 
-	private static final String CONGRATULATIONS_TAG = "congratulations";
-	private static final String ERROR_TAG = "send request failed";
+	private static final String CONGRATULATIONS_TAG = "congratulations popup";
+	private static final String ERROR_TAG = "send request failed popup";
 
 	private Spinner iPlayAsSpinner;
 	private Spinner daysPerMoveSpinner;
@@ -109,7 +109,7 @@ public class OnlineFriendChallengeActivity2 extends LiveBaseActivity2 implements
 		friendsSpinner.setAdapter(friendsAdapter);
 		if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 
-			new AlertDialog.Builder(OnlineFriendChallengeActivity2.this) // TODO change popup
+			new AlertDialog.Builder(OnlineFriendChallengeActivityDone.this) // TODO change popup
 					.setIcon(android.R.drawable.ic_dialog_alert)
 					.setTitle(getString(R.string.sorry))
 					.setMessage(getString(R.string.nofriends))
@@ -120,7 +120,7 @@ public class OnlineFriendChallengeActivity2 extends LiveBaseActivity2 implements
 					})
 					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
-//								finish();
+								finish();
 						}
 					}).setCancelable(false)
 					.create().show();

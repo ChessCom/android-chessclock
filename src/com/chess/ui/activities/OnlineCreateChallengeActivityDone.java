@@ -14,7 +14,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 
-public class OnlineCreateChallengeActivity2 extends LiveBaseActivity2 implements OnClickListener {
+public class OnlineCreateChallengeActivityDone extends LiveBaseActivity2 implements OnClickListener {
 	private Spinner iplayas;
 	private Spinner daysPerMoveSpinner;
 	private Spinner minrating;
@@ -28,7 +28,6 @@ public class OnlineCreateChallengeActivity2 extends LiveBaseActivity2 implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_create_challenge);
-
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
@@ -124,7 +123,6 @@ public class OnlineCreateChallengeActivity2 extends LiveBaseActivity2 implements
 
 		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
 	}
-
 
 	private class CreateChallengeUpdateListener extends ChessUpdateListener2 {
 		public CreateChallengeUpdateListener() {

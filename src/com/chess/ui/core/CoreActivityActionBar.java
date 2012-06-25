@@ -342,6 +342,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		finish();
 	}
 
+	protected void backToLoginActivity() {
+		Intent intent = new Intent(this, LoginScreenActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		finish();
+	}
+
 	public void dismissAllPopups(){
 		for (PopupDialogFragment fragment : popupManager) {
 			fragment.getDialog().dismiss();

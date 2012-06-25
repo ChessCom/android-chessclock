@@ -41,7 +41,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 7:34
  */
-public class SignUpScreenActivity2 extends CoreActivityActionBar implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class SignUpScreenActivityDone extends CoreActivityActionBar implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
 	private EditText userNameEdt;

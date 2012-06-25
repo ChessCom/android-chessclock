@@ -119,7 +119,7 @@ public abstract class CoreActivity2 extends FragmentActivity implements PopupDia
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 
-    // Single button no callback dialogs
+	// Single button no callback dialogs
 	protected void showSinglePopupDialog(int titleId, int messageId) {
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
 		popupDialogFragment.setButtons(1);
@@ -145,7 +145,7 @@ public abstract class CoreActivity2 extends FragmentActivity implements PopupDia
 		popupDialogFragment.setButtons(1);
 	}
 
-    // Default Dialogs
+	// Default Dialogs
 	protected void showPopupDialog(int titleId, int messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
@@ -175,7 +175,7 @@ public abstract class CoreActivity2 extends FragmentActivity implements PopupDia
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
-    // Progress Dialogs
+	// Progress Dialogs
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
@@ -187,9 +187,15 @@ public abstract class CoreActivity2 extends FragmentActivity implements PopupDia
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
-	protected void showPopupProgressDialog(int title) {
-		popupProgressItem.setTitle(title);
+	protected void showPopupProgressDialog(int titleId) {
+		popupProgressItem.setTitle(titleId);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+	}
+
+	protected void showPopupHardProgressDialog(int titleId) {
+		popupProgressItem.setTitle(titleId);
+		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+		popupProgressDialogFragment.setNotCancelable();
 	}
 
 	protected void showPopupProgressDialog(int titleId, int messageId) {
