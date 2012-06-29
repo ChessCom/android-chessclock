@@ -193,7 +193,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements View.
 		return super.onCreateDialog(id);
 	}
 
-	protected void getOnlineGame(long game_id) {
+	protected void getOnlineGame(long game_id) { // todo: should be renamed to getGame?
 		if (appService != null && appService.getRepeatableTimer() != null) {
 			appService.getRepeatableTimer().cancel();
 			appService.setRepeatableTimer(null);

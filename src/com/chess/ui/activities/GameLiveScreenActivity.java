@@ -132,7 +132,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 
         registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
 
-        if (mainApp.isLiveChess() && mainApp.getGameId() > 0 && lccHolder.getGame(mainApp.getGameId()) != null) {
+        if (mainApp.getGameId() > 0 && lccHolder.getGame(mainApp.getGameId()) != null) {
             game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
                     lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
             lccHolder.getAndroidStuff().setGameActivity(this);
@@ -182,13 +182,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	protected void getOnlineGame(long game_id) {
 		super.getOnlineGame(game_id);
-		if (mainApp.isLiveChess()) {
-			update(CALLBACK_GAME_STARTED);
-		}
-		
-//		if(DataHolder.getInstance().isLiveChess()) {
-//			update(CALLBACK_GAME_STARTED);
-//		}
+		update(CALLBACK_GAME_STARTED);
 	}
 
 	@Override
@@ -227,16 +221,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				showSubmitButtonsLay(false);
 
 				//String myMove = getBoardFace().MoveSubmit();
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())) {
-					final String move = getBoardFace().convertMoveLive();
-					LccHolder.LOG.info("LCC make move: " + move);
-					/*try {*/
-						lccHolder.makeMove(mainApp.getCurrentGameId(), move);
-					/*} catch (IllegalArgumentException e) {
-						LccHolder.LOG.info("LCC illegal move: " + move);
-						e.printStackTrace();
-					}*/
-				}
+				final String move = getBoardFace().convertMoveLive();
+				LccHolder.LOG.info("LCC make move: " + move);
+				/*try {*/
+					lccHolder.makeMove(mainApp.getCurrentGameId(), move);
+				/*} catch (IllegalArgumentException e) {
+					LccHolder.LOG.info("LCC illegal move: " + move);
+					e.printStackTrace();
+				}*/
 				break;
 			}
 			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
@@ -282,10 +274,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				if (getBoardFace().isAnalysis())
 					return;
 
-				if (!mainApp.isLiveChess()) {
-					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
-				}
-
 				if (mainApp.getCurrentGame() == null || game == null) {
 					return;
 				}
@@ -296,41 +284,29 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 						mainApp.setCurrentGame(game);
 						String[] moves;
 
-						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
-								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())))) {
+						moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(0).split(" ");
 
-							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())) ? 0 : 1;
+						if (moves.length - getBoardFace().getMovesCount() == 1) {
+							moveFT = MoveParser.parseCoordinate(getBoardFace(), moves[moves.length - 1]);
 
-							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
+							boolean playSound = lccHolder.getGame(mainApp.getCurrentGameId()).getSeq() == moves.length;
 
-							if (moves.length - getBoardFace().getMovesCount() == 1) {
-								if (mainApp.isLiveChess()) {
-									moveFT = MoveParser.parseCoordinate(getBoardFace(), moves[moves.length - 1]);
+							if (moveFT.length == 4) {
+								Move move;
+								if (moveFT[3] == 2) {
+									move = new Move(moveFT[0], moveFT[1], 0, 2);
 								} else {
-									moveFT = MoveParser.parse(getBoardFace(), moves[moves.length - 1]);
+									move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 								}
-								boolean playSound = (mainApp.isLiveChess()
-										&& lccHolder.getGame(mainApp.getCurrentGameId())
-										.getSeq() == moves.length)
-										|| !mainApp.isLiveChess();
-
-								if (moveFT.length == 4) {
-									Move move;
-									if (moveFT[3] == 2) {
-										move = new Move(moveFT[0], moveFT[1], 0, 2);
-									} else {
-										move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									}
-									getBoardFace().makeMove(move, playSound);
-								} else {
-									Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-									getBoardFace().makeMove(move, playSound);
-								}
-								//mainApp.showToast("Move list updated!");
-								getBoardFace().setMovesCount(moves.length);
-								boardView.invalidate();
-								update(CALLBACK_REPAINT_UI);
+								getBoardFace().makeMove(move, playSound);
+							} else {
+								Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+								getBoardFace().makeMove(move, playSound);
 							}
+							//mainApp.showToast("Move list updated!");
+							getBoardFace().setMovesCount(moves.length);
+							boardView.invalidate();
+							update(CALLBACK_REPAINT_UI);
 						}
 						return;
 					}
@@ -366,8 +342,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
 					getBoardFace().setMovesCount(moves.length);
-				} else if (!mainApp.isLiveChess()) {
-					getBoardFace().setMovesCount(0);
 				}
 
 				Game game = lccHolder.getGame(mainApp.getGameId());
