@@ -738,7 +738,8 @@ public class ChessBoard implements BoardFace {
 		/* test to see if a castle move is legal and move the rook
 			   (the king is moved with the usual move code later) */
 		int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		int distance;
+		int kingToRookDistance;
+		int kingDistance;
 		if ((move.bits & 2) != 0) {
 			int from = -1, to = -1;
 
@@ -747,7 +748,7 @@ public class ChessBoard implements BoardFace {
 			if (inCheck(side))
 				return false;
 
-//			distance = Math.abs(move.from - move.to);
+			kingToRookDistance = Math.abs(move.from - move.to);
 			int minMove = move.to;
 			if (move.from < move.to) minMove = move.from;
 
@@ -756,7 +757,7 @@ public class ChessBoard implements BoardFace {
 			while (i < bKingMoveOO.length) {
 				if (bKingMoveOO[i] == move.to) {
 					what = 0;
-//					distance = Math.abs(move.from - bRook2);
+					kingToRookDistance = Math.abs(move.from - bRook2);
 					minMove = bRook2;
 					if (move.from < bRook2) minMove = move.from;
 					break;
@@ -767,7 +768,7 @@ public class ChessBoard implements BoardFace {
 			while (i < bKingMoveOOO.length) {
 				if (bKingMoveOOO[i] == move.to) {
 					what = 1;
-//					distance = Math.abs(move.from - bRook1);
+					kingToRookDistance = Math.abs(move.from - bRook1);
 					minMove = bRook1;
 					if (move.from < bRook1) minMove = move.from;
 					break;
@@ -778,7 +779,7 @@ public class ChessBoard implements BoardFace {
 			while (i < wKingMoveOO.length) {
 				if (wKingMoveOO[i] == move.to) {
 					what = 2;
-//					distance = Math.abs(move.from - wRook2);
+					kingToRookDistance = Math.abs(move.from - wRook2);
 					minMove = wRook2;
 					if (move.from < wRook2)
 						minMove = move.from;
@@ -790,7 +791,7 @@ public class ChessBoard implements BoardFace {
 			while (i < wKingMoveOOO.length) {
 				if (wKingMoveOOO[i] == move.to) {
 					what = 3;
-//					distance = Math.abs(move.from - wRook1);
+					kingToRookDistance = Math.abs(move.from - wRook1);
 					minMove = wRook1;
 					if (move.from < wRook1)
 						minMove = move.from;
@@ -804,9 +805,9 @@ public class ChessBoard implements BoardFace {
 
 			if (what == 2) {
 
-				distance = Math.abs(wKing - G1);
+				kingDistance = Math.abs(wKing - G1);
 				int minimalSquare = Math.min(wKing, G1);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -822,13 +823,13 @@ public class ChessBoard implements BoardFace {
 					return false;
 
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != wRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -836,9 +837,9 @@ public class ChessBoard implements BoardFace {
 				to = F1;
 			} else if (what == 3) {
 
-				distance = Math.abs(wKing - C1);
+				kingDistance = Math.abs(wKing - C1);
 				int minimalSquare = Math.min(wKing, C1);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -853,13 +854,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[D1] == ROOK && D1 != wRook1)
 					return false;
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != wRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -867,9 +868,9 @@ public class ChessBoard implements BoardFace {
 				to = D1;
 			} else if (what == 1) {
 
-				distance = Math.abs(bKing - C8);
+				kingDistance = Math.abs(bKing - C8);
 				int minimalSquare = Math.min(bKing, C8);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -884,13 +885,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[D8] == ROOK && D8 != bRook1)
 					return false;
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != bRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -898,9 +899,9 @@ public class ChessBoard implements BoardFace {
 				to = D8;
 			} else if (what == 0) {
 
-				distance = Math.abs(bKing - G8);
+				kingDistance = Math.abs(bKing - G8);
 				int minimalSquare = Math.min(bKing, G8);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -916,13 +917,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[G8] == ROOK && bRook2 != G8)
 					return false;
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != bRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -1061,7 +1062,7 @@ public class ChessBoard implements BoardFace {
 		/* back up information so we can take the move back later. */
 		histDat[hply] = new HistoryData();
 		histDat[hply].move = move;
-		histDat[hply].capture = pieces[ move.to];
+		histDat[hply].capture = pieces[move.to];
 		histDat[hply].ep = ep;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
