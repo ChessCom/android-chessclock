@@ -200,7 +200,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public void newGame() {
 		boardView.stopThinking = true;
-		onBackPressed();
+		startActivity(new Intent(this, GameCompScreenActivity.class));
 	}
 
 	@Override

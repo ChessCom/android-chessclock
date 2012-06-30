@@ -203,13 +203,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					.replaceAll("  ", " ").substring(1).split(" ");
 
 			getBoardFace().setMovesCount(moves.length);
-		} else if (!mainApp.isLiveChess()) {
+		} else {
 			getBoardFace().setMovesCount(0);
-		}
-
-		Game game = lccHolder.getGame(mainApp.getGameId());
-		if (game != null && game.getSeq() > 0) {
-			lccHolder.doReplayMoves(game);
 		}
 
 		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
@@ -255,7 +250,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 					checkMessages();
 				}
 				invalidateGameScreen();
-			}else {
+			} else {
 				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
 			}
 		}
@@ -265,13 +260,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity implements View.O
 		mainApp.setCurrentGame(game);
 		String[] moves;
 
-		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
-				|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())))) {
-
-			int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(getBoardFace())) ? 0 : 1;
+		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 
 			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]",
-					StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
+					StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
 
 			if (moves.length - getBoardFace().getMovesCount() == 1) {
 				boardView.updateMoves(moves[moves.length - 1]);
