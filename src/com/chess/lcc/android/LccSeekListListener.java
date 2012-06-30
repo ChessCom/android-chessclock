@@ -4,6 +4,7 @@
 
 package com.chess.lcc.android;
 
+import android.util.Log;
 import com.chess.backend.statics.AppConstants;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.PaginationInfo;
@@ -13,17 +14,16 @@ import com.chess.live.client.SubscriptionId;
 import java.util.Collection;
 
 public class LccSeekListListener implements SeekListListener {
+	private static final String TAG = "LccSeekListListener";
+	private final LccHolder lccHolder;
+
 	public LccSeekListListener(LccHolder lccHolder) {
-		if (lccHolder == null) {
-			throw new NullPointerException(AppConstants.LCC_HOLDER_IS_NULL);
-		}
 		this.lccHolder = lccHolder;
 	}
 
 	public void onSeekListReceived(SubscriptionId id, Collection<Challenge> challenges, Integer total) {
 		if (challenges != null) {
-			LccHolder.LOG
-					.info("SEEK LIST LISTENER: Public Seek list received: size = " + challenges.size() + ", total = " + total);
+			Log.i(TAG, "SEEK LIST LISTENER: Public Seek list received: size = " + challenges.size() + ", total = " + total);
 			/*LccUser.LOG.debug(
 					"SEEK LIST LISTENER: Public Seek received: subscriptionId = " + ((SubscriptionIdImpl) id).toDebugString() +
 					", size = " + challenges.size() + ", total = " + total);*/
@@ -33,20 +33,20 @@ public class LccSeekListListener implements SeekListListener {
 			}
 			lccHolder.setSeekListSubscriptionId(id);
 		} else {
-			LccHolder.LOG.info("SEEK LIST LISTENER: Public Seek list received, but it is null");
+			Log.i(TAG, "SEEK LIST LISTENER: Public Seek list received, but it is null");
 		}
 	}
 
 	@Override
 	public void onSeekItemAdded(SubscriptionId id, Challenge challenge) {
-		//LccHolder.LOG.info("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
+		//Log.i("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
 		addSeek(challenge);
 	}
 
 	@Override
 	public void onSeekItemRemoved(SubscriptionId id, Long seekId) {
 		if (lccHolder.isSeekContains(seekId)) {
-			LccHolder.LOG.info("Seek item removed: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE + seekId);
+			Log.i(TAG, "Seek item removed: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE + seekId);
 			/*Seek seek = user.getConnection().getJinSeek(seekId);
 				  if(seek == null)
 				  {
@@ -59,30 +59,29 @@ public class LccSeekListListener implements SeekListListener {
 
 	@Override
 	public void onPaginationInfoReceived(SubscriptionId id, PaginationInfo info) {
-		/*LccHolder.LOG.info(
+		/*Log.i(
 			  "PAGINATION INFO LISTENER: Pagination info received: pageCount = " + info.getPageCount() + ", itemsCount=" +
 			  info.getItemsCount());*/
 	}
 
 	private void addSeek(Challenge challenge) {
 		if (challenge.getFrom().isComputer()) {
-			//LccHolder.LOG.info("Seek received: ignore computer player");
+			//Log.i("Seek received: ignore computer player");
 			return;
 		}
 		if (lccHolder.isUserBlocked(challenge.getFrom().getUsername())) {
-			LccHolder.LOG.info("Add seek: blocked user");
+			Log.i(TAG, "Add seek: blocked user");
 			return;
 		}
 		if (lccHolder.isSeekContains(challenge.getId())) {
-			LccHolder.LOG.info("Add seek: ignore seek, already exists");
+			Log.i(TAG, "Add seek: ignore seek, already exists");
 			return;
 		}
 		/*if (challenge.getFrom().getUsername().equals(lccHolder.getUser().getUsername()))
 			{
-			  LccHolder.LOG.info("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
+			  Log.i("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
 			  lccHolder.putSeek(challenge);
 			}*/
 	}
 
-	private final LccHolder lccHolder;
 }

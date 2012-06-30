@@ -18,6 +18,7 @@ import com.chess.ui.interfaces.PopupDialogFace;
  */
 public class PopupCustomViewFragment extends DialogFragment implements View.OnClickListener {
 
+	private static final String POPUP_ITEM = "popup item";
 	private PopupDialogFace listener;
 	private PopupItem popupItem;
 	private Button leftBtn;
@@ -26,7 +27,9 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
 
     public static PopupCustomViewFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();
-		frag.popupItem = popupItem;
+		Bundle arguments = new Bundle();
+		arguments.putSerializable(POPUP_ITEM, popupItem);
+		frag.setArguments(arguments);
 		frag.listener = listener;
 		return frag;
 	}
@@ -48,9 +51,6 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
 		leftBtn = (Button)v.findViewById(R.id.positiveBtn);
 		rightBtn = (Button)v.findViewById(R.id.negativeBtn);
 
-		leftBtn.setText(popupItem.getPositiveBtnId());
-		rightBtn.setText(popupItem.getNegativeBtnId());
-
 		leftBtn.setOnClickListener(this);
 		rightBtn.setOnClickListener(this);
 		return v;
@@ -65,16 +65,29 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
     }
 
     @Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if(getArguments() != null){
+			popupItem = (PopupItem) getArguments().getSerializable(POPUP_ITEM);
+		}else{
+			popupItem = (PopupItem) savedInstanceState.getSerializable(POPUP_ITEM);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		leftBtn.setText(popupItem.getPositiveBtnId());
+		rightBtn.setText(popupItem.getNegativeBtnId());
+	}
+
+	@Override
 	public void onClick(View view) {
 		if(view.getId() == R.id.positiveBtn){
 			listener.onPositiveBtnClick(this);
 		}else if(view.getId() == R.id.negativeBtn){
 			listener.onNegativeBtnClick(this);
 		}
-	}
-
-	public void updatePopupItem(PopupItem popupItem) {
-		this.popupItem = popupItem;
 	}
 
     public void setButtons(int buttonsNumber){

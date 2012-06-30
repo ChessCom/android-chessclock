@@ -8,12 +8,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
+import com.chess.backend.entity.DataHolder;
 import com.chess.lcc.android.LccHolder;
-import com.chess.ui.core.MainApp;
 
 public class NetworkChangeService extends Service {
-
-	public MainApp mainApp;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -22,7 +20,6 @@ public class NetworkChangeService extends Service {
 
 	public void onCreate() {
 		super.onCreate();
-		mainApp = (MainApp) getApplication();
 		registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 	}
 
@@ -36,18 +33,14 @@ public class NetworkChangeService extends Service {
 		@Override
 		public void onReceive(final Context context, final Intent intent) {
 
-			if (!mainApp.isLiveChess()) {
+			if (!DataHolder.getInstance().isLiveChess()) {
 				return;
 			}
 
-//			if(!DataHolder.getInstance().isLiveChess()) {
-//				return;
-//			}
-
-			LccHolder lccHolder = mainApp.getLccHolder();
+			LccHolder lccHolder = LccHolder.getInstance(context);
 
 			/*boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
-					System.out.println("!!!!!!!! NetworkChangeReceiver failover=" + failover);*/
+								   System.out.println("!!!!!!!! NetworkChangeReceiver failover=" + failover);*/
 
 			final ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);

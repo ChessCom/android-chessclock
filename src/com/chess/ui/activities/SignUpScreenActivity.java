@@ -23,7 +23,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.core.CoreActivityActionBar;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
@@ -132,78 +131,10 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
 	@Override
-	public void update(int code) {
-		if (code == 0) {
-//			String query = "http://www." + LccHolder.HOST + AppConstants.API_V2_LOGIN;
-//			try {
-//				if (appService != null) {
-//					appService.RunSingleTaskPost(1,
-//                            query,
-//                            progressDialog = new MyProgressDialog(
-//                                    ProgressDialog.show(context, null, getString(R.string.loading), true)),
-//                            AppConstants.USERNAME, userNameEdt.getText().toString(),
-//                            AppConstants.PASSWORD, passwordEdt.getText().toString()
-//                    );
-//				}
-//			} catch (Exception ignored) { // TODO handle correctly
-//			}
-		} else if (code == 1) {
-//			FlurryAgent.onEvent("New Account Created", null);  // TODO
-//			String[] r = response.split(":");
-//			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
-//			preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
-//			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, r[0].split("[+]")[1]);
-//			preferencesEditor.putString(AppConstants.API_VERSION, r[1]);
-//			try {
-//				preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(r[2], AppConstants.UTF_8));
-//			} catch (UnsupportedEncodingException ignored) {
-//			}
-//			preferencesEditor.putString(AppConstants.USER_SESSION_ID, r[3]);
-//			preferencesEditor.commit();
-//
-//			startActivity(new Intent(context, HomeScreenActivity.class));
-//			finish();
-//
-//			showToast(R.string.congratulations);
-		}
-//        if (response.length() > 0) {
-//            final String[] responseArray = response.split(":");
-//            if (responseArray.length >= 4) {
-//                if (code == SIGNIN_CALLBACK_CODE) {
-//                    preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().trim().toLowerCase());
-//                    doUpdate(responseArray);
-//                } else if (code == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-//                    FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
-//                    preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-//                    doUpdate(responseArray);
-//                }
-//            }
-//        }
-
-	}
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.RegSubmitBtn) {
 			if (checkRegisterInfo())
 				submitRegisterInfo();
-
-//			String query = StaticData.SYMBOL_EMPTY;
-//			try {
-//				query = "http://www." + LccHolder.HOST
-//                        + "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), AppConstants.UTF_8)
-//                        + "&password=" + URLEncoder.encode(passwordEdt.getText().toString(), AppConstants.UTF_8)
-//						+ "&email=" + URLEncoder.encode(emailEdt.getText().toString(), AppConstants.UTF_8)
-//						+ "&country_id=" + CID + "&app_type=android";
-//			} catch (Exception e) {   // TODO handle correctly
-//			}
-
-//			if (appService != null) {
-//				appService.RunSingleTask(0,
-//						query,
-//						progressDialog = new MyProgressDialog(ProgressDialog.show(context, null, getString(R.string.loading), true))
-//				);
-//			}
 		}
 	}
 
@@ -244,14 +175,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
 	private void submitRegisterInfo() {
-
-//		String query = "http://www." + LccHolder.HOST
-//				+ "/api/register?username=" + URLEncoder.encode(userNameEdt.getText().toString(), AppConstants.UTF_8)
-//				+ "&password=" + URLEncoder.encode(passwordEdt.getText().toString(), AppConstants.UTF_8)
-//				+ "&email=" + URLEncoder.encode(emailEdt.getText().toString(), AppConstants.UTF_8)
-//				+ "&country_id=" + CID
-//				+ "&app_type=android";
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.REGISTER);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
@@ -305,7 +228,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 					showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login);
 					return;
 				}
-				//mainApp.getSharedDataEditor().putString(AppConstants.USER_SESSION_ID, r[3]);
 				preferencesEditor.commit();
 
 				startActivity(new Intent(context, HomeScreenActivity.class));
@@ -347,7 +269,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
 			AppUtils.startNotificationsUpdate(this);
 		}
-		mainApp.guest = false;
 		DataHolder.getInstance().setGuest(false);
 
 
@@ -367,19 +288,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
 
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
-
-
-//            String query = "http://www." + LccHolder.HOST + "/api/v2/login?facebook_access_token="
-//                    + facebook.getAccessToken() + "&return=username";
-//            response = Web.Request(query, "GET", null, null);
-//
-//            if (response.contains("Success+")) {
-//                update(SIGNIN_FACEBOOK_CALLBACK_CODE);
-//            } else if (response.contains("Error+Facebook user has no Chess.com account")) {
-//                showToast(R.string.no_chess_account_signup_please);
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-//                        + "/register.html")));
-//            }
 		}
 
 		@Override

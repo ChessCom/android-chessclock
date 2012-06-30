@@ -54,11 +54,6 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 	}
 
 	@Override
-	public void update(int code) {
-	}
-
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 

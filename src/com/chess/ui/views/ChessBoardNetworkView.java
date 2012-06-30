@@ -11,7 +11,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.interfaces.GameActivityFace2;
+import com.chess.ui.interfaces.GameActivityFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -27,7 +27,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 	protected abstract boolean need2ShowSubmitButtons();
 
-	public void setGameActivityFace(GameActivityFace2 gameActivityFace) {
+	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
 
 		whiteUserName = gameActivityFace.getWhitePlayerName();

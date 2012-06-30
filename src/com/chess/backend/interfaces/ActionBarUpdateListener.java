@@ -1,7 +1,7 @@
 package com.chess.backend.interfaces;
 
 import actionbarcompat.ActionBarHelper;
-import com.chess.ui.activities.CoreActivityActionBar2;
+import com.chess.ui.activities.CoreActivityActionBar;
 
 /**
  * ChessUpdateListener class
@@ -12,13 +12,14 @@ import com.chess.ui.activities.CoreActivityActionBar2;
 public abstract class ActionBarUpdateListener<T> extends AbstractUpdateListener<T> {
 	private ActionBarHelper actionBarHelper;
 
-	public ActionBarUpdateListener(CoreActivityActionBar2 coreActivityActionBar) {
+	public ActionBarUpdateListener(CoreActivityActionBar coreActivityActionBar) {
 		super(coreActivityActionBar);
 		actionBarHelper = coreActivityActionBar.provideActionBarHelper();
 	}
 
 	@Override
 	public void showProgress(boolean show) {
-		actionBarHelper.setRefreshActionItemState(show);
+		if(actionBarHelper != null)
+			actionBarHelper.setRefreshActionItemState(show);
 	}
 }

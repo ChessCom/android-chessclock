@@ -76,7 +76,6 @@ public class ChessComApiParser {
 					tmp2[j] = tmp[inc++];
 				}
 				output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, tmp2, false));
-//				output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp2, false));
 			}
 		} catch (Exception e) {
 			return output;

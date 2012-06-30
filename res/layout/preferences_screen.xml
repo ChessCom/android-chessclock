@@ -143,9 +143,33 @@
 			android:layout_height="wrap_content"
 			android:background="@drawable/underline_grey"
 			style="@style/lineDivider"
-
 			/>
 
+		<!-- Language -->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/LinearDescription"
+			>
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/language"
+				android:layout_weight="6"
+				/>
+
+			<Spinner
+				android:id="@+id/langSpinner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:entries="@array/languages"
+				/>
+
+		</LinearLayout>
+
+		<!-- Board -->
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -168,6 +192,7 @@
 
 		</LinearLayout>
 
+		<!-- Pieces -->
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

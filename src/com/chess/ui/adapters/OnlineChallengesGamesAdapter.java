@@ -25,7 +25,7 @@ public class OnlineChallengesGamesAdapter extends OnlineGamesAdapter {
 			gameType = " (960)";
 		}
 
-		String opponentRating = "(" + item.values.get(GameListItem.OPPONENT_RATING) + ")";
+		String opponentRating = StaticData.SYMBOL_LEFT_PAR + item.values.get(GameListItem.OPPONENT_RATING) + StaticData.SYMBOL_RIGHT_PAR;
 		String userName = item.values.get(GameListItem.OPPONENT_USERNAME);
 
 		holder.playerTxt.setText(userName + StaticData.SYMBOL_SPACE + opponentRating);

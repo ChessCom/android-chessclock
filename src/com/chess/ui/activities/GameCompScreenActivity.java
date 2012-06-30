@@ -8,14 +8,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.core.MainApp;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.views.ChessBoardCompView;
 
 /**
  * GameTacticsScreenActivity class
@@ -23,9 +23,11 @@ import com.chess.ui.engine.Move;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class GameCompScreenActivity extends GameBaseActivity implements View.OnClickListener {
+public class GameCompScreenActivity extends GameBaseActivity implements GameCompActivityFace {
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
+	private ChessBoardCompView boardView;
+	private int[] compStrengthArray;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,40 +37,50 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		init();
 		widgetsInit();
-		onPostCreate();
 	}
 
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
 
+		boardView = (ChessBoardCompView) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setGamePanelView(gamePanelView);
+
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);
+		setBoardView(boardView);
+
 		getBoardFace().setInit(true);
 		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		boardView.setGameActivityFace(this);
 
-		if (MainApp.isComputerGameMode(getBoardFace()) && AppData.haveSavedCompGame(this)) { // if load game
+
+		gamePanelView.turnCompMode();
+
+		if (AppData.isComputerGameMode(getBoardFace())
+				&& AppData.haveSavedCompGame(this)) { // if load game
 			loadSavedGame();
 
-			if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace()))
+			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace()))
 				getBoardFace().setReside(true);
 
 		} else {
-			if (MainApp.isComputerVsHumanBlackGameMode(getBoardFace())) {
+			if (AppData.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
 				getBoardFace().setReside(true);
 				boardView.invalidate();
-				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+				boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 			}
-			if (MainApp.isComputerVsComputerGameMode(getBoardFace())) {
-				boardView.computerMove(mainApp.strength[preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0)]);
+			if (AppData.isComputerVsComputerGameMode(getBoardFace())) {
+				boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 			}
 		}
-        gamePanelView.turnCompMode();
-    }
+
+	}
 
 	@Override
-	protected void init() {
+	public void init() {
 		super.init();
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.ngwhite),
@@ -76,74 +88,29 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 				getString(R.string.emailgame),
 				getString(R.string.settings)};
 
+		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
+
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 	}
 
 	@Override
-	protected void onDrawOffered(int whichButton) {
+	public String getWhitePlayerName() {
+		return null;
 	}
 
 	@Override
-	protected void onAbortOffered(int whichButton) {
+	public String getBlackPlayerName() {
+		return null;
 	}
 
 	@Override
-	protected void getOnlineGame(long game_id) {
-	}
+	public void onGameRefresh() {
 
-	@Override
-	public void update(int code) {
-		switch (code) {
-			case CALLBACK_REPAINT_UI: {
-				switch (getBoardFace().getMode()) {
-					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-						whitePlayerLabel.setText(AppData.getUserName(this));
-						blackPlayerLabel.setText(getString(R.string.Computer));
-						break;
-					}
-					case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(AppData.getUserName(this));
-						break;
-					}
-					case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-						whitePlayerLabel.setText(AppData.getUserName(this)/*getString(R.string.Human)*/);
-						blackPlayerLabel.setText(getString(R.string.Human));
-						break;
-					}
-					case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-						whitePlayerLabel.setText(getString(R.string.Computer));
-						blackPlayerLabel.setText(getString(R.string.Computer));
-						break;
-					}
-
-					default:
-						break;
-				}
-
-				boardView.addMove2Log(getBoardFace().getMoveListSAN());
-				break;
-			}
-			case CALLBACK_COMP_MOVE: {
-				whitePlayerLabel.setVisibility(View.GONE);
-				blackPlayerLabel.setVisibility(View.GONE);
-				thinking.setVisibility(View.VISIBLE);
-				break;
-			}
-			case CALLBACK_PLAYER_MOVE: {
-				whitePlayerLabel.setVisibility(View.VISIBLE);
-				blackPlayerLabel.setVisibility(View.VISIBLE);
-				thinking.setVisibility(View.GONE);
-				break;
-			}
-			default:
-				break;
-		}
 	}
 
 	@Override
 	public void showOptions() {
-		boardView.stopThinking = true;
+		boardView.stopThinking(); // stopThinking = true;
 
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
@@ -151,26 +118,70 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
+	public void showSubmitButtonsLay(boolean show) {
+
+	}
+
+	@Override
+	public void showChoosePieceDialog(int col, int row) {
+	}
+
+	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		if(isAnalysis){
-			boardView.stopThinking = true;
+			boardView.stopThinking();
 		}else {
-//			boardView.stopThinking = true;
-			boardView.compmoving = false;
-//			restoreGame();
+			boardView.think();
 		}
 		super.switch2Analysis(isAnalysis);
 	}
 
     @Override
     public void updateAfterMove() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public void invalidateGameScreen() {
-        //TODO To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void invalidateGameScreen() {
+		switch (boardView.getBoardFace().getMode()) {
+			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
+				whitePlayerLabel.setText(AppData.getUserName(this));
+				blackPlayerLabel.setText(getString(R.string.Computer));
+				break;
+			}
+			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
+				whitePlayerLabel.setText(getString(R.string.Computer));
+				blackPlayerLabel.setText(AppData.getUserName(this));
+				break;
+			}
+			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
+				whitePlayerLabel.setText(getString(R.string.Human));
+				blackPlayerLabel.setText(getString(R.string.Human));
+				break;
+			}
+			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
+				whitePlayerLabel.setText(getString(R.string.Computer));
+				blackPlayerLabel.setText(getString(R.string.Computer));
+				break;
+			}
+		}
+
+		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+	}
+
+	@Override
+	public void onPlayerMove() {
+		whitePlayerLabel.setVisibility(View.VISIBLE);
+		blackPlayerLabel.setVisibility(View.VISIBLE);
+		thinking.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void onCompMove() {
+		whitePlayerLabel.setVisibility(View.GONE);
+		blackPlayerLabel.setVisibility(View.GONE);
+		thinking.setVisibility(View.VISIBLE);
+
+	}
 
     @Override
 	protected void restoreGame(){
@@ -199,8 +210,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 	@Override
 	public void newGame() {
-		boardView.stopThinking = true;
-		startActivity(new Intent(this, GameCompScreenActivity.class));
+		boardView.stopThinking();
+		onBackPressed();
 	}
 
 	@Override
@@ -237,6 +248,11 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public Boolean isUserColorWhite() {
+		return AppData.isComputerVsHumanWhiteGameMode(boardView.getBoardFace());
+	}
+
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int NEW_GAME_WHITE = 0;
@@ -250,42 +266,36 @@ public class GameCompScreenActivity extends GameBaseActivity implements View.OnC
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {
-			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
+			showToast(items[i].toString());
 			switch (i) {
 				case NEW_GAME_WHITE: {
 					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
-
-					update(CALLBACK_REPAINT_UI);
-
-					getIntent().putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-
+					invalidateGameScreen();
 					break;
 				}
 				case NEW_GAME_BLACK: {
 					// TODO encapsulate
 					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-					boardView.computerMove(mainApp.strength[AppData.getCompStrength(getContext())]);
 					getBoardFace().setReside(true);
 					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
-
-					update(CALLBACK_REPAINT_UI);
-
-					getIntent().putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
+					invalidateGameScreen();
+					boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 					break;
 				}
 				case EMAIL_GAME: {
 					String moves = StaticData.SYMBOL_EMPTY;
-					Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+					String userName = AppData.getUserName(getContext());
+					Intent emailIntent = new Intent(Intent.ACTION_SEND);
 					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
-					emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
-					emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
-							+ AppData.getUserName(getContext()) + "\"]\n [White \""
-							+ AppData.getUserName(getContext()) + "\"]\n [Result \"X-X\"]\n \n \n "
+					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
+					emailIntent.putExtra(Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
+							+ userName + "\"]\n [White \""
+							+ userName + "\"]\n [Result \"X-X\"]\n \n \n "
 							+ moves + " \n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
 					break;

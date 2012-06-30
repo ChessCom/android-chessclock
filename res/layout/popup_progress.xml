@@ -7,10 +7,10 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:minWidth="@dimen/popup_dialog_width"
-	android:paddingTop="@dimen/default_scr_top_padding"
-	android:paddingBottom="@dimen/live_grid_padding_bottom"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
+	android:paddingTop="@dimen/popup_top_padding"
+	android:paddingBottom="@dimen/popup__bottom_padding"
+	android:paddingLeft="@dimen/popup_side_padding"
+	android:paddingRight="@dimen/popup_side_padding"
 	android:background="@drawable/dashboard_single_back"
 	>
 

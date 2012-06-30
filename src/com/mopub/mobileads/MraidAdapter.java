@@ -57,8 +57,8 @@ public class MraidAdapter extends BaseAdapter {
         
         mMoPubView.removeAllViews();
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.FILL_PARENT, 
-                FrameLayout.LayoutParams.FILL_PARENT);
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);
         layoutParams.gravity = Gravity.CENTER;
         mMoPubView.addView(mMraidView, layoutParams);
     }

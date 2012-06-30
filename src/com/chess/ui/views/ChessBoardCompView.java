@@ -548,7 +548,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     @Override
     public void flipBoard() {
 //        stopThinking = true;
-//        if (!compmoving) {
+        if (!compmoving) {
             getBoardFace().setReside(!getBoardFace().isReside());
             if (AppData.isComputerVsHumanGameMode(getBoardFace())) {
                 if (AppData.isComputerVsHumanWhiteGameMode(getBoardFace())) {
@@ -558,13 +558,11 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 
                 }
-                //getBoardFaceFace().mode ^= 1;
-//                computerMove(compStrength);  // TODO why is it here?
+                computerMove(compStrength);
             }
             invalidate();
-//            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 			gameActivityFace.invalidateGameScreen();
-//        }
+        }
     }
 
     @Override

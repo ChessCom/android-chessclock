@@ -124,10 +124,6 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		new GetStringObjTask(videosItemUpdateListener).executeTask(loadItem);
 	}
 
-	@Override
-	public void update(int code) {
-	}
-
 	private class VideosItemUpdateListener extends ChessUpdateListener {
 		public VideosItemUpdateListener() {
 			super(getInstance());

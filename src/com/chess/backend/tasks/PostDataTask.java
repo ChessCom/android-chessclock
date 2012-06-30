@@ -38,7 +38,6 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 
 
 	private int postData(String url, LoadItem loadItem) {
-		// Instantiate the custom HttpClient
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
@@ -55,8 +54,6 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 		}
 
 		try {
-			// test server login support
-			//httpPost.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
 			HttpResponse response = httpClient.execute(httpPost);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
