@@ -8,7 +8,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		>
-		<com.chess.ui.views.ChessBoardCompView
+		<com.chess.ui.views.ChessBoardTacticsView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -58,6 +58,15 @@
 					android:paddingRight="8dip"
 					android:drawableRight="@drawable/player_indicator_black"
 					style="@style/GameLabel.Player"
+					/>
+
+				<com.chess.RoboTextView
+					android:id="@+id/timer"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:visibility="gone"
+					style="@style/GameLabel"
 					/>
 
 				<com.chess.RoboTextView

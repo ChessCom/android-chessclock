@@ -152,12 +152,6 @@ public class AdFetcher {
         }
 
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-
-		}
-
-		@Override
         protected AdFetchResult doInBackground(String... urls) {
             AdFetchResult result = null;
             try {

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
@@ -17,11 +16,13 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.views.ChessBoardNetworkView;
+import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 
@@ -35,40 +36,52 @@ import java.util.ArrayList;
  */
 public class GameFinishedScreenActivity extends GameBaseActivity {
 
-	private View submitButtonsLay;
-
 	private MenuOptionsDialogListener menuOptionsDialogListener;
+
 	private StartGameUpdateListener startGameUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
+	private ChessBoardNetworkView boardView;
+
+	private GameItem currentGame;
+	private long gameId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.boardviewlive);
+		setContentView(R.layout.boardview_online);
 		init();
 		widgetsInit();
-		onPostCreate();
 	}
 
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		submitButtonsLay = findViewById(R.id.submitButtonsLay);
-		findViewById(R.id.submit).setOnClickListener(this);
-		findViewById(R.id.cancel).setOnClickListener(this);
-
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gamePanelView.hideChatButton();
 
+		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setGamePanelView(gamePanelView);
+		setBoardView(boardView);
+
+		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
+		if (chessBoard != null) {
+			boardView.setBoardFace(chessBoard);
+		} else {
+			boardView.setBoardFace(new ChessBoard(this));
+			getBoardFace().setInit(true);
+			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		}
+		boardView.setGameActivityFace(this);
 	}
 
 	@Override
-	protected void init() {
+	public void init() {
 		super.init();
-		mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
-
+		gameId = extras.getLong(GameListItem.GAME_ID);
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -95,24 +108,20 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private void updateGameState() {
-		getOnlineGame(mainApp.getGameId());
+		getOnlineGame(gameId);
 		getBoardFace().setInit(false);
 	}
 
-	@Override
-	protected void getOnlineGame(long game_id) {
-		super.getOnlineGame(game_id);
-
+	protected void getOnlineGame(long gameId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V3);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(game_id));
+		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
 
-		new GetStringObjTask(startGameUpdateListener).execute(loadItem);
+		new GetStringObjTask(startGameUpdateListener).executeTask(loadItem);
 	}
 
 	private class StartGameUpdateListener extends ChessUpdateListener {
-
 		public StartGameUpdateListener() {
 			super(getInstance());
 		}
@@ -122,22 +131,21 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				onGameStarted(returnedObj);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
 
 	private void onGameStarted(String returnedObj) {
-		showSubmitButtonsLay(false);
 		getSoundPlayer().playGameStart();
 
-		mainApp.setCurrentGame(ChessComApiParser.GetGameParseV3(returnedObj));
+		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
 
 		adjustBoardForGame();
 	}
 
 	private void adjustBoardForGame() {
-		if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
+		if (currentGame.values.get(GameListItem.GAME_TYPE).equals("2"))
 			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
@@ -145,22 +153,19 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		}
 		String[] moves = {};
 
-		if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-			moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST)
+		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
+			int beginIndex = 1;
+
+			moves = currentGame.values.get(AppConstants.MOVE_LIST)
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", " ").substring(1).split(" ");
+					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 			getBoardFace().setMovesCount(moves.length);
-		} else if (!mainApp.isLiveChess()) {
+		} else {
 			getBoardFace().setMovesCount(0);
 		}
 
-		Game game = lccHolder.getGame(mainApp.getGameId());
-		if (game != null && game.getSeq() > 0) {
-			lccHolder.doReplayMoves(game);
-		}
-
-		String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
+		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION);
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, getBoardFace());
@@ -177,22 +182,67 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		playLastMoveAnimation();
 	}
 
-	public void invalidateGameScreen() {
-		if (getBoardFace().isSubmit())
-			showSubmitButtonsLay(true);
+	public void onGameRefresh() {
+		currentGame = newGame;
+		String[] moves;
+		int[] moveFT;
 
-		if (mainApp.getCurrentGame() != null) {
-			whitePlayerLabel.setText(mainApp.getWhitePlayerName());
-			blackPlayerLabel.setText(mainApp.getBlackPlayerName());
+		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
+
+			int beginIndex = 1;
+
+			moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]",
+					StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
+
+			if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
+				moveFT = MoveParser.parse(boardView.getBoardFace(), moves[moves.length - 1]);
+
+				boolean playSound = false;
+
+				if (moveFT.length == 4) {
+					Move move;
+					if (moveFT[3] == 2)
+						move = new Move(moveFT[0], moveFT[1], 0, 2);
+					else
+						move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+					boardView.getBoardFace().makeMove(move, playSound);
+				} else {
+					Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+					boardView.getBoardFace().makeMove(move, playSound);
+				}
+
+				boardView.getBoardFace().setMovesCount(moves.length);
+				boardView.invalidate();
+			}
+			invalidateGameScreen();
 		}
+	}
+
+	public void invalidateGameScreen() {
+        whitePlayerLabel.setText(getWhitePlayerName());
+        blackPlayerLabel.setText(getBlackPlayerName());
 
 		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}
 
+	@Override
+	public String getWhitePlayerName() {
+		if (currentGame == null)
+			return StaticData.SYMBOL_EMPTY;
+		else
+			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+	}
+
+	@Override
+	public String getBlackPlayerName() {
+		if (currentGame == null)
+			return StaticData.SYMBOL_EMPTY;
+		else
+			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+	}
 
 	@Override
 	public void updateAfterMove() {
-
 	}
 
 	private void getGamesList() {
@@ -201,7 +251,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
-		new GetStringObjTask(gamesListUpdateListener).execute(listLoadItem);
+		new GetStringObjTask(gamesListUpdateListener).executeTask(listLoadItem);
 	}
 
 	private class GamesListUpdateListener extends ChessUpdateListener {
@@ -216,31 +266,26 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
 
 				for (GameListItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.type == GameListItem.LIST_TYPE_CURRENT && gameListItem.values.get(GameListItem.IS_MY_TURN).equals("1")) {
+					if (gameListItem.type == GameListItem.LIST_TYPE_CURRENT && gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
 						currentGames.add(gameListItem);
 					}
 				}
+
 				for (GameListItem currentGame : currentGames) {
-					if (currentGame.getGameId() != mainApp.getCurrentGameId()) {
-						showSubmitButtonsLay(false);
+					if (currentGame.getGameId() != gameId) {
 						boardView.setBoardFace(new ChessBoard(GameFinishedScreenActivity.this));
 						getBoardFace().setAnalysis(false);
 						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+
 						getOnlineGame(currentGame.getGameId()); // if next game
 						return;
 					}
 				}
 				finish();
-
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				if (!isFinishing())
-					mainApp.showDialog(getContext(), AppConstants.ERROR, returnedObj.split("[+]")[1]);
+				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
 		}
-	}
-
-	@Override
-	public void update(int code) {
 	}
 
 	@Override
@@ -248,6 +293,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		getGamesList();
 	}
 
+	public Boolean isUserColorWhite() {
+		return currentGame.values.get(AppConstants.WHITE_USERNAME).toLowerCase()
+				.equals(AppData.getUserName(this));
+	}
 
 	@Override
 	public void showOptions() {
@@ -258,8 +307,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-		getBoardFace().setSubmit(show);
 	}
 
 	@Override
@@ -282,7 +329,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				boardView.switchAnalysis();
 				break;
 			case R.id.menu_chat:
-				getOnlineGame(mainApp.getGameId());
+				getOnlineGame(gameId);
 				break;
 			case R.id.menu_previous:
 				boardView.moveBack();
@@ -319,32 +366,40 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					onBackPressed();
 					break;
 				case ECHESS_MESSAGES:
-					getOnlineGame(mainApp.getGameId());
+					getOnlineGame(gameId);
 					break;
 				case ECHESS_RESIDE:
 					getBoardFace().setReside(!getBoardFace().isReside());
 					boardView.invalidate();
 					break;
 				case ECHESS_DRAW_OFFER:
-					showDialog(DIALOG_DRAW_OFFER);
+					popupItem.setTitle(R.string.drawoffer);
+					popupItem.setMessage(R.string.are_you_sure_q);
+					popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_RECEIVED_TAG);
 					break;
 				case ECHESS_RESIGN_OR_ABORT:
-					showDialog(DIALOG_ABORT_OR_RESIGN);
+					popupItem.setTitle(R.string.abort_resign_game);
+					popupItem.setMessage(R.string.are_you_sure_q);
+					popupDialogFragment.show(getSupportFragmentManager(), ABORT_GAME_TAG);
 					break;
 			}
 		}
 	}
 
 	@Override
-	protected void onDrawOffered(int whichButton) {
-	}
-
-	@Override
-	protected void onAbortOffered(int whichButton) {
-	}
-
-	@Override
 	protected void onGameEndMsgReceived() {
 	}
 
+	@Override
+	protected void restoreGame() {
+		boardView.setBoardFace(new ChessBoard(this));
+		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+
+		adjustBoardForGame();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
 }

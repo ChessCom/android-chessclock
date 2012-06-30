@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 
-	public ArrayList<MessageItem> items;
-	private LayoutInflater vi;
+	public ArrayList<MessageItem> itemsList;
+	private LayoutInflater inflater;
 	private int resource;
 	private int ownerColor;
     private int opponentColor;
@@ -25,9 +25,9 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 
 	public MessagesAdapter(Context context, int textViewResourceId, ArrayList<MessageItem> items) {
 		super(context, textViewResourceId, items);
-		this.items = items;
-		this.vi = LayoutInflater.from(context);
-		this.resource = textViewResourceId;
+		itemsList = items;
+		inflater = LayoutInflater.from(context);
+		resource = textViewResourceId;
         ownerColor = getContext().getResources().getColor(R.color.green_button);
         opponentColor = getContext().getResources().getColor(R.color.orange_button);
 
@@ -38,20 +38,21 @@ public class MessagesAdapter extends ArrayAdapter<MessageItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = vi.inflate(resource, null);
+			convertView = inflater.inflate(resource, null);
 		}
-		MessageItem el = items.get(position);
-		if (el != null) {
-			TextView owner = (TextView) convertView.findViewById(R.id.owner);
+		MessageItem messageItem = itemsList.get(position);
+		if (messageItem != null) {
+			TextView playerLabel = (TextView) convertView.findViewById(R.id.owner);
 			TextView text = (TextView) convertView.findViewById(R.id.text);
-			if (text != null) text.setText(el.message);
-			if (owner != null) {
-				if (el.owner.equals("0")) {
-					owner.setTextColor(ownerColor);
-					owner.setText(userName);
+
+			if (text != null) text.setText(messageItem.message);
+			if (playerLabel != null) {
+				if (messageItem.owner.equals("0")) {
+					playerLabel.setTextColor(ownerColor);
+					playerLabel.setText(userName);
 				} else {
-					owner.setTextColor(opponentColor);
-					owner.setText(opponentName);
+					playerLabel.setTextColor(opponentColor);
+					playerLabel.setText(opponentName);
 				}
 			}
 		}

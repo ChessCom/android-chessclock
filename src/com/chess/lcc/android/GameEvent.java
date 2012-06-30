@@ -7,7 +7,7 @@ package com.chess.lcc.android;
 public class GameEvent {
 	public enum Event {Move, DrawOffer, EndOfGame}
 
-	;
+
 	private Event event;
 	private Long gameId;
 	private int moveIndex;

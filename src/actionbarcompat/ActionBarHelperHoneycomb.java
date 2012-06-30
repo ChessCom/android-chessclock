@@ -18,6 +18,7 @@ package actionbarcompat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,8 +63,10 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 				}
 
 				refreshItem.setActionView(mRefreshIndeterminateProgressView);
+				Log.d("TEST", " Showing progress");
 			} else {
 				refreshItem.setActionView(null);
+				Log.d("TEST", " Hide progress");
 			}
 		}
 	}
@@ -83,7 +86,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	/**
 	 * Returns a {@link android.content.Context} suitable for inflating layouts
 	 * for the action bar. The implementation for this method in
-	 * {@link ActionBarHelperICS} asks the action bar for a themed getContext().
+	 * {@link ActionBarHelperICS} asks the action bar for a themed coreContext.
 	 */
 	protected Context getActionBarThemedContext() {
 		return mActivity;

@@ -101,7 +101,7 @@ public abstract class ActionBarHelper {
 	public abstract void showMenuItemById(int id, boolean show);
 
 
-	public abstract void showMenuItemById(int itemId, boolean connected, Menu menu);
+	public abstract void showMenuItemById(int itemId, boolean show, Menu menu);
 	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
 	 * The implementation of this method in {@link ActionBarHelperBase} returns

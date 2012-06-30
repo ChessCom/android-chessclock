@@ -1,27 +1,5 @@
 package com.mopub.mobileads;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import com.chess.R;
-
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +12,23 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import com.chess.R;
+import com.chess.backend.statics.StaticData;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MraidView extends WebView {
     private static final String LOGTAG = "MraidView";
@@ -312,7 +307,7 @@ public class MraidView extends WebView {
         try {
             fos = new FileOutputStream(destinationFile);
         } catch (FileNotFoundException e) {
-            return "";
+            return StaticData.SYMBOL_EMPTY;
         }
         
         byte[] b = new byte[8192];
@@ -321,7 +316,7 @@ public class MraidView extends WebView {
                 fos.write(b, 0, n);
             }
         } catch (IOException e) {
-            return "";
+            return StaticData.SYMBOL_EMPTY;
         } finally {
             try { is.close(); fos.close(); } catch (IOException e) { }
         }

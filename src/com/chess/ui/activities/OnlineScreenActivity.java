@@ -35,7 +35,8 @@ import java.util.List;
  * @author alien_roger
  * @created at: 08.02.12 7:12
  */
-public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
+public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener,
+		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
 	public static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private ListView gamesList;
 	private Spinner gamesTypeSpinner;
@@ -79,7 +80,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
 		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.onlineSpinner));
 
-		mainApp.setLiveChess(false);
 		DataHolder.getInstance().setLiveChess(false);
 
 		gamesTypeSpinner.setSelection(currentListType);
@@ -116,9 +116,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	protected void onResume() {
-		/*if (isShowAds() && (!mainApp.isLiveChess() || (mainApp.isLiveChess() && lccHolder.isConnected()))) {
-			  MobclixHelper.showBannerAd(getBannerAdviewWrapper(), removeAds, this, mainApp);
-			}*/
 		super.onResume();
 		updateList(selectedLoadItem);
 		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
@@ -201,11 +198,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
         }
     }
 
-
-	@Override
-	public void update(int code) {
-	}
-
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
 		public ChallengeInviteUpdateListener() {
 			super(getInstance());
@@ -213,7 +205,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(isFinishing())
+			if(isPaused)
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
@@ -279,38 +271,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
 	}
 
-//	private DialogInterface.OnClickListener acceptDrawDialogListener = new DialogInterface.OnClickListener() {
-//		@Override
-//		public void onClick(DialogInterface dialog, int whichButton) {
-//			if(whichButton == DialogInterface.BUTTON_POSITIVE){
-//				LoadItem loadItem = new LoadItem();
-//				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-//				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-//				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
-//				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
-//				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
-//
-//				new GetStringObjTask(acceptDrawUpdateListener).execute(loadItem);
-//			}else if(whichButton == DialogInterface.BUTTON_NEUTRAL){
-//				LoadItem loadItem = new LoadItem();
-//				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-//				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-//				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
-//				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
-//				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
-//
-//				new GetStringObjTask(acceptDrawUpdateListener).execute(loadItem);
-//
-//			}else  if(whichButton == DialogInterface.BUTTON_NEGATIVE){
-//				startActivity(new Intent(getContext(), GameOnlineScreenActivity.class).
-//					putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
-//					putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
-//			}
-//		}
-//	};
-
-
-
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
 
 		@Override
@@ -370,54 +330,17 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	};
 
-//	@Override
-//	protected Dialog onCreateDialog(int id) {
-//		switch (id) {
-//			case 0: {
-//				if (temp_pos > -1) {
-//					return new AlertDialog.Builder(this)
-//							.setTitle(getString(R.string.accept_draw_q))
-//							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
-//							.setNeutralButton(getString(R.string.decline), acceptDrawDialogListener)
-//							.setNegativeButton(getString(R.string.game), acceptDrawDialogListener).create();
-//				}
-//			}
-//			default:
-//				break;
-//		}
-//		return super.onCreateDialog(id);
-//	}
-
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		} else if (view.getId() == R.id.tournaments) {
 
-//			String tournamentsUrl = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
-//
-//			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
-//					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-//					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-//					+ "&goto=" + tournamentsUrl)));
 			String playerTournamentsLink = RestHelper.formTournamentsLink(AppData.getUserToken(this));
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(playerTournamentsLink));
 			startActivity(intent);
 
 		} else if (view.getId() == R.id.stats) {
-
-//			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
-//					+ AppData.getUserName(getContext());
-//			try {
-//				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
-//			} catch (UnsupportedEncodingException ignored) {
-//				showToast(R.string.username_cannot_be_encoded);
-//			}
-//			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
-//					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-//					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-//					+ "&goto=" + GOTO)));
 
 			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this));
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(playerStatsLink));
@@ -438,10 +361,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			preferencesEditor.commit();
 
 			if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
-				mainApp.acceptdraw = true;
-//				temp_pos = pos;
-//				showDialog(0);
-
 				DataHolder.getInstance().setAcceptdraw(true);
 				popupItem.setTitle(R.string.accept_draw_q);
 				popupItem.setPositiveBtnId(R.string.accept);
@@ -452,7 +371,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				popupDialogFragment.setButtons(3);
 
 			} else {
-				mainApp.acceptdraw = false;
 				DataHolder.getInstance().setAcceptdraw(false);
 
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);

@@ -105,17 +105,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 //					"&iplayas=" + color +
 //					"&israted=" + israted +
 //					"&game_type=" + gametype;
-//			if (minRating != null) query += "&minrating=" + minRating;
-//			if (maxRating != null) query += "&maxrating=" + maxRating;
 
-//			if (appService != null) {
-//				appService.RunSingleTask(0,
-//						query,
-//						progressDialog = new MyProgressDialog(ProgressDialog
-//								.show(OnlineCreateChallengeActivity.this, null, getString(R.string.creating), true))
-//				);
-//			}
-//		}
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
@@ -144,7 +134,4 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 		}
 	}
 
-	@Override
-	public void update(int code) {
-	}
 }

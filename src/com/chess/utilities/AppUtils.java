@@ -197,8 +197,9 @@ public class AppUtils {
 		boolean liveMembershipLevel = false;
 		User user = LccHolder.getInstance(context).getUser();
 		if (user != null) {
-			liveMembershipLevel = DataHolder.getInstance().isLiveChess() && (user.getMembershipLevel() < StaticData.GOLD_LEVEL)
-					&& !LccHolder.getInstance(context).isConnectingInProgress();
+			liveMembershipLevel = DataHolder.getInstance().isLiveChess()
+					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL)
+					/*&& !LccHolder.getInstance(context).isConnectingInProgress()*/;
 		}
 		return liveMembershipLevel
 				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);

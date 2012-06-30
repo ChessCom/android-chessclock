@@ -7,23 +7,20 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.live.client.Chat;
-import com.chess.live.client.ChatMessage;
+import com.chess.lcc.android.LccHolder;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
-public class ChatLiveActivity extends LiveBaseActivity implements OnClickListener {
+public class ChatLiveActivity extends LiveBaseActivity {
 
 	private EditText sendEdt;
 	private ListView chatListView;
@@ -47,7 +44,6 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 	protected void onResume() {
 		super.onResume();
 		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-		updateList();
 	}
 
 	@Override
@@ -59,39 +55,23 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			updateList();
+			onMessageReceived();
 		}
 	};
 
-	public void updateList(){
+	public void onMessageReceived(){
 		int before = chatItems.size();
 		chatItems.clear();
-		chatItems.addAll(getMessagesList());
+		chatItems.addAll(LccHolder.getInstance(this).getMessagesList(gameId));
 		if (before != chatItems.size()) {
 			if (messages == null) {
-				messages = new MessagesAdapter(ChatLiveActivity.this, R.layout.chat_item, chatItems);
+				messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
 				chatListView.setAdapter(messages);
 			} else {
 				messages.notifyDataSetChanged();
 			}
 			chatListView.setSelection(chatItems.size() - 1);
 		}
-	}
-
-	private ArrayList<MessageItem> getMessagesList() {
-		ArrayList<MessageItem> output = new ArrayList<MessageItem>();
-
-		Chat chat = lccHolder.getGameChat(gameId);
-		if (chat != null) { // TODO check
-			LinkedHashMap<Long, ChatMessage> chatMessages = lccHolder.getChatMessages(chat.getId());
-			if (chatMessages != null) {
-				for (ChatMessage message : chatMessages.values()) {
-					output.add(new MessageItem(message.getAuthor().getUsername()
-							.equals(lccHolder.getUser().getUsername()) ? "0" : "1", message.getMessage()));
-				}
-			}
-		}
-		return output;
 	}
 
 	@Override
@@ -105,9 +85,9 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 
 	private void onMessageSent(){
 		chatItems.clear();
-		chatItems.addAll(getMessagesList());
+		chatItems.addAll(LccHolder.getInstance(this).getMessagesList(gameId));
 		if (messages == null) {
-			messages = new MessagesAdapter(ChatLiveActivity.this, R.layout.chat_item, chatItems);
+			messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
 			chatListView.setAdapter(messages);
 		} else {
 			messages.notifyDataSetChanged();
@@ -121,13 +101,8 @@ public class ChatLiveActivity extends LiveBaseActivity implements OnClickListene
 	private class SendMessageTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
-			lccHolder.getClient().sendChatMessage(lccHolder.getGameChat(gameId), sendEdt.getText().toString());
+			LccHolder.getInstance(getContext()).sendChatMessage(gameId, getTextFromField(sendEdt));
 			return null;
 		}
-	}
-
-	@Override
-	public void update(int code) {
-
 	}
 }

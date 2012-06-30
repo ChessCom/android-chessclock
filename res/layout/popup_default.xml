@@ -44,7 +44,7 @@
 		android:layout_height="wrap_content"
 		>
 
-		<Button
+		<com.chess.RoboButton
 			android:id="@+id/positiveBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 			android:layout_weight="1"
 			/>
 
-		<Button
+		<com.chess.RoboButton
 			android:id="@+id/middleBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
 			android:layout_gravity="center_horizontal"
 			/>
 
-		<Button
+		<com.chess.RoboButton
 			android:id="@+id/negativeBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

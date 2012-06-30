@@ -23,7 +23,7 @@ import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 
-public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickListener, OnItemClickListener {
+public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemClickListener {
 
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
@@ -53,12 +53,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		if (MopubHelper.isShowAds(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
-
-		/*if (MobclixHelper.isShowAds(mainApp)) {
-			if (MobclixHelper.getBannerAdviewWrapper(mainApp) == null || MobclixHelper.getBannerAdview(mainApp) == null) {
-				MobclixHelper.initializeBannerAdView(this, mainApp);
-			}
-		}*/
 
 		init();
 
@@ -125,40 +119,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 	}
 
 	@Override
-	public void update(int code) {
-//		if (code == INIT_ACTIVITY) {
-//			if (appService != null) {
-//				appService.RunRepeatableTask(OnlineScreenActivity.ONLINE_CALLBACK_CODE, 0, UPDATE_DELAY,
-//						"http://www." + LccHolder.HOST + AppConstants.API_ECHESS_OPEN_INVITES_ID +
-//								preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
-//						null);
-//			}
-//		} else if (code == OnlineScreenActivity.ONLINE_CALLBACK_CODE) {
-//			openChallengesListView.setVisibility(View.GONE);
-//			gameListItems.clear();
-//
-//			gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(responseRepeatable));
-//
-//			if (gamesAdapter == null) {
-//				gamesAdapter = new OnlineChallengesGamesAdapter(this, gameListItems);
-//				openChallengesListView.setAdapter(gamesAdapter);
-//			}
-//
-//			gamesAdapter.notifyDataSetChanged();
-//			openChallengesListView.setVisibility(View.VISIBLE);
-//
-//		} else if (code == CHALLENGE_RESULT_SENT) {
-//			showToast(successToastMsgId);
-//			onPause();
-//			onResume();
-//		} else if (code == 4) {
-//			onPause();
-//			onResume();
-//		}
-	}
-
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
@@ -199,24 +159,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 		}
 	}
 
-//	private DialogInterface.OnClickListener echessDialogListener = new DialogInterface.OnClickListener() {// TODO change to PopupDialog
-//		@Override
-//		public void onClick(DialogInterface d, int pos) {
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-//			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-//
-//			if (pos == ACCEPT_DRAW) {
-//				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
-//				successToastMsgId = R.string.challengeaccepted;
-//			} else if (pos == DECLINE_DRAW) {
-//				loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
-//				successToastMsgId = R.string.challengedeclined;
-//			}
-//
-//			new GetStringObjTask(challengeInviteUpdateListener).execute(loadItem);
-//		}
-//	};
 
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
@@ -230,11 +172,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 			popupItem.setPositiveBtnId(R.string.accept);
 			popupItem.setNegativeBtnId(R.string.decline);
 
-//			new AlertDialog.Builder(OnlineNewGameActivity.this)
-//					.setTitle(title)
-//					.setItems(new String[]{getString(R.string.accept),
-//							getString(R.string.decline)}, echessDialogListener)
-//					.create().show();
 		}
 	}
 
@@ -249,10 +186,8 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnClickLi
 				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-//				update(CHALLENGE_RESULT_SENT);
 				showToast(successToastMsgId);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				mainApp.showDialog(OnlineNewGameActivity.this, AppConstants.ERROR, returnedObj.split("[+]")[1]);
 				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
 		}

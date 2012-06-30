@@ -6,7 +6,6 @@ import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
-import com.chess.lcc.android.LccHolder2;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;
 import com.chess.live.client.LiveChessClientFacade;
@@ -32,18 +31,15 @@ public class InitLccClientTask extends AbstractUpdateTask<LiveChessClient, Void>
         try {
             String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 
-            InputStream keyStoreInputStream = context.getAssets().open(LccHolder2.KEY_FILE_NAME);
+            InputStream keyStoreInputStream = context.getAssets().open(LccHolder.KEY_FILE_NAME);
             Log.d(TAG, "Start Chess.Com LCC ");
-            //System.setProperty("java.net.preferIPv6Addresses", "false");
             Log.d(TAG, "Connecting to: " + LccHolder.CONFIG_BAYEUX_HOST + ":" + LccHolder.CONFIG_PORT);
 
 
             item = LiveChessClientFacade.createClient(LccHolder.AUTH_URL, LccHolder.CONFIG_BAYEUX_HOST, LccHolder.CONFIG_PORT, LccHolder.CONFIG_URI);
             item.setClientInfo("Android", versionName, "No-Key");
             item.setSupportedClientFeatures(false, false);
-            //HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
             HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-            //httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
             httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
             httpClient.setMaxConnectionsPerAddress(4);
             httpClient.setSoTimeout(7000);

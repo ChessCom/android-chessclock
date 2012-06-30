@@ -18,12 +18,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-//		new UpdateStatusTask(context).execute(AppData.getUserToken(context));
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_MOVE_STATUS);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(context));
-		new GetStringObjTask(new UpdateListener(context)).execute(loadItem);
+		new GetStringObjTask(new UpdateListener(context)).executeTask(loadItem);
 	}
 
 	private class UpdateListener extends AbstractUpdateListener<String> {

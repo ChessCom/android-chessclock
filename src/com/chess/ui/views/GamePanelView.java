@@ -277,7 +277,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         imageButton.setBackgroundResource(backId);
         imageButton.setOnClickListener(this);
         imageButton.setId(BUTTON_PREFIX + buttonId);
-//		imageButton.setEnabled(false);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

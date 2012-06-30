@@ -20,10 +20,9 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.CheckUpdateTask2;
+import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
-import com.chess.ui.core.CoreActivity;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
@@ -40,7 +39,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener/*, DialogInterface.OnDismissListener*/ {
+public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
 	private static final String CHECK_UPDATE_TAG = "check update";
 	private static int SIGNIN_CALLBACK_CODE = 16;
@@ -55,16 +54,17 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	private Facebook facebook;
 	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
-//	private ProgressDialog loginUpdateDialog;
 	private AsyncTask<LoadItem, Void, Integer> loginTask;
 	private AsyncTask<LoadItem, Void, Integer> postDataTask;
-//	private boolean dialogDismissed = true;
     private boolean forceFlag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
+
+
+		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		usernameEdt = (EditText) findViewById(R.id.username);
 		passwordEdt = (EditText) findViewById(R.id.password);
@@ -93,7 +93,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		if (userName.length() < MIN_USERNAME_LENGTH || userName.length() > MAX_USERNAME_LENGTH) {
 			usernameEdt.setError(getString(R.string.validateUsername));
 			usernameEdt.requestFocus();
-//			mainApp.showDialog(getContext(), getString(R.string.error), getString(R.string.validateUsername));
 			return;
 		}
 
@@ -210,10 +209,7 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (mainApp.isLiveChess()) {
-			mainApp.setLiveChess(false);
-			DataHolder.getInstance().setLiveChess(false);
-		}
+		DataHolder.getInstance().setLiveChess(false);
 
 		usernameEdt.setText(AppData.getUserName(this));
 		passwordEdt.setText(AppData.getPassword(this));
@@ -222,12 +218,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
-	}
-
-
-	@Override
-	public void update(int code) {
-
 	}
 
 	private void processLogin(String[] response) {
@@ -246,7 +236,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 			AppUtils.startNotificationsUpdate(this);
 		}
 
-		mainApp.guest = false;
 		DataHolder.getInstance().setGuest(false);
 
 		Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -255,12 +244,8 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 	}
 
 	private void checkUpdate() {
-//        new CheckUpdateTask(this).execute(RestHelper.GET_ANDROID_VERSION);
-		new CheckUpdateTask2(new CheckUpdateListener()).executeTask(RestHelper.GET_ANDROID_VERSION);
-//		new CheckUpdateTaskHttp(new CheckUpdateListener()).executeTask(RestHelper.GET_ANDROID_VERSION);
+		new CheckUpdateTask(new CheckUpdateListener()).executeTask(RestHelper.GET_ANDROID_VERSION);
 	}
-
-
 
 	private class CheckUpdateListener extends AbstractUpdateListener<Boolean> {
 		public CheckUpdateListener() {
@@ -273,8 +258,6 @@ public class LoginScreenActivity extends CoreActivity implements View.OnClickLis
 
 		@Override
 		public void updateData(Boolean returnedObj) {
-			showToast("Login check update finished");
-
 			forceFlag = returnedObj;
 			if (isPaused)
 				return;

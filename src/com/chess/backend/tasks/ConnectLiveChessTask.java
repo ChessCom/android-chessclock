@@ -3,7 +3,7 @@ package com.chess.backend.tasks;
 import android.content.Context;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder2;
+import com.chess.lcc.android.LccHolder;
 
 /**
  * ConnectLiveChessTask class
@@ -20,7 +20,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<Void, Void> {
 	@Override
 	protected Integer doTheTask(Void... params) {
         Context context = taskFace.getMeContext();
-        LccHolder2.getInstance(context).performConnect();
+        LccHolder.getInstance(context).performConnect();
 
 		return StaticData.RESULT_OK;
 	}

@@ -1,10 +1,6 @@
 package com.chess.lcc.android;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
-import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 
@@ -13,6 +9,7 @@ import com.chess.live.client.*;
  * File Templates.
  */
 public class ConnectionListenerImpl implements ConnectionListener {
+	public static final String CONNECTION = "CONNECTION";
 	private LccHolder lccHolder;
 
 	public ConnectionListenerImpl(LccHolder lccHolder) {
@@ -20,143 +17,89 @@ public class ConnectionListenerImpl implements ConnectionListener {
 	}
 
 	public void onOtherClientEntered(User user) {
-		Log.d("CONNECTION", "Another client entered: user=" + user.getUsername());
-		lccHolder.getAndroidStuff().processOtherClientEntered();
+		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
+//		lccHolder.getAndroidStuff().processOtherClientEntered();
+		lccHolder.onAnotherLoginDetected();
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
-		lccHolder.setUser(user);
+        lccHolder.setUser(user);
 		lccHolder.setConnected(true);
 		Log.d("TEST", "onConnectionEstablished, setConnected(true)");
-
-		lccHolder.setConnectingInProgress(false);
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
-		lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
-		lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
-		lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-		//lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-		/*lccHolder.getClient()
-			  .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
 
-		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
-
-		//lccHolder.getAndroidStuff().sendConnectionBroadcastIntent(true, 0);
-		/*lccHolder.getAndroidStuff().getSharedDataEditor().putString("premium_status", StaticData.SYMBOL_EMPTY + user.getMembershipLevel());
-			lccHolder.getAndroidStuff().getSharedDataEditor().commit();*/
-		lccHolder.getAndroidStuff().closeLoggingInIndicator();
-
-		final ConnectivityManager connectivityManager = (ConnectivityManager)
-				lccHolder.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		lccHolder.setNetworkTypeName(activeNetworkInfo.getTypeName());
-
-		Log.d("CONNECTION", "User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
+		Log.d(CONNECTION, "User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
 	}
 
 	@Override
 	public void onSettingsChanged(User user, UserSettings settings) {
-		Log.d("CONNECTION", "onSettingsChanged");
+		Log.d("TEST", "onSettingsChanged  settings:" + settings);
+		Log.d(CONNECTION, "onSettingsChanged");
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 	}
 
 	@Override
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
-		Log.d("CONNECTION", "User connection failure:" + message + ", details=" + details);
+		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
+		Log.d("TEST", "User connection failure:" + message + ", details = " + details);
 
-		String detailsMessage = StaticData.SYMBOL_EMPTY;
 		if (details != null) {
-			lccHolder.setConnected(false);
-			lccHolder.setConnectingInProgress(false);
-			lccHolder.getAndroidStuff().closeLoggingInIndicator();
-
-			switch (details) {
-				case USER_KICKED: {
-					detailsMessage = lccHolder.getContext().getString(R.string.lccFailedUpgrading);
-					break;
-				}
-				case ACCOUNT_FAILED: {
-					detailsMessage = "Account error. " + lccHolder.getContext().getString(R.string.lccFailedUnavailable);
-					break;
-				}
-				case SERVER_STOPPED: {
-					detailsMessage = "Server stopped. " + lccHolder.getContext().getString(R.string.lccFailedUnavailable);
-					break;
-				}
-				default: {
-					detailsMessage = message;
-				}
-			}
-			lccHolder.getAndroidStuff().informAndExit(StaticData.SYMBOL_EMPTY, detailsMessage);
+			lccHolder.processConnectionFailure(details, message);
 		} else {
-			Log.d("CONNECTION", "User connection failure: IGNORING");
+			Log.d(CONNECTION, "User connection failure: IGNORING");
 		}
 	}
 
 	@Override
-	public void onConnectionLost(User arg0, String arg1, FailureDetails arg2,
-								 Throwable arg3) {
-		Log.d("CONNECTION", "Connection Lost");
+	public void onConnectionLost(User user, String message, FailureDetails details, Throwable throwable) {
+		Log.d("TEST", "Connection Lost, with message = " + message
+                + " n\\Details: id = " + details.getFailureId() + "comments = " +details.getComments());
+		Log.d(CONNECTION, "Connection Lost, with message = " + message
+                + " n\\Details: id = " + details.getFailureId() + "comments = " +details.getComments());
 		lccHolder.setConnected(false);
-		lccHolder.setConnectingInProgress(true);
-		lccHolder.getAndroidStuff().showReconnectingIndicator();
-		lccHolder.getAndroidStuff().closeLoggingInIndicator();
+        lccHolder.performConnect();
 	}
 
 	@Override
 	public void onConnectionReestablished(User arg0) {
-		Log.d("CONNECTION", "onConnectionReestablished");
+		Log.d(CONNECTION, "onConnectionReestablished");
+		Log.d("TEST", " onConnectionReestablished" );
 		//lccHolder.clearGames();
 		lccHolder.clearChallenges();
 		lccHolder.clearOwnChallenges();
 		lccHolder.clearSeeks();
 		lccHolder.setConnected(true);
-		lccHolder.setConnectingInProgress(false);
-		lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
-		lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
-		lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-		//lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-		/*lccHolder.getClient()
-			  .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
-		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
-		lccHolder.getAndroidStuff().closeReconnectingIndicator();
-		lccHolder.getAndroidStuff().closeLoggingInIndicator();
 	}
 
 	@Override
 	public void onPublishFailed(User user, Throwable th) {
-		Log.d("CONNECTION", "onPublishFailed");
+		Log.d(CONNECTION, "onPublishFailed");
+		Log.d("TEST", "onPublishFailed");
 	}
 
 	@Override
 	public void onConnectionRestored(User arg0) {
-		Log.d("CONNECTION", "Connection Restored");
+		Log.d("TEST", "Connection Restored");
+		Log.d(CONNECTION, "Connection Restored");
 		lccHolder.setConnected(true);
-		lccHolder.setConnectingInProgress(false);
-		lccHolder.getClient().subscribeToChallengeEvents(lccHolder.getChallengeListener());
-		lccHolder.getClient().subscribeToGameEvents(lccHolder.getGameListener());
-		lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-		//lccHolder.clearGames();
-		//lccHolder.getClient().subscribeToChatEvents(lccHolder.getChatListener());
-		/*lccHolder.getClient()
-			  .subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1, lccHolder.getSeekListListener());*/
-		lccHolder.getClient().subscribeToFriendStatusEvents(lccHolder.getFriendStatusListener());
-		lccHolder.getAndroidStuff().closeReconnectingIndicator();
-		lccHolder.getAndroidStuff().closeLoggingInIndicator();
 	}
 
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
-		Log.d("CONNECTION",
-				"Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
-						clientProtocolVersion + ")");
-		lccHolder.getAndroidStuff().processObsoleteProtocolVersion();
+		Log.d("TEST", "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
+						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
+		Log.d(CONNECTION, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
+						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
+		lccHolder.onObsoleteProtocolVersion();
 	}
 
-	public void onKicked(User user, String reason, String message) {
-		Log.d("CONNECTION", "user kicked");
-		lccHolder.getAndroidStuff().informAndExit(reason, "You have been kicked/banned");
-		lccHolder.setNetworkTypeName(null);
+	public void onKicked(User user, String reason, String message) { // TODO change when server change
+		Log.d("TEST", "user kicked");
+		Log.d(CONNECTION, "user kicked");
+		lccHolder.setNetworkTypeName(null);  // TODO why it is not set in others methods?
+
+		lccHolder.processConnectionFailure(reason, message);
 	}
 
 }

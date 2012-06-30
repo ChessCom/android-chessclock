@@ -1,7 +1,7 @@
 package com.chess.lcc.android;
 
 import com.chess.backend.entity.SoundPlayer;
-import com.chess.ui.activities.GameBaseActivity;
+import com.chess.lcc.android.interfaces.LccEventListener;
 
 import java.util.TimerTask;
 
@@ -83,21 +83,25 @@ public class ChessClock {
 	}
 
 	public void paint() {
-		final GameBaseActivity activity = lccHolder.getAndroidStuff().getGameActivity();
-		if (activity == null /*|| activity.getWhiteClockView() == null || activity.getBlackClockView() == null*/) {
-			return;
+		LccEventListener eventListener = lccHolder.getAndroidStuff().getLccEventListener();
+
+		String timer = createTimeString(getTime());
+		if (isWhite) { // if white player move
+			eventListener.setWhitePlayerTimer(timer);
+		} else {
+			eventListener.setBlackPlayerTimer(timer);
 		}
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-                String timer = createTimeString(getTime());
-				if (isWhite) { // if white player move
-					activity.setWhitePlayerTimer(timer);
-				} else {
-                    activity.setBlackPlayerTimer(timer);
-				}
-			}
-		});
+//		eventListener.runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				String timer = createTimeString(getTime());
+//				if (isWhite) { // if white player move
+//					eventListener.setWhitePlayerTimer(timer);
+//				} else {
+//					eventListener.setBlackPlayerTimer(timer);
+//				}
+//			}
+//		});
 	}
 
 	protected String createTimeString(int time) { // TODO simplify . Use Calendar & SimpleDateTime formatter methods
@@ -140,36 +144,7 @@ public class ChessClock {
 		return buf.toString();
 	}
 
-	//private long mStartTime = 0L;
-	private Runnable mUpdateTimeTask = new Runnable() {
-		@Override
-		public void run() {
-			/*final long start = mStartTime;
-				  long millis = SystemClock.uptimeMillis() - start;
-				  int seconds = (int) (millis / 1000);
-				  int minutes = seconds / 60;
-				  seconds = seconds % 60;*/
-			/*if (seconds < 10) {
-					  mTimeLabel.setText(StaticData.SYMBOL_EMPTY + minutes + ":0" + seconds);
-				  } else {
-					  mTimeLabel.setText(StaticData.SYMBOL_EMPTY + minutes + ":" + seconds);
-				  }*/
-			paint();
-			if (getTime() < 100) {
-				stopTimer();
-				return;
-			}
-			//long time = start + (((minutes * 60) + seconds) * 1000);
-			lccHolder.getAndroidStuff().getClockHandler().postDelayed(this, 100);
-		}
-	};
-
 	private void startTimer() {
-		/*if(mStartTime == 0L)
-			{*/
-		//mStartTime = System.currentTimeMillis();
-		/*lccHolder.getAndroidStuff().getClockHandler().removeCallbacks(mUpdateTimeTask);
-			lccHolder.getAndroidStuff().getClockHandler().postDelayed(mUpdateTimeTask, 0);*/
 		myTimer = new java.util.Timer();
 		myTimer.schedule(new TimerTask() {
 			@Override
@@ -186,12 +161,9 @@ public class ChessClock {
 				}
 			}
 		}, 0, 100);
-
-		//}
 	}
 
 	private void stopTimer() {
-		//lccHolder.getAndroidStuff().getClockHandler().removeCallbacks(mUpdateTimeTask);
 		myTimer.cancel();
 	}
 }

@@ -1,16 +1,15 @@
 package com.chess.ui.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
@@ -21,8 +20,12 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
-public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
-	private Spinner iplayas, dayspermove, friends;
+public class LiveFriendChallengeActivity extends LiveBaseActivity {
+
+	private static final String NO_ONLINE_FRIENDS_TAG = "no online friends";
+	private static final String CHALLENGE_SENT_TAG = "challenge was sent";
+
+	private Spinner friendsSpinner;
 	private AutoCompleteTextView initialTime;
 	private AutoCompleteTextView bonusTime;
 	private CheckBox isRated;
@@ -32,16 +35,16 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	private InitialTimeValidator initialTimeValidator;
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
 	private BonusTimeValidator bonusTimeValidator;
-    private static final int CHALLENGE_WAS_SENT = 1;
+	private static final int CHALLENGE_WAS_SENT = 1;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		init();
 		setContentView(R.layout.live_challenge_friend);
 
-		friends = (Spinner) findViewById(R.id.friend);
+		friendsSpinner = (Spinner) findViewById(R.id.friend);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
@@ -58,48 +61,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	}
 
 
-	@Override
-	public void update(int code) {
-		if (code == ERROR_SERVER_RESPONSE) {
-			finish();
-		} else if (code == 0 || (code == INIT_ACTIVITY)) {
-			String[] FRIENDS = lccHolder.getOnlineFriends();
-
-			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
-			friends.setAdapter(friendsAdapter);
-			if (friends.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
-				new AlertDialog.Builder(LiveFriendChallengeActivity.this)
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setTitle(getString(R.string.sorry))
-						.setMessage(getString(R.string.nofriends_online))
-						.setPositiveButton(getString(R.string.invitetitle), new DialogInterface.OnClickListener() {
-							@Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com")));
-							}
-						})
-						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-							@Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-								finish();
-							}
-						}).setCancelable(false)
-						.create().show();
-			}
-		} else if (code == CHALLENGE_WAS_SENT) {
-		    throw new IllegalArgumentException(" called deprecated method");    // TODO check
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (lccHolder.getUser() == null) {
-			lccHolder.logout();
-			backToHomeActivity();
-		}
-	}
-
 	private void init() {
 		initialTimeTextWatcher = new InitialTimeTextWatcher();
 		initialTimeValidator = new InitialTimeValidator();
@@ -108,53 +69,92 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements OnC
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (getLccHolder().getUser() == null) {
+			getLccHolder().logout();
+			backToHomeActivity();
+		}
+
+		updateScreen();
+	}
+
+	private void updateScreen() {
+		String[] friends = getLccHolder().getOnlineFriends();
+
+		ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, friends);
+
+		friendsSpinner.setAdapter(friendsAdapter);
+		if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
+			popupItem.setTitle(R.string.sorry);
+			popupItem.setMessage(R.string.nofriends_online);
+			popupItem.setPositiveBtnId(R.string.invitetitle);
+
+			popupDialogFragment.show(getSupportFragmentManager(), NO_ONLINE_FRIENDS_TAG);
+		}
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+		if (fragment.getTag().equals(NO_ONLINE_FRIENDS_TAG)) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.BASE_URL)));
+		}
+	}
+
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+		if (fragment.getTag().equals(NO_ONLINE_FRIENDS_TAG)) {
+			onBackPressed();
+		}
+	}
+
+	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
-			if (friends.getCount() == 0) {
-				return;
-			}
-			if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
-				initialTime.setText("10");
-				bonusTime.setText("0");
-			}
-
-			boolean rated = isRated.isChecked();
-
-			int initialTimeInteger = Integer.parseInt(initialTime.getText().toString());
-			int bonusTimeInteger = Integer.parseInt(bonusTime.getText().toString());
-
-			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
-
-			Integer minRating = null;
-			Integer maxRating = null;
-			Integer minMemberShipLevel = 0;
-
-//
-//			public static Challenge createCustomSeekOrChallenge(User from
-//					, String         to
-//					, PieceColor     color
-//					, Boolean        rated
-//					, GameTimeConfig gameTimeConfig
-//					, Integer        minMembershipLevel
-//					, Integer        minRating
-//					, Integer        maxRating
-
-			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-					lccHolder.getUser(), friends.getSelectedItem().toString().trim(),
-					PieceColor.UNDEFINED, rated, gameTimeConfig,
-					minMemberShipLevel, minRating, maxRating);
-
-			if (appService != null) {
-				FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
-				lccHolder.getAndroidStuff().runSendChallengeTask(null, challenge);
-
-                preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-                preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-                preferencesEditor.commit();
-                mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
-    //			onBackPressed();
-			}
+			createChallenge();
 		}
+	}
+
+	private void createChallenge() {
+		if (friendsSpinner.getCount() == 0) {
+			return;
+		}
+		if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
+			initialTime.setText("10");
+			bonusTime.setText("0");
+		}
+
+		boolean rated = isRated.isChecked();
+
+		int initialTimeInteger = Integer.parseInt(initialTime.getText().toString());
+		int bonusTimeInteger = Integer.parseInt(bonusTime.getText().toString());
+
+		GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
+
+		Integer minRating = null;
+		Integer maxRating = null;
+		Integer minMembershipLevel = null;
+
+		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
+				getLccHolder().getUser(),
+				friendsSpinner.getSelectedItem().toString().trim(),
+				PieceColor.UNDEFINED, rated, gameTimeConfig,
+				minMembershipLevel, minRating, maxRating);
+
+        FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED);
+		challengeTaskRunner.runSendChallengeTask(challenge);
+
+        preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+        preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+        preferencesEditor.commit();
+
+		popupItem.setTitle(R.string.congratulations);
+		popupItem.setMessage(R.string.challengeSent);
+
+		popupDialogFragment.setButtons(1);
+		popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_SENT_TAG);
 	}
 
 

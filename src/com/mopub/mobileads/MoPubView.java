@@ -87,7 +87,6 @@ public class MoPubView extends FrameLayout {
     protected BaseAdapter mAdapter;
     
     private Context mContext;
-    private BroadcastReceiver mScreenStateReceiver;
     private boolean mIsInForeground;
     private LocationAwareness mLocationAwareness;
     private int mLocationPrecision;
@@ -132,7 +131,7 @@ public class MoPubView extends FrameLayout {
     }
     
     private void initVersionDependentAdView(Context context) {
-        int sdkVersion = (new Integer(Build.VERSION.SDK)).intValue();
+        int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < 7) {
         	mAdView = new AdView(context, this);
         } else {
@@ -175,9 +174,29 @@ public class MoPubView extends FrameLayout {
     }
 
     private void registerScreenStateBroadcastReceiver() {
-        if (mAdView == null) return;
+        if (mAdView == null) {
+			Log.d("MoPub", "mAdView = null, intent receiver is not registered ");
+			return;
+		}
         
-        mScreenStateReceiver = new BroadcastReceiver() {
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        mContext.registerReceiver(mScreenStateReceiver, filter);
+		Log.d("MoPub", "registerScreenStateBroadcastReceiver ");
+    }
+    
+    private void unregisterScreenStateBroadcastReceiver() {
+        try {
+			Log.d("MoPub", "unregisterScreenStateBroadcastReceiver ");
+            mContext.unregisterReceiver(mScreenStateReceiver);
+        } catch (Exception IllegalArgumentException) {
+            Log.e("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
+        }
+    }
+
+
+
+    private BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                     if (mIsInForeground) {
@@ -202,18 +221,6 @@ public class MoPubView extends FrameLayout {
                 }
             }
         };
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        mContext.registerReceiver(mScreenStateReceiver, filter);
-    }
-    
-    private void unregisterScreenStateBroadcastReceiver() {
-        try {
-            mContext.unregisterReceiver(mScreenStateReceiver);
-        } catch (Exception IllegalArgumentException) {
-            Log.d("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
-        }
-    }
     
     public void loadAd() {
         if (mAdView != null) mAdView.loadAd();

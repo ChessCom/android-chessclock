@@ -1,7 +1,6 @@
 package com.chess.ui.interfaces;
 
 import android.content.Context;
-import com.chess.ui.core.MainApp;
 
 /**
  * GameActivityFace class
@@ -10,13 +9,8 @@ import com.chess.ui.core.MainApp;
  * @created at: 13.03.12 7:08
  */
 public interface GameActivityFace {
-	void update(int code);
 
 	void showOptions();
-
-//	Context getMeContext();
-
-	MainApp getMainApp();
 
 	void showSubmitButtonsLay(boolean show);
 
@@ -30,11 +24,22 @@ public interface GameActivityFace {
 
     void turnScreenOff();
 	
-	void showToast2User(String msg);
-
-	void showToast2User(int msgId);
-
     void updateAfterMove();
 
-    void invalidateGameScreen();
+	void invalidateGameScreen();
+
+	/**
+	 *
+	 * @param message
+	 * @param need2Finish tells the activity that it needs to finish
+	 */
+	void onGameOver(String message, boolean need2Finish);
+
+	String getWhitePlayerName();
+
+	String getBlackPlayerName();
+
+	Context getMeContext();
+
+	void onCheck();
 }

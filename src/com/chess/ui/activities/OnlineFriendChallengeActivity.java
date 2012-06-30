@@ -189,42 +189,5 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		}
 	}
 
-	@Override
-	public void update(int code) {
-//		if (code == ERROR_SERVER_RESPONSE) {
-//			finish();
-//		} else if (code == INIT_ACTIVITY) {
-//			if (appService != null) {
-//				appService.RunSingleTask(0,
-//						"http://www." + LccHolder.HOST + "/api/get_friends?id="
-//								+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
-//						progressDialog = new MyProgressDialog(ProgressDialog.show(OnlineFriendChallengeActivity.this, null, getString(R.string.gettingfriends), true))
-//				);
-//			}
-//		} else if (code == 0) {
-//			String[] FRIENDS = ChessComApiParser.GetFriendsParse(response);
-//
-//			ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, FRIENDS);
-//			friendsSpinner.setAdapter(friendsAdapter);
-//			if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
-//				new AlertDialog.Builder(OnlineFriendChallengeActivity.this)
-//						.setIcon(android.R.drawable.ic_dialog_alert)
-//						.setTitle(getString(R.string.sorry))
-//						.setMessage(getString(R.string.nofriends))
-//						.setPositiveButton(getString(R.string.invitetitle), new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog, int whichButton) {
-//								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com")));
-//							}
-//						})
-//						.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog, int whichButton) {
-//								finish();
-//							}
-//						}).setCancelable(false)
-//						.create().show();
-//			}
-//		} else if (code == 1) {
-//			mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
-//		}
-	}
+
 }

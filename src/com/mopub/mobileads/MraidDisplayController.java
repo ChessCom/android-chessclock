@@ -272,7 +272,7 @@ class MraidDisplayController extends MraidAbstractController {
         ViewGroup expansionViewContainer = createExpansionViewContainer(expansionContentView, 
                 (int) (width * mDensity), (int) (height * mDensity));
         mRootView.addView(expansionViewContainer, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         
         if (mNativeCloseButtonStyle == MraidView.NativeCloseButtonStyle.ALWAYS_VISIBLE || 
                 (!mAdWantsCustomCloseButton && 
@@ -321,13 +321,13 @@ class MraidDisplayController extends MraidAbstractController {
         });
         
         expansionLayout.addView(dimmingView, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         
         FrameLayout adContainerLayout = new FrameLayout(getView().getContext());
         adContainerLayout.setId(MraidView.AD_CONTAINER_LAYOUT_ID);
         
         adContainerLayout.addView(expansionContentView, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(expandWidth, expandHeight);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);

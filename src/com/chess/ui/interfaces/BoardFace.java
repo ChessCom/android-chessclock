@@ -68,8 +68,6 @@ public interface BoardFace {
 
 	boolean isSubmit();
 
-//	ChessBoard getBoard();
-
 	void setInit(boolean init);
 
 	boolean isInit();

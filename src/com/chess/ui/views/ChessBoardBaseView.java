@@ -20,7 +20,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewFace;
-import com.chess.ui.interfaces.GameActivityFace2;
+import com.chess.ui.interfaces.GameActivityFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -91,7 +91,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Handler handler;
 	protected boolean userActive;
 	protected Resources resources;
-	protected GameActivityFace2 gameActivityFace;
+	protected GameActivityFace gameActivityFace;
 	protected BoardFace boardFace;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
@@ -133,7 +133,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		preferences = AppData.getPreferences(getContext());
 	}
 
-	public void setGameActivityFace(GameActivityFace2 gameActivityFace) {
+	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
 		userName = AppData.getUserName(getContext());
 

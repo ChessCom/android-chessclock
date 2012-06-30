@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.mopub.mobileads.MoPubView;
-import android.os.Build.VERSION;
 
 public class MopubHelper {
 
@@ -19,7 +18,6 @@ public class MopubHelper {
 	private static LinearLayout rectangleAdWrapper;
 	private static MoPubView rectangleAdView;
 
-	//	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, MainApp app) {
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, Context context) {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
@@ -55,7 +53,6 @@ public class MopubHelper {
             rectangleAdView.destroy();
     }
 
-//	public static void showRectangleAd(LinearLayout wrapper, MainApp app) {
 	public static void showRectangleAd(LinearLayout wrapper, Context context) {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
