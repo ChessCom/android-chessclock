@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.*;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
@@ -43,12 +41,11 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected boolean isMoveNav;
 	protected boolean chat;
 
-	protected GameItem newGame;
+//	protected GameItem newGame;
 
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
-	protected AlertDialog adPopup;
 	protected TextView endOfGameMessage;
 
 	protected CharSequence[] menuOptionsItems;
@@ -58,7 +55,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected boolean userPlayWhite = true;
 	private ChessBoardBaseView boardView;
 
-	private boolean need2Finish;
 	private String whiteTimer;
 	private String blackTimer;
 
@@ -161,7 +157,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public abstract String getBlackPlayerName();
 
-	public abstract void onGameRefresh();
+	public abstract void onGameRefresh(GameItem newGame);
 
 	protected abstract void onGameEndMsgReceived();
 
@@ -173,56 +169,19 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	@Override
 	public void onGameOver(String message, boolean need2Finish) {
-		showToast(message);
-		this.need2Finish = need2Finish;
+		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout;
 		if (!MopubHelper.isShowAds(this)) {
-			return;
+			layout = inflater.inflate(R.layout.popup_end_game, null, false);
+		}else {
+			layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
 		}
 
-		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-		final View layout = inflater.inflate(R.layout.ad_popup2, (ViewGroup) findViewById(R.id.layout_root));
 		showGameEndPopup(layout, message);
 
-		Button ok = (Button) layout.findViewById(R.id.home);
-		ok.setText(getString(R.string.okay));
-		ok.setOnClickListener(this);
-		ok.setVisibility(View.VISIBLE);
 	}
 
-	protected void showGameEndPopup(final View layout, final String message) {
-		if (!MopubHelper.isShowAds(this)) {
-			return;
-		}
-
-		if (adPopup != null) {
-			adPopup.dismiss();
-			adPopup = null;
-		}
-
-
-		TextView endOfGameMessagePopup = (TextView) layout.findViewById(R.id.endOfGameMessage);
-		endOfGameMessagePopup.setText(message);
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, this);
-
-
-
-
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				AlertDialog.Builder builder;
-				builder = new AlertDialog.Builder(getContext());
-				builder.setView(layout);
-				adPopup = builder.create();
-				adPopup.setCancelable(true);
-				adPopup.setCanceledOnTouchOutside(true);
-				try {
-					adPopup.show();
-				} catch (Exception ignored) {
-				}
-			}
-		}, 1500);
+	protected void showGameEndPopup(final View layout, final String message){
 	}
 
 	public void setWhitePlayerTimer(String timeString) {
@@ -365,20 +324,11 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.home) {
+		if (view.getId() == R.id.homePopupBtn) {
 			backToHomeActivity();
-		} else if (view.getId() == R.id.homePopupBtn) {
-			if (adPopup != null) {
-				try {
-					adPopup.dismiss();
-				} catch (Exception ignored) {
-				}
-				adPopup = null;
-			}
-			if (need2Finish) {
-				finish();
-			}
-		} else if (view.getId() == R.id.newGame) {
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			// TODO send rematch request
+		} else if (view.getId() == R.id.reviewPopupBtn) {
 			onBackPressed();
 		}
 	}

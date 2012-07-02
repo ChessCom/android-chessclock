@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
@@ -21,9 +22,9 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.views.ChessBoardLiveView;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
 /**
@@ -36,6 +37,7 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
+	private static final String END_GAME_TAG = "end game popup";
 
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -46,6 +48,10 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	private GameItem currentGame;
 	private long gameId;
 	private ChessBoardLiveView boardView;
+	private int whitePlayerNewRating;
+	private int blackPlayerNewRating;
+	private int currentPlayerRating;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +113,8 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
-		findViewById(R.id.submit).setOnClickListener(this);
-		findViewById(R.id.cancel).setOnClickListener(this);
+		findViewById(R.id.submitBtn).setOnClickListener(this);
+		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
 		gamePanelView.enableAnalysisMode(false);
 
@@ -148,7 +154,7 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 
 		updateGameSate();
 
-		newGame = getLccHolder().getGameItem(this, gameId);
+//		getActionBarHelper().showMenuItemById();  // TODO hide signout action bar item
 	}
 
 	@Override
@@ -179,8 +185,8 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		showSubmitButtonsLay(false);
 		getSoundPlayer().playGameStart();
 
-		currentGame = getLccHolder().getGameItem(gameId);
-
+//		currentGame = getLccHolder().getGameItem(gameId);
+		currentGame = getLccHolder().getGameItem(this, gameId);
 		getLccHolder().executePausedActivityGameEvents(this);
 		checkMessages();
 
@@ -202,7 +208,7 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		getLccHolder().checkAndReplayMoves(gameId);
 
 		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals("")) {
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardView.getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardView.getBoardFace());
 		}
@@ -219,12 +225,13 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.i(TAG, AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			newGame = (GameItem) intent.getSerializableExtra(AppConstants.OBJECT);
-			onGameRefresh();
+			GameItem newGame = (GameItem) intent.getSerializableExtra(AppConstants.OBJECT);
+			onGameRefresh(newGame);
 		}
 	};
 
-	public void onGameRefresh() {
+	public void onGameRefresh(GameItem newGame) {
+//		this.newGame = newGame;
 		if (boardView.getBoardFace().isAnalysis())
 			return;
 
@@ -273,72 +280,40 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 			Log.i(TAG, AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
 
 			Game game = LccHolder.getInstance(context).getGame(gameId);
-			Integer newWhiteRating = null;
-			Integer newBlackRating = null;
 			switch (game.getGameTimeConfig().getGameTimeClass()) {
 				case BLITZ: {
-					newWhiteRating = game.getWhitePlayer().getBlitzRating();
-					newBlackRating = game.getBlackPlayer().getBlitzRating();
+					whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
+					blackPlayerNewRating = game.getBlackPlayer().getBlitzRating();
+					currentPlayerRating = getLccHolder().getUser().getBlitzRating();
 					break;
 				}
 				case LIGHTNING: {
-					newWhiteRating = game.getWhitePlayer().getQuickRating();
-					newBlackRating = game.getBlackPlayer().getQuickRating();
+					whitePlayerNewRating = game.getWhitePlayer().getQuickRating();
+					blackPlayerNewRating = game.getBlackPlayer().getQuickRating();
+					currentPlayerRating = getLccHolder().getUser().getQuickRating();
 					break;
 				}
 				case STANDARD: {
-					newWhiteRating = game.getWhitePlayer().getStandardRating();
-					newBlackRating = game.getBlackPlayer().getStandardRating();
+					whitePlayerNewRating = game.getWhitePlayer().getStandardRating();
+					blackPlayerNewRating = game.getBlackPlayer().getStandardRating();
+					currentPlayerRating = getLccHolder().getUser().getStandardRating();
 					break;
 				}
 			}
-			updatePlayerLabels(game, newWhiteRating, newBlackRating);
+			updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
 			boardView.setFinished(true);
 
-			if (MopubHelper.isShowAds(context)) {
-				final LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-				final View layout = inflater.inflate(R.layout.ad_popup,
-						(ViewGroup) findViewById(R.id.layout_root));
-				showGameEndPopup(layout, intent.getExtras().getString(AppConstants.TITLE) + ": " + intent.getExtras().getString(AppConstants.MESSAGE));
-
-				final View newGame = layout.findViewById(R.id.newGame);
-				newGame.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (adPopup != null) {
-							try {
-								adPopup.dismiss();
-							} catch (Exception ignored) {
-							}
-							adPopup = null;
-						}
-						onBackPressed();
-					}
-				});
-				newGame.setVisibility(View.VISIBLE);
-
-				final View home = layout.findViewById(R.id.home);
-				home.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (adPopup != null) {
-							try {
-								adPopup.dismiss();
-							} catch (Exception ignored) {
-							}
-							adPopup = null;
-						}
-						backToHomeActivity();
-					}
-				});
-				home.setVisibility(View.VISIBLE);
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+			View layout;
+			if (!MopubHelper.isShowAds(context)) {
+				layout = inflater.inflate(R.layout.popup_end_game, null, false);
+			}else {
+				layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
 			}
 
-			endOfGameMessage.setText(intent.getExtras().getString(AppConstants.MESSAGE));
+			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.TITLE)
+					+ ": " + intent.getExtras().getString(AppConstants.MESSAGE));
 
-			findViewById(R.id.endOfGameButtons).setVisibility(View.VISIBLE);
-			findViewById(R.id.newGame).setOnClickListener(GameLiveScreenActivity.this);
-			findViewById(R.id.home).setOnClickListener(GameLiveScreenActivity.this);
 
 			gamePanelView.showBottomPart(false);
 			getSoundPlayer().playGameEnd();
@@ -397,32 +372,17 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, final Intent intent) {
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+			View layout;
 			if (!MopubHelper.isShowAds(context)) {
-				return;
+				layout = inflater.inflate(R.layout.popup_end_game, null, false);
+			} else {
+				layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
 			}
 
-			final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-			final View layout = inflater.inflate(R.layout.ad_popup, (ViewGroup) findViewById(R.id.layout_root));
 			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.MESSAGE));
 
-			final Button ok = (Button) layout.findViewById(R.id.home);
-			ok.setText(getString(R.string.okay));
-			ok.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (adPopup != null) {
-						try {
-							adPopup.dismiss();
-						} catch (Exception ignored) {
-						}
-						adPopup = null;
-					}
-					if (intent.getBooleanExtra(AppConstants.FINISHABLE, false)) {
-						finish();
-					}
-				}
-			});
-			ok.setVisibility(View.VISIBLE);
+
 		}
 	};
 
@@ -671,6 +631,50 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		gamePanelView.enableAnalysisMode(true);
 	}
 
+	protected void showGameEndPopup(View layout, String message) {
+
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
+		endGameTitleTxt.setText(message);
+		endGameReasonTxt.setText(message);
+
+		int currentPlayerNewRating;
+		if (userPlayWhite) {
+			currentPlayerNewRating = whitePlayerNewRating;
+		} else {
+			currentPlayerNewRating = blackPlayerNewRating;
+		}
+
+		int ratingDiff;
+		String sign;
+		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
+			ratingDiff = currentPlayerNewRating - currentPlayerRating;
+			sign = StaticData.SYMBOL_PLUS;
+		} else { // 800 700
+			ratingDiff = currentPlayerRating - currentPlayerNewRating;
+			sign = StaticData.SYMBOL_MINUS;
+		}
+		
+		String rating = getString(R.string.your_end_game_rating, sign + ratingDiff, currentPlayerNewRating);
+		yourRatingTxt.setText(rating);
+
+		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, this);
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(layout);
+
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem, this);
+		customViewFragment.show(getSupportFragmentManager(), END_GAME_TAG);
+
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+
+	}
+
 	@Override
 	protected void restoreGame() {
 	}
@@ -685,14 +689,23 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.cancel) {
+		if (view.getId() == R.id.cancelBtn) {
 			showSubmitButtonsLay(false);
 
 			getBoardFace().takeBack();
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
-		} else if (view.getId() == R.id.submit) {
+		} else if (view.getId() == R.id.submitBtn) {
 			sendMove();
+		} else if (view.getId() == R.id.newGamePopupBtn) {
+			Intent intent = new Intent(this, LiveNewGameActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			// TODO send rematch request
+
+		} else if (view.getId() == R.id.upgradeBtn) {
+			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}
 }

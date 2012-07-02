@@ -101,7 +101,7 @@
 			android:visibility="invisible">
 
 			<com.chess.RoboButton
-				android:id="@+id/submit"
+				android:id="@+id/submitBtn"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginRight="10dip"
@@ -110,7 +110,7 @@
 				android:text="@string/submit"/>
 
 			<com.chess.RoboButton
-				android:id="@+id/cancel"
+				android:id="@+id/cancelBtn"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				style="@style/Text.Button.Grey"
@@ -120,7 +120,7 @@
 				/>
 		</LinearLayout>
 
-		<RelativeLayout
+	<!--	<RelativeLayout
 			android:id="@+id/endOfGameButtons"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:text="Home"/>
-		</RelativeLayout>
+		</RelativeLayout>-->
 
 	</FrameLayout>
 </LinearLayout>

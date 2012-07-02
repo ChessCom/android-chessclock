@@ -21,6 +21,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.model.GameItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoard;
@@ -173,7 +174,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	public void onGameRefresh() {
+	public void onGameRefresh(GameItem newGame) {
 		// TODO change body of implemented methods use File | Settings | File Templates.
 	}
 

@@ -78,8 +78,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		super.widgetsInit();
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
-		findViewById(R.id.submit).setOnClickListener(this);
-		findViewById(R.id.cancel).setOnClickListener(this);
+		findViewById(R.id.submitBtn).setOnClickListener(this);
+		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 
@@ -249,9 +249,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				if (getBoardFace().isAnalysis())
 					return;
 
-				newGame = ChessComApiParser.GetGameParseV3(returnedObj);
+				GameItem newGame = ChessComApiParser.GetGameParseV3(returnedObj);
 
-				onGameRefresh();
+				onGameRefresh(newGame);
 
 				checkMessages();
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
@@ -261,7 +261,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
-	public void onGameRefresh() {
+	public void onGameRefresh(GameItem newGame) {
 		currentGame = newGame;
 		String[] moves;
 
@@ -670,13 +670,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.cancel) {
+		if (view.getId() == R.id.cancelBtn) {
 			showSubmitButtonsLay(false);
 
 			getBoardFace().takeBack();
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
-		} else if (view.getId() == R.id.submit) {
+		} else if (view.getId() == R.id.submitBtn) {
 			sendMove();
 		}
 	}

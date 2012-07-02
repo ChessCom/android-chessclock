@@ -182,7 +182,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		playLastMoveAnimation();
 	}
 
-	public void onGameRefresh() {
+	public void onGameRefresh(GameItem newGame) {
 		currentGame = newGame;
 		String[] moves;
 		int[] moveFT;

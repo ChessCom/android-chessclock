@@ -52,6 +52,7 @@
 	<string name="computerWhite">White</string>
 	<string name="computerBlack">Black</string>
 	<string name="Human">Human</string>
+	<string name="guest">Guest</string>
 	<string name="Comp">Comp</string>
 	<string name="Computer">Computer</string>
 	<string name="Thinking">Thinking...</string>
@@ -342,4 +343,11 @@
 	<string name="beginner_category">beginner</string>
 	<string name="intermediate_category">intermediate</string>
 	<string name="advanced_category">advanced</string>
+	<string name="black_wins">Black wins (1-0)</string>
+	<string name="white_wins">White wins (1-0)</string>
+	<string name="draw_by_stalemate">Draw by stalemate (0-0)</string>
+	<string name="draw_by_3fold_repetition">Draw by 3Fold repetition (1/2-1/2)</string>
+	<string name="rematch">Rematch</string>
+	<string name="review">Review</string>
+	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>
 </resources>

@@ -81,11 +81,11 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         if (showCoordinates) {
             for (i = 0; i < 8; i++) {
                 if (boardFace.isReside()) {
-                    canvas.drawText(nums[i], 2, i * square + 12, black);
-                    canvas.drawText(signs[7 - i], i * square + 2, 8 * square - 2, black);
+                    canvas.drawText(nums[i], 2, i * square + 12, blackPaint);
+                    canvas.drawText(signs[7 - i], i * square + 2, 8 * square - 2, blackPaint);
                 } else {
-                    canvas.drawText(nums[7 - i], 2, i * square + 12, black);
-                    canvas.drawText(signs[i], i * square + 2, 8 * square - 2, black);
+                    canvas.drawText(nums[7 - i], 2, i * square + 12, blackPaint);
+                    canvas.drawText(signs[i], i * square + 2, 8 * square - 2, blackPaint);
                 }
             }
         }
@@ -94,16 +94,16 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
             Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
             int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
             int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
-            canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, red);
+            canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, redPaint);
             int x2 = ChessBoard.getColumn(m.to, boardFace.isReside());
             int y2 = ChessBoard.getRow(m.to, boardFace.isReside());
-            canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, red);
+            canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, redPaint);
         }
 
         if (sel) {
             int x = ChessBoard.getColumn(from, boardFace.isReside());
             int y = ChessBoard.getRow(from, boardFace.isReside());
-            canvas.drawRect(x * square, y * square, x * square + square, y * square + square, white);
+            canvas.drawRect(x * square, y * square, x * square + square, y * square + square, whitePaint);
         }
         if (drag) {
             int c = boardFace.getColor()[from];
@@ -116,13 +116,13 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
                 rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2);
                 canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
                 canvas.drawRect(col * square - square / 2, row * square - square / 2,
-                        col * square + square + square / 2, row * square + square + square / 2, white);
+                        col * square + square + square / 2, row * square + square + square / 2, whitePaint);
             }
         }
         if (track) {
             int x = (trackX - trackX % square) / square;
             int y = (trackY - trackY % square) / square;
-            canvas.drawRect(x * square, y * square, x * square + square, y * square + square, green);
+            canvas.drawRect(x * square, y * square, x * square + square, y * square + square, greenPaint);
         }
 
 		// Count captured piecesBitmap

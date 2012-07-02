@@ -27,7 +27,7 @@
 			android:id="@+id/white"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/Human"
+			android:text="@string/guest"
 			android:paddingLeft="8dip"
 			android:paddingRight="2dip"
 			android:drawableLeft="@drawable/player_indicator_white"

@@ -1,5 +1,7 @@
 package com.chess.lcc.android.interfaces;
 
+import com.chess.model.GameItem;
+
 /**
  * LccEventListener class
  *
@@ -7,7 +9,7 @@ package com.chess.lcc.android.interfaces;
  * @created at: 24.05.12 21:47
  */
 public interface LccEventListener {
-	void onGameRefresh();
+	void onGameRefresh(GameItem newGame);
 
 	void setWhitePlayerTimer(String timer);
 

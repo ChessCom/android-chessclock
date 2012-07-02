@@ -68,10 +68,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int trackX = 0;
 	protected int trackY = 0;
 
-	protected Paint white;
-	protected Paint black;
-	protected Paint red;
-	protected Paint green;
+	protected Paint whitePaint;
+	protected Paint blackPaint;
+	protected Paint redPaint;
+	protected Paint greenPaint;
 
 	protected String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	protected String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -97,32 +97,36 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
+		float density = resources.getDisplayMetrics().density;
 
 		loadBoard(AppData.getChessBoardId(getContext()));
 		loadPieces(AppData.getPiecesId(getContext()));
 
 		handler = new Handler();
-		green = new Paint();
-		white = new Paint();
-		black = new Paint();
-		red = new Paint();
+		greenPaint = new Paint();
+		whitePaint = new Paint();
+		blackPaint = new Paint();
+		redPaint = new Paint();
 		rect = new Rect();
-		// captured piece Item
-//		pieceItem = new PieceItem();
 
-		white.setStrokeWidth(2.0f);
-		white.setStyle(Style.STROKE);
-		black.setStrokeWidth(1.0f);
-		black.setStyle(Style.FILL);
-		red.setStrokeWidth(2.0f);
-		red.setStyle(Style.STROKE);
-		green.setStrokeWidth(2.0f);
-		green.setStyle(Style.STROKE);
 
-		white.setColor(Color.WHITE);
-		black.setColor(Color.BLACK);
-		red.setColor(Color.RED);
-		green.setColor(Color.GREEN);
+		whitePaint.setStrokeWidth(2.0f);
+		whitePaint.setStyle(Style.STROKE);
+		whitePaint.setColor(Color.WHITE);
+
+		blackPaint.setStrokeWidth(1.0f);
+		blackPaint.setStyle(Style.FILL);
+		blackPaint.setColor(Color.BLACK);
+		blackPaint.setTextSize(10* density + 0.5f);
+
+		redPaint.setStrokeWidth(2.0f);
+		redPaint.setStyle(Style.STROKE);
+		redPaint.setColor(Color.RED);
+
+		greenPaint.setStrokeWidth(2.0f);
+		greenPaint.setStyle(Style.STROKE);
+		greenPaint.setColor(Color.GREEN);
+
 
 		width = resources.getDisplayMetrics().widthPixels;
 		height = resources.getDisplayMetrics().heightPixels;

@@ -41,6 +41,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 				getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 			}
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {   // remove Error occurred toast when no wifi
+		}
 	}
 
 }

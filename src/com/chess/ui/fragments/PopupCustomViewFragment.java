@@ -59,7 +59,10 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(buttonsNumber == 1){
+        if(buttonsNumber == 0){
+			leftBtn.setVisibility(View.GONE);
+			rightBtn.setVisibility(View.GONE);
+		}else if(buttonsNumber == 1){
             rightBtn.setVisibility(View.GONE);
         }
     }

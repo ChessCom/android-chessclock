@@ -5,11 +5,11 @@
 package com.chess.lcc.android;
 
 public class GameEvent {
-	public enum Event {Move, DrawOffer, EndOfGame}
+	public enum Event {MOVE, DRAW_OFFER, END_OF_GAME}
 
 
 	private Event event;
-	private Long gameId;
+	private long gameId;
 	private int moveIndex;
 	private String drawOffererUsername;
 	private String gameEndedMessage;
@@ -46,11 +46,11 @@ public class GameEvent {
 		this.moveIndex = moveIndex;
 	}
 
-	public Long getGameId() {
+	public long getGameId() {
 		return gameId;
 	}
 
-	public void setGameId(Long gameId) {
+	public void setGameId(long gameId) {
 		this.gameId = gameId;
 	}
 }

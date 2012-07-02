@@ -21,6 +21,8 @@ public class StaticData {
 	public static final String SYMBOL_EMPTY = "";
 	public static final String SYMBOL_LEFT_PAR = "(";
 	public static final String SYMBOL_RIGHT_PAR = ")";
+	public static final String SYMBOL_PLUS = "+";
+	public static final String SYMBOL_MINUS = "-";
 
 
 	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";
