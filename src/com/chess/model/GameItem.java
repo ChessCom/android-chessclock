@@ -5,6 +5,7 @@ import com.chess.backend.statics.AppConstants;
 import java.io.Serializable;
 import java.util.HashMap;
 
+// TODO divide to different game instance live/online
 public class GameItem implements Serializable { // TODO make an Object, not hashmap
 
 	public static int GAME_DATA_ELEMENTS_COUNT = 14;

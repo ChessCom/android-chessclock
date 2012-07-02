@@ -52,20 +52,26 @@ public class AndroidStuff {
 //		return sharedDataEditor;
 //	}
 
-	public LccEventListener getLccEventListener() {
-		return lccEventListener;
-	}
-
-	public void setLccEventListener(LccEventListener lccEventListener) {
-		this.lccEventListener = lccEventListener;
-	}
+//	public LccEventListener getLccEventListener() {
+//		return lccEventListener;
+//	}
+//
+//	public void setLccEventListener(LccEventListener lccEventListener) {
+//		this.lccEventListener = lccEventListener;
+//	}
 
 	/*public Handler getUpdateBoardHandler() {
 		return updateBoardHandler;
 	}*/
 
 
-
+    /**
+     * Use LccEventListener instead
+     * @param code
+     * @param broadcastAction
+     * @param object
+     */
+    @Deprecated
 	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
 		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		context.sendBroadcast(
@@ -75,6 +81,14 @@ public class AndroidStuff {
 		);
 	}
 
+    /**
+     * Use LccEventListener instead
+     * @param code
+     * @param broadcastAction
+     * @param title
+     * @param message
+     */
+    @Deprecated
 	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
 		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		context.sendBroadcast(
@@ -85,6 +99,12 @@ public class AndroidStuff {
 		);
 	}
 
+    /**
+     * Use LccEventListener instead
+     * @param code
+     * @param broadcastAction
+     */
+    @Deprecated
 	public void sendBroadcastIntent(int code, String broadcastAction) {
 		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
 		context.sendBroadcast(
@@ -94,12 +114,12 @@ public class AndroidStuff {
 	}
 
 	public void processDrawOffered(String offererUsername) {
-		sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, context.getString(R.string.draw_game),
-				offererUsername + StaticData.SYMBOL_SPACE + context.getResources().getString(R.string.has_offered_draw));
+//		sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, context.getString(R.string.draw_game),
+//				offererUsername + StaticData.SYMBOL_SPACE + context.getResources().getString(R.string.has_offered_draw));
 	}
 
 	public void processGameEnd(String message) {
-		sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, context.getString(R.string.game_over), message);
+//		sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, context.getString(R.string.game_over), message);
 	}
 
 

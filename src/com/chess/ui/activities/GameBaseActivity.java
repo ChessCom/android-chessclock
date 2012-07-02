@@ -27,7 +27,7 @@ import com.chess.utilities.MopubHelper;
  * @created at: 05.03.12 21:18
  */
 public abstract class GameBaseActivity extends LiveBaseActivity implements
-		BoardToGameActivityFace, GameActivityFace, LccEventListener {
+		BoardToGameActivityFace, GameActivityFace {
 
 
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";
@@ -38,10 +38,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected TextView blackPlayerLabel;
 	protected TextView thinking;
 
-	protected boolean isMoveNav;
 	protected boolean chat;
-
-//	protected GameItem newGame;
 
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
@@ -54,9 +51,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected boolean initTimer = true;
 	protected boolean userPlayWhite = true;
 	private ChessBoardBaseView boardView;
-
-	private String whiteTimer;
-	private String blackTimer;
 
 
 	@Override
@@ -108,20 +102,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public Object onRetainCustomNonConfigurationInstance() {
 		return boardView.getBoardFace();
-	}
-
-	@Override
-	public void onOptionsMenuClosed(Menu menu) {
-		if (isMoveNav) {
-			new Handler().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					openOptionsMenu();
-				}
-			}, 10);
-			isMoveNav = false;
-		}
-		super.onOptionsMenuClosed(menu);
 	}
 
 	@Override
@@ -182,44 +162,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	}
 
 	protected void showGameEndPopup(final View layout, final String message){
-	}
-
-	public void setWhitePlayerTimer(String timeString) {
-		whiteTimer = timeString;
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				if (userPlayWhite) {
-					gamePanelView.setBlackTimer(whiteTimer);
-				} else {
-					blackPlayerLabel.setText(whiteTimer);
-				}
-
-				if (!isWhitePlayerMove || initTimer) {
-					isWhitePlayerMove = true;
-					changePlayersLabelColors();
-				}
-			}
-		});
-	}
-
-	public void setBlackPlayerTimer(String timeString) {
-		blackTimer = timeString;
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				if (userPlayWhite) {
-					blackPlayerLabel.setText(blackTimer);
-				} else {
-					gamePanelView.setBlackTimer(blackTimer);
-				}
-
-				if (isWhitePlayerMove) {
-					isWhitePlayerMove = false;
-					changePlayersLabelColors();
-				}
-			}
-		});
 	}
 
 	protected void changePlayersLabelColors() {

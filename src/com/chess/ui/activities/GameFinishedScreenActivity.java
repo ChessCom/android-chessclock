@@ -333,11 +333,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				break;
 			case R.id.menu_previous:
 				boardView.moveBack();
-				isMoveNav = true;
 				break;
 			case R.id.menu_next:
 				boardView.moveForward();
-				isMoveNav = true;
 				break;
 		}
 		return super.onOptionsItemSelected(item);

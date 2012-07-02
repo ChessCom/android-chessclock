@@ -15,6 +15,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
+import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
@@ -33,7 +35,7 @@ import com.chess.utilities.MopubHelper;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class GameLiveScreenActivity extends GameBaseActivity {
+public class GameLiveScreenActivity extends GameBaseActivity implements LccEventListener, LccChatMessageListener {
 
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
@@ -52,6 +54,8 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	private int blackPlayerNewRating;
 	private int currentPlayerRating;
 
+    private String whiteTimer;
+    private String blackTimer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +132,9 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	public void init() {
 		super.init();
 		gameId = extras.getLong(GameListItem.GAME_ID);
-		changeResignTitle();
+        getLccHolder().setLccEventListener(this);
+
+        resignOrAbort = getLccHolder().getResignTitle(gameId);
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -138,6 +144,7 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 				getString(R.string.messages)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+
 	}
 
 	@Override
@@ -146,11 +153,8 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		DataHolder.getInstance().setLiveChess(true);
 
 		registerReceiver(gameMoveReceiver, new IntentFilter(IntentConstants.ACTION_GAME_MOVE));
-		registerReceiver(gameEndMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_END));
 		registerReceiver(gameInfoMessageReceived, new IntentFilter(IntentConstants.ACTION_GAME_INFO));
 		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
-		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-		registerReceiver(drawOfferedMessageReceiver, new IntentFilter(IntentConstants.FILTER_DRAW_OFFERED));
 
 		updateGameSate();
 
@@ -161,11 +165,8 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(gameMoveReceiver);
-		unregisterReceiver(gameEndMessageReceiver);
 		unregisterReceiver(gameInfoMessageReceived);
 		unregisterReceiver(showGameEndPopupReceiver);
-		unregisterReceiver(drawOfferedMessageReceiver);
-		unregisterReceiver(chatMessageReceiver);
 
 		getLccHolder().setActivityPausedMode(true);
 	}
@@ -185,9 +186,8 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		showSubmitButtonsLay(false);
 		getSoundPlayer().playGameStart();
 
-//		currentGame = getLccHolder().getGameItem(gameId);
-		currentGame = getLccHolder().getGameItem(this, gameId);
-		getLccHolder().executePausedActivityGameEvents(this);
+		currentGame = getLccHolder().getGameItem(gameId);
+
 		checkMessages();
 
 		if (currentGame.values.get(GameListItem.GAME_TYPE).equals("2"))
@@ -229,6 +229,44 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 			onGameRefresh(newGame);
 		}
 	};
+
+    public void setWhitePlayerTimer(String timeString) {
+        whiteTimer = timeString;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (userPlayWhite) {
+                    gamePanelView.setBlackTimer(whiteTimer);
+                } else {
+                    blackPlayerLabel.setText(whiteTimer);
+                }
+
+                if (!isWhitePlayerMove || initTimer) {
+                    isWhitePlayerMove = true;
+                    changePlayersLabelColors();
+                }
+            }
+        });
+    }
+
+    public void setBlackPlayerTimer(String timeString) {
+        blackTimer = timeString;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (userPlayWhite) {
+                    blackPlayerLabel.setText(blackTimer);
+                } else {
+                    gamePanelView.setBlackTimer(blackTimer);
+                }
+
+                if (isWhitePlayerMove) {
+                    isWhitePlayerMove = false;
+                    changePlayersLabelColors();
+                }
+            }
+        });
+    }
 
 	public void onGameRefresh(GameItem newGame) {
 //		this.newGame = newGame;
@@ -274,100 +312,69 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	protected BroadcastReceiver gameEndMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, final Intent intent) {
-			Log.i(TAG, AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-
-			Game game = LccHolder.getInstance(context).getGame(gameId);
-			switch (game.getGameTimeConfig().getGameTimeClass()) {
-				case BLITZ: {
-					whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
-					blackPlayerNewRating = game.getBlackPlayer().getBlitzRating();
-					currentPlayerRating = getLccHolder().getUser().getBlitzRating();
-					break;
-				}
-				case LIGHTNING: {
-					whitePlayerNewRating = game.getWhitePlayer().getQuickRating();
-					blackPlayerNewRating = game.getBlackPlayer().getQuickRating();
-					currentPlayerRating = getLccHolder().getUser().getQuickRating();
-					break;
-				}
-				case STANDARD: {
-					whitePlayerNewRating = game.getWhitePlayer().getStandardRating();
-					blackPlayerNewRating = game.getBlackPlayer().getStandardRating();
-					currentPlayerRating = getLccHolder().getUser().getStandardRating();
-					break;
-				}
-			}
-			updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
-			boardView.setFinished(true);
-
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-			View layout;
-			if (!MopubHelper.isShowAds(context)) {
-				layout = inflater.inflate(R.layout.popup_end_game, null, false);
-			}else {
-				layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
-			}
-
-			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.TITLE)
-					+ ": " + intent.getExtras().getString(AppConstants.MESSAGE));
+    @Override
+    public void onMessageReceived() {
+        gamePanelView.haveNewMessage(true);
+    }
 
 
-			gamePanelView.showBottomPart(false);
-			getSoundPlayer().playGameEnd();
-			onGameEndMsgReceived();
-		}
-	};
+    @Override
+    public void onDrawOffered(String drawOfferUsername) {
+        String message = drawOfferUsername + StaticData.SYMBOL_SPACE + getString(R.string.has_offered_draw);
 
+        PopupItem popupItem = new PopupItem();
+        popupItem.setTitle(message);
 
-	private final BroadcastReceiver drawOfferedMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.confirm);
-			popupItem.setMessage(R.string.signout_confirm);
+        PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+        popupDialogFragment.getDialog().setCanceledOnTouchOutside(true);
+        popupDialogFragment.getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                gameTaskRunner.runRejectDrawTask(gameId);
+            }
+        });
+        popupDialogFragment.getDialog().getWindow().setGravity(Gravity.BOTTOM);
+        popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_RECEIVED_TAG);
+    }
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem,
-					GameLiveScreenActivity.this);
-			popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_RECEIVED_TAG);
-			popupDialogFragment.getDialog().setCanceledOnTouchOutside(true);
-			popupDialogFragment.getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialogInterface) {
-					gameTaskRunner.runRejectDrawTask(gameId);
-				}
-			});
-			popupDialogFragment.getDialog().getWindow().setGravity(Gravity.BOTTOM);
+    @Override
+    public void onGameEnd(String gameEndMessage) {
+        Game game = getLccHolder().getGame(gameId);
+        switch (game.getGameTimeConfig().getGameTimeClass()) {
+            case BLITZ: {
+                whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
+                blackPlayerNewRating = game.getBlackPlayer().getBlitzRating();
+                currentPlayerRating = getLccHolder().getUser().getBlitzRating();
+                break;
+            }
+            case LIGHTNING: {
+                whitePlayerNewRating = game.getWhitePlayer().getQuickRating();
+                blackPlayerNewRating = game.getBlackPlayer().getQuickRating();
+                currentPlayerRating = getLccHolder().getUser().getQuickRating();
+                break;
+            }
+            case STANDARD: {
+                whitePlayerNewRating = game.getWhitePlayer().getStandardRating();
+                blackPlayerNewRating = game.getBlackPlayer().getStandardRating();
+                currentPlayerRating = getLccHolder().getUser().getStandardRating();
+                break;
+            }
+        }
+        
+        updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
 
-			// TODO make popUpFragmentDialog
-			final AlertDialog alertDialog = new AlertDialog.Builder(context)
-					// .setTitle(intent.getExtras().getString(AppConstants.TITLE))
-					.setMessage(intent.getExtras().getString(AppConstants.MESSAGE))
-					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							gameTaskRunner.runMakeDrawTask(gameId);
-						}
-					}).setNeutralButton(getString(R.string.decline), new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-							gameTaskRunner.runRejectDrawTask(gameId);
-						}
-					})
-					.create();
-			alertDialog.setCanceledOnTouchOutside(true);
-			alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialogInterface) {
-					gameTaskRunner.runRejectDrawTask(gameId);
-				}
-			});
-			alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-			alertDialog.show();
-		}
-	};
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout;
+        if (!MopubHelper.isShowAds(this)) {
+            layout = inflater.inflate(R.layout.popup_end_game, null, false);
+        }else {
+            layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+        }
+
+        showGameEndPopup(layout, getString(R.string.game_over) + ": " + gameEndMessage);
+
+        onGameEndMsgReceived();
+    }
 
 	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 		@Override
@@ -508,7 +515,7 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 				.equals(AppData.getUserName(this));
 	}
 
-	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
+    private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		private final int LIVE_SETTINGS = 0;
 		private final int LIVE_RESIDE = 1;
 		private final int LIVE_DRAW_OFFER = 2;
@@ -583,10 +590,6 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	protected void changeResignTitle() {
-		resignOrAbort = getLccHolder().getResignTitle(gameId);
-	}
-
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (currentGame != null) {
@@ -629,6 +632,10 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	protected void onGameEndMsgReceived() {
 		showSubmitButtonsLay(false);
 		gamePanelView.enableAnalysisMode(true);
+
+        boardView.setFinished(true);
+        gamePanelView.showBottomPart(false);
+        getSoundPlayer().playGameEnd();
 	}
 
 	protected void showGameEndPopup(View layout, String message) {
@@ -678,13 +685,6 @@ public class GameLiveScreenActivity extends GameBaseActivity {
 	@Override
 	protected void restoreGame() {
 	}
-
-	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			gamePanelView.haveNewMessage(true);
-		}
-	};
 
 	@Override
 	public void onClick(View view) {

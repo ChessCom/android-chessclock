@@ -16,6 +16,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.InitLccClientTask;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
@@ -23,6 +24,7 @@ import com.chess.live.util.config.Config;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
+import com.chess.ui.activities.ChatLiveActivity;
 import com.chess.ui.activities.GameLiveScreenActivity;
 
 import java.util.*;
@@ -97,15 +99,16 @@ public class LccHolder {
 	private long currentGameId;
 	public String networkTypeName;
 	private Context context;
-	private LccClientInitListener lccClientInitListener;
 	private Handler handler;
 	private int retryClientInitCnt;
 	private List<String> pendingWarnings;
 	private boolean lccPerformConnection;
 
 	private LiveChessClientEventListenerFace liveChessClientEventListener;
+    private LccEventListener lccEventListener;
+    private LccChatMessageListener lccChatMessageListener;
 
-	public static LccHolder getInstance(Context context) {
+    public static LccHolder getInstance(Context context) {
 		if (instance == null) {
 			instance = new LccHolder(context);
 		}
@@ -115,9 +118,8 @@ public class LccHolder {
     private LccHolder(Context context) {
 		this.context = context;
 		handler = new Handler();
-		lccClientInitListener = new LccClientInitListener();
 		// start asynctask for getting certificate and init http client
-		new InitLccClientTask(lccClientInitListener).executeTask();
+		new InitLccClientTask(new LccClientInitListener()).executeTask();
 
 		_chatListener = new ChatListenerImpl(this);
 		_connectionListener = new ConnectionListenerImpl(this);
@@ -151,19 +153,20 @@ public class LccHolder {
 											  fullGameProcessed = true;
 											}*/
 				pausedActivityGameEvents.remove(drawEvent);
-				getAndroidStuff().processDrawOffered(drawEvent.getDrawOffererUsername());
+                lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
+//				androidStuff.processDrawOffered(drawEvent.getDrawOffererUsername());
 			}
 
 			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
-			if (endGameEvent != null && (getCurrentGameId() == null
-					|| getCurrentGameId().equals(endGameEvent.getGameId()))) {
+			if (endGameEvent != null && (currentGameId == 0 || currentGameId == endGameEvent.getGameId())) {
 				/*if (!fullGameProcessed)
 											{
 											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 											  fullGameProcessed = true;
 											}*/
 				pausedActivityGameEvents.remove(endGameEvent);
-				getAndroidStuff().processGameEnd(endGameEvent.getGameEndedMessage());
+//                androidStuff.processGameEnd(endGameEvent.getGameEndedMessage());
+                lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
 			}
 		}
 
@@ -177,16 +180,18 @@ public class LccHolder {
 		}
 	}
 
-	public GameItem getGameItem(LccEventListener lccEventListener, long gameId) {
+    public void setLccEventListener(LccEventListener lccEventListener){
+        this.lccEventListener = lccEventListener;
+        if (isActivityPausedMode()) {
+            executePausedActivityGameEvents(lccEventListener);
+            setActivityPausedMode(false);
+        }
+    }
+
+	public GameItem getGameItem(long gameId) {
 		GameItem newGame = new GameItem(getGameData(gameId, getGame(gameId).getSeq() - 1), true);
 
-		androidStuff.setLccEventListener(lccEventListener);
-
-		if (isActivityPausedMode()) {
-			executePausedActivityGameEvents(lccEventListener);
-			setActivityPausedMode(false);
-		}
-		updateClockTime(getGame(gameId));
+        updateClockTime(getGame(gameId));
 
 		return newGame;
 	}
@@ -391,7 +396,19 @@ public class LccHolder {
 		liveChessClientEventListener.onConnectionFailure(failMessage);
 	}
 
-	private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
+    public LccEventListener getLccEventListener() {
+        return lccEventListener;
+    }
+
+    public void setLccChatMessageListener(ChatLiveActivity lccChatMessageListener) {
+        this.lccChatMessageListener = lccChatMessageListener;
+    }
+
+    public LccChatMessageListener getLccChatMessageListener() {
+        return lccChatMessageListener;
+    }
+
+    private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccClientInitListener() {
 			super(context);
 		}
@@ -641,13 +658,13 @@ public class LccHolder {
 	}
 
 	public void processMove(long gameId, int moveIndex) {
-		final GameItem gameData = new GameItem(getGameData(gameId, moveIndex), true);
+		GameItem gameData = new GameItem(getGameData(gameId, moveIndex), true);
 		getAndroidStuff().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
 	}
 
 	public String[] getGameData(long gameId, int moveIndex) {
 		Game lccGame = getGame(gameId);
-		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
+		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 
 		gameData[0] = lccGame.getId().toString();  // TODO eliminate string conversion and use Objects
 		gameData[1] = "1";
@@ -840,7 +857,7 @@ public class LccHolder {
 		return activityPausedMode;
 	}
 
-	public void setActivityPausedMode(boolean activityPausedMode) {
+	public void setActivityPausedMode(boolean activityPausedMode) { // TODO Unsafe -> replace with save server data holder logic
 		this.activityPausedMode = activityPausedMode;
 		pausedActivityGameEvents.clear();
 	}
@@ -856,7 +873,7 @@ public class LccHolder {
 	}
 
 	public void processFullGame() {
-//		latestMoveNumber = null;
+		latestMoveNumber = 0;
 		Game game = getGame(currentGameId);
 		putGame(game);
 		int time = game.getGameTimeConfig().getBaseTime() * 100;
@@ -893,9 +910,8 @@ public class LccHolder {
 		setBlackClock(new ChessClock(this, false, time));
 
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_CLEAR_TASK
-				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		context.startActivity(intent);

@@ -14,13 +14,14 @@ import com.chess.R;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 
 import java.util.ArrayList;
 
-public class ChatLiveActivity extends LiveBaseActivity {
+public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessageListener{
 
 	private EditText sendEdt;
 	private ListView chatListView;
@@ -38,27 +39,11 @@ public class ChatLiveActivity extends LiveBaseActivity {
 		findViewById(R.id.send).setOnClickListener(this);
 
 		gameId = getIntent().getExtras().getLong(GameListItem.GAME_ID);
+
+        getLccHolder().setLccChatMessageListener(this);
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		unregisterReceiver(chatMessageReceiver);
-	}
-
-	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			onMessageReceived();
-		}
-	};
-
+    @Override
 	public void onMessageReceived(){
 		int before = chatItems.size();
 		chatItems.clear();
@@ -79,23 +64,22 @@ public class ChatLiveActivity extends LiveBaseActivity {
 		if (view.getId() == R.id.send) {
 			new SendMessageTask().execute();
 
-			onMessageSent();
-		}
-	}
+            chatItems.clear();
+            chatItems.addAll(LccHolder.getInstance(this).getMessagesList(gameId));
 
-	private void onMessageSent(){
-		chatItems.clear();
-		chatItems.addAll(LccHolder.getInstance(this).getMessagesList(gameId));
-		if (messages == null) {
-			messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
-			chatListView.setAdapter(messages);
-		} else {
-			messages.notifyDataSetChanged();
+            if (messages == null) {
+                messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
+                chatListView.setAdapter(messages);
+            } else {
+                messages.notifyDataSetChanged();
+            }
+
+            sendEdt.setText(StaticData.SYMBOL_EMPTY);
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(sendEdt.getWindowToken(), 0);
+            chatListView.setSelection(chatItems.size() - 1);
 		}
-		sendEdt.setText(StaticData.SYMBOL_EMPTY);
-		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(sendEdt.getWindowToken(), 0);
-		chatListView.setSelection(chatItems.size() - 1);
 	}
 
 	private class SendMessageTask extends AsyncTask<Void, Void, Void> {

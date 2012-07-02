@@ -102,7 +102,8 @@ public class ChatListenerImpl implements ChatListener {
 		}
 
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-			lccHolder.getAndroidStuff().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
+//			lccHolder.getAndroidStuff().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
+            lccHolder.getLccChatMessageListener().onMessageReceived();
 		}
 	}
 

@@ -9,9 +9,13 @@ import com.chess.model.GameItem;
  * @created at: 24.05.12 21:47
  */
 public interface LccEventListener {
+    void setWhitePlayerTimer(String timer);
+
+    void setBlackPlayerTimer(String timer);
+
 	void onGameRefresh(GameItem newGame);
 
-	void setWhitePlayerTimer(String timer);
+    void onDrawOffered(String drawOfferUsername);
 
-	void setBlackPlayerTimer(String timer);
+    void onGameEnd(String gameEndMessage);
 }

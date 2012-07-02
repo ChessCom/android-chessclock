@@ -92,9 +92,6 @@ public class LccGameListener implements GameListener {
                 lccHolder.currentFGTime = System.currentTimeMillis();
                 lccHolder.previousFGGameId = lccHolder.currentFGGameId;
                 lccHolder.currentFGGameId = game.getId();
-			Log.d("TEST", "onFullGameReceived-> getLccEventListener() = "
-					+ lccHolder.getAndroidStuff().getLccEventListener());
-                lccHolder.getAndroidStuff().setLccEventListener(null);
 			Log.d("TEST", "onFullGameReceived-> lccEventListener set to null");
 //            }
             //lccHolder.putGame(game);
@@ -216,7 +213,7 @@ public class LccGameListener implements GameListener {
             gameEndedEvent.setEvent(GameEvent.Event.END_OF_GAME);
             gameEndedEvent.setGameEndedMessage(message);
             lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-            if (lccHolder.getAndroidStuff().getLccEventListener() == null) {
+            if (lccHolder.getLccEventListener() == null) {// if activity is not started yet
                 lccHolder.processFullGame(game);
             }
         } else {

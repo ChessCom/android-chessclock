@@ -83,7 +83,7 @@ public class ChessClock {
 	}
 
 	public void paint() {
-		LccEventListener eventListener = lccHolder.getAndroidStuff().getLccEventListener();
+		LccEventListener eventListener = lccHolder.getLccEventListener();
 
 		String timer = createTimeString(getTime());
 		if (isWhite) { // if white player move
