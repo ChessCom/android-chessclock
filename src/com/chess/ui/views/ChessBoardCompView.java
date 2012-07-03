@@ -384,24 +384,11 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 					|| boardFace.isSubmit())
                 return true;
 
-//            if ((AppData.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)
-//                    || (AppData.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0)) {
-//                return true;
-//            }
-
-            if ((AppData.isComputerVsHumanWhiteGameMode(boardFace)
-					&& boardFace.getHply() % 2 != 0 && !boardFace.isReside())
-					||(AppData.isComputerVsHumanWhiteGameMode(boardFace)
-					&& boardFace.getHply() % 2 == 0 && boardFace.isReside())
-					|| (AppData.isComputerVsHumanBlackGameMode(boardFace)
-					&& boardFace.getHply() % 2 == 0 && !boardFace.isReside())
-					|| (AppData.isComputerVsHumanBlackGameMode(boardFace)
-					&& boardFace.getHply() % 2 != 0 && boardFace.isReside())
-					) {
-                return true;
-            }
-
-        }
+			if ((AppData.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)
+					|| (AppData.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0)) {
+				return true;
+			}
+		}
 
         int col, row;
         switch (event.getAction()) {
@@ -432,7 +419,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             }
             case MotionEvent.ACTION_MOVE: {
                 dragX = (int) event.getX();
-                dragY = (int) event.getY() - square;
+                dragY =  (int) event.getY() - square;
                 col = (dragX - dragX % square) / square;
                 row = (dragY - dragY % square) / square;
                 if (col > 7 || col < 0 || row > 7 || row < 0) {
