@@ -57,7 +57,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         if (isGameOver())
             return;
 
-        if (!boardFace.isAnalysis()) {
+        if (!boardFace.isAnalysis() && !AppData.isHumanVsHumanGameMode(boardFace)) {
 			computerMove(compStrength);
         }
     }

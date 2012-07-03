@@ -112,7 +112,7 @@ public class AppData {
 	public static boolean isComputerGameMode(BoardFace boardFace) {
 		final int mode = boardFace.getMode();
 		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE || mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK
-				|| mode == AppConstants.GAME_MODE_HUMAN_VS_HUMAN || mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+				|| mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 	}
 
 	public static boolean isLiveOrEchessGameMode(int mode) {
