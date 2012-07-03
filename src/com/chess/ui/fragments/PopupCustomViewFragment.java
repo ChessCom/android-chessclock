@@ -24,8 +24,9 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
 	private Button leftBtn;
 	private Button rightBtn;
     private int buttonsNumber;
+	private FrameLayout customView;
 
-    public static PopupCustomViewFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
+	public static PopupCustomViewFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();
 		Bundle arguments = new Bundle();
 		arguments.putSerializable(POPUP_ITEM, popupItem);
@@ -44,16 +45,16 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.popup_custom_dialog, container, false);
+		View view = inflater.inflate(R.layout.popup_custom_dialog, container, false);
 
-		((FrameLayout)v.findViewById(R.id.customView)).addView(popupItem.getCustomView());
+		customView = (FrameLayout) view.findViewById(R.id.customView);
 
-		leftBtn = (Button)v.findViewById(R.id.positiveBtn);
-		rightBtn = (Button)v.findViewById(R.id.negativeBtn);
+		leftBtn = (Button)view.findViewById(R.id.positiveBtn);
+		rightBtn = (Button)view.findViewById(R.id.negativeBtn);
 
 		leftBtn.setOnClickListener(this);
 		rightBtn.setOnClickListener(this);
-		return v;
+		return view;
 	}
 
     @Override
@@ -80,6 +81,8 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
 	@Override
 	public void onResume() {
 		super.onResume();
+		customView.addView(popupItem.getCustomView());
+
 		leftBtn.setText(popupItem.getPositiveBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
@@ -91,6 +94,13 @@ public class PopupCustomViewFragment extends DialogFragment implements View.OnCl
 		}else if(view.getId() == R.id.negativeBtn){
 			listener.onNegativeBtnClick(this);
 		}
+	}
+
+	public void updatePopupItem(PopupItem popupItem) {
+		this.popupItem = popupItem;
+		Bundle arguments = new Bundle();
+		arguments.putSerializable(POPUP_ITEM, popupItem);
+		setArguments(arguments);
 	}
 
     public void setButtons(int buttonsNumber){

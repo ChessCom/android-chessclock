@@ -266,10 +266,10 @@
 
 	<!--Game-->
 	<string name="opponent_">Opponent:</string>
-	<string name="time_">Time:</string>
+	<string name="time_">\nTime:</string>
 	<string name="rated">Rated</string>
 	<string name="unrated">Unrated</string>
-	<string name="you_play">You Play:</string>
+	<string name="you_play">\nYou Play:</string>
 	<string name="standard_game">(Standard)</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>

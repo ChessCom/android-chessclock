@@ -37,6 +37,7 @@
 		style="@style/DarkShadowBottom"
 		cb:ttf="Bold"
 		android:visibility="gone"
+		android:textSize="17sp"
 		/>
 
 	<ProgressBar

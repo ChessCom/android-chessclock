@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +72,11 @@ public class PopupProgressFragment extends DialogFragment {
 		String message = popupItem.getMessage(getActivity());
 		if(!message.equals(StaticData.SYMBOL_EMPTY)){
 			messageTxt.setVisibility(View.VISIBLE);
-			messageTxt.setText(message);
-
+			if(message.contains(StaticData.SYMBOL_TAG)){
+				messageTxt.setText(Html.fromHtml(message));
+			}else{
+				messageTxt.setText(message);
+			}
 		}
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 	}

@@ -176,9 +176,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 			return new StringBuilder()
 					.append(getString(R.string.opponent_)).append(StaticData.SYMBOL_SPACE)
-					.append(challenge.getFrom().getUsername()).append(StaticData.SYMBOL_NEW_STR)
+					.append(challenge.getFrom().getUsername())
 					.append(getString(R.string.time_)).append(StaticData.SYMBOL_SPACE)
-					.append(timeMode).append(StaticData.SYMBOL_NEW_STR)
+					.append(timeMode)
 					.append(getString(R.string.you_play)).append(StaticData.SYMBOL_SPACE)
 					.append(playerColor).append(StaticData.SYMBOL_NEW_STR)
 					.append(rated)

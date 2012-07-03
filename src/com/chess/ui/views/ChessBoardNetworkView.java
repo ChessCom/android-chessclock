@@ -256,9 +256,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			if (blackUserName.equals(userName) && boardFace.getMovesCount() % 2 == 0)
 				return true;
 
-			// todo: should be removed?
-//			if ((MainApp.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)
-//					|| (MainApp.isComputerVsHumanBlackGameMode(boardFace) && boardFace.getHply() % 2 == 0)) {
 			// TODO turns to false anyway
 //			if ((false&& boardFace.getHply() % 2 != 0)
 //					|| (false&& boardFace.getHply() % 2 == 0)) {

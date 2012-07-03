@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.fragments.PopupProgressFragment;
@@ -147,12 +148,14 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 	protected void showPopupDialog(int titleId, int messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	protected void showPopupDialog(int titleId, String messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
@@ -160,38 +163,50 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 	protected void showPopupDialog(String title, String message, String tag) {
 		popupItem.setTitle(title);
 		popupItem.setMessage(message);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	protected void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	protected void showPopupDialog(String title, String tag) {
 		popupItem.setTitle(title);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	// Progress Dialogs
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void showPopupProgressDialog(String title, String message) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(message);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 		popupProgressDialogFragment.setNotCancelable();
 	}
@@ -199,6 +214,7 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 	protected void showPopupProgressDialog(int titleId, int messageId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(messageId);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 

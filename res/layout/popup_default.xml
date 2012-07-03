@@ -37,6 +37,7 @@
 		android:paddingTop="@dimen/default_scr_bottom_padding"
 		android:paddingBottom="@dimen/default_scr_top_padding"
 		style="@style/DarkShadowBottom"
+		android:textSize="17sp"
 		/>
 
 	<LinearLayout

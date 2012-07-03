@@ -94,7 +94,7 @@ public class LccHolder {
 	private ChessClock whiteClock;
 	private ChessClock blackClock;
 	private boolean activityPausedMode = true;
-	private int latestMoveNumber;
+	private Integer latestMoveNumber;
 	private Long currentGameId;
 	public String networkTypeName;
 	private Context context;
@@ -842,13 +842,13 @@ public class LccHolder {
 	}
 
 	public void checkAndProcessFullGame() {
-		if (currentGameId != 0 && getGame(currentGameId) != null) {
+		if (currentGameId != null && getGame(currentGameId) != null) {
 			processFullGame(getGame(currentGameId));
 		}
 	}
 
 	public void processFullGame() {
-		latestMoveNumber = 0;
+		latestMoveNumber = null;
 		Game game = getGame(currentGameId);
 		putGame(game);
 		int time = game.getGameTimeConfig().getBaseTime() * 100;
@@ -870,7 +870,7 @@ public class LccHolder {
 
 
 	public void processFullGame(Game game) {
-		latestMoveNumber = 0;
+		latestMoveNumber = null;
 		putGame(game);
 
 		int time = game.getGameTimeConfig().getBaseTime() * 100;
@@ -885,8 +885,8 @@ public class LccHolder {
 		setBlackClock(new ChessClock(this, false, time));
 
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(/*Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                |*/ Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		context.startActivity(intent);
@@ -905,7 +905,7 @@ public class LccHolder {
 	}
 
 	public void doMoveMade(final Game game, final User moveMaker, String move, int moveIndex) {
-		if (((latestMoveNumber != 0) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == 0 && moveIndex > 0)) {
+		if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
 			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex + ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
 			return;
 		} else {

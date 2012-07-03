@@ -208,12 +208,14 @@ public class LccGameListener implements GameListener {
         Log.d(TAG, "GAME LISTENER: GAME OVER - " + message);
 
         if (lccHolder.isActivityPausedMode()) {
+			Log.d(TAG, "ActivityPausedMode = true");
             final GameEvent gameEndedEvent = new GameEvent();
             gameEndedEvent.setEvent(GameEvent.Event.END_OF_GAME);
             gameEndedEvent.setGameEndedMessage(message);
             lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
             if (lccHolder.getLccEventListener() == null) {// if activity is not started yet
                 lccHolder.processFullGame(game);
+				Log.d(TAG, "processFullGame");
             }
         } else {
             lccHolder.getLccEventListener().onGameEnd(message);

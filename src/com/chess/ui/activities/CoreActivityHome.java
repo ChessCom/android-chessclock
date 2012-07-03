@@ -356,12 +356,14 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void showPopupDialog(int titleId, int messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	protected void showPopupDialog(int titleId, String messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
@@ -369,38 +371,50 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void showPopupDialog(String title, String message, String tag) {
 		popupItem.setTitle(title);
 		popupItem.setMessage(message);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	protected void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	protected void showPopupDialog(String title, String tag) {
 		popupItem.setTitle(title);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	// Progress Dialogs
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void showPopupProgressDialog(String title, String message) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(message);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 		popupProgressDialogFragment.setNotCancelable();
 	}
@@ -408,6 +422,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void showPopupProgressDialog(int titleId, int messageId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(messageId);
+		popupDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 

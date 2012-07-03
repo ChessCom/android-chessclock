@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
 
@@ -91,7 +92,12 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 	@Override
 	public void onResume() {
 		super.onResume();
-		messageTxt.setText(Html.fromHtml(popupItem.getMessage(getActivity())));
+		String message = popupItem.getMessage(getActivity());
+		if(message.contains(StaticData.SYMBOL_TAG)){
+			messageTxt.setText(Html.fromHtml(message));
+		}else{
+			messageTxt.setText(message);
+		}
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
@@ -115,6 +121,9 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 
     public void updatePopupItem(PopupItem popupItem) {
         this.popupItem = popupItem;
+		Bundle arguments = new Bundle();
+		arguments.putSerializable(POPUP_ITEM, popupItem);
+		setArguments(arguments);
     }
 
     public void setButtons(int buttonsNumber){

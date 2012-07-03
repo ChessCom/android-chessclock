@@ -131,6 +131,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void init() {
 		super.init();
 		gameId = extras.getLong(GameListItem.GAME_ID);
+		currentGame = getLccHolder().getGameItem(gameId);
+
         getLccHolder().setLccEventListener(this);
 
         resignOrAbort = getLccHolder().getResignTitle(gameId);
@@ -153,6 +155,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 //		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
 
+		getLccHolder().setActivityPausedMode(false);
 		updateGameSate();
 
 //		getActionBarHelper().showMenuItemById();  // TODO hide signout action bar item
@@ -168,13 +171,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void updateGameSate() {
 		if (boardView.getBoardFace().isInit()) {
-			getOnlineGame();
+			onGameStarted();
 			boardView.getBoardFace().setInit(false);
 		}
-	}
-
-	private void getOnlineGame() {
-		onGameStarted();
 	}
 
 	private void onGameStarted() {
@@ -268,9 +267,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 				int beginIndex = 0;
 
-				moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(beginIndex).split(" ");
+				moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
+						.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
-				if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
+				if (moves.length - boardView.getBoardFace().getMovesCount() == 1) { // if have new move
 
 					moveFT = MoveParser.parseCoordinate(boardView.getBoardFace(), moves[moves.length - 1]);
 
