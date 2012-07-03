@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
@@ -217,7 +216,7 @@ public class LccGameListener implements GameListener {
                 lccHolder.processFullGame(game);
             }
         } else {
-            lccHolder.getAndroidStuff().processGameEnd(message);
+            lccHolder.getLccEventListener().onGameEnd(message);
         }
         lccHolder.getWhiteClock().setRunning(false);
         lccHolder.getBlackClock().setRunning(false);
@@ -230,10 +229,8 @@ public class LccGameListener implements GameListener {
 
     @Override
     public void onMoveMade(Game game, User moveMaker, String move) {
-        Log.d(TAG,
-                "GAME LISTENER: The move #" + game.getSeq() + " received by user: " + lccHolder.getUser().getUsername() +
-                        ", game.id=" +
-                        game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
+        Log.d(TAG, "GAME LISTENER: The move #" + game.getSeq() + " received by user: " + lccHolder.getUser().getUsername() +
+                        ", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
         if (isOldGame(game.getId())) {
             Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
             return;
@@ -256,10 +253,8 @@ public class LccGameListener implements GameListener {
 
     @Override
     public void onDrawOffered(Game game, User offerer) {
-        Log.d(TAG,
-                "GAME LISTENER: Draw offered at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
-                        ", game.id=" +
-                        game.getId() + ", offerer=" + offerer.getUsername() + ", game=" + game);
+        Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
+                        ", game.id=" + game.getId() + ", offerer=" + offerer.getUsername() + ", game=" + game);
         if (isOldGame(game.getId())) {
             return;
         }
@@ -273,27 +268,26 @@ public class LccGameListener implements GameListener {
             drawOfferedEvent.setDrawOffererUsername(offerer.getUsername());
             lccHolder.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
         } else {
-            lccHolder.getAndroidStuff().processDrawOffered(offerer.getUsername());
+            lccHolder.getLccEventListener().onDrawOffered(offerer.getUsername());
         }
     }
 
     @Override
     public void onDrawAccepted(Game game, User acceptor) {
         Log.d(TAG, "GAME LISTENER: Draw accepted at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
-                        ", game.id=" +
-                        game.getId() + ", acceptor=" + acceptor.getUsername() + ", game=" + game);
+                        ", game.id=" + game.getId() + ", acceptor=" + acceptor.getUsername() + ", game=" + game);
     }
 
     @Override
     public void onDrawRejected(Game game, User rejector) {
         final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
-        Log.d(TAG,
-                "GAME LISTENER: Draw rejected at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
-                        ", game.id=" +
-                        game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
+        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
+                        ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {
-            lccHolder.getAndroidStuff().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_INFO, "DRAW DECLINED",
-                    rejectorUsername + " has declined a draw");
+//            lccHolder.getAndroidStuff().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_INFO, "DRAW DECLINED",
+//                    rejectorUsername + " has declined a draw");
+			lccHolder.getLccEventListener().onInform(context.getString(R.string.draw_declined),
+					rejectorUsername + context.getString(R.string.has_declined_draw));
         }
     }
 

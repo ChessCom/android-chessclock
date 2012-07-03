@@ -100,11 +100,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		boardView = (ChessBoardTacticsView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-
 		boardView.setGamePanelView(gamePanelView);
-
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);
+
+		setBoardView(boardView);
 		getBoardFace().setInit(true);
 		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		setBoardView(boardView);

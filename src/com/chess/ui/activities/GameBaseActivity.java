@@ -10,7 +10,6 @@ import android.view.*;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.model.GameItem;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
@@ -158,7 +157,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		}
 
 		showGameEndPopup(layout, message);
-
 	}
 
 	protected void showGameEndPopup(final View layout, final String message){

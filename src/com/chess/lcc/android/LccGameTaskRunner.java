@@ -26,7 +26,7 @@ public class LccGameTaskRunner {
 	}
 
 
-	public void runMakeDrawTask(long gameId) {
+	public void runMakeDrawTask(Long gameId) {
 		new LiveMakeDrawTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
 	}
 
@@ -42,7 +42,7 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runMakeResignTask(long gameId) {
+	public void runMakeResignTask(Long gameId) {
 		new LiveMakeResignTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
 	}
 
@@ -58,7 +58,7 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runAbortGameTask(long gameId) {
+	public void runAbortGameTask(Long gameId) {
 		new LiveAbortGameTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
 	}
 
@@ -74,7 +74,7 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runRejectDrawTask(long gameId) {
+	public void runRejectDrawTask(Long gameId) {
 		new LiveRejectDrawTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
 	}
 

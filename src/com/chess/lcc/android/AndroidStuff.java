@@ -5,15 +5,7 @@
 package com.chess.lcc.android;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-import com.chess.R;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.IntentConstants;
-import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccEventListener;
-
-import java.io.Serializable;
 
 public class AndroidStuff {
 	private Context context;
@@ -71,15 +63,15 @@ public class AndroidStuff {
      * @param broadcastAction
      * @param object
      */
-    @Deprecated
-	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
-		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		context.sendBroadcast(
-				new Intent(broadcastAction)
-						.putExtra(AppConstants.CALLBACK_CODE, code)
-						.putExtra(AppConstants.OBJECT, object)
-		);
-	}
+//    @Deprecated
+//	public void sendBroadcastObjectIntent(int code, String broadcastAction, Serializable object) {
+//		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
+//		context.sendBroadcast(
+//				new Intent(broadcastAction)
+//						.putExtra(AppConstants.CALLBACK_CODE, code)
+//						.putExtra(AppConstants.OBJECT, object)
+//		);
+//	}
 
     /**
      * Use LccEventListener instead
@@ -88,39 +80,39 @@ public class AndroidStuff {
      * @param title
      * @param message
      */
-    @Deprecated
-	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
-		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		context.sendBroadcast(
-				new Intent(broadcastAction)
-						.putExtra(AppConstants.CALLBACK_CODE, code)
-						.putExtra(AppConstants.TITLE, title)
-						.putExtra(AppConstants.MESSAGE, message)
-		);
-	}
+//    @Deprecated
+//	public void sendBroadcastMessageIntent(int code, String broadcastAction, String title, String message) {
+//		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
+//		context.sendBroadcast(
+//				new Intent(broadcastAction)
+//						.putExtra(AppConstants.CALLBACK_CODE, code)
+//						.putExtra(AppConstants.TITLE, title)
+//						.putExtra(AppConstants.MESSAGE, message)
+//		);
+//	}
 
     /**
      * Use LccEventListener instead
      * @param code
      * @param broadcastAction
      */
-    @Deprecated
-	public void sendBroadcastIntent(int code, String broadcastAction) {
-		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
-		context.sendBroadcast(
-				new Intent(broadcastAction)
-						.putExtra(AppConstants.CALLBACK_CODE, code)
-		);
-	}
+//    @Deprecated
+//	public void sendBroadcastIntent(int code, String broadcastAction) {
+//		Log.d(TAG, AppConstants.LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION + broadcastAction);
+//		context.sendBroadcast(
+//				new Intent(broadcastAction)
+//						.putExtra(AppConstants.CALLBACK_CODE, code)
+//		);
+//	}
 
-	public void processDrawOffered(String offererUsername) {
-//		sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, context.getString(R.string.draw_game),
-//				offererUsername + StaticData.SYMBOL_SPACE + context.getResources().getString(R.string.has_offered_draw));
-	}
+//	public void processDrawOffered(String offererUsername) {
+////		sendBroadcastMessageIntent(0, IntentConstants.FILTER_DRAW_OFFERED, context.getString(R.string.draw_game),
+////				offererUsername + StaticData.SYMBOL_SPACE + context.getResources().getString(R.string.has_offered_draw));
+//	}
 
-	public void processGameEnd(String message) {
-//		sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, context.getString(R.string.game_over), message);
-	}
+//	public void processGameEnd(String message) {
+////		sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_END, context.getString(R.string.game_over), message);
+//	}
 
 
 

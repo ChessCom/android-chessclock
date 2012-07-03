@@ -9,7 +9,7 @@ public class GameEvent {
 
 
 	private Event event;
-	private long gameId;
+	private Long gameId;
 	private int moveIndex;
 	private String drawOffererUsername;
 	private String gameEndedMessage;
@@ -46,11 +46,11 @@ public class GameEvent {
 		this.moveIndex = moveIndex;
 	}
 
-	public long getGameId() {
+	public Long getGameId() {
 		return gameId;
 	}
 
-	public void setGameId(long gameId) {
+	public void setGameId(Long gameId) {
 		this.gameId = gameId;
 	}
 }

@@ -13,7 +13,6 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.InitLccClientTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -68,7 +67,7 @@ public class LccHolder {
 	private User _user;
 	private static LccHolder instance;
 
-	private AndroidStuff androidStuff;
+//	private AndroidStuff androidStuff;
 //	private GameItem newGame;
 
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
@@ -96,7 +95,7 @@ public class LccHolder {
 	private ChessClock blackClock;
 	private boolean activityPausedMode = true;
 	private int latestMoveNumber;
-	private long currentGameId;
+	private Long currentGameId;
 	public String networkTypeName;
 	private Context context;
 	private Handler handler;
@@ -127,7 +126,7 @@ public class LccHolder {
 		challengeListener = new LccChallengeListener(this);
 		seekListListener = new LccSeekListListener(this);
 		friendStatusListener = new LccFriendStatusListener(this);
-		androidStuff = new AndroidStuff(context);
+//		androidStuff = new AndroidStuff(context);
 
 		pendingWarnings = new ArrayList<String>();
 	}
@@ -136,7 +135,7 @@ public class LccHolder {
 		if (pausedActivityGameEvents.size() > 0) {
 
 			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
-			if (moveEvent != null && (currentGameId == 0 || currentGameId == moveEvent.getGameId())) {
+			if (moveEvent != null && (currentGameId == null || currentGameId == moveEvent.getGameId())) {
 				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				pausedActivityGameEvents.remove(moveEvent);
@@ -146,7 +145,7 @@ public class LccHolder {
 			}
 
 			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
-			if (drawEvent != null && (currentGameId == 0 || currentGameId == drawEvent.getGameId())) {
+			if (drawEvent != null && (currentGameId == null || currentGameId == drawEvent.getGameId())) {
 				/*if (!fullGameProcessed)
 											{
 											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
@@ -158,7 +157,7 @@ public class LccHolder {
 			}
 
 			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
-			if (endGameEvent != null && (currentGameId == 0 || currentGameId == endGameEvent.getGameId())) {
+			if (endGameEvent != null && (currentGameId == null || currentGameId == endGameEvent.getGameId())) {
 				/*if (!fullGameProcessed)
 											{
 											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
@@ -188,7 +187,7 @@ public class LccHolder {
         }
     }
 
-	public GameItem getGameItem(long gameId) {
+	public GameItem getGameItem(Long gameId) {
 		GameItem newGame = new GameItem(getGameData(gameId, getGame(gameId).getSeq() - 1), true);
 
         updateClockTime(getGame(gameId));
@@ -196,7 +195,7 @@ public class LccHolder {
 		return newGame;
 	}
 
-	public int getResignTitle(long gameId) {
+	public int getResignTitle(Long gameId) {
 		if (isFairPlayRestriction(gameId)) {
 			return R.string.resign;
 		} else if (isAbortableBySeq(gameId)) {
@@ -206,11 +205,11 @@ public class LccHolder {
 		}
 	}
 
-	public String getBlackUserName(long gameId) {
+	public String getBlackUserName(Long gameId) {
 		return getGame(gameId).getBlackPlayer().getUsername();
 	}
 
-	public String getWhiteUserName(long gameId) {
+	public String getWhiteUserName(Long gameId) {
 		return getGame(gameId).getWhitePlayer().getUsername();
 	}
 
@@ -218,11 +217,11 @@ public class LccHolder {
 		return _user.getUsername();
 	}
 
-	public boolean isPlaySound(long gameId, String[] moves) {
+	public boolean isPlaySound(Long gameId, String[] moves) {
 		return getGame(gameId).getSeq() == moves.length;
 	}
 
-	public void checkAndReplayMoves(long gameId) {
+	public void checkAndReplayMoves(Long gameId) {
 		Game game = getGame(gameId);
 		if (game != null && game.getSeq() > 0) {
 			doReplayMoves(game);
@@ -230,7 +229,7 @@ public class LccHolder {
 
 	}
 
-	public List<MessageItem> getMessagesList(long gameId) {
+	public List<MessageItem> getMessagesList(Long gameId) {
 		ArrayList<MessageItem> messageItems = new ArrayList<MessageItem>();
 
 		Chat chat = getGameChat(gameId);
@@ -246,7 +245,7 @@ public class LccHolder {
 		return messageItems;
 	}
 
-	public void sendChatMessage(long gameId, String text) {
+	public void sendChatMessage(Long gameId, String text) {
 		_lccClient.sendChatMessage(getGameChat(gameId), text);
 	}
 
@@ -472,9 +471,9 @@ public class LccHolder {
 	}
 
 
-	public AndroidStuff getAndroidStuff() {
-		return androidStuff;
-	}
+//	public AndroidStuff getAndroidStuff() {
+//		return androidStuff;
+//	}
 
 	public void clearChallenges() {
 		challenges.clear();
@@ -571,7 +570,7 @@ public class LccHolder {
 		return false;
 	}
 
-	public boolean isUserPlayingAnotherGame(long currentGameId) {
+	public boolean isUserPlayingAnotherGame(Long currentGameId) {
 		for (Game game : lccGames.values()) {
 			if (!game.getId().equals(currentGameId) && !game.isEnded()) {
 				return true;
@@ -645,7 +644,7 @@ public class LccHolder {
 //		return getGame(new Long(gameId));
 //	}
 
-	public Game getGame(long gameId) {
+	public Game getGame(Long gameId) {
 		return lccGames.get(gameId);
 	}
 
@@ -657,12 +656,12 @@ public class LccHolder {
 		lccGames.clear();
 	}
 
-	public void processMove(long gameId, int moveIndex) {
-		GameItem gameData = new GameItem(getGameData(gameId, moveIndex), true);
-		getAndroidStuff().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
-	}
+//	public void processMove(long gameId, int moveIndex) {
+//		GameItem gameData = new GameItem(getGameData(gameId, moveIndex), true);
+//		getAndroidStuff().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
+//	}
 
-	public String[] getGameData(long gameId, int moveIndex) {
+	public String[] getGameData(Long gameId, int moveIndex) {
 		Game lccGame = getGame(gameId);
 		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 
@@ -674,30 +673,7 @@ public class LccHolder {
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
 		gameData[6] = StaticData.SYMBOL_EMPTY; // starting_fen_position
 		String moves = StaticData.SYMBOL_EMPTY;
-		/*int j = 0;
-			int latest = 0;
-			for (int i=0; j <= moveIndex; i++)
-			{
-			  if (lccGame.getMovesInSanNotation().charAt(i) == ' ')
-			  {
-				j++;
-				latest = i;
-			  }
-			}
-			if (j!=0)
-			{
-			  moves = lccGame.getMovesInSanNotation().substring(0, latest);
-			}
-			else
-			{
-			  moves = lccGame.getMovesInSanNotation();
-			}*/
 
-		/*String [] movesArray = lccGame.getMovesInSanNotation().split(" ");
-			for (int i=0; i<=moveIndex; i++)
-			{
-			  moves += movesArray[i]+" ";
-			}*/
 
 		final Iterator movesIterator = lccGame.getMoves().iterator();
 		for (int i = 0; i <= moveIndex; i++) {
@@ -745,7 +721,7 @@ public class LccHolder {
 		return gameData;
 	}
 
-	public void makeMove(long gameId, final String move) {
+	public void makeMove(Long gameId, final String move) {
 		final Game game = getGame(gameId);  // TODO remove final and pass like argument
 		/*if(chessMove.isCastling())
 			{
@@ -774,8 +750,7 @@ public class LccHolder {
 
 			if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
 			{
-				final boolean isWhiteRunning =
-						_user.getUsername().equals(game.getWhitePlayer().getUsername());
+				final boolean isWhiteRunning =_user.getUsername().equals(game.getWhitePlayer().getUsername());
 				final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
 				final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
 				if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
@@ -849,7 +824,7 @@ public class LccHolder {
 		ownChallenges.remove(id);
 	}
 
-	public Challenge getSeek(long gameId) {
+	public Challenge getSeek(Long gameId) {
 		return seeks.get(gameId);
 	}
 
@@ -937,13 +912,14 @@ public class LccHolder {
 			latestMoveNumber = moveIndex;
 		}
 		if (isActivityPausedMode()) {
-			final GameEvent moveEvent = new GameEvent();
+			GameEvent moveEvent = new GameEvent();
 			moveEvent.setEvent(GameEvent.Event.MOVE);
 			moveEvent.setGameId(game.getId());
 			moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-			processMove(game.getId(), moveIndex);
+//			processMove(game.getId(), moveIndex);
+			lccEventListener.onGameRefresh(new GameItem(getGameData(game.getId(), moveIndex), true));
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);
 	}
@@ -1018,7 +994,7 @@ public class LccHolder {
 		return networkTypeName;
 	}
 
-	public Boolean isFairPlayRestriction(long gameId) {
+	public Boolean isFairPlayRestriction(Long gameId) {
 		Log.d("TEST", "gameId = " + gameId);
 		Game game = getGame(gameId);
 		String userName = _user.getUsername();
@@ -1031,7 +1007,7 @@ public class LccHolder {
 		return false;
 	}
 
-	public Boolean isAbortableBySeq(long gameId) {
+	public Boolean isAbortableBySeq(Long gameId) {
 		return getGame(gameId).getSeq() < 3;
 	}
 

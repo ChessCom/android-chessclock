@@ -350,4 +350,6 @@
 	<string name="rematch">Rematch</string>
 	<string name="review">Review</string>
 	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>
+	<string name="draw_declined">DRAW DECLINED</string>
+	<string name="has_declined_draw">has declined a draw</string>
 </resources>

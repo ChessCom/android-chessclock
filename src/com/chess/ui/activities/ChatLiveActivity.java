@@ -1,9 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +7,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -27,7 +22,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	private ListView chatListView;
 	private MessagesAdapter messages = null;
 	private ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
-	private long gameId;
+	private Long gameId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -19,7 +19,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameItem;
@@ -30,7 +29,6 @@ import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MopubHelper;
 
 import java.util.ArrayList;
 
@@ -622,13 +620,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				if (MopubHelper.isShowAds(getContext())) {
-					sendBroadcast(new Intent(IntentConstants.ACTION_SHOW_GAME_END_POPUP)
-							.putExtra(AppConstants.MESSAGE, "GAME OVER")
-							.putExtra(AppConstants.FINISHABLE, true));
-				} else {
-					finish();
-				}
+				onGameOver(getString(R.string.game_over), true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}

@@ -97,7 +97,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
-		float density = resources.getDisplayMetrics().density;
 
 		loadBoard(AppData.getChessBoardId(getContext()));
 		loadPieces(AppData.getPiecesId(getContext()));
@@ -117,7 +116,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		blackPaint.setStrokeWidth(1.0f);
 		blackPaint.setStyle(Style.FILL);
 		blackPaint.setColor(Color.BLACK);
-		blackPaint.setTextSize(10* density + 0.5f);
 
 		redPaint.setStrokeWidth(2.0f);
 		redPaint.setStyle(Style.STROKE);

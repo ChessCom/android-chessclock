@@ -1,7 +1,8 @@
 package com.chess.ui.activities;
 
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -12,9 +13,7 @@ import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
@@ -48,7 +47,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
 	private GameItem currentGame;
-	private long gameId;
+	private Long gameId;
 	private ChessBoardLiveView boardView;
 	private int whitePlayerNewRating;
 	private int blackPlayerNewRating;
@@ -63,8 +62,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		setContentView(R.layout.boardview_live);
 
-		init();
 		widgetsInit();
+		init();
 
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
@@ -152,9 +151,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.onResume();
 		DataHolder.getInstance().setLiveChess(true);
 
-		registerReceiver(gameMoveReceiver, new IntentFilter(IntentConstants.ACTION_GAME_MOVE));
-		registerReceiver(gameInfoMessageReceived, new IntentFilter(IntentConstants.ACTION_GAME_INFO));
-		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
+//		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
 
 		updateGameSate();
 
@@ -164,9 +161,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(gameMoveReceiver);
-		unregisterReceiver(gameInfoMessageReceived);
-		unregisterReceiver(showGameEndPopupReceiver);
+//		unregisterReceiver(showGameEndPopupReceiver);
 
 		getLccHolder().setActivityPausedMode(true);
 	}
@@ -221,15 +216,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	}
 
-	protected BroadcastReceiver gameMoveReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			Log.i(TAG, AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			GameItem newGame = (GameItem) intent.getSerializableExtra(AppConstants.OBJECT);
-			onGameRefresh(newGame);
-		}
-	};
-
     public void setWhitePlayerTimer(String timeString) {
         whiteTimer = timeString;
         runOnUiThread(new Runnable() {
@@ -268,15 +254,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         });
     }
 
-	public void onGameRefresh(GameItem newGame) {
-//		this.newGame = newGame;
+	// ----------------------Lcc Events ---------------------------------------------
+
+	public void onGameRefresh(GameItem gameItem) {
 		if (boardView.getBoardFace().isAnalysis())
 			return;
 
 		int[] moveFT;
-		if (!currentGame.equals(newGame)) {
-			if (!currentGame.values.get(AppConstants.MOVE_LIST).equals(newGame.values.get(AppConstants.MOVE_LIST))) {
-				currentGame = newGame;
+		if (!currentGame.equals(gameItem)) {
+			if (!currentGame.values.get(AppConstants.MOVE_LIST).equals(gameItem.values.get(AppConstants.MOVE_LIST))) {
+				currentGame = gameItem;
 				String[] moves;
 
 				int beginIndex = 0;
@@ -317,6 +304,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         gamePanelView.haveNewMessage(true);
     }
 
+	@Override
+	public void onInform(String title, String message){
+		showSinglePopupDialog(title, message);
+	}
 
     @Override
     public void onDrawOffered(String drawOfferUsername) {
@@ -376,32 +367,24 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         onGameEndMsgReceived();
     }
 
-	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, final Intent intent) {
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-			View layout;
-			if (!MopubHelper.isShowAds(context)) {
-				layout = inflater.inflate(R.layout.popup_end_game, null, false);
-			} else {
-				layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
-			}
+	// -----------------------------------------------------------------------------------
 
-			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.MESSAGE));
-
-
-		}
-	};
-
-	protected BroadcastReceiver gameInfoMessageReceived = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			Log.i(TAG, AppConstants.LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION + intent.getAction());
-			String title = intent.getStringExtra(AppConstants.TITLE);
-			String message = intent.getStringExtra(AppConstants.MESSAGE);
-			showSinglePopupDialog(title, message);
-		}
-	};
+//	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
+//		@Override
+//		public void onReceive(Context context, final Intent intent) {
+//			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+//			View layout;
+//			if (!MopubHelper.isShowAds(context)) {
+//				layout = inflater.inflate(R.layout.popup_end_game, null, false);
+//			} else {
+//				layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+//			}
+//
+//			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.MESSAGE));
+//
+//
+//		}
+//	};
 
 	protected void sendMove() {
 		showSubmitButtonsLay(false);
@@ -605,7 +588,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;  // TODO check
+			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;  // TODO check
 	}
 
 	@Override

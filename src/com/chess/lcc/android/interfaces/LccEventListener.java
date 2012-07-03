@@ -13,9 +13,11 @@ public interface LccEventListener {
 
     void setBlackPlayerTimer(String timer);
 
-	void onGameRefresh(GameItem newGame);
+	void onGameRefresh(GameItem gameItem);
 
     void onDrawOffered(String drawOfferUsername);
 
     void onGameEnd(String gameEndMessage);
+	
+	void onInform(String title, String message);
 }
