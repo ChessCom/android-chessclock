@@ -95,6 +95,14 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+		if (AppData.isComputerVsComputerGameMode(boardView.getBoardFace())) {
+			boardView.stopThinking();
+		}
+	}
+
+	@Override
 	public String getWhitePlayerName() {
 		return null;
 	}
