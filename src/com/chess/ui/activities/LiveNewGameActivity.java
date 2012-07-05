@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import com.chess.R;
@@ -44,12 +43,12 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		}
 	}
 
-	@Override
-	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		getLccHolder().logout();
-		backToHomeActivity();
-	}
+//	@Override
+//	public void onPositiveBtnClick(DialogFragment fragment) {
+//		super.onPositiveBtnClick(fragment);
+//		getLccHolder().logout();
+//		backToHomeActivity();
+//	}
 
 	@Override
 	public void onClick(View view) {

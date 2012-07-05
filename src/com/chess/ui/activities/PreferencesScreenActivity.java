@@ -227,22 +227,20 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.prefLogout) { // DO NOT turn to switch!
-			if (!DataHolder.getInstance().isGuest()) {
-				getLccHolder().logout();
+			getLccHolder().logout();
 
-				DataHolder.getInstance().setGuest(true);
+			DataHolder.getInstance().setGuest(true);
 
-				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.commit();
+			preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.commit();
 
-				Intent intent = new Intent(this, HomeScreenActivity.class);
-				intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				AppUtils.stopNotificationsUpdate(this);
-				finish();
-			}
+			Intent intent = new Intent(this, HomeScreenActivity.class);
+			intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			AppUtils.stopNotificationsUpdate(this);
+			finish();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		} else if (view.getId() == R.id.prefInvite) {

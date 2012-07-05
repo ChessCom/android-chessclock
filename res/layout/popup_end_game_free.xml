@@ -44,17 +44,20 @@
 
 		<com.chess.RoboButton
 			android:id="@+id/newGamePopupBtn"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/new_game"/>
+			android:text="@string/new_game"
+			style="@style/Text.Button"
+			/>
 
 		<com.chess.RoboButton
 			android:id="@+id/rematchPopupBtn"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/rematch"
+			style="@style/Text.Button"
 			/>
 
 	</LinearLayout>
@@ -68,17 +71,19 @@
 
 		<com.chess.RoboButton
 			android:id="@+id/homePopupBtn"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/home"/>
+			android:text="@string/home"
+			style="@style/Text.Button.Grey"/>
 
 		<com.chess.RoboButton
 			android:id="@+id/reviewPopupBtn"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/review"
+			style="@style/Text.Button.Grey"
 			/>
 
 	</LinearLayout>
@@ -95,6 +100,8 @@
 		android:layout_height="wrap_content"
 		style="@style/Text.Button.Upgrade"
 		android:text="@string/removeAds"
+		android:paddingLeft="20dip"
+		android:paddingRight="20dip"
 		/>
 
 </LinearLayout>

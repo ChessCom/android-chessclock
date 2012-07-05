@@ -67,7 +67,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
-		fragment.getDialog().dismiss();
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
 			backToHomeActivity();

@@ -3,7 +3,8 @@
 	<dimen name="popup_dialog_width">300dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 	<dimen name="popup_top_padding">16dip</dimen>
-	<dimen name="popup_side_padding">340dip</dimen>
+	<dimen name="popup_side_padding">16dip</dimen>
+	<dimen name="popup_side_margin">210dip</dimen>
 	<dimen name="popup__bottom_padding">10dip</dimen>
 
 </resources>

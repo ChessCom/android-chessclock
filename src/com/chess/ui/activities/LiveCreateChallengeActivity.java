@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -106,12 +105,12 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 			2400
 	};
 
-	@Override
-	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		getLccHolder().logout();
-		backToHomeActivity();
-	}
+//	@Override
+//	public void onPositiveBtnClick(DialogFragment fragment) {
+//		super.onPositiveBtnClick(fragment);
+//		getLccHolder().logout();
+//		backToHomeActivity();
+//	}
 
 	@Override
 	public void onClick(View view) {

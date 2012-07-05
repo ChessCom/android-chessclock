@@ -233,7 +233,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		if (fragment.getTag().equals(CONNECT_FAILED_TAG)) {
 			if (DataHolder.getInstance().isLiveChess()) {
-				LccHolder.getInstance(getContext()).logout();
+				getLccHolder().logout();
 			}
 			backToHomeActivity();
 		} else if (fragment.getTag().equals(OBSOLETE_VERSION_TAG)) {
@@ -263,8 +263,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
 			startActivity(intent);
 		}
-
-
 		fragment.getDialog().dismiss();
 	}
 

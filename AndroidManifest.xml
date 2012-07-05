@@ -118,12 +118,12 @@
 
 		<meta-data android:name="com.mobclix.APPLICATION_ID" android:value="2128371D-8E8F-476E-8791-EEA2125CE104"/>
 
-        <service android:name=".backend.NetworkChangeService">
+<!--        <service android:name=".backend.NetworkChangeService">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
-        </service>
+        </service>-->
 
 	</application>
 

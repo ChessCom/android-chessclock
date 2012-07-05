@@ -10,12 +10,12 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ChatListenerImpl implements ChatListener {
+public class LccChatListener implements ChatListener {
 
-    private static final String TAG = "ChatListenerImpl";
+    private static final String TAG = "LccChatListener";
 	private final LccHolder lccHolder;
 
-    public ChatListenerImpl(LccHolder lccHolder) {
+    public LccChatListener(LccHolder lccHolder) {
 		this.lccHolder = lccHolder;
 	}
 

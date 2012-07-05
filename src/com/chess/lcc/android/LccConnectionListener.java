@@ -8,11 +8,11 @@ import com.chess.live.client.*;
  * Created by IntelliJ IDEA. User: Vova Date: 28.02.2010 Time: 15:50:16 To change this template use File | Settings |
  * File Templates.
  */
-public class ConnectionListenerImpl implements ConnectionListener {
+public class LccConnectionListener implements ConnectionListener {
 	public static final String CONNECTION = "CONNECTION";
 	private LccHolder lccHolder;
 
-	public ConnectionListenerImpl(LccHolder lccHolder) {
+	public LccConnectionListener(LccHolder lccHolder) {
 		this.lccHolder = lccHolder;
 	}
 
@@ -59,7 +59,7 @@ public class ConnectionListenerImpl implements ConnectionListener {
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
                 + " n\\Details: id = " + details.getFailureId() + "comments = " +details.getComments());
 		lccHolder.setConnected(false);
-        lccHolder.performConnect();
+//        lccHolder.performConnect();
 	}
 
 	@Override

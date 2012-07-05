@@ -60,8 +60,8 @@ public class LccHolder {
 	public long currentFGGameId;
 	public long previousFGGameId;
 
-	private ChatListenerImpl _chatListener;
-	private ConnectionListenerImpl _connectionListener;
+	private LccChatListener _chatListener;
+	private LccConnectionListener _connectionListener;
 	private LccGameListener _gameListener;
 	private LiveChessClient _lccClient;
 	private User _user;
@@ -120,8 +120,8 @@ public class LccHolder {
 		// start asynctask for getting certificate and init http client
 		new InitLccClientTask(new LccClientInitListener()).executeTask();
 
-		_chatListener = new ChatListenerImpl(this);
-		_connectionListener = new ConnectionListenerImpl(this);
+		_chatListener = new LccChatListener(this);
+		_connectionListener = new LccConnectionListener(this);
 		_gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
 		seekListListener = new LccSeekListListener(this);
@@ -423,11 +423,11 @@ public class LccHolder {
 		return _gameListener;
 	}
 
-	public ChatListenerImpl getChatListener() {
+	public LccChatListener getChatListener() {
 		return _chatListener;
 	}
 
-	public ConnectionListenerImpl getConnectionListener() {
+	public LccConnectionListener getConnectionListener() {
 		return _connectionListener;
 	}
 
@@ -465,7 +465,7 @@ public class LccHolder {
 			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 			networkTypeName = activeNetworkInfo.getTypeName();
 		} else {
-
+			// TODO disable UI
 		}
 
 	}

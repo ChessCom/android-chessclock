@@ -182,7 +182,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		getBoardFace().setReside(!getBoardFace().isReside());
 
 		invalidate();
-//            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 		gameActivityFace.invalidateGameScreen();
 	}
 
@@ -192,7 +191,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		sel = false;
 		getBoardFace().takeBack();
 		invalidate();
-//            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 		gameActivityFace.invalidateGameScreen();
 	}
 
@@ -201,7 +199,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		sel = false;
 		getBoardFace().takeNext();
 		invalidate();
-//            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 		gameActivityFace.invalidateGameScreen();
 	}
 

@@ -39,8 +39,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		compStrengthArray = resources.getIntArray(R.array.comp_strength);
     }
 
-
-
     public void setGameActivityFace(GameCompActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
 
@@ -51,7 +49,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
     public void afterMove() {
         boardFace.setMovesCount(boardFace.getHply());
-//        gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);    //movelist
 		gameActivityFace.invalidateGameScreen();
 
         if (isGameOver())
@@ -135,7 +132,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }
 
         compmoving = true;
-//        gameActivityFace.update(GameBaseActivity.CALLBACK_COMP_MOVE);
 		gameCompActivityFace.onCompMove();
         new Thread(new Runnable() {
             @Override
@@ -155,9 +151,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                 @Override
                 public void dispatchMessage(Message msg) {
                     super.dispatchMessage(msg);
-//                    gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);    //movelist
 					gameActivityFace.invalidateGameScreen();
-//                    gameActivityFace.update(GameBaseActivity.CALLBACK_PLAYER_MOVE);
 					gameCompActivityFace.onPlayerMove();
                     invalidate();
                     if (isGameOver())
@@ -568,7 +562,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             sel = false;
             getBoardFace().takeBack();
             invalidate();
-//            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 			gameActivityFace.invalidateGameScreen();
         }
     }
@@ -580,7 +573,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             sel = false;
             getBoardFace().takeNext();
             invalidate();
-//            gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);
 			gameActivityFace.invalidateGameScreen();
         }
     }
@@ -602,7 +594,4 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		stopThinking = false;
 	}
 
-	public boolean isThinking() {
-		return stopThinking;
-	}
 }

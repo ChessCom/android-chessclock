@@ -32,11 +32,9 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 
     public void afterMove() {
         boardFace.setMovesCount(boardFace.getHply());
-//        gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);    //movelist
 		gameActivityFace.invalidateGameScreen();
 
 		if (!boardFace.isAnalysis()) {
-//			gameActivityFace.update(GameTacticsScreenActivity.CALLBACK_CHECK_TACTICS_MOVE);
 			gameTacticsActivityFace.checkMove();
         }
     }

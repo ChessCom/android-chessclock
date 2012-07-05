@@ -125,6 +125,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
 			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
@@ -133,7 +134,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
             challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 		}
-		fragment.getDialog().dismiss();
 	}
 
 	@Override
