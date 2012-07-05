@@ -37,7 +37,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 	public void afterMove() {	// TODO handle here analysis moves in comp game
 		boardFace.setMovesCount(boardFace.getHply());
-//        gameActivityFace.update(GameBaseActivity.CALLBACK_REPAINT_UI);    //movelist
 		gameActivityFace.invalidateGameScreen();
 
 		if (!boardFace.isAnalysis()) {
@@ -45,7 +44,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 				gameActivityFace.showSubmitButtonsLay(true);
 				boardFace.setSubmit(true);
 			} else {
-//                gameActivityFace.update(GameBaseActivity.CALLBACK_SEND_MOVE); // TODO check
 				gameActivityFace.updateAfterMove();
 			}
 		}
@@ -244,6 +242,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		if (square == 0) {
 			return super.onTouchEvent(event);
 		}
+        
+        if(locked)
+            return super.onTouchEvent(event);
 
 		track = false;
 		if (!boardFace.isAnalysis()) {

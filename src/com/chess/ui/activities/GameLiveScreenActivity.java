@@ -54,8 +54,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     private String whiteTimer;
     private String blackTimer;
+    private View fadeLay;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -66,7 +67,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
-//		String blackPlayerName = lccHolder.getGame(gameId).getBlackPlayer().getUsername();
 		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
 		String userName = getLccHolder().getCurrentuserName();
 
@@ -78,8 +78,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		// change players colors
 		changePlayersLabelColors();
 
-
-		// TODO show popup warning
 		Log.d("Live Game", "GameLiveScreenActivity started ");
 		if (getLccHolder().getPendingWarnings().size() > 0) {
 			// get last warning
@@ -98,6 +96,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void widgetsInit() {
 		super.widgetsInit();
 
+        fadeLay = findViewById(R.id.fadeLay);
 		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGamePanelView(gamePanelView);
@@ -152,19 +151,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.onResume();
 		DataHolder.getInstance().setLiveChess(true);
 
-//		registerReceiver(showGameEndPopupReceiver, new IntentFilter(IntentConstants.ACTION_SHOW_GAME_END_POPUP));
-
 		getLccHolder().setActivityPausedMode(false);
 		updateGameSate();
-
-//		getActionBarHelper().showMenuItemById();  // TODO hide signout action bar item
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-//		unregisterReceiver(showGameEndPopupReceiver);
-
 		getLccHolder().setActivityPausedMode(true);
 	}
 
@@ -255,6 +248,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	// ----------------------Lcc Events ---------------------------------------------
 
 	public void onGameRefresh(GameItem gameItem) {
+        blockGame(false);
+
 		if (getBoardFace().isAnalysis())
 			return;
 
@@ -302,6 +297,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			checkMessages();
 		}
 	}
+
+    @Override
+    public void onConnectionBlocked() {
+        super.onConnectionBlocked();
+        blockGame(true);
+    }
 
     @Override
     public void onMessageReceived() {
@@ -374,6 +375,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	// -----------------------------------------------------------------------------------
 
+    private void blockGame(boolean block){
+        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
+        boardView.lockBoard(block);
+    }
+    
 //	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
 //		@Override
 //		public void onReceive(Context context, final Intent intent) {

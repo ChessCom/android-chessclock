@@ -180,17 +180,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		}
 	};
 
-	@Override
-	public void unregisterReceiver(BroadcastReceiver receiver) {
-		try {
-			super.unregisterReceiver(receiver);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			// hack for Android's IllegalArgumentException: Receiver not
-// registered
-		}
-	}
-
 	public void dismissAllPopups() {
 		for (PopupDialogFragment fragment : popupManager) {
 			fragment.getDialog().dismiss();
@@ -272,7 +261,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		popupDialogFragment.setButtons(1);
 	}
 
-	@Override
+    @Override
+    public void onConnectionBlocked() {
+        // TODO To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void onObsoleteProtocolVersion() {
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update,
 				OBSOLETE_VERSION_TAG);

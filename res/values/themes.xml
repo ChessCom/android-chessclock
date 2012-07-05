@@ -17,7 +17,7 @@
         <item name="android:radioButtonStyle">@style/radio_Button</item>
 		<item name="android:listViewStyle">@style/DefaultListView</item>
 		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
-		<item name="playerLabelStyle">@style/GameLabel.Player</item>
+		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
     </style>
 
 

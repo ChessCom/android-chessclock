@@ -2104,7 +2104,7 @@ public class ChessBoard implements BoardFace {
 				&& tacticMoves[hply - 1].contains(moveTo);
 	}
 
-	@Override
+    @Override
 	public boolean isAnalysis() {
 		return analysis;
 	}

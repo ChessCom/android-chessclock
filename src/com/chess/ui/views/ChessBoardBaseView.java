@@ -93,6 +93,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Resources resources;
 	protected GameActivityFace gameActivityFace;
 	protected BoardFace boardFace;
+    protected boolean locked;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -289,7 +290,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.tan
 	};
 
-
+    public void lockBoard(boolean lock){
+        locked = lock;
+        // TODO change overlay for board
+        gamePanelView.lock(lock);
+        setEnabled(!lock);
+    }
 
 	protected void loadBoard(int boardId) {
 		boardBitmap = ((BitmapDrawable) resources.getDrawable(boardsDrawables[boardId])).getBitmap();

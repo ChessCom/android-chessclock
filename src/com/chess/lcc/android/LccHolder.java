@@ -67,9 +67,6 @@ public class LccHolder {
 	private User _user;
 	private static LccHolder instance;
 
-//	private AndroidStuff androidStuff;
-//	private GameItem newGame;
-
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
 	private HashMap<Long, Challenge> ownChallenges = new HashMap<Long, Challenge>();
@@ -126,7 +123,6 @@ public class LccHolder {
 		challengeListener = new LccChallengeListener(this);
 		seekListListener = new LccSeekListListener(this);
 		friendStatusListener = new LccFriendStatusListener(this);
-//		androidStuff = new AndroidStuff(context);
 
 		pendingWarnings = new ArrayList<String>();
 	}
@@ -153,7 +149,6 @@ public class LccHolder {
 											}*/
 				pausedActivityGameEvents.remove(drawEvent);
                 lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
-//				androidStuff.processDrawOffered(drawEvent.getDrawOffererUsername());
 			}
 
 			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
@@ -164,7 +159,6 @@ public class LccHolder {
 											  fullGameProcessed = true;
 											}*/
 				pausedActivityGameEvents.remove(endGameEvent);
-//                androidStuff.processGameEnd(endGameEvent.getGameEndedMessage());
                 lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
 			}
 		}
@@ -249,14 +243,6 @@ public class LccHolder {
 		_lccClient.sendChatMessage(getGameChat(gameId), text);
 	}
 
-	public void checkAndPerformReconnect() {
-		if (isNotConnectedToLive()) {
-			setNetworkTypeName(null);
-//			setConnectingInProgress(true);
-			checkAndInitLccClient();
-		}
-	}
-
 	private void checkAndInitLccClient() {
 		if (connected && retryClientInitCnt < LCC_INIT_RETRY_LIMIT) {
 			// Checking
@@ -319,7 +305,6 @@ public class LccHolder {
 		if (_lccClient != null) {
 			_lccClient.disconnect();
 			setNetworkTypeName(null);
-//			setConnectingInProgress(true);
 			_lccClient.connect(userName, pass, _connectionListener);
 			liveChessClientEventListener.onConnecting();
 		} else
@@ -330,7 +315,6 @@ public class LccHolder {
 		if (_lccClient != null) {
 			_lccClient.disconnect();
 			setNetworkTypeName(null);
-//			setConnectingInProgress(true);
 			_lccClient.connect(sessionId, _connectionListener);
 			liveChessClientEventListener.onConnecting();
 		} else
@@ -354,8 +338,6 @@ public class LccHolder {
 
 	public void processConnectionFailure(FailureDetails details, String message) {
 		setConnected(false);
-//			lccHolder.setConnectingInProgress(false);
-//			lccHolder.getAndroidStuff().closeLoggingInIndicator();
 
 		String detailsMessage;
 		switch (details) {
@@ -381,8 +363,6 @@ public class LccHolder {
 
 		}
 		liveChessClientEventListener.onConnectionFailure(detailsMessage);
-//		getAndroidStuff().informAndExit(StaticData.SYMBOL_EMPTY, detailsMessage); // not used
-
 	}
 
 	public void onObsoleteProtocolVersion() {
@@ -390,7 +370,6 @@ public class LccHolder {
 	}
 
 	public void onAnotherLoginDetected() {
-//		liveChessClientEventListener.onAnotherLoginDetected();
 		String failMessage = context.getString(R.string.another_login_detected);
 		liveChessClientEventListener.onConnectionFailure(failMessage);
 	}
@@ -458,22 +437,16 @@ public class LccHolder {
 
 			_lccClient.subscribeToFriendStatusEvents(friendStatusListener);
 
-//		lccHolder.getAndroidStuff().closeLoggingInIndicator(); // TODO redundant
-
 			ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 			networkTypeName = activeNetworkInfo.getTypeName();
 		} else {
+            liveChessClientEventListener.onConnectionBlocked();
 			// TODO disable UI
 		}
-
 	}
 
-
-//	public AndroidStuff getAndroidStuff() {
-//		return androidStuff;
-//	}
 
 	public void clearChallenges() {
 		challenges.clear();

@@ -168,19 +168,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	private class LccConnectUpdateListener extends AbstractUpdateListener<Void> {
-
 		public LccConnectUpdateListener() {
 			super(getContext());
 		}
-
-		@Override
-		public void showProgress(boolean show) {
-		}
-
-	}
-
-	protected void onLccConnectFail(Integer resultCode) {
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
 	}
 
 	@Override
@@ -294,7 +284,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void checkUserTokenAndStartActivity() {
+	private void checkUserTokenAndStartActivity() { // TODO decide where to use
 		if (!AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -310,8 +300,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Log.d("TEST", "show progress from CoreAcb");
-
 				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
 				getActionBarHelper().setRefreshActionItemState(true);
 			}
@@ -323,8 +311,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Log.d("TEST", "HIDE progress from CoreAcb");
-
 				getActionBarHelper().setRefreshActionItemState(false);
 				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
 			}
@@ -346,7 +332,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		popupDialogFragment.setButtons(1);
 	}
 
-	@Override
+    @Override
+    public void onConnectionBlocked() {
+        getActionBarHelper().setRefreshActionItemState(true);
+    }
+
+    @Override
 	public void onObsoleteProtocolVersion() {
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update,
 				OBSOLETE_VERSION_TAG);

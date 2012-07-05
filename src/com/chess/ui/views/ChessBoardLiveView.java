@@ -67,6 +67,4 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 		return false;
 	}
 
-
-
 }

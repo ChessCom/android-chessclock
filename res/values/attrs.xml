@@ -13,6 +13,6 @@
     </declare-styleable>
 
 	<declare-styleable name="OrangeButtonTheme">
-		<attr name="playerLabelStyle" format="reference"/>
+		<attr name="timerLabelStyle" format="reference"/>
 	</declare-styleable>
 </resources>
