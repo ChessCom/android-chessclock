@@ -54,12 +54,17 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionLost(User user, String message, FailureDetails details, Throwable throwable) {
+		String failureId = null;
+		String comments = null;
+		if (details != null) {
+			failureId = details.getFailureId();
+			comments = details.getComments();
+		}
 		Log.d("TEST", "Connection Lost, with message = " + message
-                + " n\\Details: id = " + details.getFailureId() + "comments = " +details.getComments());
+				+ " n\\Details: id = " + failureId + "comments = " + comments);
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
-                + " n\\Details: id = " + details.getFailureId() + "comments = " +details.getComments());
+                + " n\\Details: id = " + failureId + "comments = " + comments);
 		lccHolder.setConnected(false);
-//        lccHolder.performConnect();
 	}
 
 	@Override
