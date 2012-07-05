@@ -20,10 +20,6 @@
 		android:id="@+id/customView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
-		android:paddingBottom="@dimen/default_scr_bottom_padding"
 		/>
 
 	<LinearLayout

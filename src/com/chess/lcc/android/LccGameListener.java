@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
@@ -143,6 +144,7 @@ public class LccGameListener implements GameListener {
     @Override
     public void onGameEnded(Game game) {
         Log.d(TAG, "GAME LISTENER: Game ended: " + game);
+		Toast.makeText(context, "onGame Ended", Toast.LENGTH_LONG).show();
         lccHolder.putGame(game);
         if (isOldGame(game.getId())) {
             Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());

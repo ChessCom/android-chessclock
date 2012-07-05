@@ -376,8 +376,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	// -----------------------------------------------------------------------------------
 
     private void blockGame(boolean block){
-        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
-        boardView.lockBoard(block);
+//        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
+//        boardView.lockBoard(block);
     }
     
 //	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {

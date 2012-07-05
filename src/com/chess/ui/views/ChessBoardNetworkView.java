@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -243,19 +244,27 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			return super.onTouchEvent(event);
 		}
         
-        if(locked)
-            return super.onTouchEvent(event);
+        if(locked) {
+			Log.d("TEST", "locked = true");
+			return super.onTouchEvent(event);
+		}
 
 		track = false;
 		if (!boardFace.isAnalysis()) {
 			if (AppData.isFinishedEchessGameMode(boardFace) || finished || boardFace.isSubmit() ||
-					(boardFace.getHply() < boardFace.getMovesCount()))
+					(boardFace.getHply() < boardFace.getMovesCount())) {
+				Log.d("TEST","boardFace.getHply() < boardFace.getMovesCount() poss true");
 				return true;
+			}
 
-			if (whiteUserName.equals(userName) && boardFace.getMovesCount() % 2 != 0)
+			if (whiteUserName.equals(userName)  && boardFace.getMovesCount() % 2 != 0) {
+				Log.d("TEST"," boardFace.getMovesCount() % 2 != 0");
 				return true;
-			if (blackUserName.equals(userName) && boardFace.getMovesCount() % 2 == 0)
+			}
+			if (blackUserName.equals(userName) && boardFace.getMovesCount() % 2 == 0) {
+				Log.d("TEST"," boardFace.getMovesCount() % 2 == 0");
 				return true;
+			}
 
 			// TODO turns to false anyway
 //			if ((false&& boardFace.getHply() % 2 != 0)
