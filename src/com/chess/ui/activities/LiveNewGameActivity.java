@@ -43,13 +43,6 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		}
 	}
 
-//	@Override
-//	public void onPositiveBtnClick(DialogFragment fragment) {
-//		super.onPositiveBtnClick(fragment);
-//		getLccHolder().logout();
-//		backToHomeActivity();
-//	}
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {

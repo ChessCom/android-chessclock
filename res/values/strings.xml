@@ -65,7 +65,8 @@
 	<string name="GameType">Game Type</string>
 	<string name="classic">Classic Chess</string>
 	<string name="chess960">Chess 960</string>
-	<string name="Friend">Friend</string>
+	<string name="friend">Friend</string>
+	<string name="friends">Friends</string>
 	<string name="initialTime">Initial Time</string>
 	<string name="bonusTime">Bonus Time</string>
 	<string name="RatedGme">Rated Game</string>

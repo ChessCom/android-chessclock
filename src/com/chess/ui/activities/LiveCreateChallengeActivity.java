@@ -105,13 +105,6 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 			2400
 	};
 
-//	@Override
-//	public void onPositiveBtnClick(DialogFragment fragment) {
-//		super.onPositiveBtnClick(fragment);
-//		getLccHolder().logout();
-//		backToHomeActivity();
-//	}
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {

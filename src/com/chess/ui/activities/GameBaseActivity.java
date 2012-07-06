@@ -141,7 +141,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected abstract void onGameEndMsgReceived();
 
 	protected void enableScreenLockTimer() {
-		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off afer WAKE_SCREEN_TIMEOUT time
+		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
 		boardView.enableTouchTimer();
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
@@ -207,12 +207,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	protected abstract void restoreGame();
 
-
-
 	@Override
 	public void showChoosePieceDialog(final int col, final int row) {
 		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.choose_a_piece))
+				.setTitle(getString(R.string.choose_a_piece)) // TODO add strings
 				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
 						new DialogInterface.OnClickListener() {
 							@Override

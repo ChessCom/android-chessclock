@@ -29,37 +29,24 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 	private AutoCompleteTextView initialTime;
 	private AutoCompleteTextView bonusTime;
 	private CheckBox isRated;
-	private RadioButton chess960;
 
 	private InitialTimeTextWatcher initialTimeTextWatcher;
 	private InitialTimeValidator initialTimeValidator;
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
 	private BonusTimeValidator bonusTimeValidator;
-	private static final int CHALLENGE_WAS_SENT = 1;
+    private TextView friendsTxt;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.live_challenge_friend);
+
 		init();
-		setContentView(R.layout.live_challenge_friend);
+        widgetsInit();
 
-		friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
-		isRated = (CheckBox) findViewById(R.id.ratedGame);
-		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
-		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
-
-		initialTime.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
-		initialTime.addTextChangedListener(initialTimeTextWatcher);
-		initialTime.setValidator(initialTimeValidator);
-		initialTime.setOnEditorActionListener(null);
-
-		bonusTime.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
-		bonusTime.addTextChangedListener(bonusTimeTextWatcher);
-		bonusTime.setValidator(bonusTimeValidator);
-		findViewById(R.id.createchallenge).setOnClickListener(this);
+        // TODO add settings to action bar menu
 	}
-
 
 	private void init() {
 		initialTimeTextWatcher = new InitialTimeTextWatcher();
@@ -68,21 +55,37 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		bonusTimeValidator = new BonusTimeValidator();
 	}
 
-	@Override
+    @Override
+    protected void widgetsInit() {
+        friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
+        isRated = (CheckBox) findViewById(R.id.ratedGame);
+        initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
+        bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
+
+        initialTime.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
+        initialTime.addTextChangedListener(initialTimeTextWatcher);
+        initialTime.setValidator(initialTimeValidator);
+        initialTime.setOnEditorActionListener(null);
+
+        bonusTime.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
+        bonusTime.addTextChangedListener(bonusTimeTextWatcher);
+        bonusTime.setValidator(bonusTimeValidator);
+
+        findViewById(R.id.createchallenge).setOnClickListener(this);
+        friendsTxt = (TextView) findViewById(R.id.friendsTxt);
+    }
+
+    @Override
 	protected void onResume() {
 		super.onResume();
-		if (getLccHolder().getUser() == null) {
-			getLccHolder().logout();
-			backToHomeActivity();
-		}
 
 		updateScreen();
 	}
 
 	private void updateScreen() {
 		String[] friends = getLccHolder().getOnlineFriends();
-
-		if (friends.length == 0) {
+        int friendsCnt = friends.length;
+		if (friendsCnt == 0) {
 			friendsSpinner.setEnabled(false);
 
 			popupItem.setTitle(R.string.sorry);
@@ -91,6 +94,13 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 
 			popupDialogFragment.show(getSupportFragmentManager(), NO_ONLINE_FRIENDS_TAG);
 		}else {
+            if(friendsCnt > 1){
+                friendsTxt.setText(getString(R.string.friends) + StaticData.SYMBOL_SPACE + StaticData.SYMBOL_LEFT_PAR
+                        + friendsCnt + StaticData.SYMBOL_RIGHT_PAR);
+            }else{
+                friendsTxt.setText(R.string.friend);
+            }
+            
 			friendsSpinner.setEnabled(true);
 			friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, friends));
 
@@ -131,7 +141,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 				updateScreen();
 			}
 		});
-		// TODO show badge
 	}
 
 	private void createChallenge() {
