@@ -7,7 +7,7 @@
         android:centerY="150%"
         android:endColor="@color/dashboard_button"
 
-        android:gradientRadius="270"
+        android:gradientRadius="300"
         android:startColor="@color/glow_border2"
         android:type="radial"/>
 </shape>

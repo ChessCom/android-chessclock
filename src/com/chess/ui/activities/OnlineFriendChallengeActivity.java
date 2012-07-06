@@ -57,7 +57,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		iPlayAsSpinner = (Spinner) findViewById(R.id.iplayas);
 		iPlayAsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
-		friendsSpinner = (Spinner) findViewById(R.id.friend);
+		friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
 		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{StaticData.SYMBOL_EMPTY}));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);

@@ -448,4 +448,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			getBoardFace().makeMove(move, false);
 		}
 	}
+
+	public void updatePlayerNames(String whitePlayerName, String blackPlayerName) {
+		whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim();
+		blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim();
+	}
 }

@@ -86,7 +86,7 @@
 
 	<!--Popup-->
 	<dimen name="ad_popup_width">300dip</dimen>
-	<dimen name="ad_popup_height">154dip</dimen>
+	<dimen name="ad_popup_height">150dip</dimen>
 
 
 

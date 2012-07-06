@@ -334,7 +334,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
     @Override
     public void onConnectionBlocked() {
-        getActionBarHelper().setRefreshActionItemState(true);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				getActionBarHelper().setRefreshActionItemState(true);
+			}
+		});
+
     }
 
     @Override
@@ -343,6 +349,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				OBSOLETE_VERSION_TAG);
 		popupDialogFragment.setButtons(1);
 		popupDialogFragment.getDialog().setCancelable(false);
+	}
+
+	@Override
+	public void onFriendsStatusChanged(){
+
 	}
 
 	// -----------------------------------------------------

@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:padding="1dp"
+	android:padding="0dp"
 	>
 	<!--End game title-->
 	<com.chess.RoboTextView
@@ -12,8 +12,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:layout_margin="2dip"
 		robo:ttf="Bold"
+		android:textSize="@dimen/game_end_popup_text_size"
 		/>
 
 	<!--Wins reason-->
@@ -22,7 +22,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:layout_margin="2dip"
 		robo:ttf="Bold"
 		/>
 
@@ -32,7 +31,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:layout_margin="2dip"
 		robo:ttf="Bold"
 		/>
 
@@ -100,6 +98,8 @@
 		android:layout_height="wrap_content"
 		style="@style/Text.Button.Upgrade"
 		android:text="@string/removeAds"
+		android:paddingTop="0dip"
+		android:paddingBottom="0dip"
 		android:paddingLeft="20dip"
 		android:paddingRight="20dip"
 		/>

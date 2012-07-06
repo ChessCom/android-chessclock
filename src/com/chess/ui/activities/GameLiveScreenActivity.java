@@ -174,6 +174,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		currentGame = getLccHolder().getGameItem(gameId);
 
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		checkMessages();
 
 		if (currentGame.values.get(GameListItem.GAME_TYPE).equals("2"))
@@ -329,7 +330,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     }
 
     @Override
-    public void onGameEnd(String gameEndMessage) {
+    public void onGameEnd(final String gameEndMessage) {
         final Game game = getLccHolder().getGame(gameId);
         switch (game.getGameTimeConfig().getGameTimeClass()) {
             case BLITZ: {
@@ -361,14 +362,20 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout;
+        final View layout;
         if (!MopubHelper.isShowAds(this)) {
             layout = inflater.inflate(R.layout.popup_end_game, null, false);
         }else {
             layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
         }
 
-        showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
+			}
+		});
+
 
         onGameEndMsgReceived();
     }

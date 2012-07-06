@@ -578,11 +578,12 @@ public class LccHolder {
 	public void putFriend(User friend) {
 		if (friend.getStatus() != User.Status.OFFLINE) {
 			onlineFriends.put(friend.getUsername(), friend);
-			this.friends.put(friend.getUsername(), friend);
+			friends.put(friend.getUsername(), friend);
 		} else {
 			onlineFriends.remove(friend.getUsername());
-			this.friends.remove(friend.getUsername());
+			friends.remove(friend.getUsername());
 		}
+		liveChessClientEventListener.onFriendsStatusChanged();
 	}
 
 	public void removeFriend(User friend) {

@@ -19,4 +19,6 @@ public interface LiveChessClientEventListenerFace {
 	void onObsoleteProtocolVersion();
 
     void onConnectionBlocked();
+
+    void onFriendsStatusChanged();
 }

@@ -175,6 +175,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			boardView.updateMoves(moves[i]);
 		}
 
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		invalidateGameScreen();
 		getBoardFace().takeBack();
 		boardView.invalidate();
@@ -230,7 +231,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override
@@ -238,7 +240,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override

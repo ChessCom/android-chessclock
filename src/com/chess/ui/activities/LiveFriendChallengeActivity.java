@@ -44,7 +44,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		init();
 		setContentView(R.layout.live_challenge_friend);
 
-		friendsSpinner = (Spinner) findViewById(R.id.friend);
+		friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
@@ -82,15 +82,20 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 	private void updateScreen() {
 		String[] friends = getLccHolder().getOnlineFriends();
 
-		ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, friends);
+		if (friends.length == 0) {
+			friendsSpinner.setEnabled(false);
 
-		friendsSpinner.setAdapter(friendsAdapter);
-		if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 			popupItem.setTitle(R.string.sorry);
 			popupItem.setMessage(R.string.nofriends_online);
 			popupItem.setPositiveBtnId(R.string.invitetitle);
 
 			popupDialogFragment.show(getSupportFragmentManager(), NO_ONLINE_FRIENDS_TAG);
+		}else {
+			friendsSpinner.setEnabled(true);
+			friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, friends));
+
+			if(popupDialogFragment.getDialog() != null)
+				popupDialogFragment.getDialog().dismiss();
 		}
 	}
 
@@ -115,6 +120,18 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		if (view.getId() == R.id.createchallenge) {
 			createChallenge();
 		}
+	}
+
+	@Override
+	public void onFriendsStatusChanged() {
+		super.onFriendsStatusChanged();
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				updateScreen();
+			}
+		});
+		// TODO show badge
 	}
 
 	private void createChallenge() {
@@ -143,12 +160,12 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 				PieceColor.UNDEFINED, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
 
-        FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED);
+		FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED);
 		challengeTaskRunner.runSendChallengeTask(challenge);
 
-        preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-        preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-        preferencesEditor.commit();
+		preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+		preferencesEditor.commit();
 
 		popupItem.setTitle(R.string.congratulations);
 		popupItem.setMessage(R.string.challengeSent);

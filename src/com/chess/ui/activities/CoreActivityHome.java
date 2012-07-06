@@ -274,6 +274,10 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		popupDialogFragment.getDialog().setCancelable(false);
 	}
 
+	@Override
+	public void onFriendsStatusChanged(){
+	}
+
 	// -----------------------------------------------------
 
 

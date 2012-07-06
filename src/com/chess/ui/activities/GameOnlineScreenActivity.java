@@ -229,6 +229,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			boardView.updateMoves(moves[i]);
 		}
 
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		invalidateGameScreen();
 		getBoardFace().takeBack();
 		boardView.invalidate();
