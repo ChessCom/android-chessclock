@@ -60,8 +60,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		gamePanelView.turnCompMode();
 
-		if (AppData.isComputerGameMode(getBoardFace())
-				&& AppData.haveSavedCompGame(this)) { // if load game
+		if (AppData.haveSavedCompGame(this)) { // if load game
 			loadSavedGame();
 
 			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace()))
