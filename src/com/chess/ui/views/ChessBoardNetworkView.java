@@ -52,9 +52,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		isGameOver();
 	}
 
-	protected abstract boolean isGameOver();
-
-
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG));

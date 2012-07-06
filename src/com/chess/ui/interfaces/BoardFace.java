@@ -140,4 +140,6 @@ public interface BoardFace {
 	boolean toggleAnalysis();
 
 	boolean lastMoveContains(String piece, String moveTo);
+
+	boolean isPossibleToMakeMoves();
 }

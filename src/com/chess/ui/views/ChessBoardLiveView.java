@@ -24,38 +24,14 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 	}
 
 
+	@Override
 	protected boolean isGameOver() {
-		// Check available moves
-		TreeSet<Move> validMoves = boardFace.gen();
-
-		Iterator<Move> i = validMoves.iterator();
-		boolean found = false;
-		while (i.hasNext()) {   // compute available moves
-			if (boardFace.makeMove(i.next(), false)) {
-				boardFace.takeBack();
-				found = true;
-				break;
-			}
-		}
-		String message = null;
-		if (!found) {
+		if (!boardFace.isPossibleToMakeMoves()) {
 			if (boardFace.inCheck(boardFace.getSide())) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
 				gameActivityFace.invalidateGameScreen();
-
-				if (boardFace.getSide() == ChessBoard.LIGHT)
-					message = getResources().getString(R.string.black_wins);
-				else
-					message = getResources().getString(R.string.white_wins);
-			} else
-				message = getResources().getString(R.string.draw_by_stalemate);
-		}
-
-		if (message != null) {
-			finished = true;
-
-			gameActivityFace.onGameOver(message, false);
-
+			}
+			finished = true; // todo: probably it is better to set Finished flag by lcc.onGameEnded event
 			return true;
 		}
 

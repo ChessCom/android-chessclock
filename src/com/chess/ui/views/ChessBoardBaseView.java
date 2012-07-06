@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -274,6 +275,39 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		} else {
 			invalidate();
 		}
+	}
+
+	protected boolean isGameOver() {
+		String message = null;
+		if (!boardFace.isPossibleToMakeMoves()) {
+			if (boardFace.inCheck(boardFace.getSide())) {
+				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
+				gameActivityFace.invalidateGameScreen();
+
+				if (boardFace.getSide() == ChessBoard.LIGHT)
+					message = getResources().getString(R.string.black_wins);
+				else
+					message = getResources().getString(R.string.white_wins);
+			} else
+				message = getResources().getString(R.string.draw_by_stalemate);
+		} else if (boardFace.reps() == 3 )
+			message = getResources().getString(R.string.draw_by_3fold_repetition);
+
+		if (message != null) {
+			finished = true;
+
+			gameActivityFace.onGameOver(message, false);
+
+			return true;
+		}
+
+		if (boardFace.inCheck(boardFace.getSide())) {
+			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
+			gameActivityFace.invalidateGameScreen();
+
+			gameActivityFace.onCheck();
+		}
+		return false;
 	}
 
 	protected abstract void afterMove();

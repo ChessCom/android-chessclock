@@ -60,7 +60,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     }
 
 
-    boolean isGameOver() {
+    protected boolean isGameOver() {
         //saving game for comp game mode if human is playing
         if ((AppData.isComputerVsHumanGameMode(boardFace) || AppData.isHumanVsHumanGameMode(boardFace))
                 && !boardFace.isAnalysis()) {
@@ -77,49 +77,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 			editor.putString(AppConstants.SAVED_COMPUTER_GAME, saving);
 			editor.commit();
         }
-
-        // Check available moves
-        TreeSet<Move> validMoves = boardFace.gen();
-
-        Iterator<Move> i = validMoves.iterator();
-        boolean found = false;
-        while (i.hasNext()) {   // compute available moves
-            if (boardFace.makeMove(i.next(), false)) {
-                boardFace.takeBack();
-                found = true;
-                break;
-            }
-        }
-        String message = null;
-        if (!found) {
-            if (boardFace.inCheck(boardFace.getSide())) {
-                boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-				gameActivityFace.invalidateGameScreen();
-
-                if (boardFace.getSide() == ChessBoard.LIGHT)
-                    message = getResources().getString(R.string.black_wins);
-                else
-                    message = getResources().getString(R.string.white_wins);
-            } else
-                message = getResources().getString(R.string.draw_by_stalemate);
-        } else if (boardFace.reps() == 3 )
-            message = getResources().getString(R.string.draw_by_3fold_repetition);
-
-        if (message != null) {
-            finished = true;
-
-			gameActivityFace.onGameOver(message, false);
-
-            return true;
-        }
-
-        if (boardFace.inCheck(boardFace.getSide())) {
-            boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
-			gameActivityFace.invalidateGameScreen();
-
-			gameActivityFace.onCheck();
-        }
-        return false;
+		return super.isGameOver();
     }
 
     public void computerMove(final int time) {

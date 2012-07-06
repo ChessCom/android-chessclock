@@ -17,6 +17,7 @@ import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
 
 import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 public class ChessBoard implements BoardFace {
@@ -2340,5 +2341,20 @@ public class ChessBoard implements BoardFace {
 
 	public void setEp(int ep) {
 		this.ep = ep;
+	}
+
+	public boolean isPossibleToMakeMoves() {
+		TreeSet<Move> validMoves = gen();
+
+		Iterator<Move> i = validMoves.iterator();
+		boolean found = false;
+		while (i.hasNext()) {   // compute available moves
+			if (makeMove(i.next(), false)) {
+				takeBack();
+				found = true;
+				break;
+			}
+		}
+		return found;
 	}
 }
