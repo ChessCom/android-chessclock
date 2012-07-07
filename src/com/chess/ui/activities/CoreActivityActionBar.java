@@ -268,7 +268,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update,
 				OBSOLETE_VERSION_TAG);
 		popupDialogFragment.setButtons(1);
-		popupDialogFragment.getDialog().setCancelable(false);
+		popupDialogFragment.setCancelable(false);
 	}
 
 	@Override

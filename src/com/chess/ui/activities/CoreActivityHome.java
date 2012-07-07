@@ -16,7 +16,6 @@ import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.chess.utilities.MyProgressDialog;
 
 public abstract class CoreActivityHome extends ActionBarActivityHome implements PopupDialogFace, LiveChessClientEventListenerFace {
 
@@ -25,7 +24,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	public static final String OBSOLETE_VERSION_TAG = "obsolete version";
 
-	protected MyProgressDialog progressDialog;
 	private boolean forceFlag;
 
 
@@ -66,9 +64,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
-
-		if (progressDialog != null)
-			progressDialog.dismiss();
 	}
 
 
@@ -148,7 +143,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	public void onObsoleteProtocolVersion() {
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
 		popupDialogFragment.setButtons(1);
-		popupDialogFragment.getDialog().setCancelable(false);
+		popupDialogFragment.setCancelable(false);
 	}
 
 	@Override

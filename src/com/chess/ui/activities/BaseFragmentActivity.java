@@ -130,8 +130,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 		popupItem.setPositiveBtnId(R.string.ok);
 		popupItem.setNegativeBtnId(R.string.cancel);
-		fragment.getDialog().setCancelable(true);
-		fragment.getDialog().dismiss();
+		fragment.setCancelable(true);
+		fragment.dismiss();
 	}
 
 	protected void showToast(String msg) {
@@ -207,7 +207,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	// Progress Dialogs
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
-		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
 		updateProgressAndShow();
 	}
 
@@ -219,15 +219,15 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
-		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
 		updateProgressAndShow();
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
-		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
-		updateProgressAndShow();
+		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
 		popupProgressDialogFragment.setNotCancelable();
+		updateProgressAndShow();
 	}
 
 	protected void showPopupProgressDialog(int titleId, int messageId) {
@@ -237,23 +237,25 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	private void updateProgressAndShow(){
-		popupProgressDialogFragment.updatePopupItem(popupItem);
+		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 	}
 
 	protected void dismissFragmentDialog() {
-		if (popupDialogFragment != null && popupDialogFragment.getDialog() != null)
-			popupDialogFragment.getDialog().dismiss();
+//		if (popupDialogFragment != null && popupDialogFragment.getDialog() != null)
+//			popupDialogFragment.getDialog().dismiss();
+		popupDialogFragment.dismiss();
 	}
 
 	protected void dismissProgressDialog() {
-		if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
-			popupProgressDialogFragment.getDialog().dismiss();
+//		if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
+//			popupProgressDialogFragment.getDialog().dismiss();
+		popupProgressDialogFragment.dismiss();
 	}
 
 	public void dismissAllPopups() {
 		for (PopupDialogFragment fragment : popupManager) {
-			fragment.getDialog().dismiss();
+			fragment.dismiss();
 		}
 	}
 

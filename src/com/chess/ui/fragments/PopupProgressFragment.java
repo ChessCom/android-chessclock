@@ -53,7 +53,7 @@ public class PopupProgressFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if(!cancelable)
-            getDialog().setCancelable(false);
+            setCancelable(false);
     }
 
 	@Override
@@ -70,13 +70,15 @@ public class PopupProgressFragment extends DialogFragment {
 	public void onResume() {
 		super.onResume();
 		String message = popupItem.getMessage(getActivity());
-		if(!message.equals(StaticData.SYMBOL_EMPTY)){
-			messageTxt.setVisibility(View.VISIBLE);
+		if(message.equals(StaticData.SYMBOL_EMPTY)){
+			messageTxt.setVisibility(View.GONE);
+		}else{
 			if(message.contains(StaticData.SYMBOL_TAG)){
 				messageTxt.setText(Html.fromHtml(message));
 			}else{
 				messageTxt.setText(message);
 			}
+			messageTxt.setVisibility(View.VISIBLE);
 		}
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 	}

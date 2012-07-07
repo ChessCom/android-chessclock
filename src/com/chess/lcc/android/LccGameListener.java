@@ -199,6 +199,8 @@ public class LccGameListener implements GameListener {
         }
         //message = whiteUsername + " vs. " + blackUsername + " - " + message;
         Log.d(TAG, "GAME LISTENER: GAME OVER - " + message);
+		lccHolder.getWhiteClock().setRunning(false);
+		lccHolder.getBlackClock().setRunning(false);
 
         if (lccHolder.isActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
@@ -213,8 +215,6 @@ public class LccGameListener implements GameListener {
         } else {
             lccHolder.getLccEventListener().onGameEnd(message);
         }
-        lccHolder.getWhiteClock().setRunning(false);
-        lccHolder.getBlackClock().setRunning(false);
     }
 
     @Override
@@ -279,14 +279,12 @@ public class LccGameListener implements GameListener {
         Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {
-//            lccHolder.getAndroidStuff().sendBroadcastMessageIntent(0, IntentConstants.ACTION_GAME_INFO, "DRAW DECLINED",
-//                    rejectorUsername + " has declined a draw");
 			lccHolder.getLccEventListener().onInform(context.getString(R.string.draw_declined),
-					rejectorUsername + context.getString(R.string.has_declined_draw));
+					rejectorUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.has_declined_draw));
         }
     }
 
-    //	@Override
+    @Override
     public void onClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment) {
         // TODO: Implement if necessary
     }

@@ -81,7 +81,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {// Challenge declined!
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
-			fragment.getDialog().dismiss();
+			fragment.dismiss();
 			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
 			popupManager.remove(fragment);
 		}

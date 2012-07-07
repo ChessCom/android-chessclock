@@ -575,9 +575,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
 	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(GamePanelView.B_ANALYSIS_ID, enable);
-		enableGameButton(GamePanelView.B_FORWARD_ID, enable);
-		enableGameButton(GamePanelView.B_BACK_ID, enable);
+		enableGameButton(B_ANALYSIS_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+		enableGameButton(B_CHAT_ID, !enable);
 	}
 
     public void lock(boolean lock) {

@@ -56,7 +56,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     private String blackTimer;
     private View fadeLay;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -205,7 +205,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.invalidate();
 
 		playLastMoveAnimation();
-
 	}
 
     public void setWhitePlayerTimer(String timeString) {
@@ -350,14 +349,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
             }
         }
 
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
-			}
-		});
-
-
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         final View layout;
         if (!MopubHelper.isShowAds(this)) {
@@ -369,12 +360,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
 				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
+				onGameEndMsgReceived();
 			}
 		});
 
-
-        onGameEndMsgReceived();
     }
 
 	// -----------------------------------------------------------------------------------
@@ -657,8 +648,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
 
-		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem, this);
-		customViewFragment.show(getSupportFragmentManager(), END_GAME_TAG);
+		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem, this);
+		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);

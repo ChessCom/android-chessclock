@@ -38,13 +38,13 @@ public class PopupItem implements Serializable{
         this.positiveBtnId = leftBtnId;
     }
 
-    public int getNeutralBtnId() {
-        return neutralBtnId;
-    }
-
-    public void setNeutralBtnId(int neutralBtnId) {
+	public void setNeutralBtnId(int neutralBtnId) {
         this.neutralBtnId = neutralBtnId;
     }
+
+	public int getNeutralBtnId() {
+		return neutralBtnId;
+	}
 
     public String getMessage(Context context) {
         if(message.equals(StaticData.SYMBOL_EMPTY) && messageId != 0){
@@ -56,6 +56,7 @@ public class PopupItem implements Serializable{
 
     public void setMessage(String message) {
         this.message = message;
+		messageId = 0;
     }
 
     public int getNegativeBtnId() {
@@ -76,22 +77,17 @@ public class PopupItem implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getTitleId() {
-        return titleId;
+		titleId = 0;
     }
 
     public void setTitle(int titleId) {
         this.titleId = titleId;
-    }
-
-    public int getMessageId() {
-        return messageId;
+		title = StaticData.SYMBOL_EMPTY;
     }
 
     public void setMessage(int messageId) {
         this.messageId = messageId;
+		message = StaticData.SYMBOL_EMPTY;
     }
 
     public View getCustomView() {
@@ -101,4 +97,6 @@ public class PopupItem implements Serializable{
     public void setCustomView(View customView) {
         this.customView = customView;
     }
+
+
 }

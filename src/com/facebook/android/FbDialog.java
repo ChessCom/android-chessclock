@@ -57,7 +57,6 @@ public class FbDialog extends Dialog {
 
     private String mUrl;
     private DialogListener mListener;
-//    private MyProgressDialog mSpinner;
 	protected PopupItem popupProgressItem;
 	protected PopupProgressFragment popupProgressDialogFragment;
     private ImageView mCrossImage;
@@ -75,9 +74,6 @@ public class FbDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mSpinner = new MyProgressDialog(getContext());
-//        mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        mSpinner.setMessage("Loading...");
 
 		popupProgressItem = new PopupItem();
 		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
@@ -170,8 +166,7 @@ public class FbDialog extends Dialog {
                 return false;
             }
             // launch non-dialog URLs in a full browser
-            getContext().startActivity(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             return true;
         }
 
@@ -191,7 +186,6 @@ public class FbDialog extends Dialog {
 			popupProgressItem.setTitle(R.string.loading);
 			popupProgressDialogFragment.show(fragmentActivity.getSupportFragmentManager(),
 					PROGRESS_TAG);
-//            mSpinner.show();
         }
 
         @Override
@@ -200,8 +194,7 @@ public class FbDialog extends Dialog {
 			if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
 				popupProgressDialogFragment.getDialog().dismiss();
 
-//            mSpinner.dismiss();
-            /* 
+            /*
              * Once webview is fully loaded, set the mContent background to be transparent
              * and make visible the 'x' image. 
              */

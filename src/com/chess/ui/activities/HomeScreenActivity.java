@@ -104,10 +104,10 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public void onNegativeBtnClick(DialogFragment fragment) {// Challenge declined!
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
-            fragment.getDialog().dismiss();
+            fragment.dismiss();
             challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
         }else
-            fragment.getDialog().dismiss();
+            fragment.dismiss();
 	}
 
 	@Override

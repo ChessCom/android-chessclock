@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.model.GameItem;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.GameActivityFace;
@@ -43,6 +44,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected ViewGroup statusBarLay;
 
 	protected TextView endOfGameMessage;
+	protected PopupCustomViewFragment endPopupFragment;
+
 
 	protected CharSequence[] menuOptionsItems;
 	protected GamePanelView gamePanelView;
@@ -267,7 +270,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			// TODO send rematch request
 		} else if (view.getId() == R.id.reviewPopupBtn) {
-			onBackPressed();
+			endPopupFragment.dismiss();
 		}
 	}
 

@@ -87,11 +87,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		if (friendsCnt == 0) {
 			friendsSpinner.setEnabled(false);
 
-			popupItem.setTitle(R.string.sorry);
-			popupItem.setMessage(R.string.nofriends_online);
 			popupItem.setPositiveBtnId(R.string.invitetitle);
-
-			popupDialogFragment.show(getSupportFragmentManager(), NO_ONLINE_FRIENDS_TAG);
+			showPopupDialog(R.string.sorry, R.string.nofriends_online, NO_ONLINE_FRIENDS_TAG);
 		}else {
             if(friendsCnt > 1){
                 friendsTxt.setText(getString(R.string.friends) + StaticData.SYMBOL_SPACE + StaticData.SYMBOL_LEFT_PAR

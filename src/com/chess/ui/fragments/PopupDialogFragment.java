@@ -2,6 +2,8 @@ package com.chess.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +33,9 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
     private Button middleBtn;
     private Button rightBtn;
     private int buttonsNumber;
+	private boolean isShowed;
 
-    public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
+	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
         PopupDialogFragment frag = new PopupDialogFragment();
 		Bundle arguments = new Bundle();
 		arguments.putSerializable(POPUP_ITEM, popupItem);
@@ -93,10 +96,15 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 	public void onResume() {
 		super.onResume();
 		String message = popupItem.getMessage(getActivity());
-		if(message.contains(StaticData.SYMBOL_TAG)){
-			messageTxt.setText(Html.fromHtml(message));
+		if(message.equals(StaticData.SYMBOL_EMPTY)){
+			messageTxt.setVisibility(View.GONE);
 		}else{
-			messageTxt.setText(message);
+			if(message.contains(StaticData.SYMBOL_TAG)){
+				messageTxt.setText(Html.fromHtml(message));
+			}else{
+				messageTxt.setText(message);
+			}
+			messageTxt.setVisibility(View.VISIBLE);
 		}
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
@@ -129,4 +137,23 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
     public void setButtons(int buttonsNumber){
         this.buttonsNumber = buttonsNumber;
     }
+
+	@Override
+	public void show(FragmentManager manager, String tag) {
+		isShowed = true;
+		super.show(manager, tag);
+	}
+
+	@Override
+	public int show(FragmentTransaction transaction, String tag) {
+		isShowed = true;
+		return super.show(transaction, tag);
+	}
+
+	@Override
+	public void dismiss() {
+		if(isShowed)
+			super.dismiss();
+		isShowed = false;
+	}
 }

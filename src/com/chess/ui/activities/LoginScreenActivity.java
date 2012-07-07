@@ -189,7 +189,6 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				showToast(R.string.no_chess_account_signup_please);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){
-				// Error+<error_message>
 				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 		}
