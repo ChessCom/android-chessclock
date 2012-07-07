@@ -96,4 +96,11 @@ public class PopupProgressFragment extends DialogFragment {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(POPUP_ITEM, popupItem);
 	}
+
+	public void updatePopupItem(PopupItem popupItem) {
+		this.popupItem = popupItem;
+		Bundle arguments = new Bundle();
+		arguments.putSerializable(POPUP_ITEM, popupItem);
+		setArguments(arguments);
+	}
 }

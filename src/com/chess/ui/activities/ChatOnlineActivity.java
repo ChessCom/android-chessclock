@@ -60,7 +60,6 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		sendUpdateListener = new SendUpdateListener();
 	}
 
-	@Override
 	protected void widgetsInit(){
 
 		sendText = (EditText) findViewById(R.id.sendText);

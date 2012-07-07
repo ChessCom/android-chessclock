@@ -362,13 +362,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
 				DataHolder.getInstance().setAcceptdraw(true);
-				popupItem.setTitle(R.string.accept_draw_q);
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setPositiveBtnId(R.string.game);
-
-				popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_PENDING_TAG);
 				popupDialogFragment.setButtons(3);
+				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 
 			} else {
 				DataHolder.getInstance().setAcceptdraw(false);

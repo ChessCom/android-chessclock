@@ -9,7 +9,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
-public class SplashActivity extends CoreActivity {
+public class SplashActivity extends BaseFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

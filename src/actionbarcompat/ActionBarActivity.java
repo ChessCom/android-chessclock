@@ -16,13 +16,11 @@
 
 package actionbarcompat;
 
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.WindowManager;
+import com.chess.ui.activities.BaseFragmentActivity;
 
 /**
  * A base activity that defers common functionality across app activities to an {@link
@@ -33,16 +31,8 @@ import android.view.WindowManager;
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivity extends FragmentActivity {
+public abstract class ActionBarActivity extends BaseFragmentActivity {
 	final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
-
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-		// Eliminates color banding
-		getWindow().setFormat(PixelFormat.RGBA_8888);
-	}
 
 	/**
 	 * Returns the {@link ActionBarHelper} for this activity.

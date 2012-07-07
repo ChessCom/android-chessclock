@@ -19,8 +19,6 @@ public class AppData {
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 	}
 
-
-
 	public static String getUserToken(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);

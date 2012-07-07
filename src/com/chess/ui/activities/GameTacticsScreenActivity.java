@@ -119,11 +119,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (getLastCustomNonConfigurationInstance() == null) {
 			DataHolder.getInstance().setPendingTacticsLoad(false);
-			popupItem.setTitle(R.string.ready_for_first_tackics_q);
+			showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			popupItem.setPositiveBtnId(R.string.yes);
 			popupItem.setNegativeBtnId(R.string.no);
-
-			popupDialogFragment.show(getSupportFragmentManager(), FIRST_TACTICS_TAG);
 		}
 
 		gamePanelView.hideChatButton();
@@ -136,11 +134,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
         // TODO show register confirmation dialog
 		if (getBoardFace().isTacticCanceled()) {
 			getBoardFace().setTacticCanceled(false);
-			popupItem.setTitle(R.string.ready_for_first_tackics_q);
 			popupItem.setPositiveBtnId(R.string.yes);
 			popupItem.setNegativeBtnId(R.string.no);
+			showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 
-			popupDialogFragment.show(getSupportFragmentManager(), FIRST_TACTICS_TAG);
 		} else if (tactic != null && tactic.values.get(AppConstants.STOP).equals("0")
             && getBoardFace().getMovesCount() > 0) {
             invalidateGameScreen();
@@ -407,21 +404,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void showLimitDialog() {
 		FlurryAgent.onEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEDED);
-
-		popupItem.setTitle(R.string.daily_limit_exceeded);
-		popupItem.setMessage(R.string.max_tackics_for_today_reached);
-
-		popupDialogFragment.show(getSupportFragmentManager(), TACTICS_LIMIT_TAG);
+		showPopupDialog(R.string.daily_limit_exceeded, R.string.max_tactics_reached, TACTICS_LIMIT_TAG);
 	}
 
 	private void getGuestTacticsGame() {
 		FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 
 		if (currentTacticProblem >= tacticsBatch.size()) {
-			popupItem.setTitle(R.string.hundred_tackics_completed);
-
+			showPopupDialog(R.string.hundred_tackics_completed, HUNDRED_TACTICS_TAG);
 			popupDialogFragment.setButtons(1);
-			popupDialogFragment.show(getSupportFragmentManager(), HUNDRED_TACTICS_TAG);
 			return;
 		}
 
@@ -597,10 +588,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void showOfflineRatingDialog() {
-		popupItem.setTitle(R.string.offline_mode);
-		popupItem.setMessage(R.string.no_network_rating_not_changed);
-
-		popupDialogFragment.show(getSupportFragmentManager(), OFFLINE_RATING_TAG);
+		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
 	}
 
 	private class TacticsWrongUpdateListener extends ChessUpdateListener {

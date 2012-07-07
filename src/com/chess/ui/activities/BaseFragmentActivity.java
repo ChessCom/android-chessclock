@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -21,10 +22,20 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.flurry.android.FlurryAgent;
 
-public abstract class CoreActivity extends FragmentActivity implements PopupDialogFace {
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * BaseFragmentActivity class
+ *
+ * @author alien_roger
+ * @created at: 07.07.12 6:42
+ */
+public abstract class BaseFragmentActivity extends FragmentActivity implements PopupDialogFace {
 
 	private static final String INFO_POPUP_TAG = "information popup";
 	private static final String PROGRESS_TAG = "progress dialog popup";
+
 
 	protected DisplayMetrics metrics;
 	protected BackgroundChessDrawable backgroundChessDrawable;
@@ -32,12 +43,14 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 	private Context context;
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
+
 	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
 	protected PopupItem popupProgressItem;
 	protected PopupProgressFragment popupProgressDialogFragment;
-	protected boolean isPaused;
+	protected List<PopupDialogFragment> popupManager;
 
+	protected boolean isPaused;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -57,6 +70,8 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 		popupProgressItem = new PopupItem();
 		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
+
+		popupManager = new ArrayList<PopupDialogFragment>();
 
 		preferences = AppData.getPreferences(this);
 		preferencesEditor = preferences.edit();
@@ -95,27 +110,36 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 		FlurryAgent.onEndSession(this);
 	}
 
-	protected Context getContext() {
-		return context;
-	}
-
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		fragment.getDialog().dismiss();
+		dismissFragmentDialog(fragment);
 	}
 
 	@Override
 	public void onNeutralBtnCLick(DialogFragment fragment) {
-		fragment.getDialog().dismiss();
+		dismissFragmentDialog(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
+		dismissFragmentDialog(fragment);
+	}
+
+	private void dismissFragmentDialog(DialogFragment fragment){
+		popupDialogFragment.setButtons(2);
+
+		popupItem.setPositiveBtnId(R.string.ok);
+		popupItem.setNegativeBtnId(R.string.cancel);
+		fragment.getDialog().setCancelable(true);
 		fragment.getDialog().dismiss();
 	}
 
 	protected void showToast(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	}
+
+	protected void showToast(int msgId) {
+		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
 	}
 
 	// Single button no callback dialogs
@@ -148,35 +172,34 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 	protected void showPopupDialog(int titleId, int messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupDialogFragment.show(getSupportFragmentManager(), tag);
+		updatePopupAndShow(tag);
 	}
 
 	protected void showPopupDialog(int titleId, String messageId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupDialogFragment.show(getSupportFragmentManager(), tag);
+		updatePopupAndShow(tag);
 	}
-
 
 	protected void showPopupDialog(String title, String message, String tag) {
 		popupItem.setTitle(title);
 		popupItem.setMessage(message);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupDialogFragment.show(getSupportFragmentManager(), tag);
+		updatePopupAndShow(tag);
 	}
 
 	protected void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupDialogFragment.show(getSupportFragmentManager(), tag);
+		updatePopupAndShow(tag);
 	}
 
 	protected void showPopupDialog(String title, String tag) {
 		popupItem.setTitle(title);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		updatePopupAndShow(tag);
+	}
+
+	private void updatePopupAndShow(String tag){
 		popupDialogFragment.updatePopupItem(popupItem);
 		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
@@ -185,37 +208,42 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+		updateProgressAndShow();
 	}
 
 	protected void showPopupProgressDialog(String title, String message) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(message);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+		updateProgressAndShow();
 	}
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+		updateProgressAndShow();
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+		updateProgressAndShow();
 		popupProgressDialogFragment.setNotCancelable();
 	}
 
 	protected void showPopupProgressDialog(int titleId, int messageId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(messageId);
-		popupDialogFragment.updatePopupItem(popupItem);
+		updateProgressAndShow();
+	}
+
+	private void updateProgressAndShow(){
+		popupProgressDialogFragment.updatePopupItem(popupItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+	}
+
+	protected void dismissFragmentDialog() {
+		if (popupDialogFragment != null && popupDialogFragment.getDialog() != null)
+			popupDialogFragment.getDialog().dismiss();
 	}
 
 	protected void dismissProgressDialog() {
@@ -223,11 +251,17 @@ public abstract class CoreActivity extends FragmentActivity implements PopupDial
 			popupProgressDialogFragment.getDialog().dismiss();
 	}
 
+	public void dismissAllPopups() {
+		for (PopupDialogFragment fragment : popupManager) {
+			fragment.getDialog().dismiss();
+		}
+	}
+
 	protected String getTextFromField(EditText editText) {
 		return editText.getText().toString().trim();
 	}
 
-	protected void showToast(int msgId) {
-		Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
+	protected Context getContext() {
+		return context;
 	}
 }

@@ -55,7 +55,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		bonusTimeValidator = new BonusTimeValidator();
 	}
 
-    @Override
     protected void widgetsInit() {
         friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
         isRated = (CheckBox) findViewById(R.id.ratedGame);
@@ -104,8 +103,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 			friendsSpinner.setEnabled(true);
 			friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, friends));
 
-			if(popupDialogFragment.getDialog() != null)
-				popupDialogFragment.getDialog().dismiss();
+			dismissFragmentDialog();
 		}
 	}
 
@@ -176,11 +174,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
 		preferencesEditor.commit();
 
-		popupItem.setTitle(R.string.congratulations);
-		popupItem.setMessage(R.string.challengeSent);
-
+		showPopupDialog(R.string.congratulations, R.string.challengeSent, CHALLENGE_SENT_TAG);
 		popupDialogFragment.setButtons(1);
-		popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_SENT_TAG);
 	}
 
 

@@ -16,11 +16,9 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
@@ -106,10 +104,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 	}
 
-	@Override
 	protected void widgetsInit() {
-		super.widgetsInit();
-
 		findViewById(R.id.prefInvite).setOnClickListener(this);
 		findViewById(R.id.prefContactUs).setOnClickListener(this);
 
@@ -360,16 +355,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	private void updateVacationLeaveStatus() {
 		if (vacationCheckBox.isChecked()) {
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.confirm_vacation_title);
-			popupItem.setMessage(R.string.confirm_vacation_msg);
-
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
-			popupDialogFragment.show(getSupportFragmentManager(), VACATION_TAG);
+			showPopupDialog(R.string.confirm_vacation_title, R.string.confirm_vacation_msg, VACATION_TAG);
 		} else {
 			LoadItem listLoadItem = new LoadItem();
 			listLoadItem.setLoadPath(RestHelper.VACATION_RETURN);
-
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);

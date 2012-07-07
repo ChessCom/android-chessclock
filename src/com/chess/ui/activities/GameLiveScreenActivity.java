@@ -319,14 +319,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     public void onDrawOffered(String drawOfferUsername) {
         String message = drawOfferUsername + StaticData.SYMBOL_SPACE + getString(R.string.has_offered_draw);
 
-        PopupItem popupItem = new PopupItem();
-        popupItem.setTitle(message);
 		popupItem.setPositiveBtnId(R.string.accept);
 		popupItem.setNegativeBtnId(R.string.decline);
+		showPopupDialog(message, DRAW_OFFER_RECEIVED_TAG);
 
-        PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
 		popupDialogFragment.setCancelable(false);
-        popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_RECEIVED_TAG);
     }
 
     @Override
@@ -387,22 +384,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 //        boardView.lockBoard(block);
     }
     
-//	protected BroadcastReceiver showGameEndPopupReceiver = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, final Intent intent) {
-//			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-//			View layout;
-//			if (!MopubHelper.isShowAds(context)) {
-//				layout = inflater.inflate(R.layout.popup_end_game, null, false);
-//			} else {
-//				layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
-//			}
-//
-//			showGameEndPopup(layout, intent.getExtras().getString(AppConstants.MESSAGE));
-//
-//
-//		}
-//	};
+
 
 	protected void sendMove() {
 		showSubmitButtonsLay(false);
@@ -540,14 +522,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 					boardView.invalidate();
 					break;
 				case LIVE_DRAW_OFFER:
-					popupItem.setTitle(R.string.drawoffer);
-					popupItem.setMessage(R.string.are_you_sure_q);
-					popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_RECEIVED_TAG);
+					showPopupDialog(R.string.drawoffer, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 					break;
 				case LIVE_RESIGN_OR_ABORT:
-					popupItem.setTitle(R.string.abort_resign_game);
-					popupItem.setMessage(R.string.are_you_sure_q);
-					popupDialogFragment.show(getSupportFragmentManager(), ABORT_GAME_TAG);
+					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
 					break;
 				case LIVE_MESSAGES:
 					openChatActivity();
@@ -580,6 +558,15 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 	}
 
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
+			Log.i(TAG, AppConstants.DECLINE_DRAW + getLccHolder().getGame(gameId));
+			gameTaskRunner.runRejectDrawTask(gameId);
+		}
+	}
+
 	protected void changeChatIcon(Menu menu) {
 		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
@@ -604,7 +591,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return StaticData.SYMBOL_EMPTY;
 		else
 			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;  // TODO check
+					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override

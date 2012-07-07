@@ -43,7 +43,6 @@ public class LiveScreenActivity extends LiveBaseActivity {
 		widgetsInit();
 	}
 
-	@Override
     protected void widgetsInit(){
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);

@@ -83,17 +83,10 @@ public class LccGameListener implements GameListener {
         Game oldGame = lccHolder.getGame(gameId);
         if (oldGame != null) {
             Log.d(TAG, "LCC: PROCESS EXTRA onFullGameReceived, game id= " + gameId);
-            // todo: do current game end?
-//            if (lccHolder.getAndroidStuff().getLccEventListener() != null) {
-//                lccHolder.getAndroidStuff().getLccEventListener().finish(); // todo: refactoring, finish or just reinitialize
-
-//                lccHolder.previousFGTime = lccHolder.currentFGTime;
                 lccHolder.currentFGTime = System.currentTimeMillis();
                 lccHolder.previousFGGameId = lccHolder.currentFGGameId;
                 lccHolder.currentFGGameId = game.getId();
 			Log.d("TEST", "onFullGameReceived-> lccEventListener set to null");
-//            }
-            //lccHolder.putGame(game);
         }
         if (game.isEnded()) {
             lccHolder.putGame(game);

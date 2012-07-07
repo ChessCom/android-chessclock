@@ -16,7 +16,6 @@ import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 
 /**
@@ -79,14 +78,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
+		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {// Challenge declined!
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
 			fragment.getDialog().dismiss();
 			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
 			popupManager.remove(fragment);
-		} else
-			fragment.getDialog().dismiss();
+		}
 	}
 
 	@Override
@@ -103,14 +101,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
 			currentChallenge = challenge;
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.you_been_challenged);
-			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setNegativeBtnId(R.string.decline);
 			popupItem.setPositiveBtnId(R.string.accept);
-
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, LiveBaseActivity.this);
-			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+			popupItem.setNegativeBtnId(R.string.decline);
+			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
 		}
 
 		@Override

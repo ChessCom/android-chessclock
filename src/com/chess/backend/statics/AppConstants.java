@@ -93,6 +93,7 @@ public class AppConstants {
 
 	public static final String DEFAULT_GAMEBOARD_CASTLE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 	public static final String REQUEST_DRAW = "Request draw: ";
+	public static final String DECLINE_DRAW = "Decline draw: ";
 	public static final String OFFERDRAW = "OFFERDRAW";
 	public static final String ACCEPTDRAW = "ACCEPTDRAW";
 //	public static final String SUCCESS = "Success";

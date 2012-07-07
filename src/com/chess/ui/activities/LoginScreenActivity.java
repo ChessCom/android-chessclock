@@ -39,7 +39,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends CoreActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class LoginScreenActivity extends BaseFragmentActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
 	private static final String CHECK_UPDATE_TAG = "check update";
 	private static int SIGNIN_CALLBACK_CODE = 16;

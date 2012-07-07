@@ -374,14 +374,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					boardView.invalidate();
 					break;
 				case ECHESS_DRAW_OFFER:
-					popupItem.setTitle(R.string.drawoffer);
-					popupItem.setMessage(R.string.are_you_sure_q);
-					popupDialogFragment.show(getSupportFragmentManager(), DRAW_OFFER_RECEIVED_TAG);
+					showPopupDialog(R.string.drawoffer, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 					break;
 				case ECHESS_RESIGN_OR_ABORT:
-					popupItem.setTitle(R.string.abort_resign_game);
-					popupItem.setMessage(R.string.are_you_sure_q);
-					popupDialogFragment.show(getSupportFragmentManager(), ABORT_GAME_TAG);
+					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
 					break;
 			}
 		}

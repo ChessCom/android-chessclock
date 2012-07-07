@@ -17,7 +17,6 @@ import com.chess.lcc.android.LccChallengeTaskRunner;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -85,41 +84,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (MopubHelper.isShowAds(this)) {
 			showFullScreenAd();
 		}
-
-		/*if(interAdView == null)*/
-		/*interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
-		interAdView.setId(MMAdViewSDK.DEFAULT_VIEWID);
-		interAdView.callForAd();
-		interAdView.setListener(new MMAdView.MMAdListener() {
-
-			public void MMAdReturned(MMAdView mmAdView) {
-				if (mmAdView.check()) {
-					mmAdView.display();
-				}
-			}
-
-			public void MMAdFailed(MMAdView mmAdView) {
-			}
-
-			public void MMAdClickedToNewBrowser(MMAdView mmAdView) {
-			}
-
-			public void MMAdClickedToOverlay(MMAdView mmAdView) {
-			}
-
-			public void MMAdOverlayLaunched(MMAdView mmAdView) {
-			}
-
-			public void MMAdRequestIsCaching(MMAdView mmAdView) {
-			}
-
-			public void MMAdCachingCompleted(MMAdView mmAdView, boolean success) {
-				if (success && mmAdView.check()) {
-					mmAdView.display();
-				}
-			}
-		});*/
-
 	}
 
 
@@ -158,15 +122,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
-				PopupItem popupItem = new PopupItem();
-				popupItem.setTitle(R.string.confirm);
-				popupItem.setMessage(R.string.signout_confirm);
-
-//				popupDialogFragment.updatePopupItem(popupItem);
-				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
-				popupDialogFragment.show(getSupportFragmentManager(), LOGOUT_TAG);
-//				popupManager.add(popupDialogFragment);
-				break;
+				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -181,19 +137,15 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
 			currentChallenge = challenge;
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.you_been_challenged);
-			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setNegativeBtnId(R.string.decline);
-			popupItem.setPositiveBtnId(R.string.accept);
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
-			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+			popupItem.setPositiveBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
 		}
 
 		@Override
 		public void showDialog(Challenge challenge) {
-			if(popupDialogFragment.getDialog() != null && popupDialogFragment.getDialog().isShowing()){
+			if (popupManager.size() > 0) {
 				return;
 			}
 
@@ -203,8 +155,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			popupItem.setNegativeBtnId(R.string.decline);
 			popupItem.setPositiveBtnId(R.string.accept);
 
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+
+			popupManager.add(popupDialogFragment);
 		}
 
 		@Override
@@ -250,9 +205,9 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 			return new StringBuilder()
 					.append(getString(R.string.opponent_)).append(StaticData.SYMBOL_SPACE)
-					.append(challenge.getFrom().getUsername()).append(StaticData.SYMBOL_NEW_STR)
+					.append(challenge.getFrom().getUsername())
 					.append(getString(R.string.time_)).append(StaticData.SYMBOL_SPACE)
-					.append(timeMode).append(StaticData.SYMBOL_NEW_STR)
+					.append(timeMode)
 					.append(getString(R.string.you_play)).append(StaticData.SYMBOL_SPACE)
 					.append(playerColor).append(StaticData.SYMBOL_NEW_STR)
 					.append(rated)
