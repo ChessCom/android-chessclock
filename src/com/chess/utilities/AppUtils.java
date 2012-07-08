@@ -212,12 +212,12 @@ public class AppUtils {
 	 */
 	public static boolean changeLocale(Context context){
 		String prevLang = context.getResources().getConfiguration().locale.getLanguage();
-//		Log.d("TEST", " used locale = " + prevLang);
+		Log.d("TEST", " used locale = " + prevLang);
 //		Log.d("TEST", " def locale = " + Locale.ENGLISH.getLanguage());
 		String[] languageCodes = context.getResources().getStringArray(R.array.languages_codes);
 
 		String setLocale = languageCodes[AppData.getLanguageCode(context)];
-//		Log.d("TEST", " setLocale = " + setLocale);
+		Log.d("TEST", " setLocale = " + setLocale);
 		boolean changed = false;
 		if(!prevLang.equals(setLocale)) {
 			changed = true;

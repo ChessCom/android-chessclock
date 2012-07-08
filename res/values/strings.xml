@@ -210,7 +210,7 @@
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 tactics complited!</string>
+	<string name="hundred_tackics_completed">100 tactics completed!</string>
 	<string name="offline_mode">Offline mode</string>
 	<string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating
 		will not change after completing problems until your Internet connection returns.

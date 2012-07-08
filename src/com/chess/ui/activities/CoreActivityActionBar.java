@@ -62,7 +62,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		extras = getIntent().getExtras();
 
-		AppUtils.changeLocale(this);
+
 
 		lccConnectUpdateListener = new LccConnectUpdateListener();
 
