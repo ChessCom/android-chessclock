@@ -174,7 +174,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			if(config.isBlitz()){
 				blitz = getString(R.string.blitz_game);
 			}else if(config.isLightning()){
-				blitz = getString(R.string.lighthning_game);
+				blitz = getString(R.string.lightning_game);
 			}else if(config.isStandard()){
 				blitz = getString(R.string.standard_game);
 			}

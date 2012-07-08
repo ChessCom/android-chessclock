@@ -128,7 +128,6 @@
 	<string name="send">Send</string>
 	<string name="help">Help</string>
 	<string name="game">Game</string>
-	<string name="newgame">New Game</string>
 	<string name="options">Options</string>
 	<string name="reside">Flip</string>
 	<string name="hint">Hint</string>
@@ -220,11 +219,8 @@
 	<string name="are_you_sure_q">Are You sure?</string>
 	<string name="correct_ex">Correct!</string>
 	<string name="wrong_ex">Wrong!</string>
-	<!--
-	 + result.values.get("user_rating_change")
-	 +
-	 + result.values.get("user_rating")
- -->
+
+
 	<string name="wrong_score">Wrong! Score %1$s
 		\nNew rating %2$s </string>
 	<string name="correct_score">Correct! Score %1$s
@@ -274,7 +270,6 @@
 	<string name="standard_game">(Standard)</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
-	<string name="lighthning_game">(Lightning)</string>
 	<string name="network_was_changed_please_relogin">Network was changed. Please relogin to Live</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - It\'s Your Move</string>
@@ -295,13 +290,8 @@
 	<string name="on_zero_white_mates">1 - 0 White mates</string>
 	<string name="slatemate">0 - 0 Stalemate</string>
 	<string name="draw_by_repetition">1/2 - 1/2 Draw by repetition</string>
-	<string name="game_over_">GAME OVER:</string>
-	<string name="blitz_mod">(Blitz)</string>
-	<string name="lightning_mod">(Lightning)</string>
-	<string name="standard_mod">(Standard)</string>
 
-	<string name="encoding_unsopported">Encoding unsopported</string>
-	<string name="unsopported_encoding">Unsopported encoding</string>
+	<string name="encoding_unsupported">Encoding unsupported</string>
 	<string name="error_occurred_while_login">Error occurred while login, please relogin!</string>
 	<string name="update_available_please_update">An update is available! Please update</string>
 	<string name="update_check">Update Check</string>
@@ -331,8 +321,8 @@
 	<string name="warning">Warning!</string>
 	<string name="account_error">Account error.</string>
 	<string name="server_stopped">Server stopped.</string>
-	<string name="reason_">Reason:</string>
-	<string name="message_">Message:</string>
+	<string name="reason_">Reason</string>
+	<string name="message_">Message</string>
 
 	<!--Video list game categories-->
 	<string name="amazing_games_category">amazing-games</string>

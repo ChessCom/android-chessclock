@@ -348,7 +348,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		try {
 			value = URLEncoder.encode(getTextFromField(editText), HTTP.UTF_8);
 		} catch (UnsupportedEncodingException e) {
-			editText.setError(getString(R.string.unsopported_encoding));
+			editText.setError(getString(R.string.encoding_unsupported));
 		}
 		return value;
 	}

@@ -135,11 +135,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			GameTimeConfig config = challenge.getGameTimeConfig();
 			String blitz = StaticData.SYMBOL_EMPTY;
 			if (config.isBlitz()) {
-				blitz = getString(R.string.blitz_mod);
+				blitz = getString(R.string.blitz_game);
 			} else if (config.isLightning()) {
-				blitz = getString(R.string.lightning_mod);
+				blitz = getString(R.string.lightning_game);
 			} else if (config.isStandard()) {
-				blitz = getString(R.string.standard_mod);
+				blitz = getString(R.string.standard_game);
 			}
 
 			String timeIncrement = StaticData.SYMBOL_EMPTY;

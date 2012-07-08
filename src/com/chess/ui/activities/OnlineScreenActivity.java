@@ -18,6 +18,7 @@ import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
+import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.*;
@@ -42,10 +43,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private Spinner gamesTypeSpinner;
 
 	private static final int UPDATE_DELAY = 120000;
-	private int temp_pos = -1;
 	private int currentListType;
-
-	public static int ONLINE_CALLBACK_CODE = 32;
 
 	private GameListItem gameListElement;
 	private static final int ACCEPT_DRAW = 0;
@@ -59,7 +57,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
-	private GetStringObjTask getDataTask;
+	private AbstractUpdateTask getDataTask;
 
 
 	@Override
@@ -96,10 +94,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private void init() {
-		// set default load item to load current games // TODO must be adjustable
-//				"http://www." + LccHolder.HOST + AppConstants.API_V2_GET_ECHESS_CURRENT_GAMES_ID
-//				+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-//				+ "&all=1",
 		selectedLoadItem = new LoadItem();
 
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
@@ -129,10 +123,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		unregisterReceiver(challengesUpdateReceiver);
 		handler.removeCallbacks(updateListOrder);
+
+		if(getDataTask != null)
+			getDataTask.cancel(true);
 	}
 
 	private void updateList(LoadItem listLoadItem){
-		new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
+		getDataTask = new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
 	}
 
 	private Runnable updateListOrder = new Runnable() {

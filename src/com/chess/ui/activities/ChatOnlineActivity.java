@@ -153,7 +153,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			e.printStackTrace();
 			Log.e("Chat", e.toString());
 			// correctly
-			showToast(R.string.encoding_unsopported);
+			showToast(R.string.encoding_unsupported);
 		}
 
 		LoadItem loadItem = new LoadItem();
