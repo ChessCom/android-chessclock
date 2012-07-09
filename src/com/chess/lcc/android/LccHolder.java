@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 import com.chess.R;
@@ -35,8 +34,6 @@ public class LccHolder {
 	public static final String PKCS_12 = "PKCS12";
 	public static final String TESTTEST = "testtest";
 	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
-	private static final long LCC_INIT_TIMEOUT = 100;
-	private static final long LCC_INIT_RETRY_LIMIT = 10;
 
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
@@ -95,8 +92,6 @@ public class LccHolder {
 	private Long currentGameId;
 	public String networkTypeName;
 	private Context context;
-	private Handler handler;
-	private int retryClientInitCnt;
 	private List<String> pendingWarnings;
 	private boolean lccPerformConnection;
 
@@ -113,7 +108,6 @@ public class LccHolder {
 
     private LccHolder(Context context) {
 		this.context = context;
-		handler = new Handler();
 		// start asynctask for getting certificate and init http client
 		new InitLccClientTask(new LccClientInitListener()).executeTask();
 
@@ -242,27 +236,6 @@ public class LccHolder {
 	public void sendChatMessage(Long gameId, String text) {
 		_lccClient.sendChatMessage(getGameChat(gameId), text);
 	}
-
-	private void checkAndInitLccClient() {
-		if (connected && retryClientInitCnt < LCC_INIT_RETRY_LIMIT) {
-			// Checking
-			String userName = AppData.getUserName(context);
-			String pass = AppData.getPassword(context);
-			connectByCreds(userName, pass);
-			retryClientInitCnt++;
-		} else {
-			handler.removeCallbacks(lccClientReconnectOrder);
-			handler.postDelayed(lccClientReconnectOrder, LCC_INIT_TIMEOUT);
-		}
-	}
-
-	private Runnable lccClientReconnectOrder = new Runnable() {
-		@Override
-		public void run() {
-			Log.d(TAG, "trying to reconnect to liveChessClient");
-			checkAndInitLccClient();
-		}
-	};
 
 	public void addPendingWarning(String warning) {
 		if (warning != null)
