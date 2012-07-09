@@ -38,8 +38,6 @@
 	<string name="label_create_challenge_online">OPRET ONLINE UDFORDRING</string>
 
 	<string name="settings">Indstillinger</string>
-	<string name="onlineTitle">ONLINE SPIL</string>
-	<string name="liveTitle">LIVE SPIL</string>
 	<string name="start_new_game">Start nyt spil</string>
 	<string name="dont_have_account_q">Har du ikke en konto?</string>
 	<string name="singinUsername">Brugernavn:</string>

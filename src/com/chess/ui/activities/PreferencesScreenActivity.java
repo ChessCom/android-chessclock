@@ -160,14 +160,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 
 		if (DataHolder.getInstance().isLiveChess()) {
-			onlineTitle.setText(getString(R.string.liveTitle));
+			onlineTitle.setText(getString(R.string.label_game_live));
 			afterIMoveLayout.setVisibility(View.GONE);
 			enableNotifications.setVisibility(View.GONE);
 			vacationCheckBox.setVisibility(View.GONE);
 			computerTitle.setVisibility(View.GONE);
 			prefStrengthLayout.setVisibility(View.GONE);
 		} else {
-			onlineTitle.setText(getString(R.string.onlineTitle));
+			onlineTitle.setText(getString(R.string.label_game_online));
 			afterIMoveLayout.setVisibility(View.VISIBLE);
 			enableNotifications.setVisibility(View.VISIBLE);
 			vacationCheckBox.setVisibility(View.VISIBLE);

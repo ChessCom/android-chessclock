@@ -38,8 +38,6 @@
 	<string name="label_create_challenge_online">オンラインチャレンジを作成</string>
 
 	<string name="settings">設定</string>
-	<string name="onlineTitle">オンライン ゲーム</string>
-	<string name="liveTitle">ゲームを生きる</string>
 	<string name="start_new_game">新しいゲームを起動します。</string>
 	<string name="dont_have_account_q">アカウントをお持ちでない場合</string>
 	<string name="singinUsername">ユーザ名</string>

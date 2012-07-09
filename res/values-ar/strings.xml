@@ -38,8 +38,6 @@
 	<string name="label_create_challenge_online">خلق التحدي عبر الإنترنت</string>
 
 	<string name="settings">إعدادات</string>
-	<string name="onlineTitle">لعبة على الانترنت</string>
-	<string name="liveTitle">بث مباشر لعبة</string>
 	<string name="start_new_game">تبدأ لعبة جديدة</string>
 	<string name="dont_have_account_q">لم يكن لديك حساب؟</string>
 	<string name="singinUsername">اسم المستخدم</string>

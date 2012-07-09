@@ -29,7 +29,7 @@
 			android:id="@+id/onlineTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/onlineTitle"
+			android:text="@string/label_game_online"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>

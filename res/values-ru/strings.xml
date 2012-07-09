@@ -38,8 +38,6 @@
 	<string name="label_create_challenge_online">СОЗДАТЬ ОНЛАЙН ВЫЗОВ</string>
 
 	<string name="settings">Настройки</string>
-	<string name="onlineTitle">ОНЛАЙН ИГРА</string>
-	<string name="liveTitle">ЖИВАЯ ИГРА</string>
 	<string name="start_new_game">Начать Новую Игру</string>
 	<string name="dont_have_account_q">Нет Аккаунта?</string>
 	<string name="singinUsername">Имя пользователя</string>

@@ -23,17 +23,17 @@ import com.chess.ui.interfaces.PopupDialogFace;
  */
 public class PopupDialogFragment extends DialogFragment implements View.OnClickListener {
 
-	private static final String POPUP_ITEM = "popup item";
+    protected static final String POPUP_ITEM = "popup item";
 
-    private PopupDialogFace listener;
-    private PopupItem popupItem;
-    private TextView titleTxt;
-    private TextView messageTxt;
-    private Button leftBtn;
-    private Button middleBtn;
-    private Button rightBtn;
-    private int buttonsNumber;
-	private boolean isShowed;
+    protected PopupDialogFace listener;
+    protected PopupItem popupItem;
+    protected TextView titleTxt;
+    protected TextView messageTxt;
+    protected Button leftBtn;
+    protected Button middleBtn;
+    protected Button rightBtn;
+    protected int buttonsNumber;
+	protected boolean isShowed;
 
 	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
         PopupDialogFragment frag = new PopupDialogFragment();
@@ -115,11 +115,6 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 
 	@Override
     public void onClick(View view) {
-        if(listener == null){  // TODO handle NPE
-            dismiss();
-            return;
-        }
-
         if(view.getId() == R.id.positiveBtn){
             listener.onPositiveBtnClick(this);
         }else if(view.getId() == R.id.negativeBtn){
@@ -132,6 +127,12 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		Bundle arguments = new Bundle();
 		arguments.putSerializable(POPUP_ITEM, popupItem);
 		setArguments(arguments);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(POPUP_ITEM, popupItem);
     }
 
     public void setButtons(int buttonsNumber){

@@ -16,15 +16,9 @@ import com.chess.model.PopupItem;
  * @author alien_roger
  * @created at: 07.04.12 7:13
  */
-public class PopupProgressFragment extends DialogFragment {
+public class PopupProgressFragment extends PopupDialogFragment {
 
-	private static final String POPUP_ITEM = "popup item";
-
-	private PopupItem popupItem;
     private boolean cancelable;
-	private TextView titleTxt;
-	private TextView messageTxt;
-
 
 	public static PopupProgressFragment newInstance(PopupItem popupItem) {
 		PopupProgressFragment frag = new PopupProgressFragment();
@@ -32,12 +26,6 @@ public class PopupProgressFragment extends DialogFragment {
 		arguments.putSerializable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
 		return frag;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NO_TITLE, 0);
 	}
 
 	@Override
@@ -55,16 +43,6 @@ public class PopupProgressFragment extends DialogFragment {
         if(!cancelable)
             setCancelable(false);
     }
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if(getArguments() != null){
-			popupItem = (PopupItem) getArguments().getSerializable(POPUP_ITEM);
-		}else{
-			popupItem = (PopupItem) savedInstanceState.getSerializable(POPUP_ITEM);
-		}
-	}
 
 	@Override
 	public void onResume() {
@@ -93,16 +71,6 @@ public class PopupProgressFragment extends DialogFragment {
         cancelable = true;
     }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putSerializable(POPUP_ITEM, popupItem);
-	}
 
-	public void updatePopupItem(PopupItem popupItem) {
-		this.popupItem = popupItem;
-		Bundle arguments = new Bundle();
-		arguments.putSerializable(POPUP_ITEM, popupItem);
-		setArguments(arguments);
-	}
+
 }
