@@ -136,7 +136,7 @@
 	<string name="category">Categorie</string>
 	<string name="search">Zoeken</string>
 	<string name="play">Afspelen</string>
-	<string name="videos">Video's</string>
+	<string name="videos">Video\'s</string>
 	<string name="congratulations">Gefeliciteerd! </string>
 	<string name="onlinegamecreated">Online spel gemaakt!</string>
 	<string name="challengeSent">Daag Verzonden!</string>
@@ -169,7 +169,7 @@
 	<string name="wrongemail">U moet uw lidmaatschap te bevestigen per e-mail.</string>
 	<string name="wrongretype">Verkeerd overgetypt wachtwoord!</string>
 	<string name="signingin">Aanmelden...</string>
-	<string name="videoslistupdated">Video's lijst bijgewerkt!</string>
+	<string name="videoslistupdated">Video\'s lijst bijgewerkt!</string>
 	<string name="showanswer">Toon antwoord</string>
 	<string name="skipproblem">Ga Probleem</string>
 	<string name="sendinggameinfo">Het verzenden van game info ...</string>
@@ -196,7 +196,7 @@
 	<string name="accepted">Geaccepteerd:</string>
 	<string name="upgrade">Upgrade</string>
 	<string name="preferencesUpgrade">Mijn account upgraden</string>
-	<string name="videoUpgrade">Upgrade voor volledige toegang tot video's!</string>
+	<string name="videoUpgrade">Upgrade voor volledige toegang tot video\'s!</string>
 	<string name="removeAds">Upgrade En Verwijder advertenties!</string>
 	<string name="accept_draw_q">Accepteer trekken?</string>
 	<string name="ready_for_first_tackics_q">Bent u klaar voor uw eerste tactiek?</string>

@@ -166,13 +166,13 @@
 	<string name="wrongcountry">È necessario selezionare il vostro paese!</string>
 	<string name="wrongpassword">La password deve essere lunga almeno 6 caratteri!</string>
 	<string name="wrongusername">Il tuo nome utente deve essere di almeno 3 caratteri e contenere solo lettere, numeri e trattini di sottolineatura. Gli spazi non sono ammessi.</string>
-	<string name="wrongemail">Sarà necessario confermare l'iscrizione via e-mail.</string>
+	<string name="wrongemail">Sarà necessario confermare l\'iscrizione via e-mail.</string>
 	<string name="wrongretype">Sbagliato password ridigitata!</string>
 	<string name="signingin">Accesso in corso...</string>
 	<string name="videoslistupdated">Elenco aggiornato video!</string>
 	<string name="showanswer">Mostra Risposta</string>
 	<string name="skipproblem">Salta Problema</string>
-	<string name="sendinggameinfo">L'invio di informazioni di gioco ...</string>
+	<string name="sendinggameinfo">L\'invio di informazioni di gioco ...</string>
 	<string name="check_field">Campo di controllo</string>
 	<string name="validateUsername">Il tuo nome utente deve essere compresa tra 3 e 20 caratteri e contenere solo lettere, numeri e trattini di sottolineatura. Gli spazi non sono ammessi.</string>
 	<string name="validatePassword">La password deve essere compresa tra 6 e 20 caratteri!</string>
@@ -208,7 +208,7 @@
 	<string name="okay">Accetta</string>
 	<string name="hundred_tackics_completed">100 tattiche completato!</string>
 	<string name="offline_mode">Modalità Offline</string>
-	<string name="no_network_rating_not_changed">L'accesso a Internet non è attualmente disponibile. Come risultato, il tuo voto non cambierà dopo aver completato i problemi sino a quando i parametri di connessione a Internet.
+	<string name="no_network_rating_not_changed">L\'accesso a Internet non è attualmente disponibile. Come risultato, il tuo voto non cambierà dopo aver completato i problemi sino a quando i parametri di connessione a Internet.
 	</string>
 	<string name="abort_resign_game">Abort / Resign un gioco:</string>
 	<string name="are_you_sure_q">Sei sicuro?</string>
@@ -233,7 +233,7 @@
 	<string name="video">Video</string>
 	<string name="boards_s">Boards</string>
 	<string name="invite_subject">Giocare a scacchi con me</string>
-	<string name="invite_text">Ho appena firmato per giocare a scacchi a Chess.com sul mio dispositivo Android. Scarica l'applicazione gratuita qui: http://chess.com/android o registrati a http://www.chess.com/register.html. Poi a trovare - il mio nome utente è \"
+	<string name="invite_text">Ho appena firmato per giocare a scacchi a Chess.com sul mio dispositivo Android. Scarica l\'applicazione gratuita qui: http://chess.com/android o registrati a http://www.chess.com/register.html. Poi a trovare - il mio nome utente è \"
 	</string>
 	<string name="live_game">Live Partita</string>
 	<string name="online_game">Gioco Online</string>
@@ -245,7 +245,7 @@
 	<string name="analysis_mode">Modalità di analisi</string>
 	<string name="check">Segno di spunta</string>
 	<string name="choose_a_piece">Scegliere un pezzo</string>
-	<string name="open_app_t_see_msg">Toccare qui per vedere il messaggio all'interno di app</string>
+	<string name="open_app_t_see_msg">Toccare qui per vedere il messaggio all\'interno di app</string>
 
 	<!--SignOut-->
 	<string name="signout_confirm">Sei sicuro di voler uscire dal server Chess Live?</string>
@@ -263,7 +263,7 @@
 	<string name="lightning_game">(Lightning)</string>
 	<string name="network_was_changed_please_relogin">Network è stato modificato. Si prega di nuovo login a Live</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - E 'Your Move</string>
+	<string name="your_move">Chess.com - E \'Your Move</string>
 	<string name="online_challenge_wait">Il tuo turno!</string>
 	<string name="login_failed">Accesso non riuscito:</string>
 	<string name="loggin_out">Disconnessione...</string>

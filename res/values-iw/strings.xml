@@ -74,14 +74,14 @@
 	<string name="minrating">דקות דירוג</string>
 	<string name="maxrating">מקס דירוג</string>
 	<string name="email">דואר אלקטרוני</string>
-	<string name="retype">Re-type Password</string>
+	<string name="retype">מחדש את הסיסמה סוג</string>
 	<string name="country">ארץ</string>
 	<string name="blue">כחול</string>
 	<string name="brown">חום</string>
 	<string name="green">ירוק</string>
 	<string name="grey">גריי</string>
 	<string name="marble">שיש</string>
-	<string name="red">אדום-אורנג'</string>
+	<string name="red">Red</string> <!--TODO-->
 	<string name="tan">שזוף</string>
 	<string name="woodlight">עץ אור</string>
 	<string name="wooddark">עץ כהה</string>
@@ -131,7 +131,7 @@
 	<string name="prev">הקודם</string>
 	<string name="next">הבא</string>
 	<string name="nextgame">המשחק הבא</string>
-	<string name="chat">צ'אטים</string>
+	<string name="chat">chat</string>     <!--TODO-->
 	<string name="skill">רמת מיומנות</string>
 	<string name="category">קטגוריה</string>
 	<string name="search">חיפוש</string>
