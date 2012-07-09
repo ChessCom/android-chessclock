@@ -105,7 +105,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
+		if (DataHolder.getInstance().isLiveChess() &&
+				!LccHolder.getInstance(this).isConnected() && !LccHolder.getInstance(this).isConnectingInProgress()) {
 			new ConnectLiveChessTask(lccConnectUpdateListener).executeTask();
 		}
 

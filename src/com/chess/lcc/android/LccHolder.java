@@ -82,6 +82,7 @@ public class LccHolder {
 	private final LccFriendStatusListener friendStatusListener;
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
+	private boolean connectingInProgress;
 	private boolean nextOpponentMoveStillNotMade;
 	private final Object opponentClockStartSync = new Object();
 	private Timer opponentClockDelayTimer = new Timer("OpponentClockDelayTimer", true);
@@ -99,7 +100,7 @@ public class LccHolder {
     private LccEventListener lccEventListener;
     private LccChatMessageListener lccChatMessageListener;
 
-    public static LccHolder getInstance(Context context) {
+	public static LccHolder getInstance(Context context) {
 		if (instance == null) {
 			instance = new LccHolder(context);
 		}
@@ -250,10 +251,6 @@ public class LccHolder {
 		return pendingWarnings.get(pendingWarnings.size() - 1);
 	}
 
-	public boolean isNotConnectedToLive() {
-		return DataHolder.getInstance().isLiveChess() && !connected /*&& !connectingInProgress*/;
-	}
-
 	/**
 	 * Connect live chess client
 	 *
@@ -278,6 +275,7 @@ public class LccHolder {
 		if (_lccClient != null) {
 			_lccClient.disconnect();
 			setNetworkTypeName(null);
+			setConnectingInProgress(true);
 			_lccClient.connect(userName, pass, _connectionListener);
 			liveChessClientEventListener.onConnecting();
 		} else
@@ -288,6 +286,7 @@ public class LccHolder {
 		if (_lccClient != null) {
 			_lccClient.disconnect();
 			setNetworkTypeName(null);
+			setConnectingInProgress(true);
 			_lccClient.connect(sessionId, _connectionListener);
 			liveChessClientEventListener.onConnecting();
 		} else
@@ -311,6 +310,7 @@ public class LccHolder {
 
 	public void processConnectionFailure(FailureDetails details, String message) {
 		setConnected(false);
+		setConnectingInProgress(false);
 
 		String detailsMessage;
 		switch (details) {
@@ -359,7 +359,7 @@ public class LccHolder {
         return lccChatMessageListener;
     }
 
-    private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
+	private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccClientInitListener() {
 			super(context);
 		}
@@ -420,6 +420,13 @@ public class LccHolder {
 		}
 	}
 
+	public void setConnectingInProgress(boolean connectingInProgress) {
+		this.connectingInProgress = connectingInProgress;
+	}
+
+	public boolean isConnectingInProgress() {
+		return connectingInProgress;
+	}
 
 	public void clearChallenges() {
 		challenges.clear();
@@ -752,6 +759,7 @@ public class LccHolder {
 		setUser(null);
 		runDisconnectTask();
 		setConnected(false);
+		setConnectingInProgress(false);
 		clearGames();
 		clearChallenges();
 		clearOwnChallenges();

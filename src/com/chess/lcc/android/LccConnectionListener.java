@@ -25,6 +25,7 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHolder.setUser(user);
 		lccHolder.setConnected(true);
+		lccHolder.setConnectingInProgress(false);
 		Log.d("TEST", "onConnectionEstablished, setConnected(true)");
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
@@ -65,6 +66,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
                 + " n\\Details: id = " + failureId + "comments = " + comments);
 		lccHolder.setConnected(false);
+		lccHolder.setConnectingInProgress(true);
 	}
 
 	@Override
@@ -76,6 +78,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.clearOwnChallenges();
 		lccHolder.clearSeeks();
 		lccHolder.setConnected(true);
+		lccHolder.setConnectingInProgress(false);
 	}
 
 	@Override
@@ -89,6 +92,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d("TEST", "Connection Restored");
 		Log.d(CONNECTION, "Connection Restored");
 		lccHolder.setConnected(true);
+		lccHolder.setConnectingInProgress(false);
 	}
 
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
