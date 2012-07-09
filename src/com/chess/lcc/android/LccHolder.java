@@ -13,7 +13,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.InitLccClientTask;
+import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
@@ -109,8 +109,6 @@ public class LccHolder {
 
     private LccHolder(Context context) {
 		this.context = context;
-		// start asynctask for getting certificate and init http client
-		new InitLccClientTask(new LccClientInitListener()).executeTask();
 
 		_chatListener = new LccChatListener(this);
 		_connectionListener = new LccConnectionListener(this);
@@ -170,10 +168,11 @@ public class LccHolder {
 
     public void setLccEventListener(LccEventListener lccEventListener){
         this.lccEventListener = lccEventListener;
-        if (isActivityPausedMode()) {
-            executePausedActivityGameEvents(lccEventListener);
-            setActivityPausedMode(false);
-        }
+        // todo
+		/*if (isActivityPausedMode()) {
+			executePausedActivityGameEvents(lccEventListener);
+			setActivityPausedMode(false);
+		}*/
     }
 
 	public GameItem getGameItem(Long gameId) {
@@ -269,28 +268,29 @@ public class LccHolder {
 		return lccPerformConnection;
 	}
 
-
 	public void connectByCreds(String userName, String pass) {
 		Log.d("TEST", "connectByCreds : user = " + userName + "pass = " + pass);
-		if (_lccClient != null) {
-			_lccClient.disconnect();
+		//if (_lccClient != null) {
+			//_lccClient.disconnect(); // todo: check - avoid disconnect() here at all or use this.logout()
 			setNetworkTypeName(null);
 			setConnectingInProgress(true);
+
 			_lccClient.connect(userName, pass, _connectionListener);
 			liveChessClientEventListener.onConnecting();
-		} else
-			lccPerformConnection = false;
+		/*} else
+			lccPerformConnection = false;*/
 	}
 
 	public void connectBySessionId(String sessionId) {
-		if (_lccClient != null) {
-			_lccClient.disconnect();
+		//if (_lccClient != null) {
+			//_lccClient.disconnect(); // todo: check - avoid disconnect() here at all or use this.logout()
 			setNetworkTypeName(null);
 			setConnectingInProgress(true);
+
 			_lccClient.connect(sessionId, _connectionListener);
 			liveChessClientEventListener.onConnecting();
-		} else
-			lccPerformConnection = false;
+		/*} else
+			lccPerformConnection = false;*/
 	}
 
 	public void setLiveChessClientEventListener(LiveChessClientEventListenerFace liveChessClientEventListener) {
@@ -311,6 +311,7 @@ public class LccHolder {
 	public void processConnectionFailure(FailureDetails details, String message) {
 		setConnected(false);
 		setConnectingInProgress(false);
+		_lccClient = null;
 
 		String detailsMessage;
 		switch (details) {
@@ -319,13 +320,11 @@ public class LccHolder {
 				break;
 			}
 			case ACCOUNT_FAILED: {
-				// todo: improve handling if Connection fix is not enough and cleanup
 				detailsMessage = context.getString(R.string.account_error)
 						+ context.getString(R.string.lccFailedUnavailable);
 				break;
 			}
 			case SERVER_STOPPED: {
-				// todo: improve handling if Connection fix is not enough and cleanup
 				detailsMessage = context.getString(R.string.server_stopped)
 						+ context.getString(R.string.lccFailedUnavailable);
 				break;
@@ -359,7 +358,7 @@ public class LccHolder {
         return lccChatMessageListener;
     }
 
-	private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
+	/*private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccClientInitListener() {
 			super(context);
 		}
@@ -368,6 +367,19 @@ public class LccHolder {
 		public void updateData(LiveChessClient returnedObj) {
 			Log.d(TAG, "LiveChessClient initialized");
 			_lccClient = returnedObj;
+		}
+	}*/
+
+	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
+		public LccConnectUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(LiveChessClient returnedObj) {
+			Log.d(TAG, "LiveChessClient initialized");
+			_lccClient = returnedObj;
+			performConnect();
 		}
 	}
 
@@ -975,6 +987,9 @@ public class LccHolder {
 	 * Challenges
 	 */
 
+	public void runConnectTask() {
+		new ConnectLiveChessTask(new LccConnectUpdateListener()).executeTask();
+	}
 
 	public void runDisconnectTask() {
 		if (_lccClient != null)
@@ -985,6 +1000,7 @@ public class LccHolder {
 		@Override
 		protected Void doInBackground(Void... voids) {
 			_lccClient.disconnect();
+			_lccClient = null;
 			return null;
 		}
 
