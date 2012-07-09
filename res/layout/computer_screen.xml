@@ -68,7 +68,6 @@
 				android:layout_height="wrap_content"
 				android:text="@string/computerBlack"
 				android:layout_weight="8"
-				android:textSize="19sp"
 				/>
 			<RadioGroup
 				android:layout_width="match_parent"
