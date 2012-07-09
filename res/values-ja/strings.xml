@@ -315,16 +315,6 @@
 	<string name="reason_">理由</string>
 	<string name="message_">メッセージ</string>
 
-	<!--Video list game categories-->
-	<string name="amazing_games_category">素晴らしいミニゲーム</string>
-	<string name="end_games_category">endgames</string>
-	<string name="openings_category">開口部</string>
-	<string name="rules_basics_category">ルールの基本</string>
-	<string name="strategy_category">戦略。</string>
-	<string name="tactics_category">戦術</string>
-	<string name="beginner_category">初心者向け</string>
-	<string name="intermediate_category">中級オプション</string>
-	<string name="advanced_category">アドバンス</string>
 	<string name="black_wins">黒勝（1-0）</string>
 	<string name="white_wins">白勝（1-0）</string>
 	<string name="draw_by_stalemate">こう着状態（0-0）で描く</string>

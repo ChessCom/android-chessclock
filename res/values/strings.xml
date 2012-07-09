@@ -19,7 +19,7 @@
 	<string name="label_play_live">PLAY LIVE</string>
 	<string name="label_play_online">PLAY ONLINE</string>
 	<string name="label_online_new_game">NEW ONLINE GAME</string>
-	<string name="label_live_new_game"> NEW LIVE GAME</string>
+	<string name="label_live_new_game">NEW LIVE GAME</string>
 	<string name="label_play_comp">PLAY COMP</string>
 	<string name="label_video">VIDEO</string>
 	<string name="label_settings">SETTINGS</string>
@@ -38,8 +38,6 @@
 	<string name="label_create_challenge_online">CREATE ONLINE CHALLENGE</string>
 
 	<string name="settings">Settings</string>
-	<string name="onlineTitle">ONLINE GAME</string>
-	<string name="liveTitle">LIVE GAME</string>
 	<string name="start_new_game">Start New Game</string>
 	<string name="dont_have_account_q">Don\'t have an account?</string>
 	<string name="singinUsername">Username</string>
@@ -222,9 +220,9 @@
 
 
 	<string name="wrong_score">Wrong! Score %1$s
-		\nNew rating %2$s </string>
+		\n New rating %2$s </string>
 	<string name="correct_score">Correct! Score %1$s
-		\nNew rating %2$s </string>
+		\n New rating %2$s </string>
 	<string name="you_got_new_msg">You have a new message!</string>
 	<string name="browse">Browse</string>
 
@@ -263,10 +261,10 @@
 
 	<!--Game-->
 	<string name="opponent_">Opponent:</string>
-	<string name="time_">\nTime:</string>
+	<string name="time_">\n Time:</string>
 	<string name="rated">Rated</string>
 	<string name="unrated">Unrated</string>
-	<string name="you_play">\nYou Play:</string>
+	<string name="you_play">\n You Play:</string>
 	<string name="standard_game">(Standard)</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
@@ -295,21 +293,21 @@
 	<string name="error_occurred_while_login">Error occurred while login, please relogin!</string>
 	<string name="update_available_please_update">An update is available! Please update</string>
 	<string name="update_check">Update Check</string>
-	<string name="won_on_time">\nwon on time</string>
-	<string name="won_by_resignation">\nwon by resignation</string>
-	<string name="won_by_checkmate">\nwon by checkmate</string>
+	<string name="won_on_time">\n won on time</string>
+	<string name="won_by_resignation">\n won by resignation</string>
+	<string name="won_by_checkmate">\n won by checkmate</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW OFFER</string>
 	<string name="has_offered_draw">has offered a draw</string>
 	<string name="reconnecting">Reconnecting...</string>
 	<string name="another_login_detected">Another login has been detected.</string>
 	<string name="loading_live_chess">Loading Live Chess</string>
-	<string name="game_draw_by_repetition">Game drawn \nby repetition</string>
-	<string name="game_drawn_by_agreement">Game drawn \nby agreement</string>
-	<string name="game_drawn_by_stalemate">Game drawn \nby stalemate</string>
-	<string name="game_drawn_insufficient_material">Game drawn -\ninsufficient material</string>
-	<string name="game_drawn_by_fifty_move_rule">Game drawn \nby 50-move rule</string>
-	<string name="won_game_abandoned">won - \ngame abandoned</string>
+	<string name="game_draw_by_repetition">Game drawn \n by repetition</string>
+	<string name="game_drawn_by_agreement">Game drawn \n by agreement</string>
+	<string name="game_drawn_by_stalemate">Game drawn \n by stalemate</string>
+	<string name="game_drawn_insufficient_material">Game drawn -\n insufficient material</string>
+	<string name="game_drawn_by_fifty_move_rule">Game drawn \n by 50-move rule</string>
+	<string name="won_game_abandoned">won - \n game abandoned</string>
 	<string name="game_aborted">Game aborted</string>
 	<string name="new_game">New Game</string>
 	<string name="language">Language</string>
@@ -324,20 +322,10 @@
 	<string name="reason_">Reason</string>
 	<string name="message_">Message</string>
 
-	<!--Video list game categories-->
-	<string name="amazing_games_category">amazing-games</string>
-	<string name="end_games_category">endgames</string>
-	<string name="openings_category">openings</string>
-	<string name="rules_basics_category">rules-basics</string>
-	<string name="strategy_category">strategy</string>
-	<string name="tactics_category">tactics</string>
-	<string name="beginner_category">beginner</string>
-	<string name="intermediate_category">intermediate</string>
-	<string name="advanced_category">advanced</string>
 	<string name="black_wins">Black wins (1-0)</string>
 	<string name="white_wins">White wins (1-0)</string>
 	<string name="draw_by_stalemate">Draw by stalemate (0-0)</string>
-	<string name="draw_by_3fold_repetition">Draw by 3Fold repetition (1/2-1/2)</string>
+	<string name="draw_by_3fold_repetition">Draw by threefold repetition (1/2-1/2)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Review</string>
 	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>

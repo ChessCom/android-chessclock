@@ -320,16 +320,6 @@
 	<string name="reason_">Причина.</string>
 	<string name="message_">Сообщение</string>
 
-	<!--Video list game categories-->
-	<string name="amazing_games_category">удивительные игры</string>
-	<string name="end_games_category">окончания игр</string>
-	<string name="openings_category">открытия</string>
-	<string name="rules_basics_category">основные правила</string>
-	<string name="strategy_category">стратегии</string>
-	<string name="tactics_category">тактики</string>
-	<string name="beginner_category">начинающий</string>
-	<string name="intermediate_category">средний </string>
-	<string name="advanced_category">продвинутый</string>
 	<string name="black_wins">Черные выйграли (1-0)</string>
 	<string name="white_wins">Белые выйграли (1-0)</string>
 	<string name="draw_by_stalemate">Ничья по тупику (0-0)</string>
