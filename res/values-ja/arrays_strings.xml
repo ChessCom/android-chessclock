@@ -1,326 +1,340 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
 	<string-array name="languages">
-		<item>英語</item>
-		<item>ロシア</item>
-		<item>日本の</item>
 		<item>アラビア語</item>
+		<item>中国</item>
+		<item>デンマーク語</item>
+		<item>オランダ語</item>
+		<item>フランス語</item>
+		<item>ドイツ語</item>
+		<item>ヘブライ語</item>
+		<item>ヒンディー語</item>
+		<item>イタリア語</item>
+		<item>日本語</item>
+		<item>韓国語</item>
+		<item>ノルウェー語</item>
+		<item>ペルシア語</item>
+		<item>ポーランド語</item>
+		<item>ポルトガル語</item>
+		<item>ロシア語</item>
+		<item>スペイン語</item>
+		<item>スウェーデン語</item>
+		<item>トルコ語</item>
 	</string-array>
 
 	<string-array name="playas">
-		<item>Random</item>
-		<item>White</item>
-		<item>Black</item>
+		<item>ランダム</item>
+		<item>白</item>
+		<item>黒</item>
 	</string-array>
 
 	<string-array name="dayspermove">
-	    <item>1 day</item>
-		<item>2 days</item>
-		<item>3 days</item>
-		<item>5 days</item>
-		<item>7 days</item>
-		<item>14 days</item>
+	    <item>1日</item>
+		<item>2日</item>
+		<item>3日</item>
+		<item>5日</item>
+		<item>7日間</item>
+		<item>14日</item>
 	</string-array>
 	
 
 	<string-array name="skill">
-	    <item>Not Set</item>
-	    <item>Beginner</item>
-		<item>Intermediate</item>
-		<item>Advanced</item>
+	    <item>&lt;設定なし&gt;</item>
+	    <item>初心者向け</item>
+		<item>中級オプション</item>
+		<item>拡張機能</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Not Set</item>
-	    <item>Amazing games</item>
+	    <item>&lt;設定なし&gt;</item>
+	    <item>驚くべきゲーム</item>
 		<item>Endgames</item>
-		<item>Openings</item>
-		<item>Rules Basics</item>
-		<item>Strategy</item>
-		<item>Tactics</item>
+		<item>開口部</item>
+		<item>ルールの基本</item>
+		<item>戦略。</item>
+		<item>戦術</item>
 	</string-array>	
 	
 	<string-array name="wrongtactic">
-	    <item>Next</item>
-		<item>Retry</item>
-		<item>Stop</item>
+	    <item>次へ</item>
+		<item>再入力</item>
+		<item>停止(S)</item>
 	</string-array>
 	
 	<string-array name="correcttactic">
-	    <item>Stop</item>
-		<item>Next</item>
+	    <item>停止(S)</item>
+		<item>次へ</item>
 	</string-array>
 
 	<string-array name="onlineSpinner">
-		<item>Current Games</item>
-		<item>Challenges</item>
-		<item>Finished Games</item>
+		<item>現在のゲーム</item>
+		<item>課題</item>
+		<item>完成したゲーム</item>
 	</string-array>	
 
 	<string-array name="AIM">
-	    <item>Go To Next Ready Game</item>
-		<item>Stay On Same Game</item>
-		<item>Return To Game List</item>
+	    <item>次の準備試合を見に行く</item>
+		<item>同じゲームにとどまる</item>
+		<item>ゲームリストに戻る</item>
 	</string-array>
 
 	<string-array name="Notif">
-	    <item>None</item>
-		<item>Vibrate</item>
+	    <item>なし</item>
+		<item>バイブレーション</item>
 		<item>Ring</item>
-		<item>Blinking LED</item>
+		<item>LEDの点滅</item>
 	</string-array>
 	
 	<string-array name="strength">
-	    <item>1 sec</item>
-		<item>3 sec</item>
-		<item>5 sec</item>
-		<item>10 sec</item>
-		<item>30 sec</item>
-		<item>1 min</item>
+	    <item>1 秒</item>
+		<item>3 秒</item>
+		<item>5 秒</item>
+		<item>10秒</item>
+		<item>30秒</item>
+		<item>1分</item>
 	</string-array>
 	
-
     <string-array name="countries">
-        <item>United States</item>
-        <item>Canada</item>
-        <item>Argentina</item>
-        <item>Belgium</item>
-        <item>Afghanistan</item>
-        <item>Albania</item>
-        <item>Andorra</item>
-        <item>Anguilla</item>
-        <item>Antigua/Barbuda</item>
-        <item>Armenia</item>
-        <item>Aruba</item>
-        <item>Australia</item>
-        <item>Austria</item>
-        <item>Bahamas</item>
-        <item>Bahrain</item>
-        <item>Barbados</item>
-        <item>Belarus</item>
-        <item>Belize</item>
-        <item>Bermuda</item>
-        <item>Bolivia</item>
-        <item>Bosnia-Herzegovina</item>
-        <item>Brazil</item>
-        <item>Bulgaria</item>
-        <item>Canary Islands</item>
-        <item>Cayman Islands</item>
-        <item>Channel Islands</item>
-        <item>Chile</item>
-        <item>China</item>
-        <item>Colombia</item>
-        <item>Costa Rica</item>
-        <item>Croatia</item>
-        <item>Cuba</item>
-        <item>Curacao</item>
-        <item>Cyprus</item>
-        <item>Czech Republic</item>
+        <item>米国</item>
+        <item>カナダ</item>
+        <item>アルゼンチン</item>
+        <item>ベルギー</item>
+        <item>アフガニスタン</item>
+        <item>アルバニア</item>
+        <item>アンドラ</item>
+        <item>アングィラ</item>
+        <item>アンティグア/バーブーダ</item>
+        <item>アルメニア</item>
+        <item>アルバ</item>
+        <item>オーストラリア</item>
+        <item>オーストリア</item>
+        <item>バハマ</item>
+        <item>バーレーン</item>
+        <item>バルバドス</item>
+        <item>ベラルーシ</item>
+        <item>ベリーズ</item>
+        <item>バミューダ</item>
+        <item>ボリビア</item>
+        <item>ボスニア·ヘルツェゴビナ</item>
+        <item>ブラジル</item>
+        <item>ブルガリア</item>
+        <item>カナリア諸島</item>
+        <item>ケイマン諸島</item>
+        <item>チャンネル諸島</item>
+        <item>チリ</item>
+        <item>中国</item>
+        <item>コロンビア</item>
+        <item>コスタリカ</item>
+        <item>クロアチア</item>
+        <item>キューバ</item>
+        <item>キュラソー</item>
+        <item>キプロス</item>
+        <item>チェコ共和国</item>
         <item>Denmark</item>
-        <item>Dominica</item>
-        <item>Dominican Republic</item>
-        <item>Ecuador</item>
-        <item>Egypt</item>
-        <item>El Salvador</item>
-        <item>Estonia</item>
-        <item>Falkland Islands</item>
-        <item>Faroe Islands</item>
-        <item>Fiji</item>
-        <item>Finland</item>
+        <item>ドミニカ</item>
+        <item>ドミニカ共和国</item>
+        <item>エクアドル</item>
+        <item>エジプト</item>
+        <item>エルサルバドル</item>
+        <item>エストニア</item>
+        <item>フォークランド諸島</item>
+        <item>フェロー諸島</item>
+        <item>フィジー</item>
+        <item>フィンランド</item>
         <item>France</item>
-        <item>Georgia</item>
+        <item>ジョージア</item>
         <item>Germany</item>
-        <item>Gibraltar</item>
-        <item>Greece</item>
-        <item>Greenland</item>
-        <item>Grenada</item>
-        <item>Guadeloupe</item>
-        <item>Guam</item>
-        <item>Guatemala</item>
-        <item>Guernsey</item>
-        <item>Guyana</item>
-        <item>Haiti</item>
-        <item>Honduras</item>
+        <item>ジブラルタル</item>
+        <item>ギリシャ</item>
+        <item>グリーンランド</item>
+        <item>グレナダ</item>
+        <item>グアドループ</item>
+        <item>グアム</item>
+        <item>グアテマラ</item>
+        <item>ガーンジー</item>
+        <item>ガイアナ</item>
+        <item>ハイチ</item>
+        <item>ホンジュラス</item>
         <item>Hong Kong</item>
-        <item>Hungary</item>
-        <item>Iceland</item>
+        <item>ハンガリー</item>
+        <item>アイスランド</item>
         <item>India</item>
-        <item>Indonesia</item>
-        <item>Iran</item>
-        <item>Iraq</item>
-        <item>Ireland</item>
-        <item>Isle of Man</item>
-        <item>Israel</item>
-        <item>Italy</item>
-        <item>Jamaica</item>
-        <item>Japan</item>
-        <item>Jersey</item>
-        <item>Jordan</item>
-        <item>Kazakhstan</item>
-        <item>Kiribati</item>
-        <item>Korea, South</item>
-        <item>Kuwait</item>
-        <item>Latvia</item>
-        <item>Lebanon</item>
-        <item>Liechtenstein</item>
-        <item>Lithuania</item>
-        <item>Luxembourg</item>
-        <item>Macao</item>
-        <item>Macedonia</item>
-        <item>Malaysia</item>
-        <item>Malta</item>
-        <item>Martinique</item>
-        <item>Mexico</item>
-        <item>Moldova</item>
-        <item>Monaco</item>
-        <item>Montserrat</item>
-        <item>Nauru</item>
-        <item>Nepal</item>
-        <item>Netherlands</item>
-        <item>New Zealand</item>
-        <item>Nicaragua</item>
+        <item>インドネシア</item>
+        <item>イラン</item>
+        <item>イラク</item>
+        <item>アイルランド</item>
+        <item>マン島</item>
+        <item>イスラエル</item>
+        <item>イタリア</item>
+        <item>ジャマイカ</item>
+        <item>日本</item>
+        <item>ジャージー</item>
+        <item>ヨルダン</item>
+        <item>カザフスタン</item>
+        <item>キリバス</item>
+        <item>韓国</item>
+        <item>クウェート</item>
+        <item>ラトビア</item>
+        <item>レバノン</item>
+        <item>リヒテンシュタイン</item>
+        <item>リトアニア</item>
+        <item>ルクセンブルク</item>
+        <item>マカオ</item>
+        <item>マケドニア</item>
+        <item>マレーシア</item>
+        <item>マルタ</item>
+        <item>マルティニーク</item>
+        <item>メキシコ</item>
+        <item>モルドバ</item>
+        <item>モナコ</item>
+        <item>モンセラト</item>
+        <item>ナウル</item>
+        <item>ネパール</item>
+        <item>オランダ</item>
+        <item>ニュージーランド</item>
+        <item>ニカラグア</item>
         <item>Norway</item>
-        <item>Oman</item>
-        <item>Pakistan</item>
-        <item>Panama</item>
-        <item>Papua New Guinea</item>
-        <item>Paraguay</item>
-        <item>Peru</item>
-        <item>Philippines</item>
-        <item>Poland</item>
-        <item>Portugal</item>
-        <item>Puerto Rico</item>
-        <item>Romania</item>
-        <item>Russia</item>
-        <item>Saint Croix</item>
-        <item>Saint Kitts/Nevis</item>
-        <item>Saint Lucia</item>
-        <item>Saint Pierre/Miquelon</item>
-        <item>San Marino</item>
-        <item>Saudi Arabia</item>
-        <item>Serbia-Montenegro</item>
-        <item>Singapore</item>
-        <item>Slovakia</item>
-        <item>Slovenia</item>
-        <item>Solomon Islands</item>
-        <item>South Africa</item>
-        <item>South Georgia</item>
-        <item>Suriname</item>
+        <item>オマーン</item>
+        <item>パキスタン</item>
+        <item>パナマ</item>
+        <item>パプアニューギニア</item>
+        <item>パラグアイ</item>
+        <item>ペルー</item>
+        <item>フィリピン</item>
+        <item>ポーランド</item>
+        <item>ポルトガル</item>
+        <item>プエルトリコ</item>
+        <item>ルーマニア</item>
+        <item>ロシア</item>
+        <item>サン·クロワ</item>
+        <item>セントクリストファー/ネイビス</item>
+        <item>セントルシア</item>
+        <item>サンピエール/ミクロン島</item>
+        <item>サンマリノ</item>
+        <item>サウジアラビア</item>
+        <item>セルビア·モンテネグロ</item>
+        <item>シンガポール</item>
+        <item>スロバキア</item>
+        <item>スロベニア</item>
+        <item>ソロモン諸島</item>
+        <item>南アフリカ</item>
+        <item>サウスジョージア</item>
+        <item>スリナム</item>
         <item>Sweden</item>
         <item>Switzerland</item>
-        <item>Taiwan</item>
-        <item>Thailand</item>
-        <item>Tonga</item>
-        <item>Trinidad/Tobago</item>
-        <item>Turkey</item>
-        <item>Turkmenistan</item>
-        <item>Tuvalu</item>
-        <item>Ukraine</item>
-        <item>United Arab Emirates</item>
-        <item>Uruguay</item>
-        <item>Uzbekistan</item>
-        <item>Vanuatu</item>
-        <item>Vatican City</item>
-        <item>Venezuela</item>
-        <item>Vietnam</item>
-        <item>Western Samoa</item>
-        <item>Yemen</item>
-        <item>Yugoslavia</item>
-        <item>American Samoa</item>
-        <item>Saint Vincent</item>
-        <item>Azerbaijan</item>
-        <item>Mongolia</item>
-        <item>Syria</item>
-        <item>England</item>
-        <item>Marshall Islands</item>
-        <item>Northern Ireland</item>
-        <item>Scotland</item>
+        <item>台湾</item>
+        <item>タイ</item>
+        <item>トンガ</item>
+        <item>トリニダード/トバゴ</item>
+        <item>トルコ</item>
+        <item>トルクメニスタン</item>
+        <item>ツバル</item>
+        <item>ウクライナ</item>
+        <item>アラブ首長国連邦</item>
+        <item>ウルグアイ</item>
+        <item>ウズベキスタン</item>
+        <item>バヌアツ</item>
+        <item>バチカン市国</item>
+        <item>ベネズエラ</item>
+        <item>ベトナム</item>
+        <item>西サモア</item>
+        <item>イエメン</item>
+        <item>ユーゴスラビア</item>
+        <item>米領サモア</item>
+        <item>セントビンセント</item>
+        <item>アゼルバイジャン</item>
+        <item>モンゴル</item>
+        <item>シリア</item>
+        <item>イングランド</item>
+        <item>マーシャル諸島</item>
+        <item>北アイルランド</item>
+        <item>スコットランド</item>
         <item>Spain</item>
-        <item>United Kingdom</item>
-        <item>US Virgin Islands</item>
-        <item>Wales</item>
-        <item>Pago Pago</item>
-        <item>Saint John</item>
-        <item>Saint Thomas</item>
-        <item>Great Britain</item>
-        <item>Holland</item>
-        <item>South Korea</item>
-        <item>Kyrgyzstan</item>
-        <item>Bangladesh</item>
-        <item>Sudan</item>
-        <item>Benin</item>
-        <item>Bhutan</item>
-        <item>Botswana</item>
-        <item>Brunei</item>
-        <item>Burundi</item>
-        <item>Cambodia</item>
-        <item>Cameroon</item>
-        <item>Cape Verde</item>
-        <item>Central Africa</item>
-        <item>Chad</item>
-        <item>Congo</item>
-        <item>Ivory Coast</item>
-        <item>Djibouti</item>
-        <item>Equatorial Guinea</item>
-        <item>Gabon</item>
-        <item>Ghana</item>
-        <item>Kenya</item>
-        <item>Laos</item>
-        <item>Liberia</item>
-        <item>Madagascar</item>
-        <item>Morocco</item>
-        <item>Mozambique</item>
-        <item>Myanmar</item>
-        <item>Namibia</item>
-        <item>Niger</item>
-        <item>Nigeria</item>
-        <item>Qatar</item>
-        <item>Rwanda</item>
-        <item>Samoa</item>
-        <item>Sao Tome/Principe</item>
-        <item>Senegal</item>
-        <item>Sierra Leone</item>
-        <item>Somalia</item>
-        <item>Sri Lanka</item>
-        <item>Swaziland</item>
-        <item>Tajikistan</item>
-        <item>Tanzania</item>
-        <item>Timor-Leste</item>
-        <item>Togo</item>
-        <item>Tunisia</item>
-        <item>Uganda</item>
-        <item>Zambia</item>
-        <item>Zimbabwe</item>
-        <item>Algeria</item>
-        <item>Mauritania</item>
-        <item>International</item>
-        <item>Serbia</item>
-        <item>Montenegro</item>
-        <item>Libya</item>
-        <item>Gambia</item>
-        <item>Malawi</item>
-        <item>Palestine</item>
-        <item>Ethiopia</item>
-        <item>Mauritius</item>
-        <item>Lesotho</item>
-        <item>Mali</item>
-        <item>Maldives</item>
-        <item>Catalonia</item>
-        <item>Galicia</item>
-        <item>Kosovo</item>
-        <item>DR Congo</item>
-        <item>Angola</item>
-        <item>Comoros</item>
-        <item>Eritrea</item>
-        <item>Guinea</item>
-        <item>Guinea-Bissau</item>
-        <item>Micronesia</item>
-        <item>North Korea</item>
-        <item>Palau</item>
-        <item>Seychelles</item>
-        <item>Western Sahara</item>
-        <item>British Virgin Islands</item>
+        <item>イギリス</item>
+        <item>米領バージン諸島</item>
+        <item>ウェールズ</item>
+        <item>パゴパゴ</item>
+        <item>セントジョン</item>
+        <item>セントトマス</item>
+        <item>イギリス</item>
+        <item>オランダ</item>
+        <item>韓国</item>
+        <item>キルギスタン</item>
+        <item>バングラデシュ</item>
+        <item>スーダン</item>
+        <item>ベニン</item>
+        <item>ブータン</item>
+        <item>ボツワナ</item>
+        <item>ブルネイ</item>
+        <item>ブルンジ</item>
+        <item>カンボジア</item>
+        <item>カメルーン</item>
+        <item>カボベルデ</item>
+        <item>中部アフリカ</item>
+        <item>チャド</item>
+        <item>コンゴ</item>
+        <item>コートジボワール</item>
+        <item>ジブチ</item>
+        <item>赤道ギニア</item>
+        <item>ガボン</item>
+        <item>ガーナ</item>
+        <item>ケニア</item>
+        <item>ラオス</item>
+        <item>リベリア</item>
+        <item>マダガスカル</item>
+        <item>モロッコ
+</item>
+        <item>モザンビーク</item>
+        <item>ミャンマー</item>
+        <item>ナミビア</item>
+        <item>ニジェール</item>
+        <item>ナイジェリア</item>
+        <item>カタール</item>
+        <item>ルワンダ</item>
+        <item>サモア</item>
+        <item>サントメ/プリンシペ</item>
+        <item>セネガル</item>
+        <item>シエラレオネ</item>
+        <item>ソマリア</item>
+        <item>スリランカ</item>
+        <item>スワジランド</item>
+        <item>タジキスタン</item>
+        <item>タンザニア</item>
+        <item>東ティモール</item>
+        <item>トーゴ</item>
+        <item>チュニジア</item>
+        <item>ウガンダ</item>
+        <item>ザンビア</item>
+        <item>ジンバブエ</item>
+        <item>アルジェリア</item>
+        <item>モーリタニア</item>
+        <item>国際</item>
+        <item>セルビア</item>
+        <item>モンテネグロ</item>
+        <item>リビア</item>
+        <item>ガンビア</item>
+        <item>マラウイ</item>
+        <item>パレスチナ</item>
+        <item>エチオピア</item>
+        <item>モーリシャス</item>
+        <item>レソト</item>
+        <item>マリ</item>
+        <item>モルディブ</item>
+        <item>カタルーニャ</item>
+        <item>ガリシア</item>
+        <item>コソボ</item>
+        <item>コンゴ民主共和国</item>
+        <item>アンゴラ</item>
+        <item>コモロ</item>
+        <item>エリトリア</item>
+        <item>ギニア</item>
+        <item>ギニアビサウ</item>
+        <item>ミクロネシア</item>
+        <item>北朝鮮</item>
+        <item>パラオ</item>
+        <item>セイシェル</item>
+        <item>西サハラ</item>
+        <item>英領バージン諸島</item>
     </string-array>
 
 

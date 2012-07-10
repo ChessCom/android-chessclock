@@ -51,7 +51,6 @@
 	<string name="computerBlack">黒</string>
 	<string name="Human">人</string>
 	<string name="guest">カスタマ：</string>
-	<string name="Comp">人数</string>
 	<string name="Computer">コンピュータ</string>
 	<string name="Thinking">考え事…</string>
 	<string name="menuSite">www.chess.com</string>
@@ -232,7 +231,7 @@
 	<string name="video">ビデオ</string>
 	<string name="boards_s">ボード</string>
 	<string name="invite_subject">私と一緒にチェスを再生する</string>
-	<string name="invite_text">私はちょうど私のAndroidデバイス上Chess.comでチェスを再生するためにサインアップした。ここで無料アプリをダウンロードしてください。http://chess.com/androidまたはhttp://www.chess.com/register.htmlでサインアップ。その後、私を見つける - 私の名は \"</string>
+	<string name="invite_text">私はちょうど私のAndroidデバイス上Chess.comでチェスを再生するためにサインアップした。ここで無料アプリをダウンロードしてください。http://chess.com/androidまたはhttp://www.chess.com/register.htmlでサインアップ。その後、私を見つける - 私の名は \</string>
 	<string name="live_game">ライブゲーム</string>
 	<string name="online_game">オンライン ゲーム</string>
 	<string name="send_mail">メールの送信</string>

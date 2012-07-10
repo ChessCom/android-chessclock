@@ -50,7 +50,6 @@
 	<string name="computerBlack">검은</string>
 	<string name="Human">인간</string>
 	<string name="guest">게스트</string>
-	<string name="Comp">검색</string>
 	<string name="Computer">컴퓨터</string>
 	<string name="Thinking">생각||사고</string>
 	<string name="menuSite">www.chess.com</string>
@@ -231,7 +230,7 @@
 	<string name="video">Video</string>
 	<string name="boards_s">보드</string>
 	<string name="invite_subject">나와 함께 체스를 재생</string>
-	<string name="invite_text">난 그냥 내 안드로이드 장치에 Chess.com에서 체스를 가입. 여기에 무료 애플 리케이션 다운로드 : http://chess.com/android 또는 http://www.chess.com/register.html에 가입하실 수 있습니다. 그럼 날 찾아 - 내 이름은입니다 \"</string>
+	<string name="invite_text">난 그냥 내 안드로이드 장치에 Chess.com에서 체스를 가입. 여기에 무료 애플 리케이션 다운로드 : http://chess.com/android 또는 http://www.chess.com/register.html에 가입하실 수 있습니다. 그럼 날 찾아 - 내 이름은입니다 \</string>
 	<string name="live_game">게임을하다</string>
 	<string name="online_game">온라인 게임</string>
 	<string name="send_mail">메일 보내기 ...</string>

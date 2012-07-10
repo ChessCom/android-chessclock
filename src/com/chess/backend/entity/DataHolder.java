@@ -17,6 +17,7 @@ public class DataHolder {
 	private boolean acceptdraw = false;
 	private boolean liveChess;
 	private boolean pendingTacticsLoad;
+	private boolean localizationChanged;
 
 	private DataHolder() {}
 
@@ -71,5 +72,13 @@ public class DataHolder {
 
 	public boolean isPendingTacticsLoad() {
 		return pendingTacticsLoad;
+	}
+
+	public void localizationChanged(boolean localizationChanged) {
+		this.localizationChanged = localizationChanged;
+	}
+
+	public boolean isLocalizationChanged(){
+		return localizationChanged;
 	}
 }

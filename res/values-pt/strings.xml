@@ -50,7 +50,6 @@
 	<string name="computerBlack">Preto</string>
 	<string name="Human">seres humanos.</string>
 	<string name="guest">Convidado</string>
-	<string name="Comp">Cort</string>
 	<string name="Computer">Cobertos</string>
 	<string name="Thinking">Pensamento ...</string>
 	<string name="menuSite">www.chess.com</string>
@@ -63,7 +62,7 @@
 	<string name="classic">Xadrez Clássico</string>
 	<string name="chess960">Xadrez 960</string>
 	<string name="friend">Amigo</string>
-	<string name="friends">\"Friends\"</string>
+	<string name="friends">\"Friends\</string>
 	<string name="initialTime">Tempo inicial</string>
 	<string name="bonusTime">Tempo Bonus</string>
 	<string name="RatedGme">Jogo classificado</string>

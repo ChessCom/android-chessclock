@@ -1,0 +1,340 @@
+<resources>
+
+	<string-array name="languages">
+		<item>अरबी </item>
+		<item>चीनी</item>
+		<item>डेनमार्कवासी </item>
+		<item>डच </item>
+		<item>फ़्रांसिसी </item>
+		<item>जर्मन</item>
+		<item>हीब्रू</item>
+		<item>हिन्दी</item>
+		<item>इतालवी </item>
+		<item>जापानी</item>
+		<item>कोरियावासी </item>
+		<item>नॉर्वेवासी </item>
+		<item>फारसी </item>
+		<item>पोलिश</item>
+		<item>पुर्तगाली </item>
+		<item>रूसी</item>
+		<item>स्पैनिश</item>
+		<item>स्वीडिश</item>
+		<item>तुर्की</item>
+	</string-array>
+
+	<string-array name="playas">
+		<item>रैंडम</item>
+		<item>सफेद</item>
+		<item>काला</item>
+	</string-array>
+
+	<string-array name="dayspermove">
+	    <item>1 दिन</item>
+		<item>2 दिन</item>
+		<item>3 दिन</item>
+		<item>5 दिन</item>
+		<item>7 दिन</item>
+		<item>14 दिन</item>
+	</string-array>
+	
+
+	<string-array name="skill">
+	    <item>सेट नहीं है</item>
+	    <item>\"बिगिनर\"</item>
+		<item>मध्यवर्ती </item>
+		<item>विकसित</item>
+	</string-array>
+	
+	<string-array name="category">
+	    <item>सेट नहीं है</item>
+	    <item>अद्भुत खेल</item>
+		<item>एंडगेम्स</item>
+		<item>उद्घाटन</item>
+		<item>नियम मूल बातें</item>
+		<item>रणनीति</item>
+		<item>रणनीति</item>
+	</string-array>	
+	
+	<string-array name="wrongtactic">
+	    <item>NeXT</item>
+		<item>पुनः प्रयास करें</item>
+		<item>rok</item>
+	</string-array>
+	
+	<string-array name="correcttactic">
+	    <item>rok</item>
+		<item>NeXT</item>
+	</string-array>
+
+	<string-array name="onlineSpinner">
+		<item>वर्तमान खेल</item>
+		<item>चुनौतियां </item>
+		<item>समाप्त खेलों</item>
+	</string-array>	
+
+	<string-array name="AIM">
+	    <item>अगले तैयार खेल</item>
+		<item>एक ही खेल रहो</item>
+		<item>खेल सूची</item>
+	</string-array>
+
+	<string-array name="Notif">
+	    <item>कोई नहीं </item>
+		<item>कंपन करें </item>
+		<item>अंगूठी</item>
+		<item>निमिष एलईडी</item>
+	</string-array>
+	
+	<string-array name="strength">
+	    <item>1 सेकंड</item>
+		<item>3 सेकंड</item>
+		<item>5 सेकंड</item>
+		<item>10 सेकंड</item>
+		<item>30 सेकंड</item>
+		<item>1 मिनट</item>
+	</string-array>
+	
+    <string-array name="countries">
+        <item>संयुक्त राज्य अमेरिका</item>
+        <item>कनाडा</item>
+        <item>अर्जेन्टीना</item>
+        <item>बेल्जियम</item>
+        <item>अफ़ग़ानिस्तान</item>
+        <item>अल्बानिया</item>
+        <item>एन्डोर्रा</item>
+        <item>एंग्विला</item>
+        <item>/ एंटीगुआ बारबुडा</item>
+        <item>आर्मेनिया</item>
+        <item>अरूबा</item>
+        <item>ऑस्ट्रेलिया</item>
+        <item>ऑस्ट्रिया</item>
+        <item>बहामास</item>
+        <item>बहरीन</item>
+        <item>बार्बाडोस</item>
+        <item>बेलारूस</item>
+        <item>बेलीज़</item>
+        <item>बर्मूडा</item>
+        <item>बोलीविया</item>
+        <item>बोस्निया-हर्जेगोविना</item>
+        <item>ब्राज़ील</item>
+        <item>बुल्गारिया</item>
+        <item>कैनेरी आइलैंड</item>
+        <item>केमैन आइलैंड्स</item>
+        <item>चैनल के द्वीप</item>
+        <item>चिली</item>
+        <item>चीन</item>
+        <item>कोलम्बिया</item>
+        <item>कोस्टा रिका</item>
+        <item>क्रोएशिया</item>
+        <item>क्यूबा</item>
+        <item>करकाउ</item>
+        <item>साइप्रस</item>
+        <item>चेक रिपब्लिक</item>
+        <item>डेनमार्क</item>
+        <item>डोमिनिका</item>
+        <item>डॉमिनिकी गणराज्य</item>
+        <item>इक्वाडोर</item>
+        <item>मिस्र</item>
+        <item>अल साल्वाडोर</item>
+        <item>एस्टोनिया</item>
+        <item>फॉकलैंड आइलैंड्स (मालविनास)</item>
+        <item>फारो आइलैंड्स</item>
+        <item>फिजी</item>
+        <item>फिनलैंड</item>
+        <item>फ्रांस</item>
+        <item>जार्जिया</item>
+        <item>जर्मनी</item>
+        <item>जिब्राल्टर</item>
+        <item>ग्रीस</item>
+        <item>ग्रीनलैंड</item>
+        <item>ग्रेनाडा</item>
+        <item>ग्वाडेलूप</item>
+        <item>गुआम</item>
+        <item>ग्वाटेमाला</item>
+        <item>ग्वेर्नसी</item>
+        <item>गुयाना</item>
+        <item>हैती</item>
+        <item>होंडुरास</item>
+        <item>हांगकांग </item>
+        <item>हंगरी</item>
+        <item>आइसलैंड</item>
+        <item>भारत </item>
+        <item>इंडोनेशिया</item>
+        <item>ईरान, इस्लामिक रिपब्लिक ऑफ</item>
+        <item>इराक</item>
+        <item>आयरलैंड</item>
+        <item>आइस्ल ऑफ मैन</item>
+        <item>इज़रायल</item>
+        <item>इटली</item>
+        <item>जमैका</item>
+        <item>जापान</item>
+        <item>जर्सी</item>
+        <item>जॉर्डन</item>
+        <item>कज़ाख्स्तान</item>
+        <item>किरिबाती</item>
+        <item>दक्षिण कोरिया</item>
+        <item>कुवैत</item>
+        <item>लात्विया</item>
+        <item>लेबनान</item>
+        <item>लीखटेन्सटीन</item>
+        <item>लिथुआनिया</item>
+        <item>लक्ज़मबर्ग</item>
+        <item>मकाओ</item>
+        <item>मैकेडोनिया</item>
+        <item>मलेशिया</item>
+        <item>माल्टा</item>
+        <item>मार्टिनिक</item>
+        <item>मेक्सिको</item>
+        <item>रिपब्लिक ऑफ मॉलदोवा</item>
+        <item>मोनाको</item>
+        <item>मॉन्ट्सेर्राट</item>
+        <item>नायरू</item>
+        <item>नेपाल</item>
+        <item>नीदरलैंड्स</item>
+        <item>न्यू ज़ीलैन्ड</item>
+        <item>निकारागुआ</item>
+        <item>नॉर्वे</item>
+        <item>ओमान</item>
+        <item>पाकिस्तान</item>
+        <item>पनामा</item>
+        <item>पपुआ न्यू गिनी</item>
+        <item>पैरागुए</item>
+        <item>पेरू</item>
+        <item>फिलीपीन्स</item>
+        <item>पोलैंड</item>
+        <item>पुर्तगाल</item>
+        <item>प्युर्तोरिको</item>
+        <item>रोमानिया</item>
+        <item>रूस</item>
+        <item>सेंट क्रोक्स</item>
+        <item>सेंट किट्स / नेविस</item>
+        <item>सेंट लूसिया</item>
+        <item>सेंट पियरे / मिकेलॉन</item>
+        <item>सैन मरीनो</item>
+        <item>सउदी अरबिया</item>
+        <item>सर्बिया - मोंटेनेग्रो</item>
+        <item>सिंगापुर</item>
+        <item>स्लोवाकिया</item>
+        <item>स्लोवेनिया</item>
+        <item>सोलोमन आइलैंड्स</item>
+        <item>दक्षिण अफ्रीका</item>
+        <item>दक्षिण जॉर्जिया</item>
+        <item>सूरीनाम</item>
+        <item>स्वीडेन</item>
+        <item>स्विट्ज़रलैंड</item>
+        <item>ताइवान</item>
+        <item>थाईलैंड</item>
+        <item>टौंगा</item>
+        <item>/ त्रिनिदाद टोबैगो</item>
+        <item>तुर्की</item>
+        <item>तुर्कमेनिस्तान</item>
+        <item>तुवालु</item>
+        <item>उक्रेन</item>
+        <item>संयुक्त अरब अमीरात</item>
+        <item>उरुगूए</item>
+        <item>उज़्बेकिस्तान</item>
+        <item>वनुआतू</item>
+        <item>वैटिकन सिटी </item>
+        <item>वेनेज़ुएला</item>
+        <item>वियतनाम</item>
+        <item>पश्चिमी समोआ</item>
+        <item>यमन</item>
+        <item>युगोस्लाविया</item>
+        <item>अमेरिकी सामोआ</item>
+        <item>सैंत विंसेंट</item>
+        <item>अज़रबैजान</item>
+        <item>मंगोलिया</item>
+        <item>सीरिया</item>
+        <item>इंग्लैंड </item>
+        <item>मार्शल द्वीप समूह</item>
+        <item>उत्तरी आयरलैंड</item>
+        <item>स्कॉटलैंड</item>
+        <item>स्पेन</item>
+        <item>यूनाइटेड किंगडम</item>
+        <item>वर्जिन आइलैंड्स, यू.एस.</item>
+        <item>वेल्स</item>
+        <item>पेगो पेगो</item>
+        <item>सेंट जॉन</item>
+        <item>सेंट थॉमस</item>
+        <item>ग्रेट ब्रिटेन</item>
+        <item>हॉलैंड</item>
+        <item>दक्षिण कोरिया</item>
+        <item>किरगिज़तान</item>
+        <item>बांग्लादेश</item>
+        <item>सूडान</item>
+        <item>बेनिन</item>
+        <item>भूटान</item>
+        <item>बोट्सवाना</item>
+        <item>ब्रुनेई दरउस्सलाम</item>
+        <item>बुरुंडी</item>
+        <item>कम्बोडिया</item>
+        <item>कैमेरून</item>
+        <item>केप वर्दे</item>
+        <item>मध्य अफ्रीका</item>
+        <item>चाड</item>
+        <item>कांगो</item>
+        <item>आइवरी कोस्ट</item>
+        <item>जिबोउटी</item>
+        <item>इक्वेटोरियल गिनी</item>
+        <item>गाबोन</item>
+        <item>घाना</item>
+        <item>केन्या</item>
+        <item>लाओस</item>
+        <item>लाइबेरिया</item>
+        <item>मेडागास्कर</item>
+        <item>मोरक्को</item>
+        <item>मोज़ाम्बिक</item>
+        <item>म्यानमार</item>
+        <item>नामीबिया</item>
+        <item>नाइजर</item>
+        <item>नाइजीरिया</item>
+        <item>क़तर</item>
+        <item>रवांडा</item>
+        <item>समोआ</item>
+        <item>साओ तोमे / प्रिंसिपे</item>
+        <item>सेनेगल</item>
+        <item>सियेरा लियोन</item>
+        <item>सोमालिया</item>
+        <item>श्री लंका</item>
+        <item>स्वाज़ीलैंड</item>
+        <item>ताजिकिस्तान</item>
+        <item>तंज़ानिया</item>
+        <item>तिमोर-लेस्ते</item>
+        <item>टोगो</item>
+        <item>ट्यूनीशिया</item>
+        <item>यूगान्डा</item>
+        <item>ज़ाम्बिया</item>
+        <item>ज़िम्बाब्वे</item>
+        <item>अल्जीरिया</item>
+        <item>मॉरिटानिय</item>
+        <item>इंटरनैशनल </item>
+        <item>सर्बिया</item>
+        <item>मॉन्टेनेग्रो</item>
+        <item>लीबिया</item>
+        <item>गाम्बिया</item>
+        <item>मलावी</item>
+        <item>पलेस्टाइन</item>
+        <item>इथियोपिया</item>
+        <item>मॉरिशस</item>
+        <item>लेसोोथो</item>
+        <item>माली</item>
+        <item>मालदीव</item>
+        <item>केटलोनिआ</item>
+        <item>गलिशिआ</item>
+        <item>कोसोवो</item>
+        <item>डा. कांगो</item>
+        <item>अंगोला</item>
+        <item>कोमोरोस</item>
+        <item>इरिट्रीया</item>
+        <item>गिनी</item>
+        <item>गिनी-बिसाउ</item>
+        <item>फेडेरेटड स्टेट्स ऑफ माइक्रोनीसिया</item>
+        <item>उत्तर कोरिया </item>
+        <item>पलाऊ</item>
+        <item>सेशेल्स</item>
+        <item>वेस्टर्न सहारा</item>
+        <item>ब्रिटिश वर्जिन आइलैंड्स</item>
+    </string-array>
+
+
+</resources>

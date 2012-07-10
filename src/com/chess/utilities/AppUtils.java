@@ -226,7 +226,16 @@ public class AppUtils {
 			Configuration config = new Configuration();
 			config.locale = locale;
 			context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+
+			DataHolder.getInstance().localizationChanged(true);
+		}else{
+			Locale locale = new Locale(setLocale);
+			Locale.setDefault(locale);
+			Configuration config = new Configuration();
+			config.locale = locale;
+			context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
 		}
+
 
 		return changed;
 	}

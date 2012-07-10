@@ -2,10 +2,25 @@
 <resources>
 
 	<string-array name="languages_codes">
-		<item>en</item>
-		<item>ru</item>
-		<item>ja</item>
 		<item>ar</item>
+		<item>zh</item>
+		<item>da</item>
+		<item>nl</item>
+		<item>fr</item>
+		<item>de</item>
+		<item>iw</item>
+		<item>hi</item>
+		<item>it</item>
+		<item>ja</item>
+		<item>ko</item>
+		<item>nb</item>
+		<item>fa</item>
+		<item>pl</item>
+		<item>pt</item>
+		<item>ru</item>
+		<item>es</item>
+		<item>sv</item>
+		<item>tr</item>
 	</string-array>
 
 	<integer-array name="comp_strength">

@@ -51,7 +51,6 @@
 	<string name="computerBlack">काला</string>
 	<string name="Human">मानव</string>
 	<string name="guest">अतिथि</string>
-	<string name="Comp">कम्प्यूटर</string>
 	<string name="Computer">कंप्यूटर </string>
 	<string name="Thinking">सोच रहे हैं...</string>
 	<string name="menuSite">www.chess.com</string>
@@ -63,7 +62,7 @@
 	<string name="GameType">खेल के प्रकार</string>
 	<string name="classic">क्लासिक शतरंज</string>
 	<string name="chess960">960 शतरंज</string>
-	<string name="friend">\"मित्र\"</string>
+	<string name="friend">\"मित्र\</string>
 	<string name="friends">मित्र या दोस्त </string>
 	<string name="initialTime">प्रारंभिक समय</string>
 	<string name="bonusTime">बोनस समय</string>

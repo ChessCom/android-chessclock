@@ -1,153 +1,152 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
 	<string-array name="languages">
-		<item>Arabic</item>
-		<item>Chinese</item>
-		<item>Danish</item>
-		<item>Dutch</item>
-		<item>French</item>
-		<item>German</item>
-		<item>Hebrew</item>
+		<item>Arabisk</item>
+		<item>Kinesisk</item>
+		<item>Dansk</item>
+		<item>Hollandsk</item>
+		<item>Fransk</item>
+		<item>Tysk</item>
+		<item>Hebræisk</item>
 		<item>Hindi</item>
-		<item>Italian</item>
-		<item>Japanese</item>
+		<item>Italiensk</item>
+		<item>Japansk. </item>
 		<item>Korean</item>
-		<item>Norwegian</item>
+		<item>Norsk</item>
 		<item>Persian</item>
-		<item>Polish</item>
-		<item>Portuguese</item>
-		<item>Russian</item>
-		<item>Spanish</item>
-		<item>Swedish</item>
-		<item>Turkish</item>
+		<item>Polsk</item>
+		<item>Portugisisk</item>
+		<item>Russisk</item>
+		<item>Spansk</item>
+		<item>Svensk</item>
+		<item>Tyrkisk</item>
 	</string-array>
 
 	<string-array name="playas">
-		<item>Random</item>
-		<item>White</item>
-		<item>Black</item>
+		<item>Tilfældig</item>
+		<item>Hvid</item>
+		<item>Sort</item>
 	</string-array>
 
 	<string-array name="dayspermove">
-	    <item>1 day</item>
-		<item>2 days</item>
-		<item>3 days</item>
-		<item>5 days</item>
-		<item>7 days</item>
-		<item>14 days</item>
+	    <item>1 dag</item>
+		<item>2 dage</item>
+		<item>3 dage</item>
+		<item>5 dage</item>
+		<item>7 dage</item>
+		<item>14 dage</item>
 	</string-array>
 	
 
 	<string-array name="skill">
-	    <item>Not Set</item>
-	    <item>Beginner</item>
+	    <item>Ikke indstillet</item>
+	    <item>Begynder</item>
 		<item>Intermediate</item>
-		<item>Advanced</item>
+		<item>Avanceret</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Not Set</item>
-	    <item>Amazing games</item>
+	    <item>Ikke indstillet</item>
+	    <item>Fantastiske spil</item>
 		<item>Endgames</item>
-		<item>Openings</item>
-		<item>Rules Basics</item>
-		<item>Strategy</item>
-		<item>Tactics</item>
+		<item>Åbninger</item>
+		<item>Regler Grundlæggende</item>
+		<item>Strategi</item>
+		<item>Taktik</item>
 	</string-array>	
 	
 	<string-array name="wrongtactic">
-	    <item>Next</item>
-		<item>Retry</item>
+	    <item>Næste</item>
+		<item>Prøv igen</item>
 		<item>Stop</item>
 	</string-array>
 	
 	<string-array name="correcttactic">
 	    <item>Stop</item>
-		<item>Next</item>
+		<item>Næste</item>
 	</string-array>
 
 	<string-array name="onlineSpinner">
-		<item>Current Games</item>
-		<item>Challenges</item>
-		<item>Finished Games</item>
+		<item>Aktuelle spil</item>
+		<item>Udfordringer</item>
+		<item>Afsluttede spil</item>
 	</string-array>	
 
 	<string-array name="AIM">
-	    <item>Go To Next Ready Game</item>
-		<item>Stay On Same Game</item>
-		<item>Return To Game List</item>
+	    <item>Gå til næste Klar Spil</item>
+		<item>Ophold på samme spil</item>
+		<item>Tilbage til listen over spil</item>
 	</string-array>
 
 	<string-array name="Notif">
-	    <item>None</item>
-		<item>Vibrate</item>
+	    <item>Ingen </item>
+		<item>Vibrer</item>
 		<item>Ring</item>
-		<item>Blinking LED</item>
+		<item>Blinkende LED</item>
 	</string-array>
 	
 	<string-array name="strength">
-	    <item>1 sec</item>
-		<item>3 sec</item>
-		<item>5 sec</item>
-		<item>10 sec</item>
-		<item>30 sec</item>
+	    <item>1 sek</item>
+		<item>3 sek</item>
+		<item>5 sek</item>
+		<item>10 sek</item>
+		<item>30 sek</item>
 		<item>1 min</item>
 	</string-array>
 	
     <string-array name="countries">
-        <item>United States</item>
+        <item>USA</item>
         <item>Canada</item>
         <item>Argentina</item>
-        <item>Belgium</item>
+        <item>Belgien</item>
         <item>Afghanistan</item>
-        <item>Albania</item>
+        <item>Albanien</item>
         <item>Andorra</item>
         <item>Anguilla</item>
-        <item>Antigua/Barbuda</item>
-        <item>Armenia</item>
+        <item>Antigua / Barbuda</item>
+        <item>Armenien</item>
         <item>Aruba</item>
-        <item>Australia</item>
-        <item>Austria</item>
+        <item>Australien</item>
+        <item>Østrig</item>
         <item>Bahamas</item>
         <item>Bahrain</item>
         <item>Barbados</item>
-        <item>Belarus</item>
+        <item>Hviderusland</item>
         <item>Belize</item>
         <item>Bermuda</item>
         <item>Bolivia</item>
-        <item>Bosnia-Herzegovina</item>
-        <item>Brazil</item>
-        <item>Bulgaria</item>
-        <item>Canary Islands</item>
+        <item>Bosnien-Hercegovina</item>
+        <item>Brasilien</item>
+        <item>Bulgarien</item>
+        <item>De Kanariske Øer</item>
         <item>Cayman Islands</item>
-        <item>Channel Islands</item>
+        <item>Kanaløerne</item>
         <item>Chile</item>
-        <item>China</item>
+        <item>Kina</item>
         <item>Colombia</item>
         <item>Costa Rica</item>
-        <item>Croatia</item>
+        <item>Kroatien</item>
         <item>Cuba</item>
         <item>Curacao</item>
-        <item>Cyprus</item>
-        <item>Czech Republic</item>
-        <item>Denmark</item>
+        <item>Cypern</item>
+        <item>Tjekkisk</item>
+        <item>Danmark</item>
         <item>Dominica</item>
-        <item>Dominican Republic</item>
+        <item>Den Dominikanske Republik</item>
         <item>Ecuador</item>
-        <item>Egypt</item>
+        <item>Egypten</item>
         <item>El Salvador</item>
-        <item>Estonia</item>
-        <item>Falkland Islands</item>
-        <item>Faroe Islands</item>
+        <item>Estland</item>
+        <item>Falklandsøerne</item>
+        <item>Færøerne</item>
         <item>Fiji</item>
         <item>Finland</item>
-        <item>France</item>
-        <item>Georgia</item>
-        <item>Germany</item>
+        <item>Frankrig</item>
+        <item>Georgien</item>
+        <item>Tyskland</item>
         <item>Gibraltar</item>
-        <item>Greece</item>
-        <item>Greenland</item>
+        <item>Grækenland</item>
+        <item>Grønland</item>
         <item>Grenada</item>
         <item>Guadeloupe</item>
         <item>Guam</item>
@@ -156,32 +155,32 @@
         <item>Guyana</item>
         <item>Haiti</item>
         <item>Honduras</item>
-        <item>Hong Kong</item>
-        <item>Hungary</item>
-        <item>Iceland</item>
-        <item>India</item>
-        <item>Indonesia</item>
+        <item>Hongkong</item>
+        <item>Ungarn</item>
+        <item>Island</item>
+        <item>Indien</item>
+        <item>Indonesien</item>
         <item>Iran</item>
-        <item>Iraq</item>
-        <item>Ireland</item>
+        <item>Irak</item>
+        <item>Irland</item>
         <item>Isle of Man</item>
         <item>Israel</item>
-        <item>Italy</item>
+        <item>Italien</item>
         <item>Jamaica</item>
         <item>Japan</item>
         <item>Jersey</item>
         <item>Jordan</item>
-        <item>Kazakhstan</item>
+        <item>Kasakhstan</item>
         <item>Kiribati</item>
-        <item>Korea, South</item>
+        <item>Sydkorea</item>
         <item>Kuwait</item>
-        <item>Latvia</item>
-        <item>Lebanon</item>
+        <item>Letland</item>
+        <item>Libanon</item>
         <item>Liechtenstein</item>
-        <item>Lithuania</item>
+        <item>Litauen</item>
         <item>Luxembourg</item>
         <item>Macao</item>
-        <item>Macedonia</item>
+        <item>Makedonien</item>
         <item>Malaysia</item>
         <item>Malta</item>
         <item>Martinique</item>
@@ -191,76 +190,76 @@
         <item>Montserrat</item>
         <item>Nauru</item>
         <item>Nepal</item>
-        <item>Netherlands</item>
+        <item>Hollandsk</item>
         <item>New Zealand</item>
         <item>Nicaragua</item>
-        <item>Norway</item>
+        <item>Norge</item>
         <item>Oman</item>
         <item>Pakistan</item>
         <item>Panama</item>
-        <item>Papua New Guinea</item>
+        <item>Papua Ny Guinea</item>
         <item>Paraguay</item>
         <item>Peru</item>
-        <item>Philippines</item>
-        <item>Poland</item>
+        <item>Filippinerne</item>
+        <item>Polen</item>
         <item>Portugal</item>
         <item>Puerto Rico</item>
-        <item>Romania</item>
-        <item>Russia</item>
+        <item>Rumænien</item>
+        <item>Rusland</item>
         <item>Saint Croix</item>
-        <item>Saint Kitts/Nevis</item>
+        <item>Saint Kitts / Nevis</item>
         <item>Saint Lucia</item>
-        <item>Saint Pierre/Miquelon</item>
+        <item>Saint Pierre / Miquelon</item>
         <item>San Marino</item>
-        <item>Saudi Arabia</item>
-        <item>Serbia-Montenegro</item>
+        <item>Saudi-Arabien</item>
+        <item>Serbien-Montenegro</item>
         <item>Singapore</item>
-        <item>Slovakia</item>
-        <item>Slovenia</item>
-        <item>Solomon Islands</item>
-        <item>South Africa</item>
+        <item>Slovakiet</item>
+        <item>Slovenien</item>
+        <item>Salomonøerne</item>
+        <item>Sydafrika</item>
         <item>South Georgia</item>
-        <item>Suriname</item>
-        <item>Sweden</item>
-        <item>Switzerland</item>
+        <item>Surinam</item>
+        <item>Sverige</item>
+        <item>Schweiz</item>
         <item>Taiwan</item>
         <item>Thailand</item>
         <item>Tonga</item>
-        <item>Trinidad/Tobago</item>
-        <item>Turkey</item>
+        <item>Trinidad / Tobago</item>
+        <item>Tyrkiet</item>
         <item>Turkmenistan</item>
         <item>Tuvalu</item>
         <item>Ukraine</item>
-        <item>United Arab Emirates</item>
+        <item>De Forenede Arabiske Emirater</item>
         <item>Uruguay</item>
-        <item>Uzbekistan</item>
+        <item>Usbekistan</item>
         <item>Vanuatu</item>
-        <item>Vatican City</item>
+        <item>Vatikanstaten</item>
         <item>Venezuela</item>
         <item>Vietnam</item>
-        <item>Western Samoa</item>
+        <item>Vestsamoa</item>
         <item>Yemen</item>
-        <item>Yugoslavia</item>
-        <item>American Samoa</item>
+        <item>Jugoslavien</item>
+        <item>Amerikansk Samoa</item>
         <item>Saint Vincent</item>
-        <item>Azerbaijan</item>
-        <item>Mongolia</item>
-        <item>Syria</item>
+        <item>Aserbajdsjan</item>
+        <item>Mongoliet</item>
+        <item>Syrien</item>
         <item>England</item>
-        <item>Marshall Islands</item>
-        <item>Northern Ireland</item>
-        <item>Scotland</item>
-        <item>Spain</item>
-        <item>United Kingdom</item>
+        <item>Marshalløerne</item>
+        <item>Nordirland</item>
+        <item>Skotland</item>
+        <item>Spanien</item>
+        <item>Storbritannien</item>
         <item>US Virgin Islands</item>
         <item>Wales</item>
         <item>Pago Pago</item>
         <item>Saint John</item>
         <item>Saint Thomas</item>
-        <item>Great Britain</item>
+        <item>Storbritannien</item>
         <item>Holland</item>
-        <item>South Korea</item>
-        <item>Kyrgyzstan</item>
+        <item>Sydkorea</item>
+        <item>Kirgisistan</item>
         <item>Bangladesh</item>
         <item>Sudan</item>
         <item>Benin</item>
@@ -268,23 +267,23 @@
         <item>Botswana</item>
         <item>Brunei</item>
         <item>Burundi</item>
-        <item>Cambodia</item>
-        <item>Cameroon</item>
-        <item>Cape Verde</item>
-        <item>Central Africa</item>
-        <item>Chad</item>
+        <item>Cambodja</item>
+        <item>Cameroun</item>
+        <item>Kap Verde</item>
+        <item>Centralafrika</item>
+        <item>Tchad</item>
         <item>Congo</item>
-        <item>Ivory Coast</item>
+        <item>Elfenbenskysten</item>
         <item>Djibouti</item>
-        <item>Equatorial Guinea</item>
+        <item>Ækvatorialguinea</item>
         <item>Gabon</item>
         <item>Ghana</item>
         <item>Kenya</item>
         <item>Laos</item>
         <item>Liberia</item>
-        <item>Madagascar</item>
-        <item>Morocco</item>
-        <item>Mozambique</item>
+        <item>Madagaskar</item>
+        <item>Marokko</item>
+        <item>Mocambique</item>
         <item>Myanmar</item>
         <item>Namibia</item>
         <item>Niger</item>
@@ -292,48 +291,48 @@
         <item>Qatar</item>
         <item>Rwanda</item>
         <item>Samoa</item>
-        <item>Sao Tome/Principe</item>
+        <item>Sao Tome / Principe</item>
         <item>Senegal</item>
         <item>Sierra Leone</item>
         <item>Somalia</item>
         <item>Sri Lanka</item>
         <item>Swaziland</item>
-        <item>Tajikistan</item>
+        <item>Tadsjikistan</item>
         <item>Tanzania</item>
-        <item>Timor-Leste</item>
+        <item>Østtimor</item>
         <item>Togo</item>
-        <item>Tunisia</item>
+        <item>Tunesien</item>
         <item>Uganda</item>
         <item>Zambia</item>
         <item>Zimbabwe</item>
-        <item>Algeria</item>
-        <item>Mauritania</item>
+        <item>Algeriet</item>
+        <item>Mauretanien</item>
         <item>International</item>
-        <item>Serbia</item>
+        <item>Serbien</item>
         <item>Montenegro</item>
-        <item>Libya</item>
+        <item>Libyen</item>
         <item>Gambia</item>
         <item>Malawi</item>
-        <item>Palestine</item>
-        <item>Ethiopia</item>
+        <item>Palæstina</item>
+        <item>Etiopien</item>
         <item>Mauritius</item>
         <item>Lesotho</item>
         <item>Mali</item>
-        <item>Maldives</item>
-        <item>Catalonia</item>
-        <item>Galicia</item>
+        <item>Maldiverne</item>
+        <item>Catalonien</item>
+        <item>Galicien</item>
         <item>Kosovo</item>
         <item>DR Congo</item>
         <item>Angola</item>
-        <item>Comoros</item>
+        <item>Comorerne</item>
         <item>Eritrea</item>
         <item>Guinea</item>
         <item>Guinea-Bissau</item>
-        <item>Micronesia</item>
-        <item>North Korea</item>
+        <item>Mikronesien</item>
+        <item>Nordkorea</item>
         <item>Palau</item>
-        <item>Seychelles</item>
-        <item>Western Sahara</item>
+        <item>Seychellerne</item>
+        <item>Vestsahara</item>
         <item>British Virgin Islands</item>
     </string-array>
 

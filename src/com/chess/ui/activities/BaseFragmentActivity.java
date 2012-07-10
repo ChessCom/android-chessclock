@@ -93,6 +93,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			preferencesEditor.commit();
 		}
+		
+//		if(DataHolder.getInstance().isLocalizationChanged()){
+			AppUtils.changeLocale(this);
+//		}
 	}
 
 	@Override
