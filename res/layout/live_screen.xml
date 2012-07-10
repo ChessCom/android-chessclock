@@ -2,6 +2,7 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
 	android:id="@id/mainView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -9,7 +10,6 @@
 	android:paddingTop="@dimen/live_scr_top_padding"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
-
 	>
 
 	<include layout="@layout/mopub_ad_view"/>
@@ -20,6 +20,39 @@
 		android:layout_height="wrap_content"
 		android:text="@string/currentGame"
 		android:visibility="visible"/>
+
+	<RelativeLayout
+		android:id="@+id/loadingView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:minHeight="60dip"
+		android:visibility="gone"
+		>
+
+		<ProgressBar
+			android:layout_width="@dimen/pending_progress_bar_size"
+			android:layout_height="@dimen/pending_progress_bar_size"
+			android:layout_margin="5dip"
+			android:layout_centerVertical="true"
+			android:layout_toLeftOf="@+id/pending_list_item_TextView"
+			style="?android:attr/progressBarStyle"
+			/>
+
+		<com.chess.RoboTextView
+			android:id="@id/pending_list_item_TextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/loading"
+			android:gravity="center"
+			android:textSize="20sp"
+			android:textColor="@color/grey_button"
+			android:paddingLeft="10dip"
+			android:layout_centerInParent="true"
+			robo:ttf="Bold"
+			/>
+
+	</RelativeLayout>
+
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -67,22 +100,6 @@
 		android:paddingBottom="@dimen/live_grid_padding_bottom"
 		android:listSelector="@android:color/transparent"
 		/>
-
-<!--	<com.chess.RoboTextView
-		android:id="@+id/challengesListTitle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="left"
-		android:text="@string/challenges"
-		android:paddingLeft="@dimen/default_linear_left_padding"
-		android:textSize="@dimen/live_challenges_textSize"
-		/>-->
-
-<!--	<ListView
-		android:id="@+id/GamesList"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@android:color/transparent"/>-->
 
 </LinearLayout>
 

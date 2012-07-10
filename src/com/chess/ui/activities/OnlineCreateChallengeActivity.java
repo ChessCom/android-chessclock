@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,11 +7,12 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.utilities.MyProgressDialog;
 
 public class OnlineCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
 	private Spinner iplayas;
@@ -21,14 +21,13 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 	private Spinner maxrating;
 	private CheckBox isRated;
 	private RadioButton chess960;
+	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.online_create_challenge);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
 		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
@@ -48,15 +47,9 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
 		findViewById(R.id.createchallenge).setOnClickListener(this);
-	}
 
-	@Override
-	public void update(int code) {
-		if (code == 0) {
-			mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.onlinegamecreated));
-		}
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
-
 
 	private Integer[] minRatings = new Integer[]{
 			null,
@@ -92,38 +85,53 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
+			createChallenge();
+		}
+	}
 
-			Integer minRating = minRatings[minrating.getSelectedItemPosition()];
-			Integer maxRating = maxRatings[maxrating.getSelectedItemPosition()];
+	private void createChallenge() {
+		Integer minRating = minRatings[minrating.getSelectedItemPosition()];
+		Integer maxRating = maxRatings[maxrating.getSelectedItemPosition()];
 
 
-			int color = iplayas.getSelectedItemPosition();
-			int days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
-			int israted;
-			int gametype = 0;
+		int color = iplayas.getSelectedItemPosition();
+		int days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
+		int gametype = chess960.isChecked()? 2 :0;
+		int israted = isRated.isChecked() ? 1 :0;
 
-			israted = isRated.isChecked() ? 1 : 0;
 
-			if (chess960.isChecked())
-				gametype = 2;
+//			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
+//					"&timepermove=" + days +
+//					"&iplayas=" + color +
+//					"&israted=" + israted +
+//					"&game_type=" + gametype;
 
-			String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id=" + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
-					"&timepermove=" + days +
-					"&iplayas=" + color +
-					"&israted=" + israted +
-					"&game_type=" + gametype;
-			if (minRating != null) query += "&minrating=" + minRating;
-			if (maxRating != null) query += "&maxrating=" + maxRating;
 
-			if (appService != null) {
-				appService.RunSingleTask(0,
-						query,
-						progressDialog = new MyProgressDialog(ProgressDialog
-								.show(OnlineCreateChallengeActivity.this, null, getString(R.string.creating), true))
-				);
-			}
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
+		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, String.valueOf(days));
+		loadItem.addRequestParams(RestHelper.P_IPLAYAS, String.valueOf(color));
+		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(israted));
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, String.valueOf(gametype));
+
+		if (minRating != null)
+			loadItem.addRequestParams(RestHelper.P_MINRATING, String.valueOf(minRating));
+
+		if (maxRating != null)
+			loadItem.addRequestParams(RestHelper.P_MAXRATING, String.valueOf(maxRating));
+
+		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
+	}
+
+	private class CreateChallengeUpdateListener extends ChessUpdateListener {
+		public CreateChallengeUpdateListener() {
+			super(getInstance());
 		}
 
+		@Override
+		public void updateData(String returnedObj) {
+			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+		}
 	}
 
 }

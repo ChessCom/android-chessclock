@@ -158,7 +158,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ChallengeCreate"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 
 	</LinearLayout>

@@ -2,20 +2,21 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccChallengeTaskRunner;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.model.PopupItem;
-import com.chess.ui.core.CoreActivityHome;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -30,13 +31,16 @@ import com.mopub.mobileads.MoPubInterstitial;
 public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener,
 		MoPubInterstitial.MoPubInterstitialListener {
 
+	private static final String TAG = "HomeScreenActivity";
+
 	protected static final String CHALLENGE_TAG = "challenge_tag";
 	protected static final String LOGOUT_TAG = "logout_tag";
 
 	protected MoPubInterstitial moPubInterstitial;
 
-	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
+    private LccChallengeTaskRunner challengeTaskRunner;
+    private ChallengeTaskListener challengeTaskListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,91 +68,53 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		findViewById(R.id.videoLessonsFrame).setOnClickListener(this);
 		findViewById(R.id.settingsFrame).setOnClickListener(this);
 
-
-
 		// set listener to lccHolder
-		outerChallengeListener = new LiveOuterChallengeListener();
-		lccHolder.setOuterChallengeListener(outerChallengeListener);
-	}
+		getLccHolder().setOuterChallengeListener(new LiveOuterChallengeListener());
 
-	@Override
-	public void update(int code) {
+		challengeTaskListener = new ChallengeTaskListener();
+		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
 	}
 
 	@Override
 	protected void onResume() {
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
+		super.onResume();
 
-		if (MopubHelper.isShowAds(mainApp)) {
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+
+		if (MopubHelper.isShowAds(this)) {
 			showFullScreenAd();
 		}
-
-		/*if(interAdView == null)*/
-		/*interAdView = new MMAdView(this, "77015", MMAdView.FULLSCREEN_AD_TRANSITION, true, null);
-		interAdView.setId(MMAdViewSDK.DEFAULT_VIEWID);
-		interAdView.callForAd();
-		interAdView.setListener(new MMAdView.MMAdListener() {
-
-			public void MMAdReturned(MMAdView mmAdView) {
-				if (mmAdView.check()) {
-					mmAdView.display();
-				}
-			}
-
-			public void MMAdFailed(MMAdView mmAdView) {
-			}
-
-			public void MMAdClickedToNewBrowser(MMAdView mmAdView) {
-			}
-
-			public void MMAdClickedToOverlay(MMAdView mmAdView) {
-			}
-
-			public void MMAdOverlayLaunched(MMAdView mmAdView) {
-			}
-
-			public void MMAdRequestIsCaching(MMAdView mmAdView) {
-			}
-
-			public void MMAdCachingCompleted(MMAdView mmAdView, boolean success) {
-				if (success && mmAdView.check()) {
-					mmAdView.display();
-				}
-			}
-		});*/
-
-		super.onResume();
 	}
 
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(LOGOUT_TAG)) {
-			lccHolder.logout();
-			getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected());
-		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
-			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
-			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
-			lccHolder.declineAllChallenges(currentChallenge);
+			getLccHolder().logout();
+			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
+			Log.i(TAG, "Accept challenge: " + currentChallenge);
+            challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
+			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 		}
-		fragment.getDialog().dismiss();
 	}
 
 	@Override
-	public void onRightBtnClick(PopupDialogFragment fragment) {// Challenge declined!
+	public void onNegativeBtnClick(DialogFragment fragment) {// Challenge declined!
 		if (fragment.getTag().equals(CHALLENGE_TAG)) {
-			LccHolder.LOG.info("Decline challenge: " + currentChallenge);
-            fragment.getDialog().dismiss();
-            lccHolder.declineCurrentChallenge(currentChallenge);
+			Log.i(TAG, "Decline challenge: " + currentChallenge);
+            fragment.dismiss();
+            challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
         }else
-            fragment.getDialog().dismiss();
+            fragment.dismiss();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
-		getActionBarHelper().hideMenuItemById(R.id.menu_singOut, lccHolder.isConnected(), menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected(), menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -156,47 +122,44 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_singOut:
-				PopupItem popupItem = new PopupItem();
-				popupItem.setTitle(R.string.confirm);
-				popupItem.setMessage(R.string.signout_confirm);
-
-//				popupDialogFragment.updatePopupItem(popupItem);
-				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
-				popupDialogFragment.show(getSupportFragmentManager(), LOGOUT_TAG);
-//				popupManager.add(popupDialogFragment);
-				break;
+				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    private class ChallengeTaskListener extends AbstractUpdateListener<Challenge> {
+        public ChallengeTaskListener() {
+            super(getContext());
+        }
+    }
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
 			currentChallenge = challenge;
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.you_been_challenged);
-			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
-			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+			popupItem.setPositiveBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
 		}
 
 		@Override
 		public void showDialog(Challenge challenge) {
-			if(popupDialogFragment.getDialog() != null && popupDialogFragment.getDialog().isShowing()){
+			if (popupManager.size() > 0) {
 				return;
 			}
 
 			currentChallenge = challenge;
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setRightBtnId(R.string.decline);
-			popupItem.setLeftBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
 
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+
+			popupManager.add(popupDialogFragment);
 		}
 
 		@Override
@@ -211,7 +174,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			if(config.isBlitz()){
 				blitz = getString(R.string.blitz_game);
 			}else if(config.isLightning()){
-				blitz = getString(R.string.lighthning_game);
+				blitz = getString(R.string.lightning_game);
 			}else if(config.isStandard()){
 				blitz = getString(R.string.standard_game);
 			}
@@ -242,53 +205,20 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 			return new StringBuilder()
 					.append(getString(R.string.opponent_)).append(StaticData.SYMBOL_SPACE)
-					.append(challenge.getFrom().getUsername()).append(StaticData.SYMBOL_NEW_STR)
+					.append(challenge.getFrom().getUsername())
 					.append(getString(R.string.time_)).append(StaticData.SYMBOL_SPACE)
-					.append(timeMode).append(StaticData.SYMBOL_NEW_STR)
+					.append(timeMode)
 					.append(getString(R.string.you_play)).append(StaticData.SYMBOL_SPACE)
 					.append(playerColor).append(StaticData.SYMBOL_NEW_STR)
 					.append(rated)
 					.toString();
 		}
 	}
-	/*private class MobFullScreeListener implements MobclixFullScreenAdViewListener {
 
-		@Override
-		public String query() {
-			return null;
-		}
-
-		@Override
-		public void onPresentAd(MobclixFullScreenAdView arg0) {
-			System.out.println("mobclix fullscreen onPresentAd");
-
-		}
-
-		@Override
-		public void onFinishLoad(MobclixFullScreenAdView arg0) {
-			System.out.println("mobclix fullscreen onFinishLoad");
-
-		}
-
-		@Override
-		public void onFailedLoad(MobclixFullScreenAdView adView, int errorCode) {
-			System.out.println("mobclix fullscreen onFailedLoad errorCode=" + errorCode);
-		}
-
-		@Override
-		public void onDismissAd(MobclixFullScreenAdView arg0) {
-			System.out.println("mobclix fullscreen onDismissAd");
-		}
-
-		@Override
-		public String keywords() {
-			return null;
-		}
-	}*/
 
 	private void showFullScreenAd() {
 		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
-				&& MopubHelper.isShowAds(mainApp)) {
+				&& MopubHelper.isShowAds(this)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
 			// TODO: add support for tablet ad units
@@ -314,11 +244,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
-			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : LiveScreenActivity.class;
+			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : LiveScreenActivity.class;
 			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playOnlineFrame) {
-			Class<?> clazz = mainApp.guest ? SignUpScreenActivity.class : OnlineScreenActivity.class;
+			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : OnlineScreenActivity.class;
 			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playComputerFrame) {
@@ -341,6 +271,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (moPubInterstitial.isReady()) {
 			Log.d("HOME", "mopub interstitial ad listener: loaded and ready");
 			moPubInterstitial.show();
+
 			preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
 			preferencesEditor.commit();
 		}

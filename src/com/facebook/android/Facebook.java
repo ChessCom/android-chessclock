@@ -16,30 +16,22 @@
 
 package com.facebook.android;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
+import android.os.*;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.webkit.CookieSyncManager;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  * Main Facebook object for interacting with the Facebook developer API.
@@ -110,7 +102,7 @@ public class Facebook {
      *
      * See authorize() below for @params.
      */
-    public void authorize(Activity activity, final DialogListener listener) {
+    public void authorize(FragmentActivity activity, final DialogListener listener) {
         authorize(activity, new String[] {}, DEFAULT_AUTH_ACTIVITY_CODE,
                 listener);
     }
@@ -120,7 +112,7 @@ public class Facebook {
      *
      * See authorize() below for @params.
      */
-    public void authorize(Activity activity, String[] permissions,
+    public void authorize(FragmentActivity activity, String[] permissions,
             final DialogListener listener) {
         authorize(activity, permissions, DEFAULT_AUTH_ACTIVITY_CODE, listener);
     }
@@ -189,7 +181,7 @@ public class Facebook {
      *            the authentication dialog has completed, failed, or been
      *            canceled.
      */
-    public void authorize(Activity activity, String[] permissions,
+    public void authorize(FragmentActivity activity, String[] permissions,
             int activityCode, final DialogListener listener) {
 
         boolean singleSignOnStarted = false;

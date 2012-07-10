@@ -1,0 +1,4 @@
+<resources>
+	<dimen name="default_button_text_size">17sp</dimen>
+	<dimen name="game_end_popup_text_size">17sp</dimen>
+</resources>

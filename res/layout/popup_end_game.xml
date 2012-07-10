@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/layout_root"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="1dp"
+	>
+
+	<com.chess.RoboTextView
+		android:id="@+id/endOfGameMessage"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_margin="2dip"
+		android:textStyle="bold"/>
+
+	<LinearLayout
+		android:id="@+id/adview_wrapper"
+		android:layout_width="@dimen/ad_popup_width"
+		android:layout_height="@dimen/ad_popup_height"
+		android:layout_gravity="center"
+		/>
+
+	<LinearLayout
+		android:id="@+id/endOfGameButtons"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginLeft="2dip"
+		android:layout_marginRight="2dip"
+		android:layout_marginTop="2dip"
+		>
+
+		<com.chess.RoboButton
+			android:id="@+id/newGame"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/new_game"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/homePopupBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/home"
+			android:visibility="gone"/>
+
+	</LinearLayout>
+
+</LinearLayout>

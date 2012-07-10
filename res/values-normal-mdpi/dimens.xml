@@ -74,7 +74,7 @@
 
 	<!--Default margins between screen widgets-->
 
-	<dimen name="margin_top_beween_buttons">10dip</dimen>
+	<dimen name="margin_top_between_buttons">10dip</dimen>
 
 	<!--Linear Description paddings-->
 	<dimen name="default_linear_bottom_padding">2dip</dimen>
@@ -113,7 +113,7 @@
 
 	<!--Popup-->
 	<dimen name="ad_popup_width">300dip</dimen>
-	<dimen name="ad_popup_height">250dip</dimen>
+	<dimen name="ad_popup_height">230dip</dimen>
 	<dimen name="popup_dialog_width">300dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 

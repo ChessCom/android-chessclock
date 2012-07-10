@@ -1,16 +1,12 @@
 package com.chess.backend.tasks;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
-import com.chess.R;
+import android.util.Log;
+import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.ui.activities.LoginScreenActivity;
+import com.chess.backend.statics.StaticData;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.BufferedInputStream;
@@ -24,20 +20,21 @@ import java.net.URLConnection;
  * @author alien_roger
  * @created at: 14.03.12 5:35
  */
-public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
+public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 
-	private Activity context;
 	private SharedPreferences.Editor preferencesEditor;
-	private boolean forceFlag;
+	private Context context;
 
-	public CheckUpdateTask(Activity context) {
-		this.context = context;
-		preferencesEditor = AppData.getPreferences(context).edit();
+	public CheckUpdateTask(TaskUpdateInterface<Boolean> taskFace) {
+		super(taskFace);
+		context = taskFace.getMeContext();
+		preferencesEditor = AppData.getPreferences(taskFace.getMeContext()).edit();
 	}
 
 	@Override
-	protected Boolean doInBackground(String... urls) {
-		Boolean force = null;
+	protected Integer doTheTask(String... urls) {
+		item = false;  // forceFlag field
+		Log.d("CheckUpdateTask", "retrieving from url = " + urls[0]);
 		try {
 			URL updateURL = new URL(urls[0]);
 			URLConnection conn = updateURL.openConnection();
@@ -58,51 +55,23 @@ public class CheckUpdateTask extends AsyncTask<String, Void, Boolean> {
 			int preferredVersion = Integer.valueOf(valuesArray[1].trim());
 
 			if (actualVersion < preferredVersion) {
-				force = false;
+				preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
+				preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
+				preferencesEditor.commit();
+				result = StaticData.RESULT_OK;
+			}else {
+				result = StaticData.DATA_EXIST;
 			}
 			if (actualVersion < minimumVersion) {
-				force = true;
+				item = true; // need to force update
 			}
 
 		} catch (Exception e) {
-			return force;
+			result = StaticData.UNKNOWN_ERROR;
+			return result;
 		}
 
-		if (force != null && !force) {
-			preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
-			preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
-			preferencesEditor.commit();
-		}
-		return force;
+		return result;
 	}
 
-	@Override
-	protected void onPostExecute(Boolean result) {
-		super.onPostExecute(result);
-
-		if (result != null) {
-			forceFlag = result;
-			new AlertDialog.Builder(context).setIcon(R.drawable.ic_launcher)
-					.setTitle(R.string.update_check)
-					.setMessage(R.string.update_available_please_update)
-					.setCancelable(false)
-					.setPositiveButton(R.string.ok, updateClickListener).show();
-		}
-	}
-
-	private DialogInterface.OnClickListener updateClickListener =  new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int whichButton) {
-			if (forceFlag) {
-
-				preferencesEditor.putLong(AppConstants.START_DAY, 0);
-				preferencesEditor.commit();
-
-				context.startActivity(new Intent(context, LoginScreenActivity.class));
-				context.finish();
-			}
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri .parse("market://details?id=com.chess"));
-			context.startActivity(intent);
-		}
-	};
 }

@@ -8,7 +8,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		>
-		<com.chess.ui.views.ChessBoardView
+		<com.chess.ui.views.ChessBoardCompView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

@@ -1,10 +1,8 @@
 package com.chess.ui.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.*;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +11,16 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
-import com.chess.model.GameListItem;
-import com.chess.ui.core.IntentConstants;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * LiveScreenActivity class
@@ -31,82 +28,101 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class LiveScreenActivity extends LiveBaseActivity implements View.OnClickListener {
-
-	private TextView startNewGameTitle;
+public class LiveScreenActivity extends LiveBaseActivity {
 
 	private Button currentGame;
-	private Button start;
-	private GridView gridview;
-
-	private int temp_pos = -1;
-	public static int ONLINE_CALLBACK_CODE = 32;
+	private ViewGroup loadingView;
+	private List<View> infoGroup;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_screen);
 
-		widgetsInit();
 		init();
-
-		gridview.setAdapter(new NewGamesButtonsAdapter());
+		widgetsInit();
 	}
 
-	@Override
     protected void widgetsInit(){
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 
-		if (MopubHelper.isShowAds(mainApp)) {
-			moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-			MopubHelper.showBannerAd(upgradeBtn, moPubView, mainApp);
+		loadingView = (ViewGroup) findViewById(R.id.loadingView);
+
+		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+		if (MopubHelper.isShowAds(this)) {
+			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 
-		startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
+		TextView startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
 
-		start = (Button) findViewById(R.id.start);
-		start.setOnClickListener(this);
+		Button startBtn = (Button) findViewById(R.id.start);
+		startBtn.setOnClickListener(this);
 
-		gridview = (GridView) findViewById(R.id.gridview);
+		GridView gridView = (GridView) findViewById(R.id.gridview);
+		gridView.setAdapter(new NewGamesButtonsAdapter());
+
+		infoGroup.add(startNewGameTitle);
+		infoGroup.add(startBtn);
+		infoGroup.add(gridView);
 
 		currentGame = (Button) findViewById(R.id.currentGame);
 		currentGame.setOnClickListener(this);
-
-		if (lccHolder.isConnected()) {
-			start.setVisibility(View.VISIBLE);
-			gridview.setVisibility(View.VISIBLE);
-			startNewGameTitle.setVisibility(View.VISIBLE);
-		}
-
 	}
 
 	private void init() {
-		mainApp.setLiveChess(true);
+		DataHolder.getInstance().setLiveChess(true);
+
+		infoGroup = new ArrayList<View>();
 	}
 
 	@Override
 	protected void onResume() {
-		if (!lccHolder.isConnected()) {
-			start.setVisibility(View.GONE);
-			gridview.setVisibility(View.GONE);
-			startNewGameTitle.setVisibility(View.GONE);
-		}
-
-		registerReceiver(lccLoggingInInfoReceiver, new IntentFilter(IntentConstants.FILTER_LOGINING_INFO));
-
 		super.onResume();
-		if (mainApp.isLiveChess() && lccHolder.getCurrentGameId() != null &&
-				lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-			currentGame.setVisibility(View.VISIBLE);
-		} else {
+
+		showLoadingView(!getLccHolder().isConnected());
+
+		if (getLccHolder().getCurrentGameId() == null) {
 			currentGame.setVisibility(View.GONE);
+		} else {
+			currentGame.setVisibility(View.VISIBLE);
 		}
 	}
 
 	@Override
+	public void onConnecting() {
+		super.onConnecting();
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showLoadingView(true);
+			}
+		});
+	}
+
+	@Override
+	public void onConnectionEstablished() {
+		super.onConnectionEstablished();
+		Log.d("TEST", "Live Screen onLccConnected, lcc connect state = "
+				+ LccHolder.getInstance(this).isConnected());
+		showLoadingView(false);
+	}
+
+	private void showLoadingView(final boolean show){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				loadingView.setVisibility(show? View.VISIBLE: View.GONE);
+				int infoVisibility = show? View.GONE: View.VISIBLE;
+				for (View view : infoGroup) {
+					view.setVisibility(infoVisibility);
+				}
+			}
+		});
+	}
+
+	@Override
 	protected void onPause() {
-		unregisterReceiver(this.lccLoggingInInfoReceiver);
 		super.onPause();
 	}
 
@@ -158,124 +174,12 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 	}
 
 	@Override
-	public void update(int code) {
-		if (code == INIT_ACTIVITY) {
-			if (appService != null) {
-				update(ONLINE_CALLBACK_CODE);
-			}
-		} else if (code == ONLINE_CALLBACK_CODE) {
-
-		} else if (code == 1) {
-			onPause();
-			onResume();
-		} else if (code == 2) {
-			onPause();
-			onResume();
-			showToast(R.string.challengeaccepted);
-		} else if (code == 3) {
-			onPause();
-			onResume();
-			showToast(R.string.challengedeclined);
-		} else if (code == 4) {
-			onPause();
-			onResume();
-		}
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-			case 0: {
-				if (temp_pos > -1) {
-					return new AlertDialog.Builder(this)
-							.setTitle(getString(R.string.accept_draw_q))
-							.setPositiveButton(getString(R.string.accept), acceptDrawDialogListener)
-							.setNeutralButton(getString(R.string.decline), acceptDrawDialogListener)
-							.setNegativeButton(getString(R.string.game), acceptDrawDialogListener).create();
-				}
-			}
-			default:
-				break;
-		}
-		return super.onCreateDialog(id);
-	}
-
-	private  DialogInterface.OnClickListener acceptDrawDialogListener = new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int whichButton) {
-			GameListItem gameListElement = mainApp.getGameListItems().get(temp_pos);
-
-			switch (whichButton) {
-				case DialogInterface.BUTTON_POSITIVE: {
-					if (appService != null) {
-						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST + AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
-										+ "&command=ACCEPTDRAW&timestamp="
-										+ gameListElement.values.get(GameListItem.TIMESTAMP),
-								null);
-					}
-				}
-				break;
-				case DialogInterface.BUTTON_NEUTRAL: {
-					if (appService != null) {
-						appService.RunSingleTask(4,
-								"http://www." + LccHolder.HOST
-										+ AppConstants.API_SUBMIT_ECHESS_ACTION_ID
-										+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-										+ AppConstants.CHESSID_PARAMETER + gameListElement.getGameId()
-										+ "&command=DECLINEDRAW&timestamp="
-										+ gameListElement.values.get(GameListItem.TIMESTAMP),
-								null);
-					}
-				}
-				break;
-				case DialogInterface.BUTTON_NEGATIVE: {
-					startActivity(new Intent(getContext(), GameLiveScreenActivity.class).
-							putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS).
-							putExtra(GameListItem.GAME_ID, gameListElement.getGameId()));
-
-				}
-				break;
-				default:
-					break;
-			}
-		}
-	};
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
-		} else if (view.getId() == R.id.tournaments) {
-			String GOTO = "http://www." + LccHolder.HOST + AppConstants.TOURNAMENTS;
-			try {
-				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
-			} catch (UnsupportedEncodingException ignored) {
-			}
 
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www."
-					+ LccHolder.HOST + AppConstants.LOGIN_HTML_ALS
-					+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-					+ "&goto=" + GOTO)));
-		} else if (view.getId() == R.id.stats) {
-			String GOTO = "http://www." + LccHolder.HOST + AppConstants.ECHESS_MOBILE_STATS
-					+ AppData.getUserName(getContext());
-			try {
-				GOTO = URLEncoder.encode(GOTO, AppConstants.UTF_8);
-			} catch (UnsupportedEncodingException ignored) {
-			}
-
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www." + LccHolder.HOST
-					+ AppConstants.LOGIN_HTML_ALS + preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-					+ "&goto=" + GOTO)));
 		} else if (view.getId() == R.id.currentGame) {
-
-			if (lccHolder.getCurrentGameId() != null && lccHolder.getGame(lccHolder.getCurrentGameId()) != null) {
-				lccHolder.processFullGame(lccHolder.getGame(lccHolder.getCurrentGameId()));
-			}
+			getLccHolder().checkAndProcessFullGame();
 
 		} else if (view.getId() == R.id.start) {
 			startActivity(new Intent(this, LiveNewGameActivity.class));
@@ -314,18 +218,5 @@ public class LiveScreenActivity extends LiveBaseActivity implements View.OnClick
 			return text;
 		}
 	}
-
-	private BroadcastReceiver lccLoggingInInfoReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, final Intent intent) {
-			if (!intent.getExtras().getBoolean(AppConstants.ENABLE_LIVE_CONNECTING_INDICATOR)) {
-				start.setVisibility(View.VISIBLE);
-				if (gridview != null) {
-					gridview.setVisibility(View.VISIBLE);
-				}
-				startNewGameTitle.setVisibility(View.VISIBLE);
-			}
-		}
-	};
 
 }

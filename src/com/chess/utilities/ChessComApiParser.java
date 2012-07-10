@@ -33,7 +33,6 @@ public class ChessComApiParser {
 				tmp[a++] = s;
 			}
 			GameListItem gle = new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp, false);
-//			GameListItem gle = new GameListItem(GameListItem.LIST_TYPE_CURRENT, tmp, false);
 			output.add(gle);
 		}
 		return output;
@@ -54,7 +53,6 @@ public class ChessComApiParser {
 				tmp[a++] = s;
 			}
 			output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp, false));
-//			output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, tmp, false));
 		}
 		return output;
 	}
@@ -78,7 +76,6 @@ public class ChessComApiParser {
 					tmp2[j] = tmp[inc++];
 				}
 				output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, tmp2, false));
-//				output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, tmp2, false));
 			}
 		} catch (Exception e) {
 			return output;
@@ -111,10 +108,7 @@ public class ChessComApiParser {
 
 	//online game
 	public static GameItem GetGameParseV3(String result) {
-		if (result.contains(RestHelper.R_SUCCESS)) {
-			return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
-		}
-		return null;
+		return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
 	}
 
 	public static ArrayList<MessageItem> receiveMessages(String result) {

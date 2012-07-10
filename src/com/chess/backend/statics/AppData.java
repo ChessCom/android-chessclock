@@ -19,23 +19,21 @@ public class AppData {
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 	}
 
-
-
 	public static String getUserToken(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 	}
 
-	public static int getAfterMoveAction(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
-	}
+    public static int getAfterMoveAction(Context context) {
+        SharedPreferences preferences = getPreferences(context);
+        String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+        return preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
+    }
 
-	public static String getUserName(Context context){
-		SharedPreferences preferences = getPreferences(context);
-		return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-	}
+    public static String getUserName(Context context){
+        SharedPreferences preferences = getPreferences(context);
+        return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+    }
 
 	public static String getPassword(Context context) {
 		SharedPreferences preferences = getPreferences(context);
@@ -77,6 +75,17 @@ public class AppData {
 		return preferences.getInt(userName + AppConstants.PREF_PIECES_SET, 0);
 	}
 
+	public static int getLanguageCode(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getInt(userName + StaticData.SHP_LANGUAGE, 0);
+	}
+
+	public static String getUserSessionId(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		return preferences.getString(AppConstants.USER_SESSION_ID, StaticData.SYMBOL_EMPTY);
+	}
+
 	public static boolean playSounds(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
@@ -92,6 +101,8 @@ public class AppData {
 //		return isTacticsGameMode(boardFace.getMode());
 //	}
 
+	/* Game modes */
+
 	public static boolean isFinishedEchessGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
 	}
@@ -99,7 +110,7 @@ public class AppData {
 	public static boolean isComputerGameMode(BoardFace boardFace) {
 		final int mode = boardFace.getMode();
 		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE || mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK
-				|| mode == AppConstants.GAME_MODE_HUMAN_VS_HUMAN || mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+				|| mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 	}
 
 	public static boolean isLiveOrEchessGameMode(int mode) {

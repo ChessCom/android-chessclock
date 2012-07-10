@@ -1,5 +1,13 @@
 package com.mopub.mobileads;
 
+import java.util.ArrayList;
+
+import com.chess.R;
+import com.mopub.mobileads.MraidView.ExpansionStyle;
+import com.mopub.mobileads.MraidView.NativeCloseButtonStyle;
+import com.mopub.mobileads.MraidView.PlacementType;
+import com.mopub.mobileads.MraidView.ViewState;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,21 +20,19 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
-import android.view.View.OnClickListener;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.chess.R;
-import com.mopub.mobileads.MraidView.ExpansionStyle;
-import com.mopub.mobileads.MraidView.NativeCloseButtonStyle;
-import com.mopub.mobileads.MraidView.PlacementType;
-import com.mopub.mobileads.MraidView.ViewState;
-
-import java.util.ArrayList;
 
 class MraidDisplayController extends MraidAbstractController {
     private static final String LOGTAG = "MraidDisplayController";

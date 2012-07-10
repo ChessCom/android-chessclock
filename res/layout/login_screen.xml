@@ -34,7 +34,9 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/singinUsername"
+				android:inputType="textPersonName"
 				android:singleLine="true"
+				android:imeOptions="actionNext"
 				/>
 
 			<com.chess.RoboEditText
@@ -42,9 +44,9 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/singinPassword"
-				android:inputType="textPersonName"
 				android:password="true"
 				android:singleLine="true"
+				android:imeOptions="actionDone"
 				/>
 
 			<com.chess.RoboButton
@@ -60,7 +62,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:drawableLeft="@drawable/facebook_icon"
-
 				/>
 
 			<com.chess.RoboButton
@@ -69,7 +70,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/singupButton"
-
 				/>
 
 			<com.chess.RoboButton
@@ -78,7 +78,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/singinPlayguest"
-
 				/>
 		</LinearLayout>
 

@@ -1,31 +1,32 @@
 package com.chess.ui.activities;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.*;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.*;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
+import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
-import com.chess.ui.core.IntentConstants;
-import com.chess.ui.core.MainApp;
+import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.ChessComApiParser;
-
-import java.util.ArrayList;
+import com.chess.ui.views.ChessBoardLiveView;
+import com.chess.utilities.MopubHelper;
 
 /**
  * GameTacticsScreenActivity class
@@ -33,87 +34,106 @@ import java.util.ArrayList;
  * @author alien_roger
  * @created at: 08.02.12 7:17
  */
-public class GameLiveScreenActivity extends GameBaseActivity implements View.OnClickListener {
+public class GameLiveScreenActivity extends GameBaseActivity implements LccEventListener, LccChatMessageListener {
+
+	private static final String TAG = "GameLiveScreenActivity";
+	private static final String WARNING_TAG = "warning message popup";
+	private static final String END_GAME_TAG = "end game popup";
+
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private CharSequence[] menuOptionsItems;
 
-	private int resignOrAbort = R.string.resign;
 	private View submitButtonsLay;
-//	private boolean chat;
+	private GameItem currentGame;
+	private Long gameId;
+	private ChessBoardLiveView boardView;
+	private int whitePlayerNewRating;
+	private int blackPlayerNewRating;
+	private int currentPlayerRating;
+
+    private String whiteTimer;
+    private String blackTimer;
+    private View fadeLay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.boardviewlive);
+		setContentView(R.layout.boardview_live);
 
-		init();
 		widgetsInit();
-		onPostCreate();
+		init();
 
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
-		String blackPlayerName = lccHolder.getGame(mainApp.getGameId()).getBlackPlayer().getUsername();
-		String userName = lccHolder.getUser().getUsername();
+		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
+		String userName = getLccHolder().getCurrentuserName();
+
 		userPlayWhite = !userName.equals(blackPlayerName);
-		int opponentIndicator = userPlayWhite? R.drawable.player_indicator_black: R.drawable.player_indicator_white;
-		
-		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator,0,0,0);
+		int opponentIndicator = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
+
+		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator, 0, 0, 0);
 		gamePanelView.setWhiteIndicator(userPlayWhite);
 		// change players colors
 		changePlayersLabelColors();
+
+		Log.d("Live Game", "GameLiveScreenActivity started ");
+		if (getLccHolder().getPendingWarnings().size() > 0) {
+			// get last warning
+			String message = getLccHolder().getLastWarningMessage();
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setTitle(R.string.warning);
+			popupItem.setMessage(message);
+
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+			popupDialogFragment.show(getSupportFragmentManager(), WARNING_TAG);
+		}
 	}
 
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		submitButtonsLay = findViewById(R.id.submitButtonsLay);
-		findViewById(R.id.submit).setOnClickListener(this);
-		findViewById(R.id.cancel).setOnClickListener(this);
+        fadeLay = findViewById(R.id.fadeLay);
+		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setGamePanelView(gamePanelView);
+		setBoardView(boardView);
 
-		if (lccHolder.getWhiteClock() != null && lccHolder.getBlackClock() != null) { // TODO check if needed
-			lccHolder.getWhiteClock().paint();
-			lccHolder.getBlackClock().paint();
+		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
+		if (chessBoard != null) {
+			boardView.setBoardFace(chessBoard);
+		} else {
+			boardView.setBoardFace(new ChessBoard(this));
+			getBoardFace().setInit(true);
+			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
+		boardView.setGameActivityFace(this);
 
-		// hide black dot for right label
-		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
-		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+		submitButtonsLay = findViewById(R.id.submitButtonsLay);
+		findViewById(R.id.submitBtn).setOnClickListener(this);
+		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
 		gamePanelView.enableAnalysisMode(false);
+
+		// hide black dot for right label
+		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-			case DIALOG_DRAW_OFFER:
-				return new AlertDialog.Builder(this)
-						.setTitle(R.string.drawoffer)
-						.setMessage(getString(R.string.are_you_sure_q))
-						.setPositiveButton(getString(R.string.ok), drawOfferDialogListener)
-						.setNegativeButton(getString(R.string.cancel), drawOfferDialogListener)
-						.create();
-			case DIALOG_ABORT_OR_RESIGN:
-				return new AlertDialog.Builder(this)
-						.setTitle(R.string.abort_resign_game)
-						.setMessage(getString(R.string.are_you_sure_q))
-						.setPositiveButton(R.string.ok, abortGameDialogListener)
-						.setNegativeButton(R.string.cancel, abortGameDialogListener)
-						.create();
-
-			default:
-				break;
-		}
-		return super.onCreateDialog(id);
-	}
 
 	@Override
-	protected void init() {
+	public void init() {
 		super.init();
-        mainApp.setGameId(extras.getLong(GameListItem.GAME_ID));
-		changeResignTitle();
+		gameId = extras.getLong(GameListItem.GAME_ID);
+		currentGame = getLccHolder().getGameItem(gameId);
+
+        getLccHolder().setLccEventListener(this);
+
+		int resignOrAbort = getLccHolder().getResignTitle(gameId);
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -123,287 +143,261 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				getString(R.string.messages)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+
 	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mainApp.setLiveChess(true);
+	@Override
+	protected void onResume() {
+		super.onResume();
+		DataHolder.getInstance().setLiveChess(true);
 
-        registerReceiver(chatMessageReceiver, new IntentFilter(IntentConstants.ACTION_GAME_CHAT_MSG));
-
-        if (mainApp.isLiveChess() && mainApp.getGameId() > 0 && lccHolder.getGame(mainApp.getGameId()) != null) {
-            game = new GameItem(lccHolder.getGameData(mainApp.getGameId(),
-                    lccHolder.getGame(mainApp.getGameId()).getSeq() - 1), true);
-            lccHolder.getAndroid().setGameActivity(this);
-            if (lccHolder.isActivityPausedMode()) {
-                executePausedActivityGameEvents();
-                lccHolder.setActivityPausedMode(false);
-            }
-            lccHolder.updateClockTime(lccHolder.getGame(mainApp.getGameId()));
-        }
-    }
+		getLccHolder().setActivityPausedMode(false);
+		updateGameState();
+	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(chatMessageReceiver);
+		getLccHolder().setActivityPausedMode(true);
 	}
 
-	@Override
-	protected void onDrawOffered(int whichButton) {
-		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			Game game = lccHolder.getGame(mainApp.getGameId());
-			LccHolder.LOG.info(AppConstants.REQUEST_DRAW + game);
-			lccHolder.getAndroid().runMakeDrawTask(game);
+	private void updateGameState() {
+		if (getBoardFace().isInit()) {
+			onGameStarted();
+			getBoardFace().setInit(false);
+		}
+        // todo
+		if (getLccHolder().isActivityPausedMode()) {
+			getLccHolder().executePausedActivityGameEvents(getLccHolder().getLccEventListener());
+			getLccHolder().setActivityPausedMode(false);
 		}
 	}
 
-	@Override
-	protected void onAbortOffered(int whichButton) {
-		if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-			Game game = lccHolder.getGame(mainApp.getGameId());
+	private void onGameStarted() {
+		showSubmitButtonsLay(false);
+		getSoundPlayer().playGameStart();
 
-			if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
-				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
-				LccHolder.LOG.info(AppConstants.RESIGN_GAME + game);
-				lccHolder.getAndroid().runMakeResignTask(game);
-			} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
-				LccHolder.LOG.info(AppConstants.LCCLOG_ABORT_GAME + game);
-				lccHolder.getAndroid().runAbortGameTask(game);
-			} else {
-				LccHolder.LOG.info(AppConstants.LCCLOG_RESIGN_GAME + game);
-				lccHolder.getAndroid().runMakeResignTask(game);
-			}
-			finish();
+		currentGame = getLccHolder().getGameItem(gameId);
+
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+		checkMessages();
+
+		if (!isUserColorWhite()) {
+			getBoardFace().setReside(true);
 		}
+
+		String[] moves;
+		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
+			moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
+			getBoardFace().setMovesCount(moves.length);
+		}
+
+		getLccHolder().checkAndReplayMoves(gameId);
+
+		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION);
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
+			getBoardFace().genCastlePos(FEN);
+			MoveParser.fenParse(FEN, getBoardFace());
+		}
+
+		invalidateGameScreen();
+		getBoardFace().takeBack();
+		boardView.invalidate();
+
+		playLastMoveAnimation();
 	}
 
-	@Override
-	protected void getOnlineGame(long game_id) {
-		super.getOnlineGame(game_id);
-		if (mainApp.isLiveChess()) {
-			update(CALLBACK_GAME_STARTED);
-		}
-	}
+    public void setWhitePlayerTimer(String timeString) {
+        whiteTimer = timeString;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (userPlayWhite) {
+                    gamePanelView.setBlackTimer(whiteTimer);
+                } else {
+                    blackPlayerLabel.setText(whiteTimer);
+                }
 
-	@Override
-	public void update(int code) {  // TODO eliminate
-		switch (code) {
-			case ERROR_SERVER_RESPONSE:
-				if (!MainApp.isTacticsGameMode(boardView.getBoardFace()))
-					onBackPressed();
-				break;
-			case INIT_ACTIVITY:
-				if (boardView.getBoardFace().isInit()) {
-					getOnlineGame(mainApp.getGameId());
-					boardView.getBoardFace().setInit(false);
-				} else if (!boardView.getBoardFace().isInit() && appService != null && appService.getRepeatableTimer() == null && progressDialog != null) {
-					progressDialog.dismiss();
-					progressDialog = null;
-				}
-				break;
-			case CALLBACK_REPAINT_UI: {
-				if (boardView.getBoardFace().isSubmit())
-					showSubmitButtonsLay(true);
+                if (!isWhitePlayerMove || initTimer) {
+                    isWhitePlayerMove = true;
+                    changePlayersLabelColors();
+                }
+            }
+        });
+    }
 
-				whitePlayerLabel.setVisibility(View.VISIBLE);
-				blackPlayerLabel.setVisibility(View.VISIBLE);
+    public void setBlackPlayerTimer(String timeString) {
+        blackTimer = timeString;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (userPlayWhite) {
+                    blackPlayerLabel.setText(blackTimer);
+                } else {
+                    gamePanelView.setBlackTimer(blackTimer);
+                }
 
-				if (MainApp.isLiveOrEchessGameMode(boardView.getBoardFace()) || MainApp.isFinishedEchessGameMode(boardView.getBoardFace())) {
-					if (mainApp.getCurrentGame() != null) {
-						updatePlayerLabels();
-					}
-				}
+                if (isWhitePlayerMove) {
+                    isWhitePlayerMove = false;
+                    changePlayersLabelColors();
+                }
+            }
+        });
+    }
 
-				boardView.addMove2Log(boardView.getBoardFace().getMoveListSAN());
-				break;
-			}
-			case CALLBACK_SEND_MOVE: {
-				showSubmitButtonsLay(false);
+	// ----------------------Lcc Events ---------------------------------------------
 
-				//String myMove = boardView.getBoardFace().MoveSubmit();
-				if (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) {
-					final String move = boardView.getBoardFace().convertMoveLive();
-					LccHolder.LOG.info("LCC make move: " + move);
-					/*try {*/
-						lccHolder.makeMove(mainApp.getCurrentGameId(), move);
-					/*} catch (IllegalArgumentException e) {
-						LccHolder.LOG.info("LCC illegal move: " + move);
-						e.printStackTrace();
-					}*/
-				}
-				break;
-			}
-			case CALLBACK_ECHESS_MOVE_WAS_SENT: // todo: probably this case should be removed from Live
-				// move was made
-				if (preferences.getInt(AppData.getUserName(getContext())
-						+ AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 2) {
-					finish();
-				} else if (preferences.getInt(preferences
-						.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0) == 0) {
+	public void onGameRefresh(GameItem gameItem) {
+        blockGame(false);
 
-					int i;
-					ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
-					for (GameListItem gameListItem : mainApp.getGameListItems()) {
-						if (gameListItem.type == 1 && gameListItem.values.get(GameListItem.IS_MY_TURN).equals("1")) {
-							currentGames.add(gameListItem);
-						}
-					}
-					for (i = 0; i < currentGames.size(); i++) {
-						if (currentGames.get(i).getGameId() == mainApp.getCurrentGameId()) {
-							if (i + 1 < currentGames.size()) {
-								boardView.setBoardFace(new ChessBoard(this));
-								boardView.getBoardFace().setAnalysis(false);
-								boardView.getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+		if (getBoardFace().isAnalysis())
+			return;
 
-								if (progressDialog != null) {
-									progressDialog.dismiss();
-									progressDialog = null;
-								}
-
-								getOnlineGame(currentGames.get(i + 1).getGameId());
-								return;
-							} else {
-								finish();
-								return;
-							}
-						}
-					}
-					finish();
-					return;
-				}
-				break;
-			case CALLBACK_GAME_REFRESH:
-				if (boardView.getBoardFace().isAnalysis())
-					return;
-
-				if (!mainApp.isLiveChess()) {
-					game = ChessComApiParser.GetGameParseV3(responseRepeatable);
-				}
-
-				if (mainApp.getCurrentGame() == null || game == null) {
-					return;
-				}
-
-				int[] moveFT;
-				if (!mainApp.getCurrentGame().equals(game)) {
-					if (!mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).equals(game.values.get(AppConstants.MOVE_LIST))) {
-						mainApp.setCurrentGame(game);
-						String[] moves;
-
-						if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")
-								|| ((mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())))) {
-
-							int beginIndex = (mainApp.isLiveChess() && MainApp.isLiveOrEchessGameMode(boardView.getBoardFace())) ? 0 : 1;
-
-							moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
-
-							if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
-								if (mainApp.isLiveChess()) {
-									moveFT = MoveParser.parseCoordinate(boardView.getBoardFace(), moves[moves.length - 1]);
-								} else {
-									moveFT = MoveParser.parse(boardView.getBoardFace(), moves[moves.length - 1]);
-								}
-								boolean playSound = (mainApp.isLiveChess()
-										&& lccHolder.getGame(mainApp.getCurrentGameId())
-										.getSeq() == moves.length)
-										|| !mainApp.isLiveChess();
-
-								if (moveFT.length == 4) {
-									Move move;
-									if (moveFT[3] == 2) {
-										move = new Move(moveFT[0], moveFT[1], 0, 2);
-									} else {
-										move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-									}
-									boardView.getBoardFace().makeMove(move, playSound);
-								} else {
-									Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-									boardView.getBoardFace().makeMove(move, playSound);
-								}
-								//mainApp.showToast("Move list updated!");
-								boardView.getBoardFace().setMovesCount(moves.length);
-								boardView.invalidate();
-								update(CALLBACK_REPAINT_UI);
-							}
-						}
-						return;
-					}
-
-                    checkMessages();
-				}
-				break;
-
-			case CALLBACK_GAME_STARTED:
-				getSoundPlayer().playGameStart();
-
-				mainApp.setCurrentGame(new GameItem(lccHolder.getGameData(mainApp.getGameId(), -1), true));
-				executePausedActivityGameEvents();
-				//lccHolder.setActivityPausedMode(false);
-				lccHolder.getWhiteClock().paint();
-				lccHolder.getBlackClock().paint();
-				/*int time = lccHolder.getGame(mainApp.getGameId()).getGameTimeConfig().getBaseTime() * 100;
-											   lccHolder.setWhiteClock(new ChessClock(this, whiteClockView, time));
-											   lccHolder.setBlackClock(new ChessClock(this, blackClockView, time));*/
-
-				checkMessages();
-
-				if (mainApp.getCurrentGame().values.get(GameListItem.GAME_TYPE).equals("2"))
-					boardView.getBoardFace().setChess960(true);
-
-
-				if (!isUserColorWhite()) {
-					boardView.getBoardFace().setReside(true);
-				}
+		int[] moveFT;
+		if (!currentGame.equals(gameItem)) {
+			if (!currentGame.values.get(AppConstants.MOVE_LIST).equals(gameItem.values.get(AppConstants.MOVE_LIST))) {
+				currentGame = gameItem;
 				String[] moves;
 
+				int beginIndex = 0;
 
-				if (mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-					moves = mainApp.getCurrentGame().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(1).split(" ");
-					boardView.getBoardFace().setMovesCount(moves.length);
-				} else if (!mainApp.isLiveChess()) {
-					boardView.getBoardFace().setMovesCount(0);
-				}
+				moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
+						.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
-				Game game = lccHolder.getGame(mainApp.getGameId());
-				if (game != null && game.getSeq() > 0) {
-					lccHolder.doReplayMoves(game);
-				}
+				if (moves.length - getBoardFace().getMovesCount() == 1) { // if have new move
 
-				String FEN = mainApp.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION);
-				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-					boardView.getBoardFace().genCastlePos(FEN);
-					MoveParser.fenParse(FEN, boardView.getBoardFace());
-				}
+					moveFT = MoveParser.parseCoordinate(getBoardFace(), moves[moves.length - 1]);
 
-				update(CALLBACK_REPAINT_UI);
-				boardView.getBoardFace().takeBack();
-				boardView.invalidate();
+					boolean playSound = getLccHolder().isPlaySound(gameId, moves);
 
-				playLastMoveAnimation();
-
-				if (MainApp.isLiveOrEchessGameMode(boardView.getBoardFace()) && appService != null && appService.getRepeatableTimer() == null) {
-					if (progressDialog != null) {
-						progressDialog.dismiss();
-						progressDialog = null;
+					if (moveFT.length == 4) {
+						Move move;
+						if (moveFT[3] == 2) {
+							move = new Move(moveFT[0], moveFT[1], 0, 2);
+						} else {
+							move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+						}
+						getBoardFace().makeMove(move, playSound);
+					} else {
+						Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+						getBoardFace().makeMove(move, playSound);
 					}
+					getBoardFace().setMovesCount(moves.length);
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							boardView.invalidate();
+							invalidateGameScreen();
+						}
+					});
 				}
-				break;
+				return;
+			}
 
-			default:
-				break;
+			checkMessages();
+		}
+	}
+
+    @Override
+    public void onConnectionBlocked() {
+        super.onConnectionBlocked();
+        blockGame(true);
+    }
+
+    @Override
+    public void onMessageReceived() {
+        gamePanelView.haveNewMessage(true);
+    }
+
+	@Override
+	public void onInform(String title, String message){
+		showSinglePopupDialog(title, message);
+	}
+
+    @Override
+    public void onDrawOffered(String drawOfferUsername) {
+        String message = drawOfferUsername + StaticData.SYMBOL_SPACE + getString(R.string.has_offered_draw);
+
+		popupItem.setPositiveBtnId(R.string.accept);
+		popupItem.setNegativeBtnId(R.string.decline);
+		showPopupDialog(message, DRAW_OFFER_RECEIVED_TAG);
+
+		popupDialogFragment.setCancelable(false);
+    }
+
+    @Override
+    public void onGameEnd(final String gameEndMessage) {
+        final Game game = getLccHolder().getGame(gameId);
+        switch (game.getGameTimeConfig().getGameTimeClass()) {
+            case BLITZ: {
+                whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
+                blackPlayerNewRating = game.getBlackPlayer().getBlitzRating();
+                currentPlayerRating = getLccHolder().getUser().getBlitzRating();
+                break;
+            }
+            case LIGHTNING: {
+                whitePlayerNewRating = game.getWhitePlayer().getQuickRating();
+                blackPlayerNewRating = game.getBlackPlayer().getQuickRating();
+                currentPlayerRating = getLccHolder().getUser().getQuickRating();
+                break;
+            }
+            case STANDARD: {
+                whitePlayerNewRating = game.getWhitePlayer().getStandardRating();
+                blackPlayerNewRating = game.getBlackPlayer().getStandardRating();
+                currentPlayerRating = getLccHolder().getUser().getStandardRating();
+                break;
+            }
+        }
+
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View layout;
+        if (!MopubHelper.isShowAds(this)) {
+            layout = inflater.inflate(R.layout.popup_end_game, null, false);
+        }else {
+            layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+        }
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
+				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
+				onGameEndMsgReceived();
+			}
+		});
+
+    }
+
+	// -----------------------------------------------------------------------------------
+
+    private void blockGame(boolean block){
+//        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
+//        boardView.lockBoard(block);
+    }
+    
+
+
+	protected void sendMove() {
+		showSubmitButtonsLay(false);
+
+		final String move = getBoardFace().convertMoveLive();
+		Log.i(TAG, "LCC make move: " + move);
+		try {
+			getLccHolder().makeMove(gameId, move);
+		} catch (IllegalArgumentException e) {
+			Log.i(TAG, "LCC illegal move: " + move);
+			e.printStackTrace();
 		}
 	}
 
 	private void updatePlayerLabels() {
-        if(userPlayWhite){
-            whitePlayerLabel.setText(mainApp.getBlackPlayerName());
-            gamePanelView.setWhiteTimer(mainApp.getWhitePlayerName().toString());
-        }else{
-            whitePlayerLabel.setText(mainApp.getWhitePlayerName());
-            gamePanelView.setWhiteTimer(mainApp.getBlackPlayerName().toString());
-        }
+		if (userPlayWhite) {
+			whitePlayerLabel.setText(getBlackPlayerName());
+			gamePanelView.setWhiteTimer(getWhitePlayerName());
+		} else {
+			whitePlayerLabel.setText(getWhitePlayerName());
+			gamePanelView.setWhiteTimer(getBlackPlayerName());
+		}
 	}
 
 	@Override
@@ -411,47 +405,52 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		openChatActivity();
 	}
 
-	private boolean openChatActivity(){
-        preferencesEditor.putString(AppConstants.OPPONENT, mainApp.getCurrentGame().values.get(
-                isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
-        preferencesEditor.commit();
+	private boolean openChatActivity() {
+		preferencesEditor.putString(AppConstants.OPPONENT, currentGame.values.get(
+				isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
+		preferencesEditor.commit();
 
-        mainApp.getCurrentGame().values.put(GameItem.HAS_NEW_MESSAGE, "0");
-        gamePanelView.haveNewMessage(false);
+		currentGame.values.put(GameItem.HAS_NEW_MESSAGE, "0");
+		gamePanelView.haveNewMessage(false);
 
-        Intent intent = new Intent(this, ChatLiveActivity.class);
-        intent.putExtra(GameListItem.GAME_ID, mainApp.getCurrentGameId() );
-        intent.putExtra(GameListItem.TIMESTAMP, mainApp.getCurrentGame().values.get(GameListItem.TIMESTAMP));
-        startActivity(intent);
+		Intent intent = new Intent(this, ChatLiveActivity.class);
+		intent.putExtra(GameListItem.GAME_ID, gameId);
+		intent.putExtra(GameListItem.TIMESTAMP, currentGame.values.get(GameListItem.TIMESTAMP));
+		startActivity(intent);
 
-        return true;
-    }
-    
+		return true;
+	}
 
-    private void checkMessages(){
-        if (game.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
-            mainApp.setCurrentGame(game);
-            // show notification instead
-            gamePanelView.haveNewMessage(true);
-            AppUtils.showNotification(getContext(), StaticData.SYMBOL_EMPTY, mainApp.getGameId(), StaticData.SYMBOL_EMPTY, StaticData.SYMBOL_EMPTY, ChatLiveActivity.class);
-        }
-    }
+	private void checkMessages() {
+		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+			gamePanelView.haveNewMessage(true);
+		}
+	}
 
 	@Override
 	public void newGame() {
 		startActivity(new Intent(this, LiveNewGameActivity.class));
 	}
 
-    @Override
-    public void updateAfterMove() {
-    }
+	@Override
+	public void updateAfterMove() {
+		sendMove();
+	}
 
-    @Override
-    public void invalidateGameScreen() {
-        //TODO To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void invalidateGameScreen() {
+		if (getBoardFace().isSubmit())
+			showSubmitButtonsLay(true);
 
-    @Override
+		whitePlayerLabel.setVisibility(View.VISIBLE);
+		blackPlayerLabel.setVisibility(View.VISIBLE);
+
+		updatePlayerLabels();
+
+		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+	}
+
+	@Override
 	public void showOptions() {
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
@@ -461,7 +460,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-		boardView.getBoardFace().setSubmit(show);
+		getBoardFace().setSubmit(show);
 	}
 
 	@Override
@@ -478,16 +477,19 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 				showOptions();
 				break;
 			case R.id.menu_chat:
-				// test
-//				chat = true;
-//				getOnlineGame(mainApp.getGameId());
 				openChatActivity();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
+	@Override
+	public Boolean isUserColorWhite() {
+		return currentGame.values.get(AppConstants.WHITE_USERNAME).toLowerCase()
+				.equals(AppData.getUserName(this));
+	}
+
+    private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		private final int LIVE_SETTINGS = 0;
 		private final int LIVE_RESIDE = 1;
 		private final int LIVE_DRAW_OFFER = 2;
@@ -501,24 +503,22 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 		}
 
 		@Override
-		public void onClick(DialogInterface dialogInterface, int i) {
-			switch (i) {
+		public void onClick(DialogInterface dialogInterface, int pos) {
+			switch (pos) {
 				case LIVE_SETTINGS:
 					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
 				case LIVE_RESIDE:
-					boardView.getBoardFace().setReside(!boardView.getBoardFace().isReside());
+					getBoardFace().setReside(!getBoardFace().isReside());
 					boardView.invalidate();
 					break;
 				case LIVE_DRAW_OFFER:
-					showDialog(DIALOG_DRAW_OFFER);
+					showPopupDialog(R.string.drawoffer, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 					break;
 				case LIVE_RESIGN_OR_ABORT:
-					showDialog(DIALOG_ABORT_OR_RESIGN);
+					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
 					break;
 				case LIVE_MESSAGES:
-//					chat = true;
-//					getOnlineGame(mainApp.getGameId());
 					openChatActivity();
 					break;
 			}
@@ -526,81 +526,163 @@ public class GameLiveScreenActivity extends GameBaseActivity implements View.OnC
 	}
 
 	@Override
-	public void onLeftBtnClick(PopupDialogFragment fragment) {
-		if (fragment.getTag().equals(LOGOUT_TAG)) {
-			lccHolder.logout();
-			backToHomeActivity();
-		} else if(fragment.getTag().equals(CHALLENGE_TAG)) {
-			LccHolder.LOG.info("Accept challenge: " + currentChallenge);
-			lccHolder.getAndroid().runAcceptChallengeTask(currentChallenge);
-			lccHolder.declineAllChallenges(currentChallenge);
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
+			Log.i(TAG, AppConstants.REQUEST_DRAW + getLccHolder().getGame(gameId));
+			gameTaskRunner.runMakeDrawTask(gameId);
+		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
+			Game game = getLccHolder().getGame(gameId);
+
+			if (getLccHolder().isFairPlayRestriction(gameId)) {
+				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
+				Log.i(TAG, AppConstants.RESIGN_GAME + game);
+				gameTaskRunner.runMakeResignTask(gameId);
+			} else if (getLccHolder().isAbortableBySeq(gameId)) {
+				Log.i(TAG, AppConstants.LCCLOG_ABORT_GAME + game);
+				gameTaskRunner.runAbortGameTask(gameId);
+			} else {
+				Log.i(TAG, AppConstants.LCCLOG_RESIGN_GAME + game);
+				gameTaskRunner.runMakeResignTask(gameId);
+			}
+			finish();
 		}
-		fragment.getDialog().dismiss();
+	}
+
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
+			Log.i(TAG, AppConstants.DECLINE_DRAW + getLccHolder().getGame(gameId));
+			gameTaskRunner.runRejectDrawTask(gameId);
+		}
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		if (mainApp.getCurrentGame().values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
 		} else {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);
 		}
 	}
 
-	protected void changeResignTitle() {
-		if (lccHolder.isFairPlayRestriction(mainApp.getGameId())) {
-			resignOrAbort = R.string.resign;
-		} else if (lccHolder.isAbortableBySeq(mainApp.getGameId())) {
-			resignOrAbort = R.string.abort;
-		} else {
-			resignOrAbort = R.string.resign;
-		}
-	}
-
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mainApp.getCurrentGame() != null) {
+		if (currentGame != null) {
 			changeChatIcon(menu);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	// ---------------- Players names and labels -----------------------------------------------------------------
+
 	@Override
-	protected void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-        if(userPlayWhite){
-            whitePlayerLabel.setText(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
-            gamePanelView.setWhiteTimer(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")"); // always at the bottom
-        }else{
-            whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + "(" + newWhiteRating + ")");
-            gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + "(" + newBlackRating + ")");
-        }
+	public String getWhitePlayerName() {
+		if (currentGame == null)
+			return StaticData.SYMBOL_EMPTY;
+		else
+			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+	}
+
+	@Override
+	public String getBlackPlayerName() {
+		if (currentGame == null)
+			return StaticData.SYMBOL_EMPTY;
+		else
+			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+	}
+
+	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
+		if (userPlayWhite) {
+			whitePlayerLabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
+			gamePanelView.setWhiteTimer(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
+		} else {
+			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
+			gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
+		}
 	}
 
 	@Override
 	protected void onGameEndMsgReceived() {
 		showSubmitButtonsLay(false);
 		gamePanelView.enableAnalysisMode(true);
+
+        boardView.setFinished(true);
+        gamePanelView.showBottomPart(false);
+        getSoundPlayer().playGameEnd();
 	}
 
-	private BroadcastReceiver chatMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			//LccHolder.LOG.info("ANDROID: receive broadcast intent, action=" + intent.getAction());
-//			chatPanel.setVisibility(View.VISIBLE);
-			gamePanelView.haveNewMessage(true);
+	protected void showGameEndPopup(View layout,String title, String message) {
+
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
+		endGameTitleTxt.setText(title);
+		endGameReasonTxt.setText(message);
+
+		int currentPlayerNewRating;
+		if (userPlayWhite) {
+			currentPlayerNewRating = whitePlayerNewRating;
+		} else {
+			currentPlayerNewRating = blackPlayerNewRating;
 		}
-	};
+
+		int ratingDiff;
+		String sign;
+		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
+			ratingDiff = currentPlayerNewRating - currentPlayerRating;
+			sign = StaticData.SYMBOL_PLUS;
+		} else { // 800 700
+			ratingDiff = currentPlayerRating - currentPlayerNewRating;
+			sign = StaticData.SYMBOL_MINUS;
+		}
+		
+		String rating = getString(R.string.your_end_game_rating, sign + ratingDiff, currentPlayerNewRating);
+		yourRatingTxt.setText(rating);
+
+		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, this);
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(layout);
+
+		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem, this);
+		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
+
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+
+	}
+
+	@Override
+	protected void restoreGame() {
+	}
 
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.cancel) {
+		if (view.getId() == R.id.cancelBtn) {
 			showSubmitButtonsLay(false);
 
-			boardView.getBoardFace().takeBack();
-			boardView.getBoardFace().decreaseMovesCount();
+			getBoardFace().takeBack();
+			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
-		} else if (view.getId() == R.id.submit) {
-			update(CALLBACK_SEND_MOVE);
+		} else if (view.getId() == R.id.submitBtn) {
+			sendMove();
+		} else if (view.getId() == R.id.newGamePopupBtn) {
+			Intent intent = new Intent(this, LiveNewGameActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			// TODO send rematch request
+
+		} else if (view.getId() == R.id.upgradeBtn) {
+			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}
 }

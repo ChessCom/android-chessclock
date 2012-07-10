@@ -26,15 +26,16 @@
 				>
 
 				<com.chess.RoboTextView
+					android:id="@+id/friendsTxt"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
-					android:text="@string/Friend"
+					android:text="@string/friend"
 					android:layout_weight="6"
 					/>
 
 				<Spinner
-					android:id="@+id/friend"
+					android:id="@+id/friendsSpinner"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="4"/>
@@ -62,6 +63,8 @@
 					android:text=""/>
 			</LinearLayout>
 
+
+			<!--Bonus Time-->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -98,7 +101,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@drawable/button_orange_selector"
-				android:layout_marginTop="@dimen/margin_top_beween_buttons"
+				android:layout_marginTop="@dimen/margin_top_between_buttons"
 
 				android:text="@string/ChallengeCreate"/>
 		</LinearLayout>

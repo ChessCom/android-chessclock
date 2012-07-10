@@ -135,7 +135,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         addView(controlsLayout);
 
         // create textViews for timers
-        whiteTimer = new RoboTextView(getContext(), null, R.attr.playerLabelStyle);
+        whiteTimer = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
         whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_black, 0, 0, 0);
         whiteTimer.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
         int timerPaddingLeft = (int) (8 * density + 0.5f);
@@ -148,7 +148,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         whiteTimer.setLayoutParams(whiteTimerParams);
 
-        blackTimer = new RoboTextView(getContext(), null, R.attr.playerLabelStyle);
+        blackTimer = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
         blackTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
 
         int timerPaddingLeft1 = (int) (2 * density + 0.5f);
@@ -189,6 +189,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         pieceParams.weight = 3.5f;
         piecesLayout.setLayoutParams(pieceParams);
         piecesLayout.setOrientation(VERTICAL);
+
         int pieceLayoutPaddingLeft = (int) getResources().getDimension(R.dimen.piece_layout_padding_left);
         int pieceLayoutPaddingRight = (int) getResources().getDimension(R.dimen.piece_layout_padding_right);
         int pieceLayoutPaddingTop = (int) getResources().getDimension(R.dimen.piece_layout_padding_top);
@@ -277,7 +278,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         imageButton.setBackgroundResource(backId);
         imageButton.setOnClickListener(this);
         imageButton.setId(BUTTON_PREFIX + buttonId);
-//		imageButton.setEnabled(false);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -575,9 +575,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
 	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(GamePanelView.B_ANALYSIS_ID, enable);
-		enableGameButton(GamePanelView.B_FORWARD_ID, enable);
-		enableGameButton(GamePanelView.B_BACK_ID, enable);
+		enableGameButton(B_ANALYSIS_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+		enableGameButton(B_CHAT_ID, !enable);
 	}
 
+    public void lock(boolean lock) {
+        //TODO change body of created methods use File | Settings | File Templates.
+        setEnabled(!lock);
+    }
 }

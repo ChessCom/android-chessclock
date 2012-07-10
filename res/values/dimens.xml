@@ -28,6 +28,7 @@
 	<dimen name="rounded_button_padding_bottom">0dip</dimen>
 
   	<dimen name="default_field_height">48dip</dimen>
+  	<dimen name="default_button_text_size">16sp</dimen>
   	<dimen name="default_button_height">40dip</dimen>    <!--Plus glow borders-->
  	<dimen name="signin_button_height">50dip</dimen>
     <dimen name="default_stroke_width">1dip</dimen>
@@ -35,6 +36,9 @@
     <!--Upgrade Button-->
     <dimen name="button_upgrade_left_padding">43dip</dimen>
     <dimen name="button_upgrade_right_padding">46dip</dimen>
+
+	<!--Login fb-->
+    <dimen name="button_login_fb_left_padding">6dip</dimen>
 
 
     <dimen name="list_item_image_size">27dip</dimen>
@@ -77,13 +81,14 @@
 	<dimen name="live_grid_padding_bottom">10dip</dimen>
 
 
-    <!--Default screen-->
-    <dimen name="default_scr_top_padding">16dip</dimen>
-    <dimen name="default_scr_side_padding">16dip</dimen>
+	<!--Default screen-->
+	<dimen name="default_scr_top_padding">16dip</dimen>
+	<dimen name="default_scr_side_padding">16dip</dimen>
+	<dimen name="default_scr_bottom_padding">10dip</dimen>
 
 	<!--Default margins between screen widgets-->
 
-	<dimen name="margin_top_beween_buttons">10dip</dimen>
+	<dimen name="margin_top_between_buttons">10dip</dimen>
 	<!--Linear Description paddings-->
 	<dimen name="default_linear_bottom_padding">2dip</dimen>
 	<dimen name="default_linear_top_padding">2dip</dimen>
@@ -99,17 +104,12 @@
 
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
-	<dimen name="player_name_max_width">150dip</dimen>
+	<dimen name="player_name_max_width">140dip</dimen>
 	<dimen name="game_label_padding_top">2dip</dimen>
 	<dimen name="game_end_layout_padding_bottom">8dip</dimen>
 	<dimen name="game_end_layout_padding_side">7dip</dimen>
 	<dimen name="game_label_text_size">14sp</dimen>
 
-
-	<!--
-	 <dimen name="signin_button_margin_updown">24dip</dimen>
-	 <dimen name="signin_footer_margin_bottom">10dip</dimen>
- -->
 
 	<!--GamePanelView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
@@ -129,9 +129,8 @@
 
 	<!--Popup-->
 	<dimen name="ad_popup_width">300dip</dimen>
-	<dimen name="ad_popup_height">250dip</dimen>
-	<dimen name="popup_dialog_width">300dip</dimen>
-	<dimen name="popup_dialog_text_max_width">250dip</dimen>
+	<dimen name="ad_popup_height">220dip</dimen>
+	<dimen name="game_end_popup_text_size">16sp</dimen>
 
 	<!--Pending load-->
 	<dimen name="pending_progress_bar_size">40dip</dimen>

@@ -1,6 +1,6 @@
 package com.chess.ui.interfaces;
 
-import com.chess.ui.fragments.PopupDialogFragment;
+import android.support.v4.app.DialogFragment;
 
 /**
  * PopupDialogFace class
@@ -9,7 +9,7 @@ import com.chess.ui.fragments.PopupDialogFragment;
  * @created at: 07.04.12 7:36
  */
 public interface PopupDialogFace {
-	void onLeftBtnClick(PopupDialogFragment fragment);
-
-	void onRightBtnClick(PopupDialogFragment fragment);
+	void onPositiveBtnClick(DialogFragment fragment);
+    void onNeutralBtnCLick(DialogFragment fragment);
+	void onNegativeBtnClick(DialogFragment fragment);
 }

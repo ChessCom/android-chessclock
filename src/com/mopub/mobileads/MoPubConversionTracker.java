@@ -80,10 +80,13 @@ public class MoPubConversionTracker {
             Log.d("MoPub", "Conversion track: " + url);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpGet httpget = new HttpGet(url);
             HttpResponse response;
             try {
+                HttpGet httpget = new HttpGet(url);
                 response = httpclient.execute(httpget);
+            } catch (IllegalArgumentException e) {
+                Log.d("MoPub", "Conversion track failed (IllegalArgumentException): "+url);
+                return;
             } catch (ClientProtocolException e) {
                 // Just fail silently. We'll try the next time the app opens
                 Log.d("MoPub", "Conversion track failed: ClientProtocolException (no signal?)");

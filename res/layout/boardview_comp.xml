@@ -27,7 +27,7 @@
 			android:id="@+id/white"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/Human"
+			android:text="@string/guest"
 			android:paddingLeft="8dip"
 			android:paddingRight="2dip"
 			android:drawableLeft="@drawable/player_indicator_white"
@@ -63,7 +63,7 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical">
 
-		<com.chess.ui.views.ChessBoardView
+		<com.chess.ui.views.ChessBoardCompView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

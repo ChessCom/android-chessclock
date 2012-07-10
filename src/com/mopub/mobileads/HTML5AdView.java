@@ -14,6 +14,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.widget.FrameLayout;
+
 import com.chess.R;
 
 public class HTML5AdView extends AdView {

@@ -3,11 +3,13 @@ package com.chess.model;
 import java.util.HashMap;
 
 // TODO eliminate hashmaps and create Objects
+// TODO divide to different game instance live/online
 public class GameListItem {
 
 	public final static int LIST_TYPE_CURRENT = 0;
 	public final static int LIST_TYPE_CHALLENGES = 1;
 	public final static int LIST_TYPE_FINISHED = 2;
+	public static final String V_ONE = "1";
 
 	public static final String GAME_TYPE = "game_type";
 	public static final String GAME_ID = "game_id";
@@ -37,10 +39,6 @@ public class GameListItem {
 	public static final String IS_OPPONENT_ONLINE = "is_opponent_online";
 	public static final String GAME_RESULT = "game_result";
 
-//	public final static int LIST_TYPE_CURRENT = 0;
-//	public final static int LIST_TYPE_CHALLENGES = 1;
-//	public final static int LIST_TYPE_FINISHED = 2;
-
 	public int type = 0;
 	public HashMap<String, String> values;
 	public boolean isLiveChess;
@@ -50,7 +48,6 @@ public class GameListItem {
 		this.values = new HashMap<String, String>();
 		this.isLiveChess = isLiveChess;
 		switch (type) {
-//			case LIST_TYPE_CURRENT: {
 			case LIST_TYPE_CHALLENGES: {
 				this.values.put(GAME_ID, values[0].trim());
 				this.values.put(OPPONENT_USERNAME, values[1]);
@@ -78,7 +75,6 @@ public class GameListItem {
 
 				break;
 			}
-//			case LIST_TYPE_CHALLENGES: {
 			case LIST_TYPE_CURRENT: {
 				this.values.put(GAME_ID, values[0]);
 				this.values.put(COLOR, values[1]);
@@ -129,7 +125,6 @@ public class GameListItem {
 			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
 		}
 		return builder.toString();
-//		return super.toString();
 	}
 
 

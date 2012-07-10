@@ -20,7 +20,7 @@ import com.flurry.android.FlurryAgent;
  * @author alien_roger
  * @created at: 08.02.12 7:21
  */
-public class ComputerScreenActivity extends LiveBaseActivity implements View.OnClickListener {
+public class ComputerScreenActivity extends LiveBaseActivity {
 
 	private Spinner strength;
 
@@ -28,6 +28,8 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.computer_screen);
+
+		findViewById(R.id.load).setOnClickListener(this);
 
 		strength = (Spinner) findViewById(R.id.strengthSpinner);
 		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
@@ -49,21 +51,12 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
+		strength.setSelection(AppData.getCompStrength(this));
 
-		if (strength != null && mainApp != null && preferences != null) {
-			strength.post(new Runnable() {
-				@Override
-				public void run() {
-					strength.setSelection(preferences.getInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
-				}
-			});
-
-			if (!preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
-				findViewById(R.id.load).setVisibility(View.VISIBLE);
-				findViewById(R.id.load).setOnClickListener(this);
-			} else {
-				findViewById(R.id.load).setVisibility(View.GONE);
-			}
+		if (!preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
+			findViewById(R.id.load).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.load).setVisibility(View.GONE);
 		}
 	}
 
@@ -72,7 +65,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 		if (view.getId() == R.id.load) {
 			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
 
-			startActivity(new Intent(getContext(), GameCompScreenActivity.class)
+			startActivity(new Intent(this, GameCompScreenActivity.class)
 					.putExtra(AppConstants.GAME_MODE,
 							Integer.parseInt(preferences
 									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
@@ -97,9 +90,4 @@ public class ComputerScreenActivity extends LiveBaseActivity implements View.OnC
 		}
 	}
 
-
-
-	@Override
-	public void update(int code) {
-	}
 }

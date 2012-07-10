@@ -1,0 +1,341 @@
+<resources>
+
+	<string-array name="languages">
+		<item>İngilizce</item>
+		<item>Arapça</item>
+		<item>Çin</item>
+		<item>Danca</item>
+		<item>Felemenkçe</item>
+		<item>Fransızca</item>
+		<item>Almanca</item>
+		<item>İbranice</item>
+		<item>Hintçe</item>
+		<item>İtalyanca</item>
+		<item>Japon.</item>
+		<item>Kore</item>
+		<item>Norveç</item>
+		<item>Farsça</item>
+		<item>Polonyaca</item>
+		<item>Portekizce</item>
+		<item>Rus</item>
+		<item>İspanyolca</item>
+		<item>İsveççe</item>
+		<item>Türk</item>
+	</string-array>
+
+	<string-array name="playas">
+		<item>Rastgele</item>
+		<item>Beyaz</item>
+		<item>Siyah</item>
+	</string-array>
+
+	<string-array name="dayspermove">
+	    <item>1 saat</item>
+		<item>2 gün</item>
+		<item>3 gün</item>
+		<item>5 gün</item>
+		<item>7 gün</item>
+		<item>14 gün</item>
+	</string-array>
+	
+
+	<string-array name="skill">
+	    <item>Set değil</item>
+	    <item>Acemi</item>
+		<item>Ara</item>
+		<item>Gelişmiş</item>
+	</string-array>
+	
+	<string-array name="category">
+	    <item>Set değil</item>
+	    <item>İnanılmaz oyunlar</item>
+		<item>Hamleler</item>
+		<item>Açılışlar</item>
+		<item>Kuralları Temelleri</item>
+		<item>Strateji</item>
+		<item>Taktikler</item>
+	</string-array>	
+	
+	<string-array name="wrongtactic">
+	    <item>Sonraki</item>
+		<item>Tekrar dene</item>
+		<item>Dur</item>
+	</string-array>
+	
+	<string-array name="correcttactic">
+	    <item>Dur</item>
+		<item>Sonraki</item>
+	</string-array>
+
+	<string-array name="onlineSpinner">
+		<item>Şu Oyunları</item>
+		<item>Zorluklar</item>
+		<item>Bitmiş Oyunlar</item>
+	</string-array>	
+
+	<string-array name="AIM">
+	    <item>Sonraki Hazır Oyun Git</item>
+		<item>Aynı Oyunu Stay</item>
+		<item>Oyun Listesi Return To</item>
+	</string-array>
+
+	<string-array name="Notif">
+	    <item>Yok</item>
+		<item>Titreşim</item>
+		<item>Zilsesi</item>
+		<item>Yanıp sönen LED</item>
+	</string-array>
+	
+	<string-array name="strength">
+	    <item>1 sn</item>
+		<item>3 sn</item>
+		<item>5 sn</item>
+		<item>10 sn</item>
+		<item>30 sn</item>
+		<item>1 dakika</item>
+	</string-array>
+	
+    <string-array name="countries">
+        <item>Amerika Birleşik Devletleri</item>
+        <item>Kanada</item>
+        <item>Arjantin</item>
+        <item>Belçika</item>
+        <item>Afganistan</item>
+        <item>Arnavutluk</item>
+        <item>Andorra</item>
+        <item>Anguilla</item>
+        <item>Antigua / Barbuda</item>
+        <item>Ermenistan</item>
+        <item>Aruba</item>
+        <item>Avustralya</item>
+        <item>Avusturya</item>
+        <item>Bahamalar</item>
+        <item>Bahreyn</item>
+        <item>Barbados</item>
+        <item>Beyaz Rusya</item>
+        <item>Belize</item>
+        <item>Bermuda</item>
+        <item>Bolivya</item>
+        <item>Bosna-Hersek</item>
+        <item>Brezilya</item>
+        <item>Bulgaristan</item>
+        <item>Kanarya Adaları</item>
+        <item>Cayman Adaları</item>
+        <item>Channel Islands</item>
+        <item>Şili</item>
+        <item>Çin</item>
+        <item>Kolombiya</item>
+        <item>Kosta Rika</item>
+        <item>Hırvatistan</item>
+        <item>Küba</item>
+        <item>Curacao</item>
+        <item>Kıbrıs</item>
+        <item>Çek Cumhuriyeti</item>
+        <item>Danimarka</item>
+        <item>Dominika</item>
+        <item>Dominik Cumhuriyeti</item>
+        <item>Ekvador</item>
+        <item>Mısır</item>
+        <item>El Salvador</item>
+        <item>Estonya</item>
+        <item>Falkland Adaları</item>
+        <item>Faroe Adaları</item>
+        <item>Fiji</item>
+        <item>Finlandiya</item>
+        <item>Fransa</item>
+        <item>Gürcistan</item>
+        <item>Almanya</item>
+        <item>Cebelitarık</item>
+        <item>Yunanistan</item>
+        <item>Grönland</item>
+        <item>Grenada</item>
+        <item>Guadeloupe</item>
+        <item>Guam</item>
+        <item>Guatemala</item>
+        <item>Guernsey</item>
+        <item>Guyana</item>
+        <item>Haiti</item>
+        <item>Honduras</item>
+        <item>Hong Kong</item>
+        <item>Macaristan</item>
+        <item>İzlanda</item>
+        <item>Hindistan</item>
+        <item>Endonezya</item>
+        <item>İran</item>
+        <item>Irak</item>
+        <item>İrlanda</item>
+        <item>Man Adası</item>
+        <item>İsrail</item>
+        <item>İtalya</item>
+        <item>Jamaika</item>
+        <item>Japonya</item>
+        <item>Jersey</item>
+        <item>Ürdün</item>
+        <item>Kazakistan</item>
+        <item>Kiribati</item>
+        <item>Güney Kore</item>
+        <item>Kuveyt</item>
+        <item>Letonya</item>
+        <item>Lübnan</item>
+        <item>Lihtenştayn</item>
+        <item>Litvanya</item>
+        <item>Lüksemburg</item>
+        <item>Macao</item>
+        <item>Makedonya</item>
+        <item>Malezya</item>
+        <item>Malta</item>
+        <item>Martinique</item>
+        <item>Meksika</item>
+        <item>Moldova</item>
+        <item>Monako</item>
+        <item>Montserrat</item>
+        <item>Nauru</item>
+        <item>Nepal</item>
+        <item>Hollanda</item>
+        <item>Yeni Zelanda</item>
+        <item>Nikaragua</item>
+        <item>Norveç</item>
+        <item>Umman</item>
+        <item>Pakistan</item>
+        <item>Panama</item>
+        <item>Papua Yeni Gine</item>
+        <item>Paraguay</item>
+        <item>Peru</item>
+        <item>Filipinler</item>
+        <item>Polonya</item>
+        <item>Portekiz</item>
+        <item>Porto Riko</item>
+        <item>Romanya</item>
+        <item>Rusya</item>
+        <item>Saint Croix</item>
+        <item>Saint Kitts / Nevis</item>
+        <item>Saint Lucia</item>
+        <item>Saint Pierre / Miquelon</item>
+        <item>San Marino</item>
+        <item>Suudi Arabistan</item>
+        <item>Sırbistan-Karadağ</item>
+        <item>Singapur</item>
+        <item>Slovakya</item>
+        <item>Slovenya</item>
+        <item>Solomon Adaları</item>
+        <item>Güney Afrika</item>
+        <item>Güney Georgia</item>
+        <item>Surinam</item>
+        <item>İsveç</item>
+        <item>İsviçre</item>
+        <item>Tayvan</item>
+        <item>Tayland</item>
+        <item>Tonga</item>
+        <item>Trinidad / Tobago</item>
+        <item>Türkiye</item>
+        <item>Türkmenistan</item>
+        <item>Tuvalu</item>
+        <item>Ukrayna</item>
+        <item>Birleşik Arap Emirlikleri</item>
+        <item>Uruguay</item>
+        <item>Özbekistan</item>
+        <item>Vanuatu</item>
+        <item>Vatikan</item>
+        <item>Venezuela</item>
+        <item>Vietnam</item>
+        <item>Batı Samoa</item>
+        <item>Yemen</item>
+        <item>Yugoslavya</item>
+        <item>Amerikan Samoa</item>
+        <item>Saint Vincent</item>
+        <item>Azerbaycan</item>
+        <item>Moğolistan</item>
+        <item>Suriye</item>
+        <item>İngiltere</item>
+        <item>Marshall Adaları</item>
+        <item>Kuzey İrlanda</item>
+        <item>İskoçya</item>
+        <item>İspanya</item>
+        <item>Birleşik Krallık</item>
+        <item>ABD Virgin Adaları</item>
+        <item>Galler. </item>
+        <item>Pago Pago</item>
+        <item>Saint John</item>
+        <item>Saint Thomas</item>
+        <item>İngiltere</item>
+        <item>Hollanda</item>
+        <item>Güney Kore</item>
+        <item>Kırgızistan</item>
+        <item>Bangladeş</item>
+        <item>Sudan</item>
+        <item>Benin</item>
+        <item>Bhutan</item>
+        <item>Botsvana</item>
+        <item>Brunei</item>
+        <item>Burundi</item>
+        <item>Kamboçya</item>
+        <item>Kamerun</item>
+        <item>Cape Verde</item>
+        <item>Orta Afrika</item>
+        <item>Çad</item>
+        <item>Kongo</item>
+        <item>Fildişi Sahilleri</item>
+        <item>Cibuti</item>
+        <item>Ekvator Ginesi</item>
+        <item>Gabon</item>
+        <item>Gana</item>
+        <item>Kenya</item>
+        <item>Laos</item>
+        <item>Liberya</item>
+        <item>Madagaskar</item>
+        <item>Fas</item>
+        <item>Mozambik</item>
+        <item>Myanmar</item>
+        <item>Namibya</item>
+        <item>Nijer</item>
+        <item>Nijerya</item>
+        <item>Katar</item>
+        <item>Ruanda</item>
+        <item>Samoa</item>
+        <item>Sao Tome / Principe</item>
+        <item>Senegal</item>
+        <item>Sierra Leone</item>
+        <item>Somali</item>
+        <item>Sri Lanka</item>
+        <item>Svaziland</item>
+        <item>Tacikistan</item>
+        <item>Tanzanya</item>
+        <item>Timor-Leste</item>
+        <item>Togo</item>
+        <item>Tunus</item>
+        <item>Uganda</item>
+        <item>Zambiya</item>
+        <item>Zimbabve</item>
+        <item>Cezayir</item>
+        <item>Moritanya</item>
+        <item>Uluslararası</item>
+        <item>Sırbistan</item>
+        <item>Karadağ</item>
+        <item>Libya</item>
+        <item>Gambiya</item>
+        <item>Malavi</item>
+        <item>Filistin</item>
+        <item>Etiyopya</item>
+        <item>Mauritius</item>
+        <item>Lesotho</item>
+        <item>Mali</item>
+        <item>Maldivler</item>
+        <item>Katalonya</item>
+        <item>Galicia</item>
+        <item>Kosova</item>
+        <item>Demokratik Kongo Cumhuriyeti</item>
+        <item>Angola</item>
+        <item>Komorlar</item>
+        <item>Eritre</item>
+        <item>Gine</item>
+        <item>Gine Bissau</item>
+        <item>Mikronezya</item>
+        <item>Kuzey Kore</item>
+        <item>Palau</item>
+        <item>Seyşeller</item>
+        <item>Batı Sahra</item>
+        <item>Birleşik Krallık Virgin Adaları</item>
+    </string-array>
+
+
+</resources>

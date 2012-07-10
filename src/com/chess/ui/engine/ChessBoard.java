@@ -13,11 +13,11 @@ import android.util.Log;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.model.GameItem;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
 
 import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 public class ChessBoard implements BoardFace {
@@ -274,11 +274,11 @@ public class ChessBoard implements BoardFace {
 	private int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	private BoardToGameActivityFace coreActivity;
+	private BoardToGameActivityFace gameActivityFace;
 	private SoundPlayer soundPlayer;
 
 	public ChessBoard(BoardToGameActivityFace gameActivityFace) {
-		this.coreActivity = gameActivityFace;
+		this.gameActivityFace = gameActivityFace;
 		soundPlayer = gameActivityFace.getSoundPlayer();
 	}
 
@@ -532,7 +532,7 @@ public class ChessBoard implements BoardFace {
 	public TreeSet<Move> gen() {
 		TreeSet<Move> ret = new TreeSet<Move>();
 
-		for (int i = 0; i < 64; ++i)
+		for (int i = 0; i < 64; ++i){
 			if (color[i] == side) {
 				if (pieces[i] == PAWN) {
 					if (side == LIGHT) {
@@ -556,8 +556,8 @@ public class ChessBoard implements BoardFace {
 								genPush(ret, i, i + 16, 24);
 						}
 					}
-				} else if (pieces[i] < offsets.length)
-					for (int j = 0; j < offsets[pieces[i]]; ++j)
+				} else if (pieces[i] < offsets.length){
+					for (int j = 0; j < offsets[pieces[i]]; ++j){
 						for (int n = i; ; ) {
 							n = mailbox[mailbox64[n] + offset[pieces[i]][j]];
 							if (n == -1)
@@ -571,7 +571,10 @@ public class ChessBoard implements BoardFace {
 							if (!slide[pieces[i]])
 								break;
 						}
+                    }
+                }
 			}
+        }
 
 		/* generate castle moves */
 		int i;
@@ -599,15 +602,19 @@ public class ChessBoard implements BoardFace {
 		/* generate en passant moves */
 		if (ep != -1) {
 			if (side == LIGHT) {
-				if (getColumn(ep) != 0 && color[ep + 7] == LIGHT && pieces[ep + 7] == PAWN)
+				if (getColumn(ep) != 0 && color[ep + 7] == LIGHT && pieces[ep + 7] == PAWN){
 					genPush(ret, ep + 7, ep, 21);
-				if (getColumn(ep) != 7 && color[ep + 9] == LIGHT && pieces[ep + 9] == PAWN)
+                }
+				if (getColumn(ep) != 7 && color[ep + 9] == LIGHT && pieces[ep + 9] == PAWN){
 					genPush(ret, ep + 9, ep, 21);
+                }
 			} else {
-				if (getColumn(ep) != 0 && color[ep - 9] == DARK && pieces[ep - 9] == PAWN)
+				if (getColumn(ep) != 0 && color[ep - 9] == DARK && pieces[ep - 9] == PAWN){
 					genPush(ret, ep - 9, ep, 21);
-				if (getColumn(ep) != 7 && color[ep - 7] == DARK && pieces[ep - 7] == PAWN)
-					genPush(ret, ep - 7, ep, 21);
+                }
+				if (getColumn(ep) != 7 && color[ep - 7] == DARK && pieces[ep - 7] == PAWN) {
+                    genPush(ret, ep - 7, ep, 21);
+                }
 			}
 		}
 		return ret;
@@ -738,7 +745,8 @@ public class ChessBoard implements BoardFace {
 		/* test to see if a castle move is legal and move the rook
 			   (the king is moved with the usual move code later) */
 		int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		int distance;
+		int kingToRookDistance;
+		int kingDistance;
 		if ((move.bits & 2) != 0) {
 			int from = -1, to = -1;
 
@@ -747,7 +755,7 @@ public class ChessBoard implements BoardFace {
 			if (inCheck(side))
 				return false;
 
-//			distance = Math.abs(move.from - move.to);
+			kingToRookDistance = Math.abs(move.from - move.to);
 			int minMove = move.to;
 			if (move.from < move.to) minMove = move.from;
 
@@ -756,7 +764,7 @@ public class ChessBoard implements BoardFace {
 			while (i < bKingMoveOO.length) {
 				if (bKingMoveOO[i] == move.to) {
 					what = 0;
-//					distance = Math.abs(move.from - bRook2);
+					kingToRookDistance = Math.abs(move.from - bRook2);
 					minMove = bRook2;
 					if (move.from < bRook2) minMove = move.from;
 					break;
@@ -767,7 +775,7 @@ public class ChessBoard implements BoardFace {
 			while (i < bKingMoveOOO.length) {
 				if (bKingMoveOOO[i] == move.to) {
 					what = 1;
-//					distance = Math.abs(move.from - bRook1);
+					kingToRookDistance = Math.abs(move.from - bRook1);
 					minMove = bRook1;
 					if (move.from < bRook1) minMove = move.from;
 					break;
@@ -778,7 +786,7 @@ public class ChessBoard implements BoardFace {
 			while (i < wKingMoveOO.length) {
 				if (wKingMoveOO[i] == move.to) {
 					what = 2;
-//					distance = Math.abs(move.from - wRook2);
+					kingToRookDistance = Math.abs(move.from - wRook2);
 					minMove = wRook2;
 					if (move.from < wRook2)
 						minMove = move.from;
@@ -790,7 +798,7 @@ public class ChessBoard implements BoardFace {
 			while (i < wKingMoveOOO.length) {
 				if (wKingMoveOOO[i] == move.to) {
 					what = 3;
-//					distance = Math.abs(move.from - wRook1);
+					kingToRookDistance = Math.abs(move.from - wRook1);
 					minMove = wRook1;
 					if (move.from < wRook1)
 						minMove = move.from;
@@ -804,9 +812,9 @@ public class ChessBoard implements BoardFace {
 
 			if (what == 2) {
 
-				distance = Math.abs(wKing - G1);
+				kingDistance = Math.abs(wKing - G1);
 				int minimalSquare = Math.min(wKing, G1);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -822,13 +830,13 @@ public class ChessBoard implements BoardFace {
 					return false;
 
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != wRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -836,9 +844,9 @@ public class ChessBoard implements BoardFace {
 				to = F1;
 			} else if (what == 3) {
 
-				distance = Math.abs(wKing - C1);
+				kingDistance = Math.abs(wKing - C1);
 				int minimalSquare = Math.min(wKing, C1);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -853,13 +861,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[D1] == ROOK && D1 != wRook1)
 					return false;
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != wRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -867,9 +875,9 @@ public class ChessBoard implements BoardFace {
 				to = D1;
 			} else if (what == 1) {
 
-				distance = Math.abs(bKing - C8);
+				kingDistance = Math.abs(bKing - C8);
 				int minimalSquare = Math.min(bKing, C8);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -884,13 +892,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[D8] == ROOK && D8 != bRook1)
 					return false;
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != bRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -898,9 +906,9 @@ public class ChessBoard implements BoardFace {
 				to = D8;
 			} else if (what == 0) {
 
-				distance = Math.abs(bKing - G8);
+				kingDistance = Math.abs(bKing - G8);
 				int minimalSquare = Math.min(bKing, G8);
-				for (int j = 0; j <= distance; j++) {
+				for (int j = 0; j <= kingDistance; j++) {
 					if (attack(minimalSquare + j, xside)) {
 						return false;
 					}
@@ -916,13 +924,13 @@ public class ChessBoard implements BoardFace {
 				if (pieces[G8] == ROOK && bRook2 != G8)
 					return false;
 
-				if (distance > 1) {
-					while (distance != 0) {
+				if (kingToRookDistance > 1) {
+					while (kingToRookDistance != 0) {
 						minMove++;
 						if (minMove != bRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
 							return false;
 						}
-						distance--;
+						kingToRookDistance--;
 					}
 				}
 
@@ -931,11 +939,9 @@ public class ChessBoard implements BoardFace {
 			}
 
 			color[to] = color[from];
-			Log.d("TEST_PIECE", "pieces[to] = pieces[from]; pieces[to] = " + pieces[to]+
-						"pieces[from] = " + pieces[from]);
 			pieces[to] = pieces[from];
 			if (to != from) {
-				color[from] = EMPTY;  // error not here too
+				color[from] = EMPTY;
 				pieces[from] = EMPTY;
 			}
 
@@ -1040,7 +1046,7 @@ public class ChessBoard implements BoardFace {
 			}
 			if (pieces[move.from] != ROOK && tmp_to != move.from) {
 				color[move.from] = EMPTY;
-				pieces[move.from] = EMPTY; // not here either
+				pieces[move.from] = EMPTY;
 			}
 
 			/* switch sides and test for legality (if we can capture
@@ -1063,7 +1069,7 @@ public class ChessBoard implements BoardFace {
 		/* back up information so we can take the move back later. */
 		histDat[hply] = new HistoryData();
 		histDat[hply].move = move;
-		histDat[hply].capture = pieces[ move.to];
+		histDat[hply].capture = pieces[move.to];
 		histDat[hply].ep = ep;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
@@ -1181,21 +1187,15 @@ public class ChessBoard implements BoardFace {
 		}
 
 		color[move.from] = EMPTY;
-//		Log.d("TEST_PIECE","pieces[to] = EMPTY; piece[to] = " + pieces[to] + ", to = " + to);
-
 		pieces[move.from] = EMPTY;
 
 		/* erase the pawn if this is an en passant move */
 		if ((move.bits & 4) != 0) {
 			if (side == LIGHT) {
 				color[move.to + 8] = EMPTY;
-				Log.d("TEST_PIECE","pieces[move.to + 8] = EMPTY; piece[move.to + 8] = "
-						+ pieces[move.to + 8] + ", move.to + 8 = " + (move.to + 8) );
 				pieces[move.to + 8] = EMPTY;
 			} else {
 				color[move.to - 8] = EMPTY;
-				Log.d("TEST_PIECE","pieces[move.to - 8] = EMPTY; piece[move.to - 8] = "
-						+ pieces[move.to - 8] + ", move.to - 8 = "  + (move.to - 8) );
 				pieces[move.to - 8] = EMPTY;
 			}
 		}
@@ -1206,7 +1206,7 @@ public class ChessBoard implements BoardFace {
 		side ^= 1;
 		xside ^= 1;
 
-		Boolean userColorWhite = coreActivity.isUserColorWhite();
+		Boolean userColorWhite = gameActivityFace.isUserColorWhite();
 		if (playSound && userColorWhite != null) {
 			if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
 				if (inCheck(side)) {
@@ -1234,18 +1234,14 @@ public class ChessBoard implements BoardFace {
 		return true;
 	}
 
-
-/* takeBack() is very similar to makeMove(), only backwards :)  */
-	@Override
-	public ChessBoard getBoard() {
-		return this;  
-	}
-
+	/**
+	 * takeBack() is very similar to makeMove(), only backwards :)
+	 */
 	@Override
 	public void takeBack() {
-		if (hply - 1 < 0) 
-			return;
-		
+        if (hply - 1 < 0)
+            return;
+
 		side ^= 1;
 		xside ^= 1;
 		--hply;
@@ -1297,7 +1293,7 @@ public class ChessBoard implements BoardFace {
 			color[move.from] = side;
 			pieces[move.from] = pt;
 			if (move.from != to) {
-				color[to] = EMPTY; // Error not here
+				color[to] = EMPTY;
 				pieces[to] = EMPTY;
 			}
 
@@ -1326,11 +1322,12 @@ public class ChessBoard implements BoardFace {
 		}
 
 
-		color[ move.from] = side;
-		if ((move.bits & 32) != 0)
-			pieces[ move.from] = PAWN;
-		else
-			pieces[move.from] = pieces[move.to];
+		color[move.from] = side;
+		if ((move.bits & 32) != 0) {
+            pieces[move.from] = PAWN;
+        } else {
+            pieces[move.from] = pieces[move.to];
+        }
 		if (histDat[hply].capture == EMPTY) {
 			color[move.to] = EMPTY;
 			pieces[move.to] = EMPTY;
@@ -1385,72 +1382,71 @@ public class ChessBoard implements BoardFace {
 	}
 
 	public String getMoveSAN() {
-		Move m = histDat[hply].move;
-//        Log.d("TEST" ," getMoveSAN -> move = " + move);
-		int p = pieces[m.from];
+		Move move = histDat[hply].move;
+		int piece = pieces[move.from];
 		String f = StaticData.SYMBOL_EMPTY;
 		String capture = StaticData.SYMBOL_EMPTY;
 		String promotion = StaticData.SYMBOL_EMPTY;
-		if (p == 1) {
+		if (piece == 1) {
 			f = MoveParser.WHITE_KNIGHT;
 			//ambigues
 			int[] positions = new int[]{
-					m.to - 17, m.to - 15, m.to - 10, m.to - 6,
-					m.to + 17, m.to + 15, m.to + 10, m.to + 6
+					move.to - 17, move.to - 15, move.to - 10, move.to - 6,
+					move.to + 17, move.to + 15, move.to + 10, move.to + 6
 			};
 			int i;
 			for (i = 0; i < 8; i++) {
 				int pos = positions[i];
-				if (pos < 0 || pos > 63 || pos == m.from)
+				if (pos < 0 || pos > 63 || pos == move.from)
 					continue;
 				if (pieces[pos] == 1 && color[pos] == side) {
-					if (getColumn(pos) == getColumn(m.from))
-						f += MoveParser.BNToNum(getRow(m.from));
+					if (getColumn(pos) == getColumn(move.from))
+						f += MoveParser.BNToNum(getRow(move.from));
 					else
-						f += MoveParser.BNToLetter(getColumn(m.from));
+						f += MoveParser.BNToLetter(getColumn(move.from));
 					break;
 				}
 			}
 		}
-		if (p == 2)
+		if (piece == 2)
 			f = MoveParser.WHITE_BISHOP;
-		if (p == 3) {
+		if (piece == 3) {
 			f = MoveParser.WHITE_ROOK;
 			//ambigues
 			int[] positions = new int[]{
-					m.to - 8, m.to - 16, m.to - 24, m.to - 32, m.to - 40, m.to - 48, m.to - 56,
-					m.to + 8, m.to + 16, m.to + 24, m.to + 32, m.to + 40, m.to + 48, m.to + 56,
-					m.to - 1, m.to - 2, m.to - 3, m.to - 4, m.to - 5, m.to - 6, m.to - 7,
-					m.to + 1, m.to + 2, m.to + 3, m.to + 4, m.to + 5, m.to + 6, m.to + 7
+					move.to - 8, move.to - 16, move.to - 24, move.to - 32, move.to - 40, move.to - 48, move.to - 56,
+					move.to + 8, move.to + 16, move.to + 24, move.to + 32, move.to + 40, move.to + 48, move.to + 56,
+					move.to - 1, move.to - 2, move.to - 3, move.to - 4, move.to - 5, move.to - 6, move.to - 7,
+					move.to + 1, move.to + 2, move.to + 3, move.to + 4, move.to + 5, move.to + 6, move.to + 7
 			};
 			int i;
 			for (i = 0; i < 28; i++) {
 				int pos = positions[i];
-				if (pos < 0 || pos > 63 || pos == m.from)
+				if (pos < 0 || pos > 63 || pos == move.from)
 					continue;
 				if (pieces[pos] == 3 && color[pos] == side) {
-					if (getColumn(pos) == getColumn(m.from))
-						f += MoveParser.BNToNum(getRow(m.from));
+					if (getColumn(pos) == getColumn(move.from))
+						f += MoveParser.BNToNum(getRow(move.from));
 					else
-						f += MoveParser.BNToLetter(getColumn(m.from));
+						f += MoveParser.BNToLetter(getColumn(move.from));
 					break;
 				}
 			}
 		}
-		if (p == 4)
+		if (piece == 4)
 			f = MoveParser.WHITE_QUEEN;
-		if (p == 5)
+		if (piece == 5)
 			f = MoveParser.WHITE_KING;
 
 		if (histDat[hply].capture != 6) {
-			if (p == 0) {
-				f = MoveParser.BNToLetter(getColumn(m.from));
+			if (piece == 0) {
+				f = MoveParser.BNToLetter(getColumn(move.from));
 			}
 			capture = "x";
 		}
 
-		if (m.promote > 0) {
-			int pr = m.promote;
+		if (move.promote > 0) {
+			int pr = move.promote;
 			if (pr == 1)
 				promotion = EQUALS_N;
 			if (pr == 2)
@@ -1461,13 +1457,13 @@ public class ChessBoard implements BoardFace {
 				promotion = EQUALS_Q;
 		}
 
-		return f + capture + MoveParser.positionToString(m.to) + promotion;
+		return f + capture + MoveParser.positionToString(move.to) + promotion;
 	}
 
 	private String convertMove() {
-		Move m;
+		Move move = new Move(0,0,0,0);
 		try {
-			m = histDat[hply - 1].move;
+			move = histDat[hply - 1].move;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			StringBuilder result = new StringBuilder();
 			if (histDat.length > 0) {
@@ -1479,20 +1475,20 @@ public class ChessBoard implements BoardFace {
 					}
 				}
 			}
-			throw new ArrayIndexOutOfBoundsException(
-					"hply=" + hply +
-							", histDat=[" + result.toString() + "], " +
-							histDat.length + ", " +
-							coreActivity.getCurrentGame().values.get(AppConstants.MOVE_LIST) + ", " +
-							coreActivity.getCurrentGame().values.get(GameItem.ENCODED_MOVE_STRING) + ", " +
-							coreActivity.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION));
+//			throw new ArrayIndexOutOfBoundsException(
+//					"hply=" + hply +
+//							", histDat=[" + result.toString() + "], " +
+//							histDat.length + ", " +
+//							coreActivity.getCurrentGame().values.get(AppConstants.MOVE_LIST) + ", " +
+//							coreActivity.getCurrentGame().values.get(GameItem.ENCODED_MOVE_STRING) + ", " +
+//							coreActivity.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION));
 		}
 
 
 		String output = StaticData.SYMBOL_EMPTY;
 		try {
-			String to = MoveParser.positionToString(m.to);
-			if ((m.bits & 2) != 0) {
+			String to = MoveParser.positionToString(move.to);
+			if ((move.bits & 2) != 0) {
 				//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 				int what = histDat[hply - 1].what;
 
@@ -1518,7 +1514,7 @@ public class ChessBoard implements BoardFace {
 						to = "c1";
 				}
 			}
-			output = URLEncoder.encode(MoveParser.positionToString(m.from) + to, AppConstants.UTF_8);
+			output = URLEncoder.encode(MoveParser.positionToString(move.from) + to, AppConstants.UTF_8);
 		} catch (Exception ignored) {
 		}
 		Log.d("move:", output);
@@ -2104,6 +2100,12 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
+	public boolean lastMoveContains(String piece, String moveTo) {
+		return tacticMoves[hply - 1].contains(piece)
+				&& tacticMoves[hply - 1].contains(moveTo);
+	}
+
+    @Override
 	public boolean isAnalysis() {
 		return analysis;
 	}
@@ -2339,5 +2341,20 @@ public class ChessBoard implements BoardFace {
 
 	public void setEp(int ep) {
 		this.ep = ep;
+	}
+
+	public boolean isPossibleToMakeMoves() {
+		TreeSet<Move> validMoves = gen();
+
+		Iterator<Move> i = validMoves.iterator();
+		boolean found = false;
+		while (i.hasNext()) {   // compute available moves
+			if (makeMove(i.next(), false)) {
+				takeBack();
+				found = true;
+				break;
+			}
+		}
+		return found;
 	}
 }

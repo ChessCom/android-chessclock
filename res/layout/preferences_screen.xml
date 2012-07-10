@@ -29,7 +29,7 @@
 			android:id="@+id/onlineTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/onlineTitle"
+			android:text="@string/label_game_online"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>
@@ -95,7 +95,7 @@
 			android:id="@+id/computerTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/computerTitle"
+			android:text="@string/label_play_comp"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>
@@ -143,9 +143,33 @@
 			android:layout_height="wrap_content"
 			android:background="@drawable/underline_grey"
 			style="@style/lineDivider"
-
 			/>
 
+		<!-- Language -->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/LinearDescription"
+			>
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/language"
+				android:layout_weight="6"
+				/>
+
+			<Spinner
+				android:id="@+id/langSpinner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:entries="@array/languages"
+				/>
+
+		</LinearLayout>
+
+		<!-- Board -->
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -168,6 +192,7 @@
 
 		</LinearLayout>
 
+		<!-- Pieces -->
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -208,8 +233,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/invite"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
-
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 
 		<com.chess.RoboButton
@@ -217,7 +241,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/contactUs"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 
 		<com.chess.RoboButton
@@ -225,7 +249,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/logout"
-			android:layout_marginTop="@dimen/margin_top_beween_buttons"
+			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 	</LinearLayout>
 </ScrollView>

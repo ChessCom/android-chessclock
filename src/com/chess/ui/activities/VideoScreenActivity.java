@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,13 +9,17 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.utilities.MyProgressDialog;
+import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -28,36 +31,33 @@ import com.flurry.android.FlurryAgent;
 public class VideoScreenActivity extends LiveBaseActivity implements View.OnClickListener {
 	private VideoItem item;
 	private View recent;
-	private Button upgrade;
 	private TextView title, desc;
-	private Spinner skills, categories;
+	private Spinner skillsSpinner;
+	private Spinner categoriesSpinner;
 
 	private SkillsItemSelectedListener skillsItemSelectedListener;
 	private CategoriesItemSelectedListener categoriesItemSelectedListener;
+	private VideosItemUpdateListener videosItemUpdateListener;
+	private Button playBtn;
 
 	private void init() {
 		skillsItemSelectedListener = new SkillsItemSelectedListener();
 		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
+		videosItemUpdateListener = new VideosItemUpdateListener();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.video);
-//		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+		setContentView(R.layout.video_screen);
 
 		init();
-		upgrade = (Button) findViewById(R.id.upgradeBtn);
-		boolean liveMembershipLevel = false;
-		if (lccHolder.getUser() != null) {
-			liveMembershipLevel = mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
-		}
-//		boolean liveMembershipLevel =
-//				lccHolder.getUser() != null ? mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50) : false;
-		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+
+		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
+		upgrade.setOnClickListener(this);
+
+		if (AppUtils.isNeedToUpgrade(this)) {
 			upgrade.setVisibility(View.VISIBLE);
-			upgrade.setOnClickListener(this);
 		} else {
 			upgrade.setVisibility(View.GONE);
 		}
@@ -66,26 +66,19 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		title = (TextView) findViewById(R.id.title);
 		desc = (TextView) findViewById(R.id.desc);
 
-		skills = (Spinner) findViewById(R.id.skills);
-//		skills.post(new Runnable() {
-//			@Override
-//			public void run() {
-//				skills.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
-//			}
-//		});
-		skills.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
-		skills.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
-		skills.setOnItemSelectedListener(skillsItemSelectedListener);
-		categories = (Spinner) findViewById(R.id.categories);
-		categories.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
-		categories.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
-//		categories.post(new Runnable() {
-//			@Override
-//			public void run() {
-//				categories.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
-//			}
-//		});
-		categories.setOnItemSelectedListener(categoriesItemSelectedListener);
+		skillsSpinner = (Spinner) findViewById(R.id.skills);
+		skillsSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+		skillsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
+		skillsSpinner.setOnItemSelectedListener(skillsItemSelectedListener);
+
+		categoriesSpinner = (Spinner) findViewById(R.id.categories);
+		categoriesSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
+		categoriesSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
+		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
+
+		playBtn = (Button) findViewById(R.id.play);
+		playBtn.setOnClickListener(this);
+
 
 		findViewById(R.id.start).setOnClickListener(this);
 	}
@@ -116,102 +109,102 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 
 	@Override
 	protected void onResume() {
-		update(INIT_ACTIVITY);
 		super.onResume();
+		updateVideoItem();
 	}
 
-//	@Override
-//	public void LoadPrev(int code) {
-//		//finish();
-//		mainApp.getTabHost().setCurrentTab(0);
-//	}
+	private void updateVideoItem() {
+		playBtn.setEnabled(false);
 
-	@Override
-	public void update(int code) {
-		if (code == INIT_ACTIVITY) {
-			if (appService != null) {
-				appService.RunSingleTask(0,
-						"http://www." + LccHolder.HOST + "/api/get_videos?id="
-								+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-								+ "&page-size=1",
-						progressDialog = new MyProgressDialog(ProgressDialog.show(this, null, getString(R.string.loading), true))
-				);
-			}
-		} else if (code == 0) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
+
+		new GetStringObjTask(videosItemUpdateListener).executeTask(loadItem);
+	}
+
+	private class VideosItemUpdateListener extends ChessUpdateListener {
+		public VideosItemUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
 			recent.setVisibility(View.VISIBLE);
-			item = new VideoItem(response.split("[|]")[2].split("<->"));
+			item = new VideoItem(returnedObj.split("[|]")[2].split("<->"));
 			title.setText(item.values.get(AppConstants.TITLE));
 			desc.setText(item.values.get(AppConstants.DESCRIPTION));
 
-			findViewById(R.id.play).setOnClickListener(this);
+			playBtn.setEnabled(true);
 		}
 	}
 
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			FlurryAgent.onEvent("upgrade From Videos", null);
+			FlurryAgent.onEvent(FlurryData.UPGRADE_FROM_VIDEOS, null);
 			startActivity(AppData.getMembershipVideoIntent(this));
 		} else if (view.getId() == R.id.play) {
-			FlurryAgent.onEvent("Video Played", null);
+			FlurryAgent.onEvent(FlurryData.VIDEO_PLAYED, null);
 
-			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video/*");
-			startActivity(i);
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video/*");
+			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
-			int s = skills.getSelectedItemPosition();
-			int c = categories.getSelectedItemPosition();
+			int skillId = skillsSpinner.getSelectedItemPosition();
+			int categoryId = categoriesSpinner.getSelectedItemPosition();
 
-			Intent i = new Intent(getContext(), VideoListActivity.class);
-			i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, StaticData.SYMBOL_EMPTY);
-			i.putExtra(AppConstants.VIDEO_CATEGORY, StaticData.SYMBOL_EMPTY);
+			Intent intent = new Intent(this, VideoListActivity.class);
+			intent.putExtra(AppConstants.VIDEO_SKILL_LEVEL, StaticData.SYMBOL_EMPTY);
+			intent.putExtra(AppConstants.VIDEO_CATEGORY, StaticData.SYMBOL_EMPTY);
 
-			if (s > 0) {
+			if (skillId > 0) {
 				String skill = StaticData.SYMBOL_EMPTY;
-				switch (s) {
+				switch (skillId) {
 					case 1:
-						skill = "beginner";
+						skill = getString(R.string.beginner_category);
 						break;
 					case 2:
-						skill = "intermediate";
+						skill = getString(R.string.intermediate_category);
 						break;
 					case 3:
-						skill = "advanced";
+						skill = getString(R.string.advanced_category);
 						break;
 
 					default:
 						break;
 				}
-				i.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
+				intent.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
 			}
-			if (c > 0) {
+			if (categoryId > 0) {
 				String category = StaticData.SYMBOL_EMPTY;
-				switch (c) {
+				switch (categoryId) {
 					case 1:
-						category = "amazing-games";
+						category = getString(R.string.amazing_games_category);
 						break;
 					case 2:
-						category = "endgames";
+						category = getString(R.string.end_games_category);
 						break;
 					case 3:
-						category = "openings";
+						category = getString(R.string.openings_category);
 						break;
 					case 4:
-						category = "rules-basics";
+						category = getString(R.string.rules_basics_category);
 						break;
 					case 5:
-						category = "strategy";
+						category = getString(R.string.strategy_category);
 						break;
 					case 6:
-						category = "tactics";
+						category = getString(R.string.tactics_category);
 						break;
 
 					default:
 						break;
 				}
-				i.putExtra(AppConstants.VIDEO_CATEGORY, category);
+				intent.putExtra(AppConstants.VIDEO_CATEGORY, category);
 			}
-			startActivity(i);
+			startActivity(intent);
 		}
 	}
 }

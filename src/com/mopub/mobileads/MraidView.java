@@ -13,7 +13,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -143,15 +142,15 @@ public class MraidView extends WebView {
         String mraid = "file:/" + copyRawResourceToFilesDir(R.raw.mraid, "mraid.js");
         data = data.replace("<head>", "<head><script src='" + mraid + "'></script>");
         
-        loadDataWithBaseURL(null, data, "text/html", AppConstants.UTF_8, null);
+        loadDataWithBaseURL(null, data, "text/html", "UTF-8", null);
     }
 
     public void loadUrl(String url) {
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
         StringBuffer out = new StringBuffer();
         
         try {
+            HttpGet httpGet = new HttpGet(url);
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
     
@@ -162,6 +161,10 @@ public class MraidView extends WebView {
                     out.append(new String(b, 0, n));
                 }
             }
+        } catch (IllegalArgumentException e) {
+            Log.d("MoPub", "Mraid loadUrl failed (IllegalArgumentException): "+url);
+            notifyOnFailureListener();
+            return;
         } catch (ClientProtocolException e) {
             notifyOnFailureListener();
             return;
@@ -274,7 +277,7 @@ public class MraidView extends WebView {
     
     private boolean tryCommand(URI uri) {
         String commandType = uri.getHost();
-        List<NameValuePair> list = URLEncodedUtils.parse(uri, AppConstants.UTF_8);
+        List<NameValuePair> list = URLEncodedUtils.parse(uri, "UTF-8");
         Map<String, String> params = new HashMap<String, String>();
         for (NameValuePair pair : list) {
             params.put(pair.getName(), pair.getValue());
@@ -357,7 +360,8 @@ public class MraidView extends WebView {
         public void onPageFinished(WebView view, String url) {
             if (!mHasFiredReadyEvent) {
                 mDisplayController.initializeJavaScriptState();
-                fireChangeEventForProperty(MraidPlacementTypeProperty.createWithType(mPlacementType));
+                fireChangeEventForProperty(
+                        MraidPlacementTypeProperty.createWithType(mPlacementType));
                 fireReadyEvent();
                 if (getOnReadyListener() != null) getOnReadyListener().onReady(MraidView.this);
                 mHasFiredReadyEvent = true;

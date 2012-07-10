@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.chess.R;
 
 public abstract class BaseActivity extends Activity {

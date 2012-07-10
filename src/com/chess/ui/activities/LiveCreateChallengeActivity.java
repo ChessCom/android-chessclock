@@ -1,15 +1,17 @@
 package com.chess.ui.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.Challenge;
@@ -19,7 +21,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
-public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
+public class LiveCreateChallengeActivity extends LiveBaseActivity {
 	private Spinner minrating;
 	private Spinner maxrating;
 	private CheckBox isRated;
@@ -29,15 +31,15 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 	private InitialTimeValidator initialTimeValidator;
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
 	private BonusTimeValidator bonusTimeValidator;
+	private Button createChallengeBtn;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.live_create_challenge);
 
 		init();
-
-		setContentView(R.layout.live_create_challenge);
 
 		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
 		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
@@ -61,7 +63,8 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
-		findViewById(R.id.createchallenge).setOnClickListener(this);
+		createChallengeBtn = (Button) findViewById(R.id.createchallenge);
+		createChallengeBtn.setOnClickListener(this);
 	}
 
 	private void init() {
@@ -72,15 +75,10 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 	}
 
 	@Override
-	public void update(int code) {
-
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
-		if (mainApp.isLiveChess() && lccHolder.getUser() == null) {
-			lccHolder.logout();
+		if (getLccHolder().getUser() == null) {
+			getLccHolder().logout();
 			backToHomeActivity();
 		}
 	}
@@ -113,56 +111,43 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 
 			Integer minRating = minRatings[minrating.getSelectedItemPosition()];
 			Integer maxRating = maxRatings[maxrating.getSelectedItemPosition()];
+			Integer minMembershipLevel = 0;
 
 			if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
 				initialTime.setText("10");
 				bonusTime.setText("0");
 			}
-			if (lccHolder.getOwnSeeksCount() >= LccHolder.OWN_SEEKS_LIMIT) {
+			if (getLccHolder().getOwnSeeksCount() >= LccHolder.OWN_SEEKS_LIMIT) {
 				return;
 			}
-			/*PieceColor color;
-										  switch(iplayas.getSelectedItemPosition())
-										  {
-											case 0:
-											  color = PieceColor.UNDEFINED;
-											  break;
-											case 1:
-											  color = PieceColor.WHITE;
-											  break;
-											case 2:
-											  color = PieceColor.BLACK;
-											  break;
-											default:
-											  color = PieceColor.UNDEFINED;
-											  break;
-										  }*/
+
 			Boolean rated = isRated.isChecked();
 			Integer initialTimeInteger = new Integer(initialTime.getText().toString());
 			Integer bonusTimeInteger = new Integer(bonusTime.getText().toString());
 			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
 			String to = null;
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-					lccHolder.getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig, minRating, maxRating);
-			if (appService != null) {
-				FlurryAgent.onEvent("Challenge Created", null);
-				lccHolder.getAndroid().runSendChallengeTask(
-						//progressDialog = MyProgressDialog.show(FriendChallenge.this, null, getString(R.string.creating), true),
-						null,
-						challenge
-				);
-                preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-                preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-                preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
-                preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
-                preferencesEditor.commit();
-                //mainApp.showDialog(this, getString(R.string.congratulations), getString(R.string.challengeSent));
+					getLccHolder().getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig,
+					minMembershipLevel, minRating, maxRating);
 
-			}
+			FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
+
+			challengeTaskRunner.runSendChallengeTask(challenge);
+
+			preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
+			preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+			preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
+			preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
+			preferencesEditor.commit();
+
+			createChallengeBtn.setEnabled(false);
+			new Handler().postDelayed(new Runnable() {
+				public void run() {
+					createChallengeBtn.setEnabled(true);
+				}
+			}, 2000);
 		}
-
 	}
-
 
 	private class InitialTimeTextWatcher implements TextWatcher {
 		@Override
@@ -215,11 +200,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements OnC
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
 			final Integer bonusTime = Integer.parseInt(textString);
-			if (!textString.equals(StaticData.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60) {
-				return true;
-			} else {
-				return false;
-			}
+            return !textString.equals(StaticData.SYMBOL_EMPTY) && bonusTime >= 0 && bonusTime <= 60;
 		}
 
 		@Override

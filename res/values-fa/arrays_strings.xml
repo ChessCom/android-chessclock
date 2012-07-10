@@ -1,0 +1,341 @@
+<resources>
+
+	<string-array name="languages">
+		<item>انگلیسی</item>
+		<item>عربی</item>
+		<item>چینی</item>
+		<item>دانمارکی</item>
+		<item>هلندی</item>
+		<item>فرانسوی</item>
+		<item>آلمانی</item>
+		<item>عبری</item>
+		<item>هندی</item>
+		<item>ایتالیایی</item>
+		<item>ژاپنی</item>
+		<item>کره ای</item>
+		<item>نروژی</item>
+		<item>Persian</item>
+		<item>لهستانی</item>
+		<item>پرتغالی</item>
+		<item>روسی</item>
+		<item>اسپانیایی</item>
+		<item>سوئد</item>
+		<item>ترکی</item>
+	</string-array>
+
+	<string-array name="playas">
+		<item>تصادفی</item>
+		<item>سفید</item>
+		<item>سیاه</item>
+	</string-array>
+
+	<string-array name="dayspermove">
+	    <item>1 روز</item>
+		<item>2 روز</item>
+		<item>3 روز</item>
+		<item>5 روز</item>
+		<item>7 روز</item>
+		<item>14 روز</item>
+	</string-array>
+	
+
+	<string-array name="skill">
+	    <item>مشخص نشده</item>
+	    <item>مبتدی</item>
+		<item>متوسط</item>
+		<item>پیشرفته</item>
+	</string-array>
+	
+	<string-array name="category">
+	    <item>مشخص نشده</item>
+	    <item>بازی شگفت انگیز</item>
+		<item>آخر بازی</item>
+		<item>دهانه</item>
+		<item>قوانین مبانی</item>
+		<item>استراتژی</item>
+		<item>تاکتیک</item>
+	</string-array>	
+	
+	<string-array name="wrongtactic">
+	    <item>ویرایش</item>
+		<item>دوباره سعی کنید</item>
+		<item>توقف</item>
+	</string-array>
+	
+	<string-array name="correcttactic">
+	    <item>توقف</item>
+		<item>ویرایش</item>
+	</string-array>
+
+	<string-array name="onlineSpinner">
+		<item>بازی کنونی</item>
+		<item>چالش ها</item>
+		<item>بازی به پایان رسید</item>
+	</string-array>	
+
+	<string-array name="AIM">
+	    <item>برو برای بازی بعدی آماده</item>
+		<item>اقامت در بازی همان</item>
+		<item>بازگشت به لیست بازی</item>
+	</string-array>
+
+	<string-array name="Notif">
+	    <item>هیچ یک</item>
+		<item>ارتعاش داشتن</item>
+		<item>حلقه</item>
+		<item>چشمک زدن چراغ</item>
+	</string-array>
+	
+	<string-array name="strength">
+	    <item>1 ثانیه</item>
+		<item>3 ثانیه</item>
+		<item>5 ثانیه</item>
+		<item>10 ثانیه</item>
+		<item>30 ثانیه</item>
+		<item>1 دقیقه</item>
+	</string-array>
+	
+    <string-array name="countries">
+        <item>ایالات متحده</item>
+        <item>کانادا</item>
+        <item>آرژانتین</item>
+        <item>بلژیک</item>
+        <item>افغانستان </item>
+        <item>آلبانی</item>
+        <item>آندورا</item>
+        <item>آنگویلا</item>
+        <item>آنتیگوا / باربودا</item>
+        <item>ارمنستان</item>
+        <item>آروبا</item>
+        <item>استرالیا</item>
+        <item>اتریش</item>
+        <item>باهاما</item>
+        <item>بحرین</item>
+        <item>باربادوس</item>
+        <item>بلاروس</item>
+        <item>بلیز</item>
+        <item>برمودا</item>
+        <item>بولیوی</item>
+        <item>بوسنی و هرزگوین</item>
+        <item>برزیل</item>
+        <item>بلغارستان</item>
+        <item>جزایر قناری</item>
+        <item>جزایر کیمن</item>
+        <item>جزایر کانال</item>
+        <item>شیلی</item>
+        <item>چین</item>
+        <item>کلمبیا</item>
+        <item>کاستاریکا</item>
+        <item>کرواسی</item>
+        <item>کوبا</item>
+        <item>ویدیو</item>
+        <item>قبرس</item>
+        <item>جمهوری چک</item>
+        <item>دانمارک</item>
+        <item>دومینیکا</item>
+        <item>جمهوری دومینیکن</item>
+        <item>اکوادور</item>
+        <item>مصر</item>
+        <item>السالوادور</item>
+        <item>استونی</item>
+        <item>جزایر فالکلند</item>
+        <item>جزایر فارو</item>
+        <item>فیجی</item>
+        <item>فنلاند</item>
+        <item>فرانسه</item>
+        <item>گرجستان</item>
+        <item>آلمان</item>
+        <item>جبل الطارق</item>
+        <item>یونان</item>
+        <item>گرینلند</item>
+        <item>گرانادا</item>
+        <item>گوادلوپ</item>
+        <item>گوام</item>
+        <item>گواتمالا</item>
+        <item>لباس بافته پشمی</item>
+        <item>گویان</item>
+        <item>هاییتی</item>
+        <item>هندوراس</item>
+        <item>هنگ کنگ</item>
+        <item>مجارستان</item>
+        <item>ایسلند</item>
+        <item>هند</item>
+        <item>اندونزی</item>
+        <item>ایران</item>
+        <item>عراق</item>
+        <item>ایرلند</item>
+        <item>جزیره من</item>
+        <item>اسرائيل</item>
+        <item>ایتالیا</item>
+        <item>جامائیکا</item>
+        <item>ژاپن</item>
+        <item>پارچه کشباف</item>
+        <item>اردن</item>
+        <item>قزاقستان</item>
+        <item>کیریباتی</item>
+        <item>کره جنوبی</item>
+        <item>کویت</item>
+        <item>لتونی</item>
+        <item>لبنان</item>
+        <item>لیختن اشتاین</item>
+        <item>لیتوانی</item>
+        <item>لوکزامبورگ</item>
+        <item>ماکائو</item>
+        <item>مقدونیه</item>
+        <item>مالزی</item>
+        <item>جزیره مالت</item>
+        <item>مارتینیک</item>
+        <item>مکزیک</item>
+        <item>مولدووا</item>
+        <item>اهل موناکو</item>
+        <item>مانت سرت</item>
+        <item>ناورو</item>
+        <item>نپال</item>
+        <item>هلند</item>
+        <item>نیوزیلند</item>
+        <item>نیکاراگوئه</item>
+        <item>نروژ</item>
+        <item>عمان</item>
+        <item>پاکستان</item>
+        <item>پاناما </item>
+        <item>پاپویا گینه نو</item>
+        <item>پاراگوئه</item>
+        <item>پرو</item>
+        <item>Philippines</item>
+        <item>لهستان</item>
+        <item>پرتغال</item>
+        <item>پورتوریکو</item>
+        <item>رومانی</item>
+        <item>روسیه</item>
+        <item>سنت Croix</item>
+        <item>سنت کیتس / نویس</item>
+        <item>سنت لوسیا</item>
+        <item>سنت پیر / میکلون</item>
+        <item>سان مارینو</item>
+        <item>عربستان سعودی</item>
+        <item>صربستان و مونته نگرو</item>
+        <item>سنگاپور</item>
+        <item>اسلواکی</item>
+        <item>اسلوونيا</item>
+        <item>جزایر سلیمان</item>
+        <item>آفریقای جنوبی</item>
+        <item>جورجیای جنوبی</item>
+        <item>سورینام</item>
+        <item>سوئد</item>
+        <item>سویس</item>
+        <item>تایوان</item>
+        <item>تایلند</item>
+        <item>تونگا</item>
+        <item>ترینیداد / توباگو</item>
+        <item>ترکیه</item>
+        <item>ترکمنستان</item>
+        <item>تووالو</item>
+        <item>اوکراین</item>
+        <item>امارات متحده عربی</item>
+        <item>اروگوئه</item>
+        <item>ازبکستان</item>
+        <item>وانواتو</item>
+        <item>واتیکان</item>
+        <item>ونزوئلا</item>
+        <item>ویتنام </item>
+        <item>غرب ساموآ</item>
+        <item>یمن</item>
+        <item>یوگسلاوی</item>
+        <item>ساموای امریکا</item>
+        <item>سنت وینسنت</item>
+        <item>آذربايجان</item>
+        <item>مغولستان</item>
+        <item>سوریه</item>
+        <item>انگلستان</item>
+        <item>جزایر مارشال</item>
+        <item>ایرلند شمالی</item>
+        <item>اسکاتلند</item>
+        <item>اسپانیا</item>
+        <item>انگلستان</item>
+        <item>جزایر ویرجین ایالات متحده</item>
+        <item>ولز</item>
+        <item>پاگوپاگو</item>
+        <item>سنت جان</item>
+        <item>سنت توماس</item>
+        <item>بریتانیا</item>
+        <item>هلند</item>
+        <item>کره جنوبی</item>
+        <item>قرقیزستان</item>
+        <item>بنگلادش</item>
+        <item>سودان</item>
+        <item>بنین</item>
+        <item>بوتان</item>
+        <item>بوتسوانا</item>
+        <item>برونئی</item>
+        <item>بروندی</item>
+        <item>کامبوج</item>
+        <item>کامرون</item>
+        <item>کیپ ورد</item>
+        <item>آفریقای مرکزی</item>
+        <item>چاد</item>
+        <item>کنگو</item>
+        <item>ساحل عاج</item>
+        <item>جیبوتی</item>
+        <item>گینه استوایی</item>
+        <item>گابن</item>
+        <item>غنا</item>
+        <item>کنیا</item>
+        <item>لائوس</item>
+        <item>لیبریا</item>
+        <item>ماداگاسکار</item>
+        <item>مراکش</item>
+        <item>موزامبیک</item>
+        <item>میانمار</item>
+        <item>نامیبیا</item>
+        <item>نیجر</item>
+        <item>نیجریه</item>
+        <item>قطر</item>
+        <item>رواندا</item>
+        <item>ساموآ</item>
+        <item>سائو تومه / پرینسیپ</item>
+        <item>سنگال</item>
+        <item>سیرالئون</item>
+        <item>سومالی</item>
+        <item>سری لانکا</item>
+        <item>سوازیلند</item>
+        <item>تاجیکستان</item>
+        <item>تانزانیا</item>
+        <item>تیمور</item>
+        <item>توگو</item>
+        <item>تونس</item>
+        <item>اوگاندا</item>
+        <item>زامبیا</item>
+        <item>زیمبابوه</item>
+        <item>الجزایر</item>
+        <item>موریتانی</item>
+        <item>International</item>
+        <item>صربستان</item>
+        <item>مونته نگرو</item>
+        <item>لیبی </item>
+        <item>گامبیا</item>
+        <item>مالاوی</item>
+        <item>فلسطین</item>
+        <item>اتیوپی</item>
+        <item>موریس</item>
+        <item>لسوتو</item>
+        <item>مالی</item>
+        <item>مالدیو</item>
+        <item>کاتالونیا</item>
+        <item>گالیسیا</item>
+        <item>کوزوو</item>
+        <item>کنگو</item>
+        <item>آنگولا</item>
+        <item>کومور</item>
+        <item>اریتره</item>
+        <item>گینه</item>
+        <item>گینه بیسائو</item>
+        <item>میکرونزی</item>
+        <item>کره شمالی</item>
+        <item>پالائو</item>
+        <item>سیشل</item>
+        <item>صحرای غربی</item>
+        <item>جزایر ویرجین بریتانیا</item>
+    </string-array>
+
+
+</resources>

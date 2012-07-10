@@ -87,7 +87,6 @@ public class MoPubView extends FrameLayout {
     protected BaseAdapter mAdapter;
     
     private Context mContext;
-//    private BroadcastReceiver mScreenStateReceiver;
     private boolean mIsInForeground;
     private LocationAwareness mLocationAwareness;
     private int mLocationPrecision;
@@ -175,48 +174,54 @@ public class MoPubView extends FrameLayout {
     }
 
     private void registerScreenStateBroadcastReceiver() {
-        if (mAdView == null) return;
+        if (mAdView == null) {
+			Log.d("MoPub", "mAdView = null, intent receiver is not registered ");
+			return;
+		}
         
-
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
         mContext.registerReceiver(mScreenStateReceiver, filter);
+		Log.d("MoPub", "registerScreenStateBroadcastReceiver ");
     }
     
     private void unregisterScreenStateBroadcastReceiver() {
         try {
+			Log.d("MoPub", "unregisterScreenStateBroadcastReceiver ");
             mContext.unregisterReceiver(mScreenStateReceiver);
         } catch (Exception IllegalArgumentException) {
             Log.e("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
         }
     }
 
+
+
     private BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                if (mIsInForeground) {
-                    Log.d("MoPub", "Screen sleep with ad in foreground, disable refresh");
-                    if (mAdView != null) {
-                        mPreviousAutorefreshSetting = mAdView.getAutorefreshEnabled();
-                        mAdView.setAutorefreshEnabled(false);
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                    if (mIsInForeground) {
+                        Log.d("MoPub", "Screen sleep with ad in foreground, disable refresh");
+                        if (mAdView != null) {
+                            mPreviousAutorefreshSetting = mAdView.getAutorefreshEnabled();
+                            mAdView.setAutorefreshEnabled(false);
+                        }
+                    } else {
+                        Log.d("MoPub", "Screen sleep but ad in background; " + 
+                                "refresh should already be disabled");
                     }
-                } else {
-                    Log.d("MoPub", "Screen sleep but ad in background; " +
-                            "refresh should already be disabled");
-                }
-            } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-                if (mIsInForeground) {
-                    Log.d("MoPub", "Screen wake / ad in foreground, reset refresh");
-                    if (mAdView != null) {
-                        mAdView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
+                } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                    if (mIsInForeground) {
+                        Log.d("MoPub", "Screen wake / ad in foreground, reset refresh");
+                        if (mAdView != null) {
+                            mAdView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
+                        }
+                    } else {
+                        Log.d("MoPub", "Screen wake but ad in background; don't enable refresh");
                     }
-                } else {
-                    Log.d("MoPub", "Screen wake but ad in background; don't enable refresh");
                 }
             }
-        }
-    };
-
+        };
+    
     public void loadAd() {
         if (mAdView != null) mAdView.loadAd();
     }

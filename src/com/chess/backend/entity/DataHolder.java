@@ -16,6 +16,7 @@ public class DataHolder {
 	private boolean offline = false;
 	private boolean acceptdraw = false;
 	private boolean liveChess;
+	private boolean pendingTacticsLoad;
 
 	private DataHolder() {}
 
@@ -63,4 +64,13 @@ public class DataHolder {
 	public void setAcceptdraw(boolean acceptdraw) {
 		this.acceptdraw = acceptdraw;
 	}
+
+	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {
+		this.pendingTacticsLoad = pendingTacticsLoad;
+	}
+
+	public boolean isPendingTacticsLoad() {
+		return pendingTacticsLoad;
+	}
+
 }

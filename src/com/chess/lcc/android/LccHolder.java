@@ -1,30 +1,40 @@
 package com.chess.lcc.android;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+import com.chess.R;
+import com.chess.backend.entity.DataHolder;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.ConnectLiveChessTask;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
+import com.chess.lcc.android.interfaces.LccEventListener;
+import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
-import com.chess.live.client.impl.HttpClientProvider;
-import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.config.Config;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
+import com.chess.model.MessageItem;
+import com.chess.ui.activities.ChatLiveActivity;
 import com.chess.ui.activities.GameLiveScreenActivity;
-import com.chess.ui.interfaces.LccConnectionListener;
-import org.apache.log4j.Logger;
-import org.eclipse.jetty.client.HttpClient;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 public class LccHolder {
+	private static final String TAG = "LccHolder";
 	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
+	public static final int OWN_SEEKS_LIMIT = 3;
+	public static final String PKCS_12 = "PKCS12";
+	public static final String TESTTEST = "testtest";
+	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
+
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
@@ -43,29 +53,16 @@ public class LccHolder {
 	/*public static final String CONFIG_AUTH_KEY =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
-	public static final String PKCS_12 = "PKCS12";
-	public static final String TESTTEST = "testtest";
-	public long previousFGTime;
 	public long currentFGTime;
 	public long currentFGGameId;
 	public long previousFGGameId;
 
-	private ChatListenerImpl _chatListener;
-	private ConnectionListenerImpl _connectionListener;
+	private LccChatListener _chatListener;
+	private LccConnectionListener _connectionListener;
 	private LccGameListener _gameListener;
 	private LiveChessClient _lccClient;
 	private User _user;
 	private static LccHolder instance;
-	
-	private Context context;
-//	/**
-//	 * Use android.util.Log instead
-//	 */
-//	@Deprecated
-	public static final Logger LOG = Logger.getLogger(LccHolder.class);
-	private AndroidStuff android = new AndroidStuff(this);
-	public static final int OWN_SEEKS_LIMIT = 3;
-
 
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
@@ -85,81 +82,316 @@ public class LccHolder {
 	private final LccFriendStatusListener friendStatusListener;
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
+	private boolean connectingInProgress;
 	private boolean nextOpponentMoveStillNotMade;
 	private final Object opponentClockStartSync = new Object();
 	private Timer opponentClockDelayTimer = new Timer("OpponentClockDelayTimer", true);
 	private ChessClock whiteClock;
 	private ChessClock blackClock;
-	private boolean connectingInProgress;
 	private boolean activityPausedMode = true;
 	private Integer latestMoveNumber;
 	private Long currentGameId;
 	public String networkTypeName;
-	private LccConnectionListener externalConnectionListener;
+	private Context context;
+	private List<String> pendingWarnings;
+	private boolean lccPerformConnection;
 
-//	public LccHolder(InputStream keyStoreInputStream, String versionName) {
-	public LccHolder(Context context) throws IOException, PackageManager.NameNotFoundException {
-		this.context = context;
-		String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+	private LiveChessClientEventListenerFace liveChessClientEventListener;
+    private LccEventListener lccEventListener;
+    private LccChatMessageListener lccChatMessageListener;
 
-		InputStream	keyStoreInputStream = context.getAssets().open("chesscom.pkcs12");
-		Log.d("Chess.Com", "Start Chess.Com LCC mainApp");
-		//System.setProperty("java.net.preferIPv6Addresses", "false");
-		LOG.info("Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
-		//InputStream keyStoreInputStream = null;
-		/*try
-			{
-			  keyStoreInputStream = new FileInputStream("/data/data/com.chess/chesscom.pkcs12");
-			}
-			catch(FileNotFoundException e)
-			{
-			  e.printStackTrace();
-			}*/
-
-		_lccClient = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST, CONFIG_PORT, CONFIG_URI);
-		_lccClient.setClientInfo("Android", versionName, "No-Key");
-		_lccClient.setSupportedClientFeatures(false, false);
-		//HttpClient httpClient = _lccClient.setHttpClientConfiguration(HttpClientProvider.DEFAULT_CONFIGURATION);
-		HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-		//httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
-		httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
-		httpClient.setMaxConnectionsPerAddress(4);
-		httpClient.setSoTimeout(7000);
-		httpClient.setConnectTimeout(10000);
-		httpClient.setTimeout(7000); //
-
-		httpClient.setKeyStoreType(PKCS_12);
-		httpClient.setTrustStoreType(PKCS_12);
-		httpClient.setKeyManagerPassword(TESTTEST);
-		httpClient.setKeyStoreInputStream(keyStoreInputStream);
-		httpClient.setKeyStorePassword(TESTTEST);
-		httpClient.setTrustStoreInputStream(keyStoreInputStream);
-		httpClient.setTrustStorePassword(TESTTEST);
-
-		_lccClient.setHttpClient(httpClient);
-		try {
-			httpClient.start();
-		} catch (Exception e) {
-			throw new LiveChessClientException("Unable to initialize HttpClient", e);
+	public static LccHolder getInstance(Context context) {
+		if (instance == null) {
+			instance = new LccHolder(context);
 		}
+		return instance;
+	}
 
-		_chatListener = new ChatListenerImpl(this);
-		_connectionListener = new ConnectionListenerImpl(this);
+    private LccHolder(Context context) {
+		this.context = context;
+
+		_chatListener = new LccChatListener(this);
+		_connectionListener = new LccConnectionListener(this);
 		_gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
 		seekListListener = new LccSeekListListener(this);
 		friendStatusListener = new LccFriendStatusListener(this);
+
+		pendingWarnings = new ArrayList<String>();
+	}
+
+	public void executePausedActivityGameEvents(LccEventListener lccEventListener) {
+		if (pausedActivityGameEvents.size() > 0) {
+
+			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
+			if (moveEvent != null && (currentGameId == null || currentGameId == moveEvent.getGameId())) {
+				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+				//fullGameProcessed = true;
+				pausedActivityGameEvents.remove(moveEvent);
+				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
+				GameItem newGame = new GameItem(getGameData(moveEvent.getGameId(), moveEvent.getMoveIndex()), true);
+				lccEventListener.onGameRefresh(newGame);
+			}
+
+			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
+			if (drawEvent != null && (currentGameId == null || currentGameId == drawEvent.getGameId())) {
+				/*if (!fullGameProcessed)
+											{
+											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+											  fullGameProcessed = true;
+											}*/
+				pausedActivityGameEvents.remove(drawEvent);
+                lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
+			}
+
+			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
+			if (endGameEvent != null && (currentGameId == null || currentGameId == endGameEvent.getGameId())) {
+				/*if (!fullGameProcessed)
+											{
+											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+											  fullGameProcessed = true;
+											}*/
+				pausedActivityGameEvents.remove(endGameEvent);
+                lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
+			}
+		}
+
+		paintClocks();
+	}
+
+	public void paintClocks() {
+		if (whiteClock != null && blackClock != null) {
+			whiteClock.paint();
+			blackClock.paint();
+		}
+	}
+
+    public void setLccEventListener(LccEventListener lccEventListener){
+        this.lccEventListener = lccEventListener;
+        // todo
+		/*if (isActivityPausedMode()) {
+			executePausedActivityGameEvents(lccEventListener);
+			setActivityPausedMode(false);
+		}*/
+    }
+
+	public GameItem getGameItem(Long gameId) {
+		GameItem newGame = new GameItem(getGameData(gameId, getGame(gameId).getSeq() - 1), true);
+
+        updateClockTime(getGame(gameId));
+
+		return newGame;
+	}
+
+	public int getResignTitle(Long gameId) {
+		if (isFairPlayRestriction(gameId)) {
+			return R.string.resign;
+		} else if (isAbortableBySeq(gameId)) {
+			return R.string.abort;
+		} else {
+			return R.string.resign;
+		}
+	}
+
+	public String getBlackUserName(Long gameId) {
+		return getGame(gameId).getBlackPlayer().getUsername();
+	}
+
+	public String getWhiteUserName(Long gameId) {
+		return getGame(gameId).getWhitePlayer().getUsername();
+	}
+
+	public String getCurrentuserName() {
+		return _user.getUsername();
+	}
+
+	public boolean isPlaySound(Long gameId, String[] moves) {
+		return getGame(gameId).getSeq() == moves.length;
+	}
+
+	public void checkAndReplayMoves(Long gameId) {
+		Game game = getGame(gameId);
+		if (game != null && game.getSeq() > 0) {
+			doReplayMoves(game);
+		}
+
+	}
+
+	public List<MessageItem> getMessagesList(Long gameId) {
+		ArrayList<MessageItem> messageItems = new ArrayList<MessageItem>();
+
+		Chat chat = getGameChat(gameId);
+		if (chat != null) {
+			LinkedHashMap<Long, ChatMessage> chatMessages = getChatMessages(chat.getId());
+			if (chatMessages != null) {
+				for (ChatMessage message : chatMessages.values()) {
+					messageItems.add(new MessageItem(message.getAuthor().getUsername()
+							.equals(getUser().getUsername()) ? "0" : "1", message.getMessage()));
+				}
+			}
+		}
+		return messageItems;
+	}
+
+	public void sendChatMessage(Long gameId, String text) {
+		_lccClient.sendChatMessage(getGameChat(gameId), text);
+	}
+
+	public void addPendingWarning(String warning) {
+		if (warning != null)
+			pendingWarnings.add(warning);
+	}
+
+	public List<String> getPendingWarnings() {
+		return pendingWarnings;
+	}
+
+	public String getLastWarningMessage() {
+		return pendingWarnings.get(pendingWarnings.size() - 1);
+	}
+
+	/**
+	 * Connect live chess client
+	 *
+	 * @return flag if client has performed connection
+	 */
+	public boolean performConnect() {
+		String userName = AppData.getUserName(context);
+		String pass = AppData.getPassword(context);
+
+		if (pass.equals(StaticData.SYMBOL_EMPTY)) {
+			String sessionId = AppData.getUserSessionId(context);
+			connectBySessionId(sessionId);
+		} else {
+			connectByCreds(userName, pass);
+		}
+		return lccPerformConnection;
+	}
+
+	public void connectByCreds(String userName, String pass) {
+		Log.d("TEST", "connectByCreds : user = " + userName + "pass = " + pass);
+		//if (_lccClient != null) {
+			//_lccClient.disconnect(); // todo: check - avoid disconnect() here at all or use this.logout()
+			setNetworkTypeName(null);
+			setConnectingInProgress(true);
+
+			_lccClient.connect(userName, pass, _connectionListener);
+			liveChessClientEventListener.onConnecting();
+		/*} else
+			lccPerformConnection = false;*/
+	}
+
+	public void connectBySessionId(String sessionId) {
+		//if (_lccClient != null) {
+			//_lccClient.disconnect(); // todo: check - avoid disconnect() here at all or use this.logout()
+			setNetworkTypeName(null);
+			setConnectingInProgress(true);
+
+			_lccClient.connect(sessionId, _connectionListener);
+			liveChessClientEventListener.onConnecting();
+		/*} else
+			lccPerformConnection = false;*/
+	}
+
+	public void setLiveChessClientEventListener(LiveChessClientEventListenerFace liveChessClientEventListener) {
+		this.liveChessClientEventListener = liveChessClientEventListener;
+	}
+
+	public LiveChessClientEventListenerFace getLiveChessClientEventListener() {
+		return liveChessClientEventListener;
+	}
+
+	public void processConnectionFailure(String reason, String message) {
+		String kickMessage = context.getString(R.string.lccFailedUpgrading);
+		liveChessClientEventListener.onConnectionFailure(kickMessage
+				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.reason_) + reason
+				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message);
+	}
+
+	public void processConnectionFailure(FailureDetails details, String message) {
+		setConnected(false);
+		setConnectingInProgress(false);
+		_lccClient = null;
+
+		String detailsMessage;
+		switch (details) {
+			case USER_KICKED: {
+				detailsMessage = context.getString(R.string.lccFailedUpgrading);
+				break;
+			}
+			case ACCOUNT_FAILED: {
+				detailsMessage = context.getString(R.string.account_error)
+						+ context.getString(R.string.lccFailedUnavailable);
+				break;
+			}
+			case SERVER_STOPPED: {
+				detailsMessage = context.getString(R.string.server_stopped)
+						+ context.getString(R.string.lccFailedUnavailable);
+				break;
+			}
+			default:
+				detailsMessage = message;
+				break;
+
+		}
+		liveChessClientEventListener.onConnectionFailure(detailsMessage);
+	}
+
+	public void onObsoleteProtocolVersion() {
+		liveChessClientEventListener.onObsoleteProtocolVersion();
+	}
+
+	public void onAnotherLoginDetected() {
+		String failMessage = context.getString(R.string.another_login_detected);
+		liveChessClientEventListener.onConnectionFailure(failMessage);
+	}
+
+    public LccEventListener getLccEventListener() {
+        return lccEventListener;
+    }
+
+    public void setLccChatMessageListener(ChatLiveActivity lccChatMessageListener) {
+        this.lccChatMessageListener = lccChatMessageListener;
+    }
+
+    public LccChatMessageListener getLccChatMessageListener() {
+        return lccChatMessageListener;
+    }
+
+	/*private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
+		public LccClientInitListener() {
+			super(context);
+		}
+
+		@Override
+		public void updateData(LiveChessClient returnedObj) {
+			Log.d(TAG, "LiveChessClient initialized");
+			_lccClient = returnedObj;
+		}
+	}*/
+
+	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
+		public LccConnectUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(LiveChessClient returnedObj) {
+			Log.d(TAG, "LiveChessClient initialized");
+			_lccClient = returnedObj;
+			performConnect();
+		}
 	}
 
 	public LccGameListener getGameListener() {
 		return _gameListener;
 	}
 
-	public ChatListenerImpl getChatListener() {
+	public LccChatListener getChatListener() {
 		return _chatListener;
 	}
 
-	public ConnectionListenerImpl getConnectionListener() {
+	public LccConnectionListener getConnectionListener() {
 		return _connectionListener;
 	}
 
@@ -181,33 +413,40 @@ public class LccHolder {
 
 	public void setConnected(boolean connected) {
 		this.connected = connected;
-	}
+		if (connected) {
+			liveChessClientEventListener.onConnectionEstablished();
 
-	public static LccHolder getInstance(Context context){
-		if (instance == null) {
-			try {
-				instance = new LccHolder(context);
-			} catch (PackageManager.NameNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			_lccClient.subscribeToChallengeEvents(challengeListener);
+			_lccClient.subscribeToGameEvents(_gameListener);
+			_lccClient.subscribeToChatEvents(_chatListener);
+
+			_lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+
+			ConnectivityManager connectivityManager = (ConnectivityManager)
+					context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+			networkTypeName = activeNetworkInfo.getTypeName();
+		} else {
+            liveChessClientEventListener.onConnectionBlocked();
+			// TODO disable UI
 		}
-		return instance;
 	}
 
-	public AndroidStuff getAndroid() {
-		return android;
+	public void setConnectingInProgress(boolean connectingInProgress) {
+		this.connectingInProgress = connectingInProgress;
+	}
+
+	public boolean isConnectingInProgress() {
+		return connectingInProgress;
 	}
 
 	public void clearChallenges() {
 		challenges.clear();
-		android.updateChallengesList();
 	}
 
-//	public Challenge getChallenge(long challengeId) {
-//		return challenges.get(challengeId);
-//	}
+	public HashMap<Long, Challenge> getChallenges() {
+		return challenges;
+	}
 
 	public void addOwnChallenge(Challenge challenge) {
 		for (Challenge oldChallenge : ownChallenges.values()) {
@@ -216,7 +455,7 @@ public class LccHolder {
 					&& challenge.isRated() == oldChallenge.isRated()
 					&& ((challenge.getTo() == null && oldChallenge.getTo() == null) ||
 					(challenge.getTo() != null && challenge.getTo().equals(oldChallenge.getTo())))) {
-				LOG.info("Check for doubled challenges: cancel challenge: " + oldChallenge);
+				Log.d(TAG, "Check for doubled challenges: cancel challenge: " + oldChallenge);
 				_lccClient.cancelChallenge(oldChallenge);
 			}
 		}
@@ -281,7 +520,7 @@ public class LccHolder {
 		  showOwnSeeksLimitMessage();
 		  return;
 		}
-		LccUser.LOG.info("SeekConnection issue seek: " + seek);
+		LccUser.Log.d(TAG, "SeekConnection issue seek: " + seek);
 		Challenge challenge = mapJinSeekToLccChallenge(seek);
 		//outgoingLccSeeks.add(challenge);
 		lccUser.getClient().sendChallenge(challenge, lccUser.getChallengeListener());
@@ -296,7 +535,7 @@ public class LccHolder {
 		return false;
 	}
 
-	public boolean isUserPlayingAnotherGame(long currentGameId) {
+	public boolean isUserPlayingAnotherGame(Long currentGameId) {
 		for (Game game : lccGames.values()) {
 			if (!game.getId().equals(currentGameId) && !game.isEnded()) {
 				return true;
@@ -307,22 +546,19 @@ public class LccHolder {
 
 	public void putChallenge(Long challengeId, Challenge lccChallenge) {
 		challenges.put(challengeId, lccChallenge);
-		android.updateChallengesList();
 	}
 
 	public void removeChallenge(long challengeId) {
 		challenges.remove(challengeId);
 		ownChallenges.remove(challengeId);
-		android.updateChallengesList();
 	}
 
 	public void putSeek(Challenge challenge) {
 		seeks.put(challenge.getId(), challenge);
-		android.updateChallengesList();
 	}
 
 	public void setFriends(Collection<? extends User> friends) {
-		LOG.info("CONNECTION: get friends list: " + friends);
+		Log.d(TAG, "CONNECTION: get friends list: " + friends);
 		if (friends == null) {
 			return;
 		}
@@ -332,13 +568,14 @@ public class LccHolder {
 	}
 
 	public void putFriend(User friend) {
-		if (friend.getStatus() != com.chess.live.client.User.Status.OFFLINE) {
+		if (friend.getStatus() != User.Status.OFFLINE) {
 			onlineFriends.put(friend.getUsername(), friend);
-			this.friends.put(friend.getUsername(), friend);
+			friends.put(friend.getUsername(), friend);
 		} else {
 			onlineFriends.remove(friend.getUsername());
-			this.friends.remove(friend.getUsername());
+			friends.remove(friend.getUsername());
 		}
+		liveChessClientEventListener.onFriendsStatusChanged();
 	}
 
 	public void removeFriend(User friend) {
@@ -351,6 +588,7 @@ public class LccHolder {
 	}
 
 	public String[] getOnlineFriends() {
+		Log.d("TEST", "onlineFriends.size() =  " + onlineFriends.size());
 		final String[] array = new String[]{StaticData.SYMBOL_EMPTY};
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
@@ -372,103 +610,26 @@ public class LccHolder {
 //		return getGame(new Long(gameId));
 //	}
 
-	public Game getGame(long gameId) {
+	public Game getGame(Long gameId) {
 		return lccGames.get(gameId);
 	}
 
 	public void clearSeeks() {
 		seeks.clear();
-		android.updateChallengesList();
 	}
-
-	/*public void removeGame(Long id)
-	  {
-		lccGames.remove(id);
-	  }*/
 
 	public void clearGames() {
 		lccGames.clear();
 	}
 
-	public ArrayList<GameListItem> getChallengesAndSeeksData() {
-		ArrayList<GameListItem> output = new ArrayList<GameListItem>();
+//	public void processMove(long gameId, int moveIndex) {
+//		GameItem gameData = new GameItem(getGameData(gameId, moveIndex), true);
+//		getAndroidStuff().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
+//	}
 
-		Collection<Challenge> challengesAndSeeks = new ArrayList<Challenge>();
-		challengesAndSeeks.addAll(challenges.values());
-//		challengesAndSeeks.addAll(challenges);
-		challengesAndSeeks.addAll(seeks.values());
-
-		boolean isReleasedByMe;
-		for (Challenge challenge : challengesAndSeeks) {
-			String[] challengeData = new String[10];
-			final User challenger = challenge.getFrom();
-			isReleasedByMe = challenger.getUsername().equals(_user.getUsername());
-			final GameTimeConfig challengerTimeConfig = challenge.getGameTimeConfig();
-			challengeData[0] = StaticData.SYMBOL_EMPTY + challenge.getId();
-			challengeData[1] = isReleasedByMe ? challenge.getTo() : challenger.getUsername();
-			Integer challengerRating = 0;
-			if (!isReleasedByMe) {
-				switch (challengerTimeConfig.getGameTimeClass()) {
-					case BLITZ: {
-						challengerRating = challenger.getBlitzRating();
-						break;
-					}
-					case LIGHTNING: {
-						challengerRating = challenger.getQuickRating();
-						break;
-					}
-					case STANDARD: {
-						challengerRating = challenger.getStandardRating();
-						break;
-					}
-				}
-				if (challengerRating == null) {
-					challengerRating = 0;
-				}
-			}
-			challengeData[2] = StaticData.SYMBOL_EMPTY + challengerRating;
-			String challengerChessTitle =
-					challenger.getChessTitle() != null && !isReleasedByMe ? "(" + challenger.getChessTitle() + ")" : StaticData.SYMBOL_EMPTY;
-			challengeData[3] = challengerChessTitle;
-			String color = null;
-			switch (challenge.getColor()) {
-				case UNDEFINED:
-					color = "0";
-					break;
-				case WHITE:
-					color = "1";
-					break;
-				case BLACK:
-					color = "2";
-					break;
-				default:
-					color = "0";
-					break;
-			}
-			challengeData[4] = color;
-			challengeData[5] = challenge.isRated() ? StaticData.SYMBOL_EMPTY : "Unrated"; // is_rated
-
-			/*int time = challengerTimeConfig.getBaseTime() * 100;
-				  int hours = time / (1000 * 60 * 60);
-				  time -= hours * 1000 * 60 * 60;
-				  int minutes = time / (1000 * 60);*/
-			challengeData[6] = (challengerTimeConfig.getBaseTime() / 10 / 60) + "min"; // base_time
-
-			//challengeData[6] = (challengerTimeConfig.getBaseTime() / 10) + "sec"; // base_time
-			challengeData[7] = challengerTimeConfig.getTimeIncrement() != 0 ?
-					"+" + (challengerTimeConfig.getTimeIncrement() / 10) + "sec" : StaticData.SYMBOL_EMPTY; // time_increment
-			challengeData[8] = challenge.getTo() != null ? "1" : "0"; // is_direct_challenge
-			challengeData[9] = isReleasedByMe ? "1" : "0";
-
-			output.add(new GameListItem(GameListItem.LIST_TYPE_CHALLENGES, challengeData, true));
-//			output.add(new GameListItem(GameListItem.LIST_TYPE_CURRENT, challengeData, true));
-		}
-		return output;
-	}
-
-	public String[] getGameData(long gameId, int moveIndex) {
+	public String[] getGameData(Long gameId, int moveIndex) {
 		Game lccGame = getGame(gameId);
-		final String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
+		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 
 		gameData[0] = lccGame.getId().toString();  // TODO eliminate string conversion and use Objects
 		gameData[1] = "1";
@@ -478,30 +639,7 @@ public class LccHolder {
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
 		gameData[6] = StaticData.SYMBOL_EMPTY; // starting_fen_position
 		String moves = StaticData.SYMBOL_EMPTY;
-		/*int j = 0;
-			int latest = 0;
-			for (int i=0; j <= moveIndex; i++)
-			{
-			  if (lccGame.getMovesInSanNotation().charAt(i) == ' ')
-			  {
-				j++;
-				latest = i;
-			  }
-			}
-			if (j!=0)
-			{
-			  moves = lccGame.getMovesInSanNotation().substring(0, latest);
-			}
-			else
-			{
-			  moves = lccGame.getMovesInSanNotation();
-			}*/
 
-		/*String [] movesArray = lccGame.getMovesInSanNotation().split(" ");
-			for (int i=0; i<=moveIndex; i++)
-			{
-			  moves += movesArray[i]+" ";
-			}*/
 
 		final Iterator movesIterator = lccGame.getMoves().iterator();
 		for (int i = 0; i <= moveIndex; i++) {
@@ -511,7 +649,6 @@ public class LccHolder {
 			moves = StaticData.SYMBOL_EMPTY;
 		}
 		gameData[7] = moves; // move_list
-
 		gameData[8] = StaticData.SYMBOL_EMPTY; // user_to_move
 
 		Integer whiteRating = 0;
@@ -550,7 +687,7 @@ public class LccHolder {
 		return gameData;
 	}
 
-	public void makeMove(long gameId, final String move) {
+	public void makeMove(Long gameId, final String move) {
 		final Game game = getGame(gameId);  // TODO remove final and pass like argument
 		/*if(chessMove.isCastling())
 			{
@@ -566,54 +703,43 @@ public class LccHolder {
 			nextOpponentMoveStillNotMade = true;
 		}
 
-		LOG.info("MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
-		// TODO make outter task with argument
-
-		/*try {*/
-
-		new Thread(new Runnable() {
-			public void run() {
-				try {
+		try {
+			Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
+			// TODO make outter task with argument
+			new AsyncTask<Void, Void, Void>() {
+				@Override
+				protected Void doInBackground(Void... voids) {
 					_lccClient.makeMove(game, move);
-				} catch (IllegalArgumentException e) {
-					Log.d("LccHolder", "Illegal move: " + move);
-					/*e.printStackTrace();
-					Toast.makeText(android.getContext(), "Illegal move", Toast.LENGTH_SHORT).show();*/
-					// todo: still helps debugging that in market/user stacktraces
-					throw new IllegalArgumentException(e);
+					return null;
 				}
-			}
-		}).start();
+			}.execute();
 
-		/*} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			Log.d("ILLEGAL move", move);
-		}*/
-
-		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
-		{
-			final boolean isWhiteRunning =
-					_user.getUsername().equals(game.getWhitePlayer().getUsername());
-			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
-			final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
-			if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
+			if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
 			{
-				clockToBePaused.setRunning(false);
-			}
-			synchronized (opponentClockStartSync) {
-				if (nextOpponentMoveStillNotMade) {
-					opponentClockDelayTimer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							synchronized (opponentClockStartSync) {
-								if (nextOpponentMoveStillNotMade) {
-									clockToBeStarted.setRunning(true);
+				final boolean isWhiteRunning =_user.getUsername().equals(game.getWhitePlayer().getUsername());
+				final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
+				final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
+				if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
+				{
+					clockToBePaused.setRunning(false);
+				}
+				synchronized (opponentClockStartSync) {
+					if (nextOpponentMoveStillNotMade) {
+						opponentClockDelayTimer.schedule(new TimerTask() {
+							@Override
+							public void run() {
+								synchronized (opponentClockStartSync) {
+									if (nextOpponentMoveStillNotMade) {
+										clockToBeStarted.setRunning(true);
+									}
 								}
 							}
-						}
-					}, delay);
+						}, delay);
+					}
 				}
 			}
+		} catch (IllegalArgumentException e) {
+			//fireGameEvent(new IllegalMoveEvent(this, null, game, move, IllegalMoveEvent.ILLEGAL_MOVE));
 		}
 	}
 
@@ -638,13 +764,12 @@ public class LccHolder {
 	}
 
 	public void logout() {
-		LOG.info("USER LOGOUT");
-		android.getMainApp().setLiveChess(false);
+		Log.d(TAG, "USER LOGOUT");
+		DataHolder.getInstance().setLiveChess(false);
 		setCurrentGameId(null);
+		Log.d("TEST", "Lcc Logout performed");
 		setUser(null);
-		android.closeLoggingInIndicator();
-		android.closeReconnectingIndicator();
-		getAndroid().runDisconnectTask();
+		runDisconnectTask();
 		setConnected(false);
 		setConnectingInProgress(false);
 		clearGames();
@@ -653,15 +778,6 @@ public class LccHolder {
 		clearSeeks();
 		clearOnlineFriends();
 		setNetworkTypeName(null);
-		//SessionStore.clear(android.getContext());
-	}
-
-	public boolean isConnectingInProgress() {
-		return connectingInProgress;
-	}
-
-	public void setConnectingInProgress(boolean connectingInProgress) {
-		this.connectingInProgress = connectingInProgress;
 	}
 
 	public boolean isSeekContains(Long id) {
@@ -673,10 +789,9 @@ public class LccHolder {
 			seeks.remove(id);
 		}
 		ownChallenges.remove(id);
-		android.updateChallengesList();
 	}
 
-	public Challenge getSeek(long gameId) {
+	public Challenge getSeek(Long gameId) {
 		return seeks.get(gameId);
 	}
 
@@ -684,16 +799,24 @@ public class LccHolder {
 		return activityPausedMode;
 	}
 
-	public void setActivityPausedMode(boolean activityPausedMode) {
+	public void setActivityPausedMode(boolean activityPausedMode) { // TODO Unsafe -> replace with save server data holder logic
 		this.activityPausedMode = activityPausedMode;
+		pausedActivityGameEvents.clear();
 	}
 
 	public Map<GameEvent.Event, GameEvent> getPausedActivityGameEvents() {
 		return pausedActivityGameEvents;
 	}
 
-	public void processFullGame(Game game) {
+	public void checkAndProcessFullGame() {
+		if (currentGameId != null && getGame(currentGameId) != null) {
+			processFullGame(getGame(currentGameId));
+		}
+	}
+
+	public void processFullGame() {
 		latestMoveNumber = null;
+		Game game = getGame(currentGameId);
 		putGame(game);
 		int time = game.getGameTimeConfig().getBaseTime() * 100;
 		if (whiteClock != null && whiteClock.isRunning()) {
@@ -704,33 +827,40 @@ public class LccHolder {
 		}
 		setWhiteClock(new ChessClock(this, true, time));
 		setBlackClock(new ChessClock(this, false, time));
-		final Activity activity = getAndroid().getGameActivity();
-		if (activity != null) {
-			activity.finish();
-		}
-		final ContextWrapper androidContext = android.getMainApp();
 
-		final Intent intent = new Intent(androidContext, GameLiveScreenActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		final Intent intent = new Intent(context, GameLiveScreenActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
-		androidContext.startActivity(intent);
-		/*final Game currentGame = game;
-			if(game.getSeq() > 0)
-			{
-			  android.getUpdateBoardHandler().postDelayed(new Runnable()
-			  {
-				public void run()
-				{
-				  doReplayMoves(currentGame);
-				}
-			  }, 2000); // todo: remove delay, change logic to use SerializableExtra() probably, process moves replay on the Game activity
-			}*/
+		context.startActivity(intent);
+	}
+
+
+	public void processFullGame(Game game) {
+		latestMoveNumber = null;
+		putGame(game);
+
+		int time = game.getGameTimeConfig().getBaseTime() * 100;
+		if (whiteClock != null && whiteClock.isRunning()) {
+			whiteClock.setRunning(false);
+		}
+		if (blackClock != null && blackClock.isRunning()) {
+			blackClock.setRunning(false);
+		}
+
+		setWhiteClock(new ChessClock(this, true, time));
+		setBlackClock(new ChessClock(this, false, time));
+
+		Intent intent = new Intent(context, GameLiveScreenActivity.class);
+		intent.setFlags(/*Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                |*/ Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+		intent.putExtra(GameListItem.GAME_ID, game.getId());
+		context.startActivity(intent);
 	}
 
 	public void doReplayMoves(Game game) {
-		LOG.info("GAME LISTENER: replay moves,  gameId " + game.getId());
-		//final String[] sanMoves = game.getMovesInSanNotation().trim().split(" ");
+		Log.d(TAG, "GAME LISTENER: replay moves,  gameId " + game.getId());
 		final List<String> coordMoves = new ArrayList<String>(game.getMoves());
 		User whitePlayer = game.getWhitePlayer();
 		User blackPlayer = game.getBlackPlayer();
@@ -741,41 +871,28 @@ public class LccHolder {
 		}
 	}
 
-	public void doMoveMade(final Game game, final User moveMaker, String move, /*boolean isNew,*/ int moveIndex) {
-		/*if(move.length() == 5)
-			{
-			  final String promotionSign = move.substring(4, 5);
-			  promotion = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername()) ?
-						  variant.parsePiece(promotionSign.toUpperCase()) : variant.parsePiece(promotionSign);
-			}
-			else
-			{
-			  promotion = null;
-			}*/
-		//final String sanMove = game.getMovesInSanNotation().trim().split(" ")[moveIndex];
-		// todo
-
+	public void doMoveMade(final Game game, final User moveMaker, String move, int moveIndex) {
 		if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
-			LOG.info("GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex + ", latestMoveNumber=" + latestMoveNumber + ")");
+			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex + ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
 			return;
 		} else {
 			latestMoveNumber = moveIndex;
 		}
 		if (isActivityPausedMode()) {
-			final GameEvent moveEvent = new GameEvent();
-			moveEvent.setEvent(GameEvent.Event.Move);
+			GameEvent moveEvent = new GameEvent();
+			moveEvent.setEvent(GameEvent.Event.MOVE);
 			moveEvent.setGameId(game.getId());
 			moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-			android.processMove(game.getId(), moveIndex);
+//			processMove(game.getId(), moveIndex);
+			lccEventListener.onGameRefresh(new GameItem(getGameData(game.getId(), moveIndex), true));
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);
 	}
 
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
-//		setClockDrawPointer(!game.getWhitePlayer().getUsername().equals(moveMaker.getUsername()));
 
 		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
 			final boolean isOpponentMoveDone = !_user.getUsername().equals(moveMaker.getUsername());
@@ -785,35 +902,26 @@ public class LccHolder {
 					setNextOpponentMoveStillNotMade(false);
 				}
 			}
-			//final boolean amIWhite = _user.getUsername().equals(game.getWhitePlayer().getUsername());
-			/*final boolean updateWhite = isOpponentMoveDone || amIWhite;
-				  final boolean updateBlack = isOpponentMoveDone || !amIWhite;*/
 			final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
 			final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
 			final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
 
 
-            getWhiteClock().setTime(whitePlayerTime);
+			getWhiteClock().setTime(whitePlayerTime);
 			if (!game.isEnded()) {
-                getWhiteClock().setRunning(isBlackDone);
+				getWhiteClock().setRunning(isBlackDone);
 			}
 
-            getBlackClock().setTime(blackPlayerTime);
+			getBlackClock().setTime(blackPlayerTime);
 			if (!game.isEnded()) {
-                getBlackClock().setRunning(isWhiteDone);
+				getBlackClock().setRunning(isWhiteDone);
 			}
 
 		}
 	}
 
 	public void updateClockTime(Game game) {
-		/*int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
-			int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
-			System.out.println("!!!!!!!!!!!!!!!!!!!! WHITE TIME " + getWhiteClock().createTimeString(whitePlayerTime));
-			System.out.println("!!!!!!!!!!!!!!!!!!!! BLACK TIME " + getBlackClock().createTimeString(blackPlayerTime));
-			getWhiteClock().setTime(whitePlayerTime);
-			getBlackClock().setTime(blackPlayerTime);*/
 	}
 
 	public void setCurrentGameId(Long gameId) {
@@ -853,29 +961,20 @@ public class LccHolder {
 		return networkTypeName;
 	}
 
-	public Boolean isFairPlayRestriction(long gameId) {
-		Log.d("TEST","gameId = " + gameId);
+	public Boolean isFairPlayRestriction(Long gameId) {
+		Log.d("TEST", "gameId = " + gameId);
 		Game game = getGame(gameId);
-		try {
-			if (game.getWhitePlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByWhitePlayer()) {
-				return true;
-			}
-			if (game.getBlackPlayer().getUsername().equals(_user.getUsername()) && !game.isAbortableByBlackPlayer()) {
-				return true;
-			}
-		}catch (NullPointerException e) {
-			// helps debug issue
-			String message = "gameId=" + gameId + ", game != null " + (game != null) + ", _user" + _user;
-			if (_user != null) {
-				message +=  ", username=" + _user.getUsername();
-			}
-			throw new NullPointerException(message);
-		}
+		String userName = _user.getUsername();
 
+		if (game.getWhitePlayer().getUsername().equals(userName) && !game.isAbortableByWhitePlayer()) {
+			return true;
+		} else if (game.getBlackPlayer().getUsername().equals(userName) && !game.isAbortableByBlackPlayer()) {
+			return true;
+		}
 		return false;
 	}
 
-	public Boolean isAbortableBySeq(long gameId) {
+	public Boolean isAbortableBySeq(Long gameId) {
 		return getGame(gameId).getSeq() < 3;
 	}
 
@@ -883,41 +982,33 @@ public class LccHolder {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-	public void setExternalConnectionListener(LccConnectionListener externalConnectionListener) {
-		this.externalConnectionListener = externalConnectionListener;
+
+	/*
+	 * Challenges
+	 */
+
+	public void runConnectTask() {
+		new ConnectLiveChessTask(new LccConnectUpdateListener()).executeTask();
 	}
 
-	public void updateConnectionState() {
-		externalConnectionListener.onConnected(connected);
+	public void runDisconnectTask() {
+		if (_lccClient != null)
+			new LiveDisconnectTask().execute();
 	}
 
-	public void declineAllChallenges(Challenge acceptedChallenge) {
-		// decline all challenges except acceptedChallenge
-		List<Challenge> removeMe = new ArrayList<Challenge>();
-		for (Challenge challenge : challenges.values()) {
-			if(!challenge.equals(acceptedChallenge))
-				removeMe.add(challenge);
-		}
-		Challenge[] declinedChallenges = new Challenge[removeMe.size()];
-		for (int i = 0, removeMeSize = removeMe.size(); i < removeMeSize; i++) {
-			Challenge challenge = removeMe.get(i);
-			declinedChallenges[i] = challenge;
+	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			_lccClient.disconnect();
+			_lccClient = null;
+			return null;
 		}
 
-		getAndroid().runRejectBatchChallengeTask(declinedChallenges);
-		challengeListener.getOuterChallengeListener().hidePopups();
-	}
-
-	public void declineCurrentChallenge(Challenge currentChallenge) {
-		getAndroid().runRejectChallengeTask(currentChallenge);
-		final List<Challenge> retainMe = new ArrayList<Challenge>();
-		for (Challenge challenge : challenges.values()) {
-			if(!challenge.equals(currentChallenge))
-				 retainMe.add(challenge);
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+			Toast.makeText(context, "disconnected", Toast.LENGTH_SHORT).show();
 		}
-
-		if (retainMe.size() > 0)
-			challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
 	}
 
 	public Context getContext() {

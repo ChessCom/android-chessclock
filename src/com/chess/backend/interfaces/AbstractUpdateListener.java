@@ -18,6 +18,7 @@ public abstract class AbstractUpdateListener<T> implements TaskUpdateInterface<T
 
 	@Override
 	public void showProgress(boolean show) {
+
 	}
 
 	@Override

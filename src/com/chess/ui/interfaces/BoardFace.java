@@ -1,6 +1,5 @@
 package com.chess.ui.interfaces;
 
-import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.HistoryData;
 import com.chess.ui.engine.Move;
 
@@ -68,8 +67,6 @@ public interface BoardFace {
 	void setReside(boolean reside);
 
 	boolean isSubmit();
-
-	ChessBoard getBoard();
 
 	void setInit(boolean init);
 
@@ -141,4 +138,8 @@ public interface BoardFace {
 	void increaseTacticsCorrectMoves();
 
 	boolean toggleAnalysis();
+
+	boolean lastMoveContains(String piece, String moveTo);
+
+	boolean isPossibleToMakeMoves();
 }

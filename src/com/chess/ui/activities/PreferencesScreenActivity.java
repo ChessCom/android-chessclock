@@ -1,11 +1,14 @@
 package com.chess.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -15,7 +18,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.ui.adapters.SelectionAdapter2;
+import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
@@ -28,41 +31,82 @@ import java.util.List;
  * @author alien_roger
  * @created at: 08.02.12 7:18
  */
-public class PreferencesScreenActivity extends LiveBaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-	private Spinner actionAfterMyMove;
-	private Spinner strength;
+public class PreferencesScreenActivity extends LiveBaseActivity implements CompoundButton.OnCheckedChangeListener {
+
+	private static final String VACATION_TAG = "confirm vacation popup";
+
+	private Spinner afterMyMoveSpinner;
+	private Spinner strengthSpinner;
 	private CheckBox showSubmitButton;
 	private CheckBox enableNotifications;
 	private CheckBox vacationCheckBox;
 	private CheckBox showCoordinates;
 	private CheckBox showHighlights;
 	private CheckBox enableSounds;
+	private Context context;
 	private VacationStatusUpdateListener vacationStatusUpdateListener;
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
-
-	@Override
-	public void update(int code) {
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
 
+		context = this;
 
-		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
-		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
-		Button prefInvite = (Button) findViewById(R.id.prefInvite);
-		Button prefContactUs = (Button) findViewById(R.id.prefContactUs);
+		FlurryAgent.onEvent(FlurryData.SETTINGS_ACCESSED);
 
-		actionAfterMyMove = (Spinner) findViewById(R.id.prefAIM);
-		actionAfterMyMove.setAdapter(new ChessSpinnerAdapter(this, R.array.AIM));
-		actionAfterMyMove.setSelection(AppData.getAfterMoveAction(this));
-		actionAfterMyMove.setOnItemSelectedListener(afterIMoveSelectedListener);
+		widgetsInit();
 
-		strength = (Spinner) findViewById(R.id.prefStrength);
-		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
-		strength.setOnItemSelectedListener(strengthSelectedListener);
+		vacationStatusUpdateListener = new VacationStatusUpdateListener();
+		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		afterMyMoveSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
+		strengthSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+
+		if (DataHolder.getInstance().isLiveChess()) {
+			showSubmitButton.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
+		} else {
+			showSubmitButton.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
+		}
+		enableSounds.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, true));
+		enableNotifications.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true));
+		showCoordinates.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, true));
+		showHighlights.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
+
+		if (!DataHolder.getInstance().isGuest() && !DataHolder.getInstance().isLiveChess())
+			updateVacationStatus();
+	}
+
+	private void updateVacationStatus() {
+		LoadItem listLoadItem = new LoadItem();
+		listLoadItem.setLoadPath(RestHelper.GET_VACATION_STATUS);
+		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+
+		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
+	}
+
+	private class VacationStatusUpdateListener extends ChessUpdateListener {
+		public VacationStatusUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (!DataHolder.getInstance().isGuest() && returnedObj.trim().split("[+]")[1].equals("1")) {
+				vacationCheckBox.setChecked(true);
+				vacationCheckBox.setText(R.string.vacationOn);
+			}
+		}
+	}
+
+	protected void widgetsInit() {
+		findViewById(R.id.prefInvite).setOnClickListener(this);
+		findViewById(R.id.prefContactUs).setOnClickListener(this);
 
 		enableSounds = (CheckBox) findViewById(R.id.enableSounds);
 		showSubmitButton = (CheckBox) findViewById(R.id.prefSSB);
@@ -71,38 +115,65 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		showCoordinates = (CheckBox) findViewById(R.id.prefCoords);
 		showHighlights = (CheckBox) findViewById(R.id.prefHighlights);
 
-		TextView onlineTitle = (TextView) findViewById(R.id.onlineTitle);
-		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
-		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
-		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
+		Button logoutBtn = (Button) findViewById(R.id.prefLogout);
+		logoutBtn.setOnClickListener(this);
 
-		TextView preferencesUpgrade = (TextView) findViewById(R.id.upgradeBtn);
+		if (DataHolder.getInstance().isGuest()) {
+			vacationCheckBox.setVisibility(View.GONE);
+			logoutBtn.setVisibility(View.GONE);
+		} else {
+			vacationCheckBox.setOnClickListener(this);
+			logoutBtn.setVisibility(View.VISIBLE);
+		}
 
-		boolean liveMembershipLevel =
-				lccHolder.getUser() != null && mainApp.isLiveChess() && (lccHolder.getUser().getMembershipLevel() < 50);
-		if (liveMembershipLevel
-				|| (!mainApp.isLiveChess() && Integer.parseInt(preferences.getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 3)) {
+		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
+		preferencesUpgrade.setOnClickListener(this);
+
+		if (AppUtils.isNeedToUpgrade(this)) {
 			preferencesUpgrade.setVisibility(View.VISIBLE);
 		} else {
 			preferencesUpgrade.setVisibility(View.GONE);
 		}
 
-		if (mainApp.isLiveChess()) {
-			onlineTitle.setText(getString(R.string.liveTitle));
+		Spinner langSpinner = (Spinner) findViewById(R.id.langSpinner);
+		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
+		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
+
+		langSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.languages));
+		langSpinner.setOnItemSelectedListener(langSelectedListener);
+		langSpinner.setSelection(AppData.getLanguageCode(this));
+
+		afterMyMoveSpinner = (Spinner) findViewById(R.id.prefAIM);
+		afterMyMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.AIM));
+		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
+		afterMyMoveSpinner.setOnItemSelectedListener(afterMyMoveSelectedListener);
+
+		strengthSpinner = (Spinner) findViewById(R.id.prefStrength);
+		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
+		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
+
+
+		TextView onlineTitle = (TextView) findViewById(R.id.onlineTitle);
+		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
+		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
+		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
+
+
+		if (DataHolder.getInstance().isLiveChess()) {
+			onlineTitle.setText(getString(R.string.label_game_live));
 			afterIMoveLayout.setVisibility(View.GONE);
 			enableNotifications.setVisibility(View.GONE);
 			vacationCheckBox.setVisibility(View.GONE);
 			computerTitle.setVisibility(View.GONE);
 			prefStrengthLayout.setVisibility(View.GONE);
 		} else {
-			onlineTitle.setText(getString(R.string.onlineTitle));
+			onlineTitle.setText(getString(R.string.label_game_online));
 			afterIMoveLayout.setVisibility(View.VISIBLE);
 			enableNotifications.setVisibility(View.VISIBLE);
 			vacationCheckBox.setVisibility(View.VISIBLE);
 			computerTitle.setVisibility(View.VISIBLE);
 			prefStrengthLayout.setVisibility(View.VISIBLE);
 		}
-		preferencesUpgrade.setOnClickListener(this);
 
 
 		List<SelectionItem> piecesList = new ArrayList<SelectionItem>(9);
@@ -128,12 +199,13 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
 
 		//spinners
-		boardsSpinner.setAdapter(new SelectionAdapter2(this, boardsList));
+		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
 		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
-		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_TYPE, 0);
+		int boardsPosition = preferences.getInt(AppData.getUserName(this)
+				+ AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 
-		piecesSpinner.setAdapter(new SelectionAdapter2(this, piecesList));
+		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
 		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
 
 		int piecesPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_PIECES_SET, 0);
@@ -145,47 +217,28 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		enableNotifications.setOnCheckedChangeListener(this);
 		showCoordinates.setOnCheckedChangeListener(this);
 		showHighlights.setOnCheckedChangeListener(this);
-
-		if (mainApp.guest) {
-			vacationCheckBox.setVisibility(View.GONE);
-			findViewById(R.id.prefLogout).setVisibility(View.GONE);
-		} else {
-			vacationCheckBox.setOnClickListener(this);
-			findViewById(R.id.prefLogout).setVisibility(View.VISIBLE);
-			findViewById(R.id.prefLogout).setOnClickListener(this);
-		}
-
-		prefInvite.setOnClickListener(this);
-		prefContactUs.setOnClickListener(this);
-
-		vacationStatusUpdateListener = new VacationStatusUpdateListener();
-		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
-
-		FlurryAgent.onEvent(FlurryData.SETTINGS_ACCESSED);
 	}
 
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.prefLogout) { // DO NOT turn to switch!
-			if (!mainApp.guest) {
-				lccHolder.logout();
+			getLccHolder().logout();
 
-				mainApp.guest = true;
+			DataHolder.getInstance().setGuest(true);
 
-				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.commit();
+			preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.commit();
 
-				Intent intent = new Intent(this, HomeScreenActivity.class);
-				intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				AppUtils.stopNotificationsUpdate(this);
-				finish();
-			}
+			Intent intent = new Intent(this, HomeScreenActivity.class);
+			intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			AppUtils.stopNotificationsUpdate(this);
+			finish();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
-		}else if (view.getId() == R.id.prefInvite) {
+		} else if (view.getId() == R.id.prefInvite) {
 			String userName = AppData.getUserName(this);
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
@@ -202,9 +255,23 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefVacation) {
-            updateVacationLeaveStatus();
+			updateVacationLeaveStatus();
 		}
 	}
+
+	private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, pos);
+			preferencesEditor.commit();
+
+			setLocale();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
+	};
 
 	private AdapterView.OnItemSelectedListener strengthSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
@@ -218,7 +285,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		}
 	};
 
-	private AdapterView.OnItemSelectedListener afterIMoveSelectedListener = new AdapterView.OnItemSelectedListener() {
+	private AdapterView.OnItemSelectedListener afterMyMoveSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
@@ -235,7 +302,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_BOARD_TYPE, pos);
 			preferencesEditor.commit();
-			mainApp.loadBoard(mainApp.res_boards[pos]);
 		}
 
 		@Override
@@ -243,66 +309,22 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		}
 	};
 
-	private  AdapterView.OnItemSelectedListener  piecesSpinnerListener = new AdapterView.OnItemSelectedListener() {
+	private AdapterView.OnItemSelectedListener piecesSpinnerListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_PIECES_SET, pos);
 			preferencesEditor.commit();
-			mainApp.loadPieces(pos);
 		}
 
 		@Override
 		public void onNothingSelected(AdapterView<?> adapterView) {
 		}
 	};
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		actionAfterMyMove.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
-		strength.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
-
-		if (mainApp.isLiveChess()) {
-			showSubmitButton.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
-		} else {
-			showSubmitButton.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
-		}
-		enableSounds.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, true));
-		enableNotifications.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true));
-		showCoordinates.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, true));
-		showHighlights.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
-
-		if(!mainApp.guest && !mainApp.isLiveChess())
-			updateVacationStatus();
-	}
-
-	private void updateVacationStatus(){
-		LoadItem listLoadItem = new LoadItem();
-		listLoadItem.setLoadPath(RestHelper.GET_VACATION_STATUS);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-
-		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
-	}
-
-	private class VacationStatusUpdateListener extends ChessUpdateListener {
-		public VacationStatusUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			if (!mainApp.guest && returnedObj.trim().split("[+]")[1].equals("1")) {
-				vacationCheckBox.setChecked(true);
-				vacationCheckBox.setText(getString(R.string.vacationOn));
-			}
-		}
-	}
 
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.prefSSB) {
-			String sharedKey = mainApp.isLiveChess()? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
+			String sharedKey = DataHolder.getInstance().isLiveChess() ? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
 			preferencesEditor.putBoolean(AppData.getUserName(this) + sharedKey, checked);
 			preferencesEditor.commit();
 		} else if (compoundButton.getId() == R.id.enableSounds) {
@@ -326,17 +348,29 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements View.
 		}
 	}
 
-	private void updateVacationLeaveStatus(){
-		LoadItem listLoadItem = new LoadItem();
+	private void updateVacationLeaveStatus() {
 		if (vacationCheckBox.isChecked()) {
-			listLoadItem.setLoadPath(RestHelper.VACATION_LEAVE);
+			showPopupDialog(R.string.confirm_vacation_title, R.string.confirm_vacation_msg, VACATION_TAG);
 		} else {
+			LoadItem listLoadItem = new LoadItem();
 			listLoadItem.setLoadPath(RestHelper.VACATION_RETURN);
-        }
+			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
+		}
+	}
 
-		new GetStringObjTask(vacationLeaveStatusUpdateListener).execute(listLoadItem);
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+		if (fragment.getTag().equals(VACATION_TAG)) {
+			LoadItem listLoadItem = new LoadItem();
+			listLoadItem.setLoadPath(RestHelper.VACATION_LEAVE);
+
+			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+
+			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
+		}
 	}
 
 	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {

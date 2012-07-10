@@ -18,7 +18,6 @@ public class MopubHelper {
 	private static LinearLayout rectangleAdWrapper;
 	private static MoPubView rectangleAdView;
 
-	//	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, MainApp app) {
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, Context context) {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
@@ -54,7 +53,6 @@ public class MopubHelper {
             rectangleAdView.destroy();
     }
 
-//	public static void showRectangleAd(LinearLayout wrapper, MainApp app) {
 	public static void showRectangleAd(LinearLayout wrapper, Context context) {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
@@ -82,33 +80,7 @@ public class MopubHelper {
 
 	}
 
-//	public static boolean isShowAds(MainApp app) {
 	public static boolean isShowAds(Context context) {
-		boolean result;
-//		return true;
-			return AppUtils.isNeedToUpgrade(context);
-
-
-/*
-		// -------------  DO NOT USE ANYMORE --------------------------------------
-		User lccUser = null;
-		try {
-			lccUser = LccHolder.getInstance(context).getUser();
-
-			boolean liveMembershipLevel =
-					lccUser != null ? app.isLiveChess() && (lccUser.getMembershipLevel() < 30) && !app.getLccHolder().isConnectingInProgress() : false;
-
-			boolean echessMembershipLevel = !app.isLiveChess() && Integer.parseInt(
-					app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0")) < 1;
-
-			result = liveMembershipLevel || echessMembershipLevel*/
-/*((System.currentTimeMillis() - mainApp.getSharedData().getLong(AppConstants.FIRST_TIME_START, 0)) >
-				(7 * 24 * 60 * 60 * 1000)) && *//*
-;
-		} catch (Exception e) {
-			throw new NullPointerException("app.getLccHolder() " + app.getLccHolder() + ", app.getLccHolder().getUser() " + app.getLccHolder().getUser() + ", lccUser.getMembershipLevel() " + lccUser.getMembershipLevel() + ", app.getSharedData() " + app.getSharedData() + ", app.getSharedData().getString(\"premium_status\", \"0\") " + app.getSharedData().getString(AppConstants.USER_PREMIUM_STATUS, "0"));
-		}
-		return result;
-*/
+		return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
 	}
 }

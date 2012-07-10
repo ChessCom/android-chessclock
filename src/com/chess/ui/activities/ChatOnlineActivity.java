@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -28,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListener {
+public class ChatOnlineActivity extends LiveBaseActivity {
 
 	private int UPDATE_DELAY = 10000;
 
@@ -43,10 +42,6 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 	private Button sendBtn;
 	private long gameId;
 	private String timeStamp;
-
-	@Override
-	public void update(int code) {
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +60,6 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 		sendUpdateListener = new SendUpdateListener();
 	}
 
-	@Override
 	protected void widgetsInit(){
 
 		sendText = (EditText) findViewById(R.id.sendText);
@@ -97,7 +91,7 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_DELAY);
 		}
-	};	
+	};
 
 	public void updateList(){
 		// submit echess action
@@ -108,10 +102,10 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
-		getDataTask = new GetStringObjTask(listUpdateListener).execute(loadItem);
+		getDataTask = new GetStringObjTask(listUpdateListener).executeTask(loadItem);
 	}
 
-	private class ListUpdateListener extends ChessUpdateListener {
+	private class ListUpdateListener extends ActionBarUpdateListener<String> {
 		public ListUpdateListener() {
 			super(getInstance());
 		}
@@ -135,7 +129,7 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 		chatItems.addAll(ChessComApiParser.receiveMessages(response));
 		if (before != chatItems.size()) {
 			if (messages == null) {
-				messages = new MessagesAdapter(ChatOnlineActivity.this, R.layout.chat_item, chatItems);
+				messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
 				chatListView.setAdapter(messages);
 			} else {
 				messages.notifyDataSetChanged();
@@ -159,7 +153,7 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 			e.printStackTrace();
 			Log.e("Chat", e.toString());
 			// correctly
-			showToast(R.string.encoding_unsopported);
+			showToast(R.string.encoding_unsupported);
 		}
 
 		LoadItem loadItem = new LoadItem();
@@ -170,10 +164,10 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
-		getDataTask = new GetStringObjTask(sendUpdateListener).execute(loadItem);
+		getDataTask = new GetStringObjTask(sendUpdateListener).executeTask(loadItem);
 	}
 
-	private class SendUpdateListener extends ChessUpdateListener{
+	private class SendUpdateListener extends ActionBarUpdateListener<String> {
 		public SendUpdateListener() {
 			super(getInstance());
 		}
@@ -196,7 +190,7 @@ public class ChatOnlineActivity extends LiveBaseActivity implements OnClickListe
 		chatItems.addAll(ChessComApiParser.receiveMessages(response));
 
 		if (messages == null) {
-			messages = new MessagesAdapter(ChatOnlineActivity.this, R.layout.chat_item, chatItems);
+			messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
 			chatListView.setAdapter(messages);
 		} else {
 			messages.notifyDataSetChanged();
