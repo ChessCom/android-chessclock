@@ -2,9 +2,11 @@ package com.chess.ui.activities;
 
 import actionbarcompat.ActionBarActivity;
 import actionbarcompat.ActionBarHelper;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -54,6 +56,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH && getActionBar() != null) {
+			getActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
+					| ActionBar.DISPLAY_USE_LOGO
+					| ActionBar.DISPLAY_SHOW_HOME
+					| ActionBar.DISPLAY_SHOW_TITLE);
+		}
 
 		handler = new Handler();
 

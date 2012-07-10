@@ -68,9 +68,9 @@
 	</string-array>
 
 	<string-array name="onlineSpinner">
-		<item>имеющиеся игры</item>
+		<item>Текущие игры</item>
 		<item>Вызовы</item>
-		<item>Готовые игры</item>
+		<item>Завершенные игры</item>
 	</string-array>	
 
 	<string-array name="AIM">

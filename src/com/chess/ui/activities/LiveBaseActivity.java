@@ -40,12 +40,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH && getActionBar() != null) {
-			getActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
-					| ActionBar.DISPLAY_USE_LOGO
-					| ActionBar.DISPLAY_SHOW_HOME
-					| ActionBar.DISPLAY_SHOW_TITLE);
-		}
+
 		challengeTaskListener = new ChallengeTaskListener();
 		gameTaskListener = new GameTaskListener();
 

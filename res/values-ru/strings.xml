@@ -58,11 +58,11 @@
 	<string name="onlineNewGametitle">Новая Игра</string>
 	<string name="onlineChallenges">Открытые Состязания</string>
 	<string name="challengeFriend">Сыграть с Другом</string>
-	<string name="createNewChallenge">Создать Открытый Вызов</string>
+	<string name="createNewChallenge">Бросить Открытый Вызов</string>
 	<string name="currentGame">Текущая Игра Вживую</string>
 	<string name="GameType">Тип Игры</string>
-	<string name="classic">Классические Шахматы</string>
-	<string name="chess960">Шахматы 960</string>
+	<string name="classic">Классические</string>
+	<string name="chess960">Шахматы \n 960</string>
 	<string name="Friend">Друг</string>
 	<string name="initialTime">Начальное Время</string>
 	<string name="bonusTime">Бонусное Время</string>

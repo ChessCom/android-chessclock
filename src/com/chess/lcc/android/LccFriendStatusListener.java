@@ -14,7 +14,6 @@ public class LccFriendStatusListener implements FriendStatusListener {
 
 	public LccFriendStatusListener(LccHolder lccHolder) {
 		this.lccHolder = lccHolder;
-		Log.d("TEST", "LccFriendStatusListener lccHolder = " + lccHolder);
 	}
 
 	public void onFriendStatusReceived(User friend) {

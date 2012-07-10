@@ -9,12 +9,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -24,7 +22,6 @@ import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
-import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
@@ -101,9 +98,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			preferencesEditor.commit();
 		}
-		
-		if(currentLocale.equals(getResources().getConfiguration().locale.getLanguage())){
-//			restartActivity();
+
+		if(!currentLocale.equals(getResources().getConfiguration().locale.getLanguage())){
+			restartActivity();
 		}
 	}
 
@@ -127,11 +124,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
     protected void setLocale(){
         String prevLang = getResources().getConfiguration().locale.getLanguage();
-        Log.d("TEST", " used locale = " + prevLang);
         String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
         String setLocale = languageCodes[AppData.getLanguageCode(context)];
-        Log.d("TEST", " setLocale = " + setLocale);
         if(!prevLang.equals(setLocale)) {
             Locale locale = new Locale(setLocale);
             Locale.setDefault(locale);
