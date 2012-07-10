@@ -37,6 +37,9 @@
     <dimen name="button_upgrade_left_padding">43dip</dimen>
     <dimen name="button_upgrade_right_padding">46dip</dimen>
 
+	<!--Login fb-->
+    <dimen name="button_login_fb_left_padding">6dip</dimen>
+
 
     <dimen name="list_item_image_size">27dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>

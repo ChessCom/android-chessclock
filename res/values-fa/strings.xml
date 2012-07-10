@@ -36,6 +36,7 @@
 	<string name="label_friend_challenge_online">دوست چالش آنلاین</string>
 	<string name="label_create_challenge_online">ایجاد چالش آنلاین</string>
 
+	<!--Settings-->
 	<string name="settings">تنظیمات</string>
 	<string name="start_new_game">شروع بازی های جدید</string>
 	<string name="dont_have_account_q">آیا یک حساب داشته باشید؟</string>
@@ -45,7 +46,7 @@
 	<string name="singupButton">ثبت نام</string>
 	<string name="complete_singupButton">کامل ثبت نام</string>
 	<string name="singinPlayguest">بازی به عنوان مهمان</string>
-	<string name="computerTitle">PLAY کامپیوتر</string>
+
 	<string name="computerWhite">سفید</string>
 	<string name="computerBlack">سیاه</string>
 	<string name="Human">انسانی</string>

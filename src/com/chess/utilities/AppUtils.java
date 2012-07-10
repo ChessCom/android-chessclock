@@ -205,39 +205,4 @@ public class AppUtils {
 				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);
 	}
 
-	/**
-	 *
-	 * @param context
-	 * @return true if locale was changed
-	 */
-	public static boolean changeLocale(Context context){
-		String prevLang = context.getResources().getConfiguration().locale.getLanguage();
-		Log.d("TEST", " used locale = " + prevLang);
-//		Log.d("TEST", " def locale = " + Locale.ENGLISH.getLanguage());
-		String[] languageCodes = context.getResources().getStringArray(R.array.languages_codes);
-
-		String setLocale = languageCodes[AppData.getLanguageCode(context)];
-		Log.d("TEST", " setLocale = " + setLocale);
-		boolean changed = false;
-		if(!prevLang.equals(setLocale)) {
-			changed = true;
-			Locale locale = new Locale(setLocale);
-			Locale.setDefault(locale);
-			Configuration config = new Configuration();
-			config.locale = locale;
-			context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-
-			DataHolder.getInstance().localizationChanged(true);
-		}else{
-			Locale locale = new Locale(setLocale);
-			Locale.setDefault(locale);
-			Configuration config = new Configuration();
-			config.locale = locale;
-			context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-		}
-
-
-		return changed;
-	}
-
 }

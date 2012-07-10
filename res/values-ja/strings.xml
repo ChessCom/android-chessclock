@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">オンラインゲームのための友人のチャレンジ</string>
 	<string name="label_create_challenge_online">オンラインチャレンジを作成</string>
 
+	<!--Settings-->
 	<string name="settings">設定</string>
 	<string name="start_new_game">新しいゲームを起動します。</string>
 	<string name="dont_have_account_q">アカウントをお持ちでない場合</string>
@@ -46,7 +47,7 @@
 	<string name="singupButton">登録</string>
 	<string name="complete_singupButton">サインアップを完了</string>
 	<string name="singinPlayguest">ゲストとしてプレイ</string>
-	<string name="computerTitle">コンピュータPLAY</string>
+
 	<string name="computerWhite">白</string>
 	<string name="computerBlack">黒</string>
 	<string name="Human">人</string>

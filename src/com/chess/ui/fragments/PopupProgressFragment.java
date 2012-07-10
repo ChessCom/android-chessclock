@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
@@ -16,8 +17,10 @@ import com.chess.model.PopupItem;
  * @author alien_roger
  * @created at: 07.04.12 7:13
  */
-public class PopupProgressFragment extends PopupDialogFragment {
+public class PopupProgressFragment extends BasePopupDialogFragment {
 
+    private TextView titleTxt;
+    private TextView messageTxt;
     private boolean cancelable;
 
 	public static PopupProgressFragment newInstance(PopupItem popupItem) {

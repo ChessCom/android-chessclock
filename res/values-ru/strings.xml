@@ -9,11 +9,11 @@
 	<string name="signout">Выйти</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">Играть вживую</string>
-	<string name="menuOnline">Играть онлайн</string>
-	<string name="menuComp">Играть с компьютером</string>
+	<string name="menuLive">Играть Вживую</string>
+	<string name="menuOnline">Играть Онлайн</string>
+	<string name="menuComp">Играть \nс Компьютером</string>
 	<string name="menuTactics">Тренер Тактик</string>
-	<string name="menuVideo">Тренер по тактикам</string>
+	<string name="menuVideo">Видео</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">ЖИВАЯ ИГРА</string>
@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">ВЫЗОВ ДРУГА ОНЛАЙН</string>
 	<string name="label_create_challenge_online">СОЗДАТЬ ОНЛАЙН ВЫЗОВ</string>
 
+	<!--Settings-->
 	<string name="settings">Настройки</string>
 	<string name="start_new_game">Начать Новую Игру</string>
 	<string name="dont_have_account_q">Нет Аккаунта?</string>
@@ -46,7 +47,7 @@
 	<string name="singupButton">Регистрация</string>
 	<string name="complete_singupButton">Завершить Регистрацию</string>
 	<string name="singinPlayguest">Играть Как Гость</string>
-	<string name="computerTitle">ИГРАТЬ С КОМПОМ</string>
+
 	<string name="computerWhite">Белые</string>
 	<string name="computerBlack">Чёрные</string>
 	<string name="Human">Человек</string>

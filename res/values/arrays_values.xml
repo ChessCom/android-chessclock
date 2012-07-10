@@ -2,6 +2,7 @@
 <resources>
 
 	<string-array name="languages_codes">
+		<item>en</item>
 		<item>ar</item>
 		<item>zh</item>
 		<item>da</item>

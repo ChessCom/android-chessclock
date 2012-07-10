@@ -1,6 +1,7 @@
 <resources>
 
 	<string-array name="languages">
+		<item>अंग्रेज़ी</item>
 		<item>अरबी </item>
 		<item>चीनी</item>
 		<item>डेनमार्कवासी </item>

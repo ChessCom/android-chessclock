@@ -36,6 +36,7 @@
 	<string name="label_friend_challenge_online">朋友的挑战在线</string>
 	<string name="label_create_challenge_online">创建在线挑战</string>
 
+	<!--Settings-->
 	<string name="settings">设置</string>
 	<string name="start_new_game">开始新游戏</string>
 	<string name="dont_have_account_q">没有帐户？</string>
@@ -45,7 +46,7 @@
 	<string name="singupButton">注册</string>
 	<string name="complete_singupButton">完成Signup</string>
 	<string name="singinPlayguest">为来宾播放</string>
-	<string name="computerTitle">计算机上播放</string>
+
 	<string name="computerWhite">白色</string>
 	<string name="computerBlack">黑色</string>
 	<string name="Human">人</string>

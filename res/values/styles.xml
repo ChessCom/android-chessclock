@@ -31,8 +31,6 @@
 		<item name="android:layout_marginBottom">2dip</item>
 	</style>
 
-    <!--     <item name="android:layout_height">@dimen/default_button_height</item> -->
-
     <style name="Text.Button.Grey">
         <item name="android:background">@drawable/button_grey_selector</item>
     </style>
@@ -51,6 +49,7 @@
 
     <style name="Text.Button.Login" >
         <item name="android:background">@drawable/button_f_selector</item>
+		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
     </style>
 
 

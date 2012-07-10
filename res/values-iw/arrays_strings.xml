@@ -1,6 +1,7 @@
 <resources>
 
 	<string-array name="languages">
+		<item>"אנגלית"</item>
 		<item>"ערבית"</item>
 		<item>"סינית"</item>
 		<item>"דנית"</item>

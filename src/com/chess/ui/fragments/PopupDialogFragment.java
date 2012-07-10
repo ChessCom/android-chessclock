@@ -21,19 +21,13 @@ import com.chess.ui.interfaces.PopupDialogFace;
  * @author alien_roger
  * @created at: 07.04.12 7:13
  */
-public class PopupDialogFragment extends DialogFragment implements View.OnClickListener {
+public class PopupDialogFragment extends BasePopupDialogFragment {
 
-    protected static final String POPUP_ITEM = "popup item";
-
-    protected PopupDialogFace listener;
-    protected PopupItem popupItem;
-    protected TextView titleTxt;
-    protected TextView messageTxt;
-    protected Button leftBtn;
-    protected Button middleBtn;
-    protected Button rightBtn;
-    protected int buttonsNumber;
-	protected boolean isShowed;
+    private TextView titleTxt;
+    private TextView messageTxt;
+    private Button leftBtn;
+    private Button middleBtn;
+    private Button rightBtn;
 
 	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
         PopupDialogFragment frag = new PopupDialogFragment();
@@ -42,12 +36,6 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		frag.setArguments(arguments);
 		frag.listener = listener;
         return frag;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_FRAME, 0);
     }
 
     @Override
@@ -82,15 +70,7 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
         }
     }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if(getArguments() != null){
-			popupItem = (PopupItem) getArguments().getSerializable(POPUP_ITEM);
-		}else{
-			popupItem = (PopupItem) savedInstanceState.getSerializable(POPUP_ITEM);
-		}
-	}
+
 
 	@Override
 	public void onResume() {
@@ -113,48 +93,4 @@ public class PopupDialogFragment extends DialogFragment implements View.OnClickL
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
 
-	@Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.positiveBtn){
-            listener.onPositiveBtnClick(this);
-        }else if(view.getId() == R.id.negativeBtn){
-            listener.onNegativeBtnClick(this);
-        }
-    }
-
-    public void updatePopupItem(PopupItem popupItem) {
-        this.popupItem = popupItem;
-		Bundle arguments = new Bundle();
-		arguments.putSerializable(POPUP_ITEM, popupItem);
-		setArguments(arguments);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(POPUP_ITEM, popupItem);
-    }
-
-    public void setButtons(int buttonsNumber){
-        this.buttonsNumber = buttonsNumber;
-    }
-
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		isShowed = true;
-		super.show(manager, tag);
-	}
-
-	@Override
-	public int show(FragmentTransaction transaction, String tag) {
-		isShowed = true;
-		return super.show(transaction, tag);
-	}
-
-	@Override
-	public void dismiss() {
-		if(isShowed)
-			super.dismiss();
-		isShowed = false;
-	}
 }

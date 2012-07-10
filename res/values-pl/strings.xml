@@ -36,6 +36,7 @@
 	<string name="label_friend_challenge_online">PRZYJACIEL CHALLENGE ONLINE</string>
 	<string name="label_create_challenge_online">TWORZENIE ONLINE CHALLENGE</string>
 
+	<!--Settings-->
 	<string name="settings">Ustawienia</string>
 	<string name="start_new_game">Rozpocznij nową grę</string>
 	<string name="dont_have_account_q">Nie masz konta?</string>
@@ -45,7 +46,7 @@
 	<string name="singupButton">Zarejestruj się</string>
 	<string name="complete_singupButton">Wypełnij Zarejestruj</string>
 	<string name="singinPlayguest">Graj jako Gość</string>
-	<string name="computerTitle">GRA KOMPUTEROWA</string>
+
 	<string name="computerWhite">Biały</string>
 	<string name="computerBlack">Czarny</string>
 	<string name="Human">Standardy praw człowieka służą jako minimalne standardy w interpretowaniu krajowych praw podstawowych.</string>

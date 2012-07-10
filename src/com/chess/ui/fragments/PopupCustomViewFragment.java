@@ -16,9 +16,11 @@ import com.chess.ui.interfaces.PopupDialogFace;
  * @author alien_roger
  * @created at: 07.04.12 7:13
  */
-public class PopupCustomViewFragment extends PopupDialogFragment implements View.OnClickListener {
+public class PopupCustomViewFragment extends BasePopupDialogFragment {
 
-	private FrameLayout customView;
+    private Button leftBtn;
+    private Button rightBtn;
+    private FrameLayout customView;
 
 	public static PopupCustomViewFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();

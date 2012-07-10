@@ -1,16 +1,20 @@
 package com.chess.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -25,6 +29,7 @@ import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * BaseFragmentActivity class
@@ -52,8 +57,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected List<PopupDialogFragment> popupManager;
 
 	protected boolean isPaused;
+    private String currentLocale;
 
-	@Override
+    @Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
@@ -67,7 +73,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		context = this;
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
-		AppUtils.changeLocale(this);
 
 		popupItem = new PopupItem();
 		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
@@ -81,6 +86,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
+        setLocale();
 	}
 
 	@Override
@@ -94,9 +102,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 			preferencesEditor.commit();
 		}
 		
-//		if(DataHolder.getInstance().isLocalizationChanged()){
-			AppUtils.changeLocale(this);
-//		}
+		if(currentLocale.equals(getResources().getConfiguration().locale.getLanguage())){
+//			restartActivity();
+		}
 	}
 
 	@Override
@@ -116,6 +124,35 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 	}
+
+    protected void setLocale(){
+        String prevLang = getResources().getConfiguration().locale.getLanguage();
+        Log.d("TEST", " used locale = " + prevLang);
+        String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
+
+        String setLocale = languageCodes[AppData.getLanguageCode(context)];
+        Log.d("TEST", " setLocale = " + setLocale);
+        if(!prevLang.equals(setLocale)) {
+            Locale locale = new Locale(setLocale);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+
+            preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
+            preferencesEditor.commit();
+
+            currentLocale = setLocale;
+
+            restartActivity();
+        }
+    }
+
+    protected void restartActivity(){
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {

@@ -265,12 +265,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, pos);
 			preferencesEditor.commit();
 
-			boolean changed = AppUtils.changeLocale(getContext());
-			if (changed) {
-				Intent intent = getIntent();
-				finish();
-				startActivity(intent);
-			}
+			setLocale();
 		}
 
 		@Override

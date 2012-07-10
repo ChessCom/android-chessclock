@@ -1,6 +1,7 @@
 <resources>
 
 	<string-array name="languages">
+		<item>الإنجليزية</item>
 		<item>العربية</item>
 		<item>صيني- ينتمي للصين</item>
 		<item>الدانماركية</item>

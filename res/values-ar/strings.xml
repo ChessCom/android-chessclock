@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">التحدي صديق على الانترنت</string>
 	<string name="label_create_challenge_online">خلق التحدي عبر الإنترنت</string>
 
+	<!--Settings-->
 	<string name="settings">إعدادات</string>
 	<string name="start_new_game">تبدأ لعبة جديدة</string>
 	<string name="dont_have_account_q">لم يكن لديك حساب؟</string>
@@ -46,7 +47,8 @@
 	<string name="singupButton">قم بالتسجيل</string>
 	<string name="complete_singupButton">استكمال اشترك</string>
 	<string name="singinPlayguest">كما تلعب ضيف</string>
-	<string name="computerTitle">كمبيوتر اللعب</string>
+
+
 	<string name="computerWhite">الأبيض</string>
 	<string name="computerBlack">الشاي الأسود</string>
 	<string name="Human">البشر الاخرين.</string>

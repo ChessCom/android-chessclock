@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">FREUND CHALLENGE ONLINE</string>
 	<string name="label_create_challenge_online">CREATE ONLINE CHALLENGE</string>
 
+	<!--Settings-->
 	<string name="settings">Einstellungen</string>
 	<string name="start_new_game">Neues Spiel starten</string>
 	<string name="dont_have_account_q">Sie haben noch kein Konto?</string>
@@ -46,7 +47,7 @@
 	<string name="singupButton">Registrieren</string>
 	<string name="complete_singupButton">Füllen Sie Signup</string>
 	<string name="singinPlayguest">Spielen Sie als Gast</string>
-	<string name="computerTitle">Computer spielen</string>
+
 	<string name="computerWhite">Weiß</string>
 	<string name="computerBlack">Schwarz</string>
 	<string name="Human">Mensch</string>

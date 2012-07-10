@@ -95,7 +95,7 @@
 			android:id="@+id/computerTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/computerTitle"
+			android:text="@string/label_play_comp"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>

@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">AMIGO EL RETO EN LÍNEA</string>
 	<string name="label_create_challenge_online">CREAR EL RETO DE LÍNEA</string>
 
+	<!--Settings-->
 	<string name="settings">Configuración</string>
 	<string name="start_new_game">Iniciar un nuevo juego</string>
 	<string name="dont_have_account_q">¿Todavía no tienes una cuenta?</string>
@@ -46,7 +47,7 @@
 	<string name="singupButton">Regístrate</string>
 	<string name="complete_singupButton">Completa Registro</string>
 	<string name="singinPlayguest">Juega como invitado</string>
-	<string name="computerTitle">JUEGO ORDENADOR</string>
+
 	<string name="computerWhite">Blancos</string>
 	<string name="computerBlack">black</string>
 	<string name="Human">Humanos</string>

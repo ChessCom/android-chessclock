@@ -125,4 +125,5 @@ public class AppConstants {
 
 
 	public static final String UTF_8 = "UTF-8";
+    public static final String CURRENT_LOCALE = "current locale of screen";
 }

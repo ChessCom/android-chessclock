@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">मित्र चुनौती ऑनलाइन</string>
 	<string name="label_create_challenge_online">बनाने ऑनलाइन चुनौती</string>
 
+	<!--Settings-->
 	<string name="settings">सेटिंग्स</string>
 	<string name="start_new_game">नया गेम शुरू</string>
 	<string name="dont_have_account_q">कोई खाता नहीं है? </string>
@@ -46,7 +47,7 @@
 	<string name="singupButton">साइन-अप</string>
 	<string name="complete_singupButton">पंजीकरण पूरा</string>
 	<string name="singinPlayguest">अतिथि के रूप में</string>
-	<string name="computerTitle">कम्प्यूटर प्ले</string>
+
 	<string name="computerWhite">सफेद</string>
 	<string name="computerBlack">काला</string>
 	<string name="Human">मानव</string>

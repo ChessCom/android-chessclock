@@ -16,12 +16,12 @@
 	<string name="menuVideo">Videoinstruktion</string>
 
 	<!--activities titles-->
-	<string name="label_play_live">Spil Live</string>
+	<string name="label_play_live">SPIL LIVE</string>
 	<string name="label_play_online">SPIL ONLINE</string>
 	<string name="label_online_new_game">NYT ONLINE SPIL</string>
-	<string name="label_live_new_game"> NYT LIVE SPIL</string>
+	<string name="label_live_new_game">NYT LIVE SPIL</string>
 	<string name="label_play_comp">SPIL COMP</string>
-	<string name="label_video">Video</string>
+	<string name="label_video">VIDEO</string>
 	<string name="label_settings">INDSTILLINGER</string>
 	<string name="label_tactics">TAKTIK</string>
 	<string name="label_game_live">LIVE SPIL</string>
@@ -29,7 +29,7 @@
 	<string name="label_game_finished">FÆRDIG GAME</string>
 	<string name="label_chat_live">LIVE CHAT</string>
 	<string name="label_chat_online">ONLINE CHAT</string>
-	<string name="label_game_comp">COMP GAME</string>
+	<string name="label_game_comp">COMP SPIL</string>
 	<string name="label_sign_up">Tilmeld dig nu - Det er gratis!</string>
 
 	<string name="label_friend_challenge_live">VEN UDFORDRING LIVE</string>
@@ -37,6 +37,7 @@
 	<string name="label_friend_challenge_online">VEN UDFORDRING ONLINE</string>
 	<string name="label_create_challenge_online">OPRET ONLINE UDFORDRING</string>
 
+	<!--Settings-->
 	<string name="settings">Indstillinger</string>
 	<string name="start_new_game">Start nyt spil</string>
 	<string name="dont_have_account_q">Har du ikke en konto?</string>
@@ -46,7 +47,7 @@
 	<string name="singupButton">Tilmeld dig</string>
 	<string name="complete_singupButton">Komplet Tilmelding</string>
 	<string name="singinPlayguest">Spil som Gæst</string>
-	<string name="computerTitle">COMPUTEREN SPIL</string>
+
 	<string name="computerWhite">Hvid</string>
 	<string name="computerBlack">Sort</string>
 	<string name="Human">MENNESKE</string>
