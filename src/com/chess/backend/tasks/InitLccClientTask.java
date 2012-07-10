@@ -20,6 +20,7 @@ public class InitLccClientTask extends AbstractUpdateTask<LiveChessClient, Void>
 
     private Context context;
 
+    // todo: unused now
     public InitLccClientTask(TaskUpdateInterface<LiveChessClient> taskFace) {
         super(taskFace);
         context = taskFace.getMeContext();
@@ -34,7 +35,6 @@ public class InitLccClientTask extends AbstractUpdateTask<LiveChessClient, Void>
             InputStream keyStoreInputStream = context.getAssets().open(LccHolder.KEY_FILE_NAME);
             Log.d(TAG, "Start Chess.Com LCC ");
             Log.d(TAG, "Connecting to: " + LccHolder.CONFIG_BAYEUX_HOST + ":" + LccHolder.CONFIG_PORT);
-
 
             item = LiveChessClientFacade.createClient(LccHolder.AUTH_URL, LccHolder.CONFIG_BAYEUX_HOST, LccHolder.CONFIG_PORT, LccHolder.CONFIG_URI);
             item.setClientInfo("Android", versionName, "No-Key");

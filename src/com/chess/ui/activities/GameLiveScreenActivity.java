@@ -152,7 +152,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		DataHolder.getInstance().setLiveChess(true);
 
 		getLccHolder().setActivityPausedMode(false);
-		updateGameSate();
+		updateGameState();
 	}
 
 	@Override
@@ -161,10 +161,15 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		getLccHolder().setActivityPausedMode(true);
 	}
 
-	private void updateGameSate() {
+	private void updateGameState() {
 		if (getBoardFace().isInit()) {
 			onGameStarted();
 			getBoardFace().setInit(false);
+		}
+        // todo
+		if (getLccHolder().isActivityPausedMode()) {
+			getLccHolder().executePausedActivityGameEvents(getLccHolder().getLccEventListener());
+			getLccHolder().setActivityPausedMode(false);
 		}
 	}
 
@@ -177,16 +182,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		checkMessages();
 
-		if (currentGame.values.get(GameListItem.GAME_TYPE).equals("2"))
-			getBoardFace().setChess960(true);
-
-
 		if (!isUserColorWhite()) {
 			getBoardFace().setReside(true);
 		}
+
 		String[] moves;
-
-
 		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
 			moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
 			getBoardFace().setMovesCount(moves.length);

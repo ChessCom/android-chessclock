@@ -22,12 +22,10 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
-import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.chess.utilities.AppUtils;
 import com.mopub.mobileads.MoPubView;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
@@ -46,7 +44,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	// we may have this add on every screen, so control it on the lowest level
 	protected MoPubView moPubView;
 	private Boolean forceFlag;
-	private LccConnectUpdateListener lccConnectUpdateListener;
 
 	public void setFullScreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -61,11 +58,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		handler = new Handler();
 
 		extras = getIntent().getExtras();
-
-
-
-		lccConnectUpdateListener = new LccConnectUpdateListener();
-
         LccHolder.getInstance(this).setLiveChessClientEventListener(this);
 	}
 
@@ -105,19 +97,15 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
-			new ConnectLiveChessTask(lccConnectUpdateListener).executeTask();
+		// todo: encapsulate, rename
+		if (DataHolder.getInstance().isLiveChess() &&
+				!LccHolder.getInstance(this).isConnected() && !LccHolder.getInstance(this).isConnectingInProgress()) {
+			LccHolder.getInstance(this).runConnectTask();
 		}
 
 		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
-		}
-	}
-
-	private class LccConnectUpdateListener extends AbstractUpdateListener<Void> {
-		public LccConnectUpdateListener() {
-			super(getContext());
 		}
 	}
 
