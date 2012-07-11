@@ -56,7 +56,7 @@ public class NetworkChangeService extends Service {
 			NetworkInfo[] networkInfo
 					= connectivityManager.getAllNetworkInfo();
 
-			for (int i = 0; i < networkInfo.length; i++) {
+			/*for (int i = 0; i < networkInfo.length; i++) {
 				if (networkInfo[i].isConnected()) {
 					System.out.println("LCCLOG: NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
 					if (lccHolder.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHolder.getNetworkTypeName())) {
@@ -67,7 +67,7 @@ public class NetworkChangeService extends Service {
 						lccHolder.setNetworkTypeName(networkInfo[i].getTypeName());
 					}
 				}
-			}
+			}*/
 		}
 	};
 }

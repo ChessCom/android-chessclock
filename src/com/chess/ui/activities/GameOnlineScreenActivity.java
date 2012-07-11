@@ -573,7 +573,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
-			String draw = DataHolder.getInstance().isAcceptdraw() ? AppConstants.ACCEPTDRAW : AppConstants.OFFERDRAW;
+			String draw = DataHolder.getInstance().isAcceptDraw() ? AppConstants.ACCEPTDRAW : AppConstants.OFFERDRAW;
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);

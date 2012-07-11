@@ -29,6 +29,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.views.ChessBoardTacticsView;
+import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -58,6 +59,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private TacticItem tactic;
 	private int currentTacticProblem = 0;
+	private boolean noInternet;
 
 	private GetTacticsUpdateListener getTacticsUpdateListener;
 	private TacticsCorrectUpdateListener tacticsCorrectUpdateListener;
@@ -177,6 +179,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void checkMove() {
+
+		noInternet = !AppUtils.isNetworkAvailable(getContext());
+
 		Move move = getBoardFace().getHistDat()[getBoardFace().getHply() - 1].move;
 		String piece = StaticData.SYMBOL_EMPTY;
 		int p = getBoardFace().getPieces()[move.to];
@@ -214,8 +219,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				invalidateGameScreen();
 				boardView.invalidate();
 			} else {
-				if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry()
-						|| DataHolder.getInstance().isNoInternet()) {
+				if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 					new AlertDialog.Builder(this)
 							.setTitle(R.string.correct_ex)
 							.setItems(getResources().getTextArray(R.array.correcttactic),
@@ -236,7 +240,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				}
 			}
 		} else {
-			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || DataHolder.getInstance().isNoInternet()) {
+			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 				new AlertDialog.Builder(this)
 						.setTitle(R.string.wrong_ex)
 						.setItems(getResources().getTextArray(R.array.wrongtactic), wrongDialogListener)
@@ -260,7 +264,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void getTacticsGame(final String id) {
 		FlurryAgent.onEvent("Tactics Session Started For Registered", null);
-		if (!DataHolder.getInstance().isNoInternet()) {
+
+		noInternet = !AppUtils.isNetworkAvailable(getContext());
+
+		if (!noInternet) {
 			boardView.setBoardFace(new ChessBoard(this));
 
 			if (tactic != null
@@ -390,7 +397,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (DataHolder.getInstance().isNoInternet()) {
+			if (noInternet) {
 				if (DataHolder.getInstance().isOffline()) {
 					getGuestTacticsGame();
 				} else {
@@ -468,7 +475,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		boardView.setBoardFace(new ChessBoard(this));
 		getBoardFace().setRetry(true);
 
-		if (DataHolder.getInstance().isGuest() || DataHolder.getInstance().isNoInternet()) {
+		if (DataHolder.getInstance().isGuest() || noInternet) {
 			String FEN = tacticsBatch.get(currentTacticProblem).values.get(AppConstants.FEN);
 			if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 				getBoardFace().genCastlePos(FEN);
@@ -575,7 +582,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (DataHolder.getInstance().isNoInternet()) {
+			if (noInternet) {
 				if (DataHolder.getInstance().isOffline()) {
 					getGuestTacticsGame();
 				} else {
@@ -616,7 +623,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (DataHolder.getInstance().isNoInternet()) {
+			if (noInternet) {
 				if (DataHolder.getInstance().isOffline()) {
 					getGuestTacticsGame();
 				} else {
@@ -654,7 +661,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			currentTacticProblem++;
 			getGuestTacticsGame();
 		} else {
-			if (DataHolder.getInstance().isNoInternet())
+			if (noInternet)
 				currentTacticProblem++;
 			closeOptionsMenu();
 			getTacticsGame(StaticData.SYMBOL_EMPTY);
@@ -720,7 +727,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
 			switch (i) {
 				case TACTICS_SKIP_PROBLEM: {
-					if (DataHolder.getInstance().isGuest() || DataHolder.getInstance().isNoInternet()) {
+					if (DataHolder.getInstance().isGuest() || noInternet) {
 						currentTacticProblem++;
 						getGuestTacticsGame();
 					} else
@@ -790,7 +797,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		int secondsSpent = getBoardFace().getSec();
 
-		if (DataHolder.getInstance().isGuest() || DataHolder.getInstance().isNoInternet()) {
+		if (DataHolder.getInstance().isGuest() || noInternet) {
 			// set new board
 			boardView.setBoardFace(new ChessBoard(this));
 
@@ -962,7 +969,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					currentTacticProblem++;
 					getGuestTacticsGame();
 				} else {
-					if (DataHolder.getInstance().isNoInternet())
+					if (noInternet)
 						currentTacticProblem++;
 					getTacticsGame(StaticData.SYMBOL_EMPTY);
 				}
@@ -978,12 +985,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					currentTacticProblem++;
 					getGuestTacticsGame();
 				} else {
-					if (DataHolder.getInstance().isNoInternet()) currentTacticProblem++;
+					if (noInternet)
+						currentTacticProblem++;
 					getTacticsGame(StaticData.SYMBOL_EMPTY);
 				}
 			}
 			if (which == TACTICS_RETRY) {
-				if (DataHolder.getInstance().isGuest() || DataHolder.getInstance().isNoInternet()) {
+				if (DataHolder.getInstance().isGuest() || noInternet) {
 					getBoardFace().setRetry(true);
 					getGuestTacticsGame();
 				} else {

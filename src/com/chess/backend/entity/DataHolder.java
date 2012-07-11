@@ -12,9 +12,8 @@ public class DataHolder {
 	public static String APP_ID = "2427617054";
 
 	private boolean guest = false;
-	private boolean noInternet = false;
 	private boolean offline = false;
-	private boolean acceptdraw = false;
+	private boolean acceptDraw = false;
 	private boolean liveChess;
 	private boolean pendingTacticsLoad;
 
@@ -41,14 +40,6 @@ public class DataHolder {
 		this.guest = guest;
 	}
 
-	public boolean isNoInternet() {
-		return noInternet;
-	}
-
-	public void setNoInternet(boolean noInternet) {
-		this.noInternet = noInternet;
-	}
-
 	public boolean isOffline() {
 		return offline;
 	}
@@ -57,12 +48,12 @@ public class DataHolder {
 		this.offline = offline;
 	}
 
-	public boolean isAcceptdraw() {
-		return acceptdraw;
+	public boolean isAcceptDraw() {
+		return acceptDraw;
 	}
 
-	public void setAcceptdraw(boolean acceptdraw) {
-		this.acceptdraw = acceptdraw;
+	public void setAcceptDraw(boolean acceptDraw) {
+		this.acceptDraw = acceptDraw;
 	}
 
 	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {

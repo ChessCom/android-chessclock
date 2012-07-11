@@ -342,7 +342,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			preferencesEditor.commit();
 
 			if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
-				DataHolder.getInstance().setAcceptdraw(true);
+				DataHolder.getInstance().setAcceptDraw(true);
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setPositiveBtnId(R.string.game);
@@ -350,7 +350,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 
 			} else {
-				DataHolder.getInstance().setAcceptdraw(false);
+				DataHolder.getInstance().setAcceptDraw(false);
 
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
