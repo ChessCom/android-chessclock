@@ -105,11 +105,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		// todo: encapsulate, rename
-		if (DataHolder.getInstance().isLiveChess() &&
+		/*if (DataHolder.getInstance().isLiveChess() &&
 				!LccHolder.getInstance(this).isConnected() && !LccHolder.getInstance(this).isConnectingInProgress()) {
 			LccHolder.getInstance(this).runConnectTask();
-		}
+		}*/
 
 		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
