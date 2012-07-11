@@ -18,13 +18,11 @@ import java.util.List;
  */
 public class LccChallengeTaskRunner {
 
-	private LiveChessClient liveChessClient;
 	private LccChallengeListener challengeListener;
 	private TaskUpdateInterface<Challenge> challengeTaskFace;
 
 	public LccChallengeTaskRunner(TaskUpdateInterface<Challenge> challengeTaskFace) {
 		this.challengeTaskFace = challengeTaskFace;
-		this.liveChessClient = LccHolder.getInstance(challengeTaskFace.getMeContext()).getClient();
 		challengeListener = LccHolder.getInstance(challengeTaskFace.getMeContext()).getChallengeListener();
 	}
 
@@ -39,7 +37,7 @@ public class LccChallengeTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Challenge... challenge) {
-			liveChessClient.sendChallenge(challenge[0], challengeListener);
+			getLiveChessClient().sendChallenge(challenge[0], challengeListener);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -55,7 +53,7 @@ public class LccChallengeTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Challenge... challenge) {
-			liveChessClient.cancelChallenge(challenge[0]);
+			getLiveChessClient().cancelChallenge(challenge[0]);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -78,7 +76,6 @@ public class LccChallengeTaskRunner {
         challengeListener.getOuterChallengeListener().hidePopups();
     }
 
-
     public void declineCurrentChallenge(Challenge currentChallenge, HashMap<Long, Challenge> challenges) {
         runRejectChallengeTask(currentChallenge);
         final List<Challenge> retainMe = new ArrayList<Challenge>();
@@ -91,8 +88,6 @@ public class LccChallengeTaskRunner {
             challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
     }
 
-
-
 	public void runAcceptChallengeTask(Challenge challenge) {
 		new LiveAcceptChallengeTask().executeTask(challenge);
 	}
@@ -104,7 +99,7 @@ public class LccChallengeTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Challenge... challenge) {
-			liveChessClient.acceptChallenge(challenge[0], challengeListener);
+			getLiveChessClient().acceptChallenge(challenge[0], challengeListener);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -120,7 +115,7 @@ public class LccChallengeTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Challenge... challenge) {
-			liveChessClient.rejectChallenge(challenge[0], challengeListener);
+			getLiveChessClient().rejectChallenge(challenge[0], challengeListener);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -137,9 +132,13 @@ public class LccChallengeTaskRunner {
 		@Override
 		protected Integer doTheTask(Challenge... challenges) {
 			for (Challenge challenge : challenges) {
-				liveChessClient.rejectChallenge(challenge, challengeListener);
+				getLiveChessClient().rejectChallenge(challenge, challengeListener);
 			}
 			return StaticData.RESULT_OK;
 		}
+	}
+
+	private LiveChessClient getLiveChessClient() {
+		return LccHolder.getInstance(challengeTaskFace.getMeContext()).getClient();
 	}
 }

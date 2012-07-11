@@ -45,7 +45,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		gameTaskRunner = new LccGameTaskRunner(gameTaskListener);
 		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
 		outerChallengeListener = new LiveOuterChallengeListener();
-
 	}
 
 	@Override
