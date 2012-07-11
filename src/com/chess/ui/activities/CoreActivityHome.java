@@ -4,7 +4,6 @@ import actionbarcompat.ActionBarActivityHome;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import com.chess.R;
@@ -93,8 +92,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		}
 		 else if (fragment.getTag().equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
-			final Handler handler = new Handler();
-			handler.post(new Runnable() {
+			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					DataHolder.getInstance().setLiveChess(false);

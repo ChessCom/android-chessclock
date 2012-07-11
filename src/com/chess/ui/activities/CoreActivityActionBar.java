@@ -154,8 +154,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			backToHomeActivity();
 		} else if (fragment.getTag().equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
-			final Handler handler = new Handler();
-			handler.post(new Runnable() {
+			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					DataHolder.getInstance().setLiveChess(false);
