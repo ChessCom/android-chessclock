@@ -63,10 +63,8 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 				}
 
 				refreshItem.setActionView(mRefreshIndeterminateProgressView);
-				Log.d("TEST", " Showing progress");
 			} else {
 				refreshItem.setActionView(null);
-				Log.d("TEST", " Hide progress");
 			}
 		}
 	}

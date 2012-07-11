@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -18,10 +17,14 @@ import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListItem;
-import com.chess.ui.adapters.*;
+import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
+import com.chess.ui.adapters.OnlineCurrentGamesAdapter;
+import com.chess.ui.adapters.OnlineFinishedGamesAdapter;
+import com.chess.ui.adapters.SectionedAdapter;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -37,10 +40,8 @@ import java.util.List;
  * @created at: 08.02.12 7:12
  */
 public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener,
-		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
+		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 	public static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
-	private ListView gamesList;
-	private Spinner gamesTypeSpinner;
 
 	private static final int UPDATE_DELAY = 120000;
 	private int currentListType;
@@ -58,6 +59,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
 	private AbstractUpdateTask getDataTask;
+	private SectionedAdapter sectionedAdapter;
 
 
 	@Override
@@ -75,18 +77,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		init();
 
-		gamesTypeSpinner = (Spinner) findViewById(R.id.gamestypes);
-		gamesTypeSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.onlineSpinner));
-
 		DataHolder.getInstance().setLiveChess(false);
 
-		gamesTypeSpinner.setSelection(currentListType);
-		gamesTypeSpinner.setOnItemSelectedListener(this);
-        selectUpdateType(gamesTypeSpinner.getSelectedItemPosition());
-
-		gamesList = (ListView) findViewById(R.id.onlineGamesList);
+		ListView gamesList = (ListView) findViewById(R.id.onlineGamesList);
 		gamesList.setOnItemClickListener(this);
 		gamesList.setOnItemLongClickListener(this);
+		gamesList.setAdapter(sectionedAdapter);
 
 		findViewById(R.id.tournaments).setOnClickListener(this);
 		findViewById(R.id.stats).setOnClickListener(this);
@@ -102,19 +98,25 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		// init adapters
 		List<GameListItem> itemList = new ArrayList<GameListItem>();
+		sectionedAdapter = new SectionedAdapter(this);
 
 		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, itemList);
 		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, itemList);
 		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, itemList);
+
+		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesAdapter);
+		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
+		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		updateList(selectedLoadItem);
 		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
+
+		selectUpdateType(GameListItem.LIST_TYPE_CURRENT);
 	}
 
 	@Override
@@ -135,7 +137,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private Runnable updateListOrder = new Runnable() {
 		@Override
 		public void run() {
-            updateList(selectedLoadItem);
+			selectUpdateType(GameListItem.LIST_TYPE_CURRENT);
 
 			handler.removeCallbacks(this);
 			handler.postDelayed(this, UPDATE_DELAY);
@@ -148,37 +150,23 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			gamesTypeSpinner.setEnabled(false);
-		}
-
-		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-
-				OnlineGamesAdapter gamesAdapter = null;
 
 				switch (currentListType){
 					case GameListItem.LIST_TYPE_CURRENT:
 						currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
-						gamesAdapter = currentGamesAdapter;
+						selectUpdateType(GameListItem.LIST_TYPE_CHALLENGES);
 						break;
 					case GameListItem.LIST_TYPE_CHALLENGES:
 						challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
-						gamesAdapter = challengesGamesAdapter;
+						selectUpdateType(GameListItem.LIST_TYPE_FINISHED);
 						break;
 					case GameListItem.LIST_TYPE_FINISHED:
 						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
-						gamesAdapter = finishedGamesAdapter;
 						break;
 					default: break;
 				}
-
-				gamesList.setAdapter(gamesAdapter);
-
-                gamesTypeSpinner.setSelection(currentListType);
-				gamesTypeSpinner.setEnabled(true);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				String status = returnedObj.split("[+]")[1];
 				if(!isPaused)
@@ -189,10 +177,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 		}
 
-        @Override
-        public void errorHandle(Integer resultCode) {
-            gamesTypeSpinner.setEnabled(true);
-        }
     }
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
@@ -207,7 +191,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
-				updateList(selectedLoadItem);
+				selectUpdateType(GameListItem.LIST_TYPE_CURRENT);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
@@ -417,22 +401,20 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	};
 
 	private void clickOnChallenge() {
-		final String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-				+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-				+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+		final String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE 
+				+ gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE
+				+ gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE
+				+ gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
-		new AlertDialog.Builder(getContext())
+		new AlertDialog.Builder(getContext()) // TODO remake
 				.setTitle(title)
 				.setItems(new String[]{
 						getString(R.string.accept),
 						getString(R.string.decline)}, challengeDialogListener
 				)
 				.create().show();
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-        selectUpdateType(pos);
 	}
 
     private void selectUpdateType(int pos) {
@@ -456,7 +438,4 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
     }
 
-	@Override
-	public void onNothingSelected(AdapterView<?> adapterView) {
-	}
 }

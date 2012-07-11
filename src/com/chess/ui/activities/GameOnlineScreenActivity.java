@@ -372,10 +372,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			moveWasSent();
+			if(returnedObj.contains(RestHelper.R_SUCCESS_)){
+				moveWasSent();
 
-			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.cancel(R.id.notification_message);
+				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				mNotificationManager.cancel(R.id.notification_message);
+			}else if(returnedObj.contains(RestHelper.R_ERROR)){
+				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+			}
 		}
 	}
 
@@ -419,15 +423,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 				for (GameListItem currentGame : currentGames) {
 					if (currentGame.getGameId() != gameId) {
+						gameId = currentGame.getGameId();
 						showSubmitButtonsLay(false);
 						boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
 						getBoardFace().setAnalysis(false);
 						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 
-						getOnlineGame(currentGame.getGameId()); // if next game
+						getOnlineGame(gameId); // if next game
 						// same new gameId
 						Intent intent = getIntent();
-						intent.putExtra(GameListItem.GAME_ID, currentGame.getGameId());
+						intent.putExtra(GameListItem.GAME_ID, gameId);
 						getIntent().replaceExtras(intent);
 						return;
 					}
