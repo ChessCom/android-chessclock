@@ -25,8 +25,8 @@
 			android:text="@string/preferencesUpgrade"
 			/>
 
+		<!--ONLINE GAME -->
 		<com.chess.RoboTextView
-			android:id="@+id/onlineTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/label_game_online"
@@ -34,11 +34,8 @@
 			robo:ttf="Bold"
 			/>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/underline_grey"
-			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
 
 		<LinearLayout
 			android:id="@+id/afterIMoveLayout"
@@ -55,27 +52,35 @@
 				/>
 
 			<Spinner
-				android:id="@+id/prefAIM"
+				android:id="@+id/afterMoveSpinner"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:entries="@array/AIM"
-				android:layout_weight="4">
-			</Spinner>
+				android:layout_weight="4"
+				/>
+
 		</LinearLayout>
 
-		<com.chess.RoboCheckBox
-			android:id="@+id/enableSounds"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/enableSounds"
-			/>
+
 
 		<com.chess.RoboCheckBox
-			android:id="@+id/prefSSB"
+			android:id="@+id/showOnlineSubmitChckBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ssb"
 			/>
+
+		<!--LIVE GAME -->
+		<com.chess.RoboTextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/label_game_online"
+			style="@style/SettingsDividerText"
+			robo:ttf="Bold"
+			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
 
 		<com.chess.RoboCheckBox
 			android:id="@+id/prefNEnable"
@@ -100,12 +105,9 @@
 			robo:ttf="Bold"
 			/>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/underline_grey"
-			style="@style/lineDivider"
-			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
 
 		<LinearLayout
 			android:id="@+id/prefStrengthLayout"
@@ -138,12 +140,9 @@
 			robo:ttf="Bold"
 			/>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/underline_grey"
-			style="@style/lineDivider"
-			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
 
 		<!-- Language -->
 		<LinearLayout
@@ -227,6 +226,14 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/movehighlights"/>
+
+		<!--Sounds-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/enableSoundsChkBx"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/enableSounds"
+			/>
 
 		<com.chess.RoboButton
 			android:id="@+id/prefInvite"

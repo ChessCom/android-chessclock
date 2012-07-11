@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -43,7 +42,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private CheckBox showCoordinates;
 	private CheckBox showHighlights;
 	private CheckBox enableSounds;
-	private Context context;
 	private VacationStatusUpdateListener vacationStatusUpdateListener;
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
 
@@ -51,8 +49,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
-
-		context = this;
 
 		FlurryAgent.onEvent(FlurryData.SETTINGS_ACCESSED);
 
@@ -108,8 +104,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		findViewById(R.id.prefInvite).setOnClickListener(this);
 		findViewById(R.id.prefContactUs).setOnClickListener(this);
 
-		enableSounds = (CheckBox) findViewById(R.id.enableSounds);
-		showSubmitButton = (CheckBox) findViewById(R.id.prefSSB);
+		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
+		showSubmitButton = (CheckBox) findViewById(R.id.showOnlineSubmitChckBx);
 		enableNotifications = (CheckBox) findViewById(R.id.prefNEnable);
 		vacationCheckBox = (CheckBox) findViewById(R.id.prefVacation);
 		showCoordinates = (CheckBox) findViewById(R.id.prefCoords);
@@ -143,7 +139,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		langSpinner.setOnItemSelectedListener(langSelectedListener);
 		langSpinner.setSelection(AppData.getLanguageCode(this));
 
-		afterMyMoveSpinner = (Spinner) findViewById(R.id.prefAIM);
+		afterMyMoveSpinner = (Spinner) findViewById(R.id.afterMoveSpinner);
 		afterMyMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.AIM));
 		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
 		afterMyMoveSpinner.setOnItemSelectedListener(afterMyMoveSelectedListener);
@@ -153,21 +149,18 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
 
 
-		TextView onlineTitle = (TextView) findViewById(R.id.onlineTitle);
 		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
 		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
 		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
 
 		if (DataHolder.getInstance().isLiveChess()) {
-			onlineTitle.setText(getString(R.string.label_game_live));
 			afterIMoveLayout.setVisibility(View.GONE);
 			enableNotifications.setVisibility(View.GONE);
 			vacationCheckBox.setVisibility(View.GONE);
 			computerTitle.setVisibility(View.GONE);
 			prefStrengthLayout.setVisibility(View.GONE);
 		} else {
-			onlineTitle.setText(getString(R.string.label_game_online));
 			afterIMoveLayout.setVisibility(View.VISIBLE);
 			enableNotifications.setVisibility(View.VISIBLE);
 			vacationCheckBox.setVisibility(View.VISIBLE);
@@ -323,11 +316,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-		if (compoundButton.getId() == R.id.prefSSB) {
+		if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
 			String sharedKey = DataHolder.getInstance().isLiveChess() ? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
 			preferencesEditor.putBoolean(AppData.getUserName(this) + sharedKey, checked);
 			preferencesEditor.commit();
-		} else if (compoundButton.getId() == R.id.enableSounds) {
+		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
 			preferencesEditor.commit();
 		} else if (compoundButton.getId() == R.id.prefNEnable) {
