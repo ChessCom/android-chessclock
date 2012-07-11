@@ -105,11 +105,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onResume() {
 		super.onResume();
 
-		// todo: encapsulate, rename
-		if (DataHolder.getInstance().isLiveChess() &&
+		/*if (DataHolder.getInstance().isLiveChess() &&
 				!LccHolder.getInstance(this).isConnected() && !LccHolder.getInstance(this).isConnectingInProgress()) {
 			LccHolder.getInstance(this).runConnectTask();
-		}
+		}*/
 
 		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
@@ -155,8 +154,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			backToHomeActivity();
 		} else if (fragment.getTag().equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
-			final Handler handler = new Handler();
-			handler.post(new Runnable() {
+			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					DataHolder.getInstance().setLiveChess(false);

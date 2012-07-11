@@ -25,7 +25,7 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHolder.setUser(user);
 		lccHolder.setConnected(true);
-		lccHolder.setConnectingInProgress(false);
+		//lccHolder.setConnectingInProgress(false);
 		Log.d("TEST", "onConnectionEstablished, setConnected(true)");
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
@@ -66,7 +66,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
                 + " n\\Details: id = " + failureId + "comments = " + comments);
 		lccHolder.setConnected(false);
-		lccHolder.setConnectingInProgress(true);
+		//lccHolder.setConnectingInProgress(true);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.clearOwnChallenges();
 		lccHolder.clearSeeks();
 		lccHolder.setConnected(true);
-		lccHolder.setConnectingInProgress(false);
+		//lccHolder.setConnectingInProgress(false);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d("TEST", "Connection Restored");
 		Log.d(CONNECTION, "Connection Restored");
 		lccHolder.setConnected(true);
-		lccHolder.setConnectingInProgress(false);
+		//lccHolder.setConnectingInProgress(false);
 	}
 
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
@@ -106,7 +106,7 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onKicked(User user, String reason, String message) { // TODO change when server change
 		Log.d("TEST", "user kicked");
 		Log.d(CONNECTION, "user kicked");
-		lccHolder.setNetworkTypeName(null);  // TODO why it is not set in others methods?
+		//lccHolder.setNetworkTypeName(null);  // TODO why it is not set in others methods?
 
 		lccHolder.processConnectionFailure(reason, message);
 	}

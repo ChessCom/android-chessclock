@@ -247,7 +247,10 @@
 	<string name="send_mail">Send mail...</string>
 	<string name="tournaments">Tournaments</string>
 	<string name="stats">Stats</string>
+	<string name="current_games">Current Games</string>
 	<string name="challenges">Challenges</string>
+	<string name="finished_games">Finished Games</string>
+
 	<string name="challenge">Challenge</string>
 	<string name="analysis_mode">Analysis Mode</string>
 	<string name="check">Check!</string>
@@ -342,4 +345,7 @@
 	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>
 	<string name="draw_declined">DRAW DECLINED</string>
 	<string name="has_declined_draw">has declined a draw</string>
+	<string name="win_">Win:</string>
+	<string name="loss_">Loss:</string>
+	<string name="draw_">Draw:</string>
 </resources>

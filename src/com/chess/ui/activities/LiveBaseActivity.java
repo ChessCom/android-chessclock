@@ -1,7 +1,5 @@
 package com.chess.ui.activities;
 
-import android.app.ActionBar;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;

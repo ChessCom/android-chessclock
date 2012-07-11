@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -84,6 +85,23 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
+		if (fragment.getTag().equals(CONNECT_FAILED_TAG)) {
+			if (DataHolder.getInstance().isLiveChess()) {
+				getLccHolder().logout();
+			}
+		}
+		 else if (fragment.getTag().equals(OBSOLETE_VERSION_TAG)) {
+			// Show site and
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					DataHolder.getInstance().setLiveChess(false);
+					LccHolder.getInstance(getContext()).setConnected(false);
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri
+							.parse(RestHelper.PLAY_ANDROID_HTML)));
+				}
+			});
+		}
 		if (fragment.getTag().equals(CHECK_UPDATE_TAG)) {
 			if (forceFlag) {
 				// drop start day
@@ -130,7 +148,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			}
 		});
 
-		showPopupDialog(R.string.warning, message, CONNECT_FAILED_TAG);
+		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
 		popupDialogFragment.setButtons(1);
 	}
 
