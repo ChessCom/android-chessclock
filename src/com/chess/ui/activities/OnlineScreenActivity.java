@@ -5,6 +5,7 @@ import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -58,14 +59,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
-	private AbstractUpdateTask getDataTask;
+//	private AbstractUpdateTask getDataTask;
 	private SectionedAdapter sectionedAdapter;
+	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
+		Log.d("TEST","onCreate called");
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
@@ -112,6 +115,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	protected void onResume() {
 		super.onResume();
+		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
+
 		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
@@ -126,12 +131,29 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		unregisterReceiver(challengesUpdateReceiver);
 		handler.removeCallbacks(updateListOrder);
 
-		if(getDataTask != null)
-			getDataTask.cancel(true);
+		cleanTaskPool();
+//		if(getDataTask != null)
+//			getDataTask.cancel(true);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Log.d("TEST","onStop called");  
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.d("TEST","onDestroy called");  
 	}
 
 	private void updateList(LoadItem listLoadItem){
-		getDataTask = new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
+//		getDataTask = new GetStringObjTask(new ListUpdateListener()).executeTask(listLoadItem);
+		Log.d("TEST", "_____________");
+		Log.d("TEST", "updating list");
+		taskPool.add(new GetStringObjTask(new ListUpdateListener()).executeTask(listLoadItem));
+//		new GetStringObjTask(new ListUpdateListener()).executeTask(listLoadItem);
 	}
 
 	private Runnable updateListOrder = new Runnable() {
@@ -150,19 +172,30 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		@Override
+		public void updateListData(List<String> itemsList) {
+			super.updateListData(itemsList);
+			Log.d("TEST","updateListData = " + itemsList);
+		}
+
+		@Override
 		public void updateData(String returnedObj) {
+			Log.d("TEST","updateData = " + returnedObj);
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
 				switch (currentListType){
 					case GameListItem.LIST_TYPE_CURRENT:
+						Log.d("TEST","LIST_TYPE_CURRENT");
 						currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
 						selectUpdateType(GameListItem.LIST_TYPE_CHALLENGES);
 						break;
 					case GameListItem.LIST_TYPE_CHALLENGES:
+						Log.d("TEST","LIST_TYPE_CHALLENGES");
 						challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
 						selectUpdateType(GameListItem.LIST_TYPE_FINISHED);
 						break;
 					case GameListItem.LIST_TYPE_FINISHED:
+						Log.d("TEST","LIST_TYPE_FINISHED");
 						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
 						break;
 					default: break;
@@ -177,7 +210,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 		}
 
-    }
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			Log.d("TEST","errorHandle called");
+		}
+	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
 		public ChallengeInviteUpdateListener() {
@@ -437,5 +475,17 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
         updateList(selectedLoadItem);
 
     }
+
+	private void cleanTaskPool() {
+		if(taskPool.size() > 0){
+			for (AbstractUpdateTask<String, LoadItem> updateTask : taskPool) {
+				updateTask.cancel(true);
+				updateTask = null;
+				Log.d("TEST","Tasks cleaned");
+			}
+		}
+		taskPool = null;
+	}
+
 
 }

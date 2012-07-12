@@ -169,7 +169,7 @@
 	<string name="wrongemail">您将需要通过电子邮件确认您的会员。</string>
 	<string name="wrongretype">错误重新输入密码！</string>
 	<string name="signingin">签约仪式在...</string>
-	<string name="videoslistupdated">影片名单更新！</string>
+
 	<string name="showanswer">显示答案</string>
 	<string name="skipproblem">跳过问题</string>
 	<string name="sendinggameinfo">发送比赛信息...</string>

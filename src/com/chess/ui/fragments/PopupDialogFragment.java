@@ -1,9 +1,6 @@
 package com.chess.ui.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,16 +73,16 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 		String message = popupItem.getMessage(getActivity());
-		if(message.equals(StaticData.SYMBOL_EMPTY)){
-			messageTxt.setVisibility(View.GONE);
-		}else{
+//		if(message.equals(StaticData.SYMBOL_EMPTY)){
+//			messageTxt.setVisibility(View.GONE);
+//		}else{
 			if(message.contains(StaticData.SYMBOL_TAG)){
 				messageTxt.setText(Html.fromHtml(message));
 			}else{
 				messageTxt.setText(message);
 			}
 			messageTxt.setVisibility(View.VISIBLE);
-		}
+//		}
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
 		leftBtn.setText(popupItem.getPositiveBtnId());

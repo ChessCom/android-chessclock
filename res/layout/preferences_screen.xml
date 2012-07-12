@@ -26,6 +26,7 @@
 			/>
 
 		<!--ONLINE GAME -->
+		<!-- ____________________________________________ -->
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -61,32 +62,12 @@
 
 		</LinearLayout>
 
-
-
+		<!--Show Online Submit Button-->
 		<com.chess.RoboCheckBox
 			android:id="@+id/showOnlineSubmitChckBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ssb"
-			/>
-
-		<!--LIVE GAME -->
-		<com.chess.RoboTextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/label_game_online"
-			style="@style/SettingsDividerText"
-			robo:ttf="Bold"
-			/>
-		<!--Divider-->
-		<include layout="@layout/divider_view" />
-
-
-		<com.chess.RoboCheckBox
-			android:id="@+id/prefNEnable"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/notificationE"
 			/>
 
 		<com.chess.RoboCheckBox
@@ -96,11 +77,81 @@
 			android:text="@string/vacationOff"
 			/>
 
+
+		<!--LIVE GAME -->
+		<!-- ____________________________________________ -->
+		<com.chess.RoboTextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/label_game_live"
+			style="@style/SettingsDividerText"
+			robo:ttf="Bold"
+			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
+		<!--Show Live Submit Button-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/showLiveSubmitChckBx"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/ssb"
+			/>
+
+		<!--Min Rating-->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearDescription"
+			>
+
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="@string/minrating"
+				android:layout_weight="6"
+				/>
+
+			<Spinner
+				android:id="@+id/minRatingSpinner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:entries="@array/minRating"/>
+		</LinearLayout>
+
+		<!--Max Rating-->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearDescription"
+			>
+
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="@string/maxrating"
+				android:layout_weight="6"
+				/>
+
+			<Spinner
+				android:id="@+id/maxRatingSpinner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:entries="@array/maxRating"/>
+		</LinearLayout>
+
+
+		<!--COMPUTER GAME-->
+		<!-- ____________________________________________ -->
 		<com.chess.RoboTextView
 			android:id="@+id/computerTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/label_play_comp"
+			android:text="@string/label_game_comp"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>
@@ -132,6 +183,8 @@
 				android:layout_weight="4"/>
 		</LinearLayout>
 
+		<!--INTERFACE-->
+		<!-- ____________________________________________ -->
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -214,19 +267,6 @@
 
 		</LinearLayout>
 
-		<com.chess.RoboCheckBox
-			android:id="@+id/prefCoords"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-
-			android:text="@string/showcoords"/>
-
-		<com.chess.RoboCheckBox
-			android:id="@+id/prefHighlights"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/movehighlights"/>
-
 		<!--Sounds-->
 		<com.chess.RoboCheckBox
 			android:id="@+id/enableSoundsChkBx"
@@ -234,6 +274,35 @@
 			android:layout_height="wrap_content"
 			android:text="@string/enableSounds"
 			/>
+
+		<!--Coordinates-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/prefCoords"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			android:text="@string/showcoords"/>
+
+		<!--Move HighLights-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/prefHighlights"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/movehighlights"/>
+
+		<!--Notifications-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/notificationsChckBx"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/notificationE"
+			/>
+
+		<!--
+		TODO
+		Help
+		About
+		-->
 
 		<com.chess.RoboButton
 			android:id="@+id/prefInvite"

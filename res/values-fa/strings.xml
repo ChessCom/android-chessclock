@@ -169,7 +169,7 @@
 	<string name="wrongemail">شما نیاز به تایید عضویت خود را به از طریق ایمیل.</string>
 	<string name="wrongretype">دوباره رمز عبور اشتباه تایپ شده!</string>
 	<string name="signingin">ورود به سیستم ...</string>
-	<string name="videoslistupdated">لیست فیلم های بروز رسانی</string>
+
 	<string name="showanswer">نمایش پاسخ</string>
 	<string name="skipproblem">پرش مشکلات</string>
 	<string name="sendinggameinfo">ارسال اطلاعات بازی ...</string>

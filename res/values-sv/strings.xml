@@ -169,7 +169,7 @@
 	<string name="wrongemail">Du måste bekräfta ditt medlemskap via e-post.</string>
 	<string name="wrongretype">Fel skriva om lösenord!</string>
 	<string name="signingin">Loggar in...</string>
-	<string name="videoslistupdated">Videos listan uppdaterad!</string>
+
 	<string name="showanswer">Visa Svar</string>
 	<string name="skipproblem">Fortsätt Problem</string>
 	<string name="sendinggameinfo">Att skicka spelet info ...</string>

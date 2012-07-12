@@ -169,7 +169,7 @@
 	<string name="wrongemail">Będziesz musiał potwierdzić swoją przynależność poprzez email.</string>
 	<string name="wrongretype">Źle retyped hasło!</string>
 	<string name="signingin">Logowanie…</string>
-	<string name="videoslistupdated">Lista Filmy bieżąco!</string>
+
 	<string name="showanswer">Pokaż odpowiedź</string>
 	<string name="skipproblem">Przejdź problem</string>
 	<string name="sendinggameinfo">Wysyłanie informacji o grze ...</string>

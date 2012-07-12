@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.activities.BaseFragmentActivity;
 
 /**
@@ -70,7 +71,7 @@ public abstract class ActionBarActivity extends BaseFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(Build.VERSION.SDK_INT >= 11)
+		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB)
 			invalidateOptionsMenu();
 	}
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -147,6 +148,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+		Log.d("TEST", "___restartActivity___");
     }
 
 	@Override

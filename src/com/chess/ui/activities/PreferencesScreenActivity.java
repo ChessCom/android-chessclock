@@ -36,7 +36,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	private Spinner afterMyMoveSpinner;
 	private Spinner strengthSpinner;
-	private CheckBox showSubmitButton;
+	private CheckBox showOnlineSubmitChckBx;
+	private CheckBox showLiveSubmitChckBx;
 	private CheckBox enableNotifications;
 	private CheckBox vacationCheckBox;
 	private CheckBox showCoordinates;
@@ -44,6 +45,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private CheckBox enableSounds;
 	private VacationStatusUpdateListener vacationStatusUpdateListener;
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
+	private Spinner maxRatingSpinner;
+	private Spinner minRatingSpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		strengthSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 
 		if (DataHolder.getInstance().isLiveChess()) {
-			showSubmitButton.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
+			showOnlineSubmitChckBx.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
 		} else {
-			showSubmitButton.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
+			showOnlineSubmitChckBx.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
 		}
 		enableSounds.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, true));
 		enableNotifications.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true));
@@ -104,10 +107,22 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		findViewById(R.id.prefInvite).setOnClickListener(this);
 		findViewById(R.id.prefContactUs).setOnClickListener(this);
 
-		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
-		showSubmitButton = (CheckBox) findViewById(R.id.showOnlineSubmitChckBx);
-		enableNotifications = (CheckBox) findViewById(R.id.prefNEnable);
+		showOnlineSubmitChckBx = (CheckBox) findViewById(R.id.showOnlineSubmitChckBx);
+		showLiveSubmitChckBx = (CheckBox) findViewById(R.id.showLiveSubmitChckBx);
 		vacationCheckBox = (CheckBox) findViewById(R.id.prefVacation);
+
+		minRatingSpinner = (Spinner) findViewById(R.id.minRatingSpinner);
+		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
+		minRatingSpinner.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+		minRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
+
+		maxRatingSpinner = (Spinner) findViewById(R.id.maxRatingSpinner);
+		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
+		maxRatingSpinner.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
+
+		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
+		enableNotifications = (CheckBox) findViewById(R.id.notificationsChckBx);
 		showCoordinates = (CheckBox) findViewById(R.id.prefCoords);
 		showHighlights = (CheckBox) findViewById(R.id.prefHighlights);
 
@@ -149,24 +164,24 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
 
 
-		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
-		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
-		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
+//		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
+//		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
+//		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
 
 
-		if (DataHolder.getInstance().isLiveChess()) {
-			afterIMoveLayout.setVisibility(View.GONE);
-			enableNotifications.setVisibility(View.GONE);
-			vacationCheckBox.setVisibility(View.GONE);
-			computerTitle.setVisibility(View.GONE);
-			prefStrengthLayout.setVisibility(View.GONE);
-		} else {
-			afterIMoveLayout.setVisibility(View.VISIBLE);
-			enableNotifications.setVisibility(View.VISIBLE);
-			vacationCheckBox.setVisibility(View.VISIBLE);
-			computerTitle.setVisibility(View.VISIBLE);
-			prefStrengthLayout.setVisibility(View.VISIBLE);
-		}
+//		if (DataHolder.getInstance().isLiveChess()) {
+//			afterIMoveLayout.setVisibility(View.GONE);
+//			enableNotifications.setVisibility(View.GONE);
+//			vacationCheckBox.setVisibility(View.GONE);
+//			computerTitle.setVisibility(View.GONE);
+//			prefStrengthLayout.setVisibility(View.GONE);
+//		} else {
+//			afterIMoveLayout.setVisibility(View.VISIBLE);
+//			enableNotifications.setVisibility(View.VISIBLE);
+//			vacationCheckBox.setVisibility(View.VISIBLE);
+//			computerTitle.setVisibility(View.VISIBLE);
+//			prefStrengthLayout.setVisibility(View.VISIBLE);
+//		}
 
 
 		List<SelectionItem> piecesList = new ArrayList<SelectionItem>(9);
@@ -206,7 +221,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		//checkboxes
 		enableSounds.setOnCheckedChangeListener(this);
-		showSubmitButton.setOnCheckedChangeListener(this);
+		showOnlineSubmitChckBx.setOnCheckedChangeListener(this);
 		enableNotifications.setOnCheckedChangeListener(this);
 		showCoordinates.setOnCheckedChangeListener(this);
 		showHighlights.setOnCheckedChangeListener(this);
@@ -223,11 +238,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
+			AppUtils.stopNotificationsUpdate(this);
+
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			AppUtils.stopNotificationsUpdate(this);
 			finish();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
@@ -251,6 +267,22 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			updateVacationLeaveStatus();
 		}
 	}
+
+
+	private AdapterView.OnItemSelectedListener ratingSelectedListener = new AdapterView.OnItemSelectedListener() {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minRatingSpinner.getSelectedItemPosition());
+			preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxRatingSpinner.getSelectedItemPosition());
+			preferencesEditor.commit();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
+	};
+
+
 
 	private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
@@ -317,13 +349,15 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
-			String sharedKey = DataHolder.getInstance().isLiveChess() ? AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE : AppConstants.PREF_SHOW_SUBMIT_MOVE;
-			preferencesEditor.putBoolean(AppData.getUserName(this) + sharedKey, checked);
+			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
+			preferencesEditor.commit();
+		}else if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
+			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
 			preferencesEditor.commit();
 		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
 			preferencesEditor.commit();
-		} else if (compoundButton.getId() == R.id.prefNEnable) {
+		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 			preferencesEditor.commit();
 

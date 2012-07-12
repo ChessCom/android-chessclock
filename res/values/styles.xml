@@ -168,6 +168,7 @@
     </style>
 
 	<style name="SettingsDividerText" parent="Text">
+		<item name="android:paddingTop">10dip</item>
 		<item name="android:paddingLeft">10dip</item>
 		<item name="android:textStyle">bold</item>
 	</style>

@@ -12,18 +12,15 @@ import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.SoundPlayer;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
@@ -33,8 +30,6 @@ import com.mopub.mobileads.MoPubView;
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
 		, ActiveFragmentInterface, PopupDialogFace, LiveChessClientEventListenerFace {
 
-	private static final String TAG = "CoreActivityActionBar";
-	private static final String CHECK_UPDATE_TAG = "check update";
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	protected static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	private static final String INFO_MSG_TAG = "info message popup";
@@ -45,7 +40,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	// we may have this add on every screen, so control it on the lowest level
 	protected MoPubView moPubView;
-	private Boolean forceFlag;
 
 	public void setFullScreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -102,21 +96,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
-		/*if (DataHolder.getInstance().isLiveChess() &&
-				!LccHolder.getInstance(this).isConnected() && !LccHolder.getInstance(this).isConnectingInProgress()) {
-			LccHolder.getInstance(this).runConnectTask();
-		}*/
-
-		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
-		if (startDay == 0 || !DateUtils.isToday(startDay)) {
-			checkUpdate();
-		}
-	}
-
-	@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -166,17 +145,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 			backToHomeActivity();
 		} else if (fragment.getTag().equals(INFO_MSG_TAG)) {
-
-		} else if (fragment.getTag().equals(CHECK_UPDATE_TAG)) {
-			if (forceFlag) {
-				// drop start day
-				preferencesEditor.putLong(AppConstants.START_DAY, 0);
-				preferencesEditor.commit();
-
-				backToLoginActivity();
-			}
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
-			startActivity(intent);
 		}
 	}
 
@@ -286,27 +254,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	public SoundPlayer getSoundPlayer() {
 		return SoundPlayer.getInstance(this);
-	}
-
-	private void checkUpdate() {
-		new CheckUpdateTask(new CheckUpdateListener()).executeTask(RestHelper.GET_ANDROID_VERSION);
-	}
-
-	private class CheckUpdateListener extends AbstractUpdateListener<Boolean> {
-		public CheckUpdateListener() {
-			super(getContext());
-		}
-
-		@Override
-		public void updateData(Boolean returnedObj) {
-			forceFlag = returnedObj;
-			if (isPaused)
-				return;
-
-			showPopupDialog(R.string.update_check, R.string.update_available_please_update,
-					CHECK_UPDATE_TAG);
-			popupDialogFragment.setButtons(1);
-		}
 	}
 
 }

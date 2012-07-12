@@ -78,8 +78,9 @@
         <activity android:name="com.mopub.mobileads.MraidBrowser" android:configChanges="keyboardHidden|keyboard|orientation"/>
 
         <activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
-				  android:configChanges="keyboardHidden|keyboard|orientation"
+
 			/>
+		<!--android:configChanges="keyboardHidden|keyboard|orientation"-->
 		<activity android:name=".ui.activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"
 			/>
 

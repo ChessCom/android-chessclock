@@ -170,7 +170,7 @@
 	<string name="wrongemail">You will need to confirm your membership by email.</string>
 	<string name="wrongretype">Wrong retyped password!</string>
 	<string name="signingin">Signing In...</string>
-	<string name="videoslistupdated">Videos list updated!</string>
+
 	<string name="showanswer">Show Answer</string>
 	<string name="skipproblem">Skip Problem</string>
 	<string name="sendinggameinfo">Sending game info...</string>

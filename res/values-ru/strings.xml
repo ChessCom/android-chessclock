@@ -97,7 +97,7 @@
 	<string name="aim">После Моего Хода</string>
 	<string name="notification">Уведомления</string>
 	<string name="notificationE">Включить уведомления</string>
-	<string name="ssb">Показывать кнопку \"Отправить\</string>
+	<string name="ssb">Показывать кнопку \"Отправить\"</string>
 	<string name="enableSounds">Включить Звуки</string>
 	<string name="strength">Сила</string>
 	<string name="interfaceP">ИНТЕРФЕЙС</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">Поздравляем!</string>
 	<string name="onlinegamecreated">Онлайн-Игра Создана!</string>
 	<string name="challengeSent">Вызов Отправлен!</string>
-	<string name="creating">Создание ...</string>
-	<string name="gettingfriends">Получение Списка Друзей ...</string>
+	<string name="creating">Создание...</string>
+	<string name="gettingfriends">Получение Списка Друзей...</string>
 	<string name="sorry">Извините</string>
 	<string name="nofriends">Вы не добавили друзей. Вы можете пригласить их через www.chess.com.</string>
 	<string name="nofriends_online">Ваши друзья не в сети. Если вы не пригласили их, зайдите на www.chess.com.</string>
@@ -168,8 +168,8 @@
 	<string name="wrongusername">Ваше Имя должно быть не менее 3 символов и содержать только буквы, цифры, подчеркивания и тире. Пробелы не допускаются.</string>
 	<string name="wrongemail">Вам нужно будет подтвердить свое членство по электронной почте.</string>
 	<string name="wrongretype">Пароли не совпадают</string>
-	<string name="signingin">Вход в систему ...</string>
-	<string name="videoslistupdated">Видео список обновлен!</string>
+	<string name="signingin">Выполняется вход...</string>
+
 	<string name="showanswer">Показать ответ</string>
 	<string name="skipproblem">Пропустить проблему</string>
 	<string name="sendinggameinfo">Отправка Информации об Игре...</string>
