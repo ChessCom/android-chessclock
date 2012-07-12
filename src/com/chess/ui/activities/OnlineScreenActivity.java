@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.*;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -19,7 +20,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
@@ -61,7 +61,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
 //	private AbstractUpdateTask getDataTask;
 	private SectionedAdapter sectionedAdapter;
-	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
+//	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
+	private List<AsyncTask<LoadItem, Void, Integer>> taskPool;
 
 
 	@Override
@@ -115,7 +116,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	protected void onResume() {
 		super.onResume();
-		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
+		taskPool = new ArrayList<AsyncTask<LoadItem, Void, Integer>>();
+//		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
 
 		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 
@@ -478,7 +480,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	private void cleanTaskPool() {
 		if(taskPool.size() > 0){
-			for (AbstractUpdateTask<String, LoadItem> updateTask : taskPool) {
+			for (AsyncTask<LoadItem, Void, Integer> updateTask : taskPool) {
 				updateTask.cancel(true);
 				updateTask = null;
 				Log.d("TEST","Tasks cleaned");

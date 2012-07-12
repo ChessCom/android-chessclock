@@ -77,11 +77,12 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 		}
 	}
 
-	public AbstractUpdateTask<T, Input> executeTask(Input... input){
+//	public AbstractUpdateTask<T, Input> executeTask(Input... input){
+	public AsyncTask<Input, Void, Integer> executeTask(Input... input){
 		if(Build.VERSION.SDK_INT > StaticData.SDK_HONEYCOMB){
-			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
+			return executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 		}else
-			execute(input);
-		return this;
+			return execute(input);
+//		return this;
 	}
 }

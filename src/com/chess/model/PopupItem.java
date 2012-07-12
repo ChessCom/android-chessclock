@@ -14,7 +14,10 @@ import java.io.Serializable;
  * @created at: 07.04.12 7:14
  */
 public class PopupItem implements Serializable{
-    private int titleId;
+
+	private static final long serialVersionUID = 2848774369975248646L;
+
+	private int titleId;
     private int messageId;
     private String title;
     private String message;

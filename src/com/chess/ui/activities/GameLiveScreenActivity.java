@@ -675,6 +675,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		} else if (view.getId() == R.id.submitBtn) {
 			sendMove();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
+			endPopupFragment.dismiss();
 			Intent intent = new Intent(this, LiveNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
