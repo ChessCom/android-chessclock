@@ -74,10 +74,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	}
 
 	private void initActivity(){
-//		"http://www." + LccHolder.HOST
-//				+ "/api/get_friends?id="
-//				+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY),
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_FRIENDS);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
@@ -101,10 +97,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		friends = ChessComApiParser.GetFriendsParse(response);
 
-//			ArrayAdapter<String> adapterF = new ArrayAdapter<String>(OnlineFriendChallengeActivity.this,
-//					android.R.layout.simple_spinner_item,
-//					FRIENDS);
-//			adapterF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, friends);
 		friendsSpinner.setAdapter(friendsAdapter);
 		if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
@@ -143,14 +135,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		int days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
 		int gametype = chess960.isChecked()? 2 :0;
 		int israted = isRated.isChecked() ? 1 :0;
-
-//		String query = "http://www." + LccHolder.HOST + "/api/echess_new_game?id="
-//				+ preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY) +
-//				"&timepermove=" + days +
-//				"&iplayas=" + color +
-//				"&israted=" + israted +
-//				"&game_type=" + gametype +
-//				"&opponent=" + friendsSpinner.getSelectedItem().toString().trim();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);

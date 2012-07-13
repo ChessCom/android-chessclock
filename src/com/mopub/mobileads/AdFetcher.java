@@ -84,6 +84,7 @@ public class AdFetcher {
     public void fetchAdForUrl(String url) {
         mCurrentTaskId++;
         Log.i("MoPub", "Fetching ad for task #" + mCurrentTaskId);
+        Log.i("TEST", "Fetching ad for task #" + mCurrentTaskId);
 
         if (mCurrentTask != null) {
             mCurrentTask.cancel(true);
@@ -91,9 +92,8 @@ public class AdFetcher {
 
         mCurrentTask = new AdFetchTask(this);
 		mCurrentTask.executeTask(url);
-		/*
-		if (Build.VERSION.SDK_INT >= VERSION_CODE_ICE_CREAM_SANDWICH) { // WARN! - unsafe method,
-		doesn't work on motorola devices, which throws MethodNotFoundException
+		/*if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH) { // WARN! - unsafe method,
+//		doesn't work on motorola devices, which throws MethodNotFoundException
 			Class<?> cls = AdFetchTask.class;
 			Class<?>[] parameterTypes = {Executor.class, Object[].class};
 
@@ -180,8 +180,7 @@ public class AdFetcher {
             HttpResponse response = mHttpClient.execute(httpget);
             HttpEntity entity = response.getEntity();
 
-            if (response == null || entity == null ||
-                    response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            if (entity == null || response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 Log.d("MoPub", "MoPub server returned invalid response.");
                 return null;
             }

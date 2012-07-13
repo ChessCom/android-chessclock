@@ -73,20 +73,17 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 		String message = popupItem.getMessage(getActivity());
-//		if(message.equals(StaticData.SYMBOL_EMPTY)){
-//			messageTxt.setVisibility(View.GONE);
-//		}else{
-			if(message.contains(StaticData.SYMBOL_TAG)){
-				messageTxt.setText(Html.fromHtml(message));
-			}else{
-				messageTxt.setText(message);
-			}
-			messageTxt.setVisibility(View.VISIBLE);
-//		}
+		if(message.contains(StaticData.SYMBOL_TAG)){
+			messageTxt.setText(Html.fromHtml(message));
+		}else{
+			messageTxt.setText(message);
+		}
+		messageTxt.setVisibility(View.VISIBLE);
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
-		middleBtn.setText(popupItem.getNegativeBtnId());
+		if(buttonsNumber == 3)
+			middleBtn.setText(popupItem.getNeutralBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
 

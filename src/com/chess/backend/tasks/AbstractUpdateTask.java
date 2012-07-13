@@ -56,6 +56,7 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 		super.onCancelled(result);
 		taskFace.errorHandle(StaticData.TASK_CANCELED);
 		Log.d("TEST", "onCancelled Int called, result =  " + result);
+//		taskFace = null;
 	}
 
 	@Override
