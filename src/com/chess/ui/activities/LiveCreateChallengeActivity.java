@@ -74,14 +74,14 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 		bonusTimeValidator = new BonusTimeValidator();
 	}
 
-	@Override
+/*	@Override    // TODO probably useless case - If User not initialized or became null, we already  disconnected. Or it should exist everywhere.
 	protected void onResume() {
 		super.onResume();
 		if (getLccHolder().getUser() == null) {
 			getLccHolder().logout();
 			backToHomeActivity();
 		}
-	}
+	}*/
 
 	private Integer[] minRatings = new Integer[]{
 			null,

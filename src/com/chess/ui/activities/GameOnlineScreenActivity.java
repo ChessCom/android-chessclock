@@ -98,9 +98,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		boardView.setGameActivityFace(this);
 	}
 
-	@Override
 	public void init() {
-		super.init();
 		gameId = extras.getLong(GameListItem.GAME_ID);
 
 		menuOptionsItems = new CharSequence[]{

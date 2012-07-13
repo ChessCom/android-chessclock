@@ -74,6 +74,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			throw new LiveChessClientException("Unable to initialize HttpClient", e);
 		}
 
+		LccHolder.getInstance(context).setLiveChessClient(item);
+		LccHolder.getInstance(context).performConnect();
 		return StaticData.RESULT_OK;
 	}
 }

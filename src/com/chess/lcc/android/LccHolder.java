@@ -358,17 +358,9 @@ public class LccHolder {
         return lccChatMessageListener;
     }
 
-	/*private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
-		public LccClientInitListener() {
-			super(context);
-		}
-
-		@Override
-		public void updateData(LiveChessClient returnedObj) {
-			Log.d(TAG, "LiveChessClient initialized");
-			_lccClient = returnedObj;
-		}
-	}*/
+	public void setLiveChessClient(LiveChessClient liveChessClient) {
+		_lccClient = liveChessClient;
+	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {
@@ -379,7 +371,6 @@ public class LccHolder {
 		public void updateData(LiveChessClient returnedObj) {
 			Log.d(TAG, "LiveChessClient initialized");
 			_lccClient = returnedObj;
-			performConnect();
 		}
 	}
 

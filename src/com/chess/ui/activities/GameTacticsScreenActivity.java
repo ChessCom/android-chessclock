@@ -82,7 +82,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		widgetsInit();
 	}
 
-	@Override
 	public void init() {
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.skipproblem),

@@ -79,9 +79,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	}
 
-	@Override
 	public void init() {
-		super.init();
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.ngwhite),
 				getString(R.string.ngblack),
