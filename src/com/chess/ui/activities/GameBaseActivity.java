@@ -101,6 +101,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		return boardView.getBoardFace();
 	}
 
+
 	@Override
 	protected void onResume() {
 		super.onResume();

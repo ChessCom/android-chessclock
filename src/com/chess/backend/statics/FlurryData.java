@@ -19,4 +19,5 @@ public class FlurryData {
 	public static final String LOGGED_IN = "Logged In";
 	public static final String VIDEO_PLAYED = "Video Played";
 	public static final String UPGRADE_FROM_VIDEOS = "upgrade From Videos";
+	public static final String TACTICS_SESSION_STARTED_FOR_REGISTERED = "Tactics Session Started For Registered";
 }
