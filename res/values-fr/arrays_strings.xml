@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Non défini</item>
-	    <item>(Débutant - Intermédiaire)</item>
+	    <item>Débutant</item>
 		<item>Intermédiaire</item>
 		<item>Avancé</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Non défini</item>
 	    <item>Jeux étonnants</item>
 		<item>Finales</item>
 		<item>Ouvertures</item>

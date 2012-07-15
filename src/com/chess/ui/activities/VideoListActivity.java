@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.model.VideoItem;
@@ -44,7 +44,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			videoUpgrade.setVisibility(View.GONE);
 		}
 
-		listView = (ListView) findViewById(R.id.videosLV);
+		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 
 		skill = extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
@@ -78,14 +78,9 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		listView.setAdapter(paginationAdapter);
 	}
 
-	private class VideosListItemsUpdateListener extends AbstractUpdateListener<VideoItem> {
+	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem> {
 		public VideosListItemsUpdateListener() {
-			super(getContext());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			getActionBarHelper().setRefreshActionItemState(show);
+			super(getInstance());
 		}
 	}
 

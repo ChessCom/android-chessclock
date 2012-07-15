@@ -468,9 +468,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private void clickOnChallenge() {
 		String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE
 				+ gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE
+				+ getString(R.string.loss_) + StaticData.SYMBOL_NEW_STR
 				+ gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE
+				+ getString(R.string.draw_) + StaticData.SYMBOL_NEW_STR
 				+ gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
 		popupItem.setPositiveBtnId(R.string.accept);

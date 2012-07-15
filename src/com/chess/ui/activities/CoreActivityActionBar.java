@@ -37,6 +37,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	protected Bundle extras;
 	protected Handler handler;
+	protected boolean showSearch;
 
 	// we may have this add on every screen, so control it on the lowest level
 	protected MoPubView moPubView;
@@ -96,6 +97,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+
+		Log.d("TEST","core actionbar onResume called");
+//		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -107,6 +116,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
+		showSearch = false;
 	}
 
 	protected void backToHomeActivity() {
@@ -150,9 +160,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		Log.d("TEST","core actionbar onCreateOptionsMenu called");
+
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_Search, showSearch, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	style="@style/LinearDescription"
 	>
 
-	<TextView
+	<com.chess.RoboTextView
 		android:id="@+id/title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/title"
-		android:textStyle="bold"
+		robo:ttf="Bold"
 		android:visibility="visible"/>
 
 	<com.chess.RoboTextView

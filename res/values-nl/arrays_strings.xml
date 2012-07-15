@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Nog niet ingesteld</item>
 	    <item>Beginner</item>
 		<item>Intermediate</item>
 		<item>Geavanceerd</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Nog niet ingesteld</item>
 	    <item>Geweldige games</item>
 		<item>Eindspelen</item>
 		<item>Openingen</item>

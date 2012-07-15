@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Ikke angitt</item>
 	    <item>Nybegynner</item>
 		<item>Intermediate</item>
 		<item>Fremskreden Alzheimers</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Ikke angitt</item>
 	    <item>Amazing Games</item>
 		<item>Endgames</item>
 		<item>Åpninger</item>

@@ -287,7 +287,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 							showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE, MENU_ATTR_SHOW_AS_ACTION, -1);
 							if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS
-									|| showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
+									|| showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM
+									|| showAsAction == (MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW|MenuItem.SHOW_AS_ACTION_ALWAYS)) {
 								mActionItemIds.add(itemId);
 							}
 							break;

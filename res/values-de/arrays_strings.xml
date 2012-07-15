@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Nicht festgelegt</item>
 	    <item>Anfänger</item>
 		<item>Fortgeschrittene</item>
 		<item>Erweitert</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Nicht festgelegt</item>
 	    <item>Erstaunlich Spiele</item>
 		<item>Endspiele</item>
 		<item>Öffnungen</item>

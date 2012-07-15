@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Set değil</item>
 	    <item>Acemi</item>
 		<item>Ara</item>
 		<item>Gelişmiş</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Set değil</item>
 	    <item>İnanılmaz oyunlar</item>
 		<item>Hamleler</item>
 		<item>Açılışlar</item>

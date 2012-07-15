@@ -41,13 +41,12 @@
 
 	<string-array name="skill">
 	    <item>Non Impostato</item>
-	    <item>I principianti dovrebbero astenersi dal giocare in tavoli reali fino a quando non avranno acquistato sicurezza sufficiente nell\'uso di questa tabella. </item>
+	    <item>Debuttante</item>
 		<item>Intermedio</item>
 		<item>Avanzate</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Non Impostato</item>
 	    <item>Fantastici giochi</item>
 		<item>Finali</item>
 		<item>Aperture</item>

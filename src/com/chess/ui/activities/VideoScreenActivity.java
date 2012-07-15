@@ -44,6 +44,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		skillsItemSelectedListener = new SkillsItemSelectedListener();
 		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
 		videosItemUpdateListener = new VideosItemUpdateListener();
+
+		showSearch = true;
 	}
 
 	@Override
@@ -66,12 +68,12 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		title = (TextView) findViewById(R.id.title);
 		desc = (TextView) findViewById(R.id.desc);
 
-		skillsSpinner = (Spinner) findViewById(R.id.skills);
+		skillsSpinner = (Spinner) findViewById(R.id.skillsSpinner);
 		skillsSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
 		skillsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
 		skillsSpinner.setOnItemSelectedListener(skillsItemSelectedListener);
 
-		categoriesSpinner = (Spinner) findViewById(R.id.categories);
+		categoriesSpinner = (Spinner) findViewById(R.id.categoriesSpinner);
 		categoriesSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
 		categoriesSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
 		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
@@ -79,8 +81,9 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		playBtn = (Button) findViewById(R.id.play);
 		playBtn.setOnClickListener(this);
 
-
 		findViewById(R.id.start).setOnClickListener(this);
+
+		handleIntent(getIntent());
 	}
 
 	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -139,6 +142,38 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			playBtn.setEnabled(true);
 		}
 	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// Because this activity has set launchMode="singleTop", the system calls this method
+		// to deliver the intent if this actvity is currently the foreground activity when
+		// invoked again (when the user executes a search from this activity, we don't create
+		// a new instance of this activity, so the system delivers the search intent here)
+		handleIntent(intent);
+	}
+
+	private void handleIntent(Intent intent) {
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			showToast("ACTION_VIEW");
+		} else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			showToast("ACTION_SEARCH");
+		}
+	}
+
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the options menu from XML
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.options_menu, menu);
+//
+//		// Get the SearchView and set the searchable configuration
+//		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//		searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+//
+//		return super.onCreateOptionsMenu(menu);
+//	}
 
 	@Override
 	public void onClick(View view) {

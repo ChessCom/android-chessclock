@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Ej definierad</item>
 	    <item>Nybörjare</item>
 		<item>Mellan</item>
 		<item>Avancerad</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Ej definierad</item>
 	    <item>Fantastiska spel</item>
 		<item>Slutspel</item>
 		<item>Öppningar</item>

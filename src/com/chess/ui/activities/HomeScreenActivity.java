@@ -80,6 +80,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		super.onResume();
 
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+		getActionBarHelper().showMenuItemById(R.id.menu_Search, false);
 
 		if (MopubHelper.isShowAds(this)) {
 			showFullScreenAd();
@@ -115,6 +116,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected(), menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_Search, false, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

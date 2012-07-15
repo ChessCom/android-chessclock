@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Ikke indstillet</item>
 	    <item>Begynder</item>
 		<item>Intermediate</item>
 		<item>Avanceret</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Ikke indstillet</item>
 	    <item>Fantastiske spil</item>
 		<item>Endgames</item>
 		<item>Åbninger</item>

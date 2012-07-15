@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>مشخص نشده</item>
 	    <item>مبتدی</item>
 		<item>متوسط</item>
 		<item>پیشرفته</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>مشخص نشده</item>
 	    <item>بازی شگفت انگیز</item>
 		<item>آخر بازی</item>
 		<item>دهانه</item>
