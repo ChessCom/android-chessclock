@@ -17,7 +17,7 @@ public abstract class OnlineGamesAdapter extends ItemsAdapter<GameListItem> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.gamelistelement, parent, false);
+		View view = inflater.inflate(R.layout.game_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerTxt);
 		holder.gameInfoTxt = (TextView) view.findViewById(R.id.gameInfoTxt);

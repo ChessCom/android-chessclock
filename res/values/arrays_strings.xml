@@ -41,14 +41,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Not Set</item>
 	    <item>Beginner</item>
 		<item>Intermediate</item>
 		<item>Advanced</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Not Set</item>
 	    <item>Amazing games</item>
 		<item>Endgames</item>
 		<item>Openings</item>

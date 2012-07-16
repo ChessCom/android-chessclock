@@ -171,7 +171,7 @@
 	<string name="wrongemail">Vous aurez besoin de confirmer votre adhésion par e-mail.</string>
 	<string name="wrongretype">Mauvaise passe retapé!</string>
 	<string name="signingin">Signature En ...</string>
-	<string name="videoslistupdated">Liste des vidéos mis à jour!</string>
+
 	<string name="showanswer">Voir la réponse</string>
 	<string name="skipproblem">Passer Problème</string>
 	<string name="sendinggameinfo">Envoi d\'informations de jeu ...</string>

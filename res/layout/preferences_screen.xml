@@ -25,8 +25,9 @@
 			android:text="@string/preferencesUpgrade"
 			/>
 
+		<!--ONLINE GAME -->
+		<!-- ____________________________________________ -->
 		<com.chess.RoboTextView
-			android:id="@+id/onlineTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/label_game_online"
@@ -34,11 +35,8 @@
 			robo:ttf="Bold"
 			/>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/underline_grey"
-			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
 
 		<LinearLayout
 			android:id="@+id/afterIMoveLayout"
@@ -55,33 +53,21 @@
 				/>
 
 			<Spinner
-				android:id="@+id/prefAIM"
+				android:id="@+id/afterMoveSpinner"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:entries="@array/AIM"
-				android:layout_weight="4">
-			</Spinner>
+				android:layout_weight="4"
+				/>
+
 		</LinearLayout>
 
+		<!--Show Online Submit Button-->
 		<com.chess.RoboCheckBox
-			android:id="@+id/enableSounds"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/enableSounds"
-			/>
-
-		<com.chess.RoboCheckBox
-			android:id="@+id/prefSSB"
+			android:id="@+id/showOnlineSubmitChckBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ssb"
-			/>
-
-		<com.chess.RoboCheckBox
-			android:id="@+id/prefNEnable"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/notificationE"
 			/>
 
 		<com.chess.RoboCheckBox
@@ -91,21 +77,88 @@
 			android:text="@string/vacationOff"
 			/>
 
+
+		<!--LIVE GAME -->
+		<!-- ____________________________________________ -->
+		<com.chess.RoboTextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/label_game_live"
+			style="@style/SettingsDividerText"
+			robo:ttf="Bold"
+			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
+		<!--Show Live Submit Button-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/showLiveSubmitChckBx"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/ssb"
+			/>
+
+		<!--Min Rating-->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearDescription"
+			>
+
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="@string/minrating"
+				android:layout_weight="6"
+				/>
+
+			<Spinner
+				android:id="@+id/minRatingSpinner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:entries="@array/minRating"/>
+		</LinearLayout>
+
+		<!--Max Rating-->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearDescription"
+			>
+
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="@string/maxrating"
+				android:layout_weight="6"
+				/>
+
+			<Spinner
+				android:id="@+id/maxRatingSpinner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="4"
+				android:entries="@array/maxRating"/>
+		</LinearLayout>
+
+
+		<!--COMPUTER GAME-->
+		<!-- ____________________________________________ -->
 		<com.chess.RoboTextView
 			android:id="@+id/computerTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/label_play_comp"
+			android:text="@string/label_game_comp"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/underline_grey"
-			style="@style/lineDivider"
-			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
 
 		<LinearLayout
 			android:id="@+id/prefStrengthLayout"
@@ -130,6 +183,8 @@
 				android:layout_weight="4"/>
 		</LinearLayout>
 
+		<!--INTERFACE-->
+		<!-- ____________________________________________ -->
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -138,12 +193,9 @@
 			robo:ttf="Bold"
 			/>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/underline_grey"
-			style="@style/lineDivider"
-			/>
+		<!--Divider-->
+		<include layout="@layout/divider_view" />
+
 
 		<!-- Language -->
 		<LinearLayout
@@ -215,6 +267,15 @@
 
 		</LinearLayout>
 
+		<!--Sounds-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/enableSoundsChkBx"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/enableSounds"
+			/>
+
+		<!--Coordinates-->
 		<com.chess.RoboCheckBox
 			android:id="@+id/prefCoords"
 			android:layout_width="match_parent"
@@ -222,11 +283,26 @@
 
 			android:text="@string/showcoords"/>
 
+		<!--Move HighLights-->
 		<com.chess.RoboCheckBox
 			android:id="@+id/prefHighlights"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/movehighlights"/>
+
+		<!--Notifications-->
+		<com.chess.RoboCheckBox
+			android:id="@+id/notificationsChckBx"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/notificationE"
+			/>
+
+		<!--
+		TODO
+		Help
+		About
+		-->
 
 		<com.chess.RoboButton
 			android:id="@+id/prefInvite"

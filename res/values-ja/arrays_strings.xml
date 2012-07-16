@@ -40,16 +40,14 @@
 	
 
 	<string-array name="skill">
-	    <item>&lt;設定なし&gt;</item>
 	    <item>初心者向け</item>
 		<item>中級オプション</item>
 		<item>拡張機能</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>&lt;設定なし&gt;</item>
 	    <item>驚くべきゲーム</item>
-		<item>Endgames</item>
+		<item>エンドゲームの状態</item>
 		<item>開口部</item>
 		<item>ルールの基本</item>
 		<item>戦略。</item>

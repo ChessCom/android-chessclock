@@ -55,13 +55,16 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 			int preferredVersion = Integer.valueOf(valuesArray[1].trim());
 
 			if (actualVersion < preferredVersion) {
-				preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
 				preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
-				preferencesEditor.commit();
 				result = StaticData.RESULT_OK;
 			}else {
 				result = StaticData.DATA_EXIST;
 			}
+			// Save last update time to prevent update on every home screen resume
+			Log.d("CheckUpdateTask","START_DAY saved at =" + System.currentTimeMillis());
+			preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
+			preferencesEditor.commit();
+
 			if (actualVersion < minimumVersion) {
 				item = true; // need to force update
 			}

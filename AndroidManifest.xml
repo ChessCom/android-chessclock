@@ -2,66 +2,64 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:versionCode="93"
-    android:versionName="1.990" package="com.chess" android:installLocation="auto">
+	android:versionCode="93"
+	android:versionName="1.990" package="com.chess" android:installLocation="auto">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
-    <application android:icon="@drawable/ic_launcher"
+	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15"/>
+	<application android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name"
 		android:logo="@drawable/ic_home"
-    	android:debuggable="true"
-        android:theme="@style/OrangeButtonTheme"
-    	>
-        <activity android:name=".ui.activities.SplashActivity"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Black.NoTitleBar"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+		android:debuggable="true"
+		android:theme="@style/OrangeButtonTheme"
+		>
+		<activity android:name=".ui.activities.SplashActivity"
+			android:label="@string/app_name"
+			android:theme="@android:style/Theme.Black.NoTitleBar"
+			>
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
 
 		<activity android:name=".ui.activities.HomeScreenActivity"
 			android:logo="@drawable/ic_logo_bar"
 			android:label=""
 			/>
 
-        <activity android:name="com.google.ads.AdActivity"
+		<activity android:name="com.google.ads.AdActivity"
 			android:configChanges="keyboard|keyboardHidden|orientation"/>
 
-        <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:configChanges="keyboardHidden|orientation|keyboard" />
-        <activity android:name="com.millennialmedia.android.VideoPlayer"
-                  android:configChanges="keyboardHidden|orientation|keyboard" />
+		<activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar"
+			android:configChanges="keyboardHidden|orientation|keyboard"/>
+		<activity android:name="com.millennialmedia.android.VideoPlayer"
+			android:configChanges="keyboardHidden|orientation|keyboard"/>
 
-		<activity android:name=".ui.activities.VideoListActivity" 	android:label="@string/label_video"
-				  android:configChanges="keyboardHidden|keyboard|orientation" />
+		<activity android:name=".ui.activities.VideoListActivity" android:label="@string/label_video"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-
-
-		<activity android:name=".ui.activities.ChatOnlineActivity"   android:label="@string/label_chat_online"
-				  android:configChanges="keyboardHidden|keyboard|orientation" />
+		<activity android:name=".ui.activities.ChatOnlineActivity" android:label="@string/label_chat_online"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
 		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
-				  android:configChanges="keyboardHidden|keyboard|orientation" />
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-        <activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
-        <activity android:name=".ui.activities.LoginScreenActivity"
-                  android:theme="@style/OrangeButtonNotitle"
-                  />
+		<activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
+		<activity android:name=".ui.activities.LoginScreenActivity"
+			android:theme="@style/OrangeButtonNotitle"
+			/>
 
 		<activity android:name=".ui.activities.LiveFriendChallengeActivity"
 			android:configChanges="keyboardHidden|orientation|keyboard"
-			android:label="@string/label_friend_challenge_live" />
+			android:label="@string/label_friend_challenge_live"/>
 
 		<activity android:name=".ui.activities.LiveCreateChallengeActivity"
 			android:configChanges="keyboardHidden|orientation|keyboard"
@@ -73,13 +71,17 @@
 		<activity android:name=".ui.activities.OnlineCreateChallengeActivity"
 			android:label="@string/label_create_challenge_online"/>
 
-        <activity android:name="com.mopub.mobileads.MoPubActivity" android:configChanges="keyboardHidden|keyboard|orientation"/>
-        <activity android:name="com.mopub.mobileads.MraidActivity" android:configChanges="keyboardHidden|keyboard|orientation"/>
-        <activity android:name="com.mopub.mobileads.MraidBrowser" android:configChanges="keyboardHidden|keyboard|orientation"/>
+		<activity android:name="com.mopub.mobileads.MoPubActivity"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+		<activity android:name="com.mopub.mobileads.MraidActivity"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
+		<activity android:name="com.mopub.mobileads.MraidBrowser"
+			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-        <activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
-				  android:configChanges="keyboardHidden|keyboard|orientation"
+		<activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
+
 			/>
+		<!--android:configChanges="keyboardHidden|keyboard|orientation"-->
 		<activity android:name=".ui.activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"
 			/>
 
@@ -103,27 +105,37 @@
 			/>
 
 		<activity android:name=".ui.activities.PreferencesScreenActivity" android:label="@string/label_settings"
-				  android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>
+			android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>
 
-        <activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"
-					android:configChanges="keyboardHidden|keyboard|orientation"/>
-        <activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"
+		<activity android:name=".ui.activities.VideoScreenActivity" android:label="@string/label_video"
+			android:configChanges="keyboardHidden|keyboard|orientation"
+			android:launchMode="singleTop">
+			<!-- Receives the search request. -->
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH"/>
+				<!-- No category needed, because the Intent will specify this class component-->
+			</intent-filter>
+
+			<!-- Points to searchable meta data. -->
+			<meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
+		</activity>
+		<activity android:name=".ui.activities.ComputerScreenActivity" android:label="@string/label_play_comp"
 			/>
-        <activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"
-             android:windowSoftInputMode="stateHidden"/>
+		<activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"
+			android:windowSoftInputMode="stateHidden"/>
 
 		<receiver android:name=".backend.AlarmReceiver"/>
 
-        <meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607" />
+		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 
 		<meta-data android:name="com.mobclix.APPLICATION_ID" android:value="2128371D-8E8F-476E-8791-EEA2125CE104"/>
 
-<!--        <service android:name=".backend.NetworkChangeService">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </service>-->
+		<!--        <service android:name=".backend.NetworkChangeService">
+					<intent-filter>
+						<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+						<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+					</intent-filter>
+				</service>-->
 
 	</application>
 

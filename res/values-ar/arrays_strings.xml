@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>لم يتم التعيين</item>
 	    <item>المبتدئ</item>
 		<item>التوتر العضلي المعتدل</item>
 		<item>متقدمين</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>لم يتم التعيين</item>
 	    <item>مدهش ألعاب</item>
 		<item>Endgames</item>
 		<item>الفتحات</item>

@@ -21,6 +21,9 @@
         <attr name="actionbarCompatItemStyle" format="reference" />
         <attr name="actionbarCompatItemHomeStyle" format="reference" />
         <attr name="actionbarCompatProgressIndicatorStyle" format="reference" />
+        <attr name="actionbarCompatSearchPanelStyle" format="reference" />
+        <attr name="actionbarCompatSearchEditTextStyle" format="reference" />
+        <attr name="actionbarCompatSearchButtonStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="BezelImageView">

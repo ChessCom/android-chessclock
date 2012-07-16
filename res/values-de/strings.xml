@@ -170,7 +170,7 @@
 	<string name="wrongemail">Sie müssen Ihre Mitgliedschaft per E-Mail bestätigen.</string>
 	<string name="wrongretype">Falsche abgetippt Passwort!</string>
 	<string name="signingin">Bei der Anmeldung ...</string>
-	<string name="videoslistupdated">Videos Liste aktualisiert!</string>
+
 	<string name="showanswer">Antworten anzeigen</string>
 	<string name="skipproblem">Direkt Problem</string>
 	<string name="sendinggameinfo">Senden Infos zum Spiel ...</string>

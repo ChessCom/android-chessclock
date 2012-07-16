@@ -198,8 +198,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 	}
 
 	private void showLoginProgress(boolean show){
-		if (isPaused)
-			return;
+//		if (isPaused)
+//			return;
 
 		if(show){
             showPopupHardProgressDialog(R.string.signingin);
@@ -228,7 +228,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
 			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
-		} catch (UnsupportedEncodingException ignored) {
+		} catch (UnsupportedEncodingException ignored) { // TODO handle more proper way
+			preferencesEditor.putString(AppConstants.USER_TOKEN, response[2]);
 		}
 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
 		preferencesEditor.commit();
@@ -264,8 +265,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			if (isPaused)
 				return;
 
-			showPopupDialog(R.string.update_check, R.string.update_available_please_update,
-					CHECK_UPDATE_TAG);
+			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
 			popupDialogFragment.setButtons(1);
 		}
 	}
@@ -280,9 +280,6 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				preferencesEditor.putLong(AppConstants.START_DAY, 0);
 				preferencesEditor.commit();
 
-				// as we are already on login screen, we don't need to open it again
-//				startActivity(new Intent(getContext(), LoginScreenActivity.class));
-//				finish();
 			}
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
 			startActivity(intent);

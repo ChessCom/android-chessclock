@@ -29,7 +29,6 @@ public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
 
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
-
 		String url = RestHelper.formCustomRequest(loadItems[0]);
 		result = getData(url);
 		return result;

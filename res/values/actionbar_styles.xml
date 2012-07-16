@@ -25,7 +25,10 @@
         <item name="actionbarCompatItemStyle">@style/ActionBarCompatItem</item>
         <item name="actionbarCompatItemHomeStyle">@style/ActionBarCompatHomeItem</item>
         <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
-        
+        <item name="actionbarCompatSearchPanelStyle">@style/ActionBarCompatSearchPanel</item>
+        <item name="actionbarCompatSearchEditTextStyle">@style/ActionBarCompatSearchEditText</item>
+        <item name="actionbarCompatSearchButtonStyle">@style/ActionBarCompatSearchButton</item>
+
         <item name="android:textSize">17sp</item>
 	</style>
 
@@ -49,6 +52,21 @@
     <style name="ActionBarCompatProgressIndicator" parent="android:style/Widget.ProgressBar.Large">
         <item name="android:indeterminate">true</item>
     </style>
+
+	<style name="ActionBarCompatSearchPanel" >
+
+	</style>
+
+	<style name="ActionBarCompatSearchEditText" parent="DefaultEdt">
+		<item name="android:hint">@string/search</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:imeActionLabel">@string/search</item>
+		<item name="android:imeOptions">actionSearch</item>
+	</style>
+
+	<style name="ActionBarCompatSearchButton" parent="ActionBarCompatItemBase">
+		<item name="android:src">@drawable/ic_action_search</item>
+	</style>
 
     <style name="ActionBarCompatTitleBase">
         <item name="android:id">@id/actionbar_compat_title</item>

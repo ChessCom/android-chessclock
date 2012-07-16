@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Nie ustawione</item>
 	    <item>Początkujący</item>
 		<item>Średni poziom zaawansowania</item>
-		<item>&lt;source&gt; Advanced &lt;/source&gt;</item>
+		<item>Advanced</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Nie ustawione</item>
 	    <item>Niesamowite gry</item>
 		<item>Endgames</item>
 		<item>Otwory</item>

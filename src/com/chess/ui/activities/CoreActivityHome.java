@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
+import android.util.Log;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -52,6 +53,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		super.onResume();
 
 		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		Log.d("CheckUpdateTask", "startDay loaded, = " + startDay);
+
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}

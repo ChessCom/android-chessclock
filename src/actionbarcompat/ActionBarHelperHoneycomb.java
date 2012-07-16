@@ -16,9 +16,7 @@
 
 package actionbarcompat;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +31,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private Menu mOptionsMenu;
 	private View mRefreshIndeterminateProgressView = null;
 
-	protected ActionBarHelperHoneycomb(Activity activity) {
+	protected ActionBarHelperHoneycomb(ActionBarActivity activity) {
 		super(activity);
 	}
 
@@ -67,6 +65,10 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 				refreshItem.setActionView(null);
 			}
 		}
+	}
+
+	@Override
+	public void showSearchPanel(boolean show) {
 	}
 
 	@Override

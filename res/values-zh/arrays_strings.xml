@@ -39,14 +39,12 @@
 	
 
 	<string-array name="skill">
-	    <item>---</item>
 	    <item>入门级</item>
 		<item>中阶</item>
 		<item>高级</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>---</item>
 	    <item>惊人的游戏</item>
 		<item>残局</item>
 		<item>开口</item>

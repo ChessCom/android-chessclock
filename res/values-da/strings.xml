@@ -170,7 +170,7 @@
 	<string name="wrongemail">Du skal bekræfte dit medlemsskab via e-mail.</string>
 	<string name="wrongretype">Forkert retyped password!</string>
 	<string name="signingin">Logger ind ...</string>
-	<string name="videoslistupdated">Videoer liste opdateret!</string>
+
 	<string name="showanswer">Vis Svar</string>
 	<string name="skipproblem">Spring Problem</string>
 	<string name="sendinggameinfo">Sende spil info ...</string>

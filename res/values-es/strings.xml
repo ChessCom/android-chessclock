@@ -170,7 +170,7 @@
 	<string name="wrongemail">Usted tendrá que confirmar su adhesión por correo electrónico.</string>
 	<string name="wrongretype">Reescrita contraseña incorrecta!</string>
 	<string name="signingin">En la firma de ...</string>
-	<string name="videoslistupdated">Videos de la lista actualizada!</string>
+
 	<string name="showanswer">Mostrar respuestas</string>
 	<string name="skipproblem">Ir Problema</string>
 	<string name="sendinggameinfo">El envío de información del juego ...</string>

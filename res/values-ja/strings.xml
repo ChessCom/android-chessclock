@@ -170,7 +170,7 @@
 	<string name="wrongemail">あなたが電子メールでメンバーシップを確認する必要があります。</string>
 	<string name="wrongretype">間違って再入力したパスワード！</string>
 	<string name="signingin">ログイン中…</string>
-	<string name="videoslistupdated">動画リストを更新！</string>
+
 	<string name="showanswer">回答を表示する</string>
 	<string name="skipproblem">問題をスキップする</string>
 	<string name="sendinggameinfo">ゲーム情報を送信中...</string>

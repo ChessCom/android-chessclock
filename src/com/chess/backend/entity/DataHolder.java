@@ -1,5 +1,9 @@
 package com.chess.backend.entity;
 
+import com.chess.model.TacticItem;
+
+import java.util.ArrayList;
+
 /**
  * DataHolder class
  *
@@ -12,11 +16,16 @@ public class DataHolder {
 	public static String APP_ID = "2427617054";
 
 	private boolean guest = false;
-	private boolean noInternet = false;
 	private boolean offline = false;
-	private boolean acceptdraw = false;
+	private boolean acceptDraw = false;
 	private boolean liveChess;
 	private boolean pendingTacticsLoad;
+
+	// Singletones for Tactics mode
+	private ArrayList<TacticItem> tacticsBatch;
+	private TacticItem tactic;
+	private int currentTacticProblem = 0;
+
 
 	private DataHolder() {}
 
@@ -41,14 +50,6 @@ public class DataHolder {
 		this.guest = guest;
 	}
 
-	public boolean isNoInternet() {
-		return noInternet;
-	}
-
-	public void setNoInternet(boolean noInternet) {
-		this.noInternet = noInternet;
-	}
-
 	public boolean isOffline() {
 		return offline;
 	}
@@ -57,12 +58,12 @@ public class DataHolder {
 		this.offline = offline;
 	}
 
-	public boolean isAcceptdraw() {
-		return acceptdraw;
+	public boolean isAcceptDraw() {
+		return acceptDraw;
 	}
 
-	public void setAcceptdraw(boolean acceptdraw) {
-		this.acceptdraw = acceptdraw;
+	public void setAcceptDraw(boolean acceptDraw) {
+		this.acceptDraw = acceptDraw;
 	}
 
 	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {
@@ -73,4 +74,31 @@ public class DataHolder {
 		return pendingTacticsLoad;
 	}
 
+	public TacticItem getTactic() {
+		return tactic;
+	}
+
+	public void setTactic(TacticItem tactic) {
+		this.tactic = tactic;
+	}
+
+	public ArrayList<TacticItem> getTacticsBatch() {
+		return tacticsBatch;
+	}
+
+	public void setTacticsBatch(ArrayList<TacticItem> tacticsBatch) {
+		this.tacticsBatch = tacticsBatch;
+	}
+
+	public int getCurrentTacticProblem() {
+		return currentTacticProblem;
+	}
+
+	public void increaseCurrentTacticsProblem(){
+		currentTacticProblem++;
+	}
+
+	public void setCurrentTacticProblem(int currentTacticProblem) {
+		this.currentTacticProblem = currentTacticProblem;
+	}
 }

@@ -92,34 +92,11 @@ public class AppData {
 		return preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true);
 	}
 
-
-//	public static boolean isTacticsGameMode(int mode) {
-//		return mode == AppConstants.GAME_MODE_TACTICS;
-//	}
-//
-//	public static boolean isTacticsGameMode(BoardFace boardFace) {
-//		return isTacticsGameMode(boardFace.getMode());
-//	}
-
 	/* Game modes */
-
 	public static boolean isFinishedEchessGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS;
 	}
 
-	public static boolean isComputerGameMode(BoardFace boardFace) {
-		final int mode = boardFace.getMode();
-		return mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE || mode == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK
-				|| mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
-	}
-
-	public static boolean isLiveOrEchessGameMode(int mode) {
-		return mode == AppConstants.GAME_MODE_LIVE_OR_ECHESS;
-	}
-
-	public static boolean isLiveOrEchessGameMode(BoardFace boardFace) {
-		return isLiveOrEchessGameMode(boardFace.getMode());
-	}
 	public static boolean isComputerVsComputerGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 	}

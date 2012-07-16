@@ -45,7 +45,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		gameTaskRunner = new LccGameTaskRunner(gameTaskListener);
 		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
 		outerChallengeListener = new LiveOuterChallengeListener();
-
 	}
 
 	@Override
@@ -53,6 +52,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		super.onResume();
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
+		Log.d("TEST","Live Base onResume called");
+
+		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
 	}
 

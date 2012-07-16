@@ -40,14 +40,12 @@
 	
 
 	<string-array name="skill">
-	    <item>Не указано</item>
 	    <item>Начинающий уровень</item>
 		<item>Промежуточный уровень</item>
 		<item>Продвинуты</item>
 	</string-array>
 	
 	<string-array name="category">
-	    <item>Не указано</item>
 	    <item>Удивительные игры</item>
 		<item>Консолидации</item>
 		<item>Отверстия</item>

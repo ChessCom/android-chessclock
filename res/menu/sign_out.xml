@@ -22,10 +22,21 @@
 		android:orderInCategory="0"
 		android:showAsAction="always" />
 
+	<item android:id="@+id/menu_search"
+		android:title="@string/menu_search"
+		android:orderInCategory="1"
+		android:icon="@drawable/ic_action_search"
+		android:showAsAction="always|collapseActionView"
+		android:actionViewClass="android.widget.SearchView"
+		/>
+	<!--android:actionViewClass="android.widget.SearchView" TODO -->
+	<!--android:actionViewClass="android.support.v4.widget.SearchViewCompat" TODO -->
+
 	<item android:id="@+id/menu_singOut"
 		android:title="@string/signout"
-		android:orderInCategory="1"
+		android:orderInCategory="2"
 		android:icon="@drawable/ic_action_sign_out"
 		android:showAsAction="always"/>
+
 
 </menu>

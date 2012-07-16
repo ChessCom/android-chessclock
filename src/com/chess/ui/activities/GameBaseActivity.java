@@ -43,7 +43,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
-	protected TextView endOfGameMessage;
 	protected PopupCustomViewFragment endPopupFragment;
 
 
@@ -79,11 +78,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 		thinking = (TextView) findViewById(R.id.thinking);
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
-		endOfGameMessage = (TextView) findViewById(R.id.endOfGameMessage);
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
-	}
-
-	public void init() {
 	}
 
 	@Override
@@ -105,6 +100,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	public Object onRetainCustomNonConfigurationInstance() {
 		return boardView.getBoardFace();
 	}
+
 
 	@Override
 	protected void onResume() {

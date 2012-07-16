@@ -16,14 +16,17 @@
 
 package actionbarcompat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -34,7 +37,7 @@ import java.util.Set;
 /**
  * A class that implements the action bar pattern for pre-Honeycomb devices.
  */
-public class ActionBarHelperBase extends ActionBarHelper {
+public class ActionBarHelperBase extends ActionBarHelper implements View.OnClickListener {
 	private static final String MENU_RES_NAMESPACE = "http://schemas.android.com/apk/res/android";
 	private static final String MENU_ATTR_ID = "id";
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
@@ -42,7 +45,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
 	private boolean noActionBar;
 
-	protected ActionBarHelperBase(Activity activity) {
+	protected ActionBarHelperBase(ActionBarActivity activity) {
 		super(activity);
 	}
 
@@ -116,6 +119,20 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		}
 		if (refreshIndicator != null) {
 			refreshIndicator.setVisibility(refreshing ? View.VISIBLE : View.GONE);
+		}
+	}
+
+	@Override
+	public void showSearchPanel(boolean show) {
+		View searchButton = mActivity.findViewById(R.id.menu_search);
+		View searchPanel = mActivity.findViewById(R.id.actionbar_compat_item_search_panel);
+		
+		if(searchButton != null){
+			searchButton.setVisibility(show? View.GONE : View.VISIBLE);
+		}
+
+		if(searchPanel != null){
+			searchPanel.setVisibility(show? View.VISIBLE : View.GONE);
 		}
 	}
 
@@ -215,9 +232,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 		actionBar.addView(actionButton);
 
-		if (item.getItemId() == R.id.menu_refresh) {
-			// Refresh buttons should be stateful, and allow for indeterminate
-// progress indicators,
+		if (itemId == R.id.menu_refresh) {
+			// Refresh buttons should be stateful, and allow for indeterminate progress indicators,
 			// so add those.
 			ProgressBar indicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
 
@@ -236,7 +252,100 @@ public class ActionBarHelperBase extends ActionBarHelper {
 			actionBar.addView(indicator);
 		}
 
+
+		if (itemId == R.id.menu_search) {
+			actionButton.setOnClickListener(this);
+
+			// Add search container
+			LinearLayout searchPanel = new LinearLayout(mActivity);
+			LinearLayout.LayoutParams searchPanelLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			searchPanel.setLayoutParams(searchPanelLayoutParams);
+			searchPanel.setVisibility(View.GONE);
+			searchPanel.setOrientation(LinearLayout.HORIZONTAL);
+			searchPanel.setId(R.id.actionbar_compat_item_search_panel);
+
+			// Add EditText to Panel
+			EditText searchEditText = new EditText(mActivity, null, R.attr.actionbarCompatSearchEditTextStyle);
+			LinearLayout.LayoutParams searchEditLayoutParams = new LinearLayout.LayoutParams(144,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			searchEditText.setLayoutParams(searchEditLayoutParams);
+			searchEditText.setId(R.id.actionbar_compat_item_search_edit);
+			searchEditText.addTextChangedListener(searchWatcher);
+			searchEditText.setOnEditorActionListener(searchActionListener);
+
+			searchPanel.addView(searchEditText);
+
+			// Add search button
+			ImageButton searchButton2 = new ImageButton(mActivity, null, R.attr.actionbarCompatSearchButtonStyle);
+			int buttonWidth = mActivity.getResources().getDimensionPixelSize(
+					R.dimen.actionbar_compat_button_width);
+			int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
+			LinearLayout.LayoutParams searchButtonLayoutParams = new LinearLayout.LayoutParams(buttonWidth,
+					buttonHeight);
+			searchButton2.setLayoutParams(searchButtonLayoutParams);
+			searchButton2.setScaleType(ImageView.ScaleType.CENTER);
+			searchButton2.setId(R.id.actionbar_compat_item_search_button);
+			searchButton2.setOnClickListener(this);
+			searchButton2.setImageResource(R.drawable.ic_action_search);
+
+			searchPanel.addView(searchButton2);
+
+			actionBar.addView(searchPanel);
+		}
 		return actionButton;
+	}
+
+	private TextWatcher searchWatcher = new TextWatcher() {
+		@Override
+		public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			mActivity.onSearchAutoCompleteQuery(charSequence.toString());
+		}
+
+		@Override
+		public void afterTextChanged(Editable editable) {
+
+		}
+	};
+
+
+	private TextView.OnEditorActionListener searchActionListener = new TextView.OnEditorActionListener() {
+		@Override
+		public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+			if(actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+					|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
+				mActivity.onSearchQuery(textView.getText().toString().trim());
+				return true;
+			}
+			return false;
+		}
+	};
+
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.menu_search){
+			showSearchPanel(true);
+			final EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
+//			searchEdit.setText(null);
+			searchEdit.requestFocus();
+			searchEdit.post(new Runnable() {
+				@Override
+				public void run() {
+					mActivity.showKeyBoard(searchEdit);
+				}
+			});
+		}else if(view.getId() == R.id.actionbar_compat_item_search_button){
+			showSearchPanel(false);
+			EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
+			String query = searchEdit.getText().toString().trim();
+			if(!query.equals(StaticData.SYMBOL_EMPTY))
+				mActivity.onSearchQuery(query);
+		}
 	}
 
 	/**
@@ -287,7 +396,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
 							showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE, MENU_ATTR_SHOW_AS_ACTION, -1);
 							if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS
-									|| showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
+									|| showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM
+									|| showAsAction == (MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW|MenuItem.SHOW_AS_ACTION_ALWAYS)) {
 								mActionItemIds.add(itemId);
 							}
 							break;

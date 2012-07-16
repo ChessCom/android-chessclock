@@ -6,14 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -24,31 +26,27 @@ import java.util.ArrayList;
 public class VideoListActivity extends LiveBaseActivity implements OnItemClickListener,
 		View.OnClickListener {
 	private ListView listView;
-	private String skill;
-	private String category;
 	private VideosListItemsUpdateListener videosListItemUpdateListener;
+    private String skill;
+    private String category;
+    private String keyword;
 
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_list_screen);
 
-		TextView videoUpgrade = (TextView) findViewById(R.id.upgradeBtn);
+	    Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
+        videoUpgrade.setOnClickListener(this);
+        videoUpgrade.setVisibility(AppUtils.isNeedToUpgrade(this)? View.VISIBLE: View.GONE);
 
-		if (AppUtils.isNeedToUpgrade(this)) {
-			videoUpgrade.setVisibility(View.VISIBLE);
-			videoUpgrade.setOnClickListener(this);
-
-		} else {
-			videoUpgrade.setVisibility(View.GONE);
-		}
-
-		listView = (ListView) findViewById(R.id.videosLV);
+		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 
-		skill = extras.getString(AppConstants.VIDEO_SKILL_LEVEL);
-		category = extras.getString(AppConstants.VIDEO_CATEGORY);
+        keyword = extras.getString(RestHelper.P_KEYWORD);
+		category = extras.getString(RestHelper.P_CATEGORY);
+		skill = extras.getString(RestHelper.P_SKILL_LEVEL);
 
 		videosListItemUpdateListener = new VideosListItemsUpdateListener();
 	}
@@ -66,8 +64,13 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);
 		loadItem.addRequestParams(RestHelper.P_PAGE, String.valueOf(0));
-		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, skill);
-		loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
+        if(keyword != null){ // weird hack because LoadItem -> NameValuePairs can't be Serialized
+            loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
+        }else{
+            loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, skill);
+            loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
+        }
+
 
 		//set Pagination adapter params
 		ArrayList<VideoItem> itemsList = new ArrayList<VideoItem>();
@@ -78,14 +81,9 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		listView.setAdapter(paginationAdapter);
 	}
 
-	private class VideosListItemsUpdateListener extends AbstractUpdateListener<VideoItem> {
+	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem> {
 		public VideosListItemsUpdateListener() {
-			super(getContext());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			getActionBarHelper().setRefreshActionItemState(show);
+			super(getInstance());
 		}
 	}
 

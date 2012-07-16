@@ -170,7 +170,7 @@
 	<string name="wrongemail">आप ईमेल के द्वारा अपनी सदस्यता की पुष्टि करने की आवश्यकता होगी.</string>
 	<string name="wrongretype">गलत फिर से लिखा गया पासवर्ड!</string>
 	<string name="signingin">साइन इन करें...</string>
-	<string name="videoslistupdated">वीडियो सूची अद्यतन!</string>
+
 	<string name="showanswer">उत्तर दिखाएँ </string>
 	<string name="skipproblem">समस्या छोड़ें</string>
 	<string name="sendinggameinfo">खेल जानकारी भेजा जा रहा है ...</string>

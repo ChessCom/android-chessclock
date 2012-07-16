@@ -107,8 +107,7 @@ public class LiveScreenActivity extends LiveBaseActivity {
 	@Override
 	public void onConnectionEstablished() {
 		super.onConnectionEstablished();
-		Log.d("TEST", "Live Screen onLccConnected, lcc connect state = "
-				+ LccHolder.getInstance(this).isConnected());
+		Log.d("TEST", "Live Screen onLccConnected, lcc connect state = " + LccHolder.getInstance(this).isConnected());
 		showLoadingView(false);
 	}
 

@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
@@ -147,6 +149,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+		Log.d("TEST", "___restartActivity___");
     }
 
 	@Override
@@ -171,6 +174,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		popupItem.setNegativeBtnId(R.string.cancel);
 		fragment.setCancelable(true);
 		fragment.dismiss();
+	}
+
+	public void showKeyBoard(EditText editText){
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 	}
 
 	protected void showToast(String msg) {

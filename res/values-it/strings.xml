@@ -169,7 +169,7 @@
 	<string name="wrongemail">Sarà necessario confermare l\'iscrizione via e-mail.</string>
 	<string name="wrongretype">Sbagliato password ridigitata!</string>
 	<string name="signingin">Accesso in corso...</string>
-	<string name="videoslistupdated">Elenco aggiornato video!</string>
+
 	<string name="showanswer">Mostra Risposta</string>
 	<string name="skipproblem">Salta Problema</string>
 	<string name="sendinggameinfo">L\'invio di informazioni di gioco ...</string>

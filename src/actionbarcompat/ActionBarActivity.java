@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.activities.BaseFragmentActivity;
 
 /**
@@ -70,7 +71,7 @@ public abstract class ActionBarActivity extends BaseFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(Build.VERSION.SDK_INT >= 11)
+		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB)
 			invalidateOptionsMenu();
 	}
 
@@ -86,6 +87,22 @@ public abstract class ActionBarActivity extends BaseFragmentActivity {
 		retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
 		retValue |= super.onCreateOptionsMenu(menu);
 		return retValue;
+	}
+
+	/**
+	 * This method invoked from CustomSearchView textChanged or SearchButton hit
+	 * @param query that was filled in search field
+	 */
+	protected void onSearchAutoCompleteQuery(String query){
+
+	}
+
+	/**
+	 * This method invoked from CustomSearchView on Enter/Search Button hit
+	 * @param query that was filled in search field
+	 */
+	protected void onSearchQuery(String query){
+
 	}
 
 	/**

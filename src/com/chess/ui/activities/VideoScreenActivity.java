@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		skillsItemSelectedListener = new SkillsItemSelectedListener();
 		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
 		videosItemUpdateListener = new VideosItemUpdateListener();
+
+		showSearch = true;
 	}
 
 	@Override
@@ -66,27 +69,28 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		title = (TextView) findViewById(R.id.title);
 		desc = (TextView) findViewById(R.id.desc);
 
-		skillsSpinner = (Spinner) findViewById(R.id.skills);
-		skillsSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+		skillsSpinner = (Spinner) findViewById(R.id.skillsSpinner);
+		skillsSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, 0));
 		skillsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
 		skillsSpinner.setOnItemSelectedListener(skillsItemSelectedListener);
 
-		categoriesSpinner = (Spinner) findViewById(R.id.categories);
+		categoriesSpinner = (Spinner) findViewById(R.id.categoriesSpinner);
 		categoriesSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
-		categoriesSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
+		categoriesSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_CATEGORY, 0));
 		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
 
 		playBtn = (Button) findViewById(R.id.play);
 		playBtn.setOnClickListener(this);
 
-
 		findViewById(R.id.start).setOnClickListener(this);
+
+		handleIntent(getIntent());
 	}
 
 	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
+			preferencesEditor.putInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, pos);
 			preferencesEditor.commit();
 		}
 
@@ -98,7 +102,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	private class CategoriesItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.VIDEO_CATEGORY, pos);
+			preferencesEditor.putInt(AppConstants.PREF_VIDEO_CATEGORY, pos);
 			preferencesEditor.commit();
 		}
 
@@ -141,6 +145,39 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	}
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		// Because this activity has set launchMode="singleTop", the system calls this method
+		// to deliver the intent if this actvity is currently the foreground activity when
+		// invoked again (when the user executes a search from this activity, we don't create
+		// a new instance of this activity, so the system delivers the search intent here)
+		handleIntent(intent);
+	}
+
+	private void handleIntent(Intent intent) {
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			onSearchQuery(query);
+		} else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			onSearchQuery(query);
+		}
+	}
+
+	@Override
+	protected void onSearchAutoCompleteQuery(String query) {
+
+	}
+
+	@Override
+	protected void onSearchQuery(String query) {
+		showToast(query);
+
+        Intent intent = new Intent(this, VideoListActivity.class);
+        intent.putExtra(RestHelper.P_KEYWORD, query);
+        startActivity(intent);
+	}
+
+	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			FlurryAgent.onEvent(FlurryData.UPGRADE_FROM_VIDEOS, null);
@@ -155,12 +192,10 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			int skillId = skillsSpinner.getSelectedItemPosition();
 			int categoryId = categoriesSpinner.getSelectedItemPosition();
 
-			Intent intent = new Intent(this, VideoListActivity.class);
-			intent.putExtra(AppConstants.VIDEO_SKILL_LEVEL, StaticData.SYMBOL_EMPTY);
-			intent.putExtra(AppConstants.VIDEO_CATEGORY, StaticData.SYMBOL_EMPTY);
+            String skill = StaticData.SYMBOL_EMPTY;
+            String category = StaticData.SYMBOL_EMPTY;
 
 			if (skillId > 0) {
-				String skill = StaticData.SYMBOL_EMPTY;
 				switch (skillId) {
 					case 1:
 						skill = getString(R.string.beginner_category);
@@ -175,10 +210,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 					default:
 						break;
 				}
-				intent.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
 			}
 			if (categoryId > 0) {
-				String category = StaticData.SYMBOL_EMPTY;
 				switch (categoryId) {
 					case 1:
 						category = getString(R.string.amazing_games_category);
@@ -202,8 +235,11 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 					default:
 						break;
 				}
-				intent.putExtra(AppConstants.VIDEO_CATEGORY, category);
 			}
+
+            Intent intent = new Intent(this, VideoListActivity.class);
+            intent.putExtra(RestHelper.P_SKILL_LEVEL, skill);
+            intent.putExtra(RestHelper.P_CATEGORY, category);
 			startActivity(intent);
 		}
 	}

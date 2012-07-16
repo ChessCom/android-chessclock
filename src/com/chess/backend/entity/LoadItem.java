@@ -3,6 +3,7 @@ package com.chess.backend.entity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * @created at: 15.04.12 6:54
  */
 public class LoadItem {
-	private String loadPath;
+
+    private String loadPath;
 	private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
 	public LoadItem() {

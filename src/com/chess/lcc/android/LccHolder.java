@@ -2,8 +2,6 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -91,7 +89,6 @@ public class LccHolder {
 	private boolean activityPausedMode = true;
 	private Integer latestMoveNumber;
 	private Long currentGameId;
-	public String networkTypeName;
 	private Context context;
 	private List<String> pendingWarnings;
 	private boolean lccPerformConnection;
@@ -361,17 +358,9 @@ public class LccHolder {
         return lccChatMessageListener;
     }
 
-	/*private class LccClientInitListener extends AbstractUpdateListener<LiveChessClient> {
-		public LccClientInitListener() {
-			super(context);
-		}
-
-		@Override
-		public void updateData(LiveChessClient returnedObj) {
-			Log.d(TAG, "LiveChessClient initialized");
-			_lccClient = returnedObj;
-		}
-	}*/
+	public void setLiveChessClient(LiveChessClient liveChessClient) {
+		_lccClient = liveChessClient;
+	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {
@@ -382,7 +371,6 @@ public class LccHolder {
 		public void updateData(LiveChessClient returnedObj) {
 			Log.d(TAG, "LiveChessClient initialized");
 			_lccClient = returnedObj;
-			performConnect();
 		}
 	}
 
@@ -425,10 +413,10 @@ public class LccHolder {
 
 			_lccClient.subscribeToFriendStatusEvents(friendStatusListener);
 
-			ConnectivityManager connectivityManager = (ConnectivityManager)
+			/*ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-			networkTypeName = activeNetworkInfo.getTypeName();
+			networkTypeName = activeNetworkInfo.getTypeName();*/
 		} else {
             liveChessClientEventListener.onConnectionBlocked();
 			// TODO disable UI
@@ -946,14 +934,6 @@ public class LccHolder {
 			}
 		}
 		return null;
-	}
-
-	public void setNetworkTypeName(String networkTypeName) {
-		this.networkTypeName = networkTypeName;
-	}
-
-	public String getNetworkTypeName() {
-		return networkTypeName;
 	}
 
 	public Boolean isFairPlayRestriction(Long gameId) {

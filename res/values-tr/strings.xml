@@ -169,7 +169,7 @@
 	<string name="wrongemail">Bu e-posta ile üyelik onay gerekir.</string>
 	<string name="wrongretype">Yanlış retyped şifre!</string>
 	<string name="signingin">Oturum açılıyor...</string>
-	<string name="videoslistupdated">Videolar listesi güncellendi!</string>
+
 	<string name="showanswer">Cevap göster</string>
 	<string name="skipproblem">Sorun geç</string>
 	<string name="sendinggameinfo">Oyun bilgisi gönderiliyor ...</string>

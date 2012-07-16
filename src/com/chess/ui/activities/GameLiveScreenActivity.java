@@ -124,10 +124,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
-
-	@Override
 	public void init() {
-		super.init();
 		gameId = extras.getLong(GameListItem.GAME_ID);
 		currentGame = getLccHolder().getGameItem(gameId);
 
@@ -675,6 +672,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		} else if (view.getId() == R.id.submitBtn) {
 			sendMove();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
+			endPopupFragment.dismiss();
 			Intent intent = new Intent(this, LiveNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);

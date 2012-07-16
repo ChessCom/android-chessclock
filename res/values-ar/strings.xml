@@ -171,7 +171,7 @@
 	<string name="wrongemail">وسوف تحتاج لتأكيد عضويتك من خلال البريد الإلكتروني.</string>
 	<string name="wrongretype">أعد كتابة كلمة المرور غير صحيح!</string>
 	<string name="signingin">جارٍ تسجيل الدخول...</string>
-	<string name="videoslistupdated">أشرطة الفيديو قائمة محدثة!</string>
+
 	<string name="showanswer">تبين جواب</string>
 	<string name="skipproblem">تخطي مشكلة</string>
 	<string name="sendinggameinfo">إرسال معلومات لعبة ...</string>

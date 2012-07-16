@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
@@ -164,13 +164,16 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
 		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-			String title = "Win: " + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-					+ " Loss: " + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-					+ " Draw: " + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+			String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE
+					+ gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+					+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE
+					+ gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+					+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE
+					+ gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
-			showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 			popupItem.setPositiveBtnId(R.string.accept);
 			popupItem.setNegativeBtnId(R.string.decline);
+			showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 
 		}
 	}

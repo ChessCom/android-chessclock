@@ -169,7 +169,7 @@
 	<string name="wrongemail">당신은 이메일로 멤버십을 확인하셔야합니다.</string>
 	<string name="wrongretype">잘못된 칠 비밀!</string>
 	<string name="signingin">로그인하는 중...</string>
-	<string name="videoslistupdated">동영상 목록 업데이트!</string>
+
 	<string name="showanswer">답변보기</string>
 	<string name="skipproblem">문제 건너뛰기</string>
 	<string name="sendinggameinfo">게임 정보를 보내는 중 ...</string>

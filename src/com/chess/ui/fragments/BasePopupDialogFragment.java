@@ -5,8 +5,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
@@ -71,7 +69,10 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     @Override
     public void show(FragmentManager manager, String tag) {
         isShowed = true;
-        super.show(manager, tag);
+		FragmentTransaction ft = manager.beginTransaction();
+		ft.add(this, tag);
+		ft.commitAllowingStateLoss();
+//        super.show(manager, tag);
     }
 
     @Override
