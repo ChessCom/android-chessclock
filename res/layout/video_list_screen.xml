@@ -25,8 +25,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:fadingEdge="none"
-		android:background="@android:color/transparent"
-		android:cacheColorHint="@android:color/transparent"
+		android:background="@color/transparent"
+		android:cacheColorHint="@color/transparent"
 		android:divider="@color/underline_color_grey"
 		android:dividerHeight="2px"
 		android:paddingLeft="@dimen/default_linear_left_padding"/>

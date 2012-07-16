@@ -70,13 +70,13 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		desc = (TextView) findViewById(R.id.desc);
 
 		skillsSpinner = (Spinner) findViewById(R.id.skillsSpinner);
-		skillsSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_SKILL_LEVEL, 0));
+		skillsSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, 0));
 		skillsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
 		skillsSpinner.setOnItemSelectedListener(skillsItemSelectedListener);
 
 		categoriesSpinner = (Spinner) findViewById(R.id.categoriesSpinner);
 		categoriesSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
-		categoriesSpinner.setSelection(preferences.getInt(AppConstants.VIDEO_CATEGORY, 0));
+		categoriesSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_CATEGORY, 0));
 		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
 
 		playBtn = (Button) findViewById(R.id.play);
@@ -90,7 +90,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.VIDEO_SKILL_LEVEL, pos);
+			preferencesEditor.putInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, pos);
 			preferencesEditor.commit();
 		}
 
@@ -102,7 +102,7 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	private class CategoriesItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.VIDEO_CATEGORY, pos);
+			preferencesEditor.putInt(AppConstants.PREF_VIDEO_CATEGORY, pos);
 			preferencesEditor.commit();
 		}
 
@@ -172,22 +172,10 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	protected void onSearchQuery(String query) {
 		showToast(query);
 
+        Intent intent = new Intent(this, VideoListActivity.class);
+        intent.putExtra(RestHelper.P_KEYWORD, query);
+        startActivity(intent);
 	}
-
-	//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the options menu from XML
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.options_menu, menu);
-//
-//		// Get the SearchView and set the searchable configuration
-//		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-//		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//		searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-//
-//		return super.onCreateOptionsMenu(menu);
-//	}
 
 	@Override
 	public void onClick(View view) {
@@ -204,12 +192,10 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			int skillId = skillsSpinner.getSelectedItemPosition();
 			int categoryId = categoriesSpinner.getSelectedItemPosition();
 
-			Intent intent = new Intent(this, VideoListActivity.class);
-			intent.putExtra(AppConstants.VIDEO_SKILL_LEVEL, StaticData.SYMBOL_EMPTY);
-			intent.putExtra(AppConstants.VIDEO_CATEGORY, StaticData.SYMBOL_EMPTY);
+            String skill = StaticData.SYMBOL_EMPTY;
+            String category = StaticData.SYMBOL_EMPTY;
 
 			if (skillId > 0) {
-				String skill = StaticData.SYMBOL_EMPTY;
 				switch (skillId) {
 					case 1:
 						skill = getString(R.string.beginner_category);
@@ -224,10 +210,8 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 					default:
 						break;
 				}
-				intent.putExtra(AppConstants.VIDEO_SKILL_LEVEL, skill);
 			}
 			if (categoryId > 0) {
-				String category = StaticData.SYMBOL_EMPTY;
 				switch (categoryId) {
 					case 1:
 						category = getString(R.string.amazing_games_category);
@@ -251,8 +235,11 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 					default:
 						break;
 				}
-				intent.putExtra(AppConstants.VIDEO_CATEGORY, category);
 			}
+
+            Intent intent = new Intent(this, VideoListActivity.class);
+            intent.putExtra(RestHelper.P_SKILL_LEVEL, skill);
+            intent.putExtra(RestHelper.P_CATEGORY, category);
 			startActivity(intent);
 		}
 	}

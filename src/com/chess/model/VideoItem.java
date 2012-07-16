@@ -13,7 +13,7 @@ public class VideoItem {
 		this.values = new HashMap<String, String>();
 		this.values.put(AppConstants.TITLE, values[0]);
 		this.values.put(AppConstants.DESCRIPTION, values[1].replaceAll("&quot;", "\""));
-		this.values.put(AppConstants.VIDEO_CATEGORY, values[2]);
+		this.values.put(AppConstants.PREF_VIDEO_CATEGORY, values[2]);
 		this.values.put(AppConstants.SKILL_LEVEL, values[3]);
 		this.values.put(AppConstants.OPENING, values[4]);
 		this.values.put(AppConstants.AUTHOR_USERNAME, values[5]);

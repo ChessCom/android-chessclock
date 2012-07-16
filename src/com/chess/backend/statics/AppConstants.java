@@ -11,19 +11,8 @@ public class AppConstants {
 
 
 	public static final String GAME_MODE = "game_mode";
-	public static final String MESSAGE = "message";
-	public static final String FINISHABLE = "finishable";
-	public static final String LIVE_CHESS = "live_chess";
-	public static final String OBJECT = "object";
 	public static final String TITLE = "title";
-	public static final String TAB_INDEX = "tab_index";
-	public static final String VIDEO_SKILL_LEVEL = "video_skill_level";
-	public static final String VIDEO_CATEGORY = "video_category";
-	public static final String ENABLE_LIVE_CONNECTING_INDICATOR = "enable_live_connecting_indicator";
 
-	public static final String REQUEST_RESULT = "request_result";
-	public static final String CALLBACK_CODE = "callback_code";
-	public static final String REPEATABLE_TASK = "repeatable_task";
 	public static final String USER_TOKEN = "user_token";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";
 	public static final String CHALLENGE_BONUS_TIME = "bonus_time";
@@ -44,6 +33,8 @@ public class AppConstants {
 	public static final String PREF_BOARD_SQUARE_HIGHLIGHT = "highlights";
 	public static final String PREF_BOARD_TYPE = "boardBitmap";
 	public static final String PREF_PIECES_SET = "piecesBitmap";
+    public static final String PREF_VIDEO_SKILL_LEVEL = "video_skill_level";
+    public static final String PREF_VIDEO_CATEGORY = "video_category";
 
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String ONLINE_GAME_LIST_TYPE = "gamestype";
@@ -96,9 +87,7 @@ public class AppConstants {
 	public static final String DECLINE_DRAW = "Decline draw: ";
 	public static final String OFFERDRAW = "OFFERDRAW";
 	public static final String ACCEPTDRAW = "ACCEPTDRAW";
-//	public static final String SUCCESS = "Success";
-//	public static final String ERROR_PLUS = "Error+";
-//	public static final String ERROR = "Error";
+
 	public static final String LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION = "LCCLOG: resign game by fair play restriction: ";
 	public static final String RESIGN_GAME = "Resign game: ";
 
@@ -106,14 +95,9 @@ public class AppConstants {
 	public static final String LCCLOG_RESIGN_GAME = "LCCLOG: resign game: ";
 	public static final String LCCLOG_ABORT_GAME = "LCCLOG: abort game: ";
 
-	public static final String LCCLOG_ANDROID_RECEIVE_BROADCAST_INTENT_ACTION = "LCCLOG ANDROID: receive broadcast intent, action=";
-	public static final String LCCLOG_ANDROID_SEND_BROADCAST_OBJECT_INTENT_ACTION = "LCCLOG ANDROID: sendBroadcastObjectIntent action=";
 	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
-	public static final String LCC_HOLDER_IS_NULL = "LccHolder is null";
 
 	/* Messages */
-	public static final String CANCEL_MY_CHALLENGE = "Cancel my challenge: ";
-	public static final String JUST_KEEP_MY_CHALLENGE = "Just keep my challenge: ";
 	public static final String OPPONENT = "opponent";
 	public static final String WARNING = ", warning: ";
 	public static final String CHALLENGE = ", challenge: ";
