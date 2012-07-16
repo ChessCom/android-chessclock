@@ -54,7 +54,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 		Log.d("TEST","Live Base onResume called");
 
-		getActionBarHelper().showMenuItemById(R.id.menu_Search, showSearch);
+		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
 	}
 

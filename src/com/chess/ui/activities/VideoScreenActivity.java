@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -154,13 +155,26 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			showToast("ACTION_VIEW");
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			onSearchQuery(query);
 		} else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			showToast("ACTION_SEARCH");
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			onSearchQuery(query);
 		}
 	}
 
-//	@Override
+	@Override
+	protected void onSearchAutoCompleteQuery(String query) {
+
+	}
+
+	@Override
+	protected void onSearchQuery(String query) {
+		showToast(query);
+
+	}
+
+	//	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
 //		// Inflate the options menu from XML
 //		MenuInflater inflater = getMenuInflater();

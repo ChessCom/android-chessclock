@@ -90,6 +90,22 @@ public abstract class ActionBarActivity extends BaseFragmentActivity {
 	}
 
 	/**
+	 * This method invoked from CustomSearchView textChanged or SearchButton hit
+	 * @param query that was filled in search field
+	 */
+	protected void onSearchAutoCompleteQuery(String query){
+
+	}
+
+	/**
+	 * This method invoked from CustomSearchView on Enter/Search Button hit
+	 * @param query that was filled in search field
+	 */
+	protected void onSearchQuery(String query){
+
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

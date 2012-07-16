@@ -3,6 +3,8 @@ package com.chess.ui.activities;
 import actionbarcompat.ActionBarActivity;
 import actionbarcompat.ActionBarHelper;
 import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -14,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
+import android.widget.SearchView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -160,12 +163,40 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		Log.d("TEST","core actionbar onCreateOptionsMenu called");
-
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_Search, showSearch, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch, menu);
+		
+		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB){
+			// Get the SearchView and set the searchable configuration
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		}else{ // Configure in ActionBarHelper
+//			MenuItem item = menu.findItem(R.id.menu_search);
+//			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
+//					| MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+//			View searchView = SearchViewCompat.newSearchView(this);  // returns null on API 9?!
+//			// A SearchView instance if the class is present on the current platform, null otherwise.
+//			if (searchView != null) {
+//				SearchViewCompat.setOnQueryTextListener(searchView,
+//						new SearchViewCompat.OnQueryTextListenerCompat() {
+//							@Override
+//							public boolean onQueryTextChange(String newText) {
+//								// Called when the action bar search text has changed.  Update
+//								// the search filter, and restart the loader to do a new query
+//								// with this filter.
+//								String newFilter = !TextUtils.isEmpty(newText) ? newText : null;
+//								// Don't do anything if the filter hasn't actually changed.
+//								// Prevents restarting the loader when restoring state.
+//								showToast(newText);
+//								return true;
+//							}
+//						});
+//				MenuItemCompat.setActionView(item, searchView);
+//			}
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -175,9 +206,16 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			case android.R.id.home:
 				backToHomeActivity();
 				break;
+//			case R.id.menu_search:
+//				EditText searchEdit = (EditText) findViewById(R.id.actionbar_compat_item_search_edit);
+//				String query = getTextFromField(searchEdit);
+//				onSearchQuery(query);
+//				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+
 
 	private void checkUserTokenAndStartActivity() { // TODO decide where to use
 		if (!AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {

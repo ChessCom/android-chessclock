@@ -34,14 +34,16 @@ import com.chess.backend.statics.StaticData;
  * , which uses the built-in ActionBar features in Android 3.0 and later.
  */
 public abstract class ActionBarHelper {
-	protected Activity mActivity;
+	protected ActionBarActivity mActivity;
 
 	/**
 	 * Factory method for creating {@link ActionBarHelper} objects for a given
 	 * activity. Depending on which device the app is running, either a basic
 	 * helper or Honeycomb-specific helper will be returned.
+	 * @param activity
+	 * @return
 	 */
-	public static ActionBarHelper createInstance(Activity activity) {
+	public static ActionBarHelper createInstance(ActionBarActivity activity) {
 		if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH) {
 			return new ActionBarHelperICS(activity);
 		} else if (Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB) {
@@ -51,7 +53,7 @@ public abstract class ActionBarHelper {
 		}
 	}
 
-	protected ActionBarHelper(Activity activity) {
+	protected ActionBarHelper(ActionBarActivity activity) {
 		mActivity = activity;
 	}
 
@@ -92,6 +94,13 @@ public abstract class ActionBarHelper {
 	 * {@link R.id.menu_refresh}. (where the item ID was menu_refresh).
 	 */
 	public abstract void setRefreshActionItemState(boolean refreshing);
+
+	/**
+	 * Show searchPanel instead of view collapsing the item with ID
+	 * {@link R.id.menu_search}. (where the item ID was menu_search).
+	 * @param show
+	 */
+	public abstract void showSearchPanel(boolean show);
 
 	/**
 	 * Show/Hide actionbar item at specified id
