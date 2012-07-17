@@ -81,6 +81,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (getLccHolder().getPendingWarnings().size() > 0) {
 			// get last warning
 			String message = getLccHolder().getLastWarningMessage();
+			getLccHolder().getPendingWarnings().remove(message);
 
 			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.warning);
@@ -147,15 +148,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.onResume();
 		DataHolder.getInstance().setLiveChess(true);
 
-		getLccHolder().setActivityPausedMode(false);
 		updateGameState();
+		getLccHolder().setActivityPausedMode(false);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		getLccHolder().setActivityPausedMode(true);
-//		endPopupFragment.dismiss();
 	}
 
 	private void updateGameState() {
@@ -166,7 +166,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         // todo
 		if (getLccHolder().isActivityPausedMode()) {
 			getLccHolder().executePausedActivityGameEvents(getLccHolder().getLccEventListener());
-			getLccHolder().setActivityPausedMode(false);
 		}
 	}
 
@@ -350,7 +349,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         final View layout;
         if (!MopubHelper.isShowAds(this)) {
             layout = inflater.inflate(R.layout.popup_end_game, null, false);
-        }else {
+        } else {
             layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
         }
 
@@ -612,7 +611,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         getSoundPlayer().playGameEnd();
 	}
 
-	protected void showGameEndPopup(View layout,String title, String message) {
+	protected void showGameEndPopup(View layout, String title, String message) {
 
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
@@ -655,6 +654,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (MopubHelper.isShowAds(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
+
 	}
 
 	@Override
