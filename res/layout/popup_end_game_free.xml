@@ -85,6 +85,8 @@
 			/>
 
 	</LinearLayout>
+
+	<!--Ads-->
 	<LinearLayout
 		android:id="@+id/adview_wrapper"
 		android:layout_width="@dimen/ad_popup_width"
@@ -92,6 +94,7 @@
 		android:layout_gravity="center"
 		/>
 
+	<!--Upgrade-->
 	<com.chess.RoboButton
 		android:id="@+id/upgradeBtn"
 		android:layout_width="match_parent"

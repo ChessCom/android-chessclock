@@ -10,7 +10,6 @@ import android.view.*;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.model.GameItem;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
@@ -134,8 +133,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	@Override
 	public abstract String getBlackPlayerName();
-
-	public abstract void onGameRefresh(GameItem newGame);
 
 	protected abstract void onGameEndMsgReceived();
 
@@ -263,8 +260,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	public void onClick(View view) {
 		if (view.getId() == R.id.homePopupBtn) {
 			backToHomeActivity();
-		} else if (view.getId() == R.id.rematchPopupBtn) {
-			// TODO send rematch request
 		} else if (view.getId() == R.id.reviewPopupBtn) {
 			endPopupFragment.dismiss();
 		}

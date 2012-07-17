@@ -83,11 +83,11 @@
 	<dimen name="default_linear_right_padding">5dip</dimen>
 
 	<!--SigIn-->
-	<dimen name="signin_scr_top_padding">20dip</dimen>
-	<dimen name="signin_scr_bottom_padding">20dip</dimen>
+	<dimen name="signin_scr_top_padding">15dip</dimen>
+	<dimen name="signin_scr_bottom_padding">10dip</dimen>
 	<dimen name="signin_scr_side_padding">20dip</dimen>
-	<dimen name="signin_logo_margin_top">15dip</dimen>
-	<dimen name="signin_main_margin_top">36dip</dimen>
+	<dimen name="signin_logo_margin_top">0dip</dimen>
+	<dimen name="signin_main_margin_top">15dip</dimen>
 
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
@@ -113,7 +113,7 @@
 
 	<!--Popup-->
 	<dimen name="ad_popup_width">300dip</dimen>
-	<dimen name="ad_popup_height">230dip</dimen>
+	<dimen name="ad_popup_height">200dip</dimen>
 	<dimen name="popup_dialog_width">300dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 

@@ -1,6 +1,6 @@
 <resources>
 
-	<string-array name="languages">
+<!--	<string-array name="languages">
 		<item>영어</item>
 		<item>아라비아어</item>
 		<item>중국 요리</item>
@@ -21,7 +21,7 @@
 		<item>스페인어</item>
 		<item>스웨덴어</item>
 		<item>터키어</item>
-	</string-array>
+	</string-array>-->
 
 	<string-array name="playas">
 		<item>무작위</item>

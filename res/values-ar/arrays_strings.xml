@@ -1,6 +1,6 @@
 <resources>
 
-	<string-array name="languages">
+<!--	<string-array name="languages">
 		<item>الإنجليزية</item>
 		<item>العربية</item>
 		<item>صيني- ينتمي للصين</item>
@@ -21,7 +21,7 @@
 		<item>الإسبانية</item>
 		<item>السويدية</item>
 		<item>التركية</item>
-	</string-array>
+	</string-array>-->
 
 	<string-array name="playas">
 		<item>عشوائيًا</item>

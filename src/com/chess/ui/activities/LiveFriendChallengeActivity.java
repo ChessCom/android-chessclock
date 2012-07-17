@@ -84,7 +84,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 	private void updateScreen() {
 		String[] friends = getLccHolder().getOnlineFriends();
         int friendsCnt = friends.length;
-		if (friendsCnt == 0) {
+		if (friendsCnt == 0 || friends[0].equals(StaticData.SYMBOL_EMPTY)) {
 			friendsSpinner.setEnabled(false);
 
 			popupItem.setPositiveBtnId(R.string.invitetitle);

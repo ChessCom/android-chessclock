@@ -121,7 +121,7 @@ public class LccHolder {
 		if (pausedActivityGameEvents.size() > 0) {
 
 			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
-			if (moveEvent != null && (currentGameId == null || currentGameId == moveEvent.getGameId())) {
+			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
 				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
 				//fullGameProcessed = true;
 				pausedActivityGameEvents.remove(moveEvent);
@@ -131,7 +131,7 @@ public class LccHolder {
 			}
 
 			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
-			if (drawEvent != null && (currentGameId == null || currentGameId == drawEvent.getGameId())) {
+			if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
 				/*if (!fullGameProcessed)
 											{
 											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
@@ -142,7 +142,7 @@ public class LccHolder {
 			}
 
 			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
-			if (endGameEvent != null && (currentGameId == null || currentGameId == endGameEvent.getGameId())) {
+			if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
 				/*if (!fullGameProcessed)
 											{
 											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
@@ -588,11 +588,6 @@ public class LccHolder {
 		lccGames.put(lccGame.getId(), lccGame);
 	}
 
-//	public Game getGame(String gameId) {
-//		Log.d("TEST", "Game id = " + gameId);
-//		return getGame(new Long(gameId));
-//	}
-
 	public Game getGame(Long gameId) {
 		return lccGames.get(gameId);
 	}
@@ -604,11 +599,6 @@ public class LccHolder {
 	public void clearGames() {
 		lccGames.clear();
 	}
-
-//	public void processMove(long gameId, int moveIndex) {
-//		GameItem gameData = new GameItem(getGameData(gameId, moveIndex), true);
-//		getAndroidStuff().sendBroadcastObjectIntent(9, IntentConstants.ACTION_GAME_MOVE, gameData);
-//	}
 
 	public String[] getGameData(Long gameId, int moveIndex) {
 		Game lccGame = getGame(gameId);
@@ -754,13 +744,11 @@ public class LccHolder {
 		setUser(null);
 		runDisconnectTask();
 		setConnected(false);
-		//setConnectingInProgress(false);
 		clearGames();
 		clearChallenges();
 		clearOwnChallenges();
 		clearSeeks();
 		clearOnlineFriends();
-		//setNetworkTypeName(null);
 	}
 
 	public boolean isSeekContains(Long id) {
@@ -868,7 +856,6 @@ public class LccHolder {
 			moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-//			processMove(game.getId(), moveIndex);
 			lccEventListener.onGameRefresh(new GameItem(getGameData(game.getId(), moveIndex), true));
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);

@@ -3,6 +3,29 @@
 
 	<string-array name="languages">
 		<item>English</item>
+		<item>العربية</item>
+		<item>中國的</item>
+		<item>Dansk</item>
+		<item>Hollandsk</item>
+		<item>Français</item>
+		<item>Deutsch</item>
+		<item>עברית</item>
+		<item>"हिंदी"</item>
+		<item>Italiano</item>
+		<item>日本の</item>
+		<item>한국의</item>
+		<item>Norske</item>
+		<item>فارسی</item>
+		<item>Polski</item>
+		<item>Português</item>
+		<item>Русский</item>
+		<item>Español</item>
+		<item>Svenskt</item>
+		<item>Türk</item>
+	</string-array>
+	<!--
+	<string-array name="languages">
+		<item>English</item>
 		<item>Arabic</item>
 		<item>Chinese</item>
 		<item>Danish</item>
@@ -22,7 +45,7 @@
 		<item>Spanish</item>
 		<item>Swedish</item>
 		<item>Turkish</item>
-	</string-array>
+	</string-array>-->
 
 	<string-array name="playas">
 		<item>Random</item>

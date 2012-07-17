@@ -57,7 +57,7 @@
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Новая Игра</string>
 	<string name="onlineChallenges">Открытые Состязания</string>
-	<string name="challengeFriend">Сыграть с Другом</string>
+	<string name="challengeFriend">Бросить Вызов Другу</string>
 	<string name="createNewChallenge">Бросить Открытый Вызов</string>
 	<string name="currentGame">Текущая Игра Вживую</string>
 	<string name="GameType">Тип Игры</string>
@@ -197,7 +197,7 @@
 	<string name="upgrade">Обновление</string>
 	<string name="preferencesUpgrade">Улучшить Аккаунт</string>
 	<string name="videoUpgrade">Обновление для полного доступа к видео!</string>
-	<string name="removeAds">Обновление и удаление объявлений!</string>
+	<string name="removeAds">Улучшить и Убрать Рекламу!</string>
 	<string name="accept_draw_q">Принять ничью?</string>
 	<string name="ready_for_first_tackics_q">Вы готовы к первой тактике?</string>
 	<string name="daily_limit_exceeded">Ежедневный Предел Превышен</string>
