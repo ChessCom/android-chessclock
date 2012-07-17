@@ -45,7 +45,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private GameItem currentGame;
 	private long gameId;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -84,10 +84,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
 				getString(R.string.backtogamelist),
-				getString(R.string.messages),
-				getString(R.string.reside),
-				getString(R.string.drawoffer),
-				getString(R.string.resignorabort)};
+				getString(R.string.reside)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 
@@ -346,10 +343,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
 		private final int ECHESS_BACK_TO_GAME_LIST = 1;
-		private final int ECHESS_MESSAGES = 2;
-		private final int ECHESS_RESIDE = 3;
-		private final int ECHESS_DRAW_OFFER = 4;
-		private final int ECHESS_RESIGN_OR_ABORT = 5;
+		private final int ECHESS_RESIDE = 2;
 
 		private MenuOptionsDialogListener(CharSequence[] items) {
 			this.items = items;
@@ -364,18 +358,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				case ECHESS_BACK_TO_GAME_LIST:
 					onBackPressed();
 					break;
-				case ECHESS_MESSAGES:
-					getOnlineGame(gameId);
-					break;
 				case ECHESS_RESIDE:
 					getBoardFace().setReside(!getBoardFace().isReside());
 					boardView.invalidate();
-					break;
-				case ECHESS_DRAW_OFFER:
-					showPopupDialog(R.string.drawoffer, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
-					break;
-				case ECHESS_RESIGN_OR_ABORT:
-					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
 					break;
 			}
 		}

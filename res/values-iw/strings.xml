@@ -105,7 +105,7 @@
 	<string name="pieces">חתיכות</string>
 	<string name="showcoords">הצג מרכז</string>
 	<string name="movehighlights">העבר הבהרה</string>
-	<string name="invite">הזמן חברים</string>
+	<string name="invite_a_friend">הזמן חברים</string>
 	<string name="contactUs">צור קשר</string>
 	<string name="logout">התנתק</string>
 	<string name="vacationOn">בחופשה</string>
@@ -145,7 +145,7 @@
 	<string name="sorry">מצטער.</string>
 	<string name="nofriends">אין לך עדיין חברים. אתה יכול להזמין אותם דרך www.chess.com.</string>
 	<string name="nofriends_online">החברים שלך לא מחובר. אם לא מזמינים אותם עדיין, עבור www.chess.com.</string>
-	<string name="invitetitle">הזמנות</string>
+	<string name="invite">הזמנות</string>
 	<string name="drawaccepted">צייר קיבל!</string>
 	<string name="accept">קבל</string>
 	<string name="challengeaccepted">לאתגר התקבל!</string>
@@ -322,6 +322,7 @@
 	<string name="rematch">משחק גומלין</string>
 	<string name="review">בדוק</string>
 	<string name="your_end_game_rating">הדירוג שלך ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">הדירוג שלך ( %1$s ): ( %2$d )</string>
 	<string name="draw_declined">לצייר נדחה</string>
 	<string name="has_declined_draw">ירד תיקו</string>
 </resources>

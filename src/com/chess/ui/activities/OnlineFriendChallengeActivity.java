@@ -24,7 +24,7 @@ import com.chess.utilities.ChessComApiParser;
 
 public class OnlineFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
 
-	private static final String CONGRATULATIONS_TAG = "congratulations popup";
+    private static final String NO_INVITED_FRIENDS_TAG = "no invited friends";
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private Spinner iPlayAsSpinner;
@@ -101,21 +101,9 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		friendsSpinner.setAdapter(friendsAdapter);
 		if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 
-			new AlertDialog.Builder(OnlineFriendChallengeActivity.this) // TODO change popup
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle(getString(R.string.sorry))
-					.setMessage(getString(R.string.nofriends))
-					.setPositiveButton(getString(R.string.invitetitle), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.BASE_URL)));
-						}
-					})
-					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-								finish();
-						}
-					}).setCancelable(false)
-					.create().show();
+            popupItem.setPositiveBtnId(R.string.invite);
+            popupItem.setNegativeBtnId(R.string.cancel);
+            showPopupDialog(R.string.sorry, R.string.nofriends, NO_INVITED_FRIENDS_TAG);
 		}
 	}
 
@@ -156,8 +144,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		@Override
 		public void updateData(String returnedObj) {
 			if(returnedObj.contains(RestHelper.R_SUCCESS_)){
-				showPopupDialog(R.string.congratulations, R.string.onlinegamecreated,
-						CONGRATULATIONS_TAG);
+                showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
 			}else if(returnedObj.contains(RestHelper.R_ERROR)){
 				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
 						ERROR_TAG);
@@ -170,8 +157,16 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		super.onPositiveBtnClick(fragment);
 		if(fragment.getTag().equals(ERROR_TAG)){
 			backToLoginActivity();
-		}
+		} else if(fragment.getTag().equals(NO_INVITED_FRIENDS_TAG)){
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.BASE_URL)));
+        }
 	}
 
-
+    @Override
+    public void onNegativeBtnClick(DialogFragment fragment) {
+        super.onNegativeBtnClick(fragment);
+        if(fragment.getTag().equals(NO_INVITED_FRIENDS_TAG)){
+            finish();
+        }
+    }
 }

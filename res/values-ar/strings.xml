@@ -107,7 +107,7 @@
 	<string name="pieces">قطعة</string>
 	<string name="showcoords">وتظهر بتنسيق</string>
 	<string name="movehighlights">ويبرز التحرك</string>
-	<string name="invite">دعوة صديق</string>
+	<string name="invite_a_friend">دعوة صديق</string>
 	<string name="contactUs">اتصل بنا</string>
 	<string name="logout">خروج</string>
 	<string name="vacationOn">يوم عطلة</string>
@@ -147,7 +147,7 @@
 	<string name="sorry">معذرة!</string>
 	<string name="nofriends">لديك أي أصدقاء حتى الآن. يمكنك دعوتهم عبر www.chess.com.</string>
 	<string name="nofriends_online">أصدقاؤك ليسوا على الانترنت. إذا أنت لم يدعوهم حتى الآن، انتقل إلى www.chess.com.</string>
-	<string name="invitetitle">دعوة</string>
+	<string name="invite">دعوة</string>
 	<string name="drawaccepted">رسم قبلت!</string>
 	<string name="accept">قبول</string>
 	<string name="challengeaccepted">تحدي مقبول!</string>
@@ -325,6 +325,7 @@
 	<string name="rematch">مباراة العودة</string>
 	<string name="review">استعراض</string>
 	<string name="your_end_game_rating">تقييمك ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">تقييمك ( %1$s ): ( %2$d )</string>
 	<string name="draw_declined">يسحب تراجع</string>
 	<string name="has_declined_draw">وقد انخفض بالتعادل</string>
 </resources>

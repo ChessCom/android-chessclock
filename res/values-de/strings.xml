@@ -106,7 +106,7 @@
 	<string name="pieces">Pieces</string>
 	<string name="showcoords">Zeigen Sie koordiniert</string>
 	<string name="movehighlights">Bewegen Sie den Highlights</string>
-	<string name="invite">Freund einladen</string>
+	<string name="invite_a_friend">Freund einladen</string>
 	<string name="contactUs">Kontak</string>
 	<string name="logout">Logout</string>
 	<string name="vacationOn">On Vacation</string>
@@ -146,7 +146,7 @@
 	<string name="sorry">Traurig</string>
 	<string name="nofriends">Sie haben noch keine Freunde. Sie können sie per www.chess.com einladen.</string>
 	<string name="nofriends_online">Ihre Freunde sind nicht online. Wenn Sie nicht laden sie noch, um www.chess.com gehen.</string>
-	<string name="invitetitle">Einladen</string>
+	<string name="invite">Einladen</string>
 	<string name="drawaccepted">Zeichnen Sie akzeptiert!</string>
 	<string name="accept">Akzeptieren</string>
 	<string name="challengeaccepted">Herausforderung angenommen!</string>
@@ -323,6 +323,7 @@
 	<string name="rematch">Rematch</string>
 	<string name="review">Überprüfen</string>
 	<string name="your_end_game_rating">Deine Wertung ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">Deine Wertung ( %1$s )</string>
 	<string name="draw_declined">DRAW DECLINED</string>
 	<string name="has_declined_draw">abgenommen hat ein Unentschieden</string>
 </resources>

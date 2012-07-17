@@ -105,7 +105,7 @@
 	<string name="pieces">个，件，片</string>
 	<string name="showcoords">显示坐标</string>
 	<string name="movehighlights">此举凸显</string>
-	<string name="invite">邀请朋友</string>
+	<string name="invite_a_friend">邀请朋友</string>
 	<string name="contactUs">联系我们</string>
 	<string name="logout">退出</string>
 	<string name="vacationOn">休假</string>
@@ -145,7 +145,7 @@
 	<string name="sorry">对不起</string>
 	<string name="nofriends">你有没有朋友。您可以邀请通过www.chess.com的他们。</string>
 	<string name="nofriends_online">你的朋友不在线。如果没有他们还邀请，去到www.chess.com。</string>
-	<string name="invitetitle">邀请</string>
+	<string name="invite">邀请</string>
 	<string name="drawaccepted">提请接受！</string>
 	<string name="accept">n.验收,接收</string>
 	<string name="challengeaccepted">接受的挑战</string>
@@ -319,6 +319,7 @@
 	<string name="rematch">复赛</string>
 	<string name="review">评论</string>
 	<string name="your_end_game_rating">您的评价（ %1$s ）：（ %2$d ）</string>
+	<string name="your_end_game_rating_online">您的评价（ %1$s ）</string>
 	<string name="draw_declined">绘制拒收</string>
 	<string name="has_declined_draw">已拒绝平局</string>
 </resources>

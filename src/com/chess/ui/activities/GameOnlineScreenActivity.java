@@ -642,23 +642,23 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
-		endGameTitleTxt.setText(R.string.game_over);
+//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
 		endGameReasonTxt.setText(message);
 
 		
 		int currentPlayerNewRating = getCurrentPlayerRating();
 
-		int ratingDiff;
-		String sign;
-		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
-			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-			sign = StaticData.SYMBOL_PLUS;
-		} else { // 800 700
-			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-			sign = StaticData.SYMBOL_MINUS;
-		}
+//		int ratingDiff; // TODO fill difference in ratings
+//		String sign;
+//		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
+//			ratingDiff = currentPlayerNewRating - currentPlayerRating;
+//			sign = StaticData.SYMBOL_PLUS;
+//		} else { // 800 700
+//			ratingDiff = currentPlayerRating - currentPlayerNewRating;
+//			sign = StaticData.SYMBOL_MINUS;
+//		}
 
-		String rating = getString(R.string.your_end_game_rating, sign + ratingDiff, currentPlayerNewRating);
+		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
