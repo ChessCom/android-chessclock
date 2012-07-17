@@ -155,6 +155,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onPause() {
 		super.onPause();
 		getLccHolder().setActivityPausedMode(true);
+//		endPopupFragment.dismiss();
 	}
 
 	private void updateGameState() {
@@ -651,8 +652,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-
+		if (MopubHelper.isShowAds(this)) {
+			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		}
 	}
 
 	@Override
@@ -677,8 +679,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			// TODO send rematch request
-
+			endPopupFragment.dismiss();
 		} else if (view.getId() == R.id.upgradeBtn) {
+			endPopupFragment.dismiss();
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}

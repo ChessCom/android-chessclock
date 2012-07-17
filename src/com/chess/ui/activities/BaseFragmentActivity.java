@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -179,6 +180,16 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	public void showKeyBoard(EditText editText){
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+	}
+
+	public void hideKeyBoard(View editText){
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+	}
+
+	public void hideKeyBoard(){
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(findViewById(R.id.mainView).getWindowToken(), 0);
 	}
 
 	protected void showToast(String msg) {

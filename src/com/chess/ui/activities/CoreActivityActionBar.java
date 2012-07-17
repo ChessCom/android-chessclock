@@ -118,8 +118,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
-
-		showSearch = false;
 	}
 
 	protected void backToHomeActivity() {

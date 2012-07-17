@@ -11,7 +11,7 @@
 	<!--Dashboard labels-->
 	<string name="menuLive">Escuchar en vivo</string>
 	<string name="menuOnline">Jugar Online</string>
-	<string name="menuComp">Jugar con el ordenador</string>
+	<string name="menuComp">Jugar con \n el ordenador</string>
 	<string name="menuTactics">Tácticas Entrenador</string>
 	<string name="menuVideo">Lecciones en Video</string>
 
