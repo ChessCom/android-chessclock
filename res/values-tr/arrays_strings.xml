@@ -1,6 +1,6 @@
 <resources>
 
-	<string-array name="languages">
+<!--	<string-array name="languages">
 		<item>İngilizce</item>
 		<item>Arapça</item>
 		<item>Çin</item>
@@ -21,7 +21,7 @@
 		<item>İspanyolca</item>
 		<item>İsveççe</item>
 		<item>Türk</item>
-	</string-array>
+	</string-array>-->
 
 	<string-array name="playas">
 		<item>Rastgele</item>

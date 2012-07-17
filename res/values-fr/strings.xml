@@ -107,7 +107,7 @@
 	<string name="pieces">Pièces</string>
 	<string name="showcoords">Voir les coordonnées</string>
 	<string name="movehighlights">Déplacez Faits saillants</string>
-	<string name="invite">Inviter un ami</string>
+	<string name="invite_a_friend">Inviter un ami</string>
 	<string name="contactUs">Contactez-nous</string>
 	<string name="logout">Déconnexion</string>
 	<string name="vacationOn">En vacances</string>
@@ -147,7 +147,7 @@
 	<string name="sorry">Désolé</string>
 	<string name="nofriends">Vous n\'avez pas encore d\'amis. Vous pouvez les inviter par www.chess.com.</string>
 	<string name="nofriends_online">Vos amis ne sont pas en ligne. Si vous n\'avez pas les inviter encore, aller à www.chess.com.</string>
-	<string name="invitetitle">Inviter</string>
+	<string name="invite">Inviter</string>
 	<string name="drawaccepted">Dessiner accepté!</string>
 	<string name="accept">Accepter</string>
 	<string name="challengeaccepted">Défi accepté!</string>
@@ -324,6 +324,7 @@
 	<string name="rematch">Rematch</string>
 	<string name="review">Votre avis</string>
 	<string name="your_end_game_rating">Votre notation ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">Votre notation ( %1$s )</string>
 	<string name="draw_declined">TIRAGE DECLINED</string>
 	<string name="has_declined_draw">a diminué un tirage au sort</string>
 </resources>

@@ -106,7 +106,7 @@
 	<string name="pieces">Pieces</string>
 	<string name="showcoords">Show coordinates</string>
 	<string name="movehighlights">Move Highlights</string>
-	<string name="invite">Invite A Friend</string>
+	<string name="invite_a_friend">Invite A Friend</string>
 	<string name="contactUs">Contact Us</string>
 	<string name="logout">Logout</string>
 	<string name="vacationOn">On Vacation</string>
@@ -146,7 +146,7 @@
 	<string name="sorry">Sorry</string>
 	<string name="nofriends">You have no friends yet. You can invite them via www.chess.com.</string>
 	<string name="nofriends_online">Your friends are not online. If You didn\'t invite them yet, go to www.chess.com.</string>
-	<string name="invitetitle">Invite</string>
+	<string name="invite">Invite</string>
 	<string name="drawaccepted">Draw accepted!</string>
 	<string name="accept">Accept</string>
 	<string name="challengeaccepted">Challenge Accepted!</string>
@@ -343,6 +343,8 @@
 	<string name="rematch">Rematch</string>
 	<string name="review">Review</string>
 	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>
+	<string name="your_end_game_rating_online">Your Rating (%1$d)</string>
+
 	<string name="draw_declined">DRAW DECLINED</string>
 	<string name="has_declined_draw">has declined a draw</string>
 	<string name="win_">Win:</string>

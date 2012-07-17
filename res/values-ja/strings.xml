@@ -106,7 +106,7 @@
 	<string name="pieces">ピース</string>
 	<string name="showcoords">座標を表示する</string>
 	<string name="movehighlights">ハイライトを移動します</string>
-	<string name="invite">友達を招待する</string>
+	<string name="invite_a_friend">友達を招待する</string>
 	<string name="contactUs">お問い合わせ</string>
 	<string name="logout">ログアウト</string>
 	<string name="vacationOn">休暇で</string>
@@ -146,7 +146,7 @@
 	<string name="sorry">残念</string>
 	<string name="nofriends">あなたはまだ友達がいない。あなたがwww.chess.comを介してそれらを招待することができます。</string>
 	<string name="nofriends_online">あなたの友人がオンラインではありません。あなたはまだそれらを招待しなかった場合は、www.chess.comに移動します。</string>
-	<string name="invitetitle">参加を依頼</string>
+	<string name="invite">参加を依頼</string>
 	<string name="drawaccepted">受け入れ描く！</string>
 	<string name="accept">同意する</string>
 	<string name="challengeaccepted">承認された挑戦！</string>
@@ -320,6 +320,7 @@
 	<string name="rematch">再戦</string>
 	<string name="review">レビュー</string>
 	<string name="your_end_game_rating">あなたの評価（ %1$s ）：（ %2$d ）</string>
+	<string name="your_end_game_rating_online">あなたの評価（ %1$s ）</string>
 	<string name="draw_declined">縮む 減少しました</string>
 	<string name="has_declined_draw">ドローを減少している</string>
 </resources>

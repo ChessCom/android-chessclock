@@ -105,7 +105,7 @@
 	<string name="pieces">Pieces</string>
 	<string name="showcoords">Visar koordinaterna</string>
 	<string name="movehighlights">Flytta Höjdpunkter</string>
-	<string name="invite">Bjud in en vän</string>
+	<string name="invite_a_friend">Bjud in en vän</string>
 	<string name="contactUs">Kontakta oss</string>
 	<string name="logout">Logga ut</string>
 	<string name="vacationOn">På semester</string>
@@ -145,7 +145,7 @@
 	<string name="sorry">Ursäkta.</string>
 	<string name="nofriends">Du har inga vänner ännu. Du kan bjuda in dem via www.chess.com.</string>
 	<string name="nofriends_online">Dina vänner är inte online. Om du inte bjuda in dem ännu, gå till www.chess.com.</string>
-	<string name="invitetitle">Inbjuder</string>
+	<string name="invite">Inbjuder</string>
 	<string name="drawaccepted">Rita accepteras!</string>
 	<string name="accept">Godkänn</string>
 	<string name="challengeaccepted">Utmana accepteras!</string>
@@ -322,6 +322,7 @@
 	<string name="rematch">Rematch</string>
 	<string name="review">Granskning</string>
 	<string name="your_end_game_rating">Ditt betyg ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">Ditt betyg ( %1$s )</string>
 	<string name="draw_declined">DRA SJÖNK</string>
 	<string name="has_declined_draw">har minskat oavgjort</string>
 </resources>

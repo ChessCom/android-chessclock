@@ -105,7 +105,7 @@
 	<string name="pieces">조각</string>
 	<string name="showcoords">좌표 표시</string>
 	<string name="movehighlights">하이라이트를 이동</string>
-	<string name="invite">친구 초대</string>
+	<string name="invite_a_friend">친구 초대</string>
 	<string name="contactUs">고객문의</string>
 	<string name="logout">로그아웃</string>
 	<string name="vacationOn">휴가</string>
@@ -145,7 +145,7 @@
 	<string name="sorry">미안해요</string>
 	<string name="nofriends">당신은 아직 친구가 없습니다. 당신은 www.chess.com 통해 그들을 초대할 수 있습니다.</string>
 	<string name="nofriends_online">친구가 온라인이 아닙니다. 당신은 아직 그들을 초대하지 않은 경우 www.chess.com로 이동합니다.</string>
-	<string name="invitetitle">초대</string>
+	<string name="invite">초대</string>
 	<string name="drawaccepted">수락 그리기!</string>
 	<string name="accept">수락</string>
 	<string name="challengeaccepted">수락함 도전!</string>
@@ -319,6 +319,7 @@
 	<string name="rematch">재시합</string>
 	<string name="review">리뷰</string>
 	<string name="your_end_game_rating">귀하의 평가 ( %1$s ) : ( %2$d )</string>
+	<string name="your_end_game_rating_online">귀하의 평가 ( %1$s )</string>
 	<string name="draw_declined">거절 그리기</string>
 	<string name="has_declined_draw">무승부를 거절했습니다</string>
 </resources>

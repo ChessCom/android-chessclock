@@ -21,7 +21,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.GameItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoard;
@@ -121,11 +120,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 
 		if (getLastCustomNonConfigurationInstance() == null) {
+			Log.d("TEST","getLastCustomNonConfigurationInstance() == null");
 			DataHolder.getInstance().setPendingTacticsLoad(false);
 			showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			popupItem.setPositiveBtnId(R.string.yes);
 			popupItem.setNegativeBtnId(R.string.no);
-		}
+		}else
+			Log.d("TEST","getLastCustomNonConfigurationInstance() != null");
+
 
 		gamePanelView.hideChatButton();
 	}
@@ -159,11 +161,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	public Object onRetainCustomNonConfigurationInstance() {
-		return getBoardFace();
-	}
-
-	@Override
 	public String getWhitePlayerName() {
 		return null;
 	}
@@ -171,11 +168,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	@Override
 	public String getBlackPlayerName() {
 		return null;
-	}
-
-	@Override
-	public void onGameRefresh(GameItem newGame) {
-		// TODO change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
@@ -270,8 +262,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (!noInternet) {
 			boardView.setBoardFace(new ChessBoard(this));
 
-			if (getTacticItem() != null
-					&& id.equals(getTacticItem().values.get(AppConstants.ID))) {
+			if (getTacticItem() != null && id.equals(getTacticItem().values.get(AppConstants.ID))) {
 				getBoardFace().setRetry(true);
 				String FEN = getTacticItem().values.get(AppConstants.FEN);
 				if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
@@ -333,7 +324,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return null;// TODO change body of implemented methods use File | Settings | File Templates.
+		return null;
 	}
 
 
@@ -484,7 +475,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				}
 			}
 			if (getTacticsBatch().get(getCurrentProblem()).values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				getBoardFace().setTacticMoves(getTacticsBatch().get(getCurrentProblem()).values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
+				getBoardFace().setTacticMoves(getTacticsBatch().get(getCurrentProblem()).values .get(AppConstants.MOVE_LIST)
+						.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("  ", StaticData.SYMBOL_SPACE)
+						.substring(1).split(StaticData.SYMBOL_SPACE));
 				getBoardFace().setMovesCount(1);
 			}
 		} else {
@@ -501,7 +496,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 
 			if (getTacticItem().values.get(AppConstants.MOVE_LIST).contains("1.")) {
-				getBoardFace().setTacticMoves(getTacticItem().values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
+				getBoardFace().setTacticMoves(getTacticItem().values.get(AppConstants.MOVE_LIST)
+						.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
 				getBoardFace().setMovesCount(1);
 			}
 		}
@@ -540,6 +538,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					super.handleMessage(msg);
 					invalidateGameScreen();
 					boardView.invalidate();
+					stopTacticsTimer();
 				}
 			};
 		}).start();
@@ -1013,6 +1012,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			if (which == TACTICS_STOP) {
 				boardView.setFinished(true);
 				getTacticItem().values.put(AppConstants.STOP, "1");
+				stopTacticsTimer();
 			}
 		}
 	};

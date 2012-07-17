@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -23,12 +25,15 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.MopubHelper;
 
 import java.util.ArrayList;
 
@@ -41,6 +46,7 @@ import java.util.ArrayList;
 public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private static final String DRAW_OFFER_TAG = "offer draw";
+	private static final String END_GAME_TAG = "end game popup";
 
 	private int UPDATE_DELAY = 120000;
 	private View submitButtonsLay;
@@ -61,6 +67,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private GameItem currentGame;
 	private long gameId;
+	private int currentPlayerRating;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -257,7 +264,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	@Override
 	public void onGameRefresh(GameItem newGame) {
 		currentGame = newGame;
 		String[] moves;
@@ -323,6 +329,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private void sendMove() {
+		//save rating
+		currentPlayerRating = getCurrentPlayerRating();
+
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -627,6 +636,54 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
+	@Override
+	protected void showGameEndPopup(View layout, String message) {
+
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
+//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
+		endGameReasonTxt.setText(message);
+
+		
+		int currentPlayerNewRating = getCurrentPlayerRating();
+
+//		int ratingDiff; // TODO fill difference in ratings
+//		String sign;
+//		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
+//			ratingDiff = currentPlayerNewRating - currentPlayerRating;
+//			sign = StaticData.SYMBOL_PLUS;
+//		} else { // 800 700
+//			ratingDiff = currentPlayerRating - currentPlayerNewRating;
+//			sign = StaticData.SYMBOL_MINUS;
+//		}
+
+		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
+		yourRatingTxt.setText(rating);
+
+		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, this);
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(layout);
+
+		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem, this);
+		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
+
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+	}
+
+	private int getCurrentPlayerRating(){
+		if (userPlayWhite) {
+			return Integer.valueOf(currentGame.values.get(GameItem.WHITE_RATING));
+		} else {
+			return Integer.valueOf(currentGame.values.get(GameItem.BLACK_RATING));
+		}
+	}
+
 	private class DrawOfferedUpdateListener extends ChessUpdateListener {
 		public DrawOfferedUpdateListener() {
 			super(getInstance());
@@ -668,6 +725,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			boardView.invalidate();
 		} else if (view.getId() == R.id.submitBtn) {
 			sendMove();
+		} else if (view.getId() == R.id.newGamePopupBtn) {
+			endPopupFragment.dismiss();
+			Intent intent = new Intent(this, OnlineNewGameActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			// TODO send rematch request
+
+		} else if (view.getId() == R.id.upgradeBtn) {
+			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}
 

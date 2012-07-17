@@ -106,7 +106,7 @@
 	<string name="pieces">Pieces</string>
 	<string name="showcoords">Vis koordinerer</string>
 	<string name="movehighlights">Flyt Højdepunkter</string>
-	<string name="invite">Inviter en ven</string>
+	<string name="invite_a_friend">Inviter en ven</string>
 	<string name="contactUs">Kontakt os</string>
 	<string name="logout">Log ud</string>
 	<string name="vacationOn">On Vacation</string>
@@ -146,7 +146,7 @@
 	<string name="sorry">Undskyld</string>
 	<string name="nofriends">Du har ingen venner endnu. Du kan invitere dem via www.chess.com.</string>
 	<string name="nofriends_online">Dine venner er ikke online. Hvis du ikke invitere dem endnu, gå til www.chess.com.</string>
-	<string name="invitetitle">Inviter</string>
+	<string name="invite">Inviter</string>
 	<string name="drawaccepted">Tegn accepteret!</string>
 	<string name="accept">Accepter</string>
 	<string name="challengeaccepted">Udfordring accepteret!</string>
@@ -323,6 +323,7 @@
 	<string name="rematch">Omkamp</string>
 	<string name="review">Gennemgå</string>
 	<string name="your_end_game_rating">Din Bedømmelse ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">Din Bedømmelse ( %1$d )</string>
 	<string name="draw_declined">DRAW FALDT</string>
 	<string name="has_declined_draw">er faldet en lodtrækning</string>
 </resources>

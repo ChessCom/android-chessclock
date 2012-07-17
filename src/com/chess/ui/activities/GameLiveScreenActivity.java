@@ -42,7 +42,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
-	private CharSequence[] menuOptionsItems;
 
 	private View submitButtonsLay;
 	private GameItem currentGame;

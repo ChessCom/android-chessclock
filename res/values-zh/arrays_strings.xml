@@ -1,6 +1,6 @@
 <resources>
 
-	<string-array name="languages">
+<!--	<string-array name="languages">
 		<item>阿拉伯语</item>
 		<item>中国</item>
 		<item>丹麦语</item>
@@ -20,7 +20,7 @@
 		<item>西语</item>
 		<item>瑞典风味</item>
 		<item>土耳其风味</item>
-	</string-array>
+	</string-array>-->
 
 	<string-array name="playas">
 		<item>随机</item>

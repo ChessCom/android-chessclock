@@ -1,6 +1,6 @@
 <resources>
 
-	<string-array name="languages">
+<!--	<string-array name="languages">
 		<item>Inglês</item>
 		<item>Árabe</item>
 		<item>Chinê</item>
@@ -21,7 +21,7 @@
 		<item>Espanhol</item>
 		<item>Suec</item>
 		<item>Turco</item>
-	</string-array>
+	</string-array>-->
 
 	<string-array name="playas">
 		<item>Aleatório</item>
