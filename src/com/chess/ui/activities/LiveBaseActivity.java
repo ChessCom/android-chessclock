@@ -67,6 +67,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
+			popupManager.remove(fragment);
 		}
 	}
 
