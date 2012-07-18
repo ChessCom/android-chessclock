@@ -167,6 +167,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void setBoardFace(BoardFace boardFace) {
 		this.boardFace = boardFace;
+		onBoardFaceSet(boardFace);
+	}
+
+	protected void onBoardFaceSet(BoardFace boardFace) {
 	}
 
 	public void setGamePanelView(GamePanelView gamePanelView) {

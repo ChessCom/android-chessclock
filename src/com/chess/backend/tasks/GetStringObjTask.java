@@ -18,10 +18,10 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
+public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	private static final String TAG = "GetStringObjTask";
-    private static int statusCode = -1;
-    private static String reason = StaticData.SYMBOL_EMPTY;
+	private static int statusCode = -1;
+	private static String reason = StaticData.SYMBOL_EMPTY;
 
 	public GetStringObjTask(TaskUpdateInterface<String> taskFace) {
 		super(taskFace);
@@ -54,10 +54,10 @@ public class GetStringObjTask extends AbstractUpdateTask<String,LoadItem> {
 				Log.e(TAG, "Error " + statusCode + " while retrieving dat from " + url);
 				return StaticData.UNKNOWN_ERROR;
 			}
-			if (response != null){
+			if (response != null) {
 				item = EntityUtils.toString(response.getEntity());
 				result = StaticData.RESULT_OK;
-				Log.d(TAG,"WebRequest SERVER RESPONSE: " + item);
+				Log.d(TAG, "WebRequest SERVER RESPONSE: " + item);
 			}
 
 		} catch (IOException e) {

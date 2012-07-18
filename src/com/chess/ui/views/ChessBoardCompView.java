@@ -16,6 +16,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.Search;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 
 import java.util.Iterator;
@@ -47,7 +48,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		compStrength = compStrengthArray[AppData.getCompStrength(getContext())];
     }
 
-    public void afterMove() {
+	@Override
+	protected void onBoardFaceSet(BoardFace boardFace) {
+		pieces_tmp = boardFace.getPieces().clone();
+		colors_tmp = boardFace.getColor().clone();
+	}
+
+	public void afterMove() {
         boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.invalidateGameScreen();
 
@@ -166,13 +173,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             for (i = 0; i < 64; i++) {
                 if (drag && i == from)
                     continue;
-                int c = colors_tmp[i];
-                int p = pieces_tmp[i];
+                int color = colors_tmp[i];
+                int piece = pieces_tmp[i];
                 int x = ChessBoard.getColumn(i, boardFace.isReside());
                 int y = ChessBoard.getRow(i, boardFace.isReside());
-                if (c != 6 && p != 6) {     // here is the simple replace/redraw of piece
+                if (color != 6 && piece != 6) {     // here is the simple replace/redraw of piece
                     rect.set(x * square, y * square, x * square + square, y * square + square);
-                    canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
+                    canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
                 }
             }
         }

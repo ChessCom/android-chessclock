@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.*;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -20,6 +19,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
@@ -60,17 +60,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
-	//	private AbstractUpdateTask getDataTask;
 	private SectionedAdapter sectionedAdapter;
-	//	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
-	private List<AsyncTask<LoadItem, Void, Integer>> taskPool;
+	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
-		Log.d("TEST", "onCreate called");
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
@@ -117,8 +114,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	protected void onResume() {
 		super.onResume();
-		taskPool = new ArrayList<AsyncTask<LoadItem, Void, Integer>>();
-//		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
+		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
 
 		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
 
@@ -135,29 +131,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		handler.removeCallbacks(updateListOrder);
 
 		cleanTaskPool();
-//		if(getDataTask != null)
-//			getDataTask.cancel(true);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		Log.d("TEST", "onStop called");
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Log.d("TEST", "onDestroy called");
 	}
 
 	private void updateList(LoadItem listLoadItem) {
-//		getDataTask = new GetStringObjTask(new ListUpdateListener()).executeTask(listLoadItem);
-		Log.d("TEST", "_____________");
-		Log.d("TEST", "updating list");
-//		taskPool.add(new GetStringObjTask(new ListUpdateListener()).executeTask(listLoadItem));
 		taskPool.add(new GetStringObjTask(listUpdateListener).executeTask(listLoadItem));
-//		new GetStringObjTask(new ListUpdateListener()).executeTask(listLoadItem);
 	}
 
 	private Runnable updateListOrder = new Runnable() {
@@ -500,14 +477,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	private void cleanTaskPool() {
 		if (taskPool.size() > 0) {
-			for (AsyncTask<LoadItem, Void, Integer> updateTask : taskPool) {
+			for (AbstractUpdateTask<String, LoadItem> updateTask : taskPool) {
 				updateTask.cancel(true);
-//				updateTask = null;
-				Log.d("TEST", "Tasks cleaned");
 			}
 		}
-//		taskPool = null;
-//		listUpdateListener = null;
 	}
 
 

@@ -100,18 +100,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
-		Log.d("TEST","core actionbar onResume called");
-//		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);
-	}
-
-	@Override
 	protected void onPause() {
 		super.onPause();
 
-		// try to destroy ad here as Mopub team suggested
+		// try to destroy ad here as MoPub team suggested
 		if (moPubView != null) {
 			moPubView.destroy();
 		}
