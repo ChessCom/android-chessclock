@@ -545,7 +545,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				Log.i(TAG, AppConstants.LCCLOG_RESIGN_GAME + game);
 				gameTaskRunner.runMakeResignTask(gameId);
 			}
-			finish();
 		}
 	}
 
