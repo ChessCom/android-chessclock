@@ -14,6 +14,7 @@ import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 
 /**
@@ -51,8 +52,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onResume() {
 		super.onResume();
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
-
-		Log.d("TEST","Live Base onResume called");
 
 		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
@@ -96,6 +95,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
 			currentChallenge = challenge;
+
 			popupItem.setPositiveBtnId(R.string.accept);
 			popupItem.setNegativeBtnId(R.string.decline);
 			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
@@ -108,6 +108,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			}
 
 			currentChallenge = challenge;
+
+			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
 			popupItem.setNegativeBtnId(R.string.decline);

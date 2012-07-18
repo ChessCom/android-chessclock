@@ -58,16 +58,11 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		customView.removeAllViews();
 		customView.addView(popupItem.getCustomView());
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		customView.removeAllViews();
 	}
 
 }

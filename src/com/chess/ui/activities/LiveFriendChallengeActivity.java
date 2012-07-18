@@ -171,6 +171,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
 		preferencesEditor.commit();
 
+		popupItem.setPositiveBtnId(R.string.ok);
 		showPopupDialog(R.string.congratulations, R.string.challengeSent, CHALLENGE_SENT_TAG);
 		popupDialogFragment.setButtons(1);
 	}

@@ -259,7 +259,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.homePopupBtn) {
-			endPopupFragment.dismiss();
 			backToHomeActivity();
 		} else if (view.getId() == R.id.reviewPopupBtn) {
 			endPopupFragment.dismiss();

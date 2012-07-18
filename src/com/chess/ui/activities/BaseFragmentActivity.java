@@ -300,14 +300,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	protected void dismissFragmentDialog() {
-//		if (popupDialogFragment != null && popupDialogFragment.getDialog() != null)
-//			popupDialogFragment.getDialog().dismiss();
 		popupDialogFragment.dismiss();
 	}
 
 	protected void dismissProgressDialog() {
-//		if (popupProgressDialogFragment != null && popupProgressDialogFragment.getDialog() != null)
-//			popupProgressDialogFragment.getDialog().dismiss();
 		popupProgressDialogFragment.dismiss();
 	}
 
