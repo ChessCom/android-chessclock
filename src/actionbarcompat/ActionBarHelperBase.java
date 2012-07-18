@@ -126,13 +126,26 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	public void showSearchPanel(boolean show) {
 		View searchButton = mActivity.findViewById(R.id.menu_search);
 		View searchPanel = mActivity.findViewById(R.id.actionbar_compat_item_search_panel);
-		
+		final EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
+
 		if(searchButton != null){
 			searchButton.setVisibility(show? View.GONE : View.VISIBLE);
 		}
 
 		if(searchPanel != null){
 			searchPanel.setVisibility(show? View.VISIBLE : View.GONE);
+		}
+		
+		if(show){
+			searchEdit.requestFocus();
+			searchEdit.post(new Runnable() {
+				@Override
+				public void run() {
+					mActivity.showKeyBoard(searchEdit);
+				}
+			});
+		}else{
+			mActivity.hideKeyBoard(searchEdit);
 		}
 	}
 
@@ -318,7 +331,12 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 			if(actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 					|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
-				mActivity.onSearchQuery(textView.getText().toString().trim());
+
+				showSearchPanel(false);
+				String query = textView.getText().toString().trim();
+				if(!query.equals(StaticData.SYMBOL_EMPTY)){
+					mActivity.onSearchQuery(query);
+				}
 				return true;
 			}
 			return false;
@@ -330,21 +348,14 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	public void onClick(View view) {
 		if(view.getId() == R.id.menu_search){
 			showSearchPanel(true);
-			final EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
-//			searchEdit.setText(null);
-			searchEdit.requestFocus();
-			searchEdit.post(new Runnable() {
-				@Override
-				public void run() {
-					mActivity.showKeyBoard(searchEdit);
-				}
-			});
 		}else if(view.getId() == R.id.actionbar_compat_item_search_button){
 			showSearchPanel(false);
+
 			EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
 			String query = searchEdit.getText().toString().trim();
 			if(!query.equals(StaticData.SYMBOL_EMPTY))
 				mActivity.onSearchQuery(query);
+
 		}
 	}
 

@@ -964,12 +964,6 @@ public class LccHolder {
 			_lccClient.disconnect();
 			return null;
 		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			super.onPostExecute(aVoid);
-			Toast.makeText(context, "disconnected", Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	public Context getContext() {

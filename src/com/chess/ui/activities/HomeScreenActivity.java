@@ -17,6 +17,7 @@ import com.chess.lcc.android.LccChallengeTaskRunner;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -153,6 +154,8 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			}
 
 			currentChallenge = challenge;
+
+			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
 			popupItem.setNegativeBtnId(R.string.decline);

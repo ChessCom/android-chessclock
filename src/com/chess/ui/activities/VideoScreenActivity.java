@@ -29,7 +29,7 @@ import com.flurry.android.FlurryAgent;
  * @author alien_roger
  * @created at: 08.02.12 7:19
  */
-public class VideoScreenActivity extends LiveBaseActivity implements View.OnClickListener {
+public class VideoScreenActivity extends LiveBaseActivity {
 	private VideoItem item;
 	private View recent;
 	private TextView title, desc;
@@ -40,14 +40,6 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 	private CategoriesItemSelectedListener categoriesItemSelectedListener;
 	private VideosItemUpdateListener videosItemUpdateListener;
 	private Button playBtn;
-
-	private void init() {
-		skillsItemSelectedListener = new SkillsItemSelectedListener();
-		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
-		videosItemUpdateListener = new VideosItemUpdateListener();
-
-		showSearch = true;
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,28 +79,12 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 		handleIntent(getIntent());
 	}
 
-	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
-		@Override
-		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, pos);
-			preferencesEditor.commit();
-		}
+	private void init() {
+		skillsItemSelectedListener = new SkillsItemSelectedListener();
+		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
+		videosItemUpdateListener = new VideosItemUpdateListener();
 
-		@Override
-		public void onNothingSelected(AdapterView<?> a) {
-		}
-	}
-
-	private class CategoriesItemSelectedListener implements AdapterView.OnItemSelectedListener {
-		@Override
-		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.PREF_VIDEO_CATEGORY, pos);
-			preferencesEditor.commit();
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> a) {
-		}
+		showSearch = true;
 	}
 
 	@Override
@@ -141,6 +117,31 @@ public class VideoScreenActivity extends LiveBaseActivity implements View.OnClic
 			desc.setText(item.values.get(AppConstants.DESCRIPTION));
 
 			playBtn.setEnabled(true);
+		}
+	}
+
+
+	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			preferencesEditor.putInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, pos);
+			preferencesEditor.commit();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
+		}
+	}
+
+	private class CategoriesItemSelectedListener implements AdapterView.OnItemSelectedListener {
+		@Override
+		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
+			preferencesEditor.putInt(AppConstants.PREF_VIDEO_CATEGORY, pos);
+			preferencesEditor.commit();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> a) {
 		}
 	}
 

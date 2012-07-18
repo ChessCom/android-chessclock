@@ -8,14 +8,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -56,6 +54,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		super.onResume();
 
 		updateList();
+		hideKeyBoard();
 	}
 
 	private void updateList() {
