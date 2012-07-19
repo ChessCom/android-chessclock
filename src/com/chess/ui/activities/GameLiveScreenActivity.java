@@ -147,8 +147,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.onResume();
 
 
+        getLccHolder().setActivityPausedMode(false);
 		updateGameState();
-		getLccHolder().setActivityPausedMode(false);
 	}
 
 	@Override
@@ -166,10 +166,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			onGameStarted();
 			getBoardFace().setInit(false);
 		}
-        // todo
-		if (getLccHolder().isActivityPausedMode()) {
-			getLccHolder().executePausedActivityGameEvents(getLccHolder().getLccEventListener());
-		}
+
+        getLccHolder().executePausedActivityGameEvents();
 	}
 
 	private void onGameStarted() {
@@ -185,19 +183,21 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().setReside(true);
 		}
 
-		String[] moves;
-		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
-			moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "").replaceAll("  ", " ").substring(1).split(" ");
-			getBoardFace().setMovesCount(moves.length);
-		}
+//		String[] moves; // used only for online game
+//		if (currentGame.values.get(AppConstants.MOVE_LIST).length() > 0/*.contains("1.")*/) { // never contains "1."
+//			moves = currentGame.values.get(AppConstants.MOVE_LIST)
+//                    .replaceAll("[0-9]{1,4}[.]", "")
+//                    .replaceAll("  ", " ").substring(1).split(" ");
+//			getBoardFace().setMovesCount(moves.length);  // setting this here doesn't allow to process saved moves
+//		}
 
 		getLccHolder().checkAndReplayMoves(gameId);
 
-		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION);
-		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, getBoardFace());
-		}
+//		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION); // always empty , used for online game
+//		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
+//			getBoardFace().genCastlePos(FEN);
+//			MoveParser.fenParse(FEN, getBoardFace());
+//		}
 
 		invalidateGameScreen();
 		getBoardFace().takeBack();

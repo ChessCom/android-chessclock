@@ -63,7 +63,6 @@
 	<string name="GameType">Тип Игры</string>
 	<string name="classic">Классические</string>
 	<string name="chess960">Шахматы 960</string>
-	<string name="Friend">Друг</string>
 	<string name="initialTime">Начальное Время</string>
 	<string name="bonusTime">Бонусное Время</string>
 	<string name="RatedGme">Игра с Рейтингом</string>

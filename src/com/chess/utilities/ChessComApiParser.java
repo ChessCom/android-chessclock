@@ -1,5 +1,6 @@
 package com.chess.utilities;
 
+import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameItem;
@@ -108,6 +109,7 @@ public class ChessComApiParser {
 
 	//online game
 	public static GameItem GetGameParseV3(String result) {
+        Log.d("TEST", "moves from online server = " + result);
 		return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
 	}
 

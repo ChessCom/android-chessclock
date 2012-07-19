@@ -116,43 +116,47 @@ public class LccHolder {
 		pendingWarnings = new ArrayList<String>();
 	}
 
-	public void executePausedActivityGameEvents(LccEventListener lccEventListener) {
-		if (pausedActivityGameEvents.size() > 0) {
+	public void executePausedActivityGameEvents() {
+        if (activityPausedMode) {
+            if (pausedActivityGameEvents.size() > 0) {
 
-			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
-			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
-				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-				//fullGameProcessed = true;
-				pausedActivityGameEvents.remove(moveEvent);
-				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				GameItem newGame = new GameItem(getGameData(moveEvent.getGameId(), moveEvent.getMoveIndex()), true);
-				lccEventListener.onGameRefresh(newGame);
-			}
+                GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
+                if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
+                    //lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+                    //fullGameProcessed = true;
+                    pausedActivityGameEvents.remove(moveEvent);
+                    //lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
+                    GameItem newGame = new GameItem(getGameData(moveEvent.getGameId(), moveEvent.getMoveIndex()), true);
+                    lccEventListener.onGameRefresh(newGame);
+                }
 
-			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
-			if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
-				/*if (!fullGameProcessed)
-											{
-											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-											  fullGameProcessed = true;
-											}*/
-				pausedActivityGameEvents.remove(drawEvent);
-                lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
-			}
+                GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
+                if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
+                    /*if (!fullGameProcessed)
+                                                {
+                                                  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+                                                  fullGameProcessed = true;
+                                                }*/
+                    pausedActivityGameEvents.remove(drawEvent);
+                    lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
+                }
 
-			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
-			if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
-				/*if (!fullGameProcessed)
-											{
-											  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-											  fullGameProcessed = true;
-											}*/
-				pausedActivityGameEvents.remove(endGameEvent);
-                lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
-			}
-		}
+                GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
+                if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
+                    /*if (!fullGameProcessed)
+                                                {
+                                                  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+                                                  fullGameProcessed = true;
+                                                }*/
+                    pausedActivityGameEvents.remove(endGameEvent);
+                    lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
+                }
 
-		paintClocks();
+                pausedActivityGameEvents.clear(); // but it should be already cleared by using remove method
+            }
+
+            paintClocks();
+        }
 	}
 
 	public void paintClocks() {
@@ -604,13 +608,13 @@ public class LccHolder {
 		Game lccGame = getGame(gameId);
 		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 
-		gameData[0] = lccGame.getId().toString();  // TODO eliminate string conversion and use Objects
+		gameData[0] = String.valueOf(lccGame.getId());  // TODO eliminate string conversion and use Objects
 		gameData[1] = "1";
 		gameData[2] = StaticData.SYMBOL_EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
 		gameData[3] = StaticData.SYMBOL_EMPTY;
 		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
 		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
-		gameData[6] = StaticData.SYMBOL_EMPTY; // starting_fen_position
+		gameData[GameItem.STARTING_FEN_POSITION_NUMB] = StaticData.SYMBOL_EMPTY; // starting_fen_position
 		String moves = StaticData.SYMBOL_EMPTY;
 
 
@@ -621,7 +625,9 @@ public class LccHolder {
 		if (moveIndex == -1) {
 			moves = StaticData.SYMBOL_EMPTY;
 		}
-		gameData[7] = moves; // move_list
+
+        Log.d("TEST","moves from live server = " + moves);
+		gameData[GameItem.MOVE_LIST_NUMB] = moves; // move_list
 		gameData[8] = StaticData.SYMBOL_EMPTY; // user_to_move
 
 		Integer whiteRating = 0;
@@ -772,7 +778,7 @@ public class LccHolder {
 
 	public void setActivityPausedMode(boolean activityPausedMode) { // TODO Unsafe -> replace with save server data holder logic
 		this.activityPausedMode = activityPausedMode;
-		pausedActivityGameEvents.clear();
+//		pausedActivityGameEvents.clear();
 	}
 
 	public Map<GameEvent.Event, GameEvent> getPausedActivityGameEvents() {

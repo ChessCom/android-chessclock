@@ -155,28 +155,23 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void updateListData(List<String> itemsList) {
 			super.updateListData(itemsList);
-			Log.d("TEST", "updateListData = " + itemsList);
 		}
 
 		@Override
 		public void updateData(String returnedObj) {
-			Log.d("TEST", "updateData = " + returnedObj);
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
 				switch (currentListType) {
 					case GameListItem.LIST_TYPE_CURRENT:
-						Log.d("TEST", "LIST_TYPE_CURRENT");
 						currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
 						updateStartingType(GameListItem.LIST_TYPE_CHALLENGES);
 						break;
 					case GameListItem.LIST_TYPE_CHALLENGES:
-						Log.d("TEST", "LIST_TYPE_CHALLENGES");
 						challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
 						updateStartingType(GameListItem.LIST_TYPE_FINISHED);
 						break;
 					case GameListItem.LIST_TYPE_FINISHED:
-						Log.d("TEST", "LIST_TYPE_FINISHED");
 						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
 						break;
 					default:
@@ -192,11 +187,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 		}
 
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			Log.d("TEST", "errorHandle called");
-		}
 	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
