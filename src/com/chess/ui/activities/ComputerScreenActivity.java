@@ -64,11 +64,10 @@ public class ComputerScreenActivity extends LiveBaseActivity {
 	public void onClick(View view) { // make code more clear
 		if (view.getId() == R.id.load) {
 			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
-
-			startActivity(new Intent(this, GameCompScreenActivity.class)
-					.putExtra(AppConstants.GAME_MODE,
-							Integer.parseInt(preferences
-									.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1))));
+			Intent intent = new Intent(this, GameCompScreenActivity.class);
+			int compGameId = Integer.parseInt(preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1));
+			intent.putExtra(AppConstants.GAME_MODE, compGameId);
+			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
 			RadioButton whiteHuman, blackHuman;
 			whiteHuman = (RadioButton) findViewById(R.id.wHuman);

@@ -66,7 +66,7 @@ public class LiveScreenActivity extends LiveBaseActivity {
 		infoGroup.add(startBtn);
 		infoGroup.add(gridView);
 
-		currentGame = (Button) findViewById(R.id.currentGame);
+		currentGame = (Button) findViewById(R.id.currentGameBtn);
 		currentGame.setOnClickListener(this);
 	}
 
@@ -181,7 +181,7 @@ public class LiveScreenActivity extends LiveBaseActivity {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 
-		} else if (view.getId() == R.id.currentGame) {
+		} else if (view.getId() == R.id.currentGameBtn) {
 			getLccHolder().checkAndProcessFullGame();
 
 		} else if (view.getId() == R.id.start) {

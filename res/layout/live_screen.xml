@@ -15,7 +15,7 @@
 	<include layout="@layout/mopub_ad_view"/>
 
 	<com.chess.RoboButton
-		android:id="@+id/currentGame"
+		android:id="@+id/currentGameBtn"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/currentGame"

@@ -11,7 +11,7 @@ import com.mopub.mobileads.MoPubView;
 
 public class LiveNewGameActivity extends LiveBaseActivity  {
 
-	private Button currentGame;
+	private Button currentGameBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +29,17 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		findViewById(R.id.challengecreate).setOnClickListener(this);
 
-		currentGame = (Button) findViewById(R.id.currentGame);
-		currentGame.setOnClickListener(this);
+		currentGameBtn = (Button) findViewById(R.id.currentGameBtn);
+		currentGameBtn.setOnClickListener(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if (getLccHolder().getCurrentGameId() == null) {
-			currentGame.setVisibility(View.GONE);
+			currentGameBtn.setVisibility(View.GONE);
 		} else {
-			currentGame.setVisibility(View.VISIBLE);
+			currentGameBtn.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 			startActivity(new Intent(this, LiveFriendChallengeActivity.class));
 		} else if (view.getId() == R.id.challengecreate) {
 			startActivity(new Intent(this, LiveCreateChallengeActivity.class));
-		} else if (view.getId() == R.id.currentGame) {
+		} else if (view.getId() == R.id.currentGameBtn) {
 			getLccHolder().checkAndProcessFullGame();
 		}
 	}

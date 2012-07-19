@@ -17,7 +17,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 	}
 
 	public void onFriendStatusReceived(User friend) {
-		Log.d("TEST", "onFriendStatusReceived friend = " + friend.getUsername() + "go" + friend.getStatus().name());
+		Log.d("TEST", "onFriendStatusReceived friend = " + friend.getUsername() + " go " + friend.getStatus().name());
 		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
 		lccHolder.putFriend(friend);
 	}

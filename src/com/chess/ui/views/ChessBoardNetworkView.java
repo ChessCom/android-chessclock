@@ -250,27 +250,16 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		if (!boardFace.isAnalysis()) {
 			if (AppData.isFinishedEchessGameMode(boardFace) || finished || boardFace.isSubmit() ||
 					(boardFace.getHply() < boardFace.getMovesCount())) {
-				Log.d("TEST","boardFace.getHply() < boardFace.getMovesCount() poss true");
 				return true;
 			}
 
 			if (whiteUserName.equals(userName)  && boardFace.getMovesCount() % 2 != 0) {
-				Log.d("TEST"," boardFace.getMovesCount() % 2 != 0");
 				return true;
 			}
 			if (blackUserName.equals(userName) && boardFace.getMovesCount() % 2 == 0) {
-				Log.d("TEST"," boardFace.getMovesCount() % 2 == 0");
 				return true;
 			}
 
-			// TODO turns to false anyway
-//			if ((false&& boardFace.getHply() % 2 != 0)
-//					|| (false&& boardFace.getHply() % 2 == 0)) {
-//				return true;
-//			}
-//			if (false && boardFace.getHply() % 2 == 0) {
-//				return true;
-//			}
 		}
 
 		int col, row;
@@ -361,6 +350,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 					}
 
 					if (found && move != null && boardFace.makeMove(move)) {
+						Log.d("TEST", "BoardNetworkView move was made");
 						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 						sel = true;

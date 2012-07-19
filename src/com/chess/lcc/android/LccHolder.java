@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -418,6 +417,7 @@ public class LccHolder {
 			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 			networkTypeName = activeNetworkInfo.getTypeName();*/
 		} else {
+			Log.d("TEST"," not connected, block UI");
             liveChessClientEventListener.onConnectionBlocked();
 			// TODO disable UI
 		}
@@ -780,12 +780,12 @@ public class LccHolder {
 	}
 
 	public void checkAndProcessFullGame() {
-		if (currentGameId != null && getGame(currentGameId) != null) {
+		if (getGame(currentGameId) != null) {
 			processFullGame(getGame(currentGameId));
 		}
 	}
 
-	public void processFullGame() {
+/*	public void processFullGame() { // TODO remove if no need
 		latestMoveNumber = null;
 		Game game = getGame(currentGameId);
 		putGame(game);
@@ -804,10 +804,11 @@ public class LccHolder {
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		context.startActivity(intent);
-	}
+	}*/
 
 
 	public void processFullGame(Game game) {
+		Log.d("TEST", "processFullGame, gameId = " + game.getId());
 		latestMoveNumber = null;
 		putGame(game);
 
@@ -823,8 +824,7 @@ public class LccHolder {
 		setBlackClock(new ChessClock(this, false, time));
 
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
-		intent.setFlags(/*Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                |*/ Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		context.startActivity(intent);

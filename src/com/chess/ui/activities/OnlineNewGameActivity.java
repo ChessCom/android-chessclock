@@ -25,18 +25,16 @@ import java.util.ArrayList;
 
 public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemClickListener {
 
+	private static final int UPDATE_DELAY = 120000;
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
 	private ListView openChallengesListView;
 	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
 	private OnlineChallengesGamesAdapter gamesAdapter = null;
-	private static final int UPDATE_DELAY = 120000;
 	private GameListItem gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
-	private static final int CHALLENGE_RESULT_SENT = 2;
 	private int successToastMsgId;
-	private static final int ACCEPT_DRAW = 0;
-	private static final int DECLINE_DRAW = 1;
+
 	private LoadItem listLoadItem;
 	private ListUpdateListener listUpdateListener;
 

@@ -10,7 +10,6 @@ import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -146,7 +145,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	protected void onResume() {
 		super.onResume();
-		DataHolder.getInstance().setLiveChess(true);
+
 
 		updateGameState();
 		getLccHolder().setActivityPausedMode(false);
@@ -370,8 +369,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	// -----------------------------------------------------------------------------------
 
-    private void blockGame(boolean block){
-//        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
+    private void blockGame(boolean block){     // TODO block board
+        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
 //        boardView.lockBoard(block);
     }
     
@@ -382,12 +381,15 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		final String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
-		try {
+		Log.i("TEST", "LCC make move: " + move);
+//		try {
 			getLccHolder().makeMove(gameId, move);
-		} catch (IllegalArgumentException e) {
-			Log.i(TAG, "LCC illegal move: " + move);
-			e.printStackTrace();
-		}
+//		} catch (IllegalArgumentException e) {   // DO not eat Runtime Exceptions
+												// instead prevent illegal moves
+												// move to asynctask
+//			Log.i(TAG, "LCC illegal move: " + move);
+//			e.printStackTrace();
+//		}
 	}
 
 	private void updatePlayerLabels() {
