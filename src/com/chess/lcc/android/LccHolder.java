@@ -15,7 +15,6 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
-import com.chess.live.util.config.Config;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
@@ -27,30 +26,8 @@ import java.util.*;
 public class LccHolder{
 
 	private static final String TAG = "LccHolder";
-	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
 	public static final int OWN_SEEKS_LIMIT = 3;
-	public static final String PKCS_12 = "PKCS12";
-	public static final String TESTTEST = "testtest";
-	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
 
-
-	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
-
-	public static final String HOST = "chess.com";
-	public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
-	public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
-
-	/*public static final String HOST = "10.0.2.2";
-	  public static final String AUTH_URL = "http://" + HOST + "/api/v2/login?username=%s&password=%s";
-	  public static final String CONFIG_BAYEUX_HOST = HOST;*/
-
-	//Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
-	public static final Integer CONFIG_PORT = 80;
-	public static final String CONFIG_URI =
-			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
-	/*public static final String CONFIG_AUTH_KEY =
-			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
-					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
 	public long currentFGTime;
 	public long currentFGGameId;
 	public long previousFGGameId;
@@ -91,7 +68,6 @@ public class LccHolder{
 	private Long currentGameId;
 	private Context context;
 	private List<String> pendingWarnings;
-	private boolean lccPerformConnection;
 
 	private LiveChessClientEventListenerFace liveChessClientEventListener;
     private LccEventListener lccEventListener;
@@ -178,10 +154,11 @@ public class LccHolder{
 
 	public GameItem getGameItem(Long gameId) {
 		Log.d("TEST","gameId = " +gameId);
-//		Game game = getGame(gameId);
-		GameItem newGame = new GameItem(getGameData(gameId, getGame(gameId).getSeq() - 1), true);
+		Game game = getGame(gameId);
 
-        updateClockTime(getGame(gameId));
+		GameItem newGame = new GameItem(getGameData(gameId, game.getSeq() - 1), true);
+
+        updateClockTime(game);
 
 		return newGame;
 	}
@@ -262,7 +239,7 @@ public class LccHolder{
 	 *
 	 * @return flag if client has performed connection
 	 */
-	public boolean performConnect() {
+	public void performConnect() {
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
 
@@ -272,32 +249,17 @@ public class LccHolder{
 		} else {
 			connectByCreds(userName, pass);
 		}
-		return lccPerformConnection;
 	}
 
 	public void connectByCreds(String userName, String pass) {
 		Log.d("TEST", "connectByCreds : user = " + userName + "pass = " + pass);
-		//if (_lccClient != null) {
-			//_lccClient.disconnect(); // todo: check - avoid disconnect() here at all or use this.logout()
-			//setNetworkTypeName(null);
-			//setConnectingInProgress(true);
-
-			_lccClient.connect(userName, pass, _connectionListener);
-			liveChessClientEventListener.onConnecting();
-		/*} else
-			lccPerformConnection = false;*/
+		_lccClient.connect(userName, pass, _connectionListener);
+		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
-		//if (_lccClient != null) {
-			//_lccClient.disconnect(); // todo: check - avoid disconnect() here at all or use this.logout()
-			//setNetworkTypeName(null);
-			//setConnectingInProgress(true);
-
-			_lccClient.connect(sessionId, _connectionListener);
-			liveChessClientEventListener.onConnecting();
-		/*} else
-			lccPerformConnection = false;*/
+		_lccClient.connect(sessionId, _connectionListener);
+		liveChessClientEventListener.onConnecting();
 	}
 
 	public void setLiveChessClientEventListener(LiveChessClientEventListenerFace liveChessClientEventListener) {
@@ -368,10 +330,6 @@ public class LccHolder{
 		_lccClient = liveChessClient;
 	}
 
-	public int getGamesSize() {
-		return lccGames.size();
-	}
-
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {
 			super(getContext());
@@ -429,9 +387,8 @@ public class LccHolder{
 			networkTypeName = activeNetworkInfo.getTypeName();*/
 		} else {
 			Log.d("TEST"," not connected, block UI");
-            liveChessClientEventListener.onConnectionBlocked();
-			// TODO disable UI
 		}
+		liveChessClientEventListener.onConnectionBlocked(!connected);
 	}
 
 	public void clearChallenges() {
@@ -798,28 +755,6 @@ public class LccHolder{
 			processFullGame(getGame(currentGameId));
 		}
 	}
-
-/*	public void processFullGame() { // TODO remove if no need
-		latestMoveNumber = null;
-		Game game = getGame(currentGameId);
-		putGame(game);
-		int time = game.getGameTimeConfig().getBaseTime() * 100;
-		if (whiteClock != null && whiteClock.isRunning()) {
-			whiteClock.setRunning(false);
-		}
-		if (blackClock != null && blackClock.isRunning()) {
-			blackClock.setRunning(false);
-		}
-		setWhiteClock(new ChessClock(this, true, time));
-		setBlackClock(new ChessClock(this, false, time));
-
-		final Intent intent = new Intent(context, GameLiveScreenActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-		intent.putExtra(GameListItem.GAME_ID, game.getId());
-		context.startActivity(intent);
-	}*/
-
 
 	public void processFullGame(Game game) {
 		Log.d("TEST", "processFullGame, gameId = " + game.getId());

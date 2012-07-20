@@ -1,5 +1,6 @@
 <resources>
 	<string name="menu_search">חיפוש</string>
-	<string name="restoring_conntection_to_live">שחזור הקשר חי...</string>
+	<string name="restoring_conntection_to_live">מתחבר מחדש ...</string>
+	<string name="application_was_killed">יישום נהרג, שיקום ...</string>
 
 </resources>

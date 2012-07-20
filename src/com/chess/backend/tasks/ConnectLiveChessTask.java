@@ -10,10 +10,10 @@ import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.impl.HttpClientProvider;
+import com.chess.live.util.config.Config;
 import org.eclipse.jetty.client.HttpClient;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * ConnectLiveChessTask class
@@ -24,6 +24,31 @@ import java.io.InputStream;
 public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Void> {
 
 	private static final String TAG = "ConnectLiveChessTask";
+	public static final String PKCS_12 = "PKCS12";
+	public static final String TESTTEST = "testtest";
+	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
+
+
+	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
+
+	public static final String HOST = "chess.com";
+	public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
+	public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
+	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
+	public static final String CONFIG_URI =
+			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
+
+	/*public static final String HOST = "10.0.2.2";
+	  public static final String AUTH_URL = "http://" + HOST + "/api/v2/login?username=%s&password=%s";
+	  public static final String CONFIG_BAYEUX_HOST = HOST;*/
+
+	//Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
+	public static final Integer CONFIG_PORT = 80;
+	/*public static final String CONFIG_AUTH_KEY =
+			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
+					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
+
+
 
 	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace) {
 		super(taskFace);
@@ -36,13 +61,15 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 		try {
 			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 
-			InputStream keyStoreInputStream = context.getAssets().open(LccHolder.KEY_FILE_NAME);
+//			InputStream keyStoreInputStream = context.getAssets().open(LccHolder.KEY_FILE_NAME);
 			Log.d(TAG, "Start Chess.Com LCC ");
-			Log.d(TAG, "Connecting to: " + LccHolder.CONFIG_BAYEUX_HOST + ":" + LccHolder.CONFIG_PORT);
+			Log.d(TAG, "Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
 
-			item = LiveChessClientFacade.createClient(LccHolder.AUTH_URL, LccHolder.CONFIG_BAYEUX_HOST, LccHolder.CONFIG_PORT, LccHolder.CONFIG_URI);
+			item = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST,
+					CONFIG_PORT, CONFIG_URI);
 			item.setClientInfo("Android", versionName, "No-Key");
 			item.setSupportedClientFeatures(false, false);
+
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
 			httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
 			httpClient.setMaxConnectionsPerAddress(4);
@@ -50,13 +77,13 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			httpClient.setConnectTimeout(10000);
 			httpClient.setTimeout(7000); //
 
-			/*httpClient.setKeyStoreType(LccHolder.PKCS_12);
-			httpClient.setTrustStoreType(LccHolder.PKCS_12);
-			httpClient.setKeyManagerPassword(LccHolder.TESTTEST);
+			/*httpClient.setKeyStoreType(PKCS_12);
+			httpClient.setTrustStoreType(PKCS_12);
+			httpClient.setKeyManagerPassword(TESTTEST);
 			httpClient.setKeyStoreInputStream(keyStoreInputStream);
-			httpClient.setKeyStorePassword(LccHolder.TESTTEST);
+			httpClient.setKeyStorePassword(TESTTEST);
 			httpClient.setTrustStoreInputStream(keyStoreInputStream);
-			httpClient.setTrustStorePassword(LccHolder.TESTTEST);*/
+			httpClient.setTrustStorePassword(TESTTEST);*/
 
 			item.setHttpClient(httpClient);
 

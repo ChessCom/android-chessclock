@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
@@ -72,6 +73,8 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 		initialTimeValidator = new InitialTimeValidator();
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
+
+		DataHolder.getInstance().setLiveChess(true);
 	}
 
 /*	@Override    // TODO probably useless case - If User not initialized or became null, we already  disconnected. Or it should exist everywhere.

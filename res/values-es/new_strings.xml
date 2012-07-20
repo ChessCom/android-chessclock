@@ -1,5 +1,6 @@
 <resources>
 	<string name="menu_search">Buscar</string>
 	<string name="restoring_conntection_to_live">Reconectando ...</string>
+	<string name="application_was_killed">Solicitud fue asesinado, la restauración de ...</string>
 
 </resources>

@@ -51,6 +51,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
+			LccHolder.getInstance(this).runConnectTask();
+		}
+
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
 		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);

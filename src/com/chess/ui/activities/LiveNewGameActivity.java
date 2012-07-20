@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppData;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -31,11 +32,14 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 
 		currentGameBtn = (Button) findViewById(R.id.currentGameBtn);
 		currentGameBtn.setOnClickListener(this);
+
+		DataHolder.getInstance().setLiveChess(true);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		if (getLccHolder().getCurrentGameId() == null) {
 			currentGameBtn.setVisibility(View.GONE);
 		} else {

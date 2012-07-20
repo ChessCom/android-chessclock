@@ -7,9 +7,13 @@ import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.*;
+import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
@@ -53,6 +57,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		initialTimeValidator = new InitialTimeValidator();
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
+
+		DataHolder.getInstance().setLiveChess(true);
 	}
 
     protected void widgetsInit() {

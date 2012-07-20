@@ -53,6 +53,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     private String blackTimer;
     private View fadeLay;
 	private View gameBoardView;
+	private boolean lccInitiated;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		setContentView(R.layout.boardview_live);
 
 		widgetsInit();
-		init();
+		lccInitiated = init();
 
+		if(!lccInitiated){
+			return;
+		}
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
 		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
@@ -85,6 +89,32 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 			showPopupDialog(R.string.warning, message, WARNING_TAG);
 		}
+	}
+
+	private boolean init() {
+		if(!getLccHolder().isConnected()){
+//			showSinglePopupDialog(R.string.network_was_changed_please_relogin);
+			Log.d("TEST", "!getLccHolder().isConnected() -> EXIT");
+			showToast(R.string.application_was_killed);
+			return false;
+		}
+
+		gameId = extras.getLong(GameListItem.GAME_ID);
+		currentGame = getLccHolder().getGameItem(gameId);
+
+		getLccHolder().setLccEventListener(this);
+
+		int resignOrAbort = getLccHolder().getResignTitle(gameId);
+
+		menuOptionsItems = new CharSequence[]{
+				getString(R.string.settings),
+				getString(R.string.reside),
+				getString(R.string.drawoffer),
+				getString(resignOrAbort),
+				getString(R.string.messages)};
+
+		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		return true;
 	}
 
 	@Override
@@ -121,34 +151,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
-	public void init() {
-		if(getLccHolder().getGamesSize() == 0){
-//			showSinglePopupDialog(R.string.network_was_changed_please_relogin);
-			Log.d("TEST","getLccHolder().getGamesSize() == 0 -> EXIT");
-			finish();
-		}
 
-		gameId = extras.getLong(GameListItem.GAME_ID);
-		currentGame = getLccHolder().getGameItem(gameId);
-
-        getLccHolder().setLccEventListener(this);
-
-		int resignOrAbort = getLccHolder().getResignTitle(gameId);
-
-		menuOptionsItems = new CharSequence[]{
-				getString(R.string.settings),
-				getString(R.string.reside),
-				getString(R.string.drawoffer),
-				getString(resignOrAbort),
-				getString(R.string.messages)};
-
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
-
-	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		if(!lccInitiated){
+			finish();
+			return;
+		}
+
 
 
         getLccHolder().setActivityPausedMode(false);
@@ -294,9 +307,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
     @Override
-    public void onConnectionBlocked() {
-        super.onConnectionBlocked();
-        blockGame(true);
+    public void onConnectionBlocked(boolean blocked) {
+        super.onConnectionBlocked(blocked);
+        blockGame(blocked);
     }
 
     @Override

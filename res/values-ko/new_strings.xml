@@ -1,5 +1,6 @@
 <resources>
 	<string name="menu_search">검색</string>
 	<string name="restoring_conntection_to_live">다시 연결 ...</string>
+	<string name="application_was_killed">신청 복원, 살해되었을 때...</string>
 
 </resources>

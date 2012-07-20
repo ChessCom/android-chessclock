@@ -228,11 +228,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
     @Override
-    public void onConnectionBlocked() {
+    public void onConnectionBlocked(final boolean blocked) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				getActionBarHelper().setRefreshActionItemState(true);
+				getActionBarHelper().setRefreshActionItemState(blocked);
 			}
 		});
 

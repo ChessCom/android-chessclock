@@ -73,9 +73,9 @@ public class LiveScreenActivity extends LiveBaseActivity {
 	private void init() {
 		DataHolder.getInstance().setLiveChess(true);
 
-		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
-			LccHolder.getInstance(this).runConnectTask();
-		}
+//		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
+//			LccHolder.getInstance(this).runConnectTask();
+//		}
 
 		infoGroup = new ArrayList<View>();
 	}
