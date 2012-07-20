@@ -12,6 +12,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -58,8 +60,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	protected boolean isPaused;
     private String currentLocale;
+	protected Animation fadeInAnimation;
+	protected Animation fadeOutAnimation;
 
-    @Override
+	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
@@ -89,6 +93,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
         currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
         setLocale();
+
+		fadeInAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+		fadeOutAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 	}
 
 	@Override

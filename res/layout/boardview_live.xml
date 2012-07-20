@@ -2,6 +2,8 @@
 
 <FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/gameBoard"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
@@ -131,15 +133,40 @@
 		</FrameLayout>
 	</LinearLayout>
 
-	<!--Fade--> <!--TODO probably not need, or change to other-->
-	<FrameLayout
+	<!--Fade-->
+	<RelativeLayout
 		android:id="@+id/fadeLay"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@color/semitransparent"
+		android:minHeight="60dip"
+		android:background="@drawable/dashboard_single_fade"
 		android:visibility="invisible"
-		/>
+		android:layout_gravity="center"
+		>
 
+		<ProgressBar
+			android:layout_width="@dimen/pending_progress_bar_size"
+			android:layout_height="@dimen/pending_progress_bar_size"
+			android:layout_margin="5dip"
+			android:layout_centerVertical="true"
+			android:layout_toLeftOf="@+id/pending_list_item_TextView"
+			style="?android:attr/progressBarStyle"
+			/>
+
+		<com.chess.RoboTextView
+			android:id="@id/pending_list_item_TextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/restoring_conntection_to_live"
+			android:gravity="center"
+			android:textSize="20sp"
+			android:textColor="@color/white"
+			android:paddingLeft="10dip"
+			android:layout_centerInParent="true"
+			robo:ttf="Bold"
+			/>
+
+	</RelativeLayout>
 
 
 

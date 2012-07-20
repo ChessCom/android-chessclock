@@ -167,13 +167,13 @@ public class LccGameListener implements GameListener {
         String message = StaticData.SYMBOL_EMPTY;
         switch (result) {
             case TIMEOUT:
-                message = winnerUsername + context.getString(R.string.won_on_time);
+                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_on_time);
                 break;
             case RESIGNED:
-                message = winnerUsername + context.getString(R.string.won_by_resignation);
+                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_resignation);
                 break;
             case CHECKMATED:
-                message = winnerUsername + context.getString(R.string.won_by_checkmate);
+                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_checkmate);
                 break;
             case DRAW_BY_REPETITION:
 				message = context.getString(R.string.game_draw_by_repetition);

@@ -119,6 +119,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         int paddingBottom = (int) getResources().getDimension(R.dimen.game_control_padding_bottom);
 
         controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+		controlsLayout.setDuplicateParentStateEnabled(true);
 
         LinearLayout.LayoutParams defaultLinLayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -278,6 +279,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         imageButton.setBackgroundResource(backId);
         imageButton.setOnClickListener(this);
         imageButton.setId(BUTTON_PREFIX + buttonId);
+		imageButton.setDuplicateParentStateEnabled(true);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

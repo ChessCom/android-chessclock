@@ -1,0 +1,5 @@
+<resources>
+	<string name="menu_search">검색</string>
+	<string name="restoring_conntection_to_live">다시 연결 ...</string>
+
+</resources>

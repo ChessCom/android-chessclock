@@ -163,29 +163,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
 			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		}else{ // Configure in ActionBarHelper
-//			MenuItem item = menu.findItem(R.id.menu_search);
-//			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
-//					| MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-//			View searchView = SearchViewCompat.newSearchView(this);  // returns null on API 9?!
-//			// A SearchView instance if the class is present on the current platform, null otherwise.
-//			if (searchView != null) {
-//				SearchViewCompat.setOnQueryTextListener(searchView,
-//						new SearchViewCompat.OnQueryTextListenerCompat() {
-//							@Override
-//							public boolean onQueryTextChange(String newText) {
-//								// Called when the action bar search text has changed.  Update
-//								// the search filter, and restart the loader to do a new query
-//								// with this filter.
-//								String newFilter = !TextUtils.isEmpty(newText) ? newText : null;
-//								// Don't do anything if the filter hasn't actually changed.
-//								// Prevents restarting the loader when restoring state.
-//								showToast(newText);
-//								return true;
-//							}
-//						});
-//				MenuItemCompat.setActionView(item, searchView);
-//			}
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -196,11 +173,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			case android.R.id.home:
 				backToHomeActivity();
 				break;
-//			case R.id.menu_search:
-//				EditText searchEdit = (EditText) findViewById(R.id.actionbar_compat_item_search_edit);
-//				String query = getTextFromField(searchEdit);
-//				onSearchQuery(query);
-//				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

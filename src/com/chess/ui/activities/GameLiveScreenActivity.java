@@ -23,7 +23,6 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
-import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.utilities.MopubHelper;
 
@@ -53,11 +52,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     private String whiteTimer;
     private String blackTimer;
     private View fadeLay;
+	private View gameBoardView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+//		Log.d("TEST","onCreate GameLiveActivity, savedInstanceState = " + savedInstanceState);
 		setContentView(R.layout.boardview_live);
 
 		widgetsInit();
@@ -82,12 +83,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			String message = getLccHolder().getLastWarningMessage();
 			getLccHolder().getPendingWarnings().remove(message);
 
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.warning);
-			popupItem.setMessage(message);
-
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
-			popupDialogFragment.show(getSupportFragmentManager(), WARNING_TAG);
+			showPopupDialog(R.string.warning, message, WARNING_TAG);
 		}
 	}
 
@@ -96,6 +92,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.widgetsInit();
 
         fadeLay = findViewById(R.id.fadeLay);
+		gameBoardView = findViewById(R.id.gameBoard);
+
 		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGamePanelView(gamePanelView);
@@ -124,6 +122,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	public void init() {
+		if(getLccHolder().getGamesSize() == 0){
+//			showSinglePopupDialog(R.string.network_was_changed_please_relogin);
+			Log.d("TEST","getLccHolder().getGamesSize() == 0 -> EXIT");
+			finish();
+		}
+
 		gameId = extras.getLong(GameListItem.GAME_ID);
 		currentGame = getLccHolder().getGameItem(gameId);
 
@@ -161,6 +165,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.d("TEST","onDestroy called");
+	}
+
 	private void updateGameState() {
 		if (getBoardFace().isInit()) {
 			onGameStarted();
@@ -183,21 +193,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().setReside(true);
 		}
 
-//		String[] moves; // used only for online game
-//		if (currentGame.values.get(AppConstants.MOVE_LIST).length() > 0/*.contains("1.")*/) { // never contains "1."
-//			moves = currentGame.values.get(AppConstants.MOVE_LIST)
-//                    .replaceAll("[0-9]{1,4}[.]", "")
-//                    .replaceAll("  ", " ").substring(1).split(" ");
-//			getBoardFace().setMovesCount(moves.length);  // setting this here doesn't allow to process saved moves
-//		}
-
 		getLccHolder().checkAndReplayMoves(gameId);
-
-//		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION); // always empty , used for online game
-//		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-//			getBoardFace().genCastlePos(FEN);
-//			MoveParser.fenParse(FEN, getBoardFace());
-//		}
 
 		invalidateGameScreen();
 		getBoardFace().takeBack();
@@ -369,9 +365,22 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	// -----------------------------------------------------------------------------------
 
-    private void blockGame(boolean block){     // TODO block board
-        fadeLay.setVisibility(block? View.VISIBLE: View.INVISIBLE);
-//        boardView.lockBoard(block);
+    private void blockGame(final boolean block){     // TODO block board
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (block) {
+//					fadeLay.startAnimation(fadeInAnimation);
+					fadeLay.setVisibility(View.VISIBLE);
+				} else {
+//					fadeLay.startAnimation(fadeOutAnimation);
+					fadeLay.setVisibility(View.INVISIBLE);
+				}
+
+				boardView.lockBoard(block);
+				gameBoardView.invalidate();
+			}
+		});
     }
     
 
@@ -386,7 +395,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getLccHolder().makeMove(gameId, move);
 //		} catch (IllegalArgumentException e) {   // DO not eat Runtime Exceptions
 												// instead prevent illegal moves
-												// move to asynctask
+												// moved to asynctask
 //			Log.i(TAG, "LCC illegal move: " + move);
 //			e.printStackTrace();
 //		}

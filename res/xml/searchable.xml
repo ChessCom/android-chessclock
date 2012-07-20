@@ -25,7 +25,7 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
         android:label="@string/search"
         android:hint="@string/search"
-        android:searchSettingsDescription="@string/settings_description"
+        android:searchSettingsDescription="@string/search"
         android:searchSuggestAuthority="com.example.android.searchabledict.DictionaryProvider"
         android:searchSuggestIntentAction="android.intent.action.VIEW"
         android:searchSuggestIntentData="content://com.example.android.searchabledict.DictionaryProvider/dictionary"

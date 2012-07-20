@@ -24,7 +24,8 @@ import com.chess.ui.activities.GameLiveScreenActivity;
 
 import java.util.*;
 
-public class LccHolder {
+public class LccHolder{
+
 	private static final String TAG = "LccHolder";
 	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
 	public static final int OWN_SEEKS_LIMIT = 3;
@@ -176,6 +177,8 @@ public class LccHolder {
     }
 
 	public GameItem getGameItem(Long gameId) {
+		Log.d("TEST","gameId = " +gameId);
+//		Game game = getGame(gameId);
 		GameItem newGame = new GameItem(getGameData(gameId, getGame(gameId).getSeq() - 1), true);
 
         updateClockTime(getGame(gameId));
@@ -363,6 +366,10 @@ public class LccHolder {
 
 	public void setLiveChessClient(LiveChessClient liveChessClient) {
 		_lccClient = liveChessClient;
+	}
+
+	public int getGamesSize() {
+		return lccGames.size();
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -593,6 +600,7 @@ public class LccHolder {
 	}
 
 	public Game getGame(Long gameId) {
+		Log.d("TEST","lccGames size = " + lccGames.size());
 		return lccGames.get(gameId);
 	}
 
@@ -829,6 +837,7 @@ public class LccHolder {
 		setWhiteClock(new ChessClock(this, true, time));
 		setBlackClock(new ChessClock(this, false, time));
 
+		Log.d("TEST","processing full game, gameId = " + game.getId());
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
