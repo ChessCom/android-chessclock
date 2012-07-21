@@ -2,5 +2,8 @@
 	<string name="menu_search">Suche</string>
 	<string name="restoring_conntection_to_live">Verbindung wird wiederhergestellt...</string>
 	<string name="application_was_killed">Die Applikation wurde getötet, Wiederherstellung...</string>
+	<string name="no_network">Kein Netzwerk</string>
+	<string name="wireless_settings">Wireless-Einstellungen</string>
+	<string name="invalid_password">Ungültiges passwort</string>
 
 </resources>

@@ -59,10 +59,6 @@ public class LoginButton extends Button {
         mPermissions = permissions;
         mHandler = new Handler();
 
-		//setBackgroundColor(Color.TRANSPARENT);
-		//setAdjustViewBounds(true);
-		//setImageResource(fb.isSessionValid() ? R.drawable.logout_button
-		//: R.drawable.login_button_selector);
 		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_selector
 			: R.drawable.button_f_selector);
 		setText(getResources().getString(
@@ -70,8 +66,7 @@ public class LoginButton extends Button {
 				: R.string.connect_with_facebook));
 
 		invalidate();
-		//drawableStateChanged();
-        
+
         SessionEvents.addAuthListener(mSessionListener);
         SessionEvents.addLogoutListener(mSessionListener);
         setOnClickListener(new ButtonOnClickListener());
@@ -85,8 +80,7 @@ public class LoginButton extends Button {
                 AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFb);
                 asyncRunner.logout(getContext(), new LogoutRequestListener());
             } else {
-                mFb.authorize(mActivity, mPermissions,
-                              new LoginDialogListener());
+                mFb.authorize(mActivity, mPermissions, new LoginDialogListener());
             }
         }
     }
@@ -124,7 +118,7 @@ public class LoginButton extends Button {
     private class SessionListener implements AuthListener, LogoutListener {
         
         public void onAuthSucceed() {
-			setBackgroundResource(R.drawable.button_f_selector);// ImageResource(R.drawable.button_f_logout_selector);
+			setBackgroundResource(R.drawable.button_f_selector);
 			setText(getResources().getString(R.string.logout));
             SessionStore.save(mFb, getContext());
         }
@@ -139,9 +133,6 @@ public class LoginButton extends Button {
             SessionStore.clear(getContext());
 			setBackgroundResource(R.drawable.button_f_selector);
 			setText(getResources().getString(R.string.connect_with_facebook));
-
-			//invalidate();
-			//setImageResource(R.drawable.login_button_selector);
         }
     }
     

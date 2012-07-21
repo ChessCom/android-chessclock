@@ -2,5 +2,8 @@
 	<string name="menu_search">Поиск</string>
 	<string name="restoring_conntection_to_live">Реконнектим...</string>
 	<string name="application_was_killed">Приложение было убито, восстанавливаем...</string>
+	<string name="no_network">Нет Сети</string>
+	<string name="wireless_settings">Настройки Сети</string>
+	<string name="invalid_password">Неверный пароль</string>
 
 </resources>

@@ -671,7 +671,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
 
-		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem, this);
+		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);

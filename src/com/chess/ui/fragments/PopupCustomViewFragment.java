@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +22,18 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
     private Button rightBtn;
     private FrameLayout customView;
 
-	public static PopupCustomViewFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
+	public static PopupCustomViewFragment newInstance(PopupItem popupItem) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();
 		Bundle arguments = new Bundle();
 		arguments.putSerializable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
-		frag.listener = listener;
 		return frag;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (PopupDialogFace) activity;
 	}
 
 	@Override

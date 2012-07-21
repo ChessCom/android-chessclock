@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -26,16 +27,21 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
     private Button middleBtn;
     private Button rightBtn;
 
-	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace listener) {
+	public static PopupDialogFragment newInstance(PopupItem popupItem) {
         PopupDialogFragment frag = new PopupDialogFragment();
 		Bundle arguments = new Bundle();
 		arguments.putSerializable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
-		frag.listener = listener;
         return frag;
     }
 
-    @Override
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (PopupDialogFace) activity;
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.popup_default, container, false);
 
@@ -66,8 +72,6 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
                 break;
         }
     }
-
-
 
 	@Override
 	public void onResume() {

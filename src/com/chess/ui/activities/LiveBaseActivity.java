@@ -1,10 +1,13 @@
 package com.chess.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.MenuItem;
 import com.chess.R;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
@@ -16,6 +19,7 @@ import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.utilities.AppUtils;
 
 /**
  * LiveBaseActivity class
@@ -25,9 +29,11 @@ import com.chess.ui.fragments.PopupDialogFragment;
  */
 public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
+	private static final String TAG = "LiveBaseActivity";
+
 	protected static final String CHALLENGE_TAG = "challenge_tag";
 	protected static final String LOGOUT_TAG = "logout_tag";
-	private static final String TAG = "LiveBaseActivity";
+
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -52,8 +58,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onResume() {
 		super.onResume();
 
-		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
-			LccHolder.getInstance(this).runConnectTask();
+		if(DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)){ // check only if live
+			popupItem.setPositiveBtnId(R.string.wireless_settings);
+			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+		}else{
+			LccHolder.getInstance(this).checkAndConnect();
 		}
 
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
@@ -73,6 +82,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			popupManager.remove(fragment);
+		} else if(fragment.getTag().equals(NETWORK_CHECK_TAG)){
+			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
 	}
 
@@ -83,6 +94,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
 			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
 			popupManager.remove(fragment);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK && requestCode == NETWORK_REQUEST){
+			LccHolder.getInstance(this).checkAndConnect();
 		}
 	}
 
@@ -120,7 +139,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			popupItem.setNegativeBtnId(R.string.decline);
 			popupItem.setPositiveBtnId(R.string.accept);
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, LiveBaseActivity.this);
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 

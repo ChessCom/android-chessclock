@@ -2,5 +2,8 @@
 	<string name="menu_search">सर्च</string>
 	<string name="restoring_conntection_to_live">पुन: कनेक्ट ...</string>
 	<string name="application_was_killed">आवेदन को मार डाला गया था बहाल करने ...</string>
+	<string name="no_network">कोई नेटवर्क</string>
+	<string name="wireless_settings">वायरलेस सेटिंग्स</string>
+	<string name="invalid_password">סיסמה לא חוקית</string>
 
 </resources>

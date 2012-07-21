@@ -2,5 +2,8 @@
 	<string name="menu_search">Szukaj</string>
 	<string name="restoring_conntection_to_live">Ponowne łączenie ...</string>
 	<string name="application_was_killed">Wniosek został zabity, przywracając ...</string>
+	<string name="no_network">Nie Sieć</string>
+	<string name="wireless_settings">Ustawienia Bezprzewodowe</string>
+	<string name="invalid_password">Nieprawidłowe hasło</string>
 
 </resources>

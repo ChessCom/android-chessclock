@@ -86,8 +86,8 @@
 			/>
 
 		<activity android:name=".ui.activities.LiveScreenActivity" android:label="@string/label_play_live"
-			android:configChanges="keyboardHidden|orientation|keyboard"
-			/>
+
+			/>   <!--android:configChanges="keyboardHidden|orientation|keyboard"-->
 		<activity android:name=".ui.activities.LiveNewGameActivity" android:label="@string/label_live_new_game"
 			android:configChanges="keyboardHidden|orientation|keyboard"
 			/>

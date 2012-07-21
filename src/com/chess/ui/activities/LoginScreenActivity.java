@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -39,7 +41,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends BaseFragmentActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class LoginScreenActivity extends BaseFragmentActivity implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
 
 	private static final String CHECK_UPDATE_TAG = "check update";
 	private static int SIGNIN_CALLBACK_CODE = 16;
@@ -66,10 +68,11 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 
-		usernameEdt = (EditText) findViewById(R.id.username);
-		passwordEdt = (EditText) findViewById(R.id.password);
+		usernameEdt = (EditText) findViewById(R.id.usernameEdt);
+		passwordEdt = (EditText) findViewById(R.id.passwordEdt);
 		passwordEdt.setOnEditorActionListener(this);
-
+		passwordEdt.setOnTouchListener(this);
+				
 		findViewById(R.id.singin).setOnClickListener(this);
 		findViewById(R.id.singup).setOnClickListener(this);
 		findViewById(R.id.guestplay).setOnClickListener(this);
@@ -88,6 +91,37 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		loginUpdateListener = new LoginUpdateListener();
 	}
 
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == R.id.singin) {
+			if(!AppUtils.isNetworkAvailable(this)){ // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			}else{
+				signInUser();
+			}
+		} else if (view.getId() == R.id.singup) {
+			startActivity(new Intent(this, SignUpScreenActivity.class));
+		} else if (view.getId() == R.id.guestplay) {
+			Intent intent = new Intent(this, HomeScreenActivity.class);
+			startActivity(intent);
+		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+                || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
+			if(!AppUtils.isNetworkAvailable(this)){ // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			}else{
+				signInUser();
+			}
+		}
+		return false;
+	}
+
 	private void signInUser(){
 		String userName = getTextFromField(usernameEdt);
 		if (userName.length() < MIN_USERNAME_LENGTH || userName.length() > MAX_USERNAME_LENGTH) {
@@ -104,27 +138,6 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		postDataTask = new PostDataTask(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
-	}
-
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.singin) {
-			signInUser();
-		} else if (view.getId() == R.id.singup) {
-			startActivity(new Intent(this, SignUpScreenActivity.class));
-		} else if (view.getId() == R.id.guestplay) {
-			Intent intent = new Intent(this, HomeScreenActivity.class);
-			startActivity(intent);
-		}
-	}
-
-	@Override
-	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-                || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
-			signInUser();
-		}
-		return false;
 	}
 
 	public class SampleAuthListener implements SessionEvents.AuthListener {
@@ -192,15 +205,18 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				showToast(R.string.no_chess_account_signup_please);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){
-				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+				String message = returnedObj.substring(RestHelper.R_ERROR.length());
+				if(message.equals("Invalid password.")){
+					passwordEdt.setError(getResources().getString(R.string.invalid_password));
+					passwordEdt.requestFocus();
+				}else{
+					showSinglePopupDialog(R.string.error, message);
+				}
 			}
 		}
 	}
 
 	private void showLoginProgress(boolean show){
-//		if (isPaused)
-//			return;
-
 		if(show){
             showPopupHardProgressDialog(R.string.signingin);
 		}else {
@@ -283,13 +299,29 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			}
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
 			startActivity(intent);
+		}else if (fragment.getTag().equals(NETWORK_CHECK_TAG)){
+			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		facebook.authorizeCallback(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK ){
+			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+				facebook.authorizeCallback(requestCode, resultCode, data);
+			}else if(requestCode == NETWORK_REQUEST){
+				signInUser();
+			}
+		}
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		if(view.getId() == R.id.passwordEdt){
+			passwordEdt.setError(null);
+		}
+		return false;
 	}
 
 

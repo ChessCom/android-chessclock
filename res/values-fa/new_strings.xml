@@ -2,5 +2,8 @@
 	<string name="menu_search">جستجو</string>
 	<string name="restoring_conntection_to_live">اتصال مجدد ...</string>
 	<string name="application_was_killed">برنامه، کشته شد، بازگرداندن ...</string>
+	<string name="no_network">هیچ شبکه</string>
+	<string name="wireless_settings">تنظیمات بی سیم</string>
+	<string name="invalid_password">رمز عبور اشتباه</string>
 
 </resources>

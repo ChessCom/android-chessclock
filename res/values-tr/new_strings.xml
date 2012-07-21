@@ -2,5 +2,8 @@
 	<string name="menu_search">Ara</string>
 	<string name="restoring_conntection_to_live">Yeniden bağlanıyor ...</string>
 	<string name="application_was_killed">Uygulama geri, öldürüldü ...</string>
+	<string name="no_network">Şebeke Yok</string>
+	<string name="wireless_settings">Kablosuz Ayarları</string>
+	<string name="invalid_password">Geçersiz şifre</string>
 
 </resources>

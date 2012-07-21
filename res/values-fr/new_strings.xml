@@ -2,5 +2,8 @@
 	<string name="menu_search">Rechercher</string>
 	<string name="restoring_conntection_to_live">Reconnexion ...</string>
 	<string name="application_was_killed">La demande a été tué, la restauration ...</string>
+	<string name="no_network">Pas de réseau</string>
+	<string name="wireless_settings">Paramètres sans fil</string>
+	<string name="invalid_password">Invalid password</string>
 
 </resources>

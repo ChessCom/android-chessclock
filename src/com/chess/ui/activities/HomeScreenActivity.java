@@ -161,7 +161,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			popupItem.setNegativeBtnId(R.string.decline);
 			popupItem.setPositiveBtnId(R.string.accept);
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem, HomeScreenActivity.this);
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 

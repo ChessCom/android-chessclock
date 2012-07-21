@@ -2,5 +2,8 @@
 	<string name="menu_search">Search</string>
 	<string name="restoring_conntection_to_live">Reconnecting...</string>
 	<string name="application_was_killed">Application was killed, restoring...</string>
+	<string name="no_network">No Network</string>
+	<string name="wireless_settings">Wireless Settings</string>
+	<string name="invalid_password">Invalid password</string>
 
 </resources>

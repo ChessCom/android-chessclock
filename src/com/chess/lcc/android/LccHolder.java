@@ -230,8 +230,10 @@ public class LccHolder{
 		return pendingWarnings.get(pendingWarnings.size() - 1);
 	}
 
-	public boolean isNotConnectedToLive() {
-		return DataHolder.getInstance().isLiveChess() && !connected;
+	public void checkAndConnect() {
+		if(DataHolder.getInstance().isLiveChess() && !connected){
+			LccHolder.getInstance(context).runConnectTask();
+		}
 	}
 
 	/**
@@ -258,6 +260,7 @@ public class LccHolder{
 	}
 
 	public void connectBySessionId(String sessionId) {
+		Log.d("TEST", "connectBySessionId : sessionId = " + sessionId);
 		_lccClient.connect(sessionId, _connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -539,7 +542,6 @@ public class LccHolder{
 	}
 
 	public String[] getOnlineFriends() {
-		Log.d("TEST", "onlineFriends.size() =  " + onlineFriends.size());
 		final String[] array = new String[]{StaticData.SYMBOL_EMPTY};
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
@@ -591,7 +593,6 @@ public class LccHolder{
 			moves = StaticData.SYMBOL_EMPTY;
 		}
 
-        Log.d("TEST","moves from live server = " + moves);
 		gameData[GameItem.MOVE_LIST_NUMB] = moves; // move_list
 		gameData[8] = StaticData.SYMBOL_EMPTY; // user_to_move
 

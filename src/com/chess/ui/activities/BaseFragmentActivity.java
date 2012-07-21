@@ -43,6 +43,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	private static final String INFO_POPUP_TAG = "information popup";
 	private static final String PROGRESS_TAG = "progress dialog popup";
+	protected static final String NETWORK_CHECK_TAG = "network check popup";
+	protected static final int NETWORK_REQUEST = 3456;
 
 
 	protected DisplayMetrics metrics;
@@ -79,7 +81,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 
 		popupItem = new PopupItem();
-		popupDialogFragment = PopupDialogFragment.newInstance(popupItem, this);
+		popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 		popupProgressItem = new PopupItem();
 		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
 

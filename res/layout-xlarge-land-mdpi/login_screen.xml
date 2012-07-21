@@ -27,7 +27,7 @@
 			android:layout_gravity="center"/>
 
 		<com.chess.RoboEditText
-			android:id="@+id/username"
+			android:id="@+id/usernameEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/singinUsername"
@@ -36,7 +36,7 @@
 			/>
 
 		<com.chess.RoboEditText
-			android:id="@+id/password"
+			android:id="@+id/passwordEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/singinPassword"

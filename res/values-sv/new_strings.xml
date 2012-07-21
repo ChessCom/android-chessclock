@@ -2,5 +2,8 @@
 	<string name="menu_search">Sök</string>
 	<string name="restoring_conntection_to_live">Återansluter ...</string>
 	<string name="application_was_killed">Ansökan dödades, återställa ...</string>
+	<string name="no_network">Ingen Nätverket</string>
+	<string name="wireless_settings">Trådlösa Inställningar</string>
+	<string name="invalid_password">Ogiltigt lösenord</string>
 
 </resources>

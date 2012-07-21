@@ -2,5 +2,8 @@
 	<string name="menu_search">Søk</string>
 	<string name="restoring_conntection_to_live">Kobler til på nytt...</string>
 	<string name="application_was_killed">Søknad ble drept, gjenopprette...</string>
+	<string name="no_network">No Network</string>
+	<string name="wireless_settings">Trådløse Innstillinger</string>
+	<string name="invalid_password">Ugyldig passord</string>
 
 </resources>

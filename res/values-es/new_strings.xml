@@ -2,5 +2,8 @@
 	<string name="menu_search">Buscar</string>
 	<string name="restoring_conntection_to_live">Reconectando ...</string>
 	<string name="application_was_killed">Solicitud fue asesinado, la restauración de ...</string>
+	<string name="no_network">No Hay Red</string>
+	<string name="wireless_settings">Configuración Inalámbrica</string>
+	<string name="invalid_password">Contraseña no válida</string>
 
 </resources>

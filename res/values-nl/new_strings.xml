@@ -2,5 +2,8 @@
 	<string name="menu_search">Zoeken</string>
 	<string name="restoring_conntection_to_live">Opnieuw verbinding maken ...</string>
 	<string name="application_was_killed">Toepassing werd gedood, het herstellen van...</string>
+	<string name="no_network">Geen Netwerk</string>
+	<string name="wireless_settings">Draadloze Instellingen</string>
+	<string name="invalid_password">Ongeldig wachtwoord</string>
 
 </resources>

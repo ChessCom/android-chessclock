@@ -2,5 +2,8 @@
 	<string name="menu_search">Pesquisar</string>
 	<string name="restoring_conntection_to_live">Reconectando ...</string>
 	<string name="application_was_killed">A aplicação foi morto, restaurando ...</string>
+	<string name="no_network">Sem Rede</string>
+	<string name="wireless_settings">Configurações sem fio</string>
+	<string name="invalid_password">Senha inválida</string>
 
 </resources>

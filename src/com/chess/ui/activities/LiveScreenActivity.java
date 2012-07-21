@@ -73,10 +73,6 @@ public class LiveScreenActivity extends LiveBaseActivity {
 	private void init() {
 		DataHolder.getInstance().setLiveChess(true);
 
-//		if (LccHolder.getInstance(this).isNotConnectedToLive()) {
-//			LccHolder.getInstance(this).runConnectTask();
-//		}
-
 		infoGroup = new ArrayList<View>();
 	}
 
@@ -122,11 +118,6 @@ public class LiveScreenActivity extends LiveBaseActivity {
 				}
 			}
 		});
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
 	}
 
 	private class NewGamesButtonsAdapter extends BaseAdapter {
