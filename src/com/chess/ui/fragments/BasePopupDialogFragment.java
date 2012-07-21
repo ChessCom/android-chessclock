@@ -42,9 +42,11 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 
     public void updatePopupItem(PopupItem popupItem) {
         this.popupItem = popupItem;
-        Bundle arguments = new Bundle();
-        arguments.putSerializable(POPUP_ITEM, popupItem);
-        setArguments(arguments);
+		if(!isVisible()){
+			Bundle arguments = new Bundle();
+			arguments.putSerializable(POPUP_ITEM, popupItem);
+			setArguments(arguments);
+		}
     }
 
     @Override
@@ -72,7 +74,6 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 		FragmentTransaction ft = manager.beginTransaction();
 		ft.add(this, tag);
 		ft.commitAllowingStateLoss();
-//        super.show(manager, tag);
     }
 
     @Override
@@ -83,7 +84,7 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 
     @Override
     public void dismiss() {
-        if(isShowed)
+        if(isShowed || isVisible())
             super.dismiss();
         isShowed = false;
     }

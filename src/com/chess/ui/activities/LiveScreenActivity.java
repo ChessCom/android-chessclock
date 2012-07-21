@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class LiveScreenActivity extends LiveBaseActivity {
 	private Button currentGame;
 	private ViewGroup loadingView;
 	private List<View> infoGroup;
+	private View emptyView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,8 @@ public class LiveScreenActivity extends LiveBaseActivity {
 		upgradeBtn.setOnClickListener(this);
 
 		loadingView = (ViewGroup) findViewById(R.id.loadingView);
-
+		emptyView = findViewById(R.id.emptyView);
+		
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
 		if (MopubHelper.isShowAds(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
@@ -112,12 +115,23 @@ public class LiveScreenActivity extends LiveBaseActivity {
 			@Override
 			public void run() {
 				loadingView.setVisibility(show? View.VISIBLE: View.GONE);
+				emptyView.setVisibility(View.GONE);
+
 				int infoVisibility = show? View.GONE: View.VISIBLE;
 				for (View view : infoGroup) {
 					view.setVisibility(infoVisibility);
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+		if(fragment.getTag().equals(NETWORK_CHECK_TAG)){
+			emptyView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
+		}
 	}
 
 	private class NewGamesButtonsAdapter extends BaseAdapter {

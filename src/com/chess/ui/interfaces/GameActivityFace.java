@@ -1,7 +1,5 @@
 package com.chess.ui.interfaces;
 
-import android.content.Context;
-
 /**
  * GameActivityFace class
  *
@@ -38,8 +36,6 @@ public interface GameActivityFace {
 	String getWhitePlayerName();
 
 	String getBlackPlayerName();
-
-	Context getMeContext();
 
 	void onCheck();
 }

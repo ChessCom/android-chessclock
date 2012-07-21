@@ -163,6 +163,7 @@
 			android:paddingLeft="10dip"
 			android:layout_centerInParent="true"
 			robo:ttf="Bold"
+			style="@style/DarkShadowBottom"
 			/>
 
 	</RelativeLayout>
