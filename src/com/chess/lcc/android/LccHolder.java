@@ -266,13 +266,13 @@ public class LccHolder{
 
 	public void connectByCreds(String userName, String pass) {
 		Log.d("TEST", "connectByCreds : user = " + userName + "pass = " + pass);
-		_lccClient.connect(userName, pass, _connectionListener);
+		lccClient.connect(userName, pass, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
 		Log.d("TEST", "connectBySessionId : sessionId = " + sessionId);
-		_lccClient.connect(sessionId, _connectionListener);
+		lccClient.connect(sessionId, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
@@ -666,7 +666,7 @@ public class LccHolder{
 
 		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
 		{
-			final boolean isWhiteRunning =_user.getUsername().equals(game.getWhitePlayer().getUsername());
+			final boolean isWhiteRunning =user.getUsername().equals(game.getWhitePlayer().getUsername());
 			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
 			final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
 			if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
