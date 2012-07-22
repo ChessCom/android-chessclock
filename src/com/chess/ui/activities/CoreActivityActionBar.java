@@ -254,6 +254,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	}
 
+	@Override
+	public void onAdminAnnounce(String message) {
+		showSinglePopupDialog(message);
+		popupDialogFragment.setButtons(1);
+	}
+
 	// -----------------------------------------------------
 
 	protected LccHolder getLccHolder() {

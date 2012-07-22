@@ -20,6 +20,7 @@ import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.activities.ChatLiveActivity;
 import com.chess.ui.activities.GameLiveScreenActivity;
+import com.chess.utilities.AppUtils;
 
 import java.util.*;
 
@@ -32,11 +33,16 @@ public class LccHolder{
 	public long currentFGGameId;
 	public long previousFGGameId;
 
-	private LccChatListener _chatListener;
-	private LccConnectionListener _connectionListener;
-	private LccGameListener _gameListener;
-	private LiveChessClient _lccClient;
-	private User _user;
+	private final LccChatListener chatlistener;
+	private final LccConnectionListener connectionListener;
+	private final LccGameListener gameListener;
+	private final LccChallengeListener challengeListener;
+	private final LccSeekListListener seekListListener;
+	private final LccFriendStatusListener friendStatusListener;
+	private final LccAnnouncementListener announcementListener;
+	private final LccAdminEventListener adminEventListener;
+	private LiveChessClient lccClient;
+	private User user;
 	private static LccHolder instance;
 
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
@@ -52,9 +58,6 @@ public class LccHolder{
 	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
 			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
 
-	private final LccChallengeListener challengeListener;
-	private final LccSeekListListener seekListListener;
-	private final LccFriendStatusListener friendStatusListener;
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
 	//private boolean connectingInProgress;
@@ -83,12 +86,14 @@ public class LccHolder{
     private LccHolder(Context context) {
 		this.context = context;
 
-		_chatListener = new LccChatListener(this);
-		_connectionListener = new LccConnectionListener(this);
-		_gameListener = new LccGameListener(this);
+		chatlistener = new LccChatListener(this);
+		connectionListener = new LccConnectionListener(this);
+		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
 		seekListListener = new LccSeekListListener(this);
 		friendStatusListener = new LccFriendStatusListener(this);
+		announcementListener = new LccAnnouncementListener(this);
+		adminEventListener = new LccAdminEventListener(this);
 
 		pendingWarnings = new ArrayList<String>();
 	}
@@ -182,7 +187,7 @@ public class LccHolder{
 	}
 
 	public String getCurrentuserName() {
-		return _user.getUsername();
+		return user.getUsername();
 	}
 
 	public boolean isPlaySound(Long gameId, String[] moves) {
@@ -214,12 +219,18 @@ public class LccHolder{
 	}
 
 	public void sendChatMessage(Long gameId, String text) {
-		_lccClient.sendChatMessage(getGameChat(gameId), text);
+		lccClient.sendChatMessage(getGameChat(gameId), text);
 	}
 
 	public void addPendingWarning(String warning) {
-		if (warning != null)
-			pendingWarnings.add(warning);
+		if (warning != null) {
+			String messageI18n = AppUtils.getI18nString(context, warning, R.string.challengeWaitOriginal, R.string.challengeWait);
+			if (messageI18n == null) {
+				messageI18n = AppUtils.getI18nString(context,
+						R.string.challengeNotAcceptingPattern, warning, R.string.challengeNotAcceptingOriginal, R.string.challengeNotAccepting);
+			}
+			pendingWarnings.add(messageI18n == null ? warning : messageI18n);
+		}
 	}
 
 	public List<String> getPendingWarnings() {
@@ -330,7 +341,7 @@ public class LccHolder{
     }
 
 	public void setLiveChessClient(LiveChessClient liveChessClient) {
-		_lccClient = liveChessClient;
+		lccClient = liveChessClient;
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -341,32 +352,32 @@ public class LccHolder{
 		@Override
 		public void updateData(LiveChessClient returnedObj) {
 			Log.d(TAG, "LiveChessClient initialized");
-			_lccClient = returnedObj;
+			lccClient = returnedObj;
 		}
 	}
 
 	public LccGameListener getGameListener() {
-		return _gameListener;
+		return gameListener;
 	}
 
 	public LccChatListener getChatListener() {
-		return _chatListener;
+		return chatlistener;
 	}
 
 	public LccConnectionListener getConnectionListener() {
-		return _connectionListener;
+		return connectionListener;
 	}
 
 	public User getUser() {
-		return _user;
+		return user;
 	}
 
 	public void setUser(User user) {
-		_user = user;
+		this.user = user;
 	}
 
 	public LiveChessClient getClient() {
-		return _lccClient;
+		return lccClient;
 	}
 
 	public boolean isConnected() {
@@ -378,11 +389,12 @@ public class LccHolder{
 		if (connected) {
 			liveChessClientEventListener.onConnectionEstablished();
 
-			_lccClient.subscribeToChallengeEvents(challengeListener);
-			_lccClient.subscribeToGameEvents(_gameListener);
-			_lccClient.subscribeToChatEvents(_chatListener);
-
-			_lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+			lccClient.subscribeToChallengeEvents(challengeListener);
+			lccClient.subscribeToGameEvents(gameListener);
+			lccClient.subscribeToChatEvents(chatlistener);
+			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+			lccClient.subscribeToAdminEvents(adminEventListener);
+			lccClient.subscribeToAnnounces(announcementListener);
 
 			/*ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -410,7 +422,7 @@ public class LccHolder{
 					&& ((challenge.getTo() == null && oldChallenge.getTo() == null) ||
 					(challenge.getTo() != null && challenge.getTo().equals(oldChallenge.getTo())))) {
 				Log.d(TAG, "Check for doubled challenges: cancel challenge: " + oldChallenge);
-				_lccClient.cancelChallenge(oldChallenge);
+				lccClient.cancelChallenge(oldChallenge);
 			}
 		}
 		ownChallenges.put(challenge.getId(), challenge);
@@ -724,10 +736,6 @@ public class LccHolder{
 		ownChallenges.remove(id);
 	}
 
-	public Challenge getSeek(Long gameId) {
-		return seeks.get(gameId);
-	}
-
 	public boolean isActivityPausedMode() {
 		return activityPausedMode;
 	}
@@ -806,7 +814,7 @@ public class LccHolder{
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
 		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
-			final boolean isOpponentMoveDone = !_user.getUsername().equals(moveMaker.getUsername());
+			final boolean isOpponentMoveDone = !user.getUsername().equals(moveMaker.getUsername());
 
 			if (isOpponentMoveDone) {
 				synchronized (opponentClockStartSync) {
@@ -867,7 +875,7 @@ public class LccHolder{
 	public Boolean isFairPlayRestriction(Long gameId) {
 		Log.d("TEST", "gameId = " + gameId);
 		Game game = getGame(gameId);
-		String userName = _user.getUsername();
+		String userName = user.getUsername();
 
 		if (game.getWhitePlayer().getUsername().equals(userName) && !game.isAbortableByWhitePlayer()) {
 			return true;
@@ -895,14 +903,14 @@ public class LccHolder{
 	}
 
 	public void runDisconnectTask() {
-		if (_lccClient != null)
+		if (lccClient != null)
 			new LiveDisconnectTask().execute();
 	}
 
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
-			_lccClient.disconnect();
+			lccClient.disconnect();
 			return null;
 		}
 	}

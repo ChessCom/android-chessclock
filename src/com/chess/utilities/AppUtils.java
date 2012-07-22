@@ -25,6 +25,8 @@ import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * AppUtils class
@@ -213,4 +215,21 @@ public class AppUtils {
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
+	// Get i18n strings for Live chess server (temporary)
+	public static String getI18nString(Context context, String actual, int expected, int translated) {
+		return actual.equals(context.getString(expected)) ? context.getString(translated) : null;
+	}
+
+	public static String getI18nString(Context context, int regexp, String actual, int expected, int translated) {
+		String substring = null;
+		Matcher m = Pattern.compile(context.getString(regexp)).matcher(actual);
+		if (m.find()) {
+			substring = m.group(1);
+		}
+
+		String s1 = context.getString(expected, substring);
+		String s2 = context.getString(translated, substring);
+
+		return actual.equals(context.getString(expected, substring)) ? context.getString(translated, substring) : null;
+	}
 }

@@ -21,4 +21,6 @@ public interface LiveChessClientEventListenerFace {
     void onConnectionBlocked(boolean blocked);
 
     void onFriendsStatusChanged();
+
+	void onAdminAnnounce(String message);
 }

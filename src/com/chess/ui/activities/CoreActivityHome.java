@@ -171,6 +171,12 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	public void onFriendsStatusChanged(){
 	}
 
+	@Override
+	public void onAdminAnnounce(String message) {
+		showSinglePopupDialog(message);
+		popupDialogFragment.setButtons(1);
+	}
+
 	// -----------------------------------------------------
 
 
