@@ -141,7 +141,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			popupItem.setPositiveBtnId(R.string.accept);
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
-			popupDialogFragment.updatePopupItem(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 
 			popupManager.add(popupDialogFragment);

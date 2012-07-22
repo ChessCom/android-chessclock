@@ -56,6 +56,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private ChessBoardTacticsView boardView;
 
 	private boolean noInternet;
+	private boolean firstRun = true;
 
 	private GetTacticsUpdateListener getTacticsUpdateListener;
 	private TacticsCorrectUpdateListener tacticsCorrectUpdateListener;
@@ -106,6 +107,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
 		if (chessBoard != null) {
 			boardView.setBoardFace(chessBoard);
+			firstRun = false;
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			getBoardFace().setInit(true);
@@ -118,23 +120,22 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		whitePlayerLabel.setVisibility(View.GONE);
 		blackPlayerLabel.setVisibility(View.GONE);
 
-
-		if (getLastCustomNonConfigurationInstance() == null) {
-			Log.d("TEST","getLastCustomNonConfigurationInstance() == null");
-			DataHolder.getInstance().setPendingTacticsLoad(false);
-			showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
-			popupItem.setPositiveBtnId(R.string.yes);
-			popupItem.setNegativeBtnId(R.string.no);
-		}else
-			Log.d("TEST","getLastCustomNonConfigurationInstance() != null");
-
-
 		gamePanelView.hideChatButton();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+
+		if (firstRun) {
+			firstRun = false;
+			DataHolder.getInstance().setPendingTacticsLoad(false);
+
+			popupItem.setPositiveBtnId(R.string.yes);
+			popupItem.setNegativeBtnId(R.string.no);
+			showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
+		}
 
         // TODO show register confirmation dialog
 		if (getBoardFace().isTacticCanceled()) {

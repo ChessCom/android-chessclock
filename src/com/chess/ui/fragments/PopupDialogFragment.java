@@ -76,6 +76,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+
 		String message = popupItem.getMessage(getActivity());
 		if(message.contains(StaticData.SYMBOL_TAG)){
 			messageTxt.setText(Html.fromHtml(message));
