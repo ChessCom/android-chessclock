@@ -40,7 +40,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private static final String END_GAME_TAG = "end game popup";
 
 	private static final long BLINK_DELAY = 5 * 1000;
-	private static final long UNBLINK_DELAY = 500;
+	private static final long UNBLINK_DELAY = 400;
 
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -386,15 +386,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	// -----------------------------------------------------------------------------------
 
-    private void blockGame(final boolean block){     // TODO block board
+    private void blockGame(final boolean block){
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if (block) {
-//					fadeLay.startAnimation(fadeInAnimation);
 					fadeLay.setVisibility(View.VISIBLE);
 				} else {
-//					fadeLay.startAnimation(fadeOutAnimation);
 					fadeLay.setVisibility(View.INVISIBLE);
 				}
 
@@ -403,23 +401,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			}
 		});
     }
-    
-
 
 	protected void sendMove() {
 		showSubmitButtonsLay(false);
 
-		final String move = getBoardFace().convertMoveLive();
+		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
-		Log.i("TEST", "LCC make move: " + move);
-//		try {
-			getLccHolder().makeMove(gameId, move);
-//		} catch (IllegalArgumentException e) {   // DO not eat Runtime Exceptions
-												// instead prevent illegal moves
-												// moved to asynctask
-//			Log.i(TAG, "LCC illegal move: " + move);
-//			e.printStackTrace();
-//		}
+
+		getLccHolder().makeMove(gameId, move, gameTaskRunner);
 	}
 
 	private void updatePlayerLabels() {
@@ -495,11 +484,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		getBoardFace().setSubmit(show);
 		
 		if(show){
-			handler.removeCallbacks(blinkSubmitButton);
-			handler.postDelayed(blinkSubmitButton, BLINK_DELAY);
+			blinkSubmitBtn();
 		}
-
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -652,10 +641,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         getSoundPlayer().playGameEnd();
 	}
 
+	private void blinkSubmitBtn(){
+		handler.removeCallbacks(blinkSubmitButton);
+		handler.postDelayed(blinkSubmitButton, BLINK_DELAY);
+	}
+
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
 			submitBtn.setBackgroundResource(R.drawable.button_grey_selector);
+			submitBtn.invalidate();
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
 		}
@@ -665,6 +660,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		@Override
 		public void run() {
 			submitBtn.setBackgroundResource(R.drawable.button_orange_selector);
+			submitBtn.invalidate();
+			blinkSubmitBtn();
 		}
 	};
 

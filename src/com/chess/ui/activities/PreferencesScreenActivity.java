@@ -222,6 +222,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		//checkboxes
 		enableSounds.setOnCheckedChangeListener(this);
 		showOnlineSubmitChckBx.setOnCheckedChangeListener(this);
+		showLiveSubmitChckBx.setOnCheckedChangeListener(this);
 		enableNotifications.setOnCheckedChangeListener(this);
 		showCoordinates.setOnCheckedChangeListener(this);
 		showHighlights.setOnCheckedChangeListener(this);
@@ -350,16 +351,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
-			preferencesEditor.commit();
-		}else if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
+		}else if (compoundButton.getId() == R.id.showLiveSubmitChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
-			preferencesEditor.commit();
 		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
-			preferencesEditor.commit();
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
-			preferencesEditor.commit();
 
 			if (checked)
 				AppUtils.startNotificationsUpdate(this);
@@ -368,11 +365,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		} else if (compoundButton.getId() == R.id.prefCoords) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, checked);
-			preferencesEditor.commit();
 		} else if (compoundButton.getId() == R.id.prefHighlights) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, checked);
-			preferencesEditor.commit();
 		}
+		preferencesEditor.commit();
 	}
 
 	private void updateVacationLeaveStatus() {

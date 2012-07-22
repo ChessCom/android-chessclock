@@ -90,4 +90,25 @@ public class LccGameTaskRunner {
 		}
 	}
 
+	public void runMakeMoveTask(Game game, String move) {
+		new MakeMoveTask(move).executeTask(game);
+	}
+
+	private class MakeMoveTask extends AbstractUpdateTask<Game, Game> {
+		private String move;
+
+		public MakeMoveTask(String move) {
+			super(gameTaskFace);
+			this.move = move;
+		}
+
+		@Override
+		protected Integer doTheTask(Game... game) {
+			liveChessClient.makeMove(game[0], move);
+			return StaticData.RESULT_OK;
+		}
+	}
+
+
+
 }

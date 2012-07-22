@@ -632,8 +632,8 @@ public class LccHolder{
 		return gameData;
 	}
 
-	public void makeMove(Long gameId, final String move) {
-		final Game game = getGame(gameId);  // TODO remove final and pass like argument
+	public void makeMove(Long gameId, String move, LccGameTaskRunner gameTaskRunner) {
+		Game game = getGame(gameId);
 		/*if(chessMove.isCastling())
 			{
 			  lccMove = chessMove.getWarrenSmithString().substring(0, 4);
@@ -643,48 +643,38 @@ public class LccHolder{
 			  lccMove = move.getMoveString();
 			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.SYMBOL_EMPTY) : lccMove;
 			}*/
-		final long delay = game.getOpponentClockDelay() * 100;
+		long delay = game.getOpponentClockDelay() * 100;
 		synchronized (opponentClockStartSync) {
 			nextOpponentMoveStillNotMade = true;
 		}
 
-		try {
-			Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
-			// TODO make outter task with argument
-			new AsyncTask<Void, Void, Void>() {
-				@Override
-				protected Void doInBackground(Void... voids) {
-					_lccClient.makeMove(game, move);
-					return null;
-				}
-			}.execute();
+		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
+		// TODO make outter task with argument
+		gameTaskRunner.runMakeMoveTask(game, move);
 
-			if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
+		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
+		{
+			final boolean isWhiteRunning =_user.getUsername().equals(game.getWhitePlayer().getUsername());
+			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
+			final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
+			if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
 			{
-				final boolean isWhiteRunning =_user.getUsername().equals(game.getWhitePlayer().getUsername());
-				final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
-				final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
-				if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
-				{
-					clockToBePaused.setRunning(false);
-				}
-				synchronized (opponentClockStartSync) {
-					if (nextOpponentMoveStillNotMade) {
-						opponentClockDelayTimer.schedule(new TimerTask() {
-							@Override
-							public void run() {
-								synchronized (opponentClockStartSync) {
-									if (nextOpponentMoveStillNotMade) {
-										clockToBeStarted.setRunning(true);
-									}
+				clockToBePaused.setRunning(false);
+			}
+			synchronized (opponentClockStartSync) {
+				if (nextOpponentMoveStillNotMade) {
+					opponentClockDelayTimer.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							synchronized (opponentClockStartSync) {
+								if (nextOpponentMoveStillNotMade) {
+									clockToBeStarted.setRunning(true);
 								}
 							}
-						}, delay);
-					}
+						}
+					}, delay);
 				}
 			}
-		} catch (IllegalArgumentException e) {
-			//fireGameEvent(new IllegalMoveEvent(this, null, game, move, IllegalMoveEvent.ILLEGAL_MOVE));
 		}
 	}
 
