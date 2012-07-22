@@ -18,7 +18,7 @@
 	<string name="label_play_live">真人</string>
 	<string name="label_play_online">玩在线</string>
 	<string name="label_online_new_game">新的网络游戏</string>
-	<string name="label_live_new_game">新的Live游戏</string>
+	<string name="label_live_new_game">新的实时游戏</string>
 	<string name="label_play_comp">玩补偿</string>
 	<string name="label_video">視訊</string>
 	<string name="label_settings">设置</string>
@@ -40,11 +40,11 @@
 	<string name="settings">设置</string>
 	<string name="start_new_game">开始新游戏</string>
 	<string name="dont_have_account_q">没有帐户？</string>
-	<string name="singinUsername">用户名称tehwan</string>
+	<string name="singinUsername">用户名</string>
 	<string name="singinPassword">密码:</string>
 	<string name="singinButton">登录</string>
 	<string name="singupButton">注册</string>
-	<string name="complete_singupButton">完成Signup</string>
+	<string name="complete_singupButton">完成注册</string>
 	<string name="singinPlayguest">为来宾播放</string>
 
 	<string name="computerWhite">白色</string>
@@ -74,7 +74,7 @@
 	<string name="minrating">最低评价</string>
 	<string name="maxrating">最高评价</string>
 	<string name="email">电邮</string>
-	<string name="retype">&lt;msg name=\"confirm\"&gt;再次输入密码&lt;/msg&gt;</string>
+	<string name="retype">错误重新输入密码！</string>
 	<string name="country">国家</string>
 	<string name="blue">蓝色</string>
 	<string name="brown">褐色</string>
@@ -82,7 +82,7 @@
 	<string name="grey">灰色</string>
 	<string name="marble">大理石</string>
 	<string name="red">红色</string>
-	<string name="tan">{0}T{/0}{1}an{/1}</string>
+	<string name="tan">黄褐色的</string>
 	<string name="woodlight">木光</string>
 	<string name="wooddark">木材黑暗</string>
 	<string name="alpha">Alpha</string>
@@ -90,7 +90,7 @@
 	<string name="cases">例</string>
 	<string name="classicP">常规</string>
 	<string name="club">夜总会音乐</string>
-	<string name="condal">condal</string>
+	<string name="condal">Condal</string>
 	<string name="maya">玛雅：</string>
 	<string name="modern">现代</string>
 	<string name="vintage">葡萄酒</string>
@@ -113,7 +113,7 @@
 	<string name="ngwhite">新游戏（白）</string>
 	<string name="ngblack">新游戏（黑）</string>
 	<string name="emailgame">电子邮件游戏</string>
-	<string name="load">&lt;ln id=\"MainMen_btnLoad\"&gt;读取保存的游戏&lt;/ln&gt;</string>
+	<string name="load">载入保存的游戏</string>
 	<string name="backtogamelist">回游戏列表</string>
 	<string name="messages">消息</string>
 	<string name="analysis">分析局</string>
@@ -147,7 +147,7 @@
 	<string name="nofriends_online">你的朋友不在线。如果没有他们还邀请，去到www.chess.com。</string>
 	<string name="invite">邀请</string>
 	<string name="drawaccepted">提请接受！</string>
-	<string name="accept">n.验收,接收</string>
+	<string name="accept">接受</string>
 	<string name="challengeaccepted">接受的挑战</string>
 	<string name="challengedeclined">挑战拒收！</string>
 	<string name="decline">拒绝</string>

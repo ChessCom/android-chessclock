@@ -23,6 +23,17 @@
 		<item>Türk</item>
 	</string-array>-->
 
+	<string-array name="new_live_game_button_values">
+		<item>10 dk</item>
+		<item>5 | 2</item>
+		<item>15 | 10</item>
+		<item>30 dk</item>
+		<item>5 dk</item>
+		<item>3 dk</item>
+		<item>2 | 1</item>
+		<item>1 dk</item>
+	</string-array>
+
 	<string-array name="playas">
 		<item>Rastgele</item>
 		<item>Beyaz</item>

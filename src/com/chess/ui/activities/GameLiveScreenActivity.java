@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.*;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -38,6 +39,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private static final String WARNING_TAG = "warning message popup";
 	private static final String END_GAME_TAG = "end game popup";
 
+	private static final long BLINK_DELAY = 5 * 1000;
+	private static final long UNBLINK_DELAY = 500;
+
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
@@ -54,6 +58,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     private View fadeLay;
 	private View gameBoardView;
 	private boolean lccInitiated;
+	private Button submitBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +146,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
-		findViewById(R.id.submitBtn).setOnClickListener(this);
+		submitBtn = (Button) findViewById(R.id.submitBtn);
+		submitBtn.setOnClickListener(this);
+
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
 		gamePanelView.enableAnalysisMode(false);
@@ -176,6 +183,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.onPause();
 		getLccHolder().setActivityPausedMode(true);
 
+		handler.removeCallbacks(blinkSubmitButton);
 	}
 
 	@Override
@@ -485,6 +493,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
 		getBoardFace().setSubmit(show);
+		
+		if(show){
+			handler.removeCallbacks(blinkSubmitButton);
+			handler.postDelayed(blinkSubmitButton, BLINK_DELAY);
+		}
+
 	}
 
 	@Override
@@ -638,7 +652,24 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         getSoundPlayer().playGameEnd();
 	}
 
-	protected void showGameEndPopup(View layout, String title, String message) {
+	private Runnable blinkSubmitButton = new Runnable() {
+		@Override
+		public void run() {
+			submitBtn.setBackgroundResource(R.drawable.button_grey_selector);
+			handler.removeCallbacks(unBlinkSubmitButton);
+			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
+		}
+	};
+
+	private Runnable unBlinkSubmitButton = new Runnable() {
+		@Override
+		public void run() {
+			submitBtn.setBackgroundResource(R.drawable.button_orange_selector);
+		}
+	};
+
+
+	private void showGameEndPopup(View layout, String title, String message) {
 
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);

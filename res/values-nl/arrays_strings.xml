@@ -23,6 +23,18 @@
 		<item>Turks</item>
 	</string-array>-->
 
+	<string-array name="new_live_game_button_values">
+		<item>10 min</item>
+		<item>5 | 2</item>
+		<item>15 | 10</item>
+		<item>30 min</item>
+		<item>5 min</item>
+		<item>3 min</item>
+		<item>2 | 1</item>
+		<item>1 min</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>Willekeurig</item>
 		<item>Wit</item>
