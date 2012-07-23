@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListCurrentItem;
-import com.chess.model.GameListItem;
 
 import java.util.List;
 
@@ -34,23 +33,23 @@ public class OnlineCurrentGamesAdapter extends ItemsAdapter<GameListCurrentItem>
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = StaticData.SYMBOL_EMPTY;
-		if (item.values.get(GameListItem.GAME_TYPE) != null && item.values.get(GameListItem.GAME_TYPE).equals("2")) {
+		if (item.getGameType() != null && item.getGameType().equals("2")) {
 			gameType = " (960)";
 		}
 
 		String draw = StaticData.SYMBOL_EMPTY;
-		if (item.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p"))
+		if (item.getIsDrawOfferPending().equals("p"))
 			draw = "\n" + context.getString(R.string.drawoffered);
 
-		holder.playerTxt.setText(item.values.get(GameListItem.OPPONENT_USERNAME) + gameType + draw);
+		holder.playerTxt.setText(item.getOpponentUsername() + gameType + draw);
 
 		String infoText = StaticData.SYMBOL_EMPTY;
-		if (item.values.get(GameListItem.IS_MY_TURN).equals("1")) {
+		if (item.getIsMyTurn().equals("1")) {
 
-			String amount = item.values.get(GameListItem.TIME_REMAINING_AMOUNT);
-			if (item.values.get(GameListItem.TIME_REMAINING_AMOUNT).substring(0, 1).equals("0"))
+			String amount = item.getTimeRemainingAmount();
+			if (amount.substring(0, 1).equals("0"))
 				amount = amount.substring(1);
-			if (item.values.get(GameListItem.TIME_REMAINING_UNITS).equals("h"))
+			if (item.getTimeRemainingUnits().equals("h"))
 				infoText = amount + context.getString(R.string.hours);
 			else
 				infoText = amount + context.getString(R.string.days);

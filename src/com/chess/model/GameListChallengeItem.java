@@ -19,7 +19,7 @@ public class GameListChallengeItem {
 	public static final String INITIAL_SETUP_FEN = "initial_setup_fen";
 
 
-	public HashMap<String, String> values;
+	private HashMap<String, String> values;
 
 	public GameListChallengeItem(String[] values) {
 		this.values = new HashMap<String, String>();
@@ -38,6 +38,50 @@ public class GameListChallengeItem {
 		//this.values.put("initial_setup_fen", values[9]); // api ver 1
 	}
 
+	public long getGameId(){
+		return Long.parseLong(values.get(GAME_ID));
+	}
+	
+	public String getOpponentUsername(){
+		return values.get(OPPONENT_USERNAME);
+	}
+	
+	public String getOpponentRating(){
+		return values.get(OPPONENT_RATING);
+	}
+
+	public String getOpponentWinCount(){
+		return values.get(OPPONENT_WIN_COUNT);
+	}
+
+	public String getOpponentLossCount(){
+		return values.get(OPPONENT_LOSS_COUNT);
+	}
+
+	public String getOpponentDrawCount() {
+		return values.get(OPPONENT_DRAW_COUNT);
+	}
+
+	public String getPlayAsColor() {
+		return values.get(PLAYAS_COLOR);
+	}
+
+	public String getGameType() {
+		return values.get(GAME_TYPE);
+	}
+
+	public String getRated() {
+		return values.get(RATED);
+	}
+
+	public String getInitialSetupFen() {
+		return values.get(INITIAL_SETUP_FEN);
+	}
+
+	public String getDaysPerMove() {
+		return values.get(DAYS_PER_MOVE);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -47,10 +91,6 @@ public class GameListChallengeItem {
 		return builder.toString();
 	}
 
-
-	public long getGameId(){
-		return Long.parseLong(values.get(GameListChallengeItem.GAME_ID));
-	}
 
 
 //	The eches challenges response looks like the following:

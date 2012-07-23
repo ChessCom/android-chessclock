@@ -20,8 +20,11 @@ public class GameListCurrentItem {
 	public static final String LAST_MOVE_TO_SQUARE = "last_move_to_square";
 	public static final String IS_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 	public static final String IS_OPPONENT_ONLINE = "is_opponent_online";
+	private static final String FEN = "fen";
+	private static final String HAS_NEW_MESSAGE = "has_new_message";
 
-	public HashMap<String, String> values;
+
+	private HashMap<String, String> values;
 
 	public GameListCurrentItem(String[] values) {
 		this.values = new HashMap<String, String>();
@@ -35,15 +38,83 @@ public class GameListCurrentItem {
 		this.values.put(TIME_REMAINING_AMOUNT, values[6]);
 		this.values.put(TIME_REMAINING_UNITS, values[7]);
 		this.values.put(FEN_STRING_LENGTH, values[8]);
-		this.values.put("fen", values[9]);
+		this.values.put(FEN, values[9]);
 		this.values.put(TIMESTAMP, values[10]);
 		this.values.put(LAST_MOVE_FROM_SQUARE, values[11]);
 		this.values.put(LAST_MOVE_TO_SQUARE, values[12]);
 		this.values.put(IS_DRAW_OFFER_PENDING, values[13]);
 		this.values.put(IS_OPPONENT_ONLINE, values[14]);
 		this.values.put(IS_MY_TURN, values[15]);
-		this.values.put(GameItem.HAS_NEW_MESSAGE, values[16]);
+		this.values.put(HAS_NEW_MESSAGE, values[16]);
 
+	}
+
+	public long getGameId(){
+		return Long.parseLong(values.get(GAME_ID));
+	}
+
+	public String getColor() {
+		return values.get(COLOR);
+	}
+
+	public String getGameType() {
+		return values.get(GAME_TYPE);
+	}
+
+	public String getUsernameStringLength() {
+		return values.get(USERNAME_STRING_LENGTH);
+	}
+
+	public String getOpponentUsername() {
+		return values.get(OPPONENT_USERNAME);
+	}
+
+	public String getOpponentRating() {
+		return values.get(OPPONENT_RATING);
+	}
+
+	public String getTimeRemainingAmount() {
+		return values.get(TIME_REMAINING_AMOUNT);
+	}
+
+	public String getTimeRemainingUnits() {
+		return values.get(TIME_REMAINING_UNITS);
+	}
+
+	public String getFenStringLength() {
+		return values.get(FEN_STRING_LENGTH);
+	}
+
+	public String getFen() {
+		return values.get(FEN);
+	}
+
+	public String getTimestamp() {
+		return values.get(TIMESTAMP);
+	}
+
+	public String getLastMoveFromSquare() {
+		return values.get(LAST_MOVE_FROM_SQUARE);
+	}
+
+	public String getLastMoveToSquare() {
+		return values.get(LAST_MOVE_TO_SQUARE);
+	}
+
+	public String getIsDrawOfferPending() { // TODO
+		return values.get(IS_DRAW_OFFER_PENDING);
+	}
+
+	public String getIsOpponentOnline() {
+		return values.get(IS_OPPONENT_ONLINE);
+	}
+
+	public String getHasNewMessage() { // TODO
+		return values.get(HAS_NEW_MESSAGE);
+	}
+
+	public String getIsMyTurn() { // TODO
+		return values.get(IS_MY_TURN);
 	}
 
 	@Override
@@ -56,9 +127,7 @@ public class GameListCurrentItem {
 	}
 
 
-	public long getGameId(){
-		return Long.parseLong(values.get(GameListCurrentItem.GAME_ID));
-	}
+
 
 //	The echess current games response looks like the following:
 //	<

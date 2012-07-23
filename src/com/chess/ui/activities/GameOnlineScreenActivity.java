@@ -205,7 +205,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
 
-		if (currentGame.values.get(GameListItem.GAME_TYPE).equals("2"))
+		if (currentGame.getGameType().equals("2"))
 			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
@@ -213,10 +213,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 		String[] moves = {};
 
-		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
+		if (currentGame.getMoveList().contains("1.")) {
 			int beginIndex = 1;
 
-			moves = currentGame.values.get(AppConstants.MOVE_LIST)
+			moves = currentGame.getMoveList()
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
@@ -225,7 +225,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getBoardFace().setMovesCount(0);
 		}
 
-		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION);
+		String FEN = currentGame.getStartingFenPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, getBoardFace());
@@ -269,10 +269,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		currentGame = newGame;
 		String[] moves;
 
-		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
+		if (currentGame.getMoveList().contains("1.")) {
 			int beginIndex = 1;
 
-			moves = currentGame.values.get(AppConstants.MOVE_LIST)
+			moves = currentGame.getMoveList()
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
@@ -301,7 +301,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getWhiteUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.getWhiteRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override
@@ -309,7 +310,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getBlackUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override
@@ -339,7 +341,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.values.get(GameListItem.TIMESTAMP));
+		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 		new GetStringObjTask(sendMoveUpdateListener).executeTask(loadItem);
 	}
@@ -423,8 +425,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
 				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (/*gameListItem.type == GameListItem.LIST_TYPE_CURRENT
-							&&*/ gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
+					if (gameListItem.getIsMyTurn().equals(GameListItem.V_ONE)) {
 						currentGames.add(gameListItem);
 					}
 				}
@@ -454,16 +455,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private boolean openChatActivity() {
-		preferencesEditor.putString(AppConstants.OPPONENT, currentGame.values.get(
-				isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
+		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
+				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
 
-		currentGame.values.put(GameItem.HAS_NEW_MESSAGE, "0");
+		currentGame.setHasNewMessage("0");
 		gamePanelView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatOnlineActivity.class);
 		intent.putExtra(GameListItem.GAME_ID, gameId);
-		intent.putExtra(GameListItem.TIMESTAMP, currentGame.values.get(GameListItem.TIMESTAMP));
+		intent.putExtra(GameListItem.TIMESTAMP, currentGame.getTimestamp());
 		startActivity(intent);
 
 		chat = false;
@@ -472,7 +473,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 
 	private void checkMessages() {
-		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+		if (currentGame.getHasNewMessage().equals("1")) {
 			gamePanelView.haveNewMessage(true);
 		}
 	}
@@ -488,7 +489,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public Boolean isUserColorWhite() {
-		return currentGame.values.get(AppConstants.WHITE_USERNAME).toLowerCase()
+		return currentGame.getWhiteUsername().toLowerCase()
 				.equals(AppData.getUserName(this));
 	}
 
@@ -589,7 +590,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.values.get(GameListItem.TIMESTAMP));
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 			new GetStringObjTask(drawOfferedUpdateListener).executeTask(loadItem);
 		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
@@ -600,14 +601,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.values.get(GameListItem.TIMESTAMP));
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 			new GetStringObjTask(abortGameUpdateListener).executeTask(loadItem);
 		}
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+		if (currentGame.getHasNewMessage().equals("1")) {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
 		} else {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);
@@ -679,9 +680,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private int getCurrentPlayerRating(){
 		if (userPlayWhite) {
-			return Integer.valueOf(currentGame.values.get(GameItem.WHITE_RATING));
+			return Integer.valueOf(currentGame.getWhiteRating());
 		} else {
-			return Integer.valueOf(currentGame.values.get(GameItem.BLACK_RATING));
+			return Integer.valueOf(currentGame.getBlackRating());
 		}
 	}
 

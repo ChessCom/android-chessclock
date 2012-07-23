@@ -271,13 +271,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		int[] moveFT;
 		if (!currentGame.equals(gameItem)) {
-			if (!currentGame.values.get(AppConstants.MOVE_LIST).equals(gameItem.values.get(AppConstants.MOVE_LIST))) {
+			if (!currentGame.getMoveList().equals(gameItem.getMoveList())) {
 				currentGame = gameItem;
 				String[] moves;
 
 				int beginIndex = 0;
 
-				moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", "")
+				moves = currentGame.getMoveList()
+						.replaceAll("[0-9]{1,4}[.]", "")
 						.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 				if (moves.length - getBoardFace().getMovesCount() == 1) { // if have new move
@@ -427,23 +428,23 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	private boolean openChatActivity() {
-		preferencesEditor.putString(AppConstants.OPPONENT, currentGame.values.get(
-				isUserColorWhite() ? AppConstants.BLACK_USERNAME : AppConstants.WHITE_USERNAME));
+		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
+				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
 
-		currentGame.values.put(GameItem.HAS_NEW_MESSAGE, "0");
+		currentGame.setHasNewMessage("0");
 		gamePanelView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatLiveActivity.class);
 		intent.putExtra(GameListItem.GAME_ID, gameId);
-		intent.putExtra(GameListItem.TIMESTAMP, currentGame.values.get(GameListItem.TIMESTAMP));
+		intent.putExtra(GameListItem.TIMESTAMP, currentGame.getTimestamp());
 		startActivity(intent);
 
 		return true;
 	}
 
 	private void checkMessages() {
-		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+		if (currentGame.getHasNewMessage().equals("1")) {
 			gamePanelView.haveNewMessage(true);
 		}
 	}
@@ -512,7 +513,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return currentGame.values.get(AppConstants.WHITE_USERNAME).toLowerCase()
+		return currentGame.getWhiteUsername().toLowerCase()
 				.equals(AppData.getUserName(this));
 	}
 
@@ -585,7 +586,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		if (currentGame.values.get(GameItem.HAS_NEW_MESSAGE).equals("1")) {
+		if (currentGame.getHasNewMessage().equals("1")) {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
 		} else {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);
@@ -607,8 +608,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getWhiteUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.getWhiteRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override
@@ -616,7 +617,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR + currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getBlackUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {

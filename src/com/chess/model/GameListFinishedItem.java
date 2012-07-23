@@ -19,8 +19,9 @@ public class GameListFinishedItem {
 	public static final String LAST_MOVE_TO_SQUARE = "last_move_to_square";
 	public static final String IS_OPPONENT_ONLINE = "is_opponent_online";
 	public static final String GAME_RESULT = "game_result";
+	private static final String FEN = "fen";
 
-	public HashMap<String, String> values;
+	private HashMap<String, String> values;
 
 	public GameListFinishedItem(String[] values) {
 		this.values = new HashMap<String, String>();
@@ -34,13 +35,69 @@ public class GameListFinishedItem {
 		this.values.put(TIME_REMAINING_AMOUNT, values[6]);
 		this.values.put(TIME_REMAINING_UNITS, values[7]);
 		this.values.put(FEN_STRING_LENGTH, values[8]);
-		this.values.put("fen", values[9]);
+		this.values.put(FEN, values[9]);
 		this.values.put(TIMESTAMP, values[10]);
 		this.values.put(LAST_MOVE_FROM_SQUARE, values[11]);
 		this.values.put(LAST_MOVE_TO_SQUARE, values[12]);
 		this.values.put(IS_OPPONENT_ONLINE, values[13]);
 		this.values.put(GAME_RESULT, values[14]);
 
+	}
+
+	public String getColor() {
+		return values.get(COLOR);
+	}
+
+	public String getFen() {
+		return values.get(FEN);
+	}
+
+	public String getFenStringLength() {
+		return values.get(FEN_STRING_LENGTH);
+	}
+
+	public String getGameResult() {
+		return values.get(GAME_RESULT);
+	}
+
+	public String getGameType() {
+		return values.get(GAME_TYPE);
+	}
+
+	public String getIsOpponentOnline() {
+		return values.get(IS_OPPONENT_ONLINE);
+	}
+
+	public String getLastMoveFromSquare() {
+		return values.get(LAST_MOVE_FROM_SQUARE);
+	}
+
+	public String getLastMoveToSquare() {
+		return values.get(LAST_MOVE_TO_SQUARE);
+	}
+
+	public String getOpponentRating() {
+		return values.get(OPPONENT_RATING);
+	}
+
+	public String getOpponentUsername() {
+		return values.get(OPPONENT_USERNAME);
+	}
+
+	public String getTimeRemainingAmount() {
+		return values.get(TIME_REMAINING_AMOUNT);
+	}
+
+	public String getTimeRemainingUnits() {
+		return values.get(TIME_REMAINING_UNITS);
+	}
+
+	public String getTimestamp() {
+		return values.get(TIMESTAMP);
+	}
+
+	public String getUsernameStringLength() {
+		return values.get(USERNAME_STRING_LENGTH);
 	}
 
 	@Override

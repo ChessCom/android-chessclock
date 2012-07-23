@@ -162,12 +162,12 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
-		String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE
-				+ gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE
-				+ gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE
-				+ gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+		String title = gameListElement.getOpponentUsername() + StaticData.SYMBOL_NEW_STR
+				+ getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListElement.getOpponentWinCount()
+				+ StaticData.SYMBOL_NEW_STR
+				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListElement.getOpponentLossCount()
+				+ StaticData.SYMBOL_NEW_STR
+				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListElement.getOpponentDrawCount();
 
 		popupItem.setPositiveBtnId(R.string.accept);
 		popupItem.setNegativeBtnId(R.string.decline);

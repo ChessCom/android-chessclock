@@ -20,7 +20,6 @@ import com.chess.model.GameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
@@ -141,7 +140,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private void adjustBoardForGame() {
-		if (currentGame.values.get(GameListItem.GAME_TYPE).equals("2"))
+		if (currentGame.getGameType().equals("2"))
 			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
@@ -149,10 +148,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		}
 		String[] moves = {};
 
-		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
+		if (currentGame.getMoveList().contains("1.")) {
 			int beginIndex = 1;
 
-			moves = currentGame.values.get(AppConstants.MOVE_LIST)
+			moves = currentGame.getMoveList()
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
@@ -161,7 +160,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			getBoardFace().setMovesCount(0);
 		}
 
-		String FEN = currentGame.values.get(GameItem.STARTING_FEN_POSITION);
+		String FEN = currentGame.getStartingFenPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, getBoardFace());
@@ -179,42 +178,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		playLastMoveAnimation();
 	}
 
-	public void onGameRefresh(GameItem newGame) {
-		currentGame = newGame;
-		String[] moves;
-		int[] moveFT;
-
-		if (currentGame.values.get(AppConstants.MOVE_LIST).contains("1.")) {
-
-			int beginIndex = 1;
-
-			moves = currentGame.values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]",
-					StaticData.SYMBOL_EMPTY).replaceAll("  ", " ").substring(beginIndex).split(" ");
-
-			if (moves.length - boardView.getBoardFace().getMovesCount() == 1) {
-				moveFT = MoveParser.parse(boardView.getBoardFace(), moves[moves.length - 1]);
-
-				boolean playSound = false;
-
-				if (moveFT.length == 4) {
-					Move move;
-					if (moveFT[3] == 2)
-						move = new Move(moveFT[0], moveFT[1], 0, 2);
-					else
-						move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					boardView.getBoardFace().makeMove(move, playSound);
-				} else {
-					Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-					boardView.getBoardFace().makeMove(move, playSound);
-				}
-
-				boardView.getBoardFace().setMovesCount(moves.length);
-				boardView.invalidate();
-			}
-			invalidateGameScreen();
-		}
-	}
-
 	public void invalidateGameScreen() {
         whitePlayerLabel.setText(getWhitePlayerName());
         blackPlayerLabel.setText(getBlackPlayerName());
@@ -227,8 +190,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.WHITE_USERNAME) + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.values.get(GameItem.WHITE_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getWhiteUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.getWhiteRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override
@@ -236,8 +199,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.values.get(AppConstants.BLACK_USERNAME) + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.values.get(GameItem.BLACK_RATING) + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getBlackUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
 	@Override
@@ -265,7 +228,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
 				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
+					if (gameListItem.getIsMyTurn().equals(GameListItem.V_ONE)) {
 						currentGames.add(gameListItem);
 					}
 				}
@@ -293,8 +256,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	public Boolean isUserColorWhite() {
-		return currentGame.values.get(AppConstants.WHITE_USERNAME).toLowerCase()
-				.equals(AppData.getUserName(this));
+		return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
 	}
 
 	@Override
