@@ -50,7 +50,7 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 				for (GameListCurrentItem gameListItem : itemList) {
 					gameId = gameListItem.getGameId();
 				}
-
+			// test
 
 /*
 		Success+<total_games_returned>:
