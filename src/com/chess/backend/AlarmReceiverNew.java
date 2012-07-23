@@ -22,11 +22,6 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-//		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.GET_MOVE_STATUS);
-//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(context));
-//		new GetStringObjTask(new UpdateListener(context)).executeTask(loadItem);
-
 		// http://www.chess.com/api/v2/get_echess_current_games
 
 		LoadItem loadItem = new LoadItem();
@@ -50,7 +45,6 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 				for (GameListCurrentItem gameListItem : itemList) {
 					gameId = gameListItem.getGameId();
 				}
-			// test
 
 /*
 		Success+<total_games_returned>:
