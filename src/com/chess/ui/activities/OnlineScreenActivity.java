@@ -5,7 +5,6 @@ import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,6 +20,9 @@ import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.model.GameListChallengeItem;
+import com.chess.model.GameListCurrentItem;
+import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.ui.adapters.OnlineCurrentGamesAdapter;
@@ -48,7 +50,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private static final int UPDATE_DELAY = 120000;
 	private int currentListType;
 
-	private GameListItem gameListElement;
+//	private GameListItem gameListElement;
 	private static final int ACCEPT_DRAW = 0;
 	private static final int DECLINE_DRAW = 1;
 	private int successToastMsgId;
@@ -62,6 +64,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
 	private SectionedAdapter sectionedAdapter;
 	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
+	private GameListCurrentItem gameListCurrentItem;
+	private GameListChallengeItem gameListChallengeItem;
 
 
 	@Override
@@ -99,12 +103,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		listUpdateListener = new ListUpdateListener();
 
 		// init adapters
-		List<GameListItem> itemList = new ArrayList<GameListItem>();
+		List<GameListCurrentItem> currentItemList = new ArrayList<GameListCurrentItem>();
+		List<GameListChallengeItem> challengesItemList = new ArrayList<GameListChallengeItem>();
+		List<GameListFinishedItem> finishedItemList = new ArrayList<GameListFinishedItem>();
 		sectionedAdapter = new SectionedAdapter(this);
 
-		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, itemList);
-		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, itemList);
-		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, itemList);
+		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, currentItemList);
+		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, challengesItemList);
+		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, finishedItemList);
 
 		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
@@ -233,16 +239,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.values.get(GameListItem.TIMESTAMP));
 
 			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 		} else if (fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListChallengeItem.getGameId()));
 			successToastMsgId = R.string.challengeaccepted;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -256,9 +262,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.values.get(GameListItem.TIMESTAMP));
 
 			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 		}
@@ -270,14 +276,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
+			intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
 			startActivity(intent);
 
 		} else if (fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListChallengeItem.getGameId()));
 			successToastMsgId = R.string.challengedeclined;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -289,24 +295,24 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+				preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.values.get(GameListItem.OPPONENT_USERNAME));
 				preferencesEditor.commit();
 
 				Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
-				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
-				intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+				intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
+				intent.putExtra(GameListItem.TIMESTAMP, gameListCurrentItem.values.get(GameListItem.TIMESTAMP));
 				startActivity(intent);
 			} else if (pos == 1) {
 				String Draw = AppConstants.OFFERDRAW;
-				if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p"))
+				if (gameListCurrentItem.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p"))
 					Draw = AppConstants.ACCEPTDRAW;
 
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
+				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
 				loadItem.addRequestParams(RestHelper.P_COMMAND, Draw);
-				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.values.get(GameListItem.TIMESTAMP));
 
 				new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
@@ -314,9 +320,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListElement.getGameId()));
+				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.values.get(GameListItem.TIMESTAMP));
 
 				new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 			}
@@ -324,24 +330,24 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	};
 
 
-	private DialogInterface.OnClickListener challengeDialogListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface d, int pos) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-
-			if (pos == ACCEPT_DRAW) {
-				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
-				successToastMsgId = R.string.challengeaccepted;
-			} else if (pos == DECLINE_DRAW) {
-				loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
-				successToastMsgId = R.string.challengedeclined;
-			}
-
-			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
-		}
-	};
+//	private DialogInterface.OnClickListener challengeDialogListener = new DialogInterface.OnClickListener() {
+//		@Override
+//		public void onClick(DialogInterface d, int pos) {
+//			LoadItem loadItem = new LoadItem();
+//			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
+//			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//
+//			if (pos == ACCEPT_DRAW) {
+//				loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
+//				successToastMsgId = R.string.challengeaccepted;
+//			} else if (pos == DECLINE_DRAW) {
+//				loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
+//				successToastMsgId = R.string.challengedeclined;
+//			}
+//
+//			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
+//		}
+//	};
 
 	@Override
 	public void onClick(View view) {
@@ -365,15 +371,27 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		gameListElement = (GameListItem) adapterView.getItemAtPosition(pos);
+		int sectionsCnt = ((SectionedAdapter)adapterView.getAdapter()).getSectionsCnt();
+		int k;
+		int correctPosition = pos;
+		for (k = 0; k < sectionsCnt; k++){
+			int itemsCnt  = ((SectionedAdapter)adapterView.getAdapter()).getSection(k).adapter.getCount();
 
-		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-			clickOnChallenge();
-		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
-			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+			if(correctPosition < itemsCnt){
+
+				break;
+			}
+			correctPosition--;
+		}
+
+
+		if(k == 0){
+			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(correctPosition);
+
+			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.values.get(GameListItem.OPPONENT_USERNAME));
 			preferencesEditor.commit();
 
-			if (gameListElement.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
+			if (gameListCurrentItem.values.get(GameListItem.IS_DRAW_OFFER_PENDING).equals("p")) {
 				DataHolder.getInstance().setAcceptDraw(true);
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
@@ -386,26 +404,27 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-				intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
+				intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
 				startActivity(intent);
 			}
-		} else if (gameListElement.type == GameListItem.LIST_TYPE_FINISHED) {
-			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+		} else if (k == 1) {
+			clickOnChallenge(correctPosition);
+		} else {
+			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(correctPosition);
+			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.values.get(GameListItem.OPPONENT_USERNAME));
 			preferencesEditor.commit();
 
 			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
-			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
+			intent.putExtra(GameListItem.GAME_ID, finishedItem.getGameId());
 			startActivity(intent);
 		}
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		gameListElement = (GameListItem) adapterView.getItemAtPosition(pos);
+		if (pos < currentGamesAdapter.getCount()-1){
+			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 
-		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-			clickOnChallenge();
-		} else if (gameListElement.type == GameListItem.LIST_TYPE_CURRENT) {
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
 							getString(R.string.chat),
@@ -413,13 +432,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 							getString(R.string.resignorabort)},
 							gameListItemDialogListener)
 					.create().show();
-		} else if (gameListElement.type == GameListItem.LIST_TYPE_FINISHED) {
-			preferencesEditor.putString(AppConstants.OPPONENT, gameListElement.values.get(GameListItem.OPPONENT_USERNAME));
+
+		} else if (pos < challengesGamesAdapter.getCount()-1) {
+			clickOnChallenge(pos);
+		} else {
+			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
+
+			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.values.get(GameListItem.OPPONENT_USERNAME));
 			preferencesEditor.commit();
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
-			intent.putExtra(GameListItem.GAME_ID, gameListElement.getGameId());
-			intent.putExtra(GameListItem.TIMESTAMP, gameListElement.values.get(GameListItem.TIMESTAMP));
+			intent.putExtra(GameListItem.GAME_ID, finishedItem.getGameId());
+			intent.putExtra(GameListItem.TIMESTAMP, finishedItem.values.get(GameListItem.TIMESTAMP));
 			startActivity(intent);
 		}
 		return true;
@@ -432,12 +456,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	};
 
-	private void clickOnChallenge() {
-		String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+	private void clickOnChallenge(int pos) {
+		gameListChallengeItem = challengesGamesAdapter.getItem(pos);
+		
+		String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.values.get(GameListItem.OPPONENT_WIN_COUNT)
 				+ StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.values.get(GameListItem.OPPONENT_LOSS_COUNT)
 				+ StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
 		popupItem.setPositiveBtnId(R.string.accept);
 		popupItem.setNegativeBtnId(R.string.decline);

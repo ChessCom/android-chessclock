@@ -24,6 +24,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameItem;
+import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameListItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
@@ -419,16 +420,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
-				ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
+				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
-				for (GameListItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.type == GameListItem.LIST_TYPE_CURRENT
-							&& gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
+				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
+					if (/*gameListItem.type == GameListItem.LIST_TYPE_CURRENT
+							&&*/ gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
 						currentGames.add(gameListItem);
 					}
 				}
 
-				for (GameListItem currentGame : currentGames) {
+				for (GameListCurrentItem currentGame : currentGames) {
 					if (currentGame.getGameId() != gameId) {
 						gameId = currentGame.getGameId();
 						showSubmitButtonsLay(false);

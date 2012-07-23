@@ -13,7 +13,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import com.chess.R;
-import com.chess.backend.AlarmReceiver;
+import com.chess.backend.AlarmReceiverNew;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -24,7 +24,6 @@ import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -173,7 +172,8 @@ public class AppUtils {
 	}
 
 	public static void startNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
 				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -184,7 +184,8 @@ public class AppUtils {
 	}
 
 	public static void stopNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
 				PendingIntent.FLAG_UPDATE_CURRENT);

@@ -2,21 +2,35 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameListItem;
 
 import java.util.List;
 
-public class OnlineFinishedGamesAdapter extends OnlineGamesAdapter {
+public class OnlineFinishedGamesAdapter extends ItemsAdapter<GameListFinishedItem> {
 
 
-	public OnlineFinishedGamesAdapter(Context context, List<GameListItem> itemList) {
+	public OnlineFinishedGamesAdapter(Context context, List<GameListFinishedItem> itemList) {
 		super(context, itemList);
 	}
 
 	@Override
-	protected void bindView(GameListItem item, int pos, View convertView) {
+	protected View createView(ViewGroup parent) {
+		View view = inflater.inflate(R.layout.game_list_item, parent, false);
+		ViewHolder holder = new ViewHolder();
+		holder.playerTxt = (TextView) view.findViewById(R.id.playerTxt);
+		holder.gameInfoTxt = (TextView) view.findViewById(R.id.gameInfoTxt);
+
+		view.setTag(holder);
+		return view;
+	}
+
+	@Override
+	protected void bindView(GameListFinishedItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = StaticData.SYMBOL_EMPTY;
@@ -34,5 +48,10 @@ public class OnlineFinishedGamesAdapter extends OnlineGamesAdapter {
 
 		holder.playerTxt.setText(item.values.get(GameListItem.OPPONENT_USERNAME) + gameType);
 		holder.gameInfoTxt.setText(result);
+	}
+
+	protected class ViewHolder {
+		public TextView playerTxt;
+		public TextView gameInfoTxt;
 	}
 }

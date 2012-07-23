@@ -125,6 +125,7 @@
 			android:windowSoftInputMode="stateHidden"/>
 
 		<receiver android:name=".backend.AlarmReceiver"/>
+		<receiver android:name=".backend.AlarmReceiverNew"/>
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 

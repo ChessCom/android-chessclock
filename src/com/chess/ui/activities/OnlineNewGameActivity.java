@@ -15,6 +15,7 @@ import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.model.GameListChallengeItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.utilities.ChessComApiParser;
@@ -29,9 +30,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
 	private ListView openChallengesListView;
-	private ArrayList<GameListItem> gameListItems = new ArrayList<GameListItem>();
+	private ArrayList<GameListChallengeItem> gameListItems = new ArrayList<GameListChallengeItem>();
 	private OnlineChallengesGamesAdapter gamesAdapter = null;
-	private GameListItem gameListElement;
+	private GameListChallengeItem gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private int successToastMsgId;
 
@@ -161,19 +162,16 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	@Override
 	public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 		gameListElement = gameListItems.get(pos);
-		if (gameListElement.type == GameListItem.LIST_TYPE_CHALLENGES) {
-			String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE
-					+ gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
-					+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE
-					+ gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
-					+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE
-					+ gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
+		String title = getString(R.string.win_) + StaticData.SYMBOL_SPACE
+				+ gameListElement.values.get(GameListItem.OPPONENT_WIN_COUNT)
+				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE
+				+ gameListElement.values.get(GameListItem.OPPONENT_LOSS_COUNT)
+				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE
+				+ gameListElement.values.get(GameListItem.OPPONENT_DRAW_COUNT);
 
-			popupItem.setPositiveBtnId(R.string.accept);
-			popupItem.setNegativeBtnId(R.string.decline);
-			showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
-
-		}
+		popupItem.setPositiveBtnId(R.string.accept);
+		popupItem.setNegativeBtnId(R.string.decline);
+		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {

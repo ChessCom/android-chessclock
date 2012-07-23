@@ -17,6 +17,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameItem;
+import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -261,15 +262,15 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
-				ArrayList<GameListItem> currentGames = new ArrayList<GameListItem>();
+				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
-				for (GameListItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.type == GameListItem.LIST_TYPE_CURRENT && gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
+				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
+					if (gameListItem.values.get(GameListItem.IS_MY_TURN).equals(GameListItem.V_ONE)) {
 						currentGames.add(gameListItem);
 					}
 				}
 
-				for (GameListItem currentGame : currentGames) {
+				for (GameListCurrentItem currentGame : currentGames) {
 					if (currentGame.getGameId() != gameId) {
 						boardView.setBoardFace(new ChessBoard(GameFinishedScreenActivity.this));
 						getBoardFace().setAnalysis(false);
