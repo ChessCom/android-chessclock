@@ -48,16 +48,12 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 
 		HttpRequestBase httpGet = new HttpGet(url);
 		try {
-
-			httpClient.getCredentialsProvider().setCredentials(
-					new AuthScope("chess-4.com", 80, AuthScope.ANY_SCHEME),
-					new UsernamePasswordCredentials(AppConstants.CHESS_4_U, AppConstants.CHESS_4_P));
-			// test server login support
-			httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
+            if (RestHelper.IS_TEST_SERVER_MODE)
+                httpGet.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 			HttpResponse response = httpClient.execute(httpGet);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
-				Log.e(TAG, "Error " + statusCode + " while retrieving dat from " + url);
+				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 				return StaticData.UNKNOWN_ERROR;
 			}
 			if (response != null) {

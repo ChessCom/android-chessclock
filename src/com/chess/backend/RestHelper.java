@@ -136,6 +136,9 @@ public class RestHelper {
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
+	public static final boolean IS_TEST_SERVER_MODE = true;
+	public static final String AUTHORIZATION_HEADER = "Authorization";
+	public static final String AUTHORIZATION_HEADER_VALUE = "Basic Ym9iYnk6ZmlzY2hlcg==";
 
 
 //	The eches challenges response looks like the following:

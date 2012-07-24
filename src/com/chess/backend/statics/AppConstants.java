@@ -12,8 +12,6 @@ public class AppConstants {
 
 	public static final String GAME_MODE = "game_mode";
 	public static final String TITLE = "title";
-	public static final String CHESS_4_U = "bobby";
-	public static final String CHESS_4_P = "fischer";
 
 	public static final String USER_TOKEN = "user_token";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";

@@ -54,7 +54,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
             HttpResponse response = httpClient.execute(httpost);
             final int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                Log.e(TAG, "Error " + statusCode + " while retrieving dat from " + url);
+                Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
                 return StaticData.UNKNOWN_ERROR;
             }
 

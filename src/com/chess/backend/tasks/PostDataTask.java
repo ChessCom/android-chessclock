@@ -57,7 +57,7 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 			HttpResponse response = httpClient.execute(httpPost);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
-				Log.e(TAG, "Error " + statusCode + " while retrieving dat from " + url);
+				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 				return StaticData.UNKNOWN_ERROR;
 			}
 			if (response != null){
