@@ -4,10 +4,12 @@ import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -40,14 +42,18 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
-		HttpClient httpClient = new DefaultHttpClient(httpParameters);
+		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 
 		Log.d(TAG, "retrieving from url = " + url);
 
 		HttpRequestBase httpGet = new HttpGet(url);
 		try {
+
+			httpClient.getCredentialsProvider().setCredentials(
+					new AuthScope("chess-4.com", 80, AuthScope.ANY_SCHEME),
+					new UsernamePasswordCredentials(AppConstants.CHESS_4_U, AppConstants.CHESS_4_P));
 			// test server login support
-			//httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
+			httpGet.addHeader("Authorization", "Basic Ym9iYnk6ZmlzY2hlcg==");
 			HttpResponse response = httpClient.execute(httpGet);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {

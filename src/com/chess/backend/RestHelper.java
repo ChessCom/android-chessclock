@@ -23,7 +23,8 @@ public class RestHelper {
 	public static final String R_OPPONENT_MOVE = "Success+0";
 
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
-	public static final String BASE_URL = "http://www.chess.com";
+	public static final String BASE_URL = "http://www.chess-4.com";
+//	public static final String BASE_URL = "http://www.chess.com";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
 	public static final String API_V2 = "/api/v2";
