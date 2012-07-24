@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Paramètres sans fil</string>
 	<string name="invalid_password">Invalid password</string>
 	<string name="your_turn_in_game_with">Dans votre jeu avec %1$s , %2$s</string>
+	<string name="register">S\'inscrire</string>
 
 </resources>

@@ -43,7 +43,7 @@
 	<string name="singinUsername">نام کاربری</string>
 	<string name="singinPassword">گذرواژه</string>
 	<string name="singinButton">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
-	<string name="singupButton">ثبت نام</string>
+	<string name="sing_up">ثبت نام</string>
 	<string name="complete_singupButton">کامل ثبت نام</string>
 	<string name="singinPlayguest">بازی به عنوان مهمان</string>
 

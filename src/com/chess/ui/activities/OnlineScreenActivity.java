@@ -274,7 +274,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+//			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 			intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
 			startActivity(intent);
 
@@ -381,7 +381,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				DataHolder.getInstance().setAcceptDraw(false);
 
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+//				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 				intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
 				startActivity(intent);
 			}

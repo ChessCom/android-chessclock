@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:text="@string/Thinking"
-			android:visibility="gone"
+			android:visibility="visible"
 			style="@style/GameLabel"
 			/>
 

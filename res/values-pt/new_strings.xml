@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Configurações sem fio</string>
 	<string name="invalid_password">Senha inválida</string>
 	<string name="your_turn_in_game_with">Em seu jogo com %1$s , %2$s</string>
+	<string name="register">Inscrever</string>
 
 </resources>

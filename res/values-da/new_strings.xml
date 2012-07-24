@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Trådløse Indstillinger</string>
 	<string name="invalid_password">Ugyldig adgangskode</string>
 	<string name="your_turn_in_game_with">I dit spil med %1$s , %2$s</string>
+	<string name="register">Tilmeld</string>
 
 </resources>

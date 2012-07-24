@@ -24,7 +24,9 @@ import java.util.TreeSet;
 
 public class ChessBoardCompView extends ChessBoardBaseView {
 
-    private boolean hint;
+	private static final String DIVIDER_1 = "|";
+	private static final String DIVIDER_2 = ":";
+	private boolean hint;
     private boolean compmoving;
     private boolean stopThinking;
 
@@ -72,16 +74,23 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         if ((AppData.isComputerVsHumanGameMode(boardFace) || AppData.isHumanVsHumanGameMode(boardFace))
                 && !boardFace.isAnalysis()) {
 
-            String saving = StaticData.SYMBOL_EMPTY + boardFace.getMode();
-
+//            String saving = StaticData.SYMBOL_EMPTY + boardFace.getMode();
+			StringBuilder builder = new StringBuilder();
+			builder.append(boardFace.getMode());
             int i;
             for (i = 0; i < boardFace.getMovesCount(); i++) {
                 Move m = boardFace.getHistDat()[i].move;
-                saving += "|" + m.from + ":" + m.to + ":" + m.promote + ":" + m.bits;
+				builder.append(DIVIDER_1)
+						.append(m.from).append(DIVIDER_2)
+						.append(m.to).append(DIVIDER_2)
+						.append(m.promote).append(DIVIDER_2)
+						.append(m.bits);
+//                saving += DIVIDER_1 + m.from + DIVIDER_2 + m.to + DIVIDER_2 + m.promote + DIVIDER_2 + m.bits;
             }
 
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(AppConstants.SAVED_COMPUTER_GAME, saving);
+			editor.putString(AppConstants.SAVED_COMPUTER_GAME, builder.toString());
+//			editor.putString(AppConstants.SAVED_COMPUTER_GAME, saving);
 			editor.commit();
         }
 		return super.isGameOver();

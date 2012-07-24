@@ -43,7 +43,7 @@
 	<string name="singinUsername">Användarnamn</string>
 	<string name="singinPassword">Lösenord</string>
 	<string name="singinButton">Logga in</string>
-	<string name="singupButton">Anmäl dig</string>
+	<string name="sing_up">Anmäl dig</string>
 	<string name="complete_singupButton">Komplett Registrera</string>
 	<string name="singinPlayguest">Spela som gäst</string>
 

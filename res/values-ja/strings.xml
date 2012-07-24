@@ -44,7 +44,7 @@
 	<string name="singinUsername">ユーザ名</string>
 	<string name="singinPassword">パスワード</string>
 	<string name="singinButton">サイン・イン</string>
-	<string name="singupButton">登録</string>
+	<string name="sing_up">登録</string>
 	<string name="complete_singupButton">サインアップを完了</string>
 	<string name="singinPlayguest">ゲストとしてプレイ</string>
 

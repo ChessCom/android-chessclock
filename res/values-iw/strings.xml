@@ -43,7 +43,7 @@
 	<string name="singinUsername">שם משתמש</string>
 	<string name="singinPassword">סיסמא</string>
 	<string name="singinButton">היכנס</string>
-	<string name="singupButton">הירשם</string>
+	<string name="sing_up">הירשם</string>
 	<string name="complete_singupButton">השלם הרשמה</string>
 	<string name="singinPlayguest">לשחק כמו אורח</string>
 

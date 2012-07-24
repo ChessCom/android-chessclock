@@ -140,7 +140,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			getBoardFace().setInit(true);
-			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+//			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		boardView.setGameActivityFace(this);

@@ -157,7 +157,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
     @Override
     public void onConnectionBlocked(boolean blocked) {
-        // TODO To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

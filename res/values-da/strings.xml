@@ -44,7 +44,7 @@
 	<string name="singinUsername">Brugernavn:</string>
 	<string name="singinPassword">Adgangskode</string>
 	<string name="singinButton">Log ind</string>
-	<string name="singupButton">Tilmeld dig</string>
+	<string name="sing_up">Tilmeld dig</string>
 	<string name="complete_singupButton">Komplet Tilmelding</string>
 	<string name="singinPlayguest">Spil som Gæst</string>
 

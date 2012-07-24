@@ -44,7 +44,7 @@
 	<string name="singinUsername">Username</string>
 	<string name="singinPassword">Password</string>
 	<string name="singinButton">Sign In</string>
-	<string name="singupButton">Sign Up</string>
+	<string name="sing_up">Sign Up</string>
 	<string name="complete_singupButton">Complete Sign Up</string>
 	<string name="singinPlayguest">Play As Guest</string>
 

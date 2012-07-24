@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Kablosuz Ayarları</string>
 	<string name="invalid_password">Geçersiz şifre</string>
 	<string name="your_turn_in_game_with">Oyununuzu ile %1$s , %2$s</string>
+	<string name="register">Kaydetmek</string>
 
 </resources>

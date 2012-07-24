@@ -43,7 +43,7 @@
 	<string name="singinUsername">Brukernavn</string>
 	<string name="singinPassword">Passord</string>
 	<string name="singinButton">Logg på</string>
-	<string name="singupButton">Registrer deg</string>
+	<string name="sing_up">Registrer deg</string>
 	<string name="complete_singupButton">Komplett Registrering</string>
 	<string name="singinPlayguest">Spill som Gjest</string>
 

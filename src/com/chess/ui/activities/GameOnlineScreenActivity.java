@@ -100,7 +100,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			getBoardFace().setInit(true);
-			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+//			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		boardView.setGameActivityFace(this);
@@ -436,7 +436,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 						showSubmitButtonsLay(false);
 						boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
 						getBoardFace().setAnalysis(false);
-						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+//						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 
 						getOnlineGame(gameId); // if next game
 						// same new gameId
@@ -704,7 +704,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
     @Override
 	protected void restoreGame() {
 		boardView.setBoardFace(new ChessBoard(this));
-		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
+//		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		adjustBoardForGame();
 	}

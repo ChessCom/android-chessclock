@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Impostazioni Wireless</string>
 	<string name="invalid_password">Password non valida</string>
 	<string name="your_turn_in_game_with">Nel vostro gioco con %1$s , %2$s</string>
+	<string name="register">Registro</string>
 
 </resources>

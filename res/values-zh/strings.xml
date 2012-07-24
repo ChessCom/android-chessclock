@@ -43,7 +43,7 @@
 	<string name="singinUsername">用户名</string>
 	<string name="singinPassword">密码:</string>
 	<string name="singinButton">登录</string>
-	<string name="singupButton">注册</string>
+	<string name="sing_up">注册</string>
 	<string name="complete_singupButton">完成注册</string>
 	<string name="singinPlayguest">为来宾播放</string>
 

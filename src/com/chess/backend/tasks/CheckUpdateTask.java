@@ -24,6 +24,7 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 
 	private SharedPreferences.Editor preferencesEditor;
 	private Context context;
+	private static final String TAG = "CheckUpdateTask";
 
 	public CheckUpdateTask(TaskUpdateInterface<Boolean> taskFace) {
 		super(taskFace);
@@ -34,7 +35,7 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 	@Override
 	protected Integer doTheTask(String... urls) {
 		item = false;  // forceFlag field
-		Log.d("CheckUpdateTask", "retrieving from url = " + urls[0]);
+		Log.d(TAG, "retrieving from url = " + urls[0]);
 		try {
 			URL updateURL = new URL(urls[0]);
 			URLConnection conn = updateURL.openConnection();
@@ -71,6 +72,8 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 
 		} catch (Exception e) {
 			result = StaticData.UNKNOWN_ERROR;
+			e.printStackTrace();
+			Log.d(TAG, e.toString());
 			return result;
 		}
 

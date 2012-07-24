@@ -44,7 +44,7 @@
 	<string name="singinUsername">Usuario</string>
 	<string name="singinPassword">Contraseña</string>
 	<string name="singinButton">Inicia sesión</string>
-	<string name="singupButton">Regístrate</string>
+	<string name="sing_up">Regístrate</string>
 	<string name="complete_singupButton">Completa Registro</string>
 	<string name="singinPlayguest">Juega como invitado</string>
 

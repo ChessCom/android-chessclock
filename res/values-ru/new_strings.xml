@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Настройки Сети</string>
 	<string name="invalid_password">Неверный пароль</string>
 	<string name="your_turn_in_game_with">В игре с %1$s , %2$s</string>
+	<string name="register">Регистрация</string>
 
 </resources>

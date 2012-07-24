@@ -85,7 +85,9 @@ public class ComputerScreenActivity extends LiveBaseActivity {
 			preferencesEditor.commit();
 
 			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
-			startActivity(new Intent(this, GameCompScreenActivity.class).putExtra(AppConstants.GAME_MODE, mode));
+			Intent intent = new Intent(this, GameCompScreenActivity.class);
+			intent.putExtra(AppConstants.GAME_MODE, mode);
+			startActivity(intent);
 		}
 	}
 

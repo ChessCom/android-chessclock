@@ -61,10 +61,16 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
 		mNewItems = fetchMoreItems(page);
 		page++;
 
-        if( mNewItems.size() >= maxItems)
-            result = StaticData.MAX_REACHED;
+		if(mNewItems == null || result == StaticData.MAX_REACHED)
+			return false;
 
-		return mNewItems != null && mNewItems.size() > 0 && mNewItems.size() < maxItems;
+		page++;
+		if(maxItems != 0 && mNewItems.size() >= maxItems) {
+			result = StaticData.MAX_REACHED;
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

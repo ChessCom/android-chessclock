@@ -43,7 +43,7 @@
 	<string name="singinUsername">Kullanıcı adı</string>
 	<string name="singinPassword">Parola</string>
 	<string name="singinButton">Giriş Yapın</string>
-	<string name="singupButton">Kaydolun</string>
+	<string name="sing_up">Kaydolun</string>
 	<string name="complete_singupButton">Kayıt tamamlayın</string>
 	<string name="singinPlayguest">Misafir Olarak oyna</string>
 

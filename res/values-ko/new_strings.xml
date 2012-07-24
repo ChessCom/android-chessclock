@@ -6,5 +6,6 @@
 	<string name="wireless_settings">무선 설정</string>
 	<string name="invalid_password">비밀 번호가 잘못되었습니다</string>
 	<string name="your_turn_in_game_with">게임과 관련 %1$s , %2$s</string>
+	<string name="register">레지스터</string>
 
 </resources>

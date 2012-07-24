@@ -237,7 +237,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					if (currentGame.getGameId() != gameId) {
 						boardView.setBoardFace(new ChessBoard(GameFinishedScreenActivity.this));
 						getBoardFace().setAnalysis(false);
-						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+//						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 
 						getOnlineGame(currentGame.getGameId()); // if next game
 						return;

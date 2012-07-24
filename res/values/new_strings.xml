@@ -6,5 +6,6 @@
 	<string name="wireless_settings">Wireless Settings</string>
 	<string name="invalid_password">Invalid password</string>
 	<string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
+	<string name="register">Register</string>
 
 </resources>

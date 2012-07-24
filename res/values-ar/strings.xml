@@ -44,7 +44,7 @@
 	<string name="singinUsername">اسم المستخدم</string>
 	<string name="singinPassword">كلمة السر</string>
 	<string name="singinButton">توقيع في</string>
-	<string name="singupButton">قم بالتسجيل</string>
+	<string name="sing_up">قم بالتسجيل</string>
 	<string name="complete_singupButton">استكمال اشترك</string>
 	<string name="singinPlayguest">كما تلعب ضيف</string>
 

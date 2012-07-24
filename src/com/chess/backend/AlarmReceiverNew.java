@@ -41,6 +41,7 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				boolean haveMoves = false;
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
 				for (GameListCurrentItem gameListItem : itemList) {
 
@@ -51,19 +52,22 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 									gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
 							StaticData.MOVE_REQUEST_CODE,
 							gameListItem.getGameId());
+					haveMoves = true;
 				}
 
-				final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
+				if(haveMoves){
+					final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
 
-				player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-					@Override
-					public void onCompletion(MediaPlayer mediaPlayer) {
-						player.release();
-					}
-				});
-				player.start();
+					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+						@Override
+						public void onCompletion(MediaPlayer mediaPlayer) {
+							player.release();
+						}
+					});
+					player.start();
 
-				getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
+					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
+				}
 			}
 		}
 	}

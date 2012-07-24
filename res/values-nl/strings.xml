@@ -43,7 +43,7 @@
 	<string name="singinUsername">Gebruikersnaam</string>
 	<string name="singinPassword">Wachtwoord</string>
 	<string name="singinButton">Inloggen</string>
-	<string name="singupButton">Aanmelden</string>
+	<string name="sing_up">Aanmelden</string>
 	<string name="complete_singupButton">Compleet Inschrijven</string>
 	<string name="singinPlayguest">Speel als Gast</string>
 

@@ -44,6 +44,8 @@ import java.net.URLEncoder;
 public class LoginScreenActivity extends BaseFragmentActivity implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
 
 	private static final String CHECK_UPDATE_TAG = "check update";
+	private static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
+
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int MIN_USERNAME_LENGTH = 3;
@@ -202,8 +204,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 					}
 				}
 			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_ACCOUNT)) {
-				showToast(R.string.no_chess_account_signup_please);
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
+				popupItem.setPositiveBtnId(R.string.sing_up);
+				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){
 				String message = returnedObj.substring(RestHelper.R_ERROR.length());
 				if(message.equals("Invalid password.")){
@@ -297,8 +299,9 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				preferencesEditor.commit();
 
 			}
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
-			startActivity(intent);
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI)));
+		}else if (fragment.getTag().equals(CHESS_NO_ACCOUNT_TAG)){
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
 		}else if (fragment.getTag().equals(NETWORK_CHECK_TAG)){
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}

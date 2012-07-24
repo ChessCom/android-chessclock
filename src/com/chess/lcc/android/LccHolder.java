@@ -7,7 +7,6 @@ import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.ConnectLiveChessTask;
@@ -774,7 +773,7 @@ public class LccHolder{
 		Log.d("TEST","processing full game, gameId = " + game.getId());
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
+//		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		context.startActivity(intent);
 	}

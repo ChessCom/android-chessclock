@@ -44,7 +44,7 @@
 	<string name="singinUsername">उपयोगकर्तानाम </string>
 	<string name="singinPassword">पासवर्ड</string>
 	<string name="singinButton">साइन इन करें...</string>
-	<string name="singupButton">साइन-अप</string>
+	<string name="sing_up">साइन-अप</string>
 	<string name="complete_singupButton">पंजीकरण पूरा</string>
 	<string name="singinPlayguest">अतिथि के रूप में</string>
 
