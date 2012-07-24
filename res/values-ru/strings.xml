@@ -200,7 +200,7 @@
 	<string name="accept_draw_q">Принять ничью?</string>
 	<string name="ready_for_first_tackics_q">Вы готовы к первой тактике?</string>
 	<string name="daily_limit_exceeded">Ежедневный Предел Превышен</string>
-	<string name="max_tackics_for_today_reached">Вы исчерпали максимальное количество тактик на сегодняшний день. Хотите сделать больше тактик?
+	<string name="max_tactics_reached">Вы исчерпали максимальное количество тактик на сегодняшний день. Хотите сделать больше тактик?
 	</string>
 	<string name="yes">Да</string>
 	<string name="no">Нет</string>
@@ -266,7 +266,7 @@
 	<string name="network_was_changed_please_relogin">Соединение изменилось. Пожалуйста, перезайдите для игры вживую</string>
 	<string name="ches_com">Chesscom</string>
 	<string name="your_move">Chess.com - Ваш Ход</string>
-	<string name="online_challenge_wait">Ваш Ход</string>
+	<string name="your_turn">Ваш Ход</string>
 	<string name="login_failed">Войти не удалось.</string>
 	<string name="loggin_out">Выход...</string>
 	<string name="you_logged_out">Вы вышли!</string>

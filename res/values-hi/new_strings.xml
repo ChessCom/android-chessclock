@@ -4,6 +4,7 @@
 	<string name="application_was_killed">आवेदन को मार डाला गया था बहाल करने ...</string>
 	<string name="no_network">कोई नेटवर्क</string>
 	<string name="wireless_settings">वायरलेस सेटिंग्स</string>
-	<string name="invalid_password">סיסמה לא חוקית</string>
+	<string name="invalid_password">अमान्य पासवर्ड</string>
+	<string name="your_turn_in_game_with">अपने खेल के साथ %1$s , %2$s</string>
 
 </resources>

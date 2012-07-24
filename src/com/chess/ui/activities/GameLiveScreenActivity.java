@@ -169,8 +169,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return;
 		}
 
-
-
         getLccHolder().setActivityPausedMode(false);
 		updateGameState();
 	}
@@ -184,12 +182,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		getLccHolder().setActivityPausedMode(true);
 
 		handler.removeCallbacks(blinkSubmitButton);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Log.d("TEST","onDestroy called");
 	}
 
 	private void updateGameState() {

@@ -264,7 +264,7 @@
 	<string name="network_was_changed_please_relogin">شبکه تغییر یافتهاست. لطفا relogin برای زندگی</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - این حرکت خود را</string>
-	<string name="online_challenge_wait">نوبت شماست!</string>
+	<string name="your_turn">نوبت شماست!</string>
 	<string name="login_failed">ورود به سیستم شکست خورد:</string>
 	<string name="loggin_out">خروج از سیستم ...</string>
 	<string name="you_logged_out">شما وارد شده اند!</string>

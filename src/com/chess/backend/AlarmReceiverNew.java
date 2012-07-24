@@ -3,6 +3,7 @@ package com.chess.backend;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import com.chess.R;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -41,26 +42,27 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-				long gameId  = 0;
 				for (GameListCurrentItem gameListItem : itemList) {
-					gameId = gameListItem.getGameId();
+
+					AppUtils.showNewMoveStatusNotification(getMeContext(),
+							getMeContext().getString(R.string.your_move),
+							getMeContext().getString(R.string.your_turn_in_game_with,
+									gameListItem.getOpponentUsername(),
+									gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
+							StaticData.MOVE_REQUEST_CODE,
+							gameListItem.getGameId());
 				}
 
-/*
-		Success+<total_games_returned>:
-		(<game_id>:
-		<opponent_username>:
-		<time_remaining_amount>:
-		<last_move_from_square>:
-		<last_move_to_square>:
-		<is_opponent_online>)0-n
-*/
+				final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
 
-				AppUtils.showNewMoveStatusNotification(getMeContext(),
-						getMeContext().getString(R.string.your_move),
-						getMeContext().getString(R.string.online_challenge_wait),
-						StaticData.MOVE_REQUEST_CODE,
-						gameId);
+				player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+					@Override
+					public void onCompletion(MediaPlayer mediaPlayer) {
+						player.stop();
+						player.release();
+					}
+				});
+				player.start();
 
 				getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 			}

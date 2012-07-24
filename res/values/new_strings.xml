@@ -1,9 +1,10 @@
 <resources>
 	<string name="menu_search">Search</string>
-	<string name="restoring_conntection_to_live">Reconnecting...</string>
+	<string name="restoring_conntection_to_live">Reconnecting…</string>
 	<string name="application_was_killed">Application was killed, restoring...</string>
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Wireless Settings</string>
 	<string name="invalid_password">Invalid password</string>
+	<string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
 
 </resources>

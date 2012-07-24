@@ -265,7 +265,7 @@
 	<string name="network_was_changed_please_relogin">नेटवर्क बदल गया था. कृपया relogin लाइव के लिए</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - यह अपनी चाल है</string>
-	<string name="online_challenge_wait">तुम्हारी बारी है!</string>
+	<string name="your_turn">तुम्हारी बारी है!</string>
 	<string name="login_failed">लॉग इन विफल| </string>
 	<string name="loggin_out">लॉगआउट</string>
 	<string name="you_logged_out">आप लॉग आउट हो गए!</string>

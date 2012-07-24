@@ -261,7 +261,7 @@
 	<string name="network_was_changed_please_relogin">网络改变。请重新登录到Live</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com  - 这是你的移动</string>
-	<string name="online_challenge_wait">该你了</string>
+	<string name="your_turn">该你了</string>
 	<string name="login_failed">登录失败</string>
 	<string name="loggin_out">注销</string>
 	<string name="you_logged_out">您已经登出！</string>

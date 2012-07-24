@@ -156,7 +156,7 @@ public class AppUtils {
 
 		notification.setLatestEventInfo(context, title, body, contentIntent);
 
-		notifyManager.notify(R.id.notification_message, notification);
+		notifyManager.notify((int) gameId, notification);
 	}
 
 	/**
@@ -172,7 +172,6 @@ public class AppUtils {
 	}
 
 	public static void startNotificationsUpdate(Context context){
-//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
@@ -184,7 +183,6 @@ public class AppUtils {
 	}
 
 	public static void stopNotificationsUpdate(Context context){
-//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,

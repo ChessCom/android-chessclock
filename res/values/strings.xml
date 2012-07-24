@@ -274,9 +274,9 @@
 	<string name="network_was_changed_please_relogin">Network was changed. Please relogin to Live</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - It\'s Your Move</string>
-	<string name="online_challenge_wait">Your Turn!</string>
+	<string name="your_turn">Your Turn!</string>
 	<string name="login_failed">Login Failed:</string>
-	<string name="loggin_out">Logging out...</string>
+	<string name="loggin_out">Logging out…</string>
 	<string name="you_logged_out">You have logged out!</string>
 	<string name="too_short">Too short</string>
 	<string name="can_not_be_empty">Can\'t be empty</string>

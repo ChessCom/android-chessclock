@@ -264,7 +264,7 @@
 	<string name="network_was_changed_please_relogin">Rede foi alterado. Por favor, relogin ao vivo</string>
 	<string name="ches_com">Chesscom</string>
 	<string name="your_move">Chess.com - A decisão é tua</string>
-	<string name="online_challenge_wait">Sua vez.</string>
+	<string name="your_turn">Sua vez.</string>
 	<string name="login_failed">Falha na identificação do usuário</string>
 	<string name="loggin_out">Deslogando...</string>
 	<string name="you_logged_out">Você ter desconectado!</string>
