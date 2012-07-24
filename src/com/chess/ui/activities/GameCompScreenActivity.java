@@ -8,14 +8,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;
+import com.chess.utilities.MopubHelper;
 
 /**
  * GameTacticsScreenActivity class
@@ -25,7 +31,9 @@ import com.chess.ui.views.ChessBoardCompView;
  */
 public class GameCompScreenActivity extends GameBaseActivity implements GameCompActivityFace {
 
-	private MenuOptionsDialogListener menuOptionsDialogListener;
+    private static final String END_GAME_TAG = "end game popup";
+
+    private MenuOptionsDialogListener menuOptionsDialogListener;
 	private ChessBoardCompView boardView;
 	private int[] compStrengthArray;
 
@@ -307,9 +315,29 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		}
 	}
 
-	@Override
-	protected void onGameEndMsgReceived() {
-	}
+    @Override
+    protected void showGameEndPopup(View layout, String message) {
 
+        TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+        TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+        TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
+//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
+        endGameReasonTxt.setText(message);
 
+        LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+        MopubHelper.showRectangleAd(adViewWrapper, this);
+        PopupItem popupItem = new PopupItem();
+        popupItem.setCustomView(layout);
+
+        endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+        endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
+
+        layout.findViewById(R.id.newGamePopupBtn).setVisibility(View.GONE);
+        layout.findViewById(R.id.rematchPopupBtn).setVisibility(View.GONE);
+        layout.findViewById(R.id.homePopupBtn).setVisibility(View.GONE);
+        Button reviewBtn = (Button) layout.findViewById(R.id.reviewPopupBtn);
+        reviewBtn.setText(R.string.ok);
+        reviewBtn.setOnClickListener(this);
+        layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+    }
 }

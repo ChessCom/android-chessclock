@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
@@ -102,42 +101,6 @@ public class AppUtils {
 		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.open_app_t_see_msg), contentIntent);
 
 		notifyManager.notify(R.string.you_got_new_msg, notification);
-	}
-
-	/**
-	 * Fire simplified notification with defined arguments
-	 *
-	 * @param context - Application Context for resources
-	 * @param title - title that will be visible at status bar
-	 * @param id - request code id
-	 * @param body - short description for notification message content
-	 * @param clazz - which class to open when User press notification
-	 */
-	public static void showMoveStatusNotification(Context context, String title,  String body, int id, Class<?> clazz) {
-		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-		final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-
-
-		Intent intent = new Intent(context, clazz);
-		intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
-
-		notification.setLatestEventInfo(context, title, body, contentIntent);
-		notifyManager.notify(R.id.notification_message, notification);
-		player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			@Override
-			public void onCompletion(MediaPlayer mediaPlayer) {
-				player.stop();
-				player.release();
-			}
-		});
-		player.start();
 	}
 
 	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id, long gameId) {

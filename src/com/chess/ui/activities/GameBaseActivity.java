@@ -134,8 +134,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public abstract String getBlackPlayerName();
 
-	protected abstract void onGameEndMsgReceived();
-
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
 		boardView.enableTouchTimer();

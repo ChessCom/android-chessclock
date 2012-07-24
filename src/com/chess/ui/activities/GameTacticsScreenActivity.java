@@ -742,10 +742,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	}
 
-	@Override
-	protected void onGameEndMsgReceived() {
-	}
-
 	public void stopTacticsTimer() {
 		if (tacticsTimer != null) {
 			tacticsTimer.cancel();

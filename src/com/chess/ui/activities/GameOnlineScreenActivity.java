@@ -701,13 +701,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	@Override
-	protected void onGameEndMsgReceived() {
-		showSubmitButtonsLay(false);
-		gamePanelView.haveNewMessage(true);
-	}
-
-	@Override
+    @Override
 	protected void restoreGame() {
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));

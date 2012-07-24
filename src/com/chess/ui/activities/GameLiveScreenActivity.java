@@ -371,7 +371,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			public void run() {
 				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
 				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
-				onGameEndMsgReceived();
+
+                showSubmitButtonsLay(false);
+                gamePanelView.enableAnalysisMode(true);
+
+                boardView.setFinished(true);
+                gamePanelView.showBottomPart(false);
+                getSoundPlayer().playGameEnd();
 			}
 		});
 
@@ -623,16 +629,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
 			gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
 		}
-	}
-
-	@Override
-	protected void onGameEndMsgReceived() {
-		showSubmitButtonsLay(false);
-		gamePanelView.enableAnalysisMode(true);
-
-        boardView.setFinished(true);
-        gamePanelView.showBottomPart(false);
-        getSoundPlayer().playGameEnd();
 	}
 
 	private void blinkSubmitBtn(){

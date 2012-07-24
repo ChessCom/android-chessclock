@@ -330,10 +330,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
-	protected void onGameEndMsgReceived() {
-	}
-
-	@Override
 	protected void restoreGame() {
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
@@ -341,8 +337,4 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		adjustBoardForGame();
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
 }
