@@ -6,6 +6,8 @@ import java.util.HashMap;
 // TODO divide to different game instance live/online
 public class GameItem implements Serializable { // TODO make an Object, not hashmap
 
+    private static final String WHITE_MOVE = "1";
+
     public static final int STARTING_FEN_POSITION_NUMB = 6;
     public static final int MOVE_LIST_NUMB = 7;
 
@@ -98,6 +100,10 @@ public class GameItem implements Serializable { // TODO make an Object, not hash
 	public String getUserToMove() {
 		return values.get(USER_TO_MOVE);
 	}
+
+    public boolean isWhiteMove(){
+        return values.get(USER_TO_MOVE).equals(WHITE_MOVE);
+    }
 
 	public String getWhiteRating() {
 		return values.get(WHITE_RATING);

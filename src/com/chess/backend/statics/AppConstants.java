@@ -7,9 +7,6 @@ public class AppConstants {
 	public static final String SMALL_SCREEN = "small_screen";
 	// TODO split to GameType and Game Mode Constants
 
-	public static final String ENTER_FROM_NOTIFICATION = "enter_from_notification";
-
-
 	public static final String GAME_MODE = "game_mode";
 	public static final String TITLE = "title";
 

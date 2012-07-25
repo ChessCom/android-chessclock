@@ -14,11 +14,11 @@ import android.view.View;
 import com.chess.R;
 import com.chess.backend.AlarmReceiverNew;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
+import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
@@ -103,7 +103,7 @@ public class AppUtils {
 		notifyManager.notify(R.string.you_got_new_msg, notification);
 	}
 
-	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id, long gameId) {
+	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id, GameListCurrentItem currentGameItem) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
@@ -111,15 +111,14 @@ public class AppUtils {
 
 		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
 //		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-		intent.putExtra(GameListItem.GAME_ID, gameId);
-		intent.putExtra(AppConstants.ENTER_FROM_NOTIFICATION, true);
+		intent.putExtra(GameListItem.GAME_INFO_ITEM, currentGameItem);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
 		notification.setLatestEventInfo(context, title, body, contentIntent);
 
-		notifyManager.notify((int) gameId, notification);
+		notifyManager.notify((int) currentGameItem.getGameId(), notification);
 	}
 
 	/**
@@ -163,8 +162,7 @@ public class AppUtils {
 		User user = LccHolder.getInstance(context).getUser();
 		if (user != null) {
 			liveMembershipLevel = DataHolder.getInstance().isLiveChess()
-					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL)
-					/*&& !LccHolder.getInstance(context).isConnected()*/;
+					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
 		}
 		return liveMembershipLevel
 				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);

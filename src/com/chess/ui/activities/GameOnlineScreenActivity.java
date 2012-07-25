@@ -63,12 +63,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private SendMoveUpdateListener sendMoveUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
 
-    private AsyncTask<LoadItem, Void, Integer> updateGameStateTask;
+	private AsyncTask<LoadItem, Void, Integer> updateGameStateTask;
 	private ChessBoardNetworkView boardView;
 
 	private GameItem currentGame;
 	private long gameId;
 	private int currentPlayerRating;
+	private GameListCurrentItem gameInfoItem;
+	private String timeRemains;
+	private TextView infoLabelTxt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
+
+		infoLabelTxt = (TextView) findViewById(R.id.thinking);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
 		findViewById(R.id.submitBtn).setOnClickListener(this);
@@ -107,7 +112,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public void init() {
-		gameId = extras.getLong(GameListItem.GAME_ID);
+		gameInfoItem = (GameListCurrentItem) extras.getSerializable(GameListItem.GAME_INFO_ITEM);
+		gameId = gameInfoItem.getGameId();
+		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
+
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -205,24 +213,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
 
+		if (isUserMove())
+			infoLabelTxt.setText(timeRemains);
+
+
 		if (currentGame.getGameType().equals("2"))
 			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
 			getBoardFace().setReside(true);
-		}
-		String[] moves = {};
-
-		if (currentGame.getMoveList().contains("1.")) {
-			int beginIndex = 1;
-
-			moves = currentGame.getMoveList()
-					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", " ").substring(beginIndex).split(" ");
-
-			getBoardFace().setMovesCount(moves.length);
-		} else {
-			getBoardFace().setMovesCount(0);
 		}
 
 		String FEN = currentGame.getStartingFenPosition();
@@ -230,10 +229,20 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, getBoardFace());
 		}
+		if (currentGame.getMoveList().contains("1.")) {
+			int beginIndex = 1;
+			String[] moves = currentGame.getMoveList()
+					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
-		for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
-			boardView.updateMoves(moves[i]);
+			getBoardFace().setMovesCount(moves.length);
+			for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
+				boardView.updateMoves(moves[i]);
+			}
+		} else {
+			getBoardFace().setMovesCount(0);
 		}
+
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		invalidateGameScreen();
@@ -267,12 +276,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	public void onGameRefresh(GameItem newGame) {
 		currentGame = newGame;
-		String[] moves;
+
+		if (isUserMove())
+			infoLabelTxt.setText(timeRemains);
+
 
 		if (currentGame.getMoveList().contains("1.")) {
 			int beginIndex = 1;
 
-			moves = currentGame.getMoveList()
+			String[] moves = currentGame.getMoveList()
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
@@ -290,8 +302,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
-        whitePlayerLabel.setText(getWhitePlayerName());
-        blackPlayerLabel.setText(getBlackPlayerName());
+		whitePlayerLabel.setText(getWhitePlayerName());
+		blackPlayerLabel.setText(getBlackPlayerName());
 
 		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}
@@ -375,19 +387,19 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				return;
 
 			if (show) {
-                showPopupHardProgressDialog(R.string.sendinggameinfo);
+				showPopupHardProgressDialog(R.string.sendinggameinfo);
 			} else
 				dismissProgressDialog();
 		}
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS_)){
+			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				moveWasSent();
 
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.cancel((int) gameId);
-			}else if(returnedObj.contains(RestHelper.R_ERROR)){
+			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 		}
@@ -441,7 +453,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 						getOnlineGame(gameId); // if next game
 						// same new gameId
 						Intent intent = getIntent();
-						intent.putExtra(GameListItem.GAME_ID, gameId);
+//						intent.putExtra(GameListItem.GAME_ID, gameId);
+						intent.putExtra(GameListItem.GAME_INFO_ITEM, gameInfoItem);
 						getIntent().replaceExtras(intent);
 						return;
 					}
@@ -491,6 +504,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	public Boolean isUserColorWhite() {
 		return currentGame.getWhiteUsername().toLowerCase()
 				.equals(AppData.getUserName(this));
+	}
+
+	private boolean isUserMove() {
+		return (currentGame.isWhiteMove() && isUserColorWhite())
+				|| (!currentGame.isWhiteMove() && !isUserColorWhite());
 	}
 
 
@@ -647,7 +665,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //		endGameTitleTxt.setText(R.string.game_over); // already set to game over
 		endGameReasonTxt.setText(message);
 
-		
+
 		int currentPlayerNewRating = getCurrentPlayerRating();
 
 //		int ratingDiff; // TODO fill difference in ratings
@@ -678,7 +696,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 	}
 
-	private int getCurrentPlayerRating(){
+	private int getCurrentPlayerRating() {
 		if (userPlayWhite) {
 			return Integer.valueOf(currentGame.getWhiteRating());
 		} else {
@@ -701,7 +719,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
-    @Override
+	@Override
 	protected void restoreGame() {
 		boardView.setBoardFace(new ChessBoard(this));
 //		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));

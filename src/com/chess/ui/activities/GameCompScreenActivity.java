@@ -35,6 +35,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
     private MenuOptionsDialogListener menuOptionsDialogListener;
 	private ChessBoardCompView boardView;
+	protected TextView thinking;
 	private int[] compStrengthArray;
 
 	@Override
@@ -50,6 +51,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
+
+		thinking = (TextView) findViewById(R.id.thinking);
 
 		boardView = (ChessBoardCompView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);

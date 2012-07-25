@@ -24,16 +24,6 @@
 			>
 
 			<com.chess.RoboTextView
-				android:id="@+id/thinking"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:text="@string/Thinking"
-				android:visibility="gone"
-				style="@style/GameLabel"
-				/>
-
-			<com.chess.RoboTextView
 				android:id="@+id/white"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -52,15 +42,6 @@
 				android:paddingRight="8dip"
 				android:drawableRight="@drawable/player_indicator_black"
 				style="@style/GameLabel.Timer"
-				/>
-
-			<com.chess.RoboTextView
-				android:id="@+id/timer"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:visibility="gone"
-				style="@style/GameLabel"
 				/>
 
 			<com.chess.RoboTextView

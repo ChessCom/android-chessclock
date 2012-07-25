@@ -275,7 +275,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 //			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-			intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
+			intent.putExtra(GameListItem.GAME_INFO_ITEM, gameListCurrentItem);
 			startActivity(intent);
 
 		} else if (fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)) {
@@ -382,8 +382,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 //				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-				intent.putExtra(GameListItem.GAME_ID, gameListCurrentItem.getGameId());
-				startActivity(intent);
+				intent.putExtra(GameListItem.GAME_INFO_ITEM, gameListCurrentItem);
+
+                startActivity(intent);
 			}
 		} else if (k == 1) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));

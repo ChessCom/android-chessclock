@@ -1,9 +1,10 @@
 package com.chess.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 // TODO eliminate hashmaps and create Objects
-public class GameListCurrentItem {
+public class GameListCurrentItem implements Serializable {
 
 	public static final String GAME_TYPE = "game_type";
 	public static final String GAME_ID = "game_id";

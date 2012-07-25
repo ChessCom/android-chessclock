@@ -35,7 +35,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	protected TextView whitePlayerLabel;
 	protected TextView blackPlayerLabel;
-	protected TextView thinking;
 
 	protected boolean chat;
 
@@ -75,7 +74,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		whitePlayerLabel.setSelected(true);
 		blackPlayerLabel.setSelected(true);
 
-		thinking = (TextView) findViewById(R.id.thinking);
+
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 	}

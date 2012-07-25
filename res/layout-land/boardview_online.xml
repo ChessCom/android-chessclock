@@ -28,43 +28,36 @@
 				android:layout_height="wrap_content"
 				>
 
-				<com.chess.RoboTextView
-					android:id="@+id/thinking"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_centerInParent="true"
-					android:text="@string/Thinking"
-					android:visibility="gone"
-					style="@style/GameLabel"
-					/>
-				<com.chess.RoboTextView
+				<TextView
 					android:id="@+id/white"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:paddingRight="2dip"
-					android:paddingLeft="8dip"
+					android:paddingRight="5dip"
+					android:paddingLeft="7dip"
 					android:drawableLeft="@drawable/player_indicator_white"
 					style="@style/GameLabel.Player"
 					/>
 
-				<com.chess.RoboTextView
+				<TextView
+					android:id="@+id/thinking"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:visibility="visible"
+					android:text="06d"
+					style="@style/GameLabel"
+					/>
+
+				<TextView
 					android:id="@+id/black"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
-					android:paddingLeft="2dip"
-					android:paddingRight="8dip"
+					android:paddingLeft="4dip"
+					android:paddingRight="7dip"
 					android:drawableRight="@drawable/player_indicator_black"
 					style="@style/GameLabel.Player"
-					/>
-
-				<com.chess.RoboTextView
-					android:id="@+id/timer"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_centerInParent="true"
-					android:visibility="gone"
-					style="@style/GameLabel"
+					android:text="anotherRoger(1042)"
 					/>
 
 				<com.chess.RoboTextView

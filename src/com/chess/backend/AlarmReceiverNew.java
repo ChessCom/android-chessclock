@@ -51,7 +51,7 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 									gameListItem.getOpponentUsername(),
 									gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
 							StaticData.MOVE_REQUEST_CODE,
-							gameListItem.getGameId());
+							gameListItem);
 					haveMoves = true;
 				}
 
