@@ -58,10 +58,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onResume() {
 		super.onResume();
 
-		if(DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)){ // check only if live
+		if (DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-		}else{
+		} else {
 			dismissFragmentDialog();
 			LccHolder.getInstance(this).checkAndConnect();
 		}

@@ -241,7 +241,7 @@ public class LccHolder{
 	}
 
 	public void checkAndConnect() {
-		if(DataHolder.getInstance().isLiveChess() && !connected){
+		if(DataHolder.getInstance().isLiveChess() && !connected && lccClient == null){
 			LccHolder.getInstance(context).runConnectTask();
 		}
 	}
@@ -292,6 +292,7 @@ public class LccHolder{
 
 	public void processConnectionFailure(FailureDetails details, String message) {
 		setConnected(false);
+		lccClient = null;
 		//setConnectingInProgress(false);
 
 		String detailsMessage;
@@ -910,6 +911,7 @@ public class LccHolder{
 		@Override
 		protected Void doInBackground(Void... voids) {
 			lccClient.disconnect();
+			lccClient = null;
 			return null;
 		}
 	}
