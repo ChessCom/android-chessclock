@@ -105,6 +105,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
 		gameId = extras.getLong(GameListItem.GAME_ID);
+		Log.d("TEST","gameId from extras = " + gameId);
 		currentGame = getLccHolder().getGameItem(gameId);
 
 		getLccHolder().setLccEventListener(this);
@@ -487,7 +488,40 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 	}
 
+/*	@Override
+	public void onConfigurationChanged(Configuration newConfig) {  // prevent app to change locale on rotation
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.boardview_live);
+		boardView.setGameActivityFace(this);
 
+		widgetsInit();
+		lccInitiated = init();
+
+		if(!lccInitiated){
+			return;
+		}
+		// change labels and label's drawables according player color
+		// so current player(user) name must be always at the bottom
+		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
+		String userName = getLccHolder().getCurrentuserName();
+
+		userPlayWhite = !userName.equals(blackPlayerName);
+		int opponentIndicator = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
+
+		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator, 0, 0, 0);
+		gamePanelView.setWhiteIndicator(userPlayWhite);
+		// change players colors
+		changePlayersLabelColors();
+
+		Log.d("Live Game", "GameLiveScreenActivity started ");
+		if (getLccHolder().getPendingWarnings().size() > 0) {
+			// get last warning
+			String message = getLccHolder().getLastWarningMessage();
+			getLccHolder().getPendingWarnings().remove(message);
+
+			showPopupDialog(R.string.warning, message, WARNING_TAG);
+		}
+	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

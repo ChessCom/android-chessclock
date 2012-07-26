@@ -571,7 +571,6 @@ public class LccHolder{
 	}
 
 	public Game getGame(Long gameId) {
-		Log.d("TEST","lccGames size = " + lccGames.size());
 		return lccGames.get(gameId);
 	}
 
