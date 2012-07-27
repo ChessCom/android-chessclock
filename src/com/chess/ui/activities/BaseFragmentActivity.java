@@ -27,6 +27,7 @@ import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
+import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
@@ -223,7 +224,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	protected void showSinglePopupDialog(int titleId, String message) {
-		showPopupDialog(titleId, message, INFO_POPUP_TAG);
+		// temporary handling i18n manually
+		final String messageI18n = AppUtils.getI18nStringForAPIError(context, message);
+		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
 		popupDialogFragment.setButtons(1);
 	}
 

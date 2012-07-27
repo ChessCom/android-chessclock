@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
@@ -23,6 +24,7 @@ import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -175,21 +177,45 @@ public class AppUtils {
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
-	// Get i18n strings for Live chess server (temporary)
+	// Get i18n strings for server messages (temporary)
 	public static String getI18nString(Context context, String actual, int expected, int translated) {
+		if (isLocaleEn(context.getResources())) {
+			return null;
+		}
 		return actual.equals(context.getString(expected)) ? context.getString(translated) : null;
 	}
 
 	public static String getI18nString(Context context, int regexp, String actual, int expected, int translated) {
+		if (isLocaleEn(context.getResources())) {
+			return null;
+		}
+
 		String substring = null;
 		Matcher m = Pattern.compile(context.getString(regexp)).matcher(actual);
 		if (m.find()) {
 			substring = m.group(1);
 		}
 
-		String s1 = context.getString(expected, substring);
-		String s2 = context.getString(translated, substring);
-
 		return actual.equals(context.getString(expected, substring)) ? context.getString(translated, substring) : null;
+	}
+
+	public static String getI18nStringForAPIError(Context context, String message) {
+		final Resources resources = context.getResources();
+
+		if (isLocaleEn(resources)) {
+			return message;
+		}
+
+		final int positionOfMessage = Arrays.asList(resources.getStringArray(R.array.site_api_error_messages)).indexOf(message);
+		if (positionOfMessage != -1) {
+			final String messageKey = resources.getStringArray(R.array.site_api_error_keys)[positionOfMessage];
+			return context.getString(resources.getIdentifier(messageKey, "string", context.getPackageName()));
+		}
+
+		return message;
+	}
+
+	private static boolean isLocaleEn(Resources resources) {
+		return resources.getConfiguration().locale.getLanguage().equals(StaticData.LOCALE_EN);
 	}
 }
