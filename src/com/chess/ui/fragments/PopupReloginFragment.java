@@ -1,8 +1,6 @@
 package com.chess.ui.fragments;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -39,8 +37,6 @@ public class PopupReLoginFragment extends PopupCustomViewFragment {
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
-	private static final String INFO_POPUP_TAG = "information popup";
-	private static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 
 
 	private EditText usernameEdt;
@@ -49,9 +45,6 @@ public class PopupReLoginFragment extends PopupCustomViewFragment {
 	private PopupProgressFragment popupProgressDialogFragment;
 	private LoginUpdateListener loginUpdateListener;
 	private static final String PROGRESS_TAG = "progress popup";
-
-	private AsyncTask<LoadItem, Void, Integer> loginTask;
-	private AsyncTask<LoadItem, Void, Integer> postDataTask;
 
 	private int loginReturnCode;
 	private SharedPreferences.Editor preferencesEditor;
@@ -64,11 +57,6 @@ public class PopupReLoginFragment extends PopupCustomViewFragment {
 		arguments.putSerializable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
 		return frag;
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-
 	}
 
 	@Override
@@ -128,7 +116,7 @@ public class PopupReLoginFragment extends PopupCustomViewFragment {
 			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
 			loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 
-			postDataTask = new PostDataTask(loginUpdateListener).executeTask(loadItem);
+			new PostDataTask(loginUpdateListener).executeTask(loadItem);
 
 			loginReturnCode = SIGNIN_CALLBACK_CODE;
 		}
@@ -213,7 +201,7 @@ public class PopupReLoginFragment extends PopupCustomViewFragment {
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
 			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
 
-			loginTask = new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
+			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
 
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
