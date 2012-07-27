@@ -7,5 +7,6 @@
 	<string name="invalid_password">Senha inválida</string>
 	<string name="your_turn_in_game_with">Em seu jogo com %1$s , %2$s</string>
 	<string name="register">Inscrever</string>
+	<string name="session_expired">Sua sessão expirou, faça o login novamente</string>
 
 </resources>

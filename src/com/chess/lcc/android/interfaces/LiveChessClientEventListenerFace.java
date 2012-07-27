@@ -16,6 +16,8 @@ public interface LiveChessClientEventListenerFace {
 	 */
     void onConnectionFailure(String message);
 
+    void onSessionExpired();
+
 	void onObsoleteProtocolVersion();
 
     void onConnectionBlocked(boolean blocked);

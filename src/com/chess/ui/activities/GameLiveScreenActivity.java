@@ -109,6 +109,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		currentGame = getLccHolder().getGameItem(gameId);
 
 		getLccHolder().setLccEventListener(this);
+		getLccHolder().setLccChatMessageListener(this);
 
 		int resignOrAbort = getLccHolder().getResignTitle(gameId);
 
@@ -171,6 +172,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
         getLccHolder().setActivityPausedMode(false);
+		getLccHolder().setLccChatMessageListener(this);
 		updateGameState();
 	}
 
@@ -317,6 +319,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     @Override
     public void onMessageReceived() {
         gamePanelView.haveNewMessage(true);
+		boardView.invalidate();
     }
 
 	@Override

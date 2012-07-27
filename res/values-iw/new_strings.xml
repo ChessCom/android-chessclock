@@ -7,5 +7,6 @@
 	<string name="invalid_password">סיסמה לא חוקית</string>
 	<string name="your_turn_in_game_with">במשחק שלך %1$s , %2$s</string>
 	<string name="register">לרשום</string>
+	<string name="session_expired">הפגישה שלך פג, אנא התחבר מחדש</string>
 
 </resources>

@@ -7,5 +7,6 @@
 	<string name="invalid_password">अमान्य पासवर्ड</string>
 	<string name="your_turn_in_game_with">अपने खेल के साथ %1$s , %2$s</string>
 	<string name="register">रजिस्टर</string>
+	<string name="session_expired">आपका सत्र समाप्त हो गया है, फिर से लॉगिन करने के लिए कृपया</string>
 
 </resources>

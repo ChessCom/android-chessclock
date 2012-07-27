@@ -26,6 +26,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
+import com.chess.model.PopupItem;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.mopub.mobileads.MoPubView;
@@ -34,8 +36,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		, ActiveFragmentInterface, PopupDialogFace, LiveChessClientEventListenerFace {
 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
-	protected static final String OBSOLETE_VERSION_TAG = "obsolete version";
+	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	private static final String INFO_MSG_TAG = "info message popup";
+	private static final String RELOGIN_TAG = "relogin popup";
 
 
 	protected Bundle extras;
@@ -210,6 +213,18 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
 			}
 		});
+	}
+
+	@Override
+	public void onSessionExpired() {
+		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.popup_relogin_frame, null, false);
+
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(layout);
+
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+		customViewFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
 	}
 
 	@Override

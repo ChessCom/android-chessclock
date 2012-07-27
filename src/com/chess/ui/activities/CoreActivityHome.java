@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -17,6 +19,8 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
+import com.chess.model.PopupItem;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 
 public abstract class CoreActivityHome extends ActionBarActivityHome implements PopupDialogFace, LiveChessClientEventListenerFace {
@@ -25,6 +29,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	private static final String CHECK_UPDATE_TAG = "check update";
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	public static final String OBSOLETE_VERSION_TAG = "obsolete version";
+	private static final String RELOGIN_TAG = "relogin popup";
 
 	private boolean forceFlag;
 
@@ -140,6 +145,19 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			}
 		});
 	}
+
+	@Override
+	public void onSessionExpired() {
+		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.popup_relogin_frame, null, false);
+
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(layout);
+
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+		customViewFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
+	}
+
 
 	@Override
 	public void onConnectionFailure(String message) {

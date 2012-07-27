@@ -7,5 +7,6 @@
 	<string name="invalid_password">비밀 번호가 잘못되었습니다</string>
 	<string name="your_turn_in_game_with">게임과 관련 %1$s , %2$s</string>
 	<string name="register">레지스터</string>
+	<string name="session_expired">세션이 만료되었고, 다시 로그인하시기 바랍니다</string>
 
 </resources>

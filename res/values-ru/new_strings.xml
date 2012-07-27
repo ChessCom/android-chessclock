@@ -7,5 +7,6 @@
 	<string name="invalid_password">Неверный пароль</string>
 	<string name="your_turn_in_game_with">В игре с %1$s , %2$s</string>
 	<string name="register">Регистрация</string>
+	<string name="session_expired">Время сеанса истекло, пожалуйста, войдите снова</string>
 
 </resources>

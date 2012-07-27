@@ -17,7 +17,6 @@ import com.chess.live.client.*;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
-import com.chess.ui.activities.ChatLiveActivity;
 import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.utilities.AppUtils;
 
@@ -246,10 +245,19 @@ public class LccHolder{
 		}
 	}
 
+	private void checkCredentialsAndConnect(){
+		String userName = AppData.getUserName(context);
+		String pass = AppData.getPassword(context);
+		if (!pass.equals(StaticData.SYMBOL_EMPTY)){
+			connectByCreds(userName, pass);
+		} else {
+			String message = context.getString(R.string.account_error);
+			liveChessClientEventListener.onConnectionFailure(message);
+		}
+	}
+
 	/**
 	 * Connect live chess client
-	 *
-	 * @return flag if client has performed connection
 	 */
 	public void performConnect() {
 		String userName = AppData.getUserName(context);
@@ -302,9 +310,12 @@ public class LccHolder{
 				break;
 			}
 			case ACCOUNT_FAILED: {
-				detailsMessage = context.getString(R.string.account_error)
-						+ context.getString(R.string.lccFailedUnavailable);
-				break;
+				liveChessClientEventListener.onSessionExpired();
+				checkCredentialsAndConnect();
+				return;
+//				detailsMessage = context.getString(R.string.account_error)
+//						+ context.getString(R.string.lccFailedUnavailable);
+//				break;
 			}
 			case SERVER_STOPPED: {
 				detailsMessage = context.getString(R.string.server_stopped)
@@ -332,7 +343,7 @@ public class LccHolder{
         return lccEventListener;
     }
 
-    public void setLccChatMessageListener(ChatLiveActivity lccChatMessageListener) {
+    public void setLccChatMessageListener(LccChatMessageListener lccChatMessageListener) {
         this.lccChatMessageListener = lccChatMessageListener;
     }
 
