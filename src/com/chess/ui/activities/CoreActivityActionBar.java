@@ -27,7 +27,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupReLoginFragment2;
+import com.chess.ui.fragments.PopupReLoginFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.mopub.mobileads.MoPubView;
@@ -223,7 +223,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(view);
 
-		PopupReLoginFragment2 reLoginFragment = PopupReLoginFragment2.newInstance(popupItem);
+		PopupReLoginFragment reLoginFragment = PopupReLoginFragment.newInstance(popupItem);
 		reLoginFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
 
 

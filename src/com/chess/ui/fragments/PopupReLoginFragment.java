@@ -31,7 +31,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 07.04.12 7:13
  */
-public class PopupReLoginFragment2 extends PopupCustomViewFragment {
+public class PopupReLoginFragment extends PopupCustomViewFragment {
 
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
@@ -51,8 +51,8 @@ public class PopupReLoginFragment2 extends PopupCustomViewFragment {
 	private SharedPreferences preferences;
 	private Facebook facebook;
 
-	public static PopupReLoginFragment2 newInstance(PopupItem popupItem) {
-		PopupReLoginFragment2 frag = new PopupReLoginFragment2();
+	public static PopupReLoginFragment newInstance(PopupItem popupItem) {
+		PopupReLoginFragment frag = new PopupReLoginFragment();
 		Bundle arguments = new Bundle();
 		arguments.putSerializable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
