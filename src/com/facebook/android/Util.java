@@ -138,8 +138,7 @@ public final class Util {
      * @throws MalformedURLException - if the URL format is invalid
      * @throws IOException - if a network problem occurs
      */
-    public static String openUrl(String url, String method, Bundle params)
-          throws MalformedURLException, IOException {
+    public static String openUrl(String url, String method, Bundle params) throws  IOException {
         // random string as boundary for multi-part http post
         String strBoundary = "3i2ndDfv2rTHiSisAbouNdArYfORhtTPEefj3q2f";
         String endLine = "\r\n";

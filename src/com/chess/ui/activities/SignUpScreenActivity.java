@@ -318,7 +318,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 						}
 					}
 				}
-			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_ACCOUNT)) {
+			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
 				showToast(R.string.no_chess_account_signup_please);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
 			}

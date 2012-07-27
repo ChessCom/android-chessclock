@@ -5,6 +5,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.chess.R;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
@@ -23,8 +25,9 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 
     protected int buttonsNumber;
     protected boolean isShowed;
+	protected boolean isPaused;
 
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_FRAME, 0);
@@ -55,7 +58,19 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
         outState.putSerializable(POPUP_ITEM, popupItem);
     }
 
-    @Override
+	@Override
+	public void onResume() {
+		super.onResume();
+		isPaused = false;
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		isPaused = true;
+	}
+
+	@Override
     public void onClick(View view) {
         if(view.getId() == R.id.positiveBtn){
             listener.onPositiveBtnClick(this);
@@ -88,4 +103,16 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
             super.dismiss();
         isShowed = false;
     }
+
+	protected String getTextFromField(EditText editText) {
+		return editText.getText().toString().trim();
+	}
+
+	protected void showToast(String msg) {
+		Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+	}
+
+	protected void showToast(int msgId) {
+		Toast.makeText(getActivity(), msgId, Toast.LENGTH_SHORT).show();
+	}
 }

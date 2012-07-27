@@ -251,8 +251,9 @@ public class LccHolder{
 		if (!pass.equals(StaticData.SYMBOL_EMPTY)){
 			connectByCreds(userName, pass);
 		} else {
-			String message = context.getString(R.string.account_error);
-			liveChessClientEventListener.onConnectionFailure(message);
+			liveChessClientEventListener.onSessionExpired();
+//			String message = context.getString(R.string.account_error);
+//			liveChessClientEventListener.onConnectionFailure(message);
 		}
 	}
 
@@ -310,7 +311,7 @@ public class LccHolder{
 				break;
 			}
 			case ACCOUNT_FAILED: {
-				liveChessClientEventListener.onSessionExpired();
+
 				checkCredentialsAndConnect();
 				return;
 //				detailsMessage = context.getString(R.string.account_error)

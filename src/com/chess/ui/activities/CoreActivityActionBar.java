@@ -27,7 +27,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.PopupReLoginFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.mopub.mobileads.MoPubView;
@@ -217,14 +217,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public void onSessionExpired() {
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.popup_relogin_frame, null, false);
+		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
 		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView(layout);
+		popupItem.setCustomView(view);
 
-		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
-		customViewFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
+		PopupReLoginFragment reLoginFragment = PopupReLoginFragment.newInstance(popupItem);
+		reLoginFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
+
+
+
 	}
 
 	@Override

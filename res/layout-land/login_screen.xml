@@ -38,7 +38,7 @@
 			/>
 
 		<com.chess.RoboButton
-			android:id="@+id/singin"
+			android:id="@+id/signin"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/singinButton"
@@ -48,7 +48,7 @@
 			android:layout_height="wrap_content"
 			>
 			<com.chess.RoboButton
-				android:id="@+id/singup"
+				android:id="@+id/signup"
 				style="@style/Text.Button.Green"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

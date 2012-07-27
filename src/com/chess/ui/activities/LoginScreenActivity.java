@@ -75,8 +75,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		passwordEdt.setOnEditorActionListener(this);
 		passwordEdt.setOnTouchListener(this);
 				
-		findViewById(R.id.singin).setOnClickListener(this);
-		findViewById(R.id.singup).setOnClickListener(this);
+		findViewById(R.id.signin).setOnClickListener(this);
+		findViewById(R.id.signup).setOnClickListener(this);
 		findViewById(R.id.guestplay).setOnClickListener(this);
 
 		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
@@ -95,14 +95,14 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.singin) {
+		if (view.getId() == R.id.signin) {
 			if(!AppUtils.isNetworkAvailable(this)){ // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			}else{
 				signInUser();
 			}
-		} else if (view.getId() == R.id.singup) {
+		} else if (view.getId() == R.id.signup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
 			Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -203,7 +203,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 						}
 					}
 				}
-			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_ACCOUNT)) {
+			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
 				popupItem.setPositiveBtnId(R.string.sing_up);
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){

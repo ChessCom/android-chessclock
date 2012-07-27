@@ -302,7 +302,7 @@
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW OFFER</string>
 	<string name="has_offered_draw">has offered a draw</string>
-	<string name="reconnecting">Reconnecting...</string>
+	<string name="reconnecting">Reconnecting…</string>
 	<string name="another_login_detected">Another login has been detected.</string>
 	<string name="loading_live_chess">Loading Live Chess</string>
 	<string name="game_draw_by_repetition">Game drawn \n by repetition</string>

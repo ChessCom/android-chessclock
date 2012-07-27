@@ -610,8 +610,7 @@ public class Facebook {
      * @return JSON string representation of the auth.expireSession response
      *            ("true" if successful)
      */
-    public String logout(Context context)
-            throws MalformedURLException, IOException {
+    public String logout(Context context)throws  IOException {
         Util.clearCookies(context);
         Bundle b = new Bundle();
         b.putString("method", "auth.expireSession");
@@ -649,8 +648,7 @@ public class Facebook {
      *            if one of the parameters is not "method"
      * @return JSON string representation of the response
      */
-    public String request(Bundle parameters)
-            throws MalformedURLException, IOException {
+    public String request(Bundle parameters)throws IOException {
         if (!parameters.containsKey("method")) {
             throw new IllegalArgumentException("API method must be specified. "
                     + "(parameters must contain key \"method\" and value). See"
@@ -732,8 +730,7 @@ public class Facebook {
      * @throws MalformedURLException
      * @return JSON string representation of the response
      */
-    public String request(String graphPath, Bundle params, String httpMethod)
-            throws FileNotFoundException, MalformedURLException, IOException {
+    public String request(String graphPath, Bundle params, String httpMethod) throws IOException {
         params.putString("format", "json");
         if (isSessionValid()) {
             params.putString(TOKEN, getAccessToken());

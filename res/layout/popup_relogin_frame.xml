@@ -15,6 +15,7 @@
 		robo:ttf="Bold"
 		android:text="@string/session_expired"
 		android:textSize="@dimen/game_end_popup_text_size"
+		android:gravity="center"
 		/>
 
 	<com.chess.RoboEditText
@@ -38,18 +39,19 @@
 		/>
 
 	<com.chess.RoboButton
-		android:id="@+id/singin"
+		android:id="@+id/re_signin"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/singinButton"
 		/>
 
 	<com.facebook.android.LoginButton
-		android:id="@+id/fb_connect"
+		android:id="@+id/re_fb_connect"
 		style="@style/Text.Button.Login"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:drawableLeft="@drawable/facebook_icon"
+		android:text="@string/connect_with_facebook"
 		/>
 
 

@@ -61,8 +61,7 @@ public class LoginButton extends Button {
 
 		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_selector
 			: R.drawable.button_f_selector);
-		setText(getResources().getString(
-			fb.isSessionValid() ? R.string.logout
+		setText(getResources().getString(fb.isSessionValid() ? R.string.logout
 				: R.string.connect_with_facebook));
 
 		invalidate();
@@ -76,14 +75,18 @@ public class LoginButton extends Button {
         
         public void onClick(View arg0) {
             if (mFb.isSessionValid()) {
-                SessionEvents.onLogoutBegin();
-                AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFb);
-                asyncRunner.logout(getContext(), new LogoutRequestListener());
+				logout();
             } else {
                 mFb.authorize(mActivity, mPermissions, new LoginDialogListener());
             }
         }
     }
+
+	public void logout(){
+		SessionEvents.onLogoutBegin();
+		AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFb);
+		asyncRunner.logout(getContext(), new LogoutRequestListener());
+	}
 
     private final class LoginDialogListener implements DialogListener {
         public void onComplete(Bundle values) {
