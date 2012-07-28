@@ -33,7 +33,7 @@ import com.chess.backend.tasks.PostDataTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupReLoginFragment;
+import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
@@ -70,7 +70,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected MoPubView moPubView;
 	private Facebook facebook;
 	private LoginUpdateListener loginUpdateListener;
-	private PopupReLoginFragment reLoginFragment;
+	private PopupCustomViewFragment reLoginFragment;
 	private EditText usernameEdt;
 	private EditText passwordEdt;
 	private int loginReturnCode;
@@ -260,7 +260,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
 
-		reLoginFragment = PopupReLoginFragment.newInstance(popupItem);
+		reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
 		reLoginFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
 
 		getLccHolder().logout();
