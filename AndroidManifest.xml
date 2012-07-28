@@ -127,7 +127,7 @@
 		<activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"
 			android:windowSoftInputMode="stateHidden"/>
 
-		<receiver android:name=".backend.AlarmReceiverNew"/>
+		<receiver android:name=".backend.AlarmReceiver"/>
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 

@@ -181,7 +181,11 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoginProgress(show);
+			if(show){
+				showPopupHardProgressDialog(R.string.signingin);
+			}else {
+				dismissProgressDialog();
+			}
 		}
 
 		@Override
@@ -216,14 +220,6 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				}
 			}
 		}
-	}
-
-	private void showLoginProgress(boolean show){
-		if(show){
-            showPopupHardProgressDialog(R.string.signingin);
-		}else {
-            dismissProgressDialog();
-        }
 	}
 
 	@Override

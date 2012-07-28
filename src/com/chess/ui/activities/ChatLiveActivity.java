@@ -14,6 +14,7 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 
@@ -52,13 +53,18 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 		chatItems.clear();
 		chatItems.addAll(LccHolder.getInstance(this).getMessagesList(gameId));
 		if (before != chatItems.size()) {
-			if (messagesAdapter == null) {
-				messagesAdapter = new MessagesAdapter(this, R.layout.chat_item, chatItems);
-				chatListView.setAdapter(messagesAdapter);
-			} else {
-				messagesAdapter.notifyDataSetChanged();
-			}
-			chatListView.setSelection(chatItems.size() - 1);
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (messagesAdapter == null) {
+						messagesAdapter = new MessagesAdapter(ChatLiveActivity.this, R.layout.chat_item, chatItems);
+						chatListView.setAdapter(messagesAdapter);
+					} else {
+						messagesAdapter.notifyDataSetInvalidated();
+					}
+					chatListView.post(new AppUtils.ListSelector((chatItems.size() - 1), chatListView));
+				}
+			});
 		}
 	}
 
@@ -93,7 +99,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 
 		@Override
 		public void updateData(String returnedObj) {
-			messagesAdapter.notifyDataSetChanged();
+			messagesAdapter.notifyDataSetInvalidated();// Changed();
 		}
 	}
 

@@ -12,8 +12,9 @@ import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.AlarmReceiverNew;
+import com.chess.backend.AlarmReceiver;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -39,6 +40,19 @@ public class AppUtils {
 	private static final int MDPI_DENSITY = 1;
 	private static boolean ENABLE_LOG = true;
 
+	public static class ListSelector implements Runnable{
+		private int pos;
+		private ListView listView;
+
+		public ListSelector(int pos, ListView listView){
+			this.pos = pos;
+			this.listView = listView;
+		}
+		@Override
+		public void run() {
+			listView.setSelection(pos);
+		}
+	}
 
 	public static void setBackground(View mainView, Context context) {
 		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
@@ -136,7 +150,7 @@ public class AppUtils {
 	}
 
 	public static void startNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
+		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
 				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -147,7 +161,7 @@ public class AppUtils {
 	}
 
 	public static void stopNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
+		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
 				PendingIntent.FLAG_UPDATE_CURRENT);

@@ -318,8 +318,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onMessageReceived() {
-        gamePanelView.haveNewMessage(true);
-		boardView.invalidate();
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				gamePanelView.haveNewMessage(true);
+				boardView.invalidate();
+			}
+		});
     }
 
 	@Override
