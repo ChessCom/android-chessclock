@@ -18,14 +18,12 @@ public class LccConnectionListener implements ConnectionListener {
 
 	public void onOtherClientEntered(User user) {
 		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
-//		lccHolder.getAndroidStuff().processOtherClientEntered();
-		lccHolder.onAnotherLoginDetected();
+		lccHolder.checkCredentialsAndConnect();
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHolder.setUser(user);
 		lccHolder.setConnected(true);
-		//lccHolder.setConnectingInProgress(false);
 		Log.d("TEST", "onConnectionEstablished, setConnected(true)");
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
@@ -66,19 +64,16 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
                 + " n\\Details: id = " + failureId + "comments = " + comments);
 		lccHolder.setConnected(false);
-		//lccHolder.setConnectingInProgress(true);
 	}
 
 	@Override
 	public void onConnectionReestablished(User arg0) {
 		Log.d(CONNECTION, "onConnectionReestablished");
 		Log.d("TEST", " onConnectionReestablished" );
-		//lccHolder.clearGames();
 		lccHolder.clearChallenges();
 		lccHolder.clearOwnChallenges();
 		lccHolder.clearSeeks();
 		lccHolder.setConnected(true);
-		//lccHolder.setConnectingInProgress(false);
 	}
 
 	@Override
@@ -92,7 +87,6 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d("TEST", "Connection Restored");
 		Log.d(CONNECTION, "Connection Restored");
 		lccHolder.setConnected(true);
-		//lccHolder.setConnectingInProgress(false);
 	}
 
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
@@ -106,7 +100,6 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onKicked(User user, String reason, String message) { // TODO change when server change
 		Log.d("TEST", "user kicked");
 		Log.d(CONNECTION, "user kicked");
-		//lccHolder.setNetworkTypeName(null);  // TODO why it is not set in others methods?
 
 		lccHolder.processConnectionFailure(reason, message);
 	}

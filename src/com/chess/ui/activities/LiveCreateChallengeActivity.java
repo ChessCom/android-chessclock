@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -22,12 +23,12 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
-public class LiveCreateChallengeActivity extends LiveBaseActivity {
-	private Spinner minrating;
-	private Spinner maxrating;
+public class LiveCreateChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
+	private Spinner minRatingSpnr;
+	private Spinner maxRatingSpnr;
 	private CheckBox isRated;
-	private AutoCompleteTextView initialTime;
-	private AutoCompleteTextView bonusTime;
+	private AutoCompleteTextView initialTimeEdt;
+	private AutoCompleteTextView bonusTimeEdt;
 	private InitialTimeTextWatcher initialTimeTextWatcher;
 	private InitialTimeValidator initialTimeValidator;
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
@@ -42,25 +43,27 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 
 		init();
 
-		initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
-		bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
+		initialTimeEdt = (AutoCompleteTextView) findViewById(R.id.initialTime);
+		bonusTimeEdt = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
-		initialTime.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
-		initialTime.addTextChangedListener(initialTimeTextWatcher);
-		initialTime.setValidator(initialTimeValidator);
-		initialTime.setOnEditorActionListener(null);
+		initialTimeEdt.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
+		initialTimeEdt.addTextChangedListener(initialTimeTextWatcher);
+		initialTimeEdt.setValidator(initialTimeValidator);
+		initialTimeEdt.setOnTouchListener(this);
+		initialTimeEdt.setSelection(initialTimeEdt.getText().length());
 
-		bonusTime.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
-		bonusTime.addTextChangedListener(bonusTimeTextWatcher);
-		bonusTime.setValidator(bonusTimeValidator);
+		bonusTimeEdt.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
+		bonusTimeEdt.addTextChangedListener(bonusTimeTextWatcher);
+		bonusTimeEdt.setValidator(bonusTimeValidator);
+		bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
 
-		minrating = (Spinner) findViewById(R.id.minRating);
-		minrating.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
-		minrating.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+		minRatingSpnr = (Spinner) findViewById(R.id.minRating);
+		minRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
+		minRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
-		maxrating = (Spinner) findViewById(R.id.maxRating);
-		maxrating.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
-		maxrating.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxRatingSpnr = (Spinner) findViewById(R.id.maxRating);
+		maxRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
+		maxRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);
 
@@ -77,56 +80,27 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 		DataHolder.getInstance().setLiveChess(true);
 	}
 
-/*	@Override    // TODO probably useless case - If User not initialized or became null, we already  disconnected. Or it should exist everywhere.
-	protected void onResume() {
-		super.onResume();
-		if (getLccHolder().getUser() == null) {
-			getLccHolder().logout();
-			backToHomeActivity();
-		}
-	}*/
-
-	private Integer[] minRatings = new Integer[]{
-			null,
-			1000,
-			1200,
-			1400,
-			1600,
-			1800,
-			2000
-	};
-
-	private Integer[] maxRatings = new Integer[]{
-			null,
-			1000,
-			1200,
-			1400,
-			1600,
-			1800,
-			2000,
-			2200,
-			2400
-	};
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.createchallenge) {
+			int minPos = minRatingSpnr.getSelectedItemPosition();
+			int maxPos = maxRatingSpnr.getSelectedItemPosition();
 
-			Integer minRating = minRatings[minrating.getSelectedItemPosition()];
-			Integer maxRating = maxRatings[maxrating.getSelectedItemPosition()];
+			Integer minRating = minPos == 0? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(minPos));
+			Integer maxRating = maxPos == 0? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(maxPos));
 			Integer minMembershipLevel = 0;
 
-			if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
-				initialTime.setText("10");
-				bonusTime.setText("0");
+			if (initialTimeEdt.getText().toString().length() < 1 || bonusTimeEdt.getText().toString().length() < 1) {
+				initialTimeEdt.setText("10");
+				bonusTimeEdt.setText("0");
 			}
 			if (getLccHolder().getOwnSeeksCount() >= LccHolder.OWN_SEEKS_LIMIT) {
 				return;
 			}
 
 			Boolean rated = isRated.isChecked();
-			Integer initialTimeInteger = new Integer(initialTime.getText().toString());
-			Integer bonusTimeInteger = new Integer(bonusTime.getText().toString());
+			Integer initialTimeInteger = new Integer(initialTimeEdt.getText().toString());
+			Integer bonusTimeInteger = new Integer(bonusTimeEdt.getText().toString());
 			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
 			String to = null;
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
@@ -137,10 +111,10 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 
 			challengeTaskRunner.runSendChallengeTask(challenge);
 
-			preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-			preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
-			preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minrating.getSelectedItemPosition());
-			preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxrating.getSelectedItemPosition());
+			preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTimeEdt.getText().toString().trim());
+			preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTimeEdt.getText().toString().trim());
+			preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minRatingSpnr.getSelectedItemPosition());
+			preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxRatingSpnr.getSelectedItemPosition());
 			preferencesEditor.commit();
 
 			createChallengeBtn.setEnabled(false);
@@ -152,10 +126,20 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 		}
 	}
 
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		if (view.getId() == R.id.initialTime){
+			initialTimeEdt.setSelection(initialTimeEdt.getText().length());
+		} else if (view.getId() == R.id.bonusTime) {
+			bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
+		}
+		return false;
+	}
+
 	private class InitialTimeTextWatcher implements TextWatcher {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			initialTime.performValidation();
+			initialTimeEdt.performValidation();
 		}
 
 		@Override
@@ -164,7 +148,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			initialTime.performValidation();
+			initialTimeEdt.performValidation();
 		}
 	}
 
@@ -185,7 +169,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 	private class BonusTimeTextWatcher implements TextWatcher {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			bonusTime.performValidation();
+			bonusTimeEdt.performValidation();
 		}
 
 		@Override
@@ -194,7 +178,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			bonusTime.performValidation();
+			bonusTimeEdt.performValidation();
 		}
 	}
 

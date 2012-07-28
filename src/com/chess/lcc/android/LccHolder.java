@@ -245,7 +245,7 @@ public class LccHolder{
 		}
 	}
 
-	private void checkCredentialsAndConnect(){
+	public void checkCredentialsAndConnect(){
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
 		if (!pass.equals(StaticData.SYMBOL_EMPTY)){
@@ -333,11 +333,6 @@ public class LccHolder{
 
 	public void onObsoleteProtocolVersion() {
 		liveChessClientEventListener.onObsoleteProtocolVersion();
-	}
-
-	public void onAnotherLoginDetected() {
-		String failMessage = context.getString(R.string.another_login_detected);
-		liveChessClientEventListener.onConnectionFailure(failMessage);
 	}
 
     public LccEventListener getLccEventListener() {

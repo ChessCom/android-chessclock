@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -24,14 +25,14 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
-public class LiveFriendChallengeActivity extends LiveBaseActivity {
+public class LiveFriendChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
 
 	private static final String NO_ONLINE_FRIENDS_TAG = "no online friends";
 	private static final String CHALLENGE_SENT_TAG = "challenge was sent";
 
 	private Spinner friendsSpinner;
-	private AutoCompleteTextView initialTime;
-	private AutoCompleteTextView bonusTime;
+	private AutoCompleteTextView initialTimeEdt;
+	private AutoCompleteTextView bonusTimeEdt;
 	private CheckBox isRated;
 
 	private InitialTimeTextWatcher initialTimeTextWatcher;
@@ -64,19 +65,22 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
     protected void widgetsInit() {
         friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
         isRated = (CheckBox) findViewById(R.id.ratedGame);
-        initialTime = (AutoCompleteTextView) findViewById(R.id.initialTime);
-        bonusTime = (AutoCompleteTextView) findViewById(R.id.bonusTime);
+        bonusTimeEdt = (AutoCompleteTextView) findViewById(R.id.bonusTime);
 
-        initialTime.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
-        initialTime.addTextChangedListener(initialTimeTextWatcher);
-        initialTime.setValidator(initialTimeValidator);
-        initialTime.setOnEditorActionListener(null);
+		initialTimeEdt = (AutoCompleteTextView) findViewById(R.id.initialTime);
+		initialTimeEdt.setText(preferences.getString(AppConstants.CHALLENGE_INITIAL_TIME, "5"));
+        initialTimeEdt.addTextChangedListener(initialTimeTextWatcher);
+        initialTimeEdt.setValidator(initialTimeValidator);
+        initialTimeEdt.setOnTouchListener(this);
+		initialTimeEdt.setSelection(initialTimeEdt.getText().length());
 
-        bonusTime.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
-        bonusTime.addTextChangedListener(bonusTimeTextWatcher);
-        bonusTime.setValidator(bonusTimeValidator);
+        bonusTimeEdt.setText(preferences.getString(AppConstants.CHALLENGE_BONUS_TIME, "0"));
+        bonusTimeEdt.addTextChangedListener(bonusTimeTextWatcher);
+        bonusTimeEdt.setValidator(bonusTimeValidator);
+		bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
+		bonusTimeEdt.setOnTouchListener(this);
 
-        findViewById(R.id.createchallenge).setOnClickListener(this);
+		findViewById(R.id.createchallenge).setOnClickListener(this);
         friendsTxt = (TextView) findViewById(R.id.friendsTxt);
     }
 
@@ -148,15 +152,15 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		if (friendsSpinner.getCount() == 0) {
 			return;
 		}
-		if (initialTime.getText().toString().length() < 1 || bonusTime.getText().toString().length() < 1) {
-			initialTime.setText("10");
-			bonusTime.setText("0");
+		if (initialTimeEdt.getText().toString().length() < 1 || bonusTimeEdt.getText().toString().length() < 1) {
+			initialTimeEdt.setText("10");
+			bonusTimeEdt.setText("0");
 		}
 
 		boolean rated = isRated.isChecked();
 
-		int initialTimeInteger = Integer.parseInt(initialTime.getText().toString());
-		int bonusTimeInteger = Integer.parseInt(bonusTime.getText().toString());
+		int initialTimeInteger = Integer.parseInt(initialTimeEdt.getText().toString());
+		int bonusTimeInteger = Integer.parseInt(bonusTimeEdt.getText().toString());
 
 		GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
 
@@ -173,8 +177,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED);
 		challengeTaskRunner.runSendChallengeTask(challenge);
 
-		preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTime.getText().toString().trim());
-		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTime.getText().toString().trim());
+		preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTimeEdt.getText().toString().trim());
+		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTimeEdt.getText().toString().trim());
 		preferencesEditor.commit();
 
 		popupItem.setPositiveBtnId(R.string.ok);
@@ -182,11 +186,21 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 		popupDialogFragment.setButtons(1);
 	}
 
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		if (view.getId() == R.id.initialTime){
+			initialTimeEdt.setSelection(initialTimeEdt.getText().length());
+		} else if (view.getId() == R.id.bonusTime) {
+			bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
+		}
+		return false;
+	}
+
 
 	private class InitialTimeTextWatcher implements TextWatcher {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			initialTime.performValidation();
+			initialTimeEdt.performValidation();
 		}
 
 		@Override
@@ -195,7 +209,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			initialTime.performValidation();
+			initialTimeEdt.performValidation();
 		}
 	}
 
@@ -216,7 +230,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 	private class BonusTimeTextWatcher implements TextWatcher {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			bonusTime.performValidation();
+			bonusTimeEdt.performValidation();
 		}
 
 		@Override
@@ -225,7 +239,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			bonusTime.performValidation();
+			bonusTimeEdt.performValidation();
 		}
 	}
 

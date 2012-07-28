@@ -24,6 +24,17 @@
 		<item>tr</item>
 	</string-array>
 
+
+
+	<integer-array name="daysArr">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>5</item>
+		<item>7</item>
+		<item>14</item>
+	</integer-array>
+
 	<integer-array name="comp_strength">
 		<item>1000</item>
 		<item>3000</item>

@@ -317,7 +317,9 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
-		if(view.getId() == R.id.passwordEdt){
+		if(view.getId() == R.id.usernameEdt){
+			usernameEdt.setSelection(usernameEdt.getText().length());
+		} else if(view.getId() == R.id.passwordEdt){
 			passwordEdt.setError(null);
 		}
 		return false;
