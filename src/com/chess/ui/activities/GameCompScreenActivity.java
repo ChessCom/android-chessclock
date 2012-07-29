@@ -155,23 +155,23 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	public void invalidateGameScreen() {
 		switch (boardView.getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-				whitePlayerLabel.setText(AppData.getUserName(this));
-				blackPlayerLabel.setText(getString(R.string.Computer));
+				topPlayerlabel.setText(AppData.getUserName(this));
+				topPlayerTimer.setText(getString(R.string.Computer));
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-				whitePlayerLabel.setText(getString(R.string.Computer));
-				blackPlayerLabel.setText(AppData.getUserName(this));
+				topPlayerlabel.setText(getString(R.string.Computer));
+				topPlayerTimer.setText(AppData.getUserName(this));
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-				whitePlayerLabel.setText(getString(R.string.Human));
-				blackPlayerLabel.setText(getString(R.string.Human));
+				topPlayerlabel.setText(getString(R.string.Human));
+				topPlayerTimer.setText(getString(R.string.Human));
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-				whitePlayerLabel.setText(getString(R.string.Computer));
-				blackPlayerLabel.setText(getString(R.string.Computer));
+				topPlayerlabel.setText(getString(R.string.Computer));
+				topPlayerTimer.setText(getString(R.string.Computer));
 				break;
 			}
 		}
@@ -181,15 +181,15 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void onPlayerMove() {
-		whitePlayerLabel.setVisibility(View.VISIBLE);
-		blackPlayerLabel.setVisibility(View.VISIBLE);
+		topPlayerlabel.setVisibility(View.VISIBLE);
+		topPlayerTimer.setVisibility(View.VISIBLE);
 		thinking.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void onCompMove() {
-		whitePlayerLabel.setVisibility(View.GONE);
-		blackPlayerLabel.setVisibility(View.GONE);
+		topPlayerlabel.setVisibility(View.GONE);
+		topPlayerTimer.setVisibility(View.GONE);
 		thinking.setVisibility(View.VISIBLE);
 
 	}

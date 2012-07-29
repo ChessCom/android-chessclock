@@ -179,8 +179,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	public void invalidateGameScreen() {
-        whitePlayerLabel.setText(getWhitePlayerName());
-        blackPlayerLabel.setText(getBlackPlayerName());
+        topPlayerlabel.setText(getWhitePlayerName());
+        topPlayerTimer.setText(getBlackPlayerName());
 
 		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}

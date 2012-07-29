@@ -29,7 +29,6 @@
 				android:layout_height="wrap_content"
 				android:paddingRight="2dip"
 				android:paddingLeft="8dip"
-				android:drawableLeft="@drawable/player_indicator_white"
 				style="@style/GameLabel.Player"
 				/>
 
@@ -40,7 +39,6 @@
 				android:layout_alignParentRight="true"
 				android:paddingLeft="2dip"
 				android:paddingRight="8dip"
-				android:drawableRight="@drawable/player_indicator_black"
 				style="@style/GameLabel.Timer"
 				/>
 

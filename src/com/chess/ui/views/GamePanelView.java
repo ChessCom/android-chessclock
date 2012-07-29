@@ -88,13 +88,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
     private float density;
     private RelativeLayout timerRelLay;
-    private RoboTextView whiteTimer;
-    private RoboTextView blackTimer;
+    private RoboTextView bottomPlayerLabel;
+    private RoboTextView bottomPlayerTimer;
     private Resources resources;
     private LinearLayout piecesLayout;
     private TextView movesTextView;
     private ScrollView movesScroll;
 	private boolean blocked;
+	private int playerDotId;
 
 	public GamePanelView(Context context) {
         super(context);
@@ -136,41 +137,40 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         addView(controlsLayout);
 
         // create textViews for timers
-        whiteTimer = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
-        whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_black, 0, 0, 0);
-        whiteTimer.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
+        bottomPlayerLabel = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
+        bottomPlayerLabel.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
         int timerPaddingLeft = (int) (8 * density + 0.5f);
         int timerPaddingRight = (int) (2 * density + 0.5f);
-        whiteTimer.setPadding(timerPaddingLeft, 0, timerPaddingRight, 0);
-        whiteTimer.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+        bottomPlayerLabel.setPadding(timerPaddingLeft, 0, timerPaddingRight, 0);
+        bottomPlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 
-        // set whiteTimer params
+        // set bottomPlayerLabel params
         RelativeLayout.LayoutParams whiteTimerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        whiteTimer.setLayoutParams(whiteTimerParams);
+        bottomPlayerLabel.setLayoutParams(whiteTimerParams);
 
-        blackTimer = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
-        blackTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
+		bottomPlayerTimer = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
+        bottomPlayerTimer.setId(BUTTON_PREFIX + T_BLACK_TIMER_ID);
 
         int timerPaddingLeft1 = (int) (2 * density + 0.5f);
         int timerPaddingRight1 = (int) (8 * density + 0.5f);
-        blackTimer.setPadding(timerPaddingLeft1, 0, timerPaddingRight1, 0);
+        bottomPlayerTimer.setPadding(timerPaddingLeft1, 0, timerPaddingRight1, 0);
 
-        // create layout for text views
+		// create layout for text views
         timerRelLay = new RelativeLayout(getContext());
         RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         timerRelLay.setLayoutParams(relParams);
 
-        // set blackTimer params
+        // set bottomPlayerTimer params
         RelativeLayout.LayoutParams blackTimerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         blackTimerParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        blackTimer.setLayoutParams(blackTimerParams);
+        bottomPlayerTimer.setLayoutParams(blackTimerParams);
 
         // add to layout
-        timerRelLay.addView(whiteTimer);
-        timerRelLay.addView(blackTimer);
+        timerRelLay.addView(bottomPlayerLabel);
+        timerRelLay.addView(bottomPlayerTimer);
 
         timerRelLay.setVisibility(View.INVISIBLE);
         addView(timerRelLay);
@@ -541,34 +541,37 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         int imgId = newMessage ? R.drawable.ic_chat_nm1 : R.drawable.ic_chat;
 
         ((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
-//		postInvalidate();
 		invalidate();
     }
 
     public void activatePlayerTimer(boolean isWhite, boolean active) {
         timerRelLay.setVisibility(View.VISIBLE);
-        TextView textView = isWhite ? whiteTimer : blackTimer;
-        if (active)
-            textView.setTextColor(resources.getColor(R.color.white));
-        else
-            textView.setTextColor(resources.getColor(R.color.hint_text));
+        TextView textView = isWhite ? bottomPlayerLabel : bottomPlayerTimer;
+        if (active) {
+			bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(playerDotId, 0, 0, 0);
+			textView.setTextColor(resources.getColor(R.color.white));
+		} else {
+			bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+			textView.setTextColor(resources.getColor(R.color.hint_text));
+		}
     }
 
-    public void setBlackTimer(String timeString) {
-        blackTimer.setText(timeString);
+    public void setBottomPlayerTimer(String timeString) {
+        bottomPlayerTimer.setText(timeString);
     }
 
-    public void setWhiteTimer(String timeString) {
-        whiteTimer.setText(timeString);
+    public void setBottomPlayerLabel(String timeString) {
+        bottomPlayerLabel.setText(timeString);
     }
 
     public void setWhiteIndicator(boolean userPlayWhite) {
         if (userPlayWhite) {
-            whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
+			playerDotId = R.drawable.player_indicator_white;
         } else {
-            whiteTimer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_black, 0, 0, 0);
-        }
-    }
+			playerDotId = R.drawable.player_indicator_black;
+		}
+		bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(playerDotId, 0, 0, 0);
+	}
 
     public void hideChatButton() {
         showGameButton(GamePanelView.B_CHAT_ID, false);
