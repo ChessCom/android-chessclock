@@ -11,8 +11,8 @@ public class ChessClock {
 	public static final int SECOND_TENTHS_DISPLAY_MODE = 2;
 	public static final int TIME_DEPENDENT_DISPLAY_MODE = 3;
 	private int time;
-	private int secondTenthsThreshold = 10 * 1000;
-	private int minutesSecondsThreshold = 121 * 60 * 1000;
+	private static final int SECOND_TENTHS_THRESHOLD = 10 * 1000;
+	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * 1000;
 	private long runStart = -1;
 	private int displayMode = TIME_DEPENDENT_DISPLAY_MODE;
 	private LccHolder lccHolder;
@@ -73,9 +73,9 @@ public class ChessClock {
 			return displayMode;
 		}
 		int time = Math.abs(getTime());
-		if (time < secondTenthsThreshold) {
+		if (time < SECOND_TENTHS_THRESHOLD) {
 			return SECOND_TENTHS_DISPLAY_MODE;
-		} else if (time < minutesSecondsThreshold) {
+		} else if (time < MINUTES_SECONDS_THRESHOLD) {
 			return MINUTE_SECOND_DISPLAY_MODE;
 		} else {
 			return HOUR_MINUTE_DISPLAY_MODE;
@@ -151,7 +151,7 @@ public class ChessClock {
 			public void run() {
 				paint();
 
-				if (getTime() <= secondTenthsThreshold && !tenSecondsPlayed) {
+				if (getTime() <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
 					SoundPlayer.getInstance(lccHolder.getContext()).playTenSeconds();
 				}

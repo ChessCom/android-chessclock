@@ -43,9 +43,6 @@ import java.net.URLEncoder;
  */
 public class LoginScreenActivity extends BaseFragmentActivity implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
 
-	private static final String CHECK_UPDATE_TAG = "check update";
-	private static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
-
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int MIN_USERNAME_LENGTH = 3;

@@ -59,6 +59,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private View gameBoardView;
 	private boolean lccInitiated;
 	private Button submitBtn;
+	private String warningMessage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +90,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		Log.d("Live Game", "GameLiveScreenActivity started ");
 		if (getLccHolder().getPendingWarnings().size() > 0) {
 			// get last warning
-			String message = getLccHolder().getLastWarningMessage();
-			getLccHolder().getPendingWarnings().remove(message);
+			warningMessage = getLccHolder().getLastWarningMessage();
+//			getLccHolder().getPendingWarnings().remove(warningMessage);
 
-			showPopupDialog(R.string.warning, message, WARNING_TAG);
+			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
 	}
 
@@ -496,41 +497,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 	}
 
-/*	@Override
-	public void onConfigurationChanged(Configuration newConfig) {  // prevent app to change locale on rotation
-		super.onConfigurationChanged(newConfig);
-		setContentView(R.layout.boardview_live);
-		boardView.setGameActivityFace(this);
-
-		widgetsInit();
-		lccInitiated = init();
-
-		if(!lccInitiated){
-			return;
-		}
-		// change labels and label's drawables according player color
-		// so current player(user) name must be always at the bottom
-		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
-		String userName = getLccHolder().getCurrentuserName();
-
-		userPlayWhite = !userName.equals(blackPlayerName);
-		int opponentIndicator = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
-
-		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator, 0, 0, 0);
-		gamePanelView.setWhiteIndicator(userPlayWhite);
-		// change players colors
-		changePlayersLabelColors();
-
-		Log.d("Live Game", "GameLiveScreenActivity started ");
-		if (getLccHolder().getPendingWarnings().size() > 0) {
-			// get last warning
-			String message = getLccHolder().getLastWarningMessage();
-			getLccHolder().getPendingWarnings().remove(message);
-
-			showPopupDialog(R.string.warning, message, WARNING_TAG);
-		}
-	}*/
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
@@ -599,6 +565,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, AppConstants.REQUEST_DRAW + getLccHolder().getGame(gameId));
 			gameTaskRunner.runMakeDrawTask(gameId);
+		} else if (fragment.getTag().equals(WARNING_TAG)) {
+			getLccHolder().getPendingWarnings().remove(warningMessage);
 		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
 			Game game = getLccHolder().getGame(gameId);
 

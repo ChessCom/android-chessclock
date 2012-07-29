@@ -1,6 +1,7 @@
 package com.chess.lcc.android;
 
 import android.util.Log;
+import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 
@@ -18,7 +19,9 @@ public class LccConnectionListener implements ConnectionListener {
 
 	public void onOtherClientEntered(User user) {
 		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
-		lccHolder.checkCredentialsAndConnect();
+		String message = lccHolder.getContext().getString(R.string.account_error)
+				+ lccHolder.getContext().getString(R.string.another_login_detected);
+		lccHolder.checkCredentialsAndConnect(message);
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -51,9 +52,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
-	private static final String INFO_MSG_TAG = "info message popup";
-	private static final String RELOGIN_TAG = "relogin popup";
-	private static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 
 
 	private static int SIGNIN_CALLBACK_CODE = 16;
@@ -187,7 +185,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			});
 
 			backToHomeActivity();
-		} else if (fragment.getTag().equals(INFO_MSG_TAG)) {
 		}
 	}
 
@@ -253,7 +250,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onSessionExpired() {
+	public void onSessionExpired(String message) {
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		final View customView = inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
@@ -261,9 +258,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		popupItem.setCustomView(customView);
 
 		reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
-		reLoginFragment.show(getSupportFragmentManager(), RELOGIN_TAG);
+		reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
 		getLccHolder().logout();
+
+		((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
 
 		usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
 		passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
@@ -280,7 +279,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 
 		usernameEdt.setText(AppData.getUserName(this));
-
 	}
 
 	@Override
@@ -382,8 +380,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
-//			reLoginFragment.dismiss();
-
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.LOGIN);
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
@@ -396,7 +392,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		@Override
 		public void onAuthFail(String error) {
-//			reLoginFragment.dismiss();
 		}
 	}
 
