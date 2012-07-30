@@ -20,7 +20,7 @@ public interface LiveChessClientEventListenerFace {
 	 * This method invoked when authKey has expired on server, so we may re-login user with username/pass or via facebook
 	 * To re-login via facebook we should normally clear FacebookSession
 	 */
-    void onSessionExpired();
+    void onSessionExpired(String message);
 
 	void onObsoleteProtocolVersion();
 

@@ -1,7 +1,5 @@
 package com.chess.ui.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,40 +25,34 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
     private static final String NO_INVITED_FRIENDS_TAG = "no invited friends";
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private Spinner iPlayAsSpinner;
-	private Spinner daysPerMoveSpinner;
-	private Spinner friendsSpinner;
-	private CheckBox isRated;
+	private Spinner iPlayAsSpnr;
+	private Spinner daysPerMoveSpnr;
+	private Spinner friendsSpnr;
+	private CheckBox isRatedChkBx;
 	private RadioButton chess960;
-	                                   // TODO move to resources
-	private int[] daysArr = new int[]{
-			1,
-			2,
-			3,
-			5,
-			7,
-			14
-	};
+
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private InitUpdateListener initUpdateListener;
+	private int[] daysArr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_challenge_friend);
 
-		daysPerMoveSpinner = (Spinner) findViewById(R.id.dayspermove);
-		daysPerMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
+		daysArr = getResources().getIntArray(R.array.daysArr);
+		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
+		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
 
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 
-		iPlayAsSpinner = (Spinner) findViewById(R.id.iplayas);
-		iPlayAsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
+		iPlayAsSpnr = (Spinner) findViewById(R.id.iplayas);
+		iPlayAsSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
-		friendsSpinner = (Spinner) findViewById(R.id.friendsSpinner);
-		friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, new String[]{StaticData.SYMBOL_EMPTY}));
+		friendsSpnr = (Spinner) findViewById(R.id.friendsSpinner);
+		friendsSpnr.setAdapter(new ChessSpinnerAdapter(this, new String[]{StaticData.SYMBOL_EMPTY}));
 
-		isRated = (CheckBox) findViewById(R.id.ratedGame);
+		isRatedChkBx = (CheckBox) findViewById(R.id.ratedGame);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
@@ -98,8 +90,8 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		friends = ChessComApiParser.GetFriendsParse(response);
 
 		ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, friends);
-		friendsSpinner.setAdapter(friendsAdapter);
-		if (friendsSpinner.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
+		friendsSpnr.setAdapter(friendsAdapter);
+		if (friendsSpnr.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 
             popupItem.setPositiveBtnId(R.string.invite);
             popupItem.setNegativeBtnId(R.string.cancel);
@@ -115,23 +107,23 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	}
 
 	private void createChallenge(){
-		if (friendsSpinner.getCount() == 0) {
+		if (friendsSpnr.getCount() == 0) {
 			return;
 		}
 
-		int color = iPlayAsSpinner.getSelectedItemPosition();
-		int days = daysArr[daysPerMoveSpinner.getSelectedItemPosition()];
-		int gametype = chess960.isChecked()? 2 :0;
-		int israted = isRated.isChecked() ? 1 :0;
+		int color = iPlayAsSpnr.getSelectedItemPosition();
+		int days = daysArr[daysPerMoveSpnr.getSelectedItemPosition()];
+		int gameType = chess960.isChecked()? 2 :0;
+		int isRated = this.isRatedChkBx.isChecked() ? 1 :0;
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, String.valueOf(days));
 		loadItem.addRequestParams(RestHelper.P_IPLAYAS, String.valueOf(color));
-		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(israted));
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, String.valueOf(gametype));
-		loadItem.addRequestParams(RestHelper.P_OPPONENT, friendsSpinner.getSelectedItem().toString().trim());
+		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(isRated));
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, String.valueOf(gameType));
+		loadItem.addRequestParams(RestHelper.P_OPPONENT, friendsSpnr.getSelectedItem().toString().trim());
 
 		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
 	}

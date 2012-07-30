@@ -24,6 +24,17 @@
 		<item>tr</item>
 	</string-array>
 
+
+
+	<integer-array name="daysArr">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>5</item>
+		<item>7</item>
+		<item>14</item>
+	</integer-array>
+
 	<integer-array name="comp_strength">
 		<item>1000</item>
 		<item>3000</item>
@@ -308,6 +319,96 @@
 		<item>329</item>
 	</string-array>
 
-
+	<!-- temporary -->
+	<string-array name="site_api_error_keys">
+		<item>invalidUserId</item>
+		<item>invalidContenIid</item>
+		<item>pleaseLoginAgain</item>
+		<item>tooManyLoginAttempts</item>
+		<item>accountNotYetActive</item>
+		<item>accountHasBeenDisabled</item>
+		<item>invalidUsernameParameter</item>
+		<item>invalidPlace</item>
+		<item>invalidTournamentId</item>
+		<item>trophyAlreadyInserted</item>
+		<item>youAreOnVacation</item>
+		<item>invalidDaysPerMove</item>
+		<item>invalidEmail</item>
+		<item>invalidUsername2</item>
+		<item>selfChallenge</item>
+		<item>opponentOnVacation</item>
+		<item>opponentUnavailable</item>
+		<item>ratingTooLow</item>
+		<item>ratingTooHigh</item>
+		<item>opponentMismatchedTimeControl</item>
+		<item>youAreBlocked</item>
+		<item>invalidRatings</item>
+		<item>minRatingTooLow</item>
+		<item>maxRatingTooHigh</item>
+		<item>maxRatingTooLow</item>
+		<item>minRatingTooHigh</item>
+		<item>ratingRangeTooSmall</item>
+		<item>ratingRangeMustIncludeYourOwnRating</item>
+		<item>maxSeeksExceeded</item>
+		<item>makeMovesBeforeCreatingMoreGames</item>
+		<item>gameAlreadyStarted</item>
+		<item>timeoutTooHigh</item>
+		<item>tooFewGames</item>
+		<item>mustBePremium</item>
+		<item>moveSpeedTooSlow</item>
+		<item>cantAcceptOwnSeek</item>
+		<item>notYourChallenge</item>
+		<item>gameAlreadyStarted2</item>
+		<item>needUsernameOrAuthUser</item>
+		<item>invalidUsername3</item>
+		<item>invalidFen</item>
+		<item>maxPly</item>
+		<item>invalidFriendRequestId</item>
+		<item>invalidActionParameters</item>
+		<item>invalidId</item>
+		<item>invalidGameId</item>
+		<item>invalidKey</item>
+		<item>multipleLoginMethodsFound</item>
+		<item>pleaseEnterUsernameNotEmail</item>
+		<item>usernameDoesNotExist</item>
+		<item>mustGiveUsername</item>
+		<item>accountLocked</item>
+		<item>youMustSetupAPassword</item>
+		<item>invalidPassword</item>
+		<item>invalidFacebookAccessToken</item>
+		<item>facebookUserHasNoAccount</item>
+		<item>invalidAppType</item>
+		<item>missingUsername</item>
+		<item>missingPassword</item>
+		<item>missingEmail</item>
+		<item>missingCountry</item>
+		<item>invalidCountryId</item>
+		<item>emailAlreadyTaken</item>
+		<item>invalidChessComEmail</item>
+		<item>usernameAlreadyTaken</item>
+		<item>usernameNotAllowed</item>
+		<item>invalidEmailDomain</item>
+		<item>systemError</item>
+		<item>weakPassword</item>
+		<item>invalidUser</item>
+		<item>invalidGameLocationType</item>
+		<item>pleaseRequest50OrLessGames</item>
+		<item>gameIdMustBeNumeric</item>
+		<item>invalidGameId2</item>
+		<item>pleaseRefreshTheGame</item>
+		<item>gameAlreadyOver</item>
+		<item>notYourGame</item>
+		<item>itIsNotYourMove</item>
+		<item>illegalMove</item>
+		<item>noOpenDrawOffer</item>
+		<item>chatIsDisabled</item>
+		<item>invalidCommand</item>
+		<item>liveGameIdMustBeNumeric</item>
+		<item>invalidLiveGameId</item>
+		<item>alreadyOnVacation</item>
+		<item>outOfVacationTime</item>
+		<item>completeAllGameMoves</item>
+		<item>userNotOnVacation</item>
+	</string-array>
 
 </resources>

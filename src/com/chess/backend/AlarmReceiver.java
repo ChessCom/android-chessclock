@@ -18,7 +18,7 @@ import com.chess.utilities.ChessComApiParser;
 import java.util.List;
 
 
-public class AlarmReceiverNew extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -69,6 +69,11 @@ public class AlarmReceiverNew extends BroadcastReceiver {
 					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 				}
 			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+
 		}
 	}
 

@@ -59,12 +59,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private View gameBoardView;
 	private boolean lccInitiated;
 	private Button submitBtn;
+	private String warningMessage;
+	private int opponentDotId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		Log.d("TEST","onCreate GameLiveActivity, savedInstanceState = " + savedInstanceState);
 		setContentView(R.layout.boardview_live);
 
 		widgetsInit();
@@ -79,9 +80,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String userName = getLccHolder().getCurrentuserName();
 
 		userPlayWhite = !userName.equals(blackPlayerName);
-		int opponentIndicator = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
+		opponentDotId = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
 
-		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator, 0, 0, 0);
+		topPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(opponentDotId, 0, 0, 0);
 		gamePanelView.setWhiteIndicator(userPlayWhite);
 		// change players colors
 		changePlayersLabelColors();
@@ -89,10 +90,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		Log.d("Live Game", "GameLiveScreenActivity started ");
 		if (getLccHolder().getPendingWarnings().size() > 0) {
 			// get last warning
-			String message = getLccHolder().getLastWarningMessage();
-			getLccHolder().getPendingWarnings().remove(message);
+			warningMessage = getLccHolder().getLastWarningMessage();
+//			getLccHolder().getPendingWarnings().remove(warningMessage);
 
-			showPopupDialog(R.string.warning, message, WARNING_TAG);
+			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
 	}
 
@@ -156,8 +157,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		gamePanelView.enableAnalysisMode(false);
 
 		// hide black dot for right label
-		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+//		topPlayerlabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		topPlayerlabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
 
@@ -224,9 +225,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
             @Override
             public void run() {
                 if (userPlayWhite) {
-                    gamePanelView.setBlackTimer(whiteTimer);
+                    gamePanelView.setBottomPlayerTimer(whiteTimer);
                 } else {
-                    blackPlayerLabel.setText(whiteTimer);
+                    topPlayerTimer.setText(whiteTimer);
                 }
 
                 if (!isWhitePlayerMove || initTimer) {
@@ -243,9 +244,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
             @Override
             public void run() {
                 if (userPlayWhite) {
-                    blackPlayerLabel.setText(blackTimer);
+                    topPlayerTimer.setText(blackTimer);
                 } else {
-                    gamePanelView.setBlackTimer(blackTimer);
+                    gamePanelView.setBottomPlayerTimer(blackTimer);
                 }
 
                 if (isWhitePlayerMove) {
@@ -255,6 +256,35 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
             }
         });
     }
+
+	private void changePlayersLabelColors() {
+		int hintColor = getResources().getColor(R.color.hint_text);
+		int whiteColor = getResources().getColor(R.color.white);
+
+		int topPlayerColor;
+
+		if (isWhitePlayerMove) {
+			topPlayerColor = userPlayWhite ? hintColor : whiteColor;
+		} else {
+			topPlayerColor = userPlayWhite ? whiteColor : hintColor;
+		}
+
+		if(topPlayerColor == hintColor){ // not active
+			topPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		} else {
+			topPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(opponentDotId, 0, 0, 0);
+		}
+
+		topPlayerlabel.setTextColor(topPlayerColor);
+		topPlayerTimer.setTextColor(topPlayerColor);
+
+		boolean activate = isWhitePlayerMove ? userPlayWhite : !userPlayWhite;
+
+		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
+		gamePanelView.activatePlayerTimer(activate, activate);
+
+		initTimer = false;
+	}
 
 	// ----------------------Lcc Events ---------------------------------------------
 
@@ -318,8 +348,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onMessageReceived() {
-        gamePanelView.haveNewMessage(true);
-		boardView.invalidate();
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				gamePanelView.haveNewMessage(true);
+				boardView.invalidate();
+			}
+		});
     }
 
 	@Override
@@ -416,11 +451,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void updatePlayerLabels() {
 		if (userPlayWhite) {
-			whitePlayerLabel.setText(getBlackPlayerName());
-			gamePanelView.setWhiteTimer(getWhitePlayerName());
+			topPlayerlabel.setText(getBlackPlayerName());
+			gamePanelView.setBottomPlayerLabel(getWhitePlayerName());
 		} else {
-			whitePlayerLabel.setText(getWhitePlayerName());
-			gamePanelView.setWhiteTimer(getBlackPlayerName());
+			topPlayerlabel.setText(getWhitePlayerName());
+			gamePanelView.setBottomPlayerLabel(getBlackPlayerName());
 		}
 	}
 
@@ -466,8 +501,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
-		whitePlayerLabel.setVisibility(View.VISIBLE);
-		blackPlayerLabel.setVisibility(View.VISIBLE);
+		topPlayerlabel.setVisibility(View.VISIBLE);
+		topPlayerTimer.setVisibility(View.VISIBLE);
 
 		updatePlayerLabels();
 
@@ -490,41 +525,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			blinkSubmitBtn();
 		}
 	}
-
-/*	@Override
-	public void onConfigurationChanged(Configuration newConfig) {  // prevent app to change locale on rotation
-		super.onConfigurationChanged(newConfig);
-		setContentView(R.layout.boardview_live);
-		boardView.setGameActivityFace(this);
-
-		widgetsInit();
-		lccInitiated = init();
-
-		if(!lccInitiated){
-			return;
-		}
-		// change labels and label's drawables according player color
-		// so current player(user) name must be always at the bottom
-		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
-		String userName = getLccHolder().getCurrentuserName();
-
-		userPlayWhite = !userName.equals(blackPlayerName);
-		int opponentIndicator = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
-
-		whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentIndicator, 0, 0, 0);
-		gamePanelView.setWhiteIndicator(userPlayWhite);
-		// change players colors
-		changePlayersLabelColors();
-
-		Log.d("Live Game", "GameLiveScreenActivity started ");
-		if (getLccHolder().getPendingWarnings().size() > 0) {
-			// get last warning
-			String message = getLccHolder().getLastWarningMessage();
-			getLccHolder().getPendingWarnings().remove(message);
-
-			showPopupDialog(R.string.warning, message, WARNING_TAG);
-		}
-	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -594,6 +594,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, AppConstants.REQUEST_DRAW + getLccHolder().getGame(gameId));
 			gameTaskRunner.runMakeDrawTask(gameId);
+		} else if (fragment.getTag().equals(WARNING_TAG)) {
+			getLccHolder().getPendingWarnings().remove(warningMessage);
 		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
 			Game game = getLccHolder().getGame(gameId);
 
@@ -658,13 +660,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
 		if (userPlayWhite) {
-			whitePlayerLabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+			topPlayerlabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
-			gamePanelView.setWhiteTimer(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+			gamePanelView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
 		} else {
-			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
-			gamePanelView.setWhiteTimer(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
+			topPlayerlabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
+			gamePanelView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
 		}
 	}
 
@@ -723,6 +725,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 		MopubHelper.showRectangleAd(adViewWrapper, this);
+
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
 
@@ -733,10 +736,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+
 		if (MopubHelper.isShowAds(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
-
 	}
 
 	@Override

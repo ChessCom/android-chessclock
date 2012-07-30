@@ -5,7 +5,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
 import com.chess.model.PopupItem;
@@ -74,6 +73,8 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     public void onClick(View view) {
         if(view.getId() == R.id.positiveBtn){
             listener.onPositiveBtnClick(this);
+        }else if(view.getId() == R.id.neutralBtn){
+			listener.onNeutralBtnCLick(this);
         }else if(view.getId() == R.id.negativeBtn){
             listener.onNegativeBtnClick(this);
         }
@@ -103,10 +104,6 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
             super.dismiss();
         isShowed = false;
     }
-
-	protected String getTextFromField(EditText editText) {
-		return editText.getText().toString().trim();
-	}
 
 	protected void showToast(String msg) {
 		Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();

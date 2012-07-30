@@ -6,13 +6,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.AlarmReceiverNew;
+import com.chess.backend.AlarmReceiver;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -23,6 +25,7 @@ import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +40,19 @@ public class AppUtils {
 	private static final int MDPI_DENSITY = 1;
 	private static boolean ENABLE_LOG = true;
 
+	public static class ListSelector implements Runnable{
+		private int pos;
+		private ListView listView;
+
+		public ListSelector(int pos, ListView listView){
+			this.pos = pos;
+			this.listView = listView;
+		}
+		@Override
+		public void run() {
+			listView.setSelection(pos);
+		}
+	}
 
 	public static void setBackground(View mainView, Context context) {
 		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
@@ -134,7 +150,7 @@ public class AppUtils {
 	}
 
 	public static void startNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
+		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
 				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -145,7 +161,7 @@ public class AppUtils {
 	}
 
 	public static void stopNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiverNew.class);
+		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
 				PendingIntent.FLAG_UPDATE_CURRENT);
@@ -175,21 +191,45 @@ public class AppUtils {
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
-	// Get i18n strings for Live chess server (temporary)
+	// Get i18n strings for server messages (temporary)
 	public static String getI18nString(Context context, String actual, int expected, int translated) {
+		if (isLocaleEn(context.getResources())) {
+			return null;
+		}
 		return actual.equals(context.getString(expected)) ? context.getString(translated) : null;
 	}
 
 	public static String getI18nString(Context context, int regexp, String actual, int expected, int translated) {
+		if (isLocaleEn(context.getResources())) {
+			return null;
+		}
+
 		String substring = null;
 		Matcher m = Pattern.compile(context.getString(regexp)).matcher(actual);
 		if (m.find()) {
 			substring = m.group(1);
 		}
 
-		String s1 = context.getString(expected, substring);
-		String s2 = context.getString(translated, substring);
-
 		return actual.equals(context.getString(expected, substring)) ? context.getString(translated, substring) : null;
+	}
+
+	public static String getI18nStringForAPIError(Context context, String message) {
+		final Resources resources = context.getResources();
+
+		if (isLocaleEn(resources)) {
+			return message;
+		}
+
+		final int positionOfMessage = Arrays.asList(resources.getStringArray(R.array.site_api_error_messages)).indexOf(message);
+		if (positionOfMessage != -1) {
+			final String messageKey = resources.getStringArray(R.array.site_api_error_keys)[positionOfMessage];
+			return context.getString(resources.getIdentifier(messageKey, "string", context.getPackageName()));
+		}
+
+		return message;
+	}
+
+	private static boolean isLocaleEn(Resources resources) {
+		return resources.getConfiguration().locale.getLanguage().equals(StaticData.LOCALE_EN);
 	}
 }

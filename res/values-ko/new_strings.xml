@@ -8,5 +8,9 @@
 	<string name="your_turn_in_game_with">게임과 관련 %1$s , %2$s</string>
 	<string name="register">레지스터</string>
 	<string name="session_expired">세션이 만료되었고, 다시 로그인하시기 바랍니다</string>
+	<string name="problem_solved">문제는 풀렸다!</string>
+	<string name="next_tactic_puzzle">다음 전술 퍼즐</string>
+	<string name="upgrade_to_continue">계속하려면 업그레 이드</string>
+
 
 </resources>

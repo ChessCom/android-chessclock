@@ -510,8 +510,8 @@ public class Facebook {
         return isSessionValid() &&
                 (System.currentTimeMillis() - mLastAccessUpdate >= REFRESH_TOKEN_BARRIER);
     }
-    
-    /**
+
+	/**
      * Handles connection to the token refresh service (this service is a part
      * of Facebook App).
      */

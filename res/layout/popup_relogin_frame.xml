@@ -8,12 +8,11 @@
 	>
 
 	<com.chess.RoboTextView
-		android:id="@+id/endGameTitleTxt"
+		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		robo:ttf="Bold"
-		android:text="@string/session_expired"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:gravity="center"
 		/>

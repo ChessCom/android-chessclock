@@ -24,7 +24,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
     private TextView titleTxt;
     private TextView messageTxt;
     private Button leftBtn;
-    private Button middleBtn;
+    private Button neutralBtn;
     private Button rightBtn;
 
 	public static PopupDialogFragment newInstance(PopupItem popupItem) {
@@ -49,14 +49,14 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
         titleTxt = (TextView)view.findViewById(R.id.popupTitle);
 
         leftBtn = (Button)view.findViewById(R.id.positiveBtn);
-        middleBtn = (Button)view.findViewById(R.id.middleBtn);
+        neutralBtn = (Button)view.findViewById(R.id.neutralBtn);
         rightBtn = (Button)view.findViewById(R.id.negativeBtn);
 
         leftBtn.setOnClickListener(this);
-        middleBtn.setOnClickListener(this);
+        neutralBtn.setOnClickListener(this);
         rightBtn.setOnClickListener(this);
 
-        middleBtn.setVisibility(View.GONE);
+        neutralBtn.setVisibility(View.GONE);
         return view;
     }
 
@@ -68,7 +68,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
                 rightBtn.setVisibility(View.GONE);
                 break;
             case 3:
-                middleBtn.setVisibility(View.VISIBLE);
+				neutralBtn.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -88,7 +88,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
 		if(buttonsNumber == 3)
-			middleBtn.setText(popupItem.getNeutralBtnId());
+			neutralBtn.setText(popupItem.getNeutralBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
 

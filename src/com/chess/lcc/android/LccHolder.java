@@ -245,13 +245,13 @@ public class LccHolder{
 		}
 	}
 
-	private void checkCredentialsAndConnect(){
+	public void checkCredentialsAndConnect(String message){
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
 		if (!pass.equals(StaticData.SYMBOL_EMPTY)){
 			connectByCreds(userName, pass);
 		} else {
-			liveChessClientEventListener.onSessionExpired();
+			liveChessClientEventListener.onSessionExpired(message);
 //			String message = context.getString(R.string.account_error);
 //			liveChessClientEventListener.onConnectionFailure(message);
 		}
@@ -311,12 +311,10 @@ public class LccHolder{
 				break;
 			}
 			case ACCOUNT_FAILED: {
+				detailsMessage = context.getString(R.string.session_expired);
 
-				checkCredentialsAndConnect();
+				checkCredentialsAndConnect(detailsMessage);
 				return;
-//				detailsMessage = context.getString(R.string.account_error)
-//						+ context.getString(R.string.lccFailedUnavailable);
-//				break;
 			}
 			case SERVER_STOPPED: {
 				detailsMessage = context.getString(R.string.server_stopped)
@@ -333,11 +331,6 @@ public class LccHolder{
 
 	public void onObsoleteProtocolVersion() {
 		liveChessClientEventListener.onObsoleteProtocolVersion();
-	}
-
-	public void onAnotherLoginDetected() {
-		String failMessage = context.getString(R.string.another_login_detected);
-		liveChessClientEventListener.onConnectionFailure(failMessage);
 	}
 
     public LccEventListener getLccEventListener() {
@@ -672,7 +665,6 @@ public class LccHolder{
 		}
 
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
-		// TODO make outter task with argument
 		gameTaskRunner.runMakeMoveTask(game, move);
 
 		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
@@ -785,7 +777,6 @@ public class LccHolder{
 		Log.d("TEST","processing full game, gameId = " + game.getId());
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 		intent.putExtra(GameListItem.GAME_ID, game.getId());
 		context.startActivity(intent);
 	}

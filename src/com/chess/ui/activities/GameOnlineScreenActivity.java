@@ -302,8 +302,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
-		whitePlayerLabel.setText(getWhitePlayerName());
-		blackPlayerLabel.setText(getBlackPlayerName());
+		topPlayerlabel.setText(getWhitePlayerName());
+		topPlayerTimer.setText(getBlackPlayerName());
 
 		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}

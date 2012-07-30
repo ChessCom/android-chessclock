@@ -33,8 +33,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 
 
-	protected TextView whitePlayerLabel;
-	protected TextView blackPlayerLabel;
+	protected TextView topPlayerlabel;
+	protected TextView topPlayerTimer;
 
 	protected boolean chat;
 
@@ -69,10 +69,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void widgetsInit() {
 		statusBarLay = (ViewGroup) findViewById(R.id.statusBarLay);
 
-		whitePlayerLabel = (TextView) findViewById(R.id.white);
-		blackPlayerLabel = (TextView) findViewById(R.id.black);
-		whitePlayerLabel.setSelected(true);
-		blackPlayerLabel.setSelected(true);
+		topPlayerlabel = (TextView) findViewById(R.id.white);
+		topPlayerTimer = (TextView) findViewById(R.id.black);
+		topPlayerlabel.setSelected(true);
+		topPlayerTimer.setSelected(true);
 
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
@@ -155,40 +155,19 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void showGameEndPopup(final View layout, final String message){
 	}
 
-	protected void changePlayersLabelColors() {
-		int hintColor = getResources().getColor(R.color.hint_text);
-		int whiteColor = getResources().getColor(R.color.white);
 
-		int topPlayerColor;
-
-		if (isWhitePlayerMove) {
-			topPlayerColor = userPlayWhite ? hintColor : whiteColor;
-		} else {
-			topPlayerColor = userPlayWhite ? whiteColor : hintColor;
-		}
-
-		whitePlayerLabel.setTextColor(topPlayerColor);
-		blackPlayerLabel.setTextColor(topPlayerColor);
-
-		boolean activate = isWhitePlayerMove ? userPlayWhite : !userPlayWhite;
-
-		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
-		gamePanelView.activatePlayerTimer(activate, activate);
-
-		initTimer = false;
-	}
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		showSubmitButtonsLay(false);
 		if (isAnalysis) {
 			analysisTxt.setVisibility(View.VISIBLE);
-			whitePlayerLabel.setVisibility(View.INVISIBLE);
-			blackPlayerLabel.setVisibility(View.INVISIBLE);
+			topPlayerlabel.setVisibility(View.INVISIBLE);
+			topPlayerTimer.setVisibility(View.INVISIBLE);
 		} else {
 			analysisTxt.setVisibility(View.INVISIBLE);
-			whitePlayerLabel.setVisibility(View.VISIBLE);
-			blackPlayerLabel.setVisibility(View.VISIBLE);
+			topPlayerlabel.setVisibility(View.VISIBLE);
+			topPlayerTimer.setVisibility(View.VISIBLE);
 			restoreGame();
 		}
 	}
