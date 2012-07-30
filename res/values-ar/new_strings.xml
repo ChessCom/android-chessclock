@@ -12,4 +12,9 @@
 	<string name="next_tactic_puzzle">تكتيك المقبل اللغز</string>
 	<string name="upgrade_to_continue">الترقية للمتابعة</string>
 
+	<string name="retry">إعادة المحاولة</string>
+	<string name="stop">توقف</string>
+	<string name="daily_limit_reached">الحد اليومي الذي تم التوصل إليه</string>
+
+
 </resources>

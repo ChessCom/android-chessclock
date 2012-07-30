@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Следующая головоломка</string>
 	<string name="upgrade_to_continue">Улучшить для продолжения</string>
 
+	<string name="retry">Повторить</string>
+	<string name="stop">Стоп</string>
+	<string name="daily_limit_reached">Дневной Лимит Достигнут</string>
+
 
 </resources>

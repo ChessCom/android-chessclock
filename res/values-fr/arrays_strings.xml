@@ -68,23 +68,6 @@
 		<item>La mise en oeuvre</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>Suivant</item>
-		<item>Réessayer</item>
-		<item>Arrêt</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Arrêt</item>
-		<item>Suivant</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Jeux actuelles</item>
-		<item>Défis</item>
-		<item>Jeux finis</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>Aller à Game Ready Suivant</item>
 		<item>Restez sur Same Game</item>

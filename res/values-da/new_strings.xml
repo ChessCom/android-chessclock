@@ -12,4 +12,8 @@
 	<string name="next_tactic_puzzle">Næste Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Opgrader at fortsætte</string>
 
+	<string name="retry">Wiederholen</string>
+	<string name="stop">Stopp</string>
+	<string name="daily_limit_reached">Tageslimit erreicht</string>
+
 </resources>

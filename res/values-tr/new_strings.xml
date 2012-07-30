@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Sonraki Taktik Bulmaca</string>
 	<string name="upgrade_to_continue">Devam Yükseltme</string>
 
+	<string name="retry">Tekrar Dene</string>
+	<string name="stop">Dur</string>
+	<string name="daily_limit_reached">Günlük Sınırına Ulaşıldı</string>
+
 
 </resources>

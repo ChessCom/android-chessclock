@@ -64,23 +64,6 @@
 		<item>Strateji</item>
 		<item>Taktikler</item>
 	</string-array>	
-	
-	<string-array name="wrongtactic">
-	    <item>Sonraki</item>
-		<item>Tekrar dene</item>
-		<item>Dur</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Dur</item>
-		<item>Sonraki</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Şu Oyunları</item>
-		<item>Zorluklar</item>
-		<item>Bitmiş Oyunlar</item>
-	</string-array>	
 
 	<string-array name="AIM">
 	    <item>Sonraki Hazır Oyun Git</item>

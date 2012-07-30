@@ -202,7 +202,7 @@
 	<string name="removeAds">Mise à niveau et Supprimer des annonces!</string>
 	<string name="accept_draw_q">Accepter Dessiner?</string>
 	<string name="ready_for_first_tackics_q">Êtes-vous prêt pour votre première tactique?</string>
-	<string name="daily_limit_exceeded">Limite quotidienne dépassée</string>
+
 	<string name="max_tactics_reached">Vous avez atteint votre nombre maximum de tactiques pour aujourd\'hui. Aimeriez-vous être capable de faire plus de tactique?
 	</string>
 	<string name="yes">Oui</string>

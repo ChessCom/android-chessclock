@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Enigma próxima tática</string>
 	<string name="upgrade_to_continue">Actualiza Para Continuar</string>
 
+	<string name="retry">Tentar novamente</string>
+	<string name="stop">Pare</string>
+	<string name="daily_limit_reached">Limite Diário Alcançado</string>
+
 
 </resources>

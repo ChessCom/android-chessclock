@@ -64,23 +64,6 @@
 		<item>策略</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>未来</item>
-		<item>重试</item>
-		<item>停. </item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>停. </item>
-		<item>未来</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>本届运动会</item>
-		<item>面临的挑战</item>
-		<item>已完成的游戏</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>转到下一步准备游戏</item>
 		<item>留在相同的游戏</item>

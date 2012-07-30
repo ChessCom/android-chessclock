@@ -67,23 +67,6 @@
 		<item>Tattica</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>Successivo</item>
-		<item>Riprova</item>
-		<item>Arresta</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Arresta</item>
-		<item>Successivo</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Giochi del momento</item>
-		<item>Sfide</item>
-		<item>Giochi finiti</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>Vai al prossimo Game Ready</item>
 		<item>Stay On Same Game</item>

@@ -13,4 +13,8 @@
 	<string name="upgrade_to_continue">続行するにはアップグレード</string>
 
 
+	<string name="retry">再試行</string>
+	<string name="stop">停止</string>
+	<string name="daily_limit_reached">値幅制限に達しました。</string>
+
 </resources>

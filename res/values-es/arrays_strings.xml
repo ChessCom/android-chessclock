@@ -66,22 +66,6 @@
 		<item>Tácticas</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>Próximo</item>
-		<item>Reintentar</item>
-		<item>Parar!</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Parar!</item>
-		<item>Próximo</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Juegos actuales</item>
-		<item>Retos</item>
-		<item>Juegos terminados</item>
-	</string-array>	
 
 	<string-array name="AIM">
 	    <item>Ir a juego listo Siguiente</item>

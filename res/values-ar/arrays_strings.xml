@@ -65,23 +65,6 @@
 		<item>ب- الاستراتيجية</item>
 		<item>التكتيكات</item>
 	</string-array>	
-	
-	<string-array name="wrongtactic">
-	    <item>التالي</item>
-		<item>إعادة المحاولة</item>
-		<item>توقفوا عن  إثارة الجلبة حول حماقات  الحزب  </item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>توقفوا عن  إثارة الجلبة حول حماقات  الحزب  </item>
-		<item>التالي</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>الألعاب الحالية</item>
-		<item>التحديات</item>
-		<item>الانتهاء من الألعاب</item>
-	</string-array>	
 
 	<string-array name="AIM">
 	    <item>انتقل إلى لعبة جاهز التالي</item>

@@ -201,7 +201,7 @@
 	<string name="removeAds">Upgrade und Werbung ausblenden!</string>
 	<string name="accept_draw_q">Akzeptieren Sie ziehen?</string>
 	<string name="ready_for_first_tackics_q">Sind Sie bereit für Ihre erste Taktik?</string>
-	<string name="daily_limit_exceeded">Täglich Limit überschritten</string>
+
 	<string name="max_tactics_reached">Sie haben Ihre maximale Anzahl der Taktik für heute getroffen. Möchten Sie in der Lage, mehr Taktik zu tun?
 	</string>
 	<string name="yes">Ja</string>

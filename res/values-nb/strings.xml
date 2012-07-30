@@ -199,7 +199,7 @@
 	<string name="removeAds">Oppgrader Og Fjern annonser!</string>
 	<string name="accept_draw_q">Godta Tegn?</string>
 	<string name="ready_for_first_tackics_q">Er du klar for din første taktikken?</string>
-	<string name="daily_limit_exceeded">Daglig overskredet</string>
+
 	<string name="max_tactics_reached">Du har truffet maksimalt antall taktikk for i dag. Vil du være i stand til å gjøre mer taktikk?
 	</string>
 	<string name="yes">Ja</string>

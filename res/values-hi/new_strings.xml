@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">अगली रणनीति पहेली</string>
 	<string name="upgrade_to_continue">जारी रखें अपग्रेड</string>
 
+	<string name="retry">पुन: प्रयास</string>
+	<string name="stop">रोक</string>
+	<string name="daily_limit_reached">दैनिक सीमा तक पहुँच</string>
+
 
 </resources>

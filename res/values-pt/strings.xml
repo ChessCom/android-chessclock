@@ -200,7 +200,7 @@
 	<string name="removeAds">Atualizar e remover anúncios!</string>
 	<string name="accept_draw_q">Aceitar Empate?</string>
 	<string name="ready_for_first_tackics_q">Você está pronto para sua primeira tática?</string>
-	<string name="daily_limit_exceeded">Limite diário excedido</string>
+
 	<string name="max_tactics_reached">Você atingiu o número máximo de táticas para hoje. Gostaria de ser capaz de fazer mais táticas?
 	</string>
 	<string name="yes">Sim</string>

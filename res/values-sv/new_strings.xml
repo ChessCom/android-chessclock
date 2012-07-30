@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Nästa Taktik Pussel</string>
 	<string name="upgrade_to_continue">Uppgradera Fortsätta</string>
 
+	<string name="retry">Försök igen</string>
+	<string name="stop">Stoppa</string>
+	<string name="daily_limit_reached">Daglig Nådd</string>
+
 
 </resources>

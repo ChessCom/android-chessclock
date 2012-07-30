@@ -66,23 +66,6 @@
 		<item>تاکتیک</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>ویرایش</item>
-		<item>دوباره سعی کنید</item>
-		<item>توقف</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>توقف</item>
-		<item>ویرایش</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>بازی کنونی</item>
-		<item>چالش ها</item>
-		<item>بازی به پایان رسید</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>برو برای بازی بعدی آماده</item>
 		<item>اقامت در بازی همان</item>

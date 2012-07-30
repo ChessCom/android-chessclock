@@ -199,7 +199,7 @@
 	<string name="removeAds">Улучшить и Убрать Рекламу!</string>
 	<string name="accept_draw_q">Принять ничью?</string>
 	<string name="ready_for_first_tackics_q">Вы готовы к первой тактике?</string>
-	<string name="daily_limit_exceeded">Ежедневный Предел Превышен</string>
+
 	<string name="max_tactics_reached">Вы исчерпали максимальное количество тактик на сегодняшний день. Хотите сделать больше тактик?
 	</string>
 	<string name="yes">Да</string>

@@ -66,23 +66,6 @@
 		<item>Taktik</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>Næste</item>
-		<item>Prøv igen</item>
-		<item>Stop</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Stop</item>
-		<item>Næste</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Aktuelle spil</item>
-		<item>Udfordringer</item>
-		<item>Afsluttede spil</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>Gå til næste Klar Spil</item>
 		<item>Ophold på samme spil</item>

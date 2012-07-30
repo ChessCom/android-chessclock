@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Następna Puzzle Tactic</string>
 	<string name="upgrade_to_continue">Uaktualnienie do Kontynuuj</string>
 
+	<string name="retry">Opnieuw Proberen</string>
+	<string name="stop">Stop</string>
+	<string name="daily_limit_reached">Dagelijkse Limiet Bereikt</string>
+
 
 </resources>

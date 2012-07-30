@@ -200,7 +200,7 @@
 	<string name="removeAds">לשדרג ולהסיר מודעות!</string>
 	<string name="accept_draw_q">קבל צייר?</string>
 	<string name="ready_for_first_tackics_q">האם אתה מוכן הטקטיקה הראשונה שלך?</string>
-	<string name="daily_limit_exceeded">מגבלת יומי חריגה</string>
+
 	<string name="max_tactics_reached">אתה פגעו במספר המרבי של טקטיקות להיום. האם אתה רוצה להיות מסוגל לעשות טקטיקות יותר?
 	</string>
 	<string name="yes">כן</string>

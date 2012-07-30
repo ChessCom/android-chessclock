@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">טקטיקה הבא פאזל</string>
 	<string name="upgrade_to_continue">שדרג כדי להמשיך</string>
 
+	<string name="retry">נסה שוב</string>
+	<string name="stop">עצור</string>
+	<string name="daily_limit_reached">גבול יומי הגיע</string>
+
 
 </resources>

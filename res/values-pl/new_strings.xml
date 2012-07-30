@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Next Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Upgrade To Continue</string>
 
+	<string name="retry">Spróbować ponownie</string>
+	<string name="stop">Stop</string>
+	<string name="daily_limit_reached">Dzienny limit osiągnięty</string>
+
 
 </resources>

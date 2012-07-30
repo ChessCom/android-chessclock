@@ -200,7 +200,7 @@
 	<string name="removeAds">Uppgradera och ta bort annonser!</string>
 	<string name="accept_draw_q">Acceptera Rita?</string>
 	<string name="ready_for_first_tackics_q">Är du redo för ditt första taktik?</string>
-	<string name="daily_limit_exceeded">Daglig överskriden</string>
+
 	<string name="max_tactics_reached">Du har träffat din maximala antalet taktik för idag. Vill du kunna göra fler taktik?
 	</string>
 	<string name="yes">Ja</string>

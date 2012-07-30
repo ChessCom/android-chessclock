@@ -66,23 +66,6 @@
 		<item>戦術</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>次へ</item>
-		<item>再入力</item>
-		<item>停止(S)</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>停止(S)</item>
-		<item>次へ</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>現在のゲーム</item>
-		<item>課題</item>
-		<item>完成したゲーム</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>次の準備試合を見に行く</item>
 		<item>同じゲームにとどまる</item>

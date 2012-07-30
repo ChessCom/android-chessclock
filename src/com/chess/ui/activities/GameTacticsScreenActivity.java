@@ -292,7 +292,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		int nextBtnId = R.string.next_tactic_puzzle;
 		int nextBtnColorId = R.drawable.button_orange_selector;
 		if(limitReached){
-			titleId = R.string.daily_limit_exceeded;
+			titleId = R.string.daily_limit_reached;
 			nextBtnId = R.string.upgrade_to_continue;
 			nextBtnColorId = R.drawable.button_green_selector;
 		}
@@ -417,7 +417,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			if (getTacticItem().values.get(AppConstants.MOVE_LIST).contains("1.")) {
 				getBoardFace().setTacticMoves(getTacticItem().
-						values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY).replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE));
+						values.get(AppConstants.MOVE_LIST).replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+						.replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE)
+						.substring(1).split(StaticData.SYMBOL_SPACE));
 				getBoardFace().setMovesCount(1);
 			}
 			getBoardFace().setSec(0);
@@ -1000,9 +1002,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if(view.getId() == R.id.cancelBtn){
 			customViewFragment.dismiss();
 
-			getBoardFace().setTacticCanceled(true);
-			DataHolder.getInstance().setPendingTacticsLoad(false);
-			onBackPressed();
+			if(limitReached){
+				getBoardFace().setTacticCanceled(true);
+				DataHolder.getInstance().setPendingTacticsLoad(false);
+				onBackPressed();
+			}
 		}
 	}
 

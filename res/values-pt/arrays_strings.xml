@@ -65,23 +65,6 @@
 		<item>Estratégia</item>
 		<item>Táticas</item>
 	</string-array>	
-	
-	<string-array name="wrongtactic">
-	    <item>Seguinte</item>
-		<item>Tentar novamente</item>
-		<item>Parar</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Parar</item>
-		<item>SEGUINTE</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Jogos atuais</item>
-		<item>Desafios</item>
-		<item>Jogos acabados</item>
-	</string-array>	
 
 	<string-array name="AIM">
 	    <item>Ir para o Jogo Pronto Próxima</item>

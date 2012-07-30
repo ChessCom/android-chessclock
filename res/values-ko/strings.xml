@@ -200,7 +200,7 @@
 	<string name="removeAds">업그레 이드 및 광고 제거!</string>
 	<string name="accept_draw_q">그리기를 수락 하시겠습니까?</string>
 	<string name="ready_for_first_tackics_q">당신은 첫 번째 전술 준비가 되셨습니까?</string>
-	<string name="daily_limit_exceeded">일일 한도 초과</string>
+
 	<string name="max_tactics_reached">오늘은 전술의 최대 개수에 충돌했습니다. 좀 더 전술을 할 수시겠습니까?</string>
 	<string name="yes">예</string>
 	<string name="no">아니오</string>

@@ -12,5 +12,9 @@
 	<string name="next_tactic_puzzle">Neste Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Oppgrader til Fortsett</string>
 
+	<string name="retry">Prøv på nytt</string>
+	<string name="stop">Stopp</string>
+	<string name="daily_limit_reached">Daglig Nådd</string>
+
 
 </resources>

@@ -89,23 +89,6 @@
 		<item>Tactics</item>
 	</string-array>	
 	
-	<string-array name="wrongtactic">
-	    <item>Next</item>
-		<item>Retry</item>
-		<item>Stop</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Stop</item>
-		<item>Next</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>Current Games</item>
-		<item>Challenges</item>
-		<item>Finished Games</item>
-	</string-array>	
-
 	<string-array name="AIM">
 	    <item>Go To Next Ready Game</item>
 		<item>Stay On Same Game</item>

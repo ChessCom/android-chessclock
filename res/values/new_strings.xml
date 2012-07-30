@@ -11,7 +11,9 @@
 	<string name="problem_solved">Problem Solved!</string>
 	<string name="next_tactic_puzzle">Next Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Upgrade To Continue</string>
+
 	<string name="retry">Retry</string>
 	<string name="stop">Stop</string>
+	<string name="daily_limit_reached">Daily Limit Reached</string>
 
 </resources>

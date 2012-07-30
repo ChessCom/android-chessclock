@@ -19,40 +19,48 @@
 		/>
 
 
-	<!--Ads-->
-	<com.chess.SerializedLinearLayout
-		android:id="@+id/adview_wrapper"
-		android:layout_width="@dimen/ad_popup_width"
-		android:layout_height="@dimen/ad_popup_height"
-		android:layout_gravity="center"
-		/>
-
 	<com.chess.SerializedLinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
+		android:layout_height="match_parent"
 		>
-
-		<com.chess.RoboButton
-			android:id="@+id/cancelBtn"
+		<!--Ads-->
+		<com.chess.SerializedLinearLayout
+			android:id="@+id/adview_wrapper"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="@dimen/ad_popup_height"
+			android:layout_gravity="center"
+			android:orientation="vertical"
 			android:layout_weight="1"
-			android:text="@string/cancel"
-			style="@style/Text.Button.Grey"
 			/>
 
-		<com.chess.RoboButton
-			android:id="@+id/nextBtn"
+		<com.chess.SerializedLinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:orientation="vertical"
 			android:layout_weight="1"
-			android:text="@string/next_tactic_puzzle"
-			style="@style/Text.Button"
-			/>
+			android:gravity="center_vertical"
+			>
+
+			<com.chess.RoboButton
+				android:id="@+id/cancelBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/cancel"
+				style="@style/Text.Button.Grey"
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/nextBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/next_tactic_puzzle"
+				style="@style/Text.Button"
+				/>
+
+		</com.chess.SerializedLinearLayout>
+
 
 	</com.chess.SerializedLinearLayout>
-
 
 
 </com.chess.SerializedLinearLayout>

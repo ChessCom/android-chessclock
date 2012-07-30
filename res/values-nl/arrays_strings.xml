@@ -65,23 +65,6 @@
 		<item>Strategie</item>
 		<item>Tactiek</item>
 	</string-array>	
-	
-	<string-array name="wrongtactic">
-	    <item>Volgende</item>
-		<item>Probeer opnieuw</item>
-		<item>Stoppen</item>
-	</string-array>
-	
-	<string-array name="correcttactic">
-	    <item>Stoppen</item>
-		<item>Volgende</item>
-	</string-array>
-
-	<string-array name="onlineSpinner">
-		<item>De huidige games</item>
-		<item>Uitdagingen</item>
-		<item>Afgewerkte Games</item>
-	</string-array>	
 
 	<string-array name="AIM">
 	    <item>Ga naar volgende Klaar Game</item>
