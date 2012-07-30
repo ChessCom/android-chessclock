@@ -725,6 +725,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 		MopubHelper.showRectangleAd(adViewWrapper, this);
+
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
 
@@ -735,10 +736,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+
 		if (MopubHelper.isShowAds(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
-
 	}
 
 	@Override

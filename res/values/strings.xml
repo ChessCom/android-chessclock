@@ -201,7 +201,7 @@
 	<string name="removeAds">Upgrade And Remove Ads!</string>
 	<string name="accept_draw_q">Accept Draw?</string>
 	<string name="ready_for_first_tackics_q">Are you ready for your first tactic?</string>
-	<string name="daily_limit_exceeded">Daily Limit Exceeded</string>
+	<string name="daily_limit_exceeded">Daily Limit Reached</string>
 	<string name="max_tactics_reached">You have hit your maximum number of tactics for today. Would you like
 		to be able to do more tactics?
 	</string>
@@ -219,7 +219,7 @@
 	<string name="wrong_ex">Wrong!</string>
 
 
-	<string name="wrong_score">Wrong! Score %1$s
+	<string name="wrong_score">Wrong!\n Score %1$s
 		\n New rating %2$s </string>
 	<string name="correct_score">Correct! Score %1$s
 		\n New rating %2$s </string>

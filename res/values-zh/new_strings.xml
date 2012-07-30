@@ -8,5 +8,9 @@
 	<string name="your_turn_in_game_with">在您的游戏 %1$s , %2$s</string>
 	<string name="register">注册</string>
 	<string name="session_expired">您的会话已过期，请重新登录</string>
+	<string name="problem_solved">问题解决了！</string>
+	<string name="next_tactic_puzzle">下一步的战术拼图</string>
+	<string name="upgrade_to_continue">升级继续</string>
+
 
 </resources>

@@ -73,6 +73,8 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     public void onClick(View view) {
         if(view.getId() == R.id.positiveBtn){
             listener.onPositiveBtnClick(this);
+        }else if(view.getId() == R.id.neutralBtn){
+			listener.onNeutralBtnCLick(this);
         }else if(view.getId() == R.id.negativeBtn){
             listener.onNegativeBtnClick(this);
         }

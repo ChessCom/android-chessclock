@@ -8,5 +8,9 @@
 	<string name="your_turn_in_game_with">In Ihrem Spiel mit %1$s , %2$s</string>
 	<string name="register">Registrieren</string>
 	<string name="session_expired">Ihre Sitzung ist abgelaufen, bitte neu anmelden</string>
+	<string name="problem_solved">Problem gelöst!</string>
+	<string name="next_tactic_puzzle">Nächste Taktik Puzzle</string>
+	<string name="upgrade_to_continue">Upgrade auf Weiter</string>
+
 
 </resources>

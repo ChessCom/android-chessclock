@@ -8,5 +8,9 @@
 	<string name="your_turn_in_game_with">%2$s,  %1$s در بازی خود را با</string>
 	<string name="register">ثبت نام</string>
 	<string name="session_expired">جلسه شما منقضی شده است، لطفا دوباره وارد سایت شوید</string>
+	<string name="problem_solved">مشکل حل شده!</string>
+	<string name="next_tactic_puzzle">بعدی پازل تاکتیک</string>
+	<string name="upgrade_to_continue">ارتقاء به ادامه</string>
+
 
 </resources>

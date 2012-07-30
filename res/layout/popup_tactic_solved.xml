@@ -1,0 +1,59 @@
+<com.chess.SerializedLinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="0dp"
+	>
+
+	<!--End game title-->
+	<com.chess.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		robo:ttf="Bold"
+		android:textSize="@dimen/game_end_popup_text_size"
+		android:paddingBottom="10dip"
+		/>
+
+
+	<!--Ads-->
+	<com.chess.SerializedLinearLayout
+		android:id="@+id/adview_wrapper"
+		android:layout_width="@dimen/ad_popup_width"
+		android:layout_height="@dimen/ad_popup_height"
+		android:layout_gravity="center"
+		/>
+
+	<!--New Game | Rematch-->
+	<com.chess.SerializedLinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		>
+
+		<com.chess.RoboButton
+			android:id="@+id/cancelBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/cancel"
+			style="@style/Text.Button.Grey"
+			/>
+
+		<com.chess.RoboButton
+			android:id="@+id/nextBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/next_tactic_puzzle"
+			style="@style/Text.Button"
+			/>
+
+	</com.chess.SerializedLinearLayout>
+
+
+
+</com.chess.SerializedLinearLayout>

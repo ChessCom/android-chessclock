@@ -8,5 +8,9 @@
 	<string name="your_turn_in_game_with">あなたのゲームとの %1$s , %2$s</string>
 	<string name="register">登録</string>
 	<string name="session_expired">セッションの期限が切れた、再ログインしてください</string>
+	<string name="problem_solved">問題が解決しました！</string>
+	<string name="next_tactic_puzzle">次の戦術パズル</string>
+	<string name="upgrade_to_continue">続行するにはアップグレード</string>
+
 
 </resources>
