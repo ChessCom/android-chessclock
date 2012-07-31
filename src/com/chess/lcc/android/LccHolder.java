@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
@@ -14,6 +15,7 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
+import com.chess.live.util.GameTimeConfig;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
@@ -691,6 +693,49 @@ public class LccHolder{
 				}
 			}
 		}
+	}
+
+	public void rematch(Long currentGameId) {
+
+		final Game currentGame = getGame(currentGameId);
+
+		final List<Game.Result> gameResults = currentGame.getGameResults();
+		final Game.Result whitePlayerResult = gameResults.get(0);
+		final Game.Result blackPlayerResult = gameResults.get(1);
+		final String whiteUsername = currentGame.getWhitePlayer().getUsername();
+		final String blackUsername = currentGame.getBlackPlayer().getUsername();
+
+		final Game.Result result;
+		if (whitePlayerResult == Game.Result.WIN) {
+			result = blackPlayerResult;
+		} else if (blackPlayerResult == Game.Result.WIN) {
+			result = whitePlayerResult;
+		} else {
+			result = whitePlayerResult;
+		}
+
+		final boolean switchColor = result != Game.Result.ABORTED;
+
+		String to = null;
+		PieceColor color = PieceColor.WHITE;
+		final String userName = user.getUsername();
+		if (whiteUsername.equals(userName)) {
+			to = blackUsername;
+			color = switchColor ? PieceColor.BLACK : PieceColor.WHITE;
+		}
+		else if (blackUsername.equals(userName)) {
+			to = whiteUsername;
+			color = switchColor ? PieceColor.WHITE : PieceColor.BLACK;
+		}
+
+		final Integer minRating = null;
+		final Integer maxRating = null;
+		final Integer minMembershipLevel = null;
+		final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
+				user, to, color, currentGame.isRated(), currentGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
+
+		challenge.setRematchGameId(currentGameId);
+		lccClient.sendChallenge(challenge, challengeListener);
 	}
 
 	public void setNextOpponentMoveStillNotMade(boolean nextOpponentMoveStillNotMade) {

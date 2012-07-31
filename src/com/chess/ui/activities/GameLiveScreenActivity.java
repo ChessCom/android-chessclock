@@ -751,7 +751,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.onClick(view);
 		if (view.getId() == R.id.cancelBtn) {
 			showSubmitButtonsLay(false);
-
 			getBoardFace().takeBack();
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
@@ -762,7 +761,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
-			// TODO send rematch request
+			getLccHolder().rematch(Long.parseLong(currentGame.getGameId())); // todo: or use LccHolder's current game
 			endPopupFragment.dismiss();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
