@@ -21,7 +21,8 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
 		String message = lccHolder.getContext().getString(R.string.account_error)
 				+ lccHolder.getContext().getString(R.string.another_login_detected);
-		lccHolder.checkCredentialsAndConnect(message);
+
+		lccHolder.onAnotherLoginDetected(message);
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {

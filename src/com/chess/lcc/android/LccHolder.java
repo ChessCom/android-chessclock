@@ -2,7 +2,6 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
@@ -15,7 +14,6 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
-import com.chess.live.util.GameTimeConfig;
 import com.chess.model.GameItem;
 import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
@@ -294,6 +292,10 @@ public class LccHolder{
 		return liveChessClientEventListener;
 	}
 
+	public void onAnotherLoginDetected(String message){
+		liveChessClientEventListener.onConnectionFailure(message);
+	}
+
 	public void processConnectionFailure(String reason, String message) {
 		String kickMessage = context.getString(R.string.lccFailedUpgrading);
 		liveChessClientEventListener.onConnectionFailure(kickMessage
@@ -304,7 +306,6 @@ public class LccHolder{
 	public void processConnectionFailure(FailureDetails details, String message) {
 		setConnected(false);
 		lccClient = null;
-		//setConnectingInProgress(false);
 
 		String detailsMessage;
 		switch (details) {
