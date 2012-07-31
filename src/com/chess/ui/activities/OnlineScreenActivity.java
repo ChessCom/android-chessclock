@@ -351,19 +351,19 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
 		int sectionsCnt = ((SectionedAdapter)adapterView.getAdapter()).getSectionsCnt();
-		int k;
+		int section;
 		int headersCnt = 0;
 		int passedItems = 0;
-		for (k = 0; k < sectionsCnt; k++){
+		for (section = 0; section < sectionsCnt; section++){
 			headersCnt++;
-			passedItems += sectionedAdapter.getSection(k).adapter.getCount();
+			passedItems += sectionedAdapter.getSection(section).adapter.getCount();
 			if(pos < headersCnt + passedItems){
 				break;
 			}
 		}
 
 
-		if(k == CURRENT_GAMES_SECTION){
+		if(section == CURRENT_GAMES_SECTION){
 			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 
 			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
@@ -381,12 +381,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				DataHolder.getInstance().setAcceptDraw(false);
 
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-//				intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 				intent.putExtra(GameListItem.GAME_INFO_ITEM, gameListCurrentItem);
 
                 startActivity(intent);
 			}
-		} else if (k == 1) {
+		} else if (section == 1) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
 			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
@@ -402,18 +401,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
 		int sectionsCnt = ((SectionedAdapter)adapterView.getAdapter()).getSectionsCnt();
-		int k;
+		int section;
 		int headersCnt = 0;
 		int passedItems = 0;
-		for (k = 0; k < sectionsCnt; k++){
+		for (section = 0; section < sectionsCnt; section++){
 			headersCnt++;
-			passedItems += sectionedAdapter.getSection(k).adapter.getCount();
+			passedItems += sectionedAdapter.getSection(section).adapter.getCount();
 			if(pos < headersCnt + passedItems){
 				break;
 			}
 		}
 
-		if (k == CURRENT_GAMES_SECTION){
+		if (section == CURRENT_GAMES_SECTION){
 			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 
 			new AlertDialog.Builder(getContext())
@@ -424,7 +423,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 							gameListItemDialogListener)
 					.create().show();
 
-		} else if (k == CHALLENGES_SECTION) {
+		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
 			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
@@ -443,7 +442,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private BroadcastReceiver challengesUpdateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			updateList(selectedLoadItem);
+			updateStartingType(GameListItem.LIST_TYPE_CURRENT);
 		}
 	};
 

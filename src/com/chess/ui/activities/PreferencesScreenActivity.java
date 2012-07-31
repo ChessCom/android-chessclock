@@ -163,27 +163,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
 		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
 
-
-//		LinearLayout afterIMoveLayout = (LinearLayout) findViewById(R.id.afterIMoveLayout);
-//		TextView computerTitle = (TextView) findViewById(R.id.computerTitle);
-//		LinearLayout prefStrengthLayout = (LinearLayout) findViewById(R.id.prefStrengthLayout);
-
-
-//		if (DataHolder.getInstance().isLiveChess()) {
-//			afterIMoveLayout.setVisibility(View.GONE);
-//			enableNotifications.setVisibility(View.GONE);
-//			vacationCheckBox.setVisibility(View.GONE);
-//			computerTitle.setVisibility(View.GONE);
-//			prefStrengthLayout.setVisibility(View.GONE);
-//		} else {
-//			afterIMoveLayout.setVisibility(View.VISIBLE);
-//			enableNotifications.setVisibility(View.VISIBLE);
-//			vacationCheckBox.setVisibility(View.VISIBLE);
-//			computerTitle.setVisibility(View.VISIBLE);
-//			prefStrengthLayout.setVisibility(View.VISIBLE);
-//		}
-
-
 		List<SelectionItem> piecesList = new ArrayList<SelectionItem>(9);
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));

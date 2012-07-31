@@ -36,7 +36,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 	}
 
-	public void afterMove() {	// TODO handle here analysis moves in comp game
+	public void afterMove() {
 		boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.invalidateGameScreen();
 
