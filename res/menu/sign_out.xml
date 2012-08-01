@@ -29,8 +29,6 @@
 		android:showAsAction="always|collapseActionView"
 		android:actionViewClass="android.widget.SearchView"
 		/>
-	<!--android:actionViewClass="android.widget.SearchView" TODO -->
-	<!--android:actionViewClass="android.support.v4.widget.SearchViewCompat" TODO -->
 
 	<item android:id="@+id/menu_singOut"
 		android:title="@string/signout"

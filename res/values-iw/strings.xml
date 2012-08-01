@@ -131,7 +131,7 @@
 	<string name="prev">הקודם</string>
 	<string name="next">הבא</string>
 	<string name="nextgame">המשחק הבא</string>
-	<string name="chat">chat</string>     <!--TODO-->
+	<string name="chat">לשוחח</string>
 	<string name="skill">רמת מיומנות</string>
 	<string name="category">קטגוריה</string>
 	<string name="search">חיפוש</string>
@@ -261,7 +261,7 @@
 	<string name="standard_game">רגיל </string>
 	<string name="blitz_game">(בליץ)</string>
 	<string name="lightning_game">(ברק)</string>
-	<string name="network_was_changed_please_relogin">רשת שונה. אנא relogin לחיות</string>
+	<string name="network_was_changed_please_relogin">רשת השתנה. אנא התחברות מחדש לחיות</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - זה התור שלך</string>
 	<string name="your_turn">עכשיו תורך!</string>

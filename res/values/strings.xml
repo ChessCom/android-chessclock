@@ -270,7 +270,7 @@
 	<string name="standard_game">(Standard)</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
-	<string name="network_was_changed_please_relogin">Network was changed. Please relogin to Live</string>
+	<string name="network_was_changed_please_relogin">Network has changed. Please re-login to Live</string>
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - It\'s Your Move</string>
 	<string name="your_turn">Your Turn!</string>
@@ -324,7 +324,7 @@
 	<string name="reason_">Reason</string>
 	<string name="message_">Message</string>
 
-	<!--Video list game categories-->        <!--TODO-->
+	<!--Video list game categories-->
 	<string name="amazing_games_category">amazing-games</string>
 	<string name="end_games_category">endgames</string>
 	<string name="openings_category">openings</string>
