@@ -4,12 +4,9 @@ import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -22,8 +19,7 @@ import java.io.IOException;
 
 public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	private static final String TAG = "GetStringObjTask";
-	private static int statusCode = -1;
-	private static String reason = StaticData.SYMBOL_EMPTY;
+	private static final int TIMEOUT = 10000;
 
 	public GetStringObjTask(TaskUpdateInterface<String> taskFace) {
 		super(taskFace);
@@ -39,7 +35,7 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	private int getData(String url) {
 		// Instantiate the custom HttpClient
 		HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT);
 		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
 		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
