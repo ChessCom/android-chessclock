@@ -233,6 +233,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(getBoardFace().getSec()));
 
 					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
+					showToast("Passed!");
 					stopTacticsTimer();
 				}
 			}
@@ -254,6 +255,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(getBoardFace().getTacticsCorrectMoves()));
 				loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(getBoardFace().getSec()));
 
+				showToast("Fail!");
+
 				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
 				stopTacticsTimer();
 			}
@@ -262,6 +265,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void showSolvedTacticPopup(String title, boolean limitReached){
 		this.limitReached = limitReached;
+
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		View customView = inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
@@ -295,66 +299,46 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		customViewFragment.show(getSupportFragmentManager(), TACTIC_SOLVED_TAG);
 	}
 
-	private void getTacticsGame() {
-		FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED, null);
-
-		noInternet = !AppUtils.isNetworkAvailable(this);
-
-
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, StaticData.SYMBOL_EMPTY);
-
-		new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
-
-		DataHolder.getInstance().setPendingTacticsLoad(true);
-	}
-
 	@Override
 	public Boolean isUserColorWhite() {
 		return null;
 	}
 
-
-	private class GetTacticsUpdateListener extends ChessUpdateListener {
-		public GetTacticsUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			boardView.setBoardFace(new ChessBoard(GameTacticsScreenActivity.this));
-
-			String[] tmp = returnedObj.trim().split("[|]");
-			if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
-				showLimitDialog();
-				return;
-			}
-
-			TacticItem tacticItem = new TacticItem(tmp[2].split(":"));
-
-			DataHolder.getInstance().setTactic(tacticItem);
-
-			setTacticToBoard(tacticItem, 0);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			if (noInternet) {
-				if (DataHolder.getInstance().isOffline()) {
-					getGuestTacticsGame();
-				} else {
-					DataHolder.getInstance().setOffline(true);
-					showOfflineRatingDialog();
-				}
-			}
-		}
-	}
-
 	private void showLimitDialog() {
 		FlurryAgent.onEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEDED);
 		showSolvedTacticPopup(StaticData.SYMBOL_EMPTY, true);
+	}
+
+	private void getNewTactic(){
+		if(DataHolder.getInstance().isGuest() || !AppUtils.isNetworkAvailable(this)){
+			getGuestTacticsGame();
+//			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
+//			int currentProblem = getCurrentProblem();
+//			if (currentProblem >= getTacticsBatch().size()) {
+//				showPopupDialog(R.string.hundred_tackics_completed, HUNDRED_TACTICS_TAG);
+//				popupDialogFragment.setButtons(1);
+//				return;
+//			}
+//
+//			TacticItem tacticItem = getTacticsBatch().get(currentProblem);
+//
+//			setTacticToBoard(tacticItem, 0);
+//
+//			DataHolder.getInstance().setTactic(tacticItem);
+		}else {
+			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED, null);
+
+			noInternet = !AppUtils.isNetworkAvailable(this);
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+
+			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
+
+			DataHolder.getInstance().setPendingTacticsLoad(true);
+		}
 	}
 
 	private void getGuestTacticsGame() {
@@ -371,6 +355,49 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		setTacticToBoard(tacticItem, 0);
 
 		DataHolder.getInstance().setTactic(tacticItem);
+	}
+//
+//	private void getTacticsGame() {
+//		FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED, null);
+//
+//		noInternet = !AppUtils.isNetworkAvailable(this);
+//
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
+//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+//
+//		new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
+//
+//		DataHolder.getInstance().setPendingTacticsLoad(true);
+//	}
+
+	private class GetTacticsUpdateListener extends ChessUpdateListener {
+		public GetTacticsUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+//			boardView.setBoardFace(new ChessBoard(GameTacticsScreenActivity.this));
+
+			String[] tmp = returnedObj.trim().split("[|]");
+			if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
+				showLimitDialog();
+				return;
+			}
+
+			TacticItem tacticItem = new TacticItem(tmp[2].split(":"));
+
+			DataHolder.getInstance().setTactic(tacticItem);
+
+			setTacticToBoard(tacticItem, 0);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			handleErrorRequest();
+		}
 	}
 
 	private void showAnswer() {
@@ -446,16 +473,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (noInternet) {
-				if (DataHolder.getInstance().isOffline()) {
-					getGuestTacticsGame();
-				} else {
-					DataHolder.getInstance().setOffline(true);
-					showOfflineRatingDialog();
-				}
-			}
+			handleErrorRequest();
 		}
-
 	}
 
 	private void showOfflineRatingDialog() {
@@ -490,16 +509,21 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (noInternet) {
-				if (DataHolder.getInstance().isOffline()) {
-					getGuestTacticsGame();
-				} else {
-					DataHolder.getInstance().setOffline(true);
-					showOfflineRatingDialog();
-				}
-			}
+			handleErrorRequest();
 		}
 	}
+
+	private void handleErrorRequest(){
+//		getGuestTacticsGame();
+		showOfflineRatingDialog();
+//		if (noInternet) {
+//			if (DataHolder.getInstance().isOffline()) {
+//			} else {
+//				DataHolder.getInstance().setOffline(true);
+//			}
+//		}
+	}
+
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
@@ -524,15 +548,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void newGame() {
-		if (DataHolder.getInstance().isGuest()) {
-			increaseCurrentProblem();
-			getGuestTacticsGame();
-		} else {
-			if (noInternet)
-				increaseCurrentProblem();
-			closeOptionsMenu();
-			getTacticsGame();
-		}
+		getNewTactic();
+//		if (DataHolder.getInstance().isGuest()) {
+//			increaseCurrentProblem();
+//			getGuestTacticsGame();
+//		} else {
+////			if (noInternet)
+////				increaseCurrentProblem();
+//			getTacticsGame();
+//		}
+		closeOptionsMenu();
 	}
 
 
@@ -594,11 +619,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
 			switch (i) {
 				case TACTICS_SKIP_PROBLEM: {
-					if (DataHolder.getInstance().isGuest() || noInternet) {
-						increaseCurrentProblem();
-						getGuestTacticsGame();
-					} else
-						getTacticsGame();
+					getNewTactic();
+//					if (DataHolder.getInstance().isGuest() || noInternet) {
+//						increaseCurrentProblem();
+//						getGuestTacticsGame();
+//					} else
+//						getTacticsGame();
 					break;
 				}
 				case TACTICS_SHOW_ANSWER: {
@@ -731,14 +757,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 
 			} else{
-				if (DataHolder.getInstance().isGuest()) {
-					increaseCurrentProblem();
-					getGuestTacticsGame();
-				} else {
-					if (noInternet)
-						increaseCurrentProblem();
-					getTacticsGame();
-				}
+				getNewTactic();
+//				if (DataHolder.getInstance().isGuest()) {
+//					increaseCurrentProblem();
+//					getGuestTacticsGame();
+//				} else {
+//					if (noInternet)
+//						increaseCurrentProblem();
+//					getTacticsGame();
+//				}
 			}
 			customViewFragment.dismiss();
 		} else if(view.getId() == R.id.cancelBtn){
@@ -771,31 +798,39 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				String[] tmp = input.split("[|]");
 				int count = tmp.length - 1;
 
-				DataHolder.getInstance().setTacticsBatch(new ArrayList<TacticItem>(count));
-				for (int i = 1; i <= count; i++) {
-					getTacticsBatch().add(new TacticItem(tmp[i].split(":")));
+				List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
+				for (String batchItem : tmp) {
+					tacticBatch.add(new TacticItem(batchItem.split(":")));
 				}
+
+				DataHolder.getInstance().setTacticsBatch(tacticBatch);
+//				for (int i = 1; i <= count; i++) {
+//					getTacticsBatch().add(new TacticItem(tmp[i].split(":")));
+//				}
 				inputStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			if (DataHolder.getInstance().isGuest())
-				getGuestTacticsGame();
-			else
-				getTacticsGame();
+			getNewTactic();
+//			if (DataHolder.getInstance().isGuest())
+//				getGuestTacticsGame();
+//			else
+//				getTacticsGame();
 		} else if (fragment.getTag().equals(HUNDRED_TACTICS_TAG)) {
 			DataHolder.getInstance().setCurrentTacticProblem(0);
 			onBackPressed();
-		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) {
-			if (DataHolder.getInstance().isGuest()) {
-				increaseCurrentProblem();
-				getGuestTacticsGame();
-			} else {
-				if (noInternet)
-					increaseCurrentProblem();
-				getTacticsGame();
-			}
+		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Next
+			increaseCurrentProblem();
+			getNewTactic();
+//			if (DataHolder.getInstance().isGuest() ) {
+//				increaseCurrentProblem();
+//				getGuestTacticsGame();
+//			} else {
+////				if (noInternet)
+////					increaseCurrentProblem();
+//				getTacticsGame();
+//			}
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			getGuestTacticsGame();
 		}
@@ -804,16 +839,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) {
+		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) { // Cancel
 			getBoardFace().setTacticCanceled(true);
 			DataHolder.getInstance().setPendingTacticsLoad(false);
 			onBackPressed();
-		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) {
+		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Stop
 
 			boardView.setFinished(true);
 			getTacticItem().values.put(AppConstants.STOP, "1");
 			stopTacticsTimer();
-
 
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			onBackPressed();
@@ -826,14 +860,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	public void onNeutralBtnCLick(DialogFragment fragment) {
 		super.onNeutralBtnCLick(fragment);
 		if (fragment.getTag().equals(WRONG_MOVE_TAG)) {  // Retry
+			getBoardFace().setRetry(true);
+//			getNewTactic();
 			if (DataHolder.getInstance().isGuest() || noInternet) {
-				getBoardFace().setRetry(true);
 				getGuestTacticsGame();
 			} else {
-				getBoardFace().setRetry(true);
 				setTacticToBoard(getTacticItem(), 0);
 			}
-
 		}
 	}
 

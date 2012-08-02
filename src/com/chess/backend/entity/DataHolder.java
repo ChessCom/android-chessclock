@@ -2,7 +2,7 @@ package com.chess.backend.entity;
 
 import com.chess.model.TacticItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DataHolder class
@@ -22,7 +22,7 @@ public class DataHolder {
 	private boolean pendingTacticsLoad;
 
 	// Singletones for Tactics mode
-	private ArrayList<TacticItem> tacticsBatch;
+	private List<TacticItem> tacticsBatch;
 	private TacticItem tactic;
 	private int currentTacticProblem = 0;
 
@@ -82,11 +82,11 @@ public class DataHolder {
 		this.tactic = tactic;
 	}
 
-	public ArrayList<TacticItem> getTacticsBatch() {
+	public List<TacticItem> getTacticsBatch() {
 		return tacticsBatch;
 	}
 
-	public void setTacticsBatch(ArrayList<TacticItem> tacticsBatch) {
+	public void setTacticsBatch(List<TacticItem> tacticsBatch) {
 		this.tacticsBatch = tacticsBatch;
 	}
 

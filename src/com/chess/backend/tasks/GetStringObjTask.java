@@ -61,7 +61,7 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 		} catch (IOException e) {
 			httpGet.abort();
 			Log.e(TAG, "I/O error while retrieving data from " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
+			result = StaticData.NO_NETWORK;
 		} catch (IllegalStateException e) {
 			httpGet.abort();
 			Log.e(TAG, "Incorrect URL: " + url, e);

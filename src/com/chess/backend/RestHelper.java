@@ -50,6 +50,7 @@ public class RestHelper {
 	public static final String VACATION_RETURN = BASE_URL + API + "/vacation_return";
 	public static final String REGISTER = BASE_URL + API + "/register";
 	public static final String TACTICS_TRAINER = BASE_URL + API + "/tactics_trainer";
+	public static final String VALIDATE_TOKEN = BASE_URL + API + "/validate_auth_token";
 	public static final String GET_GAME = BASE_URL + API + "/get_game";
 	public static final String ADD_FRIEND = BASE_URL + API + "/add_friend";
 	public static final String SUBMIT_CHEATER_SUSPECT = BASE_URL + API + "/submit_cheater_suspect";
