@@ -77,7 +77,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 				getBoardFace().setReside(true);
 
 		} else {
-			if (AppData.isComputerVsHumanBlackGameMode(boardView.getBoardFace())) {
+			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
 				getBoardFace().setReside(true);
 				boardView.invalidate();
 				boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
@@ -104,8 +104,14 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (AppData.isComputerVsComputerGameMode(boardView.getBoardFace())) {
+		if (AppData.isComputerVsComputerGameMode(getBoardFace())) {
 			boardView.stopThinking();
+		}
+
+		if (getBoardFace().getMode() != extras.getInt(AppConstants.GAME_MODE)) {
+			Intent intent = getIntent();
+			intent.putExtra(AppConstants.GAME_MODE, getBoardFace().getMode());
+			getIntent().replaceExtras(intent);
 		}
 	}
 
@@ -153,7 +159,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void invalidateGameScreen() {
-		switch (boardView.getBoardFace().getMode()) {
+		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
 				topPlayerlabel.setText(AppData.getUserName(this));
 				topPlayerTimer.setText(getString(R.string.Computer));
@@ -259,7 +265,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return AppData.isComputerVsHumanWhiteGameMode(boardView.getBoardFace());
+		return AppData.isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
@@ -342,5 +348,5 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         reviewBtn.setText(R.string.ok);
         reviewBtn.setOnClickListener(this);
         layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-    }
+	}
 }

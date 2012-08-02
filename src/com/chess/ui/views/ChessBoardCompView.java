@@ -27,7 +27,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
 	private boolean hint;
-    private boolean compmoving;
+    private boolean computerMoving;
     private boolean stopThinking;
 
 
@@ -105,7 +105,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             return;
         }
 
-        compmoving = true;
+        computerMoving = true;
 		gameCompActivityFace.onCompMove();
         new Thread(new Runnable() {
             @Override
@@ -116,7 +116,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                 searcher.think(0, time, 32);
                 Move best = searcher.getBest();
                 boardFace.makeMove(best);
-                compmoving = false;
+                computerMoving = false;
                 boardFace.setMovesCount(boardFace.getHply());
                 update.sendEmptyMessage(0);
             }
@@ -165,7 +165,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             }
         }
 
-        if (!compmoving) {
+        if (!computerMoving) {
             for (i = 0; i < 64; i++) {
                 if (drag && i == from)
                     continue;
@@ -205,7 +205,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             }
         }
 
-        if (isHighlightEnabled && boardFace.getHply() > 0 && !compmoving) {
+        if (isHighlightEnabled && boardFace.getHply() > 0 && !computerMoving) {
             Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
             int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
             int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
@@ -241,7 +241,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }
 
         // Count captured piecesBitmap
-		if(!compmoving){
+		if(!computerMoving){
 			gamePanelView.dropAlivePieces();
 			for (i = 0; i < 64; i++) {
 				int pieceId = boardFace.getPiece(i);
@@ -348,7 +348,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
         track = false;
         if (!boardFace.isAnalysis()) {
-            if (compmoving || finished
+            if (computerMoving || finished
 					|| boardFace.isSubmit())
                 return true;
 
@@ -499,7 +499,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     @Override
     public void flipBoard() {
 //        stopThinking = true;
-        if (!compmoving) {
+        if (!computerMoving) {
             getBoardFace().setReside(!getBoardFace().isReside());
             if (AppData.isComputerVsHumanGameMode(getBoardFace())) {
                 if (AppData.isComputerVsHumanWhiteGameMode(getBoardFace())) {
@@ -531,7 +531,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	@Override
     public void moveBack() {
         stopThinking = true;
-        if (!compmoving) {
+        if (!computerMoving) {
             finished = false;
             sel = false;
             getBoardFace().takeBack();
@@ -543,7 +543,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     @Override
     public void moveForward() {
         stopThinking = true;
-        if (!compmoving) {
+        if (!computerMoving) {
             sel = false;
             getBoardFace().takeNext();
             invalidate();
@@ -554,7 +554,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     @Override
     public void showHint() {
         stopThinking = true;
-        if (!compmoving) {
+        if (!computerMoving) {
             hint = true;
             computerMove(compStrength);
         }
