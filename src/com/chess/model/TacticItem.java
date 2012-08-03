@@ -1,22 +1,60 @@
 package com.chess.model;
 
-import com.chess.backend.statics.AppConstants;
-
-import java.util.HashMap;
-
 public class TacticItem {
 
-	public HashMap<String, String> values;
+	private String id;
+	private String fen;
+	private String moveList;
+	private String attemptCnt;
+	private String passedCnt;
+	private String rating;
+	private String avgSeconds;
+	private boolean stop;
+
 
 	public TacticItem(String[] values) {
-		this.values = new HashMap<String, String>();
-		this.values.put(AppConstants.ID, values[0]);
-		this.values.put(AppConstants.FEN, values[1]);
-		this.values.put(AppConstants.MOVE_LIST, values[2]);
-		this.values.put(AppConstants.ATTEMPT_CNT, values[3]);
-		this.values.put(AppConstants.PASSED_CNT, values[4]);
-		this.values.put(AppConstants.RATING, values[5]);
-		this.values.put(AppConstants.AVG_SECONDS, values[6]);
-		this.values.put(AppConstants.STOP, "0");
+		id = values[0];
+		fen = values[1];
+		moveList = values[2];
+		attemptCnt = values[3];
+		passedCnt = values[4];
+		rating = values[5];
+		avgSeconds = values[6];
+	}
+
+	public String getAttemptCnt() {
+		return attemptCnt;
+	}
+
+	public String getAvgSeconds() {
+		return avgSeconds;
+	}
+
+	public String getFen() {
+		return fen;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getMoveList() {
+		return moveList;
+	}
+
+	public String getPassedCnt() {
+		return passedCnt;
+	}
+
+	public String getRating() {
+		return rating;
+	}
+
+	public boolean isStop() {
+		return stop;
+	}
+
+	public void setStop(boolean stop) {
+		this.stop = stop;
 	}
 }

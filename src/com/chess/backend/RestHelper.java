@@ -106,8 +106,6 @@ public class RestHelper {
 	public static final String P_LOCATION = "location";
 	public static final String P_AMOUNT = "amount";
 
-
-
 	public static final String P_ID = "id"; // user token
 	public static final String P_GID = "gid"; // game id
 	public static final String P_ALL = "all";
@@ -125,6 +123,32 @@ public class RestHelper {
 	public static final String P_GET_ECHESS_CURRENT_GAMES = "get_echess_current_games";
 	public static final String P_ECHESS_CHALLENGES = "echess_challenges";
 	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
+
+	public static final String P_STARTING_FEN_POSITION = "starting_fen_position";
+	public static final String P_USER_TO_MOVE = "user_to_move";
+	public static final String P_HAS_NEW_MESSAGE = "has_new_message";
+	public static final String P_GAME_RESULT = "game_result";
+	public static final String P_DRAW_OFFERED = "draw_offered";
+
+	//	SUBMIT_ECHESS_ACTION
+	public static final String P_CHESSID = "chessid";
+	public static final String P_COMMAND = "command";
+	public static final String P_NEWMOVE = "newmove";
+	public static final String P_NEWMOVEENCODED = "newmoveencoded";
+	public static final String P_TIMESTAMP = "timestamp";
+	public static final String P_MESSAGE = "message";
+
+	public static final String P_IS_INSTALL = "is_install";
+
+	public static final String P_IPHONE = "iphone";
+	public static final String P_KEYWORD = "keyword";
+	public static final String P_CATEGORY = "category";
+	public static final String P_SKILL_LEVEL = "skill_level";
+	public static final String P_OPENING = "opening";
+	public static final String P_AUTHOR = "author";
+	public static final String P_THEME = "theme";
+	public static final String P_PAGE = "page";
+	public static final String P_PAGE_SIZE = "page-size";
 
 	private static final String GOTO = "&goto=";
 
@@ -201,11 +225,7 @@ public class RestHelper {
 //	<game_result>: The result of the game.  1 = win, 0 = loss, 2 = draw
 //	>
 
-	public static final String P_STARTING_FEN_POSITION = "starting_fen_position";
-	public static final String P_USER_TO_MOVE = "user_to_move";
-	public static final String P_HAS_NEW_MESSAGE = "has_new_message";
-	public static final String P_GAME_RESULT = "game_result";
-	public static final String P_DRAW_OFFERED = "draw_offered";
+
 
 //	starting_fen_position   (used for thematic games only)
 //	user_to_move    (1 for white and 0 for black)
@@ -214,25 +234,7 @@ public class RestHelper {
 //	game_result: result of the game for a given user
 //	draw_offered: 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
 
-//	SUBMIT_ECHESS_ACTION
-	public static final String P_CHESSID = "chessid";
-	public static final String P_COMMAND = "command";
-	public static final String P_NEWMOVE = "newmove";
-	public static final String P_NEWMOVEENCODED = "newmoveencoded";
-	public static final String P_TIMESTAMP = "timestamp";
-	public static final String P_MESSAGE = "message";
 
-	public static final String P_IS_INSTALL = "is_install";
-
-	public static final String P_IPHONE = "iphone";
-	public static final String P_KEYWORD = "keyword";
-	public static final String P_CATEGORY = "category";
-	public static final String P_SKILL_LEVEL = "skill_level";
-	public static final String P_OPENING = "opening";
-	public static final String P_AUTHOR = "author";
-	public static final String P_THEME = "theme";
-	public static final String P_PAGE = "page";
-	public static final String P_PAGE_SIZE = "page-size";
 
 	/* Values */
 	public static final String V_RESIGN = "RESIGN";
@@ -258,13 +260,6 @@ public class RestHelper {
 
 	private static final String TAG = "Encode";
 	public static final int MAX_ITEMS_CNT = 2000;
-
-
-//	  (optional, 1 or 0)
-//	  (optional)
-//	      (1 or 0 if tactics_id is present)
-//	      (required if tactics_id is present and passed is 0)
-//	      (required if tactics_id is present)
 
 	public static String formCustomRequest(LoadItem loadItem) {
 
