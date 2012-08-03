@@ -9,6 +9,8 @@
 	<string name="register">Register</string>
 	<string name="session_expired">Your session has expired, please re-login</string>
 	<string name="problem_solved">Problem Solved!</string>
+	<!--<string name="problem_solved">Problem Solved!
+		\n Score %1$s New rating %2$s </string>-->
 	<string name="next_tactic_puzzle">Next Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Upgrade To Continue</string>
 

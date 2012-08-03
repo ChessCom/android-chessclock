@@ -1,6 +1,7 @@
 package com.chess.backend.entity;
 
 import com.chess.model.TacticItem;
+import com.chess.model.TacticResultItem;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class DataHolder {
 	private boolean acceptDraw = false;
 	private boolean liveChess;
 	private boolean pendingTacticsLoad;
+	private TacticResultItem tacticResultItem;
 
 	// Singletones for Tactics mode
 	private List<TacticItem> tacticsBatch;
@@ -100,5 +102,13 @@ public class DataHolder {
 
 	public void setCurrentTacticProblem(int currentTacticProblem) {
 		this.currentTacticProblem = currentTacticProblem;
+	}
+
+	public TacticResultItem getTacticResultItem() {
+		return tacticResultItem;
+	}
+
+	public void setTacticResultItem(TacticResultItem tacticResultItem) {
+		this.tacticResultItem = tacticResultItem;
 	}
 }

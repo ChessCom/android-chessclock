@@ -1,18 +1,40 @@
 package com.chess.model;
 
-import com.chess.backend.statics.AppConstants;
-
-import java.util.HashMap;
-
 public class TacticResultItem {
-	public HashMap<String, String> values;
+	private String score;
+	private String userRatingChange;
+	private String userRating;
+	private String problemRatingChange;
+	private String problemRating;
+
+//	public HashMap<String, String> values;
 
 	public TacticResultItem(String[] values) {
-		this.values = new HashMap<String, String>();
-		this.values.put(AppConstants.SCORE, values[0]);
-		this.values.put(AppConstants.USER_RATING_CHANGE, values[1]);
-		this.values.put(AppConstants.USER_RATING, values[2]);
-		this.values.put(AppConstants.PROBLEM_RATING_CHANGE, values[3]);
-		this.values.put(AppConstants.PROBLEM_RATING, values[4]);
+
+		score = values[0];
+		userRatingChange = values[1];
+		userRating = values[2];
+		problemRatingChange = values[3];
+		problemRating = values[4];
+	}
+
+	public String getScore() {
+		return score;
+	}
+
+	public String getUserRatingChange() {
+		return userRatingChange;
+	}
+
+	public String getUserRating() {
+		return userRating;
+	}
+
+	public String getProblemRatingChange() {
+		return problemRatingChange;
+	}
+
+	public String getProblemRating() {
+		return problemRating;
 	}
 }

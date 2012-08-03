@@ -157,6 +157,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
             boardView.invalidate();
             startTacticsTimer();
             playLastMoveAnimation();
+			if(getBoardFace().getHply() > 0)
+				checkMove();
 		}
 	}
 
@@ -219,13 +221,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				boardView.invalidate();
 			} else {
 				if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
-					showSolvedTacticPopup(getString(R.string.problem_solved), false);
+					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem(); // TODO replace strings
+					String title = getString(R.string.problem_solved) + StaticData.SYMBOL_NEW_STR
+							+ getString(R.string.correct_score, tacticResultItem.getUserRatingChange(),
+							tacticResultItem.getUserRating());
+
+					showSolvedTacticPopup(title, false);
 				} else {
 					LoadItem loadItem = new LoadItem();
 					loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 					loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 					loadItem.addRequestParams(RestHelper.P_TACTICS_ID, getTacticItem().getId());
-					loadItem.addRequestParams(RestHelper.P_PASSED, "1");
+					loadItem.addRequestParams(RestHelper.P_PASSED, "0");
 					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(getBoardFace().getTacticsCorrectMoves()));
 					loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(getBoardFace().getSec()));
 
@@ -304,7 +311,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void getNewTactic(){
 		if(DataHolder.getInstance().isGuest() || !AppUtils.isNetworkAvailable(this)){
-			increaseCurrentProblem();
+			DataHolder.getInstance().increaseCurrentTacticsProblem();
 			getGuestTacticsGame();
 		}else {
 			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED, null);
@@ -351,6 +358,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				return;
 			}
 
+//			<score>:<user_rating_change>:<user_rating>:<problem_rating_change>:<problem_rating>
+//			6.6:-65:1273:78:1385
+
+			//save changes for offline retry
+
 			TacticItem tacticItem = new TacticItem(tmp[2].split(":"));
 			DataHolder.getInstance().setTactic(tacticItem);
 
@@ -359,7 +371,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			showOfflineRatingDialog();
+			handleErrorRequest();
 		}
 	}
 
@@ -425,19 +437,31 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				return;
 			}
 
-			TacticResultItem result = new TacticResultItem(tmp[1].split(":"));
+			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
+			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+
 			String title = getString(R.string.problem_solved) + StaticData.SYMBOL_NEW_STR
-					+ getString(R.string.correct_score,
-					result.values.get(AppConstants.USER_RATING_CHANGE),
-					result.values.get(AppConstants.USER_RATING));
+					+ getString(R.string.correct_score, tacticResultItem.getUserRatingChange(),
+					tacticResultItem.getUserRating());
 
 			showSolvedTacticPopup(title, false);
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			showOfflineRatingDialog();
+			handleErrorRequest();
 		}
+	}
+
+	private void handleErrorRequest(){
+//		getGuestTacticsGame();
+//		if (noInternet) {
+			showOfflineRatingDialog();
+//			if (DataHolder.getInstance().isOffline()) {
+//			} else {
+//				DataHolder.getInstance().setOffline(true);
+//			}
+//		}
 	}
 
 	private void showOfflineRatingDialog() {
@@ -457,22 +481,24 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				return;
 			}
 
-			TacticResultItem result = new TacticResultItem(tmp[1].split(":"));
+			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
+			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+
 			popupDialogFragment.setButtons(3);
 			popupItem.setPositiveBtnId(R.string.next);
 			popupItem.setNeutralBtnId(R.string.retry);
 			popupItem.setNegativeBtnId(R.string.stop);
 
 			String title = getString(R.string.wrong_score,
-					result.values.get(AppConstants.USER_RATING_CHANGE),
-					result.values.get(AppConstants.USER_RATING));
+					tacticResultItem.getUserRatingChange(),
+					tacticResultItem.getUserRating());
 
 			showPopupDialog(title, WRONG_MOVE_TAG);
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			showOfflineRatingDialog();
+			handleErrorRequest();
 		}
 	}
 
@@ -798,10 +824,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private int getCurrentProblem(){
 		return DataHolder.getInstance().getCurrentTacticProblem();
-	}
-
-	private void increaseCurrentProblem(){
-		DataHolder.getInstance().increaseCurrentTacticsProblem();
 	}
 
 	@Override
