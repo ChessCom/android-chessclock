@@ -3,7 +3,7 @@
 	<string name="app_name">Chesscom</string>
 
 	<string name="connect_with_facebook">Вход Через Facebook</string>
-	<string name="lccFailedUnavailable">В настоящее время сервер \"живых\" шахмат недоступен.</string>
+	<string name="lccFailedUnavailable">В настоящее время сервер живых шахмат недоступен.</string>
 	<string name="lccFailedUpgrading">Мы стараемся улучшить chess.com! В данный момент на сайте ведутся работы. Он будет вновь доступен в кратчайшие сроки. Пожалуйста, повторите попытку входа в ближайшее время. Благодарим!</string>
 	<string name="error_occurred">Произошла ошибка</string>
 	<string name="signout">Выйти</string>
@@ -53,7 +53,7 @@
 	<string name="Human">Человек</string>
 	<string name="guest">Гость</string>
 	<string name="Computer">Компьютер</string>
-	<string name="Thinking">Думает...</string>
+	<string name="Thinking">Думает…</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Новая Игра</string>
 	<string name="onlineChallenges">Открытые Состязания</string>
@@ -63,6 +63,8 @@
 	<string name="GameType">Тип Игры</string>
 	<string name="classic">Классические</string>
 	<string name="chess960">Шахматы 960</string>
+	<string name="friend">Друг</string>
+	<string name="friends">Друзья</string>
 	<string name="initialTime">Начальное Время</string>
 	<string name="bonusTime">Бонусное Время</string>
 	<string name="RatedGme">Игра с Рейтингом</string>
@@ -96,7 +98,7 @@
 	<string name="aim">После Моего Хода</string>
 	<string name="notification">Уведомления</string>
 	<string name="notificationE">Включить уведомления</string>
-	<string name="ssb">Показывать кнопку \"Отправить\"</string>
+	<string name="ssb">Показывать кнопку Отправить</string>
 	<string name="enableSounds">Включить Звуки</string>
 	<string name="strength">Сила</string>
 	<string name="interfaceP">ИНТЕРФЕЙС</string>
@@ -139,8 +141,8 @@
 	<string name="congratulations">Поздравляем!</string>
 	<string name="onlinegamecreated">Онлайн-Игра Создана!</string>
 	<string name="challengeSent">Вызов Отправлен!</string>
-	<string name="creating">Создание...</string>
-	<string name="gettingfriends">Получение Списка Друзей...</string>
+	<string name="creating">Создание…</string>
+	<string name="gettingfriends">Получение Списка Друзей…</string>
 	<string name="sorry">Извините</string>
 	<string name="nofriends">Вы не добавили друзей. Вы можете пригласить их через www.chess.com.</string>
 	<string name="nofriends_online">Ваши друзья не в сети. Если вы не пригласили их, зайдите на www.chess.com.</string>
@@ -150,28 +152,28 @@
 	<string name="challengeaccepted">Вызов Принят!</string>
 	<string name="challengedeclined">Вызов Отклонен!</string>
 	<string name="decline">Отклонить</string>
-	<string name="updatinggameslist">Обновление Списка Игр ...</string>
+	<string name="updatinggameslist">Обновление Списка Игр …</string>
 	<string name="challengetitle">Вызов</string>
-	<string name="loadinggames">Загрузка Игр ...</string>
+	<string name="loadinggames">Загрузка Игр …</string>
 	<string name="drawoffered">Предложена Ничья</string>
-	<string name="gettingmessages">Получение сообщений...</string>
-	<string name="sendingmessage">Сообщение отправляется...</string>
+	<string name="gettingmessages">Получение сообщений…</string>
+	<string name="sendingmessage">Сообщение отправляется…</string>
 	<string name="ok">OK</string>
 	<string name="submit">Отправить</string>
 	<string name="login">Вход</string>
 	<string name="title">Заголовок</string>
 	<string name="error">Ошибка</string>
-	<string name="loading">Загрузка ...</string>
+	<string name="loading">Загрузка …</string>
 	<string name="wrongcountry">Вы должны выбрать вашу страну!</string>
 	<string name="wrongpassword">Ваш пароль должен содержать не менее 6 символов!</string>
 	<string name="wrongusername">Ваше Имя должно быть не менее 3 символов и содержать только буквы, цифры, подчеркивания и тире. Пробелы не допускаются.</string>
 	<string name="wrongemail">Вам нужно будет подтвердить свое членство по электронной почте.</string>
 	<string name="wrongretype">Пароли не совпадают</string>
-	<string name="signingin">Выполняется вход...</string>
+	<string name="signingin">Выполняется вход…</string>
 
 	<string name="showanswer">Показать ответ</string>
 	<string name="skipproblem">Пропустить проблему</string>
-	<string name="sendinggameinfo">Отправка Информации об Игре...</string>
+	<string name="sendinggameinfo">Отправка Информации об Игре…</string>
 	<string name="check_field">Проверьте поле ввода</string>
 	<string name="validateUsername">Ваше Имя пользователя должно быть от 3 до 20 символов и содержать только буквы, цифры, подчеркивания и тире. Пробелы не допускаются.</string>
 	<string name="validatePassword">Ваш пароль должен быть от 6 до 20 символов!</string>
@@ -211,20 +213,14 @@
 	</string>
 	<string name="abort_resign_game">Прервать / отменить игру:</string>
 	<string name="are_you_sure_q">Вы уверены?</string>
-	<string name="correct_ex">Да...</string>
+	<string name="correct_ex">Да…</string>
 	<string name="wrong_ex">Неправильно!</string>
-	<!--
-	 + result.values.get("user_rating_change")
-	 +
-	 + result.values.get("user_rating")
- -->
-	<string name="wrong_score">Неправильно! Очки %1$s \ nНовый рейтинг %2$s </string>
-	<string name="correct_score">Правильно! Очки %1$s \ nНовый рейтинг %2$s </string>
+
 	<string name="you_got_new_msg">Новое сообщение!</string>
 	<string name="browse">Обзор</string>
 
 
-	<string name="bonus_time_left">Бонусное Оставшееся время %1$s Время, проведенное %2$s</string>
+	<string name="bonus_time_left">Бонусное время %1$s Время, проведенное %2$s</string>
 
 	<string name="pieces_s">Фигуры:</string>
 	<string name="home">Домой</string>
@@ -239,7 +235,7 @@
 	</string>
 	<string name="live_game">Живая Игра</string>
 	<string name="online_game">Онлайн Игра</string>
-	<string name="send_mail">Написать письмо ...</string>
+	<string name="send_mail">Написать письмо …</string>
 	<string name="tournaments">Турниры</string>
 	<string name="stats">Статистика</string>
 	<string name="challenges">Вызовы</string>
@@ -250,7 +246,7 @@
 	<string name="open_app_t_see_msg">Нажмите здесь, чтобы увидеть текст внутри приложения</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">Вы уверены, что хотите выйти из Сервер живиых шахмат?</string>
+	<string name="signout_confirm">Вы уверены, что хотите выйти из режима живиых игры?</string>
 	<string name="confirm">Подтвердить </string>
 	<string name="you_been_challenged">Вам был Брошен Вызов!</string>
 
@@ -268,7 +264,7 @@
 	<string name="your_move">Chess.com - Ваш Ход</string>
 	<string name="your_turn">Ваш Ход</string>
 	<string name="login_failed">Войти не удалось.</string>
-	<string name="loggin_out">Выход...</string>
+	<string name="loggin_out">Выход…</string>
 	<string name="you_logged_out">Вы вышли!</string>
 	<string name="too_short">Слишком короткий</string>
 	<string name="can_not_be_empty">Не может быть пустым</string>
@@ -279,10 +275,10 @@
 	<string name="menu_refresh">обновить</string>
 	<string name="version_check">Проверка Версии</string>
 	<string name="version_is_obsolete_update">Версия клиента устарела. Пожалуйста, обновите</string>
-	<string name="zero_one_black_mates">0 - 1 Черные выйграли</string>
-	<string name="on_zero_white_mates">1 - 0 Белые выйграли</string>
-	<string name="slatemate">0 - 0 тупиковый мат</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Ничья повторением</string>
+	<string name="zero_one_black_mates">0 – 1 Черные выйграли</string>
+	<string name="on_zero_white_mates">1 – 0 Белые выйграли</string>
+	<string name="stalemate">0 – 0 тупик</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Ничья повторением</string>
 
 	<string name="encoding_unsupported">Кодировка не поддерживается</string>
 	<string name="error_occurred_while_login">Произошла ошибка во время входа в систему, пожалуйста, войдите снова!</string>
@@ -317,10 +313,10 @@
 	<string name="reason_">Причина.</string>
 	<string name="message_">Сообщение</string>
 
-	<string name="black_wins">Черные выйграли (1-0)</string>
-	<string name="white_wins">Белые выйграли (1-0)</string>
-	<string name="draw_by_stalemate">Ничья по тупику (0-0)</string>
-	<string name="draw_by_3fold_repetition">Ничья по тройному повторению (1/2-1/2)</string>
+	<string name="black_wins">Черные выйграли (1–0)</string>
+	<string name="white_wins">Белые выйграли (1–0)</string>
+	<string name="draw_by_stalemate">Ничья по тупику (0–0)</string>
+	<string name="draw_by_3fold_repetition">Ничья по тройному повторению (0.5–0.5)</string>
 	<string name="rematch">Реванш</string>
 	<string name="review">Обзор</string>
 	<string name="your_end_game_rating">Ваш рейтинг ( %1$s ): ( %2$d )</string>

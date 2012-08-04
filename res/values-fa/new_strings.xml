@@ -1,14 +1,19 @@
 <resources>
 	<string name="menu_search">جستجو</string>
-	<string name="restoring_conntection_to_live">اتصال مجدد ...</string>
-	<string name="application_was_killed">برنامه، کشته شد، بازگرداندن ...</string>
+	<string name="restoring_conntection_to_live">اتصال مجدد …</string>
+	<string name="application_was_killed">برنامه، کشته شد، بازگرداندن …</string>
 	<string name="no_network">هیچ شبکه</string>
 	<string name="wireless_settings">تنظیمات بی سیم</string>
 	<string name="invalid_password">رمز عبور اشتباه</string>
 	<string name="your_turn_in_game_with">%2$s,  %1$s در بازی خود را با</string>
 	<string name="register">ثبت نام</string>
 	<string name="session_expired">جلسه شما منقضی شده است، لطفا دوباره وارد سایت شوید</string>
-	<string name="problem_solved">مشکل حل شده!</string>
+	<string name="problem_solved">مشکل حل شده!
+		\n %1$s مشکل حل شده!
+		\n %2$s نمره</string>
+	<string name="wrong_score">اشتباه است!
+		\n %1$s مشکل حل شده!
+		\n %2$s نمره</string>
 	<string name="next_tactic_puzzle">بعدی پازل تاکتیک</string>
 	<string name="upgrade_to_continue">ارتقاء به ادامه</string>
 

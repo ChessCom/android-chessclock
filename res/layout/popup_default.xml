@@ -21,7 +21,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
-		android:text="Confirm"
 		android:gravity="center"
 		android:textStyle="bold"
 		android:textSize="19sp"

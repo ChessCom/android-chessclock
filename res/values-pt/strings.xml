@@ -52,7 +52,7 @@
 	<string name="Human">seres humanos.</string>
 	<string name="guest">Convidado</string>
 	<string name="Computer">Cobertos</string>
-	<string name="Thinking">Pensamento ...</string>
+	<string name="Thinking">Pensamento …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Novo jogo</string>
 	<string name="onlineChallenges">Desafios Abertos</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">Parabéns!</string>
 	<string name="onlinegamecreated">Jogo online criado!</string>
 	<string name="challengeSent">Desafio enviado!</string>
-	<string name="creating">Criando ...</string>
-	<string name="gettingfriends">Obtendo lista de amigos ...</string>
+	<string name="creating">Criando …</string>
+	<string name="gettingfriends">Obtendo lista de amigos …</string>
 	<string name="sorry">Desculpe!</string>
 	<string name="nofriends">Você não tem amigos ainda. Você pode convidá-los via www.chess.com.</string>
 	<string name="nofriends_online">Seus amigos não estão online. Se você não convidá-los, no entanto, ir para www.chess.com.</string>
@@ -151,9 +151,9 @@
 	<string name="challengeaccepted">Desafio aceito!</string>
 	<string name="challengedeclined">Desafio Recusado!</string>
 	<string name="decline">Ignorar</string>
-	<string name="updatinggameslist">Atualizando lista de jogos ...</string>
+	<string name="updatinggameslist">Atualizando lista de jogos …</string>
 	<string name="challengetitle">Desafio</string>
-	<string name="loadinggames">Jogos Carregando ...</string>
+	<string name="loadinggames">Jogos Carregando …</string>
 	<string name="drawoffered">Desenhe Oferecidos</string>
 	<string name="gettingmessages">Receber mensagens</string>
 	<string name="sendingmessage">Enviando mensagem</string>
@@ -162,17 +162,17 @@
 	<string name="login">Login</string>
 	<string name="title">Titulo</string>
 	<string name="error">Erro</string>
-	<string name="loading">Carregando...</string>
+	<string name="loading">Carregando…</string>
 	<string name="wrongcountry">Você deve selecionar o seu país!</string>
 	<string name="wrongpassword">Sua senha deve ter pelo menos 6 caracteres!</string>
 	<string name="wrongusername">O seu nome de usuário deve ter pelo menos 3 caracteres e conter apenas letras, números, sublinhados, e hífens. Não são permitidos espaços.</string>
 	<string name="wrongemail">Você precisará confirmar sua inscrição por e-mail.</string>
 	<string name="wrongretype">Retyped senha errada!</string>
-	<string name="signingin">Entrando...</string>
+	<string name="signingin">Entrando…</string>
 
 	<string name="showanswer">Mostrar Resposta</string>
 	<string name="skipproblem">Ir Problema</string>
-	<string name="sendinggameinfo">O envio de informação de jogo ...</string>
+	<string name="sendinggameinfo">O envio de informação de jogo …</string>
 	<string name="check_field">Verifique Campo</string>
 	<string name="validateUsername">O Usuário deve ter entre 3 e 20 caracteres e conter apenas letras, números, sublinhados, e hífens. Não são permitidos espaços.</string>
 	<string name="validatePassword">Sua senha deve ter entre 6 e 20 caracteres!</string>
@@ -215,9 +215,6 @@
 	<string name="correct_ex">Correto?</string>
 	<string name="wrong_ex">Errado</string>
 
-
-	<string name="wrong_score">Errado! Pontuação %1$s \n Nova Classificação %2$s </string>
-	<string name="correct_score">Corrija! Pontuação %1$s \n Nova Classificação %2$s </string>
 	<string name="you_got_new_msg">Você tem uma nova mensagem!</string>
 	<string name="browse">Procurar</string>
 
@@ -237,7 +234,7 @@
 	</string>
 	<string name="live_game">Jogo ao vivo</string>
 	<string name="online_game">Jogo Online</string>
-	<string name="send_mail">Enviar e-mail ...</string>
+	<string name="send_mail">Enviar e-mail …</string>
 	<string name="tournaments">&lt;i&gt;Torneios&lt;i&gt;</string>
 	<string name="stats">Estatísticas</string>
 	<string name="challenges">Desafios</string>
@@ -266,7 +263,7 @@
 	<string name="your_move">Chess.com - A decisão é tua</string>
 	<string name="your_turn">Sua vez.</string>
 	<string name="login_failed">Falha na identificação do usuário</string>
-	<string name="loggin_out">Deslogando...</string>
+	<string name="loggin_out">Deslogando…</string>
 	<string name="you_logged_out">Você ter desconectado!</string>
 	<string name="too_short">Muito curto</string>
 	<string name="can_not_be_empty">Não pode ser vazio</string>
@@ -277,10 +274,10 @@
 	<string name="menu_refresh">refrescar</string>
 	<string name="version_check">Verificação de versão</string>
 	<string name="version_is_obsolete_update">A versão cliente é obsoleto. Por favor, atualize</string>
-	<string name="zero_one_black_mates">0 - 1 companheiros Preto</string>
-	<string name="on_zero_white_mates">1 - 0 companheiros brancos</string>
-	<string name="slatemate">0-0 Stalemate</string>
-	<string name="draw_by_repetition">1/2 - 1/2 empate por repetição</string>
+	<string name="zero_one_black_mates">0 – 1 companheiros Preto</string>
+	<string name="on_zero_white_mates">1 – 0 companheiros brancos</string>
+	<string name="slatemate">0–0 Stalemate</string>
+	<string name="draw_by_repetition">0.5 – 0.5 empate por repetição</string>
 
 	<string name="encoding_unsupported">Codificação não suportada</string>
 	<string name="error_occurred_while_login">Ocorreu um erro enquanto login, por favor relogin!</string>
@@ -292,7 +289,7 @@
 	<string name="game_over">FIM DO JOGO</string>
 	<string name="draw_game">SORTEIO OFERTA</string>
 	<string name="has_offered_draw">ofereceu um empate</string>
-	<string name="reconnecting">Reconectando...</string>
+	<string name="reconnecting">Reconectando…</string>
 	<string name="another_login_detected">Outra sessão foi detectado.</string>
 	<string name="loading_live_chess">Carregamento de xadrez ao vivo</string>
 	<string name="game_draw_by_repetition">Jogo desenhado \n pela repetição</string>
@@ -315,10 +312,10 @@
 	<string name="reason_">Porquê</string>
 	<string name="message_">Mensagem</string>
 
-	<string name="black_wins">Preto vence (1-0)</string>
-	<string name="white_wins">Branco vence (1-0)</string>
-	<string name="draw_by_stalemate">Desenhe pelo impasse (0-0)</string>
-	<string name="draw_by_3fold_repetition">Empate por repetição tripla (1/2-1/2)</string>
+	<string name="black_wins">Preto vence (1–0)</string>
+	<string name="white_wins">Branco vence (1–0)</string>
+	<string name="draw_by_stalemate">Desenhe pelo impasse (0–0)</string>
+	<string name="draw_by_3fold_repetition">Empate por repetição tripla (0.5–0.5)</string>
 	<string name="rematch">Revanche</string>
 	<string name="review">Resenhar</string>
 	<string name="your_end_game_rating">Sua classificação ( %1$s ): ( %2$d )</string>

@@ -24,7 +24,7 @@
 			android:adjustViewBounds="true"
 			android:scaleType="center"
 			android:src="@drawable/logo"
-			android:layout_gravity="center"/>
+			android:layout_gravity="center" android:contentDescription=""/>
 
 		<com.chess.RoboEditText
 			android:id="@+id/usernameEdt"

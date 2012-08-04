@@ -53,7 +53,7 @@
 	<string name="Human">MENNESKE</string>
 	<string name="guest">Gæst</string>
 	<string name="Computer">Computeren</string>
-	<string name="Thinking">Tænkter...</string>
+	<string name="Thinking">Tænkter…</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Nyt spil</string>
 	<string name="onlineChallenges">Åbne Udfordringer</string>
@@ -141,8 +141,8 @@
 	<string name="congratulations">Tillykke!</string>
 	<string name="onlinegamecreated">Online spil skabt!</string>
 	<string name="challengeSent">Udfordre sendt!</string>
-	<string name="creating">Oprettelse af ...</string>
-	<string name="gettingfriends">Kom venneliste ...</string>
+	<string name="creating">Oprettelse af …</string>
+	<string name="gettingfriends">Kom venneliste …</string>
 	<string name="sorry">Undskyld</string>
 	<string name="nofriends">Du har ingen venner endnu. Du kan invitere dem via www.chess.com.</string>
 	<string name="nofriends_online">Dine venner er ikke online. Hvis du ikke invitere dem endnu, gå til www.chess.com.</string>
@@ -152,28 +152,28 @@
 	<string name="challengeaccepted">Udfordring accepteret!</string>
 	<string name="challengedeclined">Challenge Afvist!</string>
 	<string name="decline">Afvis</string>
-	<string name="updatinggameslist">Opdatering Games liste ...</string>
+	<string name="updatinggameslist">Opdatering Games liste …</string>
 	<string name="challengetitle">Udfordring</string>
-	<string name="loadinggames">Indlæser Spil ...</string>
+	<string name="loadinggames">Indlæser Spil …</string>
 	<string name="drawoffered">Tegn Tilbydes</string>
-	<string name="gettingmessages">Få Meddelelser ...</string>
-	<string name="sendingmessage">Sender Meddelelse ...</string>
+	<string name="gettingmessages">Få Meddelelser …</string>
+	<string name="sendingmessage">Sender Meddelelse …</string>
 	<string name="ok">OK</string>
 	<string name="submit">Send</string>
 	<string name="login">Login</string>
 	<string name="title">Titel</string>
 	<string name="error">Fejl!</string>
-	<string name="loading">Indlæser ...</string>
+	<string name="loading">Indlæser …</string>
 	<string name="wrongcountry">Du skal vælge dit land!</string>
 	<string name="wrongpassword">Hey, dit password skal være på mindst 6 tegn langt.</string>
 	<string name="wrongusername">Dit brugernavn skal være mindst 3 tegn langt, og må kun indeholde bogstaver, tal, understregninger og streger. Mellemrum er ikke tilladt.</string>
 	<string name="wrongemail">Du skal bekræfte dit medlemsskab via e-mail.</string>
 	<string name="wrongretype">Forkert retyped password!</string>
-	<string name="signingin">Logger ind ...</string>
+	<string name="signingin">Logger ind …</string>
 
 	<string name="showanswer">Vis Svar</string>
 	<string name="skipproblem">Spring Problem</string>
-	<string name="sendinggameinfo">Sende spil info ...</string>
+	<string name="sendinggameinfo">Sende spil info …</string>
 	<string name="check_field">Se Field</string>
 	<string name="validateUsername">Dit brugernavn skal være mellem 3 og 20 tegn langt, og må kun indeholde bogstaver, tal, understregninger og streger. Mellemrum er ikke tilladt.</string>
 	<string name="validatePassword">Dit password skal være mellem 6 og 20 karakterer lang!</string>
@@ -217,8 +217,6 @@
 	<string name="wrong_ex">Galt!</string>
 
 
-	<string name="wrong_score">Forkert! Score %1$s \nNy bedømmelse %2$s </string>
-	<string name="correct_score">Korrekt! Score %1$s \nNy bedømmelse %2$s </string>
 	<string name="you_got_new_msg">Du har en ny besked!</string>
 	<string name="browse">Gennemse</string>
 
@@ -238,7 +236,7 @@
 	</string>
 	<string name="live_game">Live Spil</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail">Send mail ...</string>
+	<string name="send_mail">Send mail …</string>
 	<string name="tournaments">Turneringer</string>
 	<string name="stats">Stats</string>
 	<string name="challenges">Udfordringer</string>
@@ -267,7 +265,7 @@
 	<string name="your_move">Chess.com - Det er din tur</string>
 	<string name="your_turn">Din tur!</string>
 	<string name="login_failed">Login mislykkedes:</string>
-	<string name="loggin_out">Logge ud ...</string>
+	<string name="loggin_out">Logge ud …</string>
 	<string name="you_logged_out">Du har logget ud!</string>
 	<string name="too_short">For kort</string>
 	<string name="can_not_be_empty">Kan ikke være tomt</string>
@@ -278,10 +276,10 @@
 	<string name="menu_refresh">Opdatér</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">Klienten version er forældet. Opdater venligst</string>
-	<string name="zero_one_black_mates">0 - 1 Black kammerater</string>
-	<string name="on_zero_white_mates">1 - 0 White kammerater</string>
-	<string name="slatemate">0-0 Pat</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Draw ved gentagelse</string>
+	<string name="zero_one_black_mates">0 – 1 Black kammerater</string>
+	<string name="on_zero_white_mates">1 – 0 White kammerater</string>
+	<string name="slatemate">0–0 Pat</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Draw ved gentagelse</string>
 
 	<string name="encoding_unsupported">Kodning understøttet</string>
 	<string name="error_occurred_while_login">Der opstod en fejl under login, bedes du logger ind igen!</string>
@@ -316,10 +314,10 @@
 	<string name="reason_">ÅRSAG</string>
 	<string name="message_">Besked</string>
 
-	<string name="black_wins">Sort vinder (1-0)</string>
-	<string name="white_wins">Hvid vinder (1-0)</string>
-	<string name="draw_by_stalemate">Tegn ved dødvande (0-0)</string>
-	<string name="draw_by_3fold_repetition">Tegn ved tredobbelt gentagelse (1/2-1/2)</string>
+	<string name="black_wins">Sort vinder (1–0)</string>
+	<string name="white_wins">Hvid vinder (1–0)</string>
+	<string name="draw_by_stalemate">Tegn ved dødvande (0–0)</string>
+	<string name="draw_by_3fold_repetition">Tegn ved tredobbelt gentagelse (0.5–0.5)</string>
 	<string name="rematch">Omkamp</string>
 	<string name="review">Gennemgå</string>
 	<string name="your_end_game_rating">Din Bedømmelse ( %1$s ): ( %2$d )</string>
@@ -358,7 +356,7 @@
 	<string name="maxSeeksExceeded">"Max søger overskrides.</string>
 	<string name="makeMovesBeforeCreatingMoreGames">"Gør træk, før du opretter flere spil.</string>
 	<string name="gameAlreadyStarted">"Spil allerede begyndt.</string>
-	<string name="timeoutTooHigh">"Timeout% for høj.</string>
+	<string name="timeoutTooHigh">"Timeout for høj.</string>
 	<string name="tooFewGames">"For få spil.</string>
 	<string name="mustBePremium">"Skal være præmie.</string>
 	<string name="moveSpeedTooSlow">"Flyt hastighed for langsom.</string>

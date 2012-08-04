@@ -52,7 +52,7 @@
 	<string name="Human">Menselijk?</string>
 	<string name="guest">Gast</string>
 	<string name="Computer">Computer</string>
-	<string name="Thinking">Denken ...</string>
+	<string name="Thinking">Denken …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Nieuw spel</string>
 	<string name="onlineChallenges">Open Uitdagingen</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">Gefeliciteerd! </string>
 	<string name="onlinegamecreated">Online spel gemaakt!</string>
 	<string name="challengeSent">Daag Verzonden!</string>
-	<string name="creating">Het creëren van ...</string>
-	<string name="gettingfriends">Getting vriendenlijst ...</string>
+	<string name="creating">Het creëren van …</string>
+	<string name="gettingfriends">Getting vriendenlijst …</string>
 	<string name="sorry">Sorry.</string>
 	<string name="nofriends">Je hebt nog geen vrienden. U kunt ze uitnodigen via www.chess.com.</string>
 	<string name="nofriends_online">Je vrienden zijn niet online. Als u nog niet nodig hen uit, ga naar www.chess.com.</string>
@@ -151,28 +151,28 @@
 	<string name="challengeaccepted">Daag geaccepteerd!</string>
 	<string name="challengedeclined">Challenge Afgewezen!</string>
 	<string name="decline">Afwijzen</string>
-	<string name="updatinggameslist">Updaten van games lijst ...</string>
+	<string name="updatinggameslist">Updaten van games lijst …</string>
 	<string name="challengetitle">Uitdaging</string>
 	<string name="loadinggames">Spel Laden ..</string>
 	<string name="drawoffered">Teken Aangeboden</string>
-	<string name="gettingmessages">Berichten ontvangen ...</string>
-	<string name="sendingmessage">Bericht verzenden...</string>
+	<string name="gettingmessages">Berichten ontvangen …</string>
+	<string name="sendingmessage">Bericht verzenden…</string>
 	<string name="ok">OK</string>
 	<string name="submit">Verzenden</string>
 	<string name="login">Inloggen</string>
 	<string name="title">Titel</string>
 	<string name="error">Fout</string>
-	<string name="loading">Wordt geladen...</string>
+	<string name="loading">Wordt geladen…</string>
 	<string name="wrongcountry">U moet uw land!</string>
 	<string name="wrongpassword">Uw wachtwoord moet minstens 6 tekens lang zijn!</string>
 	<string name="wrongusername">Uw gebruikersnaam moet minstens 3 tekens lang zijn en alleen letters, cijfers, onderstrepingstekens en streepjes. Spaties zijn niet toegestaan.</string>
 	<string name="wrongemail">U moet uw lidmaatschap te bevestigen per e-mail.</string>
 	<string name="wrongretype">Verkeerd overgetypt wachtwoord!</string>
-	<string name="signingin">Aanmelden...</string>
+	<string name="signingin">Aanmelden…</string>
 
 	<string name="showanswer">Toon antwoord</string>
 	<string name="skipproblem">Ga Probleem</string>
-	<string name="sendinggameinfo">Het verzenden van game info ...</string>
+	<string name="sendinggameinfo">Het verzenden van game info …</string>
 	<string name="check_field">Controleer Veld</string>
 	<string name="validateUsername">Uw gebruikersnaam moet tussen 3 en 20 tekens lang zijn en alleen letters, cijfers, onderstrepingstekens en streepjes. Spaties zijn niet toegestaan.</string>
 	<string name="validatePassword">Uw wachtwoord moet tussen de 6 en 20 karakters lang zijn!</string>
@@ -215,9 +215,6 @@
 	<string name="correct_ex">Corrigeer</string>
 	<string name="wrong_ex">fout</string>
 
-
-	<string name="wrong_score">Wrong! Score %1$s \n New rating %2$s </string>
-	<string name="correct_score">Correct! Score %1$s \n New rating %2$s </string>
 	<string name="you_got_new_msg">Je hebt een nieuw bericht!</string>
 	<string name="browse">Bladeren</string>
 
@@ -237,7 +234,7 @@
 	</string>
 	<string name="live_game">Live wedstrijd</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail">Stuur mail ...</string>
+	<string name="send_mail">Stuur mail …</string>
 	<string name="tournaments">Toernooien</string>
 	<string name="stats">Statistieken</string>
 	<string name="challenges">Uitdagingen</string>
@@ -278,9 +275,9 @@
 	<string name="version_check">Versie controle</string>
 	<string name="version_is_obsolete_update">De client versie is verouderd. Werk</string>
 	<string name="zero_one_black_mates">0 tot 1 Black mates</string>
-	<string name="on_zero_white_mates">1-0 Witte mates</string>
-	<string name="slatemate">0-0 Pat</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Draw door herhaling</string>
+	<string name="on_zero_white_mates">1–0 Witte mates</string>
+	<string name="slatemate">0–0 Pat</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Draw door herhaling</string>
 
 	<string name="encoding_unsupported">Coderen van niet-ondersteunde</string>
 	<string name="error_occurred_while_login">Fout opgetreden tijdens het aanmelden, dan kunt u weer inloggen!</string>
@@ -315,10 +312,10 @@
 	<string name="reason_">Reden</string>
 	<string name="message_">Bericht</string>
 
-	<string name="black_wins">Zwart wint (1-0)</string>
-	<string name="white_wins">Wit wint (1-0)</string>
-	<string name="draw_by_stalemate">Teken door pat (0-0)</string>
-	<string name="draw_by_3fold_repetition">Teken door de drievoudige herhaling (1/2-1/2)</string>
+	<string name="black_wins">Zwart wint (1–0)</string>
+	<string name="white_wins">Wit wint (1–0)</string>
+	<string name="draw_by_stalemate">Teken door pat (0–0)</string>
+	<string name="draw_by_3fold_repetition">Teken door de drievoudige herhaling (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Controleren</string>
 	<string name="your_end_game_rating">Uw waardering ( %1$s ): ( %2$d )</string>

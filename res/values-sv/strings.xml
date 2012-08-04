@@ -52,7 +52,7 @@
 	<string name="Human">Human</string>
 	<string name="guest">Gäst</string>
 	<string name="Computer">Dator</string>
-	<string name="Thinking">Tänkande...</string>
+	<string name="Thinking">Tänkande…</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Nytt Spel</string>
 	<string name="onlineChallenges">Öppna Utmaningar</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">Grattis!</string>
 	<string name="onlinegamecreated">Online spel skapat!</string>
 	<string name="challengeSent">Utmana Skickat!</string>
-	<string name="creating">Skapa ...</string>
-	<string name="gettingfriends">Få kompislista ...</string>
+	<string name="creating">Skapa …</string>
+	<string name="gettingfriends">Få kompislista …</string>
 	<string name="sorry">Ursäkta.</string>
 	<string name="nofriends">Du har inga vänner ännu. Du kan bjuda in dem via www.chess.com.</string>
 	<string name="nofriends_online">Dina vänner är inte online. Om du inte bjuda in dem ännu, gå till www.chess.com.</string>
@@ -151,28 +151,28 @@
 	<string name="challengeaccepted">Utmana accepteras!</string>
 	<string name="challengedeclined">Challenge Avvisad!</string>
 	<string name="decline">Avvisa</string>
-	<string name="updatinggameslist">Uppdaterar Spel List ...</string>
+	<string name="updatinggameslist">Uppdaterar Spel List …</string>
 	<string name="challengetitle">Utmana</string>
-	<string name="loadinggames">Laddar spel ...</string>
+	<string name="loadinggames">Laddar spel …</string>
 	<string name="drawoffered">Dra Erbjuds</string>
-	<string name="gettingmessages">Få meddelanden ...</string>
-	<string name="sendingmessage">Skickar meddelande ...</string>
+	<string name="gettingmessages">Få meddelanden …</string>
+	<string name="sendingmessage">Skickar meddelande …</string>
 	<string name="ok">OK</string>
 	<string name="submit">Skicka</string>
 	<string name="login">Inloggning</string>
 	<string name="title">Titel</string>
 	<string name="error">Fel</string>
-	<string name="loading">Laddar...</string>
+	<string name="loading">Laddar…</string>
 	<string name="wrongcountry">Du måste välja ditt land!</string>
 	<string name="wrongpassword">Ditt lösenord måste vara minst 6 tecken långt!</string>
 	<string name="wrongusername">Ditt användarnamn måste vara minst 3 tecken långt och endast innehålla bokstäver, siffror, understreck och bindestreck. Mellanslag är inte tillåtna.</string>
 	<string name="wrongemail">Du måste bekräfta ditt medlemskap via e-post.</string>
 	<string name="wrongretype">Fel skriva om lösenord!</string>
-	<string name="signingin">Loggar in...</string>
+	<string name="signingin">Loggar in…</string>
 
 	<string name="showanswer">Visa Svar</string>
 	<string name="skipproblem">Fortsätt Problem</string>
-	<string name="sendinggameinfo">Att skicka spelet info ...</string>
+	<string name="sendinggameinfo">Att skicka spelet info …</string>
 	<string name="check_field">Ta Fält</string>
 	<string name="validateUsername">Ditt användarnamn måste vara mellan 3 och 20 tecken långt och endast innehålla bokstäver, siffror, understreck och bindestreck. Mellanslag är inte tillåtna.</string>
 	<string name="validatePassword">Ditt lösenord måste vara mellan 6 och 20 tecken långt!</string>
@@ -185,7 +185,7 @@
 	<string name="mymove">Min Flytta!</string>
 	<string name="theirmove">Deras Flytta!</string>
 	<string name="gamefinish">Avsluta detta spel</string>
-	<string name="random">Slumpa...</string>
+	<string name="random">Slumpa…</string>
 	<string name="won">vann</string>
 	<string name="lost">tappat bort mig</string>
 	<string name="draw">ritningar</string>
@@ -215,9 +215,6 @@
 	<string name="correct_ex">Alldeles riktig?</string>
 	<string name="wrong_ex">Fel!</string>
 
-
-	<string name="wrong_score">Fel! Betyg %1$s \n New rating %2$s </string>
-	<string name="correct_score">Rätt! Betyg %1$s \n New rating %2$s </string>
 	<string name="you_got_new_msg">Du har ett nytt meddelande!</string>
 	<string name="browse">Bläddra</string>
 
@@ -237,7 +234,7 @@
 	</string>
 	<string name="live_game">Live Game</string>
 	<string name="online_game">Online Spel</string>
-	<string name="send_mail">Skicka e-post ...</string>
+	<string name="send_mail">Skicka e-post …</string>
 	<string name="tournaments">Turneringar</string>
 	<string name="stats">Statistik</string>
 	<string name="challenges">Utmaningar</string>
@@ -266,7 +263,7 @@
 	<string name="your_move">Chess.com - Det är ditt drag</string>
 	<string name="your_turn">Din tur!</string>
 	<string name="login_failed">Inloggningen misslyckades:</string>
-	<string name="loggin_out">Logga ut ...</string>
+	<string name="loggin_out">Logga ut …</string>
 	<string name="you_logged_out">Du har loggat ut!</string>
 	<string name="too_short">För kort</string>
 	<string name="can_not_be_empty">Kan inte vara tom</string>
@@ -277,10 +274,10 @@
 	<string name="menu_refresh">Uppdatera</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">Klientversionen är föråldrad. Uppdatera</string>
-	<string name="zero_one_black_mates">0 - 1 Svart kompisar</string>
-	<string name="on_zero_white_mates">1 - 0 Vita kompisar</string>
+	<string name="zero_one_black_mates">0 – 1 Svart kompisar</string>
+	<string name="on_zero_white_mates">1 – 0 Vita kompisar</string>
 	<string name="slatemate">0 till 0 Dödläge</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Oavgjort genom upprepning</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Oavgjort genom upprepning</string>
 
 	<string name="encoding_unsupported">Kodar ouppburen</string>
 	<string name="error_occurred_while_login">Fel uppstod när inloggning, vänligen logga in igen!</string>
@@ -315,10 +312,10 @@
 	<string name="reason_">Orsak</string>
 	<string name="message_">Meddelande</string>
 
-	<string name="black_wins">Svart vinner (1-0)</string>
-	<string name="white_wins">Vit vinner (1-0)</string>
-	<string name="draw_by_stalemate">Rita dödläge (0-0)</string>
-	<string name="draw_by_3fold_repetition">Rita tre upprepning (1/2-1/2)</string>
+	<string name="black_wins">Svart vinner (1–0)</string>
+	<string name="white_wins">Vit vinner (1–0)</string>
+	<string name="draw_by_stalemate">Rita dödläge (0–0)</string>
+	<string name="draw_by_3fold_repetition">Rita tre upprepning (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Granskning</string>
 	<string name="your_end_game_rating">Ditt betyg ( %1$s ): ( %2$d )</string>
@@ -357,7 +354,7 @@
 	<string name="maxSeeksExceeded">Max söker överskrids.</string>
 	<string name="makeMovesBeforeCreatingMoreGames">Göra drag innan du skapar fler spel.</string>
 	<string name="gameAlreadyStarted">Spelet började redan.</string>
-	<string name="timeoutTooHigh">Timeout% för hög.</string>
+	<string name="timeoutTooHigh">Timeout för hög.</string>
 	<string name="tooFewGames">För få spel</string>
 	<string name="mustBePremium">Måste vara premiebaserade.</string>
 	<string name="moveSpeedTooSlow">Flytta varvtal är för långsam.</string>

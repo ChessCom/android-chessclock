@@ -222,8 +222,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			} else {
 				if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem(); // TODO replace strings
-					String title = getString(R.string.problem_solved) + StaticData.SYMBOL_NEW_STR
-							+ getString(R.string.correct_score, tacticResultItem.getUserRatingChange(),
+					String title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 							tacticResultItem.getUserRating());
 
 					showSolvedTacticPopup(title, false);
@@ -440,8 +439,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
 			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 
-			String title = getString(R.string.problem_solved) + StaticData.SYMBOL_NEW_STR
-					+ getString(R.string.correct_score, tacticResultItem.getUserRatingChange(),
+			String title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 					tacticResultItem.getUserRating());
 
 			showSolvedTacticPopup(title, false);

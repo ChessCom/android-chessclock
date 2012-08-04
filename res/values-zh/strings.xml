@@ -140,8 +140,8 @@
 	<string name="congratulations">恭喜！</string>
 	<string name="onlinegamecreated">创建在线游戏！</string>
 	<string name="challengeSent">挑战已发送！</string>
-	<string name="creating">创建...</string>
-	<string name="gettingfriends">获取好友列表...</string>
+	<string name="creating">创建…</string>
+	<string name="gettingfriends">获取好友列表…</string>
 	<string name="sorry">对不起</string>
 	<string name="nofriends">你有没有朋友。您可以邀请通过www.chess.com的他们。</string>
 	<string name="nofriends_online">你的朋友不在线。如果没有他们还邀请，去到www.chess.com。</string>
@@ -151,9 +151,9 @@
 	<string name="challengeaccepted">接受的挑战</string>
 	<string name="challengedeclined">挑战拒收！</string>
 	<string name="decline">拒绝</string>
-	<string name="updatinggameslist">更新游戏列表...</string>
+	<string name="updatinggameslist">更新游戏列表…</string>
 	<string name="challengetitle">需求</string>
-	<string name="loadinggames">载入游戏...</string>
+	<string name="loadinggames">载入游戏…</string>
 	<string name="drawoffered">提请发售</string>
 	<string name="gettingmessages">正在接收邮件“%@”</string>
 	<string name="sendingmessage">正在发送邮件：%@</string>
@@ -162,17 +162,17 @@
 	<string name="login">登入</string>
 	<string name="title">标题</string>
 	<string name="error">錯誤</string>
-	<string name="loading">载入中...</string>
+	<string name="loading">载入中…</string>
 	<string name="wrongcountry">你必须选择你的国家！</string>
 	<string name="wrongpassword">您的密码必须至少6个字符长！</string>
 	<string name="wrongusername">你的用户名必须有至少3个字符长，并且只包含字母，数字，下划线和破折号。不允许有空格。</string>
 	<string name="wrongemail">您将需要通过电子邮件确认您的会员。</string>
 	<string name="wrongretype">错误重新输入密码！</string>
-	<string name="signingin">签约仪式在...</string>
+	<string name="signingin">签约仪式在…</string>
 
 	<string name="showanswer">显示答案</string>
 	<string name="skipproblem">跳过问题</string>
-	<string name="sendinggameinfo">发送比赛信息...</string>
+	<string name="sendinggameinfo">发送比赛信息…</string>
 	<string name="check_field">检查现场</string>
 	<string name="validateUsername">您的用户名必须是3至20个字符长，并且只包含字母，数字，下划线和破折号。不允许有空格。</string>
 	<string name="validatePassword">您的密码必须介于6和20个字符长！</string>
@@ -213,9 +213,6 @@
 	<string name="correct_ex">n.修正,校准</string>
 	<string name="wrong_ex">但这种想法大错特错。</string>
 
-
-	<string name="wrong_score">错了！分数%1$s \ n新评级%2$s </string>
-	<string name="correct_score">正确的！分数%1$s \ n新评级%2$s </string>
 	<string name="you_got_new_msg">你有一个新的消息！</string>
 	<string name="browse">浏览</string>
 
@@ -251,10 +248,10 @@
 
 	<!--Game-->
 	<string name="opponent_">敌方</string>
-	<string name="time_">时间\ n：</string>
+	<string name="time_">时间\n：</string>
 	<string name="rated">评分：</string>
 	<string name="unrated">未评级</string>
-	<string name="you_play">\ n您播放：</string>
+	<string name="you_play">\n您播放：</string>
 	<string name="standard_game">n.使合标准,使标准化</string>
 	<string name="blitz_game">n.闪击战,空中突然袭击</string>
 	<string name="lightning_game">照明</string>
@@ -274,10 +271,10 @@
 	<string name="menu_refresh">重新整理</string>
 	<string name="version_check">版本检查</string>
 	<string name="version_is_obsolete_update">客户端版本已经过时了。请更新</string>
-	<string name="zero_one_black_mates">0  -  1黑色队友</string>
-	<string name="on_zero_white_mates">1  -  0白色队友</string>
-	<string name="slatemate">0  -  0相持</string>
-	<string name="draw_by_repetition">1/2  -  1/2重复绘制</string>
+	<string name="zero_one_black_mates">0 – 1黑色队友</string>
+	<string name="on_zero_white_mates">1 – 0白色队友</string>
+	<string name="slatemate">0 – 0相持</string>
+	<string name="draw_by_repetition">0.5 – 0.5 重复绘制</string>
 
 	<string name="encoding_unsupported">编码不受支持</string>
 	<string name="error_occurred_while_login">发生错误，同时登录，请重新登录！</string>
@@ -312,10 +309,10 @@
 	<string name="reason_">原因</string>
 	<string name="message_">訊息</string>
 
-	<string name="black_wins">黑胜（1-0）</string>
-	<string name="white_wins">白衣胜（1-0）</string>
-	<string name="draw_by_stalemate">绘制僵局（0-0）</string>
-	<string name="draw_by_3fold_repetition">绘制三重重复（1/2-1/2）</string>
+	<string name="black_wins">黑胜（1–0）</string>
+	<string name="white_wins">白衣胜（1–0）</string>
+	<string name="draw_by_stalemate">绘制僵局（0–0）</string>
+	<string name="draw_by_3fold_repetition">绘制三重重复（0.5–0.5）</string>
 	<string name="rematch">复赛</string>
 	<string name="review">评论</string>
 	<string name="your_end_game_rating">您的评价（ %1$s ）：（ %2$d ）</string>

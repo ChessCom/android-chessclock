@@ -140,8 +140,8 @@
 	<string name="congratulations"> 축하해요!</string>
 	<string name="onlinegamecreated">온라인 게임이 만들어!</string>
 	<string name="challengeSent">보낸 도전!</string>
-	<string name="creating">만드는 중 ...</string>
-	<string name="gettingfriends">친구 목록을 얻는 ...</string>
+	<string name="creating">만드는 중 …</string>
+	<string name="gettingfriends">친구 목록을 얻는 …</string>
 	<string name="sorry">미안해요</string>
 	<string name="nofriends">당신은 아직 친구가 없습니다. 당신은 www.chess.com 통해 그들을 초대할 수 있습니다.</string>
 	<string name="nofriends_online">친구가 온라인이 아닙니다. 당신은 아직 그들을 초대하지 않은 경우 www.chess.com로 이동합니다.</string>
@@ -151,28 +151,28 @@
 	<string name="challengeaccepted">수락함 도전!</string>
 	<string name="challengedeclined">도전 실패!</string>
 	<string name="decline">거절</string>
-	<string name="updatinggameslist">게임 목록을 업데이트 중 ...</string>
+	<string name="updatinggameslist">게임 목록을 업데이트 중 …</string>
 	<string name="challengetitle">도전</string>
-	<string name="loadinggames">로드 게임 ...</string>
+	<string name="loadinggames">로드 게임 …</string>
 	<string name="drawoffered">제공 그리기</string>
-	<string name="gettingmessages">메시 ...</string>
-	<string name="sendingmessage">메시지 보내는 중...</string>
+	<string name="gettingmessages">메시 …</string>
+	<string name="sendingmessage">메시지 보내는 중…</string>
 	<string name="ok">OK</string>
 	<string name="submit">전송</string>
 	<string name="login">로그인</string>
 	<string name="title">Title</string>
 	<string name="error">오류</string>
-	<string name="loading">로드중입니다...</string>
+	<string name="loading">로드중입니다…</string>
 	<string name="wrongcountry">당신의 국가를 선택해야합니다!</string>
 	<string name="wrongpassword">비밀 번호는 최소 6 자 이상이어야합니다!</string>
 	<string name="wrongusername">귀하의 사용자 이름은 적어도 3 자 이상이어야하고, 오직 문자, 숫자, 밑줄 및 대시를 포함해야합니다. 공백은 허용되지 않습니다.</string>
 	<string name="wrongemail">당신은 이메일로 멤버십을 확인하셔야합니다.</string>
 	<string name="wrongretype">잘못된 칠 비밀!</string>
-	<string name="signingin">로그인하는 중...</string>
+	<string name="signingin">로그인하는 중…</string>
 
 	<string name="showanswer">답변보기</string>
 	<string name="skipproblem">문제 건너뛰기</string>
-	<string name="sendinggameinfo">게임 정보를 보내는 중 ...</string>
+	<string name="sendinggameinfo">게임 정보를 보내는 중 …</string>
 	<string name="check_field">필드를 확인합니다</string>
 	<string name="validateUsername">사용자 이름 3시 사이에 20 자 이상이어야하고, 오직 문자, 숫자, 밑줄 및 대시를 포함해야합니다. 공백은 허용되지 않습니다.</string>
 	<string name="validatePassword">비밀 번호는 6, 20 자 사이 여야합니다!</string>
@@ -213,9 +213,6 @@
 	<string name="correct_ex">맞습니다.</string>
 	<string name="wrong_ex">표기를 올바르게 했음에도 -가령, 고유명사를 입력했거나 맞춤법 검사 사전에 없는 단어를 사용했을 때-</string>
 
-
-	<string name="wrong_score">틀렸어! 점수 %1$s \ n 새 평가 %2$s </string>
-	<string name="correct_score">수정! 점수 %1$s \ n 새 평가 %2$s </string>
 	<string name="you_got_new_msg">당신은 새 메시지가 있습니다!</string>
 	<string name="browse">찾기</string>
 
@@ -234,7 +231,7 @@
 	<string name="invite_text">난 그냥 내 안드로이드 장치에 Chess.com에서 체스를 가입. 여기에 무료 애플 리케이션 다운로드 : http://chess.com/android 또는 http://www.chess.com/register.html에 가입하실 수 있습니다. 그럼 날 찾아 - 내 이름은입니다 \</string>
 	<string name="live_game">게임을하다</string>
 	<string name="online_game">온라인 게임</string>
-	<string name="send_mail">메일 보내기 ...</string>
+	<string name="send_mail">메일 보내기 …</string>
 	<string name="tournaments">토너먼트</string>
 	<string name="stats">통계</string>
 	<string name="challenges">도전</string>
@@ -274,10 +271,10 @@
 	<string name="menu_refresh">~을 상쾌하게하다, ~을 새롭게하다</string>
 	<string name="version_check">버전 확인</string>
 	<string name="version_is_obsolete_update">클라이언트 버전은 쓸모입니다. 업데이 트하시기 바랍니다</string>
-	<string name="zero_one_black_mates">0-1 블랙 짝을</string>
-	<string name="on_zero_white_mates">1-0 흰색 연분</string>
-	<string name="slatemate">0-0 막다른 골목</string>
-	<string name="draw_by_repetition">2분의 1 - 반복하여 2분의 1 그리기</string>
+	<string name="zero_one_black_mates">0–1 블랙 짝을</string>
+	<string name="on_zero_white_mates">1–0 흰색 연분</string>
+	<string name="slatemate">0–0 막다른 골목</string>
+	<string name="draw_by_repetition">0.5–0.5 반복에 의해 그리기</string>
 
 	<string name="encoding_unsupported">지원되지 않는 인코딩</string>
 	<string name="error_occurred_while_login">오류가 발생했습니다 로그인 동안 relogin를주세요!</string>
@@ -294,7 +291,7 @@
 	<string name="loading_live_chess">라이브 체스로드</string>
 	<string name="game_draw_by_repetition">게임 반복하여 \n을 그려</string>
 	<string name="game_drawn_by_agreement">게임 합의로 \n을 그려</string>
-	<string name="game_drawn_by_stalemate">게임 막다른 골목에 의해 \ n을 그려</string>
+	<string name="game_drawn_by_stalemate">게임 막다른 골목에 의해 \n을 그려</string>
 	<string name="game_drawn_insufficient_material">게임 그립 - \n 불충 분한 자료</string>
 	<string name="game_drawn_by_fifty_move_rule">게임 50 이동 규칙에 의해 \n을 그려</string>
 	<string name="won_game_abandoned">원 - \n 게임은 포기</string>
@@ -312,10 +309,10 @@
 	<string name="reason_">이유</string>
 	<string name="message_">메시지</string>
 
-	<string name="black_wins">블랙 승리 1-0</string>
-	<string name="white_wins">화이트 승리 1-0</string>
-	<string name="draw_by_stalemate">교착 상태 (0-0)에 의해 그리기</string>
-	<string name="draw_by_3fold_repetition">삼중 반복 (1/2-1/2)에 의해 그리기</string>
+	<string name="black_wins">블랙 승리 1–0</string>
+	<string name="white_wins">화이트 승리 1–0</string>
+	<string name="draw_by_stalemate">교착 상태 (0–0)에 의해 그리기</string>
+	<string name="draw_by_3fold_repetition">삼중 반복 (0.5–0.5)에 의해 그리기</string>
 	<string name="rematch">재시합</string>
 	<string name="review">리뷰</string>
 	<string name="your_end_game_rating">귀하의 평가 ( %1$s ) : ( %2$d )</string>

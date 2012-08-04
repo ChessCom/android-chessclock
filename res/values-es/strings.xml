@@ -53,7 +53,7 @@
 	<string name="Human">Humanos</string>
 	<string name="guest">Huésped </string>
 	<string name="Computer">Ordenador</string>
-	<string name="Thinking">Pensamiento ...</string>
+	<string name="Thinking">Pensamiento …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Nuevo Juego</string>
 	<string name="onlineChallenges">Retos abiertos</string>
@@ -135,14 +135,14 @@
 	<string name="chat">Chat</string>
 	<string name="skill">Nivel de dificultad:</string>
 	<string name="category">Categoría</string>
-	<string name="search">Buscando...</string>
+	<string name="search">Buscando…</string>
 	<string name="play">reproduce</string>
 	<string name="videos">Videos</string>
 	<string name="congratulations">¡Enhorabuena!</string>
 	<string name="onlinegamecreated">Juego en línea creado!</string>
 	<string name="challengeSent">Desafío enviado!</string>
-	<string name="creating">La creación de ...</string>
-	<string name="gettingfriends">Obtener la lista de amigos ...</string>
+	<string name="creating">La creación de …</string>
+	<string name="gettingfriends">Obtener la lista de amigos …</string>
 	<string name="sorry">Perdón.</string>
 	<string name="nofriends">Usted no tiene amigos todavía. Puede invitarlos a través de www.chess.com.</string>
 	<string name="nofriends_online">Tus amigos no están en línea. Si usted no los invitan, sin embargo, ir a www.chess.com.</string>
@@ -152,28 +152,28 @@
 	<string name="challengeaccepted">Asumido el reto.</string>
 	<string name="challengedeclined">Rehusó Challenge!</string>
 	<string name="decline">Rechazar</string>
-	<string name="updatinggameslist">Actualización de la lista de juegos ...</string>
+	<string name="updatinggameslist">Actualización de la lista de juegos …</string>
 	<string name="challengetitle">Desafiar</string>
-	<string name="loadinggames">Juegos Cargando ...</string>
+	<string name="loadinggames">Juegos Cargando …</string>
 	<string name="drawoffered">Dibuja Oferta</string>
-	<string name="gettingmessages">Recibir mensajes ...</string>
-	<string name="sendingmessage">Enviando mensaje...</string>
+	<string name="gettingmessages">Recibir mensajes …</string>
+	<string name="sendingmessage">Enviando mensaje…</string>
 	<string name="ok">Aceptar</string>
 	<string name="submit">Enviar</string>
 	<string name="login">Inicio de Sesión</string>
 	<string name="title">Título</string>
 	<string name="error">error</string>
-	<string name="loading">Cargando...</string>
+	<string name="loading">Cargando…</string>
 	<string name="wrongcountry">Usted debe seleccionar su país!</string>
 	<string name="wrongpassword">Epa, tu contraseña debe tener al menos 6 caracteres.</string>
 	<string name="wrongusername">Su nombre de usuario debe tener al menos 3 caracteres de longitud, y sólo puede contener letras, números, guiones y guiones. No se permiten espacios.</string>
 	<string name="wrongemail">Usted tendrá que confirmar su adhesión por correo electrónico.</string>
 	<string name="wrongretype">Reescrita contraseña incorrecta!</string>
-	<string name="signingin">En la firma de ...</string>
+	<string name="signingin">En la firma de …</string>
 
 	<string name="showanswer">Mostrar respuestas</string>
 	<string name="skipproblem">Ir Problema</string>
-	<string name="sendinggameinfo">El envío de información del juego ...</string>
+	<string name="sendinggameinfo">El envío de información del juego …</string>
 	<string name="check_field">Comprobar el campo</string>
 	<string name="validateUsername">Su nombre de usuario debe tener entre 3 y 20 caracteres de longitud, y sólo puede contener letras, números, guiones y guiones. No se permiten espacios.</string>
 	<string name="validatePassword">Su contraseña debe tener entre 6 y 20 caracteres de largo!</string>
@@ -217,8 +217,6 @@
 	<string name="wrong_ex">¡Falso!</string>
 
 
-	<string name="wrong_score">¡Falso! Puntuación %1$s \n Calificación otorgada %2$s </string>
-	<string name="correct_score">Corrija! Puntuación %1$s \n Calificación otorgada %2$s </string>
 	<string name="you_got_new_msg">Tiene un mensaje nuevo!</string>
 	<string name="browse">Examinar</string>
 
@@ -278,10 +276,10 @@
 	<string name="menu_refresh">refresh</string>
 	<string name="version_check">Verificar versión</string>
 	<string name="version_is_obsolete_update">La versión de cliente es obsoleto. Por favor, actualice</string>
-	<string name="zero_one_black_mates">0 - 1 compañeros negros</string>
-	<string name="on_zero_white_mates">1 - 0 blancas dan mate</string>
-	<string name="slatemate">0-0 Estancamiento</string>
-	<string name="draw_by_repetition">1/2 - 1/2 tablas por repetición</string>
+	<string name="zero_one_black_mates">0 – 1 compañeros negros</string>
+	<string name="on_zero_white_mates">1 – 0 blancas dan mate</string>
+	<string name="slatemate">0–0 Estancamiento</string>
+	<string name="draw_by_repetition">0.5 – 0.5 tablas por repetición</string>
 
 	<string name="encoding_unsupported">Codificación no soportada</string>
 	<string name="error_occurred_while_login">Ocurrió un error al inicio de sesión, por favor, iniciar la sesión!</string>
@@ -317,9 +315,9 @@
 	<string name="message_">Mensaje</string>
 
 
-	<string name="black_wins">Negro gana (1-0)</string>
-	<string name="white_wins">Blanco gana (1-0)</string>
-	<string name="draw_by_stalemate">Dibuja por empate (0-0)</string>
+	<string name="black_wins">Negro gana (1–0)</string>
+	<string name="white_wins">Blanco gana (1–0)</string>
+	<string name="draw_by_stalemate">Dibuja por empate (0–0)</string>
 	<string name="draw_by_3fold_repetition">Dibuja por la triple repetición (1.2 a 1.2)</string>
 	<string name="rematch">la revancha.</string>
 	<string name="review">Opinar</string>

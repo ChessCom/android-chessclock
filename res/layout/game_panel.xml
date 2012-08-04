@@ -21,7 +21,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_next_game"
 			android:background="@drawable/button_emboss_left_selector"
-			/>
+			android:contentDescription=""/>
 		<ImageButton
 			android:id="@+id/optionsBtn"
 			android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_options"
 			android:background="@drawable/button_emboss_mid_selector"
-			/>
+			android:contentDescription=""/>
 		<ImageButton
 			android:id="@+id/flipBtn"
 			android:layout_width="match_parent"
@@ -37,7 +37,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_flip"
 			android:background="@drawable/button_emboss_mid_selector"
-			/>
+			android:contentDescription=""/>
 		<ImageButton
 			android:id="@+id/analysisBtn"
 			android:layout_width="match_parent"
@@ -45,7 +45,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_analysis"
 			android:background="@drawable/button_emboss_mid_selector"
-			/>
+			android:contentDescription=""/>
 		<ImageButton
 			android:id="@+id/chatBtn"
 			android:layout_width="match_parent"
@@ -53,7 +53,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_chat"
 			android:background="@drawable/button_emboss_mid_selector"
-			/>
+			android:contentDescription=""/>
 		<ImageButton
 			android:id="@+id/backBtn"
 			android:layout_width="match_parent"
@@ -61,7 +61,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_back"
 			android:background="@drawable/button_emboss_mid_selector"
-			/>
+			android:contentDescription=""/>
 		<ImageButton
 			android:id="@+id/forwardBtn"
 			android:layout_width="match_parent"
@@ -69,7 +69,7 @@
 			style="@style/GamePanelButton"
 			android:src="@drawable/ic_forward"
 			android:background="@drawable/button_emboss_right_selector"
-			/>
+			android:contentDescription=""/>
 	</LinearLayout>
 
 	<LinearLayout

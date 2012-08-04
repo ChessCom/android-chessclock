@@ -140,8 +140,8 @@
 	<string name="congratulations">Tebrikler!</string>
 	<string name="onlinegamecreated">Online oyun oluşturuldu!</string>
 	<string name="challengeSent">Gönderilen meydan!</string>
-	<string name="creating">Oluşturuluyor ...</string>
-	<string name="gettingfriends">Arkadaş Listesi Alınması ...</string>
+	<string name="creating">Oluşturuluyor …</string>
+	<string name="gettingfriends">Arkadaş Listesi Alınması …</string>
 	<string name="sorry">Üzüldüm</string>
 	<string name="nofriends">Henüz hiç arkadaşlarım var. Sen www.chess.com aracılığıyla davet edebilirsiniz.</string>
 	<string name="nofriends_online">Arkadaşlarınız çevrimiçi değildir. Henüz davet almadıysanız, www.chess.com gidin.</string>
@@ -151,28 +151,28 @@
 	<string name="challengeaccepted">Kabul meydan!</string>
 	<string name="challengedeclined">Mücadelesi Reddedildi!</string>
 	<string name="decline">Reddet</string>
-	<string name="updatinggameslist">Oyun listesi güncelleniyor ...</string>
+	<string name="updatinggameslist">Oyun listesi güncelleniyor …</string>
 	<string name="challengetitle">Meydan okuma</string>
-	<string name="loadinggames">Yükleniyor Oyunlar ...</string>
+	<string name="loadinggames">Yükleniyor Oyunlar …</string>
 	<string name="drawoffered">Açılan Çiz</string>
-	<string name="gettingmessages">Başlarken Mesajlar ...</string>
+	<string name="gettingmessages">Başlarken Mesajlar …</string>
 	<string name="sendingmessage">Mesaj gönder</string>
 	<string name="ok">Tamam</string>
 	<string name="submit">Gönder</string>
 	<string name="login">Oturum aç</string>
 	<string name="title">Başlık:</string>
 	<string name="error">Hata</string>
-	<string name="loading">Yükleniyor...</string>
+	<string name="loading">Yükleniyor…</string>
 	<string name="wrongcountry">Siz ülkenizi seçmeniz gerekir!</string>
 	<string name="wrongpassword">Şifreniz en az 6 karakter uzunluğunda olmalı!</string>
 	<string name="wrongusername">Kullanıcı adınız en az 3 karakter uzunluğunda olmalı ve sadece harf, rakam, altçizgi, tire ve içermelidir. Boşluklara izin verilmez.</string>
 	<string name="wrongemail">Bu e-posta ile üyelik onay gerekir.</string>
 	<string name="wrongretype">Yanlış retyped şifre!</string>
-	<string name="signingin">Oturum açılıyor...</string>
+	<string name="signingin">Oturum açılıyor…</string>
 
 	<string name="showanswer">Cevap göster</string>
 	<string name="skipproblem">Sorun geç</string>
-	<string name="sendinggameinfo">Oyun bilgisi gönderiliyor ...</string>
+	<string name="sendinggameinfo">Oyun bilgisi gönderiliyor …</string>
 	<string name="check_field">Saha Kontrol</string>
 	<string name="validateUsername">Kullanıcı adınız 3 ile 20 karakter uzunluğunda olmalı ve sadece harf, rakam, altçizgi, tire ve içermelidir. Boşluklara izin verilmez.</string>
 	<string name="validatePassword">Parolanız 6 ve 20 karakter arasında olmalıdır!</string>
@@ -215,9 +215,6 @@
 	<string name="correct_ex">Düzeltin!</string>
 	<string name="wrong_ex">Yanlış!</string>
 
-
-	<string name="wrong_score">Yanlış! Puan %1$s \n Yeni puanı %2$s </string>
-	<string name="correct_score">Düzeltin! Puan %1$s \n Yeni puanı %2$s </string>
 	<string name="you_got_new_msg">Yeni bir mesajınız var!</string>
 	<string name="browse">Gözat</string>
 
@@ -237,7 +234,7 @@
 	</string>
 	<string name="live_game">Oyun Canlı</string>
 	<string name="online_game">Online Oyun</string>
-	<string name="send_mail">Posta gönder ...</string>
+	<string name="send_mail">Posta gönder …</string>
 	<string name="tournaments">Turnuvalar</string>
 	<string name="stats">İstatistikler</string>
 	<string name="challenges">Zorluklar</string>
@@ -277,10 +274,10 @@
 	<string name="menu_refresh">yenileme</string>
 	<string name="version_check">Sürüm Kontrol</string>
 	<string name="version_is_obsolete_update">Istemci sürümü artık kullanılmıyor. Güncelleyin</string>
-	<string name="zero_one_black_mates">0 - 1 Siyah arkadaşları</string>
-	<string name="on_zero_white_mates">1 - 0 Beyaz arkadaşları</string>
-	<string name="slatemate">0 - 0 Çıkmazı</string>
-	<string name="draw_by_repetition">1/2 - tekrarlama 1/2 Beraberlik</string>
+	<string name="zero_one_black_mates">0 – 1 Siyah arkadaşları</string>
+	<string name="on_zero_white_mates">1 – 0 Beyaz arkadaşları</string>
+	<string name="slatemate">0 – 0 Çıkmazı</string>
+	<string name="draw_by_repetition">0.5 - tekrarlama 0.5 Beraberlik</string>
 
 	<string name="encoding_unsupported">Desteklenmeyen Kodlama</string>
 	<string name="error_occurred_while_login">Hata oluştu giriş yaparken, relogin lütfen!</string>
@@ -315,10 +312,10 @@
 	<string name="reason_">Sebep</string>
 	<string name="message_">Mesaj</string>
 
-	<string name="black_wins">Siyah galibiyet (1-0)</string>
-	<string name="white_wins">Beyaz kazanır (1-0)</string>
-	<string name="draw_by_stalemate">Çıkmazı (0-0) tarafından çizin</string>
-	<string name="draw_by_3fold_repetition">Üçlü tekrarı (1/2-1/2) tarafından çizin</string>
+	<string name="black_wins">Siyah galibiyet (1–0)</string>
+	<string name="white_wins">Beyaz kazanır (1–0)</string>
+	<string name="draw_by_stalemate">Çıkmazı (0–0) tarafından çizin</string>
+	<string name="draw_by_3fold_repetition">Üçlü tekrarı (0.5–0.5) tarafından çizin</string>
 	<string name="rematch">Rövanş</string>
 	<string name="review">Gözden geçirin</string>
 	<string name="your_end_game_rating">Sizin Rating ( %1$s ): ( %2$d )</string>

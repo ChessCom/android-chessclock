@@ -8,7 +8,12 @@
 	<string name="your_turn_in_game_with">%2$s, %1$s  في لعبتك مع</string>
 	<string name="register">تسجيل</string>
 	<string name="session_expired">جلسة العمل الخاصة بك قد انتهت صلاحيتها، الرجاء إعادة تسجيل الدخول</string>
-	<string name="problem_solved">حل المشكلة!</string>
+	<string name="problem_solved">حل المشكلة!
+		\n %1$s علامة
+		\n %2$s تصنيف جديد </string>
+	<string name="wrong_score">صحيح!
+		\n %1$s علامة
+		\n %2$s تصنيف جديد </string>
 	<string name="next_tactic_puzzle">تكتيك المقبل اللغز</string>
 	<string name="upgrade_to_continue">الترقية للمتابعة</string>
 

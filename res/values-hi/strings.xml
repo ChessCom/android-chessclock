@@ -43,7 +43,7 @@
 	<string name="dont_have_account_q">कोई खाता नहीं है? </string>
 	<string name="singinUsername">उपयोगकर्तानाम </string>
 	<string name="singinPassword">पासवर्ड</string>
-	<string name="singinButton">साइन इन करें...</string>
+	<string name="singinButton">साइन इन करें…</string>
 	<string name="sing_up">साइन-अप</string>
 	<string name="complete_singupButton">पंजीकरण पूरा</string>
 	<string name="singinPlayguest">अतिथि के रूप में</string>
@@ -53,7 +53,7 @@
 	<string name="Human">मानव</string>
 	<string name="guest">अतिथि</string>
 	<string name="Computer">कंप्यूटर </string>
-	<string name="Thinking">सोच रहे हैं...</string>
+	<string name="Thinking">सोच रहे हैं…</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">नया गेम</string>
 	<string name="onlineChallenges">ओपन चुनौतियां</string>
@@ -141,8 +141,8 @@
 	<string name="congratulations">बधाई हो! </string>
 	<string name="onlinegamecreated">ऑनलाइन खेल बनाया!</string>
 	<string name="challengeSent">भेजे गए चुनौती!</string>
-	<string name="creating">बना रहा है ...</string>
-	<string name="gettingfriends">मित्र सूची पा रहा है ...</string>
+	<string name="creating">बना रहा है …</string>
+	<string name="gettingfriends">मित्र सूची पा रहा है …</string>
 	<string name="sorry">क्षमा करें</string>
 	<string name="nofriends">आप अभी तक कोई दोस्त नहीं है. आप उन्हें www.chess.com के माध्यम से आमंत्रित कर सकते हैं.</string>
 	<string name="nofriends_online">अपने मित्रों को ऑनलाइन नहीं कर रहे हैं. यदि आप उन्हें अभी तक आमंत्रित नहीं किया, www.chess.com करने के लिए जाओ.</string>
@@ -152,9 +152,9 @@
 	<string name="challengeaccepted">स्वीकृत चुनौती!</string>
 	<string name="challengedeclined">चैलेंज अस्वीकृत!</string>
 	<string name="decline">अस्वीकृत</string>
-	<string name="updatinggameslist">खेल सूची अद्यतन हो रहा है ...</string>
+	<string name="updatinggameslist">खेल सूची अद्यतन हो रहा है …</string>
 	<string name="challengetitle">चुनौती </string>
-	<string name="loadinggames">लोड हो रहा है खेल ...</string>
+	<string name="loadinggames">लोड हो रहा है खेल …</string>
 	<string name="drawoffered">पेशकश ड्रा</string>
 	<string name="gettingmessages">संदेश प्राप्त करें</string>
 	<string name="sendingmessage">संदेश भेजा जा रहा है </string>
@@ -163,17 +163,17 @@
 	<string name="login">लॉग इन</string>
 	<string name="title">शीर्षक </string>
 	<string name="error">त्रुटि</string>
-	<string name="loading">लोडिंग...</string>
+	<string name="loading">लोडिंग…</string>
 	<string name="wrongcountry">आप अपने देश का चयन करना होगा!</string>
 	<string name="wrongpassword">आपका पासवर्ड कम से कम 8 कैरेक्टर तक लंबा होना चाहिए| </string>
 	<string name="wrongusername">आपके उपयोगकर्ता नाम कम से कम 3 अक्षर का लंबा होना चाहिए, और केवल अक्षर, संख्या, रेखांकित करता है, और डैश शामिल. रिक्तियों की अनुमति नहीं कर रहे हैं.</string>
 	<string name="wrongemail">आप ईमेल के द्वारा अपनी सदस्यता की पुष्टि करने की आवश्यकता होगी.</string>
 	<string name="wrongretype">गलत फिर से लिखा गया पासवर्ड!</string>
-	<string name="signingin">साइन इन करें...</string>
+	<string name="signingin">साइन इन करें…</string>
 
 	<string name="showanswer">उत्तर दिखाएँ </string>
 	<string name="skipproblem">समस्या छोड़ें</string>
-	<string name="sendinggameinfo">खेल जानकारी भेजा जा रहा है ...</string>
+	<string name="sendinggameinfo">खेल जानकारी भेजा जा रहा है …</string>
 	<string name="check_field">फ़ील्ड की जाँच करें</string>
 	<string name="validateUsername">आपके उपयोगकर्ता नाम के बीच 3 और 20 वर्ण लंबा होना चाहिए, और केवल अक्षर, संख्या, रेखांकित करता है, और डैश शामिल. रिक्तियों की अनुमति नहीं कर रहे हैं.</string>
 	<string name="validatePassword">आपके पासवर्ड के बीच 6 और 20 वर्ण लंबा होना चाहिए!</string>
@@ -216,9 +216,6 @@
 	<string name="correct_ex">सही कहा आपने!</string>
 	<string name="wrong_ex">गलत </string>
 
-
-	<string name="wrong_score">गलत! कुल %1$s \n नये दर्ज़ा %2$s </string>
-	<string name="correct_score">सही! कुल %1$s \n नये दर्ज़ा %2$s </string>
 	<string name="you_got_new_msg">आप एक नया संदेश है!</string>
 	<string name="browse">ब्राउज़ करें</string>
 
@@ -238,7 +235,7 @@
 	</string>
 	<string name="live_game">गेम जीते</string>
 	<string name="online_game">ऑनलाइन गेम्स</string>
-	<string name="send_mail">मेल भेजें ...</string>
+	<string name="send_mail">मेल भेजें …</string>
 	<string name="tournaments">टूर्नामेंट</string>
 	<string name="stats">&amp;स्थिति</string>
 	<string name="challenges">चुनौतियां </string>
@@ -278,10 +275,10 @@
 	<string name="menu_refresh">रीफ्रेश करें </string>
 	<string name="version_check">संस्करण की जाँच</string>
 	<string name="version_is_obsolete_update">ग्राहक संस्करण अप्रचलित है. अपडेट करें</string>
-	<string name="zero_one_black_mates">0 - 1 काला साथी</string>
-	<string name="on_zero_white_mates">1 - 0 व्हाइट साथी</string>
-	<string name="slatemate">0 - 0 जिच</string>
-	<string name="draw_by_repetition">1/2 - 1/2 से पुनरावृत्ति ड्रा</string>
+	<string name="zero_one_black_mates">0 – 1 काला साथी</string>
+	<string name="on_zero_white_mates">1 – 0 व्हाइट साथी</string>
+	<string name="slatemate">0 – 0 जिच</string>
+	<string name="draw_by_repetition">0.5 – 0.5 से पुनरावृत्ति ड्रा</string>
 
 	<string name="encoding_unsupported">असमर्थित एनकोडिंग</string>
 	<string name="error_occurred_while_login">त्रुटि हुई लॉगिन जबकि, relogin कृपया!</string>
@@ -296,12 +293,12 @@
 	<string name="reconnecting">पुनः कनेक्ट कर रहा है</string>
 	<string name="another_login_detected">अन्य लॉगिन पाया गया है.</string>
 	<string name="loading_live_chess">लाइव शतरंज लोड हो रहा है</string>
-	<string name="game_draw_by_repetition">खेल पुनरावृत्ति के द्वारा \ n तैयार</string>
-	<string name="game_drawn_by_agreement">खेल समझौते के द्वारा \ n तैयार</string>
-	<string name="game_drawn_by_stalemate">खेल गतिरोध के द्वारा \ n तैयार</string>
-	<string name="game_drawn_insufficient_material">खेल तैयार \ n अपर्याप्त सामग्री</string>
-	<string name="game_drawn_by_fifty_move_rule">खेल 50 चाल नियम के द्वारा \ n तैयार</string>
-	<string name="won_game_abandoned">जीता है \ n खेल परित्यक्त</string>
+	<string name="game_draw_by_repetition">खेल पुनरावृत्ति के द्वारा \n तैयार</string>
+	<string name="game_drawn_by_agreement">खेल समझौते के द्वारा \n तैयार</string>
+	<string name="game_drawn_by_stalemate">खेल गतिरोध के द्वारा \n तैयार</string>
+	<string name="game_drawn_insufficient_material">खेल तैयार \n अपर्याप्त सामग्री</string>
+	<string name="game_drawn_by_fifty_move_rule">खेल 50 चाल नियम के द्वारा \n तैयार</string>
+	<string name="won_game_abandoned">जीता है \n खेल परित्यक्त</string>
 	<string name="game_aborted">गर्भपात खेल</string>
 	<string name="new_game">नया गेम</string>
 	<string name="language">भाषा</string>
@@ -317,10 +314,10 @@
 	<string name="message_">संदेश</string>
 
 
-	<string name="black_wins">काले जीत (1-0)</string>
-	<string name="white_wins">सफेद जीत (1-0)</string>
-	<string name="draw_by_stalemate">गतिरोध से ड्रा (0-0)</string>
-	<string name="draw_by_3fold_repetition">तीन बार दुहराव (1/2-1/2) द्वारा ड्रा</string>
+	<string name="black_wins">काले जीत (1–0)</string>
+	<string name="white_wins">सफेद जीत (1–0)</string>
+	<string name="draw_by_stalemate">गतिरोध से ड्रा (0–0)</string>
+	<string name="draw_by_3fold_repetition">तीन बार दुहराव (0.5–0.5) द्वारा ड्रा</string>
 	<string name="rematch">पुनरावृत्ति</string>
 	<string name="review">समीक्षा</string>
 	<string name="your_end_game_rating">(रेटिंग %1$s ): ( %2$d )</string>

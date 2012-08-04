@@ -1,14 +1,19 @@
 <resources>
 	<string name="menu_search">सर्च</string>
-	<string name="restoring_conntection_to_live">पुन: कनेक्ट ...</string>
-	<string name="application_was_killed">आवेदन को मार डाला गया था बहाल करने ...</string>
+	<string name="restoring_conntection_to_live">पुन: कनेक्ट …</string>
+	<string name="application_was_killed">आवेदन को मार डाला गया था बहाल करने …</string>
 	<string name="no_network">कोई नेटवर्क</string>
 	<string name="wireless_settings">वायरलेस सेटिंग्स</string>
 	<string name="invalid_password">अमान्य पासवर्ड</string>
 	<string name="your_turn_in_game_with">अपने खेल के साथ %1$s , %2$s</string>
 	<string name="register">रजिस्टर</string>
 	<string name="session_expired">आपका सत्र समाप्त हो गया है, फिर से लॉगिन करने के लिए कृपया</string>
-	<string name="problem_solved">समस्या हल!</string>
+	<string name="problem_solved">समस्या का हल!
+		\n स्कोर %1$s
+		\n नई रेटिंग %2$s </string>
+	<string name="wrong_score">गलत!
+		\n स्कोर %1$s
+		\n नई रेटिंग %2$s </string>
 	<string name="next_tactic_puzzle">अगली रणनीति पहेली</string>
 	<string name="upgrade_to_continue">जारी रखें अपग्रेड</string>
 

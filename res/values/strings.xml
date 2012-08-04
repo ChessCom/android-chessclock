@@ -53,7 +53,7 @@
 	<string name="Human">Human</string>
 	<string name="guest">Guest</string>
 	<string name="Computer">Computer</string>
-	<string name="Thinking">Thinking...</string>
+	<string name="Thinking">Thinking…</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">New Game</string>
 	<string name="onlineChallenges">Open Challenges</string>
@@ -141,8 +141,8 @@
 	<string name="congratulations">Congratulations!</string>
 	<string name="onlinegamecreated">Online game created!</string>
 	<string name="challengeSent">Challenge Sent!</string>
-	<string name="creating">Creating...</string>
-	<string name="gettingfriends">Getting Friends List...</string>
+	<string name="creating">Creating…</string>
+	<string name="gettingfriends">Getting Friends List…</string>
 	<string name="sorry">Sorry</string>
 	<string name="nofriends">You have no friends yet. You can invite them via www.chess.com.</string>
 	<string name="nofriends_online">Your friends are not online. If You didn\'t invite them yet, go to www.chess.com.</string>
@@ -152,28 +152,28 @@
 	<string name="challengeaccepted">Challenge Accepted!</string>
 	<string name="challengedeclined">Challenge Declined!</string>
 	<string name="decline">Decline</string>
-	<string name="updatinggameslist">Updating Games List...</string>
+	<string name="updatinggameslist">Updating Games List…</string>
 	<string name="challengetitle">Challenge</string>
-	<string name="loadinggames">Loading Games...</string>
+	<string name="loadinggames">Loading Games…</string>
 	<string name="drawoffered">Draw Offered</string>
-	<string name="gettingmessages">Getting Messages...</string>
-	<string name="sendingmessage">Sending Message...</string>
+	<string name="gettingmessages">Getting Messages…</string>
+	<string name="sendingmessage">Sending Message…</string>
 	<string name="ok">OK</string>
 	<string name="submit">Submit</string>
 	<string name="login">Login</string>
 	<string name="title">Title</string>
 	<string name="error">Error</string>
-	<string name="loading">Loading...</string>
+	<string name="loading">Loading…</string>
 	<string name="wrongcountry">You must select your country!</string>
 	<string name="wrongpassword">Your password must be at least 6 characters long!</string>
 	<string name="wrongusername">Your Username must be at least 3 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 	<string name="wrongemail">You will need to confirm your membership by email.</string>
 	<string name="wrongretype">Wrong retyped password!</string>
-	<string name="signingin">Signing In...</string>
+	<string name="signingin">Signing In…</string>
 
 	<string name="showanswer">Show Answer</string>
 	<string name="skipproblem">Skip Problem</string>
-	<string name="sendinggameinfo">Sending game info...</string>
+	<string name="sendinggameinfo">Sending game info…</string>
 	<string name="check_field">Check Field</string>
 	<string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 	<string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
@@ -218,10 +218,8 @@
 	<string name="wrong_ex">Wrong!</string>
 
 
-	<string name="wrong_score">Wrong!\n Score %1$s
-		\n New rating %2$s </string>
-	<string name="correct_score">Correct! Score %1$s
-		\n New rating %2$s </string>
+
+
 	<string name="you_got_new_msg">You have a new message!</string>
 	<string name="browse">Browse</string>
 
@@ -243,7 +241,7 @@
 	</string>
 	<string name="live_game">Live Game</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail">Send mail...</string>
+	<string name="send_mail">Send mail…</string>
 	<string name="tournaments">Tournaments</string>
 	<string name="stats">Stats</string>
 	<string name="current_games">Current Games</string>
@@ -286,10 +284,10 @@
 	<string name="menu_refresh">refresh</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">The client version is obsolete. Please update</string>
-	<string name="zero_one_black_mates">0 - 1 Black mates</string>
-	<string name="on_zero_white_mates">1 - 0 White mates</string>
-	<string name="slatemate">0 - 0 Stalemate</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Draw by repetition</string>
+	<string name="zero_one_black_mates">0 – 1 Black mates</string>
+	<string name="on_zero_white_mates">1 – 0 White mates</string>
+	<string name="slatemate">0 – 0 Stalemate</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Draw by repetition</string>
 
 	<string name="encoding_unsupported">Encoding unsupported</string>
 	<string name="error_occurred_while_login">Error occurred while login, please relogin!</string>
@@ -335,10 +333,10 @@
 	<string name="intermediate_category">intermediate</string>
 	<string name="advanced_category">advanced</string>
 
-	<string name="black_wins">Black wins (1-0)</string>
-	<string name="white_wins">White wins (1-0)</string>
-	<string name="draw_by_stalemate">Draw by stalemate (0-0)</string>
-	<string name="draw_by_3fold_repetition">Draw by threefold repetition (1/2-1/2)</string>
+	<string name="black_wins">Black wins (1–0)</string>
+	<string name="white_wins">White wins (1–0)</string>
+	<string name="draw_by_stalemate">Draw by stalemate (0–0)</string>
+	<string name="draw_by_3fold_repetition">Draw by threefold repetition (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Review</string>
 	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>

@@ -1,14 +1,19 @@
 <resources>
 	<string name="menu_search">Sök</string>
-	<string name="restoring_conntection_to_live">Återansluter ...</string>
-	<string name="application_was_killed">Ansökan dödades, återställa ...</string>
+	<string name="restoring_conntection_to_live">Återansluter …</string>
+	<string name="application_was_killed">Ansökan dödades, återställa …</string>
 	<string name="no_network">Ingen Nätverket</string>
 	<string name="wireless_settings">Trådlösa Inställningar</string>
 	<string name="invalid_password">Ogiltigt lösenord</string>
 	<string name="your_turn_in_game_with">I ditt spel med %1$s , %2$s</string>
 	<string name="register">Registrera</string>
 	<string name="session_expired">Din session har gått ut, vänligen logga in igen</string>
-	<string name="problem_solved">Problem löst!</string>
+	<string name="problem_solved">Problem löst!
+		\n Betyg %1$s
+		\n Ny Betyget %2$s </string>
+	<string name="wrong_score">Fel!
+		\n Betyg %1$s
+		\n Ny Betyget %2$s </string>
 	<string name="next_tactic_puzzle">Nästa Taktik Pussel</string>
 	<string name="upgrade_to_continue">Uppgradera Fortsätta</string>
 

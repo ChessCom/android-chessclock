@@ -52,7 +52,7 @@
 	<string name="Human">לבני אדם.</string>
 	<string name="guest">אורח</string>
 	<string name="Computer">מחשב</string>
-	<string name="Thinking">חשיבה ...</string>
+	<string name="Thinking">חשיבה …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">משחק חדש</string>
 	<string name="onlineChallenges">פתח אתגרים</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">ברכותיי.</string>
 	<string name="onlinegamecreated">משחק מקוון שנוצר!</string>
 	<string name="challengeSent">לאתגר נשלח!</string>
-	<string name="creating">יצירת ...</string>
-	<string name="gettingfriends">קבלת רשימת חברים ...</string>
+	<string name="creating">יצירת …</string>
+	<string name="gettingfriends">קבלת רשימת חברים …</string>
 	<string name="sorry">מצטער.</string>
 	<string name="nofriends">אין לך עדיין חברים. אתה יכול להזמין אותם דרך www.chess.com.</string>
 	<string name="nofriends_online">החברים שלך לא מחובר. אם לא מזמינים אותם עדיין, עבור www.chess.com.</string>
@@ -151,18 +151,18 @@
 	<string name="challengeaccepted">לאתגר התקבל!</string>
 	<string name="challengedeclined">האתגר נדחה!</string>
 	<string name="decline">סרב</string>
-	<string name="updatinggameslist">עדכון רשימת משחקים ...</string>
+	<string name="updatinggameslist">עדכון רשימת משחקים …</string>
 	<string name="challengetitle">לאתגר</string>
-	<string name="loadinggames">טוען משחקים ...</string>
+	<string name="loadinggames">טוען משחקים …</string>
 	<string name="drawoffered">צייר מוצע</string>
-	<string name="gettingmessages">מקבל הודעות ...</string>
+	<string name="gettingmessages">מקבל הודעות …</string>
 	<string name="sendingmessage">שולח הודעה…</string>
 	<string name="ok">אישור</string>
 	<string name="submit">שלח</string>
 	<string name="login">כניסה</string>
 	<string name="title">כותרת</string>
 	<string name="error">שגיאה</string>
-	<string name="loading">טוען...</string>
+	<string name="loading">טוען…</string>
 	<string name="wrongcountry">עליך לבחור את המדינה שלך!</string>
 	<string name="wrongpassword">הסיסמה חייבת להיות לפחות 6 תווים!</string>
 	<string name="wrongusername">שם המשתמש חייב להיות לפחות 3 תווים, ורק להכיל אותיות, מספרים, תחתונים, ומקפים. מקומות אסורים.</string>
@@ -172,7 +172,7 @@
 
 	<string name="showanswer">הצג תשובה</string>
 	<string name="skipproblem">דלג בעיה</string>
-	<string name="sendinggameinfo">שליחת מידע על המשחק ...</string>
+	<string name="sendinggameinfo">שליחת מידע על המשחק …</string>
 	<string name="check_field">יש לבדוק את שדה</string>
 	<string name="validateUsername">שם המשתמש חייב להיות בין 3 ל 20 תווים, ורק להכיל אותיות, מספרים, תחתונים, ומקפים. מקומות אסורים.</string>
 	<string name="validatePassword">הסיסמה שלך צריכה להיות בין 6 ל 20 תווים!</string>
@@ -216,8 +216,7 @@
 	<string name="wrong_ex">כלל וכלל לא.</string>
 
 
-	<string name="wrong_score">טעות! ציון %1$s \ n חדש דירוג %2$s </string>
-	<string name="correct_score">נכון! ציון %1$s \ n חדש דירוג %2$s </string>
+
 	<string name="you_got_new_msg">יש לך הודעה חדשה!</string>
 	<string name="browse">עיין</string>
 
@@ -237,7 +236,7 @@
 	</string>
 	<string name="live_game">חיים משחק</string>
 	<string name="online_game">משחק מקוון</string>
-	<string name="send_mail">שלח דואר ...</string>
+	<string name="send_mail">שלח דואר …</string>
 	<string name="tournaments">טורנירים</string>
 	<string name="stats">סטטיסטיקות</string>
 	<string name="challenges">אתגר</string>
@@ -266,7 +265,7 @@
 	<string name="your_move">Chess.com - זה התור שלך</string>
 	<string name="your_turn">עכשיו תורך!</string>
 	<string name="login_failed">הכניסה נכשלה:</string>
-	<string name="loggin_out">התנתקות ...</string>
+	<string name="loggin_out">התנתקות …</string>
 	<string name="you_logged_out">אתה מתנתק!</string>
 	<string name="too_short">קצר מדי</string>
 	<string name="can_not_be_empty">לא יכול להיות ריק</string>
@@ -277,10 +276,10 @@
 	<string name="menu_refresh">רענן</string>
 	<string name="version_check">גרסה בדוק</string>
 	<string name="version_is_obsolete_update">את גירסת הלקוח הוא מיושן. אנא עדכן</string>
-	<string name="zero_one_black_mates">0 - 1 בני זוג שחורים</string>
-	<string name="on_zero_white_mates">1 - 0 בני זוג לבנים</string>
-	<string name="slatemate">0-0 תיקו</string>
-	<string name="draw_by_repetition">1/2 - 1/2 צייר ידי החזרה</string>
+	<string name="zero_one_black_mates">0 – 1 בני זוג שחורים</string>
+	<string name="on_zero_white_mates">1 – 0 בני זוג לבנים</string>
+	<string name="slatemate">0–0 תיקו</string>
+	<string name="draw_by_repetition">0.5 – 0.5 צייר ידי החזרה</string>
 
 	<string name="encoding_unsupported">קידוד לא נתמך</string>
 	<string name="error_occurred_while_login">שגיאה בזמן ההתחברות, אנא relogin!</string>
@@ -315,10 +314,10 @@
 	<string name="reason_">סיבה:</string>
 	<string name="message_">הודעה</string>
 
-	<string name="black_wins">שחור מנצח (1-0)</string>
-	<string name="white_wins">לבן מנצח (1-0)</string>
-	<string name="draw_by_stalemate">ציור של קיפאון (0-0)</string>
-	<string name="draw_by_3fold_repetition">ציור על ידי חזרה משולשת (1/2-1/2)</string>
+	<string name="black_wins">שחור מנצח (1–0)</string>
+	<string name="white_wins">לבן מנצח (1–0)</string>
+	<string name="draw_by_stalemate">ציור של קיפאון (0–0)</string>
+	<string name="draw_by_3fold_repetition">ציור על ידי חזרה משולשת (0.5–0.5)</string>
 	<string name="rematch">משחק גומלין</string>
 	<string name="review">בדוק</string>
 	<string name="your_end_game_rating">הדירוג שלך ( %1$s ): ( %2$d )</string>

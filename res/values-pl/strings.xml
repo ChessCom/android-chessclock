@@ -52,7 +52,7 @@
 	<string name="Human">Standardy praw człowieka służą jako minimalne standardy w interpretowaniu krajowych praw podstawowych.</string>
 	<string name="guest">Gość</string>
 	<string name="Computer">komputerze</string>
-	<string name="Thinking">Myślenie ...</string>
+	<string name="Thinking">Myślenie …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Nowa gra</string>
 	<string name="onlineChallenges">Otwarte Wyzwania</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">Gratulacje!</string>
 	<string name="onlinegamecreated">Gra online stworzona!</string>
 	<string name="challengeSent">Wyzwanie wysłane!</string>
-	<string name="creating">Tworzenie ...</string>
-	<string name="gettingfriends">Pobieranie listy znajomych ...</string>
+	<string name="creating">Tworzenie …</string>
+	<string name="gettingfriends">Pobieranie listy znajomych …</string>
 	<string name="sorry">Przepraszam!</string>
 	<string name="nofriends">Nie masz żadnych znajomych. Możesz zaprosić je przez www.chess.com.</string>
 	<string name="nofriends_online">Twoi znajomi nie są online. Jeśli nie zaprosić ich jeszcze, przejdź do www.chess.com.</string>
@@ -151,11 +151,11 @@
 	<string name="challengeaccepted">Wyzwanie akceptowane!</string>
 	<string name="challengedeclined">Wyzwanie Odrzucona!</string>
 	<string name="decline">Odrzuć</string>
-	<string name="updatinggameslist">Aktualizacja liście gier ...</string>
+	<string name="updatinggameslist">Aktualizacja liście gier …</string>
 	<string name="challengetitle">Wyzwanie</string>
-	<string name="loadinggames">Gry loading ...</string>
+	<string name="loadinggames">Gry loading …</string>
 	<string name="drawoffered">Narysuj Oferowane</string>
-	<string name="gettingmessages">Wiadomości Getting ...</string>
+	<string name="gettingmessages">Wiadomości Getting …</string>
 	<string name="sendingmessage">Wyślij wiadomość</string>
 	<string name="ok">OK</string>
 	<string name="submit">Wyślij</string>
@@ -172,7 +172,7 @@
 
 	<string name="showanswer">Pokaż odpowiedź</string>
 	<string name="skipproblem">Przejdź problem</string>
-	<string name="sendinggameinfo">Wysyłanie informacji o grze ...</string>
+	<string name="sendinggameinfo">Wysyłanie informacji o grze …</string>
 	<string name="check_field">Sprawdź pole</string>
 	<string name="validateUsername">Twoja nazwa użytkownika musi zawierać od 3 do 20 znaków i zawierać jedynie litery, cyfry, podkreślenia i myślniki. Spacje nie są dozwolone.</string>
 	<string name="validatePassword">Hasło musi mieć od 6 do 20 znaków!</string>
@@ -215,9 +215,6 @@
 	<string name="correct_ex">poprawne</string>
 	<string name="wrong_ex">złe</string>
 
-
-	<string name="wrong_score">NIEPRAWDA! Wynik %1$s \n Ocena New %2$s </string>
-	<string name="correct_score">Popraw! Wynik %1$s \n Ocena New %2$s </string>
 	<string name="you_got_new_msg">Masz nową wiadomość!</string>
 	<string name="browse">Przeglądaj</string>
 
@@ -237,7 +234,7 @@
 	</string>
 	<string name="live_game">Gry na żywo</string>
 	<string name="online_game">gra online</string>
-	<string name="send_mail">Wyślij pocztę ...</string>
+	<string name="send_mail">Wyślij pocztę …</string>
 	<string name="tournaments">Turnieje</string>
 	<string name="stats">Statystyki</string>
 	<string name="challenges">Wyzwania</string>
@@ -277,10 +274,10 @@
 	<string name="menu_refresh">odśwież</string>
 	<string name="version_check">Sprawdź wersję</string>
 	<string name="version_is_obsolete_update">Wersja klienta jest przestarzałe. Proszę zaktualizować</string>
-	<string name="zero_one_black_mates">0 - 1 Czarne mates</string>
-	<string name="on_zero_white_mates">1 - 0 Białe mates</string>
-	<string name="slatemate">0 - 0 Pat</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Draw przez powtarzanie</string>
+	<string name="zero_one_black_mates">0 – 1 Czarne mates</string>
+	<string name="on_zero_white_mates">1 – 0 Białe mates</string>
+	<string name="slatemate">0 – 0 Pat</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Draw przez powtarzanie</string>
 
 	<string name="encoding_unsupported">Kodowanie nieobsługiwane</string>
 	<string name="error_occurred_while_login">Wystąpił błąd podczas logowania, należy przelogować!</string>
@@ -315,10 +312,10 @@
 	<string name="reason_">rdza.</string>
 	<string name="message_">Wiadomość</string>
 
-	<string name="black_wins">Czarny zwycięstw (1-0)</string>
-	<string name="white_wins">Biały zwycięstw (1-0)</string>
-	<string name="draw_by_stalemate">Remis w martwym punkcie (0-0)</string>
-	<string name="draw_by_3fold_repetition">Remis w potrójnym powtórzeniu ust 1/2-1/2)</string>
+	<string name="black_wins">Czarny zwycięstw (1–0)</string>
+	<string name="white_wins">Biały zwycięstw (1–0)</string>
+	<string name="draw_by_stalemate">Remis w martwym punkcie (0–0)</string>
+	<string name="draw_by_3fold_repetition">Remis w potrójnym powtórzeniu ust 0.5–0.5)</string>
 	<string name="rematch">Rewanż</string>
 	<string name="review">Przegląd</string>
 	<string name="your_end_game_rating">Twoja ocena ( %1$s ): ( %2$d )</string>

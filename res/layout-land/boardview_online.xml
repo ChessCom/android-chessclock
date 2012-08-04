@@ -44,7 +44,6 @@
 					android:layout_height="wrap_content"
 					android:layout_centerInParent="true"
 					android:visibility="visible"
-					android:text="06d"
 					style="@style/GameLabel"
 					/>
 
@@ -57,7 +56,6 @@
 					android:paddingRight="7dip"
 					android:drawableRight="@drawable/player_indicator_black"
 					style="@style/GameLabel.Player"
-					android:text="anotherRoger(1042)"
 					/>
 
 				<com.chess.RoboTextView

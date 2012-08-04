@@ -55,7 +55,6 @@
 		android:layout_marginTop="20dip"
 		android:background="@color/black"
 		android:textColor="#FF434343"
-		android:text="Advertisment"
 		android:layout_weight="1"
 		/>
 

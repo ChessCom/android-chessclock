@@ -122,7 +122,7 @@
 	<string name="resignorabort">辞任（または中止）</string>
 	<string name="resign">再びサイン</string>
 	<string name="abort">中止</string>
-	<string name="cancel">取消し(C)</string>
+	<string name="cancel">キャンセル</string>
 	<string name="send">送信</string>
 	<string name="help">助け</string>
 	<string name="game">ゲーム</string>
@@ -141,10 +141,10 @@
 	<string name="congratulations">おめでとうございます！</string>
 	<string name="onlinegamecreated">オンラインゲームが作成されました！</string>
 	<string name="challengeSent">送信されたチャレンジ！</string>
-	<string name="creating">作成...</string>
-	<string name="gettingfriends">フレンドリストを取得する...</string>
+	<string name="creating">作成…</string>
+	<string name="gettingfriends">フレンドリストを取得する…</string>
 	<string name="sorry">残念</string>
-	<string name="nofriends">あなたはまだ友達がいない。あなたがwww.chess.comを介してそれらを招待することができます。</string>
+	<string name="nofriends">あなたはまだ友達がいない。あなたが www.chess.com を介してそれらを招待することができます。</string>
 	<string name="nofriends_online">あなたの友人がオンラインではありません。あなたはまだそれらを招待しなかった場合は、www.chess.comに移動します。</string>
 	<string name="invite">参加を依頼</string>
 	<string name="drawaccepted">受け入れ描く！</string>
@@ -152,18 +152,18 @@
 	<string name="challengeaccepted">承認された挑戦！</string>
 	<string name="challengedeclined">チャレンジは拒否！</string>
 	<string name="decline">同意しない(D)</string>
-	<string name="updatinggameslist">ゲームリストを更新しています...</string>
+	<string name="updatinggameslist">ゲームリストを更新しています…</string>
 	<string name="challengetitle">チャレンジ</string>
-	<string name="loadinggames">ロードゲーム...</string>
+	<string name="loadinggames">ロードゲーム…</string>
 	<string name="drawoffered">提供される描画</string>
-	<string name="gettingmessages">メッセージを取得する...</string>
-	<string name="sendingmessage">メッセージを送信中...</string>
+	<string name="gettingmessages">メッセージを取得する…</string>
+	<string name="sendingmessage">メッセージを送信中…</string>
 	<string name="ok">確定</string>
 	<string name="submit">次へ</string>
 	<string name="login">ログイン</string>
 	<string name="title">Title</string>
 	<string name="error">エラー</string>
-	<string name="loading">読み込み中...</string>
+	<string name="loading">読み込み中…</string>
 	<string name="wrongcountry">あなたの国を選択する必要があります！</string>
 	<string name="wrongpassword">パスワードには、半角 7 文字以上をご使用ください。</string>
 	<string name="wrongusername">あなたのユーザー名は3文字以上の長さが、唯一の文字、数字、下線、およびダッシュを含める必要があります。スペースは許可されていません。</string>
@@ -173,7 +173,7 @@
 
 	<string name="showanswer">回答を表示する</string>
 	<string name="skipproblem">問題をスキップする</string>
-	<string name="sendinggameinfo">ゲーム情報を送信中...</string>
+	<string name="sendinggameinfo">ゲーム情報を送信中…</string>
 	<string name="check_field">フィールドを確認してください</string>
 	<string name="validateUsername">あなたのユーザー名は3〜20文字の長さが、唯一の文字、数字、下線、およびダッシュを含める必要があります。スペースは許可されていません。</string>
 	<string name="validatePassword">パスワードは6〜20文字の長さでなければなりません！</string>
@@ -215,8 +215,6 @@
 	<string name="wrong_ex">それは違う！</string>
 
 
-	<string name="wrong_score">間違っている！スコア%1$s \ n新規格付け%2$s </string>
-	<string name="correct_score">正しい！スコア%1$s \ n新規格付け%2$s </string>
 	<string name="you_got_new_msg">あなたは、新しいメッセージがあります！</string>
 	<string name="browse">ブラウズ</string>
 
@@ -278,14 +276,14 @@
 	<string name="zero_one_black_mates">0から1ブラックメイト</string>
 	<string name="on_zero_white_mates">1から0ホワイトメイト</string>
 	<string name="slatemate">0から0手詰まり</string>
-	<string name="draw_by_repetition">1/2  - 繰り返しにより1月2日ドロー</string>
+	<string name="draw_by_repetition">0.5  - 繰り返しにより1月2日ドロー</string>
 
 	<string name="encoding_unsupported">サポートされていないエンコーディング</string>
 	<string name="error_occurred_while_login">エラーが発生したログインの間、再ログインしてください！</string>
 	<string name="update_available_please_update">アップデートが利用可能です！更新してください</string>
 	<string name="update_check">チェック更新</string>
-	<string name="won_on_time">時間の\ nwon</string>
-	<string name="won_by_resignation">辞任によって\ nwon</string>
+	<string name="won_on_time">時間の\n 赢得</string>
+	<string name="won_by_resignation">辞任によって\n 赢得</string>
 	<string name="won_by_checkmate">チェックメイトでは \nウォン</string>
 	<string name="game_over">ゲームオーバー</string>
 	<string name="draw_game">提供されドロー</string>
@@ -297,8 +295,8 @@
 	<string name="game_drawn_by_agreement">ゲーム描画 \nから契約</string>
 	<string name="game_drawn_by_stalemate">ゲーム描画 \nから 行き詰まり</string>
 	<string name="game_drawn_insufficient_material">ゲーム描画 -  \n 不十分 材料</string>
-	<string name="game_drawn_by_fifty_move_rule">ゲームは\ nby 50移動ルールを描画</string>
-	<string name="won_game_abandoned">ウォン - 放棄された\ ngame</string>
+	<string name="game_drawn_by_fifty_move_rule">ゲームは \n 通过 50 移動ルールを描画</string>
+	<string name="won_game_abandoned">ウォン - 放棄された\n 游戏</string>
 	<string name="game_aborted">中止されたゲーム</string>
 	<string name="new_game">新しいゲーム</string>
 	<string name="language">言語</string>
@@ -313,10 +311,10 @@
 	<string name="reason_">理由</string>
 	<string name="message_">メッセージ</string>
 
-	<string name="black_wins">黒勝（1-0）</string>
-	<string name="white_wins">白勝（1-0）</string>
-	<string name="draw_by_stalemate">こう着状態（0-0）で描く</string>
-	<string name="draw_by_3fold_repetition">3倍に 繰り返し（1/2-1/2）で描く</string>
+	<string name="black_wins">黒勝（1–0）</string>
+	<string name="white_wins">白勝（1–0）</string>
+	<string name="draw_by_stalemate">こう着状態（0–0）で描く</string>
+	<string name="draw_by_3fold_repetition">3倍に 繰り返し（0.5–0.5）で描く</string>
 	<string name="rematch">再戦</string>
 	<string name="review">レビュー</string>
 	<string name="your_end_game_rating">あなたの評価（ %1$s ）：（ %2$d ）</string>

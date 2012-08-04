@@ -52,7 +52,7 @@
 	<string name="Human">انسانی</string>
 	<string name="guest">\"ميهمان\"</string>
 	<string name="Computer">کامپیوتر</string>
-	<string name="Thinking">اندیشیدن ...</string>
+	<string name="Thinking">اندیشیدن …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">بازی های جدید</string>
 	<string name="onlineChallenges">چالش باز</string>
@@ -70,7 +70,7 @@
 	<string name="IplayAs">من به عنوان بازی</string>
 	<string name="DaysPerMove">روز در هر حرکت</string>
 	<string name="ChallengeCreate">ایجاد چالش</string>
-	<string name="onoff">ON / OFF</string>
+	<string name="onoff">بر / خاموش</string>
 	<string name="minrating">امتیاز حداقل</string>
 	<string name="maxrating">حداکثر امتیاز</string>
 	<string name="email">\"ایمیل\"</string>
@@ -125,7 +125,7 @@
 	<string name="send">فرستادن</string>
 	<string name="help">کمک</string>
 	<string name="game">بازی</string>
-	<string name="options">گزینه ها ...</string>
+	<string name="options">گزینه ها …</string>
 	<string name="reside">تلنگر</string>
 	<string name="hint">تذکر</string>
 	<string name="prev">\"قبلی\"</string>
@@ -141,7 +141,7 @@
 	<string name="onlinegamecreated">بازی آنلاین ایجاد شد!</string>
 	<string name="challengeSent">چالش فرستاده شده!</string>
 	<string name="creating">ایجاد شده همانند </string>
-	<string name="gettingfriends">گرفتن سوال ...</string>
+	<string name="gettingfriends">گرفتن سوال …</string>
 	<string name="sorry">ببخشيد.</string>
 	<string name="nofriends">شما هیچ دوستی است. شما می توانید آنها را از طریق www.chess.com دعوت می کنند.</string>
 	<string name="nofriends_online">دوستان خود را آنلاین نیست. اگر شما آنها را دعوت نشده است، به www.chess.com بروید.</string>
@@ -151,12 +151,12 @@
 	<string name="challengeaccepted">چالش پذیرفته شده!</string>
 	<string name="challengedeclined">چالش کاهش یافته است.</string>
 	<string name="decline">رد کن</string>
-	<string name="updatinggameslist">به روز رسانی لیست بازی ها ...</string>
+	<string name="updatinggameslist">به روز رسانی لیست بازی ها …</string>
 	<string name="challengetitle">چالش</string>
-	<string name="loadinggames">بارگذاری بازی ...</string>
+	<string name="loadinggames">بارگذاری بازی …</string>
 	<string name="drawoffered">رسم ارائه شده</string>
-	<string name="gettingmessages">دریافت پیام ...</string>
-	<string name="sendingmessage">ارسال پیام ...</string>
+	<string name="gettingmessages">دریافت پیام …</string>
+	<string name="sendingmessage">ارسال پیام …</string>
 	<string name="ok">پذیرش</string>
 	<string name="submit">ارسال</string>
 	<string name="login">ورود</string>
@@ -168,11 +168,11 @@
 	<string name="wrongusername">نام کاربری شما باید حداقل 3 کاراکتر باشد و فقط شامل حروف، اعداد، زیرین خط و خط تیره است. فاصله مجاز نمی باشد.</string>
 	<string name="wrongemail">شما نیاز به تایید عضویت خود را به از طریق ایمیل.</string>
 	<string name="wrongretype">دوباره رمز عبور اشتباه تایپ شده!</string>
-	<string name="signingin">ورود به سیستم ...</string>
+	<string name="signingin">ورود به سیستم …</string>
 
 	<string name="showanswer">نمایش پاسخ</string>
 	<string name="skipproblem">پرش مشکلات</string>
-	<string name="sendinggameinfo">ارسال اطلاعات بازی ...</string>
+	<string name="sendinggameinfo">ارسال اطلاعات بازی …</string>
 	<string name="check_field">میدان مقابلهای</string>
 	<string name="validateUsername">نام کاربری شما باید بین 3 تا 20 حرف طولانی باشد، و فقط شامل حروف، اعداد، زیرین خط و خط تیره است. فاصله مجاز نمی باشد.</string>
 	<string name="validatePassword">رمز عبور شما باید بین 6 و 20 حرف طولانی باشد!</string>
@@ -215,9 +215,6 @@
 	<string name="correct_ex">اص</string>
 	<string name="wrong_ex">اشتباه است!</string>
 
-
-	<string name="wrong_score">اشتباه است! امتیاز %1$s است \n رتبه دادن به %2$s </string>
-	<string name="correct_score">درست است! امتیاز %1$s است \n رتبه دادن به %2$s </string>
 	<string name="you_got_new_msg">شما یک پیام جدید!</string>
 	<string name="browse">انتخاب</string>
 
@@ -266,7 +263,7 @@
 	<string name="your_move">Chess.com - این حرکت خود را</string>
 	<string name="your_turn">نوبت شماست!</string>
 	<string name="login_failed">ورود به سیستم شکست خورد:</string>
-	<string name="loggin_out">خروج از سیستم ...</string>
+	<string name="loggin_out">خروج از سیستم …</string>
 	<string name="you_logged_out">شما وارد شده اند!</string>
 	<string name="too_short">خیلی کوتاه</string>
 	<string name="can_not_be_empty">نمی تواند خالی باشد</string>
@@ -277,10 +274,10 @@
 	<string name="menu_refresh">تازه کردن</string>
 	<string name="version_check">چک نسخه</string>
 	<string name="version_is_obsolete_update">نسخه سرویس گیرنده است منسوخ باشد. لطفا به روز رسانی</string>
-	<string name="zero_one_black_mates">0 - 1 سیاه مات</string>
-	<string name="on_zero_white_mates">1 - 0 سفید آمپول</string>
-	<string name="slatemate">0 - 0 بن بست</string>
-	<string name="draw_by_repetition">1/2 - 1/2 قرعه کشی با تکرار</string>
+	<string name="zero_one_black_mates">0 – 1 سیاه مات</string>
+	<string name="on_zero_white_mates">1 – 0 سفید آمپول</string>
+	<string name="slatemate">0 – 0 بن بست</string>
+	<string name="draw_by_repetition">0.5 – 0.5 قرعه کشی با تکرار</string>
 
 	<string name="encoding_unsupported">کدبندی پشتیبانی نشده</string>
 	<string name="error_occurred_while_login">خطا رخ داده است در حالی که ورود به سیستم، لطفا relogin!</string>
@@ -292,14 +289,14 @@
 	<string name="game_over">بازیتمامشد</string>
 	<string name="draw_game">قرعه کشی را</string>
 	<string name="has_offered_draw">قرعه کشی ارائه کرده است</string>
-	<string name="reconnecting">اتصال مجدد ...</string>
+	<string name="reconnecting">اتصال مجدد …</string>
 	<string name="another_login_detected">یکی دیگر از ورود به سیستم شناسایی شده است.</string>
 	<string name="loading_live_chess">در حال بارگذاری شطرنج زنده</string>
 	<string name="game_draw_by_repetition">بازی کنید \n با تکرار کشیده شده</string>
 	<string name="game_drawn_by_agreement">بازی کنید \n بر اساس توافق کشیده</string>
 	<string name="game_drawn_by_stalemate">بازی \n به بن بست کشیده شده</string>
 	<string name="game_drawn_insufficient_material">بازی کشیده - \n ناکافی مواد</string>
-	<string name="game_drawn_by_fifty_move_rule">بازی کنید \ n 50 حرکت حکومت کشیده</string>
+	<string name="game_drawn_by_fifty_move_rule">بازی کنید \n 50 حرکت حکومت کشیده</string>
 	<string name="won_game_abandoned">برنده - \n بازی رها</string>
 	<string name="game_aborted">بازی سقط</string>
 	<string name="new_game">بازی های جدید</string>
@@ -315,10 +312,10 @@
 	<string name="reason_">دلیل</string>
 	<string name="message_">پیام</string>
 
-	<string name="black_wins">سیاه و سفید برنده (1-0)</string>
-	<string name="white_wins">سفید برنده (1-0)</string>
-	<string name="draw_by_stalemate">رسم شده توسط بن بست (0-0)</string>
-	<string name="draw_by_3fold_repetition">رسم شده توسط سه برابر تکرار (1/2-1/2)</string>
+	<string name="black_wins">سیاه و سفید برنده (1–0)</string>
+	<string name="white_wins">سفید برنده (1–0)</string>
+	<string name="draw_by_stalemate">رسم شده توسط بن بست (0–0)</string>
+	<string name="draw_by_3fold_repetition">رسم شده توسط سه برابر تکرار (0.5–0.5)</string>
 	<string name="rematch">مسابقه برگشت</string>
 	<string name="review">بازنگری</string>
 	<string name="your_end_game_rating">امتیاز شما ( %1$s )، ( %2$d )</string>

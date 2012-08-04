@@ -52,7 +52,7 @@
 	<string name="Human">Umani</string>
 	<string name="guest">Ospite</string>
 	<string name="Computer">Computer</string>
-	<string name="Thinking">Thinking ...</string>
+	<string name="Thinking">Thinking …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Nuova Partita</string>
 	<string name="onlineChallenges">Sfide aperte</string>
@@ -140,8 +140,8 @@
 	<string name="congratulations">Congratulazioni!</string>
 	<string name="onlinegamecreated">Gioco online creato!</string>
 	<string name="challengeSent">Sfida inviata!</string>
-	<string name="creating">Creazione ...</string>
-	<string name="gettingfriends">Come Lista Amici ...</string>
+	<string name="creating">Creazione …</string>
+	<string name="gettingfriends">Come Lista Amici …</string>
 	<string name="sorry">Scusa</string>
 	<string name="nofriends">Non hai ancora amici. È possibile invitare via www.chess.com.</string>
 	<string name="nofriends_online">I tuoi amici non sono online. Se non li invitano ancora, andare a www.chess.com.</string>
@@ -151,28 +151,28 @@
 	<string name="challengeaccepted">SFIDA ACCETTATA!</string>
 	<string name="challengedeclined">Sfida rifiutato!</string>
 	<string name="decline">Non accetto</string>
-	<string name="updatinggameslist">Aggiornamento Elenco giochi ...</string>
+	<string name="updatinggameslist">Aggiornamento Elenco giochi …</string>
 	<string name="challengetitle">Sfida</string>
-	<string name="loadinggames">Giochi Loading ...</string>
+	<string name="loadinggames">Giochi Loading …</string>
 	<string name="drawoffered">Disegna Offerto</string>
-	<string name="gettingmessages">Recupero dei messaggi ...</string>
-	<string name="sendingmessage">Invio messaggio in corso...</string>
+	<string name="gettingmessages">Recupero dei messaggi …</string>
+	<string name="sendingmessage">Invio messaggio in corso…</string>
 	<string name="ok">Accetta</string>
 	<string name="submit">Invia</string>
 	<string name="login">Entra</string>
 	<string name="title">Titolo</string>
 	<string name="error">Errore</string>
-	<string name="loading">Caricamento...</string>
+	<string name="loading">Caricamento…</string>
 	<string name="wrongcountry">È necessario selezionare il vostro paese!</string>
 	<string name="wrongpassword">La password deve essere lunga almeno 6 caratteri!</string>
 	<string name="wrongusername">Il tuo nome utente deve essere di almeno 3 caratteri e contenere solo lettere, numeri e trattini di sottolineatura. Gli spazi non sono ammessi.</string>
 	<string name="wrongemail">Sarà necessario confermare l\'iscrizione via e-mail.</string>
 	<string name="wrongretype">Sbagliato password ridigitata!</string>
-	<string name="signingin">Accesso in corso...</string>
+	<string name="signingin">Accesso in corso…</string>
 
 	<string name="showanswer">Mostra Risposta</string>
 	<string name="skipproblem">Salta Problema</string>
-	<string name="sendinggameinfo">L\'invio di informazioni di gioco ...</string>
+	<string name="sendinggameinfo">L\'invio di informazioni di gioco …</string>
 	<string name="check_field">Campo di controllo</string>
 	<string name="validateUsername">Il tuo nome utente deve essere compresa tra 3 e 20 caratteri e contenere solo lettere, numeri e trattini di sottolineatura. Gli spazi non sono ammessi.</string>
 	<string name="validatePassword">La password deve essere compresa tra 6 e 20 caratteri!</string>
@@ -216,8 +216,6 @@
 	<string name="wrong_ex">Sbagliato.</string>
 
 
-	<string name="wrong_score">Sbagliato! Punteggio %1$s \ n Nuova classifica %2$s </string>
-	<string name="correct_score">Correggere! Punteggio %1$s \ n Nuova classifica %2$s </string>
 	<string name="you_got_new_msg">Hai un nuovo messaggio!</string>
 	<string name="browse">Sfoglia</string>
 
@@ -237,7 +235,7 @@
 	</string>
 	<string name="live_game">Live Partita</string>
 	<string name="online_game">Gioco Online</string>
-	<string name="send_mail">Invia email...</string>
+	<string name="send_mail">Invia email…</string>
 	<string name="tournaments">Tornei</string>
 	<string name="stats">Statistiche</string>
 	<string name="challenges">Sfide</string>
@@ -266,7 +264,7 @@
 	<string name="your_move">Chess.com - E \'Your Move</string>
 	<string name="your_turn">Il tuo turno!</string>
 	<string name="login_failed">Accesso non riuscito:</string>
-	<string name="loggin_out">Disconnessione...</string>
+	<string name="loggin_out">Disconnessione…</string>
 	<string name="you_logged_out">Avete effettuato il logout!</string>
 	<string name="too_short">Troppo corta</string>
 	<string name="can_not_be_empty">Non può essere vuoto</string>
@@ -277,10 +275,10 @@
 	<string name="menu_refresh">&amp;Aggiorna</string>
 	<string name="version_check">Versione Controllo</string>
 	<string name="version_is_obsolete_update">La versione del client è obsoleto. Si prega di aggiornare</string>
-	<string name="zero_one_black_mates">0 - 1 compagni di Nero</string>
-	<string name="on_zero_white_mates">1 - 0 compagni bianchi</string>
-	<string name="slatemate">0-0 Stallo</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Draw attraverso la ripetizione</string>
+	<string name="zero_one_black_mates">0 – 1 compagni di Nero</string>
+	<string name="on_zero_white_mates">1 – 0 compagni bianchi</string>
+	<string name="slatemate">0–0 Stallo</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Draw attraverso la ripetizione</string>
 
 	<string name="encoding_unsupported">Codifica non supportata</string>
 	<string name="error_occurred_while_login">Errore durante il login, nuovo login!</string>
@@ -316,10 +314,10 @@
 	<string name="message_">Messaggio</string>
 
 
-	<string name="black_wins">Nero vince (1-0)</string>
-	<string name="white_wins">Bianco vince (1-0)</string>
-	<string name="draw_by_stalemate">Disegna per stallo (0-0)</string>
-	<string name="draw_by_3fold_repetition">Disegna da triplice ripetizione (1/2-1/2)</string>
+	<string name="black_wins">Nero vince (1–0)</string>
+	<string name="white_wins">Bianco vince (1–0)</string>
+	<string name="draw_by_stalemate">Disegna per stallo (0–0)</string>
+	<string name="draw_by_3fold_repetition">Disegna da triplice ripetizione (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Revisione</string>
 	<string name="your_end_game_rating">Il tuo voto ( %1$s ): ( %2$d )</string>

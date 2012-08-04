@@ -54,7 +54,7 @@
 	<string name="Human">البشر الاخرين.</string>
 	<string name="guest">ضيف</string>
 	<string name="Computer">الكمبيوتر أو الحاسوب</string>
-	<string name="Thinking">جارٍ التفكير...</string>
+	<string name="Thinking">جارٍ التفكير…</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">لعبة جديدة</string>
 	<string name="onlineChallenges">مفتوحة التحديات</string>
@@ -142,8 +142,8 @@
 	<string name="congratulations">تهانينا!</string>
 	<string name="onlinegamecreated">لعبة على الانترنت خلقت!</string>
 	<string name="challengeSent">تحدي المرسلة!</string>
-	<string name="creating">خلق ...</string>
-	<string name="gettingfriends">الحصول على قائمة الأصدقاء ...</string>
+	<string name="creating">خلق …</string>
+	<string name="gettingfriends">الحصول على قائمة الأصدقاء …</string>
 	<string name="sorry">معذرة!</string>
 	<string name="nofriends">لديك أي أصدقاء حتى الآن. يمكنك دعوتهم عبر www.chess.com.</string>
 	<string name="nofriends_online">أصدقاؤك ليسوا على الانترنت. إذا أنت لم يدعوهم حتى الآن، انتقل إلى www.chess.com.</string>
@@ -153,28 +153,28 @@
 	<string name="challengeaccepted">تحدي مقبول!</string>
 	<string name="challengedeclined">امتنع التحدي!</string>
 	<string name="decline">رفض</string>
-	<string name="updatinggameslist">تحديث قائمة الألعاب ...</string>
+	<string name="updatinggameslist">تحديث قائمة الألعاب …</string>
 	<string name="challengetitle">التحديات</string>
-	<string name="loadinggames">تحميل العاب ...</string>
+	<string name="loadinggames">تحميل العاب …</string>
 	<string name="drawoffered">رسم معروض</string>
-	<string name="gettingmessages">الكثير من الرسائل ...</string>
-	<string name="sendingmessage">جار إرسال الرسالة...</string>
+	<string name="gettingmessages">الكثير من الرسائل …</string>
+	<string name="sendingmessage">جار إرسال الرسالة…</string>
 	<string name="ok">موافق</string>
 	<string name="submit">إرسال</string>
 	<string name="login">تسجيل الدخول</string>
 	<string name="title">العنوان</string>
 	<string name="error">خطأ</string>
-	<string name="loading">جارٍ التحميل...</string>
+	<string name="loading">جارٍ التحميل…</string>
 	<string name="wrongcountry">يجب تحديد بلدكم!</string>
 	<string name="wrongpassword">مهلا ، يجب أن لا تقل كلمة السر عن 6 أحرف.</string>
 	<string name="wrongusername">يجب أن يكون اسم المستخدم لا يقل عن 3 أحرف، وتحتوي فقط على حروف وأرقام، ويؤكد، وشرطات. لا يسمح للمسافات.</string>
 	<string name="wrongemail">وسوف تحتاج لتأكيد عضويتك من خلال البريد الإلكتروني.</string>
 	<string name="wrongretype">أعد كتابة كلمة المرور غير صحيح!</string>
-	<string name="signingin">جارٍ تسجيل الدخول...</string>
+	<string name="signingin">جارٍ تسجيل الدخول…</string>
 
 	<string name="showanswer">تبين جواب</string>
 	<string name="skipproblem">تخطي مشكلة</string>
-	<string name="sendinggameinfo">إرسال معلومات لعبة ...</string>
+	<string name="sendinggameinfo">إرسال معلومات لعبة …</string>
 	<string name="check_field">التحقق الميداني</string>
 	<string name="validateUsername">يجب أن يكون اسم المستخدم الخاص بك ما بين 3 و 20 حرفا، وتحتوي فقط على حروف وأرقام، ويؤكد، وشرطات. لا يسمح للمسافات.</string>
 	<string name="validatePassword">يجب أن تكون كلمة السر ما بين 6 و 20 حرفا!</string>
@@ -217,8 +217,6 @@
 	<string name="wrong_ex">خطأ!</string>
 
 
-	<string name="wrong_score">صحيح! النتيجة %1$s \ nNew تصنيف %2$s </string>
-	<string name="correct_score">تصحيح! النتيجة %1$s \ nNew تصنيف %2$s </string>
 	<string name="you_got_new_msg">لديك رسالة جديدة!</string>
 	<string name="browse">تصفح</string>
 
@@ -238,7 +236,7 @@
 	</string>
 	<string name="live_game">تعيش لعبة</string>
 	<string name="online_game">لعبة على الانترنت</string>
-	<string name="send_mail">إرسال البريد ...</string>
+	<string name="send_mail">إرسال البريد …</string>
 	<string name="tournaments">البطولات</string>
 	<string name="stats">إحصائيات</string>
 	<string name="challenges">التحديات</string>
@@ -255,10 +253,10 @@
 
 	<!--Game-->
 	<string name="opponent_">المنافس</string>
-	<string name="time_">\ nTime:</string>
+	<string name="time_">\nTime:</string>
 	<string name="rated">تصنيف</string>
 	<string name="unrated">غير المصنف</string>
-	<string name="you_play">\ n يمكنك اللعب:</string>
+	<string name="you_play">\n يمكنك اللعب:</string>
 	<string name="standard_game">ستاندرد</string>
 	<string name="blitz_game">(الغارة)</string>
 	<string name="lightning_game">بَرْق</string>
@@ -267,7 +265,7 @@
 	<string name="your_move">Chess.com - إنها عملكم</string>
 	<string name="your_turn">دورك!</string>
 	<string name="login_failed">فشل تسجيل الدخول:</string>
-	<string name="loggin_out">تسجيل الخروج ...</string>
+	<string name="loggin_out">تسجيل الخروج …</string>
 	<string name="you_logged_out">لقد قمت بالخروج!</string>
 	<string name="too_short">قصيرة جدا</string>
 	<string name="can_not_be_empty">لا يمكن أن تكون فارغة</string>
@@ -278,10 +276,10 @@
 	<string name="menu_refresh">يُنْعِش</string>
 	<string name="version_check">تحقق من إصدار</string>
 	<string name="version_is_obsolete_update">إصدار العميل عفا عليه الزمن. يرجى تحديث</string>
-	<string name="zero_one_black_mates">0-1 الاصحاب الأسود</string>
-	<string name="on_zero_white_mates">1-0 الاصحاب الأبيض</string>
-	<string name="slatemate">0-0 المأزق</string>
-	<string name="draw_by_repetition">1/2 - 1/2 القرعة عن طريق التكرار</string>
+	<string name="zero_one_black_mates">0–1 الاصحاب الأسود</string>
+	<string name="on_zero_white_mates">1–0 الاصحاب الأبيض</string>
+	<string name="slatemate">0–0 المأزق</string>
+	<string name="draw_by_repetition">0.5 – 0.5 القرعة عن طريق التكرار</string>
 
 	<string name="encoding_unsupported">ترميز غير معتمد</string>
 	<string name="error_occurred_while_login">حدث خطأ أثناء تسجيل الدخول، يرجى relogin!</string>
@@ -317,10 +315,10 @@
 	<string name="message_">الرسائل</string>
 
 
-	<string name="black_wins">أسود يفوز (1-0)</string>
-	<string name="white_wins">الأبيض يفوز (1-0)</string>
-	<string name="draw_by_stalemate">رسم من الجمود (0-0)</string>
-	<string name="draw_by_3fold_repetition">رسم عن طريق التكرار ثلاثة أضعاف (1/2-1/2)</string>
+	<string name="black_wins">أسود يفوز (1–0)</string>
+	<string name="white_wins">الأبيض يفوز (1–0)</string>
+	<string name="draw_by_stalemate">رسم من الجمود (0–0)</string>
+	<string name="draw_by_3fold_repetition">رسم عن طريق التكرار ثلاثة أضعاف (0.5–0.5)</string>
 	<string name="rematch">مباراة العودة</string>
 	<string name="review">استعراض</string>
 	<string name="your_end_game_rating">تقييمك ( %1$s ): ( %2$d )</string>

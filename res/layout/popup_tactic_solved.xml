@@ -16,6 +16,7 @@
 		robo:ttf="Bold"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:paddingBottom="10dip"
+		android:gravity="center"
 		/>
 
 

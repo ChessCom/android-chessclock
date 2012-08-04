@@ -217,8 +217,6 @@
 	<string name="wrong_ex">falsch</string>
 
 
-	<string name="wrong_score">Falsch! Ergebnis %1$s \ n New Rating %2$s </string>
-	<string name="correct_score">Korrigieren Sie! Ergebnis %1$s \ n New Rating %2$s </string>
 	<string name="you_got_new_msg">Sie haben eine neue Nachricht!</string>
 	<string name="browse">Blättern</string>
 
@@ -281,7 +279,7 @@
 	<string name="zero_one_black_mates">0 bis 1 Schwarz mates</string>
 	<string name="on_zero_white_mates">1-0 Weiß setzt</string>
 	<string name="slatemate">0-0 Patt</string>
-	<string name="draw_by_repetition">1/2 - 1/2 Remis durch Wiederholung</string>
+	<string name="draw_by_repetition">0.5 - 0.5 Remis durch Wiederholung</string>
 
 	<string name="encoding_unsupported">Encoding nicht unterstützten</string>
 	<string name="error_occurred_while_login">Fehler beim Login, wenden Sie sich bitte erneut anmelden!</string>
@@ -319,7 +317,7 @@
 	<string name="black_wins">Schwarz gewinnt (1-0)</string>
 	<string name="white_wins">Weiß gewinnt (1-0)</string>
 	<string name="draw_by_stalemate">Zeichnen Sie durch Patt (0-0)</string>
-	<string name="draw_by_3fold_repetition">Zeichnen Sie durch dreifache Wiederholung (1/2-1/2)</string>
+	<string name="draw_by_3fold_repetition">Zeichnen Sie durch dreifache Wiederholung (0.5-0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Überprüfen</string>
 	<string name="your_end_game_rating">Deine Wertung ( %1$s ): ( %2$d )</string>

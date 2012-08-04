@@ -1,14 +1,19 @@
 <resources>
 	<string name="menu_search">Ara</string>
-	<string name="restoring_conntection_to_live">Yeniden bağlanıyor ...</string>
-	<string name="application_was_killed">Uygulama geri, öldürüldü ...</string>
+	<string name="restoring_conntection_to_live">Yeniden bağlanıyor …</string>
+	<string name="application_was_killed">Uygulama geri, öldürüldü …</string>
 	<string name="no_network">Şebeke Yok</string>
 	<string name="wireless_settings">Kablosuz Ayarları</string>
 	<string name="invalid_password">Geçersiz şifre</string>
 	<string name="your_turn_in_game_with">Oyununuzu ile %1$s , %2$s</string>
 	<string name="register">Kaydetmek</string>
 	<string name="session_expired">Oturumunuz zaman aşımına uğradı, yeniden giriş yapınız</string>
-	<string name="problem_solved">Sorun çözüldü!</string>
+	<string name="problem_solved">Sorun çözüldü!
+		\n Puan %1$s
+		\n Yeni Değerlendirmesi %2$s </string>
+	<string name="wrong_score">Yanlış!
+		\n Puan %1$s
+		\n Yeni Değerlendirmesi %2$s </string>
 	<string name="next_tactic_puzzle">Sonraki Taktik Bulmaca</string>
 	<string name="upgrade_to_continue">Devam Yükseltme</string>
 

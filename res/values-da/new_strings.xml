@@ -8,7 +8,12 @@
 	<string name="your_turn_in_game_with">I dit spil med %1$s , %2$s</string>
 	<string name="register">Tilmeld</string>
 	<string name="session_expired">Din session er udløbet, kan du igen logge ind</string>
-	<string name="problem_solved">Problem løst!</string>
+	<string name="problem_solved">Problem løst!
+		\n Score %1$s
+		\n Ny Bedømmelse %2$s </string>
+	<string name="wrong_score">Forkert!
+		\n Score %1$s
+		\n Ny Bedømmelse %2$s </string>
 	<string name="next_tactic_puzzle">Næste Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Opgrader at fortsætte</string>
 
