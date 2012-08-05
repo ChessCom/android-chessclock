@@ -16,7 +16,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListChallengeItem;
-import com.chess.model.GameListItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
@@ -106,7 +105,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		@Override
 		public void updateData(String returnedObj) {
 			gameListItems.clear();
-			gameListItems.addAll(ChessComApiParser.ViewOpenChallengeParse(returnedObj));
+			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
 
 			if (gamesAdapter == null) {
 				gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);

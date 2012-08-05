@@ -20,8 +20,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
-import com.chess.model.GameListItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
@@ -87,47 +87,15 @@ public class AppUtils {
 				&& displayMetrics.heightPixels <= 480;
 	}
 
-    /**
-     * Fire notification with defined arguments
-     *
-     * @param context - Application Context for resources
-     * @param title - title that will be visible at status bar
-     * @param id - request code id
-     * @param sound - sound to play
-     * @param body - short description for notification message content
-     * @param clazz - which class to open when User press notification
-     */
-	public static void showNotification(Context context, String title, long id,
-										String sound,String body,Class<?> clazz) { // TODO unify
-		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		Notification notification = new Notification(R.drawable.ic_stat_chess, context.getString(R.string.you_got_new_msg), System.currentTimeMillis());
-//		notification.sound = Uri.parse(sound); // SettingsActivity.getAlarmRingtone(context);
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		if (SettingsActivity.vibrate4Alarm(context)) { // TODO
-//			notification.defaults = Notification.DEFAULT_VIBRATE;
-//		}
-		Intent openList = new Intent(context, clazz);
-		openList.putExtra(StaticData.CLEAR_CHAT_NOTIFICATION, true);
-		openList.putExtra(GameListItem.GAME_ID, id);
-		openList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-				|Intent.FLAG_ACTIVITY_NEW_TASK);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openList, PendingIntent.FLAG_ONE_SHOT);
-
-		notification.setLatestEventInfo(context, context.getText(R.string.you_got_new_msg), context.getText(R.string.open_app_t_see_msg), contentIntent);
-
-		notifyManager.notify(R.string.you_got_new_msg, notification);
-	}
-
-	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id, GameListCurrentItem currentGameItem) {
+	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
+													 GameListCurrentItem currentGameItem) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
-//		intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-		intent.putExtra(GameListItem.GAME_INFO_ITEM, currentGameItem);
+		intent.putExtra(BaseGameItem.GAME_INFO_ITEM, currentGameItem);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);

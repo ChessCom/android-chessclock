@@ -88,6 +88,7 @@ public class RestHelper {
 	public static final String P_USER_NAME = "username";
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";
+	public static final String P_AUTH_TOKEN = "auth_token";
 	public static final String P_COUNTRY_ID = "country_id";
 	public static final String P_COUNTRY_CODE = "country_code";
 	public static final String P_APP_TYPE = "app_type";
@@ -161,7 +162,7 @@ public class RestHelper {
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
-	public static final boolean IS_TEST_SERVER_MODE = false;
+	public static final boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://www.chess.com");
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 	public static final String AUTHORIZATION_HEADER_VALUE = "Basic Ym9iYnk6ZmlzY2hlcg==";
 

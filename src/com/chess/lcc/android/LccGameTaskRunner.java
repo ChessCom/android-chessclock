@@ -26,8 +26,8 @@ public class LccGameTaskRunner {
 	}
 
 
-	public void runMakeDrawTask(Long gameId) {
-		new LiveMakeDrawTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
+	public void runMakeDrawTask() {
+		new LiveMakeDrawTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveMakeDrawTask extends AbstractUpdateTask<Game, Game> {
@@ -42,8 +42,8 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runMakeResignTask(Long gameId) {
-		new LiveMakeResignTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
+	public void runMakeResignTask() {
+		new LiveMakeResignTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveMakeResignTask extends AbstractUpdateTask<Game, Game> {
@@ -58,8 +58,8 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runAbortGameTask(Long gameId) {
-		new LiveAbortGameTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
+	public void runAbortGameTask() {
+		new LiveAbortGameTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveAbortGameTask extends AbstractUpdateTask<Game, Game> {
@@ -74,8 +74,8 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runRejectDrawTask(Long gameId) {
-		new LiveRejectDrawTask().executeTask(LccHolder.getInstance(context).getGame(gameId));
+	public void runRejectDrawTask() {
+		new LiveRejectDrawTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveRejectDrawTask extends AbstractUpdateTask<Game, Game> {

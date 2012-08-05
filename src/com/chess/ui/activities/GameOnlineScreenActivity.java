@@ -23,10 +23,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.GameItem;
-import com.chess.model.GameListCurrentItem;
-import com.chess.model.GameListItem;
-import com.chess.model.PopupItem;
+import com.chess.model.*;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
@@ -66,7 +63,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private AsyncTask<LoadItem, Void, Integer> updateGameStateTask;
 	private ChessBoardNetworkView boardView;
 
-	private GameItem currentGame;
+	private GameOnlineItem currentGame;
 	private long gameId;
 	private int currentPlayerRating;
 	private GameListCurrentItem gameInfoItem;
@@ -112,7 +109,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public void init() {
-		gameInfoItem = (GameListCurrentItem) extras.getSerializable(GameListItem.GAME_INFO_ITEM);
+		gameInfoItem = (GameListCurrentItem) extras.getSerializable(BaseGameItem.GAME_INFO_ITEM);
 		gameId = gameInfoItem.getGameId();
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
@@ -224,7 +221,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getBoardFace().setReside(true);
 		}
 
-		String FEN = currentGame.getStartingFenPosition();
+		String FEN = currentGame.getFenStartPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, getBoardFace());
@@ -263,7 +260,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				if (getBoardFace().isAnalysis())
 					return;
 
-				GameItem newGame = ChessComApiParser.GetGameParseV3(returnedObj);
+				GameOnlineItem newGame = ChessComApiParser.GetGameParseV3(returnedObj);
 
 				onGameRefresh(newGame);
 
@@ -274,7 +271,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	public void onGameRefresh(GameItem newGame) {
+	public void onGameRefresh(GameOnlineItem newGame) {
 		currentGame = newGame;
 
 		if (isUserMove())
@@ -353,7 +350,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
+		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 		new GetStringObjTask(sendMoveUpdateListener).executeTask(loadItem);
 	}
@@ -437,7 +434,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
 				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.getIsMyTurn().equals(GameListItem.V_ONE)) {
+					if (gameListItem.getIsMyTurn()) {
 						currentGames.add(gameListItem);
 					}
 				}
@@ -448,13 +445,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 						showSubmitButtonsLay(false);
 						boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
 						getBoardFace().setAnalysis(false);
-//						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 
 						getOnlineGame(gameId); // if next game
 						// same new gameId
 						Intent intent = getIntent();
-//						intent.putExtra(GameListItem.GAME_ID, gameId);
-						intent.putExtra(GameListItem.GAME_INFO_ITEM, gameInfoItem);
+						intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameInfoItem);
 						getIntent().replaceExtras(intent);
 						return;
 					}
@@ -472,12 +467,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
 
-		currentGame.setHasNewMessage("0");
+		currentGame.setHasNewMessage(false);
 		gamePanelView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatOnlineActivity.class);
-		intent.putExtra(GameListItem.GAME_ID, gameId);
-		intent.putExtra(GameListItem.TIMESTAMP, currentGame.getTimestamp());
+		intent.putExtra(BaseGameItem.GAME_ID, gameId);
+		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestamp());
 		startActivity(intent);
 
 		chat = false;
@@ -486,7 +481,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 
 	private void checkMessages() {
-		if (currentGame.getHasNewMessage().equals("1")) {
+		if (currentGame.hasNewMessage()) {
 			gamePanelView.haveNewMessage(true);
 		}
 	}
@@ -608,7 +603,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 			new GetStringObjTask(drawOfferedUpdateListener).executeTask(loadItem);
 		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
@@ -619,14 +614,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 			new GetStringObjTask(abortGameUpdateListener).executeTask(loadItem);
 		}
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		if (currentGame.getHasNewMessage().equals("1")) {
+		if (currentGame.hasNewMessage()) {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
 		} else {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);

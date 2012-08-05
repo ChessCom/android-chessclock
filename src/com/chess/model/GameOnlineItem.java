@@ -7,32 +7,53 @@ package com.chess.model;
  */
 public class GameOnlineItem extends BaseGameItem {
 
-	public static final int STARTING_FEN_POSITION_NUMB = 6;
-	public static final int MOVE_LIST_NUMB = 7;
+	public final static int CURRENT_TYPE = 0;
+	public final static int CHALLENGES_TYPE = 1;
+	public final static int FINISHED_TYPE = 2;
 
-
-	private String userToMove;
+	private boolean whiteUserMove;
 	private String encodedMoveStr;
 
 	protected String gameName;
 	protected String gameType;
 	protected String fenStartPosition;
-	protected boolean hasNewMessage;
 
 	public GameOnlineItem(String[] values) {
 		gameId = Long.valueOf(values[0].split("[+]")[1]);
 		gameType = values[1];
 		timestamp = Long.valueOf(values[2]);
 		gameName =  values[3];
-		whiteUserName = values[4].trim();
-		blackUserName = values[5].trim();
-		fenStartPosition =  values[STARTING_FEN_POSITION_NUMB];
-		moveList = values[MOVE_LIST_NUMB];
-		userToMove = values[8];
+		whiteUsername = values[4].trim();
+		blackUsername = values[5].trim();
+		fenStartPosition =  values[6];
+		moveList = values[7];
+		whiteUserMove = values[8].equals("1");
 		whiteRating = values[9];
 		blackRating = values[10];
 		encodedMoveStr = values[11];
 		hasNewMessage = values[12].equals("1");
 		secondsRemain = values[13];
 	}
+
+	public String getEncodedMoveStr() {
+		return encodedMoveStr;
+	}
+
+	public String getFenStartPosition() {
+		return fenStartPosition;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public String getGameType() {
+		return gameType;
+	}
+
+	public boolean isWhiteMove(){
+		return whiteUserMove;
+	}
+
+
 }

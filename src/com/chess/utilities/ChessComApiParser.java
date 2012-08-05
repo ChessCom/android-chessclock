@@ -18,24 +18,23 @@ public class ChessComApiParser {
 	}
 
 	//online new game
-	public static ArrayList<GameListChallengeItem> ViewOpenChallengeParse(String result) {
-		ArrayList<GameListChallengeItem> output = new ArrayList<GameListChallengeItem>();
-
-		String[] g = result.split("[|]");
-		int count = g.length - 1;
-
-		int i, a;
-		for (i = 1; i <= count; i++) {
-			String[] tmp = new String[11];
-			a = 0;
-			for (String s : g[i].split(RestHelper.SYMBOL_PARAMS_SPLIT)) {
-				tmp[a++] = s;
-			}
-			GameListChallengeItem gameListChallengeItem = new GameListChallengeItem(tmp);
-			output.add(gameListChallengeItem);
-		}
-		return output;
-	}
+//	public static ArrayList<GameListChallengeItem> ViewOpenChallengeParse(String result) {
+//		ArrayList<GameListChallengeItem> output = new ArrayList<GameListChallengeItem>();
+//
+//		String[] g = result.split("[|]");
+//		int count = g.length - 1;
+//
+//		int i, a;
+//		for (i = 1; i <= count; i++) {
+//			String[] tmp = new String[11];
+//			a = 0;
+//			for (String s : g[i].split(RestHelper.SYMBOL_PARAMS_SPLIT)) {
+//				tmp[a++] = s;
+//			}
+//			output.add(new GameListChallengeItem(tmp));
+//		}
+//		return output;
+//	}
 
 	public static ArrayList<GameListChallengeItem> getChallengesGames(String result) {
 		ArrayList<GameListChallengeItem> output = new ArrayList<GameListChallengeItem>();
@@ -104,9 +103,9 @@ public class ChessComApiParser {
 		return output;
 	}
 
-	public static GameItem GetGameParseV3(String result) {
+	public static GameOnlineItem GetGameParseV3(String result) {
         Log.d("TEST", "moves from online server = " + result);
-		return new GameItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT), false);
+		return new GameOnlineItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT));
 	}
 
 	public static ArrayList<MessageItem> receiveMessages(String result) {

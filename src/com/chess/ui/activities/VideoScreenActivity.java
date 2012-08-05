@@ -113,8 +113,8 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		public void updateData(String returnedObj) {
 			recent.setVisibility(View.VISIBLE);
 			item = new VideoItem(returnedObj.split("[|]")[2].split("<->"));
-			title.setText(item.values.get(AppConstants.TITLE));
-			desc.setText(item.values.get(AppConstants.DESCRIPTION));
+			title.setText(item.getTitle());
+			desc.setText(item.getDescription());
 
 			playBtn.setEnabled(true);
 		}
@@ -187,7 +187,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 			FlurryAgent.onEvent(FlurryData.VIDEO_PLAYED, null);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(item.values.get(AppConstants.VIEW_URL).trim()), "video/*");
+			intent.setDataAndType(Uri.parse(item.getViewUrl().trim()), "video/*");
 			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
 			int skillId = skillsSpinner.getSelectedItemPosition();

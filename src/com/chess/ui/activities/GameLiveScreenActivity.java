@@ -17,8 +17,9 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
-import com.chess.model.GameItem;
-import com.chess.model.GameListItem;
+import com.chess.model.BaseGameItem;
+
+import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -46,8 +47,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
 	private View submitButtonsLay;
-	private GameItem currentGame;
-	private Long gameId;
+	private GameLiveItem currentGame;
+//	private Long gameId;
 	private ChessBoardLiveView boardView;
 	private int whitePlayerNewRating;
 	private int blackPlayerNewRating;
@@ -76,7 +77,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
-		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
+//		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
+		String blackPlayerName = getLccHolder().getBlackUserName();
 		String userName = getLccHolder().getCurrentuserName();
 
 		userPlayWhite = !userName.equals(blackPlayerName);
@@ -105,14 +107,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return false;
 		}
 
-		gameId = extras.getLong(GameListItem.GAME_ID);
-		Log.d("TEST","gameId from extras = " + gameId);
-		currentGame = getLccHolder().getGameItem(gameId);
+//		gameId = extras.getLong(BaseGameItem.GAME_ID);
+//		Log.d("TEST","gameId from extras = " + gameId);
+//		currentGame = getLccHolder().getGameItem(gameId);
+		currentGame = getLccHolder().getGameItem();
 
 		getLccHolder().setLccEventListener(this);
 		getLccHolder().setLccChatMessageListener(this);
 
-		int resignOrAbort = getLccHolder().getResignTitle(gameId);
+//		int resignOrAbort = getLccHolder().getResignTitle(gameId);
+		int resignOrAbort = getLccHolder().getResignTitle();
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -201,7 +205,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		showSubmitButtonsLay(false);
 		getSoundPlayer().playGameStart();
 
-		currentGame = getLccHolder().getGameItem(gameId);
+		currentGame = getLccHolder().getGameItem();
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		checkMessages();
@@ -210,7 +214,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().setReside(true);
 		}
 
-		getLccHolder().checkAndReplayMoves(gameId);
+		getLccHolder().checkAndReplayMoves();
 
 		invalidateGameScreen();
 		getBoardFace().takeBack();
@@ -288,7 +292,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	// ----------------------Lcc Events ---------------------------------------------
 
-	public void onGameRefresh(GameItem gameItem) {
+	public void onGameRefresh(GameLiveItem gameItem) {
         blockGame(false);
 
 		if (getBoardFace().isAnalysis())
@@ -310,7 +314,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 					moveFT = MoveParser.parseCoordinate(getBoardFace(), moves[moves.length - 1]);
 
-					boolean playSound = getLccHolder().isPlaySound(gameId, moves);
+					boolean playSound = getLccHolder().isPlaySound(moves);
 
 					if (moveFT.length == 4) {
 						Move move;
@@ -375,7 +379,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onGameEnd(final String gameEndMessage) {
-        final Game game = getLccHolder().getGame(gameId);
+        final Game game = getLccHolder().getCurrentGame();
         switch (game.getGameTimeConfig().getGameTimeClass()) {
             case BLITZ: {
                 whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
@@ -446,7 +450,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
 
-		getLccHolder().makeMove(gameId, move, gameTaskRunner);
+		getLccHolder().makeMove(move, gameTaskRunner);
 	}
 
 	private void updatePlayerLabels() {
@@ -469,19 +473,19 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
 
-		currentGame.setHasNewMessage("0");
+		currentGame.setHasNewMessage(false);
 		gamePanelView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatLiveActivity.class);
-		intent.putExtra(GameListItem.GAME_ID, gameId);
-		intent.putExtra(GameListItem.TIMESTAMP, currentGame.getTimestamp());
+//		intent.putExtra(BaseGameItem.GAME_ID, gameId);
+		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestamp());
 		startActivity(intent);
 
 		return true;
 	}
 
 	private void checkMessages() {
-		if (currentGame.getHasNewMessage().equals("1")) {
+		if (currentGame.hasNewMessage()) {
 			gamePanelView.haveNewMessage(true);
 		}
 	}
@@ -592,23 +596,23 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
-			Log.i(TAG, AppConstants.REQUEST_DRAW + getLccHolder().getGame(gameId));
-			gameTaskRunner.runMakeDrawTask(gameId);
+			Log.i(TAG, AppConstants.REQUEST_DRAW + getLccHolder().getCurrentGame());
+			gameTaskRunner.runMakeDrawTask();
 		} else if (fragment.getTag().equals(WARNING_TAG)) {
 			getLccHolder().getPendingWarnings().remove(warningMessage);
 		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
-			Game game = getLccHolder().getGame(gameId);
+			Game game = getLccHolder().getCurrentGame();
 
-			if (getLccHolder().isFairPlayRestriction(gameId)) {
+			if (getLccHolder().isFairPlayRestriction()) {
 				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
 				Log.i(TAG, AppConstants.RESIGN_GAME + game);
-				gameTaskRunner.runMakeResignTask(gameId);
-			} else if (getLccHolder().isAbortableBySeq(gameId)) {
+				gameTaskRunner.runMakeResignTask();
+			} else if (getLccHolder().isAbortableBySeq()) {
 				Log.i(TAG, AppConstants.LCCLOG_ABORT_GAME + game);
-				gameTaskRunner.runAbortGameTask(gameId);
+				gameTaskRunner.runAbortGameTask();
 			} else {
 				Log.i(TAG, AppConstants.LCCLOG_RESIGN_GAME + game);
-				gameTaskRunner.runMakeResignTask(gameId);
+				gameTaskRunner.runMakeResignTask();
 			}
 		}
 	}
@@ -617,13 +621,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
-			Log.i(TAG, AppConstants.DECLINE_DRAW + getLccHolder().getGame(gameId));
-			gameTaskRunner.runRejectDrawTask(gameId);
+			Log.i(TAG, AppConstants.DECLINE_DRAW + getLccHolder().getCurrentGame());
+			gameTaskRunner.runRejectDrawTask();
 		}
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		if (currentGame.getHasNewMessage().equals("1")) {
+		if (currentGame.hasNewMessage()) {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
 		} else {
 			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);
@@ -761,7 +765,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
-			getLccHolder().rematch(Long.parseLong(currentGame.getGameId())); // todo: or use LccHolder's current game
+			getLccHolder().rematch(); // todo: or use LccHolder's current game
 			endPopupFragment.dismiss();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));

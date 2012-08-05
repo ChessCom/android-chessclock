@@ -11,12 +11,13 @@ import java.util.Iterator;
  * @modified 31.07.12
  */
 public class GameLiveItem extends BaseGameItem {
+
 	public GameLiveItem(Game lccGame, int moveIndex) {
 
 		gameId = lccGame.getId();
 		timestamp = System.currentTimeMillis();
-		whiteUserName = lccGame.getWhitePlayer().getUsername().trim();
-		blackUserName = lccGame.getBlackPlayer().getUsername().trim();
+		whiteUsername = lccGame.getWhitePlayer().getUsername().trim();
+		blackUsername = lccGame.getBlackPlayer().getUsername().trim();
 
 		String moves = StaticData.SYMBOL_EMPTY;
 

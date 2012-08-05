@@ -7,8 +7,6 @@ public class TacticResultItem {
 	private String problemRatingChange;
 	private String problemRating;
 
-//	public HashMap<String, String> values;
-
 	public TacticResultItem(String[] values) {
 
 		score = values[0];

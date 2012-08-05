@@ -38,13 +38,13 @@ public class OnlineCurrentGamesAdapter extends ItemsAdapter<GameListCurrentItem>
 		}
 
 		String draw = StaticData.SYMBOL_EMPTY;
-		if (item.getIsDrawOfferPending().equals("p"))
+		if (item.getIsDrawOfferPending())
 			draw = "\n" + context.getString(R.string.drawoffered);
 
 		holder.playerTxt.setText(item.getOpponentUsername() + gameType + draw);
 
 		String infoText = StaticData.SYMBOL_EMPTY;
-		if (item.getIsMyTurn().equals("1")) {
+		if (item.getIsMyTurn()) {
 
 			String amount = item.getTimeRemainingAmount();
 			if (amount.substring(0, 1).equals("0"))

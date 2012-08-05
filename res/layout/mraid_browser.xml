@@ -22,28 +22,28 @@
 				android:src="@drawable/leftarrow"
 				android:layout_gravity="center_vertical"
 				android:layout_height="wrap_content"
-				android:layout_weight="25" android:contentDescription=""/>
+				android:layout_weight="25" android:contentDescription="@string/image"/>
 
 			<ImageButton android:layout_width="wrap_content"
 				android:id="@+id/browserForwardButton"
 				android:src="@drawable/rightarrow"
 				android:layout_gravity="center_vertical"
 				android:layout_height="wrap_content"
-				android:layout_weight="25" android:contentDescription=""/>
+				android:layout_weight="25" android:contentDescription="@string/image"/>
 
 			<ImageButton android:layout_width="wrap_content"
 				android:id="@+id/browserRefreshButton"
 				android:src="@drawable/refresh"
 				android:layout_gravity="center_vertical"
 				android:layout_height="wrap_content"
-				android:layout_weight="25" android:contentDescription=""/>
+				android:layout_weight="25" android:contentDescription="@string/image"/>
 
 			<ImageButton android:layout_width="wrap_content"
 				android:id="@+id/browserCloseButton"
 				android:src="@drawable/btn_close"
 				android:layout_gravity="center_vertical"
 				android:layout_height="wrap_content"
-				android:layout_weight="25" android:contentDescription=""/>
+				android:layout_weight="25" android:contentDescription="@string/image"/>
 		</LinearLayout>
 
 		<android.webkit.WebView android:id="@+id/webView"

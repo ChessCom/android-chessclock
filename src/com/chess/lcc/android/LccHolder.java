@@ -14,8 +14,7 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
-import com.chess.model.GameItem;
-import com.chess.model.GameListItem;
+import com.chess.model.GameLiveItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.utilities.AppUtils;
@@ -106,7 +105,7 @@ public class LccHolder{
                     //fullGameProcessed = true;
                     pausedActivityGameEvents.remove(moveEvent);
                     //lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-                    GameItem newGame = new GameItem(getGameData(moveEvent.getGameId(), moveEvent.getMoveIndex()), true);
+					GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), moveEvent.getMoveIndex());
                     lccEventListener.onGameRefresh(newGame);
                 }
 
@@ -155,55 +154,54 @@ public class LccHolder{
 		}*/
     }
 
-	public GameItem getGameItem(Long gameId) {
-		Log.d("TEST","gameId = " +gameId);
-		Game game = getGame(gameId);
+//	public GameLiveItem getGameItem(Long gameId) {
+	public GameLiveItem getGameItem() {
+		Log.d("TEST","gameId = " +currentGameId);
+		Game game = getGame(currentGameId);
 
-		GameItem newGame = new GameItem(getGameData(gameId, game.getSeq() - 1), true);
+		GameLiveItem newGame = new GameLiveItem(game, game.getSeq() - 1);
 
         updateClockTime(game);
 
 		return newGame;
 	}
 
-	public int getResignTitle(Long gameId) {
-		if (isFairPlayRestriction(gameId)) {
+//	public int getResignTitle(Long gameId) {
+	public int getResignTitle() {
+		if (isFairPlayRestriction()) {
 			return R.string.resign;
-		} else if (isAbortableBySeq(gameId)) {
+		} else if (isAbortableBySeq()) {
 			return R.string.abort;
 		} else {
 			return R.string.resign;
 		}
 	}
 
-	public String getBlackUserName(Long gameId) {
-		return getGame(gameId).getBlackPlayer().getUsername();
-	}
-
-	public String getWhiteUserName(Long gameId) {
-		return getGame(gameId).getWhitePlayer().getUsername();
+//	public String getBlackUserName(Long gameId) {
+	public String getBlackUserName() {
+		return getGame(currentGameId).getBlackPlayer().getUsername();
 	}
 
 	public String getCurrentuserName() {
 		return user.getUsername();
 	}
 
-	public boolean isPlaySound(Long gameId, String[] moves) {
-		return getGame(gameId).getSeq() == moves.length;
+	public boolean isPlaySound(String[] moves) {
+		return getGame(currentGameId).getSeq() == moves.length;
 	}
 
-	public void checkAndReplayMoves(Long gameId) {
-		Game game = getGame(gameId);
+	public void checkAndReplayMoves() {
+		Game game = getGame(currentGameId);
 		if (game != null && game.getSeq() > 0) {
 			doReplayMoves(game);
 		}
 
 	}
 
-	public List<MessageItem> getMessagesList(Long gameId) {
+	public List<MessageItem> getMessagesList() {
 		ArrayList<MessageItem> messageItems = new ArrayList<MessageItem>();
 
-		Chat chat = getGameChat(gameId);
+		Chat chat = getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = getChatMessages(chat.getId());
 			if (chatMessages != null) {
@@ -350,6 +348,10 @@ public class LccHolder{
 
 	public void setLiveChessClient(LiveChessClient liveChessClient) {
 		lccClient = liveChessClient;
+	}
+
+	public Game getCurrentGame() {
+		return lccGames.get(currentGameId);
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -590,69 +592,69 @@ public class LccHolder{
 		lccGames.clear();
 	}
 
-	public String[] getGameData(Long gameId, int moveIndex) {
-		Game lccGame = getGame(gameId);
-		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
+//	public String[] getGameData(Long gameId, int moveIndex) {
+//		Game lccGame = getGame(gameId);
+//		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
+//
+//		gameData[0] = String.valueOf(lccGame.getId());  // TODO eliminate string conversion and use Objects
+//		gameData[1] = "1";
+//		gameData[2] = StaticData.SYMBOL_EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
+//		gameData[3] = StaticData.SYMBOL_EMPTY;
+//		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
+//		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
+//		gameData[GameItem.STARTING_FEN_POSITION_NUMB] = StaticData.SYMBOL_EMPTY; // starting_fen_position
+//		String moves = StaticData.SYMBOL_EMPTY;
+//
+//
+//		final Iterator movesIterator = lccGame.getMoves().iterator();
+//		for (int i = 0; i <= moveIndex; i++) {
+//			moves += movesIterator.next() + " ";
+//		}
+//		if (moveIndex == -1) {
+//			moves = StaticData.SYMBOL_EMPTY;
+//		}
+//
+//		gameData[GameItem.MOVE_LIST_NUMB] = moves; // move_list
+//		gameData[8] = StaticData.SYMBOL_EMPTY; // user_to_move
+//
+//		Integer whiteRating = 0;
+//		Integer blackRating = 0;
+//		switch (lccGame.getGameTimeConfig().getGameTimeClass()) {
+//			case BLITZ: {
+//				whiteRating = lccGame.getWhitePlayer().getBlitzRating();
+//				blackRating = lccGame.getBlackPlayer().getBlitzRating();
+//				break;
+//			}
+//			case LIGHTNING: {
+//				whiteRating = lccGame.getWhitePlayer().getQuickRating();
+//				blackRating = lccGame.getBlackPlayer().getQuickRating();
+//				break;
+//			}
+//			case STANDARD: {
+//				whiteRating = lccGame.getWhitePlayer().getStandardRating();
+//				blackRating = lccGame.getBlackPlayer().getStandardRating();
+//				break;
+//			}
+//		}
+//		if (whiteRating == null) {
+//			whiteRating = 0;
+//		}
+//		if (blackRating == null) {
+//			blackRating = 0;
+//		}
+//
+//		gameData[9] = whiteRating.toString();
+//		gameData[10] = blackRating.toString();
+//
+//		gameData[11] = StaticData.SYMBOL_EMPTY; // todo: encoded_move_string
+//		gameData[12] = StaticData.SYMBOL_EMPTY; // has_new_message
+//		gameData[13] = StaticData.SYMBOL_EMPTY + (lccGame.getGameTimeConfig().getBaseTime() / 10); // seconds_remaining
+//
+//		return gameData;
+//	}
 
-		gameData[0] = String.valueOf(lccGame.getId());  // TODO eliminate string conversion and use Objects
-		gameData[1] = "1";
-		gameData[2] = StaticData.SYMBOL_EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
-		gameData[3] = StaticData.SYMBOL_EMPTY;
-		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
-		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
-		gameData[GameItem.STARTING_FEN_POSITION_NUMB] = StaticData.SYMBOL_EMPTY; // starting_fen_position
-		String moves = StaticData.SYMBOL_EMPTY;
-
-
-		final Iterator movesIterator = lccGame.getMoves().iterator();
-		for (int i = 0; i <= moveIndex; i++) {
-			moves += movesIterator.next() + " ";
-		}
-		if (moveIndex == -1) {
-			moves = StaticData.SYMBOL_EMPTY;
-		}
-
-		gameData[GameItem.MOVE_LIST_NUMB] = moves; // move_list
-		gameData[8] = StaticData.SYMBOL_EMPTY; // user_to_move
-
-		Integer whiteRating = 0;
-		Integer blackRating = 0;
-		switch (lccGame.getGameTimeConfig().getGameTimeClass()) {
-			case BLITZ: {
-				whiteRating = lccGame.getWhitePlayer().getBlitzRating();
-				blackRating = lccGame.getBlackPlayer().getBlitzRating();
-				break;
-			}
-			case LIGHTNING: {
-				whiteRating = lccGame.getWhitePlayer().getQuickRating();
-				blackRating = lccGame.getBlackPlayer().getQuickRating();
-				break;
-			}
-			case STANDARD: {
-				whiteRating = lccGame.getWhitePlayer().getStandardRating();
-				blackRating = lccGame.getBlackPlayer().getStandardRating();
-				break;
-			}
-		}
-		if (whiteRating == null) {
-			whiteRating = 0;
-		}
-		if (blackRating == null) {
-			blackRating = 0;
-		}
-
-		gameData[9] = whiteRating.toString();
-		gameData[10] = blackRating.toString();
-
-		gameData[11] = StaticData.SYMBOL_EMPTY; // todo: encoded_move_string
-		gameData[12] = StaticData.SYMBOL_EMPTY; // has_new_message
-		gameData[13] = StaticData.SYMBOL_EMPTY + (lccGame.getGameTimeConfig().getBaseTime() / 10); // seconds_remaining
-
-		return gameData;
-	}
-
-	public void makeMove(Long gameId, String move, LccGameTaskRunner gameTaskRunner) {
-		Game game = getGame(gameId);
+	public void makeMove(String move, LccGameTaskRunner gameTaskRunner) {
+		Game game = lccGames.get(currentGameId);
 		/*if(chessMove.isCastling())
 			{
 			  lccMove = chessMove.getWarrenSmithString().substring(0, 4);
@@ -696,8 +698,7 @@ public class LccHolder{
 		}
 	}
 
-	public void rematch(Long currentGameId) {
-
+	public void rematch() {
 		final Game currentGame = getGame(currentGameId);
 
 		final List<Game.Result> gameResults = currentGame.getGameResults();
@@ -823,7 +824,7 @@ public class LccHolder{
 		Log.d("TEST","processing full game, gameId = " + game.getId());
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra(GameListItem.GAME_ID, game.getId());
+//		intent.putExtra(BaseGameItem.GAME_ID, game.getId());
 		context.startActivity(intent);
 	}
 
@@ -853,7 +854,7 @@ public class LccHolder{
 			moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-			lccEventListener.onGameRefresh(new GameItem(getGameData(game.getId(), moveIndex), true));
+			lccEventListener.onGameRefresh(new GameLiveItem(getGame(game.getId()), moveIndex));
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);
 	}
@@ -920,9 +921,9 @@ public class LccHolder{
 		return null;
 	}
 
-	public Boolean isFairPlayRestriction(Long gameId) {
-		Log.d("TEST", "gameId = " + gameId);
-		Game game = getGame(gameId);
+	public Boolean isFairPlayRestriction() {
+		Log.d("TEST", "gameId = " + currentGameId);
+		Game game = lccGames.get(currentGameId);
 		String userName = user.getUsername();
 
 		if (game.getWhitePlayer().getUsername().equals(userName) && !game.isAbortableByWhitePlayer()) {
@@ -933,8 +934,8 @@ public class LccHolder{
 		return false;
 	}
 
-	public Boolean isAbortableBySeq(Long gameId) {
-		return getGame(gameId).getSeq() < 3;
+	public Boolean isAbortableBySeq() {
+		return lccGames.get(currentGameId).getSeq() < 3;
 	}
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {

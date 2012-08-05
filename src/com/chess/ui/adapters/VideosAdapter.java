@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.VideoItem;
 
@@ -19,6 +18,7 @@ import java.util.List;
 
 public class VideosAdapter extends ItemsAdapter<VideoItem> {
 
+	private static final String MMMM_DD_YYYY = "MMMM' 'dd,' 'yyyy";
 	private PlayClickListener playClickListener;
 	private FullDescClickListener fullDescClickListener;
 
@@ -47,24 +47,20 @@ public class VideosAdapter extends ItemsAdapter<VideoItem> {
 	}
 
 	@Override
-	protected void bindView(VideoItem el, int pos, View convertView) {
+	protected void bindView(VideoItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.fullDescBtn.setTag(itemListId, pos);
 		holder.playBtn.setTag(itemListId, pos);
 
-//			CharSequence date = DateFormat.format("dd.MM.yyyy", 1000 * Long.parseLong(el.values.get(AppConstants.PUBLISH_TIMESTAMP)));
-		CharSequence date = DateFormat.format("MMMM' 'dd,' 'yyyy", 1000 * Long.parseLong(el.values.get(AppConstants.PUBLISH_TIMESTAMP)));
+		CharSequence date = DateFormat.format(MMMM_DD_YYYY, 1000* item.getPublishTimestamp());
 
-		holder.titleTxt.setText(el.values.get(AppConstants.TITLE));
-//			“21 min | Jan 23, 2012”
-//				times.setText(context.getString(R.string.duration)
-//						+ " " + el.values.get("minutes") + "min " + context.getString(R.string.published) + " " + date);
-		holder.timesTxt.setText(el.values.get("minutes") + " min " + " | " + date);
+		holder.titleTxt.setText(item.getTitle());
+		holder.timesTxt.setText(item.getMinutes() + " min " + " | " + date);
 
-		holder.descTxt.setText(el.values.get(AppConstants.DESCRIPTION));
-		holder.addInfoTxt.setText(el.values.get(AppConstants.AUTHOR_FIRST_GAME) + StaticData.SYMBOL_SPACE
-				+ el.values.get(AppConstants.AUTHOR_LAST_NAME));
+		holder.descTxt.setText(item.getDescription());
+		holder.addInfoTxt.setText(item.getAuthorFirstGame() + StaticData.SYMBOL_SPACE
+				+ item.getAuthorLastName());
 
 	}
 
@@ -75,8 +71,8 @@ public class VideosAdapter extends ItemsAdapter<VideoItem> {
 			VideoItem videoItem = itemsList.get(pos);
 
 			new AlertDialog.Builder(context)
-					.setTitle(videoItem.values.get(AppConstants.TITLE))
-					.setMessage(videoItem.values.get(AppConstants.DESCRIPTION))
+					.setTitle(videoItem.getTitle())
+					.setMessage(videoItem.getDescription())
 					.setPositiveButton(context.getString(R.string.ok), null)
 					.create().show();
 		}
@@ -89,7 +85,7 @@ public class VideosAdapter extends ItemsAdapter<VideoItem> {
 			VideoItem videoItem = itemsList.get(pos);
 
 			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setDataAndType(Uri.parse(videoItem.values.get(AppConstants.VIEW_URL).trim()), "video/*");
+			i.setDataAndType(Uri.parse(videoItem.getViewUrl().trim()), "video/*");
 			context.startActivity(i);
 		}
 	}

@@ -16,9 +16,9 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.GameItem;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
-import com.chess.model.GameListItem;
+import com.chess.model.GameOnlineItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.ChessBoardNetworkView;
@@ -42,7 +42,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private GamesListUpdateListener gamesListUpdateListener;
 	private ChessBoardNetworkView boardView;
 
-	private GameItem currentGame;
+	private GameOnlineItem currentGame;
 	private long gameId;
 
     @Override
@@ -79,7 +79,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	public void init() {
-		gameId = extras.getLong(GameListItem.GAME_ID);
+		gameId = extras.getLong(BaseGameItem.GAME_ID);
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
@@ -160,7 +160,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			getBoardFace().setMovesCount(0);
 		}
 
-		String FEN = currentGame.getStartingFenPosition();
+		String FEN = currentGame.getFenStartPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			getBoardFace().genCastlePos(FEN);
 			MoveParser.fenParse(FEN, getBoardFace());
@@ -228,7 +228,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
 				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.getIsMyTurn().equals(GameListItem.V_ONE)) {
+					if (gameListItem.getIsMyTurn()) {
 						currentGames.add(gameListItem);
 					}
 				}

@@ -9,4 +9,9 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 	protected String opponentName;
 	protected String opponentRating;
 	protected String gameType;
+	protected String lastMoveFromSquare;
+	protected String lastMoveToSquare;
+	protected boolean isMyTurn;
+	protected boolean hasMessage;
+
 }

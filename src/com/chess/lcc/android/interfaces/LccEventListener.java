@@ -1,6 +1,6 @@
 package com.chess.lcc.android.interfaces;
 
-import com.chess.model.GameItem;
+import com.chess.model.GameLiveItem;
 
 /**
  * LccEventListener class
@@ -13,7 +13,7 @@ public interface LccEventListener {
 
     void setBlackPlayerTimer(String timer);
 
-	void onGameRefresh(GameItem gameItem);
+	void onGameRefresh(GameLiveItem gameItem);
 
     void onDrawOffered(String drawOfferUsername);
 

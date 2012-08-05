@@ -12,7 +12,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter;
@@ -91,7 +90,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		VideoItem videoItem = (VideoItem) adapter.getItemAtPosition(pos);
 
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		String videoUrl = videoItem.values.get(AppConstants.VIEW_URL).trim();
+		String videoUrl = videoItem.getViewUrl().trim();
 		intent.setDataAndType(Uri.parse(videoUrl), "video/*");
 		startActivity(intent);
 	}

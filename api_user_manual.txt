@@ -76,6 +76,26 @@ Premium Status Key:
 
 ---------------------------------------------------------------------------
 
+API: validate_auth_token
+url: http://www.chess.com/api/validate_auth_token
+
+parameters:
+auth_token          (user token)
+
+success return string:
+Success+
+
+error return string:
+Error+<error_message>
+
+Example Call:
+http://www.chess.com/api/validate_auth_token?auth_token=jajeue25j25j25j2j11jqja
+
+Example Return String:
+Success+
+
+---------------------------------------------------------------------------
+
 API: Get user's move status
 url: http://www.chess.com/api/get_move_status
 

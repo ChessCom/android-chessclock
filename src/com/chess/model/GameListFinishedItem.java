@@ -1,9 +1,6 @@
 package com.chess.model;
 
-import java.util.HashMap;
-
-// TODO eliminate hashmaps and create Objects
-public class GameListFinishedItem {
+public class GameListFinishedItem extends BaseGameOnlineItem{
 
 	public static final String GAME_TYPE = "game_type";
 	public static final String GAME_ID = "game_id";
@@ -20,99 +17,99 @@ public class GameListFinishedItem {
 	public static final String IS_OPPONENT_ONLINE = "is_opponent_online";
 	public static final String GAME_RESULT = "game_result";
 	private static final String FEN = "fen";
-
-	private HashMap<String, String> values;
+	private String gameResults;
 
 	public GameListFinishedItem(String[] values) {
-		this.values = new HashMap<String, String>();
 
-		this.values.put(GAME_ID, values[0]);
-		this.values.put(COLOR, values[1]);
-		this.values.put(GAME_TYPE, values[2]);
-		this.values.put(USERNAME_STRING_LENGTH, values[3]);
-		this.values.put(OPPONENT_USERNAME, values[4]);
-		this.values.put(OPPONENT_RATING, values[5]);
-		this.values.put(TIME_REMAINING_AMOUNT, values[6]);
-		this.values.put(TIME_REMAINING_UNITS, values[7]);
-		this.values.put(FEN_STRING_LENGTH, values[8]);
-		this.values.put(FEN, values[9]);
-		this.values.put(TIMESTAMP, values[10]);
-		this.values.put(LAST_MOVE_FROM_SQUARE, values[11]);
-		this.values.put(LAST_MOVE_TO_SQUARE, values[12]);
-		this.values.put(IS_OPPONENT_ONLINE, values[13]);
-		this.values.put(GAME_RESULT, values[14]);
+		gameId = Long.parseLong(values[0]);
+		color = values[1];
+		gameType = values[2];
+		userNameStrLength = values[3];
+		opponentName = values[4];
+		opponentRating = values[5];
+		timeRemainingAmount = values[6];
+		timeRemainingUnits = values[7];
+		fenStrLength = values[8];
+		fen = values[9];
+		timestamp = Long.parseLong(values[10]);
+		lastMoveFromSquare = values[11];
+		lastMoveToSquare = values[12];
+		isOpponentOnline = values[13].equals("1");
+		gameResults = values[14];
 
+	}
+
+	public long getGameId(){
+		return gameId;
 	}
 
 	public String getColor() {
-		return values.get(COLOR);
+		return color;
 	}
 
 	public String getFen() {
-		return values.get(FEN);
+		return fen;
 	}
 
 	public String getFenStringLength() {
-		return values.get(FEN_STRING_LENGTH);
+		return fenStrLength;
 	}
 
 	public String getGameResult() {
-		return values.get(GAME_RESULT);
+		return gameResults;
 	}
 
 	public String getGameType() {
-		return values.get(GAME_TYPE);
+		return gameType;
 	}
 
-	public String getIsOpponentOnline() {
-		return values.get(IS_OPPONENT_ONLINE);
+	public boolean getIsOpponentOnline() {
+		return isOpponentOnline;
 	}
 
 	public String getLastMoveFromSquare() {
-		return values.get(LAST_MOVE_FROM_SQUARE);
+		return lastMoveFromSquare;
 	}
 
 	public String getLastMoveToSquare() {
-		return values.get(LAST_MOVE_TO_SQUARE);
+		return lastMoveToSquare;
 	}
 
 	public String getOpponentRating() {
-		return values.get(OPPONENT_RATING);
+		return opponentRating;
 	}
 
 	public String getOpponentUsername() {
-		return values.get(OPPONENT_USERNAME);
+		return opponentName;
 	}
 
 	public String getTimeRemainingAmount() {
-		return values.get(TIME_REMAINING_AMOUNT);
+		return timeRemainingAmount;
 	}
 
 	public String getTimeRemainingUnits() {
-		return values.get(TIME_REMAINING_UNITS);
+		return timeRemainingUnits;
 	}
 
-	public String getTimestamp() {
-		return values.get(TIMESTAMP);
+	public long getTimestamp() {
+		return timestamp;
 	}
 
 	public String getUsernameStringLength() {
-		return values.get(USERNAME_STRING_LENGTH);
+		return userNameStrLength;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		for (String string : values.keySet()) {
-			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
-		}
-		return builder.toString();
-	}
+//	@Override
+//	public String toString() {
+//		StringBuilder builder = new StringBuilder();
+//		for (String string : values.keySet()) {
+//			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
+//		}
+//		return builder.toString();
+//	}
 
 
-	public long getGameId(){
-		return Long.parseLong(values.get(GameListFinishedItem.GAME_ID));
-	}
+
 
 
 //	The eches challenges response looks like the following:

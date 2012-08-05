@@ -1,10 +1,6 @@
 package com.chess.model;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
-// TODO eliminate hashmaps and create Objects
-public class GameListCurrentItem implements Serializable {
+public class GameListCurrentItem extends BaseGameOnlineItem {
 
 	public static final String GAME_TYPE = "game_type";
 	public static final String GAME_ID = "game_id";
@@ -25,107 +21,91 @@ public class GameListCurrentItem implements Serializable {
 	private static final String HAS_NEW_MESSAGE = "has_new_message";
 
 
-	private HashMap<String, String> values;
+//	private HashMap<String, String> values;
 
 	public GameListCurrentItem(String[] values) {
-		this.values = new HashMap<String, String>();
+//		this.values = new HashMap<String, String>();
 
-		this.values.put(GAME_ID, values[0]);
-		this.values.put(COLOR, values[1]);
-		this.values.put(GAME_TYPE, values[2]);
-		this.values.put(USERNAME_STRING_LENGTH, values[3]);
-		this.values.put(OPPONENT_USERNAME, values[4]);
-		this.values.put(OPPONENT_RATING, values[5]);
-		this.values.put(TIME_REMAINING_AMOUNT, values[6]);
-		this.values.put(TIME_REMAINING_UNITS, values[7]);
-		this.values.put(FEN_STRING_LENGTH, values[8]);
-		this.values.put(FEN, values[9]);
-		this.values.put(TIMESTAMP, values[10]);
-		this.values.put(LAST_MOVE_FROM_SQUARE, values[11]);
-		this.values.put(LAST_MOVE_TO_SQUARE, values[12]);
-		this.values.put(IS_DRAW_OFFER_PENDING, values[13]);
-		this.values.put(IS_OPPONENT_ONLINE, values[14]);
-		this.values.put(IS_MY_TURN, values[15]);
-		this.values.put(HAS_NEW_MESSAGE, values[16]);
+		gameId = Long.parseLong(values[0]);
+		color = values[1];
+		gameType =  values[2];
+		userNameStrLength = values[3];
+		opponentName = values[4];
+		opponentRating = values[5];
+		timeRemainingAmount = values[6];
+		timeRemainingUnits = values[7];
+		fenStrLength = values[8];
+		fen = values[9];
+		timestamp = Long.parseLong(values[10]);
+		lastMoveFromSquare =  values[11];
+		lastMoveToSquare = values[12];
+		isDrawOfferPending = values[13].equals("p");
+		isOpponentOnline = values[14].equals("1");
+		isMyTurn = values[15].equals("1");
+		hasMessage = values[16].equals("1");
 
 	}
 
 	public long getGameId(){
-		return Long.parseLong(values.get(GAME_ID));
+		return gameId;
 	}
 
 	public String getColor() {
-		return values.get(COLOR);
+		return color;
 	}
 
 	public String getGameType() {
-		return values.get(GAME_TYPE);
+		return gameType;
 	}
 
 	public String getUsernameStringLength() {
-		return values.get(USERNAME_STRING_LENGTH);
+		return userNameStrLength;
 	}
 
 	public String getOpponentUsername() {
-		return values.get(OPPONENT_USERNAME);
+		return opponentName;
 	}
 
 	public String getOpponentRating() {
-		return values.get(OPPONENT_RATING);
-	}
-
-	public String getTimeRemainingAmount() {
-		return values.get(TIME_REMAINING_AMOUNT);
-	}
-
-	public String getTimeRemainingUnits() {
-		return values.get(TIME_REMAINING_UNITS);
+		return opponentRating;
 	}
 
 	public String getFenStringLength() {
-		return values.get(FEN_STRING_LENGTH);
-	}
-
-	public String getFen() {
-		return values.get(FEN);
-	}
-
-	public String getTimestamp() {
-		return values.get(TIMESTAMP);
+		return fenStrLength;
 	}
 
 	public String getLastMoveFromSquare() {
-		return values.get(LAST_MOVE_FROM_SQUARE);
+		return lastMoveFromSquare;
 	}
 
 	public String getLastMoveToSquare() {
-		return values.get(LAST_MOVE_TO_SQUARE);
+		return lastMoveToSquare;
 	}
 
-	public String getIsDrawOfferPending() { // TODO
-		return values.get(IS_DRAW_OFFER_PENDING);
+	public boolean getIsDrawOfferPending() { // TODO
+		return isDrawOfferPending;
 	}
 
-	public String getIsOpponentOnline() {
-		return values.get(IS_OPPONENT_ONLINE);
+	public boolean getIsOpponentOnline() {
+		return isOpponentOnline;
 	}
 
-	public String getHasNewMessage() { // TODO
-		return values.get(HAS_NEW_MESSAGE);
+	public boolean getHasNewMessage() { // TODO
+		return hasMessage;
 	}
 
-	public String getIsMyTurn() { // TODO
-		return values.get(IS_MY_TURN);
+	public boolean getIsMyTurn() { // TODO
+		return isMyTurn;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		for (String string : values.keySet()) {
-			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
-		}
-		return builder.toString();
-	}
+//	@Override
+//	public String toString() {
+//		StringBuilder builder = new StringBuilder();
+//		for (String string : values.keySet()) {
+//			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
+//		}
+//		return builder.toString();
+//	}
 
 
 

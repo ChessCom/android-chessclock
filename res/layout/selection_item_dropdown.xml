@@ -9,7 +9,7 @@
 		android:id="@+id/image"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginLeft="6dip" android:contentDescription=""/>
+		android:layout_marginLeft="6dip" android:contentDescription="@string/image"/>
 
 	<com.chess.RoboTextView
 		android:id="@+id/text"

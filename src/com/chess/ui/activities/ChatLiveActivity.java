@@ -9,7 +9,6 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.SendLiveMessageTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
-import com.chess.model.GameListItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.utilities.AppUtils;
@@ -22,7 +21,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	private ListView chatListView;
 	private MessagesAdapter messagesAdapter;
 	private ArrayList<MessageItem> chatItems;
-	private Long gameId;
+//	private Long gameId;
 	private MessageUpdateListener messageUpdateListener;
 
 	@Override
@@ -34,7 +33,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.send).setOnClickListener(this);
 
-		gameId = getIntent().getExtras().getLong(GameListItem.GAME_ID);
+//		gameId = getIntent().getExtras().getLong(BaseGameItem.GAME_ID);
 		chatItems = new ArrayList<MessageItem>();
 		messageUpdateListener = new MessageUpdateListener();
 	}
@@ -48,7 +47,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 
 	private void updateList(){
 		chatItems.clear();
-		chatItems.addAll(getLccHolder().getMessagesList(gameId));
+		chatItems.addAll(getLccHolder().getMessagesList());
 
 		if (messagesAdapter == null) {
 			messagesAdapter = new MessagesAdapter(ChatLiveActivity.this, R.layout.chat_item, chatItems);
@@ -75,6 +74,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.send) {
+			Long gameId = getLccHolder().getCurrentGameId();
 			new SendLiveMessageTask(messageUpdateListener, getTextFromField(sendEdt)).execute(gameId);
 			updateList();
 

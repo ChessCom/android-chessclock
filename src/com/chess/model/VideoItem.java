@@ -1,27 +1,83 @@
 package com.chess.model;
 
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-
-import java.util.HashMap;
 
 public class VideoItem {
 
-	public HashMap<String, String> values;
+
+	private String title;
+	private String description;
+	private String prefVideoCategory;
+	private String skillLevel;
+	private String opening;
+	private String authorUsername;
+	private String authorChessTitle;
+	private String authorFirstGame;
+	private String authorLastName;
+	private String minutes;
+	private long publishTimestamp;
+	private String viewUrl;
 
 	public VideoItem(String[] values) {
-		this.values = new HashMap<String, String>();
-		this.values.put(AppConstants.TITLE, values[0]);
-		this.values.put(AppConstants.DESCRIPTION, values[1].replaceAll("&quot;", "\""));
-		this.values.put(AppConstants.PREF_VIDEO_CATEGORY, values[2]);
-		this.values.put(AppConstants.SKILL_LEVEL, values[3]);
-		this.values.put(AppConstants.OPENING, values[4]);
-		this.values.put(AppConstants.AUTHOR_USERNAME, values[5]);
-		this.values.put(AppConstants.AUTHOR_CHESS_TITLE, values[6]);
-		this.values.put(AppConstants.AUTHOR_FIRST_GAME, values[7]);
-		this.values.put(AppConstants.AUTHOR_LAST_NAME, values[8]);
-		this.values.put(AppConstants.MINUTES, values[9]);
-		this.values.put(AppConstants.PUBLISH_TIMESTAMP, values[10]);
-		this.values.put(AppConstants.VIEW_URL, values[11].replaceAll("<--->", StaticData.SYMBOL_EMPTY));
+		title = values[0];
+		description = values[1].replaceAll("&quot;", "\"");
+		prefVideoCategory = values[2];
+		skillLevel = values[3];
+		opening = values[4];
+		authorUsername = values[5];
+		authorChessTitle = values[6];
+		authorFirstGame = values[7];
+		authorLastName = values[8];
+		minutes = values[9];
+		publishTimestamp = Long.parseLong(values[10]);
+		viewUrl = values[11].replaceAll("<--->", StaticData.SYMBOL_EMPTY);
+	}
+
+	public String getAuthorChessTitle() {
+		return authorChessTitle;
+	}
+
+	public String getAuthorFirstGame() {
+		return authorFirstGame;
+	}
+
+	public String getAuthorLastName() {
+		return authorLastName;
+	}
+
+	public String getAuthorUsername() {
+		return authorUsername;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getMinutes() {
+		return minutes;
+	}
+
+	public String getOpening() {
+		return opening;
+	}
+
+	public String getPrefVideoCategory() {
+		return prefVideoCategory;
+	}
+
+	public long getPublishTimestamp() {
+		return publishTimestamp;
+	}
+
+	public String getSkillLevel() {
+		return skillLevel;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getViewUrl() {
+		return viewUrl;
 	}
 }

@@ -18,7 +18,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.GameListItem;
+import com.chess.model.BaseGameItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.utilities.ChessComApiParser;
@@ -53,8 +53,8 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancel(R.string.you_got_new_msg);
 
-		gameId = extras.getLong(GameListItem.GAME_ID);
-		timeStamp = extras.getString(GameListItem.TIMESTAMP);
+		gameId = extras.getLong(BaseGameItem.GAME_ID);
+		timeStamp = extras.getString(BaseGameItem.TIMESTAMP);
 
 		listUpdateListener = new ListUpdateListener();
 		sendUpdateListener = new SendUpdateListener();

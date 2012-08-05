@@ -2,8 +2,8 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
@@ -55,9 +55,9 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 	private Facebook facebook;
 	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
-	private AsyncTask<LoadItem, Void, Integer> loginTask;
-	private AsyncTask<LoadItem, Void, Integer> postDataTask;
     private boolean forceFlag;
+	private Handler handler;
+	private static final long FACEBOOK_DELAY = 200;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		SessionEvents.dropLogoutListeners();
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
 		facebookLoginButton.init(this, facebook);
+
+		handler = new Handler();
 
 		loginUpdateListener = new LoginUpdateListener();
 	}
@@ -134,7 +136,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 
-		postDataTask = new PostDataTask(loginUpdateListener).executeTask(loadItem);
+		new PostDataTask(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
@@ -148,7 +150,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
 			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
 
-			loginTask = new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
+			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
 
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
@@ -213,7 +215,9 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 					passwordEdt.setError(getResources().getString(R.string.invalid_password));
 					passwordEdt.requestFocus();
 				}else{
-					showSinglePopupDialog(R.string.error, message);
+
+					showToast(message);
+//					showSinglePopupDialog(R.string.error, message);
 				}
 			}
 		}
@@ -305,12 +309,34 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK ){
 			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
-				facebook.authorizeCallback(requestCode, resultCode, data);
+				handler.postDelayed(new DelayedCallback(data, requestCode, resultCode), FACEBOOK_DELAY);
 			}else if(requestCode == NETWORK_REQUEST){
 				signInUser();
 			}
 		}
 	}
+
+	/**
+	 * Prevent earlier launch of task, as it finish right after onPause callback
+	 */
+	private class DelayedCallback implements Runnable {
+
+		private Intent data;
+		private int resultCode;
+		private int requestCode;
+
+		private DelayedCallback(Intent data, int requestCode, int resultCode) {
+			this.data = data;
+			this.requestCode = requestCode;
+			this.resultCode = resultCode;
+		}
+
+		@Override
+		public void run() {
+			handler.removeCallbacks(this);
+			facebook.authorizeCallback(requestCode, resultCode, data);
+		}
+	};
 
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -327,10 +353,10 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 	protected void onPause() {
 		super.onPause();
 
-		if(loginTask != null)
-			loginTask.cancel(true);
-		if(postDataTask != null)
-			postDataTask.cancel(true);
+//		if(loginTask != null)
+//			loginTask.cancel(true);
+//		if(postDataTask != null)
+//			postDataTask.cancel(true);
 
 	}
 

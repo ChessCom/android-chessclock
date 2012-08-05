@@ -1,9 +1,7 @@
 package com.chess.model;
 
-import java.util.HashMap;
-
 // TODO eliminate hashmaps and create Objects
-public class GameListChallengeItem {
+public class GameListChallengeItem extends BaseGameOnlineItem{
 
 	public static final String GAME_TYPE = "game_type";
 	public static final String GAME_ID = "game_id";
@@ -18,78 +16,95 @@ public class GameListChallengeItem {
 	public static final String RATED = "rated";
 	public static final String INITIAL_SETUP_FEN = "initial_setup_fen";
 
+	private String opponentWinCount;
+	private String opponentLossCount;
+	private String opponentDrawCount;
+	private String playAsColor;
+	private String daysPerMove;
+	private String initialSetupFen;
+	private String isRated;
 
-	private HashMap<String, String> values;
 
 	public GameListChallengeItem(String[] values) {
-		this.values = new HashMap<String, String>();
-		this.values.put(GAME_ID, values[0].trim());
-		this.values.put(OPPONENT_USERNAME, values[1]);
-		this.values.put(OPPONENT_RATING, values[2]);
+		gameId = Long.parseLong(values[0].trim());
+		opponentName = values[1];
+		opponentRating = values[2];
+//		this.values.put(GAME_ID, values[0].trim());
+//		this.values.put(OPPONENT_USERNAME, values[1]);
+//		this.values.put(OPPONENT_RATING, values[2]);
 
-		this.values.put(OPPONENT_WIN_COUNT, values[3]);
-		this.values.put(OPPONENT_LOSS_COUNT, values[4]);
-		this.values.put(OPPONENT_DRAW_COUNT, values[5]);
-		this.values.put(PLAYAS_COLOR, values[6]);
-		this.values.put(DAYS_PER_MOVE, values[7]);
-		this.values.put(GAME_TYPE, values[8]);
-		this.values.put(RATED, values[9]);
-		this.values.put(INITIAL_SETUP_FEN, values[10]);
-		//this.values.put("initial_setup_fen", values[9]); // api ver 1
+		opponentWinCount = values[3];
+		opponentLossCount = values[4];
+		opponentDrawCount = values[5];
+//		this.values.put(OPPONENT_WIN_COUNT, values[3]);
+//		this.values.put(OPPONENT_LOSS_COUNT, values[4]);
+//		this.values.put(OPPONENT_DRAW_COUNT, values[5]);
+
+		playAsColor = values[6];
+		daysPerMove = values[7];
+		gameType = values[8];
+		isRated = values[9];
+		initialSetupFen = values[10];
+//		this.values.put(PLAYAS_COLOR, values[6]);
+//		this.values.put(DAYS_PER_MOVE, values[7]);
+//		this.values.put(GAME_TYPE, values[8]);
+//		this.values.put(RATED, values[9]);
+//		this.values.put(INITIAL_SETUP_FEN, values[10]);
+
 	}
 
 	public long getGameId(){
-		return Long.parseLong(values.get(GAME_ID));
+		return gameId;
 	}
 	
 	public String getOpponentUsername(){
-		return values.get(OPPONENT_USERNAME);
+		return opponentName;
 	}
 	
 	public String getOpponentRating(){
-		return values.get(OPPONENT_RATING);
+		return opponentRating;
 	}
 
 	public String getOpponentWinCount(){
-		return values.get(OPPONENT_WIN_COUNT);
+		return opponentWinCount;
 	}
 
 	public String getOpponentLossCount(){
-		return values.get(OPPONENT_LOSS_COUNT);
+		return opponentLossCount;
 	}
 
 	public String getOpponentDrawCount() {
-		return values.get(OPPONENT_DRAW_COUNT);
+		return opponentDrawCount;
 	}
 
 	public String getPlayAsColor() {
-		return values.get(PLAYAS_COLOR);
+		return playAsColor;
 	}
 
 	public String getGameType() {
-		return values.get(GAME_TYPE);
+		return gameType;
 	}
 
 	public String getRated() {
-		return values.get(RATED);
+		return isRated;
 	}
 
 	public String getInitialSetupFen() {
-		return values.get(INITIAL_SETUP_FEN);
+		return initialSetupFen;
 	}
 
 	public String getDaysPerMove() {
-		return values.get(DAYS_PER_MOVE);
+		return daysPerMove;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		for (String string : values.keySet()) {
-			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
-		}
-		return builder.toString();
-	}
+//	@Override
+//	public String toString() {
+//		StringBuilder builder = new StringBuilder();
+//		for (String string : values.keySet()) {
+//			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
+//		}
+//		return builder.toString();
+//	}
 
 
 
