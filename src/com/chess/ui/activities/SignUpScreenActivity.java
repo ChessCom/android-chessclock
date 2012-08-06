@@ -223,7 +223,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, result[0].split("[+]")[1]);
 				preferencesEditor.putString(AppConstants.API_VERSION, result[1]);
 				try {
-					preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(result[2], AppConstants.UTF_8));
+					preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(result[2], HTTP.UTF_8));
 				} catch (UnsupportedEncodingException ignored) {
 					showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login);
 					return;
@@ -260,7 +260,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
 		}
 		preferencesEditor.commit();

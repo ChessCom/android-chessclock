@@ -206,7 +206,7 @@
 	<string name="yes">Si</string>
 	<string name="no">No</string>
 	<string name="okay">Accetta</string>
-	<string name="hundred_tackics_completed">100 tattiche completato!</string>
+	<string name="ten_tactics_completed">10 tattiche completato!</string>
 	<string name="offline_mode">Modalità Offline</string>
 	<string name="no_network_rating_not_changed">L\'accesso a Internet non è attualmente disponibile. Come risultato, il tuo voto non cambierà dopo aver completato i problemi sino a quando i parametri di connessione a Internet.
 	</string>

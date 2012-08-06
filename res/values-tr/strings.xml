@@ -206,7 +206,7 @@
 	<string name="yes">Evet</string>
 	<string name="no">Hayır</string>
 	<string name="okay">Tamam</string>
-	<string name="hundred_tackics_completed">100 taktikleri tamamlandı!</string>
+	<string name="ten_tactics_completed">10 taktikleri tamamlandı!</string>
 	<string name="offline_mode">Çevrimdışı modu</string>
 	<string name="no_network_rating_not_changed">İnternet şu anda kullanılabilir değil. Sonuç olarak, kendi değerlendirmesi Internet bağlantınızı dönene kadar sorunlarını tamamladıktan sonra değişmez.
 	</string>

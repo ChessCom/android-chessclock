@@ -31,6 +31,7 @@ import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
+import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -242,7 +243,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) { // TODO handle more proper way
 			preferencesEditor.putString(AppConstants.USER_TOKEN, response[2]);
 		}

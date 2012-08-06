@@ -14,13 +14,11 @@ import java.util.List;
 public class DataHolder {
 	private static DataHolder ourInstance = new DataHolder();
 
-	public static String APP_ID = "2427617054";
-
 	private boolean guest = false;
 	private boolean offline = false;
 	private boolean acceptDraw = false;
 	private boolean liveChess;
-	private boolean pendingTacticsLoad;
+//	private boolean pendingTacticsLoad;
 	private TacticResultItem tacticResultItem;
 
 	// Singletones for Tactics mode
@@ -68,13 +66,13 @@ public class DataHolder {
 		this.acceptDraw = acceptDraw;
 	}
 
-	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {
-		this.pendingTacticsLoad = pendingTacticsLoad;
-	}
-
-	public boolean isPendingTacticsLoad() {
-		return pendingTacticsLoad;
-	}
+//	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {
+//		this.pendingTacticsLoad = pendingTacticsLoad;
+//	}
+//
+//	public boolean isPendingTacticsLoad() {
+//		return pendingTacticsLoad;
+//	}
 
 	public TacticItem getTactic() {
 		return tactic;

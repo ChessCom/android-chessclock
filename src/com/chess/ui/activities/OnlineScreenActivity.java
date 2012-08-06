@@ -299,15 +299,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				intent.putExtra(BaseGameItem.TIMESTAMP, gameListCurrentItem.getTimestamp());
 				startActivity(intent);
 			} else if (pos == 1) {
-				String Draw = AppConstants.OFFERDRAW;
+				String draw = RestHelper.V_OFFERDRAW;
 				if (gameListCurrentItem.getIsDrawOfferPending())
-					Draw = AppConstants.ACCEPTDRAW;
+					draw = RestHelper.V_ACCEPTDRAW;
 
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
-				loadItem.addRequestParams(RestHelper.P_COMMAND, Draw);
+				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestampStr());
 
 				new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);

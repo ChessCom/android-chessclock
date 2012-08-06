@@ -206,7 +206,7 @@
 	<string name="yes">Sim</string>
 	<string name="no">Não</string>
 	<string name="okay">Aceitar</string>
-	<string name="hundred_tackics_completed">100 táticas concluída!</string>
+	<string name="ten_tactics_completed">10 táticas concluída!</string>
 	<string name="offline_mode">Modo offline</string>
 	<string name="no_network_rating_not_changed">Acesso à Internet não está disponível. Como resultado, a sua classificação não vai mudar após a conclusão problemas até seus retornos de ligação à Internet.
 	</string>

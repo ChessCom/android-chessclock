@@ -207,7 +207,7 @@
 	<string name="yes">Да</string>
 	<string name="no">Нет</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 Тактик завершены!</string>
+	<string name="ten_tactics_completed">10 Тактик завершены!</string>
 	<string name="offline_mode">Автономный режим</string>
 	<string name="no_network_rating_not_changed">Доступ в Интернет в настоящее время недоступен. В результате, ваш рейтинг не изменится после завершения проблемы пока не вернется подключение к Интернету.
 	</string>

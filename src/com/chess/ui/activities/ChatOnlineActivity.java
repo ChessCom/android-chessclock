@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
@@ -22,6 +21,7 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.utilities.ChessComApiParser;
+import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -148,7 +148,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	private void sendMessage(){
 		String message = StaticData.SYMBOL_EMPTY;
 		try {
-			message = URLEncoder.encode(sendText.getText().toString(), AppConstants.UTF_8);
+			message = URLEncoder.encode(sendText.getText().toString(), HTTP.UTF_8);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			Log.e("Chat", e.toString());

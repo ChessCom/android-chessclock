@@ -15,6 +15,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardToGameActivityFace;
+import org.apache.http.protocol.HTTP;
 
 import java.net.URLEncoder;
 import java.util.Iterator;
@@ -1514,7 +1515,7 @@ public class ChessBoard implements BoardFace {
 						to = "c1";
 				}
 			}
-			output = URLEncoder.encode(MoveParser.positionToString(move.from) + to, AppConstants.UTF_8);
+			output = URLEncoder.encode(MoveParser.positionToString(move.from) + to, HTTP.UTF_8);
 		} catch (Exception ignored) {
 		}
 		Log.d("move:", output);

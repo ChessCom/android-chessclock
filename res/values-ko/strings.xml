@@ -205,7 +205,7 @@
 	<string name="yes">예</string>
 	<string name="no">아니오</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">백 전술이 완성!</string>
+	<string name="ten_tactics_completed">10 전술 완료!</string>
 	<string name="offline_mode">오프라인 모드</string>
 	<string name="no_network_rating_not_changed">인터넷은 현재 사용할 수 없습니다. 따라서 귀하의 평가는 인터넷 연결 반품 때까지 문제를 완료한 후 변경되지 않습니다.</string>
 	<string name="abort_resign_game">중지는 / 게임을 사임 :</string>

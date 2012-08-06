@@ -207,7 +207,7 @@
 	<string name="yes">हाँ</string>
 	<string name="no">नहीं</string>
 	<string name="okay">स्वीकारें</string>
-	<string name="hundred_tackics_completed">पूरा 100 रणनीति!</string>
+	<string name="ten_tactics_completed">पूरा 10 रणनीति!</string>
 	<string name="offline_mode">ऑफ़लाइन मोड</string>
 	<string name="no_network_rating_not_changed">इंटरनेट का उपयोग नहीं वर्तमान में उपलब्ध है. एक परिणाम के रूप में, अपने दर्ज़ा आपके इंटरनेट कनेक्शन रिटर्न जब तक समस्याओं को पूरा करने के बाद नहीं बदल जाएगा.
 	</string>

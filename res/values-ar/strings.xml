@@ -207,7 +207,7 @@
 	<string name="yes">نعم</string>
 	<string name="no">النُّوبِلْيُوم</string>
 	<string name="okay">موافق</string>
-	<string name="hundred_tackics_completed">100 تكتيكات الانتهاء!</string>
+	<string name="ten_tactics_completed">10 تكتيكات الانتهاء!</string>
 	<string name="offline_mode">حاليا الوضع</string>
 	<string name="no_network_rating_not_changed">الدخول إلى الإنترنت غير متوفر حاليا. ونتيجة لذلك، سوف تصويتك لن يتغير بعد الانتهاء من المشاكل حتى يعود الاتصال بالإنترنت.
 	</string>

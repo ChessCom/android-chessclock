@@ -206,7 +206,7 @@
 	<string name="yes">Ja</string>
 	<string name="no">Nej</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 taktik klar!</string>
+	<string name="ten_tactics_completed">10 taktik klar!</string>
 	<string name="offline_mode">Offline-läge</string>
 	<string name="no_network_rating_not_changed">Internet är för närvarande inte tillgänglig. Som ett resultat kommer ditt betyg ändras inte efter att ha avslutat problem tills din avkastning Internet-anslutning.
 	</string>

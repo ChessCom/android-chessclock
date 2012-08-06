@@ -206,7 +206,7 @@
 	<string name="yes">\"آره.\"</string>
 	<string name="no">\"نه.\"</string>
 	<string name="okay">پذیرش</string>
-	<string name="hundred_tackics_completed">100 تاکتیک های تکمیل شده!</string>
+	<string name="ten_tactics_completed">10 تاکتیک های تکمیل شده!</string>
 	<string name="offline_mode">در حالت آفلاین</string>
 	<string name="no_network_rating_not_changed">دسترسی به اینترنت در حال حاضر در دسترس نمی باشد. به عنوان یک نتیجه، امتیاز شما تغییر نخواهد کرد پس از اتمام مشکلات تا زمانی که اتصال اینترنت شما را برمی گرداند.
 	</string>

@@ -206,7 +206,7 @@
 	<string name="yes">כן</string>
 	<string name="no">לא</string>
 	<string name="okay">אישור</string>
-	<string name="hundred_tackics_completed">100 טקטיקות הושלמה!</string>
+	<string name="ten_tactics_completed">10 טקטיקות הושלמה!</string>
 	<string name="offline_mode">מצב לא מקוון</string>
 	<string name="no_network_rating_not_changed">גישה לאינטרנט אינו זמין כרגע. כתוצאה מכך, הדירוג שלך לא ישתנה לאחר השלמת בעיות עד החיבור שלך לאינטרנט חוזר.
 	</string>

@@ -596,7 +596,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
-			Log.i(TAG, AppConstants.REQUEST_DRAW + getLccHolder().getCurrentGame());
+			Log.i(TAG, "Request draw: " + getLccHolder().getCurrentGame());
 			gameTaskRunner.runMakeDrawTask();
 		} else if (fragment.getTag().equals(WARNING_TAG)) {
 			getLccHolder().getPendingWarnings().remove(warningMessage);
@@ -604,14 +604,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			Game game = getLccHolder().getCurrentGame();
 
 			if (getLccHolder().isFairPlayRestriction()) {
-				System.out.println(AppConstants.LCCLOG_RESIGN_GAME_BY_FAIR_PLAY_RESTRICTION + game);
-				Log.i(TAG, AppConstants.RESIGN_GAME + game);
+				Log.i("LCCLOG", ": resign game by fair play restriction: " + game);
+				Log.i(TAG, "Resign game: " + game);
 				gameTaskRunner.runMakeResignTask();
 			} else if (getLccHolder().isAbortableBySeq()) {
-				Log.i(TAG, AppConstants.LCCLOG_ABORT_GAME + game);
+				Log.i(TAG, "LCCLOG: abort game: " + game);
 				gameTaskRunner.runAbortGameTask();
 			} else {
-				Log.i(TAG, AppConstants.LCCLOG_RESIGN_GAME + game);
+				Log.i(TAG,"LCCLOG: resign game: " + game);
 				gameTaskRunner.runMakeResignTask();
 			}
 		}
@@ -621,7 +621,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
-			Log.i(TAG, AppConstants.DECLINE_DRAW + getLccHolder().getCurrentGame());
+			Log.i(TAG, "Decline draw: " + getLccHolder().getCurrentGame());
 			gameTaskRunner.runRejectDrawTask();
 		}
 	}

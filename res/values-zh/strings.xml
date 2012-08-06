@@ -205,7 +205,7 @@
 	<string name="yes">是</string>
 	<string name="no">不愿意</string>
 	<string name="okay">确定</string>
-	<string name="hundred_tackics_completed">完成100战术！</string>
+	<string name="ten_tactics_completed">完成10战术！</string>
 	<string name="offline_mode">离线模式</string>
 	<string name="no_network_rating_not_changed">目前还没有上网。因此，您的评级将不会改变完成后，直到您的Internet连接返回的问题。</string>
 	<string name="abort_resign_game">中止/辞职的游戏：</string>

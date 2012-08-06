@@ -206,7 +206,7 @@
 	<string name="yes">Ja</string>
 	<string name="no">Nee</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 tactieken voltooid!</string>
+	<string name="ten_tactics_completed">10 tactieken voltooid!</string>
 	<string name="offline_mode">Offline-modus</string>
 	<string name="no_network_rating_not_changed">Toegang tot internet is momenteel niet beschikbaar. Als gevolg hiervan, zal je rating niet veranderen na het voltooien van problemen tot aan uw internetverbinding rendement.
 	</string>

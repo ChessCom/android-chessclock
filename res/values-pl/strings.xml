@@ -206,7 +206,7 @@
 	<string name="yes">Tak</string>
 	<string name="no">Nr</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 taktyka zakończony!</string>
+	<string name="ten_tactics_completed">10 taktyka zakończony!</string>
 	<string name="offline_mode">Tryb offline</string>
 	<string name="no_network_rating_not_changed">Dostęp do Internetu jest obecnie niedostępna. W rezultacie Twoja ocena nie ulegnie zmianie po zakończeniu problemów aż do Twoich zwrotów połączeń internetowych.
 	</string>

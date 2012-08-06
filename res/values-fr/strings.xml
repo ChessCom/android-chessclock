@@ -208,7 +208,7 @@
 	<string name="yes">Oui</string>
 	<string name="no">Aucun</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 tactiques terminé!</string>
+	<string name="ten_tactics_completed">10 tactiques terminé!</string>
 	<string name="offline_mode">Le mode hors connexion</string>
 	<string name="no_network_rating_not_changed">L\'accès à Internet n\'est pas disponible actuellement. En conséquence, votre note ne changera pas après avoir terminé les problèmes jusqu\'à ce que vos déclarations de connexion à Internet.
 	</string>

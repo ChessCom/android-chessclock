@@ -43,6 +43,7 @@ import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 import com.mopub.mobileads.MoPubView;
+import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -448,7 +449,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], AppConstants.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
 			preferencesEditor.putString(AppConstants.USER_TOKEN, response[2]);
 		}

@@ -205,7 +205,7 @@
 	<string name="yes">Ja</string>
 	<string name="no">Nei</string>
 	<string name="okay">OK</string>
-	<string name="hundred_tackics_completed">100 taktikk ferdig!</string>
+	<string name="ten_tactics_completed">10 taktikk ferdig!</string>
 	<string name="offline_mode">Frakoblet modus</string>
 	<string name="no_network_rating_not_changed">Internett tilgang er ikke tilgjengelig for øyeblikket. Som et resultat, vil din rating ikke endre etter endt problemer før din internettforbindelse avkastning.
 	</string>

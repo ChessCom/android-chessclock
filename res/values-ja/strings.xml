@@ -206,7 +206,7 @@
 	<string name="yes">はい</string>
 	<string name="no">いいえ</string>
 	<string name="okay">確定</string>
-	<string name="hundred_tackics_completed">100戦術は 完了する！</string>
+	<string name="ten_tactics_completed">10 戦術は 完了する！</string>
 	<string name="offline_mode">オフラインモード(O)</string>
 	<string name="no_network_rating_not_changed">インターネットアクセスは現在利用できません。結果として、あなたの評価は、インターネット接続が復帰するまでの問題を完了した後に変更されません。</string>
 	<string name="abort_resign_game">中止/ゲームを投了。</string>
