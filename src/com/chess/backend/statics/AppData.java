@@ -141,4 +141,10 @@ public class AppData {
 		return !preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
 				.equals(StaticData.SYMBOL_EMPTY);
 	}
+
+	public static boolean haveSavedTacticGame(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		return !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
+				.equals(StaticData.SYMBOL_EMPTY);
+	}
 }

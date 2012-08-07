@@ -89,12 +89,12 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         }
 
         if (isHighlightEnabled && boardFace.getHply() > 0 ) {
-            Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
-            int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
-            int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
+            Move move = boardFace.getHistDat()[boardFace.getHply() - 1].move;
+            int x1 = ChessBoard.getColumn(move.from, boardFace.isReside());
+            int y1 = ChessBoard.getRow(move.from, boardFace.isReside());
             canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, redPaint);
-            int x2 = ChessBoard.getColumn(m.to, boardFace.isReside());
-            int y2 = ChessBoard.getRow(m.to, boardFace.isReside());
+            int x2 = ChessBoard.getColumn(move.to, boardFace.isReside());
+            int y2 = ChessBoard.getRow(move.to, boardFace.isReside());
             canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, redPaint);
         }
 

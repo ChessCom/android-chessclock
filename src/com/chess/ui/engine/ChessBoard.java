@@ -75,8 +75,8 @@ public class ChessBoard implements BoardFace {
 	private boolean retry;
 	private boolean tacticCanceled;
 	private int side = LIGHT;
-	private int sec = 0;
-	private int left = 0;
+	private int secondsPassed = 0;
+	private int secondsLeft = 0;
 	private int tacticsCorrectMoves = 0;
 	private String[] tacticMoves;
 	private int xside = DARK;
@@ -2036,33 +2036,36 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public int getSec() {
-		return sec;
+	public int getSecondsPassed() {
+		return secondsPassed;
 	}
 
 	@Override
-	public void setSec(int sec) {
-		this.sec = sec;
+	public void setSecondsPassed(int secondsPassed) {
+		this.secondsPassed = secondsPassed;
 	}
 
 	@Override
-	public int getLeft() {
-		return left;
+	public int getSecondsLeft() {
+		return secondsLeft;
 	}
 
 	@Override
-	public void increaseSec() {
-		sec++;
+	public void increaseSecondsPassed() {
+		secondsPassed++;
+
+		if(secondsLeft > 0)
+			secondsLeft--;
 	}
 
 	@Override
-	public void setLeft(int left) {
-		this.left = left;
+	public void setSecondsLeft(int secondsLeft) {
+		this.secondsLeft = secondsLeft;
 	}
 
 	@Override
-	public void decreaseLeft() {
-		left--;
+	public void decreaseSecondsLeft() {
+		secondsLeft--;
 	}
 
 	@Override

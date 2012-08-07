@@ -15,6 +15,10 @@ public class AppConstants {
 	public static final String CHALLENGE_MIN_RATING = "min_rating";
 	public static final String CHALLENGE_MAX_RATING = "max_rating";
 	public static final String SAVED_COMPUTER_GAME = "saving";
+	public static final String SAVED_TACTICS_ITEM = "saved tactics game";
+	public static final String SAVED_TACTICS_RESULT_ITEM = "saved tactic result";
+	public static final String SPENT_SECONDS_TACTICS = "spent seconds in tactics";
+
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
 	public static final String API_VERSION = "api_version";

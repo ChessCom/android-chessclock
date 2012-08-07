@@ -74,7 +74,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         if ((AppData.isComputerVsHumanGameMode(boardFace) || AppData.isHumanVsHumanGameMode(boardFace))
                 && !boardFace.isAnalysis()) {
 
-//            String saving = StaticData.SYMBOL_EMPTY + boardFace.getMode();
 			StringBuilder builder = new StringBuilder();
 			builder.append(boardFace.getMode());
             int i;
@@ -85,12 +84,10 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 						.append(m.to).append(DIVIDER_2)
 						.append(m.promote).append(DIVIDER_2)
 						.append(m.bits);
-//                saving += DIVIDER_1 + m.from + DIVIDER_2 + m.to + DIVIDER_2 + m.promote + DIVIDER_2 + m.bits;
             }
 
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putString(AppConstants.SAVED_COMPUTER_GAME, builder.toString());
-//			editor.putString(AppConstants.SAVED_COMPUTER_GAME, saving);
 			editor.commit();
         }
 		return super.isGameOver();

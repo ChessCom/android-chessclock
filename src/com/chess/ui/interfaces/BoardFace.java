@@ -119,17 +119,17 @@ public interface BoardFace {
 
 	String[] getTacticMoves();
 
-	void setSec(int sec);
+	void setSecondsPassed(int sec);
 
-	int getSec();
+	int getSecondsPassed();
 
-	void setLeft(int left);
+	void setSecondsLeft(int left);
 
-	void decreaseLeft();
+	void decreaseSecondsLeft();
 
-	int getLeft();
+	int getSecondsLeft();
 
-	void increaseSec();
+	void increaseSecondsPassed();
 
 	boolean isTacticCanceled();
 

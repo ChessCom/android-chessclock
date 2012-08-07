@@ -1,5 +1,7 @@
 package com.chess.model;
 
+import com.chess.backend.statics.StaticData;
+
 public class TacticItem {
 
 	private String id;
@@ -30,6 +32,10 @@ public class TacticItem {
 		return avgSeconds;
 	}
 
+	public int getAvgSecondsInt() {
+		return Integer.parseInt(avgSeconds);
+	}
+
 	public String getFen() {
 		return fen;
 	}
@@ -56,5 +62,23 @@ public class TacticItem {
 
 	public void setStop(boolean stop) {
 		this.stop = stop;
+	}
+
+	public String getSaveString(){
+//48566
+// :r4rk1/pp2p2p/6p1/3Pq3/2P1P1p1/P4nP1/1R2K2P/3Q1B1R w - - 0 1
+// :1. Qc2 Nd4+ 2. Kd1 Nxc2
+// :547
+// :389
+// :633
+// :38
+		StringBuilder builder = new StringBuilder();
+		return builder.append(id).append(StaticData.SYMBOL_COLON)
+				.append(fen).append(StaticData.SYMBOL_COLON)
+				.append(moveList).append(StaticData.SYMBOL_COLON)
+				.append(attemptCnt).append(StaticData.SYMBOL_COLON)
+				.append(passedCnt).append(StaticData.SYMBOL_COLON)
+				.append(rating).append(StaticData.SYMBOL_COLON)
+				.append(avgSeconds).append(StaticData.SYMBOL_COLON).toString();
 	}
 }
