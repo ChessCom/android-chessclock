@@ -109,7 +109,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	protected void getOnlineGame(long gameId) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.GET_GAME_V3);
+		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
 

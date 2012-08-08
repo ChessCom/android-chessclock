@@ -25,6 +25,7 @@ public class RestHelper {
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
 //	public static final String BASE_URL = "http://www.chess-4.com";
 	public static final String BASE_URL = "http://www.chess.com";
+	public static final String API_V5 = "/api/v5";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
 	public static final String API_V2 = "/api/v2";
@@ -81,8 +82,7 @@ public class RestHelper {
 	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
 	public static final String GET_USER_INFO_V3 = BASE_URL + API_V3 + "/get_user_info";
 
-	public static final String GET_GAME_V3 = BASE_URL + API_V3 + "/get_game";
-	public static final String GET_GAME_V4 = BASE_URL + API_V4 + "/get_game";
+	public static final String GET_GAME_V5 = BASE_URL + API_V5 + "/get_game";
 
 	/* Parameters */
 	public static final String P_USER_NAME = "username";

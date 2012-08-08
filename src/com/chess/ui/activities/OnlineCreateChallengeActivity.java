@@ -15,6 +15,9 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 
 public class OnlineCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
+
+	private static final String ERROR_TAG = "send request failed popup";
+
 	private Spinner iplayasSpnr;
 	private Spinner daysPerMoveSpnr;
 	private Spinner minRatingSpnr;
@@ -63,14 +66,14 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 		int minPos = minRatingSpnr.getSelectedItemPosition();
 		int maxPos = maxRatingSpnr.getSelectedItemPosition();
 
-		Integer minRating = minPos == 0? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(minPos));
-		Integer maxRating = maxPos == 0? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(maxPos));
+		Integer minRating = minPos == 0 ? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(minPos));
+		Integer maxRating = maxPos == 0 ? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(maxPos));
 
 
 		int color = iplayasSpnr.getSelectedItemPosition();
 		int days = daysArr[daysPerMoveSpnr.getSelectedItemPosition()];
-		int gameType = chess960.isChecked()? 2 :0;
-		int isRated = this.isRatedChkBx.isChecked() ? 1 :0;
+		int gameType = chess960.isChecked() ? 2 : 0;
+		int isRated = this.isRatedChkBx.isChecked() ? 1 : 0;
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
@@ -95,7 +98,12 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 
 		@Override
 		public void updateData(String returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
+				showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
+						ERROR_TAG);
+			}
 		}
 	}
 

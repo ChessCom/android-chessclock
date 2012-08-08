@@ -113,8 +113,8 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		int color = iPlayAsSpnr.getSelectedItemPosition();
 		int days = daysArr[daysPerMoveSpnr.getSelectedItemPosition()];
-		int gameType = chess960.isChecked()? 2 :0;
-		int isRated = this.isRatedChkBx.isChecked() ? 1 :0;
+		int gameType = chess960.isChecked() ? 2 : 0;
+		int isRated = this.isRatedChkBx.isChecked() ? 1 : 0;
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
@@ -135,9 +135,9 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS_)){
+			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
                 showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
-			}else if(returnedObj.contains(RestHelper.R_ERROR)){
+			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
 						ERROR_TAG);
 			}

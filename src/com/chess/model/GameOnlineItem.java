@@ -18,6 +18,9 @@ public class GameOnlineItem extends BaseGameItem {
 	protected String gameType;
 	protected String fenStartPosition;
 
+	private String rated;
+	private String daysPerMove;
+
 	public GameOnlineItem(String[] values) {
 		gameId = Long.valueOf(values[0].split("[+]")[1]);
 		gameType = values[1];
@@ -33,6 +36,8 @@ public class GameOnlineItem extends BaseGameItem {
 		encodedMoveStr = values[11];
 		hasNewMessage = values[12].equals("1");
 		secondsRemain = values[13];
+		rated = values[16];
+		daysPerMove = values[17];
 	}
 
 	public String getEncodedMoveStr() {
@@ -55,5 +60,11 @@ public class GameOnlineItem extends BaseGameItem {
 		return whiteUserMove;
 	}
 
+	public String getRated() {
+		return rated;
+	}
 
+	public String getDaysPerMove() {
+		return daysPerMove;
+	}
 }
