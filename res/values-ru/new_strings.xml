@@ -20,6 +20,7 @@
 	<string name="retry">Повтор</string>
 	<string name="stop">Стоп</string>
 	<string name="daily_limit_reached">Дневной Лимит Достигнут</string>
+	<string name="checkmate">Шах и мат!</string>
 
 
 </resources>

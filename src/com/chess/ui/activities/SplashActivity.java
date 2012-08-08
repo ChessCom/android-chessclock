@@ -30,24 +30,23 @@ public class SplashActivity extends BaseFragmentActivity {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			DataHolder.getInstance().setGuest(true);
 		} else { // validate token
-			if(RestHelper.IS_TEST_SERVER_MODE){
+//			if(RestHelper.IS_TEST_SERVER_MODE){
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.VALIDATE_TOKEN);
 				loadItem.addRequestParams(RestHelper.P_AUTH_TOKEN, AppData.getUserToken(this));
 
 				new GetStringObjTask(new TokenValidationListener()).execute(loadItem);
 
-			}else{
-				if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
-					AppUtils.startNotificationsUpdate(getContext());
-				}
-
-				startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
-				DataHolder.getInstance().setGuest(false);
-			}
+//			}else{
+//				if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
+//					AppUtils.startNotificationsUpdate(getContext());
+//				}
+//
+//				startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
+//				DataHolder.getInstance().setGuest(false);
+//			}
 		}
 
-		finish();
 	}
 
 	private class TokenValidationListener extends AbstractUpdateListener<String>{
@@ -70,12 +69,13 @@ public class SplashActivity extends BaseFragmentActivity {
 
 				startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
 				DataHolder.getInstance().setGuest(false);
+
 			}else{
 				startActivity(new Intent(getContext(), LoginScreenActivity.class));
 				DataHolder.getInstance().setGuest(true);
 				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
-
 			}
+			finish();
 		}
 
 		@Override
@@ -83,6 +83,7 @@ public class SplashActivity extends BaseFragmentActivity {
 			super.errorHandle(resultCode);
 			startActivity(new Intent(getContext(), LoginScreenActivity.class));
 			DataHolder.getInstance().setGuest(true);
+			finish();
 		}
 	}
 

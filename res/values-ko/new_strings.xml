@@ -20,6 +20,7 @@
 	<string name="retry">재시도</string>
 	<string name="stop">정지</string>
 	<string name="daily_limit_reached">일일 한도에 도달</string>
+	<string name="checkmate">체크 메이트!</string>
 
 
 </resources>

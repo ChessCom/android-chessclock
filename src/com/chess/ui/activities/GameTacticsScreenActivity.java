@@ -424,9 +424,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				preferencesEditor.putBoolean(AppConstants.PREF_FIRST_TACTIC_START, false);
 				preferencesEditor.commit();
 			} else {
-				showSinglePopupDialog(returnedObj.substring(RestHelper.R_ERROR.length()));
+				String errorMessage = returnedObj.substring(RestHelper.R_ERROR.length());
+				if (errorMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
+					showLimitDialog();
+				} else {
+					showSinglePopupDialog(errorMessage);
+				}
 			}
-
 		}
 
 		@Override

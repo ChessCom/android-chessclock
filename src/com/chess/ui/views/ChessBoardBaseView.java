@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -210,6 +209,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void setFinished(boolean finished){
 		this.finished = finished;
+	}
+
+	public boolean isFinished(){
+		return finished;
 	}
 
 	@Override

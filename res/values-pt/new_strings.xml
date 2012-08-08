@@ -20,6 +20,7 @@
 	<string name="retry">Tentar novamente</string>
 	<string name="stop">Pare</string>
 	<string name="daily_limit_reached">Limite Diário Alcançado</string>
+	<string name="checkmate">Checkmate!</string>
 
 
 </resources>

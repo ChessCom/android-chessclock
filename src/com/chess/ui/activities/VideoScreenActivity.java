@@ -171,8 +171,6 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 	@Override
 	protected void onSearchQuery(String query) {
-		showToast(query);
-
         Intent intent = new Intent(this, VideoListActivity.class);
         intent.putExtra(RestHelper.P_KEYWORD, query);
         startActivity(intent);

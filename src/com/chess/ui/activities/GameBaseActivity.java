@@ -50,6 +50,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected boolean initTimer = true;
 	protected boolean userPlayWhite = true;
 	private ChessBoardBaseView boardView;
+	protected View endGamePopupView;
+	protected String endGameMessage;
 
 
 	@Override
@@ -141,15 +143,20 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	@Override
 	public void onGameOver(String message, boolean need2Finish) {
+		endGameMessage = message;
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout;
+
 		if (!MopubHelper.isShowAds(this)) {
-			layout = inflater.inflate(R.layout.popup_end_game, null, false);
+			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 		}else {
-			layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+			endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 		}
 
-		showGameEndPopup(layout, message);
+		if(getBoardFace().isSubmit()){
+			showToast(R.string.checkmate);
+		} else {
+			showGameEndPopup(endGamePopupView, endGameMessage);
+		}
 	}
 
 	protected void showGameEndPopup(final View layout, final String message){

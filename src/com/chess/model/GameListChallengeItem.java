@@ -1,20 +1,6 @@
 package com.chess.model;
 
-// TODO eliminate hashmaps and create Objects
 public class GameListChallengeItem extends BaseGameOnlineItem{
-
-	public static final String GAME_TYPE = "game_type";
-	public static final String GAME_ID = "game_id";
-	public static final String TIMESTAMP = "time_stamp";
-	public static final String OPPONENT_USERNAME = "opponent_username";
-	public static final String OPPONENT_RATING = "opponent_rating";
-	public static final String PLAYAS_COLOR = "playas_color";
-	public static final String OPPONENT_WIN_COUNT = "opponent_win_count";
-	public static final String OPPONENT_LOSS_COUNT = "opponent_loss_count";
-	public static final String OPPONENT_DRAW_COUNT = "opponent_draw_count";
-	public static final String DAYS_PER_MOVE = "days_per_move";
-	public static final String RATED = "rated";
-	public static final String INITIAL_SETUP_FEN = "initial_setup_fen";
 
 	private String opponentWinCount;
 	private String opponentLossCount;
@@ -29,28 +15,16 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		gameId = Long.parseLong(values[0].trim());
 		opponentName = values[1];
 		opponentRating = values[2];
-//		this.values.put(GAME_ID, values[0].trim());
-//		this.values.put(OPPONENT_USERNAME, values[1]);
-//		this.values.put(OPPONENT_RATING, values[2]);
 
 		opponentWinCount = values[3];
 		opponentLossCount = values[4];
 		opponentDrawCount = values[5];
-//		this.values.put(OPPONENT_WIN_COUNT, values[3]);
-//		this.values.put(OPPONENT_LOSS_COUNT, values[4]);
-//		this.values.put(OPPONENT_DRAW_COUNT, values[5]);
 
 		playAsColor = values[6];
 		daysPerMove = values[7];
 		gameType = values[8];
 		isRated = values[9];
 		initialSetupFen = values[10];
-//		this.values.put(PLAYAS_COLOR, values[6]);
-//		this.values.put(DAYS_PER_MOVE, values[7]);
-//		this.values.put(GAME_TYPE, values[8]);
-//		this.values.put(RATED, values[9]);
-//		this.values.put(INITIAL_SETUP_FEN, values[10]);
-
 	}
 
 	public long getGameId(){

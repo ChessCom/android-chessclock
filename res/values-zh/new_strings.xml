@@ -20,6 +20,7 @@
 	<string name="retry">重试</string>
 	<string name="stop">停止</string>
 	<string name="daily_limit_reached">达到涨停</string>
+	<string name="checkmate">死！</string>
 
 
 </resources>

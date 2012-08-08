@@ -20,6 +20,7 @@
 	<string name="retry">Prøv på nytt</string>
 	<string name="stop">Stopp</string>
 	<string name="daily_limit_reached">Daglig Nådd</string>
+	<string name="checkmate">Sjakkmatt!</string>
 
 
 </resources>

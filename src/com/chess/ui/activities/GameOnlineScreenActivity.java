@@ -23,7 +23,10 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.*;
+import com.chess.model.BaseGameItem;
+import com.chess.model.GameListCurrentItem;
+import com.chess.model.GameOnlineItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
@@ -45,6 +48,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String END_GAME_TAG = "end game popup";
+	private static final String ERROR_TAG = "send request failed popup";
 
 	private int UPDATE_DELAY = 120000;
 	private View submitButtonsLay;
@@ -69,6 +73,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private GameListCurrentItem gameInfoItem;
 	private String timeRemains;
 	private TextView infoLabelTxt;
+	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +107,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			getBoardFace().setInit(true);
-//			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		boardView.setGameActivityFace(this);
@@ -131,7 +135,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		getGameUpdateListener = new GetGameUpdateListener();
 		sendMoveUpdateListener = new SendMoveUpdateListener();
 		gamesListUpdateListener = new GamesListUpdateListener();
-
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
 	@Override
@@ -404,11 +408,15 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private void moveWasSent() {
 		showSubmitButtonsLay(false);
-		int action = AppData.getAfterMoveAction(getContext());
-		if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
-			finish();
-		else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
-			getGamesList();
+		if(boardView.isFinished()){
+			showGameEndPopup(endGamePopupView, endGameMessage);
+		} else {
+			int action = AppData.getAfterMoveAction(getContext());
+			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
+				finish();
+			else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
+				getGamesList();
+			}
 		}
 	}
 
@@ -617,6 +625,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 			new GetStringObjTask(abortGameUpdateListener).executeTask(loadItem);
+		} else if(fragment.getTag().equals(ERROR_TAG)){
+			backToLoginActivity();
 		}
 	}
 
@@ -688,7 +698,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		if (MopubHelper.isShowAds(this)) {
+			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		}
 	}
 
 	private int getCurrentPlayerRating() {
@@ -722,6 +734,73 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		adjustBoardForGame();
 	}
 
+	private void createChallenge(){
+
+		// sent challenge
+//		id (user token)
+//		opponent (optional)
+//		timepermove (in days)
+//		iplayas (0=random , 1=white, 2=black)
+//		minrating (optional)
+//		maxrating (optional)
+//		israted (0 or 1)
+//		game_type (optional: 1 = chess (default), 2 = chess960)
+
+
+		// current game
+//	<game_id>: The game id
+//	<player_color>: The users color he/she will play as, w = white, b = black
+//	<game_type>: The chess game type.  1 = chess, 2 = chess960
+//	<game_name>: The games name, can be null
+//	<white_username>: The username for white
+//	<black_username>: The username for black
+//	<white_rating>: Whites rating
+//	<black_rating>: Blacks rating
+//	<time_stamp>: The timestamp for the game
+//	<time_remaining_amount>: Remaining time for the game
+//	<time_remaining_units>: the units, d for day and h for hours
+//	<initial_fen>: the initial starting position, can be null
+//	<last_move_from_square>: the last move, from square
+//	<last_move_to_square>: the last move, to square
+//	<is_draw_offer_pending>: Draw offer pending.  n = no, p = pending offer
+//	<is_opponent_online>: Is the opponent online. 1 = yes, 0 = no
+//	<is_my_turn>: is it the users turn to move. 1 = yes, 0 = no
+//	<has_new_message>: new messages for the game. 1 = yes, 0 = no
+//	<move_list>: the moves from the start of the game (all moves after <intial_fen>)
+//	<days_per_move>: how many days per move.
+		String color = gameInfoItem.getColor();  // w, b
+//		int days = daysArr[daysPerMoveSpnr.getSelectedItemPosition()];
+//		int gameType = chess960.isChecked()? 2 :0;
+//		int isRated = this.isRatedChkBx.isChecked() ? 1 :0;
+
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
+//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
+//		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, String.valueOf(days));
+//		loadItem.addRequestParams(RestHelper.P_IPLAYAS, String.valueOf(color));
+//		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(isRated));
+//		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, String.valueOf(gameType));
+//		loadItem.addRequestParams(RestHelper.P_OPPONENT, friendsSpnr.getSelectedItem().toString().trim());
+//
+//		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
+	}
+
+	private class CreateChallengeUpdateListener extends ChessUpdateListener {
+		public CreateChallengeUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if(returnedObj.contains(RestHelper.R_SUCCESS_)){
+				showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+			}else if(returnedObj.contains(RestHelper.R_ERROR)){
+				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
+						ERROR_TAG);
+			}
+		}
+	}
+
 
 	@Override
 	public void onClick(View view) {
@@ -740,8 +819,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
-			// TODO send rematch request
-
+			createChallenge();
+			endPopupFragment.dismiss();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
@@ -753,4 +832,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (updateGameStateTask != null)
 			updateGameStateTask.cancel(true);
 	}
+
+
 }

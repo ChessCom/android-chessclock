@@ -349,4 +349,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         reviewBtn.setOnClickListener(this);
         layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 	}
+
+//	@Override
+//	public void onClick(View view) {
+//		super.onClick(view);
+//		if(view.getId() == R.id.reviewPopupBtn)
+//	}
 }

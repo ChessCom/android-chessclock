@@ -21,5 +21,6 @@
 	<string name="retry">دوباره سعی کنید</string>
 	<string name="stop">توقف</string>
 	<string name="daily_limit_reached">محدودیت روزانه رسیده</string>
+	<string name="checkmate">مات!</string>
 
 </resources>

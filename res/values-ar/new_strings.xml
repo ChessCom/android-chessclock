@@ -20,6 +20,7 @@
 	<string name="retry">إعادة المحاولة</string>
 	<string name="stop">توقف</string>
 	<string name="daily_limit_reached">الحد اليومي الذي تم التوصل إليه</string>
+	<string name="checkmate">كش ملك!</string>
 
 
 </resources>

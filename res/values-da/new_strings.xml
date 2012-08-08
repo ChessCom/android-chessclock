@@ -20,5 +20,6 @@
 	<string name="retry">Wiederholen</string>
 	<string name="stop">Stopp</string>
 	<string name="daily_limit_reached">Tageslimit erreicht</string>
+	<string name="checkmate">Checkmate!</string>
 
 </resources>

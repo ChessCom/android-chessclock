@@ -2,29 +2,9 @@ package com.chess.model;
 
 public class GameListCurrentItem extends BaseGameOnlineItem {
 
-	public static final String GAME_TYPE = "game_type";
-	public static final String GAME_ID = "game_id";
-	public static final String TIMESTAMP = "time_stamp";
-	public static final String IS_MY_TURN = "is_my_turn";
-	public static final String OPPONENT_USERNAME = "opponent_username";
-	public static final String OPPONENT_RATING = "opponent_rating";
-	public static final String COLOR = "color";
-	public static final String USERNAME_STRING_LENGTH = "username_string_length";
-	public static final String TIME_REMAINING_AMOUNT = "time_remaining_amount";
-	public static final String TIME_REMAINING_UNITS = "time_remaining_units";
-	public static final String FEN_STRING_LENGTH = "fen_string_length";
-	public static final String LAST_MOVE_FROM_SQUARE = "last_move_from_square";
-	public static final String LAST_MOVE_TO_SQUARE = "last_move_to_square";
-	public static final String IS_DRAW_OFFER_PENDING = "is_draw_offer_pending";
-	public static final String IS_OPPONENT_ONLINE = "is_opponent_online";
-	private static final String FEN = "fen";
-	private static final String HAS_NEW_MESSAGE = "has_new_message";
-
-
-//	private HashMap<String, String> values;
+//	public static final String GAME_ID = "game_id";
 
 	public GameListCurrentItem(String[] values) {
-//		this.values = new HashMap<String, String>();
 
 		gameId = Long.parseLong(values[0]);
 		color = values[1];
@@ -82,7 +62,7 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 		return lastMoveToSquare;
 	}
 
-	public boolean getIsDrawOfferPending() { // TODO
+	public boolean getIsDrawOfferPending() {
 		return isDrawOfferPending;
 	}
 
@@ -90,11 +70,11 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 		return isOpponentOnline;
 	}
 
-	public boolean getHasNewMessage() { // TODO
+	public boolean getHasNewMessage() {
 		return hasMessage;
 	}
 
-	public boolean getIsMyTurn() { // TODO
+	public boolean getIsMyTurn() {
 		return isMyTurn;
 	}
 

@@ -20,6 +20,7 @@
 	<string name="retry">נסה שוב</string>
 	<string name="stop">עצור</string>
 	<string name="daily_limit_reached">גבול יומי הגיע</string>
+	<string name="checkmate">מט!</string>
 
 
 </resources>

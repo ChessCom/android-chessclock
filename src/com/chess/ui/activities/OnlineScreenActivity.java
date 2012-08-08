@@ -352,8 +352,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		int headersCnt = 0;
 		int passedItems = 0;
 		for (section = 0; section < sectionsCnt; section++){
-			headersCnt++;
 			passedItems += sectionedAdapter.getSection(section).adapter.getCount();
+			if(passedItems > 0)
+				headersCnt++;
 			if(pos < headersCnt + passedItems){
 				break;
 			}
@@ -382,7 +383,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
                 startActivity(intent);
 			}
-		} else if (section == 1) {
+		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
 			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
@@ -402,8 +403,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		int headersCnt = 0;
 		int passedItems = 0;
 		for (section = 0; section < sectionsCnt; section++){
-			headersCnt++;
 			passedItems += sectionedAdapter.getSection(section).adapter.getCount();
+			if(passedItems > 0)
+				headersCnt++;
 			if(pos < headersCnt + passedItems){
 				break;
 			}
