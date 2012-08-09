@@ -161,43 +161,60 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	public void invalidateGameScreen() {
 		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-				topPlayerlabel.setText(AppData.getUserName(this));
-				topPlayerTimer.setText(getString(R.string.Computer));
+				whitePlayerlabel.setText(AppData.getUserName(this));
+				blackPlayerLabel.setText(getString(R.string.Computer));
+				userPlayWhite = true;
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-				topPlayerlabel.setText(getString(R.string.Computer));
-				topPlayerTimer.setText(AppData.getUserName(this));
+				whitePlayerlabel.setText(getString(R.string.Computer));
+				blackPlayerLabel.setText(AppData.getUserName(this));
+				userPlayWhite = false;
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-				topPlayerlabel.setText(getString(R.string.Human));
-				topPlayerTimer.setText(getString(R.string.Human));
+				whitePlayerlabel.setText(getString(R.string.Human));
+				blackPlayerLabel.setText(getString(R.string.Human));
+				userPlayWhite = true;
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-				topPlayerlabel.setText(getString(R.string.Computer));
-				topPlayerTimer.setText(getString(R.string.Computer));
+				whitePlayerlabel.setText(getString(R.string.Computer));
+				blackPlayerLabel.setText(getString(R.string.Computer));
+				userPlayWhite = true;
 				break;
 			}
 		}
 
 		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+
+		if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && getBoardFace().getHply() % 2 != 0)
+				|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() % 2 == 0)) {
+			// opponents move - non touchable
+			setWhitePlayerDot(userPlayWhite);
+		} else{
+			setWhitePlayerDot(userPlayWhite);
+		}
+
+
 	}
 
 	@Override
 	public void onPlayerMove() {
-		topPlayerlabel.setVisibility(View.VISIBLE);
-		topPlayerTimer.setVisibility(View.VISIBLE);
+		setWhitePlayerDot(userPlayWhite);
+
+		whitePlayerlabel.setVisibility(View.VISIBLE);
+		blackPlayerLabel.setVisibility(View.VISIBLE);
 		thinking.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void onCompMove() {
-		topPlayerlabel.setVisibility(View.GONE);
-		topPlayerTimer.setVisibility(View.GONE);
-		thinking.setVisibility(View.VISIBLE);
+		setWhitePlayerDot(!userPlayWhite);
 
+		whitePlayerlabel.setVisibility(View.GONE);
+		blackPlayerLabel.setVisibility(View.GONE);
+		thinking.setVisibility(View.VISIBLE);
 	}
 
     @Override

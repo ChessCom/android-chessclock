@@ -155,7 +155,8 @@
 	<!--Players indicators-->
 	<color name="player_ind_white_1">#fffcfcfc</color>
 	<color name="player_ind_white_2">#FFa3a3a3</color>
-	<color name="player_ind_white_stroke">#fff5f5f5</color>
+	<!--<color name="player_ind_white_stroke">#fff5f5f5</color>-->
+	<color name="player_ind_white_stroke">#fff19324</color>
 
 	<color name="player_ind_black_1">#FF000000</color>
 	<color name="player_ind_black_2">#FF575757</color>

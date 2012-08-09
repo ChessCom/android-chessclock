@@ -44,9 +44,9 @@
 					android:text="@string/Human"
 					android:paddingLeft="8dip"
 					android:paddingRight="2dip"
-					android:drawableLeft="@drawable/player_indicator_white"
 					style="@style/GameLabel.Player"
 					/>
+				<!--android:drawableLeft="@drawable/player_indicator_white"-->
 
 				<com.chess.RoboTextView
 					android:id="@+id/black"
@@ -56,9 +56,9 @@
 					android:text="@string/Computer"
 					android:paddingLeft="2dip"
 					android:paddingRight="8dip"
-					android:drawableRight="@drawable/player_indicator_black"
 					style="@style/GameLabel.Player"
 					/>
+				<!--android:drawableRight="@drawable/player_indicator_black"-->
 
 				<com.chess.RoboTextView
 					android:id="@+id/analysisTxt"

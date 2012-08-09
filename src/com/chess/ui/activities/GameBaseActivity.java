@@ -33,8 +33,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 
 
-	protected TextView topPlayerlabel;
-	protected TextView topPlayerTimer;
+	protected TextView whitePlayerlabel;
+	protected TextView blackPlayerLabel;
 
 	protected boolean chat;
 
@@ -71,10 +71,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void widgetsInit() {
 		statusBarLay = (ViewGroup) findViewById(R.id.statusBarLay);
 
-		topPlayerlabel = (TextView) findViewById(R.id.white);
-		topPlayerTimer = (TextView) findViewById(R.id.black);
-		topPlayerlabel.setSelected(true);
-		topPlayerTimer.setSelected(true);
+		whitePlayerlabel = (TextView) findViewById(R.id.white);
+		blackPlayerLabel = (TextView) findViewById(R.id.black);
+		whitePlayerlabel.setSelected(true);
+		blackPlayerLabel.setSelected(true);
 
 
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
@@ -135,6 +135,16 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public abstract String getBlackPlayerName();
 
+	protected void setWhitePlayerDot(boolean whitePlayerMove){
+		if (whitePlayerMove) {
+			whitePlayerlabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
+			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		} else {
+			whitePlayerlabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
+		}
+	}
+
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
 		boardView.enableTouchTimer();
@@ -169,12 +179,12 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		showSubmitButtonsLay(false);
 		if (isAnalysis) {
 			analysisTxt.setVisibility(View.VISIBLE);
-			topPlayerlabel.setVisibility(View.INVISIBLE);
-			topPlayerTimer.setVisibility(View.INVISIBLE);
+			whitePlayerlabel.setVisibility(View.INVISIBLE);
+			blackPlayerLabel.setVisibility(View.INVISIBLE);
 		} else {
 			analysisTxt.setVisibility(View.INVISIBLE);
-			topPlayerlabel.setVisibility(View.VISIBLE);
-			topPlayerTimer.setVisibility(View.VISIBLE);
+			whitePlayerlabel.setVisibility(View.VISIBLE);
+			blackPlayerLabel.setVisibility(View.VISIBLE);
 			restoreGame();
 		}
 	}

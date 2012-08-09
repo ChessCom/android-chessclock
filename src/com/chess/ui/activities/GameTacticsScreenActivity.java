@@ -127,8 +127,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		timerTxt = (TextView) findViewById(R.id.timerTxt);
 		timerTxt.setVisibility(View.VISIBLE);
 
-		topPlayerlabel.setVisibility(View.GONE);
-		topPlayerTimer.setVisibility(View.GONE);
+		whitePlayerlabel.setVisibility(View.GONE);
+		blackPlayerLabel.setVisibility(View.GONE);
 
 		gamePanelView.hideChatButton();
 	}

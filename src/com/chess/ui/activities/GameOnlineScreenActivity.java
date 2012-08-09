@@ -35,7 +35,6 @@ import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
-import org.eclipse.jetty.util.log.Log;
 
 import java.util.ArrayList;
 
@@ -203,7 +202,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		showSubmitButtonsLay(false);
 		getSoundPlayer().playGameStart();
 
-		 currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
 
 		checkMessages();
 
@@ -213,14 +212,17 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
 
-		if (isUserMove())
+		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
-
+			setWhitePlayerDot(userPlayWhite);
+		} else {
+			setWhitePlayerDot(!userPlayWhite);
+		}
 
 		if (currentGame.getGameType().equals("2"))
 			getBoardFace().setChess960(true);
 
-		if (!isUserColorWhite()) {
+		if (!userPlayWhite) {
 			getBoardFace().setReside(true);
 		}
 
@@ -277,8 +279,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	public void onGameRefresh(GameOnlineItem newGame) {
 		currentGame = newGame;
 
-		if (isUserMove())
+		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
+			setWhitePlayerDot(userPlayWhite);
+		} else {
+			setWhitePlayerDot(!userPlayWhite);
+		}
 
 
 		if (currentGame.getMoveList().contains("1.")) {
@@ -302,8 +308,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (getBoardFace().isSubmit())
 			showSubmitButtonsLay(true);
 
-		topPlayerlabel.setText(getWhitePlayerName());
-		topPlayerTimer.setText(getBlackPlayerName());
+		whitePlayerlabel.setText(getWhitePlayerName());
+		blackPlayerLabel.setText(getBlackPlayerName());
 
 		boardView.addMove2Log(getBoardFace().getMoveListSAN());
 	}
@@ -470,7 +476,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private boolean openChatActivity() {
-		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
+		preferencesEditor.putString(AppConstants.OPPONENT, userPlayWhite
 				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
 
@@ -509,8 +515,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private boolean isUserMove() {
-		return (currentGame.isWhiteMove() && isUserColorWhite())
-				|| (!currentGame.isWhiteMove() && !isUserColorWhite());
+		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
+				.equals(AppData.getUserName(this));
+
+		return (currentGame.isWhiteMove() && userPlayWhite)
+				|| (!currentGame.isWhiteMove() && !userPlayWhite);
 	}
 
 
@@ -728,7 +737,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	protected void restoreGame() {
 		boardView.setBoardFace(new ChessBoard(this));
-//		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		adjustBoardForGame();
 	}
@@ -768,7 +776,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void sendRematch() {
 		String opponent;
 		String color; // reversed color
-		if (isUserColorWhite()) {
+		if (userPlayWhite) {
 			opponent = currentGame.getBlackUsername();
 			color = "2";
 		}

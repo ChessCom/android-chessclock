@@ -30,7 +30,6 @@
 			android:paddingLeft="8dip"
 			style="@style/GameLabel.Player"
 			/>
-		<!--android:drawableLeft="@drawable/player_indicator_white"-->
 
 		<com.chess.RoboTextView
 			android:id="@+id/black"
@@ -41,7 +40,6 @@
 			android:paddingRight="8dip"
 			style="@style/GameLabel.Player"
 			/>
-		<!--android:drawableRight="@drawable/player_indicator_black"-->
 
 
 		<com.chess.RoboTextView

@@ -34,7 +34,6 @@
 					android:layout_height="wrap_content"
 					android:paddingRight="5dip"
 					android:paddingLeft="7dip"
-					android:drawableLeft="@drawable/player_indicator_white"
 					style="@style/GameLabel.Player"
 					/>
 
@@ -54,7 +53,6 @@
 					android:layout_alignParentRight="true"
 					android:paddingLeft="4dip"
 					android:paddingRight="7dip"
-					android:drawableRight="@drawable/player_indicator_black"
 					style="@style/GameLabel.Player"
 					/>
 
