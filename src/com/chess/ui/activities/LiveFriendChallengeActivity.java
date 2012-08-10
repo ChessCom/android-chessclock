@@ -49,8 +49,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 
 		init();
         widgetsInit();
-
-        // TODO add settings to action bar menu
 	}
 
 	private void init() {
@@ -60,6 +58,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeValidator = new BonusTimeValidator();
 
 		DataHolder.getInstance().setLiveChess(true);
+
+		showActionSettings = true;
 	}
 
     protected void widgetsInit() {

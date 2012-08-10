@@ -53,6 +53,8 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 		findViewById(R.id.createchallenge).setOnClickListener(this);
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+
+		showActionSettings = true;
 	}
 
 	@Override

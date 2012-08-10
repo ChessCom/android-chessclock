@@ -79,7 +79,12 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void showMenuItemById(int itemId, boolean visible, Menu menu) {
-		menu.findItem(itemId).setVisible(visible);
+		if(itemId == R.id.menu_refresh){
+			menu.findItem(itemId).setIcon(visible? R.drawable.ic_action_refresh
+					:R.drawable.empty);
+		}else {
+			menu.findItem(itemId).setVisible(visible);
+		}
 	}
 
 

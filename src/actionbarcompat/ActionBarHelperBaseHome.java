@@ -39,6 +39,8 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 	private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
 	protected Set<Integer> mActionItemIds = new HashSet<Integer>();
+	private ProgressBar refreshIndicator;
+	private ImageButton refreshButton;
 
 	protected ActionBarHelperBaseHome(Activity activity) {
 		super(activity);
@@ -99,20 +101,33 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 		actionBarCompat.addView(titleText);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setRefreshActionItemState(boolean refreshing) {
-		View refreshButton = mActivity.findViewById(R.id.actionbar_compat_item_refresh);
-		View refreshIndicator = mActivity.findViewById(R.id.actionbar_compat_item_refresh_progress);
+		RelativeLayout refreshButtonLay = (RelativeLayout) mActivity.findViewById(R.id.actionbar_compat_item_refresh);
+//		View refreshIndicator = mActivity.findViewById(R.id.actionbar_compat_item_refresh_progress);
 
-		if (refreshButton != null) {
-			refreshButton.setVisibility(refreshing ? View.GONE : View.VISIBLE);
+		if (refreshButtonLay != null) {
+			if(refreshing){
+				refreshIndicator.setVisibility(View.VISIBLE);
+				refreshButton.setVisibility(View.INVISIBLE);
+			} else {
+				refreshIndicator.setVisibility(View.INVISIBLE);
+				refreshButton.setVisibility(View.VISIBLE);
+			}
+
+//			refreshButtonLay.setVisibility(refreshing ? View.GONE : View.VISIBLE);
 		}
-		if (refreshIndicator != null) {
-			refreshIndicator.setVisibility(refreshing ? View.VISIBLE : View.GONE);
-		}
+
+//		if (refreshIndicator != null) {
+//
+//			refreshIndicator.setId(R.id.actionbar_compat_item_refresh_progress);
+//
+//
+//
+//
+//
+//			refreshIndicator.setVisibility(refreshing ? View.VISIBLE : View.GONE);
+//		}
 	}
 
 	@Override
@@ -186,63 +201,126 @@ public class ActionBarHelperBaseHome extends ActionBarHelperHome {
 			return null;
 		}
 
-		// Create the button
-		ImageButton actionButton = new ImageButton(mActivity, null,
-				itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
-
-		if (itemId == android.R.id.home) {
-			float density = mActivity.getResources().getDisplayMetrics().density;
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) mActivity.getResources().getDimension(
-					R.dimen.actionbar_my_compat_button_home_width), ViewGroup.LayoutParams.MATCH_PARENT);
-			int left = (int) (12 * density + 0.5f);
-			params.setMargins(0, 0, 2, 0);
-			actionButton.setPadding(left, 1, 3, 1);
-			actionButton.setLayoutParams(params);
-		} else {
-			actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
-					R.dimen.actionbar_compat_button_width),
-					ViewGroup.LayoutParams.MATCH_PARENT));
-		}
 
 
 		if (itemId == R.id.menu_refresh) {
-			actionButton.setId(R.id.actionbar_compat_item_refresh);
-		}
-		actionButton.setImageDrawable(item.getIcon());
-		actionButton.setScaleType(ImageView.ScaleType.CENTER);
-		actionButton.setContentDescription(item.getTitle());
-		actionButton.setId(itemId);
-		actionButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
-			}
-		});
-
-		actionBar.addView(actionButton);
-
-		if (item.getItemId() == R.id.menu_refresh) {
 			// Refresh buttons should be stateful, and allow for indeterminate
-// progress indicators,
-			// so add those.
-			ProgressBar indicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
+			// progress indicators, so add those.
+			RelativeLayout refreshButtonLay = new RelativeLayout(mActivity);
 
-			final int buttonWidth = mActivity.getResources().getDimensionPixelSize(
-					R.dimen.actionbar_compat_button_width);
-			final int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
-			final int progressIndicatorWidth = buttonWidth / 2;
 
-			LinearLayout.LayoutParams indicatorLayoutParams = new LinearLayout.LayoutParams(progressIndicatorWidth,
-					progressIndicatorWidth);
-			indicatorLayoutParams.setMargins((buttonWidth - progressIndicatorWidth) / 2,
-					(buttonHeight - progressIndicatorWidth) / 2, (buttonWidth - progressIndicatorWidth) / 2, 0);
-			indicator.setLayoutParams(indicatorLayoutParams);
-			indicator.setVisibility(View.GONE);
-			indicator.setId(R.id.actionbar_compat_item_refresh_progress);
-			actionBar.addView(indicator);
+			refreshButtonLay.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
+					R.dimen.actionbar_compat_button_width),
+					ViewGroup.LayoutParams.MATCH_PARENT));
+
+			if(refreshIndicator == null){
+				refreshIndicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
+
+				final int buttonWidth = mActivity.getResources().getDimensionPixelSize(
+						R.dimen.actionbar_compat_button_width);
+				final int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
+				final int progressIndicatorWidth = buttonWidth / 2;
+
+				RelativeLayout.LayoutParams indicatorLayoutParams = new RelativeLayout.LayoutParams(progressIndicatorWidth,
+						progressIndicatorWidth);
+				indicatorLayoutParams.setMargins((buttonWidth - progressIndicatorWidth) / 2,
+						(buttonHeight - progressIndicatorWidth) / 2, (buttonWidth - progressIndicatorWidth) / 2, 0);
+				indicatorLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+				refreshIndicator.setLayoutParams(indicatorLayoutParams);
+				refreshIndicator.setVisibility(View.GONE);
+				refreshButtonLay.addView(refreshIndicator);
+			}
+
+			if(refreshButton == null){
+				// Create the button
+				refreshButton = new ImageButton(mActivity, null, R.attr.actionbarCompatItemStyle);
+				refreshButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
+						R.dimen.actionbar_compat_button_width),
+						ViewGroup.LayoutParams.MATCH_PARENT));
+
+
+				refreshButton.setImageDrawable(item.getIcon());
+				refreshButton.setScaleType(ImageView.ScaleType.CENTER);
+				refreshButton.setContentDescription(item.getTitle());
+				refreshButton.setId(itemId);
+				refreshButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
+					}
+				});
+
+
+				refreshButtonLay.addView(refreshButton);
+
+			}
+			actionBar.addView(refreshButtonLay);
+
+
+
+			refreshButtonLay.setId(R.id.actionbar_compat_item_refresh);
+
+			return refreshButtonLay;
+		} else {
+			// Create the button
+			ImageButton actionButton = new ImageButton(mActivity, null,
+					itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
+
+			if (itemId == android.R.id.home) {
+				float density = mActivity.getResources().getDisplayMetrics().density;
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) mActivity.getResources().getDimension(
+						R.dimen.actionbar_my_compat_button_home_width), ViewGroup.LayoutParams.MATCH_PARENT);
+				int left = (int) (12 * density + 0.5f);
+				params.setMargins(0, 0, 2, 0);
+				actionButton.setPadding(left, 1, 3, 1);
+				actionButton.setLayoutParams(params);
+			} else {
+				actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
+						R.dimen.actionbar_compat_button_width),
+						ViewGroup.LayoutParams.MATCH_PARENT));
+			}
+
+			actionButton.setImageDrawable(item.getIcon());
+			actionButton.setScaleType(ImageView.ScaleType.CENTER);
+			actionButton.setContentDescription(item.getTitle());
+			actionButton.setId(itemId);
+			actionButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
+				}
+			});
+
+			actionBar.addView(actionButton);
+			return actionButton;
 		}
 
-		return actionButton;
+
+
+
+
+//		if (item.getItemId() == R.id.menu_refresh) {
+//			// Refresh buttons should be stateful, and allow for indeterminate
+//// progress indicators,
+//			// so add those.
+//			ProgressBar refreshIndicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
+//
+//			final int buttonWidth = mActivity.getResources().getDimensionPixelSize(
+//					R.dimen.actionbar_compat_button_width);
+//			final int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
+//			final int progressIndicatorWidth = buttonWidth / 2;
+//
+//			LinearLayout.LayoutParams indicatorLayoutParams = new LinearLayout.LayoutParams(progressIndicatorWidth,
+//					progressIndicatorWidth);
+//			indicatorLayoutParams.setMargins((buttonWidth - progressIndicatorWidth) / 2,
+//					(buttonHeight - progressIndicatorWidth) / 2, (buttonWidth - progressIndicatorWidth) / 2, 0);
+//			refreshIndicator.setLayoutParams(indicatorLayoutParams);
+//			refreshIndicator.setVisibility(View.GONE);
+//			refreshIndicator.setId(R.id.actionbar_compat_item_refresh_progress);
+//			actionBar.addView(refreshIndicator);
+//		}
+
+//		return actionButton;
 	}
 
 	/**

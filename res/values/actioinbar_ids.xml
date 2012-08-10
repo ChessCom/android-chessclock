@@ -17,7 +17,7 @@
 <resources>
     <item type="id" name="actionbar_compat" />
     <item type="id" name="actionbar_compat_title" />
-    <item type="id" name="actionbar_compat_item_refresh_progress" />
+    <!--<item type="id" name="actionbar_compat_item_refresh_progress" />-->
     <item type="id" name="actionbar_compat_item_search_panel" />
     <item type="id" name="actionbar_compat_item_search_edit" />
     <item type="id" name="actionbar_compat_item_search_button" />

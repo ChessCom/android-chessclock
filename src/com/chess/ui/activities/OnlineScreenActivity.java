@@ -111,6 +111,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
+
+		showActionRefresh = true;
+//		showActionNewGame = true;
 	}
 
 	@Override

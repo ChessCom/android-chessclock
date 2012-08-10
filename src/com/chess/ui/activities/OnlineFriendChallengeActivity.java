@@ -57,15 +57,17 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 		initUpdateListener = new InitUpdateListener();
+
+		showActionSettings = true;
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		initActivity();
+		updateData();
 	}
 
-	private void initActivity(){
+	private void updateData(){
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_FRIENDS);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));

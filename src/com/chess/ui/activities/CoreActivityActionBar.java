@@ -63,7 +63,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	protected Bundle extras;
 	protected Handler handler;
-	protected boolean showSearch;
+	protected boolean showActionSearch;
+	protected boolean showActionSettings;
+//	protected boolean showActionNewGame;
+	protected boolean showActionRefresh;
 
 	// we may have this add on every screen, so control it on the lowest level
 	protected MoPubView moPubView;
@@ -124,6 +127,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public void onConfigurationChanged(Configuration newConfig) {
 		backgroundChessDrawable.updateConfig();
 		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		adjustActionBar();
 	}
 
 	@Override
@@ -189,13 +199,24 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
+	private void adjustActionBar() {
+		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
+		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
+		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch);
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch, menu);
-		
+		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh, menu);
+
 		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB){
 			// Get the SearchView and set the searchable configuration
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

@@ -68,8 +68,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
-		getActionBarHelper().showMenuItemById(R.id.menu_search, showSearch);
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
 	}
 
 	@Override

@@ -80,12 +80,11 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	protected void onResume() {
 		super.onResume();
 
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
-		getActionBarHelper().showMenuItemById(R.id.menu_search, false);
-
 		if (MopubHelper.isShowAds(this)) {
 			showFullScreenAd();
 		}
+
+		adjustActionBar();
 	}
 
 
@@ -112,12 +111,23 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
             fragment.dismiss();
 	}
 
+	private void adjustActionBar(){
+		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+		getActionBarHelper().showMenuItemById(R.id.menu_search, false);
+		getActionBarHelper().showMenuItemById(R.id.menu_settings, false);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false);
+		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected(), menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_search, false, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_settings, false, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

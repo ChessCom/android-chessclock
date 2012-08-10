@@ -78,6 +78,8 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeValidator = new BonusTimeValidator();
 
 		DataHolder.getInstance().setLiveChess(true);
+
+		showActionSettings = true;
 	}
 
 	@Override
