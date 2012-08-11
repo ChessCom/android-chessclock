@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">En el juego con %1$s , %2$s</string>
 	<string name="register">Registrar</string>
 	<string name="session_expired">Su sesión ha caducado, por favor vuelve a iniciar sesión</string>
+	<string name="problem_solved_">Problema resuelto!</string>
 	<string name="problem_solved">Problema resuelto!
 		\n Puntuación %1$s
 		\n Calificación Otorgada %2$s </string>

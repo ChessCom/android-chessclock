@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">在您的游戏 %1$s , %2$s</string>
 	<string name="register">注册</string>
 	<string name="session_expired">您的会话已过期，请重新登录</string>
+	<string name="problem_solved_">问题解决了！</string>
 	<string name="problem_solved">问题解决了！
 		\n 得分 %1$s
 		\n 新的评级 %2$s </string>

@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">%2$s,  %1$s در بازی خود را با</string>
 	<string name="register">ثبت نام</string>
 	<string name="session_expired">جلسه شما منقضی شده است، لطفا دوباره وارد سایت شوید</string>
+	<string name="problem_solved_">مشکل حل شده!</string>
 	<string name="problem_solved">مشکل حل شده!
 		\n %1$s مشکل حل شده!
 		\n %2$s نمره</string>

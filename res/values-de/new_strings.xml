@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">In Ihrem Spiel mit %1$s , %2$s</string>
 	<string name="register">Registrieren</string>
 	<string name="session_expired">Ihre Sitzung ist abgelaufen, bitte neu anmelden</string>
+	<string name="problem_solved_">Problem Gelöst!</string>
 	<string name="problem_solved">Problem Gelöst!
 		\n Partitur %1$s
 		\n Neues Rating %2$s </string>

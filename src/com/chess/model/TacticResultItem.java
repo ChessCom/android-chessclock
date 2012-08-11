@@ -38,6 +38,12 @@ public class TacticResultItem {
 	}
 
 	public String getSaveString(){
+//		6.6:
+//		-65
+//		:1273
+//		:78
+//		:1385
+
 		StringBuilder builder = new StringBuilder();
 		return builder.append(score).append(StaticData.SYMBOL_COLON)
 				.append(userRatingChange).append(StaticData.SYMBOL_COLON)

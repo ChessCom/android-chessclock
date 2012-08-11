@@ -198,6 +198,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		stopTacticsTimer();
 
 		if (!getBoardFace().isTacticCanceled() && !limitReached) {
+			if(DataHolder.getInstance().getTacticResultItem() == null)  // if user didn't made any result move on online
+				return;
+
 			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 			preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM,
 					DataHolder.getInstance().getTacticResultItem().getSaveString());
@@ -259,8 +262,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			} else {
 				if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
-					String title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
-							tacticResultItem.getUserRating());
+
+					String title;
+					if(tacticResultItem != null){
+						title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
+								tacticResultItem.getUserRating());
+					} else {
+						title = getString(R.string.problem_solved_);
+					}
 
 					showSolvedTacticPopup(title, false);
 				} else {
@@ -278,14 +287,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		} else {
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
-
 				showWrongMovePopup(getString(R.string.wrong_ex));
-
-//				popupDialogFragment.setButtons(3);
-//				popupItem.setPositiveBtnId(R.string.next);
-//				popupItem.setNeutralBtnId(R.string.retry);
-//				popupItem.setNegativeBtnId(R.string.stop);
-//				showPopupDialog(R.string.wrong_ex, WRONG_MOVE_TAG);
 
 			} else {
 				LoadItem loadItem = new LoadItem();
@@ -861,7 +863,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (DataHolder.getInstance().isGuest()) {
 			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 
-			InputStream inputStream = getResources().openRawResource(R.raw.tactics100batch);
+//			InputStream inputStream = getResources().openRawResource(R.raw.tactics100batch);
+			InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
 			try {
 				ByteArrayBuffer baf = new ByteArrayBuffer(50);
 				int current;
@@ -897,9 +900,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 
 		}
-
-
-//			getNewTactic();
 	}
 
 	@Override

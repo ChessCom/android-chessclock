@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">게임과 관련 %1$s , %2$s</string>
 	<string name="register">레지스터</string>
 	<string name="session_expired">세션이 만료되었고, 다시 로그인하시기 바랍니다</string>
+	<string name="problem_solved_">문제는 풀렸다!</string>
 	<string name="problem_solved">문제는 풀렸다!
 		\n 점수 %1$s
 		\n 신규 평가 %2$s </string>

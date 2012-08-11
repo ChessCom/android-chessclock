@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">I spillet ditt med %1$s , %2$s</string>
 	<string name="register">Register</string>
 	<string name="session_expired">Økten er utløpt, vennligst re-login</string>
+	<string name="problem_solved_">Problem løst!</string>
 	<string name="problem_solved">Problem løst!
 		\n Resultat %1$s
 		\n Ny Rating %2$s </string>

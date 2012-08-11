@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">Oyununuzu ile %1$s , %2$s</string>
 	<string name="register">Kaydetmek</string>
 	<string name="session_expired">Oturumunuz zaman aşımına uğradı, yeniden giriş yapınız</string>
+	<string name="problem_solved_">Sorun çözüldü!</string>
 	<string name="problem_solved">Sorun çözüldü!
 		\n Puan %1$s
 		\n Yeni Değerlendirmesi %2$s </string>

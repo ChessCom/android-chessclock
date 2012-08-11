@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">Em seu jogo com %1$s , %2$s</string>
 	<string name="register">Inscrever</string>
 	<string name="session_expired">Sua sessão expirou, faça o login novamente</string>
+	<string name="problem_solved_">Problema Resolvido!</string>
 	<string name="problem_solved">Problema Resolvido!
 		\n Contagem %1$s
 		\n Nova Classificação %2$s </string>

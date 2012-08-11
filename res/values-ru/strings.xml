@@ -214,7 +214,7 @@
 	<string name="abort_resign_game">Прервать / отменить игру:</string>
 	<string name="are_you_sure_q">Вы уверены?</string>
 	<string name="correct_ex">Да…</string>
-	<string name="wrong_ex">Неправильно!</string>
+	<string name="wrong_ex">Неверно!</string>
 
 	<string name="you_got_new_msg">Новое сообщение!</string>
 	<string name="browse">Обзор</string>

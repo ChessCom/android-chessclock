@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">In uw spel met %1$s , %2$s</string>
 	<string name="register">Registreren</string>
 	<string name="session_expired">Uw sessie is verlopen, dan kunt u opnieuw in te loggen</string>
+	<string name="problem_solved_">Probleem Opgelost!</string>
 	<string name="problem_solved">Probleem Opgelost!
 		\n Score %1$s
 		\n New Rating %2$s </string>

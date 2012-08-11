@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
 	<string name="register">Register</string>
 	<string name="session_expired">Your session has expired, please re-login</string>
+	<string name="problem_solved_">Problem Solved!</string>
 	<string name="problem_solved">Problem Solved!
 		\n Score %1$s
 		\n New rating %2$s </string>

@@ -8,6 +8,7 @@
 	<string name="your_turn_in_game_with">במשחק שלך %1$s , %2$s</string>
 	<string name="register">לרשום</string>
 	<string name="session_expired">הפגישה שלך פג, אנא התחבר מחדש</string>
+	<string name="problem_solved_">הבעיה נפתרה!</string>
 	<string name="problem_solved">הבעיה נפתרה!
 		\n ציון %1$s
 		\n דירוג חדש %2$s </string>
