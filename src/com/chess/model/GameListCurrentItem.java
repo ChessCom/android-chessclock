@@ -2,8 +2,6 @@ package com.chess.model;
 
 public class GameListCurrentItem extends BaseGameOnlineItem {
 
-//	public static final String GAME_ID = "game_id";
-
 	public GameListCurrentItem(String[] values) {
 
 		gameId = Long.parseLong(values[0]);
@@ -87,31 +85,4 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 //		return builder.toString();
 //	}
 
-
-
-
-//	The echess current games response looks like the following:
-//	<
-//	<game_id>: The game id
-//	<player_color>: The users color he/she will play as, w = white, b = black
-//	<game_type>: The chess game type.  1 = chess, 2 = chess960
-//	<game_name>: The games name, can be null
-//	<white_username>: The username for white
-//	<black_username>: The username for black
-//	<white_rating>: Whites rating
-//	<black_rating>: Blacks rating
-//	<time_stamp>: The timestamp for the game
-//	<time_remaining_amount>: Remaining time for the game
-//	<time_remaining_units>: the units, d for day and h for hours
-//	<initial_fen>: the initial starting position, can be null
-//	<last_move_from_square>: the last move, from square
-//	<last_move_to_square>: the last move, to square
-//	<is_draw_offer_pending>: Draw offer pending.  n = no, p = pending offer
-//	<is_opponent_online>: Is the opponent online. 1 = yes, 0 = no
-//	<is_my_turn>: is it the users turn to move. 1 = yes, 0 = no
-//	<has_new_message>: new messages for the game. 1 = yes, 0 = no
-//	<move_list>: the moves from the start of the game (all moves after <intial_fen>)
-//	<days_per_move>: how many days per move.
-//	>
-//
 }

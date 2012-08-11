@@ -55,7 +55,7 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, LiveFriendChallengeActivity.class));
 		} else if (view.getId() == R.id.challengecreate) {
-			startActivity(new Intent(this, LiveCreateChallengeActivity.class));
+			startActivity(new Intent(this, LiveOpenChallengeActivity.class));
 		} else if (view.getId() == R.id.currentGameBtn) {
 			getLccHolder().checkAndProcessFullGame();
 		}

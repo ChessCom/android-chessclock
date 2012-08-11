@@ -12,6 +12,7 @@ import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListCurrentItem;
+import com.chess.ui.activities.OnlineScreenActivity;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 
@@ -22,8 +23,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-
-		// http://www.chess.com/api/v2/get_echess_current_games
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
@@ -41,21 +40,28 @@ public class AlarmReceiver extends BroadcastReceiver {
 		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				boolean haveMoves = false;
+				int haveMoves = 0;
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-				for (GameListCurrentItem gameListItem : itemList) {
+				if(itemList.size() < 3) {
+					for (GameListCurrentItem gameListItem : itemList) {
 
-					AppUtils.showNewMoveStatusNotification(getMeContext(),
-							getMeContext().getString(R.string.your_move),
-							getMeContext().getString(R.string.your_turn_in_game_with,
-									gameListItem.getOpponentUsername(),
-									gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
-							StaticData.MOVE_REQUEST_CODE,
-							gameListItem);
-					haveMoves = true;
+						AppUtils.showNewMoveStatusNotification(getMeContext(),
+								getMeContext().getString(R.string.your_move),
+								getMeContext().getString(R.string.your_turn_in_game_with,
+										gameListItem.getOpponentUsername(),
+										gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
+								StaticData.MOVE_REQUEST_CODE,
+								gameListItem);
+						haveMoves++;
+					}
+				} else {
+					AppUtils.showMoveStatusNotification(getMeContext(),
+							getMeContext().getString(R.string.your_turn),
+							getMeContext().getString(R.string.your_move), 0, OnlineScreenActivity.class);
+					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 				}
 
-				if(haveMoves){
+				if(haveMoves > 0 && haveMoves < 2){
 					final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
 
 					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

@@ -5,6 +5,7 @@ import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -113,7 +114,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
 
 		showActionRefresh = true;
-//		showActionNewGame = true;
 	}
 
 	@Override
@@ -481,6 +481,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		updateList(selectedLoadItem);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_refresh:
+				updateStartingType(GameOnlineItem.CURRENT_TYPE);
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void cleanTaskPool() {

@@ -22,5 +22,6 @@
 	<string name="stop">停止</string>
 	<string name="daily_limit_reached">値幅制限に達しました。</string>
 	<string name="checkmate">チェックメイト!</string>
+	<string name="solution">溶液</string>
 
 </resources>

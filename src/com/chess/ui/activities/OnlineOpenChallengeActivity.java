@@ -14,7 +14,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 
-public class OnlineCreateChallengeActivity extends LiveBaseActivity implements OnClickListener {
+public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnClickListener {
 
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -30,7 +30,7 @@ public class OnlineCreateChallengeActivity extends LiveBaseActivity implements O
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.online_create_challenge);
+		setContentView(R.layout.online_open_challenge);
 
 		daysArr = getResources().getIntArray(R.array.daysArr);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);

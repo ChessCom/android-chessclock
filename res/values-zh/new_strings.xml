@@ -21,6 +21,7 @@
 	<string name="stop">停止</string>
 	<string name="daily_limit_reached">达到涨停</string>
 	<string name="checkmate">死！</string>
+	<string name="solution">解</string>
 
 
 </resources>

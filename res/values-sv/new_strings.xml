@@ -21,6 +21,7 @@
 	<string name="stop">Stoppa</string>
 	<string name="daily_limit_reached">Daglig Nådd</string>
 	<string name="checkmate">Schackmatt!</string>
+	<string name="solution">Lösning</string>
 
 
 </resources>

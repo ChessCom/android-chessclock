@@ -259,12 +259,10 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
-			// TODO check internet connection before connect
 			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : LiveScreenActivity.class;
 			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playOnlineFrame) {
-			// TODO check internet connection before connect
 			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : OnlineScreenActivity.class;
 			startActivity(new Intent(this, clazz));
 
@@ -273,7 +271,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 		} else if (v.getId() == R.id.tacticsTrainerFrame) {
 			Intent intent = new Intent(this, GameTacticsScreenActivity.class);
-//			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_TACTICS);
 			startActivity(intent);
 
 		} else if (v.getId() == R.id.videoLessonsFrame) {

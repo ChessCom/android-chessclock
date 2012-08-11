@@ -73,6 +73,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private PopupCustomViewFragment customViewFragment;
 	private boolean limitReached;
 	private boolean firsTacticStart;
+	private LayoutInflater inflater;
 
 
 	@Override
@@ -87,6 +88,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	public void init() {
 		tacticsTimer = new Handler();
+		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.skipproblem),
@@ -195,7 +197,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		stopTacticsTimer();
 
-		if (!getBoardFace().isTacticCanceled()) {
+		if (!getBoardFace().isTacticCanceled() && !limitReached) {
 			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 			preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM,
 					DataHolder.getInstance().getTacticResultItem().getSaveString());
@@ -276,11 +278,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		} else {
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
-				popupDialogFragment.setButtons(3);
-				popupItem.setPositiveBtnId(R.string.next);
-				popupItem.setNeutralBtnId(R.string.retry);
-				popupItem.setNegativeBtnId(R.string.stop);
-				showPopupDialog(R.string.wrong_ex, WRONG_MOVE_TAG);
+
+				showWrongMovePopup(getString(R.string.wrong_ex));
+
+//				popupDialogFragment.setButtons(3);
+//				popupItem.setPositiveBtnId(R.string.next);
+//				popupItem.setNeutralBtnId(R.string.retry);
+//				popupItem.setNegativeBtnId(R.string.stop);
+//				showPopupDialog(R.string.wrong_ex, WRONG_MOVE_TAG);
 
 			} else {
 				LoadItem loadItem = new LoadItem();
@@ -297,10 +302,27 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	}
 
+	private void showWrongMovePopup(String title){
+		View customView = inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
+
+		((TextView)customView.findViewById(R.id.titleTxt)).setText(title);
+
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(customView);
+
+		customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+		customViewFragment.show(getSupportFragmentManager(), WRONG_MOVE_TAG);
+
+
+		customView.findViewById(R.id.retryBtn).setOnClickListener(this);
+		customView.findViewById(R.id.stopBtn).setOnClickListener(this);
+		customView.findViewById(R.id.solutionBtn).setOnClickListener(this);
+		customView.findViewById(R.id.nextBtn).setOnClickListener(this);
+	}
+
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
 		this.limitReached = limitReached;
 
-		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		View customView = inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
 		LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
@@ -316,6 +338,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			title = getString(R.string.daily_limit_reached);
 			nextBtnId = R.string.upgrade_to_continue;
 			nextBtnColorId = R.drawable.button_green_selector;
+
+			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, 0);
+			preferencesEditor.commit();
 		}
 
 		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
@@ -547,16 +574,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
 			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 
-			popupDialogFragment.setButtons(3);
-			popupItem.setPositiveBtnId(R.string.next);
-			popupItem.setNeutralBtnId(R.string.retry);
-			popupItem.setNegativeBtnId(R.string.stop);
+//			popupDialogFragment.setButtons(3);
+//			popupItem.setPositiveBtnId(R.string.next);
+//			popupItem.setNeutralBtnId(R.string.retry);
+//			popupItem.setNegativeBtnId(R.string.stop);
 
 			String title = getString(R.string.wrong_score,
 					tacticResultItem.getUserRatingChange(),
 					tacticResultItem.getUserRating());
 
-			showPopupDialog(title, WRONG_MOVE_TAG);
+//			showPopupDialog(title, WRONG_MOVE_TAG);
+
+			showWrongMovePopup(title);
 		}
 
 		@Override
@@ -784,12 +813,28 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			} else {
 				getNewTactic();
 			}
+		} else if (view.getId() == R.id.stopBtn) {
+			boardView.setFinished(true);
+			getTacticItem().setStop(true);
+			stopTacticsTimer();
+			customViewFragment.dismiss();
+		} else if (view.getId() == R.id.retryBtn) {
+			if (DataHolder.getInstance().isGuest() || noInternet) {
+				getTacticFromBatch();
+			} else {
+				setTacticToBoard(getTacticItem(), 0);
+			}
+			getBoardFace().setRetry(true);
+			customViewFragment.dismiss();
+
+		} else if (view.getId() == R.id.solutionBtn) {
+			showAnswer();
+			customViewFragment.dismiss();
 		} else if (view.getId() == R.id.cancelBtn) {
 			customViewFragment.dismiss();
 
 			if (limitReached) {
 				cancelTacticAndLeave();
-//				DataHolder.getInstance().setPendingTacticsLoad(false);
 				onBackPressed();
 			}
 		}
@@ -803,8 +848,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if (fragment.getTag().equals(TEN_TACTICS_TAG)) {
 			DataHolder.getInstance().setCurrentTacticProblem(0);
 			onBackPressed();
-		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Next
-			getNewTactic();
+//		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Next
+//			getNewTactic();
 
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			getTacticFromBatch();
@@ -862,29 +907,29 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) { // Cancel
 			cancelTacticAndLeave();
-		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Stop
-
-			boardView.setFinished(true);
-			getTacticItem().setStop(true);
-			stopTacticsTimer();
+//		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Stop
+//
+//			boardView.setFinished(true);
+//			getTacticItem().setStop(true);
+//			stopTacticsTimer();
 
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			cancelTacticAndLeave();
 		}
 	}
 
-	@Override
-	public void onNeutralBtnCLick(DialogFragment fragment) {
-		super.onNeutralBtnCLick(fragment);
-		if (fragment.getTag().equals(WRONG_MOVE_TAG)) {  // Retry
-			if (DataHolder.getInstance().isGuest() || noInternet) {
-				getTacticFromBatch();
-			} else {
-				setTacticToBoard(getTacticItem(), 0);
-			}
-			getBoardFace().setRetry(true);
-		}
-	}
+//	@Override
+//	public void onNeutralBtnCLick(DialogFragment fragment) {
+//		super.onNeutralBtnCLick(fragment);
+//		if (fragment.getTag().equals(WRONG_MOVE_TAG)) {  // Retry
+//			if (DataHolder.getInstance().isGuest() || noInternet) {
+//				getTacticFromBatch();
+//			} else {
+//				setTacticToBoard(getTacticItem(), 0);
+//			}
+//			getBoardFace().setRetry(true);
+//		}
+//	}
 
 	private TacticItem getTacticItem() {
 		return DataHolder.getInstance().getTactic();

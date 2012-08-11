@@ -162,7 +162,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, StaticData.SYMBOL_EMPTY + buttonItem.getMin());
 			preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, StaticData.SYMBOL_EMPTY + buttonItem.getSec());
 			preferencesEditor.commit();
-			startActivity(new Intent(getContext(), LiveCreateChallengeActivity.class));
+			startActivity(new Intent(getContext(), LiveOpenChallengeActivity.class));
 		}
 	}
 

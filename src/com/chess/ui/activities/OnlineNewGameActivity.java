@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -70,6 +71,8 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 		listUpdateListener = new ListUpdateListener();
+
+		showActionRefresh = true;
 	}
 
 	@Override
@@ -125,8 +128,18 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			startActivity(new Intent(this, OnlineFriendChallengeActivity.class));
 
 		} else if (view.getId() == R.id.challengecreate) {
-			startActivity(new Intent(this, OnlineCreateChallengeActivity.class));
+			startActivity(new Intent(this, OnlineOpenChallengeActivity.class));
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_refresh:
+				updateList();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

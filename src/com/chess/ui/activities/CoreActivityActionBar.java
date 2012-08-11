@@ -232,6 +232,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			case android.R.id.home:
 				backToHomeActivity();
 				break;
+			case R.id.menu_settings:
+				startActivity(new Intent(this, PreferencesScreenActivity.class));
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

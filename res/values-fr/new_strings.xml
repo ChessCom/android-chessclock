@@ -21,6 +21,7 @@
 	<string name="stop">Stop</string>
 	<string name="daily_limit_reached">Limite quotidienne atteint</string>
 	<string name="checkmate">Échec et mat!</string>
+	<string name="solution">Solution</string>
 
 
 </resources>

@@ -21,6 +21,7 @@
 	<string name="stop">रोक</string>
 	<string name="daily_limit_reached">दैनिक सीमा तक पहुँच</string>
 	<string name="checkmate">मात!</string>
+	<string name="solution">समाधान</string>
 
 
 </resources>

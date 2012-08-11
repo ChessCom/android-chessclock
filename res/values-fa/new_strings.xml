@@ -22,5 +22,6 @@
 	<string name="stop">توقف</string>
 	<string name="daily_limit_reached">محدودیت روزانه رسیده</string>
 	<string name="checkmate">مات!</string>
+	<string name="solution">راه حل</string>
 
 </resources>

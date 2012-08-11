@@ -15,7 +15,8 @@
   -->
 
 <resources>
-    <color name="actionbar_title_color">#FFc1c1c1</color>
+    <!--<color name="actionbar_title_color">#FFc1c1c1</color>-->
+    <color name="actionbar_title_color">#ffffffff</color>
     <color name="actionbar_background_color">#eee</color>
 	<color name="action_bar_item_pressed">#FFff7e00</color>
 	<color name="action_bar_item_focused">#FF59b111</color>

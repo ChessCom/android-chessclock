@@ -21,6 +21,7 @@
 	<string name="stop">توقف</string>
 	<string name="daily_limit_reached">الحد اليومي الذي تم التوصل إليه</string>
 	<string name="checkmate">كش ملك!</string>
+	<string name="solution">حل</string>
 
 
 </resources>

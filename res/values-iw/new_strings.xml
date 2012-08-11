@@ -21,6 +21,7 @@
 	<string name="stop">עצור</string>
 	<string name="daily_limit_reached">גבול יומי הגיע</string>
 	<string name="checkmate">מט!</string>
+	<string name="solution">פתרון</string>
 
 
 </resources>

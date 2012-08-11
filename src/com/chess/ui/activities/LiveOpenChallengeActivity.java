@@ -23,7 +23,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
-public class LiveCreateChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
+public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
 	private Spinner minRatingSpnr;
 	private Spinner maxRatingSpnr;
 	private CheckBox isRated;
@@ -39,7 +39,7 @@ public class LiveCreateChallengeActivity extends LiveBaseActivity implements Vie
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.live_create_challenge);
+		setContentView(R.layout.live_open_challenge);
 
 		init();
 

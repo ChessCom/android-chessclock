@@ -84,6 +84,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 					:R.drawable.empty);
 		}else {
 			menu.findItem(itemId).setVisible(visible);
+			menu.findItem(itemId).setEnabled(visible);
 		}
 	}
 

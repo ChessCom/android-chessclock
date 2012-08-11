@@ -21,6 +21,7 @@
 	<string name="stop">Stopp</string>
 	<string name="daily_limit_reached">Daglig Nådd</string>
 	<string name="checkmate">Sjakkmatt!</string>
+	<string name="solution">Oppløsning</string>
 
 
 </resources>

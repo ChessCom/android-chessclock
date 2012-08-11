@@ -63,14 +63,14 @@
 			android:configChanges="keyboardHidden|orientation|keyboard"
 			android:label="@string/label_friend_challenge_live"/>
 
-		<activity android:name=".ui.activities.LiveCreateChallengeActivity"
+		<activity android:name=".ui.activities.LiveOpenChallengeActivity"
 			android:configChanges="keyboardHidden|orientation|keyboard"
 			android:label="@string/label_create_challenge_live"/>
 
 		<activity android:name=".ui.activities.OnlineFriendChallengeActivity"
 			android:label="@string/label_friend_challenge_online"/>
 
-		<activity android:name=".ui.activities.OnlineCreateChallengeActivity"
+		<activity android:name=".ui.activities.OnlineOpenChallengeActivity"
 			android:label="@string/label_create_challenge_online"/>
 
 		<activity android:name="com.mopub.mobileads.MoPubActivity"

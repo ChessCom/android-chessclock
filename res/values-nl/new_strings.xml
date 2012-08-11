@@ -21,6 +21,7 @@
 	<string name="stop">Stop</string>
 	<string name="daily_limit_reached">Dagelijkse Limiet Bereikt</string>
 	<string name="checkmate">Schaakmat!</string>
+	<string name="solution">Oplossing</string>
 
 
 </resources>

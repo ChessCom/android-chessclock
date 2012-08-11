@@ -55,10 +55,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-
 import com.mopub.mobileads.MoPubView.LocationAwareness;
-import com.mopub.mobileads.Utils;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -68,7 +65,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class AdView extends WebView {
     public static final String AD_ORIENTATION_PORTRAIT_ONLY = "p";
@@ -355,8 +353,8 @@ public class AdView extends WebView {
             orString = DEVICE_ORIENTATION_PORTRAIT;
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             orString = DEVICE_ORIENTATION_LANDSCAPE;
-        } else if (orientation == Configuration.ORIENTATION_SQUARE) {
-            orString = DEVICE_ORIENTATION_SQUARE;
+//        } else if (orientation == Configuration.ORIENTATION_SQUARE) {
+//            orString = DEVICE_ORIENTATION_SQUARE;
         }
         sz.append("&o=" + orString);
         

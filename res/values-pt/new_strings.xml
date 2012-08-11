@@ -21,6 +21,7 @@
 	<string name="stop">Pare</string>
 	<string name="daily_limit_reached">Limite Diário Alcançado</string>
 	<string name="checkmate">Checkmate!</string>
+	<string name="solution">Solução</string>
 
 
 </resources>

@@ -21,6 +21,7 @@
 	<string name="stop">Dur</string>
 	<string name="daily_limit_reached">Günlük Sınırına Ulaşıldı</string>
 	<string name="checkmate">Şah mat!</string>
+	<string name="solution">çözüm</string>
 
 
 </resources>

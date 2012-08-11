@@ -1,0 +1,84 @@
+<com.chess.SerializedLinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="0dp"
+	>
+
+	<!-- title-->
+	<com.chess.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		robo:ttf="Bold"
+		android:textSize="@dimen/game_end_popup_text_size"
+		android:paddingBottom="10dip"
+		android:gravity="center"
+		/>
+
+
+	<com.chess.SerializedLinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		>
+
+		<com.chess.SerializedLinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			>
+			<com.chess.RoboButton
+				android:id="@+id/nextBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/next"
+				style="@style/Text.Button"
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/retryBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/retry"
+				style="@style/Text.Button"
+				/>
+
+		</com.chess.SerializedLinearLayout>
+
+		<com.chess.SerializedLinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			>
+			<com.chess.RoboButton
+				android:id="@+id/solutionBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/solution"
+				style="@style/Text.Button.Grey"
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/stopBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/stop"
+				style="@style/Text.Button.Grey"
+				/>
+
+		</com.chess.SerializedLinearLayout>
+
+
+	</com.chess.SerializedLinearLayout>
+
+
+
+</com.chess.SerializedLinearLayout>
