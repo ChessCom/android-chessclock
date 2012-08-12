@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.app.AlertDialog;
 import android.content.*;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.MenuItem;
@@ -88,8 +87,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesList.setAdapter(sectionedAdapter);
 
 		findViewById(R.id.tournaments).setOnClickListener(this);
-		findViewById(R.id.stats).setOnClickListener(this);
-		findViewById(R.id.start).setOnClickListener(this);
+		findViewById(R.id.statsBtn).setOnClickListener(this);
+//		findViewById(R.id.start).setOnClickListener(this);
 	}
 
 	private void init() {
@@ -114,6 +113,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
 
 		showActionRefresh = true;
+		showActionNewGame = true;
 	}
 
 	@Override
@@ -335,16 +335,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (view.getId() == R.id.tournaments) {
 
 			String playerTournamentsLink = RestHelper.formTournamentsLink(AppData.getUserToken(this));
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(playerTournamentsLink));
+			Intent intent = new Intent(this, WebViewActivity.class);
+			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerTournamentsLink);
 			startActivity(intent);
 
-		} else if (view.getId() == R.id.stats) {
+		} else if (view.getId() == R.id.statsBtn) {
 
 			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this));
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(playerStatsLink));
+			Intent intent = new Intent(this, WebViewActivity.class);
+			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
 			startActivity(intent);
-		} else if (view.getId() == R.id.start) {
-			startActivity(new Intent(this, OnlineNewGameActivity.class));
+//		} else if (view.getId() == R.id.start) {
+//			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}
 	}
 
@@ -488,6 +490,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
 				updateStartingType(GameOnlineItem.CURRENT_TYPE);
+				break;
+			case R.id.menu_new_game:
+				startActivity(new Intent(this, OnlineNewGameActivity.class));
 				break;
 		}
 		return super.onOptionsItemSelected(item);

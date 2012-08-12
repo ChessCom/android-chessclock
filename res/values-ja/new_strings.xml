@@ -25,4 +25,10 @@
 	<string name="checkmate">チェックメイト!</string>
 	<string name="solution">溶液</string>
 
+	<string name="bullet_">弾丸: %d</string>
+	<string name="blitz_">ブリッツ: %d</string>
+	<string name="standard_">標準: %d</string>
+
+	<string name="min_">%s 分</string>
+
 </resources>

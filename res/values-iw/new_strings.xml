@@ -24,5 +24,11 @@
 	<string name="checkmate">מט!</string>
 	<string name="solution">פתרון</string>
 
+	<string name="bullet_">כדור: %d</string>
+	<string name="blitz_">בליץ: %d</string>
+	<string name="standard_">תקן: %d</string>
+
+	<string name="min_">%s דקות</string>
+
 
 </resources>

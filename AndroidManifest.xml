@@ -126,6 +126,7 @@
 			/>
 		<activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"
 			android:windowSoftInputMode="stateHidden"/>
+		<activity android:name=".ui.activities.WebViewActivity"/>
 
 		<receiver android:name=".backend.AlarmReceiver"/>
 

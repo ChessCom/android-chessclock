@@ -24,5 +24,11 @@
 	<string name="checkmate">死！</string>
 	<string name="solution">解</string>
 
+	<string name="bullet_">子弹: %d</string>
+	<string name="blitz_">闪电战: %d</string>
+	<string name="standard_">标准: %d</string>
+
+	<string name="min_">%s 分</string>
+
 
 </resources>

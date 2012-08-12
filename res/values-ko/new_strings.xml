@@ -24,5 +24,11 @@
 	<string name="checkmate">체크 메이트!</string>
 	<string name="solution">용액</string>
 
+	<string name="bullet_">총알: %d</string>
+	<string name="blitz_">전격적으로 공격하다: %d</string>
+	<string name="standard_">표준: %d</string>
+
+	<string name="min_">%s 분</string>
+
 
 </resources>

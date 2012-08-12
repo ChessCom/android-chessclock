@@ -1,5 +1,8 @@
 package com.chess.model;
 
+import android.content.Context;
+import com.chess.R;
+
 /**
  * NewGameButtonItem class
  *
@@ -12,11 +15,10 @@ public class NewGameButtonItem {
 	private int sec;
 	private String label;
 	private static final String PAIR_DIVIDER = " | ";
-	private static final String SINGLE_DIVIDER = " ";
+//	private static final String SINGLE_DIVIDER = " ";
 
-	public static NewGameButtonItem createNewButtonFromLabel(String label){
+	public static NewGameButtonItem createNewButtonFromLabel(String label, Context context){
 		NewGameButtonItem  buttonItem = new NewGameButtonItem();
-		buttonItem.label = label;
 		if(label.contains(PAIR_DIVIDER)){
 			// "5 | 2"),
 			String[] params = label.split(PAIR_DIVIDER);
@@ -24,9 +26,11 @@ public class NewGameButtonItem {
 			buttonItem.sec = Integer.valueOf(params[2]);
 		} else {
 			// "10 min"),
-			String[] params = label.split(SINGLE_DIVIDER);
-			buttonItem.min = Integer.valueOf(params[0].trim());
+//			String[] params = label.split(SINGLE_DIVIDER);
+//			buttonItem.min = Integer.valueOf(params[0].trim());
+			buttonItem.min = Integer.valueOf(label);
 		}
+		buttonItem.label = context.getString(R.string.min_, label);
 		return buttonItem;
 	}
 

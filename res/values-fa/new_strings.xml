@@ -25,4 +25,10 @@
 	<string name="checkmate">مات!</string>
 	<string name="solution">راه حل</string>
 
+	<string name="bullet_">گلوله: %d</string>
+	<string name="blitz_">حمله رعد اسا: %d</string>
+	<string name="standard_">استاندارد: %d</string>
+
+	<string name="min_">%s دقیقه</string>
+
 </resources>

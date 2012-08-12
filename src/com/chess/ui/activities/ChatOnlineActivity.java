@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -58,6 +59,8 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 		listUpdateListener = new ListUpdateListener();
 		sendUpdateListener = new SendUpdateListener();
+
+		showActionRefresh = true;
 	}
 
 	protected void widgetsInit(){
@@ -122,6 +125,17 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			onMessageReceived(returnedObj);
 		}
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.menu_refresh:
+				updateList();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 
 	public void onMessageReceived(String response){
 		int before = chatItems.size();

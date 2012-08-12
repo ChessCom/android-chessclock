@@ -64,38 +64,77 @@
 		android:textSize="20sp"
 		android:textColor="@color/grey_button"
 		android:paddingLeft="10dip"
-		android:layout_centerInParent="true"
 		robo:ttf="Bold"
 		style="@style/DarkShadowBottom"
 		/>
 
 	<LinearLayout
+		android:id="@+id/ratingLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:gravity="center"
 		style="@style/LinearDescription"
+		android:paddingTop="0dip"
 		android:paddingRight="0dip"
-		android:layout_marginTop="@dimen/live_layout_mTop"
+		android:weightSum="0"
 		>
+		<!--android:layout_marginTop="@dimen/live_layout_mTop"-->
 
 		<com.chess.RoboTextView
-			android:id="@+id/startNewGameTitle"
+			android:id="@+id/bulletRatingTxt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="6"
-			android:text="@string/start_new_game"
-			android:textSize="@dimen/live_challenges_textSize"
-			android:visibility="visible"/>
+			android:layout_weight="1"
+			android:text="@string/bullet_"
+			android:textSize="13sp"
+			/>
 
-		<com.chess.RoboButton
-			android:id="@+id/start"
+		<com.chess.RoboTextView
+			android:id="@+id/blitzRatingTxt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/ChallengeCreate"
-			android:visibility="visible"
-			android:layout_weight="4"/>
+			android:layout_weight="1"
+			android:text="@string/blitz_"
+			android:textSize="13sp"
+			/>
+
+		<com.chess.RoboTextView
+			android:id="@+id/standardRatingTxt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/standard_"
+			android:textSize="13sp"
+			/>
+
+		<!--
+		  <com.chess.RoboTextView
+			  android:id="@+id/startNewGameTitle"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:layout_weight="6"
+			  android:text="@string/start_new_game"
+			  android:textSize="@dimen/live_challenges_textSize"
+			  android:visibility="visible"/>
+
+		  <com.chess.RoboButton
+			  android:id="@+id/start"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:text="@string/ChallengeCreate"
+			  android:visibility="visible"
+			  android:layout_weight="4"/>
+  -->
 
 	</LinearLayout>
+
+	<com.chess.RoboButton
+		android:id="@+id/statsBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@drawable/ic_chartbar"
+		android:text="@string/stats"
+		style="@style/Text.Button.Grey"
+		/>
 
 	<GridView
 		android:id="@+id/gridview"

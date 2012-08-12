@@ -24,5 +24,11 @@
 	<string name="checkmate">मात!</string>
 	<string name="solution">समाधान</string>
 
+	<string name="bullet_">गोली: %d</string>
+	<string name="blitz_">बम बरसाना: %d</string>
+	<string name="standard_">मानक: %d</string>
+
+	<string name="min_">%s मिनट</string>
+
 
 </resources>

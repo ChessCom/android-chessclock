@@ -25,6 +25,17 @@
 	</string-array>
 
 
+	<string-array name="new_live_game_button_values">
+		<item>30</item>
+		<item>5</item>
+		<item>15 | 10</item>
+		<item>3</item>
+		<item>10</item>
+		<item>2 | 1</item>
+		<item>5 | 2</item>
+		<item>1</item>
+	</string-array>
+
 
 	<integer-array name="daysArr">
 		<item>1</item>

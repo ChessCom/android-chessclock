@@ -27,7 +27,7 @@ public class NewGamesButtonsAdapter extends ItemsAdapter<NewGameButtonItem>{
 	@Override
 	protected View createView(ViewGroup parent) {
 		ViewHolder holder = new ViewHolder();
-		RoboButton view = (RoboButton) inflater.inflate(R.layout.default_button_grey, null, false);
+		RoboButton view = (RoboButton) inflater.inflate(R.layout.default_button, null, false);
 		holder.label = view;
 		view.setTag(holder);
 		view.setOnClickListener(clickListenerFace);

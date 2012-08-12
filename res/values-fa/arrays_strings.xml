@@ -23,18 +23,6 @@
 		<item>ترکی</item>
 	</string-array>-->
 
-	<string-array name="new_live_game_button_values">
-		<item>10 دقیقه</item>
-		<item>5 | 2</item>
-		<item>15 | 10</item>
-		<item>30 دقیقه</item>
-		<item>5 دقیقه</item>
-		<item>3 دقیقه</item>
-		<item>2 | 1</item>
-		<item>1 دقیقه</item>
-	</string-array>
-
-
 	<string-array name="playas">
 		<item>تصادفی</item>
 		<item>سفید</item>

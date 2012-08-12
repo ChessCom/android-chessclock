@@ -30,25 +30,23 @@
 		android:actionViewClass="android.widget.SearchView"
 		/>
 
-<!--	<item android:id="@+id/menu_new_game"
-		android:title="@string/menu_search"
-		android:orderInCategory="1"
+	<item android:id="@+id/menu_new_game"
+		android:title="@string/challenge"
+		android:orderInCategory="2"
 		android:icon="@drawable/ic_action_new_game"
-		android:showAsAction="always|collapseActionView"
-		android:actionViewClass="android.widget.SearchView"
-		/>-->
+		android:showAsAction="always"
+		/>
 
 	<item android:id="@+id/menu_settings"
 		android:title="@string/settings"
-		android:orderInCategory="1"
+		android:orderInCategory="3"
 		android:icon="@drawable/ic_action_settings"
-		android:showAsAction="always|collapseActionView"
-		android:actionViewClass="android.widget.SearchView"
+		android:showAsAction="always"
 		/>
 
 	<item android:id="@+id/menu_singOut"
 		android:title="@string/signout"
-		android:orderInCategory="2"
+		android:orderInCategory="4"
 		android:icon="@drawable/ic_action_sign_out"
 		android:showAsAction="always"/>
 

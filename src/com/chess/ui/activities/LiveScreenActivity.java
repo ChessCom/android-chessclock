@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -38,6 +41,9 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	private List<View> infoGroup;
 	private View emptyView;
 	private NewGamesButtonsAdapter newGamesButtonsAdapter;
+	private TextView bulletRatingTxt;
+	private TextView blitzRatingTxt;
+	private TextView standardRatingTxt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 		List<NewGameButtonItem> newGameButtonItems = new ArrayList<NewGameButtonItem>();
 		for (String label : newGameButtonsArray) {
-			newGameButtonItems.add(NewGameButtonItem.createNewButtonFromLabel(label));
+			newGameButtonItems.add(NewGameButtonItem.createNewButtonFromLabel(label, this));
 		}
 
 		newGamesButtonsAdapter = new NewGamesButtonsAdapter(this, newGameButtonItems);
@@ -74,17 +80,25 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 
-		TextView startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
+//		TextView startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
 
-		Button startBtn = (Button) findViewById(R.id.start);
-		startBtn.setOnClickListener(this);
+		Button statsBtn = (Button) findViewById(R.id.statsBtn);
+		statsBtn.setOnClickListener(this);
+
+
+		LinearLayout ratingView = (LinearLayout) findViewById(R.id.ratingLay);
 
 		GridView gridView = (GridView) findViewById(R.id.gridview);
 		gridView.setAdapter(newGamesButtonsAdapter);
 
-		infoGroup.add(startNewGameTitle);
-		infoGroup.add(startBtn);
+//		infoGroup.add(startNewGameTitle);
+		infoGroup.add(statsBtn);
 		infoGroup.add(gridView);
+		infoGroup.add(ratingView);
+
+		bulletRatingTxt = (TextView) findViewById(R.id.bulletRatingTxt);
+		blitzRatingTxt = (TextView) findViewById(R.id.blitzRatingTxt);
+		standardRatingTxt = (TextView) findViewById(R.id.standardRatingTxt);
 
 		currentGame = (Button) findViewById(R.id.currentGameBtn);
 		currentGame.setOnClickListener(this);
@@ -132,6 +146,14 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				for (View view : infoGroup) {
 					view.setVisibility(infoVisibility);
 				}
+				showActionNewGame = !show;
+				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
+
+				if(!show){
+					bulletRatingTxt.setText(getString(R.string.bullet_, getLccHolder().getUser().getQuickRating()));
+					blitzRatingTxt.setText(getString(R.string.blitz_, getLccHolder().getUser().getBlitzRating()));
+					standardRatingTxt.setText(getString(R.string.standard_, getLccHolder().getUser().getStandardRating()));
+				}
 			}
 		});
 	}
@@ -153,8 +175,14 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		} else if (view.getId() == R.id.currentGameBtn) {
 			getLccHolder().checkAndProcessFullGame();
 
-		} else if (view.getId() == R.id.start) {
-			startActivity(new Intent(this, LiveNewGameActivity.class));
+//		} else if (view.getId() == R.id.start) {
+//			startActivity(new Intent(this, LiveNewGameActivity.class));
+		} else if(view.getId() == R.id.statsBtn){
+			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this));
+			Intent intent = new Intent(this, WebViewActivity.class);
+			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
+			startActivity(intent);
+
 		} else if(view.getId() == R.id.newGameBtn){
 			Integer pos = (Integer) view.getTag(R.id.list_item_id);
 			NewGameButtonItem buttonItem = newGamesButtonsAdapter.getItem(pos);
@@ -164,6 +192,16 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			preferencesEditor.commit();
 			startActivity(new Intent(getContext(), LiveOpenChallengeActivity.class));
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.menu_new_game:
+				startActivity(new Intent(this, LiveNewGameActivity.class));
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

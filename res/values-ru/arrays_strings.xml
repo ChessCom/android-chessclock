@@ -23,18 +23,6 @@
 		<item>Турецский</item>
 	</string-array>-->
 
-	<string-array name="new_live_game_button_values">
-		<item>10 мин</item>
-		<item>5 | 2</item>
-		<item>15 | 10</item>
-		<item>30 мин</item>
-		<item>5 мин</item>
-		<item>3 мин</item>
-		<item>2 | 1</item>
-		<item>1 мин</item>
-	</string-array>
-
-
 	<string-array name="playas">
 		<item>Случайный</item>
 		<item>Белый</item>

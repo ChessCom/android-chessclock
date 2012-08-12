@@ -65,7 +65,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected Handler handler;
 	protected boolean showActionSearch;
 	protected boolean showActionSettings;
-//	protected boolean showActionNewGame;
+	protected boolean showActionNewGame;
 	protected boolean showActionRefresh;
 
 	// we may have this add on every screen, so control it on the lowest level
@@ -201,7 +201,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	private void adjustActionBar() {
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
-//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
+		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
 		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch);
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
@@ -214,7 +214,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh, menu);
 
 		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB){

@@ -24,5 +24,11 @@
 	<string name="checkmate">Шах и мат!</string>
 	<string name="solution">Решение</string>
 
+	<string name="bullet_">Пуля: %d</string>
+	<string name="blitz_">Блицкриг: %d</string>
+	<string name="standard_">Стандарт: %d</string>
+
+	<string name="min_">%s мин</string>
+
 
 </resources>

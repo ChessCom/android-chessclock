@@ -115,7 +115,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
 		getActionBarHelper().showMenuItemById(R.id.menu_search, false);
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, false);
-//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false);
+		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false);
 		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false);
 	}
 
@@ -127,7 +127,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		getActionBarHelper().showMenuItemById(R.id.menu_search, false, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, false, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

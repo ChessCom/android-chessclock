@@ -29,7 +29,7 @@
 			/>
 
 		<com.chess.RoboButton
-			android:id="@+id/stats"
+			android:id="@+id/statsBtn"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/ic_chartbar"
@@ -40,7 +40,7 @@
 			/>
 	</RelativeLayout>
 
-	<LinearLayout
+<!--	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
@@ -57,7 +57,7 @@
 			android:text="@string/challenge"
 			/>
 
-	</LinearLayout>
+	</LinearLayout>-->
 
 	<ListView
 		android:id="@+id/onlineGamesList"

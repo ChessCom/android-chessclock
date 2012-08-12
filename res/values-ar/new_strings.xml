@@ -24,5 +24,10 @@
 	<string name="checkmate">كش ملك!</string>
 	<string name="solution">حل</string>
 
+	<string name="bullet_">رصاصة: %d</string>
+	<string name="blitz_">مداهمات: %d</string>
+	<string name="standard_">معيار: %d</string>
+
+	<string name="min_">%s دقيقة</string>
 
 </resources>

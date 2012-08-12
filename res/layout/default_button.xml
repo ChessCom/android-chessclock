@@ -4,4 +4,4 @@
 	android:id="@+id/newGameBtn"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	style="@style/Text.Button.Grey"/>
+	style="@style/Text.Button"/>

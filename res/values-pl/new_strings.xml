@@ -24,5 +24,11 @@
 	<string name="checkmate">Mat!</string>
 	<string name="solution">Rozwiązanie</string>
 
+	<string name="bullet_">Kula: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s min</string>
+
 
 </resources>

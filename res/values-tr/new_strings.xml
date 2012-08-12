@@ -24,5 +24,11 @@
 	<string name="checkmate">Şah mat!</string>
 	<string name="solution">çözüm</string>
 
+	<string name="bullet_">Kurşun: %d</string>
+	<string name="blitz_">Hava Saldırısı: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s dk</string>
+
 
 </resources>

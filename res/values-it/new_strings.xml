@@ -24,5 +24,11 @@
 	<string name="checkmate">Scacco matto!</string>
 	<string name="solution">Soluzione</string>
 
+	<string name="bullet_">Proiettile: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s min</string>
+
 
 </resources>

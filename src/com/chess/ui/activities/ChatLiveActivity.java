@@ -1,6 +1,7 @@
 package com.chess.ui.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -36,6 +37,8 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 //		gameId = getIntent().getExtras().getLong(BaseGameItem.GAME_ID);
 		chatItems = new ArrayList<MessageItem>();
 		messageUpdateListener = new MessageUpdateListener();
+
+		showActionRefresh = true;
 	}
 
 	@Override
@@ -69,6 +72,16 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 				}
 			});
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.menu_refresh:
+				updateList();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
