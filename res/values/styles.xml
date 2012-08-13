@@ -121,6 +121,7 @@
 	<style name="DefaultListView" parent="android:style/Widget.ListView" >
 		<item name="android:cacheColorHint">@android:color/transparent</item>
 		<item name="android:background">@android:color/transparent</item>
+		<item name="android:listSelector">@drawable/list_selector_background</item>
 	</style>
 
     <style name="DashboardItemText" parent="@android:style/Widget.TextView">

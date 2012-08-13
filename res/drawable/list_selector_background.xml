@@ -23,13 +23,15 @@
     <item android:state_focused="true" android:state_enabled="false"
         android:state_pressed="true"
         android:drawable="@color/disabled" />
+
     <item android:state_focused="true" android:state_enabled="false"
         android:drawable="@color/disabled" />
 
-    <item android:state_focused="true" android:state_pressed="true"
-        android:drawable="@color/orange_button_p" />
+	<item android:state_focused="true" android:state_pressed="true"
+		  android:drawable="@drawable/list_item_pressed" />
+
     <item android:state_focused="false" android:state_pressed="true"
-        android:drawable="@color/orange_button" />
+        android:drawable="@drawable/list_item_pressed" />
 
     <item android:state_focused="true"
         android:drawable="@color/green_button" />

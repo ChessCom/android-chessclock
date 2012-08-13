@@ -128,6 +128,8 @@
 
     <color name="blue">#FF183b94</color>
     <color name="orange">#FFf97028</color>
+    <color name="orange_transp">#7Ff97028</color>
+    <color name="green_transp">#7F59b111</color>
     <!--<color name="dark_orange">#FFa94a14</color>-->
 
     <color name="glow_border">#00c9c9c9</color>
