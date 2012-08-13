@@ -290,8 +290,8 @@ public class RestHelper {
 		return LOGIN_HTML_ALS + userToken + GOTO + TOURNAMENTS;
 	}
 
-	public static String formStatsLink(String userToken) {
-		return LOGIN_HTML_ALS + userToken + GOTO + ECHESS_MOBILE_STATS;
+	public static String formStatsLink(String userToken, String username) {
+		return LOGIN_HTML_ALS + userToken + GOTO + ECHESS_MOBILE_STATS + username;
 	}
 
 	public static String getMembershipLink(String userToken, String param) {

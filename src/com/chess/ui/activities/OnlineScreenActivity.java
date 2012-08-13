@@ -399,13 +399,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			String playerTournamentsLink = RestHelper.formTournamentsLink(AppData.getUserToken(this));
 			Intent intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerTournamentsLink);
+			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.tournaments));
 			startActivity(intent);
 
 		} else if (view.getId() == R.id.statsBtn) {
 
-			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this));
+			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));
 			Intent intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
+			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.stats));
 			startActivity(intent);
 //		} else if (view.getId() == R.id.start) {
 //			startActivity(new Intent(this, OnlineNewGameActivity.class));

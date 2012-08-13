@@ -178,9 +178,10 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 //		} else if (view.getId() == R.id.start) {
 //			startActivity(new Intent(this, LiveNewGameActivity.class));
 		} else if(view.getId() == R.id.statsBtn){
-			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this));
+			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));
 			Intent intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
+			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.stats));
 			startActivity(intent);
 
 		} else if(view.getId() == R.id.newGameBtn){

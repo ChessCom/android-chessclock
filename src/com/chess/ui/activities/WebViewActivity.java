@@ -29,6 +29,10 @@ public class WebViewActivity extends LiveBaseActivity {
 
 		widgetsInit();
 		url = getIntent().getStringExtra(AppConstants.EXTRA_WEB_URL);
+		String title = getIntent().getStringExtra(AppConstants.EXTRA_TITLE);
+
+
+		setTitle(title.toUpperCase());
 		showActionRefresh = true;
 	}
 

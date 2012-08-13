@@ -47,6 +47,7 @@ public class AppConstants {
 
 	public static final String ID = "id";
 	public static final String EXTRA_WEB_URL = "extras weblink url";
+	public static final String EXTRA_TITLE = "screen title";
 
 	public final static int GAME_MODE_COMPUTER_VS_HUMAN_WHITE = 0;
 	public final static int GAME_MODE_COMPUTER_VS_HUMAN_BLACK = 1;
