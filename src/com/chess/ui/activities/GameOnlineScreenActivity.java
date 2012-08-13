@@ -475,7 +475,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	private boolean openChatActivity() {
+	private void openChatActivity() {
+		if(currentGame == null)
+			return;
+
 		preferencesEditor.putString(AppConstants.OPPONENT, userPlayWhite
 				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
@@ -489,7 +492,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		startActivity(intent);
 
 		chat = false;
-		return true;
 	}
 
 

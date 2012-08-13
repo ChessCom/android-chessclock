@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">Suche</string>
-	<string name="restoring_conntection_to_live">Verbindung wird wiederhergestellt…</string>
-	<string name="application_was_killed">Die Applikation wurde getötet, Wiederherstellung…</string>
-	<string name="no_network">Kein Netzwerk</string>
-	<string name="wireless_settings">Wireless-Einstellungen</string>
-	<string name="invalid_password">Ungültiges passwort</string>
-	<string name="your_turn_in_game_with">In Ihrem Spiel mit %1$s , %2$s</string>
-	<string name="register">Registrieren</string>
-	<string name="session_expired">Ihre Sitzung ist abgelaufen, bitte neu anmelden</string>
-	<string name="problem_solved_">Problem Gelöst!</string>
-	<string name="problem_solved">Problem Gelöst!
-		\n Partitur %1$s
-		\n Neues Rating %2$s </string>
-	<string name="wrong_score">Falsch!
-		\n Partitur %1$s
-		\n Neues Rating %2$s </string>
-	<string name="next_tactic_puzzle">Nächste Taktik Puzzle</string>
-	<string name="upgrade_to_continue">Upgrade auf Weiter</string>
 
-	<string name="retry">Retry</string>
-	<string name="stop">Stop</string>
-	<string name="daily_limit_reached">Daily Limit Reached</string>
-	<string name="checkmate">Schachmatt!</string>
-	<string name="solution">Lösung</string>
-
-	<string name="bullet_">Kugel: %d</string>
-	<string name="blitz_">Blitz: %d</string>
-	<string name="standard_">Standard: %d</string>
-
-	<string name="min_">%s min</string>
+	<string name="unable_to_move_on_vacation">Kann nicht bewegt, bis in den Ferien machen</string>
+	<string name="current_games">Aktuelle Spiele</string>
+	<string name="finished_games">Fertige Spiele</string>
+	<string name="no_challenges_during_vacation">Herausforderungen werden nicht in den Ferien zeigen</string>
+	<string name="end_vacation">End Urlaub</string>
 
 
 </resources>

@@ -19,7 +19,7 @@
         <shape android:dither="true"
             >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_top_left"  />
+            <solid android:color="@color/grey_emboss_top_left"  />
 
         </shape>
     </item>
@@ -32,7 +32,7 @@
         <shape android:dither="true"
             >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_low_right"  />
+            <solid android:color="@color/grey_emboss_low_right"  />
 
         </shape>
     </item>
@@ -45,7 +45,7 @@
         android:right="1px"
         >
         <shape android:dither="true" >
-            <solid android:color="@color/orange_button_d"
+            <solid android:color="@color/grey_button_d"
                 />
             <stroke android:width="@dimen/default_stroke_width"
                     android:color="@color/any_button_stroke"/>

@@ -325,6 +325,37 @@
 	<string name="draw_declined">TIRAGE DECLINED</string>
 	<string name="has_declined_draw">a diminué un tirage au sort</string>
 
+	<string name="menu_search">Rechercher</string>
+	<string name="restoring_conntection_to_live">Reconnexion …</string>
+	<string name="application_was_killed">La demande a été tué, la restauration …</string>
+	<string name="no_network">Pas de réseau</string>
+	<string name="wireless_settings">Paramètres sans fil</string>
+	<string name="invalid_password">Invalid password</string>
+	<string name="your_turn_in_game_with">Dans votre jeu avec %1$s , %2$s</string>
+	<string name="register">S\'inscrire</string>
+	<string name="session_expired">Votre session a expiré, s\'il vous plaît ré-ouvrir une session</string>
+	<string name="problem_solved_">Problème résolu!</string>
+	<string name="problem_solved">Problème résolu!
+		\n Score %1$s
+		\n Nouvelle Cotation %2$s </string>
+	<string name="wrong_score">Faux!
+		\n Score %1$s
+		\n Nouvelle Cotation %2$s </string>
+	<string name="next_tactic_puzzle">Puzzle tactique suivante</string>
+	<string name="upgrade_to_continue">Mise à jour pour continuer</string>
+
+	<string name="retry">Réessayer</string>
+	<string name="stop">Stop</string>
+	<string name="daily_limit_reached">Limite quotidienne atteint</string>
+	<string name="checkmate">Échec et mat!</string>
+	<string name="solution">Solution</string>
+
+	<string name="bullet_">Balle: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s min</string>
+
 	<string name="invalidUserId">Blancs ID utilisateur</string>
 	<string name="invalidContenIid">Blancs Content ID</string>
 	<string name="pleaseLoginAgain">Veuillez vous connecter à nouveau.</string>

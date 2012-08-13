@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">Pesquisar</string>
-	<string name="restoring_conntection_to_live">Reconectando ...</string>
-	<string name="application_was_killed">A aplicação foi morto, restaurando ...</string>
-	<string name="no_network">Sem Rede</string>
-	<string name="wireless_settings">Configurações sem fio</string>
-	<string name="invalid_password">Senha inválida</string>
-	<string name="your_turn_in_game_with">Em seu jogo com %1$s , %2$s</string>
-	<string name="register">Inscrever</string>
-	<string name="session_expired">Sua sessão expirou, faça o login novamente</string>
-	<string name="problem_solved_">Problema Resolvido!</string>
-	<string name="problem_solved">Problema Resolvido!
-		\n Contagem %1$s
-		\n Nova Classificação %2$s </string>
-	<string name="wrong_score">Errado!
-		\n Contagem %1$s
-		\n Nova Classificação %2$s </string>
-	<string name="next_tactic_puzzle">Enigma próxima tática</string>
-	<string name="upgrade_to_continue">Actualiza Para Continuar</string>
 
-	<string name="retry">Tentar novamente</string>
-	<string name="stop">Pare</string>
-	<string name="daily_limit_reached">Limite Diário Alcançado</string>
-	<string name="checkmate">Checkmate!</string>
-	<string name="solution">Solução</string>
-
-	<string name="bullet_">Bala: %d</string>
-	<string name="blitz_">Blitz: %d</string>
-	<string name="standard_">Padrão: %d</string>
-
-	<string name="min_">%s min</string>
+	<string name="unable_to_move_on_vacation">Incapaz de fazer movimentos até nas férias</string>
+	<string name="current_games">Jogos Atuais</string>
+	<string name="finished_games">Jogos Acabados</string>
+	<string name="no_challenges_during_vacation">Desafios não será exibido durante as férias</string>
+	<string name="end_vacation">Fim de Férias</string>
 
 
 </resources>

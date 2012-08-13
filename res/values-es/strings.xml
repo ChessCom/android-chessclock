@@ -326,6 +326,37 @@
 	<string name="draw_declined">SORTEO RECHAZADA</string>
 	<string name="has_declined_draw">ha disminuido un empate</string>
 
+	<string name="menu_search">Buscar</string>
+	<string name="restoring_conntection_to_live">Reconectando …</string>
+	<string name="application_was_killed">Solicitud fue asesinado, la restauración de …</string>
+	<string name="no_network">No Hay Red</string>
+	<string name="wireless_settings">Configuración Inalámbrica</string>
+	<string name="invalid_password">Contraseña no válida</string>
+	<string name="your_turn_in_game_with">En el juego con %1$s , %2$s</string>
+	<string name="register">Registrar</string>
+	<string name="session_expired">Su sesión ha caducado, por favor vuelve a iniciar sesión</string>
+	<string name="problem_solved_">Problema resuelto!</string>
+	<string name="problem_solved">Problema resuelto!
+		\n Puntuación %1$s
+		\n Calificación Otorgada %2$s </string>
+	<string name="wrong_score">¡Falso!
+		\n Puntuación %1$s
+		\n Calificación Otorgada %2$s </string>
+	<string name="next_tactic_puzzle">Puzzle siguiente táctica</string>
+	<string name="upgrade_to_continue">Actualización para continuar</string>
+
+	<string name="retry">Reintentar</string>
+	<string name="stop">Detener</string>
+	<string name="daily_limit_reached">Límite diario alcanzó</string>
+	<string name="checkmate">Jaque mate!</string>
+	<string name="solution">Solución</string>
+
+	<string name="bullet_">Bala: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Estándar: %d</string>
+
+	<string name="min_">%s min</string>
+
 	<string name="invalidUserId">ID de usuario no válido</string>
 	<string name="invalidContenIid">Válido de identificación de contenido</string>
 	<string name="pleaseLoginAgain">Por favor login de nuevo.</string>

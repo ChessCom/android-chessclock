@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">Zoeken</string>
-	<string name="restoring_conntection_to_live">Opnieuw verbinding maken …</string>
-	<string name="application_was_killed">Toepassing werd gedood, het herstellen van…</string>
-	<string name="no_network">Geen Netwerk</string>
-	<string name="wireless_settings">Draadloze Instellingen</string>
-	<string name="invalid_password">Ongeldig wachtwoord</string>
-	<string name="your_turn_in_game_with">In uw spel met %1$s , %2$s</string>
-	<string name="register">Registreren</string>
-	<string name="session_expired">Uw sessie is verlopen, dan kunt u opnieuw in te loggen</string>
-	<string name="problem_solved_">Probleem Opgelost!</string>
-	<string name="problem_solved">Probleem Opgelost!
-		\n Score %1$s
-		\n New Rating %2$s </string>
-	<string name="wrong_score">Wrong!
-		\n Score %1$s
-		\n New Rating %2$s </string>
-	<string name="next_tactic_puzzle">Następna Puzzle Tactic</string>
-	<string name="upgrade_to_continue">Uaktualnienie do Kontynuuj</string>
 
-	<string name="retry">Opnieuw Proberen</string>
-	<string name="stop">Stop</string>
-	<string name="daily_limit_reached">Dagelijkse Limiet Bereikt</string>
-	<string name="checkmate">Schaakmat!</string>
-	<string name="solution">Oplossing</string>
-
-	<string name="bullet_">Kogel: %d</string>
-	<string name="blitz_">Blitz: %d</string>
-	<string name="standard_">Standaard: %d</string>
-
-	<string name="min_">%s min</string>
+	<string name="unable_to_move_on_vacation">Niet in staat om bewegingen te maken totdat op vakantie</string>
+	<string name="current_games">De huidige Games</string>
+	<string name="finished_games">Afgewerkte Games</string>
+	<string name="no_challenges_during_vacation">Uitdagingen worden niet weergegeven tijdens vakantie</string>
+	<string name="end_vacation">Einde Vakantie</string>
 
 
 </resources>

@@ -322,7 +322,38 @@
 	<string name="your_end_game_rating">Ваш рейтинг ( %1$s ): ( %2$d )</string>
 	<string name="your_end_game_rating_online">Ваш рейтинг ( %1$s )</string>
 	<string name="draw_declined">НИЧЬЯ ОТКЛОНЕНА</string>
-	<string name="has_declined_draw">отзалал в ничье</string>
+	<string name="has_declined_draw">отказал в ничье</string>
+
+	<string name="menu_search">Поиск</string>
+	<string name="restoring_conntection_to_live">Реконнектим…</string>
+	<string name="application_was_killed">Приложение было убито, восстанавливаем…</string>
+	<string name="no_network">Нет Сети</string>
+	<string name="wireless_settings">Настройки Сети</string>
+	<string name="invalid_password">Неверный пароль</string>
+	<string name="your_turn_in_game_with">В игре с %1$s , %2$s</string>
+	<string name="register">Регистрация</string>
+	<string name="session_expired">Время сеанса истекло, пожалуйста, войдите снова</string>
+	<string name="problem_solved_">Проблема решена!</string>
+	<string name="problem_solved">Проблема решена!
+		\n Счет %1$s
+		\n Новый Рейтинг %2$s </string>
+	<string name="wrong_score">Неверно!
+		\n Счет %1$s
+		\n Новый Рейтинг %2$s </string>
+	<string name="next_tactic_puzzle">Следующая головоломка</string>
+	<string name="upgrade_to_continue">Улучшить для продолжения</string>
+
+	<string name="retry">Повтор</string>
+	<string name="stop">Стоп</string>
+	<string name="daily_limit_reached">Дневной Лимит Достигнут</string>
+	<string name="checkmate">Шах и мат!</string>
+	<string name="solution">Решение</string>
+
+	<string name="bullet_">Пуля: %d</string>
+	<string name="blitz_">Блицкриг: %d</string>
+	<string name="standard_">Стандарт: %d</string>
+
+	<string name="min_">%s мин</string>
 
 	<string name="invalidUserId">Неверный идентификатор пользователя</string>
 	<string name="invalidContenIid">Неверный идентификатор контента</string>

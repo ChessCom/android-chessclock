@@ -122,7 +122,11 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			onMessageReceived(returnedObj);
+			if(returnedObj.contains(RestHelper.R_SUCCESS)){
+				onMessageReceived(returnedObj);
+			}  else if (returnedObj.contains(RestHelper.R_ERROR)) {
+				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+			}
 		}
 	}
 
@@ -137,7 +141,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	}
 
 
-	public void onMessageReceived(String response){
+	private void onMessageReceived(String response){
 		int before = chatItems.size();
 		chatItems.clear();
 		chatItems.addAll(ChessComApiParser.receiveMessages(response));

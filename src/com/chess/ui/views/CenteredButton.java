@@ -13,8 +13,7 @@ import android.widget.FrameLayout;
 import com.chess.R;
 import com.chess.RoboButton;
 
-public class CenteredButton extends FrameLayout implements View.OnClickListener, View.OnTouchListener {
-//public class CenteredButton extends RelativeLayout {
+public class CenteredButton extends FrameLayout implements View.OnTouchListener {
 
 	static final String TAG = "CenteredButton";
 	private final int DEFAULT_WIDTH = 100;
@@ -66,8 +65,6 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 				break;
 			}
 		}
-//		getBackground()
-//		Log.i(TAG, "DraggableDot @ " + this + " : radius=" + mRadius + " legend='" + buttonText + "' anr=" + mAnrType);
 
 		button = new RoboButton(getContext());
         button.setFont("Bold");
@@ -87,7 +84,6 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 		addView(button, params);
 		this.setTouchDelegate(button.getTouchDelegate());
 		button.setClickable(true);
-		button.setOnClickListener(this);
 		button.setOnTouchListener(this);
 		setClickable(true);
 	}
@@ -154,7 +150,6 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 		int height = measureParam(heightMeasureSpec, DEFAULT_HEIGHT);
 		int width = measureParam(widthMeasureSpec, DEFAULT_WIDTH);
@@ -205,21 +200,5 @@ public class CenteredButton extends FrameLayout implements View.OnClickListener,
 				return value;
 		}
 	}
-
-	private boolean isButtonClicked;
-//	@Override
-//	public boolean performClick() {
-//		refreshDrawableState();
-//		if(!isButtonClicked)
-//			button.performClick();
-//		return super.performClick();
-//	}
-
-	@Override
-	public void onClick(View view) {
-		isButtonClicked = view.equals(button);
-//		performClick();
-	}
-
 
 }

@@ -323,6 +323,37 @@
 	<string name="draw_declined">SORTEIO DIMINUIU</string>
 	<string name="has_declined_draw">diminuiu um empate</string>
 
+	<string name="menu_search">Pesquisar</string>
+	<string name="restoring_conntection_to_live">Reconectando …</string>
+	<string name="application_was_killed">A aplicação foi morto, restaurando …</string>
+	<string name="no_network">Sem Rede</string>
+	<string name="wireless_settings">Configurações sem fio</string>
+	<string name="invalid_password">Senha inválida</string>
+	<string name="your_turn_in_game_with">Em seu jogo com %1$s , %2$s</string>
+	<string name="register">Inscrever</string>
+	<string name="session_expired">Sua sessão expirou, faça o login novamente</string>
+	<string name="problem_solved_">Problema Resolvido!</string>
+	<string name="problem_solved">Problema Resolvido!
+		\n Contagem %1$s
+		\n Nova Classificação %2$s </string>
+	<string name="wrong_score">Errado!
+		\n Contagem %1$s
+		\n Nova Classificação %2$s </string>
+	<string name="next_tactic_puzzle">Enigma próxima tática</string>
+	<string name="upgrade_to_continue">Actualiza Para Continuar</string>
+
+	<string name="retry">Tentar novamente</string>
+	<string name="stop">Pare</string>
+	<string name="daily_limit_reached">Limite Diário Alcançado</string>
+	<string name="checkmate">Checkmate!</string>
+	<string name="solution">Solução</string>
+
+	<string name="bullet_">Bala: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Padrão: %d</string>
+
+	<string name="min_">%s min</string>
+
 	<string name="invalidUserId">User ID inválido</string>
 	<string name="invalidContenIid">ID inválido Conteúdo</string>
 	<string name="pleaseLoginAgain">Entrar novamente.</string>

@@ -29,6 +29,8 @@
         <item name="actionbarCompatSearchEditTextStyle">@style/ActionBarCompatSearchEditText</item>
         <item name="actionbarCompatSearchButtonStyle">@style/ActionBarCompatSearchButton</item>
 
+		<item name="android:actionBarItemBackground">@color/action_bar_item_pressed</item>
+
         <item name="android:textSize">17sp</item>
 	</style>
 

@@ -368,7 +368,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		if (fragment.getTag().equals(VACATION_TAG)) {
 			LoadItem listLoadItem = new LoadItem();
 			listLoadItem.setLoadPath(RestHelper.VACATION_LEAVE);
-
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
@@ -382,10 +381,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (vacationCheckBox.isChecked())
-				vacationCheckBox.setText(getString(R.string.vacationOn));
-			else
-				vacationCheckBox.setText(getString(R.string.vacationOff));
+			if(returnedObj.contains(RestHelper.R_SUCCESS)){
+				if (vacationCheckBox.isChecked())
+					vacationCheckBox.setText(getString(R.string.vacationOn));
+				else
+					vacationCheckBox.setText(getString(R.string.vacationOff));
+			} else if(returnedObj.contains(RestHelper.R_ERROR)) {
+				showPopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+			}
 		}
 	}
 }

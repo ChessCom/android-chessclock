@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">검색</string>
-	<string name="restoring_conntection_to_live">다시 연결 …</string>
-	<string name="application_was_killed">신청 복원, 살해되었을 때…</string>
-	<string name="no_network">어떤 네트워크도</string>
-	<string name="wireless_settings">무선 설정</string>
-	<string name="invalid_password">비밀 번호가 잘못되었습니다</string>
-	<string name="your_turn_in_game_with">게임과 관련 %1$s , %2$s</string>
-	<string name="register">레지스터</string>
-	<string name="session_expired">세션이 만료되었고, 다시 로그인하시기 바랍니다</string>
-	<string name="problem_solved_">문제는 풀렸다!</string>
-	<string name="problem_solved">문제는 풀렸다!
-		\n 점수 %1$s
-		\n 신규 평가 %2$s </string>
-	<string name="wrong_score">틀렸어!
-		\n 점수 %1$s
-		\n 신규 평가 %2$s </string>
-	<string name="next_tactic_puzzle">다음 전술 퍼즐</string>
-	<string name="upgrade_to_continue">계속하려면 업그레 이드</string>
 
-	<string name="retry">재시도</string>
-	<string name="stop">정지</string>
-	<string name="daily_limit_reached">일일 한도에 도달</string>
-	<string name="checkmate">체크 메이트!</string>
-	<string name="solution">용액</string>
-
-	<string name="bullet_">총알: %d</string>
-	<string name="blitz_">전격적으로 공격하다: %d</string>
-	<string name="standard_">표준: %d</string>
-
-	<string name="min_">%s 분</string>
+	<string name="unable_to_move_on_vacation">휴가까지 이동을 할 수 없습니다</string>
+	<string name="current_games">현재 게임</string>
+	<string name="finished_games">완성된 게임</string>
+	<string name="no_challenges_during_vacation">도전은 방학 중에 표시되지 않습니다</string>
+	<string name="end_vacation">최종 휴가</string>
 
 
 </resources>

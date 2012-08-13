@@ -47,6 +47,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
+	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
 	private int currentListType;
 	private int successToastMsgId;
@@ -62,6 +63,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
 	private GameListCurrentItem gameListCurrentItem;
 	private GameListChallengeItem gameListChallengeItem;
+	private VacationStatusUpdateListener vacationStatusUpdateListener;
+	private boolean onVacation;
+	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
 
 
 	@Override
@@ -97,6 +101,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
 		listUpdateListener = new ListUpdateListener();
+		vacationStatusUpdateListener = new VacationStatusUpdateListener();
+		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
 
 		// init adapters
 		List<GameListCurrentItem> currentItemList = new ArrayList<GameListCurrentItem>();
@@ -125,6 +131,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 
+		updateVacationStatus();
 		updateStartingType(GameOnlineItem.CURRENT_TYPE);
 	}
 
@@ -183,12 +190,27 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						break;
 				}
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				String status = returnedObj.split("[+]")[1];
-				if (!isPaused)
-					showSinglePopupDialog(R.string.error, status);
+				if (isPaused)
+					return;
 
-				if (status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN))
+				String status = returnedObj.split("[+]")[1];
+
+				if (status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN)) {
 					AppUtils.stopNotificationsUpdate(getContext());
+				} else if(status.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
+					showToast(R.string.no_challenges_during_vacation);
+				} else {
+					showSinglePopupDialog(R.string.error, status);
+				}
+
+				switch (currentListType) { // Continue to update list
+					case GameOnlineItem.CURRENT_TYPE:
+						updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+						break;
+					case GameOnlineItem.CHALLENGES_TYPE:
+						updateStartingType(GameOnlineItem.FINISHED_TYPE);
+						break;
+				}
 			}
 		}
 
@@ -227,6 +249,27 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				updateStartingType(GameOnlineItem.CURRENT_TYPE);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
+			}
+		}
+	}
+
+	private void updateVacationStatus() {
+		LoadItem listLoadItem = new LoadItem();
+		listLoadItem.setLoadPath(RestHelper.GET_VACATION_STATUS);
+		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+
+		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
+	}
+
+	private class VacationStatusUpdateListener extends ChessUpdateListener {
+		public VacationStatusUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				onVacation = returnedObj.substring(RestHelper.R_SUCCESS.length()).equals("1");
 			}
 		}
 	}
@@ -274,7 +317,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-//			intent.putExtra(AppConstants.GAME_MODE, AppConstants.GAME_MODE_LIVE_OR_ECHESS);
 			intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);
 			startActivity(intent);
 
@@ -286,6 +328,26 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			successToastMsgId = R.string.challengedeclined;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
+		} else if(fragment.getTag().equals(UNABLE_TO_MOVE_TAG)){
+			LoadItem listLoadItem = new LoadItem();
+			listLoadItem.setLoadPath(RestHelper.VACATION_RETURN);
+			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+
+			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
+		}
+	}
+
+	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {
+		public VacationLeaveStatusUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				onVacation = false;
+				updateStartingType(GameOnlineItem.CURRENT_TYPE);
+			}
 		}
 	}
 
@@ -352,21 +414,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		int sectionsCnt = ((SectionedAdapter)adapterView.getAdapter()).getSectionsCnt();
-		int section;
-		int headersCnt = 0;
-		int passedItems = 0;
-		for (section = 0; section < sectionsCnt; section++){
-			passedItems += sectionedAdapter.getSection(section).adapter.getCount();
-			if(passedItems > 0)
-				headersCnt++;
-			if(pos < headersCnt + passedItems){
-				break;
-			}
-		}
-
+		int section = sectionedAdapter.getCurrentSection(pos);
 
 		if(section == CURRENT_GAMES_SECTION){
+			if(onVacation){
+				popupItem.setNegativeBtnId(R.string.end_vacation);
+				showPopupDialog(R.string.unable_to_move_on_vacation, UNABLE_TO_MOVE_TAG);
+				return;
+			}
+
 			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 
 			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
@@ -403,18 +459,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		int sectionsCnt = ((SectionedAdapter)adapterView.getAdapter()).getSectionsCnt();
-		int section;
-		int headersCnt = 0;
-		int passedItems = 0;
-		for (section = 0; section < sectionsCnt; section++){
-			passedItems += sectionedAdapter.getSection(section).adapter.getCount();
-			if(passedItems > 0)
-				headersCnt++;
-			if(pos < headersCnt + passedItems){
-				break;
-			}
-		}
+		int section = sectionedAdapter.getCurrentSection(pos);
 
 		if (section == CURRENT_GAMES_SECTION){
 			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
@@ -490,6 +535,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
 				updateStartingType(GameOnlineItem.CURRENT_TYPE);
+				updateVacationStatus();
 				break;
 			case R.id.menu_new_game:
 				startActivity(new Intent(this, OnlineNewGameActivity.class));

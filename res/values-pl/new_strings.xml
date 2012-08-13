@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">Szukaj</string>
-	<string name="restoring_conntection_to_live">Ponowne łączenie …</string>
-	<string name="application_was_killed">Wniosek został zabity, przywracając …</string>
-	<string name="no_network">Nie Sieć</string>
-	<string name="wireless_settings">Ustawienia Bezprzewodowe</string>
-	<string name="invalid_password">Nieprawidłowe hasło</string>
-	<string name="your_turn_in_game_with">W swojej grze z %1$s , %2$s</string>
-	<string name="register">Zarejestrować</string>
-	<string name="session_expired">Twoja sesja wygasła, należy ponownie zalogować</string>
-	<string name="problem_solved_">Problem rozwiązany!</string>
-	<string name="problem_solved">Problem rozwiązany!
-		\n Wynik %1$s
-		\n Nowa Ocena %2$s </string>
-	<string name="wrong_score">Nieprawda!
-		\n Wynik %1$s
-		\n Nowa Ocena %2$s </string>
-	<string name="next_tactic_puzzle">Next Tactic Puzzle</string>
-	<string name="upgrade_to_continue">Upgrade To Continue</string>
 
-	<string name="retry">Spróbować ponownie</string>
-	<string name="stop">Stop</string>
-	<string name="daily_limit_reached">Dzienny limit osiągnięty</string>
-	<string name="checkmate">Mat!</string>
-	<string name="solution">Rozwiązanie</string>
-
-	<string name="bullet_">Kula: %d</string>
-	<string name="blitz_">Blitz: %d</string>
-	<string name="standard_">Standard: %d</string>
-
-	<string name="min_">%s min</string>
+	<string name="unable_to_move_on_vacation">Nie można uczynić ruchy dopiero na wakacjach</string>
+	<string name="current_games">Aktualne Gry</string>
+	<string name="finished_games">Gotowe Gry</string>
+	<string name="no_challenges_during_vacation">Wyzwania nie pokaże w czasie wakacji</string>
+	<string name="end_vacation">Urlop Koniec</string>
 
 
 </resources>

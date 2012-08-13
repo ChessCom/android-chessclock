@@ -1,34 +1,9 @@
 <resources>
-	<string name="menu_search">検索</string>
-	<string name="restoring_conntection_to_live">再接続…</string>
-	<string name="application_was_killed">アプリケーションは、リストア、殺された…</string>
-	<string name="no_network">ネットワーク無し</string>
-	<string name="wireless_settings">ワイヤレス設定</string>
-	<string name="invalid_password">無効なパスワード</string>
-	<string name="your_turn_in_game_with">あなたのゲームとの %1$s , %2$s</string>
-	<string name="register">登録</string>
-	<string name="session_expired">セッションの期限が切れた、再ログインしてください</string>
-	<string name="problem_solved_">問題は解決！</string>
-	<string name="problem_solved">問題は解決！
-		\n スコア %1$s
-		\n 新しい評価 %2$s </string>
-	<string name="wrong_score">間違っている！
-		\n スコア %1$s
-		\n 新しい評価 %2$s </string>
-	<string name="next_tactic_puzzle">次の戦術パズル</string>
-	<string name="upgrade_to_continue">続行するにはアップグレード</string>
 
-
-	<string name="retry">再試行</string>
-	<string name="stop">停止</string>
-	<string name="daily_limit_reached">値幅制限に達しました。</string>
-	<string name="checkmate">チェックメイト!</string>
-	<string name="solution">溶液</string>
-
-	<string name="bullet_">弾丸: %d</string>
-	<string name="blitz_">ブリッツ: %d</string>
-	<string name="standard_">標準: %d</string>
-
-	<string name="min_">%s 分</string>
+	<string name="unable_to_move_on_vacation">休暇までの動きを行うことができません</string>
+	<string name="current_games">現在のゲーム</string>
+	<string name="finished_games">完成したゲーム</string>
+	<string name="no_challenges_during_vacation">課題は、休暇中に表示されません</string>
+	<string name="end_vacation">エンド·バケーション</string>
 
 </resources>

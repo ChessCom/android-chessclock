@@ -1,34 +1,11 @@
 <resources>
-	<string name="menu_search">Search</string>
-	<string name="restoring_conntection_to_live">Reconnecting…</string>
-	<string name="application_was_killed">Application was killed, restoring…</string>
-	<string name="no_network">No Network</string>
-	<string name="wireless_settings">Wireless Settings</string>
-	<string name="invalid_password">Invalid password</string>
-	<string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
-	<string name="register">Register</string>
-	<string name="session_expired">Your session has expired, please re-login</string>
-	<string name="problem_solved_">Problem Solved!</string>
-	<string name="problem_solved">Problem Solved!
-		\n Score %1$s
-		\n New rating %2$s </string>
 
-	<string name="wrong_score">Wrong!
-		\n Score %1$s
-		\n New rating %2$s </string>
-	<string name="next_tactic_puzzle">Next Tactic Puzzle</string>
-	<string name="upgrade_to_continue">Upgrade To Continue</string>
+	<string name="unable_to_move_on_vacation">Unable to make moves until on vacation</string>
 
-	<string name="retry">Retry</string>
-	<string name="stop">Stop</string>
-	<string name="daily_limit_reached">Daily Limit Reached</string>
-	<string name="checkmate">Checkmate!</string>
-	<string name="solution">Solution</string>
+	<string name="current_games">Current Games</string>
+	<string name="finished_games">Finished Games</string>
+	<string name="no_challenges_during_vacation">Challenges will not show during vacation</string>
+	<string name="end_vacation">End Vacation</string>
 
-	<string name="bullet_">Bullet: %d</string>
-	<string name="blitz_">Blitz: %d</string>
-	<string name="standard_">Standard: %d</string>
-
-	<string name="min_">%s min</string>
 
 </resources>

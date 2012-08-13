@@ -88,6 +88,27 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 		return (total);
 	}
 
+	public int getCurrentSection(int pos){
+		int sectionsCnt = sections.size();
+		int section;
+		int headersCnt = 0;
+		int passedItems = 0;
+		int lastPassedItems = 0;
+
+		for (section = 0; section < sectionsCnt; section++){
+			passedItems += getSection(section).adapter.getCount();
+//			if(passedItems > 0)
+			if(passedItems > lastPassedItems) {
+				lastPassedItems = passedItems;
+				headersCnt++;
+			}
+			if(pos < headersCnt + passedItems){
+				break;
+			}
+		}
+		return section;
+	}
+
 	@Override
 	public Object getItem(int position) {
 		for (Section section : this.sections) {

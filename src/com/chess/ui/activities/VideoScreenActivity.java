@@ -71,7 +71,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		categoriesSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_CATEGORY, 0));
 		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
 
-		playBtn = (Button) findViewById(R.id.play);
+		playBtn = (Button) findViewById(R.id.playVideoBtn);
 		playBtn.setOnClickListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);
@@ -181,7 +181,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		if (view.getId() == R.id.upgradeBtn) {
 			FlurryAgent.onEvent(FlurryData.UPGRADE_FROM_VIDEOS, null);
 			startActivity(AppData.getMembershipVideoIntent(this));
-		} else if (view.getId() == R.id.play) {
+		} else if (view.getId() == R.id.playVideoBtn) {
 			FlurryAgent.onEvent(FlurryData.VIDEO_PLAYED, null);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);

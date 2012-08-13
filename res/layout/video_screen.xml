@@ -36,13 +36,13 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="52dip"
-				android:layout_toLeftOf="@+id/play"
+				android:layout_toLeftOf="@+id/playVideoBtn"
 				android:gravity="center_vertical"
 				android:paddingLeft="@dimen/default_linear_left_padding"
 				robo:ttf="Bold"
 				/>
 			<com.chess.RoboButton
-				android:id="@id/play"
+				android:id="@id/playVideoBtn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/play"

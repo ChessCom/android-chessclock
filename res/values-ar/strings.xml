@@ -325,6 +325,37 @@
 	<string name="your_end_game_rating_online">تقييمك ( %1$s ): ( %2$d )</string>
 	<string name="draw_declined">يسحب تراجع</string>
 	<string name="has_declined_draw">وقد انخفض بالتعادل</string>
+	<string name="menu_search">البحث</string>
+	<string name="restoring_conntection_to_live">إعادة الاتصال …</string>
+	<string name="application_was_killed">قتل تطبيق، واستعادة …</string>
+	<string name="no_network">لا شبكة</string>
+	<string name="wireless_settings">الإعدادات اللاسلكية</string>
+	<string name="invalid_password">كلمة السر غير صحيحة</string>
+	<string name="your_turn_in_game_with">%2$s, %1$s  في لعبتك مع</string>
+	<string name="register">تسجيل</string>
+	<string name="session_expired">جلسة العمل الخاصة بك قد انتهت صلاحيتها، الرجاء إعادة تسجيل الدخول</string>
+	<string name="problem_solved_">حل المشكلة!</string>
+	<string name="problem_solved">حل المشكلة!
+		\n %1$s علامة
+		\n %2$s تصنيف جديد </string>
+	<string name="wrong_score">صحيح!
+		\n %1$s علامة
+		\n %2$s تصنيف جديد </string>
+	<string name="next_tactic_puzzle">تكتيك المقبل اللغز</string>
+	<string name="upgrade_to_continue">الترقية للمتابعة</string>
+
+	<string name="retry">إعادة المحاولة</string>
+	<string name="stop">توقف</string>
+	<string name="daily_limit_reached">الحد اليومي الذي تم التوصل إليه</string>
+	<string name="checkmate">كش ملك!</string>
+	<string name="solution">حل</string>
+
+	<string name="bullet_">رصاصة: %d</string>
+	<string name="blitz_">مداهمات: %d</string>
+	<string name="standard_">معيار: %d</string>
+
+	<string name="min_">%s دقيقة</string>
+
 
 	<string name="invalidUserId">غير صالحة هوية المستخدم</string>
 	<string name="invalidContenIid">المحتوى غير صالح معرف</string>

@@ -15,7 +15,7 @@
             <solid android:color="@android:color/transparent"/>
             <stroke
                 android:width="@dimen/button_pressed_stroke_width_1"
-                android:color="@color/orange_button_pressed_stroke_1"/>
+                android:color="@color/transparent"/>
         </shape>
 
     </item>

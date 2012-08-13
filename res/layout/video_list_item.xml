@@ -47,14 +47,14 @@
 			/>
 
 		<com.chess.RoboButton
-			android:id="@+id/fulldesc"
+			android:id="@+id/fullDescBtn"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			style="@style/Text.Button.Grey"
 			android:text="@string/details"/>
 
 		<com.chess.RoboButton
-			android:id="@+id/play"
+			android:id="@+id/playVideoBtn"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/play"/>

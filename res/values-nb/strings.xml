@@ -322,6 +322,37 @@
 	<string name="draw_declined">DRAW Avvist</string>
 	<string name="has_declined_draw">har avtatt en uavgjort</string>
 
+	<string name="menu_search">Søk</string>
+	<string name="restoring_conntection_to_live">Kobler til på nytt…</string>
+	<string name="application_was_killed">Søknad ble drept, gjenopprette…</string>
+	<string name="no_network">No Network</string>
+	<string name="wireless_settings">Trådløse Innstillinger</string>
+	<string name="invalid_password">Ugyldig passord</string>
+	<string name="your_turn_in_game_with">I spillet ditt med %1$s , %2$s</string>
+	<string name="register">Register</string>
+	<string name="session_expired">Økten er utløpt, vennligst re-login</string>
+	<string name="problem_solved_">Problem løst!</string>
+	<string name="problem_solved">Problem løst!
+		\n Resultat %1$s
+		\n Ny Rating %2$s </string>
+	<string name="wrong_score">Feil!
+		\n Resultat %1$s
+		\n Ny Rating %2$s </string>
+	<string name="next_tactic_puzzle">Neste Tactic Puzzle</string>
+	<string name="upgrade_to_continue">Oppgrader til Fortsett</string>
+
+	<string name="retry">Prøv på nytt</string>
+	<string name="stop">Stopp</string>
+	<string name="daily_limit_reached">Daglig Nådd</string>
+	<string name="checkmate">Sjakkmatt!</string>
+	<string name="solution">Oppløsning</string>
+
+	<string name="bullet_">Bullet: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s min</string>
+
 	<string name="invalidUserId">Ugyldig bruker-ID</string>
 	<string name="invalidContenIid">Ugyldig Content ID</string>
 	<string name="pleaseLoginAgain">Vennligst logg inn igjen.</string>

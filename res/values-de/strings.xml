@@ -277,9 +277,9 @@
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">Die Client-Version ist veraltet. Bitte aktualisieren</string>
 	<string name="zero_one_black_mates">0 bis 1 Schwarz mates</string>
-	<string name="on_zero_white_mates">1-0 Weiß setzt</string>
-	<string name="slatemate">0-0 Patt</string>
-	<string name="draw_by_repetition">0.5 - 0.5 Remis durch Wiederholung</string>
+	<string name="on_zero_white_mates">1–0 Weiß setzt</string>
+	<string name="slatemate">0–0 Patt</string>
+	<string name="draw_by_repetition">0.5 – 0.5 Remis durch Wiederholung</string>
 
 	<string name="encoding_unsupported">Encoding nicht unterstützten</string>
 	<string name="error_occurred_while_login">Fehler beim Login, wenden Sie sich bitte erneut anmelden!</string>
@@ -291,7 +291,7 @@
 	<string name="game_over">SPIELENDE</string>
 	<string name="draw_game">Remisangebot</string>
 	<string name="has_offered_draw">hat angeboten, ein Remis</string>
-	<string name="reconnecting">Verbindung wird wiederhergestellt ...</string>
+	<string name="reconnecting">Verbindung wird wiederhergestellt …</string>
 	<string name="another_login_detected">Eine weitere Anmeldung wurde erkannt.</string>
 	<string name="loading_live_chess">Lädt Live-Schach</string>
 	<string name="game_draw_by_repetition">Spiel gezogen \n durch Wiederholung</string>
@@ -314,16 +314,47 @@
 	<string name="reason_">Grund</string>
 	<string name="message_">Nachricht</string>
 
-	<string name="black_wins">Schwarz gewinnt (1-0)</string>
-	<string name="white_wins">Weiß gewinnt (1-0)</string>
-	<string name="draw_by_stalemate">Zeichnen Sie durch Patt (0-0)</string>
-	<string name="draw_by_3fold_repetition">Zeichnen Sie durch dreifache Wiederholung (0.5-0.5)</string>
+	<string name="black_wins">Schwarz gewinnt (1–0)</string>
+	<string name="white_wins">Weiß gewinnt (1–0)</string>
+	<string name="draw_by_stalemate">Zeichnen Sie durch Patt (0–0)</string>
+	<string name="draw_by_3fold_repetition">Zeichnen Sie durch dreifache Wiederholung (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Überprüfen</string>
 	<string name="your_end_game_rating">Deine Wertung ( %1$s ): ( %2$d )</string>
 	<string name="your_end_game_rating_online">Deine Wertung ( %1$s )</string>
 	<string name="draw_declined">DRAW DECLINED</string>
 	<string name="has_declined_draw">abgenommen hat ein Unentschieden</string>
+
+	<string name="menu_search">Suche</string>
+	<string name="restoring_conntection_to_live">Verbindung wird wiederhergestellt…</string>
+	<string name="application_was_killed">Die Applikation wurde getötet, Wiederherstellung…</string>
+	<string name="no_network">Kein Netzwerk</string>
+	<string name="wireless_settings">Wireless-Einstellungen</string>
+	<string name="invalid_password">Ungültiges passwort</string>
+	<string name="your_turn_in_game_with">In Ihrem Spiel mit %1$s , %2$s</string>
+	<string name="register">Registrieren</string>
+	<string name="session_expired">Ihre Sitzung ist abgelaufen, bitte neu anmelden</string>
+	<string name="problem_solved_">Problem Gelöst!</string>
+	<string name="problem_solved">Problem Gelöst!
+		\n Partitur %1$s
+		\n Neues Rating %2$s </string>
+	<string name="wrong_score">Falsch!
+		\n Partitur %1$s
+		\n Neues Rating %2$s </string>
+	<string name="next_tactic_puzzle">Nächste Taktik Puzzle</string>
+	<string name="upgrade_to_continue">Upgrade auf Weiter</string>
+
+	<string name="retry">Retry</string>
+	<string name="stop">Stop</string>
+	<string name="daily_limit_reached">Daily Limit Reached</string>
+	<string name="checkmate">Schachmatt!</string>
+	<string name="solution">Lösung</string>
+
+	<string name="bullet_">Kugel: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s min</string>
 
 	<string name="invalidUserId">Ungültige Benutzer-ID</string>
 	<string name="invalidContenIid">Ungültige Content-ID</string>

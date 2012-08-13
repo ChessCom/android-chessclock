@@ -37,9 +37,7 @@ public class SectionedAdapter extends SectionedListAdapter {
 		view.text.setText(text);
 	}
 
-	public int getSectionsCnt() {
-		return sections.size();
-	}
+
 
 	private class ViewHolder {
 		TextView text;

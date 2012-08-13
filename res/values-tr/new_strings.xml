@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">Ara</string>
-	<string name="restoring_conntection_to_live">Yeniden bağlanıyor …</string>
-	<string name="application_was_killed">Uygulama geri, öldürüldü …</string>
-	<string name="no_network">Şebeke Yok</string>
-	<string name="wireless_settings">Kablosuz Ayarları</string>
-	<string name="invalid_password">Geçersiz şifre</string>
-	<string name="your_turn_in_game_with">Oyununuzu ile %1$s , %2$s</string>
-	<string name="register">Kaydetmek</string>
-	<string name="session_expired">Oturumunuz zaman aşımına uğradı, yeniden giriş yapınız</string>
-	<string name="problem_solved_">Sorun çözüldü!</string>
-	<string name="problem_solved">Sorun çözüldü!
-		\n Puan %1$s
-		\n Yeni Değerlendirmesi %2$s </string>
-	<string name="wrong_score">Yanlış!
-		\n Puan %1$s
-		\n Yeni Değerlendirmesi %2$s </string>
-	<string name="next_tactic_puzzle">Sonraki Taktik Bulmaca</string>
-	<string name="upgrade_to_continue">Devam Yükseltme</string>
 
-	<string name="retry">Tekrar Dene</string>
-	<string name="stop">Dur</string>
-	<string name="daily_limit_reached">Günlük Sınırına Ulaşıldı</string>
-	<string name="checkmate">Şah mat!</string>
-	<string name="solution">çözüm</string>
-
-	<string name="bullet_">Kurşun: %d</string>
-	<string name="blitz_">Hava Saldırısı: %d</string>
-	<string name="standard_">Standard: %d</string>
-
-	<string name="min_">%s dk</string>
+	<string name="unable_to_move_on_vacation">Tatile kadar hamle yapmak için açılamıyor</string>
+	<string name="current_games">Şu Oyunları</string>
+	<string name="finished_games">Bitmiş Oyunlar</string>
+	<string name="no_challenges_during_vacation">Zorluklar tatil sırasında göstermeyecektir</string>
+	<string name="end_vacation">Sonu Tatil</string>
 
 
 </resources>

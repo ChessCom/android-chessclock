@@ -1,34 +1,10 @@
 <resources>
-	<string name="menu_search">חיפוש</string>
-	<string name="restoring_conntection_to_live">מתחבר מחדש …</string>
-	<string name="application_was_killed">יישום נהרג, שיקום …</string>
-	<string name="no_network">לא ברשת</string>
-	<string name="wireless_settings">הגדרות אלחוטיות</string>
-	<string name="invalid_password">סיסמה לא חוקית</string>
-	<string name="your_turn_in_game_with">במשחק שלך %1$s , %2$s</string>
-	<string name="register">לרשום</string>
-	<string name="session_expired">הפגישה שלך פג, אנא התחבר מחדש</string>
-	<string name="problem_solved_">הבעיה נפתרה!</string>
-	<string name="problem_solved">הבעיה נפתרה!
-		\n ציון %1$s
-		\n דירוג חדש %2$s </string>
-	<string name="wrong_score">טעות!
-		\n ציון %1$s
-		\n דירוג חדש %2$s </string>
-	<string name="next_tactic_puzzle">טקטיקה הבא פאזל</string>
-	<string name="upgrade_to_continue">שדרג כדי להמשיך</string>
 
-	<string name="retry">נסה שוב</string>
-	<string name="stop">עצור</string>
-	<string name="daily_limit_reached">גבול יומי הגיע</string>
-	<string name="checkmate">מט!</string>
-	<string name="solution">פתרון</string>
-
-	<string name="bullet_">כדור: %d</string>
-	<string name="blitz_">בליץ: %d</string>
-	<string name="standard_">תקן: %d</string>
-
-	<string name="min_">%s דקות</string>
+	<string name="unable_to_move_on_vacation">לא ניתן לבצע מהלכים עד לחופשה</string>
+	<string name="current_games">שוטפים משחקים</string>
+	<string name="finished_games">סיום משחקים</string>
+	<string name="no_challenges_during_vacation">אתגרים לא תוצג במהלך חופשת</string>
+	<string name="end_vacation">סוף החופשה</string>
 
 
 </resources>

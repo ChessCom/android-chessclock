@@ -320,6 +320,37 @@
 	<string name="draw_declined">绘制拒收</string>
 	<string name="has_declined_draw">已拒绝平局</string>
 
+	<string name="menu_search">搜索</string>
+	<string name="restoring_conntection_to_live">还原现场连线…</string>
+	<string name="application_was_killed">申请被打死，恢复…</string>
+	<string name="no_network">没有网络</string>
+	<string name="wireless_settings">无线设置</string>
+	<string name="invalid_password">密码无效</string>
+	<string name="your_turn_in_game_with">在您的游戏 %1$s , %2$s</string>
+	<string name="register">注册</string>
+	<string name="session_expired">您的会话已过期，请重新登录</string>
+	<string name="problem_solved_">问题解决了！</string>
+	<string name="problem_solved">问题解决了！
+		\n 得分 %1$s
+		\n 新的评级 %2$s </string>
+	<string name="wrong_score">错了！
+		\n 得分 %1$s
+		\n 新的评级 %2$s </string>
+	<string name="next_tactic_puzzle">下一步的战术拼图</string>
+	<string name="upgrade_to_continue">升级继续</string>
+
+	<string name="retry">重试</string>
+	<string name="stop">停止</string>
+	<string name="daily_limit_reached">达到涨停</string>
+	<string name="checkmate">死！</string>
+	<string name="solution">解</string>
+
+	<string name="bullet_">子弹: %d</string>
+	<string name="blitz_">闪电战: %d</string>
+	<string name="standard_">标准: %d</string>
+
+	<string name="min_">%s 分</string>
+
 	<string name="invalidUserId">无效的用户ID</string>
 	<string name="invalidContenIid">内容ID无效</string>
 	<string name="pleaseLoginAgain">请重新登录。</string>

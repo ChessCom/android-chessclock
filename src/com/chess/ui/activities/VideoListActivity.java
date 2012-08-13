@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,17 +17,20 @@ import com.chess.backend.statics.AppData;
 import com.chess.model.VideoItem;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoListActivity extends LiveBaseActivity implements OnItemClickListener,
-		View.OnClickListener {
+		View.OnClickListener, ItemClickListenerFace {
 	private ListView listView;
 	private VideosListItemsUpdateListener videosListItemUpdateListener;
     private String skill;
     private String category;
     private String keyword;
+	private List<VideoItem> videosList;
 
 
     @Override
@@ -79,9 +83,20 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		listView.setAdapter(paginationAdapter);
 	}
 
+	@Override
+	public Context getMeContext() {
+		return this;
+	}
+
 	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem> {
 		public VideosListItemsUpdateListener() {
 			super(getInstance());
+			useList = true;
+		}
+
+		@Override
+		public void updateListData(List<VideoItem> itemsList) {
+			videosList = itemsList;
 		}
 	}
 
@@ -99,7 +114,27 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipVideoIntent(this));
+		} else if(view.getId() == R.id.fullDescBtn){
+			int pos = (Integer) view.getTag(R.id.list_item_id);
+			VideoItem videoItem = videosList.get(pos);
+
+			showSinglePopupDialog(videoItem.getTitle(), videoItem.getDescription());
+
+//			new AlertDialog.Builder(context)
+//					.setTitle()
+//					.setMessage(videoItem.getDescription())
+//					.setPositiveButton(context.getString(R.string.ok), null)
+//					.create().show();
+		} else if(view.getId() == R.id.playVideoBtn) {
+			int pos = (Integer) view.getTag(R.id.list_item_id);
+			VideoItem videoItem = videosList.get(pos);
+
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse(videoItem.getViewUrl().trim()), "video/*");
+			startActivity(intent);
 		}
+
+
 	}
 
 

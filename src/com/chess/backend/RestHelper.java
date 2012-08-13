@@ -159,6 +159,7 @@ public class RestHelper {
 	public static final String R_FB_USER_HAS_NO_ACCOUNT = "Facebook user has no Chess.com account";
 	public static final String SYMBOL_PARAMS_SPLIT = ":";
 	public static final String R_PLEASE_LOGIN_AGAIN = "Please login again.";
+	public static final String R_YOU_ARE_ON_VACATION = "You are on vacation.";
 	public static final String R_TACTICS_LIMIT_REACHED = "Tactics daily limit reached.";
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";

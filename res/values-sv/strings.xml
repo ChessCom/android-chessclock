@@ -323,6 +323,37 @@
 	<string name="draw_declined">DRA SJÖNK</string>
 	<string name="has_declined_draw">har minskat oavgjort</string>
 
+	<string name="menu_search">Sök</string>
+	<string name="restoring_conntection_to_live">Återansluter …</string>
+	<string name="application_was_killed">Ansökan dödades, återställa …</string>
+	<string name="no_network">Ingen Nätverket</string>
+	<string name="wireless_settings">Trådlösa Inställningar</string>
+	<string name="invalid_password">Ogiltigt lösenord</string>
+	<string name="your_turn_in_game_with">I ditt spel med %1$s , %2$s</string>
+	<string name="register">Registrera</string>
+	<string name="session_expired">Din session har gått ut, vänligen logga in igen</string>
+	<string name="problem_solved_">Problem löst!</string>
+	<string name="problem_solved">Problem löst!
+		\n Betyg %1$s
+		\n Ny Betyget %2$s </string>
+	<string name="wrong_score">Fel!
+		\n Betyg %1$s
+		\n Ny Betyget %2$s </string>
+	<string name="next_tactic_puzzle">Nästa Taktik Pussel</string>
+	<string name="upgrade_to_continue">Uppgradera Fortsätta</string>
+
+	<string name="retry">Försök igen</string>
+	<string name="stop">Stoppa</string>
+	<string name="daily_limit_reached">Daglig Nådd</string>
+	<string name="checkmate">Schackmatt!</string>
+	<string name="solution">Lösning</string>
+
+	<string name="bullet_">Bullet: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
+
+	<string name="min_">%s minuter</string>
+
 	<string name="invalidUserId">Ogiltigt användar-ID</string>
 	<string name="invalidContenIid">Ogiltigt innehålls-ID</string>
 	<string name="pleaseLoginAgain">Vänligen logga in igen.</string>
