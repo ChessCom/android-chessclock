@@ -9,7 +9,7 @@
 	android:paddingRight="7dip">
 
 	<com.chess.RoboTextView
-		android:id="@+id/owner"
+		android:id="@+id/playerLabelTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:padding="3dip"
@@ -18,7 +18,7 @@
 		/>
 
 	<com.chess.RoboTextView
-		android:id="@+id/text"
+		android:id="@+id/messageTxt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:padding="3dip"

@@ -45,6 +45,9 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     public void updatePopupItem(PopupItem popupItem) {
         this.popupItem = popupItem;
 		if(!isVisible()){
+			if(getArguments().containsKey(POPUP_ITEM)){
+				setArguments(null);
+			}
 			Bundle arguments = new Bundle();
 			arguments.putSerializable(POPUP_ITEM, popupItem);
 			setArguments(arguments);

@@ -359,7 +359,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, Long.toString(currentGame.getTimestamp()));
+		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 		new GetStringObjTask(sendMoveUpdateListener).executeTask(loadItem);
 	}
@@ -488,7 +488,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		Intent intent = new Intent(this, ChatOnlineActivity.class);
 		intent.putExtra(BaseGameItem.GAME_ID, gameId);
-		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestamp());
+		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestampStr());
 		startActivity(intent);
 
 		chat = false;

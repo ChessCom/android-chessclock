@@ -14,12 +14,6 @@
 
 	<include layout="@layout/mopub_ad_view"/>
 
-	<com.chess.RoboButton
-		android:id="@+id/currentGameBtn"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/currentGame"
-		android:visibility="visible"/>
 
 	<RelativeLayout
 		android:id="@+id/loadingView"
@@ -106,25 +100,6 @@
 			android:textSize="13sp"
 			/>
 
-		<!--
-		  <com.chess.RoboTextView
-			  android:id="@+id/startNewGameTitle"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:layout_weight="6"
-			  android:text="@string/start_new_game"
-			  android:textSize="@dimen/live_challenges_textSize"
-			  android:visibility="visible"/>
-
-		  <com.chess.RoboButton
-			  android:id="@+id/start"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:text="@string/ChallengeCreate"
-			  android:visibility="visible"
-			  android:layout_weight="4"/>
-  -->
-
 	</LinearLayout>
 
 	<com.chess.RoboButton
@@ -135,6 +110,14 @@
 		android:text="@string/stats"
 		style="@style/Text.Button.Grey"
 		/>
+
+	<com.chess.RoboButton
+		android:id="@+id/currentGameBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/currentGame"
+		android:visibility="visible"/>
+
 
 	<GridView
 		android:id="@+id/gridview"

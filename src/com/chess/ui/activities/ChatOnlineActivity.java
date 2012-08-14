@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -34,13 +33,13 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	private EditText sendText;
 	private ListView chatListView;
-	private MessagesAdapter messages = null;
-	private ArrayList<MessageItem> chatItems = new ArrayList<MessageItem>();
+	private MessagesAdapter messagesAdapter;
+	private ArrayList<MessageItem> chatItems;
 	private AsyncTask<LoadItem, Void, Integer> getDataTask;
 	private ListUpdateListener listUpdateListener;
 	private SendUpdateListener sendUpdateListener;
 	private View progressBar;
-	private Button sendBtn;
+	private ImageButton sendBtn;
 	private long gameId;
 	private String timeStamp;
 
@@ -56,7 +55,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 		gameId = extras.getLong(BaseGameItem.GAME_ID);
 		timeStamp = extras.getString(BaseGameItem.TIMESTAMP);
-
+		chatItems = new ArrayList<MessageItem>();
 		listUpdateListener = new ListUpdateListener();
 		sendUpdateListener = new SendUpdateListener();
 
@@ -70,7 +69,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 		progressBar = findViewById(R.id.progressBar);
 
-		sendBtn = (Button) findViewById(R.id.send);
+		sendBtn = (ImageButton) findViewById(R.id.sendBtn);
 		sendBtn.setOnClickListener(this);
 	}
 
@@ -146,11 +145,11 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		chatItems.clear();
 		chatItems.addAll(ChessComApiParser.receiveMessages(response));
 		if (before != chatItems.size()) {
-			if (messages == null) {
-				messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
-				chatListView.setAdapter(messages);
+			if (messagesAdapter == null) {
+				messagesAdapter = new MessagesAdapter(this, chatItems);
+				chatListView.setAdapter(messagesAdapter);
 			} else {
-				messages.notifyDataSetChanged();
+				messagesAdapter.notifyDataSetChanged();
 			}
 			chatListView.setSelection(chatItems.size() - 1);
 		}
@@ -158,7 +157,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.send) {
+		if (view.getId() == R.id.sendBtn) {
 			sendMessage();
 		}
 	}
@@ -207,18 +206,15 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		chatItems.clear();
 		chatItems.addAll(ChessComApiParser.receiveMessages(response));
 
-		if (messages == null) {
-			messages = new MessagesAdapter(this, R.layout.chat_item, chatItems);
-			chatListView.setAdapter(messages);
+		if (messagesAdapter == null) {
+			messagesAdapter = new MessagesAdapter(this, chatItems);
+			chatListView.setAdapter(messagesAdapter);
 		} else {
-			messages.notifyDataSetChanged();
+			messagesAdapter.setItemsList(chatItems);
 		}
 		sendText.setText(StaticData.SYMBOL_EMPTY);
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(sendText.getWindowToken(), 0);
 		chatListView.setSelection(chatItems.size() - 1);
-
 		updateList();
 	}
 
