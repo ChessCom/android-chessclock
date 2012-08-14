@@ -436,11 +436,12 @@
 	<string name="completeAllGameMoves">完成所有的游戏动作。</string>
 	<string name="userNotOnVacation">用户不休假。</string>
 
-	<string name="challengeWait">&lt;strong>您之间的游戏，必须等待5分钟。&lt;/strong>你的发挥受到限制，因为你没有跟随我们的 &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> ，这阻碍拖延，放弃比赛或故意中止。此限制将自动取消后，相当多玩游戏。</string>
-	<string name="challengeNotAccepting">%1$s目前不接受挑战</string>
-	<string name="announceRestarting">警示：Chess.com将重新启动在服务器%1$s分钟！</string>
-	<string name="announceRestartCancelled">重新启动服务器已被取消。</string>
-	<string name="adminShutdownScheduled">关闭已定（%1$s分钟）。</string>
-	<string name="adminShutdownCancelled">关机已被取消。</string>
-	<string name="gameAbortedByServer">比赛已中止服务器。</string>
+	<string name="game.dw_restriction">&lt;strong>您之间的游戏，必须等待5分钟。&lt;/strong>你的发挥受到限制，因为你没有跟随我们的 &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> ，这阻碍拖延，放弃比赛或故意中止。此限制将自动取消后，相当多玩游戏。</string>
+	<string name="game.dw_warn">如果你不按照我们的“公平竞争政策，您的帐户可能会受到限制。如果限制，您将只能够与朋友一起玩。请不要故意中止/断开游戏，或让你的对手不必要的等待。感谢您保持Chess.com享受国际象棋的一个有趣的地方！</string>
+	<string name="game.not_accepting_challenges">%1$s目前不接受挑战</string>
+	<string name="game.aborted_by_server">游戏服务器已中止</string>
+	<string name="game.aborted_by_server_on_logout">游戏服务器已中止</string>
+	<string name="game.aborted_by_server_on_disconnection">游戏服务器已中止</string>
+	<string name="announcement.server_restarting">警示：Chess.com将重新启动服务器！</string>
+	<string name="announcement.server_restart_cancelled">服务器重新启动已取消</string>
 </resources>

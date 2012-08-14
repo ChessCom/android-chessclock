@@ -436,11 +436,12 @@
 	<string name="completeAllGameMoves">모든 게임 동작을 완료합니다.</string>
 	<string name="userNotOnVacation">아니 휴가를 사용자.</string>
 
-	<string name="challengeWait">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>당신은 게임 사이 5 분 기다려야합니다. 당신은 연기자, 포기 게임이나 중단 의도를 discourages 우리 페어 플레이 정책을 따라하지 않았기 때문에 당신의 플레이가 제한됩니다. 당신은 매우 더 많은 게임을 플레이하면 이러한 제한이 자동으로 해제됩니다.</string>
-	<string name="challengeNotAccepting">%1$s 현재 도전을 수락하지 않습니다</string>
-	<string name="announceRestarting">알림 : Chess.com가 서버를 다시 시작합니다 %1$s 분!</string>
-	<string name="announceRestartCancelled">서버 재시작이 취소되었습니다.</string>
-	<string name="adminShutdownScheduled">종료는 (예약되었습니다 %1$s 분).</string>
-	<string name="adminShutdownCancelled">시스템 종료가 취소되었습니다.</string>
-	<string name="gameAbortedByServer">게임은 서버에 의해 중단되었습니다.</string>
+	<string name="game.dw_restriction">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>당신은 게임 사이 5 분 기다려야합니다. 당신은 연기자, 포기 게임이나 중단 의도를 discourages 우리 페어 플레이 정책을 따라하지 않았기 때문에 당신의 플레이가 제한됩니다. 당신은 매우 더 많은 게임을 플레이하면 이러한 제한이 자동으로 해제됩니다.</string>
+	<string name="game.dw_warn">저희 페어 플레이 정책을 수행하지 않을 경우 귀하의 계정이 제한될 수 있습니다. 제한된 경우에만 친구들과 놀 수있을 것이다. 제발 의도적으로 중지는 / 게임으로부터 분리 혹은 상대방이 불필요하게 기다리게하지 않습니다. Chess.com에게 체스를 즐길 수있는 재미있는 장소를 유지 주셔서 감사합니다!</string>
+	<string name="game.not_accepting_challenges">%1$s 현재 도전을 수락하지 않습니다</string>
+	<string name="game.aborted_by_server">게임은 서버가 중단되었습니다</string>
+	<string name="game.aborted_by_server_on_logout">게임은 서버가 중단되었습니다</string>
+	<string name="game.aborted_by_server_on_disconnection">게임은 서버가 중단되었습니다</string>
+	<string name="announcement.server_restarting">알림 : Chess.com는 서버를 다시 시작합니다!</string>
+	<string name="announcement.server_restart_cancelled">서버 재시작이 취소되었습니다</string>
 </resources>

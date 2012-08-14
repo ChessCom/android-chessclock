@@ -90,7 +90,7 @@ public class LccChallengeListener implements ChallengeListener {
 		lccHolder.removeChallenge(challengeId);
 
 		Log.d("TEST", "onChallengeAccepted , warning" + warning);
-		lccHolder.addPendingWarning(warning);
+		lccHolder.addPendingWarning(warning, by);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class LccChallengeListener implements ChallengeListener {
 		Log.d(TAG, "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE +
 						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHolder.removeChallenge(challengeId);
-		lccHolder.addPendingWarning(warning);
+		lccHolder.addPendingWarning(warning, by);
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class LccChallengeListener implements ChallengeListener {
 
 
 		lccHolder.removeChallenge(challengeId);
-		lccHolder.addPendingWarning(warning);
+		lccHolder.addPendingWarning(warning, by);
 	}
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {

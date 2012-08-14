@@ -228,26 +228,8 @@ public class AppUtils {
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
-	// Get i18n strings for server messages (temporary)
-	public static String getI18nString(Context context, String actual, int expected, int translated) {
-		if (isLocaleEn(context.getResources())) {
-			return null;
-		}
-		return actual.equals(context.getString(expected)) ? context.getString(translated) : null;
-	}
-
-	public static String getI18nString(Context context, int regexp, String actual, int expected, int translated) {
-		if (isLocaleEn(context.getResources())) {
-			return null;
-		}
-
-		String substring = null;
-		Matcher m = Pattern.compile(context.getString(regexp)).matcher(actual);
-		if (m.find()) {
-			substring = m.group(1);
-		}
-
-		return actual.equals(context.getString(expected, substring)) ? context.getString(translated, substring) : null;
+	public static String getI18nString(Context context, String codeMessage, String... parameters) {
+		return context.getString(context.getResources().getIdentifier(codeMessage, "string", context.getPackageName()), parameters);
 	}
 
 	public static String getI18nStringForAPIError(Context context, String message) {

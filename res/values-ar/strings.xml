@@ -442,11 +442,12 @@
 	<string name="completeAllGameMoves">استكمال جميع التحركات لعبة.</string>
 	<string name="userNotOnVacation">المستخدم ليس لقضاء اجازة.</string>
 
-	<string name="challengeWait">يجب الانتظار مدة 5 دقائق بين ألعاب. ويقتصر اللعب لأنك لم تتبع التي لدينا &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> يثبط المماطلة، والتخلي عن ألعاب أو إجهاض متعمد. وسيتم رفع هذا القيد تلقائيا بعد لعب مباريات أكثر إلى حد ما.</string>
-	<string name="challengeNotAccepting">%1$s في الوقت الحالي عدم قبول التحديات</string>
-	<string name="announceRestarting">تنبيه: Chess.com سيتم إعادة تشغيل الخوادم في دقائق %1$s!</string>
-	<string name="announceRestartCancelled">تم إلغاء إعادة تشغيل الخادم.</string>
-	<string name="adminShutdownScheduled">وكان من المقرر إغلاق (دقائق %1$s).</string>
-	<string name="adminShutdownCancelled">تم إلغاء إيقاف التشغيل.</string>
-	<string name="gameAbortedByServer">تم إحباط لعبة من قبل الملقم.</string>
+	<string name="game.dw_restriction">يجب الانتظار مدة 5 دقائق بين ألعاب. ويقتصر اللعب لأنك لم تتبع التي لدينا &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> يثبط المماطلة، والتخلي عن ألعاب أو إجهاض متعمد. وسيتم رفع هذا القيد تلقائيا بعد لعب مباريات أكثر إلى حد ما.</string>
+	<string name="game.dw_warn">ولا يجوز تقييد حسابك إذا كنت لا تتبع سياسة اللعب النظيف. إذا مقيد، وسوف يكون قادرا على اللعب مع الأصدقاء. من فضلك لا عمدا إجهاض / قطع من ألعاب أو جعل خصومك الانتظار بلا داع. أشكركم على حفظ Chess.com مكان ممتع للاستمتاع الشطرنج!</string>
+	<string name="game.not_accepting_challenges">%1$s في الوقت الحالي عدم قبول التحديات</string>
+	<string name="game.aborted_by_server">تم إحباط لعبة من قبل الملقم</string>
+	<string name="game.aborted_by_server_on_logout">تم إحباط لعبة من قبل الملقم</string>
+	<string name="game.aborted_by_server_on_disconnection">تم إحباط لعبة من قبل الملقم</string>
+	<string name="announcement.server_restarting">تنبيه: Chess.com سيتم إعادة تشغيل خوادم!</string>
+	<string name="announcement.server_restart_cancelled">تم إلغاء إعادة تشغيل الخادم</string>
 </resources>

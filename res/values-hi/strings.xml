@@ -442,11 +442,12 @@
 	<string name="completeAllGameMoves">सभी खेल चाल को पूरा करें.</string>
 	<string name="userNotOnVacation">छुट्टी पर नहीं उपयोगकर्ता.</string>
 
-	<string name="challengeWait">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>आप खेल के बीच 5 मिनट इंतज़ार करना होगा. अपने खेल प्रतिबंधित है क्योंकि आप हमारे फेयर प्ले नीति को रोकने, छोड़ खेल या जानबूझकर छोड़ रहा है को हतोत्साहित नहीं का पालन किया है. के बाद आप अधिक खेल काफी खेलते यह प्रतिबंध स्वत: हटा लिया जाएगा.</string>
-	<string name="challengeNotAccepting">%1$s वर्तमान में स्वीकार नहीं है चुनौतियों</string>
-	<string name="announceRestarting">चेतावनी: Chess.com में सर्वर जा पुनरारंभ करने जाएगा %1$s पहले!</string>
-	<string name="announceRestartCancelled">सर्वर पुनः आरंभ रद्द कर दिया गया है.</string>
-	<string name="adminShutdownScheduled">शट डाउन अनुसूचित किया गया है ( %1$s मिनट).</string>
-	<string name="adminShutdownCancelled">शट डाउन रद्द कर दिया गया है.</string>
-	<string name="gameAbortedByServer">खेल सर्वर द्वारा गर्भपात किया गया है.</string>
+	<string name="game.dw_restriction">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>आप खेल के बीच 5 मिनट इंतज़ार करना होगा. अपने खेल प्रतिबंधित है क्योंकि आप हमारे फेयर प्ले नीति को रोकने, छोड़ खेल या जानबूझकर छोड़ रहा है को हतोत्साहित नहीं का पालन किया है. के बाद आप अधिक खेल काफी खेलते यह प्रतिबंध स्वत: हटा लिया जाएगा.</string>
+	<string name="game.dw_warn">आपका खाता अगर आप हमारे फेयर प्ले नीति का पालन नहीं करते के लिए प्रतिबंधित किया जा सकता है. यदि प्रतिबंधित है, आप केवल दोस्तों के साथ खेलने के लिए सक्षम हो जाएगा. कृपया जानबूझकर गर्भपात नहीं / खेल से डिस्कनेक्ट या अपने विरोधियों को अनावश्यक प्रतीक्षा. Chess.com शतरंज का आनंद लेने के लिए एक मजेदार जगह रखने के लिए धन्यवाद!</string>
+	<string name="game.not_accepting_challenges">%1$s वर्तमान में स्वीकार नहीं है चुनौतियों</string>
+	<string name="game.aborted_by_server">खेल सर्वर द्वारा गर्भपात</string>
+	<string name="game.aborted_by_server_on_logout">खेल सर्वर द्वारा गर्भपात</string>
+	<string name="game.aborted_by_server_on_disconnection">खेल सर्वर द्वारा गर्भपात</string>
+	<string name="announcement.server_restarting">चेतावनी: सर्वर Chess.com पुनरारंभ करने जाएगा!</string>
+	<string name="announcement.server_restart_cancelled">सर्वर पुनः आरंभ रद्द कर दिया गया है</string>
 </resources>

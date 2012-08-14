@@ -441,11 +441,12 @@
 	<string name="completeAllGameMoves">Completate tutte le mosse del gioco.</string>
 	<string name="userNotOnVacation">Utente non in vacanza.</string>
 
-	<string name="challengeWait">&lt;strong>È necessario attendere 5 minuti tra le partite.&lt;/strong> Il tuo gioco è limitato perché non avete seguito il nostro &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> che scoraggia di stallo, giochi abbandonando o intenzionali abortire. Questa restrizione si solleva automaticamente dopo aver giocato più partite in modo equo.</string>
-	<string name="challengeNotAccepting">%1$s al momento non accetta le sfide</string>
-	<string name="announceRestarting">ALERT: Chess.com sarà riavviare i server in %1$s minuti!</string>
-	<string name="announceRestartCancelled">Riavvio del server è stata annullata.</string>
-	<string name="adminShutdownScheduled">Shutdown è stata programmata (%1$s minuti).</string>
-	<string name="adminShutdownCancelled">Arresto è stato annullato.</string>
-	<string name="gameAbortedByServer">Gioco è stato interrotto dal server.</string>
+	<string name="game.dw_restriction">&lt;strong>È necessario attendere 5 minuti tra le partite.&lt;/strong> Il tuo gioco è limitato perché non avete seguito il nostro &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> che scoraggia di stallo, giochi abbandonando o intenzionali abortire. Questa restrizione si solleva automaticamente dopo aver giocato più partite in modo equo.</string>
+	<string name="game.dw_warn">Il tuo account può essere limitato se non seguire la nostra politica di Fair Play. Se limitato, si sarà in grado di giocare con gli amici. Si prega di non interrompere intenzionalmente / disconnettersi da giochi o fare i vostri avversari aspettare inutilmente. Grazie per mantenere Chess.com un posto divertente per godere di scacchi!</string>
+	<string name="game.not_accepting_challenges">%1$s al momento non accetta le sfide</string>
+	<string name="game.aborted_by_server">Partita è stata interrotta dal server</string>
+	<string name="game.aborted_by_server_on_logout">Partita è stata interrotta dal server</string>
+	<string name="game.aborted_by_server_on_disconnection">Partita è stata interrotta dal server</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com sarà riavviare i server!</string>
+	<string name="announcement.server_restart_cancelled">Riavvio del server è stata annullata</string>
 </resources>

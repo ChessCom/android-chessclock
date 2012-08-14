@@ -394,7 +394,7 @@
 	<string name="maxPly">Max ply</string>
 	<string name="invalidFriendRequestId">ID inválida pedido de amizade.</string>
 	<string name="invalidActionParameters">Inválidos parâmetros de ação.</string>
-	<string name="invalidId">\"Identificação inválida\"</string>
+	<string name="invalidId">\"Identificação inválida\</string>
 	<string name="invalidGameId">Inválido ID do jogo.</string>
 	<string name="invalidKey">Tecla inválida</string>
 	<string name="multipleLoginMethodsFound">Vários métodos de login encontrado. Não envie nome de usuário ou senha com outras credenciais.</string>
@@ -418,7 +418,7 @@
 	<string name="usernameNotAllowed">Nome de usuário não é permitido.</string>
 	<string name="invalidEmailDomain">Domínio de e-mail inválido.</string>
 	<string name="systemError">Erro do sistema</string>
-	<string name="weakPassword">\"Senha fraca\"</string>
+	<string name="weakPassword">\"Senha fraca\</string>
 	<string name="invalidUser">Usuário inválido</string>
 	<string name="invalidGameLocationType">Tipo de local inválido Jogo</string>
 	<string name="pleaseRequest50OrLessGames">Por favor, solicitar ou menos 50 jogos</string>
@@ -439,11 +439,12 @@
 	<string name="completeAllGameMoves">Conclua todos os movimentos do jogo.</string>
 	<string name="userNotOnVacation">Usuário não de férias.</string>
 
-	<string name="challengeWait">&lt;strong>Você deve aguardar 5 minutos entre os jogos.&lt;/strong> O jogo é restrito porque você não seguiu o nosso &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> que desestimula fracassem, jogos abandono ou intencionais abortar. Essa restrição será levantada automaticamente depois de jogar mais jogos de forma justa.</string>
-	<string name="challengeNotAccepting">%1$s não está aceitando desafios</string>
-	<string name="announceRestarting">ALERTA: Chess.com será reiniciar os servidores em %1$s minutos!</string>
-	<string name="announceRestartCancelled">Reinicialização do servidor foi cancelada.</string>
-	<string name="adminShutdownScheduled">Desligamento foi agendada (%1$s minutos).</string>
-	<string name="adminShutdownCancelled">Desligamento foi cancelada.</string>
-	<string name="gameAbortedByServer">Jogo foi abortada pelo servidor.</string>
+	<string name="game.dw_restriction">&lt;strong>Você deve aguardar 5 minutos entre os jogos.&lt;/strong> O jogo é restrito porque você não seguiu o nosso &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> que desestimula fracassem, jogos abandono ou intencionais abortar. Essa restrição será levantada automaticamente depois de jogar mais jogos de forma justa.</string>
+	<string name="game.dw_warn">Sua conta pode ser restrito se você não seguir nossa Política de Fair Play. Se restrito, você só será capaz de jogar com os amigos. Por favor, não intencionalmente abortar / desligar de jogos ou fazer seus oponentes esperar desnecessariamente. Obrigado por manter Chess.com um lugar divertido para desfrutar de xadrez!</string>
+	<string name="game.not_accepting_challenges">%1$s não está aceitando desafios</string>
+	<string name="game.aborted_by_server">Jogo foi abortada pelo servidor</string>
+	<string name="game.aborted_by_server_on_logout">Jogo foi abortada pelo servidor</string>
+	<string name="game.aborted_by_server_on_disconnection">Jogo foi abortada pelo servidor</string>
+	<string name="announcement.server_restarting">ALERTA: Chess.com será reiniciar os servidores!</string>
+	<string name="announcement.server_restart_cancelled">Reinicialização do servidor foi cancelada</string>
 </resources>

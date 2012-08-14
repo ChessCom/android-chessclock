@@ -35,15 +35,5 @@ public class LccAdminEventListener implements AdminEventListener {
 	public void onServerShutdownAlertReceived(User sender, String message) {
 		Log.d(TAG, "onServerShutdownAlertReceived: sender=" + (sender != null ? sender.getUsername() : null)
 				+ ", message=" + message);
-		final Context context = lccHolder.getContext();
-
-		if (message != null) {
-			String messageI18n = AppUtils.getI18nString(context, message, R.string.adminShutdownCancelledOriginal, R.string.adminShutdownCancelled);
-			if (messageI18n == null) {
-				messageI18n = AppUtils.getI18nString(context,
-						R.string.adminShutdownScheduledPattern, message, R.string.adminShutdownScheduledOriginal, R.string.adminShutdownScheduled);
-			}
-			lccHolder.getLiveChessClientEventListener().onAdminAnnounce(messageI18n == null ? message : messageI18n);
-		}
 	}
 }

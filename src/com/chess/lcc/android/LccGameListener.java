@@ -8,6 +8,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
+import com.chess.live.client.impl.GameImpl;
 import com.chess.live.util.Utils;
 import com.chess.utilities.AppUtils;
 
@@ -203,21 +204,23 @@ public class LccGameListener implements GameListener {
 		lccHolder.getWhiteClock().setRunning(false);
 		lccHolder.getBlackClock().setRunning(false);
 
-		final String messageI18n =
-                AppUtils.getI18nString(context, message, R.string.gameAbortedByServerOriginal, R.string.gameAbortedByServer);
+		final String messageI18n = AppUtils.getI18nString(context, ((GameImpl)game).getCodeMessage());
+		if (messageI18n != null) {
+			message = messageI18n;
+		}
 
         if (lccHolder.isActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
             final GameEvent gameEndedEvent = new GameEvent();
             gameEndedEvent.setEvent(GameEvent.Event.END_OF_GAME);
-            gameEndedEvent.setGameEndedMessage(messageI18n);
+            gameEndedEvent.setGameEndedMessage(message);
             lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
             if (lccHolder.getLccEventListener() == null) {// if activity is not started yet
                 lccHolder.processFullGame(game);
 				Log.d(TAG, "processFullGame");
             }
         } else {
-            lccHolder.getLccEventListener().onGameEnd(messageI18n);
+            lccHolder.getLccEventListener().onGameEnd(message);
         }
     }
 

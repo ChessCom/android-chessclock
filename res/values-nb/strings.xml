@@ -438,11 +438,12 @@
 	<string name="completeAllGameMoves">Fullfør alle spill trekk.</string>
 	<string name="userNotOnVacation">Bruker ikke på ferie.</string>
 
-	<string name="challengeWait">&lt;strong>Du må vente 5 minutter mellom kampene.&lt;/strong> Din lek er begrenset fordi du ikke har fulgt vår &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> som fraråder steiling, etterlatt spill eller tilsiktet abortere. Denne begrensningen vil bli løftet automatisk når du spiller flere kamper rettferdig.</string>
-	<string name="challengeNotAccepting">%1$s er for øyeblikket ikke aksepterer utfordringer</string>
-	<string name="announceRestarting">ALERT: Chess.com skal starte serverne i %1$s minutter!</string>
-	<string name="announceRestartCancelled">Server Oppstarten er kansellert.</string>
-	<string name="adminShutdownScheduled">Nedleggelse er berammet (%1$s minutter).</string>
-	<string name="adminShutdownCancelled">Nedleggelse er avlyst.</string>
-	<string name="gameAbortedByServer">Spillet har blitt avbrutt av serveren.</string>
+	<string name="game.dw_restriction">&lt;strong>Du må vente 5 minutter mellom kampene.&lt;/strong> Din lek er begrenset fordi du ikke har fulgt vår &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> som fraråder steiling, etterlatt spill eller tilsiktet abortere. Denne begrensningen vil bli løftet automatisk når du spiller flere kamper rettferdig.</string>
+	<string name="game.dw_warn">Kontoen din kan bli begrenset dersom du ikke følger våre Fair Play Policy. Hvis begrenset, vil du bare kunne spille med venner. Vennligst ikke med vilje abortere / koble fra spill eller lage dine motstandere vente unødvendig. Takk for at du holde Chess.com et morsomt sted å nyte sjakk!</string>
+	<string name="game.not_accepting_challenges">%1$s er for øyeblikket ikke aksepterer utfordringer</string>
+	<string name="game.aborted_by_server">Spillet har blitt avbrutt av serveren</string>
+	<string name="game.aborted_by_server_on_logout">Spillet har blitt avbrutt av serveren</string>
+	<string name="game.aborted_by_server_on_disconnection">Spillet har blitt avbrutt av serveren</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com skal starte serverne!</string>
+	<string name="announcement.server_restart_cancelled">Server omstart er avlyst</string>
 </resources>
