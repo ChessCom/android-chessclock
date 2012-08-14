@@ -469,25 +469,17 @@
 
 	<string name="min_">%s min</string>
 
-    <!-- Original strings from Live chess server (temporary) -->
-	<string name="challengeWaitOriginal">
-		&lt;strong>You must wait 5 minutes between games.&lt;/strong> Your play is restricted because you have not followed our &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> which discourages stalling, abandoning games or intentional aborting. This restriction will be lifted automatically after you play more games fairly.
-	</string>
-	<string name="challengeNotAcceptingOriginal">%1$s is currently not accepting challenges</string>
-	<string name="challengeNotAcceptingPattern">(.+) is currently not accepting challenges</string>
-	<string name="announceRestartingOriginal">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>
-	<string name="announceRestartingPattern">ALERT: Chess.com will be restarting the servers in (.+) minutes!</string>
-	<string name="announceRestartCancelledOriginal">Server restart has been cancelled.</string>
-	<string name="adminShutdownScheduledOriginal">Shutdown has been scheduled (%1$s minutes).</string>
-	<string name="adminShutdownScheduledPattern">Shutdown has been scheduled \\((.+) minutes\\).</string>
-	<string name="adminShutdownCancelledOriginal">Shutdown has been cancelled.</string>
-	<string name="gameAbortedByServerOriginal">Game has been aborted by the server.</string>
+	<string name="game.dw_restriction">&lt;strong>You must wait 5 minutes between games.&lt;/strong> Your play is restricted because you have not followed our &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> which discourages stalling, abandoning games or intentional aborting. This restriction will be lifted automatically after you play more games fairly.</string>
+	<string name="game.dw_warn">Your account may be restricted if you do not follow our Fair Play Policy. If restricted, you will only be able to play with friends. Please do not intentionally abort/disconnect from games or make your opponents wait unnecessarily. Thank you for keeping Chess.com a fun place to enjoy chess!</string>
+	<string name="game.not_accepting_challenges">%1$s is currently not accepting challenges</string>
+	<string name="game.aborted_by_server">Game has been aborted by the server</string>
+	<string name="game.aborted_by_server_on_logout">Game has been aborted by the server</string>
+	<string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers!</string>
+	<string name="announcement.server_restart_cancelled">Server restart has been cancelled</string>
 
-	<string name="challengeWait">&lt;strong>You must wait 5 minutes between games.&lt;/strong> Your play is restricted because you have not followed our &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> which discourages stalling, abandoning games or intentional aborting. This restriction will be lifted automatically after you play more games fairly.</string>
-	<string name="challengeNotAccepting">%1$s is currently not accepting challenges</string>
-	<string name="announceRestarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>
-	<string name="announceRestartCancelled">Server restart has been cancelled.</string>
-	<string name="adminShutdownScheduled">Shutdown has been scheduled (%1$s minutes).</string>
-	<string name="adminShutdownCancelled">Shutdown has been cancelled.</string>
-	<string name="gameAbortedByServer">Game has been aborted by the server.</string>
+    <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
+    <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
+    <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>-->
+
 </resources>

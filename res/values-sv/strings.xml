@@ -439,11 +439,12 @@
 	<string name="completeAllGameMoves">Fyll i alla spel drag.</string>
 	<string name="userNotOnVacation">Användaren inte på semester.</string>
 
-	<string name="challengeWait">&lt;strong>Du måste vänta 5 minuter mellan spel.&lt;/strong> ditt spel är begränsad eftersom du inte har följt vår &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> som motverkar stallar överger spel eller avsiktliga avbryter. Denna begränsning kommer att lyftas automatiskt när du spelar fler spel rättvist.</string>
-	<string name="challengeNotAccepting">%1$s för närvarande inte emot utmaningar</string>
-	<string name="announceRestarting">VARNING: Chess.com kommer att starta servrarna i %1$s minuter!</string>
-	<string name="announceRestartCancelled">Restart har avbrutits.</string>
-	<string name="adminShutdownScheduled">Avstängning har planerats (%1$s minuter).</string>
-	<string name="adminShutdownCancelled">Avstängning har avbrutits.</string>
-	<string name="gameAbortedByServer">Spelet har avbrutits av servern.</string>
+	<string name="game.dw_restriction">&lt;strong>Du måste vänta 5 minuter mellan spel.&lt;/strong> ditt spel är begränsad eftersom du inte har följt vår &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> som motverkar stallar överger spel eller avsiktliga avbryter. Denna begränsning kommer att lyftas automatiskt när du spelar fler spel rättvist.</string>
+	<string name="game.dw_warn">Ditt konto kan begränsas om du inte följer vår Fair Play policy. Om begränsat, kommer du bara att kunna spela med vänner. Skicka inte avsiktligt avbryta / koppla från spel eller göra dina motståndare väntar i onödan. Tack för att hålla Chess.com en rolig plats att njuta av schack!</string>
+	<string name="game.not_accepting_challenges">%1$s för närvarande inte emot utmaningar</string>
+	<string name="game.aborted_by_server">Spelet har avbrutits av servern</string>
+	<string name="game.aborted_by_server_on_logout">Spelet har avbrutits av servern</string>
+	<string name="game.aborted_by_server_on_disconnection">Spelet har avbrutits av servern</string>
+	<string name="announcement.server_restarting">VARNING: Chess.com kommer att starta servrarna!</string>
+	<string name="announcement.server_restart_cancelled">Restart har avbrutits</string>
 </resources>

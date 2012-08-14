@@ -441,11 +441,12 @@
 	<string name="completeAllGameMoves">Füllen Sie alle Spielzüge.</string>
 	<string name="userNotOnVacation">Benutzer nicht in den Urlaub.</string>
 
-	<string name="challengeWait">&lt;strong>Sie müssen 5 Minuten zwischen den Spielen warten.&lt;/strong> Ihr Spiel ist eingeschränkt, weil Sie nicht unsere &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> die ins Stocken geraten, aufzugeben Spiele oder vorsätzliche Abbruch rät. Diese Beschränkung wird automatisch aufgehoben werden, nachdem Sie mehr Spiele fair zu spielen.</string>
-	<string name="challengeNotAccepting">%1$s ist momentan leider nicht Annehmen von Herausforderungen</string>
-	<string name="announceRestarting">ALERT: Chess.com werden einen Neustart der Server in %1$s Minuten!</string>
-	<string name="announceRestartCancelled">Server-Neustart wurde abgebrochen.</string>
-	<string name="adminShutdownScheduled">Shutdown wurde geplant (%1$s Minuten).</string>
-	<string name="adminShutdownCancelled">Shutdown wurde abgebrochen.</string>
-	<string name="gameAbortedByServer">Spiel wurde von der Server wurde abgebrochen.</string>
+    <string name="game.dw_restriction">&lt;strong>Sie müssen 5 Minuten zwischen den Spielen warten.&lt;/strong> Ihr Spiel ist eingeschränkt, weil Sie nicht unsere &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> die ins Stocken geraten, aufzugeben Spiele oder vorsätzliche Abbruch rät. Diese Beschränkung wird automatisch aufgehoben werden, nachdem Sie mehr Spiele fair zu spielen.</string>
+	<string name="game.dw_warn">Ihr Konto kann eingeschränkt werden, wenn Sie sich nicht an unsere Fair-Play-Politik werden. Wenn beschränkt, werden Sie nur in der Lage sein, um mit Freunden zu spielen. Bitte nicht absichtlich abbrechen / von Spielen zu trennen oder machen Sie Ihre Gegner nicht unnötig warten. Wir danken Ihnen für das Halten Chess.com ein toller Ort, um Schach zu genießen!</string>
+	<string name="game.not_accepting_challenges">%1$s ist momentan leider nicht Annehmen von Herausforderungen</string>
+	<string name="game.aborted_by_server">Spiel vom Server abgebrochen</string>
+	<string name="game.aborted_by_server_on_logout">Spiel vom Server abgebrochen</string>
+	<string name="game.aborted_by_server_on_disconnection">Spiel vom Server abgebrochen</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com werden die Server neu zu starten!</string>
+	<string name="announcement.server_restart_cancelled">Server-Neustart wurde abgesagt</string>
 </resources>

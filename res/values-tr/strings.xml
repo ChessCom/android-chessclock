@@ -439,11 +439,12 @@
 	<string name="completeAllGameMoves">Tüm oyun hamle tamamlayın.</string>
 	<string name="userNotOnVacation">Değil tatile Kullanıcı.</string>
 
-	<string name="challengeWait">&lt;strong>Bu oyunlar arasında 5 dakika beklemeniz gerekir.&lt;/strong> Bizim &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> hangi bezginliğe, durdurduklarını oyunlar terk veya kasıtlı iptal takip edemiyorum, çünkü senin oyun sınırlıdır. Eğer oldukça fazla oyun oynamak sonra bu kısıtlama otomatik olarak kalkacak.</string>
-	<string name="challengeNotAccepting">%1$s henüz zorlukları kabul etmiyor</string>
-	<string name="announceRestarting">UYARI: Chess.com yılında sunucuları yeniden başlatma edilecektir %1$s dakika!</string>
-	<string name="announceRestartCancelled">Sunucu yeniden iptal edildi.</string>
-	<string name="adminShutdownScheduled">Kapatma (planlanmış olan %1$s dakika).</string>
-	<string name="adminShutdownCancelled">Kapatma iptal edildi.</string>
-	<string name="gameAbortedByServer">Oyun sunucu tarafından iptal edildi.</string>
+	<string name="game.dw_restriction">&lt;strong>Bu oyunlar arasında 5 dakika beklemeniz gerekir.&lt;/strong> Bizim &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> hangi bezginliğe, durdurduklarını oyunlar terk veya kasıtlı iptal takip edemiyorum, çünkü senin oyun sınırlıdır. Eğer oldukça fazla oyun oynamak sonra bu kısıtlama otomatik olarak kalkacak.</string>
+	<string name="game.dw_warn">Bizim Fair Play Politikası uymayan Hesabınız kısıtlanabilir. Kısıtlı ise, sadece arkadaşları ile oynamak mümkün olacak. Lütfen kasıtlı iptal / oyunları kesmek veya rakiplerinizi gereksiz yere beklemek yapmazlar. Chess.com satranç zevk için eğlenceli bir yer tutmak için teşekkür ederiz!</string>
+	<string name="game.not_accepting_challenges">%1$s henüz zorlukları kabul etmiyor</string>
+	<string name="game.aborted_by_server">Oyun sunucu tarafından iptal edildi</string>
+	<string name="game.aborted_by_server_on_logout">Oyun sunucu tarafından iptal edildi</string>
+	<string name="game.aborted_by_server_on_disconnection">Oyun sunucu tarafından iptal edildi</string>
+	<string name="announcement.server_restarting">UYARI: Chess.com sunucuları yeniden başlatma olacak!</string>
+	<string name="announcement.server_restart_cancelled">Sunucu yeniden iptal edildi</string>
 </resources>

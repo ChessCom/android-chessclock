@@ -439,11 +439,12 @@
 	<string name="completeAllGameMoves">Wypełnij wszystkie ruchy w grze.</string>
 	<string name="userNotOnVacation">Użytkownik nie na wakacjach.</string>
 
-	<string name="challengeWait">&lt;strong>Musisz poczekać 5 minut od gier.&lt;/strong> gra jest ograniczona, ponieważ nie po naszej &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> który zniechęca fazach, porzucając gry lub umyślne przerywam. To ograniczenie zostanie zniesione automatycznie po rozegra więcej gemów sprawiedliwie.</string>
-	<string name="challengeNotAccepting">%1$s nie jest obecnie przyjęcie wyzwania</string>
-	<string name="announceRestarting">ALERT: Chess.com będzie ponowne uruchomienie serwerów w %1$s minut!</string>
-	<string name="announceRestartCancelled">Restart serwera został anulowany.</string>
-	<string name="adminShutdownScheduled">Zamknięcie zostało zaplanowane (%1$s minut).</string>
-	<string name="adminShutdownCancelled">Zamknięcie zostało anulowane.</string>
-	<string name="gameAbortedByServer">Gra została przerwana przez serwer.</string>
+	<string name="game.dw_restriction">&lt;strong>Musisz poczekać 5 minut od gier.&lt;/strong> gra jest ograniczona, ponieważ nie po naszej &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> który zniechęca fazach, porzucając gry lub umyślne przerywam. To ograniczenie zostanie zniesione automatycznie po rozegra więcej gemów sprawiedliwie.</string>
+	<string name="game.dw_warn">Twoje konto może zostać ograniczone, jeśli nie przestrzegają naszego Uczciwy Play. Jeśli ograniczony, będziesz tylko mógł grać z przyjaciółmi. Proszę nie celowo przerwać / odłączyć od gier lub zrobić twoi przeciwnicy czekać niepotrzebnie. Dziękujemy za utrzymywanie Chess.com ciekawym miejscem do cieszyć szachy!</string>
+	<string name="game.not_accepting_challenges">%1$s nie jest obecnie przyjęcie wyzwania</string>
+	<string name="game.aborted_by_server">Gra została przerwana przez serwer</string>
+	<string name="game.aborted_by_server_on_logout">Gra została przerwana przez serwer</string>
+	<string name="game.aborted_by_server_on_disconnection">Gra została przerwana przez serwer</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com będzie ponowne uruchomienie serwerów!</string>
+	<string name="announcement.server_restart_cancelled">Restart serwera został odwołany</string>
 </resources>

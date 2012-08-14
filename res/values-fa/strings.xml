@@ -4,7 +4,7 @@
 	<string name="lccFailedUnavailable">سرور شطرنج زنده در حال حاضر در دسترس نیست.</string>
 	<string name="lccFailedUpgrading">ما در حال تلاش برای بهبود chess.com! در حال حاضر سایت در حال ارتقاء است. خواهد شد زندگی دوباره در هیچ زمان. لطفا برای ورود به سایت از مدت اندکی دوباره سعی کنید. با تشکر از شما</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">\"بروز خطا! لطفاً کاربر را جستجو و انتخاب نماييد\"</string>
+	<string name="error_occurred">بروز خطا! لطفاً کاربر را جستجو و انتخاب نماييد\</string>
 	<string name="signout">خروج از سیستم</string>
 
 	<!--Dashboard labels-->
@@ -63,7 +63,7 @@
 	<string name="classic">شطرنج کلاسیک</string>
 	<string name="chess960">شطرنج 960</string>
 	<string name="friend">دوست؟</string>
-	<string name="friends">\"دوست\"؟</string>
+	<string name="friends">دوست؟</string>
 	<string name="initialTime">زمان اولیه</string>
 	<string name="bonusTime">زمان پاداش</string>
 	<string name="RatedGme">دارای رتبه بازی</string>
@@ -73,7 +73,7 @@
 	<string name="onoff">بر / خاموش</string>
 	<string name="minrating">امتیاز حداقل</string>
 	<string name="maxrating">حداکثر امتیاز</string>
-	<string name="email">\"ایمیل\"</string>
+	<string name="email">ایمیل</string>
 	<string name="retype">بازنویسی گذرواژه</string>
 	<string name="country">کشور</string>
 	<string name="blue">آبی</string>
@@ -128,7 +128,7 @@
 	<string name="options">گزینه ها …</string>
 	<string name="reside">تلنگر</string>
 	<string name="hint">تذکر</string>
-	<string name="prev">\"قبلی\"</string>
+	<string name="prev">قبلی</string>
 	<string name="next">ویرایش</string>
 	<string name="nextgame">بازی بعدی</string>
 	<string name="chat">گپ زدن</string>
@@ -161,7 +161,7 @@
 	<string name="submit">ارسال</string>
 	<string name="login">ورود</string>
 	<string name="title">عنوان</string>
-	<string name="error">\"خطا! به روز رسانی تنظيمات شکست خورد.\"</string>
+	<string name="error">خطا! به روز رسانی تنظيمات شکست خورد.\</string>
 	<string name="loading">what </string>
 	<string name="wrongcountry">شما باید کشور خود را انتخاب کنید!</string>
 	<string name="wrongpassword">رمز عبور شما باید حداقل 6 کاراکتر داشته باشد!</string>
@@ -203,8 +203,8 @@
 
 	<string name="max_tactics_reached">حداکثر تعداد خود را از تاکتیک های شما برای امروز رسید. آیا شما دوست دارید که قادر به انجام تاکتیک های بیشتر؟
 	</string>
-	<string name="yes">\"آره.\"</string>
-	<string name="no">\"نه.\"</string>
+	<string name="yes">آره.\</string>
+	<string name="no">نه.\</string>
 	<string name="okay">پذیرش</string>
 	<string name="ten_tactics_completed">10 تاکتیک های تکمیل شده!</string>
 	<string name="offline_mode">در حالت آفلاین</string>
@@ -230,11 +230,11 @@
 	<string name="video">تصویر</string>
 	<string name="boards_s">انجمن</string>
 	<string name="invite_subject">با من شطرنج بازی</string>
-	<string name="invite_text">من فقط امضا کرد تا به بازی شطرنج در Chess.com بر روی دستگاه من اندیشه. دانلود نرم افزار رایگان: http://chess.com/android یا در http://www.chess.com/register.html ثبت نام. سپس - نام کاربری من است \"
+	<string name="invite_text">من فقط امضا کرد تا به بازی شطرنج در Chess.com بر روی دستگاه من اندیشه. دانلود نرم افزار رایگان: http://chess.com/android یا در http://www.chess.com/register.html ثبت نام. سپس - نام کاربری من است 
 	</string>
 	<string name="live_game">زندگی بازی</string>
 	<string name="online_game">بازی آنلاین</string>
-	<string name="send_mail">\"ارسال ایمیل\"</string>
+	<string name="send_mail">ارسال ایمیل\</string>
 	<string name="tournaments">مسابقات</string>
 	<string name="stats">آمار</string>
 	<string name="challenges">چالش ها</string>
@@ -440,11 +440,12 @@
 	<string name="completeAllGameMoves">کامل تمام بازی حرکت می کند.</string>
 	<string name="userNotOnVacation">کاربر در تعطیلات.</string>
 
-	<string name="challengeWait">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>شما بین بازی باید 5 دقیقه صبر کنید. بازی شما محدود شده است دلیل این که شما سیاست بازی ما عادلانه که مانع به تاخیر انداختن، رها کردن بازی ها یا عمدی سقط. این محدودیت برداشته شود به طور خودکار بعد از اینکه شما بازی نسبتا.</string>
-	<string name="challengeNotAccepting">%1$s در حال حاضر چالش ها را نمی پذیرد</string>
-	<string name="announceRestarting">هشدار: Chess.com خواهد شد راه اندازی مجدد سرور در %1$s دقیقه!</string>
-	<string name="announceRestartCancelled">راه اندازی مجدد سرور لغو شده است.</string>
-	<string name="adminShutdownScheduled">خاموش کردن بنامه ریزی شده است ( %1$s دقیقه).</string>
-	<string name="adminShutdownCancelled">خاموش کردن لغو شده است.</string>
-	<string name="gameAbortedByServer">بازی توسط سرور لغو شد.</string>
+	<string name="game.dw_restriction">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>شما بین بازی باید 5 دقیقه صبر کنید. بازی شما محدود شده است دلیل این که شما سیاست بازی ما عادلانه که مانع به تاخیر انداختن، رها کردن بازی ها یا عمدی سقط. این محدودیت برداشته شود به طور خودکار بعد از اینکه شما بازی نسبتا.</string>
+	<string name="game.dw_warn">حساب کاربری شما ممکن است محدود شود اگر شما سیاست بازی ما عادلانه نیست. اگر محدود است، شما تنها قادر خواهد بود به بازی با دوستان باشد. لطفا عمدا نمی سقط جنین / از بازی را قطع و یا به آن مخالفان خود را منتظر بی ارزش است. با تشکر از شما برای نگه داشتن Chess.com مکان سرگرم کننده برای لذت بردن از شطرنج!</string>
+	<string name="game.not_accepting_challenges">%1$s در حال حاضر چالش ها را نمی پذیرد</string>
+	<string name="game.aborted_by_server">بازی توسط سرور سقط شده است</string>
+	<string name="game.aborted_by_server_on_logout">بازی توسط سرور سقط شده است</string>
+	<string name="game.aborted_by_server_on_disconnection">بازی توسط سرور سقط شده است</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com خواهد شد راه اندازی مجدد سرورها!</string>
+	<string name="announcement.server_restart_cancelled">راه اندازی مجدد سرور لغو شده است</string>
 </resources>

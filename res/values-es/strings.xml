@@ -443,11 +443,12 @@
 	<string name="completeAllGameMoves">Completa todos los movimientos del juego.</string>
 	<string name="userNotOnVacation">El usuario no está de vacaciones.</string>
 
-	<string name="challengeWait">&lt;strong>debe esperar 5 minutos entre partidos.&lt;/strong> Su obra está restringido debido a que no han seguido nuestro &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> que desalienta la pérdida de sustentación, los juegos de abandono o intencionales abortar. Esta restricción se levantará de forma automática después de jugar más partidos con justicia.</string>
-	<string name="challengeNotAccepting">%1$s no está aceptando los desafíos</string>
-	<string name="announceRestarting">ALERTA: Chess.com se reinician los servidores en %1$s minutos!</string>
-	<string name="announceRestartCancelled">Reiniciar el servidor ha sido cancelado.</string>
-	<string name="adminShutdownScheduled">Parada ha sido programada (%1$s minutos).</string>
-	<string name="adminShutdownCancelled">Parada ha sido cancelado.</string>
-	<string name="gameAbortedByServer">Juego ha sido anulada por el servidor.</string>
+	<string name="game.dw_restriction">&lt;strong>debe esperar 5 minutos entre partidos.&lt;/strong> Su obra está restringido debido a que no han seguido nuestro &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> que desalienta la pérdida de sustentación, los juegos de abandono o intencionales abortar. Esta restricción se levantará de forma automática después de jugar más partidos con justicia.</string>
+	<string name="game.dw_warn">Su cuenta puede ser restringido si no cumplimos con nuestra política de juego limpio. Si restringido, sólo será capaz de jugar con los amigos. Por favor, no intencionalmente abortar / desconectar de juegos o hacer que sus opositores esperar innecesariamente. Gracias por mantener Chess.com un lugar divertido para disfrutar del ajedrez!</string>
+	<string name="game.not_accepting_challenges">%1$s no está aceptando los desafíos</string>
+	<string name="game.aborted_by_server">Juego ha sido anulada por el servidor</string>
+	<string name="game.aborted_by_server_on_logout">Juego ha sido anulada por el servidor</string>
+	<string name="game.aborted_by_server_on_disconnection">Juego ha sido anulada por el servidor</string>
+	<string name="announcement.server_restarting">ALERTA: Chess.com se reinician los servidores!</string>
+	<string name="announcement.server_restart_cancelled">Reiniciar el servidor ha sido cancelada</string>
 </resources>

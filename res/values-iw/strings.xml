@@ -441,11 +441,12 @@
 	<string name="completeAllGameMoves">השלם את כל מהלכי המשחק.</string>
 	<string name="userNotOnVacation">אסור למשתמש לעשות בחופשה.</string>
 
-	<string name="challengeWait">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>עליך להמתין 5 דקות בין המשחקים. המחזה שלך מוגבלת, כי אתה לא בעקבות מדיניות משחק הוגן שלנו, מעודדת השתהות, משחקים הנוטשים או מכוונות להפיל. הגבלה זו יוסר באופן אוטומטי לאחר כל המשחקים למדי.</string>
-	<string name="challengeNotAccepting">%1$s כרגע לא לקבל אתגרים</string>
-	<string name="announceRestarting">התראה: Chess.com יהיה להפעיל מחדש את השרתים של %1$s דקות!</string>
-	<string name="announceRestartCancelled">הפעלה מחדש של השרת בוטל.</string>
-	<string name="adminShutdownScheduled">כיבוי נקבעה ( %1$s דקות).</string>
-	<string name="adminShutdownCancelled">כיבוי בוטל.</string>
-	<string name="gameAbortedByServer">המשחק הופסק על ידי השרת.</string>
+	<string name="game.dw_restriction">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>עליך להמתין 5 דקות בין המשחקים. המחזה שלך מוגבלת, כי אתה לא בעקבות מדיניות משחק הוגן שלנו, מעודדת השתהות, משחקים הנוטשים או מכוונות להפיל. הגבלה זו יוסר באופן אוטומטי לאחר כל המשחקים למדי.</string>
+	<string name="game.dw_warn">החשבון שלך עשוי להיות מוגבל אם אתה לא מבין את מדיניות משחק הוגן שלנו. אם מוגבלת, אתה רק יכול לשחק עם חברים. נא לא בכוונה להפיל / להתנתק משחקים או להפוך את היריבים שלך להמתין שלא לצורך. תודה על שמירה על Chess.com מקום שכיף ליהנות שח!</string>
+	<string name="game.not_accepting_challenges">%1$s כרגע לא לקבל אתגרים</string>
+	<string name="game.aborted_by_server">המשחק הופסק על ידי שרת</string>
+	<string name="game.aborted_by_server_on_logout">המשחק הופסק על ידי שרת</string>
+	<string name="game.aborted_by_server_on_disconnection">המשחק הופסק על ידי שרת</string>
+	<string name="announcement.server_restarting">התראה: Chess.com יהיה להפעיל מחדש את השרתים!</string>
+	<string name="announcement.server_restart_cancelled">הפעלה מחדש של שרת בוטל</string>
 </resources>

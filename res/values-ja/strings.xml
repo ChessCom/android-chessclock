@@ -440,11 +440,12 @@
 	<string name="completeAllGameMoves">すべてのゲームに移動を完了します。</string>
 	<string name="userNotOnVacation">ない休暇のユーザー。</string>
 
-	<string name="challengeWait">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>あなたは、ゲームの間に5分間待つ必要があります。あなたが失速、捨てゲームや中止意図を推奨して私たちのフェアプレー·ポリシーに従っていないため、プレイが制限されています。あなたはかなり多くのゲームをプレイした後に、この制限は自動的に解除されます。</string>
-	<string name="challengeNotAccepting">%1$s 、現在の課題を受け付けていません</string>
-	<string name="announceRestarting">ALERT：Chess.comがでサーバを再起動されます%1$s分！</string>
-	<string name="announceRestartCancelled">サーバーの再起動がキャンセルされました。</string>
-	<string name="adminShutdownScheduled">シャットダウンは（予定されている%1$s分）。</string>
-	<string name="adminShutdownCancelled">シャットダウンはキャンセルされました。</string>
-	<string name="gameAbortedByServer">ゲームはサーバーによって中止されました。</string>
+	<string name="game.dw_restriction">&lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a>あなたは、ゲームの間に5分間待つ必要があります。あなたが失速、捨てゲームや中止意図を推奨して私たちのフェアプレー·ポリシーに従っていないため、プレイが制限されています。あなたはかなり多くのゲームをプレイした後に、この制限は自動的に解除されます。</string>
+	<string name="game.dw_warn">あなたが私たちのフェアプレー·ポリシーに従わない場合、アカウントが制限される場合があります。制限されている場合、あなただけの友達と遊ぶことができるようになります。意図的に中止するには/ゲームから切断するか、またはあなたの対戦相手が不必要に待たせないでください。 Chess.comにチェスを楽しむために楽しい場所を維持してくれてありがとう！</string>
+	<string name="game.not_accepting_challenges">%1$s 、現在の課題を受け付けていません</string>
+	<string name="game.aborted_by_server">ゲームはサーバーによって中止されました</string>
+	<string name="game.aborted_by_server_on_logout">ゲームはサーバーによって中止されました</string>
+	<string name="game.aborted_by_server_on_disconnection">ゲームはサーバーによって中止されました</string>
+	<string name="announcement.server_restarting">ALERT：Chess.comは、サーバを再起動されます！</string>
+	<string name="announcement.server_restart_cancelled">サーバーの再起動がキャンセルされました。</string>
 </resources>
