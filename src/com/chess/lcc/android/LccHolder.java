@@ -218,13 +218,9 @@ public class LccHolder{
 		lccClient.sendChatMessage(getGameChat(gameId), text);
 	}
 
-	public void addPendingWarning(String warning) {
+	public void addPendingWarning(String warning, String... parameters) {
 		if (warning != null) {
-			String messageI18n = AppUtils.getI18nString(context, warning, R.string.challengeWaitOriginal, R.string.challengeWait);
-			if (messageI18n == null) {
-				messageI18n = AppUtils.getI18nString(context,
-						R.string.challengeNotAcceptingPattern, warning, R.string.challengeNotAcceptingOriginal, R.string.challengeNotAccepting);
-			}
+			String messageI18n = AppUtils.getI18nString(context, warning, parameters);
 			pendingWarnings.add(messageI18n == null ? warning : messageI18n);
 		}
 	}

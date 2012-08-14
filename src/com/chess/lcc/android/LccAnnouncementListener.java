@@ -28,14 +28,9 @@ public class LccAnnouncementListener implements AnnounceListener {
 		Log.d(TAG, "onAnnounceMessageReceived: " + chatMessage);
 
 		final String message = chatMessage.getMessage();
-		final Context context = lccHolder.getContext();
 
 		if (message != null) {
-			String messageI18n = AppUtils.getI18nString(context, message, R.string.announceRestartCancelledOriginal, R.string.announceRestartCancelled);
-			if (messageI18n == null) {
-				messageI18n = AppUtils.getI18nString(context,
-						R.string.announceRestartingPattern, message, R.string.announceRestartingOriginal, R.string.announceRestarting);
-			}
+			String messageI18n = AppUtils.getI18nString(lccHolder.getContext(), message);
 			lccHolder.getLiveChessClientEventListener().onAdminAnnounce(messageI18n == null ? message : messageI18n);
 		}
 
