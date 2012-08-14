@@ -63,7 +63,7 @@
 	<string-array name="Notif">
 	    <item>Geen</item>
 		<item>Trillen</item>
-		<item>ringen...</item>
+		<item>Ringen…</item>
 		<item>Knipperende LED</item>
 	</string-array>
 	

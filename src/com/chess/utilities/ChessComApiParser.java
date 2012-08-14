@@ -63,7 +63,7 @@ public class ChessComApiParser {
 
 		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		try {
-			int gamescount = new Integer(GamesArray[0].substring(8));
+			int gamescount = Integer.valueOf(GamesArray[0].substring(8));
 			int i, j, inc = 0;
 			String[] tmp = GamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 

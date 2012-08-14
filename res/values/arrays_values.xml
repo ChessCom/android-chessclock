@@ -77,17 +77,6 @@
 		<item>2400</item>
 	</string-array>
 
-
-	<string-array name="home_items">
-		<item>@string/menuLive</item>
-		<item>@string/menuOnline</item>
-		<item>@string/menuComp</item>
-		<item>@string/menuTactics</item>
-		<item>@string/menuVideo</item>
-	</string-array>
-
-
-
 	<string-array name="countries_id">
 		<item>2</item>
 		<item>3</item>

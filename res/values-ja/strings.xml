@@ -273,10 +273,7 @@
 	<string name="menu_refresh">リフレッシュ</string>
 	<string name="version_check">バージョンチェック</string>
 	<string name="version_is_obsolete_update">クライアントのバージョンは廃止されました。更新してください</string>
-	<string name="zero_one_black_mates">0から1ブラックメイト</string>
-	<string name="on_zero_white_mates">1から0ホワイトメイト</string>
-	<string name="slatemate">0から0手詰まり</string>
-	<string name="draw_by_repetition">0.5  - 繰り返しにより1月2日ドロー</string>
+
 
 	<string name="encoding_unsupported">サポートされていないエンコーディング</string>
 	<string name="error_occurred_while_login">エラーが発生したログインの間、再ログインしてください！</string>

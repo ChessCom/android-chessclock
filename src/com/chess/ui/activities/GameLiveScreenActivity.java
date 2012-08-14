@@ -465,7 +465,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		openChatActivity();
 	}
 
-	private boolean openChatActivity() {
+	private void openChatActivity() {
 		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
 				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
 		preferencesEditor.commit();
@@ -476,8 +476,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		Intent intent = new Intent(this, ChatLiveActivity.class);
 		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestamp());
 		startActivity(intent);
-
-		return true;
 	}
 
 	private void checkMessages() {

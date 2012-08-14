@@ -276,10 +276,6 @@
 	<string name="menu_refresh">Opdatér</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">Klienten version er forældet. Opdater venligst</string>
-	<string name="zero_one_black_mates">0 – 1 Black kammerater</string>
-	<string name="on_zero_white_mates">1 – 0 White kammerater</string>
-	<string name="slatemate">0–0 Pat</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Draw ved gentagelse</string>
 
 	<string name="encoding_unsupported">Kodning understøttet</string>
 	<string name="error_occurred_while_login">Der opstod en fejl under login, bedes du logger ind igen!</string>

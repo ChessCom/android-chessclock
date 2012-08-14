@@ -50,7 +50,7 @@
 	<string name="computerWhite">سفید</string>
 	<string name="computerBlack">سیاه</string>
 	<string name="Human">انسانی</string>
-	<string name="guest">\"ميهمان\"</string>
+	<string name="guest">ميهمان</string>
 	<string name="Computer">کامپیوتر</string>
 	<string name="Thinking">اندیشیدن …</string>
 	<string name="menuSite">www.chess.com</string>
@@ -274,10 +274,6 @@
 	<string name="menu_refresh">تازه کردن</string>
 	<string name="version_check">چک نسخه</string>
 	<string name="version_is_obsolete_update">نسخه سرویس گیرنده است منسوخ باشد. لطفا به روز رسانی</string>
-	<string name="zero_one_black_mates">0 – 1 سیاه مات</string>
-	<string name="on_zero_white_mates">1 – 0 سفید آمپول</string>
-	<string name="slatemate">0 – 0 بن بست</string>
-	<string name="draw_by_repetition">0.5 – 0.5 قرعه کشی با تکرار</string>
 
 	<string name="encoding_unsupported">کدبندی پشتیبانی نشده</string>
 	<string name="error_occurred_while_login">خطا رخ داده است در حالی که ورود به سیستم، لطفا relogin!</string>

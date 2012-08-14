@@ -49,7 +49,7 @@ abstract public class EndlessAdapter extends AdapterWrapper {
 
 	abstract protected void dismissLoad();
 
-	abstract protected boolean cacheInBackground() throws Exception;
+	abstract protected boolean cacheInBackground() /*throws Exception*/;
 
 	abstract protected void appendCachedData();
 

@@ -271,10 +271,6 @@
 	<string name="menu_refresh">~을 상쾌하게하다, ~을 새롭게하다</string>
 	<string name="version_check">버전 확인</string>
 	<string name="version_is_obsolete_update">클라이언트 버전은 쓸모입니다. 업데이 트하시기 바랍니다</string>
-	<string name="zero_one_black_mates">0–1 블랙 짝을</string>
-	<string name="on_zero_white_mates">1–0 흰색 연분</string>
-	<string name="slatemate">0–0 막다른 골목</string>
-	<string name="draw_by_repetition">0.5–0.5 반복에 의해 그리기</string>
 
 	<string name="encoding_unsupported">지원되지 않는 인코딩</string>
 	<string name="error_occurred_while_login">오류가 발생했습니다 로그인 동안 relogin를주세요!</string>

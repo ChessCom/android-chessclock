@@ -274,10 +274,6 @@
 	<string name="menu_refresh">odśwież</string>
 	<string name="version_check">Sprawdź wersję</string>
 	<string name="version_is_obsolete_update">Wersja klienta jest przestarzałe. Proszę zaktualizować</string>
-	<string name="zero_one_black_mates">0 – 1 Czarne mates</string>
-	<string name="on_zero_white_mates">1 – 0 Białe mates</string>
-	<string name="slatemate">0 – 0 Pat</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Draw przez powtarzanie</string>
 
 	<string name="encoding_unsupported">Kodowanie nieobsługiwane</string>
 	<string name="error_occurred_while_login">Wystąpił błąd podczas logowania, należy przelogować!</string>

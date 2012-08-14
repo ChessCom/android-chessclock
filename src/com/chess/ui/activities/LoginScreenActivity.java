@@ -337,7 +337,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			handler.removeCallbacks(this);
 			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
-	};
+	}
 
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -347,18 +347,6 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			passwordEdt.setError(null);
 		}
 		return false;
-	}
-
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-//		if(loginTask != null)
-//			loginTask.cancel(true);
-//		if(postDataTask != null)
-//			postDataTask.cancel(true);
-
 	}
 
 	@Override

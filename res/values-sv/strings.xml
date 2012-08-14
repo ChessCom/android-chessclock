@@ -274,10 +274,6 @@
 	<string name="menu_refresh">Uppdatera</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">Klientversionen är föråldrad. Uppdatera</string>
-	<string name="zero_one_black_mates">0 – 1 Svart kompisar</string>
-	<string name="on_zero_white_mates">1 – 0 Vita kompisar</string>
-	<string name="slatemate">0 till 0 Dödläge</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Oavgjort genom upprepning</string>
 
 	<string name="encoding_unsupported">Kodar ouppburen</string>
 	<string name="error_occurred_while_login">Fel uppstod när inloggning, vänligen logga in igen!</string>

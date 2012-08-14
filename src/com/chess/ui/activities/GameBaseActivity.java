@@ -109,12 +109,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		enableScreenLockTimer();
 	}
 
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
 	protected void onDestroy() {
 		// try to destroy ad here as Mopub team suggested
 		if (MopubHelper.isShowAds(this)) {

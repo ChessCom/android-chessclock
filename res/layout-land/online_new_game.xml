@@ -8,8 +8,9 @@
 	android:paddingTop="@dimen/default_scr_top_padding"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
-
-	android:orientation="horizontal">
+	android:orientation="horizontal"
+	android:baselineAligned="false"
+	>
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

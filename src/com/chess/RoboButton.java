@@ -45,11 +45,6 @@ public class RoboButton extends Button {
         setTypeface(font);
     }
 
-	@Override
-	public void setTypeface(Typeface tf) {
-		super.setTypeface(tf);
-	}
-
     public void setFont(String font) {
         ttfName = font;
         init();

@@ -276,10 +276,7 @@
 	<string name="menu_refresh">refresh</string>
 	<string name="version_check">Verificar versión</string>
 	<string name="version_is_obsolete_update">La versión de cliente es obsoleto. Por favor, actualice</string>
-	<string name="zero_one_black_mates">0 – 1 compañeros negros</string>
-	<string name="on_zero_white_mates">1 – 0 blancas dan mate</string>
-	<string name="slatemate">0–0 Estancamiento</string>
-	<string name="draw_by_repetition">0.5 – 0.5 tablas por repetición</string>
+
 
 	<string name="encoding_unsupported">Codificación no soportada</string>
 	<string name="error_occurred_while_login">Ocurrió un error al inicio de sesión, por favor, iniciar la sesión!</string>

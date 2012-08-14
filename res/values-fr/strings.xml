@@ -276,10 +276,6 @@
 	<string name="menu_refresh">rafraîchir</string>
 	<string name="version_check">Vérification de la version</string>
 	<string name="version_is_obsolete_update">La version client est obsolète. S\'il vous plaît mettre à jour</string>
-	<string name="zero_one_black_mates">0 – 1 copains noirs</string>
-	<string name="on_zero_white_mates">1 – 0 camarades blancs</string>
-	<string name="slatemate">0–0 impasse</string>
-	<string name="draw_by_repetition">0.5–0.5 moitié nulle par répétition</string>
 
 	<string name="encoding_unsupported">Encodage non pris en charge</string>
 	<string name="error_occurred_while_login">Une erreur s\'est produite tout en identifiant, s\'il vous plaît se reconnecter!</string>

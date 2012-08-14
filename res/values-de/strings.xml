@@ -53,7 +53,7 @@
 	<string name="Human">Mensch</string>
 	<string name="guest">Gast:</string>
 	<string name="Computer">Computer</string>
-	<string name="Thinking">Denken ...</string>
+	<string name="Thinking">Denken …</string>
 	<string name="menuSite">www.chess.com</string>
 	<string name="onlineNewGametitle">Neues Spiel</string>
 	<string name="onlineChallenges">Offene Herausforderungen</string>
@@ -141,8 +141,8 @@
 	<string name="congratulations">Glückwunsch!</string>
 	<string name="onlinegamecreated">Online-Spiel erstellt!</string>
 	<string name="challengeSent">Fordern Sie gesendet!</string>
-	<string name="creating">Erstellen ...</string>
-	<string name="gettingfriends">Erste Freunde-Liste ...</string>
+	<string name="creating">Erstellen …</string>
+	<string name="gettingfriends">Erste Freunde-Liste …</string>
 	<string name="sorry">Traurig</string>
 	<string name="nofriends">Sie haben noch keine Freunde. Sie können sie per www.chess.com einladen.</string>
 	<string name="nofriends_online">Ihre Freunde sind nicht online. Wenn Sie nicht laden sie noch, um www.chess.com gehen.</string>
@@ -152,28 +152,28 @@
 	<string name="challengeaccepted">Herausforderung angenommen!</string>
 	<string name="challengedeclined">Herausforderung Abgelehnt!</string>
 	<string name="decline">Ablehnen</string>
-	<string name="updatinggameslist">Aktualisieren Spiele-Liste ...</string>
+	<string name="updatinggameslist">Aktualisieren Spiele-Liste …</string>
 	<string name="challengetitle">Aufgabe</string>
-	<string name="loadinggames">Lädt Spiele ...</string>
+	<string name="loadinggames">Lädt Spiele …</string>
 	<string name="drawoffered">Unentschieden angeboten</string>
-	<string name="gettingmessages">Erste Meldungen ...</string>
-	<string name="sendingmessage">Nachricht wird gesendet...</string>
+	<string name="gettingmessages">Erste Meldungen …</string>
+	<string name="sendingmessage">Nachricht wird gesendet…</string>
 	<string name="ok">OK</string>
 	<string name="submit">Einreichen</string>
 	<string name="login">Login</string>
 	<string name="title">Titel</string>
 	<string name="error">Fehler</string>
-	<string name="loading">Loading ...</string>
+	<string name="loading">Loading …</string>
 	<string name="wrongcountry">Sie müssen wählen Sie Ihr Land!</string>
 	<string name="wrongpassword">Ihr Passwort muss mindestens sieben Zeichen lang sein.</string>
 	<string name="wrongusername">Ihr Benutzername muss mindestens 3 Zeichen lang sein und nur aus Buchstaben, Zahlen, Unterstriche und Bindestriche. Leerzeichen sind nicht erlaubt.</string>
 	<string name="wrongemail">Sie müssen Ihre Mitgliedschaft per E-Mail bestätigen.</string>
 	<string name="wrongretype">Falsche abgetippt Passwort!</string>
-	<string name="signingin">Bei der Anmeldung ...</string>
+	<string name="signingin">Bei der Anmeldung …</string>
 
 	<string name="showanswer">Antworten anzeigen</string>
 	<string name="skipproblem">Direkt Problem</string>
-	<string name="sendinggameinfo">Senden Infos zum Spiel ...</string>
+	<string name="sendinggameinfo">Senden Infos zum Spiel …</string>
 	<string name="check_field">Überprüfen Feld</string>
 	<string name="validateUsername">Ihr Benutzername muss zwischen 3 und 20 Zeichen lang sein und nur aus Buchstaben, Zahlen, Unterstriche und Bindestriche. Leerzeichen sind nicht erlaubt.</string>
 	<string name="validatePassword">Ihr Passwort muss zwischen 6 und 20 Zeichen lang sein!</string>
@@ -236,7 +236,7 @@
 	</string>
 	<string name="live_game">Live Spiel</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail">E-Mail senden ...</string>
+	<string name="send_mail">E-Mail senden …</string>
 	<string name="tournaments">Turniere</string>
 	<string name="stats">Status</string>
 	<string name="challenges">Herausforderungen</string>
@@ -265,7 +265,7 @@
 	<string name="your_move">Chess.com - Du gibst die Richtung</string>
 	<string name="your_turn">Sie sind dran!</string>
 	<string name="login_failed">Fehler bei der Anmeldung:</string>
-	<string name="loggin_out">Abmelden ...</string>
+	<string name="loggin_out">Abmelden …</string>
 	<string name="you_logged_out">Sie haben sich abgemeldet!</string>
 	<string name="too_short">Zu kurz</string>
 	<string name="can_not_be_empty">Darf nicht leer sein</string>
@@ -276,10 +276,6 @@
 	<string name="menu_refresh">aktualisiert</string>
 	<string name="version_check">Version Check</string>
 	<string name="version_is_obsolete_update">Die Client-Version ist veraltet. Bitte aktualisieren</string>
-	<string name="zero_one_black_mates">0 bis 1 Schwarz mates</string>
-	<string name="on_zero_white_mates">1–0 Weiß setzt</string>
-	<string name="slatemate">0–0 Patt</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Remis durch Wiederholung</string>
 
 	<string name="encoding_unsupported">Encoding nicht unterstützten</string>
 	<string name="error_occurred_while_login">Fehler beim Login, wenden Sie sich bitte erneut anmelden!</string>

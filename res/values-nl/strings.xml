@@ -274,10 +274,6 @@
 	<string name="menu_refresh">vernieuwen</string>
 	<string name="version_check">Versie controle</string>
 	<string name="version_is_obsolete_update">De client versie is verouderd. Werk</string>
-	<string name="zero_one_black_mates">0 tot 1 Black mates</string>
-	<string name="on_zero_white_mates">1–0 Witte mates</string>
-	<string name="slatemate">0–0 Pat</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Draw door herhaling</string>
 
 	<string name="encoding_unsupported">Coderen van niet-ondersteunde</string>
 	<string name="error_occurred_while_login">Fout opgetreden tijdens het aanmelden, dan kunt u weer inloggen!</string>

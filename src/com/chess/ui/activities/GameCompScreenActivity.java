@@ -258,10 +258,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_new_game: // TODO move to action bar
+			case R.id.menu_newGame:
 				newGame();
 				break;
-			case R.id.menu_options:	 // TODO move to action bar
+			case R.id.menu_options:
 				showOptions();
 				break;
 			case R.id.menu_reside:

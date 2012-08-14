@@ -275,10 +275,7 @@
 	<string name="menu_refresh">रीफ्रेश करें </string>
 	<string name="version_check">संस्करण की जाँच</string>
 	<string name="version_is_obsolete_update">ग्राहक संस्करण अप्रचलित है. अपडेट करें</string>
-	<string name="zero_one_black_mates">0 – 1 काला साथी</string>
-	<string name="on_zero_white_mates">1 – 0 व्हाइट साथी</string>
-	<string name="slatemate">0 – 0 जिच</string>
-	<string name="draw_by_repetition">0.5 – 0.5 से पुनरावृत्ति ड्रा</string>
+
 
 	<string name="encoding_unsupported">असमर्थित एनकोडिंग</string>
 	<string name="error_occurred_while_login">त्रुटि हुई लॉगिन जबकि, relogin कृपया!</string>

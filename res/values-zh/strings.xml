@@ -271,10 +271,6 @@
 	<string name="menu_refresh">重新整理</string>
 	<string name="version_check">版本检查</string>
 	<string name="version_is_obsolete_update">客户端版本已经过时了。请更新</string>
-	<string name="zero_one_black_mates">0 – 1黑色队友</string>
-	<string name="on_zero_white_mates">1 – 0白色队友</string>
-	<string name="slatemate">0 – 0相持</string>
-	<string name="draw_by_repetition">0.5 – 0.5 重复绘制</string>
 
 	<string name="encoding_unsupported">编码不受支持</string>
 	<string name="error_occurred_while_login">发生错误，同时登录，请重新登录！</string>

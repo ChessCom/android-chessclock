@@ -45,9 +45,4 @@ public class RoboCheckBox extends CheckBox {
 		setTypeface(font);
 	}
 
-	@Override
-	public void setTypeface(Typeface tf) {
-		super.setTypeface(tf);
-	}
-
 }

@@ -275,10 +275,6 @@
 	<string name="menu_refresh">обновить</string>
 	<string name="version_check">Проверка Версии</string>
 	<string name="version_is_obsolete_update">Версия клиента устарела. Пожалуйста, обновите</string>
-	<string name="zero_one_black_mates">0 – 1 Черные выйграли</string>
-	<string name="on_zero_white_mates">1 – 0 Белые выйграли</string>
-	<string name="stalemate">0 – 0 тупик</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Ничья повторением</string>
 
 	<string name="encoding_unsupported">Кодировка не поддерживается</string>
 	<string name="error_occurred_while_login">Произошла ошибка во время входа в систему, пожалуйста, войдите снова!</string>

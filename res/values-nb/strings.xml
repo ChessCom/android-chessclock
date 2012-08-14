@@ -273,10 +273,6 @@
 	<string name="menu_refresh">Oppdater</string>
 	<string name="version_check">Versjon Sjekk</string>
 	<string name="version_is_obsolete_update">Klienten versjonen er foreldet. Vennligst oppdater</string>
-	<string name="zero_one_black_mates">0 – 1 Black kamerater</string>
-	<string name="on_zero_white_mates">1 – 0 Hvite kamerater</string>
-	<string name="slatemate">0–0 Stalemate</string>
-	<string name="draw_by_repetition">0.5 – 0.5 Uavgjort ved repetisjon</string>
 
 	<string name="encoding_unsupported">Koding som ikke støttes</string>
 	<string name="error_occurred_while_login">Feil oppstod ved pålogging, kan du logge inn på nytt!</string>

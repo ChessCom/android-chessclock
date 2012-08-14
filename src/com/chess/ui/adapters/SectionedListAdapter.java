@@ -64,9 +64,9 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 		return (-1);
 	}
 
-	public boolean areAllItemsSelectable() {
-		return false;
-	}
+//	public boolean areAllItemsSelectable() {
+//		return false;
+//	}
 
 	@Override
 	public boolean isEnabled(int position) {

@@ -217,7 +217,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		@Override
 		public boolean isValid(CharSequence text) {
 			final String textString = text.toString().trim();
-			final Integer initialTime = new Integer(textString);
+			final Integer initialTime = Integer.valueOf(textString);
 			return !textString.equals(StaticData.SYMBOL_EMPTY) && initialTime >= 1 && initialTime <= 120;
 		}
 

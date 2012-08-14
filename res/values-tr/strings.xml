@@ -274,10 +274,6 @@
 	<string name="menu_refresh">yenileme</string>
 	<string name="version_check">Sürüm Kontrol</string>
 	<string name="version_is_obsolete_update">Istemci sürümü artık kullanılmıyor. Güncelleyin</string>
-	<string name="zero_one_black_mates">0 – 1 Siyah arkadaşları</string>
-	<string name="on_zero_white_mates">1 – 0 Beyaz arkadaşları</string>
-	<string name="slatemate">0 – 0 Çıkmazı</string>
-	<string name="draw_by_repetition">0.5 - tekrarlama 0.5 Beraberlik</string>
 
 	<string name="encoding_unsupported">Desteklenmeyen Kodlama</string>
 	<string name="error_occurred_while_login">Hata oluştu giriş yaparken, relogin lütfen!</string>

@@ -44,9 +44,5 @@ public class RoboAutoCompleteTextView extends AutoCompleteTextView {
         Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-" + ttfName + ".ttf");
         setTypeface(font);
     }
-	@Override
-	public void setTypeface(Typeface tf) {
-		super.setTypeface(tf);
-	}
 
 }

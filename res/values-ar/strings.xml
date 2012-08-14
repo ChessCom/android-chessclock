@@ -276,10 +276,6 @@
 	<string name="menu_refresh">يُنْعِش</string>
 	<string name="version_check">تحقق من إصدار</string>
 	<string name="version_is_obsolete_update">إصدار العميل عفا عليه الزمن. يرجى تحديث</string>
-	<string name="zero_one_black_mates">0–1 الاصحاب الأسود</string>
-	<string name="on_zero_white_mates">1–0 الاصحاب الأبيض</string>
-	<string name="slatemate">0–0 المأزق</string>
-	<string name="draw_by_repetition">0.5 – 0.5 القرعة عن طريق التكرار</string>
 
 	<string name="encoding_unsupported">ترميز غير معتمد</string>
 	<string name="error_occurred_while_login">حدث خطأ أثناء تسجيل الدخول، يرجى relogin!</string>

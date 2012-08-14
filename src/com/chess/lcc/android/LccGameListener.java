@@ -56,17 +56,17 @@ public class LccGameListener implements GameListener {
         // TODO: Implement when necessary
     }
 
-    public void onFollowedUserListReceived(Collection<? extends User> users) {
-        // TODO: Implement when necessary
-    }
-
-    public void onFollowConfirmed(String followedUser, boolean succeed) {
-        // TODO: Implement when necessary
-    }
-
-    public void onUnfollowConfirmed(String unfollowedUser, boolean succeed) {
-        // TODO: Implement when necessary
-    }
+//    public void onFollowedUserListReceived(Collection<? extends User> users) {
+//        // TODO: Implement when necessary
+//    }
+//
+//    public void onFollowConfirmed(String followedUser, boolean succeed) {
+//        // TODO: Implement when necessary
+//    }
+//
+//    public void onUnfollowConfirmed(String unfollowedUser, boolean succeed) {
+//        // TODO: Implement when necessary
+//    }
 
     private boolean isOldGame(Long gameId) {
         return gameId < latestGameId;

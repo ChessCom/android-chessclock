@@ -101,8 +101,8 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 			}
 
 			Boolean rated = isRated.isChecked();
-			Integer initialTimeInteger = new Integer(initialTimeEdt.getText().toString());
-			Integer bonusTimeInteger = new Integer(bonusTimeEdt.getText().toString());
+			Integer initialTimeInteger = Integer.valueOf(initialTimeEdt.getText().toString());
+			Integer bonusTimeInteger = Integer.valueOf(bonusTimeEdt.getText().toString());
 			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
 			String to = null;
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(

@@ -10,9 +10,8 @@
 	android:paddingBottom="@dimen/signin_scr_bottom_padding"
 	android:paddingLeft="@dimen/signin_scr_side_padding"
 	android:paddingRight="@dimen/signin_scr_side_padding"
-	android:background="@color/black"
 	>
-
+	<!--android:background="@color/black"-->
 	<ImageView
 		android:id="@+id/logoImg"
 		android:layout_width="wrap_content"

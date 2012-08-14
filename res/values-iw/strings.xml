@@ -276,10 +276,6 @@
 	<string name="menu_refresh">רענן</string>
 	<string name="version_check">גרסה בדוק</string>
 	<string name="version_is_obsolete_update">את גירסת הלקוח הוא מיושן. אנא עדכן</string>
-	<string name="zero_one_black_mates">0 – 1 בני זוג שחורים</string>
-	<string name="on_zero_white_mates">1 – 0 בני זוג לבנים</string>
-	<string name="slatemate">0–0 תיקו</string>
-	<string name="draw_by_repetition">0.5 – 0.5 צייר ידי החזרה</string>
 
 	<string name="encoding_unsupported">קידוד לא נתמך</string>
 	<string name="error_occurred_while_login">שגיאה בזמן ההתחברות, אנא relogin!</string>

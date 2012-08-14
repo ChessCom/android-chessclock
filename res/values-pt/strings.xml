@@ -274,10 +274,6 @@
 	<string name="menu_refresh">refrescar</string>
 	<string name="version_check">Verificação de versão</string>
 	<string name="version_is_obsolete_update">A versão cliente é obsoleto. Por favor, atualize</string>
-	<string name="zero_one_black_mates">0 – 1 companheiros Preto</string>
-	<string name="on_zero_white_mates">1 – 0 companheiros brancos</string>
-	<string name="slatemate">0–0 Stalemate</string>
-	<string name="draw_by_repetition">0.5 – 0.5 empate por repetição</string>
 
 	<string name="encoding_unsupported">Codificação não suportada</string>
 	<string name="error_occurred_while_login">Ocorreu um erro enquanto login, por favor relogin!</string>

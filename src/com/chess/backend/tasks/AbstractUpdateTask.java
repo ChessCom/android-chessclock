@@ -40,10 +40,6 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 
 	protected abstract Integer doTheTask(Input... params);
 
-	@Override
-	protected void onCancelled() {
-		super.onCancelled();
-	}
 
 	@Override
 	protected void onCancelled(Integer result) {
