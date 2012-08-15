@@ -136,11 +136,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-
-	}
-
-	@Override
-	public void showChoosePieceDialog(int col, int row) {
 	}
 
 	@Override
