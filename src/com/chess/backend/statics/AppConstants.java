@@ -2,6 +2,7 @@ package com.chess.backend.statics;
 
 public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";
+	public static final String BUGSENSE_API_KEY = "609b3b0e";
 
 	/*Screen Features*/
 	public static final String SMALL_SCREEN = "small_screen";

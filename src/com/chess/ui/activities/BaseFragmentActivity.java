@@ -29,6 +29,7 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
+import com.bugsense.trace.BugSenseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		BugSenseHandler.setup(this, AppConstants.BUGSENSE_API_KEY);
 
 		context = this;
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
