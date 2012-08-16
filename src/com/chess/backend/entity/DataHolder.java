@@ -18,7 +18,7 @@ public class DataHolder {
 	private boolean offline = false;
 	private boolean acceptDraw = false;
 	private boolean liveChess;
-//	private boolean pendingTacticsLoad;
+	private boolean isAdsLoading;
 	private TacticResultItem tacticResultItem;
 
 	// Singletones for Tactics mode
@@ -66,13 +66,13 @@ public class DataHolder {
 		this.acceptDraw = acceptDraw;
 	}
 
-//	public void setPendingTacticsLoad(boolean pendingTacticsLoad) {
-//		this.pendingTacticsLoad = pendingTacticsLoad;
-//	}
-//
-//	public boolean isPendingTacticsLoad() {
-//		return pendingTacticsLoad;
-//	}
+	public boolean isAdsLoading() {
+		return isAdsLoading;
+	}
+
+	public void setAdsLoading(boolean adsLoading) {
+		isAdsLoading = adsLoading;
+	}
 
 	public TacticItem getTactic() {
 		return tactic;

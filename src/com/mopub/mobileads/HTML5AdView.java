@@ -107,7 +107,7 @@ public class HTML5AdView extends AdView {
         
         @Override
         public boolean onError(MediaPlayer arg0, int arg1, int arg2) {
-            Log.d("MoPub", "Video errored!");
+            Log.d(MOPUB, "Video errored!");
             return false;
         }
 
@@ -115,7 +115,7 @@ public class HTML5AdView extends AdView {
         public void onCompletion(MediaPlayer mp) {
             mp.stop();
             mCustomViewCallback.onCustomViewHidden();
-            Log.d("MoPub", "Video completed!");
+            Log.d(MOPUB, "Video completed!");
         }
     }
 }

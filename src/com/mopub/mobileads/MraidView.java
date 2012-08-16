@@ -162,7 +162,7 @@ public class MraidView extends WebView {
                 }
             }
         } catch (IllegalArgumentException e) {
-            Log.d("MoPub", "Mraid loadUrl failed (IllegalArgumentException): "+url);
+            Log.d(AdView.MOPUB, "Mraid loadUrl failed (IllegalArgumentException): "+url);
             notifyOnFailureListener();
             return;
         } catch (ClientProtocolException e) {

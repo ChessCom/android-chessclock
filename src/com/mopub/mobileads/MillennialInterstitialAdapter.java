@@ -102,7 +102,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     public void loadInterstitial() {
         if (isInvalidated()) return;
         
-        Log.d("MoPub", "Fetching Millennial ad...");
+        Log.d(AdView.MOPUB, "Fetching Millennial ad...");
 
         Location location = mInterstitial.getLocation();
         if (location != null) mMillennialAdView.updateUserLocation(location);
@@ -117,7 +117,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
         if (isInvalidated()) return;
         
         if (mMillennialAdView.check()) mMillennialAdView.display();
-        else Log.d("MoPub", "Tried to show a Millennial interstitial before it finished caching. " + 
+        else Log.d(AdView.MOPUB, "Tried to show a Millennial interstitial before it finished caching. " +
                 "Please try again.");
     }
     
@@ -134,7 +134,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial interstitial failed. Trying another.");
+                Log.d(AdView.MOPUB, "Millennial interstitial failed. Trying another.");
                 if (mAdapterListener != null) {
                     mAdapterListener.onNativeInterstitialFailed(MillennialInterstitialAdapter.this);
                 }
@@ -148,7 +148,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial interstitial returned an ad.");
+                Log.d(AdView.MOPUB, "Millennial interstitial returned an ad.");
                 if (mAdapterListener != null) {
                     //mAdapterListener.onNativeInterstitialLoaded(MillennialInterstitialAdapter.this);
                 }
@@ -162,7 +162,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial interstitial clicked to new browser");
+                Log.d(AdView.MOPUB, "Millennial interstitial clicked to new browser");
                 recordClickIfNecessary();
             }
         });
@@ -174,7 +174,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial interstitial clicked to overlay");
+                Log.d(AdView.MOPUB, "Millennial interstitial clicked to overlay");
                 recordClickIfNecessary();
             }
         }); 
@@ -186,7 +186,7 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial interstitial launched overlay");
+                Log.d(AdView.MOPUB, "Millennial interstitial launched overlay");
                 if (mAdapterListener != null) {
                     mAdapterListener.onNativeInterstitialExpired(MillennialInterstitialAdapter.this);
                 }
@@ -202,11 +202,11 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
                 
                 if (mAdapterListener != null) {
                 	if (mMillennialAdView.check()) {
-                		Log.d("MoPub", "Millennial interstitial caching completed.");
+                		Log.d(AdView.MOPUB, "Millennial interstitial caching completed.");
                 		mAdapterListener.onNativeInterstitialLoaded(MillennialInterstitialAdapter.this);
                 	}
                 	else {
-                		Log.d("MoPub", "Millennial interstitial caching failed. Trying another.");
+                		Log.d(AdView.MOPUB, "Millennial interstitial caching failed. Trying another.");
                         mAdapterListener.onNativeInterstitialFailed(MillennialInterstitialAdapter.this);
                 	}
                 }
@@ -217,6 +217,6 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdRequestIsCaching(MMAdView adview) {
         // Nothing needs to happen.
-        Log.d("MoPub", "Millennial interstitial is caching.");
+        Log.d(AdView.MOPUB, "Millennial interstitial is caching.");
     }
 }

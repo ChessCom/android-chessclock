@@ -62,7 +62,7 @@ public abstract class BaseInterstitialAdapter {
                     (BaseInterstitialAdapter) constructor.newInstance();
             return nativeAdapter;
         } catch (Exception e) {
-            Log.d("MoPub", "Couldn't create native interstitial adapter for type: " + type);
+            Log.d(AdView.MOPUB, "Couldn't create native interstitial adapter for type: " + type);
             return null;
         }
     }
@@ -74,7 +74,7 @@ public abstract class BaseInterstitialAdapter {
     private static Class<?> classForAdapterType(String type) {
         String className = classStringForAdapterType(type);
         if (className == null) {
-            Log.d("MoPub", "Couldn't find a handler for this ad type: " + type + "."
+            Log.d(AdView.MOPUB, "Couldn't find a handler for this ad type: " + type + "."
             + " MoPub for Android does not support it at this time.");
             return null;
         }
@@ -82,7 +82,7 @@ public abstract class BaseInterstitialAdapter {
         try {
             return (Class<?>) Class.forName(className);
         } catch (ClassNotFoundException e) {
-            Log.d("MoPub", "Couldn't find " + className + "class."
+            Log.d(AdView.MOPUB, "Couldn't find " + className + "class."
             + " Make sure the project includes the adapter library for " + className
             + " from the extras folder");
             return null;

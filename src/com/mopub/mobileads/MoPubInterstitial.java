@@ -32,18 +32,17 @@
 
 package com.mopub.mobileads;
 
-import java.util.HashMap;
-
-import com.mopub.mobileads.BaseInterstitialAdapter.BaseInterstitialAdapterListener;
-import com.mopub.mobileads.MoPubView.LocationAwareness;
-import com.mopub.mobileads.MoPubView.OnAdFailedListener;
-import com.mopub.mobileads.MoPubView.OnAdLoadedListener;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
+import com.mopub.mobileads.BaseInterstitialAdapter.BaseInterstitialAdapterListener;
+import com.mopub.mobileads.MoPubView.LocationAwareness;
+import com.mopub.mobileads.MoPubView.OnAdFailedListener;
+import com.mopub.mobileads.MoPubView.OnAdLoadedListener;
+
+import java.util.HashMap;
 
 public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener {
     
@@ -273,7 +272,7 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
                 String interstitialType = type.equals("interstitial") ? 
                         paramsHash.get("X-Fulladtype") : "mraid";
                 
-                Log.i("MoPub", "Loading native adapter for interstitial type: " + interstitialType);
+                Log.i(AdView.MOPUB, "Loading native adapter for interstitial type: " + interstitialType);
                 mInterstitialAdapter =
                         BaseInterstitialAdapter.getAdapterForType(interstitialType);
                 
@@ -286,12 +285,12 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
                 }
             }
             
-            Log.i("MoPub", "Couldn't load native adapter. Trying next ad...");
+            Log.i(AdView.MOPUB, "Couldn't load native adapter. Trying next ad...");
             adapterListener.onNativeInterstitialFailed(null);
         }
         
         protected void trackImpression() {
-            Log.d("MoPub", "Tracking impression for interstitial.");
+            Log.d(AdView.MOPUB, "Tracking impression for interstitial.");
             if (mAdView != null) mAdView.trackImpression();
         }
     }

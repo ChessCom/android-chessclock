@@ -143,11 +143,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
     protected void setLocale(){
         String prevLang = getResources().getConfiguration().locale.getLanguage();
-		Log.d("TEST","prevLang = " + prevLang);
+//		Log.d("TEST","prevLang = " + prevLang);
         String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
         String setLocale = languageCodes[AppData.getLanguageCode(context)];
-		Log.d("TEST","setLocale = " + setLocale);
+//		Log.d("TEST","setLocale = " + setLocale);
 		if(!prevLang.equals(setLocale)) {
             Locale locale = new Locale(setLocale);
             Locale.setDefault(locale);

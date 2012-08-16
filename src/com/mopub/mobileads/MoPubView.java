@@ -120,7 +120,7 @@ public class MoPubView extends FrameLayout {
         // Here, we'll work around it by trying to create a file store and then just go inert
         // if it's not accessible.
         if (WebViewDatabase.getInstance(context) == null) {
-            Log.e("MoPub", "Disabling MoPub. Local cache file is inaccessible so MoPub will " +
+            Log.e(AdView.MOPUB, "Disabling MoPub. Local cache file is inaccessible so MoPub will " +
                     "fail if we try to create a WebView. Details of this Android bug found at:" +
                     "http://code.google.com/p/android/issues/detail?id=10789");
             return;
@@ -156,17 +156,17 @@ public class MoPubView extends FrameLayout {
                 Constructor<?> constructor = HTML5AdViewClass.getConstructor(parameterTypes);
                 mAdView = (AdView) constructor.newInstance(args);
             } catch (SecurityException e) {
-                Log.e("MoPub", "Could not load HTML5AdView.");
+                Log.e(AdView.MOPUB, "Could not load HTML5AdView.");
             } catch (NoSuchMethodException e) {
-                Log.e("MoPub", "Could not load HTML5AdView.");
+                Log.e(AdView.MOPUB, "Could not load HTML5AdView.");
             } catch (IllegalArgumentException e) {
-                Log.e("MoPub", "Could not load HTML5AdView.");
+                Log.e(AdView.MOPUB, "Could not load HTML5AdView.");
             } catch (InstantiationException e) {
-                Log.e("MoPub", "Could not load HTML5AdView.");
+                Log.e(AdView.MOPUB, "Could not load HTML5AdView.");
             } catch (IllegalAccessException e) {
-                Log.e("MoPub", "Could not load HTML5AdView.");
+                Log.e(AdView.MOPUB, "Could not load HTML5AdView.");
             } catch (InvocationTargetException e) {
-                Log.e("MoPub", "Could not load HTML5AdView.");
+                Log.e(AdView.MOPUB, "Could not load HTML5AdView.");
             }
 
             if (mAdView == null) mAdView = new AdView(context, this);
@@ -175,22 +175,22 @@ public class MoPubView extends FrameLayout {
 
     private void registerScreenStateBroadcastReceiver() {
         if (mAdView == null) {
-			Log.d("MoPub", "mAdView = null, intent receiver is not registered ");
+			Log.d(AdView.MOPUB, "mAdView = null, intent receiver is not registered ");
 			return;
 		}
         
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
         mContext.registerReceiver(mScreenStateReceiver, filter);
-		Log.d("MoPub", "registerScreenStateBroadcastReceiver ");
+		Log.d(AdView.MOPUB, "registerScreenStateBroadcastReceiver ");
     }
     
     private void unregisterScreenStateBroadcastReceiver() {
         try {
-			Log.d("MoPub", "unregisterScreenStateBroadcastReceiver ");
+			Log.d(AdView.MOPUB, "unregisterScreenStateBroadcastReceiver ");
             mContext.unregisterReceiver(mScreenStateReceiver);
         } catch (Exception IllegalArgumentException) {
-            Log.e("MoPub", "Failed to unregister screen state broadcast receiver (never registered).");
+            Log.e(AdView.MOPUB, "Failed to unregister screen state broadcast receiver (never registered).");
         }
     }
 
@@ -200,23 +200,23 @@ public class MoPubView extends FrameLayout {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                     if (mIsInForeground) {
-                        Log.d("MoPub", "Screen sleep with ad in foreground, disable refresh");
+                        Log.d(AdView.MOPUB, "Screen sleep with ad in foreground, disable refresh");
                         if (mAdView != null) {
                             mPreviousAutorefreshSetting = mAdView.getAutorefreshEnabled();
                             mAdView.setAutorefreshEnabled(false);
                         }
                     } else {
-                        Log.d("MoPub", "Screen sleep but ad in background; " + 
+                        Log.d(AdView.MOPUB, "Screen sleep but ad in background; " +
                                 "refresh should already be disabled");
                     }
                 } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                     if (mIsInForeground) {
-                        Log.d("MoPub", "Screen wake / ad in foreground, reset refresh");
+                        Log.d(AdView.MOPUB, "Screen wake / ad in foreground, reset refresh");
                         if (mAdView != null) {
                             mAdView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
                         }
                     } else {
-                        Log.d("MoPub", "Screen wake but ad in background; don't enable refresh");
+                        Log.d(AdView.MOPUB, "Screen wake but ad in background; don't enable refresh");
                     }
                 }
             }
@@ -255,12 +255,12 @@ public class MoPubView extends FrameLayout {
         mAdapter = BaseAdapter.getAdapterForType(type);
 
         if (mAdapter != null) {
-            Log.i("MoPub", "Loading native adapter for type: " + type);
+            Log.i(AdView.MOPUB, "Loading native adapter for type: " + type);
             String jsonParams = paramsHash.get("X-Nativeparams");
             mAdapter.init(this, jsonParams);
             mAdapter.loadAd();
         } else {
-            Log.i("MoPub", "Couldn't load native adapter. Trying next ad...");
+            Log.i(AdView.MOPUB, "Couldn't load native adapter. Trying next ad...");
             loadFailUrl();
         }
     }
@@ -279,7 +279,7 @@ public class MoPubView extends FrameLayout {
     }
     
     protected void trackNativeImpression() {
-        Log.d("MoPub", "Tracking impression for native adapter.");
+        Log.d(AdView.MOPUB, "Tracking impression for native adapter.");
         if (mAdView != null) mAdView.trackImpression();
     }
     
@@ -288,24 +288,24 @@ public class MoPubView extends FrameLayout {
         if (mAdView == null) return;
         
         if (visibility == VISIBLE) {
-            Log.d("MoPub", "Ad Unit ("+mAdView.getAdUnitId()+") going visible: enabling refresh");
+            Log.d(AdView.MOPUB, "Ad Unit ("+mAdView.getAdUnitId()+") going visible: enabling refresh");
             mIsInForeground = true;
             mAdView.setAutorefreshEnabled(true);
         }
         else {
-            Log.d("MoPub", "Ad Unit ("+mAdView.getAdUnitId()+") going invisible: disabling refresh");
+            Log.d(AdView.MOPUB, "Ad Unit ("+mAdView.getAdUnitId()+") going invisible: disabling refresh");
             mIsInForeground = false;
             mAdView.setAutorefreshEnabled(false);
         }
     }
 
     protected void adWillLoad(String url) {
-        Log.d("MoPub", "adWillLoad: " + url);
+        Log.d(AdView.MOPUB, "adWillLoad: " + url);
         if (mOnAdWillLoadListener != null) mOnAdWillLoadListener.OnAdWillLoad(this, url);
     }
 
     protected void adLoaded() {
-        Log.d("MoPub", "adLoaded");
+        Log.d(AdView.MOPUB, "adLoaded");
         if (mOnAdLoadedListener != null) mOnAdLoadedListener.OnAdLoaded(this);
     }
 
@@ -445,7 +445,7 @@ public class MoPubView extends FrameLayout {
     public boolean getAutorefreshEnabled() {
         if (mAdView != null) return mAdView.getAutorefreshEnabled();
         else {
-            Log.d("MoPub", "Can't get autorefresh status for destroyed MoPubView. " + 
+            Log.d(AdView.MOPUB, "Can't get autorefresh status for destroyed MoPubView. " +
                     "Returning false.");
             return false;
         }

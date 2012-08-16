@@ -39,15 +39,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import com.millennialmedia.android.MMAdView;
 import com.millennialmedia.android.MMAdView.MMAdListener;
 import com.millennialmedia.android.MMAdViewSDK;
-import com.mopub.mobileads.MoPubView;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.lang.ref.WeakReference;
 
@@ -99,8 +96,11 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
             mmAdType = MMAdView.BANNER_AD_RECTANGLE;
             widthString = Integer.toString(adWidth);
             heightString = Integer.toString(adHeight);
-        }
-        
+//		} else if (adWidth == 728 && adHeight == 90) { // TODO merge changes to 1.7 version
+//			mmAdType = MMAdView.BANNER_AD_TOP;
+//			widthString = Integer.toString(adWidth);
+//			heightString = Integer.toString(adHeight);
+		}
         Activity activity = mActivityReference.get();
         mMillennialAdView = new MMAdView(activity, pubId, mmAdType, MMAdView.REFRESH_INTERVAL_OFF);
         mMillennialAdView.setId(MMAdViewSDK.DEFAULT_VIEWID);
@@ -115,7 +115,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
 
         mHasAlreadyRegisteredImpression = false;
         
-        Log.d("MoPub", "Loading Millennial ad...");
+        Log.d(AdView.MOPUB, "Loading Millennial ad...");
         mMillennialAdView.callForAd();
     }
 
@@ -144,7 +144,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial failed. Trying another");
+                Log.d(AdView.MOPUB, "Millennial failed. Trying another");
                 mMoPubView.loadFailUrl();
             }
         });   
@@ -181,7 +181,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial clicked");
+                Log.d(AdView.MOPUB, "Millennial clicked");
                 mMoPubView.registerClick();
             }
         }); 
@@ -193,7 +193,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
             public void run() {
                 if (isInvalidated()) return;
                 
-                Log.d("MoPub", "Millennial clicked");
+                Log.d(AdView.MOPUB, "Millennial clicked");
                 mMoPubView.registerClick();
             }
         });

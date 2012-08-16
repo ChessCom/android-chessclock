@@ -38,6 +38,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -50,9 +51,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -66,7 +67,8 @@ import java.util.HashMap;
  * the last completed task to prevent out-of-order execution.
  */
 public class AdFetcher {
-    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
+//    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 10000;
+    private static final int HTTP_CLIENT_TIMEOUT_MILLISECONDS = 3000; // reduce timeout to prevent blocking
 
     private AdView mAdView;
     private AdFetchTask mCurrentTask;
@@ -83,7 +85,7 @@ public class AdFetcher {
 
     public void fetchAdForUrl(String url) {
         mCurrentTaskId++;
-        Log.i("MoPub", "Fetching ad for task #" + mCurrentTaskId);
+        Log.i(AdView.MOPUB, "Fetching ad for task #" + mCurrentTaskId);
         Log.i("TEST", "Fetching ad for task #" + mCurrentTaskId);
 
         if (mCurrentTask != null) {
@@ -118,7 +120,7 @@ public class AdFetcher {
 
     public void cancelFetch() {
         if (mCurrentTask != null) {
-            Log.i("MoPub", "Canceling fetch ad for task #" + mCurrentTaskId);
+            Log.i(AdView.MOPUB, "Canceling fetch ad for task #" + mCurrentTaskId);
             mCurrentTask.cancel(true);
         }
     }
@@ -154,15 +156,17 @@ public class AdFetcher {
 		@Override
         protected AdFetchResult doInBackground(String... urls) {
             AdFetchResult result = null;
-            try {
-                result = fetch(urls[0]);
-            } catch (Exception exception) {
-                mException = exception;
-            }
+			try {
+				result = fetch(urls[0]);
+			} catch (IOException e) {
+				e.printStackTrace();
+				Log.e(AdView.MOPUB, " Fail to load ad with -> " + e.toString());
+				mException = e;
+			}
             return result;
         }
 
-        private AdFetchResult fetch(String url) throws Exception {
+        private AdFetchResult fetch(String url) throws IOException /*throws Exception*/ {
             HttpGet httpget = new HttpGet(url);
             httpget.addHeader("User-Agent", mAdFetcher.mUserAgent);
 
@@ -173,7 +177,7 @@ public class AdFetcher {
             }
 
             if (mAdView == null || mAdView.isDestroyed()) {
-                Log.d("MoPub", "Error loading ad: AdView has already been GCed or destroyed.");
+                Log.d(AdView.MOPUB, "Error loading ad: AdView has already been GCed or destroyed.");
                 return null;
             }
 
@@ -181,7 +185,7 @@ public class AdFetcher {
             HttpEntity entity = response.getEntity();
 
             if (entity == null || response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                Log.d("MoPub", "MoPub server returned invalid response.");
+                Log.d(AdView.MOPUB, "MoPub server returned invalid response.");
                 return null;
             }
 
@@ -190,29 +194,29 @@ public class AdFetcher {
             // Ensure that the ad type header is valid and not "clear".
             Header atHeader = response.getFirstHeader("X-Adtype");
             if (atHeader == null || atHeader.getValue().equals("clear")) {
-                Log.d("MoPub", "MoPub server returned no ad.");
+                Log.d(AdView.MOPUB, "MoPub server returned no ad.");
                 return null;
             }
 
             if (atHeader.getValue().equals("custom")) {
                 // Handle custom native ad type.
-                Log.i("MoPub", "Performing custom event.");
+                Log.i(AdView.MOPUB, "Performing custom event.");
                 Header cmHeader = response.getFirstHeader("X-Customselector");
                 return new PerformCustomEventTaskResult(mAdView, cmHeader);
 
             } else if (atHeader.getValue().equals("mraid")) {
                 // Handle mraid ad type.
-                Log.i("MoPub", "Loading mraid ad");
+                Log.i(AdView.MOPUB, "Loading mraid ad");
                 HashMap<String, String> paramsHash = new HashMap<String, String>();
                 paramsHash.put("X-Adtype", atHeader.getValue());
 
-                String data = httpEntityToString(entity);
+                String data = EntityUtils.toString(entity);
                 paramsHash.put("X-Nativeparams", data);
                 return new LoadNativeAdTaskResult(mAdView, paramsHash);
 
             } else if (!atHeader.getValue().equals("html")) {
                 // Handle native SDK ad type.
-                Log.i("MoPub", "Loading native ad");
+                Log.i(AdView.MOPUB, "Loading native ad");
 
                 HashMap<String, String> paramsHash = new HashMap<String, String>();
                 paramsHash.put("X-Adtype", atHeader.getValue());
@@ -232,14 +236,14 @@ public class AdFetcher {
             }
 
             // Handle HTML ad.
-            String data = httpEntityToString(entity);
+            String data = EntityUtils.toString(entity);
             return new LoadHtmlAdTaskResult(mAdView, data);
         }
 
         @Override
         protected void onPostExecute(AdFetchResult result) {
             if (!isMostCurrentTask()) {
-                Log.d("MoPub", "Ad response is stale.");
+                Log.d(AdView.MOPUB, "Ad response is stale.");
                 releaseResources();
                 return;
             }
@@ -256,7 +260,7 @@ public class AdFetcher {
 
             if (result == null) {
                 if (mException != null) {
-                    Log.d("MoPub", "Exception caught while loading ad: " + mException);
+                    Log.d(AdView.MOPUB, "Exception caught while loading ad: " + mException);
                 }
                 mAdView.loadFailUrl();
             } else {
@@ -266,41 +270,61 @@ public class AdFetcher {
 
             mAdFetcher.markTaskCompleted(mTaskId);
             releaseResources();
+			DataHolder.getInstance().setAdsLoading(false); // TODO verify
         }
 
-        @Override
+		@Override
+		protected void onCancelled(AdFetchResult adFetchResult) {
+			super.onCancelled(adFetchResult);
+			if (!isMostCurrentTask()) {
+				Log.d(AdView.MOPUB, "Ad response is stale.");
+				releaseResources();
+				return;
+			}
+
+			Log.d(AdView.MOPUB, "Ad loading was cancelled.");
+			if (mException != null) {
+				Log.d(AdView.MOPUB, "Exception caught while loading ad: " + mException);
+			}
+			mAdFetcher.markTaskCompleted(mTaskId);
+			releaseResources();
+			DataHolder.getInstance().setAdsLoading(false);
+		}
+
+		@Override
         protected void onCancelled() {
             if (!isMostCurrentTask()) {
-                Log.d("MoPub", "Ad response is stale.");
+                Log.d(AdView.MOPUB, "Ad response is stale.");
                 releaseResources();
                 return;
             }
 
-            Log.d("MoPub", "Ad loading was cancelled.");
+            Log.d(AdView.MOPUB, "Ad loading was cancelled.");
             if (mException != null) {
-                Log.d("MoPub", "Exception caught while loading ad: " + mException);
+                Log.d(AdView.MOPUB, "Exception caught while loading ad: " + mException);
             }
             mAdFetcher.markTaskCompleted(mTaskId);
             releaseResources();
+			DataHolder.getInstance().setAdsLoading(false);
         }
 
-        private String httpEntityToString(HttpEntity entity)
-                throws IOException {
-
-            InputStream inputStream = entity.getContent();
-            int numberBytesRead = 0;
-            StringBuffer out = new StringBuffer();
-            byte[] bytes = new byte[4096];
-
-            while (numberBytesRead != -1) {
-                out.append(new String(bytes, 0, numberBytesRead));
-                numberBytesRead = inputStream.read(bytes);
-            }
-
-            inputStream.close();
-
-            return out.toString();
-        }
+//        private String httpEntityToString(HttpEntity entity)
+//                throws IOException {
+//
+//            InputStream inputStream = entity.getContent();
+//            int numberBytesRead = 0;
+//            StringBuffer out = new StringBuffer();
+//            byte[] bytes = new byte[4096];
+//
+//            while (numberBytesRead != -1) {
+//                out.append(new String(bytes, 0, numberBytesRead));
+//                numberBytesRead = inputStream.read(bytes);
+//            }
+//
+//            inputStream.close();
+//
+//            return out.toString();
+//        }
 
         private void releaseResources() {
             mAdFetcher = null;
@@ -379,13 +403,13 @@ public class AdFetcher {
             MoPubView mpv = adView.mMoPubView;
 
             if (mHeader == null) {
-                Log.i("MoPub", "Couldn't call custom method because the server did not specify one.");
+                Log.i(AdView.MOPUB, "Couldn't call custom method because the server did not specify one.");
                 mpv.adFailed();
                 return;
             }
 
             String methodName = mHeader.getValue();
-            Log.i("MoPub", "Trying to call method named " + methodName);
+            Log.i(AdView.MOPUB, "Trying to call method named " + methodName);
 
             Class<? extends Activity> c;
             Method method;
@@ -395,11 +419,11 @@ public class AdFetcher {
                 method = c.getMethod(methodName, MoPubView.class);
                 method.invoke(userActivity, mpv);
             } catch (NoSuchMethodException e) {
-                Log.d("MoPub", "Couldn't perform custom method named " + methodName +
+                Log.d(AdView.MOPUB, "Couldn't perform custom method named " + methodName +
                         "(MoPubView view) because your activity class has no such method");
                 return;
             } catch (Exception e) {
-                Log.d("MoPub", "Couldn't perform custom method named " + methodName);
+                Log.d(AdView.MOPUB, "Couldn't perform custom method named " + methodName);
                 return;
             }
         }

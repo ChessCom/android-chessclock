@@ -21,6 +21,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import com.mopub.mobileads.AdView;
 import com.mopub.mobileads.MoPubInterstitial;
 
 /**
@@ -80,9 +81,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	protected void onResume() {
 		super.onResume();
 
-		if (MopubHelper.isShowAds(this)) {
-			showFullScreenAd();
-		}
+		showFullScreenAd();
 
 		adjustActionBar();
 	}
@@ -232,8 +231,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 
 	private void showFullScreenAd() {
-		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false)
-				&& MopubHelper.isShowAds(this)) {
+		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && MopubHelper.isShowAds(this)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
 			// TODO: add support for tablet ad units
@@ -283,18 +281,18 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	public void OnInterstitialLoaded() {
 		if (moPubInterstitial.isReady()) {
-			Log.d("HOME", "mopub interstitial ad listener: loaded and ready");
+			Log.d(AdView.MOPUB, "interstitial ad listener: loaded and ready");
 			moPubInterstitial.show();
 
 			preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
 			preferencesEditor.commit();
 		}
 		else {
-			Log.d("HOME", "mopub interstitial ad listener: loaded, but not ready");
+			Log.d(AdView.MOPUB, "interstitial ad listener: loaded, but not ready");
 		}
 	}
 
 	public void OnInterstitialFailed() {
-		Log.d("HOME", "mopub interstitial ad listener: failed");
+		Log.d(AdView.MOPUB, "interstitial ad listener: failed");
 	}
 }

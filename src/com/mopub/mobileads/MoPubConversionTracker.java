@@ -64,7 +64,7 @@ public class MoPubConversionTracker {
         if (settings.getBoolean(mPackageName+" tracked", false) == false) {
             new Thread(mTrackOpen).start();
         } else {
-            Log.d("MoPub", "Conversion already tracked");
+            Log.d(AdView.MOPUB, "Conversion already tracked");
         }
     }
 
@@ -77,7 +77,7 @@ public class MoPubConversionTracker {
             String udidDigest = (udid == null) ? StaticData.SYMBOL_EMPTY : Utils.sha1(udid);
             sz.append("&udid=sha:" + udidDigest);
             String url = sz.toString();
-            Log.d("MoPub", "Conversion track: " + url);
+            Log.d(AdView.MOPUB, "Conversion track: " + url);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
@@ -85,31 +85,31 @@ public class MoPubConversionTracker {
                 HttpGet httpget = new HttpGet(url);
                 response = httpclient.execute(httpget);
             } catch (IllegalArgumentException e) {
-                Log.d("MoPub", "Conversion track failed (IllegalArgumentException): "+url);
+                Log.d(AdView.MOPUB, "Conversion track failed (IllegalArgumentException): "+url);
                 return;
             } catch (ClientProtocolException e) {
                 // Just fail silently. We'll try the next time the app opens
-                Log.d("MoPub", "Conversion track failed: ClientProtocolException (no signal?)");
+                Log.d(AdView.MOPUB, "Conversion track failed: ClientProtocolException (no signal?)");
                 return;
             } catch (IOException e) {
                 // Just fail silently. We'll try the next time the app opens
-                Log.d("MoPub", "Conversion track failed: IOException (no signal?)");
+                Log.d(AdView.MOPUB, "Conversion track failed: IOException (no signal?)");
                 return;
             }
 
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                Log.d("MoPub", "Conversion track failed: Status code != 200");
+                Log.d(AdView.MOPUB, "Conversion track failed: Status code != 200");
                 return;
             }
 
             HttpEntity entity = response.getEntity();
             if (entity == null || entity.getContentLength() == 0) {
-                Log.d("MoPub", "Conversion track failed: Response was empty");
+                Log.d(AdView.MOPUB, "Conversion track failed: Response was empty");
                 return;
             }
 
             // If we made it here, the request has been tracked
-            Log.d("MoPub", "Conversion track successful");
+            Log.d(AdView.MOPUB, "Conversion track successful");
             SharedPreferences.Editor editor
             = mContext.getSharedPreferences("mopubSettings", 0).edit();
             editor.putBoolean(mPackageName+" tracked", true).commit();

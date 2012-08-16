@@ -84,6 +84,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		init();
 		widgetsInit();
+		Log.d("TEST","onCreate");
 	}
 
 	public void init() {
@@ -150,6 +151,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (firstRun) {
 			firstRun = false;
 
+			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
 			if (AppData.haveSavedTacticGame(this)) {
 				String tacticString = preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 				String tacticResultString = preferences.getString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
@@ -172,6 +174,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			}
 		}
+		Log.d("TEST", "getTacticItem() = " + getTacticItem());
 
 		// TODO show register confirmation dialog
 		if (getBoardFace().isTacticCanceled()) {
@@ -428,6 +431,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void updateData(String returnedObj) {
+			Log.d("TEST", "Load over");
+			blockScreenRotation(false);
+
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				String[] tmp = returnedObj.trim().split("[|]");
 				if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
@@ -465,6 +471,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void errorHandle(Integer resultCode) {
 			handleErrorRequest();
+			blockScreenRotation(false);
 		}
 	}
 
@@ -898,7 +905,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
 
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
-
+			Log.d("TEST", "load started") ;
+			blockScreenRotation(true);
 		}
 	}
 
