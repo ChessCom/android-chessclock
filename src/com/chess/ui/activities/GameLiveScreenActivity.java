@@ -26,6 +26,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardLiveView;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
 /**
@@ -48,7 +49,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private View submitButtonsLay;
 	private GameLiveItem currentGame;
-//	private Long gameId;
 	private ChessBoardLiveView boardView;
 	private int whitePlayerNewRating;
 	private int blackPlayerNewRating;
@@ -93,7 +93,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (getLccHolder().getPendingWarnings().size() > 0) {
 			// get last warning
 			warningMessage = getLccHolder().getLastWarningMessage();
-//			getLccHolder().getPendingWarnings().remove(warningMessage);
 
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
@@ -107,15 +106,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return false;
 		}
 
-//		gameId = extras.getLong(BaseGameItem.GAME_ID);
-//		Log.d("TEST","gameId from extras = " + gameId);
-//		currentGame = getLccHolder().getGameItem(gameId);
 		currentGame = getLccHolder().getGameItem();
 
 		getLccHolder().setLccEventListener(this);
 		getLccHolder().setLccChatMessageListener(this);
 
-//		int resignOrAbort = getLccHolder().getResignTitle(gameId);
 		int resignOrAbort = getLccHolder().getResignTitle();
 
 		menuOptionsItems = new CharSequence[]{
@@ -735,7 +730,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
 
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

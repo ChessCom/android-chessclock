@@ -190,6 +190,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 		@Override
 		public void updateData(String returnedObj) {
+//			if(isPaused)
+//				return;
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				if (returnedObj.length() > 0) {
@@ -347,8 +349,4 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		return false;
 	}
 
-	@Override
-	public void onBackPressed() {
-		finish();
-	}
 }
