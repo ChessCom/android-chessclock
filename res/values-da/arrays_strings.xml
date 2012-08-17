@@ -23,6 +23,14 @@
 		<item>Tyrkisk</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Dronning</item>
+		<item>Råge</item>
+		<item>Biskop</item>
+		<item>Knight</item>
+		<item>@string/cancel</item>
+	</string-array>
+
 	<string-array name="playas">
 		<item>Tilfældig</item>
 		<item>Hvid</item>

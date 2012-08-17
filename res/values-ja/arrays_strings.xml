@@ -23,6 +23,15 @@
 		<item>トルコ語</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>女王</item>
+		<item>ルーク</item>
+		<item>ビショップ</item>
+		<item>ナイト</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>ランダム</item>
 		<item>白</item>

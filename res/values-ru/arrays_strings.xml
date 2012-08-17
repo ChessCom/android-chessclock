@@ -23,6 +23,15 @@
 		<item>Турецский</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Королева</item>
+		<item>Ладья</item>
+		<item>Слон</item>
+		<item>Рыцарь</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>Случайный</item>
 		<item>Белый</item>

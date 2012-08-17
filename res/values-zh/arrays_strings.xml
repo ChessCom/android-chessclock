@@ -22,6 +22,15 @@
 		<item>土耳其风味</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>女王</item>
+		<item>车</item>
+		<item>主教</item>
+		<item>骑士</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 
 	<string-array name="playas">
 		<item>随机</item>

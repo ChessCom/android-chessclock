@@ -23,6 +23,15 @@
 		<item>"תורכית"</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>מלכה</item>
+		<item>צריח</item>
+		<item>בישוף</item>
+		<item>אביר</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>"אקראי"</item>
 		<item>"לבן"</item>

@@ -47,6 +47,15 @@
 		<item>Turkish</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Queen</item>
+		<item>Rook</item>
+		<item>Bishop</item>
+		<item>Knight</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 
 	<string-array name="playas">
 		<item>Random</item>

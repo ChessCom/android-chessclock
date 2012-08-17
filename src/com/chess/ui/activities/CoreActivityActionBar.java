@@ -253,18 +253,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-
-
-	private void checkUserTokenAndStartActivity() { // TODO decide where to use
-		if (!AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
-			Intent intent = new Intent(this, HomeScreenActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			startActivity(intent);
-		} else {
-			startActivity(new Intent(this, LoginScreenActivity.class));
-		}
-	}
-
 	// ---------- LiveChessClientEventListenerFace ----------------
 	@Override
 	public void onConnecting() {

@@ -23,6 +23,15 @@
 		<item>तुर्की</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>रानी</item>
+		<item>कौआ</item>
+		<item>बिशप</item>
+		<item>शूरवीर</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>रैंडम</item>
 		<item>सफेद</item>

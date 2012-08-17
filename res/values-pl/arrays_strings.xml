@@ -23,6 +23,15 @@
 		<item>Turecki</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Królowa</item>
+		<item>Gawron</item>
+		<item>Biskup</item>
+		<item>Rycerz</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>Losowo</item>
 		<item>Biały</item>

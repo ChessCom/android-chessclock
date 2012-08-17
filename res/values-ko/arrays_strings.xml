@@ -23,6 +23,15 @@
 		<item>터키어</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>여왕</item>
+		<item>떼까마귀</item>
+		<item>주교</item>
+		<item>기사</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>무작위</item>
 		<item>백색</item>

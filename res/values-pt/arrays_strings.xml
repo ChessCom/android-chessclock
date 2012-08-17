@@ -23,6 +23,15 @@
 		<item>Turco</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Rainha</item>
+		<item>Torre</item>
+		<item>Bispo</item>
+		<item>Cavaleiro</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>Aleatório</item>
 		<item>Branco</item>

@@ -23,6 +23,15 @@
 		<item>Turks</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Koningin</item>
+		<item>Roek</item>
+		<item>Bisschop</item>
+		<item>Ridder</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>Willekeurig</item>
 		<item>Wit</item>

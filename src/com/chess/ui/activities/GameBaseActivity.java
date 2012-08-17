@@ -193,8 +193,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public void showChoosePieceDialog(final int col, final int row) {
 		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.choose_a_piece)) // TODO add strings
-				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+				.setTitle(getString(R.string.choose_a_piece)) // add localized strings
+//				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
+				.setItems(getResources().getStringArray(R.array.promotion_options),
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {

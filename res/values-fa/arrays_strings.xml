@@ -23,6 +23,14 @@
 		<item>ترکی</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>ملکه</item>
+		<item>کلاغ سیاه</item>
+		<item>اسقف</item>
+		<item>شوالیه</item>
+		<item>@string/cancel</item>
+	</string-array>
+
 	<string-array name="playas">
 		<item>تصادفی</item>
 		<item>سفید</item>

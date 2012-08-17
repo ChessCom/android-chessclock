@@ -23,6 +23,15 @@
 		<item>Türk</item>
 	</string-array>-->
 
+	<string-array name="promotion_options">
+		<item>Kraliçe</item>
+		<item>Kale</item>
+		<item>Piskopos</item>
+		<item>şövalye</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
 	<string-array name="playas">
 		<item>Rastgele</item>
 		<item>Beyaz</item>
