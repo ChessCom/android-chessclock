@@ -29,6 +29,7 @@ public class SplashActivity extends BaseFragmentActivity {
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
 			DataHolder.getInstance().setGuest(true);
+			finish();
 		} else { // validate token
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.VALIDATE_TOKEN);
@@ -51,7 +52,7 @@ public class SplashActivity extends BaseFragmentActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS)){
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				if (preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_NOTIFICATION, true)) {
 					AppUtils.startNotificationsUpdate(getContext());
 				}
@@ -59,7 +60,7 @@ public class SplashActivity extends BaseFragmentActivity {
 				startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
 				DataHolder.getInstance().setGuest(false);
 
-			}else{
+			} else {
 				startActivity(new Intent(getContext(), LoginScreenActivity.class));
 				DataHolder.getInstance().setGuest(true);
 				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
