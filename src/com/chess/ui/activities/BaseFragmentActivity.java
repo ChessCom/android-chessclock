@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -29,7 +31,6 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
-import com.bugsense.trace.BugSenseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		BugSenseHandler.setup(this, AppConstants.BUGSENSE_API_KEY);
+		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)){ // if not debuggable
+			BugSenseHandler.setup(this, AppConstants.BUGSENSE_API_KEY); // TODO check
+		}
 
 		context = this;
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
@@ -143,11 +146,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
     protected void setLocale(){
         String prevLang = getResources().getConfiguration().locale.getLanguage();
-//		Log.d("TEST","prevLang = " + prevLang);
+		Log.d("TEST","prevLang = " + prevLang);
         String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
         String setLocale = languageCodes[AppData.getLanguageCode(context)];
-//		Log.d("TEST","setLocale = " + setLocale);
+		Log.d("TEST","setLocale = " + setLocale);
 		if(!prevLang.equals(setLocale)) {
             Locale locale = new Locale(setLocale);
             Locale.setDefault(locale);

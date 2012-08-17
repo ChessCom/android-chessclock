@@ -29,7 +29,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.webkit.CookieSyncManager;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -158,8 +157,6 @@ public class Facebook {
      * @param activity
      *            The Android activity in which we want to display the
      *            authorization dialog.
-     * @param applicationId
-     *            The Facebook application identifier e.g. "350685531728"
      * @param permissions
      *            A list of permissions required for this application: e.g.
      *            "read_stream", "publish_stream", "offline_access", etc. see
@@ -320,8 +317,6 @@ public class Facebook {
      *
      * @param activity
      *            The Android Activity that will parent the auth dialog.
-     * @param applicationId
-     *            The Facebook application identifier.
      * @param permissions
      *            A list of permissions required for this application. If you do
      *            not require any permissions, pass an empty String array.
@@ -591,8 +586,16 @@ public class Facebook {
                 serviceListener.onError(new Error("Service connection error"));
             }
         }
-    };    
-    
+    }
+
+	public void logoutMe(Context context, AsyncFacebookRunner.RequestListener listener){
+		SessionEvents.onLogoutBegin();
+		AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(this);
+		asyncRunner.logout(context, listener);
+	}
+
+
+
     /**
      * Invalidate the current user session by removing the access token in
      * memory, clearing the browser cookie, and calling auth.expireSession
@@ -614,6 +617,7 @@ public class Facebook {
         Util.clearCookies(context);
         Bundle b = new Bundle();
         b.putString("method", "auth.expireSession");
+
         String response = request(b);
         setAccessToken(null);
         setAccessExpires(0);

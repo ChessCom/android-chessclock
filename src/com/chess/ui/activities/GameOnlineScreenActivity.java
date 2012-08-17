@@ -33,6 +33,7 @@ import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 
@@ -708,7 +709,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

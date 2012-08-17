@@ -19,6 +19,10 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.utilities.AppUtils;
+import com.facebook.android.BaseRequestListener;
+import com.facebook.android.Facebook;
+import com.facebook.android.SessionEvents;
+import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
@@ -214,6 +218,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 			DataHolder.getInstance().setGuest(true);
 
+			Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+			SessionStore.restore(facebook, this);
+			facebook.logoutMe(this, new LogoutRequestListener());
+
 			preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
@@ -389,6 +397,18 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			} else if(returnedObj.contains(RestHelper.R_ERROR)) {
 				showPopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
+		}
+	}
+
+	private class LogoutRequestListener extends BaseRequestListener {
+		public void onComplete(String response, final Object state) {
+			// callback should be run in the original thread,
+			// not the background thread
+			handler.post(new Runnable() {
+				public void run() {
+					SessionEvents.onLogoutFinish();
+				}
+			});
 		}
 	}
 }
