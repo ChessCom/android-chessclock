@@ -100,7 +100,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private boolean init() {
 		if(!getLccHolder().isConnected()){
-//			showSinglePopupDialog(R.string.network_was_changed_please_relogin);
 			Log.d("TEST", "!getLccHolder().isConnected() -> EXIT");
 			showToast(R.string.application_was_killed);
 			return false;
@@ -371,7 +370,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onGameEnd(final String gameEndMessage) {
-        final Game game = getLccHolder().getCurrentGame();
+        final Game game = getLccHolder().getLastGame();
         switch (game.getGameTimeConfig().getGameTimeClass()) {
             case BLITZ: {
                 whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
@@ -754,7 +753,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
-			getLccHolder().rematch(); // todo: or use LccHolder's current game
+			getLccHolder().rematch();
 			endPopupFragment.dismiss();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));

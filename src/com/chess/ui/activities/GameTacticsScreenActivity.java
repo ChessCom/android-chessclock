@@ -852,14 +852,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) { // TODO move to AsyncTask
+		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) {
 			loadNewTacticsBatch();
 		} else if (fragment.getTag().equals(TEN_TACTICS_TAG)) {
 			DataHolder.getInstance().setCurrentTacticProblem(0);
 			onBackPressed();
-//		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Next
-//			getNewTactic();
-
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			getTacticFromBatch();
 		}
@@ -869,7 +866,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (DataHolder.getInstance().isGuest()) {
 			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
-
+			// TODO move to AsyncTask
 //			InputStream inputStream = getResources().openRawResource(R.raw.tactics100batch);
 			InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
 			try {

@@ -214,7 +214,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		@Override
 		public void updateData(String returnedObj) {
 			if(returnedObj.contains(RestHelper.R_SUCCESS)){
-				FlurryAgent.onEvent("New Account Created", null);  // TODO
+				FlurryAgent.onEvent(FlurryData.NEW_ACCOUNT_CREATED);
 				String[] result = returnedObj.split(":");
 
 

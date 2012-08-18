@@ -27,8 +27,6 @@ import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * AppUtils class
@@ -105,9 +103,7 @@ public class AppUtils {
 		Notification notification = new Notification(R.drawable.ic_stat_chess, context.getString(R.string.you_got_new_msg), System.currentTimeMillis());
 //		notification.sound = Uri.parse(sound); // SettingsActivity.getAlarmRingtone(context);
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		if (SettingsActivity.vibrate4Alarm(context)) { // TODO
-//			notification.defaults = Notification.DEFAULT_VIBRATE;
-//		}
+
 		Intent openList = new Intent(context, clazz);
 		openList.putExtra(StaticData.CLEAR_CHAT_NOTIFICATION, true);
 		openList.putExtra(BaseGameItem.GAME_ID, id);

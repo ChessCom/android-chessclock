@@ -146,7 +146,9 @@ public class LccGameListener implements GameListener {
 
         /*lccHolder.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                                         lccHolder.getSeekListListener());*/
-        lccHolder.setCurrentGameId(null);
+		lccHolder.setLastGameId();
+		lccHolder.setCurrentGameId(null);
+
         List<Game.Result> gameResults = game.getGameResults();
         final Game.Result whitePlayerResult = gameResults.get(0);
         final Game.Result blackPlayerResult = gameResults.get(1);
@@ -204,9 +206,12 @@ public class LccGameListener implements GameListener {
 		lccHolder.getWhiteClock().setRunning(false);
 		lccHolder.getBlackClock().setRunning(false);
 
-		final String messageI18n = AppUtils.getI18nString(context, ((GameImpl)game).getCodeMessage());
-		if (messageI18n != null) {
-			message = messageI18n;
+		String abortedCodeMessage = ((GameImpl)game).getCodeMessage(); // used only for aborted games
+		if(abortedCodeMessage != null){
+			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage);
+			if (messageI18n != null) {
+				message = messageI18n;
+			}
 		}
 
         if (lccHolder.isActivityPausedMode()) {

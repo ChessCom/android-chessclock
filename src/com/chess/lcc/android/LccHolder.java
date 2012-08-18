@@ -66,6 +66,7 @@ public class LccHolder{
 	private boolean activityPausedMode = true;
 	private Integer latestMoveNumber;
 	private Long currentGameId;
+	private Long lastGameId;
 	private Context context;
 	private List<String> pendingWarnings;
 
@@ -348,6 +349,10 @@ public class LccHolder{
 
 	public Game getCurrentGame() {
 		return lccGames.get(currentGameId);
+	}
+
+	public Game getLastGame() {
+		return lccGames.get(lastGameId);
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -695,13 +700,13 @@ public class LccHolder{
 	}
 
 	public void rematch() {
-		final Game currentGame = getGame(currentGameId);
+		final Game lastGame = getLastGame();
 
-		final List<Game.Result> gameResults = currentGame.getGameResults();
+		final List<Game.Result> gameResults = lastGame.getGameResults();
 		final Game.Result whitePlayerResult = gameResults.get(0);
 		final Game.Result blackPlayerResult = gameResults.get(1);
-		final String whiteUsername = currentGame.getWhitePlayer().getUsername();
-		final String blackUsername = currentGame.getBlackPlayer().getUsername();
+		final String whiteUsername = lastGame.getWhitePlayer().getUsername();
+		final String blackUsername = lastGame.getBlackPlayer().getUsername();
 
 		final Game.Result result;
 		if (whitePlayerResult == Game.Result.WIN) {
@@ -730,9 +735,9 @@ public class LccHolder{
 		final Integer maxRating = null;
 		final Integer minMembershipLevel = null;
 		final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-				user, to, color, currentGame.isRated(), currentGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
+				user, to, color, lastGame.isRated(), lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
 
-		challenge.setRematchGameId(currentGameId);
+		challenge.setRematchGameId(lastGameId);
 		lccClient.sendChallenge(challenge, challengeListener);
 	}
 
@@ -820,7 +825,6 @@ public class LccHolder{
 		Log.d("TEST","processing full game, gameId = " + game.getId());
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		intent.putExtra(BaseGameItem.GAME_ID, game.getId());
 		context.startActivity(intent);
 	}
 
@@ -886,6 +890,10 @@ public class LccHolder{
 	}
 
 	public void updateClockTime(Game game) {
+	}
+
+	public void setLastGameId(){
+		lastGameId = currentGameId;
 	}
 
 	public void setCurrentGameId(Long gameId) {

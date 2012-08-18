@@ -333,7 +333,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
     public void lockBoard(boolean lock){
         locked = lock;
-        // TODO change overlay for board
         gamePanelView.lock(lock);
         setEnabled(!lock);
     }
