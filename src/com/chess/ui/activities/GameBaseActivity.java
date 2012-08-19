@@ -160,12 +160,22 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 			showToast(R.string.checkmate);
 		} else {
 			showGameEndPopup(endGamePopupView, endGameMessage);
+			setBoardToFinishedState();
 		}
 	}
 
 	protected void showGameEndPopup(final View layout, final String message){
 	}
 
+	protected void setBoardToFinishedState(){
+		showSubmitButtonsLay(false);
+		boardView.switchAnalysis();
+		gamePanelView.enableAnalysisMode(true);
+
+		boardView.setFinished(true);
+		gamePanelView.showBottomPart(false);
+		getSoundPlayer().playGameEnd();
+	}
 
 
 	@Override

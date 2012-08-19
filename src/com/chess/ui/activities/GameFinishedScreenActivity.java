@@ -100,6 +100,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		getBoardFace().setMode(AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
 		updateGameState();
+		setBoardToFinishedState();
 	}
 
 	private void updateGameState() {
@@ -153,7 +154,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 			moves = currentGame.getMoveList()
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", " ").substring(beginIndex).split(" ");
+					.replaceAll("  ", StaticData.SYMBOL_SPACE).substring(beginIndex)
+					.split(StaticData.SYMBOL_SPACE);
 
 			getBoardFace().setMovesCount(moves.length);
 		} else {
@@ -237,8 +239,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					if (currentGame.getGameId() != gameId) {
 						boardView.setBoardFace(new ChessBoard(GameFinishedScreenActivity.this));
 						getBoardFace().setAnalysis(false);
-//						getBoardFace().setMode(AppConstants.GAME_MODE_LIVE_OR_ECHESS);
-
 						getOnlineGame(currentGame.getGameId()); // if next game
 						return;
 					}

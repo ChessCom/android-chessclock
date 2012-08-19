@@ -401,16 +401,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
 	}
 
-
-
-	@Override
-	public void switchAnalysis() {
-		boolean isAnalysis = getBoardFace().toggleAnalysis();
-
-		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, isAnalysis);
-		gameActivityFace.switch2Analysis(isAnalysis); //  update(GameBaseActivity.CALLBACK_REPAINT_UI);
-	}
-
 	@Override
 	public void switchChat() {
 		gameActivityFace.switch2Chat();

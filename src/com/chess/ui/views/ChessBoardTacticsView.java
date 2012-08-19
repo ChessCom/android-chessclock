@@ -390,14 +390,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
     }
 
     @Override
-    public void switchAnalysis() {
-        boolean isAnalysis = getBoardFace().toggleAnalysis();
-
-        gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, isAnalysis);
-        gameActivityFace.switch2Analysis(isAnalysis); //  update(GameBaseActivity.CALLBACK_REPAINT_UI);
-    }
-
-    @Override
     public void switchChat() {
     }
 

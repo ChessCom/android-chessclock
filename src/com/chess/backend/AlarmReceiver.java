@@ -55,9 +55,15 @@ public class AlarmReceiver extends BroadcastReceiver {
 						haveMoves++;
 					}
 				} else {
+					for (GameListCurrentItem currentItem : itemList) {
+						AppUtils.cancelNotification(getMeContext(), (int) currentItem.getGameId());
+					}
+
 					AppUtils.showMoveStatusNotification(getMeContext(),
 							getMeContext().getString(R.string.your_turn),
-							getMeContext().getString(R.string.your_move), 0, OnlineScreenActivity.class);
+							getMeContext().getString(R.string.your_move) + StaticData.SYMBOL_SPACE
+									+ StaticData.SYMBOL_LEFT_PAR + itemList.size() + StaticData.SYMBOL_RIGHT_PAR,
+							0, OnlineScreenActivity.class);
 					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 				}
 

@@ -136,6 +136,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
         addView(controlsLayout);
 
+		// disable by default fwd and back buttons
+		enableGameButton(B_FORWARD_ID, false);
+		enableGameButton(B_BACK_ID, false);
+
         // create textViews for timers
         bottomPlayerLabel = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
         bottomPlayerLabel.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
@@ -273,6 +277,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         controlsLayout.addView(createControlButton(buttonId, backId));
     }
 
+	public void addControlButton(int position, int buttonId, int backId) {
+		controlsLayout.addView(createControlButton(buttonId, backId), position);
+	}
+
     private View createControlButton(int buttonId, int backId) {
         ImageButton imageButton = new ImageButton(getContext());
         imageButton.setImageResource(buttonsDrawableIds[buttonId]);
@@ -288,9 +296,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         return imageButton;
     }
 
-    public void addControlButton(int position, int buttonId, int backId) {
-        controlsLayout.addView(createControlButton(buttonId, backId), position);
-    }
+
 
     public void toggleControlButton(int buttonId, boolean checked) {
         if (checked) {
@@ -524,6 +530,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
             boardViewFace.flipBoard();
         } else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
             boardViewFace.switchAnalysis();
+			enableGameButton(B_FORWARD_ID, boardViewFace.isInAnalysis());
+			enableGameButton(B_BACK_ID, boardViewFace.isInAnalysis());
         } else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
             boardViewFace.switchChat();
         } else if (view.getId() == BUTTON_PREFIX + B_BACK_ID) {
@@ -581,13 +589,15 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
         hideChatButton();
         addControlButton(1, GamePanelView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
+		enableGameButton(B_FORWARD_ID, true);
+		enableGameButton(B_BACK_ID, true);
     }
 
 	public void enableAnalysisMode(boolean enable) {
 		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
-		enableGameButton(B_CHAT_ID, !enable);
+//		enableGameButton(B_CHAT_ID, !enable);
 	}
 
     public void lock(boolean lock) {

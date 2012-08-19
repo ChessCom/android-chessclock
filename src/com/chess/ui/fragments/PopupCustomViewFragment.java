@@ -64,6 +64,7 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		customView.removeAllViews(); // still haveIllegal exception  after echess game finished
 		customView.addView(popupItem.getCustomView());
 
 		leftBtn.setText(popupItem.getPositiveBtnId());

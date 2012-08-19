@@ -155,7 +155,6 @@ public class LccHolder{
 		}*/
     }
 
-//	public GameLiveItem getGameItem(Long gameId) {
 	public GameLiveItem getGameItem() {
 		Log.d("TEST","gameId = " +currentGameId);
 		Game game = getGame(currentGameId);
@@ -196,7 +195,6 @@ public class LccHolder{
 		if (game != null && game.getSeq() > 0) {
 			doReplayMoves(game);
 		}
-
 	}
 
 	public List<MessageItem> getMessagesList() {
@@ -828,9 +826,21 @@ public class LccHolder{
 		context.startActivity(intent);
 	}
 
+	public Integer getLatestMoveNumber() {
+		return latestMoveNumber;
+	}
+
+	public void setLatestMoveNumber(Integer latestMoveNumber) {
+		this.latestMoveNumber = latestMoveNumber;
+	}
+
 	public void doReplayMoves(Game game) {
 		Log.d(TAG, "GAME LISTENER: replay moves,  gameId " + game.getId());
 		final List<String> coordMoves = new ArrayList<String>(game.getMoves());
+		for (String coordMove : coordMoves) {
+			Log.d("TEST"," move to replay = " + coordMove);
+		}
+
 		User whitePlayer = game.getWhitePlayer();
 		User blackPlayer = game.getBlackPlayer();
 		User moveMaker;
@@ -842,10 +852,12 @@ public class LccHolder{
 
 	public void doMoveMade(final Game game, final User moveMaker, String move, int moveIndex) {
 		if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
-			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex + ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
+			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
+					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
 			return;
 		} else {
 			latestMoveNumber = moveIndex;
+			Log.d("TEST", "latestMoveNumber = " + latestMoveNumber);
 		}
 		if (isActivityPausedMode()) {
 			GameEvent moveEvent = new GameEvent();
@@ -923,6 +935,10 @@ public class LccHolder{
 			}
 		}
 		return null;
+	}
+
+	public boolean currentGameExist(){
+		return currentGameId != null && !getGame(currentGameId).isEnded();
 	}
 
 	public Boolean isFairPlayRestriction() {

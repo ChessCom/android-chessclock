@@ -110,10 +110,10 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 
 		showLoadingView(!getLccHolder().isConnected());
 
-		if (getLccHolder().getCurrentGameId() == null) {
-			currentGame.setVisibility(View.GONE);
-		} else {
+		if (getLccHolder().currentGameExist()) {
 			currentGame.setVisibility(View.VISIBLE);
+		} else {
+			currentGame.setVisibility(View.GONE);
 		}
 	}
 

@@ -23,7 +23,6 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 		return preferences.getBoolean(AppData.getUserName(getContext()) + sharedKey, false);
 	}
 
-
 	@Override
 	protected boolean isGameOver() {
 		if (!boardFace.isPossibleToMakeMoves()) {

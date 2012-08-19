@@ -40,10 +40,10 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 	protected void onResume() {
 		super.onResume();
 
-		if (getLccHolder().getCurrentGameId() == null) {
-			currentGameBtn.setVisibility(View.GONE);
-		} else {
+		if (getLccHolder().currentGameExist()) {
 			currentGameBtn.setVisibility(View.VISIBLE);
+		} else {
+			currentGameBtn.setVisibility(View.GONE);
 		}
 	}
 

@@ -147,7 +147,7 @@ public class LccGameListener implements GameListener {
         /*lccHolder.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                                         lccHolder.getSeekListListener());*/
 		lccHolder.setLastGameId();
-		lccHolder.setCurrentGameId(null);
+//		lccHolder.setCurrentGameId(null);
 
         List<Game.Result> gameResults = game.getGameResults();
         final Game.Result whitePlayerResult = gameResults.get(0);

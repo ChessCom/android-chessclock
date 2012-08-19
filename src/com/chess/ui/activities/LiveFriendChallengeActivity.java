@@ -40,8 +40,9 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 	private BonusTimeTextWatcher bonusTimeTextWatcher;
 	private BonusTimeValidator bonusTimeValidator;
     private TextView friendsTxt;
+	private Spinner iPlayAsSpnr;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -79,6 +80,9 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
         bonusTimeEdt.setValidator(bonusTimeValidator);
 		bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
 		bonusTimeEdt.setOnTouchListener(this);
+
+		iPlayAsSpnr = (Spinner) findViewById(R.id.iplayas);
+		iPlayAsSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
 
 		findViewById(R.id.createchallenge).setOnClickListener(this);
         friendsTxt = (TextView) findViewById(R.id.friendsTxt);
@@ -140,6 +144,9 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 	@Override
 	public void onFriendsStatusChanged() {
 		super.onFriendsStatusChanged();
+		if(isFinishing())
+			return;
+
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -167,11 +174,18 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		Integer minRating = null;
 		Integer maxRating = null;
 		Integer minMembershipLevel = null;
+		PieceColor pieceColor;
+		switch (iPlayAsSpnr.getSelectedItemPosition()){
+			case 1: pieceColor = PieceColor.WHITE; break;
+			case 2: pieceColor = PieceColor.BLACK; break;
+			default: pieceColor = PieceColor.UNDEFINED; break;
+		}
 
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 				getLccHolder().getUser(),
 				friendsSpinner.getSelectedItem().toString().trim(),
-				PieceColor.UNDEFINED, rated, gameTimeConfig,
+//				PieceColor.UNDEFINED, rated, gameTimeConfig,
+				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
 
 		FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED);

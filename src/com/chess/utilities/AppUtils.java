@@ -206,6 +206,11 @@ public class AppUtils {
 		notifyManager.cancel(R.id.notification_message);
 	}
 
+	public static void cancelNotification(Context context, int id){
+		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager.cancel(id);
+	}
+
 	public static boolean isNeedToUpgrade(Context context){
 		boolean liveMembershipLevel = false;
 		User user = LccHolder.getInstance(context).getUser();

@@ -191,8 +191,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		} else{
 			setWhitePlayerDot(userPlayWhite);
 		}
-
-
 	}
 
 	@Override
