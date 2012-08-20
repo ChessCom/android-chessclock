@@ -96,7 +96,11 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 		@Override
 		public void updateListData(List<VideoItem> itemsList) {
-			videosList = itemsList;
+			if(videosList == null){
+				videosList = itemsList;
+			}else{
+				videosList.addAll(itemsList);
+			}
 		}
 	}
 
@@ -116,15 +120,10 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			startActivity(AppData.getMembershipVideoIntent(this));
 		} else if(view.getId() == R.id.fullDescBtn){
 			int pos = (Integer) view.getTag(R.id.list_item_id);
-			VideoItem videoItem = videosList.get(pos);
+			VideoItem videoItem = (VideoItem) listView.getItemAtPosition(pos);
 
 			showSinglePopupDialog(videoItem.getTitle(), videoItem.getDescription());
 
-//			new AlertDialog.Builder(context)
-//					.setTitle()
-//					.setMessage(videoItem.getDescription())
-//					.setPositiveButton(context.getString(R.string.ok), null)
-//					.create().show();
 		} else if(view.getId() == R.id.playVideoBtn) {
 			int pos = (Integer) view.getTag(R.id.list_item_id);
 			VideoItem videoItem = videosList.get(pos);
@@ -133,9 +132,6 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			intent.setDataAndType(Uri.parse(videoItem.getViewUrl().trim()), "video/*");
 			startActivity(intent);
 		}
-
-
 	}
-
 
 }

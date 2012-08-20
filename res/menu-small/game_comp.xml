@@ -22,7 +22,7 @@
 		android:icon="@drawable/ic_action_settings"
 		android:showAsAction="always"
 		/>
-<!--
+
 	<item android:id="@+id/menu_newGame"
 		android:title="@string/new_game"
 		android:icon="@drawable/newgame"
@@ -46,6 +46,11 @@
 	<item android:id="@+id/menu_next"
 		android:title="@string/next"
 		android:icon="@drawable/next"
-		android:showAsAction="never" />-->
+		android:showAsAction="never" />
 
+<!--   <item android:id="@+id/menu_preferences"
+        android:title="@string/preferences"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="1"
+        android:showAsAction="never" />-->
 </menu>

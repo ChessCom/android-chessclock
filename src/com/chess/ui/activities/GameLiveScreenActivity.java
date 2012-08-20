@@ -633,10 +633,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	protected void changeChatIcon(Menu menu) {
+		MenuItem menuItem = menu.findItem(R.id.menu_chat);
+		if(menuItem == null)
+			return;
+
 		if (currentGame.hasNewMessage()) {
-			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
+			menuItem.setIcon(R.drawable.chat_nm);
 		} else {
-			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);
+			menuItem.setIcon(R.drawable.chat);
 		}
 	}
 

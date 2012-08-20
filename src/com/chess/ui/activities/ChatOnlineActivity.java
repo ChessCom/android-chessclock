@@ -31,7 +31,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	private int UPDATE_DELAY = 10000;
 
-	private EditText sendText;
+	private EditText sendEdt;
 	private ListView chatListView;
 	private MessagesAdapter messagesAdapter;
 	private ArrayList<MessageItem> chatItems;
@@ -64,7 +64,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	protected void widgetsInit(){
 
-		sendText = (EditText) findViewById(R.id.sendText);
+		sendEdt = (EditText) findViewById(R.id.sendEdt);
 		chatListView = (ListView) findViewById(R.id.chatLV);
 
 		progressBar = findViewById(R.id.progressBar);
@@ -76,6 +76,9 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		showKeyBoard(sendEdt);
+
 		updateList();
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
@@ -165,7 +168,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	private void sendMessage(){
 		String message = StaticData.SYMBOL_EMPTY;
 		try {
-			message = URLEncoder.encode(sendText.getText().toString(), HTTP.UTF_8);
+			message = URLEncoder.encode(sendEdt.getText().toString(), HTTP.UTF_8);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			Log.e("Chat", e.toString());
@@ -212,7 +215,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		} else {
 			messagesAdapter.setItemsList(chatItems);
 		}
-		sendText.setText(StaticData.SYMBOL_EMPTY);
+		sendEdt.setText(StaticData.SYMBOL_EMPTY);
 
 		chatListView.setSelection(chatItems.size() - 1);
 		updateList();

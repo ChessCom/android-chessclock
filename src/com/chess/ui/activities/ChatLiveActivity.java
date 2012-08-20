@@ -29,7 +29,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_screen);
 
-		sendEdt = (EditText) findViewById(R.id.sendText);
+		sendEdt = (EditText) findViewById(R.id.sendEdt);
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 
@@ -44,6 +44,8 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		showKeyBoard(sendEdt);
 		getLccHolder().setLccChatMessageListener(this);
 		updateList();
 	}

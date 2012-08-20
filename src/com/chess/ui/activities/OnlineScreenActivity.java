@@ -92,7 +92,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		findViewById(R.id.tournaments).setOnClickListener(this);
 		findViewById(R.id.statsBtn).setOnClickListener(this);
-//		findViewById(R.id.start).setOnClickListener(this);
 	}
 
 	private void init() {

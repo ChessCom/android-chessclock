@@ -15,29 +15,28 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
 	<item android:id="@+id/menu_settings"
 		android:title="@string/settings"
-		android:orderInCategory="0"
+		android:orderInCategory="3"
 		android:icon="@drawable/ic_action_settings"
 		android:showAsAction="always"
 		/>
-<!--
-	<item android:id="@+id/menu_newGame"
-		android:title="@string/new_game"
-		android:icon="@drawable/newgame"
+
+	<item android:id="@+id/menu_next_game"
+		android:title="@string/nextgame"
+		android:icon="@drawable/forward"
 		android:showAsAction="never" />
 	<item android:id="@+id/menu_options"
 		android:title="@string/options"
 		android:icon="@drawable/options"
 		android:showAsAction="never" />
-	<item android:id="@+id/menu_reside"
-		android:title="@string/reside"
-		android:icon="@drawable/reside"
+	<item android:id="@+id/menu_analysis"
+		android:title="@string/analysis"
+		android:icon="@drawable/analysis"
 		android:showAsAction="never" />
-	<item android:id="@+id/menu_hint"
-		android:title="@string/hint"
-		android:icon="@drawable/hint"
+	<item android:id="@+id/menu_chat"
+		android:title="@string/chat"
+		android:icon="@drawable/chat"
 		android:showAsAction="never" />
 	<item android:id="@+id/menu_previous"
 		android:title="@string/prev"
@@ -46,6 +45,5 @@
 	<item android:id="@+id/menu_next"
 		android:title="@string/next"
 		android:icon="@drawable/next"
-		android:showAsAction="never" />-->
-
+		android:showAsAction="never" />
 </menu>

@@ -21,7 +21,7 @@
 		android:icon="@drawable/ic_action_settings"
 		android:showAsAction="always"
 		/>
-
+<!--
 	<item android:id="@+id/menu_next_game"
 		android:title="@string/nextgame"
 		android:icon="@drawable/forward"
@@ -46,5 +46,5 @@
 	<item android:id="@+id/menu_next"
 		android:title="@string/next"
 		android:icon="@drawable/next"
-		android:showAsAction="never" />
+		android:showAsAction="never" />-->
 </menu>

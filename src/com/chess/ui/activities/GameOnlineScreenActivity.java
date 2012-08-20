@@ -135,6 +135,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		sendMoveUpdateListener = new SendMoveUpdateListener();
 		gamesListUpdateListener = new GamesListUpdateListener();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+
+		showActionRefresh = true;
+
 	}
 
 	@Override
@@ -549,6 +552,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_refresh:
+				updateGameState();
+				break;
 			case R.id.menu_next_game:
 				newGame();
 				break;
@@ -642,10 +648,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	protected void changeChatIcon(Menu menu) {
+		MenuItem menuItem = menu.findItem(R.id.menu_chat);
+		if(menuItem == null)
+			return;
+
 		if (currentGame.hasNewMessage()) {
-			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat_nm);
+			menuItem.setIcon(R.drawable.chat_nm);
 		} else {
-			menu.findItem(R.id.menu_chat).setIcon(R.drawable.chat);
+			menuItem.setIcon(R.drawable.chat);
 		}
 	}
 
