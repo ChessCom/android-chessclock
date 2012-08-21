@@ -1,5 +1,5 @@
 <resources>
-
+<!--
     <style name="button_blue" parent="Text">
         <item name="android:gravity">center</item>
         <item name="android:focusable">true</item>
@@ -41,7 +41,7 @@
     <style name="button_blue_mid" parent="toggle_button">
         <item name="android:background">@drawable/button_emboss_mid_selector</item>
 
-    </style>
+    </style>-->
 
 
 

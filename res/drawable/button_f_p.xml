@@ -58,10 +58,10 @@
                 android:radius="@dimen/rounded_button_radius"
                 />
             <padding
-                android:left="@dimen/rounded_button_padding"
-                android:right="@dimen/rounded_button_padding"
-                android:top="@dimen/rounded_button_padding"
-                android:bottom="@dimen/rounded_button_padding"
+                android:left="@dimen/rounded_button_padding_left"
+                android:right="@dimen/rounded_button_padding_right"
+                android:top="@dimen/rounded_button_padding_right"
+                android:bottom="@dimen/rounded_button_padding_bottom"
                 />
             <size android:height="@dimen/default_button_height"/>
         </shape>

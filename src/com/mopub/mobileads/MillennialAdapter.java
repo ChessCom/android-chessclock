@@ -96,7 +96,7 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
             mmAdType = MMAdView.BANNER_AD_RECTANGLE;
             widthString = Integer.toString(adWidth);
             heightString = Integer.toString(adHeight);
-//		} else if (adWidth == 728 && adHeight == 90) { // TODO merge changes to 1.7 version
+//		} else if (adWidth == 728 && adHeight == 90) {
 //			mmAdType = MMAdView.BANNER_AD_TOP;
 //			widthString = Integer.toString(adWidth);
 //			heightString = Integer.toString(adHeight);
