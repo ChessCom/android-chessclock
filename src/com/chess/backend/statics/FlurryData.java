@@ -21,4 +21,8 @@ public class FlurryData {
 	public static final String UPGRADE_FROM_VIDEOS = "upgrade From Videos";
 	public static final String NEW_ACCOUNT_CREATED = "New Account Created";
 	public static final String TACTICS_SESSION_STARTED_FOR_REGISTERED = "Tactics Session Started For Registered";
+	public static final String MATOMY_AD_FAILED = "matomy-ad-failed";
+	public static final String MATOMY_AD_LOADED = "matomy-ad-loaded";
+	public static final String MATOMY_AD_FULLSCREEN_FAILED = "matomy-ad-fullscreen-failed";
+	public static final String MATOMY_AD_FULLSCREEN_LOADED = "matomy-ad-fullscreen-loaded";
 }

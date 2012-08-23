@@ -28,8 +28,9 @@ public class MopubHelper {
 
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 
-		if (adsShowCounter != 10) {
+		if (adsShowCounter != AppConstants.UPGRADE_SHOW_COUNTER) {
 			upgradeBtn.setVisibility(View.GONE);
+			setListener(moPubAdView, new MopubListener());
 			moPubAdView.setVisibility(View.VISIBLE);
 			moPubAdView.setAdUnitId(MOPUB_AD_BANNER_ID);
 			moPubAdView.loadAd();
@@ -46,6 +47,7 @@ public class MopubHelper {
 	public static void createRectangleAd(Context context) {
 		rectangleAdView = new MoPubView(context);
 		rectangleAdView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
+		setListener(rectangleAdView, new MopubListener());
 	}
 
     public static void destroyRectangleAd(){
@@ -83,4 +85,14 @@ public class MopubHelper {
 	public static boolean isShowAds(Context context) {
 		return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
 	}
+
+	public static void setListener(MoPubView mopPubView, MopubListener mopubListener) {
+		mopPubView.setOnAdClickedListener(mopubListener);
+		mopPubView.setOnAdWillLoadListener(mopubListener);
+		mopPubView.setOnAdLoadedListener(mopubListener);
+		mopPubView.setOnAdFailedListener(mopubListener);
+		mopPubView.setOnAdPresentedOverlayListener(mopubListener);
+		mopPubView.setOnAdClosedListener(mopubListener);
+	}
+
 }

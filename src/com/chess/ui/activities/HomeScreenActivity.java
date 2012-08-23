@@ -12,6 +12,7 @@ import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
 import com.chess.lcc.android.OuterChallengeListener;
@@ -21,8 +22,12 @@ import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import com.flurry.android.FlurryAgent;
 import com.mopub.mobileads.AdView;
 import com.mopub.mobileads.MoPubInterstitial;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * HomeScreenActivity class
@@ -290,9 +295,25 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		else {
 			Log.d(AdView.MOPUB, "interstitial ad listener: loaded, but not ready");
 		}
+
+		String response = moPubInterstitial.getMoPubInterstitialView().getResponseString();
+		Log.d("MOPUB TEST", "OnInterstitialLoaded response=" + response);
+		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put(AppConstants.RESPONSE, response);
+			FlurryAgent.logEvent(FlurryData.MATOMY_AD_FULLSCREEN_LOADED, params);
+		}
 	}
 
 	public void OnInterstitialFailed() {
 		Log.d(AdView.MOPUB, "interstitial ad listener: failed");
+
+		String response = moPubInterstitial.getMoPubInterstitialView().getResponseString();
+		Log.d("MOPUB TEST", "OnInterstitialFailed response=" + response);
+		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put(AppConstants.RESPONSE, response);
+			FlurryAgent.logEvent(FlurryData.MATOMY_AD_FULLSCREEN_FAILED, params);
+		}
 	}
 }
