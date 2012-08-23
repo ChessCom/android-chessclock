@@ -294,4 +294,8 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
             if (mAdView != null) mAdView.trackImpression();
         }
     }
+
+	public MoPubInterstitialView getMoPubInterstitialView() {
+		return mInterstitialView;
+	}
 }

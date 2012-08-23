@@ -752,4 +752,8 @@ public class AdView extends WebView {
 	public boolean getAutorefreshEnabled() {
 		return mAutorefreshEnabled;
 	}
+
+	public String getUrl() {
+		return mUrl;
+	}
 }
