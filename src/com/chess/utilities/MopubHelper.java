@@ -83,7 +83,8 @@ public class MopubHelper {
 	}
 
 	public static boolean isShowAds(Context context) {
-		return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
+		return false;
+		//return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
 	}
 
 	public static void setListener(MoPubView mopPubView, MopubListener mopubListener) {
