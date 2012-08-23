@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -80,6 +81,17 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		DataHolder.getInstance().setLiveChess(true);
 
 		showActionSettings = true;
+	}
+
+	public void onResume() {
+		super.onResume();
+
+		if (getLccHolder().getUser() == null) {
+			if (DataHolder.getInstance().isLiveChess()) {
+				getLccHolder().logout();
+			}
+			backToHomeActivity();
+		}
 	}
 
 	@Override
