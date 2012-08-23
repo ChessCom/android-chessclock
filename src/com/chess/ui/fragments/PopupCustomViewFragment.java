@@ -74,7 +74,8 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		customView.removeAllViews();
+		//customView.removeAllViews();
+		customView.removeView(popupItem.getCustomView());
 	}
 
 }
