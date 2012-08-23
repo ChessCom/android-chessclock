@@ -342,7 +342,7 @@ public class AdFetcher {
 		}
 
 		private boolean isMostCurrentTask() {
-			return mTaskId >= mAdFetcher.mLastCompletedTaskId;
+			return mAdFetcher == null || mTaskId >= mAdFetcher.mLastCompletedTaskId; // no loading tasks at the moment
 		}
 
 		public AsyncTask<String, Void, AdFetchResult> executeTask(String... input) {
