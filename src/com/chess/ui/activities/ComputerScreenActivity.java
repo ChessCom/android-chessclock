@@ -63,7 +63,7 @@ public class ComputerScreenActivity extends LiveBaseActivity {
 	@Override
 	public void onClick(View view) { // make code more clear
 		if (view.getId() == R.id.load) {
-			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
+			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
 			Intent intent = new Intent(this, GameCompScreenActivity.class);
 			int compGameId = Integer.parseInt(preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1));
 			intent.putExtra(AppConstants.GAME_MODE, compGameId);
@@ -84,7 +84,7 @@ public class ComputerScreenActivity extends LiveBaseActivity {
 			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
-			FlurryAgent.onEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
+			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
 			Intent intent = new Intent(this, GameCompScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, mode);
 			startActivity(intent);

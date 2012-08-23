@@ -13,7 +13,7 @@ public class FlurryData {
 	public static final String SETTINGS_ACCESSED = "Settings Accessed";
 	public static final String INVITE_A_FRIEND = "Invite A Friend";
 	public static final String CHALLENGE_CREATED = "Challenge Created";
-	public static final String TACTICS_DAILY_LIMIT_EXCEDED = "Tactics Daily Limit Exceded";
+	public static final String TACTICS_DAILY_LIMIT_EXCEEDED = "Tactics Daily Limit Exceeded";
 	public static final String TACTICS_SESSION_STARTED_FOR_GUEST = "Tactics Session Started For Guest";
 	public static final String UPGRADE_FROM_TACTICS = "Upgrade From Tactics";
 	public static final String LOGGED_IN = "Logged In";

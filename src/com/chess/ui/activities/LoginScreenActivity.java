@@ -201,7 +201,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 							preferencesEditor.putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
 							processLogin(responseArray);
 						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
+							FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 							processLogin(responseArray);
 						}
@@ -250,7 +250,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
 		preferencesEditor.commit();
 
-		FlurryAgent.onEvent(FlurryData.LOGGED_IN);
+		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
 		if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)){
 			AppUtils.startNotificationsUpdate(this);
 		}

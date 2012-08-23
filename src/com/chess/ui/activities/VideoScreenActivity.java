@@ -179,10 +179,10 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			FlurryAgent.onEvent(FlurryData.UPGRADE_FROM_VIDEOS, null);
+			FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_VIDEOS, null);
 			startActivity(AppData.getMembershipVideoIntent(this));
 		} else if (view.getId() == R.id.playVideoBtn) {
-			FlurryAgent.onEvent(FlurryData.VIDEO_PLAYED, null);
+			FlurryAgent.logEvent(FlurryData.VIDEO_PLAYED, null);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setDataAndType(Uri.parse(item.getViewUrl().trim()), "video/*");

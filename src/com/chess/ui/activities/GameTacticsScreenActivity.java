@@ -140,7 +140,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	protected void onStart() {
 		super.onStart();
 		if (!DataHolder.getInstance().isGuest())
-			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
+			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 	}
 
 	@Override
@@ -371,7 +371,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void showLimitDialog() {
-		FlurryAgent.onEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEDED);
+		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
 		showSolvedTacticPopup(StaticData.SYMBOL_EMPTY, true);
 	}
 
@@ -816,7 +816,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (view.getId() == R.id.nextBtn) {
 			customViewFragment.dismiss();
 			if (limitReached) {
-				FlurryAgent.onEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
+				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 
 			} else {
@@ -865,7 +865,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void loadNewTacticsBatch(){
 
 		if (DataHolder.getInstance().isGuest()) {
-			FlurryAgent.onEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
+			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 			// TODO move to AsyncTask
 //			InputStream inputStream = getResources().openRawResource(R.raw.tactics100batch);
 			InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);

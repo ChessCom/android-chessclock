@@ -214,9 +214,8 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		@Override
 		public void updateData(String returnedObj) {
 			if(returnedObj.contains(RestHelper.R_SUCCESS)){
-				FlurryAgent.onEvent(FlurryData.NEW_ACCOUNT_CREATED);
+				FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
 				String[] result = returnedObj.split(":");
-
 
 				preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
 				preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
@@ -241,7 +240,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 						if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
 							preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
 						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
+							FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 
 							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 						}
@@ -265,7 +264,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		}
 		preferencesEditor.commit();
 
-		FlurryAgent.onEvent(FlurryData.LOGGED_IN);
+		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
 		if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
 			AppUtils.startNotificationsUpdate(this);
 		}
@@ -312,7 +311,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 							preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
 							doUpdate(responseArray);
 						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
+							FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 							doUpdate(responseArray);
 						}

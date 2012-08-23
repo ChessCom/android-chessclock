@@ -188,7 +188,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
 
-		FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED);
+		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
 		challengeTaskRunner.runSendChallengeTask(challenge);
 
 		preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTimeEdt.getText().toString().trim());

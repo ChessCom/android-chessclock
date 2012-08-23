@@ -109,7 +109,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 					getLccHolder().getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minMembershipLevel, minRating, maxRating);
 
-			FlurryAgent.onEvent(FlurryData.CHALLENGE_CREATED, null);
+			FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED, null);
 
 			challengeTaskRunner.runSendChallengeTask(challenge);
 

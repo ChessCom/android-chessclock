@@ -57,7 +57,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences_screen);
 
-		FlurryAgent.onEvent(FlurryData.SETTINGS_ACCESSED);
+		FlurryAgent.logEvent(FlurryData.SETTINGS_ACCESSED);
 
 		widgetsInit();
 
@@ -242,7 +242,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
 			emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text)
 					+ userName + "\". \n \n Sent from my Android");
-			FlurryAgent.onEvent(FlurryData.INVITE_A_FRIEND, null);
+			FlurryAgent.logEvent(FlurryData.INVITE_A_FRIEND, null);
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);

@@ -449,7 +449,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 							preferencesEditor.putString(AppConstants.USERNAME, usernameEdt.getText().toString().trim().toLowerCase());
 							processLogin(responseArray);
 						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-							FlurryAgent.onEvent(FlurryData.FB_LOGIN, null);
+							FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 							processLogin(responseArray);
 						}
