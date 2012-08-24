@@ -279,6 +279,11 @@ public class AdFetcher {
 		@Override
 		protected void onCancelled(AdFetchResult adFetchResult) {
 			super.onCancelled(adFetchResult);
+			if(mAdFetcher == null) {
+				mException = null;
+				return;
+			}
+
 			if (!isMostCurrentTask()) {
 				Log.d(AdView.MOPUB, "Ad response is stale.");
 				releaseResources();
@@ -296,6 +301,11 @@ public class AdFetcher {
 
 		@Override
 		protected void onCancelled() {
+			if(mAdFetcher == null) {
+				mException = null;
+				return;
+			}
+
 			if (!isMostCurrentTask()) {
 				Log.d(AdView.MOPUB, "Ad response is stale.");
 				releaseResources();
