@@ -11,6 +11,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 
@@ -79,6 +80,7 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, String.valueOf(days));
 		loadItem.addRequestParams(RestHelper.P_IPLAYAS, String.valueOf(color));
 		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(isRated));
