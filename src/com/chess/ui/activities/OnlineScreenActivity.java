@@ -77,7 +77,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		upgradeBtn.setOnClickListener(this);
 
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 

@@ -64,18 +64,34 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		customView.removeAllViews(); // still haveIllegal exception  after echess game finished
+//		customView.removeAllViews(); // still haveIllegal exception  after echess game finished
+		// we need remove parent from child's view  see note below. Should work
+		removeParent();
 		customView.addView(popupItem.getCustomView());
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
 
+	/*   // Note!
+		if (child.getParent() != null) {
+            throw new IllegalStateException("The specified child already has a parent. " +
+                    "You must call removeView() on the child's parent first.");
+        }
+	 */
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		//customView.removeAllViews();
-		customView.removeView(popupItem.getCustomView());
+		removeParent();
 	}
 
+
+	private void removeParent(){
+		ViewGroup childParent = (ViewGroup) popupItem.getCustomView().getParent();
+		if(childParent != null)
+			childParent.removeAllViews();
+		customView.removeAllViews();
+		customView.removeView(popupItem.getCustomView());
+	}
 }

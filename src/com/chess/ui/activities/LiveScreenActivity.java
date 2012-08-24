@@ -22,6 +22,7 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 
@@ -76,7 +77,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		emptyView = findViewById(R.id.emptyView);
 		
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 

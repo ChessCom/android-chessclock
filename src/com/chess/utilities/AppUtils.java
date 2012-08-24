@@ -141,6 +141,9 @@ public class AppUtils {
 
 		notification.setLatestEventInfo(context, title, body, contentIntent);
 		notifyManager.notify(R.id.notification_message, notification);
+		if(player == null) // someone hasn't player?
+			return;
+
 		player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 			@Override
 			public void onCompletion(MediaPlayer mediaPlayer) {

@@ -7,6 +7,7 @@ import android.widget.Button;
 import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppData;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 
@@ -23,7 +24,7 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		upgradeBtn.setOnClickListener(this);
 
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 

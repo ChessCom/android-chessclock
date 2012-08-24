@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -32,7 +33,13 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
         setStyle(STYLE_NO_FRAME, 0);
     }
 
-    @Override
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		// TODO change default method
+	}
+
+	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(getArguments() != null){

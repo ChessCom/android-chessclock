@@ -18,6 +18,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListChallengeItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
@@ -49,7 +50,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		upgradeBtn.setOnClickListener(this);
 
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 

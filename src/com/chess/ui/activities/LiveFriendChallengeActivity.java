@@ -92,6 +92,13 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 	protected void onResume() {
 		super.onResume();
 
+		if (getLccHolder().getUser() == null) {    // added in case user returns here after process has been killed
+			if (DataHolder.getInstance().isLiveChess()) {
+				getLccHolder().logout();
+			}
+			backToHomeActivity();
+		}
+
 		updateScreen();
 	}
 

@@ -402,7 +402,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         final View layout;
-        if (!MopubHelper.isShowAds(this)) {
+        if (!AppUtils.isNeedToUpgrade(this)) {
             layout = inflater.inflate(R.layout.popup_end_game, null, false);
         } else {
             layout = inflater.inflate(R.layout.popup_end_game_free, null, false);

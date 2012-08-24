@@ -21,7 +21,6 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
 import com.mopub.mobileads.AdView;
 import com.mopub.mobileads.MoPubInterstitial;
@@ -236,7 +235,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 
 	private void showFullScreenAd() {
-		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && MopubHelper.isShowAds(this)) {
+		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && AppUtils.isNeedToUpgrade(this)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
 			// TODO: add support for tablet ad units

@@ -22,7 +22,7 @@ public class MopubHelper {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		if (!isShowAds(context)) {
+		if (!AppUtils.isNeedToUpgrade(context)) {
 			return;
 		}
 
@@ -59,7 +59,7 @@ public class MopubHelper {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		if (!isShowAds(context) || rectangleAdView == null) {
+		if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
 			return;
 		}
 
@@ -82,10 +82,10 @@ public class MopubHelper {
 
 	}
 
-	public static boolean isShowAds(Context context) {
-		return false;
-		//return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
-	}
+//	public static boolean isShowAds(Context context) {  // we need only one way to detect way in other way it rise NPE for upgrade button
+//		return false;
+//		//return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
+//	}
 
 	public static void setListener(MoPubView mopPubView, MopubListener mopubListener) {
 		mopPubView.setOnAdClickedListener(mopubListener);

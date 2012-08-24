@@ -85,7 +85,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.createRectangleAd(this);
 		}
 
@@ -111,7 +111,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	protected void onDestroy() {
 		// try to destroy ad here as Mopub team suggested
-		if (MopubHelper.isShowAds(this)) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.destroyRectangleAd();
 		}
 
@@ -150,7 +150,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		endGameMessage = message;
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		if (!MopubHelper.isShowAds(this)) {
+		if (!AppUtils.isNeedToUpgrade(this)) {
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 		}else {
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
