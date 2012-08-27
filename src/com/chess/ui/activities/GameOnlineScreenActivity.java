@@ -137,7 +137,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 
 		showActionRefresh = true;
-
 	}
 
 	@Override

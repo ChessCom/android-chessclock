@@ -136,10 +136,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
         addView(controlsLayout);
 
-		// disable by default fwd and back buttons
-		enableGameButton(B_FORWARD_ID, false);
-		enableGameButton(B_BACK_ID, false);
-
         // create textViews for timers
         bottomPlayerLabel = new RoboTextView(getContext(), null, R.attr.timerLabelStyle);
         bottomPlayerLabel.setId(BUTTON_PREFIX + T_WHITE_TIMER_ID);
@@ -597,7 +593,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
-//		enableGameButton(B_CHAT_ID, !enable);
 	}
 
     public void lock(boolean lock) {

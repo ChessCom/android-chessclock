@@ -3,10 +3,12 @@ package com.chess.backend;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import com.chess.R;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
@@ -20,6 +22,8 @@ import java.util.List;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
+
+	private static final int NOTIFICATIONS_ICON_CNT = 1;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -42,7 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				int haveMoves = 0;
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-				if(itemList.size() < 3) {
+				if(itemList.size() == NOTIFICATIONS_ICON_CNT) {
 					for (GameListCurrentItem gameListItem : itemList) {
 
 						AppUtils.showNewMoveStatusNotification(getMeContext(),
@@ -67,16 +71,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 				}
 
-				if(haveMoves > 0 && haveMoves < 2){
-					final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
+				if(haveMoves > 0 && haveMoves < 1){ // play for one
+					SharedPreferences preferences = AppData.getPreferences(getMeContext());
+					boolean playSounds = preferences.getBoolean(AppData.getUserName(getMeContext()) + AppConstants.PREF_SOUNDS, false);
+					if(playSounds){
+						final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
 
-					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-						@Override
-						public void onCompletion(MediaPlayer mediaPlayer) {
-							player.release();
-						}
-					});
-					player.start();
+						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+							@Override
+							public void onCompletion(MediaPlayer mediaPlayer) {
+								player.release();
+							}
+						});
+						player.start();
+					}
+
 
 					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 				}

@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.AlarmReceiver;
 import com.chess.backend.entity.DataHolder;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
@@ -131,7 +133,6 @@ public class AppUtils {
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 
 
 		Intent intent = new Intent(context, clazz);
@@ -141,17 +142,24 @@ public class AppUtils {
 
 		notification.setLatestEventInfo(context, title, body, contentIntent);
 		notifyManager.notify(R.id.notification_message, notification);
-		if(player == null) // someone hasn't player?
-			return;
 
-		player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			@Override
-			public void onCompletion(MediaPlayer mediaPlayer) {
-				player.stop();
-				player.release();
-			}
-		});
-		player.start();
+		SharedPreferences preferences = AppData.getPreferences(context);
+		boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
+		if(playSounds){
+			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
+
+			if(player == null) // someone hasn't player?
+				return;
+
+			player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mediaPlayer) {
+					player.stop();
+					player.release();
+				}
+			});
+			player.start();
+		}
 	}
 
 
