@@ -81,8 +81,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
 		}
 
-//		TextView startNewGameTitle = (TextView) findViewById(R.id.startNewGameTitle);
-
 		Button statsBtn = (Button) findViewById(R.id.statsBtn);
 		statsBtn.setOnClickListener(this);
 
@@ -176,8 +174,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		} else if (view.getId() == R.id.currentGameBtn) {
 			getLccHolder().checkAndProcessFullGame();
 
-//		} else if (view.getId() == R.id.start) {
-//			startActivity(new Intent(this, LiveNewGameActivity.class));
 		} else if(view.getId() == R.id.statsBtn){
 			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));
 			Intent intent = new Intent(this, WebViewActivity.class);

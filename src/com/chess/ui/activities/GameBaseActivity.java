@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.*;
 import android.widget.TextView;
 import com.chess.R;
@@ -220,26 +218,45 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	}
 
 	protected void playLastMoveAnimation() {
-		new Thread(new Runnable() {
+		handler.postDelayed(new Runnable() {    // seems to be workign that way
 			@Override
 			public void run() {
-				try {
-					Thread.sleep(1300);
-					boardView.getBoardFace().takeNext();
-					update.sendEmptyMessage(0);
-				} catch (Exception ignored) {
-				}
+				boardView.getBoardFace().takeNext();
+				invalidateGameScreen();
+				boardView.invalidate();
 			}
+		},1300);
 
-			private Handler update = new Handler() {
-				@Override
-				public void dispatchMessage(Message msg) {
-					super.dispatchMessage(msg);
-					invalidateGameScreen();
-					boardView.invalidate();
-				}
-			};
-		}).start();
+
+
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				try {
+//					Thread.sleep(1300);
+//					boardView.getBoardFace().takeNext();
+//					update.sendEmptyMessage(0);
+//				} catch (Exception ignored) {
+//				}
+//			}
+//
+//			private Handler update = new Handler() {
+//				@Override
+//				public void dispatchMessage(Message msg) {
+//					super.dispatchMessage(msg);
+//					invalidateGameScreen();
+//					boardView.invalidate();
+//		fast switching of activities throws NPE
+//		java.lang.NullPointerException
+//		at com.chess.ui.engine.ChessBoard.getMoveListSAN(ChessBoard.java:1379)
+//		at com.chess.ui.engine.ChessBoard.getMoveListSAN(ChessBoard.java:24)
+//		at com.chess.ui.activities.GameTacticsScreenActivity.invalidateGameScreen(GameTacticsScreenActivity.java:625)
+//		at com.chess.ui.activities.GameBaseActivity$2$1.dispatchMessage(GameBaseActivity.java:238)
+
+
+//				}
+//			};
+//		}).start();
 	}
 
 	public Context getMeContext() {

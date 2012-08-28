@@ -505,6 +505,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
+	public void switch2Analysis(boolean isAnalysis) {
+		super.switch2Analysis(isAnalysis);
+		if (getBoardFace().isAnalysis()){
+			infoLabelTxt.setVisibility(View.GONE);
+		} else {
+			infoLabelTxt.setVisibility(View.VISIBLE);
+		}
+	}
+
+	@Override
 	public void switch2Chat() {
 		openChatActivity();
 	}

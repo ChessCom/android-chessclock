@@ -51,7 +51,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
 		upgrade.setOnClickListener(this);
 
-		if (AppUtils.isNeedToUpgrade(this)) {
+		if (AppUtils.isNeedToUpgradePremium(this)) {
 			upgrade.setVisibility(View.VISIBLE);
 		} else {
 			upgrade.setVisibility(View.GONE);

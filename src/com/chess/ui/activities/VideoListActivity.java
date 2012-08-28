@@ -40,7 +40,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 	    Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
         videoUpgrade.setOnClickListener(this);
-        videoUpgrade.setVisibility(AppUtils.isNeedToUpgrade(this)? View.VISIBLE: View.GONE);
+        videoUpgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this)? View.VISIBLE: View.GONE);
 
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);

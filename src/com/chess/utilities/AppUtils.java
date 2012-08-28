@@ -233,6 +233,17 @@ public class AppUtils {
 				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);
 	}
 
+	public static boolean isNeedToUpgradePremium(Context context){
+		boolean liveMembershipLevel = false;
+		User user = LccHolder.getInstance(context).getUser();
+		if (user != null) {
+			liveMembershipLevel = DataHolder.getInstance().isLiveChess()
+					&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
+		}
+		return liveMembershipLevel
+				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER);
+	}
+
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager cm
 				= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

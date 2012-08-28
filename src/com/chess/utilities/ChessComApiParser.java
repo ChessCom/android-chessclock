@@ -81,13 +81,20 @@ public class ChessComApiParser {
 	}
 
 	public static ArrayList<GameListFinishedItem> getFinishedOnlineGames(String result) {
+		Log.d("TEST", "getFinishedOnlineGames input = " +result);
 		ArrayList<GameListFinishedItem> output = new ArrayList<GameListFinishedItem>();
+//		Success+<total_games_returned>:(
+// <game_id>
+// :<color>:<game_type>:<username_string_length>:<opponent_username>:<opponent_rating>:<time_remaining_amount>:<time_remaining_units>:<fen_string_length>:<fen>:<timestamp>:<last_move_from_square>:<last_move_to_square>:<is_opponent_online>:<game_result>:)0-n
+
+
 
 		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		int gamescount;
 		try {
 			gamescount = Integer.parseInt(GamesArray[0].substring(8));
 		} catch (NumberFormatException e) {  // TODO
+			Log.e("getFinishedOnlineGames", e.toString());
 			return output;
 		}
 
