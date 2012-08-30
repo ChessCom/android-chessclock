@@ -276,11 +276,20 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 					showSolvedTacticPopup(title, false);
 				} else {
+
+
+//					id          (user token)
+//					encoded_moves  (optional, 1 or 0)
+//					tactics_id  (optional)
+//					passed      (1 or 0 if tactics_id is present)
+//					correct_moves      (required if tactics_id is present and passed is 0)
+//					seconds      (required if tactics_id is present)
+
 					LoadItem loadItem = new LoadItem();
 					loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 					loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 					loadItem.addRequestParams(RestHelper.P_TACTICS_ID, getTacticItem().getId());
-					loadItem.addRequestParams(RestHelper.P_PASSED, "0");
+					loadItem.addRequestParams(RestHelper.P_PASSED, "1");
 					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(getBoardFace().getTacticsCorrectMoves()));
 					loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(getBoardFace().getSecondsPassed()));
 

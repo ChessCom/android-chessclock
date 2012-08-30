@@ -58,7 +58,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 								gameListItem);
 						haveMoves++;
 					}
-				} else {
+				} else if(itemList.size() > 0) {
 					for (GameListCurrentItem currentItem : itemList) {
 						AppUtils.cancelNotification(getMeContext(), (int) currentItem.getGameId());
 					}
