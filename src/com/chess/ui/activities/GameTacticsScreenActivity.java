@@ -276,15 +276,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 					showSolvedTacticPopup(title, false);
 				} else {
-
-
-//					id          (user token)
-//					encoded_moves  (optional, 1 or 0)
-//					tactics_id  (optional)
-//					passed      (1 or 0 if tactics_id is present)
-//					correct_moves      (required if tactics_id is present and passed is 0)
-//					seconds      (required if tactics_id is present)
-
 					LoadItem loadItem = new LoadItem();
 					loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 					loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -388,25 +379,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		noInternet = !AppUtils.isNetworkAvailable(this);
 		DataHolder.getInstance().increaseCurrentTacticsProblem();
 		getTacticFromBatch();
-
-//		if(DataHolder.getInstance().isGuest() || noInternet){
-//			DataHolder.getInstance().increaseCurrentTacticsProblem();
-//			getTacticFromBatch();
-//			preferencesEditor.putBoolean(AppConstants.PREF_FIRST_TACTIC_START, false);
-//			preferencesEditor.commit();
-//		}else {
-//
-////				LoadItem loadItem = new LoadItem();
-////				loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
-////				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-////				loadItem.addRequestParams(RestHelper.P_TACTICS_ID, StaticData.SYMBOL_EMPTY);
-////
-////				new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
-//			DataHolder.getInstance().increaseCurrentTacticsProblem();
-//
-//			getTacticFromBatch();
-//
-//		}
 	}
 
 	private void getTacticFromBatch() {
