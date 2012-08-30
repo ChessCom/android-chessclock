@@ -97,46 +97,44 @@ public class LccHolder{
 	}
 
 	public void executePausedActivityGameEvents() {
-        if (activityPausedMode) {
-            if (pausedActivityGameEvents.size() > 0) {
+		if (activityPausedMode) {
+			if (pausedActivityGameEvents.size() > 0) {
 
-                GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
-                if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
-                    //lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-                    //fullGameProcessed = true;
-                    pausedActivityGameEvents.remove(moveEvent);
-                    //lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
+				GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
+				if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
+					//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+					//fullGameProcessed = true;
+					pausedActivityGameEvents.remove(moveEvent);
+					//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
 					GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), moveEvent.getMoveIndex());
-                    lccEventListener.onGameRefresh(newGame);
-                }
+					lccEventListener.onGameRefresh(newGame);
+				}
 
-                GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
-                if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
-                    /*if (!fullGameProcessed)
-                                                {
-                                                  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-                                                  fullGameProcessed = true;
-                                                }*/
-                    pausedActivityGameEvents.remove(drawEvent);
-                    lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
-                }
+				GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
+				if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
+					/*if (!fullGameProcessed) {
+						lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+						fullGameProcessed = true;
+					}*/
+					pausedActivityGameEvents.remove(drawEvent);
+					lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
+				}
 
-                GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
-                if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
-                    /*if (!fullGameProcessed)
-                                                {
-                                                  lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-                                                  fullGameProcessed = true;
-                                                }*/
-                    pausedActivityGameEvents.remove(endGameEvent);
-                    lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
-                }
+				GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
+				if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
+					/*if (!fullGameProcessed) {
+						lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+						fullGameProcessed = true;
+					}*/
+					pausedActivityGameEvents.remove(endGameEvent);
+					lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
+				}
 
-                pausedActivityGameEvents.clear(); // but it should be already cleared by using remove method
-            }
-
-            paintClocks();
-        }
+				pausedActivityGameEvents.clear(); // but it should be already cleared by using remove method
+			}
+			setActivityPausedMode(false);
+			paintClocks();
+		}
 	}
 
 	public void paintClocks() {
