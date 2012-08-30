@@ -185,6 +185,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return;
 		}
 
+		getLccHolder().setActivityPausedMode(false);
 		getLccHolder().setLccChatMessageListener(this);
 		updateGameState();
 	}

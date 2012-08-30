@@ -97,44 +97,42 @@ public class LccHolder{
 	}
 
 	public void executePausedActivityGameEvents() {
-		if (activityPausedMode) {
-			if (pausedActivityGameEvents.size() > 0) {
+		/*if (activityPausedMode) {*/
+		if (pausedActivityGameEvents.size() > 0) {
 
-				GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
-				if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
-					//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-					//fullGameProcessed = true;
-					pausedActivityGameEvents.remove(moveEvent);
-					//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-					GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), moveEvent.getMoveIndex());
-					lccEventListener.onGameRefresh(newGame);
-				}
-
-				GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
-				if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
-					/*if (!fullGameProcessed) {
-						lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-						fullGameProcessed = true;
-					}*/
-					pausedActivityGameEvents.remove(drawEvent);
-					lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
-				}
-
-				GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
-				if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
-					/*if (!fullGameProcessed) {
-						lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-						fullGameProcessed = true;
-					}*/
-					pausedActivityGameEvents.remove(endGameEvent);
-					lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
-				}
-
-				pausedActivityGameEvents.clear(); // but it should be already cleared by using remove method
+			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
+			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
+				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+				//fullGameProcessed = true;
+				pausedActivityGameEvents.remove(moveEvent);
+				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
+				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), moveEvent.getMoveIndex());
+				lccEventListener.onGameRefresh(newGame);
 			}
-			setActivityPausedMode(false);
-			paintClocks();
+
+			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
+			if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
+				/*if (!fullGameProcessed) {
+					lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+					fullGameProcessed = true;
+				}*/
+				pausedActivityGameEvents.remove(drawEvent);
+				lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
+			}
+
+			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
+			if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
+				/*if (!fullGameProcessed) {
+					lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
+					fullGameProcessed = true;
+				}*/
+				pausedActivityGameEvents.remove(endGameEvent);
+				lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
+			}
+
+			pausedActivityGameEvents.clear(); // but it should be already cleared by using remove method
 		}
+		paintClocks();
 	}
 
 	public void paintClocks() {
@@ -884,7 +882,6 @@ public class LccHolder{
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
 			final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
 			final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
-
 
 			getWhiteClock().setTime(whitePlayerTime);
 			if (!game.isEnded()) {
