@@ -679,8 +679,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			gamePanelView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
 		} else {
-			whitePlayerlabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
-			gamePanelView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
+			whitePlayerlabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
+			gamePanelView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
 		}
 	}
 
@@ -764,7 +766,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 
 
-		if (getBoardFace().isInit()) {
+		if (getBoardFace().isInit()) { // todo: redundant check?
 			onGameStarted();
 			getBoardFace().setInit(false);
 		}

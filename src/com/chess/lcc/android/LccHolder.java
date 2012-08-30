@@ -697,21 +697,23 @@ public class LccHolder{
 		final Game lastGame = getLastGame();
 
 		final List<Game.Result> gameResults = lastGame.getGameResults();
-		final Game.Result whitePlayerResult = gameResults.get(0);
-		final Game.Result blackPlayerResult = gameResults.get(1);
 		final String whiteUsername = lastGame.getWhitePlayer().getUsername();
 		final String blackUsername = lastGame.getBlackPlayer().getUsername();
 
-		final Game.Result result;
-		if (whitePlayerResult == Game.Result.WIN) {
-			result = blackPlayerResult;
-		} else if (blackPlayerResult == Game.Result.WIN) {
-			result = whitePlayerResult;
-		} else {
-			result = whitePlayerResult;
+		boolean switchColor = false;
+		if (gameResults != null) {
+			final Game.Result whitePlayerResult = gameResults.get(0);
+			final Game.Result blackPlayerResult = gameResults.get(1);
+			final Game.Result result;
+			if (whitePlayerResult == Game.Result.WIN) {
+				result = blackPlayerResult;
+			} else if (blackPlayerResult == Game.Result.WIN) {
+				result = whitePlayerResult;
+			} else {
+				result = whitePlayerResult;
+			}
+			switchColor = result != Game.Result.ABORTED;
 		}
-
-		final boolean switchColor = result != Game.Result.ABORTED;
 
 		String to = null;
 		PieceColor color = PieceColor.WHITE;
