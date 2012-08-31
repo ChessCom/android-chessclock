@@ -595,10 +595,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
-		private final int ECHESS_MESSAGES = 2;
-		private final int ECHESS_RESIDE = 3;
-		private final int ECHESS_DRAW_OFFER = 4;
-		private final int ECHESS_RESIGN_OR_ABORT = 5;
+		private final int ECHESS_MESSAGES = 1;
+		private final int ECHESS_RESIDE = 2;
+		private final int ECHESS_DRAW_OFFER = 3;
+		private final int ECHESS_RESIGN_OR_ABORT = 4;
 
 		private MenuOptionsDialogListener(CharSequence[] items) {
 			this.items = items;
