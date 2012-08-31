@@ -346,7 +346,7 @@ public class LccHolder{
 	}
 
 	public Game getLastGame() {
-		return lccGames.get(lastGameId);
+		return lastGameId != null ? lccGames.get(lastGameId) : null;
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -648,7 +648,7 @@ public class LccHolder{
 //		return gameData;
 //	}
 
-	public void makeMove(String move, LccGameTaskRunner gameTaskRunner) {
+	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo) {
 		Game game = lccGames.get(currentGameId);
 		/*if(chessMove.isCastling())
 			{
@@ -665,7 +665,7 @@ public class LccHolder{
 		}
 
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
-		gameTaskRunner.runMakeMoveTask(game, move);
+		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 
 		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
 		{
@@ -984,5 +984,10 @@ public class LccHolder{
 
 	public Context getContext() {
 		return context;
+	}
+
+	// todo: remove after debugging
+	public Integer getGamesCount() {
+		return lccGames.size();
 	}
 }

@@ -450,7 +450,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
 
-		getLccHolder().makeMove(move, gameTaskRunner);
+		final String temporaryDebugInfo = "lccInitiated=" + lccInitiated +
+				", Hist=" + getBoardFace().getHistDat().length +
+				", Hply=" + getBoardFace().getHply() +
+				", Init=" + getBoardFace().isInit() +
+				", MoveLive=" + getBoardFace().convertMoveLive() +
+				", gamesC=" + getLccHolder().getGamesCount() +
+				", gameId=" + getLccHolder().getCurrentGameId();
+		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
 	private void updatePlayerLabels() {
@@ -767,10 +774,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 
 
-//		if (getBoardFace().isInit()) { // todo: redundant check?  // looks like so :)
-			onGameStarted();
-			getBoardFace().setInit(false);
-//		}
+		onGameStarted();
+		getBoardFace().setInit(false);
 
 		getLccHolder().executePausedActivityGameEvents();
 	}

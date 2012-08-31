@@ -90,21 +90,29 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runMakeMoveTask(Game game, String move) {
-		new MakeMoveTask(move).executeTask(game);
+	public void runMakeMoveTask(Game game, String move, String debugInfo) {
+		new MakeMoveTask(move, debugInfo).executeTask(game);
 	}
 
 	private class MakeMoveTask extends AbstractUpdateTask<Game, Game> {
 		private String move;
+		private String debugInfo;
 
-		public MakeMoveTask(String move) {
+		public MakeMoveTask(String move, String debugInfo) {
 			super(gameTaskFace);
 			this.move = move;
+			this.debugInfo = debugInfo;
 		}
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-			liveChessClient.makeMove(game[0], move);
+
+			try {
+				liveChessClient.makeMove(game[0], move);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(debugInfo, e);
+			}
+
 			return StaticData.RESULT_OK;
 		}
 	}
