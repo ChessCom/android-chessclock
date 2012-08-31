@@ -797,8 +797,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			getLccHolder().rematch();
 			endPopupFragment.dismiss();
-		} else if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}
 }

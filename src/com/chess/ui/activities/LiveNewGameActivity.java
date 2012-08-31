@@ -52,7 +52,6 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
-
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, LiveFriendChallengeActivity.class));
 		} else if (view.getId() == R.id.challengecreate) {

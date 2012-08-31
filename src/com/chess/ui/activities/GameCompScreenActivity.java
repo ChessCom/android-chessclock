@@ -355,7 +355,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         Button reviewBtn = (Button) layout.findViewById(R.id.reviewPopupBtn);
         reviewBtn.setText(R.string.ok);
         reviewBtn.setOnClickListener(this);
-		if(AppUtils.isNeedToUpgrade(this)){
+		if(AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

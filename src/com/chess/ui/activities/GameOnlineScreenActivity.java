@@ -789,8 +789,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
             endPopupFragment.dismiss();
-		} else if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}
 
