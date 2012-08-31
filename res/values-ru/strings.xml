@@ -187,7 +187,7 @@
 	<string name="theirmove">Их Ход!</string>
 	<string name="gamefinish">Закончить эту игру</string>
 	<string name="random">Случайный</string>
-	<string name="won">выйграл</string>
+	<string name="won">выиграл</string>
 	<string name="lost">проиграл</string>
 	<string name="draw">ничья</string>
 	<string name="duration">Продолжительность</string>
@@ -280,9 +280,9 @@
 	<string name="error_occurred_while_login">Произошла ошибка во время входа в систему, пожалуйста, войдите снова!</string>
 	<string name="update_available_please_update">Обновление доступно! Пожалуйста, обновите</string>
 	<string name="update_check">Проверка обновлений</string>
-	<string name="won_on_time">\nвыйграл по времени</string>
-	<string name="won_by_resignation">\nвыйграл по отставке</string>
-	<string name="won_by_checkmate">\nвыйграл поставив мат</string>
+	<string name="won_on_time">\nвыиграл по времени</string>
+	<string name="won_by_resignation">\nвыиграл по отставке</string>
+	<string name="won_by_checkmate">\nвыиграл поставив мат</string>
 	<string name="game_over">КОНЕЦ ИГРЫ</string>
 	<string name="draw_game">ПРЕДЛОЖЕНА НИЧЬЯ</string>
 	<string name="has_offered_draw">предложил ничью</string>
@@ -309,8 +309,8 @@
 	<string name="reason_">Причина.</string>
 	<string name="message_">Сообщение</string>
 
-	<string name="black_wins">Черные выйграли (1–0)</string>
-	<string name="white_wins">Белые выйграли (1–0)</string>
+	<string name="black_wins">Черные выиграли (1–0)</string>
+	<string name="white_wins">Белые выиграли (1–0)</string>
 	<string name="draw_by_stalemate">Ничья по тупику (0–0)</string>
 	<string name="draw_by_3fold_repetition">Ничья по тройному повторению (0.5–0.5)</string>
 	<string name="rematch">Реванш</string>
