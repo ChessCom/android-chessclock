@@ -171,9 +171,9 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 	@Override
 	protected void onSearchQuery(String query) {
-        Intent intent = new Intent(this, VideoListActivity.class);
-        intent.putExtra(RestHelper.P_KEYWORD, query);
-        startActivity(intent);
+		Intent intent = new Intent(this, VideoListActivity.class);
+		intent.putExtra(RestHelper.P_KEYWORD, query);
+		startActivity(intent);
 	}
 
 	@Override
@@ -191,54 +191,44 @@ public class VideoScreenActivity extends LiveBaseActivity {
 			int skillId = skillsSpinner.getSelectedItemPosition();
 			int categoryId = categoriesSpinner.getSelectedItemPosition();
 
-            String skill = StaticData.SYMBOL_EMPTY;
-            String category = StaticData.SYMBOL_EMPTY;
+			String skill = StaticData.SYMBOL_EMPTY;
+			String category = StaticData.SYMBOL_EMPTY;
 
-			if (skillId > 0) {
-				switch (skillId) {
-					case 1:
-						skill = getString(R.string.beginner_category);
-						break;
-					case 2:
-						skill = getString(R.string.intermediate_category);
-						break;
-					case 3:
-						skill = getString(R.string.advanced_category);
-						break;
-
-					default:
-						break;
-				}
+			switch (skillId) {
+				case 0:
+					skill = getString(R.string.beginner_category);
+					break;
+				case 1:
+					skill = getString(R.string.intermediate_category);
+					break;
+				case 2:
+					skill = getString(R.string.advanced_category);
+					break;
 			}
-			if (categoryId > 0) {
-				switch (categoryId) {
-					case 1:
-						category = getString(R.string.amazing_games_category);
-						break;
-					case 2:
-						category = getString(R.string.end_games_category);
-						break;
-					case 3:
-						category = getString(R.string.openings_category);
-						break;
-					case 4:
-						category = getString(R.string.rules_basics_category);
-						break;
-					case 5:
-						category = getString(R.string.strategy_category);
-						break;
-					case 6:
-						category = getString(R.string.tactics_category);
-						break;
-
-					default:
-						break;
-				}
+			switch (categoryId) {
+				case 0:
+					category = getString(R.string.amazing_games_category);
+					break;
+				case 1:
+					category = getString(R.string.end_games_category);
+					break;
+				case 2:
+					category = getString(R.string.openings_category);
+					break;
+				case 3:
+					category = getString(R.string.rules_basics_category);
+					break;
+				case 4:
+					category = getString(R.string.strategy_category);
+					break;
+				case 5:
+					category = getString(R.string.tactics_category);
+					break;
 			}
 
-            Intent intent = new Intent(this, VideoListActivity.class);
-            intent.putExtra(RestHelper.P_SKILL_LEVEL, skill);
-            intent.putExtra(RestHelper.P_CATEGORY, category);
+			Intent intent = new Intent(this, VideoListActivity.class);
+			intent.putExtra(RestHelper.P_SKILL_LEVEL, skill);
+			intent.putExtra(RestHelper.P_CATEGORY, category);
 			startActivity(intent);
 		}
 	}
