@@ -83,7 +83,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
-				getString(R.string.backtogamelist),
 				getString(R.string.reside)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
@@ -305,7 +304,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
-		private final int ECHESS_BACK_TO_GAME_LIST = 1;
 		private final int ECHESS_RESIDE = 2;
 
 		private MenuOptionsDialogListener(CharSequence[] items) {
@@ -317,9 +315,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			switch (i) {
 				case ECHESS_SETTINGS:
 					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
-					break;
-				case ECHESS_BACK_TO_GAME_LIST:
-					onBackPressed();
 					break;
 				case ECHESS_RESIDE:
 					getBoardFace().setReside(!getBoardFace().isReside());

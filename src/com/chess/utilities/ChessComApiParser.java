@@ -89,23 +89,27 @@ public class ChessComApiParser {
 
 
 
-		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
-		int gamescount;
+		String[] gamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
+		int gamesCnt;
 		try {
-			gamescount = Integer.parseInt(GamesArray[0].substring(8));
+			gamesCnt = Integer.parseInt(gamesArray[0].substring(8));
 		} catch (NumberFormatException e) {  // TODO
 			Log.e("getFinishedOnlineGames", e.toString());
 			return output;
 		}
 
 		int i, j, inc = 0;
-		String[] tmp = GamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
-		for (i = 0; i < gamescount; i++) {
+		String[] tmp = gamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
+		for (i = 0; i < gamesCnt; i++) {
 			String[] tmp2 = new String[15];
 			for (j = 0; j < 15; j++) {
 				tmp2[j] = tmp[inc++];
 			}
-			output.add(new GameListFinishedItem(tmp2));
+			try{ // TODO temp stick! remove after investigation
+				output.add(new GameListFinishedItem(tmp2));
+			}catch (NumberFormatException ex){
+				return output;
+			}
 		}
 		return output;
 	}

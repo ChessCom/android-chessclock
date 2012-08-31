@@ -95,6 +95,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		gamePanelView.enableGameControls(false);
 
 		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
@@ -119,7 +120,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
-				getString(R.string.backtogamelist),
 				getString(R.string.messages),
 				getString(R.string.reside),
 				getString(R.string.drawoffer),
@@ -206,6 +206,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		getSoundPlayer().playGameStart();
 
 		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+		gamePanelView.enableGameControls(true);
 
 		checkMessages();
 
@@ -281,6 +282,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	public void onGameRefresh(GameOnlineItem newGame) {
 		currentGame = newGame;
+		gamePanelView.enableGameControls(true);
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
@@ -377,6 +379,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		public void updateData(String returnedObj) {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+				gamePanelView.enableGameControls(true);
 				sendMove();
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
@@ -530,6 +533,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private boolean isUserMove() {
+		if(currentGame == null)  // TODO probably redundant
+			return false;
+
 		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
 				.equals(AppData.getUserName(this));
 
@@ -589,7 +595,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
-		private final int ECHESS_BACK_TO_GAME_LIST = 1;
 		private final int ECHESS_MESSAGES = 2;
 		private final int ECHESS_RESIDE = 3;
 		private final int ECHESS_DRAW_OFFER = 4;
@@ -604,9 +609,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			switch (i) {
 				case ECHESS_SETTINGS:
 					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
-					break;
-				case ECHESS_BACK_TO_GAME_LIST:
-					onBackPressed();
 					break;
 				case ECHESS_MESSAGES:
 					openChatActivity();
@@ -693,6 +695,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	@Override
 	protected void showGameEndPopup(View layout, String message) {
+		if(currentGame == null)
+			return;
+
 
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);

@@ -526,8 +526,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
             boardViewFace.flipBoard();
         } else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
             boardViewFace.switchAnalysis();
-			enableGameButton(B_FORWARD_ID, boardViewFace.isInAnalysis());
-			enableGameButton(B_BACK_ID, boardViewFace.isInAnalysis());
         } else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
             boardViewFace.switchChat();
         } else if (view.getId() == BUTTON_PREFIX + B_BACK_ID) {
@@ -595,8 +593,21 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		enableGameButton(B_BACK_ID, enable);
 	}
 
-    public void lock(boolean lock) {
+	public void enableControlButtons(boolean enable) {
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+	}
+
+	public void lock(boolean lock) {
 		blocked = lock;
         setEnabled(!lock);
     }
+
+	public void enableGameControls(boolean enable) {
+		enableGameButton(B_ANALYSIS_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+		enableGameButton(B_CHAT_ID, enable);
+		enableGameButton(B_FLIP_ID, enable);
+	}
 }

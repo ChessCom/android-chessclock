@@ -469,6 +469,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (isAnalysis) {
 			getLccHolder().setLatestMoveNumber(0);
 		}
+		gamePanelView.enableControlButtons(isAnalysis);
 	}
 
 	@Override
@@ -766,10 +767,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 
 
-		if (getBoardFace().isInit()) { // todo: redundant check?
+//		if (getBoardFace().isInit()) { // todo: redundant check?  // looks like so :)
 			onGameStarted();
 			getBoardFace().setInit(false);
-		}
+//		}
 
 		getLccHolder().executePausedActivityGameEvents();
 	}
