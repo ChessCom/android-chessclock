@@ -76,14 +76,15 @@ public class AlarmReceiver extends BroadcastReceiver {
 					boolean playSounds = preferences.getBoolean(AppData.getUserName(getMeContext()) + AppConstants.PREF_SOUNDS, false);
 					if(playSounds){
 						final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
-
-						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-							@Override
-							public void onCompletion(MediaPlayer mediaPlayer) {
-								player.release();
-							}
-						});
-						player.start();
+						if(player != null){
+							player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+								@Override
+								public void onCompletion(MediaPlayer mediaPlayer) {
+									player.release();
+								}
+							});
+							player.start();
+						}
 					}
 
 

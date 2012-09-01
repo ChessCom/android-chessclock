@@ -23,7 +23,7 @@
 		>
 		<activity android:name=".ui.activities.SplashActivity"
 			android:label="@string/app_name"
-			android:theme="@android:style/Theme.Black.NoTitleBar"
+			android:theme="@style/NoTitle"
 			>
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
