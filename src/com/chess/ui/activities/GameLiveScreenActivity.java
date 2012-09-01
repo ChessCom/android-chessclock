@@ -105,6 +105,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
 		currentGame = getLccHolder().getGameItem();
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+
 		Game game = getLccHolder().getCurrentGame();
 		switch (game.getGameTimeConfig().getGameTimeClass()) {
 			case BLITZ:
