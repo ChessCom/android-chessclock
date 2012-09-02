@@ -1,11 +1,18 @@
 package com.chess.utilities;
 
+import android.content.Context;
 import android.util.Log;
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
+import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChessComApiParser {
 
@@ -80,7 +87,7 @@ public class ChessComApiParser {
 		return output;
 	}
 
-	public static ArrayList<GameListFinishedItem> getFinishedOnlineGames(String result) {
+	public static ArrayList<GameListFinishedItem> getFinishedOnlineGames(String result, Context temporaryContext) {
 		Log.d("TEST", "getFinishedOnlineGames input = " +result);
 		ArrayList<GameListFinishedItem> output = new ArrayList<GameListFinishedItem>();
 //		Success+<total_games_returned>:(
@@ -105,9 +112,14 @@ public class ChessComApiParser {
 			for (j = 0; j < 15; j++) {
 				tmp2[j] = tmp[inc++];
 			}
-			try{ // TODO temp stick! remove after investigation
+			try { // TODO temp stick! remove after investigation
 				output.add(new GameListFinishedItem(tmp2));
-			}catch (NumberFormatException ex){
+			} catch (NumberFormatException ex) {
+
+				Map<String, String> params = new HashMap<String, String>();
+				params.put(AppConstants.RESPONSE, AppData.getUserName(temporaryContext) + " " + result);
+				FlurryAgent.logEvent(FlurryData.DEBUG_FINISHED_GAMES_LIST, params);
+
 				return output;
 			}
 		}

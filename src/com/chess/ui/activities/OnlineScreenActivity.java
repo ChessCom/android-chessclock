@@ -183,7 +183,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						updateStartingType(GameOnlineItem.FINISHED_TYPE);
 						break;
 					case GameOnlineItem.FINISHED_TYPE:
-						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
+						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj, getContext()));
 						break;
 					default:
 						break;
