@@ -25,5 +25,4 @@ public class FlurryData {
 	public static final String MATOMY_AD_LOADED = "matomy-ad-loaded";
 	public static final String MATOMY_AD_FULLSCREEN_FAILED = "matomy-ad-fullscreen-failed";
 	public static final String MATOMY_AD_FULLSCREEN_LOADED = "matomy-ad-fullscreen-loaded";
-	public static final String DEBUG_FINISHED_GAMES_LIST = "debug-finished-games-list";
 }

@@ -2,13 +2,12 @@ package com.chess.utilities;
 
 import android.content.Context;
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
-import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,9 +115,9 @@ public class ChessComApiParser {
 				output.add(new GameListFinishedItem(tmp2));
 			} catch (NumberFormatException ex) {
 
-				Map<String, String> params = new HashMap<String, String>();
-				params.put(AppConstants.RESPONSE, AppData.getUserName(temporaryContext) + " " + result);
-				FlurryAgent.logEvent(FlurryData.DEBUG_FINISHED_GAMES_LIST, params);
+				Map<String, String> extraData = new HashMap<String, String>();
+				extraData.put(AppConstants.RESPONSE, AppData.getUserName(temporaryContext) + " " + result);
+				BugSenseHandler.log("DEBUG_FINISHED_GAMES_LIST", extraData, ex);
 
 				return output;
 			}
