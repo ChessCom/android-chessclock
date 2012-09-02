@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Inglés</item>
-		<item>Árabe</item>
-		<item>China</item>
-		<item>Danés</item>
-		<item>Holandés</item>
-		<item>Francés</item>
-		<item>Alemán</item>
-		<item>Hebreo</item>
-		<item>Hindi</item>
-		<item>Italiano</item>
-		<item>Japonés</item>
-		<item>Coreano</item>
-		<item>Noruego</item>
-		<item>Persa</item>
-		<item>Polaco</item>
-		<item>Portugués</item>
-		<item>Ruso</item>
-		<item>Español</item>
-		<item>Sueco</item>
-		<item>Turco</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>Reina</item>
 		<item>Torre</item>

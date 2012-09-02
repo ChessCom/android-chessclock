@@ -158,8 +158,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		afterMyMoveSpinner = (Spinner) findViewById(R.id.afterMoveSpinner);
 		afterMyMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.AIM));
-		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
 		afterMyMoveSpinner.setOnItemSelectedListener(afterMyMoveSelectedListener);
+		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
 
 		strengthSpinner = (Spinner) findViewById(R.id.prefStrength);
 		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
@@ -190,13 +190,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		//spinners
 		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
 		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
-		int boardsPosition = preferences.getInt(AppData.getUserName(this)
-				+ AppConstants.PREF_BOARD_TYPE, 0);
+		int boardsPosition = preferences.getInt(AppData.getUserName(this)+ AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 
 		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
 		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
-
 		int piecesPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 

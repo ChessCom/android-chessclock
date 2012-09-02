@@ -1350,6 +1350,9 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void takeNext() {
 		if (hply + 1 <= movesCount) {
+			if(histDat[hply] == null) // TODO find real problem
+				return;
+
 			Move m = histDat[hply].move;
 			makeMove(m);
 		}

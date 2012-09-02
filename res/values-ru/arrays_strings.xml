@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Английский</item>
-		<item>Арабский</item>
-		<item>Китай</item>
-		<item>Датский</item>
-		<item>Голландский</item>
-		<item>Французский</item>
-		<item>Немецкий</item>
-		<item>Еврейский</item>
-		<item>Хинди</item>
-		<item>Итальянский</item>
-		<item>Японский</item>
-		<item>Корейский</item>
-		<item>Норвежский</item>
-		<item>Персидский</item>
-		<item>Польский</item>
-		<item>Португальский</item>
-		<item>Русский</item>
-		<item>Испанский</item>
-		<item>Шведский</item>
-		<item>Турецский</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>Ферзь</item>
 		<item>Ладья</item>

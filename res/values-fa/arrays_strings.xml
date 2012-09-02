@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>انگلیسی</item>
-		<item>عربی</item>
-		<item>چینی</item>
-		<item>دانمارکی</item>
-		<item>هلندی</item>
-		<item>فرانسوی</item>
-		<item>آلمانی</item>
-		<item>عبری</item>
-		<item>هندی</item>
-		<item>ایتالیایی</item>
-		<item>ژاپنی</item>
-		<item>کره ای</item>
-		<item>نروژی</item>
-		<item>Persian</item>
-		<item>لهستانی</item>
-		<item>پرتغالی</item>
-		<item>روسی</item>
-		<item>اسپانیایی</item>
-		<item>سوئد</item>
-		<item>ترکی</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>ملکه</item>
 		<item>کلاغ سیاه</item>

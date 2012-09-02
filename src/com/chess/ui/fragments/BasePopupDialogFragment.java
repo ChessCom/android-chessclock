@@ -63,9 +63,10 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(POPUP_ITEM, popupItem);
-    }
+		outState.putSerializable("smth", "value");
+		super.onSaveInstanceState(outState);
+		outState.putSerializable(POPUP_ITEM, popupItem);
+	}
 
 	@Override
 	public void onResume() {

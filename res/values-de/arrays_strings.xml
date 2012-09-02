@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Englisch</item>
-		<item>Arabisch</item>
-		<item>Chinesisch</item>
-		<item>Dänisch</item>
-		<item>Niederländisch</item>
-		<item>Französisch</item>
-		<item>Deutsch</item>
-		<item>Hebräisch</item>
-		<item>Hindi</item>
-		<item>Italienisch</item>
-		<item>Japanisch</item>
-		<item>Koreanisch</item>
-		<item>Norwegisch</item>
-		<item>Persisch</item>
-		<item>Polnisch</item>
-		<item>Portugiesisch</item>
-		<item>Russisch</item>
-		<item>Spanisch</item>
-		<item>Schwedisch</item>
-		<item>Türkisch</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>Königin</item>
 		<item>Turm</item>

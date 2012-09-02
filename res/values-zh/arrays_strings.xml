@@ -1,27 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>阿拉伯语</item>
-		<item>中国</item>
-		<item>丹麦语</item>
-		<item>荷兰语</item>
-		<item>法国风味</item>
-		<item>德国风味</item>
-		<item>希伯来语</item>
-		<item>北印度语</item>
-		<item>意大利的</item>
-		<item>日本</item>
-		<item>朝鲜风味</item>
-		<item>挪威语</item>
-		<item>波斯语</item>
-		<item>波兰风味</item>
-		<item>葡萄牙风味</item>
-		<item>俄罗斯风味</item>
-		<item>西语</item>
-		<item>瑞典风味</item>
-		<item>土耳其风味</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>女王</item>
 		<item>车</item>
@@ -29,8 +7,6 @@
 		<item>骑士</item>
 		<item>@string/cancel</item>
 	</string-array>
-
-
 
 	<string-array name="playas">
 		<item>随机</item>

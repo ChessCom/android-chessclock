@@ -48,7 +48,6 @@
 	
 
 	<string-array name="skill">
-	    <item>Non Impostato</item>
 	    <item>Debuttante</item>
 		<item>Intermedio</item>
 		<item>Avanzate</item>

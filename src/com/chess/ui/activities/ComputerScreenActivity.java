@@ -20,7 +20,7 @@ import com.flurry.android.FlurryAgent;
  * @author alien_roger
  * @created at: 08.02.12 7:21
  */
-public class ComputerScreenActivity extends LiveBaseActivity {
+public class ComputerScreenActivity extends LiveBaseActivity implements AdapterView.OnItemSelectedListener {
 
 	private Spinner strength;
 
@@ -33,17 +33,7 @@ public class ComputerScreenActivity extends LiveBaseActivity {
 
 		strength = (Spinner) findViewById(R.id.strengthSpinner);
 		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
-		strength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-				preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
-				preferencesEditor.commit();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> a) {
-			}
-		});
+		strength.setOnItemSelectedListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);
 	}
@@ -91,4 +81,13 @@ public class ComputerScreenActivity extends LiveBaseActivity {
 		}
 	}
 
+	@Override
+	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+		preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+		preferencesEditor.commit();
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> adapterView) {
+	}
 }

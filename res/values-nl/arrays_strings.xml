@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Engels</item>
-		<item>Arabisch</item>
-		<item>Chinees</item>
-		<item>Deens</item>
-		<item>Nederlands </item>
-		<item>Frans</item>
-		<item>Duits</item>
-		<item>Hebreeuws</item>
-		<item>Hindi</item>
-		<item>Italiaans</item>
-		<item>Japans </item>
-		<item>Koreaans</item>
-		<item>Noors</item>
-		<item>Perzisch</item>
-		<item>Pools</item>
-		<item>Portugees </item>
-		<item>Russisch</item>
-		<item>Spaans</item>
-		<item>Zweeds </item>
-		<item>Turks</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>Koningin</item>
 		<item>Roek</item>

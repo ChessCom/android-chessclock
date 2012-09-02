@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Angielski</item>
-		<item>Arabski</item>
-		<item>Chiński</item>
-		<item>Duński</item>
-		<item>Holenderski</item>
-		<item>Francuski</item>
-		<item>Niemiecki</item>
-		<item>Hebrajski</item>
-		<item>Hindi</item>
-		<item>Włoski</item>
-		<item>Japonia</item>
-		<item>Koreański</item>
-		<item>Norweski</item>
-		<item>Perski</item>
-		<item>Polski</item>
-		<item>Portugalski</item>
-		<item>Rosyjski</item>
-		<item>Hiszpański</item>
-		<item>Szwedzki</item>
-		<item>Turecki</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>Królowa</item>
 		<item>Gawron</item>

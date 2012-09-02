@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>"אנגלית"</item>
-		<item>"ערבית"</item>
-		<item>"סינית"</item>
-		<item>"דנית"</item>
-		<item>"הולנדית"</item>
-		<item>"צרפתית"</item>
-		<item>"גרמנית"</item>
-		<item>"עברית"</item>
-		<item>"הינדית"</item>
-		<item>"איטלקית"</item>
-		<item>"יפנית"</item>
-		<item>"קוריאנית"</item>
-		<item>"נורווגית"</item>
-		<item>"פרסית"</item>
-		<item>"פולנית"</item>
-		<item>"פורטוגזית"</item>
-		<item>"רוסית"</item>
-		<item>"ספרדית"</item>
-		<item>"שוודית"</item>
-		<item>"תורכית"</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>מלכה</item>
 		<item>צריח</item>

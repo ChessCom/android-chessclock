@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>الإنجليزية</item>
-		<item>العربية</item>
-		<item>صيني- ينتمي للصين</item>
-		<item>الدانماركية</item>
-		<item>الهولندية</item>
-		<item>الفرنسية</item>
-		<item>الألمانية</item>
-		<item>العبرية</item>
-		<item>الهندية</item>
-		<item>الإيطالية</item>
-		<item>اليابانية</item>
-		<item>الكورية</item>
-		<item>النرويجية</item>
-		<item>الفارسية</item>
-		<item>البولندية</item>
-		<item>البرتغالية</item>
-		<item>الروسية</item>
-		<item>الإسبانية</item>
-		<item>السويدية</item>
-		<item>التركية</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>ملكة</item>
 		<item>غراب</item>

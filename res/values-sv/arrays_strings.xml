@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Engelska</item>
-		<item>Arabiska</item>
-		<item>Kinesisk</item>
-		<item>Danska</item>
-		<item>Nederländska</item>
-		<item>Franska</item>
-		<item>Tyska</item>
-		<item>Hebreiska</item>
-		<item>Hindi</item>
-		<item>Italienska</item>
-		<item>Japanska</item>
-		<item>Koreansk</item>
-		<item>Norska</item>
-		<item>Persiska</item>
-		<item>Polska</item>
-		<item>Portugisiska</item>
-		<item>Ryska</item>
-		<item>Spanska</item>
-		<item>Svenskt</item>
-		<item>turkiska</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>drottning</item>
 		<item>Rook</item>

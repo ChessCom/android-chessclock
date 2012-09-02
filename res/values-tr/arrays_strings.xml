@@ -1,28 +1,5 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>İngilizce</item>
-		<item>Arapça</item>
-		<item>Çin</item>
-		<item>Danca</item>
-		<item>Felemenkçe</item>
-		<item>Fransızca</item>
-		<item>Almanca</item>
-		<item>İbranice</item>
-		<item>Hintçe</item>
-		<item>İtalyanca</item>
-		<item>Japon.</item>
-		<item>Kore</item>
-		<item>Norveç</item>
-		<item>Farsça</item>
-		<item>Polonyaca</item>
-		<item>Portekizce</item>
-		<item>Rus</item>
-		<item>İspanyolca</item>
-		<item>İsveççe</item>
-		<item>Türk</item>
-	</string-array>-->
-
 	<string-array name="promotion_options">
 		<item>Kraliçe</item>
 		<item>Kale</item>
