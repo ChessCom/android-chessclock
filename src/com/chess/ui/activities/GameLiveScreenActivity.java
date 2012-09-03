@@ -682,6 +682,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
 	}
 
+	@Override
+	public boolean currentGameExist() {
+		return getLccHolder().getCurrentGame() != null;
+	}
+
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
 		if (userPlayWhite) {
 			whitePlayerlabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR

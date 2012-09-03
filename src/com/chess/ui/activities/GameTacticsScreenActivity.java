@@ -223,6 +223,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
+	public boolean currentGameExist() {
+		return getTacticItem() != null;
+	}
+
+	@Override
 	public void checkMove() {
 
 		noInternet = !AppUtils.isNetworkAvailable(getContext());

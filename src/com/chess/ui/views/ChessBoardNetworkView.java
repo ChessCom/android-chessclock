@@ -241,10 +241,11 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			return super.onTouchEvent(event);
 		}
         
-        if(locked) {
+        if(locked || !gameActivityFace.currentGameExist()) {
 			Log.d("TEST", "locked = true");
 			return super.onTouchEvent(event);
 		}
+
 
 		track = false;
 		if (!boardFace.isAnalysis()) {

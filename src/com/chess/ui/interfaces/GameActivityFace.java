@@ -38,4 +38,6 @@ public interface GameActivityFace {
 	String getBlackPlayerName();
 
 	void onCheck();
+
+	boolean currentGameExist();
 }

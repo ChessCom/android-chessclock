@@ -127,6 +127,11 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	@Override
+	public boolean currentGameExist() {
+		return true;
+	}
+
+	@Override
 	public void showOptions() {
 		boardView.stopThinking(); // stopThinking = true;
 

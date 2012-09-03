@@ -111,6 +111,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		boardView.setGameActivityFace(this);
+		boardView.lockBoard(true);
 	}
 
 	public void init() {
@@ -207,6 +208,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
 		gamePanelView.enableGameControls(true);
+		boardView.lockBoard(false);
 
 		checkMessages();
 
@@ -283,6 +285,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	public void onGameRefresh(GameOnlineItem newGame) {
 		currentGame = newGame;
 		gamePanelView.enableGameControls(true);
+		boardView.lockBoard(false);
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
@@ -338,6 +341,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
+	public boolean currentGameExist() {
+		return currentGame != null;
+	}
+
+	@Override
 	public void updateAfterMove() {
 		showSubmitButtonsLay(false);
 
@@ -380,6 +388,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
 				gamePanelView.enableGameControls(true);
+				boardView.lockBoard(false);
+
 				sendMove();
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);

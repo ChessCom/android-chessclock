@@ -205,6 +205,11 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
+	public boolean currentGameExist() {
+		return currentGame != null;
+	}
+
+	@Override
 	public void updateAfterMove() {
 	}
 
