@@ -60,11 +60,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
 
-	protected PopupDialogFragment popupDialogFragment;
+//	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
 	protected PopupItem popupProgressItem;
-	protected PopupProgressFragment popupProgressDialogFragment;
+//	protected PopupProgressFragment popupProgressDialogFragment;
 	protected List<PopupDialogFragment> popupManager;
+	protected List<PopupProgressFragment> popupProgressManager;
 
 	protected boolean isPaused;
     private String currentLocale;
@@ -91,11 +92,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 
 		popupItem = new PopupItem();
-		popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+//		popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 		popupProgressItem = new PopupItem();
-		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
+//		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
 
 		popupManager = new ArrayList<PopupDialogFragment>();
+		popupProgressManager = new ArrayList<PopupProgressFragment>();
 
 		preferences = AppData.getPreferences(this);
 		preferencesEditor = preferences.edit();
@@ -198,7 +200,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	private void dismissFragmentDialog(DialogFragment fragment){
-		popupDialogFragment.setButtons(2);
+//		popupDialogFragment.setButtons(2);
 
 		popupItem.setPositiveBtnId(R.string.ok);
 		popupItem.setNegativeBtnId(R.string.cancel);
@@ -232,29 +234,29 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	// Single button no callback dialogs
 	protected void showSinglePopupDialog(int titleId, int messageId) {
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(String title, String message) {
 		showPopupDialog(title, message, INFO_POPUP_TAG);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(int titleId, String message) {
 		// temporary handling i18n manually
 		final String messageI18n = AppUtils.getI18nStringForAPIError(context, message);
 		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(String message) {
 		showPopupDialog(message, INFO_POPUP_TAG);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(int messageId) {
 		showPopupDialog(messageId, INFO_POPUP_TAG);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
 	}
 
 	// Default Dialogs
@@ -282,60 +284,90 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		updatePopupAndShow(tag);
 	}
 
-	protected void showPopupDialog(String title, String tag) {
+	protected void showPopupDialog(String title, String tag) {  // TODO handle popups overlays - set default button values
 		popupItem.setTitle(title);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
 		updatePopupAndShow(tag);
 	}
 
-	private void updatePopupAndShow(String tag){
-		popupDialogFragment.updatePopupItem(popupItem);
-		popupDialogFragment.show(getSupportFragmentManager(), tag);
+	private synchronized void updatePopupAndShow(String tag){
+		popupManager.add(PopupDialogFragment.newInstance(popupItem));
+		getLastPopupFragment().show(getSupportFragmentManager(), tag); // TODO verify
+//		popupDialogFragment.updatePopupItem(popupItem);
+//		popupDialogFragment.show(getSupportFragmentManager(), tag);
 	}
 
 	// Progress Dialogs
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		updateProgressAndShow();
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupProgressDialog(String title, String message) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(message);
-		updateProgressAndShow();
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		updateProgressAndShow();
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
 		popupProgressDialogFragment.setNotCancelable();
-		updateProgressAndShow();
+		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupProgressDialog(int titleId, int messageId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(messageId);
-		updateProgressAndShow();
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
-	private void updateProgressAndShow(){
+//	private void updateProgressAndShow(){
+//		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
+//		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+//	}
+
+	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment){
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
+		popupProgressManager.add(popupProgressDialogFragment);
 	}
 
 	protected void dismissFragmentDialog() {
-		popupDialogFragment.dismiss();
+		if (getLastPopupFragment() == null)
+			return;
+
+		getLastPopupFragment().dismiss();
+		popupManager.remove(popupManager.size()-1);
+//		popupDialogFragment.dismiss();
+	}
+
+	protected PopupDialogFragment getLastPopupFragment(){
+		if (popupManager.size() == 0){
+			return null; //
+		} else {
+			return popupManager.get(popupManager.size()-1);
+		}
 	}
 
 	protected void dismissProgressDialog() {
-		popupProgressDialogFragment.dismiss();
+		if(popupProgressManager.size() == 0)
+			return;
+
+		popupProgressManager.get(popupProgressManager.size()-1).dismiss();
+//		popupProgressDialogFragment.dismiss();
 	}
 
 	public void dismissAllPopups() {

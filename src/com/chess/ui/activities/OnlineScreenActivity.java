@@ -434,7 +434,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
-				popupDialogFragment.setButtons(3);
+				getLastPopupFragment().setButtons(3);
+//				popupDialogFragment.setButtons(3);
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 
 			} else {

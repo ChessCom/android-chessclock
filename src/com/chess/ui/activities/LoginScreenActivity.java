@@ -282,7 +282,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				return;
 
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
-			popupDialogFragment.setButtons(1);
+			getLastPopupFragment().setButtons(1);
+//			popupDialogFragment.setButtons(1);
 		}
 	}
 

@@ -396,7 +396,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (getCurrentProblem() >= getTacticsBatch().size()) {
 			if (DataHolder.getInstance().isGuest()) {
 				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
-				popupDialogFragment.setButtons(1);
+				getLastPopupFragment().setButtons(1);
+//				popupDialogFragment.setButtons(1);
 			} else {
 				showLimitDialog();
 			}

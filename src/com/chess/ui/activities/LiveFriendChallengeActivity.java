@@ -204,7 +204,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 
 		popupItem.setPositiveBtnId(R.string.ok);
 		showPopupDialog(R.string.congratulations, R.string.challengeSent, CHALLENGE_SENT_TAG);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
+//		popupDialogFragment.setButtons(1);
 	}
 
 	@Override

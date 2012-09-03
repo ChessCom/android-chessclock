@@ -228,7 +228,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		});
 
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
-		popupDialogFragment.setButtons(1);
+//		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
+
 	}
 
     @Override
@@ -238,8 +240,10 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
     @Override
 	public void onObsoleteProtocolVersion() {
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
-		popupDialogFragment.setButtons(1);
-		popupDialogFragment.setCancelable(false);
+		getLastPopupFragment().setButtons(1);
+		getLastPopupFragment().setCancelable(false);
+//		popupDialogFragment.setButtons(1);
+//		popupDialogFragment.setCancelable(false);
 	}
 
 	@Override
@@ -249,7 +253,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
-		popupDialogFragment.setButtons(1);
+		getLastPopupFragment().setButtons(1);
+//		popupDialogFragment.setButtons(1);
 	}
 
 	// -----------------------------------------------------
@@ -274,9 +279,9 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			if (isPaused)
 				return;
 
-			showPopupDialog(R.string.update_check, R.string.update_available_please_update,
-					CHECK_UPDATE_TAG);
-			popupDialogFragment.setButtons(1);
+			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
+			getLastPopupFragment().setButtons(1);
+//			popupDialogFragment.setButtons(1);
 		}
 	}
 
