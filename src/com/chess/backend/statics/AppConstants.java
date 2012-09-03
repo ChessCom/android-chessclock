@@ -79,4 +79,6 @@ public class AppConstants {
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 
     public static final String CURRENT_LOCALE = "current locale of screen";
+
+	public static final String BUGSENSE_DEBUG_APP_API_REQUEST = "APP_API_REQUEST";
 }

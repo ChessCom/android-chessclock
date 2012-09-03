@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -527,6 +528,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (pos == GameOnlineItem.FINISHED_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
+			// todo: temporary
+			BugSenseHandler.addExtra("APP_FINISHED_USER_TOKEN", AppData.getUserToken(this));
 		}
 
 		updateList(selectedLoadItem);

@@ -1,9 +1,11 @@
 package com.chess.backend.tasks;
 
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -41,6 +43,7 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 
 		Log.d(TAG, "retrieving from url = " + url);
+		BugSenseHandler.addExtra(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, url);
 
 		HttpRequestBase httpGet = new HttpGet(url);
 		try {

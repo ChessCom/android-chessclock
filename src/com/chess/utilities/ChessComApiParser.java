@@ -116,7 +116,11 @@ public class ChessComApiParser {
 			} catch (NumberFormatException ex) {
 
 				Map<String, String> extraData = new HashMap<String, String>();
-				extraData.put(AppConstants.RESPONSE, AppData.getUserName(temporaryContext) + " " + result);
+				extraData.put(AppConstants.RESPONSE,
+						"NAME=" + AppData.getUserName(temporaryContext) +
+						", TOKEN=" + AppData.getUserToken(temporaryContext) +
+						", SESSION_ID=" + AppData.getUserSessionId(temporaryContext) +
+						", RESPONSE=" + result);
 				BugSenseHandler.log("DEBUG_FINISHED_GAMES_LIST", extraData, ex);
 
 				return output;
