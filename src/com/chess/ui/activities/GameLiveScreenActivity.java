@@ -453,8 +453,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
 
-		final String temporaryDebugInfo = "lccInitiated=" + lccInitiated +
-				", Hist=" + getBoardFace().getHistDat().length +
+		final String temporaryDebugInfo =
+				"lccInitiated=" + lccInitiated +
 				", Hply=" + getBoardFace().getHply() +
 				", Init=" + getBoardFace().isInit() +
 				", MoveLive=" + getBoardFace().convertMoveLive() +
