@@ -84,8 +84,5 @@ public class StaticData {
 	public static final int DIAMOND_LEVEL = 50;
 	public static final int STAFF_LEVEL = 90;
 
-
-	public static final int SDK_ICE_CREAM_SANDWICH = 14;
-	public static final int SDK_HONEYCOMB = 11;
     public static final String LOCALE_EN = "en";
 }

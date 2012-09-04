@@ -87,7 +87,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= StaticData.SDK_ICE_CREAM_SANDWICH && getActionBar() != null) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && getActionBar() != null) {
 			getActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
 					| ActionBar.DISPLAY_USE_LOGO
 					| ActionBar.DISPLAY_SHOW_HOME
@@ -231,7 +231,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh, menu);
 
-		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB){
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			// Get the SearchView and set the searchable configuration
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();

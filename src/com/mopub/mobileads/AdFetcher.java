@@ -356,7 +356,7 @@ public class AdFetcher {
 		}
 
 		public AsyncTask<String, Void, AdFetchResult> executeTask(String... input) {
-			if (Build.VERSION.SDK_INT > StaticData.SDK_HONEYCOMB) {
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
 				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 			} else
 				execute(input);

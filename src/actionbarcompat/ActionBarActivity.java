@@ -71,7 +71,7 @@ public abstract class ActionBarActivity extends BaseFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(Build.VERSION.SDK_INT >= StaticData.SDK_HONEYCOMB)
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			invalidateOptionsMenu();
 	}
 

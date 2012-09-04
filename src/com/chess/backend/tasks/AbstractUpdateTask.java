@@ -65,7 +65,7 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 	}
 
 	public AbstractUpdateTask<T, Input> executeTask(Input... input){
-		if(Build.VERSION.SDK_INT > StaticData.SDK_HONEYCOMB){
+		if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
 			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 		}else
 			execute(input);
