@@ -24,14 +24,6 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 
 	}
 
-	public long getGameId(){
-		return gameId;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
 	public String getGameType() {
 		return gameType;
 	}

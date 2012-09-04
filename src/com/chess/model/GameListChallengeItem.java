@@ -26,10 +26,6 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		isRated = values[9];
 		initialSetupFen = values[10];
 	}
-
-	public long getGameId(){
-		return gameId;
-	}
 	
 	public String getOpponentUsername(){
 		return opponentName;

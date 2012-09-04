@@ -24,18 +24,6 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 
 	}
 
-	public long getGameId(){
-		return gameId;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public String getFen() {
-		return fen;
-	}
-
 	public String getFenStringLength() {
 		return fenStrLength;
 	}
@@ -66,18 +54,6 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 
 	public String getOpponentUsername() {
 		return opponentName;
-	}
-
-	public String getTimeRemainingAmount() {
-		return timeRemainingAmount;
-	}
-
-	public String getTimeRemainingUnits() {
-		return timeRemainingUnits;
-	}
-
-	public long getTimestamp() {
-		return timestamp;
 	}
 
 	public String getUsernameStringLength() {
