@@ -528,8 +528,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (pos == GameOnlineItem.FINISHED_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-			// todo: temporary
-			BugSenseHandler.addExtra("APP_FINISHED_USER_TOKEN", AppData.getUserToken(this));
 		}
 
 		updateList(selectedLoadItem);

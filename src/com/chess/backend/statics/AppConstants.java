@@ -81,4 +81,5 @@ public class AppConstants {
     public static final String CURRENT_LOCALE = "current locale of screen";
 
 	public static final String BUGSENSE_DEBUG_APP_API_REQUEST = "APP_API_REQUEST";
+	public static final String BUGSENSE_DEBUG_APP_API_RESPONSE = "APP_API_RESPONSE";
 }

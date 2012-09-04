@@ -43,7 +43,9 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 
 		Log.d(TAG, "retrieving from url = " + url);
-		BugSenseHandler.addExtra(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, url);
+
+		long tag = System.currentTimeMillis();
+		BugSenseHandler.addExtra(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
 
 		HttpRequestBase httpGet = new HttpGet(url);
 		try {
@@ -59,6 +61,7 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 				item = EntityUtils.toString(response.getEntity());
 				result = StaticData.RESULT_OK;
 				Log.d(TAG, "WebRequest SERVER RESPONSE: " + item);
+				BugSenseHandler.addExtra(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + item);
 			}
 
 		} catch (IOException e) {
