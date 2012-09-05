@@ -63,7 +63,10 @@ public class MraidBrowser extends Activity {
                         url.startsWith("voicemail:") || url.startsWith("sms:") || 
                         url.startsWith("mailto:") || url.startsWith("geo:") || 
                         url.startsWith("google.streetview:")) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+
+					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(i);
 					finish();
                     return true;
                 }

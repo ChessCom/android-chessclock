@@ -111,7 +111,8 @@ public class AdView extends WebView {
 		/* Important: don't allow any WebView subclass to be instantiated using
 				 * an Activity context, as it will leak on Froyo devices and earlier.
 				 */
-		super(context.getApplicationContext());
+//		super(context.getApplicationContext()); // this rise android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+		super(context);
 
 		mMoPubView = view;
 		mAutorefreshEnabled = true;

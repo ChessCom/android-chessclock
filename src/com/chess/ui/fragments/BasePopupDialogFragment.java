@@ -1,10 +1,10 @@
 package com.chess.ui.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.chess.R;
@@ -32,12 +32,6 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_FRAME, 0);
     }
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		// TODO change default method
-	}
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -100,7 +94,11 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
         isShowed = true;
 		FragmentTransaction ft = manager.beginTransaction();
 		ft.add(this, tag);
-		ft.commitAllowingStateLoss();
+		try{
+			ft.commitAllowingStateLoss();
+		} catch (IllegalStateException ex){
+			Log.e("FragmentShow", "Fragment was showed when activity is dead" + ex.toString());
+		}
     }
 
     @Override

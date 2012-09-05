@@ -15,6 +15,7 @@ public class MraidInterstitialAdapter extends BaseInterstitialAdapter {
         Activity activity = mInterstitial.getActivity();
         Intent i = new Intent(activity, MraidActivity.class);
         i.putExtra("com.mopub.mobileads.Source", mJsonParams);
-        activity.startActivity(i);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		activity.startActivity(i);
     }
 }

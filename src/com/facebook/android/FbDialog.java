@@ -166,7 +166,9 @@ public class FbDialog extends Dialog {
                 return false;
             }
             // launch non-dialog URLs in a full browser
-            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
             return true;
         }
 

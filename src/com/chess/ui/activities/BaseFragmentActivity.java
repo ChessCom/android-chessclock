@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,8 +13,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -70,8 +67,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	protected boolean isPaused;
     private String currentLocale;
-	protected Animation fadeInAnimation;
-	protected Animation fadeOutAnimation;
+//	protected Animation fadeInAnimation;
+//	protected Animation fadeOutAnimation;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -109,10 +106,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
         currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
         setLocale();
 
-		if (Build.VERSION.SDK_INT != Build.VERSION_CODES.HONEYCOMB_MR1) { // fix for 3.1 - NumberFormatException: Invalid int: "res/drawable/title_bar.xml"
-			fadeInAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-			fadeOutAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-		}
+//		fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in); // temporary unused
+//		fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 	}
 
 	@Override

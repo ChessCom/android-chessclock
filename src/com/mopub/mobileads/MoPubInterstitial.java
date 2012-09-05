@@ -105,6 +105,7 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
     private void showHtmlInterstitial() {
         String responseString = mInterstitialView.getResponseString();
         Intent i = new Intent(mActivity, MoPubActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra("com.mopub.mobileads.AdUnitId", mAdUnitId);
         i.putExtra("com.mopub.mobileads.Keywords", mInterstitialView.getKeywords());
         i.putExtra("com.mopub.mobileads.Source", responseString);
