@@ -60,6 +60,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gamePanelView.hideChatButton();
+		gamePanelView.enableGameControls(false);
 
 		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
@@ -135,6 +136,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		getSoundPlayer().playGameStart();
 
 		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+		gamePanelView.enableGameControls(true);
 
 		adjustBoardForGame();
 	}

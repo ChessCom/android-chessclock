@@ -229,7 +229,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 
         track = false;
         if (!boardFace.isAnalysis()) {
-            if (finished || boardFace.isSubmit())
+            if (finished ) // TODO probably never happens
                 return true;
 
             if (boardFace.getHply() % 2 == 0) {

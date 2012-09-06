@@ -345,7 +345,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
         track = false;
         if (!boardFace.isAnalysis()) {
-            if (computerMoving || finished || boardFace.isSubmit())
+            if (computerMoving || finished)
                 return true;
 
 			if ((AppData.isComputerVsHumanWhiteGameMode(boardFace) && boardFace.getHply() % 2 != 0)

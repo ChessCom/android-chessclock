@@ -114,12 +114,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		vacationCheckBox = (CheckBox) findViewById(R.id.prefVacation);
 
 		minRatingSpinner = (Spinner) findViewById(R.id.minRatingSpinner);
-		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
+		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
 		minRatingSpinner.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 		minRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
 
 		maxRatingSpinner = (Spinner) findViewById(R.id.maxRatingSpinner);
-		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
+		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
 		maxRatingSpinner.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 		maxRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
 
@@ -152,17 +152,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
 
-		langSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.languages));
+		langSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.languages)));
 		langSpinner.setOnItemSelectedListener(langSelectedListener);
 		langSpinner.setSelection(AppData.getLanguageCode(this));
 
 		afterMyMoveSpinner = (Spinner) findViewById(R.id.afterMoveSpinner);
-		afterMyMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.AIM));
+		afterMyMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.AIM)));
 		afterMyMoveSpinner.setOnItemSelectedListener(afterMyMoveSelectedListener);
 		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
 
 		strengthSpinner = (Spinner) findViewById(R.id.prefStrength);
-		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
+		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
 		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
 
 		List<SelectionItem> piecesList = new ArrayList<SelectionItem>(9);

@@ -2,6 +2,8 @@ package com.chess.model;
 
 public class GameListChallengeItem extends BaseGameOnlineItem{
 
+	private static final long serialVersionUID = -3955725041630450331L;
+
 	private String opponentWinCount;
 	private String opponentLossCount;
 	private String opponentDrawCount;

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -435,9 +434,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
-				getLastPopupFragment().setButtons(3);
-//				popupDialogFragment.setButtons(3);
+
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
+				getLastPopupFragment().setButtons(3);
 
 			} else {
 				DataHolder.getInstance().setAcceptDraw(false);

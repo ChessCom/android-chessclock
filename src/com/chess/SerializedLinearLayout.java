@@ -14,6 +14,8 @@ import java.io.Serializable;
  */
 public class SerializedLinearLayout extends LinearLayout implements Serializable{
 
+	private static final long serialVersionUID = -8464648125307185315L;
+
 	public SerializedLinearLayout(Context context) {
 		super(context);
 	}

@@ -12,6 +12,8 @@ import java.util.Iterator;
  */
 public class GameLiveItem extends BaseGameItem {
 
+	private static final long serialVersionUID = -1595434515333793544L;
+
 	public GameLiveItem(Game lccGame, int moveIndex) {
 
 		gameId = lccGame.getId();

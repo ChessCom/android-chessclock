@@ -519,8 +519,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public void invalidateGameScreen() {
-		if (getBoardFace().isSubmit())
-			showSubmitButtonsLay(true);
+		showSubmitButtonsLay(getBoardFace().isSubmit());
 
 		whitePlayerlabel.setVisibility(View.VISIBLE);
 		blackPlayerLabel.setVisibility(View.VISIBLE);
@@ -540,7 +539,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-		getBoardFace().setSubmit(show);
+//		getBoardFace().setSubmit(show);
 
 		if(show){
 			blinkSubmitBtn();

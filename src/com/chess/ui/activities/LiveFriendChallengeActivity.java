@@ -82,7 +82,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeEdt.setOnTouchListener(this);
 
 		iPlayAsSpnr = (Spinner) findViewById(R.id.iplayas);
-		iPlayAsSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
+		iPlayAsSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
 
 		findViewById(R.id.createchallenge).setOnClickListener(this);
         friendsTxt = (TextView) findViewById(R.id.friendsTxt);
@@ -119,7 +119,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
             }
             
 			friendsSpinner.setEnabled(true);
-			friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, friends));
+			friendsSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromArray(friends)));
 
 			dismissFragmentDialog();
 		}

@@ -90,7 +90,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		getCountryCode();
 		Spinner countrySpinner = (Spinner) findViewById(R.id.country);
-		countrySpinner.setAdapter(new ChessSpinnerAdapter(this, tmp2));
+		countrySpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromArray(tmp2)));
 		countrySpinner.setOnItemSelectedListener(this);
 
 		regSubmit.setOnClickListener(this);

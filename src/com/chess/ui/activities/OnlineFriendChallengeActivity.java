@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -42,15 +41,15 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		daysArr = getResources().getIntArray(R.array.daysArr);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
-		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
+		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
 
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 
 		iPlayAsSpnr = (Spinner) findViewById(R.id.iplayas);
-		iPlayAsSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
+		iPlayAsSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
 
 		friendsSpnr = (Spinner) findViewById(R.id.friendsSpinner);
-		friendsSpnr.setAdapter(new ChessSpinnerAdapter(this, new String[]{StaticData.SYMBOL_EMPTY}));
+		friendsSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromArray(new String[]{StaticData.SYMBOL_EMPTY})));
 
 		isRatedChkBx = (CheckBox) findViewById(R.id.ratedGame);
 		findViewById(R.id.createchallenge).setOnClickListener(this);
@@ -91,8 +90,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		friends = ChessComApiParser.GetFriendsParse(response);
 
-		ArrayAdapter<String> friendsAdapter = new ChessSpinnerAdapter(this, friends);
-		friendsSpnr.setAdapter(friendsAdapter);
+		friendsSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromArray(friends)));
 		if (friendsSpnr.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 
             popupItem.setPositiveBtnId(R.string.invite);

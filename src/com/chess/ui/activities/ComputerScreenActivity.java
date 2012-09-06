@@ -32,7 +32,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		findViewById(R.id.load).setOnClickListener(this);
 
 		strength = (Spinner) findViewById(R.id.strengthSpinner);
-		strength.setAdapter(new ChessSpinnerAdapter(this, R.array.strength));
+		strength.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
 		strength.setOnItemSelectedListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);

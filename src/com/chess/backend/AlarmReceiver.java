@@ -47,17 +47,18 @@ public class AlarmReceiver extends BroadcastReceiver {
 				int haveMoves = 0;
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
 				if(itemList.size() == NOTIFICATIONS_ICON_CNT) {
-					for (GameListCurrentItem gameListItem : itemList) {
+					AppUtils.cancelNotification(getMeContext(), R.id.notification_message);
 
-						AppUtils.showNewMoveStatusNotification(getMeContext(),
-								getMeContext().getString(R.string.your_move),
-								getMeContext().getString(R.string.your_turn_in_game_with,
-										gameListItem.getOpponentUsername(),
-										gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
-								StaticData.MOVE_REQUEST_CODE,
-								gameListItem);
-						haveMoves++;
-					}
+					GameListCurrentItem gameListItem = itemList.get(0);
+
+					AppUtils.showNewMoveStatusNotification(getMeContext(),
+							getMeContext().getString(R.string.your_move),
+							getMeContext().getString(R.string.your_turn_in_game_with,
+									gameListItem.getOpponentUsername(),
+									gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
+							StaticData.MOVE_REQUEST_CODE,
+							gameListItem);
+					haveMoves++;
 				} else if(itemList.size() > 0) {
 					for (GameListCurrentItem currentItem : itemList) {
 						AppUtils.cancelNotification(getMeContext(), (int) currentItem.getGameId());
@@ -71,7 +72,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
 				}
 
-				if(haveMoves > 0 && haveMoves < 1){ // play for one
+				if(haveMoves == 1){ // play for one
 					SharedPreferences preferences = AppData.getPreferences(getMeContext());
 					boolean playSounds = preferences.getBoolean(AppData.getUserName(getMeContext()) + AppConstants.PREF_SOUNDS, false);
 					if(playSounds){

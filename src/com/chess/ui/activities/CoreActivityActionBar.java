@@ -322,7 +322,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if(isPaused)
 			return;
 
-//		popupDialogFragment.setButtons(1);
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
 		getLastPopupFragment().setButtons(1);
 	}
@@ -340,12 +339,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
     @Override
 	public void onObsoleteProtocolVersion() {
-		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update,
-				OBSOLETE_VERSION_TAG);
+		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
 		getLastPopupFragment().setButtons(1);
 		getLastPopupFragment().setCancelable(false);
-//		popupDialogFragment.setButtons(1);
-//		popupDialogFragment.setCancelable(false);
 	}
 
 	@Override

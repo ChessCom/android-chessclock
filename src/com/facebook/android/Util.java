@@ -98,9 +98,13 @@ public final class Util {
             String array[] = s.split("&");
             for (String parameter : array) {
                 String v[] = parameter.split("=");
-                params.putString(URLDecoder.decode(v[0]),
-                                 URLDecoder.decode(v[1]));
-            }
+				try {
+					params.putString(URLDecoder.decode(v[0], HTTP.UTF_8),
+									 URLDecoder.decode(v[1], HTTP.UTF_8));
+				} catch (UnsupportedEncodingException e) {
+					params.putString(v[0], v[1]);
+				}
+			}
         }
         return params;
     }

@@ -92,8 +92,11 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     private RoboTextView bottomPlayerTimer;
     private Resources resources;
     private LinearLayout piecesLayout;
-    private TextView movesTextView;
-    private ScrollView movesScroll;
+
+	@Deprecated
+	private TextView movesTextView; // will rise OOM
+    @Deprecated
+	private ScrollView movesScroll; // http://stackoverflow.com/questions/10806154/outofmemoryerror-when-inflating-a-layout
 	private boolean blocked;
 	private int playerDotId;
 

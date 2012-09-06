@@ -7,6 +7,8 @@ package com.chess.model;
  */
 public class GameOnlineItem extends BaseGameItem {
 
+	private static final long serialVersionUID = 3153671036660470671L;
+
 	public final static int CURRENT_TYPE = 0;
 	public final static int CHALLENGES_TYPE = 1;
 	public final static int FINISHED_TYPE = 2;

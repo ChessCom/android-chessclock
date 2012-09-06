@@ -62,12 +62,12 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		desc = (TextView) findViewById(R.id.desc);
 
 		skillsSpinner = (Spinner) findViewById(R.id.skillsSpinner);
-		skillsSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.skill));
+		skillsSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.skill)));
 		skillsSpinner.setOnItemSelectedListener(skillsItemSelectedListener);
 		skillsSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, 0));
 
 		categoriesSpinner = (Spinner) findViewById(R.id.categoriesSpinner);
-		categoriesSpinner.setAdapter(new ChessSpinnerAdapter(this, R.array.category));
+		categoriesSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.category)));
 		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
 		categoriesSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_CATEGORY, 0));
 

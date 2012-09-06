@@ -2,6 +2,8 @@ package com.chess.model;
 
 public class GameListCurrentItem extends BaseGameOnlineItem {
 
+	private static final long serialVersionUID = -7231705372370548056L;
+
 	public GameListCurrentItem(String[] values) {
 
 		gameId = Long.parseLong(values[0]);

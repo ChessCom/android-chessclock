@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -59,11 +58,11 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
 
 		minRatingSpnr = (Spinner) findViewById(R.id.minRating);
-		minRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
+		minRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
 		minRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxRatingSpnr = (Spinner) findViewById(R.id.maxRating);
-		maxRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
+		maxRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
 		maxRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);

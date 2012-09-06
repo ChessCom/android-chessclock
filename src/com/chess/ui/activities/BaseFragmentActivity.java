@@ -31,6 +31,7 @@ import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,10 +59,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
 
-//	protected PopupDialogFragment popupDialogFragment;
 	protected PopupItem popupItem;
 	protected PopupItem popupProgressItem;
-//	protected PopupProgressFragment popupProgressDialogFragment;
 	protected List<PopupDialogFragment> popupManager;
 	protected List<PopupProgressFragment> popupProgressManager;
 
@@ -90,9 +89,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 
 		popupItem = new PopupItem();
-//		popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 		popupProgressItem = new PopupItem();
-//		popupProgressDialogFragment = PopupProgressFragment.newInstance(popupProgressItem);
 
 		popupManager = new ArrayList<PopupDialogFragment>();
 		popupProgressManager = new ArrayList<PopupProgressFragment>();
@@ -182,6 +179,17 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onSaveInstanceState(outState);
 	}
 
+	protected List<String> getItemsFromEntries(int entries){
+		String[] array = getResources().getStringArray(entries);
+		return getItemsFromArray(array);
+	}
+
+	protected List<String> getItemsFromArray(String[] array){
+		List<String> items = new ArrayList<String>();
+		items.addAll(Arrays.asList(array));
+		return items;
+	}
+
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		dismissFragmentDialog(fragment);
@@ -198,8 +206,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	private void dismissFragmentDialog(DialogFragment fragment){
-//		popupDialogFragment.setButtons(2);
-
 		popupItem.setPositiveBtnId(R.string.ok);
 		popupItem.setNegativeBtnId(R.string.cancel);
 		fragment.setCancelable(true);
@@ -290,9 +296,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	private synchronized void updatePopupAndShow(String tag){
 		popupManager.add(PopupDialogFragment.newInstance(popupItem));
-		getLastPopupFragment().show(getSupportFragmentManager(), tag); // TODO verify
-//		popupDialogFragment.updatePopupItem(popupItem);
-//		popupDialogFragment.show(getSupportFragmentManager(), tag);
+		getLastPopupFragment().show(getSupportFragmentManager(), tag);
 	}
 
 	// Progress Dialogs
@@ -332,11 +336,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
-//	private void updateProgressAndShow(){
-//		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
-//		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
-//	}
-
 	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment){
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
@@ -349,7 +348,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 		getLastPopupFragment().dismiss();
 		popupManager.remove(popupManager.size()-1);
-//		popupDialogFragment.dismiss();
 	}
 
 	protected PopupDialogFragment getLastPopupFragment(){
@@ -365,7 +363,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 			return;
 
 		popupProgressManager.get(popupProgressManager.size()-1).dismiss();
-//		popupProgressDialogFragment.dismiss();
 	}
 
 	public void dismissAllPopups() {

@@ -42,8 +42,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 		if (!boardFace.isAnalysis()) {
 			if (need2ShowSubmitButtons()) {
-				gameActivityFace.showSubmitButtonsLay(true);
 				boardFace.setSubmit(true);
+				gameActivityFace.showSubmitButtonsLay(true);
 			} else {
 				gameActivityFace.updateAfterMove();
 			}
@@ -253,6 +253,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 					(boardFace.getHply() < boardFace.getMovesCount())) {
 				return true;
 			}
+
+			if(whiteUserName.equals(StaticData.SYMBOL_EMPTY) || blackUserName.equals(StaticData.SYMBOL_EMPTY))
+				return true;
 
 			if (whiteUserName.equals(userName)  && boardFace.getMovesCount() % 2 != 0) {
 				return true;

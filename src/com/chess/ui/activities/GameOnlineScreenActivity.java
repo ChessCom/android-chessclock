@@ -313,8 +313,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public void invalidateGameScreen() {
-		if (getBoardFace().isSubmit())
-			showSubmitButtonsLay(true);
+		showSubmitButtonsLay(getBoardFace().isSubmit());
 
 		whitePlayerlabel.setText(getWhitePlayerName());
 		blackPlayerLabel.setText(getBlackPlayerName());
@@ -564,7 +563,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-		getBoardFace().setSubmit(show);
+//		getBoardFace().setSubmit(show);
 	}
 
 	@Override
@@ -790,6 +789,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.submitBtn) {
+			if(currentGame == null)
+				return;
+
 			sendMove();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			endPopupFragment.dismiss();

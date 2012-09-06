@@ -745,6 +745,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void setTacticToBoard(TacticItem tacticItem, int secondsSpent) {
+		if(tacticItem == null) { // TODO adjust more proper handle
+			return;
+		}
+
 		boardView.setBoardFace(new ChessBoard(this));
 
 		String FEN = tacticItem.getFen();

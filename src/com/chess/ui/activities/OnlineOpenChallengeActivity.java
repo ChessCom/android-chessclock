@@ -35,18 +35,18 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		daysArr = getResources().getIntArray(R.array.daysArr);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
-		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.dayspermove));
+		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
 
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 		iplayasSpnr = (Spinner) findViewById(R.id.iplayas);
-		iplayasSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.playas));
+		iplayasSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
 
 		minRatingSpnr = (Spinner) findViewById(R.id.minRating);
-		minRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.minRating));
+		minRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
 		minRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxRatingSpnr = (Spinner) findViewById(R.id.maxRating);
-		maxRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, R.array.maxRating));
+		maxRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
 		maxRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRatedChkBx = (CheckBox) findViewById(R.id.ratedGame);
