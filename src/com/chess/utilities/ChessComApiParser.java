@@ -111,20 +111,7 @@ public class ChessComApiParser {
 			for (j = 0; j < 15; j++) {
 				tmp2[j] = tmp[inc++];
 			}
-			try { // TODO temp stick! remove after investigation
-				output.add(new GameListFinishedItem(tmp2));
-			} catch (NumberFormatException ex) {
-
-				Map<String, String> extraData = new HashMap<String, String>();
-				extraData.put(AppConstants.RESPONSE,
-						"NAME=" + AppData.getUserName(temporaryContext) +
-						", TOKEN=" + AppData.getUserToken(temporaryContext) +
-						", SESSION_ID=" + AppData.getUserSessionId(temporaryContext) +
-						", RESPONSE=" + result);
-				BugSenseHandler.log("DEBUG_FINISHED_GAMES_LIST", extraData, ex);
-
-				return output;
-			}
+			output.add(new GameListFinishedItem(tmp2));
 		}
 		return output;
 	}

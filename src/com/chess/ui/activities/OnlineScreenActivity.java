@@ -164,11 +164,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		@Override
-		public void updateListData(List<String> itemsList) {
-			super.updateListData(itemsList);
-		}
-
-		@Override
 		public void updateData(String returnedObj) {
 
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
@@ -189,8 +184,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						break;
 				}
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				if (isPaused)
-					return;
+
+				// redundant check? we already clean the tasks pool in onPause, or...?
+				/*if (isPaused)
+					return;*/
 
 				String status = returnedObj.split("[+]")[1];
 
@@ -516,6 +513,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		currentListType = pos;
 		selectedLoadItem.clearParams();
 		if (pos == GameOnlineItem.CURRENT_TYPE) {
+			cleanTaskPool();
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 			selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
