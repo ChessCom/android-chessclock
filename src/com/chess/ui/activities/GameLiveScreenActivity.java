@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -24,6 +25,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -156,9 +158,25 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		setBoardView(boardView);
 
 		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
+		//ChessBoard chessBoard = null;
+
 		if (chessBoard != null) {
 			boardView.setBoardFace(chessBoard);
 		} else {
+
+			try {
+				if (getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
+					throw new RuntimeException("Restored board should not be null! moveN=" + getLccHolder().getLatestMoveNumber());
+				}
+			}
+			catch (RuntimeException e) {
+				BugSenseHandler.log("DEBUG_BOARD_RESTORE", e);
+				e.printStackTrace();
+
+				// temporary fix! still investigating
+				getLccHolder().setLatestMoveNumber(null);
+			}
+
 			boardView.setBoardFace(new ChessBoard(this));
 			getBoardFace().setInit(true);
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
@@ -805,6 +823,21 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getLccHolder().rematch();
 			endPopupFragment.dismiss();
 		}
+	}
+
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		BoardFace board = boardView.getBoardFace();
+		try {
+			if (board == null && getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
+				throw new RuntimeException("Retain board should not be null! moveN=" + getLccHolder().getLatestMoveNumber() + ", board=" + board);
+			}
+		}
+		catch (RuntimeException e) {
+			BugSenseHandler.log("DEBUG_BOARD_RETAIN", e);
+			e.printStackTrace();
+		}
+		return board;
 	}
 }
 
