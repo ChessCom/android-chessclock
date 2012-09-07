@@ -735,6 +735,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		TacticItem tacticItem;
 		if (DataHolder.getInstance().isGuest() || noInternet) {
+			if(getTacticsBatch() == null) // TODO handle properly
+				return;
+
 			tacticItem = getTacticsBatch().get(getCurrentProblem());
 		} else {
 			tacticItem = getTacticItem();

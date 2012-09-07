@@ -186,8 +186,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 
 				// redundant check? we already clean the tasks pool in onPause, or...?
-				/*if (isPaused)
-					return;*/
+				// no cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
+				// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
+				if (isPaused)
+					return;
 
 				String status = returnedObj.split("[+]")[1];
 
