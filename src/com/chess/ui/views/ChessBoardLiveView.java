@@ -18,9 +18,7 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 	}
 
 	protected boolean need2ShowSubmitButtons() {
-		String sharedKey;
-		sharedKey = AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE;
-		return preferences.getBoolean(AppData.getUserName(getContext()) + sharedKey, false);
+		return preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 	}
 
 	@Override

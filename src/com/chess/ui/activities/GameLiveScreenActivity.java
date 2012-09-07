@@ -166,7 +166,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 			try {
 				if (getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
-					throw new RuntimeException("Restored board should not be null! moveN=" + getLccHolder().getLatestMoveNumber());
+					throw new RuntimeException("Restored board should not be null!");
 				}
 			}
 			catch (RuntimeException e) {
@@ -557,10 +557,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-//		getBoardFace().setSubmit(show);
 
 		if(show){
 			blinkSubmitBtn();
+		} else {
+			getBoardFace().setSubmit(false);
 		}
 	}
 
@@ -830,7 +831,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		BoardFace board = boardView.getBoardFace();
 		try {
 			if (board == null && getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
-				throw new RuntimeException("Retain board should not be null! moveN=" + getLccHolder().getLatestMoveNumber() + ", board=" + board);
+				throw new RuntimeException("Retain board should not be null!");
 			}
 		}
 		catch (RuntimeException e) {

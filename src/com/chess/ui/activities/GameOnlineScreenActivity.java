@@ -287,13 +287,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		gamePanelView.enableGameControls(true);
 		boardView.lockBoard(false);
 
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
 			setWhitePlayerDot(userPlayWhite);
 		} else {
 			setWhitePlayerDot(!userPlayWhite);
 		}
-
 
 		if (currentGame.getMoveList().contains("1.")) {
 			int beginIndex = 1;
@@ -563,7 +564,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
-//		getBoardFace().setSubmit(show);
+		if (!show) {
+			getBoardFace().setSubmit(false);
+		}
 	}
 
 	@Override
