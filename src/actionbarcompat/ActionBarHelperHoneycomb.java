@@ -50,6 +50,10 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			return;
 		}
 
+		if(mActivity == null) {
+			return;
+		}
+
 		final MenuItem refreshItem = mOptionsMenu.findItem(R.id.menu_refresh);
 		if (refreshItem != null) {
 			if (refreshing) {
