@@ -494,7 +494,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			legalMove = false;
 		}
 		if(!legalMove) {
-			Log.d("TEST", " legal move result");
+			Log.d("TEST", " legal move result = " + legalMove);
 //			showToast("illegal move");
 		}
 
