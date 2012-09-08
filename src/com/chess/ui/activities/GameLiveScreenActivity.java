@@ -18,6 +18,12 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.live.rules.GameMove;
+import com.chess.live.rules.GameRules;
+import com.chess.live.rules.GameSetup;
+import com.chess.live.rules.chess.ChessRules;
+import com.chess.live.rules.chess.StandardChessMoveEncoder;
+import com.chess.live.util.Notation;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -466,10 +472,32 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     }
 
 	protected void sendMove() {
+
+		getBoardFace().setSubmit(false);
 		showSubmitButtonsLay(false);
 
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
+
+		GameRules gameRules = ChessRules.getInstance();
+		GameSetup gameSetup = gameRules.createDefaultGameSetup();
+		boolean legalMove;
+		try{
+			String testMove = "";
+			if (move.length() > 2)
+				testMove = Notation.coord2live(move);
+
+			final GameMove gameMove = StandardChessMoveEncoder.decodeMove(testMove, gameSetup);
+			legalMove = gameRules.isMoveLegal(gameMove, gameSetup);
+
+		} catch (Exception ex) {
+			legalMove = false;
+		}
+		if(!legalMove) {
+			Log.d("TEST", " legal move result");
+//			showToast("illegal move");
+		}
+
 
 		final String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
@@ -555,7 +583,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	@Override
-	public void showSubmitButtonsLay(boolean show) {
+	public void showSubmitButtonsLay(boolean show) {  // TODO remove arg and get state from boardFace
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
 
 		if(show){

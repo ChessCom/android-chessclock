@@ -165,7 +165,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void showGameEndPopup(final View layout, final String message){
 	}
 
-	protected void setBoardToFinishedState(){
+	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
 		showSubmitButtonsLay(false);
 		boardView.switchAnalysis();
 		gamePanelView.enableAnalysisMode(true);
@@ -202,7 +202,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	public void showChoosePieceDialog(final int col, final int row) {
 		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.choose_a_piece)) // add localized strings
-//				.setItems(new String[]{"Queen", "Rook", "Bishop", "Knight", "Cancel"},
 				.setItems(getResources().getStringArray(R.array.promotion_options),
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -226,37 +225,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 				boardView.invalidate();
 			}
 		},1300);
-
-
-
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//					Thread.sleep(1300);
-//					boardView.getBoardFace().takeNext();
-//					update.sendEmptyMessage(0);
-//				} catch (Exception ignored) {
-//				}
-//			}
-//
-//			private Handler update = new Handler() {
-//				@Override
-//				public void dispatchMessage(Message msg) {
-//					super.dispatchMessage(msg);
-//					invalidateGameScreen();
-//					boardView.invalidate();
-//		fast switching of activities throws NPE
-//		java.lang.NullPointerException
-//		at com.chess.ui.engine.ChessBoard.getMoveListSAN(ChessBoard.java:1379)
-//		at com.chess.ui.engine.ChessBoard.getMoveListSAN(ChessBoard.java:24)
-//		at com.chess.ui.activities.GameTacticsScreenActivity.invalidateGameScreen(GameTacticsScreenActivity.java:625)
-//		at com.chess.ui.activities.GameBaseActivity$2$1.dispatchMessage(GameBaseActivity.java:238)
-
-
-//				}
-//			};
-//		}).start();
 	}
 
 	public Context getMeContext() {
@@ -281,7 +249,4 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
 	}
-
-
-
 }
