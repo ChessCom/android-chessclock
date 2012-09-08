@@ -81,7 +81,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onCreate(savedInstanceState);
 
 		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)){ // if not debuggable
-			BugSenseHandler.setup(this, AppConstants.BUGSENSE_API_KEY);
+			BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 		}
 
 		context = this;

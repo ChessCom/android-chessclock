@@ -2,16 +2,11 @@ package com.chess.utilities;
 
 import android.content.Context;
 import android.util.Log;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChessComApiParser {
 

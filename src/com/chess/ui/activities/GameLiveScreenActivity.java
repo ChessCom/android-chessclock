@@ -176,7 +176,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				}
 			}
 			catch (RuntimeException e) {
-				BugSenseHandler.log("DEBUG_BOARD_RESTORE", e);
+				BugSenseHandler.sendException(e);
 				e.printStackTrace();
 
 				// temporary fix! still investigating
@@ -492,6 +492,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		} catch (Exception ex) {
 			legalMove = false;
+			BugSenseHandler.sendException(ex);
 		}
 		if(!legalMove) {
 			Log.d("TEST", " legal move result = " + legalMove);
@@ -863,7 +864,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			}
 		}
 		catch (RuntimeException e) {
-			BugSenseHandler.log("DEBUG_BOARD_RETAIN", e);
+			BugSenseHandler.sendException(e);
 			e.printStackTrace();
 		}
 		return board;
