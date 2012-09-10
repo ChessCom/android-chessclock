@@ -36,7 +36,6 @@ public class AppConstants {
 	public static final String PREF_PIECES_SET = "piecesBitmap";
     public static final String PREF_VIDEO_SKILL_LEVEL = "video_skill_level";
     public static final String PREF_VIDEO_CATEGORY = "video_category";
-	public static final String PREF_FIRST_TACTIC_START = "first tactic start";
 
 
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";

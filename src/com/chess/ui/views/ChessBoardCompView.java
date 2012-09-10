@@ -104,7 +104,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
         computerMoving = true;
 		gameCompActivityFace.onCompMove();
-        new Thread(new Runnable() {
+        new Thread(new Runnable() {  // TODO change to AsyncTask
             @Override
             public void run() {
                 pieces_tmp = boardFace.getPieces().clone();

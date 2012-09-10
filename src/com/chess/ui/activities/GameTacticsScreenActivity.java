@@ -21,7 +21,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.CalculateTacticsMoveTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticItem;
@@ -30,6 +29,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.utilities.AppUtils;
@@ -51,6 +51,8 @@ import java.util.List;
 public class GameTacticsScreenActivity extends GameBaseActivity implements GameTacticsActivityFace {
 
 	private static final int TIMER_UPDATE = 1000;
+	private static final long TACTIC_ANSWER_DELAY = 1500;
+
 	private TextView timerTxt;
 	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
@@ -69,11 +71,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private static final String TACTIC_SOLVED_TAG = "tactic solved popup";
 	private static final String WRONG_MOVE_TAG = "wrong move popup";
 
-	private TacticsCalculationUpdateListener tacticsCalculationUpdateListener;
 	private PopupCustomViewFragment customViewFragment;
 	private boolean limitReached;
-	private boolean firsTacticStart;
 	private LayoutInflater inflater;
+	private int currentTacticAnswerCnt;
+	private int maxTacticAnswerCnt;
 
 
 	@Override
@@ -100,9 +102,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getTacticsUpdateListener = new GetTacticsUpdateListener();
 		tacticsCorrectUpdateListener = new TacticsCorrectUpdateListener();
 		tacticsWrongUpdateListener = new TacticsWrongUpdateListener();
-		tacticsCalculationUpdateListener = new TacticsCalculationUpdateListener();
-
-		firsTacticStart = preferences.getBoolean(AppConstants.PREF_FIRST_TACTIC_START, true);
 	}
 
 	@Override
@@ -391,7 +390,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getTacticFromBatch() {
-
 		if(getTacticsBatch() == null){ // if we load from saved tactic
 			loadNewTacticsBatch();
 			return;
@@ -401,7 +399,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			if (DataHolder.getInstance().isGuest()) {
 				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
 				getLastPopupFragment().setButtons(1);
-//				popupDialogFragment.setButtons(1);
 			} else {
 				showLimitDialog();
 			}
@@ -432,7 +429,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					return;
 				}
 
-//			TacticItem tacticItem = new TacticItem(tmp[2].split(":"));
 				int count = tmp.length - 1;
 				List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
 				for (int i = 1; i <= count; i++) {
@@ -442,13 +438,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				DataHolder.getInstance().setCurrentTacticProblem(0);
 				DataHolder.getInstance().setTacticsBatch(tacticBatch);
 				getTacticFromBatch();
-//			TacticItem tacticItem = new TacticItem(tmp[2].split(":"));
-//			DataHolder.getInstance().setTactic(tacticItem);
 
-//			setTacticToBoard(tacticItem, 0);
-
-				preferencesEditor.putBoolean(AppConstants.PREF_FIRST_TACTIC_START, false);
-				preferencesEditor.commit();
 			} else {
 				String errorMessage = returnedObj.substring(RestHelper.R_ERROR.length());
 				if (errorMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
@@ -467,6 +457,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void showAnswer() {
+		stopTacticsTimer();
+
 		boardView.setBoardFace(new ChessBoard(this));
 		getBoardFace().setRetry(true);
 
@@ -499,21 +491,45 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		boardView.invalidate();
 
-		new CalculateTacticsMoveTask(tacticsCalculationUpdateListener, getBoardFace()).executeTask();
+		currentTacticAnswerCnt = 0;
+		maxTacticAnswerCnt = getBoardFace().getTacticMoves().length;
+		handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
 	}
 
-	private class TacticsCalculationUpdateListener extends ChessUpdateListener {
-		public TacticsCalculationUpdateListener() {
-			super(getInstance());
-		}
-
+	private Runnable showTacticMoveTask = new Runnable() {
 		@Override
-		public void updateData(String returnedObj) {
+		public void run() {
+			handler.removeCallbacks(this);
+
+			if(currentTacticAnswerCnt == maxTacticAnswerCnt) {
+				preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
+				preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+				preferencesEditor.commit();
+				return;
+			}
+
+			BoardFace boardFace = getBoardFace();
+			int[] moveFT = MoveParser.parse(boardFace, boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+
+			if (moveFT.length == 4) {
+				Move move;
+				if (moveFT[3] == 2)
+					move = new Move(moveFT[0], moveFT[1], 0, 2);
+				else
+					move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+
+				boardFace.makeMove(move);
+			} else {
+				Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+				boardFace.makeMove(move);
+			}
 			invalidateGameScreen();
 			boardView.invalidate();
-			stopTacticsTimer();
+
+			currentTacticAnswerCnt++;
+			handler.postDelayed(this, TACTIC_ANSWER_DELAY);
 		}
-	}
+	};
 
 	private class TacticsCorrectUpdateListener extends ChessUpdateListener {
 		public TacticsCorrectUpdateListener() {
@@ -544,14 +560,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void handleErrorRequest() {
-//		getTacticFromBatch();
-//		if (noInternet) {
 		showOfflineRatingDialog();
-//			if (DataHolder.getInstance().isOffline()) {
-//			} else {
-//				DataHolder.getInstance().setOffline(true);
-//			}
-//		}
 	}
 
 	private void showOfflineRatingDialog() {
@@ -574,16 +583,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
 			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 
-//			popupDialogFragment.setButtons(3);
-//			popupItem.setPositiveBtnId(R.string.next);
-//			popupItem.setNeutralBtnId(R.string.retry);
-//			popupItem.setNegativeBtnId(R.string.stop);
-
 			String title = getString(R.string.wrong_score,
 					tacticResultItem.getUserRatingChange(),
 					tacticResultItem.getUserRating());
-
-//			showPopupDialog(title, WRONG_MOVE_TAG);
 
 			showWrongMovePopup(title);
 		}
@@ -622,7 +624,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getNewTactic();
 		closeOptionsMenu();
 	}
-
 
 	@Override
 	public void showOptions() {
@@ -748,7 +749,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		setTacticToBoard(tacticItem, secondsSpent);
-
 	}
 
 	private void setTacticToBoard(TacticItem tacticItem, int secondsSpent) {
@@ -894,9 +894,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
-//			loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-//			loadItem.addRequestParams(RestHelper.P_TACTICS_ID, StaticData.SYMBOL_EMPTY);
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
 
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
@@ -910,29 +908,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) { // Cancel
 			cancelTacticAndLeave();
-//		} else if (fragment.getTag().equals(WRONG_MOVE_TAG)) { // Stop
-//
-//			boardView.setFinished(true);
-//			getTacticItem().setStop(true);
-//			stopTacticsTimer();
-
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			cancelTacticAndLeave();
 		}
 	}
-
-//	@Override
-//	public void onNeutralBtnCLick(DialogFragment fragment) {
-//		super.onNeutralBtnCLick(fragment);
-//		if (fragment.getTag().equals(WRONG_MOVE_TAG)) {  // Retry
-//			if (DataHolder.getInstance().isGuest() || noInternet) {
-//				getTacticFromBatch();
-//			} else {
-//				setTacticToBoard(getTacticItem(), 0);
-//			}
-//			getBoardFace().setRetry(true);
-//		}
-//	}
 
 	private TacticItem getTacticItem() {
 		return DataHolder.getInstance().getTactic();
