@@ -142,6 +142,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private void adjustBoardForGame() {
+		if(currentGame == null)
+			return;
+
 		if (currentGame.getGameType().equals("2"))
 			getBoardFace().setChess960(true);
 
