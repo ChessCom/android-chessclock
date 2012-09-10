@@ -23,6 +23,7 @@
 	</style>
 
 	<style name="NoTitle" parent="android:style/Theme.Holo.Light.NoActionBar">
+		<item name="android:windowBackground">@color/black</item>
 	</style>
 
 	<style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">

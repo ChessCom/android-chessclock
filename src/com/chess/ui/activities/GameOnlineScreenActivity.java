@@ -70,7 +70,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private GameOnlineItem currentGame;
 	private long gameId;
-	private int currentPlayerRating;
+//	private int currentPlayerRating;
 	private GameListCurrentItem gameInfoItem;
 	private String timeRemains;
 	private TextView infoLabelTxt;
@@ -364,7 +364,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private void sendMove() {
 		//save rating
-		currentPlayerRating = getCurrentPlayerRating();
+//		currentPlayerRating = getCurrentPlayerRating();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);

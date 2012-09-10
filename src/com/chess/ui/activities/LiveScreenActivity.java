@@ -19,6 +19,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.User;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -134,7 +135,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		showLoadingView(false);
 	}
 
-	private void showLoadingView(final boolean show){
+	private synchronized void showLoadingView(final boolean show){
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -148,10 +149,11 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				showActionNewGame = !show;
 				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
-				if(!show){
-					bulletRatingTxt.setText(getString(R.string.bullet_, getLccHolder().getUser().getQuickRating()));
-					blitzRatingTxt.setText(getString(R.string.blitz_, getLccHolder().getUser().getBlitzRating()));
-					standardRatingTxt.setText(getString(R.string.standard_, getLccHolder().getUser().getStandardRating()));
+				User user = getLccHolder().getUser();
+				if(!show && user != null){
+					bulletRatingTxt.setText(getString(R.string.bullet_, user.getQuickRating()));
+					blitzRatingTxt.setText(getString(R.string.blitz_, user.getBlitzRating()));
+					standardRatingTxt.setText(getString(R.string.standard_, user.getStandardRating()));
 				}
 			}
 		});

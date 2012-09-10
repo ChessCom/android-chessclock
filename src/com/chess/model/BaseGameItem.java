@@ -10,10 +10,11 @@ import java.io.Serializable;
  */
 public abstract class BaseGameItem implements Serializable {
 
+	private static final long serialVersionUID = -752315798923143602L;
+
 	public static final String GAME_ID = "game_id";
 	public static final String TIMESTAMP = "time_stamp";
 	public static final String GAME_INFO_ITEM = "game_info_item";
-	private static final long serialVersionUID = -752315798923143602L;
 
 	protected long gameId;
 	protected String color;

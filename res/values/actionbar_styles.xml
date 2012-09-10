@@ -34,6 +34,7 @@
 	</style>
 
 	<style name="NoTitle" parent="android:Theme.Black.NoTitleBar">
+		<item name="android:windowBackground">@color/black</item>
 	</style>
 
     <style name="TaskTextAppearance" parent="@android:style/TextAppearance">
