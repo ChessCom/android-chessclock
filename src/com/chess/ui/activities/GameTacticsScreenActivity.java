@@ -166,6 +166,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
 				DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 
+				getBoardFace().setRetry(true);
+
 				if (getBoardFace().getHply() > 0)
 					checkMove();
 			} else {
@@ -247,9 +249,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			piece = MoveParser.WHITE_KING;
 		}
 		String moveTo = MoveParser.positionToString(move.to);
-		Log.d("!!!", piece + " | " + moveTo + " : " + getBoardFace().getTacticMoves()[getBoardFace().getHply() - 1]);
+		Log.d("TEST", "piece " + piece + " | " + moveTo + " : " + getBoardFace().getTacticMoves()[getBoardFace().getHply() - 1]);
 
 		if (getBoardFace().lastMoveContains(piece, moveTo)) { // if correct move
+			Log.d("TEST", " Correct move");
 			getBoardFace().increaseTacticsCorrectMoves();
 
 			if (getBoardFace().getMovesCount() < getBoardFace().getTacticMoves().length - 1) {
@@ -294,6 +297,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				stopTacticsTimer();
 			}
 		} else {
+			Log.d("TEST", " Wrong move");
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 				showWrongMovePopup(getString(R.string.wrong_ex));
 
