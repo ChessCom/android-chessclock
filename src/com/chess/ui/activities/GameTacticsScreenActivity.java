@@ -458,6 +458,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void showAnswer() {
 		stopTacticsTimer();
+		getTacticItem().setStop(true);
 
 		boardView.setBoardFace(new ChessBoard(this));
 		getBoardFace().setRetry(true);

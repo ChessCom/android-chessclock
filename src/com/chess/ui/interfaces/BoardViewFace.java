@@ -14,7 +14,7 @@ public interface BoardViewFace {
 
 	void switchAnalysis();
 
-	boolean isInAnalysis();
+//	boolean isInAnalysis();
 
 	void switchChat();
 

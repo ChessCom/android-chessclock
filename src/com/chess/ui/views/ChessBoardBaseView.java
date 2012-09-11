@@ -207,10 +207,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.switch2Analysis(isAnalysis);
 	}
 
-	@Override
-	public boolean isInAnalysis() {
-		return getBoardFace().isAnalysis();
-	}
+//	@Override
+//	public boolean isInAnalysis() {
+//		return getBoardFace().isAnalysis();
+//	}
 
 	@Override
 	public void moveForward() {
