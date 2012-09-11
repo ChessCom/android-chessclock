@@ -191,9 +191,14 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 				getLccHolder().getUser(),
 				friendsSpinner.getSelectedItem().toString().trim(),
-//				PieceColor.UNDEFINED, rated, gameTimeConfig,
 				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
+
+		if(!getLccHolder().isConnected() && getLccHolder().getClient() == null){
+			getLccHolder().logout();
+			backToHomeActivity();
+			return;
+		}
 
 		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
 		challengeTaskRunner.runSendChallengeTask(challenge);
@@ -205,7 +210,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		popupItem.setPositiveBtnId(R.string.ok);
 		showPopupDialog(R.string.congratulations, R.string.challengeSent, CHALLENGE_SENT_TAG);
 		getLastPopupFragment().setButtons(1);
-//		popupDialogFragment.setButtons(1);
 	}
 
 	@Override
