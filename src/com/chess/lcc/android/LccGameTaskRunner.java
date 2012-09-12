@@ -1,6 +1,7 @@
 package com.chess.lcc.android;
 
 import android.content.Context;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -110,6 +111,7 @@ public class LccGameTaskRunner {
 			try {
 				liveChessClient.makeMove(game[0], move);
 			} catch (IllegalArgumentException e) {
+				BugSenseHandler.addCrashExtraData("APP_LCC_MAKE_MOVE", debugInfo);
 				throw new IllegalArgumentException(debugInfo, e);
 			}
 
