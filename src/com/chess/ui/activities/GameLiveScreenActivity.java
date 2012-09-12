@@ -164,7 +164,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		setBoardView(boardView);
 
 		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
-		//ChessBoard chessBoard = null;
 
 		if (chessBoard != null) {
 			boardView.setBoardFace(chessBoard);
@@ -499,14 +498,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 //			showToast("illegal move");
 		}
 
-
 		final String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
 				", Hply=" + getBoardFace().getHply() +
 				", Init=" + getBoardFace().isInit() +
 				", MoveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
-				", gameId=" + getLccHolder().getCurrentGameId();
+				", gameId=" + getLccHolder().getCurrentGameId() +
+				", analysis=" + gamePanelView.isAnalysisEnabled();
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
@@ -853,21 +852,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getLccHolder().rematch();
 			endPopupFragment.dismiss();
 		}
-	}
-
-	@Override
-	public Object onRetainCustomNonConfigurationInstance() {
-		BoardFace board = boardView.getBoardFace();
-		try {
-			if (board == null && getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
-				throw new RuntimeException("Retain board should not be null!");
-			}
-		}
-		catch (RuntimeException e) {
-			BugSenseHandler.sendException(e);
-			e.printStackTrace();
-		}
-		return board;
 	}
 }
 
