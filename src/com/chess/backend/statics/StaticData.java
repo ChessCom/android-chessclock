@@ -20,6 +20,7 @@ public class StaticData {
 	public static final String SYMBOL_SPACE = " ";
 	public static final String SYMBOL_NEW_STR = "\n";
 	public static final String SYMBOL_EMPTY = "";
+	public static final String SYMBOL_COMMA = ",";
 	public static final String SYMBOL_LEFT_PAR = "(";
 	public static final String SYMBOL_RIGHT_PAR = ")";
 	public static final String SYMBOL_PLUS = "+";

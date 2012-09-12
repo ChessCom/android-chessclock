@@ -138,17 +138,25 @@
 
 		<receiver android:name=".backend.AlarmReceiver"/>
 
-		<!--GCM Receiver-->
+		<!--GCM-->
 		<receiver
-			android:name=".backend.MyBroadcastReceiver"
+			android:name="com.google.android.gcm.GCMBroadcastReceiver"
 			android:permission="com.google.android.c2dm.permission.SEND" >
 			<intent-filter>
+				<!-- Receives the actual messages. -->
 				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<!-- Receives the registration id. -->
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-				<category android:name="com.chess.gcm" />
+				<category android:name="com.google.android.gcm.demo.app" />
 			</intent-filter>
 		</receiver>
-		<service android:name=".backend.MyIntentService" />
+
+		<!--Application-specific subclass of GCMBaseIntentService that will
+			handle received messages.
+
+			By default, it must be named .GCMIntentService, unless the
+			application uses a custom BroadcastReceiver that redefines its name.-->
+		<service android:name=".backend.GCMIntentService" />
 
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>

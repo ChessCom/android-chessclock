@@ -2,6 +2,7 @@ package com.chess.backend;
 
 import android.util.Log;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.statics.StaticData;
 import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
@@ -265,6 +266,11 @@ public class RestHelper {
 	private static final String TAG = "Encode";
 	public static final int MAX_ITEMS_CNT = 2000;
 
+	private static final String Q_ = "?";
+	private static final String EQUALS = "=";
+	private static final String AND = "&";
+
+
 	public static String formCustomRequest(LoadItem loadItem) {
 
 		String fullUrl = formUrl(loadItem.getRequestParams());
@@ -278,12 +284,34 @@ public class RestHelper {
 	private static String formUrl(List<NameValuePair> nameValuePairs) {
 		List<NameValuePair> safeList = new ArrayList<NameValuePair>();
 		safeList.addAll(nameValuePairs);
-		String url = "?";
+		StringBuilder builder = new StringBuilder();
+		builder.append(Q_);
+		String separator = StaticData.SYMBOL_EMPTY;
 		for (NameValuePair pair: safeList) {
-            url += pair.getName() + "=" + pair.getValue();
-			url += "&";
+			builder.append(separator);
+			separator = AND;
+			builder.append(pair.getName()).append(EQUALS).append(pair.getValue());
 		}
-		return url.substring(0, url.length()-1);
+		return builder.toString();
+	}
+
+	public static String formJsonData(List<NameValuePair> requestParams){
+		StringBuilder data = new StringBuilder();
+		String separator = StaticData.SYMBOL_EMPTY;
+		data.append("{");
+		for (NameValuePair requestParam : requestParams) {
+
+			data.append(separator);
+			separator = StaticData.SYMBOL_COMMA;
+			data.append("\"")
+					.append(requestParam.getName()).append("\"")
+					.append(":")
+					.append("\"")
+					.append(requestParam.getValue())
+					.append("\"");
+		}
+		data.append("}");
+		return data.toString();
 	}
 
 	public static String formTournamentsLink(String userToken) {
