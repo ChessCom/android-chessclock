@@ -481,7 +481,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		GameRules gameRules = ChessRules.getInstance();
 		GameSetup gameSetup = gameRules.createDefaultGameSetup();
 		boolean legalMove;
-		try{
+
+		/*try{
 			String testMove = "";
 			if (move.length() > 2)
 				testMove = Notation.coord2live(move);
@@ -492,10 +493,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		} catch (Exception ex) {
 			legalMove = false;
 			BugSenseHandler.sendException(ex);
-		}
-		if(!legalMove) {
-			Log.d("TEST", " legal move result = " + legalMove);
-//			showToast("illegal move");
+		}*/
+		if(!getLccHolder().getCurrentGame().isMoveValid(move)) {
+			Log.d("TEST", "illegal move = " + move);
+			//showToast("illegal move");
 		}
 
 		final String temporaryDebugInfo =
@@ -505,7 +506,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", MoveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
 				", gameId=" + getLccHolder().getCurrentGameId() +
-				", analysis=" + gamePanelView.isAnalysisEnabled();
+				", analysisPanel=" + gamePanelView.isAnalysisEnabled() +
+				", analysisBoard=" + getBoardFace().isAnalysis();
+		BugSenseHandler.addCrashExtraData("APP_LCC_MAKE_MOVE", temporaryDebugInfo);
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
