@@ -211,6 +211,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
 			preferencesEditor.commit();
 		}
+
+		if(customViewFragment != null)
+			customViewFragment.dismiss();
 	}
 
 	@Override

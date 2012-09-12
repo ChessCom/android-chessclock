@@ -184,6 +184,9 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			if (show){
 				showPopupHardProgressDialog(R.string.signingin);
 			} else {
+				if(isPaused)
+					return;
+
 				dismissProgressDialog();
 			}
 		}
