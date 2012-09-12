@@ -12,6 +12,15 @@
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
+	<!--GCM Permissions-->
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+	<permission android:name="com.example.gcm.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
+
+
 	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
 	<supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
@@ -54,7 +63,6 @@
 		<activity android:name=".ui.activities.ChatLiveActivity" android:label="@string/label_chat_live"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-		<activity android:name="com.mobclix.android.sdk.MobclixBrowserActivity"/>
 		<activity android:name=".ui.activities.LoginScreenActivity"
 			android:theme="@style/OrangeButtonNotitle"
 			/>
@@ -129,6 +137,19 @@
 		<activity android:name=".ui.activities.WebViewActivity"/>
 
 		<receiver android:name=".backend.AlarmReceiver"/>
+
+		<!--GCM Receiver-->
+		<receiver
+			android:name=".backend.MyBroadcastReceiver"
+			android:permission="com.google.android.c2dm.permission.SEND" >
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="com.chess.gcm" />
+			</intent-filter>
+		</receiver>
+		<service android:name=".backend.MyIntentService" />
+
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 
