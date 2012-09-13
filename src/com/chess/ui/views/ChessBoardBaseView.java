@@ -313,14 +313,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				message = getResources().getString(R.string.draw_by_3fold_repetition);
 		}
 
-		if (message != null) {
-			finished = true;
-
-			gameActivityFace.onGameOver(message, false);
-
-			return true;
-		}
-
 		if (boardFace.inCheck(boardFace.getSide())) {
 
 			if (!boardFace.isPossibleToMakeMoves()) {
@@ -332,6 +324,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 			gameActivityFace.invalidateGameScreen();
 		}
+
+		if (message != null || (boardFace.inCheck(boardFace.getSide()) && !boardFace.isPossibleToMakeMoves())) {
+			finished = true;
+			gameActivityFace.onGameOver(message, false);
+			return true;
+		}
+
 		return false;
 	}
 
