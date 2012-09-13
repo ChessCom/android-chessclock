@@ -311,21 +311,22 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					message = getResources().getString(R.string.draw_by_stalemate);
 			} else if (boardFace.reps() == 3)
 				message = getResources().getString(R.string.draw_by_3fold_repetition);
-		}
-
-		if (boardFace.inCheck(boardFace.getSide())) {
+		} else if (boardFace.inCheck(boardFace.getSide())) {
 
 			if (!boardFace.isPossibleToMakeMoves()) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
+				gameActivityFace.invalidateGameScreen();
+				finished = true;
+				return true;
 			}
 			else {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
+				gameActivityFace.invalidateGameScreen();
 				gameActivityFace.onCheck();
 			}
-			gameActivityFace.invalidateGameScreen();
 		}
 
-		if (message != null || (boardFace.inCheck(boardFace.getSide()) && !boardFace.isPossibleToMakeMoves())) {
+		if (message != null) {
 			finished = true;
 			gameActivityFace.onGameOver(message, false);
 			return true;
