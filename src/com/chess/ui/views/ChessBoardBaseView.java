@@ -299,11 +299,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected boolean isGameOver() {
 
-		if (!boardFace.isPossibleToMakeMoves() && boardFace.inCheck(boardFace.getSide())) {
-			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-			gameActivityFace.invalidateGameScreen();
-		}
-
 		String message = null;
 		if (!boardFace.isAnalysis()) {
 			if (!boardFace.isPossibleToMakeMoves()) {
@@ -327,10 +322,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		if (boardFace.inCheck(boardFace.getSide())) {
-			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
-			gameActivityFace.invalidateGameScreen();
 
-			gameActivityFace.onCheck();
+			if (!boardFace.isPossibleToMakeMoves()) {
+				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
+			}
+			else {
+				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
+				gameActivityFace.onCheck();
+			}
+			gameActivityFace.invalidateGameScreen();
 		}
 		return false;
 	}
