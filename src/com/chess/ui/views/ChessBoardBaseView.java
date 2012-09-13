@@ -298,20 +298,25 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean isGameOver() {
-		String message = null;
-		if (!boardFace.isPossibleToMakeMoves()) {
-			if (boardFace.inCheck(boardFace.getSide())) {
-				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-				gameActivityFace.invalidateGameScreen();
 
-				if (boardFace.getSide() == ChessBoard.LIGHT)
-					message = getResources().getString(R.string.black_wins);
-				else
-					message = getResources().getString(R.string.white_wins);
-			} else
-				message = getResources().getString(R.string.draw_by_stalemate);
-		} else if (boardFace.reps() == 3 )
-			message = getResources().getString(R.string.draw_by_3fold_repetition);
+		if (!boardFace.isPossibleToMakeMoves() && boardFace.inCheck(boardFace.getSide())) {
+			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
+			gameActivityFace.invalidateGameScreen();
+		}
+
+		String message = null;
+		if (!boardFace.isAnalysis()) {
+			if (!boardFace.isPossibleToMakeMoves()) {
+				if (boardFace.inCheck(boardFace.getSide())) {
+					if (boardFace.getSide() == ChessBoard.LIGHT)
+						message = getResources().getString(R.string.black_wins);
+					else
+						message = getResources().getString(R.string.white_wins);
+				} else
+					message = getResources().getString(R.string.draw_by_stalemate);
+			} else if (boardFace.reps() == 3)
+				message = getResources().getString(R.string.draw_by_3fold_repetition);
+		}
 
 		if (message != null) {
 			finished = true;
