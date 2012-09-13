@@ -436,13 +436,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
 				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
 
-                showSubmitButtonsLay(false);
-				boardView.switchAnalysis();
-                gamePanelView.enableAnalysisMode(true);
-
-                boardView.setFinished(true);
-                gamePanelView.showBottomPart(false);
-                getSoundPlayer().playGameEnd();
+				setBoardToFinishedState();
 			}
 		});
 

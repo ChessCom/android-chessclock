@@ -171,7 +171,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		gamePanelView.enableAnalysisMode(true);
 
 		boardView.setFinished(true);
-		gamePanelView.showBottomPart(false);
+		//gamePanelView.showBottomPart(false);
 		getSoundPlayer().playGameEnd();
 	}
 
