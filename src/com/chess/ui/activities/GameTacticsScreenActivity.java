@@ -72,7 +72,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private static final String WRONG_MOVE_TAG = "wrong move popup";
 
 	private PopupCustomViewFragment customViewFragment;
-	private boolean limitReached;
 	private LayoutInflater inflater;
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
@@ -154,6 +153,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			if (AppData.haveSavedTacticGame(this)) {
 				String tacticString = preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 				String tacticResultString = preferences.getString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+				String showedTacticId = preferences.getString(AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
 
 				int secondsSpend = preferences.getInt(AppConstants.SPENT_SECONDS_TACTICS, 0);
 
@@ -164,6 +164,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
 				DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+				DataHolder.getInstance().addShowedTacticId(showedTacticId);
 
 				getBoardFace().setRetry(true);
 
@@ -204,14 +205,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		stopTacticsTimer();
 
-		if (!getBoardFace().isTacticCanceled() && !limitReached) {
-			if(DataHolder.getInstance().getTacticResultItem() == null)  // if user didn't made any result move on online
-				return;
+		if (!getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
+				&& DataHolder.getInstance().getTacticResultItem() != null) { // if user didn't made any result move on online
 
 			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 			preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM,
 					DataHolder.getInstance().getTacticResultItem().getSaveString());
 			preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
+			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
 			preferencesEditor.commit();
 		}
 
@@ -276,7 +277,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				invalidateGameScreen();
 				boardView.invalidate();
 			} else {
-				if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
+				if(DataHolder.getInstance().tacticWasShowed(getTacticItem().getId())){
+					showSolvedTacticPopup(getString(R.string.problem_solved_), false);
+
+				} else if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 
 					String title;
@@ -340,7 +344,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
-		this.limitReached = limitReached;
+		DataHolder.getInstance().setTacticLimitReached(limitReached);
 
 		View customView = inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
@@ -358,10 +362,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			nextBtnId = R.string.upgrade_to_continue;
 			nextBtnColorId = R.drawable.button_green_selector;
 
-			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, 0);
-			preferencesEditor.commit();
+			clearSavedTactics();
 		}
 
 		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
@@ -413,6 +414,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		TacticItem tacticItem = getTacticsBatch().get(getCurrentProblem());
 		setTacticToBoard(tacticItem, 0);
+		currentTacticAnswerCnt = 0;
 
 		DataHolder.getInstance().setTactic(tacticItem);
 	}
@@ -465,9 +467,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void showAnswer() {
 		stopTacticsTimer();
 		getTacticItem().setStop(true);
+		DataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
 
 		boardView.setBoardFace(new ChessBoard(this));
 		getBoardFace().setRetry(true);
+
 
 		TacticItem tacticItem;
 		if (DataHolder.getInstance().isGuest() || noInternet) {
@@ -509,9 +513,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			handler.removeCallbacks(this);
 
 			if(currentTacticAnswerCnt == maxTacticAnswerCnt) {
-				preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.commit();
 				return;
 			}
 
@@ -820,7 +821,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		super.onClick(view);
 		if (view.getId() == R.id.nextBtn) {
 			customViewFragment.dismiss();
-			if (limitReached) {
+			if (DataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 
@@ -847,7 +848,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if (view.getId() == R.id.cancelBtn) {
 			customViewFragment.dismiss();
 
-			if (limitReached) {
+			if (DataHolder.getInstance().isTacticLimitReached()) {
 				cancelTacticAndLeave();
 				onBackPressed();
 			}
@@ -934,11 +935,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void cancelTacticAndLeave(){
 		getBoardFace().setTacticCanceled(true);
-		preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
-		preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-		preferencesEditor.commit();
-
+		clearSavedTactics();
 		onBackPressed();
 	}
+
+	private void clearSavedTactics() {
+		preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, 0);
+		preferencesEditor.putString(AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.commit();
+	}
+
 
 }

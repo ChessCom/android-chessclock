@@ -3,6 +3,7 @@ package com.chess.backend.entity;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,14 +26,17 @@ public class DataHolder {
 	private List<TacticItem> tacticsBatch;
 	private TacticItem tactic;
 	private int currentTacticProblem = 0;
+	private boolean tacticLimitReached;
+	private List<String> showedTacticsIds;
 
 
-	private DataHolder() {}
+	private DataHolder() {
+		this.showedTacticsIds = new ArrayList<String>();
+	}
 
 	public static DataHolder getInstance() {
 		return ourInstance;
 	}
-
 
 	public boolean isLiveChess() {
 		return liveChess;
@@ -108,5 +112,31 @@ public class DataHolder {
 
 	public void setTacticResultItem(TacticResultItem tacticResultItem) {
 		this.tacticResultItem = tacticResultItem;
+	}
+
+	public boolean isTacticLimitReached() {
+		return tacticLimitReached;
+	}
+
+	public void setTacticLimitReached(boolean tacticLimitReached) {
+		this.tacticLimitReached = tacticLimitReached;
+	}
+
+
+	/**
+	 * Add id of showed answer tactic to prevent cheating
+	 * @param id
+	 */
+	public void addShowedTacticId(String id) {
+		showedTacticsIds.add(id);
+	}
+
+	/**
+	 * Check if user used that tactic for showAnswer option
+	 * @param id
+	 * @return
+	 */
+	public boolean tacticWasShowed(String id){
+		return showedTacticsIds.contains(id);
 	}
 }
