@@ -421,6 +421,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.cancel((int) gameId);
+				mNotificationManager.cancel(R.id.notification_message);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
 				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
