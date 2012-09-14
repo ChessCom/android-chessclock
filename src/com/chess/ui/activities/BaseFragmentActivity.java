@@ -30,10 +30,7 @@ import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * BaseFragmentActivity class
