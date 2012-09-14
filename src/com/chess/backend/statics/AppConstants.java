@@ -82,4 +82,6 @@ public class AppConstants {
 
 	public static final String BUGSENSE_DEBUG_APP_API_REQUEST = "APP_API_REQUEST";
 	public static final String BUGSENSE_DEBUG_APP_API_RESPONSE = "APP_API_RESPONSE";
+
+	public static final String EXCEPTION = "exception";
 }

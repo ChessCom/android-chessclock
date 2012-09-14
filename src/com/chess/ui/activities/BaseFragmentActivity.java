@@ -81,7 +81,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onCreate(savedInstanceState);
 
 		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)){ // if not debuggable
-			BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
+			try {
+				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
+			} catch (Exception e) {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put(AppConstants.EXCEPTION, android.os.Build.MODEL + " " + e.toString());
+				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
+			}
 		}
 
 		context = this;
