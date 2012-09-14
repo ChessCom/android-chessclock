@@ -407,8 +407,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
 			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.stats));
 			startActivity(intent);
-//		} else if (view.getId() == R.id.start) {
-//			startActivity(new Intent(this, OnlineNewGameActivity.class));
 		}
 	}
 

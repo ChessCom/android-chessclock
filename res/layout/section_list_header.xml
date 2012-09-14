@@ -10,6 +10,9 @@
 		android:layout_height="wrap_content"
 		android:textSize="18sp"
 		android:paddingTop="10dip"
+		android:paddingLeft="8dip"
 		robo:ttf="Bold"
 		/>
+	<!--Divider-->
+	<include layout="@layout/divider_view" />
 </LinearLayout>
