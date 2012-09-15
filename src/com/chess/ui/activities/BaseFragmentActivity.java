@@ -81,6 +81,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 			try {
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
+				e.printStackTrace();
 				Map<String, String> params = new HashMap<String, String>();
 				params.put(AppConstants.EXCEPTION, android.os.Build.MODEL + " " + e.toString());
 				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
