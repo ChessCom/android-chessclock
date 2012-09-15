@@ -474,8 +474,10 @@ public class AdView extends WebView {
 		Log.i(MOPUB, "Ad successfully loaded.");
 		DataHolder.getInstance().setAdsLoading(false);
 		scheduleRefreshTimerIfEnabled();
-		setAdContentView(this);
-		mMoPubView.adLoaded();
+		if (mMoPubView != null){
+			setAdContentView(this);
+			mMoPubView.adLoaded();
+		}
 	}
 
 	public void setAdContentView(View view) {
