@@ -26,8 +26,6 @@ import com.chess.model.PopupItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.Move;
-import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
@@ -151,11 +149,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
 			if (AppData.haveSavedTacticGame(this)) {
-				String tacticString = preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
-				String tacticResultString = preferences.getString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-				String showedTacticId = preferences.getString(AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+				String userNae = AppData.getUserName(this);
+				String tacticString = preferences.getString(userNae + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
+				String tacticResultString = preferences.getString(userNae + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+				String showedTacticId = preferences.getString(userNae + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
 
-				int secondsSpend = preferences.getInt(AppConstants.SPENT_SECONDS_TACTICS, 0);
+				int secondsSpend = preferences.getInt(userNae + AppConstants.SPENT_SECONDS_TACTICS, 0);
 
 				TacticItem tacticItem = new TacticItem(tacticString.split(StaticData.SYMBOL_COLON));
 				setTacticToBoard(tacticItem, secondsSpend);
@@ -175,28 +174,29 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				popupItem.setNegativeBtnId(R.string.no);
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			}
-		}
+		} else {
+			// TODO show register confirmation dialog
+			TacticItem tacticItem = getTacticItem();
+			Log.d("TEST", "getTacticItem() = " + tacticItem);
+			/*if (getBoardFace().isTacticCanceled()) {    // never executing condition
+				getBoardFace().setTacticCanceled(false);
+				popupItem.setPositiveBtnId(R.string.yes);
+				popupItem.setNegativeBtnId(R.string.no);
+				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 
-		// TODO show register confirmation dialog
-		TacticItem tacticItem = getTacticItem();
-		Log.d("TEST", "getTacticItem() = " + tacticItem);
-		if (getBoardFace().isTacticCanceled()) {
-			getBoardFace().setTacticCanceled(false);
-			popupItem.setPositiveBtnId(R.string.yes);
-			popupItem.setNegativeBtnId(R.string.no);
-			showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
+			} else*/
+			if(tacticItem == null){ // singleton can be killed ... but i think we always will restore or load new tactic
+				getNewTactic(); // probably redundant
+			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
 
-		} else if (tacticItem != null && !tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
-			invalidateGameScreen();
-			getBoardFace().takeBack();
-			boardView.invalidate();
-			startTacticsTimer(tacticItem);
-			playLastMoveAnimation();
+				startTacticsTimer(tacticItem);
+				getBoardFace().setRetry(true);
 
-			getBoardFace().setRetry(true);
-
-			if (getBoardFace().getHply() > 0)
-				checkMove();
+				invalidateGameScreen();
+				getBoardFace().takeBack();
+				boardView.invalidate();
+				playLastMoveAnimationAndCheck();
+			}
 		}
 	}
 
@@ -208,18 +208,34 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (!getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
 				&& DataHolder.getInstance().getTacticResultItem() != null) { // if user didn't made any result move on online
-
-			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
-			preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM,
+			String userName = AppData.getUserName(this);
+			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
+			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM,
 					DataHolder.getInstance().getTacticResultItem().getSaveString());
-			preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
-			preferencesEditor.putString(AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
+			preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
+			if(answerWasShowed()) {
+				preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
+			}
 			preferencesEditor.commit();
 		}
 
 		if(customViewFragment != null)
 			customViewFragment.dismiss();
 	}
+
+	private void playLastMoveAnimationAndCheck() {
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getBoardFace().takeNext();
+				invalidateGameScreen();
+
+				if (getBoardFace().getHply() > 0)
+					checkMove();
+			}
+		},1300);
+	}
+
 
 	@Override
 	public String getWhitePlayerName() {
@@ -241,47 +257,20 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		noInternet = !AppUtils.isNetworkAvailable(getContext());
 
-		Move move = getBoardFace().getHistDat()[getBoardFace().getHply() - 1].move;
-		String piece = StaticData.SYMBOL_EMPTY;
-		int p = getBoardFace().getPieces()[move.to];
-		if (p == 1) {
-			piece = MoveParser.WHITE_KNIGHT;
-		} else if (p == 2) {
-			piece = MoveParser.WHITE_BISHOP;
-		} else if (p == 3) {
-			piece = MoveParser.WHITE_ROOK;
-		} else if (p == 4) {
-			piece = MoveParser.WHITE_QUEEN;
-		} else if (p == 5) {
-			piece = MoveParser.WHITE_KING;
-		}
-		String moveTo = MoveParser.positionToString(move.to);
-		Log.d("TEST", "piece " + piece + " | " + moveTo + " : " + getBoardFace().getTacticMoves()[getBoardFace().getHply() - 1]);
+		BoardFace boardFace = getBoardFace();
 
-		if (getBoardFace().lastMoveContains(piece, moveTo)) { // if correct move
-			Log.d("TEST", " Correct move");
-			getBoardFace().increaseTacticsCorrectMoves();
+		if (boardFace.lastTacticMoveIsCorrect()) {
+			Log.d("TEST_MOVE", " Correct move");
+			boardFace.increaseTacticsCorrectMoves();
 
-			if (getBoardFace().getMovesCount() < getBoardFace().getTacticMoves().length - 1) {
-				int[] moveFT = MoveParser.parse(getBoardFace(),
-						getBoardFace().getTacticMoves()[getBoardFace().getHply()]);
-				if (moveFT.length == 4) {
-					if (moveFT[3] == 2)
-						move = new Move(moveFT[0], moveFT[1], 0, 2);
-					else
-						move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					getBoardFace().makeMove(move);
-				} else {
-					move = new Move(moveFT[0], moveFT[1], 0, 0);
-					getBoardFace().makeMove(move);
-				}
+			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
+				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
-				boardView.invalidate();
 			} else {
 				if(DataHolder.getInstance().tacticWasShowed(getTacticItem().getId())){
 					showSolvedTacticPopup(getString(R.string.problem_solved_), false);
 
-				} else if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
+				} else if (DataHolder.getInstance().isGuest() || boardFace.isRetry() || noInternet) {
 					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 
 					String title;
@@ -299,15 +288,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 					loadItem.addRequestParams(RestHelper.P_TACTICS_ID, getTacticItem().getId());
 					loadItem.addRequestParams(RestHelper.P_PASSED, "1");
-					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(getBoardFace().getTacticsCorrectMoves()));
-					loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(getBoardFace().getSecondsPassed()));
+					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(boardFace.getTacticsCorrectMoves()));
+					loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(boardFace.getSecondsPassed()));
 
 					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
 				}
 				stopTacticsTimer();
 			}
 		} else {
-			Log.d("TEST", " Wrong move");
+			Log.d("TEST_MOVE", " Wrong move");
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 				showWrongMovePopup(getString(R.string.wrong_ex));
 
@@ -480,23 +469,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			tacticItem = getTacticItem();
 		}
 
-		String FEN = tacticItem.getFen();
-		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, getBoardFace());
-			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
-			if (tmp.length > 1) {
-				if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
-					getBoardFace().setReside(true);
-				}
-			}
-		}
+		getBoardFace().setupBoard(tacticItem.getFen());
+
 		if (tacticItem.getMoveList().contains("1.")) {
-			getBoardFace().setTacticMoves(tacticItem.getMoveList()
-					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", StaticData.SYMBOL_SPACE)
-					.substring(1).split(StaticData.SYMBOL_SPACE));
+			getBoardFace().setTacticMoves(tacticItem.getMoveList());
 			getBoardFace().setMovesCount(1);
 		}
 
@@ -507,32 +483,22 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
 	}
 
+	private boolean answerWasShowed(){
+		return currentTacticAnswerCnt == maxTacticAnswerCnt && maxTacticAnswerCnt != 0;
+	}
+
 	private Runnable showTacticMoveTask = new Runnable() {
 		@Override
 		public void run() {
 			handler.removeCallbacks(this);
 
-			if(currentTacticAnswerCnt == maxTacticAnswerCnt) {
+			if(answerWasShowed()) {
 				return;
 			}
 
 			BoardFace boardFace = getBoardFace();
-			int[] moveFT = MoveParser.parse(boardFace, boardFace.getTacticMoves()[currentTacticAnswerCnt]);
-
-			if (moveFT.length == 4) {
-				Move move;
-				if (moveFT[3] == 2)
-					move = new Move(moveFT[0], moveFT[1], 0, 2);
-				else
-					move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-
-				boardFace.makeMove(move);
-			} else {
-				Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-				boardFace.makeMove(move);
-			}
+			getBoardFace().updateMoves(boardFace.getTacticMoves()[currentTacticAnswerCnt], true);
 			invalidateGameScreen();
-			boardView.invalidate();
 
 			currentTacticAnswerCnt++;
 			handler.postDelayed(this, TACTIC_ANSWER_DELAY);
@@ -620,8 +586,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void invalidateGameScreen() {
-		boardView.addMove2Log(getBoardFace().getMoveListSAN());
-		gamePanelView.invalidate();
+		Log.d("TEST", " set moves " + getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
 
 	@Override
@@ -760,52 +726,27 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		boardView.setBoardFace(new ChessBoard(this));
+		BoardFace boardFace = getBoardFace();
 
-		String FEN = tacticItem.getFen();
-		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			getBoardFace().genCastlePos(FEN); // restore castle position for current tactics problem
-			MoveParser.fenParse(FEN, getBoardFace());
+		boardFace.setupBoard(tacticItem.getFen());
 
-			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
-			if (tmp.length > 1) {
-				if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
-					getBoardFace().setReside(true);
-				}
-			}
-		}
 
 		if (tacticItem.getMoveList().contains("1.")) {
-			getBoardFace().setTacticMoves(tacticItem.getMoveList()
-					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("[.]", StaticData.SYMBOL_EMPTY).replaceAll("  ", StaticData.SYMBOL_SPACE)
-					.substring(1).split(StaticData.SYMBOL_SPACE));
-
-			getBoardFace().setMovesCount(1);
+			boardFace.setTacticMoves(tacticItem.getMoveList());
+			boardFace.setMovesCount(1);
 		}
 
-		getBoardFace().setSecondsPassed(secondsSpent);
+		boardFace.setSecondsPassed(secondsSpent);
 		int secondsLeft = tacticItem.getAvgSecondsInt() - secondsSpent < 0 ?
 				0 : tacticItem.getAvgSecondsInt() - secondsSpent;
-		getBoardFace().setSecondsLeft(secondsLeft);
+		boardFace.setSecondsLeft(secondsLeft);
 
 		startTacticsTimer(tacticItem);
 
-		int[] moveFT = MoveParser.parse(getBoardFace(), getBoardFace().getTacticMoves()[0]);
-		if (moveFT.length == 4) {
-			Move move;
-			if (moveFT[3] == 2)
-				move = new Move(moveFT[0], moveFT[1], 0, 2);
-			else
-				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-
-			getBoardFace().makeMove(move);
-		} else {
-			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-			getBoardFace().makeMove(move);
-		}
+		boardFace.updateMoves(boardFace.getTacticMoves()[0], true);
 
 		invalidateGameScreen();
-		getBoardFace().takeBack();
+		boardFace.takeBack();
 		boardView.invalidate();
 
 		playLastMoveAnimation();
@@ -935,10 +876,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void clearSavedTactics() {
-		preferencesEditor.putString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
-		preferencesEditor.putString(AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-		preferencesEditor.putInt(AppConstants.SPENT_SECONDS_TACTICS, 0);
-		preferencesEditor.putString(AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+		String userName = AppData.getUserName(this);
+		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
+		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
 		preferencesEditor.commit();
 	}
 

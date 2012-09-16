@@ -341,7 +341,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 
-			if (checked)
+			if (checked)  // TODO doesn't check updates if was already checked
 				AppUtils.startNotificationsUpdate(this);
 			else
 				AppUtils.stopNotificationsUpdate(this);

@@ -459,10 +459,10 @@ public class ChessBoard implements BoardFace {
 		return color[(i << 3) + j];
 	}
 
-	@Override
-	public int getPiece(int i, int j) {
-		return pieces[(i << 3) + j];
-	}
+//	@Override
+//	public int getPiece(int i, int j) {
+//		return pieces[(i << 3) + j];
+//	}
 
 	public boolean isWhiteToMove() {
 		return (side == LIGHT);
@@ -731,9 +731,27 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
+	@Override
+	public void updateMoves(String newMove, boolean playSound) {
+		int[] moveFT = MoveParser.parse(this, newMove);
+		if (moveFT.length == 4) {
+			Move move;
+			if (moveFT[3] == 2)
+				move = new Move(moveFT[0], moveFT[1], 0, 2);
+			else
+				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+
+			makeMove(move, playSound);
+		} else {
+			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+			makeMove(move, playSound);
+		}
+	}
+
+
 	/* makemove() makes a move. If the move is illegal, it
-		undoes whatever it did and returns false. Otherwise, it
-		returns true. */
+			undoes whatever it did and returns false. Otherwise, it
+			returns true. */
 
 	@Override
 	public boolean makeMove(Move m) {
@@ -1069,6 +1087,8 @@ public class ChessBoard implements BoardFace {
 
 		/* back up information so we can take the move back later. */
 		histDat[hply] = new HistoryData();
+//		Log.d("TEST_MOVE", " __________ makeMove___________________");
+//		Log.d("TEST_MOVE", "new HistoryData = " + histDat[hply] + ", hply = " + hply + ", move = "+ move);
 		histDat[hply].move = move;
 		histDat[hply].capture = pieces[move.to];
 		histDat[hply].ep = ep;
@@ -1246,6 +1266,8 @@ public class ChessBoard implements BoardFace {
 		side ^= 1;
 		xside ^= 1;
 		--hply;
+//		Log.d("TEST_MOVE", " _________________________________________");
+//		Log.d("TEST_MOVE", " taking BACK move = " + histDat[hply].move);
 		Move move = histDat[hply].move;
 		ep = histDat[hply].ep;
 		fifty = histDat[hply].fifty;
@@ -1349,12 +1371,15 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void takeNext() {
+//		Log.d("TEST_MOVE", " takeNext hply + 1 = " + (hply + 1)
+//				+ " <= movesCount = " + (hply + 1 <= movesCount) + " movesCount = " + movesCount);
 		if (hply + 1 <= movesCount) {
+//			Log.d("TEST_MOVE", " histDat[hply] = " + histDat[hply]);
 			if(histDat[hply] == null) // TODO find real problem
 				return;
 
-			Move m = histDat[hply].move;
-			makeMove(m);
+//			Log.d("TEST_MOVE", " taking NEXT move = " + histDat[hply].move);
+			makeMove(histDat[hply].move);
 		}
 	}
 
@@ -1469,23 +1494,16 @@ public class ChessBoard implements BoardFace {
 		try {
 			move = histDat[hply - 1].move;
 		} catch (ArrayIndexOutOfBoundsException e) {
-			StringBuilder result = new StringBuilder();
-			if (histDat.length > 0) {
-				result.append(histDat[0]);
-				for (int i = 1; i < histDat.length; i++) {
-					if (histDat[i] != null) {
-						result.append(", ");
-						result.append(histDat[i].move);
-					}
-				}
-			}
-//			throw new ArrayIndexOutOfBoundsException(
-//					"hply=" + hply +
-//							", histDat=[" + result.toString() + "], " +
-//							histDat.length + ", " +
-//							coreActivity.getCurrentGame().values.get(AppConstants.MOVE_LIST) + ", " +
-//							coreActivity.getCurrentGame().values.get(GameItem.ENCODED_MOVE_STRING) + ", " +
-//							coreActivity.getCurrentGame().values.get(GameItem.STARTING_FEN_POSITION));
+//			StringBuilder result = new StringBuilder(); // never queried
+//			if (histDat.length > 0) {
+//				result.append(histDat[0]);
+//				for (int i = 1; i < histDat.length; i++) {
+//					if (histDat[i] != null) {
+//						result.append(", ");
+//						result.append(histDat[i].move);
+//					}
+//				}
+//			}
 		}
 
 
@@ -1984,10 +2002,6 @@ public class ChessBoard implements BoardFace {
 		return hply;
 	}
 
-	public void setHply(int hply) {
-		this.hply = hply;
-	}
-
 	@Override
 	public int getMovesCount() {
 		return movesCount;
@@ -2001,11 +2015,6 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void decreaseMovesCount() {
 		movesCount--;
-	}
-
-	@Override
-	public void increaseMovesCount() {
-		movesCount++;
 	}
 
 	@Override
@@ -2067,11 +2076,6 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public void decreaseSecondsLeft() {
-		secondsLeft--;
-	}
-
-	@Override
 	public int getMode() {
 		return mode;
 	}
@@ -2092,8 +2096,11 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public void setTacticMoves(String[] tacticMoves) {
-		this.tacticMoves = tacticMoves;
+	public void setTacticMoves(String tacticMoves) {
+		this.tacticMoves = tacticMoves.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+				.replaceAll("[.]", StaticData.SYMBOL_EMPTY)
+				.replaceAll("  ", StaticData.SYMBOL_SPACE)
+				.substring(1).split(StaticData.SYMBOL_SPACE);
 	}
 
 	@Override
@@ -2107,9 +2114,26 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public boolean lastMoveContains(String piece, String moveTo) {
-		return tacticMoves[hply - 1].contains(piece)
-				&& tacticMoves[hply - 1].contains(moveTo);
+	public boolean lastTacticMoveIsCorrect() {
+		int lastIndex = hply - 1;
+		Move move = histDat[lastIndex].move; // get last move
+		String piece = StaticData.SYMBOL_EMPTY;
+		int pieceCode = pieces[move.to];
+		if (pieceCode == 1) { // set piece name
+			piece = MoveParser.WHITE_KNIGHT;
+		} else if (pieceCode == 2) {
+			piece = MoveParser.WHITE_BISHOP;
+		} else if (pieceCode == 3) {
+			piece = MoveParser.WHITE_ROOK;
+		} else if (pieceCode == 4) {
+			piece = MoveParser.WHITE_QUEEN;
+		} else if (pieceCode == 5) {
+			piece = MoveParser.WHITE_KING;
+		}
+		String moveTo = MoveParser.positionToString(move.to);
+//		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
+
+		return tacticMoves[lastIndex].contains(piece) && tacticMoves[lastIndex].contains(moveTo);
 	}
 
     @Override
@@ -2125,11 +2149,6 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public HistoryData[] getHistDat() {
 		return histDat;
-	}
-
-	@Override
-	public void setHistDat(HistoryData[] histDat) {
-		this.histDat = histDat;
 	}
 
 	public boolean[] getSlide() {
@@ -2364,4 +2383,19 @@ public class ChessBoard implements BoardFace {
 		}
 		return found;
 	}
+
+	@Override
+	public void setupBoard(String FEN) {
+		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
+			genCastlePos(FEN);
+			MoveParser.fenParse(FEN, this);
+			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
+			if (tmp.length > 1) {
+				if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
+					setReside(true);
+				}
+			}
+		}
+	}
+
 }

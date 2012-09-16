@@ -168,7 +168,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getOnlineGame(gameId);
 			getBoardFace().setInit(false);
 		} else {
-
+			// TODO don't check updates if it' our move
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -245,7 +245,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			getBoardFace().setMovesCount(moves.length);
 			for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
-				boardView.updateMoves(moves[i]);
+				getBoardFace().updateMoves(moves[i], false);
 			}
 		} else {
 			getBoardFace().setMovesCount(0);
@@ -304,7 +304,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
 			if (moves.length - getBoardFace().getMovesCount() == 1) {
-				boardView.updateMoves(moves[moves.length - 1]);
+				getBoardFace().updateMoves(moves[moves.length - 1], false);
 
 				getBoardFace().setMovesCount(moves.length);
 				boardView.invalidate();
@@ -319,7 +319,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		whitePlayerlabel.setText(getWhitePlayerName());
 		blackPlayerLabel.setText(getBlackPlayerName());
 
-		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
 
 	@Override

@@ -187,7 +187,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 			}
 		}
 
-		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 
 		if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && getBoardFace().getHply() % 2 != 0)
 				|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() % 2 == 0)) {
@@ -228,7 +228,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	private void loadSavedGame(){
 		int i;
-		String[] moves = preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).split("[|]");
+		String[] moves = AppData.getCompSavedGame(this).split("[|]");
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
 			getBoardFace().makeMove(new Move(

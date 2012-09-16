@@ -317,7 +317,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         ((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
     }
 
-    public void addMoveLog(CharSequence move) {
+    public void setMovesLog(CharSequence move) {
         movesTextView.setText(move);
         movesScroll.scrollTo(0, getResources().getDisplayMetrics().heightPixels);
     }

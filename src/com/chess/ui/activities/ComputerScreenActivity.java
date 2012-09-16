@@ -43,7 +43,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		super.onResume();
 		strength.setSelection(AppData.getCompStrength(this));
 
-		if (!preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).equals(StaticData.SYMBOL_EMPTY)) {
+		if (AppData.haveSavedCompGame(this)) {
 			findViewById(R.id.load).setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.load).setVisibility(View.GONE);
@@ -55,7 +55,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		if (view.getId() == R.id.load) {
 			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
 			Intent intent = new Intent(this, GameCompScreenActivity.class);
-			int compGameId = Integer.parseInt(preferences.getString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY).substring(0, 1));
+			int compGameId = Integer.parseInt(AppData.getCompSavedGame(this).substring(0, 1));
 			intent.putExtra(AppConstants.GAME_MODE, compGameId);
 			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
@@ -71,7 +71,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
 				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 
-			preferencesEditor.putString(AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
 			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);

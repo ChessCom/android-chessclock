@@ -128,7 +128,8 @@ public class DataHolder {
 	 * @param id
 	 */
 	public void addShowedTacticId(String id) {
-		showedTacticsIds.add(id);
+		if(!showedTacticsIds.contains(id))
+			showedTacticsIds.add(id);
 	}
 
 	/**

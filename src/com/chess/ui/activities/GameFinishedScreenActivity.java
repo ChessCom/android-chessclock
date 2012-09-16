@@ -173,7 +173,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		}
 
 		for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
-			boardView.updateMoves(moves[i]);
+			getBoardFace().updateMoves(moves[i], false);
 		}
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
@@ -188,7 +188,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
         whitePlayerlabel.setText(getWhitePlayerName());
         blackPlayerLabel.setText(getBlackPlayerName());
 
-		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
 
 	@Override

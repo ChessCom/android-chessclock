@@ -11,7 +11,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.GameActivityFace;
 
 import java.util.Iterator;
@@ -414,21 +413,21 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 	public void showHint() {
 	}
 
-	public void updateMoves(String newMove) {
-		int[] moveFT = MoveParser.parse(getBoardFace(), newMove);
-		if (moveFT.length == 4) {
-			Move move;
-			if (moveFT[3] == 2)
-				move = new Move(moveFT[0], moveFT[1], 0, 2);
-			else
-				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-
-			getBoardFace().makeMove(move, false);
-		} else {
-			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-			getBoardFace().makeMove(move, false);
-		}
-	}
+//	public void updateMoves(String newMove) {
+//		int[] moveFT = MoveParser.parse(getBoardFace(), newMove);
+//		if (moveFT.length == 4) {
+//			Move move;
+//			if (moveFT[3] == 2)
+//				move = new Move(moveFT[0], moveFT[1], 0, 2);
+//			else
+//				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+//
+//			getBoardFace().makeMove(move, false);
+//		} else {
+//			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
+//			getBoardFace().makeMove(move, false);
+//		}
+//	}
 
 	public void updatePlayerNames(String whitePlayerName, String blackPlayerName) {
 		whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();

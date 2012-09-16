@@ -564,7 +564,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		updatePlayerLabels();
 
-		boardView.addMove2Log(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
 
 	@Override

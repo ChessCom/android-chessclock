@@ -32,7 +32,7 @@ public interface BoardFace {
 
 	HistoryData[] getHistDat();
 
-	void setHistDat(HistoryData[] histDat);
+	void updateMoves(String newMove, boolean playSound);
 
 	boolean makeMove(Move m);
 
@@ -47,8 +47,6 @@ public interface BoardFace {
 	int[] getColor();
 
 	int getColor(int i, int j);
-
-	int getPiece(int i, int j);
 
 	int getHply();
 
@@ -111,11 +109,9 @@ public interface BoardFace {
 
 	void decreaseMovesCount();
 
-	void increaseMovesCount();
-
 	String convertMoveEchess();
 
-	void setTacticMoves(String[] tacticMoves);
+	void setTacticMoves(String tacticMoves);
 
 	String[] getTacticMoves();
 
@@ -124,8 +120,6 @@ public interface BoardFace {
 	int getSecondsPassed();
 
 	void setSecondsLeft(int left);
-
-	void decreaseSecondsLeft();
 
 	int getSecondsLeft();
 
@@ -139,7 +133,10 @@ public interface BoardFace {
 
 	boolean toggleAnalysis();
 
-	boolean lastMoveContains(String piece, String moveTo);
+	boolean lastTacticMoveIsCorrect();
 
 	boolean isPossibleToMakeMoves();
+
+	void setupBoard(String fen);
+
 }

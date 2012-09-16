@@ -220,9 +220,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		handler.postDelayed(new Runnable() {    // seems to be workign that way
 			@Override
 			public void run() {
-				boardView.getBoardFace().takeNext();
+				getBoardFace().takeNext();
 				invalidateGameScreen();
-				boardView.invalidate();
 			}
 		},1300);
 	}

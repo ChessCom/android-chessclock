@@ -87,7 +87,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             }
 
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(AppConstants.SAVED_COMPUTER_GAME, builder.toString());
+			editor.putString(AppData.getUserName(getContext()) + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
 			editor.commit();
         }
 		return super.isGameOver();

@@ -97,7 +97,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		popupManager = new ArrayList<PopupDialogFragment>();
 		popupProgressManager = new ArrayList<PopupProgressFragment>();
 
-		preferences = AppData.getPreferences(this);
+		preferences = AppData.getPreferences(this); // TODO rework shared pref usage to unique get method
 		preferencesEditor = preferences.edit();
 
 		metrics = new DisplayMetrics();

@@ -233,8 +233,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.newGame();
 	}
 
-	public void addMove2Log(CharSequence move) {
-		gamePanelView.addMoveLog(move);
+	public void setMovesLog(CharSequence move) {
+		gamePanelView.setMovesLog(move);
 		invalidate();
 		requestFocus();
 	}
