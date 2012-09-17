@@ -397,8 +397,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		popupItem.setNegativeBtnId(R.string.decline);
 		showPopupDialog(message, DRAW_OFFER_RECEIVED_TAG);
 		getLastPopupFragment().setCancelable(false);
-
-//		popupDialogFragment.setCancelable(false);
     }
 
     @Override

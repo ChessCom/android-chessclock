@@ -162,7 +162,6 @@ public class LccHolder{
 		return newGame;
 	}
 
-//	public int getResignTitle(Long gameId) {
 	public int getResignTitle() {
 		if (isFairPlayRestriction()) {
 			return R.string.resign;
@@ -173,7 +172,6 @@ public class LccHolder{
 		}
 	}
 
-//	public String getBlackUserName(Long gameId) {
 	public String getBlackUserName() {
 		return getGame(currentGameId).getBlackPlayer().getUsername();
 	}

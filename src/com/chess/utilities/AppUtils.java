@@ -7,10 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -242,4 +245,40 @@ public class AppUtils {
 	private static boolean isLocaleEn(Resources resources) {
 		return resources.getConfiguration().locale.getLanguage().equals(StaticData.LOCALE_EN);
 	}
+
+	public static class DeviceInfo {
+		public String MODEL;
+		public int SDK_API;
+		public String APP_VERSION_NAME = StaticData.SYMBOL_EMPTY;
+		public int APP_VERSION_CODE = 0;
+
+		/*
+		 * Get information about device model, App version and API version
+		 */
+		public DeviceInfo getDeviceInfo(Context context) {
+			DeviceInfo deviceInfo = new DeviceInfo();
+
+			deviceInfo.MODEL = Build.MODEL;
+			Log.i("requested MODEL = ", deviceInfo.MODEL);
+
+			deviceInfo.SDK_API = Build.VERSION.SDK_INT;
+			Log.i("requested SDK_INT = ", deviceInfo.SDK_API + StaticData.SYMBOL_EMPTY);
+			// get version number and name
+			try {
+				PackageManager manager = context.getPackageManager();
+				PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+				deviceInfo.APP_VERSION_CODE = info.versionCode;
+				Log.i("requested versionCode = ", deviceInfo.APP_VERSION_CODE + StaticData.SYMBOL_EMPTY);
+
+				deviceInfo.APP_VERSION_NAME = info.versionName;
+				Log.i("requested versionName = ", deviceInfo.APP_VERSION_NAME);
+
+			} catch (PackageManager.NameNotFoundException nnf) {
+				nnf.printStackTrace();
+			}
+			return deviceInfo;
+		}
+	}
+
+
 }

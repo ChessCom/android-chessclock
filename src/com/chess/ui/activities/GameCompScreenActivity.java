@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -23,6 +22,9 @@ import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * GameTacticsScreenActivity class
@@ -38,6 +40,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
 	private int[] compStrengthArray;
+	private SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +77,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		if (AppData.haveSavedCompGame(this)) { // if load game
 			loadSavedGame();
 
-			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace()))
+			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
 				getBoardFace().setReside(true);
+				boardView.invalidate();
+			}
 
 		} else {
 			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
@@ -297,7 +302,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {
-			showToast(items[i].toString());
 			switch (i) {
 				case NEW_GAME_WHITE: {
 					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
@@ -315,19 +319,29 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 					invalidateGameScreen();
+
 					boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 					break;
 				}
 				case EMAIL_GAME: {
-					String moves = StaticData.SYMBOL_EMPTY;
-					String userName = AppData.getUserName(getContext());
+					CharSequence moves = getBoardFace().getMoveListSAN();
+					String whitePlayerName = AppData.getUserName(getContext());
+					String blackPlayerName = getString(R.string.comp);
+					if(!isUserColorWhite()){
+						whitePlayerName = getString(R.string.comp);
+						blackPlayerName = AppData.getUserName(getContext());
+					}
+					String date = datePgnFormat.format(Calendar.getInstance().getTime());
 					Intent emailIntent = new Intent(Intent.ACTION_SEND);
-					emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
-					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");
-					emailIntent.putExtra(Intent.EXTRA_TEXT, "[Site \"Chess.com Android\"]\n [White \""
-							+ userName + "\"]\n [White \""
-							+ userName + "\"]\n [Result \"X-X\"]\n \n \n "
-							+ moves + " \n \n Sent from my Android");
+					emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");  // TODO localize
+					emailIntent.putExtra(Intent.EXTRA_TEXT,
+							"\n [Date \"" + date	+ "\"]"
+							+ "\n [White \"" + whitePlayerName	+ "\"]"
+							+ "\n [Black \"" + blackPlayerName + "\"]"
+							+ "\n [Result \"*\"]"
+							+ "\n " + moves
+							+ "\n \n Sent from my Android");
 					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
 					break;
 				}

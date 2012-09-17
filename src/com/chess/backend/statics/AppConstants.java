@@ -77,6 +77,7 @@ public class AppConstants {
 	/* Stuff */
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
+	public static final String MIME_TYPE_MESSAGE_RFC822 = "message/rfc822";
 
     public static final String CURRENT_LOCALE = "current locale of screen";
 
@@ -84,4 +85,9 @@ public class AppConstants {
 	public static final String BUGSENSE_DEBUG_APP_API_RESPONSE = "APP_API_RESPONSE";
 
 	public static final String EXCEPTION = "exception";
+
+	/*Email Feedback*/
+	public static final String VERSION_CODE = "versionCode ";
+	public static final String VERSION_NAME = "versionName ";
+	public static final String SDK_API = "API ";
 }

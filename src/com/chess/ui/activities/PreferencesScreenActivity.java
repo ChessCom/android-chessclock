@@ -242,16 +242,22 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
-			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
+			emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
-			//emailIntent.setData(Uri.parse("mailto:mobile@chess.com?subject=Android Support".replace(" ", "%20")));
+			emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (view.getId() == R.id.prefVacation) {
 			updateVacationLeaveStatus();
 		}
 	}
 
+	private String feedbackBodyCompose() {
+		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(this);
+		return getResources().getString(R.string.feedback_mailbody) + ": " + AppConstants.VERSION_CODE
+				+ deviceInfo.APP_VERSION_CODE + ", " + AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME
+				+ ", " + deviceInfo.MODEL + ", " + AppConstants.SDK_API + deviceInfo.SDK_API + ", ";
+	}
 
 	private AdapterView.OnItemSelectedListener ratingSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
