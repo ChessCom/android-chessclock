@@ -298,7 +298,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else {
 			Log.d("TEST_MOVE", " Wrong move");
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
-				showWrongMovePopup(getString(R.string.wrong_ex));
+				TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+				String title = getString(R.string.wrong_score,
+						tacticResultItem.getUserRatingChange(),
+						tacticResultItem.getUserRating());
+				showWrongMovePopup(title);
 
 			} else {
 				LoadItem loadItem = new LoadItem();
