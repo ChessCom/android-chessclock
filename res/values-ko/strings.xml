@@ -305,8 +305,8 @@
 	<string name="reason_">이유</string>
 	<string name="message_">메시지</string>
 
-	<string name="black_wins">블랙 승리 1–0</string>
-	<string name="white_wins">화이트 승리 1–0</string>
+	<string name="black_wins">블랙 승리 (0–1)</string>
+	<string name="white_wins">화이트 승리 (1–0)</string>
 	<string name="draw_by_stalemate">교착 상태 (0–0)에 의해 그리기</string>
 	<string name="draw_by_3fold_repetition">삼중 반복 (0.5–0.5)에 의해 그리기</string>
 	<string name="rematch">재시합</string>

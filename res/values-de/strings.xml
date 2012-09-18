@@ -310,7 +310,7 @@
 	<string name="reason_">Grund</string>
 	<string name="message_">Nachricht</string>
 
-	<string name="black_wins">Schwarz gewinnt (1–0)</string>
+	<string name="black_wins">Schwarz gewinnt (0–1)</string>
 	<string name="white_wins">Weiß gewinnt (1–0)</string>
 	<string name="draw_by_stalemate">Zeichnen Sie durch Patt (0–0)</string>
 	<string name="draw_by_3fold_repetition">Zeichnen Sie durch dreifache Wiederholung (0.5–0.5)</string>

@@ -27,6 +27,7 @@ import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.ChessComApiParser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * GameFinishedScreenActivity class
@@ -84,6 +85,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
+				getString(R.string.emailgame),
 				getString(R.string.reside)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
@@ -185,7 +187,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	public void invalidateGameScreen() {
-        whitePlayerlabel.setText(getWhitePlayerName());
+        whitePlayerLabel.setText(getWhitePlayerName());
         blackPlayerLabel.setText(getBlackPlayerName());
 
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
@@ -314,6 +316,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
+		private final int EMAIL_GAME = 1;
 		private final int ECHESS_RESIDE = 2;
 
 		private MenuOptionsDialogListener(CharSequence[] items) {
@@ -326,12 +329,52 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				case ECHESS_SETTINGS:
 					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
+				case EMAIL_GAME:
+					sendPGN();
+					break;
 				case ECHESS_RESIDE:
 					getBoardFace().setReside(!getBoardFace().isReside());
 					boardView.invalidate();
 					break;
 			}
 		}
+	}
+
+	private void sendPGN() {
+		CharSequence moves = getBoardFace().getMoveListSAN();
+		String whitePlayerName = currentGame.getWhiteUsername();
+		String blackPlayerName = currentGame.getBlackUsername();
+		String result;
+		if (getBoardFace().getSide() == ChessBoard.LIGHT) {
+			result = BLACK_WINS;
+		} else {
+			result = WHITE_WINS;
+		}
+		int daysPerMove = Integer.parseInt(currentGame.getDaysPerMove());
+		StringBuilder timeControl = new StringBuilder();
+		timeControl.append("1 in ").append(daysPerMove);
+		if (daysPerMove > 1){
+			timeControl.append(" days");
+		} else {
+			timeControl.append(" day");
+		}
+
+		String date = datePgnFormat.format(Calendar.getInstance().getTime());
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("[Event \"").append(currentGame.getGameName()).append("\"]")
+				.append("\n [Site \" Chess.com\"]")
+				.append("\n [Date \"").append(date).append("\"]")
+				.append("\n [White \"").append(whitePlayerName).append("\"]")
+				.append("\n [Black \"").append(blackPlayerName).append("\"]")
+				.append("\n [Result \"").append(result).append("\"]")
+				.append("\n [WhiteElo \"").append(currentGame.getWhiteRating()).append("\"]")
+				.append("\n [BlackElo \"").append(currentGame.getBlackRating()).append("\"]")
+				.append("\n [TimeControl \"").append(timeControl.toString()).append("\"]")
+				.append("\n ").append(moves)
+				.append("\n \n Sent from my Android");
+
+		sendPGN(builder.toString());
 	}
 
 	@Override

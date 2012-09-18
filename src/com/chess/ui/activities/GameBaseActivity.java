@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
+import java.text.SimpleDateFormat;
+
 /**
  * GameBaseActivity class
  *
@@ -27,12 +30,16 @@ import com.chess.utilities.MopubHelper;
 public abstract class GameBaseActivity extends LiveBaseActivity implements
 		BoardToGameActivityFace, GameActivityFace {
 
+	protected static final String GAME_GOES = "*";
+	protected static final String WHITE_WINS = "1-0";
+	protected static final String BLACK_WINS = "0-1";
 
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
+	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 
-	protected TextView whitePlayerlabel;
+	protected TextView whitePlayerLabel;
 	protected TextView blackPlayerLabel;
 
 	protected boolean chat;
@@ -70,9 +77,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void widgetsInit() {
 		statusBarLay = (ViewGroup) findViewById(R.id.statusBarLay);
 
-		whitePlayerlabel = (TextView) findViewById(R.id.white);
+		whitePlayerLabel = (TextView) findViewById(R.id.white);
 		blackPlayerLabel = (TextView) findViewById(R.id.black);
-		whitePlayerlabel.setSelected(true);
+		whitePlayerLabel.setSelected(true);
 		blackPlayerLabel.setSelected(true);
 
 
@@ -129,10 +136,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	protected void setWhitePlayerDot(boolean whitePlayerMove){
 		if (whitePlayerMove) {
-			whitePlayerlabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
+			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
 			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 		} else {
-			whitePlayerlabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
 		}
 	}
@@ -175,17 +182,24 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		getSoundPlayer().playGameEnd();
 	}
 
+	protected void sendPGN(String message) {
+		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+		emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");  // TODO localize
+		emailIntent.putExtra(Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+	}
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		showSubmitButtonsLay(false);
 		if (isAnalysis) {
 			analysisTxt.setVisibility(View.VISIBLE);
-			whitePlayerlabel.setVisibility(View.INVISIBLE);
+			whitePlayerLabel.setVisibility(View.INVISIBLE);
 			blackPlayerLabel.setVisibility(View.INVISIBLE);
 		} else {
 			analysisTxt.setVisibility(View.INVISIBLE);
-			whitePlayerlabel.setVisibility(View.VISIBLE);
+			whitePlayerLabel.setVisibility(View.VISIBLE);
 			blackPlayerLabel.setVisibility(View.VISIBLE);
 			restoreGame();
 		}

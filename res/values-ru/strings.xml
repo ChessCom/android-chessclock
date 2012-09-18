@@ -309,7 +309,7 @@
 	<string name="reason_">Причина.</string>
 	<string name="message_">Сообщение</string>
 
-	<string name="black_wins">Черные выиграли (1–0)</string>
+	<string name="black_wins">Черные выиграли (0–1)</string>
 	<string name="white_wins">Белые выиграли (1–0)</string>
 	<string name="draw_by_stalemate">Ничья по тупику (0–0)</string>
 	<string name="draw_by_3fold_repetition">Ничья по тройному повторению (0.5–0.5)</string>

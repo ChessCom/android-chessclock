@@ -308,7 +308,7 @@
 	<string name="reason_">Sebep</string>
 	<string name="message_">Mesaj</string>
 
-	<string name="black_wins">Siyah galibiyet (1–0)</string>
+	<string name="black_wins">Siyah galibiyet (0–1)</string>
 	<string name="white_wins">Beyaz kazanır (1–0)</string>
 	<string name="draw_by_stalemate">Çıkmazı (0–0) tarafından çizin</string>
 	<string name="draw_by_3fold_repetition">Üçlü tekrarı (0.5–0.5) tarafından çizin</string>

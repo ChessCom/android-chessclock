@@ -310,7 +310,7 @@
 	<string name="reason_">סיבה:</string>
 	<string name="message_">הודעה</string>
 
-	<string name="black_wins">שחור מנצח (1–0)</string>
+	<string name="black_wins">שחור מנצח (0–1)</string>
 	<string name="white_wins">לבן מנצח (1–0)</string>
 	<string name="draw_by_stalemate">ציור של קיפאון (0–0)</string>
 	<string name="draw_by_3fold_repetition">ציור על ידי חזרה משולשת (0.5–0.5)</string>

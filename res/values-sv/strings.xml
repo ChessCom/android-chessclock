@@ -308,7 +308,7 @@
 	<string name="reason_">Orsak</string>
 	<string name="message_">Meddelande</string>
 
-	<string name="black_wins">Svart vinner (1–0)</string>
+	<string name="black_wins">Svart vinner (0–1)</string>
 	<string name="white_wins">Vit vinner (1–0)</string>
 	<string name="draw_by_stalemate">Rita dödläge (0–0)</string>
 	<string name="draw_by_3fold_repetition">Rita tre upprepning (0.5–0.5)</string>

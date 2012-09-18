@@ -192,7 +192,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		gamePanelView.enableAnalysisMode(false);
 
-		whitePlayerlabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
 
@@ -309,7 +309,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentDotId, 0, 0, 0);
 		}
 
-		whitePlayerlabel.setTextColor(topPlayerColor);
+		whitePlayerLabel.setTextColor(topPlayerColor);
 		blackPlayerLabel.setTextColor(topPlayerColor);
 
 		boolean activate = isWhitePlayerMove ? userPlayWhite : !userPlayWhite;
@@ -501,10 +501,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void updatePlayerLabels() {
 		if (userPlayWhite) {
-			whitePlayerlabel.setText(getBlackPlayerName());
+			whitePlayerLabel.setText(getBlackPlayerName());
 			gamePanelView.setBottomPlayerLabel(getWhitePlayerName());
 		} else {
-			whitePlayerlabel.setText(getWhitePlayerName());
+			whitePlayerLabel.setText(getWhitePlayerName());
 			gamePanelView.setBottomPlayerLabel(getBlackPlayerName());
 		}
 	}
@@ -557,7 +557,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
-		whitePlayerlabel.setVisibility(View.VISIBLE);
+		whitePlayerLabel.setVisibility(View.VISIBLE);
 		blackPlayerLabel.setVisibility(View.VISIBLE);
 
 		updatePlayerLabels();
@@ -726,12 +726,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
 		if (userPlayWhite) {
-			whitePlayerlabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+			whitePlayerLabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
 			gamePanelView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
 		} else {
-			whitePlayerlabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
 			gamePanelView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);

@@ -305,7 +305,7 @@
 	<string name="reason_">原因</string>
 	<string name="message_">訊息</string>
 
-	<string name="black_wins">黑胜（1–0）</string>
+	<string name="black_wins">黑胜（0–1）</string>
 	<string name="white_wins">白衣胜（1–0）</string>
 	<string name="draw_by_stalemate">绘制僵局（0–0）</string>
 	<string name="draw_by_3fold_repetition">绘制三重重复（0.5–0.5）</string>

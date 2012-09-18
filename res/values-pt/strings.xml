@@ -308,7 +308,7 @@
 	<string name="reason_">Porquê</string>
 	<string name="message_">Mensagem</string>
 
-	<string name="black_wins">Preto vence (1–0)</string>
+	<string name="black_wins">Preto vence (0–1)</string>
 	<string name="white_wins">Branco vence (1–0)</string>
 	<string name="draw_by_stalemate">Desenhe pelo impasse (0–0)</string>
 	<string name="draw_by_3fold_repetition">Empate por repetição tripla (0.5–0.5)</string>

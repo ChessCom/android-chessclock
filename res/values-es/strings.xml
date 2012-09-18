@@ -312,7 +312,7 @@
 	<string name="message_">Mensaje</string>
 
 
-	<string name="black_wins">Negro gana (1–0)</string>
+	<string name="black_wins">Negro gana (0–1)</string>
 	<string name="white_wins">Blanco gana (1–0)</string>
 	<string name="draw_by_stalemate">Dibuja por empate (0–0)</string>
 	<string name="draw_by_3fold_repetition">Dibuja por la triple repetición (1.2 a 1.2)</string>

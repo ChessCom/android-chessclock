@@ -310,7 +310,7 @@
 	<string name="reason_">Raison</string>
 	<string name="message_">Message</string>
 
-	<string name="black_wins">Noir gagne (1–0)</string>
+	<string name="black_wins">Noir gagne (0–1)</string>
 	<string name="white_wins">Blanc gagne (1–0)</string>
 	<string name="draw_by_stalemate">Dessiner par l\'impasse (0–0)</string>
 	<string name="draw_by_3fold_repetition">Dessiner par triple répétition (0.5–0.5)</string>

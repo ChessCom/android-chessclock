@@ -308,7 +308,7 @@
 	<string name="reason_">rdza.</string>
 	<string name="message_">Wiadomość</string>
 
-	<string name="black_wins">Czarny zwycięstw (1–0)</string>
+	<string name="black_wins">Czarny zwycięstw (0–1)</string>
 	<string name="white_wins">Biały zwycięstw (1–0)</string>
 	<string name="draw_by_stalemate">Remis w martwym punkcie (0–0)</string>
 	<string name="draw_by_3fold_repetition">Remis w potrójnym powtórzeniu ust 0.5–0.5)</string>

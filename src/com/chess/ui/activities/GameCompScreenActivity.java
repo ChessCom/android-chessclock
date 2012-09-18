@@ -23,7 +23,6 @@ import com.chess.ui.views.ChessBoardCompView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -40,7 +39,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
 	private int[] compStrengthArray;
-	private SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -167,25 +165,25 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	public void invalidateGameScreen() {
 		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {	//w - human; b - comp
-				whitePlayerlabel.setText(AppData.getUserName(this));
+				whitePlayerLabel.setText(AppData.getUserName(this));
 				blackPlayerLabel.setText(getString(R.string.Computer));
 				userPlayWhite = true;
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {	//w - comp; b - human
-				whitePlayerlabel.setText(getString(R.string.Computer));
+				whitePlayerLabel.setText(getString(R.string.Computer));
 				blackPlayerLabel.setText(AppData.getUserName(this));
 				userPlayWhite = false;
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {	//w - human; b - human
-				whitePlayerlabel.setText(getString(R.string.Human));
+				whitePlayerLabel.setText(getString(R.string.Human));
 				blackPlayerLabel.setText(getString(R.string.Human));
 				userPlayWhite = true;
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {	//w - comp; b - comp
-				whitePlayerlabel.setText(getString(R.string.Computer));
+				whitePlayerLabel.setText(getString(R.string.Computer));
 				blackPlayerLabel.setText(getString(R.string.Computer));
 				userPlayWhite = true;
 				break;
@@ -207,7 +205,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	public void onPlayerMove() {
 		setWhitePlayerDot(userPlayWhite);
 
-		whitePlayerlabel.setVisibility(View.VISIBLE);
+		whitePlayerLabel.setVisibility(View.VISIBLE);
 		blackPlayerLabel.setVisibility(View.VISIBLE);
 		thinking.setVisibility(View.GONE);
 	}
@@ -216,7 +214,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	public void onCompMove() {
 		setWhitePlayerDot(!userPlayWhite);
 
-		whitePlayerlabel.setVisibility(View.GONE);
+		whitePlayerLabel.setVisibility(View.GONE);
 		blackPlayerLabel.setVisibility(View.GONE);
 		thinking.setVisibility(View.VISIBLE);
 	}
@@ -324,25 +322,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					break;
 				}
 				case EMAIL_GAME: {
-					CharSequence moves = getBoardFace().getMoveListSAN();
-					String whitePlayerName = AppData.getUserName(getContext());
-					String blackPlayerName = getString(R.string.comp);
-					if(!isUserColorWhite()){
-						whitePlayerName = getString(R.string.comp);
-						blackPlayerName = AppData.getUserName(getContext());
-					}
-					String date = datePgnFormat.format(Calendar.getInstance().getTime());
-					Intent emailIntent = new Intent(Intent.ACTION_SEND);
-					emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
-					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");  // TODO localize
-					emailIntent.putExtra(Intent.EXTRA_TEXT,
-							"\n [Date \"" + date	+ "\"]"
-							+ "\n [White \"" + whitePlayerName	+ "\"]"
-							+ "\n [Black \"" + blackPlayerName + "\"]"
-							+ "\n [Result \"*\"]"
-							+ "\n " + moves
-							+ "\n \n Sent from my Android");
-					startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail) /*"Send mail..."*/));
+					sendPGN();
 					break;
 				}
 
@@ -354,7 +334,50 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		}
 	}
 
-    @Override
+	private void sendPGN() {
+		/*
+				[Event "Let's Play!"]
+				[Site "Chess.com"]
+				[Date "2012.09.13"]
+				[White "anotherRoger"]
+				[Black "alien_roger"]
+				[Result "0-1"]
+				[WhiteElo "1221"]
+				[BlackElo "1119"]
+				[TimeControl "1 in 1 day"]
+				[Termination "alien_roger won on time"]
+				 */
+		CharSequence moves = getBoardFace().getMoveListSAN();
+		String whitePlayerName = AppData.getUserName(getContext());
+		String blackPlayerName = getString(R.string.comp);
+		String result = GAME_GOES;
+		if(boardView.isFinished()){// means in check state
+			if (getBoardFace().getSide() == ChessBoard.LIGHT) {
+				result = BLACK_WINS;
+			} else {
+				result = WHITE_WINS;
+			}
+		}
+		if(!isUserColorWhite()){
+			whitePlayerName = getString(R.string.comp);
+			blackPlayerName = AppData.getUserName(getContext());
+		}
+		String date = datePgnFormat.format(Calendar.getInstance().getTime());
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("\n [Site \" Chess.com\"]")
+				.append("\n [Date \"").append(date).append("\"]")
+				.append("\n [White \"").append(whitePlayerName).append("\"]")
+				.append("\n [Black \"").append(blackPlayerName).append("\"]")
+				.append("\n [Result \"").append(result).append("\"]");
+
+		builder.append("\n ").append(moves)
+				.append("\n \n Sent from my Android");
+
+		sendPGN(builder.toString());
+	}
+
+	@Override
     protected void showGameEndPopup(View layout, String message) {
 
         TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);

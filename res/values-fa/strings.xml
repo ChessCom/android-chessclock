@@ -308,7 +308,7 @@
 	<string name="reason_">دلیل</string>
 	<string name="message_">پیام</string>
 
-	<string name="black_wins">سیاه و سفید برنده (1–0)</string>
+	<string name="black_wins">سیاه و سفید برنده (0–1)</string>
 	<string name="white_wins">سفید برنده (1–0)</string>
 	<string name="draw_by_stalemate">رسم شده توسط بن بست (0–0)</string>
 	<string name="draw_by_3fold_repetition">رسم شده توسط سه برابر تکرار (0.5–0.5)</string>

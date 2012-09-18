@@ -311,7 +311,7 @@
 	<string name="message_">संदेश</string>
 
 
-	<string name="black_wins">काले जीत (1–0)</string>
+	<string name="black_wins">काले जीत (0–1)</string>
 	<string name="white_wins">सफेद जीत (1–0)</string>
 	<string name="draw_by_stalemate">गतिरोध से ड्रा (0–0)</string>
 	<string name="draw_by_3fold_repetition">तीन बार दुहराव (0.5–0.5) द्वारा ड्रा</string>

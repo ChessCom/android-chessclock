@@ -334,7 +334,7 @@
 	<string name="intermediate_category">intermediate</string>
 	<string name="advanced_category">advanced</string>
 
-	<string name="black_wins">Black wins (1–0)</string>
+	<string name="black_wins">Black wins (0–1)</string>
 	<string name="white_wins">White wins (1–0)</string>
 	<string name="draw_by_stalemate">Draw by stalemate (0–0)</string>
 	<string name="draw_by_3fold_repetition">Draw by threefold repetition (0.5–0.5)</string>

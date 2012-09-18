@@ -308,7 +308,7 @@
 	<string name="reason_">Reden</string>
 	<string name="message_">Bericht</string>
 
-	<string name="black_wins">Zwart wint (1–0)</string>
+	<string name="black_wins">Zwart wint (0–1)</string>
 	<string name="white_wins">Wit wint (1–0)</string>
 	<string name="draw_by_stalemate">Teken door pat (0–0)</string>
 	<string name="draw_by_3fold_repetition">Teken door de drievoudige herhaling (0.5–0.5)</string>

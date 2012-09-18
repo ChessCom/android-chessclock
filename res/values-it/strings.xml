@@ -310,7 +310,7 @@
 	<string name="message_">Messaggio</string>
 
 
-	<string name="black_wins">Nero vince (1–0)</string>
+	<string name="black_wins">Nero vince (0–1)</string>
 	<string name="white_wins">Bianco vince (1–0)</string>
 	<string name="draw_by_stalemate">Disegna per stallo (0–0)</string>
 	<string name="draw_by_3fold_repetition">Disegna da triplice ripetizione (0.5–0.5)</string>

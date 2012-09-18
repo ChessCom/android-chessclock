@@ -307,7 +307,7 @@
 	<string name="reason_">Årsak.</string>
 	<string name="message_">Melding</string>
 
-	<string name="black_wins">Svart vinner (1–0)</string>
+	<string name="black_wins">Svart vinner (0–1)</string>
 	<string name="white_wins">Hvit vinner (1–0)</string>
 	<string name="draw_by_stalemate">Tegner ved patt (0–0)</string>
 	<string name="draw_by_3fold_repetition">Tegn av tredelt repetisjon (01.02 til 01.02)</string>

@@ -607,6 +607,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
 	public void enableGameControls(boolean enable) {
+		enableGameButton(B_OPTIONS_ID, enable);
 		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);

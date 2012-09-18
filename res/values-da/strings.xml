@@ -310,7 +310,7 @@
 	<string name="reason_">ÅRSAG</string>
 	<string name="message_">Besked</string>
 
-	<string name="black_wins">Sort vinder (1–0)</string>
+	<string name="black_wins">Sort vinder (0–1)</string>
 	<string name="white_wins">Hvid vinder (1–0)</string>
 	<string name="draw_by_stalemate">Tegn ved dødvande (0–0)</string>
 	<string name="draw_by_3fold_repetition">Tegn ved tredobbelt gentagelse (0.5–0.5)</string>

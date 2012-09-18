@@ -308,7 +308,7 @@
 	<string name="reason_">理由</string>
 	<string name="message_">メッセージ</string>
 
-	<string name="black_wins">黒勝（1–0）</string>
+	<string name="black_wins">黒勝（0–1）</string>
 	<string name="white_wins">白勝（1–0）</string>
 	<string name="draw_by_stalemate">こう着状態（0–0）で描く</string>
 	<string name="draw_by_3fold_repetition">3倍に 繰り返し（0.5–0.5）で描く</string>
