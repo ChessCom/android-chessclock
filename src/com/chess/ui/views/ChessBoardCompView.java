@@ -138,6 +138,33 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }).start();
     }
 
+//	private class ComputeMoveUpdateListener extends AbstractUpdateListener<String>{ // TODO add later
+//
+//		private int time;
+//
+//		public ComputeMoveUpdateListener(int time) {
+//			super(getContext());
+//			this.time = time;
+//		}
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			super.updateData(returnedObj);
+//			gameActivityFace.invalidateGameScreen();
+//			gameCompActivityFace.onPlayerMove();
+//			invalidate();
+//			if (isGameOver())
+//				return;
+//			if (AppData.isComputerVsComputerGameMode(boardFace)
+//					|| (hint && !AppData.isHumanVsHumanGameMode(boardFace))) {
+//				if (hint)
+//					hint = false;
+//				computerMove(time);
+//			}
+//
+//		}
+//	}
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG));
