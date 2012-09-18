@@ -288,9 +288,9 @@ public class ChessBoard implements BoardFace {
 	}
 
 	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace, Long gameId) {
-		if (instance == null || !gameId.equals(ChessBoard.gameId)) {
+		if (instance == null || !gameId.equals(instance.gameId)) {
 			instance = new ChessBoard(gameActivityFace);
-			ChessBoard.gameId = gameId;
+			instance.gameId = gameId;
 		}
 		return instance;
 	}
