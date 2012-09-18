@@ -159,28 +159,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
-
-		if (chessBoard != null) {
-			boardView.setBoardFace(chessBoard);
+		final Long currentGameId = getLccHolder().getCurrentGameId();
+		boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
+		if (!currentGameId.equals(ChessBoard.getGameId())) {
+			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
 		} else {
-
-			try {
-				if (getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
-					throw new RuntimeException("Restored board should not be null!");
-				}
-			}
-			catch (RuntimeException e) {
-				BugSenseHandler.sendException(e);
-				e.printStackTrace();
-
-				// temporary fix! still investigating
-				getLccHolder().setLatestMoveNumber(null);
-			}
-
-			boardView.setBoardFace(new ChessBoard(this));
+			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
 			getBoardFace().setInit(true);
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+			if (getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
+				getLccHolder().setLatestMoveNumber(null); // todo: refactor with new LCC
+			}
 		}
 		boardView.setGameActivityFace(this);
 
@@ -458,7 +447,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		});
     }
 
-	protected void sendMove() {
+	protected void sendMove(String debugString) {
 
 		getBoardFace().setSubmit(false);
 		showSubmitButtonsLay(false);
@@ -495,7 +484,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", gamesC=" + getLccHolder().getGamesCount() +
 				", gameId=" + getLccHolder().getCurrentGameId() +
 				", analysisPanel=" + gamePanelView.isAnalysisEnabled() +
-				", analysisBoard=" + getBoardFace().isAnalysis();
+				", analysisBoard=" + getBoardFace().isAnalysis() +
+				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
+				", debugString=" + debugString;
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
@@ -550,7 +541,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	public void updateAfterMove() {
 		if(!getBoardFace().isAnalysis())
-			sendMove();
+			sendMove("update");
 	}
 
 	@Override
@@ -812,11 +803,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void restoreGame() {
-		boardView.setBoardFace(new ChessBoard(this));
+		boardView.setBoardFace(ChessBoard.getInstance(this, getLccHolder().getCurrentGameId()));
 		getBoardFace().setInit(true);
 		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		boardView.setGameActivityFace(this);
-
 
 		onGameStarted();
 		getBoardFace().setInit(false);
@@ -833,7 +823,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.submitBtn) {
-			sendMove();
+			sendMove("submit click");
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			Intent intent = new Intent(this, LiveNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

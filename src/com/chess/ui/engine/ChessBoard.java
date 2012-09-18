@@ -65,6 +65,9 @@ public class ChessBoard implements BoardFace {
 	public static final String EQUALS_R = "=R";
 	public static final String EQUALS_Q = "=Q";
 
+	private static ChessBoard instance;
+	private static Long gameId;
+
 	private boolean init;
 	private boolean chess960;
 	private boolean reside;
@@ -278,9 +281,18 @@ public class ChessBoard implements BoardFace {
 	private BoardToGameActivityFace gameActivityFace;
 	private SoundPlayer soundPlayer;
 
+	// todo: should be changed to private after refactoring for another boards: Echess, Tactics
 	public ChessBoard(BoardToGameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
 		soundPlayer = gameActivityFace.getSoundPlayer();
+	}
+
+	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace, Long gameId) {
+		if (instance == null || !gameId.equals(ChessBoard.gameId)) {
+			instance = new ChessBoard(gameActivityFace);
+			ChessBoard.gameId = gameId;
+		}
+		return instance;
 	}
 
 	public void resetCastlePos() {
@@ -2396,6 +2408,10 @@ public class ChessBoard implements BoardFace {
 				}
 			}
 		}
+	}
+
+	public static Long getGameId() {
+		return gameId;
 	}
 
 }

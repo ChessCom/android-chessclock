@@ -842,11 +842,11 @@ public class LccHolder{
 		User moveMaker;
 		for (int i = 0; i < coordMoves.size(); i++) {
 			moveMaker = (i % 2 == 0) ? whitePlayer : blackPlayer;
-			doMoveMade(game, moveMaker, coordMoves.get(i), i);
+			doMoveMade(game, moveMaker, i);
 		}
 	}
 
-	public void doMoveMade(final Game game, final User moveMaker, String move, int moveIndex) {
+	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
 		if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
 			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
 					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);

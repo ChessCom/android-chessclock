@@ -242,7 +242,7 @@ public class LccGameListener implements GameListener {
             Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
             return;
         }
-        lccHolder.doMoveMade(game, moveMaker, move, game.getSeq() - 1);
+        lccHolder.doMoveMade(game, moveMaker, game.getSeq() - 1);
 
         if (TESTING_GAME && game.isMoveOf(lccHolder.getUser()) && game.getState() == Game.State.Started) {
             Utils.sleep(0.5F);
