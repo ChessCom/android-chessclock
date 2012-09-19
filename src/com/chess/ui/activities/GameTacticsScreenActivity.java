@@ -149,25 +149,28 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
 			if (AppData.haveSavedTacticGame(this)) {
-				String userNae = AppData.getUserName(this);
-				String tacticString = preferences.getString(userNae + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
-				String tacticResultString = preferences.getString(userNae + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-				String showedTacticId = preferences.getString(userNae + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+				String userName = AppData.getUserName(this);
+				String tacticString = preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
+				String tacticResultString = preferences.getString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
+				String showedTacticId = preferences.getString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
 
-				int secondsSpend = preferences.getInt(userNae + AppConstants.SPENT_SECONDS_TACTICS, 0);
+				int secondsSpend = preferences.getInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
 
 				TacticItem tacticItem = new TacticItem(tacticString.split(StaticData.SYMBOL_COLON));
 				setTacticToBoard(tacticItem, secondsSpend);
 
 				DataHolder.getInstance().setTactic(tacticItem);
 
-				TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
-				DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+				if (tacticResultString != StaticData.SYMBOL_EMPTY) {
+					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
+					DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+				}
+
 				DataHolder.getInstance().addShowedTacticId(showedTacticId);
 
 				getBoardFace().setRetry(true);
 
-				if (getBoardFace().getHply() > 0)
+				if (isLatestMoveMadeUser())
 					checkMove();
 			} else {
 				popupItem.setPositiveBtnId(R.string.yes);
@@ -209,8 +212,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if(needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
+
+			final TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM,
-					DataHolder.getInstance().getTacticResultItem().getSaveString());
+					tacticResultItem == null ? StaticData.SYMBOL_EMPTY : DataHolder.getInstance().getTacticResultItem().getSaveString());
 			preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
 			if(answerWasShowed()) {
 				preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
@@ -224,14 +229,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	/**
 	 * Check if tactic was canceled or limit reached
-	 * if DataHolder.getInstance().getTacticResultItem()  == null means user  didn't made any result move on online
-	 * or user is in the Guest mode
-	 * @see DataHolder#getTacticResultItem()
 	 * @return true if need to Save
 	 */
 	private boolean needToSaveTactic(){
 		return !getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
-				&& DataHolder.getInstance().getTacticResultItem() != null;
+				&& !DataHolder.getInstance().isGuest();
 	}
 
 	private void playLastMoveAnimationAndCheck() {
@@ -241,7 +243,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().takeNext();
 				invalidateGameScreen();
 
-				if (getBoardFace().getHply() > 0)
+				if (isLatestMoveMadeUser())
 					checkMove();
 			}
 		},1300);
@@ -904,5 +906,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		preferencesEditor.commit();
 	}
 
+	private boolean isLatestMoveMadeUser() {
+		return getBoardFace().getHply() > 0 && getBoardFace().getHply() %2 == 0;
+	}
 
 }
