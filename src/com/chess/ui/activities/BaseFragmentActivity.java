@@ -18,10 +18,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerUtilities;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.fragments.PopupProgressFragment;
@@ -29,6 +34,7 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
+import com.google.android.gcm.GCMRegistrar;
 
 import java.util.*;
 
@@ -77,6 +83,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+
+
 		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)){ // if not debuggable
 			try {
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
@@ -110,6 +118,51 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 //		fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in); // temporary unused
 //		fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 	}
+
+	protected void registerGcmService(){
+		// Make sure the device has the proper dependencies.
+		GCMRegistrar.checkDevice(this);
+		// Make sure the manifest was properly set - comment out this line
+		// while developing the app, then uncomment it when it's ready.
+		GCMRegistrar.checkManifest(this);
+
+		final String registrationId = GCMRegistrar.getRegistrationId(this);
+		if (registrationId.equals("")) {
+			// Automatically registers application on startup.
+			GCMRegistrar.register(this, ServerUtilities.SENDER_ID);
+		} else {
+			// Device is already registered on GCM, check server.
+			if (GCMRegistrar.isRegisteredOnServer(this)) {
+				// Skips registration.
+				Log.d("TEST", "already registered");
+			} else {
+				// Try to register again, but not in the UI thread.
+				// It's also necessary to cancel the thread onDestroy(),
+				// hence the use of AsyncTask instead of a raw thread.
+
+				final Context context = this;
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
+				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserSessionId(context));
+				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+
+				new PostJsonDataTask(new PostUpdateListener()).execute(loadItem);
+			}
+		}
+	}
+
+	private class PostUpdateListener extends AbstractUpdateListener<String> {
+		public PostUpdateListener() {
+			super(BaseFragmentActivity.this);
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			super.updateData(returnedObj);
+
+		}
+	}
+
 
 	@Override
 	protected void onResume() {

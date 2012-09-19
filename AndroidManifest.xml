@@ -17,8 +17,8 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-	<permission android:name="com.example.gcm.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
+	<permission android:name="com.chess.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.chess.permission.C2D_MESSAGE" />
 
 
 	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
@@ -138,7 +138,13 @@
 
 		<receiver android:name=".backend.AlarmReceiver"/>
 
-		<!--GCM-->
+		<!--
+				  BroadcastReceiver that will receive intents from GCM
+				  services and handle them to the custom IntentService.
+
+				  The com.google.android.c2dm.permission.SEND permission is necessary
+				  so only GCM services can send data messages for the app.
+				-->
 		<receiver
 			android:name="com.google.android.gcm.GCMBroadcastReceiver"
 			android:permission="com.google.android.c2dm.permission.SEND" >
@@ -147,16 +153,18 @@
 				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
 				<!-- Receives the registration id. -->
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-				<category android:name="com.google.android.gcm.demo.app" />
+				<category android:name="com.chess" />
 			</intent-filter>
 		</receiver>
 
-		<!--Application-specific subclass of GCMBaseIntentService that will
-			handle received messages.
+		<!--
+				  Application-specific subclass of GCMBaseIntentService that will
+				  handle received messages.
 
-			By default, it must be named .GCMIntentService, unless the
-			application uses a custom BroadcastReceiver that redefines its name.-->
-		<service android:name=".backend.GCMIntentService" />
+				  By default, it must be named .GCMIntentService, unless the
+				  application uses a custom BroadcastReceiver that redefines its name.
+				-->
+		<service android:name=".GCMIntentService" />
 
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>

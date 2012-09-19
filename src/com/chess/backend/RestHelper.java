@@ -32,7 +32,16 @@ public class RestHelper {
 	public static final String API_V2 = "/api/v2";
 	public static final String API = "/api";
 
-//	API: Allow auto login to chess.com:
+	/*Google Cloud Messaging API part*/
+	public static final String GCM_BASE_URL = "http://www.chess-5.com/api/gcm";
+	public static final String GCM_REGISTER = GCM_BASE_URL + "/register";
+	public static final String GCM_UNREGISTER = GCM_BASE_URL + "/unregister";
+	/* Params */
+	public static final String GCM_P_ID = "id";
+	public static final String GCM_P_REGISTER_ID = "registration_id";
+
+
+	//	API: Allow auto login to chess.com:
 //	url: http://www.chess.com/login.html?als=<auto_login_string>&goto=<goto_url>
 //
 //	parameters

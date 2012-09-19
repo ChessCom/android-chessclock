@@ -138,18 +138,21 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }).start();
     }
 
-//	private class ComputeMoveUpdateListener extends AbstractUpdateListener<String>{ // TODO add later
+//	private class ComputeMoveUpdateListener extends AbstractUpdateListener<String> { // TODO add later
 //
-//		private int time;
+//		private int moveTime;
 //
 //		public ComputeMoveUpdateListener(int time) {
 //			super(getContext());
-//			this.time = time;
+//			this.moveTime = time;
 //		}
 //
 //		@Override
 //		public void updateData(String returnedObj) {
 //			super.updateData(returnedObj);
+//			computerMoving = false;
+//			boardFace.setMovesCount(boardFace.getHply());
+//
 //			gameActivityFace.invalidateGameScreen();
 //			gameCompActivityFace.onPlayerMove();
 //			invalidate();
@@ -159,7 +162,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 //					|| (hint && !AppData.isHumanVsHumanGameMode(boardFace))) {
 //				if (hint)
 //					hint = false;
-//				computerMove(time);
+//				computerMove(moveTime);
 //			}
 //
 //		}

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.chess.backend;
+package com.chess;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -21,7 +21,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerUtilities;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.ui.activities.HomeScreenActivity;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
@@ -31,7 +36,8 @@ import com.google.android.gcm.GCMRegistrar;
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
-    private static final String TAG = "GCMIntentService";
+	@SuppressWarnings("hiding")
+	private static final String TAG = "GCMIntentService";
 
     public GCMIntentService() {
         super(ServerUtilities.SENDER_ID);
@@ -41,7 +47,14 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onRegistered(Context context, String registrationId) {
         Log.d(TAG, "Device registered: regId = " + registrationId);
 
-        ServerUtilities.register(context, registrationId);
+//        ServerUtilities.register(context, registrationId);
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
+		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserSessionId(context));
+		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+
+		new PostJsonDataTask(new PostUpdateListener()).execute(loadItem);
+
     }
 
     @Override
@@ -99,4 +112,15 @@ public class GCMIntentService extends GCMBaseIntentService {
         notificationManager.notify(0, notification);
     }
 
+	private class PostUpdateListener extends AbstractUpdateListener<String>{
+		public PostUpdateListener() {
+			super(GCMIntentService.this);
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			super.updateData(returnedObj);
+
+		}
+	}
 }

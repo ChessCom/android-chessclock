@@ -37,12 +37,12 @@ public final class ServerUtilities {
 	/**
 	 * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
 	 */
-	static final String SERVER_URL = "http://chess-4.com:8080/gcm-demo";
+	public static final String SERVER_URL = "http://chess-5.com:8080/gcm";
 
 	/**
 	 * Google API project id registered to use GCM.
 	 */
-	static final String SENDER_ID = "27129061667";
+	public static final String SENDER_ID = "27129061667";
 
 	/**
 	 * Intent used to display a message in the screen.
@@ -105,7 +105,7 @@ public final class ServerUtilities {
 	/**
 	 * Unregister this account/device pair within the server.
 	 */
-	static void unregister(final Context context, final String regId) {
+	public static void unregister(final Context context, final String regId) {
 		Log.i(TAG, "unregistering device (regId = " + regId + ")");
 		String serverUrl = SERVER_URL + "/unregister";
 		Map<String, String> params = new HashMap<String, String>();

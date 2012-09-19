@@ -1,6 +1,7 @@
 package com.chess.backend.tasks;
 
 import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.BoardFace;
 
 /**
@@ -29,11 +30,7 @@ public class ComputeMoveTask extends AbstractUpdateTask<String, Void> {
 //		searcher.think(0, time, 32);
 //		Move best = searcher.getBest();
 //		boardFace.makeMove(best);
-////		boardFace.set
-////		computerMoving = false;
-//		boardFace.setMovesCount(boardFace.getHply());
-////		update.sendEmptyMessage(0);
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		return StaticData.RESULT_OK;
 	}
 
 }
