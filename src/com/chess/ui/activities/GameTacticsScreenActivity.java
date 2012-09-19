@@ -161,7 +161,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				DataHolder.getInstance().setTactic(tacticItem);
 
-				if (tacticResultString != StaticData.SYMBOL_EMPTY) {
+				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
 					DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 				}
@@ -209,7 +209,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		stopTacticsTimer();
 
-		if(needToSaveTactic()) {
+		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 
