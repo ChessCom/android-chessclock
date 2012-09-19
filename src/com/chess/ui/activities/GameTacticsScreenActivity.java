@@ -185,8 +185,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 
 			} else*/
-			if(tacticItem == null){ // singleton can be killed ... but i think we always will restore or load new tactic
-				getNewTactic(); // probably redundant
+			if(tacticItem == null){ // singleton can be killed
+				getNewTactic();
 			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
 
 				startTacticsTimer(tacticItem);
@@ -206,8 +206,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		stopTacticsTimer();
 
-		if (!getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
-				&& DataHolder.getInstance().getTacticResultItem() != null) { // if user didn't made any result move on online
+		if(needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM,
@@ -221,6 +220,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if(customViewFragment != null)
 			customViewFragment.dismiss();
+	}
+
+	/**
+	 * Check if tactic was canceled or limit reached
+	 * if DataHolder.getInstance().getTacticResultItem()  == null means user  didn't made any result move on online
+	 * or user is in the Guest mode
+	 * @see DataHolder#getTacticResultItem()
+	 * @return true if need to Save
+	 */
+	private boolean needToSaveTactic(){
+		return !getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
+				&& DataHolder.getInstance().getTacticResultItem() != null;
 	}
 
 	private void playLastMoveAnimationAndCheck() {
@@ -299,9 +310,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			Log.d("TEST_MOVE", " Wrong move");
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 				TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
-				String title = getString(R.string.wrong_score,
-						tacticResultItem.getUserRatingChange(),
-						tacticResultItem.getUserRating());
+				String title;
+				if(tacticResultItem != null){ // in guest mode we don't have result items
+					title = getString(R.string.wrong_score,
+							tacticResultItem.getUserRatingChange(),
+							tacticResultItem.getUserRating());
+				} else {
+					title = getString(R.string.wrong_ex);
+				}
 				showWrongMovePopup(title);
 
 			} else {
