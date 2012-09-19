@@ -133,10 +133,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		if (DataHolder.getInstance().isGuest()) {
 			vacationCheckBox.setVisibility(View.GONE);
-			logoutBtn.setVisibility(View.GONE);
+			logoutBtn.setText(R.string.login);
 		} else {
 			vacationCheckBox.setOnClickListener(this);
-			logoutBtn.setVisibility(View.VISIBLE);
+			logoutBtn.setText(R.string.logout);
 		}
 
 		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
@@ -210,19 +210,20 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.prefLogout) { // DO NOT turn to switch!
-			getLccHolder().logout();
+			if (!DataHolder.getInstance().isGuest()) {
+				getLccHolder().logout();
 
-			DataHolder.getInstance().setGuest(true);
+				DataHolder.getInstance().setGuest(true);
 
-			Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-			SessionStore.restore(facebook, this);
-			facebook.logoutMe(this, new LogoutRequestListener());
+				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+				SessionStore.restore(facebook, this);
+				facebook.logoutMe(this, new LogoutRequestListener());
 
-			preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.commit();
-
-			AppUtils.stopNotificationsUpdate(this);
+				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+				preferencesEditor.commit();
+				AppUtils.stopNotificationsUpdate(this);
+			}
 
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
