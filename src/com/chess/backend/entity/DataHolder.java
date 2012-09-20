@@ -22,7 +22,7 @@ public class DataHolder {
 	private boolean isAdsLoading;
 	private TacticResultItem tacticResultItem;
 
-	// Singletones for Tactics mode
+	// Singletons for Tactics mode
 	private List<TacticItem> tacticsBatch;
 	private TacticItem tactic;
 	private int currentTacticProblem = 0;

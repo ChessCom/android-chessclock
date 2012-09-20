@@ -209,7 +209,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		stopTacticsTimer();
 
-		if(needToSaveTactic()) {
+		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 
@@ -287,7 +287,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 
 					String title;
-					if(tacticResultItem != null){
+					if(tacticResultItem != null && !DataHolder.getInstance().isGuest()){
 						title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 								tacticResultItem.getUserRating());
 					} else {
@@ -313,7 +313,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
 				TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 				String title;
-				if(tacticResultItem != null){ // in guest mode we don't have result items
+				if (tacticResultItem != null && !DataHolder.getInstance().isGuest()) {
 					title = getString(R.string.wrong_score,
 							tacticResultItem.getUserRatingChange(),
 							tacticResultItem.getUserRating());
