@@ -105,6 +105,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		} else if (view.getId() == R.id.signup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
+			DataHolder.getInstance().reset();
+			DataHolder.getInstance().setGuest(true);
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			startActivity(intent);
 		}
@@ -258,7 +260,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 			AppUtils.startNotificationsUpdate(this);
 		}
 
-		DataHolder.getInstance().setGuest(false);
+		DataHolder.getInstance().reset();
 
 		Intent intent = new Intent(this, HomeScreenActivity.class);
 		startActivity(intent);
