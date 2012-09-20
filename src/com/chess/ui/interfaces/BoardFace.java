@@ -103,6 +103,8 @@ public interface BoardFace {
 	CharSequence getMoveListSAN();
 //    List<String> getMoveListSAN();
 
+	boolean isLatestMoveMadeUser();
+
 	String convertMoveLive();
 
 	void setAnalysis(boolean analysis);

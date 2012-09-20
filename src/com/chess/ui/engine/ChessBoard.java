@@ -1395,6 +1395,11 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
+	@Override
+	public boolean isLatestMoveMadeUser() {
+		return hply > 0 && hply %2 == 0;
+	}
+
 	public String getMoveList() {
 		String output = StaticData.SYMBOL_EMPTY;
 		int i;

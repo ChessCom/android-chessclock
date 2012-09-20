@@ -80,7 +80,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		challengeTaskListener = new ChallengeTaskListener();
 		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
 
-		registerGcmService();
+//		registerGcmService();
 	}
 
 	@Override

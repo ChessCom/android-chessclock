@@ -20,6 +20,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerUtilities;
+import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -35,6 +36,7 @@ import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.gson.Gson;
 
 import java.util.*;
 
@@ -159,7 +161,16 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		@Override
 		public void updateData(String returnedObj) {
 			super.updateData(returnedObj);
+			GSMServerResponseItem responseItem = parseJson(returnedObj);
 
+			if(responseItem.getCode() < 400){
+				GCMRegistrar.setRegisteredOnServer(context, true);
+			}
+		}
+
+		GSMServerResponseItem parseJson(String jRespString) {
+			Gson gson = new Gson();
+			return gson.fromJson(jRespString, GSMServerResponseItem.class);
 		}
 	}
 

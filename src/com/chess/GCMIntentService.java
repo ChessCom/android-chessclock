@@ -20,12 +20,14 @@ import android.content.Intent;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerUtilities;
+import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.PostJsonDataTask;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.gson.Gson;
 
 /**
  * IntentService responsible for handling GCM messages.
@@ -123,9 +125,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 		@Override
 		public void updateData(String returnedObj) {
 			super.updateData(returnedObj);
-			// TODO parse json
+			GSMServerResponseItem responseItem = parseJson(returnedObj);
 
-			GCMRegistrar.setRegisteredOnServer(context, true);
+			if(responseItem.getCode() < 400){
+				GCMRegistrar.setRegisteredOnServer(context, true);
+			}
+		}
+
+		GSMServerResponseItem parseJson(String jRespString) {
+			Gson gson = new Gson();
+			return gson.fromJson(jRespString, GSMServerResponseItem.class);
 		}
 	}
 }

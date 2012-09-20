@@ -9,9 +9,6 @@ import com.chess.utilities.AppUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -53,22 +50,11 @@ public class PostJsonDataTask extends AbstractUpdateTask<String, LoadItem> {
 
 		HttpPost httpPost = new HttpPost(url);
 		try {
-			if(url.contains("chess-5")) {// testing GCM
+			StringEntity stringEntity = new StringEntity(formJsonData(loadItem.getRequestParams()), HTTP.UTF_8);
+			Log.d(TAG,"sending JSON object = " + formJsonData(loadItem.getRequestParams()));
 
-				StringEntity stringEntity = new StringEntity(formJsonData(loadItem.getRequestParams()), HTTP.UTF_8);
-				Log.d(TAG,"sending JSON object = " + formJsonData(loadItem.getRequestParams()));
-
-				stringEntity.setContentType("text/json");
-				httpPost.setHeader("Content-Type","application/json");
-				httpPost.setEntity(stringEntity);
-
-				httpClient.getCredentialsProvider().setCredentials(
-						new AuthScope("chess-5.com", 443, AuthScope.ANY_SCHEME),
-						new UsernamePasswordCredentials("bobby", "fischer"));
-				httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
-			}else{
-				httpPost.setEntity(new UrlEncodedFormEntity(loadItem.getRequestParams()));
-			}
+			httpPost.setEntity(stringEntity);
+			httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 		} catch (UnsupportedEncodingException e) {
 			AppUtils.logD(TAG, e.toString());
 		}

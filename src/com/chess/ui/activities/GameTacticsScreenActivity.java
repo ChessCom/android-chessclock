@@ -161,7 +161,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				DataHolder.getInstance().setTactic(tacticItem);
 
-				if (tacticResultString != StaticData.SYMBOL_EMPTY) {
+				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
 					DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 				}
@@ -170,7 +170,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				getBoardFace().setRetry(true);
 
-				if (isLatestMoveMadeUser())
+				if (getBoardFace().isLatestMoveMadeUser())
 					checkMove();
 			} else {
 				popupItem.setPositiveBtnId(R.string.yes);
@@ -243,7 +243,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().takeNext();
 				invalidateGameScreen();
 
-				if (isLatestMoveMadeUser())
+				if (getBoardFace().isLatestMoveMadeUser())
 					checkMove();
 			}
 		},1300);
@@ -906,8 +906,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		preferencesEditor.commit();
 	}
 
-	private boolean isLatestMoveMadeUser() {
-		return getBoardFace().getHply() > 0 && getBoardFace().getHply() %2 == 0;
-	}
+
 
 }
