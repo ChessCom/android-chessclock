@@ -140,4 +140,8 @@ public class DataHolder {
 	public boolean tacticWasShowed(String id){
 		return showedTacticsIds.contains(id);
 	}
+
+	public void reset() {
+		ourInstance = new DataHolder();
+	}
 }
