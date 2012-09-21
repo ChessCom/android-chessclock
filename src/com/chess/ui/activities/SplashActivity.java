@@ -28,7 +28,6 @@ public class SplashActivity extends BaseFragmentActivity {
 
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			startActivity(new Intent(this, LoginScreenActivity.class));
-			DataHolder.getInstance().setGuest(true);
 			finish();
 		} else { // validate token
 			LoadItem loadItem = new LoadItem();
@@ -62,7 +61,6 @@ public class SplashActivity extends BaseFragmentActivity {
 
 			} else {
 				startActivity(new Intent(getContext(), LoginScreenActivity.class));
-				DataHolder.getInstance().setGuest(true);
 				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 			finish();
@@ -72,9 +70,7 @@ public class SplashActivity extends BaseFragmentActivity {
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			startActivity(new Intent(getContext(), LoginScreenActivity.class));
-			DataHolder.getInstance().setGuest(true);
 			finish();
 		}
 	}
-
 }
