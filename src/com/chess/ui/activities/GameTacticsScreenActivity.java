@@ -233,7 +233,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	 */
 	private boolean needToSaveTactic(){
 		return !getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
-				&& !DataHolder.getInstance().isGuest();
+				&& getTacticItem() != null && !DataHolder.getInstance().isGuest();
 	}
 
 	private void playLastMoveAnimationAndCheck() {
