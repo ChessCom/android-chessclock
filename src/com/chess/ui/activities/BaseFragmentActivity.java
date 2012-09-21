@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerUtilities;
+import com.chess.backend.GcmHelper;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -56,6 +56,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
 
+	private static final int REQUEST_REGISTER = 11;
+	private static final int REQUEST_UNREGISTER = 22;
 
 	protected DisplayMetrics metrics;
 	protected BackgroundChessDrawable backgroundChessDrawable;
@@ -128,10 +130,18 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		// while developing the app, then uncomment it when it's ready.
 		GCMRegistrar.checkManifest(this);
 
+		/* When an application is updated, it should invalidate its existing registration ID.
+		The best way to achieve this validation is by storing the current
+		 application version when a registration ID is stored.
+		 Then when the application is started, compare the stored value
+		 with the current application version.
+		 If they do not match, invalidate the stored data and start the registration process again.
+		 */
+
 		final String registrationId = GCMRegistrar.getRegistrationId(this);
 		if (registrationId.equals("")) {
 			// Automatically registers application on startup.
-			GCMRegistrar.register(this, ServerUtilities.SENDER_ID);
+			GCMRegistrar.register(this, GcmHelper.SENDER_ID);
 		} else {
 			// Device is already registered on GCM, check server.
 			if (GCMRegistrar.isRegisteredOnServer(this)) {
@@ -145,17 +155,20 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 				final Context context = this;
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
-				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserSessionId(context));
+				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-				new PostJsonDataTask(new PostUpdateListener()).execute(loadItem);
+				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 			}
 		}
 	}
 
 	private class PostUpdateListener extends AbstractUpdateListener<String> {
-		public PostUpdateListener() {
+		private int requestCode;
+
+		public PostUpdateListener(int requestCode) {
 			super(BaseFragmentActivity.this);
+			this.requestCode = requestCode;
 		}
 
 		@Override
@@ -164,7 +177,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 			GSMServerResponseItem responseItem = parseJson(returnedObj);
 
 			if(responseItem.getCode() < 400){
-				GCMRegistrar.setRegisteredOnServer(context, true);
+				switch (requestCode){
+					case REQUEST_REGISTER:
+						GCMRegistrar.setRegisteredOnServer(context, true);
+						break;
+					case REQUEST_UNREGISTER:
+						GCMRegistrar.setRegisteredOnServer(context, false);
+						break;
+				}
 			}
 		}
 

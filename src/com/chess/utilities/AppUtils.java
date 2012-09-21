@@ -215,6 +215,32 @@ public class AppUtils {
 				|| (!DataHolder.getInstance().isLiveChess() && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER);
 	}
 
+	public static String getStringTimeFromSeconds(long duration) {
+		String D = "d";
+		String H = "h";
+		String M = "m";
+		long minutes = duration /60%60;
+		long hours = duration /3600%24;
+		long days = duration /86400;
+		StringBuilder sb = new StringBuilder();
+
+		if (days > 0)
+			sb.append(days).append(D).append(StaticData.SYMBOL_SPACE);
+
+		if (hours > 0) {
+			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
+				sb.append(StaticData.SYMBOL_SPACE);
+			sb.append(hours).append(H).append(StaticData.SYMBOL_SPACE);
+		}
+		if (minutes > 0) {
+			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
+				sb.append(StaticData.SYMBOL_SPACE);
+			sb.append(minutes).append(M);
+		}
+
+		return sb.toString();
+	}
+
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager cm
 				= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

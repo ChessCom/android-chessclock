@@ -24,6 +24,7 @@ import com.facebook.android.Facebook;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
+import com.google.android.gcm.GCMRegistrar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,6 +214,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			if (!DataHolder.getInstance().isGuest()) {
 				getLccHolder().logout();
 
+				// un-register from GCM
+				// save token to unregister from server
+				preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, AppData.getUserToken(this));
+				preferencesEditor.commit();
+				GCMRegistrar.unregister(this);
+
 				DataHolder.getInstance().setGuest(true);
 
 				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
@@ -223,6 +230,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 				preferencesEditor.commit();
 				AppUtils.stopNotificationsUpdate(this);
+
 			}
 
 			Intent intent = new Intent(this, HomeScreenActivity.class);

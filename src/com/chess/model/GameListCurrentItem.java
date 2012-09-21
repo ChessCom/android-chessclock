@@ -23,7 +23,17 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 		isOpponentOnline = values[14].equals("1");
 		isMyTurn = values[15].equals("1");
 		hasMessage = values[16].equals("1");
+	}
 
+	public GameListCurrentItem() {
+	}
+
+	public static GameListCurrentItem newInstance(String[] gcmMessageInfo){
+		GameListCurrentItem gameListCurrentItem = new GameListCurrentItem();
+		gameListCurrentItem.gameId = Long.parseLong(gcmMessageInfo[0]);
+		gameListCurrentItem.timeRemainingAmount = gcmMessageInfo[1];
+		gameListCurrentItem.timeRemainingUnits = gcmMessageInfo[2];
+		return gameListCurrentItem;
 	}
 
 	public String getGameType() {

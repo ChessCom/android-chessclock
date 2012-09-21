@@ -17,14 +17,19 @@ package com.chess;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
+import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerUtilities;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.PostJsonDataTask;
+import com.chess.model.GameListCurrentItem;
+import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
@@ -37,9 +42,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@SuppressWarnings("hiding")
 	private static final String TAG = "GCMIntentService";
 	private Context context;
+	private SharedPreferences preferences;
+
 
 	public GCMIntentService() {
-        super(ServerUtilities.SENDER_ID);
+        super(GcmHelper.SENDER_ID);
 		context = this;
     }
 
@@ -49,10 +56,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
-		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserSessionId(context));
+		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-		new PostJsonDataTask(new PostUpdateListener()).execute(loadItem);
+		new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_REGISTER)).execute(loadItem);
     }
 
     @Override
@@ -60,10 +67,18 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.d(TAG, "Device unregistered");
 
         if (GCMRegistrar.isRegisteredOnServer(context)) {
-            ServerUtilities.unregister(context, registrationId);
+			preferences = AppData.getPreferences(this);
+			String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
+			loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
+			loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+
+			new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
         } else {
             // This callback results from the call to unregister made on
-            // ServerUtilities when the registration to the server failed.
+            // GcmHelper when the registration to the server failed.
             Log.d(TAG, "Ignoring unregister callback");
         }
     }
@@ -72,14 +87,50 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.d(TAG, "Received message");
 
-//		AppUtils.showNewMoveStatusNotification(context,
-//				context.getString(R.string.your_move),
-//				context.getString(R.string.your_turn_in_game_with,
-//						gameListItem.getOpponentUsername(),
-//						gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
-//				StaticData.MOVE_REQUEST_CODE,
-//				gameListItem);
-    }
+
+		String type = intent.getStringExtra("type");
+
+		if(type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)){
+			String lastMoveSan = intent.getStringExtra("last_move_san");
+//			String opponentUserId = intent.getStringExtra("opponent_user_id");
+//			String collapseKey = intent.getStringExtra("collapse_key");
+			String opponentUsername = intent.getStringExtra("opponent_username");
+			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
+			String gameId = intent.getStringExtra("game_id");
+
+
+			long minutes = gameTimeLeft /60%60;
+			long hours = gameTimeLeft /3600%24;
+			long days = gameTimeLeft /86400;
+
+			String remainingUnits;
+			String remainingTime;
+
+			if(days > 0){
+				remainingUnits = "d";
+				remainingTime = String.valueOf(days);
+			} else if(hours > 0){
+				remainingUnits = "h";
+				remainingTime = String.valueOf(hours);
+			} else {
+				remainingUnits = "m";
+				remainingTime = String.valueOf(minutes);
+			}
+			String[] gameInfoValues = new String[]{
+					gameId,
+					remainingTime,
+					remainingUnits
+			};
+			GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
+			AppUtils.showNewMoveStatusNotification(context,
+					context.getString(R.string.your_move),
+					context.getString(R.string.your_turn_in_game_with,
+							opponentUsername,
+							lastMoveSan),
+					StaticData.MOVE_REQUEST_CODE,
+					gameListItem);
+		}
+	}
 
     @Override
     protected void onDeletedMessages(Context context, int total) {
@@ -97,29 +148,12 @@ public class GCMIntentService extends GCMBaseIntentService {
         return super.onRecoverableError(context, errorId);
     }
 
-//    /**
-//     * Issues a notification to inform the user that server has sent a message.
-//     */
-//    private static void generateNotification(Context context, String message) {
-//        int icon = R.drawable.ic_stat_chess;
-//        long when = System.currentTimeMillis();
-//        NotificationManager notificationManager = (NotificationManager)
-//                context.getSystemService(Context.NOTIFICATION_SERVICE);
-//        Notification notification = new Notification(icon, message, when);
-//        String title = context.getString(R.string.app_name);
-//        Intent notificationIntent = new Intent(context, HomeScreenActivity.class);
-//        // set intent so it does not start a new activity
-//        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-//        notification.setLatestEventInfo(context, title, message, intent);
-//        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//        notificationManager.notify(0, notification);
-//    }
-
 	private class PostUpdateListener extends AbstractUpdateListener<String>{
-		public PostUpdateListener() {
+		private int requestCode;
+
+		public PostUpdateListener(int requestCode) {
 			super(GCMIntentService.this);
+			this.requestCode = requestCode;
 		}
 
 		@Override
@@ -128,7 +162,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 			GSMServerResponseItem responseItem = parseJson(returnedObj);
 
 			if(responseItem.getCode() < 400){
-				GCMRegistrar.setRegisteredOnServer(context, true);
+				switch (requestCode){
+					case GcmHelper.REQUEST_REGISTER:
+						GCMRegistrar.setRegisteredOnServer(context, true);
+						break;
+					case GcmHelper.REQUEST_UNREGISTER:
+						GCMRegistrar.setRegisteredOnServer(context, false);
+						// remove saved token
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+						editor.commit();
+						break;
+				}
 			}
 		}
 

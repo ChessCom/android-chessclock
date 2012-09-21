@@ -27,12 +27,16 @@ import java.util.Random;
 /**
  * Helper class used to communicate with the demo server.
  */
-public final class ServerUtilities {
+public final class GcmHelper {
 
 	private static final int MAX_ATTEMPTS = 5;
 	private static final int BACKOFF_MILLI_SECONDS = 2000;
 	private static final Random random = new Random();
-	private static final String TAG = "ServerUtilities";
+	private static final String TAG = "GcmHelper";
+
+	public static final int REQUEST_REGISTER = 11;
+	public static final int REQUEST_UNREGISTER = 22;
+	public static final String NOTIFICATION_YOUR_MOVE = "NOTIFICATION_YOUR_MOVE";
 
 	/**
 	 * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
