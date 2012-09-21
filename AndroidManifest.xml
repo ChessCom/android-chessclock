@@ -11,6 +11,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--GCM Permissions-->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -87,6 +88,8 @@
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
 		<activity android:name="com.mopub.mobileads.MraidBrowser"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
+
+        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" />
 
 		<activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
 
@@ -166,10 +169,7 @@
 				-->
 		<service android:name=".GCMIntentService" />
 
-
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
-
-		<meta-data android:name="com.mobclix.APPLICATION_ID" android:value="2128371D-8E8F-476E-8791-EEA2125CE104"/>
 
 	</application>
 
