@@ -125,10 +125,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	protected void registerGcmService(){
 		// Make sure the device has the proper dependencies.
-		GCMRegistrar.checkDevice(this);
+//		GCMRegistrar.checkDevice(this); // don't check for emulator
 		// Make sure the manifest was properly set - comment out this line
 		// while developing the app, then uncomment it when it's ready.
-		GCMRegistrar.checkManifest(this);
+//		GCMRegistrar.checkManifest(this);
 
 		/* When an application is updated, it should invalidate its existing registration ID.
 		The best way to achieve this validation is by storing the current

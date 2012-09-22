@@ -49,12 +49,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
-	private int currentListType;
+//	private int currentListType;
 	private int successToastMsgId;
 
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
-	private ListUpdateListener listUpdateListener;
+//	private ListUpdateListener listUpdateListener;
 	private LoadItem selectedLoadItem;
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
@@ -99,7 +99,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
-		listUpdateListener = new ListUpdateListener();
+//		listUpdateListener = new ListUpdateListener(currentListType);
 		vacationStatusUpdateListener = new VacationStatusUpdateListener();
 		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
 
@@ -144,9 +144,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		cleanTaskPool();
 	}
 
-	private void updateList(LoadItem listLoadItem) {
-		taskPool.add(new GetStringObjTask(listUpdateListener).executeTask(listLoadItem));
-	}
+//	private void updateList(LoadItem listLoadItem) {
+//		taskPool.add(new GetStringObjTask(listUpdateListener).executeTask(listLoadItem));
+//	}
 
 	private Runnable updateListOrder = new Runnable() {
 		@Override
@@ -159,8 +159,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	};
 
 	private class ListUpdateListener extends ChessUpdateListener {
-		public ListUpdateListener() {
+		private int currentListType;
+
+		public ListUpdateListener(int currentListType) {
 			super(getInstance());
+			this.currentListType = currentListType;
 		}
 
 		@Override
@@ -195,6 +198,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				if (status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN)) {
 					AppUtils.stopNotificationsUpdate(getContext());
+					showSinglePopupDialog(R.string.error, status);
 				} else if(status.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
 					showToast(R.string.no_challenges_during_vacation);
 				} else {
@@ -510,7 +514,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private void updateStartingType(int pos) {
-		currentListType = pos;
+//		currentListType = pos;
 		selectedLoadItem.clearParams();
 		if (pos == GameOnlineItem.CURRENT_TYPE) {
 			cleanTaskPool();
@@ -518,16 +522,21 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 			selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
+			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
+
+
 		} else if (pos == GameOnlineItem.CHALLENGES_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
+			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
 
 		} else if (pos == GameOnlineItem.FINISHED_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
+			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
 		}
 
-		updateList(selectedLoadItem);
+//		updateList(selectedLoadItem);
 	}
 
 	@Override

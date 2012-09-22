@@ -212,11 +212,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
+			preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
 
 			final TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
-			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM,
-					tacticResultItem == null ? StaticData.SYMBOL_EMPTY : DataHolder.getInstance().getTacticResultItem().getSaveString());
-			preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
+			String tacticResultString = StaticData.SYMBOL_EMPTY;
+			if (tacticResultItem != null) {
+				tacticResultString = tacticResultItem.getSaveString();
+			}
+			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, tacticResultString);
+
 			if(answerWasShowed()) {
 				preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
 			}

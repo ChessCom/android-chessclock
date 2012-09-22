@@ -195,9 +195,6 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if(isPaused)
-//				return;
-
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				if (returnedObj.length() > 0) {
 					final String[] responseArray = returnedObj.split(":");
@@ -217,7 +214,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){
 				String message = returnedObj.substring(RestHelper.R_ERROR.length());
-				if(message.equals("Invalid password.")){
+				if(message.equals(RestHelper.R_INVALID_PASS)){
 					passwordEdt.setError(getResources().getString(R.string.invalid_password));
 					passwordEdt.requestFocus();
 				}else{
@@ -241,6 +238,12 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		dismissProgressDialog();
 	}
 
 	private void processLogin(String[] response) {
