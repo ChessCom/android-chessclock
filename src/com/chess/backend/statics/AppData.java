@@ -156,4 +156,10 @@ public class AppData {
 		return !preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
 				.equals(StaticData.SYMBOL_EMPTY);
 	}
+
+	public static boolean isNotificationsEnabled(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getBoolean(userName + AppConstants.PREF_NOTIFICATION, true);
+	}
 }

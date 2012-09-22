@@ -259,7 +259,7 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		preferencesEditor.commit();
 
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-		if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)){
+		if (AppData.isNotificationsEnabled(this)){
 			AppUtils.startNotificationsUpdate(this);
 		}
 
