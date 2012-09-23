@@ -18,6 +18,7 @@ package com.chess;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.util.Log;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
@@ -90,13 +91,17 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		String type = intent.getStringExtra("type");
 
-		if(type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)){
+		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)){
+			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
+				return;
+
 			String lastMoveSan = intent.getStringExtra("last_move_san");
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
 //			String collapseKey = intent.getStringExtra("collapse_key");
 			String opponentUsername = intent.getStringExtra("opponent_username");
 			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 			String gameId = intent.getStringExtra("game_id");
+			Log.d("TEST", " receinved game info -> gameId = " + gameId);
 
 
 			long minutes = gameTimeLeft /60%60;
@@ -116,12 +121,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 				remainingUnits = "m";
 				remainingTime = String.valueOf(minutes);
 			}
+			// compose gameInfoItem
 			String[] gameInfoValues = new String[]{
 					gameId,
 					remainingTime,
 					remainingUnits
 			};
+
 			GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
+
 			AppUtils.showNewMoveStatusNotification(context,
 					context.getString(R.string.your_move),
 					context.getString(R.string.your_turn_in_game_with,
@@ -129,6 +137,21 @@ public class GCMIntentService extends GCMBaseIntentService {
 							lastMoveSan),
 					StaticData.MOVE_REQUEST_CODE,
 					gameListItem);
+
+			SharedPreferences preferences = AppData.getPreferences(context);
+			boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
+			if(playSounds){
+				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
+				if(player != null){
+					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+						@Override
+						public void onCompletion(MediaPlayer mediaPlayer) {
+							player.release();
+						}
+					});
+					player.start();
+				}
+			}
 		}
 	}
 

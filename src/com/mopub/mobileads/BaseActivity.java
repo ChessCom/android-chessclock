@@ -2,15 +2,15 @@ package com.mopub.mobileads;
 
 import android.app.Activity;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.chess.R;
 
 public abstract class BaseActivity extends Activity {
@@ -47,7 +47,11 @@ public abstract class BaseActivity extends Activity {
                     getResources().getDrawable(R.drawable.close_button_pressed));
             mCloseButton = new ImageButton(this);
             mCloseButton.setImageDrawable(states);
-            mCloseButton.setBackgroundDrawable(null);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+				mCloseButton.setBackground(null);
+			} else {
+				mCloseButton.setBackgroundDrawable(null);
+			}
             mCloseButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     finish();

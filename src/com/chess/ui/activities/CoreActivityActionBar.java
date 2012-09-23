@@ -13,8 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
@@ -36,7 +34,6 @@ import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupCustomViewFragment;
-import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
@@ -50,7 +47,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
-		, ActiveFragmentInterface, PopupDialogFace, LiveChessClientEventListenerFace {
+		, PopupDialogFace, LiveChessClientEventListenerFace {
 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
@@ -114,8 +111,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		View mainView = findViewById(R.id.mainView);
-		if (mainView != null)
-			mainView.setBackgroundDrawable(backgroundChessDrawable);
+		if (mainView != null) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+				mainView.setBackground(backgroundChessDrawable);
+			} else {
+				mainView.setBackgroundDrawable(backgroundChessDrawable);
+			}
+		}
 	}
 
 	@Override
@@ -135,18 +137,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onResume();
 
 		adjustActionBar();
-	}
-
-	@Override
-	public void switchFragment(Fragment fragment) {
-
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.addToBackStack(null);
-		ft.commit();
-	}
-
-	public void showProgress(boolean show) {
-		getActionBarHelper().setRefreshActionItemState(show);
 	}
 
 	@Override

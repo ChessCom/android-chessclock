@@ -20,8 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import com.chess.backend.statics.StaticData;
-import com.chess.ui.activities.BaseFragmentActivity;
+import com.chess.ui.activities.CommonLogicActivity;
 
 /**
  * A base activity that defers common functionality across app activities to an {@link
@@ -32,7 +31,7 @@ import com.chess.ui.activities.BaseFragmentActivity;
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivity extends BaseFragmentActivity {
+public abstract class ActionBarActivity extends CommonLogicActivity {
 	final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 
 	/**

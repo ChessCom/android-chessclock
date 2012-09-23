@@ -181,7 +181,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 						updateStartingType(GameOnlineItem.FINISHED_TYPE);
 						break;
 					case GameOnlineItem.FINISHED_TYPE:
-						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj, getContext()));
+						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
 						break;
 					default:
 						break;
@@ -197,7 +197,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				String status = returnedObj.split("[+]")[1];
 
 				if (status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN)) {
-					AppUtils.stopNotificationsUpdate(getContext());
+//					AppUtils.stopNotificationsUpdate(getContext());
 					showSinglePopupDialog(R.string.error, status);
 				} else if(status.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
 					showToast(R.string.no_challenges_during_vacation);

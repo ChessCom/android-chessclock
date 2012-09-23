@@ -1,6 +1,5 @@
 package com.chess.utilities;
 
-import android.content.Context;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.StaticData;
@@ -81,8 +80,7 @@ public class ChessComApiParser {
 		return output;
 	}
 
-	public static ArrayList<GameListFinishedItem> getFinishedOnlineGames(String result, Context temporaryContext) {
-		Log.d("TEST", "getFinishedOnlineGames input = " +result);
+	public static ArrayList<GameListFinishedItem> getFinishedOnlineGames(String result) {
 		ArrayList<GameListFinishedItem> output = new ArrayList<GameListFinishedItem>();
 //		Success+<total_games_returned>:(
 // <game_id>

@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -359,7 +360,11 @@ class MraidDisplayController extends MraidAbstractController {
                         getView().getResources().getDrawable(R.drawable.close_button_pressed));
                 mCloseButton = new ImageButton(getView().getContext());
                 mCloseButton.setImageDrawable(states);
-                mCloseButton.setBackgroundDrawable(null);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+					mCloseButton.setBackground(null);
+				} else {
+					mCloseButton.setBackgroundDrawable(null);
+				}
                 mCloseButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
                         MraidDisplayController.this.close();

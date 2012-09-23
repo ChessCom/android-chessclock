@@ -214,10 +214,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				getLccHolder().logout();
 
 				// un-register from GCM
-				// save token to unregister from server
-//				preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, AppData.getUserToken(this));
-//				preferencesEditor.commit();
-//				GCMRegistrar.unregister(this);
+				unregisterGcmService();
 
 				DataHolder.getInstance().setGuest(true);
 
@@ -228,8 +225,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 				preferencesEditor.commit();
-				AppUtils.stopNotificationsUpdate(this);
 
+				AppUtils.cancelNotifications(this);
 			}
 
 			Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -354,9 +351,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			if(!AppData.isNotificationsEnabled(this) && checked){
-				AppUtils.startNotificationsUpdate(this);
+//				AppUtils.startNotificationsUpdate(this);
+				registerGcmService();
+				checkMove();
 			} else {
-				AppUtils.stopNotificationsUpdate(this);
+				unregisterGcmService();
+//				AppUtils.stopNotificationsUpdate(this);
 			}
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 

@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -42,7 +43,7 @@ import java.net.URLEncoder;
  * @author alien_roger
  * @created at: 08.02.12 6:23
  */
-public class LoginScreenActivity extends BaseFragmentActivity implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
+public class LoginScreenActivity extends CommonLogicActivity implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
 
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
@@ -66,8 +67,11 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 		setContentView(R.layout.login_screen);
 
 
-		findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
-
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+			findViewById(R.id.mainView).setBackground(backgroundChessDrawable);
+		} else {
+			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+		}
 		usernameEdt = (EditText) findViewById(R.id.usernameEdt);
 		passwordEdt = (EditText) findViewById(R.id.passwordEdt);
 		passwordEdt.setOnEditorActionListener(this);
@@ -260,7 +264,8 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
 		if (AppData.isNotificationsEnabled(this)){
-			AppUtils.startNotificationsUpdate(this);
+			checkMove();
+//			AppUtils.startNotificationsUpdate(this);
 		}
 
 		DataHolder.getInstance().reset();
@@ -291,9 +296,10 @@ public class LoginScreenActivity extends BaseFragmentActivity implements View.On
 
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
 			getLastPopupFragment().setButtons(1);
-//			popupDialogFragment.setButtons(1);
 		}
 	}
+
+
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {

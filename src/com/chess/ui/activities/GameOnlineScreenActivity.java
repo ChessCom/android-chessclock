@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -118,6 +119,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	public void init() {
 		gameInfoItem = (GameListCurrentItem) extras.getSerializable(BaseGameItem.GAME_INFO_ITEM);
 		gameId = gameInfoItem.getGameId();
+		Log.d("TEST", "GameOnline , gameId = " + gameId);
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		menuOptionsItems = new CharSequence[]{

@@ -1,16 +1,12 @@
 package com.chess.ui.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
-import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -18,25 +14,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.GcmHelper;
-import com.chess.backend.entity.GSMServerResponseItem;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
-import com.google.android.gcm.GCMRegistrar;
-import com.google.gson.Gson;
 
 import java.util.*;
 
@@ -56,11 +43,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
 
-	private static final int REQUEST_REGISTER = 11;
-	private static final int REQUEST_UNREGISTER = 22;
-
-	protected DisplayMetrics metrics;
-	protected BackgroundChessDrawable backgroundChessDrawable;
 
 	private Context context;
 	protected SharedPreferences preferences;
@@ -72,9 +54,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected List<PopupProgressFragment> popupProgressManager;
 
 	protected boolean isPaused;
-    private String currentLocale;
-//	protected Animation fadeInAnimation;
-//	protected Animation fadeOutAnimation;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -86,8 +65,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
 
 		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)){ // if not debuggable
 			try {
@@ -101,8 +78,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		}
 
 		context = this;
-		backgroundChessDrawable = new BackgroundChessDrawable(this);
-
 
 		popupItem = new PopupItem();
 		popupProgressItem = new PopupItem();
@@ -112,103 +87,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 		preferences = AppData.getPreferences(this); // TODO rework shared pref usage to unique get method
 		preferencesEditor = preferences.edit();
-
-		metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
-        setLocale();
-
-//		fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in); // temporary unused
-//		fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 	}
-
-	protected void registerGcmService(){
-		// Make sure the device has the proper dependencies.
-//		GCMRegistrar.checkDevice(this); // don't check for emulator
-		// Make sure the manifest was properly set - comment out this line
-		// while developing the app, then uncomment it when it's ready.
-//		GCMRegistrar.checkManifest(this);
-
-		/* When an application is updated, it should invalidate its existing registration ID.
-		The best way to achieve this validation is by storing the current
-		 application version when a registration ID is stored.
-		 Then when the application is started, compare the stored value
-		 with the current application version.
-		 If they do not match, invalidate the stored data and start the registration process again.
-		 */
-
-		final String registrationId = GCMRegistrar.getRegistrationId(this);
-		if (registrationId.equals("")) {
-			// Automatically registers application on startup.
-			GCMRegistrar.register(this, GcmHelper.SENDER_ID);
-		} else {
-			// Device is already registered on GCM, check server.
-			if (GCMRegistrar.isRegisteredOnServer(this)) {
-				// Skips registration.
-				Log.d("TEST", "already registered");
-			} else {
-				// Try to register again, but not in the UI thread.
-				// It's also necessary to cancel the thread onDestroy(),
-				// hence the use of AsyncTask instead of a raw thread.
-
-				final Context context = this;
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
-				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
-				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-
-				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
-			}
-		}
-	}
-
-	private class PostUpdateListener extends AbstractUpdateListener<String> {
-		private int requestCode;
-
-		public PostUpdateListener(int requestCode) {
-			super(BaseFragmentActivity.this);
-			this.requestCode = requestCode;
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			super.updateData(returnedObj);
-			GSMServerResponseItem responseItem = parseJson(returnedObj);
-
-			if(responseItem.getCode() < 400){
-				switch (requestCode){
-					case REQUEST_REGISTER:
-						GCMRegistrar.setRegisteredOnServer(context, true);
-						break;
-					case REQUEST_UNREGISTER:
-						GCMRegistrar.setRegisteredOnServer(context, false);
-						break;
-				}
-			}
-		}
-
-		GSMServerResponseItem parseJson(String jRespString) {
-			Gson gson = new Gson();
-			return gson.fromJson(jRespString, GSMServerResponseItem.class);
-		}
-	}
-
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		isPaused = false;
-
-		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			preferencesEditor.commit();
-		}
-
-		if(!currentLocale.equals(getResources().getConfiguration().locale.getLanguage())){
-			restartActivity();
-		}
 	}
 
 	@Override
@@ -216,48 +100,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onPause();
 		isPaused = true;
 	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(this);
-	}
-
-    protected void setLocale(){
-        String prevLang = getResources().getConfiguration().locale.getLanguage();
-		Log.d("TEST","prevLang = " + prevLang);
-        String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
-
-        String setLocale = languageCodes[AppData.getLanguageCode(context)];
-		Log.d("TEST","setLocale = " + setLocale);
-		if(!prevLang.equals(setLocale)) {
-            Locale locale = new Locale(setLocale);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-
-            preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
-            preferencesEditor.commit();
-
-            currentLocale = setLocale;
-
-            restartActivity();
-        }
-    }
-
-    protected void restartActivity(){
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
-		Log.d("TEST", "___restartActivity___");
-    }
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

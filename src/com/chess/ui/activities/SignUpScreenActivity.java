@@ -23,7 +23,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
-import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
@@ -265,15 +264,15 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		preferencesEditor.commit();
 
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-		if (preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true)) {
-			AppUtils.startNotificationsUpdate(this);
+		if (AppData.isNotificationsEnabled(this)) {
+//			AppUtils.startNotificationsUpdate(this);
+			checkMove();
 		}
 		DataHolder.getInstance().setGuest(false);
 
 
 		backToHomeActivity();
 	}
-
 
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override

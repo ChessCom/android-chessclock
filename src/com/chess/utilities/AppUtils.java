@@ -59,7 +59,11 @@ public class AppUtils {
 	}
 
 	public static void setBackground(View mainView, Context context) {
-		mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+			mainView.setBackground(new BackgroundChessDrawable(context));
+		} else {
+			mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
+		}
 
 		int paddingTop = (int) context.getResources().getDimension(R.dimen.dashboard_padding_top);
 		int paddingLeft = (int) context.getResources().getDimension(R.dimen.dashboard_padding_side);
@@ -112,6 +116,7 @@ public class AppUtils {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
 		notification.setLatestEventInfo(context, title, body, contentIntent);
+		notifyManager.cancelAll();
 		notifyManager.notify(R.id.notification_message, notification);
 
 		SharedPreferences preferences = AppData.getPreferences(context);
@@ -137,6 +142,7 @@ public class AppUtils {
 	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
 													 GameListCurrentItem currentGameItem) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager.cancelAll(); // clear all previous notifications
 
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -187,6 +193,13 @@ public class AppUtils {
 
 		notifyManager.cancel(R.id.notification_message);
 	}
+
+	public static void cancelNotifications(Context context) {
+		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager.cancelAll();
+	}
+
+
 
 	public static void cancelNotification(Context context, int id){
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

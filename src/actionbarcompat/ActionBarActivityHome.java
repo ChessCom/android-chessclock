@@ -19,7 +19,7 @@ package actionbarcompat;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import com.chess.ui.activities.BaseFragmentActivity;
+import com.chess.ui.activities.CommonLogicActivity;
 
 /**
  * A base activity that defers common functionality across app activities to an {@link
@@ -30,7 +30,7 @@ import com.chess.ui.activities.BaseFragmentActivity;
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivityHome extends BaseFragmentActivity {
+public abstract class ActionBarActivityHome extends CommonLogicActivity {
 	final ActionBarHelperHome mActionBarHelperMy = ActionBarHelperHome.createInstance(this);
 
 	/**

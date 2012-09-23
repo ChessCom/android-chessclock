@@ -93,11 +93,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 				}
 			}
 		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-
-		}
 	}
 
 }
