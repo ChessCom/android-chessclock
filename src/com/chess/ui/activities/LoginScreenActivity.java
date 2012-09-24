@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -190,6 +191,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			if (show){
 				showPopupHardProgressDialog(R.string.signingin);
 			} else {
+				Log.d("TEST", "LoginUpdateListener ->  dismissProgressDialog();, isPaused = " + isPaused);
 				if(isPaused)
 					return;
 

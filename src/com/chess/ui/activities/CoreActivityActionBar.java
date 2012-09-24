@@ -422,6 +422,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			if(show){
 				showPopupHardProgressDialog(R.string.signingin);
 			}else {
+				Log.d("TEST", "LoginUpdateListener ->  dismissProgressDialog();, isPaused = " + isPaused);
 				dismissProgressDialog();
 			}
 		}
