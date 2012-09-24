@@ -68,16 +68,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	@Override
 	protected void onResume() {
 		super.onResume();
-		afterMyMoveSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
-		strengthSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+		String userName = AppData.getUserName(this); 
+		afterMyMoveSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
+		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 0));
 
-		showLiveSubmitChckBx.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
-		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
+		showLiveSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
+		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
 
-		enableSounds.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, true));
-		enableNotifications.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, true));
-		showCoordinates.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, true));
-		showHighlights.setChecked(preferences.getBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
+		enableSounds.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
+		enableNotifications.setChecked(preferences.getBoolean(userName + AppConstants.PREF_NOTIFICATION, true));
+		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
+		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 
 		if (!DataHolder.getInstance().isGuest() && !DataHolder.getInstance().isLiveChess())
 			updateVacationStatus();

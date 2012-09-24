@@ -109,17 +109,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onSaveInstanceState(outState);
 	}
 
-	protected List<String> getItemsFromEntries(int entries){
-		String[] array = getResources().getStringArray(entries);
-		return getItemsFromArray(array);
-	}
-
-	protected List<String> getItemsFromArray(String[] array){
-		List<String> items = new ArrayList<String>();
-		items.addAll(Arrays.asList(array));
-		return items;
-	}
-
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		dismissFragmentDialog(fragment);

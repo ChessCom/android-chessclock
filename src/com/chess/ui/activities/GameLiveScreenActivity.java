@@ -10,7 +10,6 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -18,9 +17,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
-import com.chess.live.rules.GameRules;
-import com.chess.live.rules.GameSetup;
-import com.chess.live.rules.chess.ChessRules;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -80,7 +76,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
-//		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
 		String blackPlayerName = getLccHolder().getBlackUserName();
 		String userName = getLccHolder().getCurrentuserName();
 
@@ -455,9 +450,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
 
-		GameRules gameRules = ChessRules.getInstance();
-		GameSetup gameSetup = gameRules.createDefaultGameSetup();
-		boolean legalMove;
+//		GameRules gameRules = ChessRules.getInstance();
+//		GameSetup gameSetup = gameRules.createDefaultGameSetup();
+//		boolean legalMove;
 
 		/*try{
 			String testMove = "";
