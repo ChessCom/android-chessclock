@@ -161,7 +161,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		final Long currentGameId = getLccHolder().getCurrentGameId();
 		boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
-		if (!currentGameId.equals(ChessBoard.getGameId())) {
+		if (currentGameId.equals(ChessBoard.getGameId())) {
 			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
 		} else {
 			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
@@ -457,9 +457,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		GameRules gameRules = ChessRules.getInstance();
 		GameSetup gameSetup = gameRules.createDefaultGameSetup();
-		boolean legalMove;
 
-		/*try{
+		/*boolean legalMove;
+		try{
 			String testMove = "";
 			if (move.length() > 2)
 				testMove = Notation.coord2live(move);
@@ -471,6 +471,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			legalMove = false;
 			BugSenseHandler.sendException(ex);
 		}*/
+
 		if(!getLccHolder().getCurrentGame().isMoveValid(move)) {
 			Log.d("TEST", "illegal move = " + move);
 			//showToast("illegal move");
@@ -479,7 +480,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		final String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
 				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
-				", movesLive=" + getLccHolder().getCurrentGame().getMoves() +
 				", boardHply=" + getBoardFace().getHply() +
 				", boardInit=" + getBoardFace().isInit() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
@@ -488,7 +488,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", analysisPanel=" + gamePanelView.isAnalysisEnabled() +
 				", analysisBoard=" + getBoardFace().isAnalysis() +
 				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
-				", debugString=" + debugString;
+				", debugString=" + debugString +
+				", movesLive=" + getLccHolder().getCurrentGame().getMoves();
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
