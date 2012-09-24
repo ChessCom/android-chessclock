@@ -36,8 +36,8 @@ public class AppConstants {
 	public static final String PREF_BOARD_SQUARE_HIGHLIGHT = "highlights";
 	public static final String PREF_BOARD_TYPE = "boardBitmap";
 	public static final String PREF_PIECES_SET = "piecesBitmap";
-    public static final String PREF_VIDEO_SKILL_LEVEL = "video_skill_level";
-    public static final String PREF_VIDEO_CATEGORY = "video_category";
+    public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
+    public static final String PREF_VIDEO_CATEGORY = "video category";
 
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
 

@@ -161,7 +161,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		final Long currentGameId = getLccHolder().getCurrentGameId();
 		boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
-		if (currentGameId.equals(ChessBoard.getGameId())) {
+		if (!currentGameId.equals(ChessBoard.getGameId())) {
 			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
 		} else {
 			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
@@ -455,8 +455,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
 
-		GameRules gameRules = ChessRules.getInstance();
-		GameSetup gameSetup = gameRules.createDefaultGameSetup();
+//		GameRules gameRules = ChessRules.getInstance();
+//		GameSetup gameSetup = gameRules.createDefaultGameSetup();
+//		boolean legalMove;
 
 		/*boolean legalMove;
 		try{

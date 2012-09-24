@@ -80,7 +80,6 @@
 				android:id="@+id/skillsSpinner"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:entries="@array/skill"
 				android:layout_weight="4"
 				/>
 
@@ -104,7 +103,6 @@
 				android:id="@+id/categoriesSpinner"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:entries="@array/category"
 				android:layout_weight="4"
 				/>
 		</LinearLayout>

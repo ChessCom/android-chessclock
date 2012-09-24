@@ -24,6 +24,8 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +41,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	private static final int REQUEST_UNREGISTER = 22;
 
 	protected BackgroundChessDrawable backgroundChessDrawable;
-//	protected DisplayMetrics metrics;
 	private String currentLocale;
 
 
@@ -48,9 +49,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
-
-//		metrics = new DisplayMetrics();
-//		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 		setLocale();
@@ -109,6 +107,17 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		finish();
 		startActivity(intent);
 		Log.d("TEST", "___restartActivity___");
+	}
+
+	protected List<String> getItemsFromEntries(int entries){
+		String[] array = getResources().getStringArray(entries);
+		return getItemsFromArray(array);
+	}
+
+	protected List<String> getItemsFromArray(String[] array){
+		List<String> items = new ArrayList<String>();
+		items.addAll(Arrays.asList(array));
+		return items;
 	}
 
 	protected void registerGcmService(){

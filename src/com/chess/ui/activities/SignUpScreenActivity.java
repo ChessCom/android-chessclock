@@ -54,7 +54,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	private String[] tmp2;
 
 	private Facebook facebook;
-	private LoginButton facebookLoginButton;
 	private static int SIGNIN_CALLBACK_CODE = 16;
 	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private String userName;
@@ -94,7 +93,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		regSubmit.setOnClickListener(this);
 
-		facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
+		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
 
 		facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
 		SessionStore.restore(facebook, this);
