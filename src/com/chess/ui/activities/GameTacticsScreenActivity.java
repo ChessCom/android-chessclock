@@ -148,11 +148,21 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			firstRun = false;
 
 			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
-			if (AppData.haveSavedTacticGame(this)) {
+			boolean  haveGuestSavedGame = !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
+					.equals(StaticData.SYMBOL_EMPTY);
+			Log.d("TEST","haveGuestSavedGame = " + haveGuestSavedGame);
+
+			if (AppData.haveSavedTacticGame(this) && !DataHolder.getInstance().isGuest()
+					|| haveGuestSavedGame) {
 				String userName = AppData.getUserName(this);
+				if (DataHolder.getInstance().isGuest()) {
+					userName = StaticData.SYMBOL_EMPTY;
+				}
+
 				String tacticString = preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 				String tacticResultString = preferences.getString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
 				String showedTacticId = preferences.getString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+				boolean isRetry = preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_RETRY, false);
 
 				int secondsSpend = preferences.getInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
 
@@ -168,7 +178,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				DataHolder.getInstance().addShowedTacticId(showedTacticId);
 
-				getBoardFace().setRetry(true);
+				getBoardFace().setRetry(isRetry);
 
 				if (getBoardFace().isLatestMoveMadeUser())
 					checkMove();
@@ -180,14 +190,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else {
 			// TODO show register confirmation dialog
 			TacticItem tacticItem = getTacticItem();
-			Log.d("TEST", "getTacticItem() = " + tacticItem);
-			/*if (getBoardFace().isTacticCanceled()) {    // never executing condition
-				getBoardFace().setTacticCanceled(false);
-				popupItem.setPositiveBtnId(R.string.yes);
-				popupItem.setNegativeBtnId(R.string.no);
-				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
-
-			} else*/
 			if(tacticItem == null){ // singleton can be killed
 				getNewTactic();
 			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
@@ -211,8 +213,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
+			if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
+				userName = StaticData.SYMBOL_EMPTY;
+			}
+
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, getTacticItem().getSaveString());
 			preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
+			preferencesEditor.putBoolean(userName + AppConstants.SAVED_TACTICS_RETRY, getBoardFace().isRetry());
 
 			final TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 			String tacticResultString = StaticData.SYMBOL_EMPTY;
@@ -237,7 +244,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	 */
 	private boolean needToSaveTactic(){
 		return !getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
-				&& getTacticItem() != null && !DataHolder.getInstance().isGuest();
+				&& getTacticItem() != null /*&& !DataHolder.getInstance().isGuest()*/;
 	}
 
 	private void playLastMoveAnimationAndCheck() {
@@ -314,10 +321,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		} else {
 			Log.d("TEST_MOVE", " Wrong move");
-			if (DataHolder.getInstance().isGuest() || getBoardFace().isRetry() || noInternet) {
-				TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+			TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+			boolean  tacticResultItemIsValid = tacticResultItem != null
+					&& Integer.valueOf(tacticResultItem.getUserRatingChange()) < 0; // if saved
+			if (tacticResultItemIsValid  && (DataHolder.getInstance().isGuest() || getBoardFace().isRetry()
+					|| noInternet)) {
 				String title;
-				if (tacticResultItem != null && !DataHolder.getInstance().isGuest()) {
+				if (!DataHolder.getInstance().isGuest()) {
 					title = getString(R.string.wrong_score,
 							tacticResultItem.getUserRatingChange(),
 							tacticResultItem.getUserRating());
@@ -540,12 +550,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
 			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
-				showLimitDialog();
+				showLimitDialog(); // can be replaced with IllegalStateExc, because this should never happen
 				return;
 			}
 
 			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
-			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+			DataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
 
 			String title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 					tacticResultItem.getUserRating());
@@ -573,7 +583,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
 			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
-				showLimitDialog();
+				showLimitDialog();  // can be replaced with IllegalStateExc, because this should never happen
 				return;
 			}
 
@@ -585,6 +595,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					tacticResultItem.getUserRating());
 
 			showWrongMovePopup(title);
+
+			getBoardFace().setRetry(true); // set auto retry because we save tactic
 		}
 
 		@Override
@@ -612,7 +624,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void invalidateGameScreen() {
-		Log.d("TEST", " set moves " + getBoardFace().getMoveListSAN());
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
 
@@ -903,6 +914,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void clearSavedTactics() {
 		String userName = AppData.getUserName(this);
+		if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
+			userName = StaticData.SYMBOL_EMPTY; // w/o userName
+		}
+
 		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
 		preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);

@@ -108,15 +108,19 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		@Override
 		public void updateData(String returnedObj) {
-			gameListItems.clear();
-			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
+			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				gameListItems.clear();
+				gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
 
-			if (gamesAdapter == null) {
-				gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);
-				openChallengesListView.setAdapter(gamesAdapter);
+				if (gamesAdapter == null) {
+					gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);
+					openChallengesListView.setAdapter(gamesAdapter);
+				}
+
+				gamesAdapter.notifyDataSetChanged();
+			} else  if (returnedObj.contains(RestHelper.R_ERROR)) {
+				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
-
-			gamesAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -200,7 +204,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
 			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
+				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 		}
 	}

@@ -19,6 +19,7 @@ public class AppConstants {
 	public static final String SAVED_TACTICS_ITEM = "saved tactics game";
 	public static final String SAVED_TACTICS_RESULT_ITEM = "saved tactic result";
 	public static final String SAVED_TACTICS_ID = "saved tactic id";
+	public static final String SAVED_TACTICS_RETRY = "saved tactic retry";
 	public static final String SPENT_SECONDS_TACTICS = "spent seconds in tactics";
 
 	public static final String USERNAME = "username";
