@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -17,6 +18,9 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.live.rules.GameRules;
+import com.chess.live.rules.GameSetup;
+import com.chess.live.rules.chess.ChessRules;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -76,6 +80,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
+//		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
 		String blackPlayerName = getLccHolder().getBlackUserName();
 		String userName = getLccHolder().getCurrentuserName();
 
@@ -454,7 +459,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 //		GameSetup gameSetup = gameRules.createDefaultGameSetup();
 //		boolean legalMove;
 
-		/*try{
+		/*boolean legalMove;
+		try{
 			String testMove = "";
 			if (move.length() > 2)
 				testMove = Notation.coord2live(move);
@@ -466,6 +472,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			legalMove = false;
 			BugSenseHandler.sendException(ex);
 		}*/
+
 		if(!getLccHolder().getCurrentGame().isMoveValid(move)) {
 			Log.d("TEST", "illegal move = " + move);
 			//showToast("illegal move");
@@ -474,7 +481,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		final String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
 				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
-				", movesLive=" + getLccHolder().getCurrentGame().getMoves() +
 				", boardHply=" + getBoardFace().getHply() +
 				", boardInit=" + getBoardFace().isInit() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
@@ -483,7 +489,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", analysisPanel=" + gamePanelView.isAnalysisEnabled() +
 				", analysisBoard=" + getBoardFace().isAnalysis() +
 				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
-				", debugString=" + debugString;
+				", debugString=" + debugString +
+				", movesLive=" + getLccHolder().getCurrentGame().getMoves();
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
