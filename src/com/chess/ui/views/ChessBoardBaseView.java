@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.graphics.Paint.Style;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -94,10 +91,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected GameActivityFace gameActivityFace;
 	protected BoardFace boardFace;
     protected boolean locked;
+	protected PaintFlagsDrawFilter drawFilter;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
+
+		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 
 		loadBoard(AppData.getChessBoardId(getContext()));
 		loadPieces(AppData.getPiecesId(getContext()));

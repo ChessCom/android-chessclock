@@ -2,8 +2,6 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
@@ -41,7 +39,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG));
+        canvas.setDrawFilter(drawFilter);
         super.onDraw(canvas);
         W = viewWidth;
         H = viewHeight;

@@ -53,7 +53,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG));
+		canvas.setDrawFilter(drawFilter);
 		super.onDraw(canvas);
 		W = viewWidth;
 		H = viewHeight;
