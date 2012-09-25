@@ -5,17 +5,17 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.R;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.ComputeMoveTask;
+import com.chess.model.ComputeMoveItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.Search;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 
@@ -104,69 +104,46 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
         computerMoving = true;
 		gameCompActivityFace.onCompMove();
-        new Thread(new Runnable() {  // TODO change to AsyncTask
-            @Override
-            public void run() {
-                pieces_tmp = boardFace.getPieces().clone();
-                colors_tmp = boardFace.getColor().clone();
-                Search searcher = new Search(boardFace);
-                searcher.think(0, time, 32);
-                Move best = searcher.getBest();
-                boardFace.makeMove(best);
-                computerMoving = false;
-                boardFace.setMovesCount(boardFace.getHply());
-                update.sendEmptyMessage(0);
-            }
+		ComputeMoveItem computeMoveItem = new ComputeMoveItem();
+		computeMoveItem.setBoardFace(getBoardFace());
+		computeMoveItem.setColors_tmp(colors_tmp);
+		computeMoveItem.setPieces_tmp(pieces_tmp);
+		computeMoveItem.setMoveTime(time);
 
-            private Handler update = new Handler() {
-                @Override
-                public void dispatchMessage(Message msg) {
-                    super.dispatchMessage(msg);
-					gameActivityFace.invalidateGameScreen();
-					gameCompActivityFace.onPlayerMove();
-                    invalidate();
-                    if (isGameOver())
-                        return;
-                    if (AppData.isComputerVsComputerGameMode(boardFace)
-                            || (hint && !AppData.isHumanVsHumanGameMode(boardFace))) {
-                        if (hint)
-                            hint = false;
-                        computerMove(time);
-                    }
-                }
-            };
-        }).start();
+		pieces_tmp = getBoardFace().getPieces().clone();
+		colors_tmp = getBoardFace().getColor().clone();
+
+		new ComputeMoveTask(computeMoveItem, new ComputeMoveUpdateListener()).executeTask();
     }
 
-//	private class ComputeMoveUpdateListener extends AbstractUpdateListener<String> { // TODO add later
-//
-//		private int moveTime;
-//
-//		public ComputeMoveUpdateListener(int time) {
-//			super(getContext());
-//			this.moveTime = time;
-//		}
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			super.updateData(returnedObj);
-//			computerMoving = false;
-//			boardFace.setMovesCount(boardFace.getHply());
-//
-//			gameActivityFace.invalidateGameScreen();
-//			gameCompActivityFace.onPlayerMove();
-//			invalidate();
-//			if (isGameOver())
-//				return;
-//			if (AppData.isComputerVsComputerGameMode(boardFace)
-//					|| (hint && !AppData.isHumanVsHumanGameMode(boardFace))) {
-//				if (hint)
-//					hint = false;
-//				computerMove(moveTime);
-//			}
-//
-//		}
-//	}
+	private class ComputeMoveUpdateListener extends AbstractUpdateListener<ComputeMoveItem> { // TODO add later
+		public ComputeMoveUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(ComputeMoveItem returnedObj) {
+			super.updateData(returnedObj);
+			computerMoving = false;
+			pieces_tmp = returnedObj.getPieces_tmp();
+			colors_tmp = returnedObj.getColors_tmp();
+
+			boardFace.setMovesCount(boardFace.getHply());
+
+			gameActivityFace.invalidateGameScreen();
+			gameCompActivityFace.onPlayerMove();
+			invalidate();
+			if (isGameOver())
+				return;
+			if (AppData.isComputerVsComputerGameMode(boardFace)
+					|| (hint && !AppData.isHumanVsHumanGameMode(boardFace))) {
+				if (hint)
+					hint = false;
+				computerMove(returnedObj.getMoveTime());
+			}
+
+		}
+	}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -463,7 +440,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                         }
                     }
 
-                    if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
+                    if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) || // if in promotion position
 							((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
                             (boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
 

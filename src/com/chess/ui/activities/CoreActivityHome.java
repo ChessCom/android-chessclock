@@ -281,7 +281,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
 			getLastPopupFragment().setButtons(1);
-//			popupDialogFragment.setButtons(1);
 		}
 	}
 
@@ -317,6 +316,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+			Log.d("TEST", "HomeActivity onActivityResult -> facebook authorize");
 			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
 	}
@@ -349,7 +349,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			if(show){
 				showPopupHardProgressDialog(R.string.signingin);
 			}else {
-				Log.d("TEST", "LoginUpdateListener ->  dismissProgressDialog();, isPaused = " + isPaused);
+				Log.d("TEST", "HomeActivity LoginUpdateListener ->  dismissProgressDialog();, isPaused = " + isPaused);
 				dismissProgressDialog();
 			}
 		}
@@ -378,7 +378,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else if(returnedObj.contains(RestHelper.R_ERROR)){
 				String message = returnedObj.substring(RestHelper.R_ERROR.length());
-				if(message.equals("Invalid password.")){
+				if(message.equals(RestHelper.R_INVALID_PASS)){
 					passwordEdt.setError(getResources().getString(R.string.invalid_password));
 					passwordEdt.requestFocus();
 				}else{
