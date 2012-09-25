@@ -270,6 +270,10 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
 	}
 
+	public Long getGameId() {
+		return gameId;
+	}
+
 	@Override
 	public void showOptions() {
 		new AlertDialog.Builder(this)

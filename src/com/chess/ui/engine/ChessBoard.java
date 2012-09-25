@@ -287,10 +287,13 @@ public class ChessBoard implements BoardFace {
 		soundPlayer = gameActivityFace.getSoundPlayer();
 	}
 
-	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace, Long gameId) {
-		if (instance == null || !gameId.equals(instance.gameId)) {
-			instance = new ChessBoard(gameActivityFace);
+	public static ChessBoard getChessBoard(BoardToGameActivityFace gameActivityFace) {
+		final Long gameId = gameActivityFace.getGameId();
+		if (instance == null || !instance.gameId.equals(gameId)) {
 			instance.gameId = gameId;
+			instance = new ChessBoard(gameActivityFace);
+			instance.setInit(true);
+			instance.genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		return instance;
 	}
@@ -2419,4 +2422,7 @@ public class ChessBoard implements BoardFace {
 		return gameId;
 	}
 
+	public static void resetBoardInstance() {
+		instance = null;
+	}
 }

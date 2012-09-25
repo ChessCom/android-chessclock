@@ -12,4 +12,6 @@ public interface BoardToGameActivityFace {
 	SoundPlayer getSoundPlayer();
 
 	Boolean isUserColorWhite();
+
+	Long getGameId();
 }

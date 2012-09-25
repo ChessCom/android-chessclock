@@ -10,17 +10,14 @@ import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
-import com.chess.live.rules.GameRules;
-import com.chess.live.rules.GameSetup;
-import com.chess.live.rules.chess.ChessRules;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -159,18 +156,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		final Long currentGameId = getLccHolder().getCurrentGameId();
-		boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
-		if (!currentGameId.equals(ChessBoard.getGameId())) {
-			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
-		} else {
-			boardView.setBoardFace(ChessBoard.getInstance(this, currentGameId));
-			getBoardFace().setInit(true);
-			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-			if (getLccHolder().getLatestMoveNumber() != null && getLccHolder().getLatestMoveNumber() > 0) {
-				getLccHolder().setLatestMoveNumber(null); // todo: refactor with new LCC
-			}
-		}
+		final ChessBoard chessBoard = ChessBoard.getChessBoard(this);
+		boardView.setBoardFace(chessBoard);
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
@@ -485,7 +472,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", boardInit=" + getBoardFace().isInit() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
-				", gameId=" + getLccHolder().getCurrentGameId() +
+				", gameId=" + getGameId() +
 				", analysisPanel=" + gamePanelView.isAnalysisEnabled() +
 				", analysisBoard=" + getBoardFace().isAnalysis() +
 				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
@@ -509,6 +496,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.switch2Analysis(isAnalysis);
 		if (isAnalysis) {
 			getLccHolder().setLatestMoveNumber(0);
+			ChessBoard.resetBoardInstance();
 		}
 		gamePanelView.enableControlButtons(isAnalysis);
 	}
@@ -604,7 +592,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				.equals(AppData.getUserName(this));
 	}
 
-    private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
+	@Override
+	public Long getGameId() {
+		return getLccHolder().getCurrentGameId(); // currentGame initialized in init() method
+	}
+
+	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		private final int LIVE_SETTINGS = 0;
 		private final int LIVE_RESIDE = 1;
 		private final int LIVE_DRAW_OFFER = 2;
@@ -807,9 +800,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void restoreGame() {
-		boardView.setBoardFace(ChessBoard.getInstance(this, getLccHolder().getCurrentGameId()));
-		getBoardFace().setInit(true);
-		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		boardView.setBoardFace(ChessBoard.getChessBoard(this));
 		boardView.setGameActivityFace(this);
 
 		onGameStarted();

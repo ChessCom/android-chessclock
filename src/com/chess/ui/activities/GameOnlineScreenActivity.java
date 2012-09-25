@@ -547,6 +547,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				.equals(AppData.getUserName(this));
 	}
 
+	public Long getGameId() {
+		return gameId;
+	}
+
 	private boolean isUserMove() {
 		if(currentGame == null)  // TODO probably redundant
 			return false;

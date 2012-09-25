@@ -411,6 +411,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		return null;
 	}
 
+	public Long getGameId() {
+		return null;
+	}
+
 	private void showLimitDialog() {
 		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
 		showSolvedTacticPopup(StaticData.SYMBOL_EMPTY, true);

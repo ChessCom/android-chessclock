@@ -287,6 +287,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		return AppData.isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
+	public Long getGameId() {
+		return null;
+	}
+
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
 		private final int NEW_GAME_WHITE = 0;
