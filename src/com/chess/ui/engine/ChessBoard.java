@@ -287,7 +287,7 @@ public class ChessBoard implements BoardFace {
 		soundPlayer = gameActivityFace.getSoundPlayer();
 	}
 
-	public static ChessBoard getChessBoard(BoardToGameActivityFace gameActivityFace) {
+	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace) {
 		final Long gameId = gameActivityFace.getGameId();
 		if (instance == null || !instance.gameId.equals(gameId)) {
 			instance.gameId = gameId;
@@ -2422,7 +2422,7 @@ public class ChessBoard implements BoardFace {
 		return gameId;
 	}
 
-	public static void resetBoardInstance() {
+	public static void resetInstance() {
 		instance = null;
 	}
 }

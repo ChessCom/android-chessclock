@@ -804,7 +804,7 @@ public class LccHolder{
 	public void processFullGame(Game game) {
 		Log.d("TEST", "processFullGame, gameId = " + game.getId());
 		latestMoveNumber = null;
-		ChessBoard.resetBoardInstance();
+		ChessBoard.resetInstance();
 		putGame(game);
 
 		int time = game.getGameTimeConfig().getBaseTime() * 100;
