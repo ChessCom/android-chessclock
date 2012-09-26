@@ -108,20 +108,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		boardView = (ChessBoardTacticsView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGamePanelView(gamePanelView);
-		boardView.setBoardFace(new ChessBoard(this));
+		//boardView.setBoardFace(new ChessBoard(this)); // looks like as redundant init
 		boardView.setGameActivityFace(this);
 
 		setBoardView(boardView);
 
-		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
-		if (chessBoard != null) {
-			boardView.setBoardFace(chessBoard);
-			firstRun = false;
-		} else {
-			boardView.setBoardFace(new ChessBoard(this));
-			getBoardFace().setInit(true);
-			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-		}
+		final ChessBoard chessBoard = ChessBoard.getInstanceTactics(this);
+		firstRun = chessBoard.isJustInitialized();
+		boardView.setBoardFace(chessBoard);
 
 		timerTxt = (TextView) findViewById(R.id.timerTxt);
 		timerTxt.setVisibility(View.VISIBLE);
@@ -170,6 +164,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				setTacticToBoard(tacticItem, secondsSpend);
 
 				DataHolder.getInstance().setTactic(tacticItem);
+				boardView.setBoardFace(ChessBoard.getInstanceTactics(this));
 
 				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
@@ -412,7 +407,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	public Long getGameId() {
-		return null;
+		return getTacticItem() == null ? null : Long.parseLong(getTacticItem().getId());
 	}
 
 	private void showLimitDialog() {
@@ -498,9 +493,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getTacticItem().setStop(true);
 		DataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
 
-		boardView.setBoardFace(new ChessBoard(this));
+		boardView.setBoardFace(ChessBoard.getInstanceTactics(this));
 		getBoardFace().setRetry(true);
-
 
 		TacticItem tacticItem;
 		if (DataHolder.getInstance().isGuest() || noInternet) {
@@ -766,11 +760,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return;
 		}
 
-		boardView.setBoardFace(new ChessBoard(this));
-		BoardFace boardFace = getBoardFace();
+		final BoardFace boardFace = ChessBoard.getInstanceTactics(this);
+		boardView.setBoardFace(boardFace);
 
 		boardFace.setupBoard(tacticItem.getFen());
-
 
 		if (tacticItem.getMoveList().contains("1.")) {
 			boardFace.setTacticMoves(tacticItem.getMoveList());

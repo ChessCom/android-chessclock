@@ -224,8 +224,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		boardView.setBoardFace(new ChessBoard(this));
 		boardView.setGameActivityFace(this);
 		getBoardFace().setInit(true);
-		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		loadSavedGame();
 	}
 
