@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
@@ -156,8 +155,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		final ChessBoard chessBoard = ChessBoard.getChessBoard(this);
-		boardView.setBoardFace(chessBoard);
+		boardView.setBoardFace(ChessBoard.getInstance(this));
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
@@ -496,7 +494,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.switch2Analysis(isAnalysis);
 		if (isAnalysis) {
 			getLccHolder().setLatestMoveNumber(0);
-			ChessBoard.resetBoardInstance();
+			ChessBoard.resetInstance();
 		}
 		gamePanelView.enableControlButtons(isAnalysis);
 	}
@@ -800,7 +798,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void restoreGame() {
-		boardView.setBoardFace(ChessBoard.getChessBoard(this));
+		boardView.setBoardFace(ChessBoard.getInstance(this));
 		boardView.setGameActivityFace(this);
 
 		onGameStarted();
