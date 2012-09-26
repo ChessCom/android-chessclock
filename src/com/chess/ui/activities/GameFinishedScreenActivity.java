@@ -74,7 +74,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		} else {
 			boardView.setBoardFace(new ChessBoard(this));
 			getBoardFace().setInit(true);
-			getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		boardView.setGameActivityFace(this);
@@ -384,7 +383,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	@Override
 	protected void restoreGame() {
 		boardView.setBoardFace(new ChessBoard(this));
-		boardView.getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
 		adjustBoardForGame();
 	}
