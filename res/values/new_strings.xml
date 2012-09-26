@@ -8,4 +8,7 @@
 	<string name="end_vacation">End Vacation</string>
 	<string name="feedback_mailbody">Device info</string>
 
+	<string name="win_">Win:</string>
+	<string name="loss_">Loss:</string>
+	<string name="draw_">Draw:</string>
 </resources>

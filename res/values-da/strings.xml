@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">Live-skak-serveren er ikke tilgængelig i øjeblikket.</string>
 	<string name="lccFailedUpgrading">Vi forsøger at forbedre chess.com! I øjeblikket webstedet er ved at blive opgraderet. Det vil blive leve igen på ingen tid. Prøv at logge ind igen om lidt. Tak!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Der opstod en fejl</string>
 	<string name="signout">Log ud</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">Indstillinger</string>
 	<string name="start_new_game">Start nyt spil</string>
-	<string name="dont_have_account_q">Har du ikke en konto?</string>
+	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
 	<string name="singinUsername">Brugernavn:</string>
 	<string name="singinPassword">Adgangskode</string>
 	<string name="singinButton">Log ind</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">Nyt spil (sort)</string>
 	<string name="emailgame">E-mail Spil</string>
 	<string name="load">Indlæs gemt spil</string>
-	<string name="backtogamelist">Tilbage til spil liste</string>
+	<!--<string name="backtogamelist">Tilbage til spil liste</string>-->
 	<string name="messages">Meddelelser</string>
 	<string name="analysis">Analyse Board</string>
 	<string name="drawoffer">Tilbyde remis</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">Challenge Afvist!</string>
 	<string name="decline">Afvis</string>
 	<string name="updatinggameslist">Opdatering Games liste …</string>
-	<string name="challengetitle">Udfordring</string>
+	<!--<string name="challengetitle">Udfordring</string>-->
 	<string name="loadinggames">Indlæser Spil …</string>
 	<string name="drawoffered">Tegn Tilbydes</string>
 	<string name="gettingmessages">Få Meddelelser …</string>
@@ -230,7 +229,7 @@
 	<string name="comp">Comp</string>
 	<string name="tactics">Taktik</string>
 	<string name="video">Video</string>
-	<string name="boards_s">Boards</string>
+	<!--<string name="boards_s">Boards</string>-->
 	<string name="invite_subject">Spille skak med mig</string>
 	<string name="invite_text">Jeg har netop underskrevet op til at spille skak på Chess.com på min Android enhed. Download gratis app her: http://chess.com/android eller tilmelding på http://www.chess.com/register.html. Så finde mig - mit brugernavn er \"
 	</string>

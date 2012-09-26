@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">라이브 체스 서버는 현재 사용할 수 없습니다.</string>
 	<string name="lccFailedUpgrading">우리는 chess.com 개선을 위해 노력하고 있습니다! 현재 사이트 업그레이 드되고 있습니다. 그것은 금새 다시 살 것입니다. 잠시 후 다시 로그인을 시도해보십시오. 감사합니다!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">오류가 발생했습니다</string>
 	<string name="signout">로그아웃</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">설정</string>
 	<string name="start_new_game">새 게임을 시작합니다</string>
-	<string name="dont_have_account_q">계정이 없습니까?</string>
+	<!--<string name="dont_have_account_q">계정이 없습니까?</string>-->
 	<string name="singinUsername">사용자 이름</string>
 	<string name="singinPassword">패스워드</string>
 	<string name="singinButton">로그인</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">신규 게임 (블랙)</string>
 	<string name="emailgame">이메일 게임</string>
 	<string name="load">저장된 게임을로드</string>
-	<string name="backtogamelist">게임 목록으로</string>
+	<!--<string name="backtogamelist">게임 목록으로</string>-->
 	<string name="messages">쪽지</string>
 	<string name="analysis">분석 게시판</string>
 	<string name="drawoffer">그리기 기능을 제공</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">도전 실패!</string>
 	<string name="decline">거절</string>
 	<string name="updatinggameslist">게임 목록을 업데이트 중 …</string>
-	<string name="challengetitle">도전</string>
+	<!--<string name="challengetitle">도전</string>-->
 	<string name="loadinggames">로드 게임 …</string>
 	<string name="drawoffered">제공 그리기</string>
 	<string name="gettingmessages">메시 …</string>
@@ -187,7 +186,7 @@
 	<string name="gamefinish">이 게임을 마침</string>
 	<string name="random">무작위</string>
 	<string name="won">원</string>
-	<string name="lost">lose ~을 잃다</string>
+	<string name="lost">잃어버린</string>
 	<string name="draw">그릴</string>
 	<string name="duration">기간:</string>
 	<string name="published">게시완료</string>
@@ -226,7 +225,7 @@
 	<string name="comp">검색</string>
 	<string name="tactics">전술</string>
 	<string name="video">Video</string>
-	<string name="boards_s">보드</string>
+	<!--<string name="boards_s">보드</string>-->
 	<string name="invite_subject">나와 함께 체스를 재생</string>
 	<string name="invite_text">난 그냥 내 안드로이드 장치에 Chess.com에서 체스를 가입. 여기에 무료 애플 리케이션 다운로드 : http://chess.com/android 또는 http://www.chess.com/register.html에 가입하실 수 있습니다. 그럼 날 찾아 - 내 이름은입니다 \</string>
 	<string name="live_game">게임을하다</string>

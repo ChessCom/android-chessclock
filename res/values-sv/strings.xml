@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">Live Chess Servern är inte tillgänglig för tillfället.</string>
 	<string name="lccFailedUpgrading">Vi försöker förbättra chess.com! För närvarande webbplats uppgraderas. Det kommer att leva igen på nolltid. Försök att logga in igen inom kort. Tack!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Ett fel inträffade</string>
 	<string name="signout">Logga ut</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">Inställningar</string>
 	<string name="start_new_game">Starta Nytt spel</string>
-	<string name="dont_have_account_q">Har du inte ett konto?</string>
+	<!--<string name="dont_have_account_q">Har du inte ett konto?</string>-->
 	<string name="singinUsername">Användarnamn</string>
 	<string name="singinPassword">Lösenord</string>
 	<string name="singinButton">Logga in</string>
@@ -101,8 +100,8 @@
 	<string name="enableSounds">Aktivera ljud</string>
 	<string name="strength">Styrka</string>
 	<string name="interfaceP">Gränssnitt</string>
-	<string name="board">Kort</string>
-	<string name="pieces">Pieces</string>
+	<string name="board">Bräda</string>
+	<string name="pieces">Pjäs typ</string>
 	<string name="showcoords">Visar koordinaterna</string>
 	<string name="movehighlights">Flytta Höjdpunkter</string>
 	<string name="invite_a_friend">Bjud in en vän</string>
@@ -114,12 +113,12 @@
 	<string name="ngblack">Nytt spel (svart)</string>
 	<string name="emailgame">E-post Game</string>
 	<string name="load">Ladda sparat spel</string>
-	<string name="backtogamelist">Tillbaka till Spellista</string>
+	<!--<string name="backtogamelist">Tillbaka till Spellista</string>-->
 	<string name="messages">Meddelanden</string>
 	<string name="analysis">Analys Board</string>
 	<string name="drawoffer">Erbjudande A Oavgjort</string>
 	<string name="resignorabort">Avgå (eller avbryta)</string>
-	<string name="resign">Avgå</string>
+	<string name="resign">Ge upp</string>
 	<string name="abort">Abort</string>
 	<string name="cancel">Avbryt</string>
 	<string name="send">Skicka</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">Challenge Avvisad!</string>
 	<string name="decline">Avvisa</string>
 	<string name="updatinggameslist">Uppdaterar Spel List …</string>
-	<string name="challengetitle">Utmana</string>
+	<!--<string name="challengetitle">Utmana</string>-->
 	<string name="loadinggames">Laddar spel …</string>
 	<string name="drawoffered">Dra Erbjuds</string>
 	<string name="gettingmessages">Få meddelanden …</string>
@@ -186,9 +185,9 @@
 	<string name="theirmove">Deras Flytta!</string>
 	<string name="gamefinish">Avsluta detta spel</string>
 	<string name="random">Slumpa…</string>
-	<string name="won">vann</string>
-	<string name="lost">tappat bort mig</string>
-	<string name="draw">ritningar</string>
+	<string name="won">vinst</string>
+	<string name="lost">förlorat</string>
+	<string name="draw">oavgjort</string>
 	<string name="duration">Längd</string>
 	<string name="published">Publicerad</string>
 	<string name="details">Detaljer</string>
@@ -228,7 +227,7 @@
 	<string name="comp">Komp</string>
 	<string name="tactics">Taktik</string>
 	<string name="video">Video</string>
-	<string name="boards_s">Styrelser</string>
+	<!--<string name="boards_s">Styrelser</string>-->
 	<string name="invite_subject">Spela schack med mig</string>
 	<string name="invite_text">Jag skrev bara upp för att spela schack på Chess.com på min Android-enhet. Ladda ner applikationen gratis här: http://chess.com/android eller registrera dig på http://www.chess.com/register.html. Sedan hitta mig - mitt användarnamn är \"
 	</string>

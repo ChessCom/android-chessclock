@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">लाइव शतरंज सर्वर वर्तमान में अनुपलब्ध है.</string>
 	<string name="lccFailedUpgrading">हम chess.com को बेहतर बनाने की कोशिश कर रहे हैं! वर्तमान में साइट का उन्नयन किया जा रहा है. यह कोई समय में फिर से जीवित रहेगा. फिर शीघ्र ही प्रवेश करने की कोशिश करें. धन्यवाद!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">त्रुटि हुई</string>
 	<string name="signout">साइन आउट</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">सेटिंग्स</string>
 	<string name="start_new_game">नया गेम शुरू</string>
-	<string name="dont_have_account_q">कोई खाता नहीं है? </string>
+	<!--<string name="dont_have_account_q">कोई खाता नहीं है? </string>-->
 	<string name="singinUsername">उपयोगकर्तानाम </string>
 	<string name="singinPassword">पासवर्ड</string>
 	<string name="singinButton">साइन इन करें…</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">नई खेल (काला)</string>
 	<string name="emailgame">ईमेल खेल</string>
 	<string name="load">लोड सहेजा गया खेल</string>
-	<string name="backtogamelist">खेल की सूची के लिए बैकअप लें</string>
+	<!--<string name="backtogamelist">खेल की सूची के लिए बैकअप लें</string>-->
 	<string name="messages">संदेश</string>
 	<string name="analysis">विश्लेषण बोर्ड</string>
 	<string name="drawoffer">एक ड्रा प्रस्ताव</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">चैलेंज अस्वीकृत!</string>
 	<string name="decline">अस्वीकृत</string>
 	<string name="updatinggameslist">खेल सूची अद्यतन हो रहा है …</string>
-	<string name="challengetitle">चुनौती </string>
+	<!--<string name="challengetitle">चुनौती </string>-->
 	<string name="loadinggames">लोड हो रहा है खेल …</string>
 	<string name="drawoffered">पेशकश ड्रा</string>
 	<string name="gettingmessages">संदेश प्राप्त करें</string>
@@ -229,7 +228,7 @@
 	<string name="comp">इस COMP</string>
 	<string name="tactics">रणनीति</string>
 	<string name="video">वीडियो</string>
-	<string name="boards_s">बोर्ड</string>
+	<!--<string name="boards_s">बोर्ड</string>-->
 	<string name="invite_subject">मेरे साथ शतरंज चलायें</string>
 	<string name="invite_text">मैं अभी साइन अप करने के लिए अपने Android डिवाइस पर Chess.com पर शतरंज खेलने के लिए. मुफ्त app डाउनलोड यहाँ: http://chess.com/android या http://www.chess.com/register.html पर पंजीकरण. तो मुझे लगता है - अपने उपयोगकर्ता नाम \"
 	</string>

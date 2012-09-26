@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">Na żywo serwer Chess jest obecnie niedostępna.</string>
 	<string name="lccFailedUpgrading">Staramy się poprawić chess.com! Obecnie strona jest modernizowane. Będzie on znowu żyć w żadnym momencie. Spróbuj zalogować się ponownie w najbliższym czasie. Dzięki!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Wystąpił błąd</string>
 	<string name="signout">Wyloguj się</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">Ustawienia</string>
 	<string name="start_new_game">Rozpocznij nową grę</string>
-	<string name="dont_have_account_q">Nie masz konta?</string>
+	<!--<string name="dont_have_account_q">Nie masz konta?</string>-->
 	<string name="singinUsername">Nazwa użytkownika</string>
 	<string name="singinPassword">Hasło</string>
 	<string name="singinButton">Zaloguj się</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">Nowa gra (czarny)</string>
 	<string name="emailgame">Gra Email</string>
 	<string name="load">Załadować zapisaną grę</string>
-	<string name="backtogamelist">Powrót do listy gier</string>
+	<!--<string name="backtogamelist">Powrót do listy gier</string>-->
 	<string name="messages">Wiadomości</string>
 	<string name="analysis">Strona analiza</string>
 	<string name="drawoffer">Oferta remis</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">Wyzwanie Odrzucona!</string>
 	<string name="decline">Odrzuć</string>
 	<string name="updatinggameslist">Aktualizacja liście gier …</string>
-	<string name="challengetitle">Wyzwanie</string>
+	<!--<string name="challengetitle">Wyzwanie</string>-->
 	<string name="loadinggames">Gry loading …</string>
 	<string name="drawoffered">Narysuj Oferowane</string>
 	<string name="gettingmessages">Wiadomości Getting …</string>
@@ -228,7 +227,7 @@
 	<string name="comp">Zł</string>
 	<string name="tactics">Taktyka</string>
 	<string name="video">Film</string>
-	<string name="boards_s">Deski</string>
+	<!--<string name="boards_s">Deski</string>-->
 	<string name="invite_subject">Zagraj w szachy ze mną</string>
 	<string name="invite_text">I właśnie podpisali się grać w szachy w Chess.com na urządzeniu z systemem Android. Pobierz darmową aplikację tutaj: http://chess.com/android lub zarejestruj się http://www.chess.com/register.html~~pobj. Następnie znajdź mnie - mój nazwa to \"
 	</string>

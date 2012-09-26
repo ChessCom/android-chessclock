@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">يعيش خادم شطرنج غير متوفرة حاليا.</string>
 	<string name="lccFailedUpgrading">نحن نحاول تحسين chess.com! حاليا يتم ترقية الموقع. وسوف يتم العيش مرة أخرى في أي وقت من الأوقات. يرجى محاولة تسجيل الدخول مرة أخرى في وقت قريب. شكرا!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">حدث خطأ</string>
 	<string name="signout">الخروج</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">إعدادات</string>
 	<string name="start_new_game">تبدأ لعبة جديدة</string>
-	<string name="dont_have_account_q">لم يكن لديك حساب؟</string>
+	<!--<string name="dont_have_account_q">لم يكن لديك حساب؟</string>-->
 	<string name="singinUsername">اسم المستخدم</string>
 	<string name="singinPassword">كلمة السر</string>
 	<string name="singinButton">توقيع في</string>
@@ -116,7 +115,7 @@
 	<string name="ngblack">لعبة جديدة (أسود)</string>
 	<string name="emailgame">البريد الالكتروني لعبة</string>
 	<string name="load">تحميل اللعبة المحفوظة</string>
-	<string name="backtogamelist">عودة إلى قائمة لعبة</string>
+	<!--<string name="backtogamelist">عودة إلى قائمة لعبة</string>-->
 	<string name="messages">الرسائل</string>
 	<string name="analysis">تحليل المجلس</string>
 	<string name="drawoffer">عرض التعادل</string>
@@ -154,7 +153,7 @@
 	<string name="challengedeclined">امتنع التحدي!</string>
 	<string name="decline">رفض</string>
 	<string name="updatinggameslist">تحديث قائمة الألعاب …</string>
-	<string name="challengetitle">التحديات</string>
+	<!--<string name="challengetitle">التحديات</string>-->
 	<string name="loadinggames">تحميل العاب …</string>
 	<string name="drawoffered">رسم معروض</string>
 	<string name="gettingmessages">الكثير من الرسائل …</string>
@@ -230,7 +229,7 @@
 	<string name="comp">مُرَكَّب</string>
 	<string name="tactics">التكتيكات</string>
 	<string name="video">فيديو</string>
-	<string name="boards_s">لوحات</string>
+	<!--<string name="boards_s">لوحات</string>-->
 	<string name="invite_subject">لعب الشطرنج معي</string>
 	<string name="invite_text">أنا وقعت للتو للعب الشطرنج في Chess.com على جهاز الروبوت الخاص بي. تنزيل التطبيق مجانا من هنا: http://chess.com/android أو الاشتراك في http://www.chess.com/register.html. ثم تجد لي - اسمي هو \"
 	</string>

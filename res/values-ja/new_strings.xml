@@ -6,4 +6,7 @@
 	<string name="no_challenges_during_vacation">課題は、休暇中に表示されません</string>
 	<string name="end_vacation">エンド·バケーション</string>
 
+	<string name="win_">勝つ:</string>
+	<string name="loss_">ロス:</string>
+	<string name="draw_">描画:</string>
 </resources>

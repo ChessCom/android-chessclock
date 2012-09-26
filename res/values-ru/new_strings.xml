@@ -6,5 +6,7 @@
 	<string name="no_challenges_during_vacation">Вызовы не будут отображаться во время отпуска</string>
 	<string name="end_vacation">Конец Отпуска</string>
 
-
+	<string name="win_">Победил:</string>
+	<string name="loss_">Проиграл:</string>
+	<string name="draw_">Ничья:</string>
 </resources>

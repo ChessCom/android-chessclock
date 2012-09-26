@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">Levende Chess server er for øyeblikket utilgjengelig.</string>
 	<string name="lccFailedUpgrading">Vi prøver å forbedre chess.com! Foreløpig området blir oppgradert. Det vil være live igjen på kort tid. Vennligst prøv å logge inn igjen snart. Takk!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Feil på siden</string>
 	<string name="signout">Logg av</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">Innstillinger</string>
 	<string name="start_new_game">Start nytt spill</string>
-	<string name="dont_have_account_q">Har du ikke en konto?</string>
+	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
 	<string name="singinUsername">Brukernavn</string>
 	<string name="singinPassword">Passord</string>
 	<string name="singinButton">Logg på</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">New Game (svart)</string>
 	<string name="emailgame">Epost spill</string>
 	<string name="load">Laste lagret spill</string>
-	<string name="backtogamelist">Tilbake til spillhjelpesiden liste</string>
+	<!--<string name="backtogamelist">Tilbake til spillhjelpesiden liste</string>-->
 	<string name="messages">Meldinger</string>
 	<string name="analysis">Analyse Board</string>
 	<string name="drawoffer">Tilby A Draw</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">Challenge Avvist!</string>
 	<string name="decline">Avslå</string>
 	<string name="updatinggameslist">Oppdaterer Games List …</string>
-	<string name="challengetitle">Utfordring</string>
+	<!--<string name="challengetitle">Utfordring</string>-->
 	<string name="loadinggames">Laster spill …</string>
 	<string name="drawoffered">Tegn Tilbys</string>
 	<string name="gettingmessages">Får meldinger …</string>
@@ -227,7 +226,7 @@
 	<string name="comp">Comp</string>
 	<string name="tactics">Tactics</string>
 	<string name="video">Video</string>
-	<string name="boards_s">Boards</string>
+	<!--<string name="boards_s">Boards</string>-->
 	<string name="invite_subject">Spille sjakk med meg</string>
 	<string name="invite_text">Jeg bare meldt seg til å spille sjakk på Chess.com på min Android-enhet. Last ned gratis app her: http://chess.com/android eller påmelding på http://www.chess.com/register.html. Så finn meg - mitt brukernavn er \"
 	</string>

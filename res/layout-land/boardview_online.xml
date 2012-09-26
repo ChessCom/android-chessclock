@@ -5,10 +5,10 @@
 	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
 	android:orientation="vertical">
-	<LinearLayout
+<!--	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		>
+		>-->
 		<com.chess.ui.views.ChessBoardOnlineView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
@@ -108,42 +108,8 @@
 						/>
 				</LinearLayout>
 
-			<!--	<RelativeLayout
-					android:id="@+id/endOfGameButtons"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_alignParentBottom="true"
-					android:paddingLeft="@dimen/game_end_layout_padding_side"
-					android:paddingRight="@dimen/game_end_layout_padding_side"
-					android:paddingBottom="@dimen/game_end_layout_padding_bottom"
-					android:visibility="invisible">
-
-					<com.chess.RoboButton
-						android:id="@+id/newGame"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentLeft="true"
-						android:text="New "/>
-
-					<com.chess.RoboTextView
-						android:id="@+id/endOfGameMessage"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerHorizontal="true"
-						android:layout_gravity="center"
-						android:padding="2dip"
-						/>
-
-					<com.chess.RoboButton
-						android:id="@+id/home"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentRight="true"
-						android:text="Home"/>
-				</RelativeLayout>-->
-
 			</RelativeLayout>
 
 		</LinearLayout>
-	</LinearLayout>
+	<!--</LinearLayout>-->
 </LinearLayout>

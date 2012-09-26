@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">Live Chess server is currently unavailable.</string>
 	<string name="lccFailedUpgrading">We are trying to improve chess.com! Currently the site is being upgraded. It will be live again in no time. Please try to login again shortly. Thanks!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">Error occurred</string>
 	<string name="signout">Sign Out</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">Settings</string>
 	<string name="start_new_game">Start New Game</string>
-	<string name="dont_have_account_q">Don\'t have an account?</string>
+	<!--<string name="dont_have_account_q">Don\'t have an account?</string>-->
 	<string name="singinUsername">Username</string>
 	<string name="singinPassword">Password</string>
 	<string name="singinButton">Sign In</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">New Game (black)</string>
 	<string name="emailgame">Email Game</string>
 	<string name="load">Load Saved Game</string>
-	<string name="backtogamelist">Back To Game List</string>
+	<!--<string name="backtogamelist">Back To Game List</string>-->
 	<string name="messages">Messages</string>
 	<string name="analysis">Analysis Board</string>
 	<string name="drawoffer">Offer A Draw</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">Challenge Declined!</string>
 	<string name="decline">Decline</string>
 	<string name="updatinggameslist">Updating Games List…</string>
-	<string name="challengetitle">Challenge</string>
+	<!--<string name="challengetitle">Challenge</string>-->
 	<string name="loadinggames">Loading Games…</string>
 	<string name="drawoffered">Draw Offered</string>
 	<string name="gettingmessages">Getting Messages…</string>
@@ -234,7 +233,7 @@
 	<string name="comp">Comp</string>
 	<string name="tactics">Tactics</string>
 	<string name="video">Video</string>
-	<string name="boards_s">Boards</string>
+	<!--<string name="boards_s">Boards</string>-->
 	<string name="invite_subject">Play Chess with me</string>
 	<string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app
 		here:
@@ -345,9 +344,7 @@
 
 	<string name="draw_declined">DRAW DECLINED</string>
 	<string name="has_declined_draw">has declined a draw</string>
-	<string name="win_">Win:</string>
-	<string name="loss_">Loss:</string>
-	<string name="draw_">Draw:</string>
+
 
 	<string name="invalidUserId">Invalid User ID</string>
 	<string name="invalidContenIid">Invalid Content ID</string>

@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">Servidor de xadrez ao vivo está disponível no momento.</string>
 	<string name="lccFailedUpgrading">Estamos tentando melhorar chess.com! Atualmente o site está sendo atualizado. Será viver novamente em nenhum momento. Por favor, tente fazer o login novamente em breve. Obrigado!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Ocorreu um erro</string>
 	<string name="signout">Sair</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">Configuração</string>
 	<string name="start_new_game">Jogo Novo</string>
-	<string name="dont_have_account_q">Ainda não tem uma conta?</string>
+	<!--<string name="dont_have_account_q">Ainda não tem uma conta?</string>-->
 	<string name="singinUsername">Nome de Usuário </string>
 	<string name="singinPassword">Palavra-passe</string>
 	<string name="singinButton">Entrar</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">New Game (preto)</string>
 	<string name="emailgame">Jogo-mail</string>
 	<string name="load">Carregar Jogo Salvo</string>
-	<string name="backtogamelist">Voltar à lista de Jogo</string>
+	<!--<string name="backtogamelist">Voltar à lista de Jogo</string>-->
 	<string name="messages">Mensagens</string>
 	<string name="analysis">Diretoria de Análise</string>
 	<string name="drawoffer">Oferecer um empate</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">Desafio Recusado!</string>
 	<string name="decline">Ignorar</string>
 	<string name="updatinggameslist">Atualizando lista de jogos …</string>
-	<string name="challengetitle">Desafio</string>
+	<!--<string name="challengetitle">Desafio</string>-->
 	<string name="loadinggames">Jogos Carregando …</string>
 	<string name="drawoffered">Desenhe Oferecidos</string>
 	<string name="gettingmessages">Receber mensagens</string>
@@ -228,7 +227,7 @@
 	<string name="comp">Cort</string>
 	<string name="tactics">Táticas</string>
 	<string name="video">Vídeo</string>
-	<string name="boards_s">Conselhos</string>
+	<!--<string name="boards_s">Conselhos</string>-->
 	<string name="invite_subject">Jogar xadrez comigo</string>
 	<string name="invite_text">Eu só se inscreveu para jogar xadrez em Chess.com no meu dispositivo Android. Baixe o aplicativo gratuito aqui: http://chess.com/android ou inscrição no http://www.chess.com/register.html. Em seguida, encontrar-me - meu nome de usuário é \"
 	</string>

@@ -6,5 +6,7 @@
 	<string name="no_challenges_during_vacation">Los desafíos no se mostrará durante las vacaciones</string>
 	<string name="end_vacation">Fin de Vacaciones</string>
 
-
+	<string name="win_">Victoria:</string>
+	<string name="loss_">Pérdida:</string>
+	<string name="draw_">Sorteo:</string>
 </resources>

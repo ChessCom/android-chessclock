@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">שרת שחמט חי אינו זמין כעת.</string>
 	<string name="lccFailedUpgrading">אנחנו מנסים לשפר את chess.com! כיום האתר הוא להיות משודרג. זה יהיה לחיות שוב בתוך זמן קצר. נסה להתחבר שוב בקרוב. תודה!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">אירעה שגיאה</string>
 	<string name="signout">יציאה</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">הגדרות</string>
 	<string name="start_new_game">התחל משחק חדש</string>
-	<string name="dont_have_account_q">אין לך חשבון?</string>
+	<!--<string name="dont_have_account_q">אין לך חשבון?</string>-->
 	<string name="singinUsername">שם משתמש</string>
 	<string name="singinPassword">סיסמא</string>
 	<string name="singinButton">היכנס</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">משחק חדש (שחור)</string>
 	<string name="emailgame">דוא\"ל משחק</string>
 	<string name="load">טען משחק שמור</string>
-	<string name="backtogamelist">חזרה לרשימת משחק</string>
+	<!--<string name="backtogamelist">חזרה לרשימת משחק</string>-->
 	<string name="messages">הודעות</string>
 	<string name="analysis">ניתוח עמוד</string>
 	<string name="drawoffer">להציע תיקו</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">האתגר נדחה!</string>
 	<string name="decline">סרב</string>
 	<string name="updatinggameslist">עדכון רשימת משחקים …</string>
-	<string name="challengetitle">לאתגר</string>
+	<!--<string name="challengetitle">לאתגר</string>-->
 	<string name="loadinggames">טוען משחקים …</string>
 	<string name="drawoffered">צייר מוצע</string>
 	<string name="gettingmessages">מקבל הודעות …</string>
@@ -230,7 +229,7 @@
 	<string name="comp">מחשב</string>
 	<string name="tactics">טקטיקה</string>
 	<string name="video">וידאו</string>
-	<string name="boards_s">לוחות</string>
+	<!--<string name="boards_s">לוחות</string>-->
 	<string name="invite_subject">לשחק שחמט עם לי</string>
 	<string name="invite_text">אני פשוט נרשמת לשחק שחמט ב Chess.com על המכשיר שלי אנדרואיד. להוריד את היישום בחינם כאן: http://chess.com/android או הרשמה על http://www.chess.com/register.html. ואז למצוא אותי - שם המשתמש שלי \"
 	</string>

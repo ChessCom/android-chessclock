@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">Canlı Satranç sunucusu şu anda kullanılamıyor.</string>
 	<string name="lccFailedUpgrading">Biz chess.com geliştirmek için çalışıyorlar! Şu anda sitenin güncellenmesi. O hiçbir zaman tekrar yaşamak olacak. Kısa sürede tekrar giriş deneyin. Teşekkürler!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Hata oluştu</string>
 	<string name="signout">Çıkış</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">Ayarlar</string>
 	<string name="start_new_game">Yeni Start Game</string>
-	<string name="dont_have_account_q">Bir hesabınız yok mu?</string>
+	<!--<string name="dont_have_account_q">Bir hesabınız yok mu?</string>-->
 	<string name="singinUsername">Kullanıcı adı</string>
 	<string name="singinPassword">Parola</string>
 	<string name="singinButton">Giriş Yapın</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">New Game (siyah)</string>
 	<string name="emailgame">E-posta Oyun</string>
 	<string name="load">Kayıtlı Oyun yükleyin</string>
-	<string name="backtogamelist">Oyun Listesi için yedekleyin</string>
+	<!--<string name="backtogamelist">Oyun Listesi için yedekleyin</string>-->
 	<string name="messages">Mesajlar</string>
 	<string name="analysis">Analiz Yönetim Kurulu</string>
 	<string name="drawoffer">A Beraberlik Teklif</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">Mücadelesi Reddedildi!</string>
 	<string name="decline">Reddet</string>
 	<string name="updatinggameslist">Oyun listesi güncelleniyor …</string>
-	<string name="challengetitle">Meydan okuma</string>
+	<!--<string name="challengetitle">Meydan okuma</string>-->
 	<string name="loadinggames">Yükleniyor Oyunlar …</string>
 	<string name="drawoffered">Açılan Çiz</string>
 	<string name="gettingmessages">Başlarken Mesajlar …</string>
@@ -228,7 +227,7 @@
 	<string name="comp">Zorunlu</string>
 	<string name="tactics">Taktikler</string>
 	<string name="video">Video</string>
-	<string name="boards_s">Kurulları</string>
+	<!--<string name="boards_s">Kurulları</string>-->
 	<string name="invite_subject">Benimle Satranç Oyna</string>
 	<string name="invite_text">Ben sadece benim Android cihaza Chess.com ve satranç oynamaya kaydoldum. Burada ücretsiz uygulamayı indirin: http://chess.com/android veya http://www.chess.com/register.html de acin. Sonra beni bulur - adımı olan \"
 	</string>

@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">ライブチェスのサーバーは現在利用できません。</string>
 	<string name="lccFailedUpgrading">我々はchess.comを改善しようとしています！現在、サイトがアップグレードされています。それは時間がない再び生きるされます。すぐに再度ログインしてみてください。ありがとう！</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">エラーが生じた場合</string>
 	<string name="signout">サイン・アウト</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">設定</string>
 	<string name="start_new_game">新しいゲームを起動します。</string>
-	<string name="dont_have_account_q">アカウントをお持ちでない場合</string>
+	<!--<string name="dont_have_account_q">アカウントをお持ちでない場合</string>-->
 	<string name="singinUsername">ユーザ名</string>
 	<string name="singinPassword">パスワード</string>
 	<string name="singinButton">サイン・イン</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">新しいゲーム（黒）</string>
 	<string name="emailgame">メールゲーム</string>
 	<string name="load">保存したゲームをロードします。</string>
-	<string name="backtogamelist">ゲーム一覧へ戻る</string>
+	<!--<string name="backtogamelist">ゲーム一覧へ戻る</string>-->
 	<string name="messages">メッセージ</string>
 	<string name="analysis">分析委員会</string>
 	<string name="drawoffer">Drawを提供</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">チャレンジは拒否！</string>
 	<string name="decline">同意しない(D)</string>
 	<string name="updatinggameslist">ゲームリストを更新しています…</string>
-	<string name="challengetitle">チャレンジ</string>
+	<!--<string name="challengetitle">チャレンジ</string>-->
 	<string name="loadinggames">ロードゲーム…</string>
 	<string name="drawoffered">提供される描画</string>
 	<string name="gettingmessages">メッセージを取得する…</string>
@@ -228,7 +227,7 @@
 	<string name="comp">人数</string>
 	<string name="tactics">戦術</string>
 	<string name="video">ビデオ</string>
-	<string name="boards_s">ボード</string>
+	<!--<string name="boards_s">ボード</string>-->
 	<string name="invite_subject">私と一緒にチェスを再生する</string>
 	<string name="invite_text">私はちょうど私のAndroidデバイス上Chess.comでチェスを再生するためにサインアップした。ここで無料アプリをダウンロードしてください。http://chess.com/androidまたはhttp://www.chess.com/register.htmlでサインアップ。その後、私を見つける - 私の名は \</string>
 	<string name="live_game">ライブゲーム</string>

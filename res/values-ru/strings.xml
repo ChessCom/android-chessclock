@@ -5,7 +5,6 @@
 	<string name="connect_with_facebook">Вход Через Facebook</string>
 	<string name="lccFailedUnavailable">В настоящее время сервер живых шахмат недоступен.</string>
 	<string name="lccFailedUpgrading">Мы стараемся улучшить chess.com! В данный момент на сайте ведутся работы. Он будет вновь доступен в кратчайшие сроки. Пожалуйста, повторите попытку входа в ближайшее время. Благодарим!</string>
-	<string name="error_occurred">Произошла ошибка</string>
 	<string name="signout">Выйти</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">Настройки</string>
 	<string name="start_new_game">Начать Новую Игру</string>
-	<string name="dont_have_account_q">Нет Аккаунта?</string>
+	<!--<string name="dont_have_account_q">Нет Аккаунта?</string>-->
 	<string name="singinUsername">Имя пользователя</string>
 	<string name="singinPassword">Пароль</string>
 	<string name="singinButton">Войти</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">Новая игра (черные)</string>
 	<string name="emailgame">Отправить Игру на Почту</string>
 	<string name="load">Загрузить Игру</string>
-	<string name="backtogamelist">Назад к Списку Игр</string>
+	<!--<string name="backtogamelist">Назад к Списку Игр</string>-->
 	<string name="messages">Сообщения</string>
 	<string name="analysis">Доска Анализа</string>
 	<string name="drawoffer">Предложить Ничью</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">Вызов Отклонен!</string>
 	<string name="decline">Отклонить</string>
 	<string name="updatinggameslist">Обновление Списка Игр …</string>
-	<string name="challengetitle">Вызов</string>
+	<!--<string name="challengetitle">Вызов</string>-->
 	<string name="loadinggames">Загрузка Игр …</string>
 	<string name="drawoffered">Предложена Ничья</string>
 	<string name="gettingmessages">Получение сообщений…</string>
@@ -229,7 +228,7 @@
 	<string name="comp">Комп</string>
 	<string name="tactics">Тактики</string>
 	<string name="video">Видео</string>
-	<string name="boards_s">Доски</string>
+	<!--<string name="boards_s">Доски</string>-->
 	<string name="invite_subject">Играть в шахматы со мной</string>
 	<string name="invite_text">Я только что зарегистрировался, чтобы играть в шахматы в Chess.com на устройстве Android. Скачать бесплатное приложение здесь: http://chess.com/android или зарегистрируйтесь на http://www.chess.com/register.html. Затем найдите мне - мое имя пользователя \"
 	</string>

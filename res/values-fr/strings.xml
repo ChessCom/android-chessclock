@@ -6,7 +6,6 @@
 	<string name="lccFailedUpgrading">Nous essayons d\'améliorer chess.com! Actuellement, le site est en cours de modernisation.
 		Il sera à nouveau vivre en peu de temps. S\'il vous plaît essayez de vous connecter à nouveau peu de temps. Merci!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Une erreur est survenue</string>
 	<string name="signout">Déconnexion</string>
 
 	<!--Dashboard labels-->
@@ -41,7 +40,7 @@
 	<!--Settings-->
 	<string name="settings">Paramètres</string>
 	<string name="start_new_game">Commencer une nouvelle partie</string>
-	<string name="dont_have_account_q">Vous n\'avez pas de compte?</string>
+	<!--<string name="dont_have_account_q">Vous n\'avez pas de compte?</string>-->
 	<string name="singinUsername">Nom d\'utilisateur</string>
 	<string name="singinPassword">Mot de passe</string>
 	<string name="singinButton">Inscription En</string>
@@ -116,7 +115,7 @@
 	<string name="ngblack">Nouveau jeu (noir)</string>
 	<string name="emailgame">Jeu Email</string>
 	<string name="load">Charger une partie enregistrée</string>
-	<string name="backtogamelist">Back To Game List</string>
+	<!--<string name="backtogamelist">Back To Game List</string>-->
 	<string name="messages">Messages</string>
 	<string name="analysis">Conseil d\'analyse</string>
 	<string name="drawoffer">Offrez Un tirage au</string>
@@ -154,7 +153,7 @@
 	<string name="challengedeclined">Défi Refusée!</string>
 	<string name="decline">Refuser</string>
 	<string name="updatinggameslist">Mise à jour Liste des jeux …</string>
-	<string name="challengetitle">Contester</string>
+	<!--<string name="challengetitle">Contester</string>-->
 	<string name="loadinggames">Jeux Loading …</string>
 	<string name="drawoffered">Dessiner Offert</string>
 	<string name="gettingmessages">Messages Obtenir internautes</string>
@@ -230,7 +229,7 @@
 	<string name="comp">Comp</string>
 	<string name="tactics">Tactique</string>
 	<string name="video">Vidéo</string>
-	<string name="boards_s">Conseils</string>
+	<!--<string name="boards_s">Conseils</string>-->
 	<string name="invite_subject">Jouez aux échecs avec moi</string>
 	<string name="invite_text">Je viens de signer pour jouer aux échecs à Chess.com sur mon appareil Android. Téléchargez l\'application gratuitement ici: http://chess.com/android ou vous inscrire à http://www.chess.com/register.html. Puis me trouver - mon nom d\'utilisateur est \"
 	</string>

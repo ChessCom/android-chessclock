@@ -48,14 +48,5 @@
 			cb:buttonText="@string/settings"/>
 	</com.chess.ui.views.DashBoardLayout>
 
-	<TextView
-		android:id="@+id/adView"
-		android:layout_width="match_parent"
-		android:layout_height="48dip"
-		android:layout_marginTop="20dip"
-		android:background="@color/black"
-		android:textColor="#FF434343"
-		android:layout_weight="1"
-		/>
 
 </LinearLayout>

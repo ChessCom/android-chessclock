@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">Live-Schaken-server is momenteel niet beschikbaar.</string>
 	<string name="lccFailedUpgrading">We proberen chess.com te verbeteren! Momenteel is de site wordt bijgewerkt. Het wordt opnieuw leven in een mum van tijd. Probeer opnieuw kort in te loggen. Bedankt!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Er is een fout opgetreden.</string>
 	<string name="signout">Afmelden</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">Instellingen</string>
 	<string name="start_new_game">Start New Game</string>
-	<string name="dont_have_account_q">Heb je nog geen account?</string>
+	<!--<string name="dont_have_account_q">Heb je nog geen account?</string>-->
 	<string name="singinUsername">Gebruikersnaam</string>
 	<string name="singinPassword">Wachtwoord</string>
 	<string name="singinButton">Inloggen</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">New Game (zwart)</string>
 	<string name="emailgame">E-mail Game</string>
 	<string name="load">Laad saved game</string>
-	<string name="backtogamelist">Maak een back-Om Game List</string>
+	<!--<string name="backtogamelist">Maak een back-Om Game List</string>-->
 	<string name="messages">Berichten</string>
 	<string name="analysis">Analyse van Bestuur</string>
 	<string name="drawoffer">Remise aanbieden</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">Challenge Afgewezen!</string>
 	<string name="decline">Afwijzen</string>
 	<string name="updatinggameslist">Updaten van games lijst …</string>
-	<string name="challengetitle">Uitdaging</string>
+	<!--<string name="challengetitle">Uitdaging</string>-->
 	<string name="loadinggames">Spel Laden ..</string>
 	<string name="drawoffered">Teken Aangeboden</string>
 	<string name="gettingmessages">Berichten ontvangen …</string>
@@ -228,7 +227,7 @@
 	<string name="comp">Comp</string>
 	<string name="tactics">Tactiek</string>
 	<string name="video">Video</string>
-	<string name="boards_s">Boards</string>
+	<!--<string name="boards_s">Boards</string>-->
 	<string name="invite_subject">Speel schaak met mij</string>
 	<string name="invite_text">Ik ondertekend schaken op Chess.com op mijn Android-toestel. Download hier de gratis app: http://chess.com/android of schrijf je in op http://www.chess.com/register.html. Dan vind ik - mijn gebruikersnaam is \"
 	</string>

@@ -6,5 +6,7 @@
 	<string name="no_challenges_during_vacation">Le sfide non verranno visualizzati durante le vacanze</string>
 	<string name="end_vacation">Fine Vacanze</string>
 
-
+	<string name="win_">Win:</string>
+	<string name="loss_">Perdita:</string>
+	<string name="draw_">Draw:</string>
 </resources>

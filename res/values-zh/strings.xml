@@ -4,7 +4,6 @@
 	<string name="lccFailedUnavailable">活棋服务器目前无法使用。</string>
 	<string name="lccFailedUpgrading">我们正在努力改善chess.com！目前网站正在升级。将生活在没有时间再次。请尝试再次登陆不久。谢谢！</string>
 	<string name="app_name">ChessCom</string>
-	<string name="error_occurred">錯誤出現</string>
 	<string name="signout">签出</string>
 
 	<!--Dashboard labels-->
@@ -39,7 +38,7 @@
 	<!--Settings-->
 	<string name="settings">设置</string>
 	<string name="start_new_game">开始新游戏</string>
-	<string name="dont_have_account_q">没有帐户？</string>
+	<!--<string name="dont_have_account_q">没有帐户？</string>-->
 	<string name="singinUsername">用户名</string>
 	<string name="singinPassword">密码:</string>
 	<string name="singinButton">登录</string>
@@ -114,7 +113,7 @@
 	<string name="ngblack">新游戏（黑）</string>
 	<string name="emailgame">电子邮件游戏</string>
 	<string name="load">载入保存的游戏</string>
-	<string name="backtogamelist">回游戏列表</string>
+	<!--<string name="backtogamelist">回游戏列表</string>-->
 	<string name="messages">消息</string>
 	<string name="analysis">分析局</string>
 	<string name="drawoffer">提供平局</string>
@@ -152,7 +151,7 @@
 	<string name="challengedeclined">挑战拒收！</string>
 	<string name="decline">拒绝</string>
 	<string name="updatinggameslist">更新游戏列表…</string>
-	<string name="challengetitle">需求</string>
+	<!--<string name="challengetitle">需求</string>-->
 	<string name="loadinggames">载入游戏…</string>
 	<string name="drawoffered">提请发售</string>
 	<string name="gettingmessages">正在接收邮件“%@”</string>
@@ -226,7 +225,7 @@
 	<string name="comp">壓縮</string>
 	<string name="tactics">策略</string>
 	<string name="video">視訊</string>
-	<string name="boards_s">议会</string>
+	<!--<string name="boards_s">议会</string>-->
 	<string name="invite_subject">与我玩国际象棋</string>
 	<string name="invite_text">我刚刚签署了我的Andr​​oid设备上的国际象棋在Chess.com发挥。在这里免费下载的应用程序：http://chess.com/android或注册在http://www.chess.com/register.html。然后找我 - 我的用户名是“</string>
 	<string name="live_game">生活游戏</string>

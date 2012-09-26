@@ -6,5 +6,7 @@
 	<string name="no_challenges_during_vacation">Utfordringer vil ikke vise i ferien</string>
 	<string name="end_vacation">Slutt Vacation</string>
 
-
+	<string name="win_">Vinn:</string>
+	<string name="loss_">Tap:</string>
+	<string name="draw_">Tegne:</string>
 </resources>

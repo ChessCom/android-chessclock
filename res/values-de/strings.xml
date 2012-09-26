@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">Live-Schach-Server ist derzeit nicht verfügbar.</string>
 	<string name="lccFailedUpgrading">Wir versuchen, chess.com zu verbessern! Derzeit die Website modernisiert. Es wird wieder leben werden in kürzester Zeit. Bitte versuchen Sie erneut kurz anmelden. Vielen Dank!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Fehler aufgetreten</string>
 	<string name="signout">Abmelden</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">Einstellungen</string>
 	<string name="start_new_game">Neues Spiel starten</string>
-	<string name="dont_have_account_q">Sie haben noch kein Konto?</string>
+	<!--<string name="dont_have_account_q">Sie haben noch kein Konto?</string>-->
 	<string name="singinUsername">Benutzername</string>
 	<string name="singinPassword">Kennwort</string>
 	<string name="singinButton">Anmelden</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">Neues Spiel (schwarz)</string>
 	<string name="emailgame">E-Mail-Spiel</string>
 	<string name="load">Gespeichertes Spiel laden</string>
-	<string name="backtogamelist">Zurück zum Spiel Liste</string>
+	<!--<string name="backtogamelist">Zurück zum Spiel Liste</string>-->
 	<string name="messages">Nachrichten</string>
 	<string name="analysis">Analysebrett</string>
 	<string name="drawoffer">Verschenken Sie einen Draw</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">Herausforderung Abgelehnt!</string>
 	<string name="decline">Ablehnen</string>
 	<string name="updatinggameslist">Aktualisieren Spiele-Liste …</string>
-	<string name="challengetitle">Aufgabe</string>
+	<!--<string name="challengetitle">Aufgabe</string>-->
 	<string name="loadinggames">Lädt Spiele …</string>
 	<string name="drawoffered">Unentschieden angeboten</string>
 	<string name="gettingmessages">Erste Meldungen …</string>
@@ -230,7 +229,7 @@
 	<string name="comp">Firma</string>
 	<string name="tactics">Taktik</string>
 	<string name="video">Google</string>
-	<string name="boards_s">Bretter</string>
+	<!--<string name="boards_s">Bretter</string>-->
 	<string name="invite_subject">Spielen Sie Schach mit mir</string>
 	<string name="invite_text">Ich habe gerade unterschrieben bis zu Schach zu spielen Chess.com auf meinem Android-Gerät. Laden Sie die kostenlose App hier: http://chess.com/android oder eine Anmeldung bei http://www.chess.com/register.html. Dann informieren Sie mich - mein Benutzername ist \"
 	</string>

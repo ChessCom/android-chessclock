@@ -6,5 +6,7 @@
 	<string name="no_challenges_during_vacation">挑战将不会显示在假期</string>
 	<string name="end_vacation">结束休假</string>
 
-
+	<string name="win_">赢:</string>
+	<string name="loss_">损失:</string>
+	<string name="draw_">抽奖:</string>
 </resources>

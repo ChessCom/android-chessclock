@@ -5,7 +5,6 @@
 	<string name="lccFailedUnavailable">Servidor de ajedrez en vivo no está disponible actualmente.</string>
 	<string name="lccFailedUpgrading">Estamos tratando de mejorar la chess.com! Actualmente el sitio está siendo actualizado. Se volverá a vivir en poco tiempo. Por favor, intente ingresar de nuevo en breve. Gracias!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="error_occurred">Se produjo un error:</string>
 	<string name="signout">Cerrar sesión</string>
 
 	<!--Dashboard labels-->
@@ -40,7 +39,7 @@
 	<!--Settings-->
 	<string name="settings">Configuración</string>
 	<string name="start_new_game">Iniciar un nuevo juego</string>
-	<string name="dont_have_account_q">¿Todavía no tienes una cuenta?</string>
+	<!--<string name="dont_have_account_q">¿Todavía no tienes una cuenta?</string>-->
 	<string name="singinUsername">Usuario</string>
 	<string name="singinPassword">Contraseña</string>
 	<string name="singinButton">Inicia sesión</string>
@@ -115,7 +114,7 @@
 	<string name="ngblack">Nuevo Juego (negro)</string>
 	<string name="emailgame">E-mail Juego</string>
 	<string name="load">Cargar el juego guardado</string>
-	<string name="backtogamelist">Retorno a la Lista del juego</string>
+	<!--<string name="backtogamelist">Retorno a la Lista del juego</string>-->
 	<string name="messages">Mensajes</string>
 	<string name="analysis">Análisis de la Junta</string>
 	<string name="drawoffer">Ofrecer tablas</string>
@@ -153,7 +152,7 @@
 	<string name="challengedeclined">Rehusó Challenge!</string>
 	<string name="decline">Rechazar</string>
 	<string name="updatinggameslist">Actualización de la lista de juegos …</string>
-	<string name="challengetitle">Desafiar</string>
+	<!--<string name="challengetitle">Desafiar</string>-->
 	<string name="loadinggames">Juegos Cargando …</string>
 	<string name="drawoffered">Dibuja Oferta</string>
 	<string name="gettingmessages">Recibir mensajes …</string>
@@ -230,7 +229,7 @@
 	<string name="comp">Comp</string>
 	<string name="tactics">Tácticas</string>
 	<string name="video">Vídeo</string>
-	<string name="boards_s">Foros</string>
+	<!--<string name="boards_s">Foros</string>-->
 	<string name="invite_subject">Jugar al ajedrez conmigo</string>
 	<string name="invite_text">Acabo de firmar para jugar al ajedrez en Chess.com en mi dispositivo Android. Descarga la aplicación gratuita aquí: http://chess.com/android o registrarse en el http://www.chess.com/register.html. Entonces me encuentre - es mi nombre de usuario \"
 	</string>
