@@ -22,11 +22,13 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.model.GameListCurrentItem;
@@ -92,8 +94,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String type = intent.getStringExtra("type");
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)){
+			Log.d(TAG, "received move notification, notifications enabled = " + AppData.isNotificationsEnabled(context));
 			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
 				return;
+
 
 			String lastMoveSan = intent.getStringExtra("last_move_san");
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
@@ -102,6 +106,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 			String gameId = intent.getStringExtra("game_id");
 			Log.d("TEST", " receinved game info -> gameId = " + gameId);
+
+			Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
+			if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // update board
+				context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
+				return;
+			}
 
 
 			long minutes = gameTimeLeft /60%60;

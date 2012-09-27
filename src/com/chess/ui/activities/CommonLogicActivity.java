@@ -243,7 +243,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 							getMeContext().getString(R.string.your_move) + StaticData.SYMBOL_SPACE
 									+ StaticData.SYMBOL_LEFT_PAR + itemList.size() + StaticData.SYMBOL_RIGHT_PAR,
 							0, OnlineScreenActivity.class);
-					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
+					getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 				}
 
 				if(haveMoves == 1){ // play for one
@@ -263,7 +263,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 					}
 
 
-					getMeContext().sendBroadcast(new Intent(IntentConstants.CHALLENGES_LIST_UPDATE));
+					getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 				}
 			}
 		}

@@ -7,6 +7,6 @@ package com.chess.backend.statics;
  * @created at: 03.02.12 7:26
  */
 public class IntentConstants {
-	public static final String CHALLENGES_LIST_UPDATE = "com.chess.lcc.android-challenges-list-update";
+	public static final String USER_MOVE_UPDATE = "com.chess.user_move_update";
 
 }

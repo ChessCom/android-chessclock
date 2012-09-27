@@ -1,5 +1,6 @@
 package com.chess.backend.entity;
 
+import com.chess.model.GamePlayingItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 
@@ -28,10 +29,12 @@ public class DataHolder {
 	private int currentTacticProblem = 0;
 	private boolean tacticLimitReached;
 	private List<String> showedTacticsIds;
+	private List<GamePlayingItem> playingGamesList;
 
 
 	private DataHolder() {
-		this.showedTacticsIds = new ArrayList<String>();
+		showedTacticsIds = new ArrayList<String>();
+		playingGamesList = new ArrayList<GamePlayingItem>();
 	}
 
 	public static DataHolder getInstance() {
@@ -143,5 +146,36 @@ public class DataHolder {
 
 	public void reset() {
 		ourInstance = new DataHolder();
+	}
+
+	/**
+	 * Checks if game with this Id is currently open to the user
+	 * @param gameId id of the game
+	 * @return
+	 */
+	public synchronized boolean inOnlineGame(long gameId) {
+		for (GamePlayingItem gamePlayingItem : playingGamesList) {
+			if (gamePlayingItem.getGameId() == gameId){
+				return gamePlayingItem.isBoardOpen();
+			}
+		}
+		return false;
+	}
+
+	/**
+	 *  Set flag for notifications to avoid every move notification
+	 * @param gameId id of the game
+	 * @param gameOpen flag that shows if current game board is opened to user
+	 */
+	public synchronized void setInOnlineGame(long gameId, boolean gameOpen) {
+		for (GamePlayingItem gamePlayingItem : playingGamesList) {
+			if(gamePlayingItem.getGameId() == gameId){
+				gamePlayingItem.setBoardOpen(gameOpen);
+			} else { // add this game
+				GamePlayingItem newGameItem = new GamePlayingItem();
+				newGameItem.setGameId(gameId);
+				newGameItem.setBoardOpen(gameOpen);
+			}
+		}
 	}
 }

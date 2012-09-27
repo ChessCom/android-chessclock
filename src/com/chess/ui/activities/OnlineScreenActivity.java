@@ -68,6 +68,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private VacationStatusUpdateListener vacationStatusUpdateListener;
 	private boolean onVacation;
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
+	private IntentFilter listUpdateFilter;
 
 
 	@Override
@@ -100,6 +101,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		findViewById(R.id.tournaments).setOnClickListener(this);
 		findViewById(R.id.statsBtn).setOnClickListener(this);
+
+		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
 
 	private void init() {
@@ -134,7 +137,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onResume();
 		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
 
-		registerReceiver(challengesUpdateReceiver, new IntentFilter(IntentConstants.CHALLENGES_LIST_UPDATE));
+		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 
@@ -146,7 +149,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	protected void onPause() {
 		super.onPause();
 
-		unregisterReceiver(challengesUpdateReceiver);
+		unregisterReceiver(gamesUpdateReceiver);
 		handler.removeCallbacks(updateListOrder);
 
 		cleanTaskPool();
@@ -499,7 +502,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		return true;
 	}
 
-	private BroadcastReceiver challengesUpdateReceiver = new BroadcastReceiver() {
+	private BroadcastReceiver gamesUpdateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			updateStartingType(GameOnlineItem.CURRENT_TYPE);

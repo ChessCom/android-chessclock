@@ -2,9 +2,7 @@ package com.chess.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -23,6 +21,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.BaseGameItem;
@@ -54,7 +53,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private static final String END_GAME_TAG = "end game popup";
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private int UPDATE_DELAY = 120000;
+//	private int UPDATE_DELAY = 120000;
 	private View submitButtonsLay;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -77,6 +76,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private GameListCurrentItem gameInfoItem;
 	private String timeRemains;
 	private TextView infoLabelTxt;
+	private IntentFilter moveUpdateFilter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +115,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
+
+		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
 
 	public void init() {
@@ -149,24 +151,38 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	protected void onResume() {
 		super.onResume();
 
+		DataHolder.getInstance().setInOnlineGame(gameId, true);
+		registerReceiver(moveUpdateReceiver, moveUpdateFilter);
+
 		updateGameState();
-		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
+//		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
 	}
 
-	private Runnable updateGameStateOrder = new Runnable() {
-		@Override
-		public void run() {
-			updateGameState();
-			handler.removeCallbacks(this);
-			handler.postDelayed(this, UPDATE_DELAY);
-		}
-	};
+//	private Runnable updateGameStateOrder = new Runnable() {
+//		@Override
+//		public void run() {
+//			updateGameState();
+//			handler.removeCallbacks(this);
+//			handler.postDelayed(this, UPDATE_DELAY);
+//		}
+//	};
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		handler.removeCallbacks(updateGameStateOrder);
+
+		unregisterReceiver(moveUpdateReceiver);
+
+		DataHolder.getInstance().setInOnlineGame(gameId, false);
+//		handler.removeCallbacks(updateGameStateOrder);
 	}
+
+	private BroadcastReceiver moveUpdateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateGameState();
+		}
+	};
 
 	private void updateGameState() {
 		if (getBoardFace().isInit()) {
