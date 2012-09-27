@@ -65,8 +65,13 @@ public class ChessBoard implements BoardFace {
 	public static final String EQUALS_R = "=R";
 	public static final String EQUALS_Q = "=Q";
 
-	private static ChessBoard instance;
-	private /*static*/ Long gameId;
+	private static ChessBoard instanceLive;
+	private static ChessBoard instanceOnline;
+	private static ChessBoard instanceComputer;
+	private static ChessBoard instanceTactics;
+
+	private static Long gameId;
+	private static Boolean justInitialized;
 
 	private boolean init;
 	private boolean chess960;
@@ -290,8 +295,8 @@ public class ChessBoard implements BoardFace {
 	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace) {
 		final Long gameId = gameActivityFace.getGameId();
 		if (instance == null || !instance.gameId.equals(gameId)) {
-			instance = new ChessBoard(gameActivityFace);
 			instance.gameId = gameId;
+			instance = new ChessBoard(gameActivityFace);
 			instance.setInit(true);
 			instance.genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
@@ -2418,11 +2423,31 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
-//	public static Long getGameId() {
-//		return gameId;
-//	}
+	public static Long getGameId() {
+		return gameId;
+	}
 
-	public static void resetInstance() {
+	private static void resetInstance(ChessBoard instance) {
 		instance = null;
+	}
+
+	public static void resetInstanceLive() {
+		resetInstance(instanceLive);
+	}
+
+	public static void resetInstanceOnline() {
+		resetInstance(instanceOnline);
+	}
+
+	public static void resetInstanceComputer() {
+		resetInstance(instanceComputer);
+	}
+
+	public static void resetInstanceTactics() {
+		resetInstance(instanceTactics);
+	}
+
+	public boolean isJustInitialized() {
+		return justInitialized;
 	}
 }

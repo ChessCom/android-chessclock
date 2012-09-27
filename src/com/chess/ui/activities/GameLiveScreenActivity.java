@@ -156,7 +156,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		boardView.setBoardFace(ChessBoard.getInstance(this));
+		boardView.setBoardFace(ChessBoard.getInstanceLive(this));
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
@@ -495,7 +495,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.switch2Analysis(isAnalysis);
 		if (isAnalysis) {
 			getLccHolder().setLatestMoveNumber(0);
-			ChessBoard.resetInstance();
+			ChessBoard.resetInstanceLive();
 		}
 		gamePanelView.enableControlButtons(isAnalysis);
 	}
@@ -799,7 +799,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void restoreGame() {
-		boardView.setBoardFace(ChessBoard.getInstance(this));
+		boardView.setBoardFace(ChessBoard.getInstanceLive(this));
 		boardView.setGameActivityFace(this);
 
 		onGameStarted();
