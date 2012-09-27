@@ -1,8 +1,11 @@
 package com.chess.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 public class GameListFinishedItem extends BaseGameOnlineItem{
 
-	private static final long serialVersionUID = -7716309161626834425L;
 
 	private String gameResults;
 
@@ -62,14 +65,33 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		return userNameStrLength;
 	}
 
-//	@Override
-//	public String toString() {
-//		StringBuilder builder = new StringBuilder();
-//		for (String string : values.keySet()) {
-//			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
-//		}
-//		return builder.toString();
-//	}
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
+		writeBaseGameParcel(parcel);
+
+		writeBaseGameOnlineParcel(parcel);
+		parcel.writeString(gameResults);
+	}
+
+
+
+	public static final Parcelable.Creator<GameListFinishedItem> CREATOR = new Parcelable.Creator<GameListFinishedItem>() {
+		public GameListFinishedItem createFromParcel(Parcel in) {
+			return new GameListFinishedItem(in);
+		}
+
+		public GameListFinishedItem[] newArray(int size) {
+			return new GameListFinishedItem[size];
+		}
+	};
+
+	private GameListFinishedItem(Parcel in) {
+		readBaseGameParcel(in);
+
+		readBaseGameOnlineParcel(in);
+		gameResults = in.readString();
+	}
 
 
 

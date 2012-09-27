@@ -109,41 +109,6 @@
 				/>
 		</LinearLayout>
 
-	<!--	<RelativeLayout
-			android:id="@+id/endOfGameButtons"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom"
-			android:paddingLeft="@dimen/game_end_layout_padding_side"
-			android:paddingRight="@dimen/game_end_layout_padding_side"
-			android:paddingBottom="@dimen/game_end_layout_padding_bottom"
-			android:visibility="invisible">
-
-
-			<com.chess.RoboButton
-				android:id="@+id/newGame"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:text="New "/>
-
-			<com.chess.RoboTextView
-				android:id="@+id/endOfGameMessage"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerHorizontal="true"
-				android:layout_gravity="center"
-				android:padding="2dip"
-				/>
-
-			<com.chess.RoboButton
-				android:id="@+id/home"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:text="Home"/>
-		</RelativeLayout>-->
-
 	</FrameLayout>
 </LinearLayout>
 

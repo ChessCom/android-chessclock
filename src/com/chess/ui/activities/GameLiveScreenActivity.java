@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.SerialLinLay;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -781,7 +782,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		MopubHelper.showRectangleAd(adViewWrapper, this);
 
 		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView(layout);
+		popupItem.setCustomView((SerialLinLay) layout);
 
 		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);

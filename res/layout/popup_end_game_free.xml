@@ -1,4 +1,4 @@
-<com.chess.SerializedLinearLayout
+<com.chess.SerialLinLay
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
@@ -37,7 +37,7 @@
 		/>
 
 	 <!--New Game | Rematch-->
-	<com.chess.SerializedLinearLayout
+	<com.chess.SerialLinLay
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
@@ -60,11 +60,11 @@
 			style="@style/Text.Button"
 			/>
 
-	</com.chess.SerializedLinearLayout>
+	</com.chess.SerialLinLay>
 
 
 	<!--Home Review-->
-	<com.chess.SerializedLinearLayout
+	<com.chess.SerialLinLay
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
@@ -86,10 +86,10 @@
 			style="@style/Text.Button.Grey"
 			/>
 
-	</com.chess.SerializedLinearLayout>
+	</com.chess.SerialLinLay>
 
 	<!--Ads-->
-	<com.chess.SerializedLinearLayout
+	<com.chess.SerialLinLay
 		android:id="@+id/adview_wrapper"
 		android:layout_width="@dimen/ad_popup_width"
 		android:layout_height="@dimen/ad_popup_height"
@@ -109,4 +109,4 @@
 		android:paddingRight="5dip"
 		/>
 
-</com.chess.SerializedLinearLayout>
+</com.chess.SerialLinLay>

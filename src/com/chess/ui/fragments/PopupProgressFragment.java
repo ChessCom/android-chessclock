@@ -24,7 +24,7 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 	public static PopupProgressFragment newInstance(PopupItem popupItem) {
 		PopupProgressFragment frag = new PopupProgressFragment();
 		Bundle arguments = new Bundle();
-		arguments.putSerializable(POPUP_ITEM, popupItem);
+		arguments.putParcelable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
 		return frag;
 	}

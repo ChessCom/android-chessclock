@@ -37,9 +37,9 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(getArguments() != null){
-            popupItem = (PopupItem) getArguments().getSerializable(POPUP_ITEM);
+            popupItem = (PopupItem) getArguments().getParcelable(POPUP_ITEM);
         }else{
-            popupItem = (PopupItem) savedInstanceState.getSerializable(POPUP_ITEM);
+            popupItem = (PopupItem) savedInstanceState.getParcelable(POPUP_ITEM);
         }
     }
 
@@ -50,7 +50,7 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 				setArguments(null);
 			}
 			Bundle arguments = new Bundle();
-			arguments.putSerializable(POPUP_ITEM, popupItem);
+			arguments.putParcelable(POPUP_ITEM, popupItem);
 			setArguments(arguments);
 		}
     }
@@ -59,7 +59,7 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     public void onSaveInstanceState(Bundle outState) {
 		outState.putSerializable("smth", "value");
 		super.onSaveInstanceState(outState);
-		outState.putSerializable(POPUP_ITEM, popupItem);
+		outState.putParcelable(POPUP_ITEM, popupItem);
 	}
 
 	@Override

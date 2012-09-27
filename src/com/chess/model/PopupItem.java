@@ -1,11 +1,13 @@
 package com.chess.model;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import com.chess.R;
+import com.chess.SerialLinLay;
 import com.chess.backend.statics.StaticData;
-
-import java.io.Serializable;
 
 /**
  * PopupItem class
@@ -13,9 +15,10 @@ import java.io.Serializable;
  * @author alien_roger
  * @created at: 07.04.12 7:14
  */
-public class PopupItem implements Serializable{
+//public class PopupItem implements Serializable{
+public class PopupItem implements Parcelable{
 
-	private static final long serialVersionUID = 2848774369975248646L;
+//	private static final long serialVersionUID = 2848774369975248646L;
 
 	private int titleId;
     private int messageId;
@@ -24,7 +27,7 @@ public class PopupItem implements Serializable{
     private int positiveBtnId;
     private int neutralBtnId;
     private int negativeBtnId;
-    private View customView;
+    private SerialLinLay customView;
 
     public PopupItem() {
         this.positiveBtnId = R.string.ok;
@@ -97,9 +100,57 @@ public class PopupItem implements Serializable{
         return customView;
     }
 
-    public void setCustomView(View customView) {
+    public void setCustomView(SerialLinLay customView) {
         this.customView = customView;
     }
 
 
+	@Override
+	public int describeContents() {
+		return hashCode();
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
+		/*
+	private int titleId;
+    private int messageId;
+    private String title;
+    private String message;
+    private int positiveBtnId;
+    private int neutralBtnId;
+    private int negativeBtnId;
+    private View customView;
+		 */
+		parcel.writeInt(titleId);
+		parcel.writeInt(messageId);
+		parcel.writeString(title);
+		parcel.writeString(message);
+		parcel.writeInt(positiveBtnId);
+		parcel.writeInt(neutralBtnId);
+		parcel.writeInt(negativeBtnId);
+		parcel.writeSerializable(customView);
+	}
+
+	public static final Parcelable.Creator<PopupItem> CREATOR = new Parcelable.Creator<PopupItem>() {
+		public PopupItem createFromParcel(Parcel in) {
+			return new PopupItem(in);
+		}
+
+		public PopupItem[] newArray(int size) {
+			return new PopupItem[size];
+		}
+	};
+
+	private PopupItem(Parcel in) {
+		titleId = in.readInt();
+		messageId = in.readInt();
+		title = in.readString();
+		message = in.readString();
+		positiveBtnId = in.readInt();
+		neutralBtnId = in.readInt();
+		negativeBtnId = in.readInt();
+		customView = (SerialLinLay) in.readSerializable();
+	}
 }

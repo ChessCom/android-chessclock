@@ -1,13 +1,15 @@
 package com.chess.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 /**
  * @author Alexey Schekin (schekin@azoft.com)
  * @created 31.07.12
  * @modified 31.07.12
  */
 public class GameOnlineItem extends BaseGameItem {
-
-	private static final long serialVersionUID = 3153671036660470671L;
 
 	public final static int CURRENT_TYPE = 0;
 	public final static int CHALLENGES_TYPE = 1;
@@ -68,5 +70,46 @@ public class GameOnlineItem extends BaseGameItem {
 
 	public String getDaysPerMove() {
 		return daysPerMove;
+	}
+
+
+
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
+		writeBaseGameParcel(parcel);
+
+		// own write
+		parcel.writeBooleanArray(new boolean[] {whiteUserMove});
+		parcel.writeString(encodedMoveStr);
+		parcel.writeString(gameName);
+		parcel.writeString(gameType);
+		parcel.writeString(fenStartPosition);
+		parcel.writeString(rated);
+		parcel.writeString(daysPerMove);
+	}
+
+
+	public static final Parcelable.Creator<GameOnlineItem> CREATOR = new Parcelable.Creator<GameOnlineItem>() {
+		public GameOnlineItem createFromParcel(Parcel in) {
+			return new GameOnlineItem(in);
+		}
+
+		public GameOnlineItem[] newArray(int size) {
+			return new GameOnlineItem[size];
+		}
+	};
+
+	private GameOnlineItem(Parcel in) {
+		readBaseGameParcel(in);
+
+		in.readBooleanArray(new boolean[] {whiteUserMove});
+
+		encodedMoveStr = in.readString();
+		gameName = in.readString();
+		gameType = in.readString();
+		fenStartPosition = in.readString();
+		rated = in.readString();
+		daysPerMove = in.readString();
 	}
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
@@ -117,7 +118,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public void init() {
-		gameInfoItem = (GameListCurrentItem) extras.getSerializable(BaseGameItem.GAME_INFO_ITEM);
+		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
 		gameId = gameInfoItem.getGameId();
 		Log.d("TEST", "GameOnline , gameId = " + gameId);
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
@@ -792,7 +793,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 		MopubHelper.showRectangleAd(adViewWrapper, this);
 		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView(layout);
+		popupItem.setCustomView((SerialLinLay) layout);
 
 		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);

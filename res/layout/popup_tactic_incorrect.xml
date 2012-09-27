@@ -1,4 +1,4 @@
-<com.chess.SerializedLinearLayout
+<com.chess.SerialLinLay
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
@@ -20,13 +20,13 @@
 		/>
 
 
-	<com.chess.SerializedLinearLayout
+	<com.chess.SerialLinLay
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		>
 
-		<com.chess.SerializedLinearLayout
+		<com.chess.SerialLinLay
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -49,9 +49,9 @@
 				style="@style/Text.Button"
 				/>
 
-		</com.chess.SerializedLinearLayout>
+		</com.chess.SerialLinLay>
 
-		<com.chess.SerializedLinearLayout
+		<com.chess.SerialLinLay
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -74,11 +74,11 @@
 				style="@style/Text.Button.Grey"
 				/>
 
-		</com.chess.SerializedLinearLayout>
+		</com.chess.SerialLinLay>
 
 
-	</com.chess.SerializedLinearLayout>
+	</com.chess.SerialLinLay>
 
 
 
-</com.chess.SerializedLinearLayout>
+</com.chess.SerialLinLay>

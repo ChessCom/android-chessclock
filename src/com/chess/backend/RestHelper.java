@@ -33,7 +33,7 @@ public class RestHelper {
 	public static final String API = "/api";
 
 	/*Google Cloud Messaging API part*/
-	public static final String GCM_BASE_URL = "http://www.chess-5.com/api/gcm";
+	public static final String GCM_BASE_URL = "http://www.chess.com/api/gcm";
 	public static final String GCM_REGISTER = GCM_BASE_URL + "/register";
 	public static final String GCM_UNREGISTER = GCM_BASE_URL + "/unregister";
 	/* Params */

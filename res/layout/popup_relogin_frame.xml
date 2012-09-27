@@ -1,4 +1,4 @@
-<com.chess.SerializedLinearLayout
+<com.chess.SerialLinLay
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
@@ -54,4 +54,4 @@
 		/>
 
 
-</com.chess.SerializedLinearLayout>
+</com.chess.SerialLinLay>

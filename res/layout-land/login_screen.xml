@@ -10,70 +10,62 @@
 	android:paddingRight="@dimen/signin_scr_side_padding"
 	android:orientation="vertical"
 	>
-<!--	<LinearLayout
+
+	<com.chess.RoboEditText
+		android:id="@+id/usernameEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:orientation="vertical"
-		android:gravity="center_vertical"
-		>-->
+		android:hint="@string/singinUsername"
+		android:singleLine="true"
+		android:imeOptions="actionNext"
+		/>
 
-		<com.chess.RoboEditText
-			android:id="@+id/usernameEdt"
+	<com.chess.RoboEditText
+		android:id="@+id/passwordEdt"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/singinPassword"
+		android:inputType="textPersonName"
+		android:password="true"
+		android:singleLine="true"
+		android:imeOptions="actionDone"
+		/>
+
+	<com.chess.RoboButton
+		android:id="@+id/signin"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/singinButton"
+		/>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+		<com.chess.RoboButton
+			android:id="@+id/signup"
+			style="@style/Text.Button.Green"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/singinUsername"
-			android:singleLine="true"
-			android:imeOptions="actionNext"
-			/>
-
-		<com.chess.RoboEditText
-			android:id="@+id/passwordEdt"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/singinPassword"
-			android:inputType="textPersonName"
-			android:password="true"
-			android:singleLine="true"
-			android:imeOptions="actionDone"
+			android:text="@string/sing_up"
+			android:layout_weight="1"
 			/>
 
 		<com.chess.RoboButton
-			android:id="@+id/signin"
+			android:id="@+id/guestplay"
+			style="@style/Text.Button.Grey"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/singinButton"
+			android:text="@string/singinPlayguest"
+			android:layout_weight="1"
 			/>
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			>
-			<com.chess.RoboButton
-				android:id="@+id/signup"
-				style="@style/Text.Button.Green"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/sing_up"
-				android:layout_weight="1"
-				/>
 
-			<com.chess.RoboButton
-				android:id="@+id/guestplay"
-				style="@style/Text.Button.Grey"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/singinPlayguest"
-				android:layout_weight="1"
-				/>
-
-		</LinearLayout>
-		<com.facebook.android.LoginButton
-			android:id="@+id/fb_connect"
-			style="@style/Text.Button.Login"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:drawableLeft="@drawable/facebook_icon"
-			android:drawablePadding="3dip"
-			/>
-	<!--</LinearLayout>-->
+	</LinearLayout>
+	<com.facebook.android.LoginButton
+		android:id="@+id/fb_connect"
+		style="@style/Text.Button.Login"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@drawable/facebook_icon"
+		android:drawablePadding="3dip"
+		/>
 </LinearLayout>

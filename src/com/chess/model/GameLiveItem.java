@@ -1,5 +1,8 @@
 package com.chess.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 
@@ -11,8 +14,6 @@ import java.util.Iterator;
  * @modified 31.07.12
  */
 public class GameLiveItem extends BaseGameItem {
-
-	private static final long serialVersionUID = -1595434515333793544L;
 
 	public GameLiveItem(Game lccGame, int moveIndex) {
 
@@ -64,6 +65,27 @@ public class GameLiveItem extends BaseGameItem {
 		this.blackRating = String.valueOf(blackRating);
 
 		secondsRemain = String.valueOf(lccGame.getGameTimeConfig().getBaseTime() / 10);
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
+		writeBaseGameParcel(parcel);
+	}
+
+
+	public static final Parcelable.Creator<GameLiveItem> CREATOR = new Parcelable.Creator<GameLiveItem>() {
+		public GameLiveItem createFromParcel(Parcel in) {
+			return new GameLiveItem(in);
+		}
+
+		public GameLiveItem[] newArray(int size) {
+			return new GameLiveItem[size];
+		}
+	};
+
+	private GameLiveItem(Parcel in) {
+		readBaseGameParcel(in);
 	}
 
 }

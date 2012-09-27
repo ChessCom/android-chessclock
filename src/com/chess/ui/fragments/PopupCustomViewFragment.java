@@ -25,7 +25,7 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	public static PopupCustomViewFragment newInstance(PopupItem popupItem) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();
 		Bundle arguments = new Bundle();
-		arguments.putSerializable(POPUP_ITEM, popupItem);
+		arguments.putParcelable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
 		return frag;
 	}

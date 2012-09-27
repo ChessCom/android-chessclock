@@ -1,8 +1,10 @@
 package com.chess.model;
 
-public class GameListCurrentItem extends BaseGameOnlineItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
-	private static final long serialVersionUID = 1191792800703371304L;
+public class GameListCurrentItem extends BaseGameOnlineItem {
 
 	public GameListCurrentItem(String[] values) {
 
@@ -80,13 +82,30 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 		return isMyTurn;
 	}
 
-//	@Override
-//	public String toString() {
-//		StringBuilder builder = new StringBuilder();
-//		for (String string : values.keySet()) {
-//			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
-//		}
-//		return builder.toString();
-//	}
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
+		writeBaseGameParcel(parcel);
+
+		writeBaseGameOnlineParcel(parcel);
+	}
+
+
+
+	public static final Parcelable.Creator<GameListCurrentItem> CREATOR = new Parcelable.Creator<GameListCurrentItem>() {
+		public GameListCurrentItem createFromParcel(Parcel in) {
+			return new GameListCurrentItem(in);
+		}
+
+		public GameListCurrentItem[] newArray(int size) {
+			return new GameListCurrentItem[size];
+		}
+	};
+
+	private GameListCurrentItem(Parcel in) {
+		readBaseGameParcel(in);
+
+		readBaseGameOnlineParcel(in);
+	}
 
 }

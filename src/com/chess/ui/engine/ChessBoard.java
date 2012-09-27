@@ -66,7 +66,7 @@ public class ChessBoard implements BoardFace {
 	public static final String EQUALS_Q = "=Q";
 
 	private static ChessBoard instance;
-	private static Long gameId;
+	private /*static*/ Long gameId;
 
 	private boolean init;
 	private boolean chess960;
@@ -290,8 +290,8 @@ public class ChessBoard implements BoardFace {
 	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace) {
 		final Long gameId = gameActivityFace.getGameId();
 		if (instance == null || !instance.gameId.equals(gameId)) {
-			instance.gameId = gameId;
 			instance = new ChessBoard(gameActivityFace);
+			instance.gameId = gameId;
 			instance.setInit(true);
 			instance.genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
@@ -2418,9 +2418,9 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
-	public static Long getGameId() {
-		return gameId;
-	}
+//	public static Long getGameId() {
+//		return gameId;
+//	}
 
 	public static void resetInstance() {
 		instance = null;

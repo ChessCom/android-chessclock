@@ -1,6 +1,7 @@
 package com.chess.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * BaseGameItem class
@@ -8,9 +9,10 @@ import java.io.Serializable;
  * @author alien_roger
  * @created at: 31.07.12 6:59
  */
-public abstract class BaseGameItem implements Serializable {
+//public abstract class BaseGameItem implements Serializable {
+public abstract class BaseGameItem implements Parcelable {
 
-	private static final long serialVersionUID = -752315798923143602L;
+//	private static final long serialVersionUID = -752315798923143602L;
 
 	public static final String GAME_ID = "game_id";
 	public static final String TIMESTAMP = "time_stamp";
@@ -114,4 +116,60 @@ public abstract class BaseGameItem implements Serializable {
 	public void setHasNewMessage(boolean hasNewMessage) {
 		this.hasNewMessage = hasNewMessage;
 	}
+
+
+	@Override
+	public int describeContents() {
+		return hashCode();
+	}
+
+	/**
+	 * Write BaseGameItem fields to parcel
+	 * @param parcel
+	 */
+	protected void writeBaseGameParcel(Parcel parcel) {
+		parcel.writeLong(gameId);
+		parcel.writeString(color);
+
+		parcel.writeString(whiteUsername);
+		parcel.writeString(blackUsername);
+		parcel.writeString(userNameStrLength);
+
+		parcel.writeString(timeRemainingAmount);
+		parcel.writeString(timeRemainingUnits);
+		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
+		parcel.writeString(fenStrLength);
+		parcel.writeString(fen);
+		parcel.writeLong(timestamp);
+		parcel.writeString(moveList);
+		parcel.writeString(whiteRating);
+		parcel.writeString(blackRating);
+		parcel.writeString(secondsRemain);
+	}
+
+	/**
+	 * Fill values in abstract class
+	 * @param in
+	 */
+	protected void readBaseGameParcel(Parcel in) {
+		gameId = in.readLong();
+		color = in.readString();
+
+		whiteUsername = in.readString();
+		blackUsername = in.readString();
+		userNameStrLength = in.readString();
+
+		timeRemainingAmount = in.readString();
+		timeRemainingUnits = in.readString();
+		in.readBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
+		fenStrLength = in.readString();
+		fen = in.readString();
+		timestamp = in.readLong();
+		moveList = in.readString();
+		whiteRating = in.readString();
+		blackRating = in.readString();
+		secondsRemain = in.readString();
+	}
+
+
 }

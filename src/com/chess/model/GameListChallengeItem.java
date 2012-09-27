@@ -1,8 +1,10 @@
 package com.chess.model;
 
-public class GameListChallengeItem extends BaseGameOnlineItem{
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
-	private static final long serialVersionUID = -3955725041630450331L;
+public class GameListChallengeItem extends BaseGameOnlineItem{
 
 	private String opponentWinCount;
 	private String opponentLossCount;
@@ -96,4 +98,42 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 //	<initial_setup_fen>: The initial starting position.  This field can be null
 //	>
 //
+
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
+		writeBaseGameParcel(parcel);
+
+		// own write
+		parcel.writeString(opponentWinCount);
+		parcel.writeString(opponentLossCount);
+		parcel.writeString(opponentDrawCount);
+		parcel.writeString(playAsColor);
+		parcel.writeString(daysPerMove);
+		parcel.writeString(initialSetupFen);
+		parcel.writeString(isRated);
+	}
+
+
+	public static final Parcelable.Creator<GameListChallengeItem> CREATOR = new Parcelable.Creator<GameListChallengeItem>() {
+		public GameListChallengeItem createFromParcel(Parcel in) {
+			return new GameListChallengeItem(in);
+		}
+
+		public GameListChallengeItem[] newArray(int size) {
+			return new GameListChallengeItem[size];
+		}
+	};
+
+	private GameListChallengeItem(Parcel in) {
+		readBaseGameParcel(in);
+
+		opponentWinCount = in.readString();
+		opponentLossCount = in.readString();
+		opponentDrawCount = in.readString();
+		playAsColor = in.readString();
+		daysPerMove = in.readString();
+		initialSetupFen = in.readString();
+		isRated = in.readString();
+	}
 }

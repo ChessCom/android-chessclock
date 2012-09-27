@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
@@ -269,7 +270,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	public void onSessionExpired(String message) {
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		final View customView = inflater.inflate(R.layout.popup_relogin_frame, null, false);
+		final SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);

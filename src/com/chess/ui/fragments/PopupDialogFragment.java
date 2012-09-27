@@ -30,7 +30,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	public static PopupDialogFragment newInstance(PopupItem popupItem) {
         PopupDialogFragment frag = new PopupDialogFragment();
 		Bundle arguments = new Bundle();
-		arguments.putSerializable(POPUP_ITEM, popupItem);
+		arguments.putParcelable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
         return frag;
     }

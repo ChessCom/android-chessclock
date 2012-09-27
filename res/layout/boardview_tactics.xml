@@ -65,26 +65,21 @@
 			/>
 	</RelativeLayout>
 
-	<FrameLayout
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-		<LinearLayout
+		<com.chess.ui.views.ChessBoardTacticsView
+			android:id="@+id/boardview"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical">
+			android:layout_height="wrap_content"
+			android:visibility="visible"/>
 
-			<com.chess.ui.views.ChessBoardTacticsView
-				android:id="@+id/boardview"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="visible"/>
-
-			<com.chess.ui.views.GamePanelView
-				android:id="@+id/gamePanelView"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				/>
-		</LinearLayout>
-	</FrameLayout>
+		<com.chess.ui.views.GamePanelView
+			android:id="@+id/gamePanelView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			/>
+	</LinearLayout>
 </LinearLayout>
