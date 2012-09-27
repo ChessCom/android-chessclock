@@ -70,8 +70,8 @@ public class ChessBoard implements BoardFace {
 	private static ChessBoard instanceComputer;
 	private static ChessBoard instanceTactics;
 
-	private static Long gameId;
-	private static Boolean justInitialized;
+	private Long gameId;
+	private Boolean justInitialized;
 
 	private boolean init;
 	private boolean chess960;
@@ -292,15 +292,39 @@ public class ChessBoard implements BoardFace {
 		soundPlayer = gameActivityFace.getSoundPlayer();
 	}
 
-	public static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace) {
+	private static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace, ChessBoard instance) {
 		final Long gameId = gameActivityFace.getGameId();
 		if (instance == null || !instance.gameId.equals(gameId)) {
-			instance.gameId = gameId;
 			instance = new ChessBoard(gameActivityFace);
+			instance.gameId = gameId;
 			instance.setInit(true);
 			instance.genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		}
 		return instance;
+	}
+
+	public static ChessBoard getInstanceLive(BoardToGameActivityFace gameActivityFace) {
+		return getInstance(gameActivityFace, instanceLive);
+	}
+
+	public static ChessBoard getInstanceOnline(BoardToGameActivityFace gameActivityFace) {
+		return getInstance(gameActivityFace, instanceOnline);
+	}
+
+	public static ChessBoard getInstanceComputer(BoardToGameActivityFace gameActivityFace) {
+		return getInstance(gameActivityFace, instanceLive);
+	}
+
+	public static ChessBoard getInstanceTactics(BoardToGameActivityFace gameActivityFace) {
+		final Long gameId = gameActivityFace.getGameId();
+		if (instanceTactics == null || instanceTactics.gameId == null || !instanceTactics.gameId.equals(gameId)) {
+			instanceTactics = new ChessBoard(gameActivityFace);
+			instanceTactics.gameId = gameId;
+			instanceTactics.justInitialized = true;
+		} else {
+			instanceTactics.justInitialized = false;
+		}
+		return instanceTactics;
 	}
 
 	public void resetCastlePos() {
@@ -2423,7 +2447,7 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
-	public static Long getGameId() {
+	public Long getGameId() {
 		return gameId;
 	}
 
