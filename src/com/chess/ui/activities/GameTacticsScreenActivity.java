@@ -26,7 +26,7 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
-import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
@@ -114,7 +114,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		setBoardView(boardView);
 
-		final ChessBoard chessBoard = ChessBoard.getInstanceTactics(this);
+		final ChessBoardTactics chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
 		boardView.setBoardFace(chessBoard);
 
@@ -165,7 +165,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				setTacticToBoard(tacticItem, secondsSpend);
 
 				DataHolder.getInstance().setTactic(tacticItem);
-				boardView.setBoardFace(ChessBoard.getInstanceTactics(this));
 
 				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
@@ -494,7 +493,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getTacticItem().setStop(true);
 		DataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
 
-		boardView.setBoardFace(ChessBoard.getInstanceTactics(this));
+		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
 		getBoardFace().setRetry(true);
 
 		TacticItem tacticItem;
@@ -761,7 +760,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return;
 		}
 
-		final BoardFace boardFace = ChessBoard.getInstanceTactics(this);
+		final BoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
 
 		boardFace.setupBoard(tacticItem.getFen());
