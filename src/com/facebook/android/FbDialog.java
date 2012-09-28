@@ -24,7 +24,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -36,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.model.PopupItem;
+import com.chess.ui.activities.BaseFragmentActivity;
 import com.chess.ui.fragments.PopupProgressFragment;
 import com.facebook.android.Facebook.DialogListener;
 
@@ -62,13 +62,13 @@ public class FbDialog extends Dialog {
     private ImageView mCrossImage;
     private WebView mWebView;
     private FrameLayout mContent;
-	private FragmentActivity fragmentActivity;
+	private BaseFragmentActivity fragmentActivity;
 
 	public FbDialog(Context context, String url, DialogListener listener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         mUrl = url;
         mListener = listener;
-		fragmentActivity = (FragmentActivity) context;
+		fragmentActivity = (BaseFragmentActivity) context;
     }
 
     @Override
@@ -173,11 +173,12 @@ public class FbDialog extends Dialog {
         }
 
         @Override
-        public void onReceivedError(WebView view, int errorCode,
-                String description, String failingUrl) {
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-            mListener.onError(
-                    new DialogError(description, errorCode, failingUrl));
+			if (fragmentActivity.isFinishing() || fragmentActivity.isChangingConfiguration())
+				return;
+
+            mListener.onError(new DialogError(description, errorCode, failingUrl));
             FbDialog.this.dismiss();
         }
 

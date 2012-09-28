@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -54,6 +55,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected List<PopupProgressFragment> popupProgressManager;
 
 	protected boolean isPaused;
+	private boolean changingConfiguration;
 
 	@Override
 	public void onAttachedToWindow() {
@@ -107,6 +109,16 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		//http://code.google.com/p/android/issues/detail?id=19917
 		outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		changingConfiguration = true;
+	}
+
+	public boolean isChangingConfiguration() {
+		return changingConfiguration;
 	}
 
 	@Override
