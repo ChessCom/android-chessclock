@@ -21,7 +21,8 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class ChessBoard implements BoardFace {
+// todo: make class abstract after refactoring for another boards: Echess, Tactics
+public /*abstract*/ class ChessBoard implements BoardFace {
 	final public static int LIGHT = 0;
 	final public static int DARK = 1;
 
@@ -65,19 +66,12 @@ public class ChessBoard implements BoardFace {
 	public static final String EQUALS_R = "=R";
 	public static final String EQUALS_Q = "=Q";
 
-	private static ChessBoard instanceLive;
-	private static ChessBoard instanceOnline;
-	private static ChessBoard instanceComputer;
-	private static ChessBoard instanceTactics;
-
-	private Long gameId;
-	private Boolean justInitialized;
+	protected Long gameId;
 
 	private boolean init;
 	private boolean chess960;
 	private boolean reside;
 	private boolean submit;
-
 
 	private boolean analysis;
 	private boolean retry;
@@ -290,54 +284,6 @@ public class ChessBoard implements BoardFace {
 	public ChessBoard(BoardToGameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
 		soundPlayer = gameActivityFace.getSoundPlayer();
-	}
-
-	private static ChessBoard getInstance(BoardToGameActivityFace gameActivityFace, ChessBoard instance) {
-		final Long gameId = gameActivityFace.getGameId();
-		if (instance == null || !instance.gameId.equals(gameId)) {
-			instance = new ChessBoard(gameActivityFace);
-			instance.gameId = gameId;
-			instance.setInit(true);
-			instance.genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-		}
-		return instance;
-	}
-
-	public static ChessBoard getInstanceLive(BoardToGameActivityFace gameActivityFace) {
-		return getInstance(gameActivityFace, instanceLive);
-	}
-
-	public static ChessBoard getInstanceOnline(BoardToGameActivityFace gameActivityFace) {
-		return getInstance(gameActivityFace, instanceOnline);
-	}
-
-	public static ChessBoard getInstanceComputer(BoardToGameActivityFace gameActivityFace) {
-		return getInstance(gameActivityFace, instanceLive);
-	}
-
-	public static ChessBoard getInstanceTactics(BoardToGameActivityFace gameActivityFace) {
-		final Long gameId = gameActivityFace.getGameId();
-		if (instanceTactics == null || instanceTactics.gameId == null || !instanceTactics.gameId.equals(gameId)) {
-			instanceTactics = new ChessBoard(gameActivityFace);
-			instanceTactics.gameId = gameId;
-			instanceTactics.justInitialized = true;
-		} else {
-			instanceTactics.justInitialized = false;
-		}
-		return instanceTactics;
-	}
-
-	public void resetCastlePos() {
-		bRook1 = 0;
-		bKing = 4;
-		bRook2 = 7;
-		wRook1 = 56;
-		wKing = 60;
-		wRook2 = 63;
-		bKingMoveOO = new int[]{6};
-		bKingMoveOOO = new int[]{2};
-		wKingMoveOO = new int[]{62};
-		wKingMoveOOO = new int[]{58};
 	}
 
 	@Override
@@ -2449,29 +2395,5 @@ public class ChessBoard implements BoardFace {
 
 	public Long getGameId() {
 		return gameId;
-	}
-
-	private static void resetInstance(ChessBoard instance) {
-		instance = null;
-	}
-
-	public static void resetInstanceLive() {
-		resetInstance(instanceLive);
-	}
-
-	public static void resetInstanceOnline() {
-		resetInstance(instanceOnline);
-	}
-
-	public static void resetInstanceComputer() {
-		resetInstance(instanceComputer);
-	}
-
-	public static void resetInstanceTactics() {
-		resetInstance(instanceTactics);
-	}
-
-	public boolean isJustInitialized() {
-		return justInitialized;
 	}
 }

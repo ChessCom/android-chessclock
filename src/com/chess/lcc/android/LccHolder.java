@@ -17,6 +17,7 @@ import com.chess.live.client.*;
 import com.chess.model.GameLiveItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.utilities.AppUtils;
 
