@@ -70,11 +70,6 @@ public interface BoardFace {
 
 	boolean isInit();
 
-	void setRetry(boolean retry);
-
-	boolean isRetry();
-
-	void setTacticCanceled(boolean tacticCanceled);
 
 	void setXside(int xside);
 
@@ -113,29 +108,7 @@ public interface BoardFace {
 
 	String convertMoveEchess();
 
-	void setTacticMoves(String tacticMoves);
-
-	String[] getTacticMoves();
-
-	void setSecondsPassed(int sec);
-
-	int getSecondsPassed();
-
-	void setSecondsLeft(int left);
-
-	int getSecondsLeft();
-
-	void increaseSecondsPassed();
-
-	boolean isTacticCanceled();
-
-	int getTacticsCorrectMoves();
-
-	void increaseTacticsCorrectMoves();
-
 	boolean toggleAnalysis();
-
-	boolean lastTacticMoveIsCorrect();
 
 	boolean isPossibleToMakeMoves();
 

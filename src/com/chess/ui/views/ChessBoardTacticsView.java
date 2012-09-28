@@ -7,7 +7,9 @@ import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
+import com.chess.ui.interfaces.TacticBoardFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -15,6 +17,7 @@ import java.util.TreeSet;
 public class ChessBoardTacticsView extends ChessBoardBaseView {
 
 	private GameTacticsActivityFace gameTacticsActivityFace;
+	protected TacticBoardFace boardFace;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -26,6 +29,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 		super.setGameActivityFace(gameActivityFace);
 
 		gameTacticsActivityFace = gameActivityFace;
+	}
+
+	protected void onBoardFaceSet(BoardFace boardFace) {
+		this.boardFace = (TacticBoardFace) boardFace;
 	}
 
     public void afterMove() {
@@ -353,6 +360,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         }
     };
 
+	@Override
+	public TacticBoardFace getBoardFace() {
+		return boardFace;
+	}
 
     public void promote(int promote, int col, int row) {
         boolean found = false;

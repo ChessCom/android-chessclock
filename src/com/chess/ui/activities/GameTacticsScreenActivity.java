@@ -29,8 +29,8 @@ import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.fragments.PopupCustomViewFragment;
-import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
+import com.chess.ui.interfaces.TacticBoardFace;
 import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -163,10 +163,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				int secondsSpend = preferences.getInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
 
 				TacticItem tacticItem = new TacticItem(tacticString.split(StaticData.SYMBOL_COLON));
+				DataHolder.getInstance().setTactic(tacticItem);
 				setTacticToBoard(tacticItem, secondsSpend);
 
-				DataHolder.getInstance().setTactic(tacticItem);
-				boardView.setBoardFace(ChessBoardTactics.getInstance(this));
+//				boardView.setBoardFace(ChessBoardTactics.getInstance(this));  // useless as we set it in setTacticToBoard
 
 				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
@@ -274,11 +274,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
+	protected TacticBoardFace getBoardFace(){
+		return boardView.getBoardFace();
+	}
+
+	@Override
 	public void checkMove() {
 
 		noInternet = !AppUtils.isNetworkAvailable(getContext());
 
-		BoardFace boardFace = getBoardFace();
+		TacticBoardFace boardFace = getBoardFace();
 
 		if (boardFace.lastTacticMoveIsCorrect()) {
 			Log.d("TEST_MOVE", " Correct move");
@@ -533,7 +538,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				return;
 			}
 
-			BoardFace boardFace = getBoardFace();
+			TacticBoardFace boardFace = getBoardFace();
 			getBoardFace().updateMoves(boardFace.getTacticMoves()[currentTacticAnswerCnt], true);
 			invalidateGameScreen();
 
@@ -764,7 +769,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		ChessBoardTactics.resetInstance();
-		final BoardFace boardFace = ChessBoardTactics.getInstance(this);
+		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
 
 		boardFace.setupBoard(tacticItem.getFen());

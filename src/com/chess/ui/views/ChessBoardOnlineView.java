@@ -12,8 +12,7 @@ public class ChessBoardOnlineView extends ChessBoardNetworkView {
 	}
 
 	protected boolean need2ShowSubmitButtons() {
-		String sharedKey;
-		sharedKey = AppConstants.PREF_SHOW_SUBMIT_MOVE;
+		String sharedKey = AppConstants.PREF_SHOW_SUBMIT_MOVE;
 		return preferences.getBoolean(AppData.getUserName(getContext()) + sharedKey, true);
 	}
 }

@@ -75,21 +75,15 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	private boolean submit;
 
 	private boolean analysis;
-	private boolean retry;
-	private boolean tacticCanceled;
 	private int side = LIGHT;
-	private int secondsPassed = 0;
-	private int secondsLeft = 0;
-	private int tacticsCorrectMoves = 0;
-	private String[] tacticMoves;
 	private int xside = DARK;
 	private int rotated = 0;
 	private int ep = -1;  // en passant move
 	private int fifty = 0;
 	private int movesCount = 0;
-	private int hply = 0;
+	protected int hply = 0;
 	private int history[][] = new int[64][64];
-	private HistoryData[] histDat = new HistoryData[HIST_STACK];
+	protected HistoryData[] histDat = new HistoryData[HIST_STACK];
 	private int pawnRank[][] = new int[2][10];
 	private int pieceMat[] = new int[2];
 	private int pawnMat[] = new int[2];
@@ -119,7 +113,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	};
 
 
-	private int pieces[] = {
+	protected int[] pieces = {
 			3, 1, 2, 4, 5, 2, 1, 3,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			6, 6, 6, 6, 6, 6, 6, 6,
@@ -2023,15 +2017,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.submit = submit;
 	}
 
-	@Override
-	public boolean isRetry() {
-		return retry;
-	}
 
-	@Override
-	public void setRetry(boolean retry) {
-		this.retry = retry;
-	}
 
 	@Override
 	public boolean isInit() {
@@ -2043,33 +2029,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.init = init;
 	}
 
-	@Override
-	public int getSecondsPassed() {
-		return secondsPassed;
-	}
 
-	@Override
-	public void setSecondsPassed(int secondsPassed) {
-		this.secondsPassed = secondsPassed;
-	}
-
-	@Override
-	public int getSecondsLeft() {
-		return secondsLeft;
-	}
-
-	@Override
-	public void increaseSecondsPassed() {
-		secondsPassed++;
-
-		if(secondsLeft > 0)
-			secondsLeft--;
-	}
-
-	@Override
-	public void setSecondsLeft(int secondsLeft) {
-		this.secondsLeft = secondsLeft;
-	}
 
 	@Override
 	public int getMode() {
@@ -2081,56 +2041,14 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.mode = mode;
 	}
 
-	@Override
-	public boolean isTacticCanceled() {
-		return tacticCanceled;
-	}
 
-	@Override
-	public void setTacticCanceled(boolean tacticCanceled) {
-		this.tacticCanceled = tacticCanceled;
-	}
-
-	@Override
-	public void setTacticMoves(String tacticMoves) {
-		this.tacticMoves = tacticMoves.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-				.replaceAll("[.]", StaticData.SYMBOL_EMPTY)
-				.replaceAll("  ", StaticData.SYMBOL_SPACE)
-				.substring(1).split(StaticData.SYMBOL_SPACE);
-	}
-
-	@Override
-	public String[] getTacticMoves() {
-		return tacticMoves;
-	}
 
 	@Override
 	public boolean toggleAnalysis() {
 		return analysis = !analysis;
 	}
 
-	@Override
-	public boolean lastTacticMoveIsCorrect() {
-		int lastIndex = hply - 1;
-		Move move = histDat[lastIndex].move; // get last move
-		String piece = StaticData.SYMBOL_EMPTY;
-		int pieceCode = pieces[move.to];
-		if (pieceCode == 1) { // set piece name
-			piece = MoveParser.WHITE_KNIGHT;
-		} else if (pieceCode == 2) {
-			piece = MoveParser.WHITE_BISHOP;
-		} else if (pieceCode == 3) {
-			piece = MoveParser.WHITE_ROOK;
-		} else if (pieceCode == 4) {
-			piece = MoveParser.WHITE_QUEEN;
-		} else if (pieceCode == 5) {
-			piece = MoveParser.WHITE_KING;
-		}
-		String moveTo = MoveParser.positionToString(move.to);
-//		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
 
-		return tacticMoves[lastIndex].contains(piece) && tacticMoves[lastIndex].contains(moveTo);
-	}
 
     @Override
 	public boolean isAnalysis() {
@@ -2324,20 +2242,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.rotated = rotated;
 	}
 
-	@Override
-	public int getTacticsCorrectMoves() {
-		return tacticsCorrectMoves;
-	}
 
-	@Override
-	public void increaseTacticsCorrectMoves() {
-		tacticsCorrectMoves++;
-	}
-
-
-	public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
-		this.tacticsCorrectMoves = tacticsCorrectMoves;
-	}
 
 	public int getXside() {
 		return xside;
