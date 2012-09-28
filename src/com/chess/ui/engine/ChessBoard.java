@@ -1942,9 +1942,9 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		return color;
 	}
 
-	public void setColor(int[] color) {
-		this.color = color;
-	}
+//	public void setColor(int[] color) {
+//		this.color = color;
+//	}
 
 	public static int getPositionIndex(int c, int r, boolean reside) {
 		if (reside)
@@ -1983,9 +1983,9 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		return pieces[pieceId];
 	}
 
-	public void setPieces(int[] pieces) {
-		this.pieces = pieces;
-	}
+//	public void setPieces(int[] pieces) {
+//		this.pieces = pieces;
+//	}
 
 	@Override
 	public int getHply() {
@@ -2017,8 +2017,6 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.submit = submit;
 	}
 
-
-
 	@Override
 	public boolean isInit() {
 		return init;
@@ -2028,8 +2026,6 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	public void setInit(boolean init) {
 		this.init = init;
 	}
-
-
 
 	@Override
 	public int getMode() {
@@ -2041,14 +2037,10 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.mode = mode;
 	}
 
-
-
 	@Override
 	public boolean toggleAnalysis() {
 		return analysis = !analysis;
 	}
-
-
 
     @Override
 	public boolean isAnalysis() {

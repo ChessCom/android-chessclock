@@ -71,14 +71,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         if (GCMRegistrar.isRegisteredOnServer(context)) {
 			preferences = AppData.getPreferences(this);
-			String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+			// TODO temporary unregister only if user loged out
+			String realToken = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+			if (realToken.equals(StaticData.SYMBOL_EMPTY)) {
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
-			loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
-			loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
 
-			new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
+				loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
+				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+
+				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
+
+			}
         } else {
             // This callback results from the call to unregister made on
             // GcmHelper when the registration to the server failed.
@@ -90,7 +96,6 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.d(TAG, "Received message");
 
-
 		String type = intent.getStringExtra("type");
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)){
@@ -98,69 +103,72 @@ public class GCMIntentService extends GCMBaseIntentService {
 			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
 				return;
 
-
-			String lastMoveSan = intent.getStringExtra("last_move_san");
-//			String opponentUserId = intent.getStringExtra("opponent_user_id");
-//			String collapseKey = intent.getStringExtra("collapse_key");
-			String opponentUsername = intent.getStringExtra("opponent_username");
-			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 			String gameId = intent.getStringExtra("game_id");
-			Log.d("TEST", " receinved game info -> gameId = " + gameId);
+			Log.d("TEST", " received game info -> gameId = " + gameId);
 
 			Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
-			if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // update board
-				context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
-				return;
+			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
+			if (!DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
+				showYouTurnNotification(intent);
 			}
+		}
+	}
 
+	private void showYouTurnNotification(Intent intent) {
+		String lastMoveSan = intent.getStringExtra("last_move_san");
+//			String opponentUserId = intent.getStringExtra("opponent_user_id");
+//			String collapseKey = intent.getStringExtra("collapse_key");
+		String opponentUsername = intent.getStringExtra("opponent_username");
+		String gameId = intent.getStringExtra("game_id");
 
-			long minutes = gameTimeLeft /60%60;
-			long hours = gameTimeLeft /3600%24;
-			long days = gameTimeLeft /86400;
+		long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 
-			String remainingUnits;
-			String remainingTime;
+		long minutes = gameTimeLeft /60%60;
+		long hours = gameTimeLeft /3600%24;
+		long days = gameTimeLeft /86400;
 
-			if(days > 0){
-				remainingUnits = "d";
-				remainingTime = String.valueOf(days);
-			} else if(hours > 0){
-				remainingUnits = "h";
-				remainingTime = String.valueOf(hours);
-			} else {
-				remainingUnits = "m";
-				remainingTime = String.valueOf(minutes);
-			}
-			// compose gameInfoItem
-			String[] gameInfoValues = new String[]{
-					gameId,
-					remainingTime,
-					remainingUnits
-			};
+		String remainingUnits;
+		String remainingTime;
 
-			GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
+		if(days > 0){
+			remainingUnits = "d";
+			remainingTime = String.valueOf(days);
+		} else if(hours > 0){
+			remainingUnits = "h";
+			remainingTime = String.valueOf(hours);
+		} else {
+			remainingUnits = "m";
+			remainingTime = String.valueOf(minutes);
+		}
+		// compose gameInfoItem
+		String[] gameInfoValues = new String[]{
+				gameId,
+				remainingTime,
+				remainingUnits
+		};
 
-			AppUtils.showNewMoveStatusNotification(context,
-					context.getString(R.string.your_move),
-					context.getString(R.string.your_turn_in_game_with,
-							opponentUsername,
-							lastMoveSan),
-					StaticData.MOVE_REQUEST_CODE,
-					gameListItem);
+		GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
 
-			SharedPreferences preferences = AppData.getPreferences(context);
-			boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
-			if(playSounds){
-				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-				if(player != null){
-					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-						@Override
-						public void onCompletion(MediaPlayer mediaPlayer) {
-							player.release();
-						}
-					});
-					player.start();
-				}
+		AppUtils.showNewMoveStatusNotification(context,
+				context.getString(R.string.your_move),
+				context.getString(R.string.your_turn_in_game_with,
+						opponentUsername,
+						lastMoveSan),
+				StaticData.MOVE_REQUEST_CODE,
+				gameListItem);
+
+		SharedPreferences preferences = AppData.getPreferences(context);
+		boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
+		if(playSounds){
+			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
+			if(player != null){
+				player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+					@Override
+					public void onCompletion(MediaPlayer mediaPlayer) {
+						player.release();
+					}
+				});
+				player.start();
 			}
 		}
 	}

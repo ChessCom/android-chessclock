@@ -96,7 +96,6 @@ public interface BoardFace {
 	void takeNext();
 
 	CharSequence getMoveListSAN();
-//    List<String> getMoveListSAN();
 
 	boolean isLatestMoveMadeUser();
 

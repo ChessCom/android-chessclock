@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
@@ -27,12 +28,14 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
+import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
+import com.google.android.gcm.GCMRegistrar;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -267,10 +270,24 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
 		if (AppData.isNotificationsEnabled(this)){
 			checkMove();
-//			AppUtils.startNotificationsUpdate(this);
 		}
 
 		DataHolder.getInstance().reset();
+
+		// Update server with new token for GCM
+		final String registrationId = GCMRegistrar.getRegistrationId(this);
+		if (registrationId.equals("")) {
+			// Automatically registers application on startup.
+			GCMRegistrar.register(this, GcmHelper.SENDER_ID);
+			Log.d("TEST", " no regId - > GCMRegistrar.register");
+		} else {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.GCM_REGISTER);
+			loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(this));
+			loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+
+			new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
+		}
 
 		Intent intent = new Intent(this, HomeScreenActivity.class);
 		startActivity(intent);

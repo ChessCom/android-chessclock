@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -37,7 +36,7 @@ import java.util.Locale;
  */
 public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
-	private static final int REQUEST_REGISTER = 11;
+	protected static final int REQUEST_REGISTER = 11;
 	private static final int REQUEST_UNREGISTER = 22;
 
 	protected BackgroundChessDrawable backgroundChessDrawable;
@@ -121,6 +120,9 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void registerGcmService(){
+		if (!AppData.isNotificationsEnabled(this)) // no need to register if user turned off notifications
+			return;
+
 		// Make sure the device has the proper dependencies.
 //		GCMRegistrar.checkDevice(this); // don't check for emulator
 		// Make sure the manifest was properly set - comment out this line
@@ -150,10 +152,9 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
 
-				final Context context = this;
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
-				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
+				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(this));
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
@@ -169,7 +170,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		GCMRegistrar.unregister(this);
 	}
 
-	private class PostUpdateListener extends AbstractUpdateListener<String> {
+	protected class PostUpdateListener extends AbstractUpdateListener<String> {
 		private int requestCode;
 
 		public PostUpdateListener(int requestCode) {

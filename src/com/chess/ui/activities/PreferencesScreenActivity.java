@@ -351,13 +351,13 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
-			if(!AppData.isNotificationsEnabled(this) && checked){
-//				AppUtils.startNotificationsUpdate(this);
+			// don't check move if pref didn't changed
+			boolean notificationsWasEnabled = AppData.isNotificationsEnabled(this);
+			if(!notificationsWasEnabled && checked){
 				registerGcmService();
 				checkMove();
-			} else {
+			} else if(!checked) {
 				unregisterGcmService();
-//				AppUtils.stopNotificationsUpdate(this);
 			}
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 
