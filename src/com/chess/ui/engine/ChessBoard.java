@@ -67,6 +67,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	public static final String EQUALS_Q = "=Q";
 
 	protected Long gameId;
+	protected boolean restored;
 
 	private boolean init;
 	private boolean chess960;
@@ -2395,5 +2396,9 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 
 	public Long getGameId() {
 		return gameId;
+	}
+
+	public boolean getRestored() {
+		return restored;
 	}
 }

@@ -140,8 +140,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		super.onResume();
 
 
-//		if (firstRun) {
-//			firstRun = false;
+		if (firstRun) {
+			firstRun = false;
 
 			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
 			boolean  haveGuestSavedGame = !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
@@ -184,22 +184,22 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				popupItem.setNegativeBtnId(R.string.no);
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			}
-//		} else {
+		} else {
 			// TODO show register confirmation dialog
-//			TacticItem tacticItem = getTacticItem();
-//			if(tacticItem == null){ // singleton can be killed
-//				getNewTactic();
-//			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
-//
-//				startTacticsTimer(tacticItem);
-//				getBoardFace().setRetry(true);
-//
-//				invalidateGameScreen();
-//				getBoardFace().takeBack();
-//				boardView.invalidate();
-//				playLastMoveAnimationAndCheck();
-//			}
-//		}
+			TacticItem tacticItem = getTacticItem();
+			if(tacticItem == null){ // singleton can be killed
+				getNewTactic();
+			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
+
+				startTacticsTimer(tacticItem);
+				getBoardFace().setRetry(true);
+
+				invalidateGameScreen();
+				getBoardFace().takeBack();
+				boardView.invalidate();
+				playLastMoveAnimationAndCheck();
+			}
+		}
 	}
 
 	@Override
@@ -495,6 +495,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getTacticItem().setStop(true);
 		DataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
 
+		ChessBoardTactics.resetInstance();
 		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
 		getBoardFace().setRetry(true);
 
@@ -762,6 +763,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return;
 		}
 
+		ChessBoardTactics.resetInstance();
 		final BoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
 

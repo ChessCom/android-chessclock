@@ -3,6 +3,8 @@ package com.chess.backend.entity;
 import com.chess.model.GamePlayingItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
+import com.chess.ui.engine.ChessBoardLive;
+import com.chess.ui.engine.ChessBoardTactics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,6 +148,8 @@ public class DataHolder {
 
 	public void reset() {
 		ourInstance = new DataHolder();
+		ChessBoardTactics.resetInstance();
+		ChessBoardLive.resetInstance();
 	}
 
 	/**
