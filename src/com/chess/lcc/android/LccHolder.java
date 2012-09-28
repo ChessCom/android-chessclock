@@ -17,7 +17,7 @@ import com.chess.live.client.*;
 import com.chess.model.GameLiveItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
-import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardLive;
 import com.chess.utilities.AppUtils;
 
 import java.util.*;
@@ -804,7 +804,7 @@ public class LccHolder{
 	public void processFullGame(Game game) {
 		Log.d("TEST", "processFullGame, gameId = " + game.getId());
 		latestMoveNumber = null;
-		ChessBoard.resetInstanceLive();
+		ChessBoardLive.resetInstance();
 		putGame(game);
 
 		int time = game.getGameTimeConfig().getBaseTime() * 100;

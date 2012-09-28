@@ -97,7 +97,7 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 		try{
 			ft.commitAllowingStateLoss();
 		} catch (IllegalStateException ex){
-			Log.e("FragmentShow", "Fragment was showed when activity is dead" + ex.toString());
+			Log.e("FragmentShow", "Fragment was showed when activity is dead " + ex.toString());
 		}
     }
 

@@ -27,6 +27,7 @@ import com.chess.model.PopupItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
@@ -114,8 +115,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		setBoardView(boardView);
 
-		final ChessBoard chessBoard = ChessBoard.getInstanceTactics(this);
-		firstRun = chessBoard.isJustInitialized();
+		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
+		firstRun = !chessBoard.getRestored();
 		boardView.setBoardFace(chessBoard);
 
 		timerTxt = (TextView) findViewById(R.id.timerTxt);
@@ -139,8 +140,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		super.onResume();
 
 
-		if (firstRun) {
-			firstRun = false;
+//		if (firstRun) {
+//			firstRun = false;
 
 			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
 			boolean  haveGuestSavedGame = !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
@@ -148,7 +149,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			Log.d("TEST","haveGuestSavedGame = " + haveGuestSavedGame);
 
 			if (AppData.haveSavedTacticGame(this) && !DataHolder.getInstance().isGuest()
-					|| haveGuestSavedGame) {
+					|| haveGuestSavedGame && DataHolder.getInstance().isGuest()) {
 				String userName = AppData.getUserName(this);
 				if (DataHolder.getInstance().isGuest()) {
 					userName = StaticData.SYMBOL_EMPTY;
@@ -165,7 +166,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				setTacticToBoard(tacticItem, secondsSpend);
 
 				DataHolder.getInstance().setTactic(tacticItem);
-				boardView.setBoardFace(ChessBoard.getInstanceTactics(this));
+				boardView.setBoardFace(ChessBoardTactics.getInstance(this));
 
 				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
@@ -183,22 +184,22 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				popupItem.setNegativeBtnId(R.string.no);
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			}
-		} else {
+//		} else {
 			// TODO show register confirmation dialog
-			TacticItem tacticItem = getTacticItem();
-			if(tacticItem == null){ // singleton can be killed
-				getNewTactic();
-			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
-
-				startTacticsTimer(tacticItem);
-				getBoardFace().setRetry(true);
-
-				invalidateGameScreen();
-				getBoardFace().takeBack();
-				boardView.invalidate();
-				playLastMoveAnimationAndCheck();
-			}
-		}
+//			TacticItem tacticItem = getTacticItem();
+//			if(tacticItem == null){ // singleton can be killed
+//				getNewTactic();
+//			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
+//
+//				startTacticsTimer(tacticItem);
+//				getBoardFace().setRetry(true);
+//
+//				invalidateGameScreen();
+//				getBoardFace().takeBack();
+//				boardView.invalidate();
+//				playLastMoveAnimationAndCheck();
+//			}
+//		}
 	}
 
 	@Override
@@ -494,7 +495,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getTacticItem().setStop(true);
 		DataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
 
-		boardView.setBoardFace(ChessBoard.getInstanceTactics(this));
+		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
 		getBoardFace().setRetry(true);
 
 		TacticItem tacticItem;
@@ -761,7 +762,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return;
 		}
 
-		final BoardFace boardFace = ChessBoard.getInstanceTactics(this);
+		final BoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
 
 		boardFace.setupBoard(tacticItem.getFen());
