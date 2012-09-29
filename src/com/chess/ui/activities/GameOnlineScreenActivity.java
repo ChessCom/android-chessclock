@@ -813,7 +813,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
-		blockScreenRotation(true);
+//		blockScreenRotation(true);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
@@ -924,7 +924,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
 						ERROR_TAG);
 			}
-			blockScreenRotation(false);
+//			blockScreenRotation(false);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package com.chess.lcc.android.interfaces;
 
 /**
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @created 15.06.12
  * @modified 15.06.12
  */

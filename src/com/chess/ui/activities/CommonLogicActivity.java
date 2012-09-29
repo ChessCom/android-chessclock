@@ -124,10 +124,17 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			return;
 
 		// Make sure the device has the proper dependencies.
-//		GCMRegistrar.checkDevice(this); // don't check for emulator
+		try {
+			GCMRegistrar.checkDevice(this); // Check device to support GCM, if not supported then turn on timed notifications
+		} catch (UnsupportedOperationException ex) {
+			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications " + ex.toString());
+			AppUtils.startNotificationsUpdate(this);
+			return;
+		}
+
 		// Make sure the manifest was properly set - comment out this line
 		// while developing the app, then uncomment it when it's ready.
-//		GCMRegistrar.checkManifest(this);
+//		GCMRegistrar.checkManifest(this);   // don't need to check manifest because it's developers task to write it correct :)
 
 		/* When an application is updated, it should invalidate its existing registration ID.
 		The best way to achieve this validation is by storing the current
@@ -164,6 +171,13 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void unregisterGcmService(){
+		try{
+			GCMRegistrar.checkDevice(this);
+		} catch (UnsupportedOperationException ex){
+			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications ");
+			AppUtils.stopNotificationsUpdate(this);
+		}
+
 		// save token to unregister from server
 		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, AppData.getUserToken(this));
 		preferencesEditor.commit();

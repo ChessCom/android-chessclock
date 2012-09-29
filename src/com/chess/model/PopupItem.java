@@ -3,7 +3,6 @@ package com.chess.model;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import com.chess.R;
 import com.chess.SerialLinLay;
@@ -15,10 +14,7 @@ import com.chess.backend.statics.StaticData;
  * @author alien_roger
  * @created at: 07.04.12 7:14
  */
-//public class PopupItem implements Serializable{
 public class PopupItem implements Parcelable{
-
-//	private static final long serialVersionUID = 2848774369975248646L;
 
 	private int titleId;
     private int messageId;
@@ -112,17 +108,6 @@ public class PopupItem implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
-		/*
-	private int titleId;
-    private int messageId;
-    private String title;
-    private String message;
-    private int positiveBtnId;
-    private int neutralBtnId;
-    private int negativeBtnId;
-    private View customView;
-		 */
 		parcel.writeInt(titleId);
 		parcel.writeInt(messageId);
 		parcel.writeString(title);

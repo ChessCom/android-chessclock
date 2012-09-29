@@ -12,7 +12,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
 
 /**
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @created 10.07.12
  * @modified 10.07.12
  */

@@ -24,6 +24,7 @@ import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
+import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -46,7 +47,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TAG = "GCMIntentService";
 	private Context context;
 	private SharedPreferences preferences;
-
 
 	public GCMIntentService() {
         super(GcmHelper.SENDER_ID);
@@ -114,12 +114,41 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 	}
 
-	private void showYouTurnNotification(Intent intent) {
+	private synchronized void showYouTurnNotification(Intent intent) {
+
+
 		String lastMoveSan = intent.getStringExtra("last_move_san");
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
 //			String collapseKey = intent.getStringExtra("collapse_key");
 		String opponentUsername = intent.getStringExtra("opponent_username");
 		String gameId = intent.getStringExtra("game_id");
+
+		boolean gameInfoWasFound = false;
+		Log.d("TEST", " _________________________________");
+		Log.d("TEST", " LastmoveSan = " + lastMoveSan);
+		Log.d("TEST", " gameId = " + gameId);
+		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
+
+		// check if we already received that notification
+		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
+			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
+				Log.d("TEST", " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
+				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
+					return; // no need to update
+				} else { // if move info is different
+					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+				}
+				gameInfoWasFound = true;
+			}
+		}
+
+		if (!gameInfoWasFound) { // if we have no info about this game, then add last move to list of objects
+			Log.d("TEST", " adding new game info" );
+			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
+			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+			lastMoveInfoItem.setGameId(gameId);
+		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
+		}
 
 		long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 

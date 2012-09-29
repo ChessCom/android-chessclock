@@ -3,7 +3,7 @@ package com.chess.model;
 import android.os.Parcel;
 
 /**
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @created 31.07.12
  * @modified 31.07.12
  */

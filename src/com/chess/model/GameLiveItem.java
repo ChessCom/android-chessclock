@@ -2,14 +2,13 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 
 import java.util.Iterator;
 
 /**
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @created 31.07.12
  * @modified 31.07.12
  */
@@ -69,7 +68,6 @@ public class GameLiveItem extends BaseGameItem {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
 		writeBaseGameParcel(parcel);
 	}
 

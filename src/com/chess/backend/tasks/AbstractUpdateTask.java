@@ -1,8 +1,10 @@
 package com.chess.backend.tasks;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 
@@ -25,6 +27,7 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		blockScreenRotation(true);
 		taskFace.showProgress(true);
 	}
 
@@ -32,7 +35,6 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 	protected Integer doInBackground(Input... params) {
 		if(isCancelled()) {
 			result = StaticData.EMPTY_DATA;
-			Log.d("TEST", "isCancelled() from doInBackground called");
 			return result;
 		}
 		return doTheTask(params);
@@ -40,16 +42,34 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 
 	protected abstract Integer doTheTask(Input... params);
 
+	protected void blockScreenRotation(boolean block){
+		if (taskFace.getMeContext() instanceof Activity) {
+			Activity activity = (Activity) taskFace.getMeContext();
+			if(block){
+				// Stop the screen orientation changing during an event
+				if(activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				}else{
+					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				}
+			} else {
+				activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			}
+		}
+	}
 
 	@Override
 	protected void onCancelled(Integer result) {
 		super.onCancelled(result);
+		blockScreenRotation(false);
 		taskFace.errorHandle(StaticData.TASK_CANCELED);
 	}
 
 	@Override
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
+		blockScreenRotation(false);
+
 		if(isCancelled()) {
 			return;
 		}

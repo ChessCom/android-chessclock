@@ -6,7 +6,6 @@ import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -151,19 +150,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
-	}
-
-	protected void blockScreenRotation(boolean block){
-		if(block){
-			// Stop the screen orientation changing during an event
-			if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			}else{
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			}
-		} else {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-		}
 	}
 
 	protected void backToHomeActivity() {

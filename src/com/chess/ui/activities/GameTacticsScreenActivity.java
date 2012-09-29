@@ -458,9 +458,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void updateData(String returnedObj) {
-			Log.d("TEST", "Load over");
-			blockScreenRotation(false);
-
 			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				String[] tmp = returnedObj.trim().split("[|]");
 				if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
@@ -491,7 +488,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void errorHandle(Integer resultCode) {
 			handleErrorRequest();
-			blockScreenRotation(false);
+//			blockScreenRotation(false);
 		}
 	}
 
@@ -555,13 +552,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
-			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
-				showLimitDialog(); // can be replaced with IllegalStateExc, because this should never happen
-				return;
+//			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
+//				showLimitDialog(); // can be replaced with IllegalStateExc, because this should never happen
+//				return;
+//			}
+			TacticResultItem tacticResultItem;
+			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
+				tacticResultItem = new TacticResultItem(tmp[1].split(":"));
+				DataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
+			} else {
+				tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 			}
-
-			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
-			DataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
 
 			String title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 					tacticResultItem.getUserRating());
@@ -588,13 +589,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
-			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
-				showLimitDialog();  // can be replaced with IllegalStateExc, because this should never happen
-				return;
+//			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
+//				showLimitDialog(); // can be replaced with IllegalStateExc, because this should never happen
+//				return;
+//			}
+			TacticResultItem tacticResultItem;
+			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
+				tacticResultItem = new TacticResultItem(tmp[1].split(":"));
+				DataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
+			} else {
+				tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 			}
-
-			TacticResultItem tacticResultItem = new TacticResultItem(tmp[1].split(":"));
-			DataHolder.getInstance().setTacticResultItem(tacticResultItem);
 
 			String title = getString(R.string.wrong_score,
 					tacticResultItem.getUserRatingChange(),
@@ -886,7 +891,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 			Log.d("TEST", "load started") ;
-			blockScreenRotation(true);
+//			blockScreenRotation(true);
 		}
 	}
 

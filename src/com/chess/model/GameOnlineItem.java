@@ -2,10 +2,9 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @created 31.07.12
  * @modified 31.07.12
  */
@@ -76,7 +75,6 @@ public class GameOnlineItem extends BaseGameItem {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
 		writeBaseGameParcel(parcel);
 
 		// own write

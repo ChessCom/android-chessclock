@@ -2,7 +2,6 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 public class GameListFinishedItem extends BaseGameOnlineItem{
 
@@ -67,7 +66,6 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		Log.d("Parcel_TEST", "writeToParcel, flags = " + flags);
 		writeBaseGameParcel(parcel);
 
 		writeBaseGameOnlineParcel(parcel);

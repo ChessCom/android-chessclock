@@ -32,11 +32,14 @@ public class DataHolder {
 	private boolean tacticLimitReached;
 	private List<String> showedTacticsIds;
 	private List<GamePlayingItem> playingGamesList;
+	private List<LastMoveInfoItem> lastMoveInfoItems;
 
 
 	private DataHolder() {
 		showedTacticsIds = new ArrayList<String>();
 		playingGamesList = new ArrayList<GamePlayingItem>();
+		lastMoveInfoItems = new ArrayList<LastMoveInfoItem>();
+
 	}
 
 	public static DataHolder getInstance() {
@@ -181,5 +184,14 @@ public class DataHolder {
 				newGameItem.setBoardOpen(gameOpen);
 			}
 		}
+	}
+
+
+	public synchronized List<LastMoveInfoItem> getLastMoveInfoItems() {
+		return lastMoveInfoItems;
+	}
+
+	public synchronized void addLastMoveInfo(LastMoveInfoItem lastMoveInfoItem) {
+		lastMoveInfoItems.add(lastMoveInfoItem);
 	}
 }

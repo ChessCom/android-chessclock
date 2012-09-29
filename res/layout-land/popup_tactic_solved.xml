@@ -13,6 +13,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
+		android:gravity="center"
 		robo:ttf="Bold"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:paddingBottom="10dip"

@@ -8,7 +8,7 @@ import com.chess.ui.engine.Search;
 import com.chess.ui.interfaces.BoardFace;
 
 /**
- * @author Alexey Schekin (schekin@azoft.com)
+ * @author alien_roger
  * @created 18.09.12
  * @modified 18.09.12
  */

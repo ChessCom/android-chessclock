@@ -9,10 +9,7 @@ import android.os.Parcelable;
  * @author alien_roger
  * @created at: 31.07.12 6:59
  */
-//public abstract class BaseGameItem implements Serializable {
 public abstract class BaseGameItem implements Parcelable {
-
-//	private static final long serialVersionUID = -752315798923143602L;
 
 	public static final String GAME_ID = "game_id";
 	public static final String TIMESTAMP = "time_stamp";
