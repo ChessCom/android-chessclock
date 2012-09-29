@@ -2,8 +2,6 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -55,101 +53,21 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 	protected void onDraw(Canvas canvas) {
 		canvas.setDrawFilter(drawFilter);
 		super.onDraw(canvas);
-		W = viewWidth;
-		H = viewHeight;
 
-		if (H < W) {
-			square = viewHeight / 8;
-			H -= viewHeight % 8;
-		} else {
-			square = viewWidth / 8;
-			W -= viewWidth % 8;
-		}
-		side = square * 2;
+		drawBoard(canvas);
 
-		int i, j;
-		for (i = 0; i < 4; i++) {
-			for (j = 0; j < 4; j++) {
-				rect.set(i * side, j * side, i * side + side, j * side + side);
-				canvas.drawBitmap(boardBitmap, null, rect, null);
-			}
-		}
+		drawPieces(canvas);
 
-		for (i = 0; i < 64; i++) {
-			if (drag && i == from)
-				continue;
-			int c = boardFace.getColor()[i];
-			int p = boardFace.getPieces()[i];
-			int x = ChessBoard.getColumn(i, boardFace.isReside());
-			int y = ChessBoard.getRow(i, boardFace.isReside());
-			if (c != 6 && p != 6) {	// here is the simple replace/redraw of piece
-				rect.set(x * square, y * square, x * square + square, y * square + square);
-				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
-			}
-		}
+		drawCoordinates(canvas);
 
+		drawHighlight(canvas);
 
-		if (showCoordinates) {
-			for (i = 0; i < 8; i++) {
-				if (boardFace.isReside()) {
-					canvas.drawText(nums[i], 2, i * square + 12, blackPaint);
-					canvas.drawText(signs[7 - i], i * square + 2, 8 * square - 2, blackPaint);
-				} else {
-					canvas.drawText(nums[7 - i], 2, i * square + 12, blackPaint);
-					canvas.drawText(signs[i], i * square + 2, 8 * square - 2, blackPaint);
-				}
-			}
-		}
+		drawDragPosition(canvas);
 
-		if (isHighlightEnabled && boardFace.getHply() > 0) {
-			Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
-			int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
-			int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
-			canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, redPaint);
-			int x2 = ChessBoard.getColumn(m.to, boardFace.isReside());
-			int y2 = ChessBoard.getRow(m.to, boardFace.isReside());
-			canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, redPaint);
-		}
+		drawTrackballDrag(canvas);
 
-		if (sel) {
-			int x = ChessBoard.getColumn(from, boardFace.isReside());
-			int y = ChessBoard.getRow(from, boardFace.isReside());
-			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, whitePaint);
-		}
-		if (drag) {
-			int c = boardFace.getColor()[from];
-			int p = boardFace.getPieces()[from];
-			int x = dragX - square / 2;
-			int y = dragY - square / 2;
-			int col = (dragX - dragX % square) / square;
-			int row = ((dragY + square) - (dragY + square) % square) / square;
-			if (c != 6 && p != 6) {
-				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2);
-				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
-				canvas.drawRect(col * square - square / 2, row * square - square / 2,
-						col * square + square + square / 2, row * square + square + square / 2, whitePaint);
-			}
-		}
-		if (track) {
-			int x = (trackX - trackX % square) / square;
-			int y = (trackY - trackY % square) / square;
-			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, greenPaint);
-		}
-
-		// Count captured piecesBitmap
-		gamePanelView.dropAlivePieces();
-
-		for (i = 0; i < 64; i++) {
-			int pieceId = boardFace.getPiece(i);
-			if (boardFace.getColor()[i] == ChessBoard.LIGHT) {
-				gamePanelView.addAlivePiece(true, pieceId);
-			} else {
-				gamePanelView.addAlivePiece(false, pieceId);
-			}
-		}
-		gamePanelView.updateCapturedPieces();
+		drawCapturedPieces();
 	}
-
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {

@@ -30,16 +30,15 @@ import java.util.TreeSet;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace {
 
-	public static final int P_ALPHA_ID 	= 0;
-	public static final int P_BOOK_ID 	= 1;
-	public static final int P_CASES_ID 	= 2;
+	public static final int P_ALPHA_ID = 0;
+	public static final int P_BOOK_ID = 1;
+	public static final int P_CASES_ID = 2;
 	public static final int P_CLASSIC_ID = 3;
-	public static final int P_CLUB_ID 	= 4;
+	public static final int P_CLUB_ID = 4;
 	public static final int P_CONDAL_ID = 5;
-	public static final int P_MAYA_ID 	= 6;
+	public static final int P_MAYA_ID = 6;
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
-
 
 
 	protected Bitmap[][] piecesBitmaps;
@@ -66,7 +65,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int trackY = 0;
 
 	protected Paint whitePaint;
-	protected Paint blackPaint;
+	protected Paint coordinatesPaint;
 	protected Paint redPaint;
 	protected Paint greenPaint;
 
@@ -90,12 +89,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Resources resources;
 	protected GameActivityFace gameActivityFace;
 	protected BoardFace boardFace;
-    protected boolean locked;
+	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
+	private float density;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
+		density = resources.getDisplayMetrics().density;
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 
@@ -105,7 +106,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		handler = new Handler();
 		greenPaint = new Paint();
 		whitePaint = new Paint();
-		blackPaint = new Paint();
+		coordinatesPaint = new Paint();
 		redPaint = new Paint();
 		rect = new Rect();
 
@@ -114,9 +115,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		whitePaint.setStyle(Style.STROKE);
 		whitePaint.setColor(Color.WHITE);
 
-		blackPaint.setStrokeWidth(1.0f);
-		blackPaint.setStyle(Style.FILL);
-		blackPaint.setColor(Color.BLACK);
+		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Regular.ttf");
+		coordinatesPaint.setStrokeWidth(1.0f);
+		coordinatesPaint.setStyle(Style.FILL);
+		coordinatesPaint.setColor(Color.BLACK);
+		coordinatesPaint.setTextSize(16 * density);
+		coordinatesPaint.setTypeface(typeface);
 
 		redPaint.setStrokeWidth(2.0f);
 		redPaint.setStyle(Style.STROKE);
@@ -220,11 +224,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.invalidateGameScreen();
 	}
 
-	public void setFinished(boolean finished){
+	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
 
-	public boolean isFinished(){
+	public boolean isFinished() {
 		return finished;
 	}
 
@@ -255,6 +259,118 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		}
 	};
+
+	protected void drawBoard(Canvas canvas) {
+		W = viewWidth;
+		H = viewHeight;
+
+		if (H < W) {
+			square = viewHeight / 8;
+			H -= viewHeight % 8;
+		} else {
+			square = viewWidth / 8;
+			W -= viewWidth % 8;
+		}
+		side = square * 2;
+
+		int i, j;
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				rect.set(i * side, j * side, i * side + side, j * side + side);
+				canvas.drawBitmap(boardBitmap, null, rect, null);
+			}
+		}
+	}
+
+	protected void drawPieces(Canvas canvas) {
+		int i;
+		for (i = 0; i < 64; i++) {
+			if (drag && i == from)
+				continue;
+			int c = boardFace.getColor()[i];
+			int p = boardFace.getPieces()[i];
+			int x = ChessBoard.getColumn(i, boardFace.isReside());
+			int y = ChessBoard.getRow(i, boardFace.isReside());
+			if (c != 6 && p != 6) {    // here is the simple replace/redraw of piece
+				rect.set(x * square, y * square, x * square + square, y * square + square);
+				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
+			}
+		}
+	}
+
+	protected void drawCoordinates(Canvas canvas) {
+		int i;
+		if (showCoordinates) {
+			float numYShift = 15 * density;
+			for (i = 0; i < 8; i++) {
+				if (boardFace.isReside()) {
+					canvas.drawText(nums[i], 2, i * square + numYShift, coordinatesPaint);
+					canvas.drawText(signs[7 - i], i * square + 2, 8 * square - 2, coordinatesPaint);
+				} else {
+					canvas.drawText(nums[7 - i], 2, i * square + numYShift, coordinatesPaint);
+					canvas.drawText(signs[i], i * square + 2, 8 * square - 2, coordinatesPaint);
+				}
+			}
+		}
+	}
+
+	protected void drawHighlight(Canvas canvas) {
+		if (isHighlightEnabled && boardFace.getHply() > 0) { // draw current piece touched position highlight
+			Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
+			int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
+			int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
+			canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, redPaint);
+			int x2 = ChessBoard.getColumn(m.to, boardFace.isReside());
+			int y2 = ChessBoard.getRow(m.to, boardFace.isReside());
+			canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, redPaint);
+		}
+
+		if (sel) { // draw rectangle around the start move piece position
+			int x = ChessBoard.getColumn(from, boardFace.isReside());
+			int y = ChessBoard.getRow(from, boardFace.isReside());
+			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, whitePaint);
+		}
+	}
+
+	protected void drawDragPosition(Canvas canvas) {
+		if (drag) {
+			int c = boardFace.getColor()[from];
+			int p = boardFace.getPieces()[from];
+			int x = dragX - square / 2;
+			int y = dragY - square / 2;
+			int col = (dragX - dragX % square) / square;
+			int row = ((dragY + square) - (dragY + square) % square) / square;
+			if (c != 6 && p != 6) {
+				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2);
+				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
+				canvas.drawRect(col * square - square / 2, row * square - square / 2,
+						col * square + square + square / 2, row * square + square + square / 2, whitePaint);
+			}
+		}
+	}
+
+	protected void drawTrackballDrag(Canvas canvas) {
+		if (track) {
+			int x = (trackX - trackX % square) / square;
+			int y = (trackY - trackY % square) / square;
+			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, greenPaint);
+		}
+	}
+
+	protected void drawCapturedPieces() {
+		// Count captured piecesBitmap
+		gamePanelView.dropAlivePieces();
+
+		for (int i = 0; i < 64; i++) {
+			int pieceId = boardFace.getPiece(i);
+			if (boardFace.getColor()[i] == ChessBoard.LIGHT) {
+				gamePanelView.addAlivePiece(true, pieceId);
+			} else {
+				gamePanelView.addAlivePiece(false, pieceId);
+			}
+		}
+		gamePanelView.updateCapturedPieces();
+	}
 
 //	protected void loadIdsFromResources(){  // TODO reuse later
 //		TypedArray ar = getResources().obtainTypedArray(R.array.comp_strength);
@@ -318,8 +434,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				gameActivityFace.invalidateGameScreen();
 				finished = true;
 				return true;
-			}
-			else {
+			} else {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
 				gameActivityFace.invalidateGameScreen();
 				gameActivityFace.onCheck();
@@ -349,29 +464,29 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.tan
 	};
 
-    public void lockBoard(boolean lock){
-        locked = lock;
-        gamePanelView.lock(lock);
-        setEnabled(!lock);
-    }
+	public void lockBoard(boolean lock) {
+		locked = lock;
+		gamePanelView.lock(lock);
+		setEnabled(!lock);
+	}
 
 	protected void loadBoard(int boardId) {
 		boardBitmap = ((BitmapDrawable) resources.getDrawable(boardsDrawables[boardId])).getBitmap();
 	}
 
-	private void setPieceBitmapFromArray(int[] drawableArray){
+	private void setPieceBitmapFromArray(int[] drawableArray) {
 		piecesBitmaps = new Bitmap[2][6];
 		Resources resources = getResources();
-		for(int j=0; j<6; j++){
+		for (int j = 0; j < 6; j++) {
 			piecesBitmaps[0][j] = ((BitmapDrawable) resources.getDrawable(drawableArray[j])).getBitmap();
 		}
-		for(int j=0; j<6; j++){
+		for (int j = 0; j < 6; j++) {
 			piecesBitmaps[1][j] = ((BitmapDrawable) resources.getDrawable(drawableArray[6 + j])).getBitmap();
 		}
 	}
 
 	protected void loadPieces(int piecesSetId) {
-		switch (piecesSetId){
+		switch (piecesSetId) {
 			case P_ALPHA_ID:
 				setPieceBitmapFromArray(alphaPiecesDrawableIds);
 				break;
