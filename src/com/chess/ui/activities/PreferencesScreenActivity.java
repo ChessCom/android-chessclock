@@ -52,6 +52,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private Spinner maxRatingSpinner;
 	private Spinner minRatingSpinner;
 
+	private List<SelectionItem> boardsList;
+	private List<SelectionItem> piecesList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,12 +119,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		minRatingSpinner = (Spinner) findViewById(R.id.minRatingSpinner);
 		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
-		minRatingSpinner.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+		minRatingSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MIN_RATING, 0));
 		minRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
 
 		maxRatingSpinner = (Spinner) findViewById(R.id.maxRatingSpinner);
 		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
-		maxRatingSpinner.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxRatingSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MAX_RATING, 0));
 		maxRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
 
 		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
@@ -166,7 +169,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
 		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
 
-		List<SelectionItem> piecesList = new ArrayList<SelectionItem>(9);
+		piecesList = new ArrayList<SelectionItem>(9);
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.cases)));
@@ -177,7 +180,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.modern)));
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.vintage)));
 
-		List<SelectionItem> boardsList = new ArrayList<SelectionItem>(9);
+		boardsList = new ArrayList<SelectionItem>(9);
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.wooddark)));
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.woodlight)));
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_blue), getString(R.string.blue)));
@@ -189,9 +192,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
 
 		//spinners
+		int boardsPosition = preferences.getInt(AppData.getUserName(this)+ AppConstants.PREF_BOARD_TYPE, 0);
+		boardsList.get(boardsPosition).setChecked(true);
 		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
 		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
-		int boardsPosition = preferences.getInt(AppData.getUserName(this)+ AppConstants.PREF_BOARD_TYPE, 0);
+
 		boardsSpinner.setSelection(boardsPosition);
 
 		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
@@ -210,7 +215,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.prefLogout) { // DO NOT turn to switch!
+		int id = view.getId();
+		if (id == R.id.prefLogout) { // DO NOT turn to switch!
 			if (!DataHolder.getInstance().isGuest()) {
 				getLccHolder().logout();
 
@@ -235,9 +241,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			finish();
-		} else if (view.getId() == R.id.upgradeBtn) {
+		} else if (id == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
-		} else if (view.getId() == R.id.prefInvite) {
+		} else if (id == R.id.prefInvite) {
 			String userName = AppData.getUserName(this);
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
@@ -246,14 +252,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 					+ userName + "\". \n \n Sent from my Android");
 			FlurryAgent.logEvent(FlurryData.INVITE_A_FRIEND, null);
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
-		} else if (view.getId() == R.id.prefContactUs) {
+		} else if (id == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
 			emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
-		} else if (view.getId() == R.id.prefVacation) {
+		} else if (id == R.id.prefVacation) {
 			updateVacationLeaveStatus();
 		}
 	}
@@ -268,8 +274,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private AdapterView.OnItemSelectedListener ratingSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppConstants.CHALLENGE_MIN_RATING, minRatingSpinner.getSelectedItemPosition());
-			preferencesEditor.putInt(AppConstants.CHALLENGE_MAX_RATING, maxRatingSpinner.getSelectedItemPosition());
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.CHALLENGE_MIN_RATING, minRatingSpinner.getSelectedItemPosition());
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.CHALLENGE_MAX_RATING, maxRatingSpinner.getSelectedItemPosition());
 			preferencesEditor.commit();
 		}
 
@@ -321,8 +327,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private AdapterView.OnItemSelectedListener boardSpinnerListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+			for (SelectionItem item : boardsList) {
+				item.setChecked(false);
+			}
+
+			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
+			selectionItem.setChecked(true);
+
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_BOARD_TYPE, pos);
 			preferencesEditor.commit();
+
+			((BaseAdapter)adapterView.getAdapter()).notifyDataSetChanged();
 		}
 
 		@Override
@@ -333,8 +348,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private AdapterView.OnItemSelectedListener piecesSpinnerListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+			for (SelectionItem item : piecesList) {
+				item.setChecked(false);
+			}
+
+			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
+			selectionItem.setChecked(true);
+
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_PIECES_SET, pos);
 			preferencesEditor.commit();
+
+			((BaseAdapter)adapterView.getAdapter()).notifyDataSetChanged();
 		}
 
 		@Override

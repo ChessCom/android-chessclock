@@ -410,13 +410,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     }
 
     @Override
-    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
-        super.onSizeChanged(xNew, yNew, xOld, yOld);
-        viewWidth = (xNew == 0 ? viewWidth : xNew);
-        viewHeight = (yNew == 0 ? viewHeight : yNew);
-    }
-
-    @Override
     public void flipBoard() {
 //        stopThinking = true;
         if (!computerMoving) {

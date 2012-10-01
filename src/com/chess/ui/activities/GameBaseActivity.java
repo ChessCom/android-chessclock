@@ -111,6 +111,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void onResume() {
 		super.onResume();
 
+		// update boardView if boardId has changed
+		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
 	}
 

@@ -3,8 +3,8 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.model.SelectionItem;
 
@@ -29,7 +29,7 @@ public class SelectionAdapter extends ItemsAdapter<SelectionItem> {
 	@Override
 	protected void bindView(SelectionItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.image.setImageDrawable(item.image);
+		holder.image.setImageDrawable(item.getImage());
 	}
 
 	@Override
@@ -38,23 +38,25 @@ public class SelectionAdapter extends ItemsAdapter<SelectionItem> {
 			convertView = inflater.inflate(R.layout.selection_item_dropdown, parent, false);
 			ViewHolder holder = new ViewHolder();
 			holder.image = (ImageView) convertView.findViewById(R.id.image);
-			holder.text = (TextView) convertView.findViewById(R.id.text);
+			holder.text = (CheckedTextView) convertView.findViewById(R.id.text);
 
 			convertView.setTag(holder);
 		}
-		bindDropDownView(itemsList.get(position), position, convertView);
+		bindDropDownView(itemsList.get(position), convertView);
 
 		return convertView;
 	}
 
-	private void bindDropDownView(SelectionItem item, int pos, View convertView) {
+	private void bindDropDownView(SelectionItem item, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.image.setImageDrawable(item.image);
-		holder.text.setText(item.text);
+
+		holder.image.setImageDrawable(item.getImage());
+		holder.text.setText(item.getText());
+		holder.text.setChecked(item.isChecked());
 	}
 
 	private class ViewHolder {
-		public TextView text;
+		public CheckedTextView text;
 		public ImageView image;
 	}
 }

@@ -33,8 +33,6 @@ public class VideosAdapter extends ItemsAdapter<VideoItem> {
 		holder.fullDescBtn = (Button) view.findViewById(R.id.fullDescBtn);
 		holder.playBtn = (Button) view.findViewById(R.id.playVideoBtn);
 
-//		holder.fullDescBtn.setOnClickListener(fullDescClickListener);
-//		holder.playBtn.setOnClickListener(playClickListener);
 		holder.fullDescBtn.setOnClickListener(clickListenerFace);
 		holder.playBtn.setOnClickListener(clickListenerFace);
 

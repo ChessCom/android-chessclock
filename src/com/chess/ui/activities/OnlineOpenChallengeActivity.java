@@ -43,11 +43,12 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		minRatingSpnr = (Spinner) findViewById(R.id.minRating);
 		minRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
-		minRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
+		minRatingSpnr.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MIN_RATING, 0));
+		// TODO save last selected rating
 
 		maxRatingSpnr = (Spinner) findViewById(R.id.maxRating);
 		maxRatingSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
-		maxRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxRatingSpnr.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRatedChkBx = (CheckBox) findViewById(R.id.ratedGame);
 
@@ -68,6 +69,10 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 	private void createChallenge() {
 		int minPos = minRatingSpnr.getSelectedItemPosition();
 		int maxPos = maxRatingSpnr.getSelectedItemPosition();
+
+		preferencesEditor.putInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MIN_RATING, minPos);
+		preferencesEditor.putInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MAX_RATING, maxPos);
+		preferencesEditor.commit();
 
 		Integer minRating = minPos == 0 ? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(minPos));
 		Integer maxRating = maxPos == 0 ? null : Integer.parseInt((String) maxRatingSpnr.getAdapter().getItem(maxPos));

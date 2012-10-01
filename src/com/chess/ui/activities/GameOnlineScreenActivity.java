@@ -31,6 +31,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
@@ -246,17 +247,18 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			setWhitePlayerDot(!userPlayWhite);
 		}
 
+		BoardFace boardFace = getBoardFace(); 
 		if (currentGame.getGameType().equals("2"))
-			getBoardFace().setChess960(true);
+			boardFace.setChess960(true);
 
 		if (!userPlayWhite) {
-			getBoardFace().setReside(true);
+			boardFace.setReside(true);
 		}
 
 		String FEN = currentGame.getFenStartPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, getBoardFace());
+			boardFace.genCastlePos(FEN);
+			MoveParser.fenParse(FEN, boardFace);
 		}
 		if (currentGame.getMoveList().contains("1.")) {
 			int beginIndex = 1;
@@ -264,18 +266,18 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", " ").substring(beginIndex).split(" ");
 
-			getBoardFace().setMovesCount(moves.length);
-			for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
-				getBoardFace().updateMoves(moves[i], false);
+			boardFace.setMovesCount(moves.length);
+			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
+				boardFace.updateMoves(moves[i], false);
 			}
 		} else {
-			getBoardFace().setMovesCount(0);
+			boardFace.setMovesCount(0);
 		}
 
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		invalidateGameScreen();
-		getBoardFace().takeBack();
+		boardFace.takeBack();
 		boardView.invalidate();
 
 		playLastMoveAnimation();

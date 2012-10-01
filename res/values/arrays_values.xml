@@ -58,22 +58,34 @@
 	<string-array name="minRating">
 		<item>---</item>
 		<item>1000</item>
+		<item>1100</item>
 		<item>1200</item>
+		<item>1300</item>
 		<item>1400</item>
+		<item>1500</item>
 		<item>1600</item>
+		<item>1700</item>
 		<item>1800</item>
+		<item>1900</item>
 		<item>2000</item>
 	</string-array>
 
 	<string-array name="maxRating">
 		<item>---</item>
 		<item>1000</item>
+		<item>1100</item>
 		<item>1200</item>
+		<item>1300</item>
 		<item>1400</item>
+		<item>1500</item>
 		<item>1600</item>
+		<item>1700</item>
 		<item>1800</item>
+		<item>1900</item>
 		<item>2000</item>
+		<item>2100</item>
 		<item>2200</item>
+		<item>2300</item>
 		<item>2400</item>
 	</string-array>
 

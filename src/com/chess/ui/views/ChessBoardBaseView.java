@@ -110,7 +110,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		redPaint = new Paint();
 		rect = new Rect();
 
-
 		whitePaint.setStrokeWidth(2.0f);
 		whitePaint.setStyle(Style.STROKE);
 		whitePaint.setColor(Color.WHITE);
@@ -147,7 +146,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		isHighlightEnabled = AppData.isHighlightEnabled(getContext());
 
 		showCoordinates = AppData.showCoordinates(getContext());
-
 	}
 
 	@Override
@@ -271,6 +269,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			square = viewWidth / 8;
 			W -= viewWidth % 8;
 		}
+
 		side = square * 2;
 
 		int i, j;
@@ -336,15 +335,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (drag) {
 			int c = boardFace.getColor()[from];
 			int p = boardFace.getPieces()[from];
-			int x = dragX - square / 2;
-			int y = dragY - square / 2;
+			int halfSquare = square / 2;
+			int x = dragX - halfSquare;
+			int y = dragY - halfSquare;
 			int col = (dragX - dragX % square) / square;
 			int row = ((dragY + square) - (dragY + square) % square) / square;
 			if (c != 6 && p != 6) {
-				rect.set(x - square / 2, y - square / 2, x + square + square / 2, y + square + square / 2);
+				rect.set(x - halfSquare, y - halfSquare, x + square + halfSquare, y + square + halfSquare);
 				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
-				canvas.drawRect(col * square - square / 2, row * square - square / 2,
-						col * square + square + square / 2, row * square + square + square / 2, whitePaint);
+				canvas.drawRect(col * square - halfSquare, row * square - halfSquare,
+						col * square + square + halfSquare, row * square + square + halfSquare, whitePaint);
 			}
 		}
 	}
@@ -386,6 +386,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //		for (int i = 0; i < len; i++)
 //			Log.v("TEST", "Res Id " + i + " is " + Integer.toHexString(resIds[i]));
 //	}
+
+	@Override
+	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
+		super.onSizeChanged(xNew, yNew, xOld, yOld);
+		viewWidth = (xNew == 0 ? viewWidth : xNew);
+		viewHeight = (yNew == 0 ? viewHeight : yNew);
+	}
 
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
@@ -653,4 +660,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.vintage_bk,
 	};
 
+	public void updateBoardAndPiecesImgs() {
+		loadBoard(AppData.getChessBoardId(getContext()));
+		loadPieces(AppData.getPiecesId(getContext()));
+
+		invalidate();
+	}
 }

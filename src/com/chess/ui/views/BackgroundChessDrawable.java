@@ -75,8 +75,6 @@ public class BackgroundChessDrawable extends Drawable {
 			configChanged = false;
 		}
 		canvas.save();
-//		screenOrientation = context.getResources().getConfiguration().orientation;
-
 
 		image.draw(canvas);
 

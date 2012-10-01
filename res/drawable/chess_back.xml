@@ -3,5 +3,4 @@
     android:src="@drawable/chess_cell"
     android:tileMode="repeat"
     android:dither="true"
-     
     />

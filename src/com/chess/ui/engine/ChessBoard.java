@@ -23,8 +23,8 @@ import java.util.TreeSet;
 
 // todo: make class abstract after refactoring for another boards: Echess, Tactics
 public /*abstract*/ class ChessBoard implements BoardFace {
-	final public static int LIGHT = 0;
-	final public static int DARK = 1;
+	public static final int LIGHT = 0;
+	public static final int DARK = 1;
 
 	// piecesBitmap codes on boardBitmap
 	public static final int PAWN = 0;
