@@ -48,9 +48,4 @@
 		android:icon="@drawable/next"
 		android:showAsAction="never" />
 
-<!--   <item android:id="@+id/menu_preferences"
-        android:title="@string/preferences"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:orderInCategory="1"
-        android:showAsAction="never" />-->
 </menu>

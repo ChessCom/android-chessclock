@@ -22,30 +22,6 @@
 		android:icon="@drawable/ic_action_settings"
 		android:showAsAction="always"
 		/>
-<!--
-	<item android:id="@+id/menu_newGame"
-		android:title="@string/new_game"
-		android:icon="@drawable/newgame"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_options"
-		android:title="@string/options"
-		android:icon="@drawable/options"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_reside"
-		android:title="@string/reside"
-		android:icon="@drawable/reside"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_hint"
-		android:title="@string/hint"
-		android:icon="@drawable/hint"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_previous"
-		android:title="@string/prev"
-		android:icon="@drawable/prev"
-		android:showAsAction="never" />
-	<item android:id="@+id/menu_next"
-		android:title="@string/next"
-		android:icon="@drawable/next"
-		android:showAsAction="never" />-->
+
 
 </menu>

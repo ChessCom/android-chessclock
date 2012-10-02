@@ -22,14 +22,5 @@
 		android:icon="@drawable/ic_action_settings"
 		android:showAsAction="always"
 		/>
-<!--
-	<item android:id="@+id/menu_options"
-		android:title="@string/options"
-		android:icon="@drawable/options"
-		android:showAsAction="never"/>
-	<item android:id="@+id/menu_chat"
-		android:title="@string/chat"
-		android:icon="@drawable/chat"
-		android:showAsAction="never"/>-->
 
 </menu>

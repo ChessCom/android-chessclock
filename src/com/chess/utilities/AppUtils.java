@@ -81,12 +81,8 @@ public class AppUtils {
 	public static boolean needFullScreen(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
-		if ((displayMetrics.density < MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW)
-				&& config.orientation == Configuration.ORIENTATION_PORTRAIT) {
-			return true;
-		} else {
-			return false;
-		}
+		return (displayMetrics.density < MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW)
+				&& config.orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 
 	/**
@@ -97,18 +93,9 @@ public class AppUtils {
 	public static boolean noNeedTitleBar(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
-		if (displayMetrics.density == MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM) {
-			if (displayMetrics.heightPixels <= 480 && config.orientation == Configuration.ORIENTATION_PORTRAIT) {
-				return true;
-			} else if (displayMetrics.heightPixels <= 300 && config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-				return true;
-			} else {
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
+		return (displayMetrics.density == MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
+				&& (displayMetrics.heightPixels <= 480 && config.orientation == Configuration.ORIENTATION_PORTRAIT
+				|| displayMetrics.heightPixels <= 300 && config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 	}
 
 	/**

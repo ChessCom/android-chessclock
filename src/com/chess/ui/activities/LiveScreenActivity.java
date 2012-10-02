@@ -91,7 +91,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		GridView gridView = (GridView) findViewById(R.id.gridview);
 		gridView.setAdapter(newGamesButtonsAdapter);
 
-//		infoGroup.add(startNewGameTitle);
 		infoGroup.add(statsBtn);
 		infoGroup.add(gridView);
 		infoGroup.add(ratingView);

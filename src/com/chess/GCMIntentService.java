@@ -135,8 +135,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		boolean gameInfoWasFound = false;
 		Log.d(TAG, " _________________________________");
-//		Log.d("TEST", " LastmoveSan = " + lastMoveSan);
+		Log.d(TAG, " LastmoveSan = " + lastMoveSan);
 		Log.d(TAG, " gameId = " + gameId);
+		Log.d(TAG, " opponentUsername = " + opponentUsername);
+
+		// temp fix for self notification
+//		if (opponentUsername.equals(AppData.getUserName(this))) {
+//			return; // don't need notificaion of myself game
+//		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
 
 		// check if we already received that notification
