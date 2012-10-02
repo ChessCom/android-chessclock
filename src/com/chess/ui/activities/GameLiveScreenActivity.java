@@ -799,12 +799,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void restoreGame() {
+		ChessBoardLive.resetInstance();
 		boardView.setBoardFace(ChessBoardLive.getInstance(this));
 		boardView.setGameActivityFace(this);
 
 		onGameStarted();
-        //getBoardFace().setInit(false); // looks redundant
-
 		getLccHolder().executePausedActivityGameEvents();
 	}
 
