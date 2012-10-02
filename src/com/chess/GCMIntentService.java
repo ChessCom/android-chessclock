@@ -15,16 +15,18 @@
  */
 package com.chess;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.SystemClock;
 import android.util.Log;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
-import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -38,6 +40,8 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 
+import java.util.Random;
+
 /**
  * IntentService responsible for handling GCM messages.
  */
@@ -45,6 +49,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@SuppressWarnings("hiding")
 	private static final String TAG = "GCMIntentService";
+	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
 	private Context context;
 	private SharedPreferences preferences;
 
@@ -62,17 +67,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
+		Log.d(TAG, "Registering to server, registrationId = " + registrationId
+				+ "token = " + AppData.getUserToken(context));
+
 		new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_REGISTER)).execute(loadItem);
     }
 
     @Override
     protected void onUnregistered(Context context, String registrationId) {
-        Log.d(TAG, "Device unregistered");
+        Log.d(TAG, "Device unregistered, registrationId = " + registrationId);
 
         if (GCMRegistrar.isRegisteredOnServer(context)) {
 			preferences = AppData.getPreferences(this);
 			// TODO temporary unregister only if user loged out
-			String realToken = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+			String realToken = preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 			if (realToken.equals(StaticData.SYMBOL_EMPTY)) {
 
 				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
@@ -83,6 +91,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
+				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId
+						+ "token = " + token);
 
 			}
         } else {
@@ -124,31 +134,31 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String gameId = intent.getStringExtra("game_id");
 
 		boolean gameInfoWasFound = false;
-		Log.d("TEST", " _________________________________");
-		Log.d("TEST", " LastmoveSan = " + lastMoveSan);
-		Log.d("TEST", " gameId = " + gameId);
-		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
+		Log.d(TAG, " _________________________________");
+//		Log.d("TEST", " LastmoveSan = " + lastMoveSan);
+		Log.d(TAG, " gameId = " + gameId);
+//		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
 
 		// check if we already received that notification
-		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
-			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
-				Log.d("TEST", " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
-				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
-					return; // no need to update
-				} else { // if move info is different
-					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-				}
-				gameInfoWasFound = true;
-			}
-		}
-
-		if (!gameInfoWasFound) { // if we have no info about this game, then add last move to list of objects
-			Log.d("TEST", " adding new game info" );
-			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
-			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-			lastMoveInfoItem.setGameId(gameId);
-		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
-		}
+//		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
+//			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
+//				Log.d("TEST", " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
+//				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
+//					return; // no need to update
+//				} else { // if move info is different
+//					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+//				}
+//				gameInfoWasFound = true;
+//			}
+//		}
+//
+//		if (!gameInfoWasFound) { // if we have no info about this game, then add last move to list of objects
+//			Log.d("TEST", " adding new game info" );
+//			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
+//			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+//			lastMoveInfoItem.setGameId(gameId);
+//		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
+//		}
 
 		long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 
@@ -210,6 +220,27 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     public void onError(Context context, String errorId) {
         Log.d(TAG, "Received error: " + errorId);
+		if (errorId != null) {
+			if ("SERVICE_NOT_AVAILABLE".equals(errorId)) {
+				long backoffTimeMs = preferences.getLong(AppConstants.GCM_RETRY_TIME, 100);// get back-off time from shared preferences
+				long nextAttempt = SystemClock.elapsedRealtime() + backoffTimeMs;
+				Intent retryIntent = new Intent("com.example.gcm.intent.RETRY");
+				retryIntent.putExtra("token", TOKEN);
+				PendingIntent retryPendingIntent =
+						PendingIntent.getBroadcast(context, 0, retryIntent, 0);
+				AlarmManager am = (AlarmManager)
+						context.getSystemService(Context.ALARM_SERVICE);
+				am.set(AlarmManager.ELAPSED_REALTIME, nextAttempt, retryPendingIntent);
+				backoffTimeMs *= 2; // Next retry should wait longer.
+				// update back-off time on shared preferences
+				SharedPreferences.Editor editor = preferences.edit();
+				editor.putLong(AppConstants.GCM_RETRY_TIME, backoffTimeMs);
+				editor.commit();
+			} else {
+				// Unrecoverable error, log it
+				Log.i(TAG, "Received error: " + errorId);
+			}
+		}
     }
 
     @Override
@@ -230,6 +261,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		public void updateData(String returnedObj) {
 			super.updateData(returnedObj);
 			GSMServerResponseItem responseItem = parseJson(returnedObj);
+			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER? "REGISTER": "UNREGITER";
+			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj );
 
 			if(responseItem.getCode() < 400){
 				switch (requestCode){

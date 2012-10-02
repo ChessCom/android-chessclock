@@ -212,13 +212,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             if (firstclick) {
                 from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                 if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-                    sel = true;
+                    pieceSelected = true;
                     firstclick = false;
                     invalidate();
                 }
             } else {
                 to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                sel = false;
+                pieceSelected = false;
                 firstclick = true;
                 boolean found = false;
 
@@ -244,7 +244,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                     invalidate();
                     afterMove();
                 } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-                    sel = true;
+                    pieceSelected = true;
                     firstclick = false;
                     from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                     invalidate();
@@ -290,7 +290,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                 if (firstclick) {
                     from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                     if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-                        sel = true;
+                        pieceSelected = true;
                         firstclick = false;
                         invalidate();
                     }
@@ -298,7 +298,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                     int fromPosIndex = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                     if (boardFace.getPieces()[fromPosIndex] != 6 && boardFace.getSide() == boardFace.getColor()[fromPosIndex]) {
                         from = fromPosIndex;
-                        sel = true;
+                        pieceSelected = true;
                         firstclick = false;
                         invalidate();
                     }
@@ -314,7 +314,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                     invalidate();
                     return false;
                 }
-                if (!drag && !sel)
+                if (!drag && !pieceSelected)
                     from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                 if (!firstclick && boardFace.getSide() == boardFace.getColor()[from]) {
                     drag = true;
@@ -336,13 +336,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                 if (firstclick) {
                     from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                     if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-                        sel = true;
+                        pieceSelected = true;
                         firstclick = false;
                         invalidate();
                     }
                 } else {
                     to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    sel = false;
+                    pieceSelected = false;
                     firstclick = true;
                     boolean found = false;
                     TreeSet<Move> moves = boardFace.gen();
@@ -368,7 +368,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                     if (found && move != null && boardFace.makeMove(move)) {
                         afterMove();
                     } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-                        sel = true;
+                        pieceSelected = true;
                         firstclick = false;
                         from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
                     }
@@ -400,7 +400,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             invalidate();
             afterMove();
         } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-            sel = true;
+            pieceSelected = true;
             firstclick = false;
             from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
             invalidate();
@@ -438,7 +438,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         stopThinking = true;
         if (!computerMoving) {
             finished = false;
-            sel = false;
+            pieceSelected = false;
             getBoardFace().takeBack();
             invalidate();
 			gameActivityFace.invalidateGameScreen();
@@ -449,7 +449,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     public void moveForward() {
         stopThinking = true;
         if (!computerMoving) {
-            sel = false;
+            pieceSelected = false;
             getBoardFace().takeNext();
             invalidate();
 			gameActivityFace.invalidateGameScreen();

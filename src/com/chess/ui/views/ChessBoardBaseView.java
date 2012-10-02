@@ -47,7 +47,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected boolean finished;
 	protected boolean firstclick = true;
-	protected boolean sel;
+	protected boolean pieceSelected;
 	protected boolean track;
 	protected boolean drag;
 	protected int[] pieces_tmp;
@@ -195,7 +195,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	@Override
 	public void moveBack() {
 		finished = false;
-		sel = false;
+		pieceSelected = false;
 		getBoardFace().takeBack();
 		invalidate();
 		gameActivityFace.invalidateGameScreen();
@@ -216,7 +216,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void moveForward() {
-		sel = false;
+		pieceSelected = false;
 		getBoardFace().takeNext();
 		invalidate();
 		gameActivityFace.invalidateGameScreen();
@@ -286,13 +286,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		for (i = 0; i < 64; i++) {
 			if (drag && i == from)
 				continue;
-			int c = boardFace.getColor()[i];
-			int p = boardFace.getPieces()[i];
+			int color = boardFace.getColor()[i];
+			int piece = boardFace.getPieces()[i];
 			int x = ChessBoard.getColumn(i, boardFace.isReside());
 			int y = ChessBoard.getRow(i, boardFace.isReside());
-			if (c != 6 && p != 6) {    // here is the simple replace/redraw of piece
+			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece
 				rect.set(x * square, y * square, x * square + square, y * square + square);
-				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
+				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
 			}
 		}
 	}
@@ -324,7 +324,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, redPaint);
 		}
 
-		if (sel) { // draw rectangle around the start move piece position
+		if (pieceSelected) { // draw rectangle around the start move piece position
 			int x = ChessBoard.getColumn(from, boardFace.isReside());
 			int y = ChessBoard.getRow(from, boardFace.isReside());
 			canvas.drawRect(x * square, y * square, x * square + square, y * square + square, whitePaint);
@@ -340,7 +340,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int y = dragY - halfSquare;
 			int col = (dragX - dragX % square) / square;
 			int row = ((dragY + square) - (dragY + square) % square) / square;
-			if (c != 6 && p != 6) {
+			if (c != ChessBoard.EMPTY && p != ChessBoard.EMPTY) {
 				rect.set(x - halfSquare, y - halfSquare, x + square + halfSquare, y + square + halfSquare);
 				canvas.drawBitmap(piecesBitmaps[c][p], null, rect, null);
 				canvas.drawRect(col * square - halfSquare, row * square - halfSquare,
@@ -411,7 +411,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			invalidate();
 			afterMove();
 		} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-			sel = true;
+			pieceSelected = true;
 			firstclick = false;
 			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 			invalidate();

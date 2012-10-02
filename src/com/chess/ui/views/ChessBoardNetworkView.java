@@ -103,13 +103,13 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			if (firstclick) {
 				from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 				if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-					sel = true;
+					pieceSelected = true;
 					firstclick = false;
 					invalidate();
 				}
 			} else {
 				to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-				sel = false;
+				pieceSelected = false;
 				firstclick = true;
 				boolean found = false;
 
@@ -135,7 +135,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 					invalidate();
 					afterMove();
 				} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-					sel = true;
+					pieceSelected = true;
 					firstclick = false;
 					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					invalidate();
@@ -195,7 +195,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 				if (firstclick) {
 					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-						sel = true;
+						pieceSelected = true;
 						firstclick = false;
 						invalidate();
 					}
@@ -203,7 +203,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 					int fromPosIndex = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[fromPosIndex] != 6 && boardFace.getSide() == boardFace.getColor()[fromPosIndex]) {
 						from = fromPosIndex;
-						sel = true;
+						pieceSelected = true;
 						firstclick = false;
 						invalidate();
 					}
@@ -219,7 +219,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 					invalidate();
 					return false;
 				}
-				if (!drag && !sel)
+				if (!drag && !pieceSelected)
 					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 				if (!firstclick && boardFace.getSide() == boardFace.getColor()[from]) {
 					drag = true;
@@ -241,13 +241,13 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 				if (firstclick) {
 					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-						sel = true;
+						pieceSelected = true;
 						firstclick = false;
 						invalidate();
 					}
 				} else {
 					to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-					sel = false;
+					pieceSelected = false;
 					firstclick = true;
 					boolean found = false;
 					TreeSet<Move> moves = boardFace.gen();
@@ -274,7 +274,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 						Log.d("TEST", "BoardNetworkView move was made");
 						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-						sel = true;
+						pieceSelected = true;
 						firstclick = false;
 						from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 					}
@@ -306,7 +306,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			invalidate();
 			afterMove();
 		} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-			sel = true;
+			pieceSelected = true;
 			firstclick = false;
 			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
 			invalidate();

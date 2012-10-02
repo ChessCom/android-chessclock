@@ -93,4 +93,5 @@ public class AppConstants {
 	public static final String VERSION_CODE = "versionCode ";
 	public static final String VERSION_NAME = "versionName ";
 	public static final String SDK_API = "API ";
+	public static final String GCM_RETRY_TIME = "GCM retry time";
 }

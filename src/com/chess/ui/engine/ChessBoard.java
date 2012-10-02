@@ -1927,14 +1927,28 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		return 8 * r + c;
 	}
 
+	/**
+	 * Get horizontal coordinate on the board for the given index of column
+	 * @param x
+	 * @param reside
+	 * @return
+	 */
 	public static int getColumn(int x, boolean reside) {
-		if (reside) x = 63 - x;
+		if (reside)
+			x = 63 - x;
 		return (x & 7);
 	}
 
-	public static int getRow(int x, boolean reside) {
-		if (reside) x = 63 - x;
-		return (x >> 3);
+	/**
+	 * Get vertical coordinate on the board for the given index of row
+	 * @param y
+	 * @param reside
+	 * @return
+	 */
+	public static int getRow(int y, boolean reside) {
+		if (reside)
+			y = 63 - y;
+		return (y >> 3);
 	}
 
 	@Override

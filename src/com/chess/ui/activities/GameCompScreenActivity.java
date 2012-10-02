@@ -67,7 +67,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		getBoardFace().setInit(true);
 		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
+//		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);// TODO seems to be useless
 		boardView.setGameActivityFace(this);
 
 
