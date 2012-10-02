@@ -29,9 +29,9 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
 			instance = new ChessBoardTactics(gameActivityFace);
 			instance.gameId = gameId;
-			instance.restored = false;
+			instance.justInitialized = true;
 		} else {
-			instance.restored = true;
+			instance.justInitialized = false;
 		}
 		return instance;
 	}

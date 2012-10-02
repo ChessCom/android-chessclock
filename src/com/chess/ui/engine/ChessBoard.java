@@ -67,7 +67,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	public static final String EQUALS_Q = "=Q";
 
 	protected Long gameId;
-	protected boolean restored;
+	protected boolean justInitialized;
 
 	private boolean init;
 	private boolean chess960;
@@ -2031,11 +2031,13 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		this.submit = submit;
 	}
 
+    // todo: should be removed soon
 	@Override
 	public boolean isInit() {
 		return init;
 	}
 
+    // todo: should be removed soon
 	@Override
 	public void setInit(boolean init) {
 		this.init = init;
@@ -2309,7 +2311,13 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		return gameId;
 	}
 
-	public boolean isRestored() {
-		return restored;
+	@Override
+	public boolean isJustInitialized() {
+		return justInitialized;
+	}
+
+    @Override
+	public void setJustInitialized(boolean justInitialized) {
+		this.justInitialized = justInitialized;
 	}
 }
