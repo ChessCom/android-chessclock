@@ -803,7 +803,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 
 		onGameStarted();
-        getBoardFace().setInit(false); // looks redundant
+        //getBoardFace().setInit(false); // looks redundant
 
 		getLccHolder().executePausedActivityGameEvents();
 	}
