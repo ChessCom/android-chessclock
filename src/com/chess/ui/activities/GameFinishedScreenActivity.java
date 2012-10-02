@@ -20,6 +20,7 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
@@ -68,14 +69,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
-		if (chessBoard != null) {
-			boardView.setBoardFace(chessBoard);
-		} else {
-			boardView.setBoardFace(new ChessBoard(this));
-			getBoardFace().setInit(true);
-//			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-		}
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		boardView.setGameActivityFace(this);
 	}
 
@@ -97,7 +91,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	protected void onResume() {
 		super.onResume();
 
-		boardView.setBoardFace(new ChessBoard(this));
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		getBoardFace().setMode(AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
 		updateGameState();
@@ -247,7 +241,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 				for (GameListCurrentItem currentGame : currentGames) {
 					if (currentGame.getGameId() != gameId) {
-						boardView.setBoardFace(new ChessBoard(GameFinishedScreenActivity.this));
+						boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
 						getBoardFace().setAnalysis(false);
 						getOnlineGame(currentGame.getGameId()); // if next game
 						return;
@@ -382,7 +376,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	@Override
 	protected void restoreGame() {
-		boardView.setBoardFace(new ChessBoard(this));
+		ChessBoardOnline.resetInstance();
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 
 		adjustBoardForGame();
 	}

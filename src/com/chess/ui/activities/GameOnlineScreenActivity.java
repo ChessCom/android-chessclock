@@ -490,7 +490,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 					if (currentGame.getGameId() != gameId) {
 						gameId = currentGame.getGameId();
 						showSubmitButtonsLay(false);
-						boardView.setBoardFace(new ChessBoard(GameOnlineScreenActivity.this));
+						boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
 						getBoardFace().setAnalysis(false);
 
 						getOnlineGame(gameId); // if next game
@@ -845,7 +845,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	@Override
 	protected void restoreGame() {
-		boardView.setBoardFace(new ChessBoard(this));
+		ChessBoardOnline.resetInstance();
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 
 		adjustBoardForGame();
 	}
