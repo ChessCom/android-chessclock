@@ -29,6 +29,7 @@ import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
@@ -106,14 +107,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		ChessBoard chessBoard = (ChessBoard) getLastCustomNonConfigurationInstance();
-		if (chessBoard != null) {
-			boardView.setBoardFace(chessBoard);
-		} else {
-			boardView.setBoardFace(new ChessBoard(this));
-			getBoardFace().setInit(true);
-//			getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
-		}
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
 
@@ -186,9 +180,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	};
 
 	private void updateGameState() {
-		if (getBoardFace().isInit()) {
+		if (getBoardFace().isJustInitialized()) {
 			getOnlineGame(gameId);
-			getBoardFace().setInit(false);
+			getBoardFace().setJustInitialized(false);
 		} else {
 			// TODO don't check updates if it' our move
 			LoadItem loadItem = new LoadItem();

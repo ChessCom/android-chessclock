@@ -193,7 +193,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		super.onPause();
 		getLccHolder().setActivityPausedMode(true);
-		getBoardFace().setJustInitialized(false);
 
 		handler.removeCallbacks(blinkSubmitButton);
 	}
@@ -201,6 +200,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private void updateGameState() {
 		if (getBoardFace().isJustInitialized()) {
 			onGameStarted();
+			getBoardFace().setJustInitialized(false);
 		}
 
         getLccHolder().executePausedActivityGameEvents();

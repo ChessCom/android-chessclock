@@ -4,6 +4,7 @@ import com.chess.model.GamePlayingItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoardLive;
+import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.ChessBoardTactics;
 
 import java.util.ArrayList;
@@ -153,6 +154,7 @@ public class DataHolder {
 		ourInstance = new DataHolder();
 		ChessBoardTactics.resetInstance();
 		ChessBoardLive.resetInstance();
+		ChessBoardOnline.resetInstance();
 	}
 
 	/**
