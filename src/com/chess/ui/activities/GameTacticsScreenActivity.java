@@ -116,7 +116,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		setBoardView(boardView);
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
-		firstRun = !chessBoard.getRestored();
+		firstRun = !chessBoard.isRestored();
 		boardView.setBoardFace(chessBoard);
 
 		timerTxt = (TextView) findViewById(R.id.timerTxt);

@@ -2309,7 +2309,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 		return gameId;
 	}
 
-	public boolean getRestored() {
+	public boolean isRestored() {
 		return restored;
 	}
 }
