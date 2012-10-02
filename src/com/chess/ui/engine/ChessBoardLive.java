@@ -21,9 +21,7 @@ public class ChessBoardLive extends ChessBoard {
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
 			instance = new ChessBoardLive(gameActivityFace);
 			instance.gameId = gameId;
-			instance.restored = false;
-		} else {
-			instance.restored = true;
+			instance.setInit(true);
 		}
 		return instance;
 	}
