@@ -60,22 +60,26 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onRegistered(Context context, String registrationId) {
-        Log.d(TAG, "Device registered: regId = " + registrationId);
+        Log.d(TAG, "User = " + AppData.getUserName(context) + " Device registered: regId = " + registrationId);
+
+		String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+		loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
-				+ "token = " + AppData.getUserToken(context));
+				+ " \ntoken = " + AppData.getUserToken(context)
+				+ " \ndeviceId = " + deviceId );
 
 		new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_REGISTER)).execute(loadItem);
     }
 
     @Override
     protected void onUnregistered(Context context, String registrationId) {
-        Log.d(TAG, "Device unregistered, registrationId = " + registrationId);
+        Log.d(TAG, "User = " + AppData.getUserName(context) + " Device unregistered, registrationId = " + registrationId);
 
         if (GCMRegistrar.isRegisteredOnServer(context)) {
 			preferences = AppData.getPreferences(this);
@@ -85,14 +89,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
 
+				String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
+
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
 				loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+				loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
-				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId
-						+ "token = " + token);
+				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
 
 			}
         } else {
@@ -104,7 +110,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onMessage(Context context, Intent intent) {
-        Log.d(TAG, "Received message");
+        Log.d(TAG, "User = " + AppData.getUserName(context) + " Received message");
 
 		String type = intent.getStringExtra("type");
 
@@ -232,10 +238,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 				long nextAttempt = SystemClock.elapsedRealtime() + backoffTimeMs;
 				Intent retryIntent = new Intent("com.example.gcm.intent.RETRY");
 				retryIntent.putExtra("token", TOKEN);
-				PendingIntent retryPendingIntent =
-						PendingIntent.getBroadcast(context, 0, retryIntent, 0);
-				AlarmManager am = (AlarmManager)
-						context.getSystemService(Context.ALARM_SERVICE);
+				PendingIntent retryPendingIntent = PendingIntent.getBroadcast(context, 0, retryIntent, 0);
+				AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 				am.set(AlarmManager.ELAPSED_REALTIME, nextAttempt, retryPendingIntent);
 				backoffTimeMs *= 2; // Next retry should wait longer.
 				// update back-off time on shared preferences
@@ -267,7 +271,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		public void updateData(String returnedObj) {
 			super.updateData(returnedObj);
 			GSMServerResponseItem responseItem = parseJson(returnedObj);
-			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER? "REGISTER": "UNREGITER";
+			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER? "REGISTER": "UNREGISTER";
 			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj );
 
 			if(responseItem.getCode() < 400){

@@ -531,11 +531,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void run() {
 			handler.removeCallbacks(this);
 
-			if(answerWasShowed()) {
+			TacticBoardFace boardFace = getBoardFace();
+			boolean sizeExceed = currentTacticAnswerCnt >= boardFace.getTacticMoves().length;
+
+			if(answerWasShowed() || sizeExceed) {
 				return;
 			}
 
-			TacticBoardFace boardFace = getBoardFace();
 			getBoardFace().updateMoves(boardFace.getTacticMoves()[currentTacticAnswerCnt], true);
 			invalidateGameScreen();
 

@@ -39,6 +39,7 @@ public class RestHelper {
 	/* Params */
 	public static final String GCM_P_ID = "id";
 	public static final String GCM_P_REGISTER_ID = "registration_id";
+	public static final String GCM_P_DEVICE_ID = "device_id";
 
 
 	//	API: Allow auto login to chess.com:

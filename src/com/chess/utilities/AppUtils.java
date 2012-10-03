@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -293,12 +294,15 @@ public class AppUtils {
 		public int SDK_API;
 		public String APP_VERSION_NAME = StaticData.SYMBOL_EMPTY;
 		public int APP_VERSION_CODE = 0;
-
+		public String android_id;
 		/*
 		 * Get information about device model, App version and API version
 		 */
 		public DeviceInfo getDeviceInfo(Context context) {
 			DeviceInfo deviceInfo = new DeviceInfo();
+
+			deviceInfo.android_id =  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
 			deviceInfo.MODEL = Build.MODEL;
 			Log.i("requested MODEL = ", deviceInfo.MODEL);

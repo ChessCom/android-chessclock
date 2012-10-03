@@ -33,6 +33,7 @@ import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
+import com.google.android.gcm.GCMRegistrar;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -237,6 +238,13 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// make sure device is unregistered from GCM, because when user uninstall app it's can't be unregistered from server and GCM
+		GCMRegistrar.unregister(this);
 	}
 
 	@Override

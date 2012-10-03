@@ -159,13 +159,18 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
 
+				String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
+
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(this));
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+				loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
-				Log.d("TEST", " manual register -> PostJsonDataTask");
+				Log.d("GCMIntentService", "Registering to server, registrationId = " + registrationId
+						+ " \ntoken = " + AppData.getUserToken(this)
+						+ " \ndeviceId = " + deviceId );
 			}
 		}
 	}

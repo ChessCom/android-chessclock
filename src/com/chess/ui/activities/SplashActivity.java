@@ -29,8 +29,7 @@ public class SplashActivity extends CommonLogicActivity {
 			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 		}
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
-			startActivity(new Intent(this, LoginScreenActivity.class));
-			finish();
+			goToLoginScreen();
 		} else { // validate token
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.VALIDATE_TOKEN);
@@ -62,7 +61,7 @@ public class SplashActivity extends CommonLogicActivity {
 				DataHolder.getInstance().setGuest(false);
 
 			} else {
-				startActivity(new Intent(getContext(), LoginScreenActivity.class));
+				goToLoginScreen();
 				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
 			}
 		}
@@ -70,7 +69,12 @@ public class SplashActivity extends CommonLogicActivity {
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-			startActivity(new Intent(getContext(), LoginScreenActivity.class));
+			goToLoginScreen();
 		}
+	}
+
+	private void goToLoginScreen(){
+		startActivity(new Intent(getContext(), LoginScreenActivity.class));
+//		GCMRegistrar.unregister(this);
 	}
 }
