@@ -780,7 +780,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			return;
 
 
-		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+//		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
 //		endGameTitleTxt.setText(R.string.game_over); // already set to game over

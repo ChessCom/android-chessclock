@@ -115,9 +115,7 @@ FIXME!!! We could in principle overflow the move history stack.
 
 		/* loop through the moves */
 		boolean foundMove = false;
-		Iterator<Move> i = validMoves.iterator();
-		while (i.hasNext()) {
-			Move m = (Move) i.next();
+		for (Move m : validMoves) {
 			if (!boardFace.makeMove(m, false))
 				continue;
 			foundMove = true;
@@ -191,9 +189,7 @@ FIXME!! see above */
 			sortPV(validCaptures);
 
 		/* loop through the moves */
-		Iterator<Move> i = validCaptures.iterator();
-		while (i.hasNext()) {
-			Move m = (Move) i.next();
+		for (Move m : validCaptures) {
 			if (!boardFace.makeMove(m, false))
 				continue;
 			ply++;
@@ -227,7 +223,7 @@ FIXME!! see above */
 		followPV = false;
 		Iterator<Move> i = moves.iterator();
 		while (i.hasNext()) {
-			Move m = (Move) i.next();
+			Move m = i.next();
 			if (m.equals(pv[0][ply])) {
 				followPV = true;
 				m.score += 10000000;

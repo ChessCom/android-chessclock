@@ -110,7 +110,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	private void getCountryCode() {
 		String[] tmp = COUNTRIES.clone();
 		java.util.Arrays.sort(tmp);
-		int i = 0, k = 0;
+		int i, k = 0;
 		for (i = 0; i < tmp.length; i++) {
 			if (tmp[i].equals(getString(R.string.united_states))) {
 				k = i;

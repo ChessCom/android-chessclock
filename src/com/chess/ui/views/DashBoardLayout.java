@@ -136,8 +136,8 @@ public class DashBoardLayout extends RelativeLayout {
 		int spaceDifference;
 
 		// Horizontal and vertical space between items
-		int hSpace = 0;
-		int vSpace = 0;
+		int hSpace;
+		int vSpace;
 
 		int cols = 1;
 		int rows;

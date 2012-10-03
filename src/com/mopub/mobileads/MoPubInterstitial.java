@@ -46,7 +46,7 @@ import java.util.HashMap;
 
 public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener {
     
-    private enum InterstitialState { HTML_AD_READY, NATIVE_AD_READY, NOT_READY };
+    private enum InterstitialState { HTML_AD_READY, NATIVE_AD_READY, NOT_READY }
     
     private MoPubInterstitialView mInterstitialView;
     private BaseInterstitialAdapter mInterstitialAdapter;

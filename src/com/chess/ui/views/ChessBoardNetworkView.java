@@ -270,7 +270,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 						return true;
 					}
 
-					if (found && move != null && boardFace.makeMove(move)) {
+					// && move != null -> always true because found flag preceding that state
+					if (found /*&& move != null*/ && boardFace.makeMove(move)) {
 						Log.d("TEST", "BoardNetworkView move was made");
 						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {

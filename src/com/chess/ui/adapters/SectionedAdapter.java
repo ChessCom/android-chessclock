@@ -49,7 +49,7 @@ public class SectionedAdapter extends SectionedListAdapter {
 		for (Section s : sections) {
 			if (s.adapter instanceof BaseAdapter) {
 				try {
-					((BaseAdapter) s.adapter).registerDataSetObserver(observer);
+					s.adapter.registerDataSetObserver(observer);
 				} catch (Exception e) {
 					// we have the same observable objects
 					// so, do nothing

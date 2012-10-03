@@ -133,7 +133,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String opponentUsername = intent.getStringExtra("opponent_username");
 		String gameId = intent.getStringExtra("game_id");
 
-		boolean gameInfoWasFound = false;
+//		boolean gameInfoWasFound = false;
 		Log.d(TAG, " _________________________________");
 		Log.d(TAG, " LastmoveSan = " + lastMoveSan);
 		Log.d(TAG, " gameId = " + gameId);

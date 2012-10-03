@@ -364,8 +364,8 @@ public class ChessBoardCompView extends ChessBoardBaseView {
                         gameActivityFace.showChoosePieceDialog(col, row);
                         return true;
                     }
-
-                    if (found && move != null && boardFace.makeMove(move)) {
+					// && move != null -> always true because found flag preceding that state
+                    if (found /*&& move != null*/ && boardFace.makeMove(move)) {
                         afterMove();
                     } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
                         pieceSelected = true;

@@ -52,10 +52,9 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 				if (position == 0) {
 					return TYPE_SECTION_HEADER;
 				}
-				int size = count == 0 ? 0 : count + 1;
+				int size = count + 1;
 				if (position < size) {
-					int result = typeOffset + section.adapter.getItemViewType(position - 1);
-					return result;
+					return typeOffset + section.adapter.getItemViewType(position - 1);
 				}
 				position -= size;
 			}
@@ -138,7 +137,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 				if (position == 0) {
 					return (getHeaderView(section.caption, sectionIndex, convertView, parent));
 				}
-				int size = count == 0 ? 0 : count + 1;
+				int size = count + 1;
 
 				if (position < size) {
 					return (section.adapter.getView(position - 1, convertView, parent));

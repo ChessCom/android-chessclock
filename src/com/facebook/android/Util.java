@@ -190,7 +190,7 @@ public final class Util {
             os.write((encodePostBody(params, strBoundary)).getBytes());
             os.write((endLine + "--" + strBoundary + endLine).getBytes());
 
-            if (!dataparams.equals(StaticData.SYMBOL_EMPTY)) {
+            if (!dataparams.isEmpty()) {
 
                 for (String key: dataparams.keySet()){
                     os.write(("Content-Disposition: form-data; filename=\"" + key + "\"" + endLine).getBytes());
