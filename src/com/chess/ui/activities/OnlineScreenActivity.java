@@ -25,6 +25,7 @@ import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.ui.adapters.OnlineCurrentGamesAdapter;
 import com.chess.ui.adapters.OnlineFinishedGamesAdapter;
 import com.chess.ui.adapters.SectionedAdapter;
+import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.InneractiveAdHelper;
@@ -324,6 +325,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
+			ChessBoardOnline.resetInstance();
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 			intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);
 			startActivity(intent);
@@ -447,7 +449,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			} else {
 				DataHolder.getInstance().setAcceptDraw(false);
-
+				ChessBoardOnline.resetInstance();
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 				intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);
 

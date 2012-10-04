@@ -280,21 +280,21 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (getBoardFace().isAnalysis())
+			currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+			gamePanelView.enableGameControls(true);
+			boardView.lockBoard(false);
+
+			if (getBoardFace().isAnalysis()) {
+				boardView.enableAnalysis();
 				return;
+			}
 
-			GameOnlineItem newGame = ChessComApiParser.GetGameParseV3(returnedObj);
-
-			onGameRefresh(newGame);
-
+			onGameRefresh();
 			checkMessages();
 		}
 	}
 
-	public void onGameRefresh(GameOnlineItem newGame) {
-		currentGame = newGame;
-		gamePanelView.enableGameControls(true);
-		boardView.lockBoard(false);
+	public void onGameRefresh() {
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
@@ -817,8 +817,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	protected void restoreGame() {
 		ChessBoardOnline.resetInstance();
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
-
 		adjustBoardForGame();
+		getBoardFace().setJustInitialized(false);
 	}
 
 
