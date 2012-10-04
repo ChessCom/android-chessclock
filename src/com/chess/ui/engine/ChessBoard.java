@@ -21,8 +21,7 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-// todo: make class abstract after refactoring for another boards: Echess, Tactics
-public /*abstract*/ class ChessBoard implements BoardFace {
+public class ChessBoard implements BoardFace {
 	public static final int LIGHT = 0;
 	public static final int DARK = 1;
 
@@ -69,7 +68,6 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	protected Long gameId;
 	protected boolean justInitialized;
 
-	private boolean init;
 	private boolean chess960;
 	private boolean reside;
 	private boolean submit;
@@ -275,8 +273,7 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	private BoardToGameActivityFace gameActivityFace;
 	private SoundPlayer soundPlayer;
 
-	// todo: should be changed to private after refactoring for another boards: Echess, Tactics
-	public ChessBoard(BoardToGameActivityFace gameActivityFace) {
+	protected ChessBoard(BoardToGameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
 		soundPlayer = gameActivityFace.getSoundPlayer();
 	}
@@ -2029,18 +2026,6 @@ public /*abstract*/ class ChessBoard implements BoardFace {
 	@Override
 	public void setSubmit(boolean submit) {
 		this.submit = submit;
-	}
-
-    // todo: should be removed soon
-	@Override
-	public boolean isInit() {
-		return init;
-	}
-
-    // todo: should be removed soon
-	@Override
-	public void setInit(boolean init) {
-		this.init = init;
 	}
 
 	@Override

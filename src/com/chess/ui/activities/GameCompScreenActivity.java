@@ -17,6 +17,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameCompActivityFace;
@@ -61,20 +62,26 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		boardView.setFocusable(true);
 		boardView.setGamePanelView(gamePanelView);
 
-		boardView.setBoardFace(new ChessBoard(this));
+		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
+		boardView.setBoardFace(chessBoardComp);
 		boardView.setGameActivityFace(this);
 		setBoardView(boardView);
 
-		getBoardFace().setInit(true);
-		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-//		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);// TODO seems to be useless
-		boardView.setGameActivityFace(this);
+        getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
+        if (getBoardFace().isAnalysis()) {
+            boardView.enableAnalysis();
+            return;
+        }
 
-		gamePanelView.turnCompMode();
+        gamePanelView.turnCompMode();
 
-		if (AppData.haveSavedCompGame(this)) { // if load game
-			loadSavedGame();
+		if (AppData.haveSavedCompGame(this)) {
+
+			if (chessBoardComp.isJustInitialized()) {
+				loadSavedGame();
+				chessBoardComp.setJustInitialized(false);
+			}
 
 			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
 				getBoardFace().setReside(true);
@@ -91,7 +98,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 				boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 			}
 		}
-
 	}
 
 	public void init() {
@@ -221,16 +227,17 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
     @Override
-	protected void restoreGame(){
-		boardView.setBoardFace(new ChessBoard(this));
+	protected void restoreGame() {
+		ChessBoardComp.resetInstance();
+		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
+		boardView.setBoardFace(chessBoardComp);
 		boardView.setGameActivityFace(this);
-		getBoardFace().setInit(true);
-		getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		loadSavedGame();
+		chessBoardComp.setJustInitialized(false);
 	}
 
-	private void loadSavedGame(){
+	private void loadSavedGame() {
 		int i;
 		String[] moves = AppData.getCompSavedGame(this).split("[|]");
 		for (i = 1; i < moves.length; i++) {
@@ -307,19 +314,19 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		public void onClick(DialogInterface dialogInterface, int i) {
 			switch (i) {
 				case NEW_GAME_WHITE: {
-					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
+					ChessBoardComp.resetInstance();
+					boardView.setBoardFace(ChessBoardComp.getInstance(GameCompScreenActivity.this));
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 					invalidateGameScreen();
 					break;
 				}
 				case NEW_GAME_BLACK: {
 					// TODO encapsulate
-					boardView.setBoardFace(new ChessBoard(GameCompScreenActivity.this));
+					ChessBoardComp.resetInstance();
+					boardView.setBoardFace(ChessBoardComp.getInstance(GameCompScreenActivity.this));
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
 					getBoardFace().setReside(true);
-					getBoardFace().genCastlePos(AppConstants.DEFAULT_GAMEBOARD_CASTLE);
 					boardView.invalidate();
 					invalidateGameScreen();
 

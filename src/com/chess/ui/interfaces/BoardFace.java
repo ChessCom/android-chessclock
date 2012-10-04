@@ -66,11 +66,6 @@ public interface BoardFace {
 
 	boolean isSubmit();
 
-	void setInit(boolean init);
-
-	boolean isInit();
-
-
 	void setXside(int xside);
 
 	void setSide(int side);

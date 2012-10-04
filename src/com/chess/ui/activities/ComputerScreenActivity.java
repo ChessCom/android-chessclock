@@ -12,6 +12,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.ui.engine.ChessBoardComp;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -71,6 +72,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
 				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 
+			ChessBoardComp.resetInstance();
 			preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
