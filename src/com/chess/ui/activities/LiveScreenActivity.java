@@ -169,6 +169,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 
 	@Override
 	public void onClick(View view) {
+		super.onClick(view);
 		if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 
