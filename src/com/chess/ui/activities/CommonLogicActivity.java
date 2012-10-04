@@ -124,13 +124,13 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			return;
 
 		// Make sure the device has the proper dependencies.
-		try {
-			GCMRegistrar.checkDevice(this); // Check device to support GCM, if not supported then turn on timed notifications
-		} catch (UnsupportedOperationException ex) {
-			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications " + ex.toString());
-			AppUtils.startNotificationsUpdate(this);
-			return;
-		}
+//		try {
+//			GCMRegistrar.checkDevice(this); // Check device to support GCM, if not supported then turn on timed notifications
+//		} catch (UnsupportedOperationException ex) {
+//			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications " + ex.toString());
+//			AppUtils.startNotificationsUpdate(this);
+//			return;
+//		}
 
 		// Make sure the manifest was properly set - comment out this line
 		// while developing the app, then uncomment it when it's ready.
@@ -159,29 +159,29 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
 
-				String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
+//				String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
 
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(this));
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-				loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
+//				loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 				Log.d("GCMIntentService", "Registering to server, registrationId = " + registrationId
 						+ " \ntoken = " + AppData.getUserToken(this)
-						+ " \ndeviceId = " + deviceId );
+						/*+ " \ndeviceId = " + deviceId */);
 			}
 		}
 	}
 
 	protected void unregisterGcmService(){
-		try{
-			GCMRegistrar.checkDevice(this);
-		} catch (UnsupportedOperationException ex){
-			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications ");
-			AppUtils.stopNotificationsUpdate(this);
-		}
+//		try{
+//			GCMRegistrar.checkDevice(this);
+//		} catch (UnsupportedOperationException ex){
+//			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications ");
+//			AppUtils.stopNotificationsUpdate(this);
+//		}
 
 		// save token to unregister from server
 		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, AppData.getUserToken(this));

@@ -92,6 +92,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
 	private float density;
+	private int coordinateFont;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -115,10 +116,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		whitePaint.setColor(Color.WHITE);
 
 		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Regular.ttf");
+		coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
+
 		coordinatesPaint.setStrokeWidth(1.0f);
 		coordinatesPaint.setStyle(Style.FILL);
-		coordinatesPaint.setColor(Color.BLACK);
-		coordinatesPaint.setTextSize(16 * density);
+		coordinatesPaint.setColor(Color.WHITE);
+		coordinatesPaint.setShadowLayer(1.5f, 1.0f, 1.5f, 0xFF000000);
+		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(typeface);
 
 		redPaint.setStrokeWidth(2.0f);
@@ -137,6 +141,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		userActive = false;
 
 		preferences = AppData.getPreferences(getContext());
+
 	}
 
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {

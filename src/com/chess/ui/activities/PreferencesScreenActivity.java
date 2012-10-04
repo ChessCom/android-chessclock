@@ -377,13 +377,15 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			// don't check move if pref didn't changed
 			boolean notificationsWasEnabled = AppData.isNotificationsEnabled(this);
+			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
+			preferencesEditor.commit();
+
 			if(!notificationsWasEnabled && checked){
 				registerGcmService();
 				checkMove();
 			} else if(!checked) {
 				unregisterGcmService();
 			}
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 
 		} else if (compoundButton.getId() == R.id.prefCoords) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, checked);
