@@ -17,9 +17,8 @@ import java.util.List;
 public class RestHelper {
 
 	/* Results */
-	public static final String R_SUCCESS = "Success+";
-	public static final String R_SUCCESS_ = "Success";
-	public static final String R_ERROR = "Error+";
+	public static final String R_SUCCESS = "Success"; // seems like we need only one word
+	public static final String R_ERROR = "Error";
 	public static final String R_YOUR_MOVE = "Success+1";
 	public static final String R_OPPONENT_MOVE = "Success+0";
 

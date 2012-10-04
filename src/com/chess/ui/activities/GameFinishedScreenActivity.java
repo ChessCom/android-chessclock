@@ -120,11 +120,11 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				onGameStarted(returnedObj);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+//				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
+//			}
 		}
 	}
 
@@ -230,28 +230,23 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+			ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
-				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
-
-				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.getIsMyTurn()) {
-						currentGames.add(gameListItem);
-					}
+			for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
+				if (gameListItem.getIsMyTurn()) {
+					currentGames.add(gameListItem);
 				}
-
-				for (GameListCurrentItem currentGame : currentGames) {
-					if (currentGame.getGameId() != gameId) {
-						boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
-						getBoardFace().setAnalysis(false);
-						getOnlineGame(currentGame.getGameId()); // if next game
-						return;
-					}
-				}
-				finish();
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
+
+			for (GameListCurrentItem currentGame : currentGames) {
+				if (currentGame.getGameId() != gameId) {
+					boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
+					getBoardFace().setAnalysis(false);
+					getOnlineGame(currentGame.getGameId()); // if next game
+					return;
+				}
+			}
+			finish();
 		}
 	}
 

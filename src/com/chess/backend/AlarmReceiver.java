@@ -43,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				int haveMoves = 0;
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
 				if(itemList.size() == NOTIFICATIONS_ICON_CNT) {
@@ -91,7 +91,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 					getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 				}
-			}
+//			}
 		}
 	}
 

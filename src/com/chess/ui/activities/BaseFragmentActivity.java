@@ -181,6 +181,17 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		getLastPopupFragment().setButtons(1);
 	}
 
+	public void safeShowSinglePopupDialog(int titleId, String message) {
+		if (isPaused)
+			return;
+
+		// temporary handling i18n manually
+		final String messageI18n = AppUtils.getI18nStringForAPIError(context, message);
+		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
+		getLastPopupFragment().setButtons(1);
+	}
+
+
 	protected void showSinglePopupDialog(int titleId, String message) {
 		// temporary handling i18n manually
 		final String messageI18n = AppUtils.getI18nStringForAPIError(context, message);

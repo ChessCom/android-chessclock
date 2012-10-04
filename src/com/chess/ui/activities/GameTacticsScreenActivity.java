@@ -458,37 +458,35 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				String[] tmp = returnedObj.trim().split("[|]");
-				if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
-					showLimitDialog();
-					return;
-				}
+			String[] tmp = returnedObj.trim().split("[|]");
+			if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
+				showLimitDialog();
+				return;
+			}
 
-				int count = tmp.length - 1;
-				List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
-				for (int i = 1; i <= count; i++) {
-					tacticBatch.add(new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON)));
-				}
+			int count = tmp.length - 1;
+			List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
+			for (int i = 1; i <= count; i++) {
+				tacticBatch.add(new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON)));
+			}
 
-				DataHolder.getInstance().setCurrentTacticProblem(0);
-				DataHolder.getInstance().setTacticsBatch(tacticBatch);
-				getTacticFromBatch();
+			DataHolder.getInstance().setCurrentTacticProblem(0);
+			DataHolder.getInstance().setTacticsBatch(tacticBatch);
+			getTacticFromBatch();
+		}
 
+		@Override
+		public void errorHandle(String resultMessage) {
+			if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
+				showLimitDialog();
 			} else {
-				String errorMessage = returnedObj.substring(RestHelper.R_ERROR.length());
-				if (errorMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
-					showLimitDialog();
-				} else {
-					showSinglePopupDialog(errorMessage);
-				}
+				showSinglePopupDialog(resultMessage);
 			}
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
 			handleErrorRequest();
-//			blockScreenRotation(false);
 		}
 	}
 

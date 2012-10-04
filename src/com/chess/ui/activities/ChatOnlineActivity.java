@@ -124,11 +124,11 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS)){
+//			if(returnedObj.contains(RestHelper.R_SUCCESS)){
 				onMessageReceived(returnedObj);
-			}  else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
-			}
+//			}  else if (returnedObj.contains(RestHelper.R_ERROR)) {
+//				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+//			}
 		}
 	}
 

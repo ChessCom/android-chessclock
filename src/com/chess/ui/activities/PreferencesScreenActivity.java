@@ -426,13 +426,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS)){
-				if (vacationCheckBox.isChecked())
-					vacationCheckBox.setText(getString(R.string.vacationOn));
-				else
-					vacationCheckBox.setText(getString(R.string.vacationOff));
-			} else if(returnedObj.contains(RestHelper.R_ERROR)) {
-				showPopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+			if (vacationCheckBox.isChecked()) {
+				vacationCheckBox.setText(getString(R.string.vacationOn));
+			} else {
+				vacationCheckBox.setText(getString(R.string.vacationOff));
 			}
 		}
 	}

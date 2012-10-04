@@ -180,53 +180,48 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void updateData(String returnedObj) {
 
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
-				switch (currentListType) {
-					case GameOnlineItem.CURRENT_TYPE:
-						currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
-						updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
-						break;
-					case GameOnlineItem.CHALLENGES_TYPE:
-						challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
-						updateStartingType(GameOnlineItem.FINISHED_TYPE);
-						break;
-					case GameOnlineItem.FINISHED_TYPE:
-						finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
-						break;
-					default:
-						break;
-				}
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-
-				// redundant check? we already clean the tasks pool in onPause, or...?
-				// no cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
-				// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
-				if (isPaused)
-					return;
-
-				String status = returnedObj.split("[+]")[1];
-
-				if (status.equals(RestHelper.R_PLEASE_LOGIN_AGAIN)) {
-//					AppUtils.stopNotificationsUpdate(getContext());
-					showSinglePopupDialog(R.string.error, status);
-				} else if(status.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
-					showToast(R.string.no_challenges_during_vacation);
-				} else {
-					showSinglePopupDialog(R.string.error, status);
-				}
-
-				switch (currentListType) { // Continue to update list
-					case GameOnlineItem.CURRENT_TYPE:
-						updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
-						break;
-					case GameOnlineItem.CHALLENGES_TYPE:
-						updateStartingType(GameOnlineItem.FINISHED_TYPE);
-						break;
-				}
+			switch (currentListType) {
+				case GameOnlineItem.CURRENT_TYPE:
+					currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
+					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+					break;
+				case GameOnlineItem.CHALLENGES_TYPE:
+					challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
+					updateStartingType(GameOnlineItem.FINISHED_TYPE);
+					break;
+				case GameOnlineItem.FINISHED_TYPE:
+					finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
+					break;
+				default:
+					break;
 			}
 		}
 
+		@Override
+		public void errorHandle(String resultMessage) {
+			// redundant check? we already clean the tasks pool in onPause, or...?
+			// no cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
+			// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
+			if (isPaused)
+				return;
+
+			if(resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
+				showToast(R.string.no_challenges_during_vacation);
+			} else {
+				showSinglePopupDialog(R.string.error, resultMessage);
+			}
+
+			switch (currentListType) { // Continue to update list
+				case GameOnlineItem.CURRENT_TYPE:
+					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+					break;
+				case GameOnlineItem.CHALLENGES_TYPE:
+					updateStartingType(GameOnlineItem.FINISHED_TYPE);
+					break;
+			}
+		}
 	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
@@ -239,12 +234,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (isPaused)
 				return;
 
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
 				updateStartingType(GameOnlineItem.CURRENT_TYPE);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+//				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
+//			}
 		}
 	}
 
@@ -258,11 +253,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (isFinishing())
 				return;
 
-			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
 				updateStartingType(GameOnlineItem.CURRENT_TYPE);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+//				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
+//			}
 		}
 	}
 
@@ -281,9 +276,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				onVacation = returnedObj.substring(RestHelper.R_SUCCESS.length()).equals("1");
-			}
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+				onVacation = returnedObj.contains("1");
+//			}
 		}
 	}
 
@@ -357,10 +352,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				onVacation = false;
 				updateStartingType(GameOnlineItem.CURRENT_TYPE);
-			}
+//			}
 		}
 	}
 

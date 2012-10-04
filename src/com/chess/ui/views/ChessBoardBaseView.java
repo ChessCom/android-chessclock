@@ -312,13 +312,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		int i;
 		if (showCoordinates) {
 			float numYShift = 15 * density;
+			float textYShift = 3 * density;
 			for (i = 0; i < 8; i++) {
 				if (boardFace.isReside()) {
 					canvas.drawText(nums[i], 2, i * square + numYShift, coordinatesPaint);
-					canvas.drawText(signs[7 - i], i * square + 2, 8 * square - 2, coordinatesPaint);
+					canvas.drawText(signs[7 - i], i * square + textYShift, 8 * square - textYShift, coordinatesPaint);
 				} else {
 					canvas.drawText(nums[7 - i], 2, i * square + numYShift, coordinatesPaint);
-					canvas.drawText(signs[i], i * square + 2, 8 * square - 2, coordinatesPaint);
+					canvas.drawText(signs[i], i * square + textYShift, 8 * square - textYShift, coordinatesPaint);
 				}
 			}
 		}

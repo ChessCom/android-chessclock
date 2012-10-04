@@ -108,7 +108,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				gameListItems.clear();
 				gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
 
@@ -118,9 +118,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 				}
 
 				gamesAdapter.notifyDataSetChanged();
-			} else  if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
-			}
+//			} else  if (returnedObj.contains(RestHelper.R_ERROR)) {
+//				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+//			}
 		}
 	}
 
@@ -201,11 +201,11 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			if(isPaused)
 				return;
 
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				showToast(successToastMsgId);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
-			}
+//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
+//				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
+//			}
 		}
 	}
 }

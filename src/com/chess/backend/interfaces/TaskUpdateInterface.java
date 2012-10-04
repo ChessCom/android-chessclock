@@ -23,5 +23,7 @@ public interface TaskUpdateInterface<T> {
 
 	void errorHandle(Integer resultCode);
 
+	void errorHandle(String resultMessage);
+
 	Context getMeContext();
 }

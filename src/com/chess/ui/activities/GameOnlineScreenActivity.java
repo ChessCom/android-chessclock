@@ -210,11 +210,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				onGameStarted(returnedObj);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+			onGameStarted(returnedObj);
 		}
 	}
 
@@ -284,18 +280,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				if (getBoardFace().isAnalysis())
-					return;
+			if (getBoardFace().isAnalysis())
+				return;
 
-				GameOnlineItem newGame = ChessComApiParser.GetGameParseV3(returnedObj);
+			GameOnlineItem newGame = ChessComApiParser.GetGameParseV3(returnedObj);
 
-				onGameRefresh(newGame);
+			onGameRefresh(newGame);
 
-				checkMessages();
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+			checkMessages();
 		}
 	}
 
@@ -402,15 +394,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
-				gamePanelView.enableGameControls(true);
-				boardView.lockBoard(false);
+			currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+			gamePanelView.enableGameControls(true);
+			boardView.lockBoard(false);
 
-				sendMove();
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+			sendMove();
 		}
 	}
 
@@ -433,15 +421,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				moveWasSent();
+			moveWasSent();
 
-				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				mNotificationManager.cancel((int) gameId);
-				mNotificationManager.cancel(R.id.notification_message);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
-			}
+			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			mNotificationManager.cancel((int) gameId);
+			mNotificationManager.cancel(R.id.notification_message);
 		}
 	}
 
@@ -476,36 +460,30 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+			ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
-				ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
-
-				for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-					if (gameListItem.getIsMyTurn()) {
-						currentGames.add(gameListItem);
-					}
+			for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
+				if (gameListItem.getIsMyTurn()) {
+					currentGames.add(gameListItem);
 				}
-
-				for (GameListCurrentItem currentGame : currentGames) {
-					if (currentGame.getGameId() != gameId) {
-						gameId = currentGame.getGameId();
-						showSubmitButtonsLay(false);
-						boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
-						getBoardFace().setAnalysis(false);
-
-						getOnlineGame(gameId); // if next game
-						// same new gameId
-						Intent intent = getIntent();
-						intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameInfoItem);
-						getIntent().replaceExtras(intent);
-						return;
-					}
-				}
-				finish();
-
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
+
+			for (GameListCurrentItem currentGame : currentGames) {
+				if (currentGame.getGameId() != gameId) {
+					gameId = currentGame.getGameId();
+					showSubmitButtonsLay(false);
+					boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
+					getBoardFace().setAnalysis(false);
+
+					getOnlineGame(gameId); // if next game
+					// same new gameId
+					Intent intent = getIntent();
+					intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameInfoItem);
+					getIntent().replaceExtras(intent);
+					return;
+				}
+			}
+			finish();
 		}
 	}
 
@@ -766,11 +744,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				onGameOver(getString(R.string.game_over), true);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+			onGameOver(getString(R.string.game_over), true);
 		}
 	}
 
@@ -835,11 +809,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				showSinglePopupDialog(R.string.drawoffered, DRAW_OFFER_TAG);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+			showSinglePopupDialog(R.string.drawoffered, DRAW_OFFER_TAG);
 		}
 	}
 
@@ -915,13 +885,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
-			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
-						ERROR_TAG);
-			}
-//			blockScreenRotation(false);
+			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
 		}
 	}
 }

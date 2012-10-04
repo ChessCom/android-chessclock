@@ -52,18 +52,18 @@ public class SplashActivity extends CommonLogicActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				if (AppData.isNotificationsEnabled(getContext())) {
-					checkMove();
-				}
-
-				startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
-				DataHolder.getInstance().setGuest(false);
-
-			} else {
-				goToLoginScreen();
-				showToast(returnedObj.substring(RestHelper.R_ERROR.length()));
+			if (AppData.isNotificationsEnabled(getContext())) {
+				checkMove();
 			}
+
+			startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
+			DataHolder.getInstance().setGuest(false);
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			goToLoginScreen();
+			showToast(resultMessage);
 		}
 
 		@Override

@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
@@ -14,15 +16,23 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.PostDataTask;
 import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
+import com.facebook.android.Facebook;
+import com.facebook.android.LoginButton;
+import com.facebook.android.SessionEvents;
+import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
+import org.apache.http.protocol.HTTP;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,11 +46,24 @@ import java.util.Locale;
  */
 public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
+	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
+	private static final int SIGNIN_CALLBACK_CODE = 16;
+	protected static final long FACEBOOK_DELAY = 200;
+	private static final int MIN_USERNAME_LENGTH = 3;
+	private static final int MAX_USERNAME_LENGTH = 20;
+
 	protected static final int REQUEST_REGISTER = 11;
 	private static final int REQUEST_UNREGISTER = 22;
 
+	private LoginUpdateListener loginUpdateListener;
+	private int loginReturnCode;
+
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	private String currentLocale;
+	protected Facebook facebook;
+	protected Handler handler;
+	private EditText loginUsernameEdt;
+	private EditText passwordEdt;
 
 
 	@Override
@@ -50,7 +73,32 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
 		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
+
 		setLocale();
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		facebookInit();
+	}
+
+	private void facebookInit() {
+		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
+		if (facebookLoginButton != null) {
+			facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+			SessionStore.restore(facebook, this);
+
+			SessionEvents.dropAuthListeners();
+			SessionEvents.addAuthListener(new SampleAuthListener());
+			SessionEvents.dropLogoutListeners();
+			SessionEvents.addLogoutListener(new SampleLogoutListener());
+			facebookLoginButton.init(this, facebook);
+
+			handler = new Handler();
+
+			loginUpdateListener = new LoginUpdateListener();
+		}
 	}
 
 	@Override
@@ -222,6 +270,162 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
+	protected void setLoginFields(EditText passedUsernameEdt, EditText passedPasswordEdt) {
+		this.loginUsernameEdt = passedUsernameEdt;
+		this.passwordEdt = passedPasswordEdt;
+	}
+
+	protected void signInUser(){
+		String userName = getTextFromField(loginUsernameEdt);
+		if (userName.length() < MIN_USERNAME_LENGTH || userName.length() > MAX_USERNAME_LENGTH) {
+			loginUsernameEdt.setError(getString(R.string.validateUsername));
+			loginUsernameEdt.requestFocus();
+			return;
+		}
+
+		String pass = getTextFromField(passwordEdt);
+		if (pass.length() == 0) {
+			passwordEdt.setError(getString(R.string.invalid_password));
+			passwordEdt.requestFocus();
+			return;
+		}
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.LOGIN);
+		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
+
+		new PostDataTask(loginUpdateListener).executeTask(loadItem);
+
+		loginReturnCode = SIGNIN_CALLBACK_CODE;
+	}
+
+	private class LoginUpdateListener extends AbstractUpdateListener<String> {
+		public LoginUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show){
+				showPopupHardProgressDialog(R.string.signingin);
+			} else {
+				Log.d("TEST", "LoginScreen LoginUpdateListener ->  dismissProgressDialog();, isPaused = " + isPaused);
+				if(isPaused)
+					return;
+
+				dismissProgressDialog();
+			}
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+			if (returnedObj.length() > 0) {
+				final String[] responseArray = returnedObj.split(":");
+				if (responseArray.length >= 4) {
+					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
+						preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
+						processLogin(responseArray);
+					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
+						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
+						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+						processLogin(responseArray);
+					}
+				}
+			}
+//			}
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
+				popupItem.setPositiveBtnId(R.string.sing_up);
+				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
+			} else /*if(returnedObj.contains(RestHelper.R_ERROR))*/{
+//				String message = returnedObj.substring(RestHelper.R_ERROR.length());
+				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){
+					passwordEdt.setError(getResources().getString(R.string.invalid_password));
+					passwordEdt.requestFocus();
+				}else{
+
+					showToast(resultMessage);
+//					showSinglePopupDialog(R.string.error, message);
+				}
+			}
+		}
+	}
+
+	public class SampleAuthListener implements SessionEvents.AuthListener {
+		@Override
+		public void onAuthSucceed() {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.LOGIN);
+			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
+			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
+
+			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
+
+			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
+		}
+
+		@Override
+		public void onAuthFail(String error) {
+			showToast(getString(R.string.login_failed)+ StaticData.SYMBOL_SPACE + error);
+		}
+	}
+	public class SampleLogoutListener implements SessionEvents.LogoutListener {
+		@Override
+		public void onLogoutBegin() {
+			showToast(R.string.loggin_out);
+		}
+
+		@Override
+		public void onLogoutFinish() {
+			showToast(R.string.you_logged_out);
+		}
+	}
+
+	private void processLogin(String[] response) {
+		// from actionbar
+		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
+		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
+		try {
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
+		} catch (UnsupportedEncodingException ignored) {
+			preferencesEditor.putString(AppConstants.USER_TOKEN, response[2]);
+		}
+		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
+		preferencesEditor.commit();
+
+		afterLogin();
+	}
+
+	protected void afterLogin(){ }
+
+	/**
+	 * Prevent earlier launch of task, as it finish right after onPause callback
+	 */
+	protected class DelayedCallback implements Runnable {
+
+		private Intent data;
+		private int resultCode;
+		private int requestCode;
+
+		public DelayedCallback(Intent data, int requestCode, int resultCode) {
+			this.data = data;
+			this.requestCode = requestCode;
+			this.resultCode = resultCode;
+		}
+
+		@Override
+		public void run() {
+			handler.removeCallbacks(this);
+			facebook.authorizeCallback(requestCode, resultCode, data);
+		}
+	}
+
 
 	protected void checkMove(){
 		LoadItem loadItem = new LoadItem();
@@ -238,7 +442,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
+//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 				int haveMoves = 0;
 				List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
 
@@ -285,7 +489,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 					getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 				}
-			}
+//			}
 		}
 	}
 }

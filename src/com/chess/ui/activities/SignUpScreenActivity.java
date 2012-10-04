@@ -191,16 +191,12 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS)){
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.LOGIN);
-				loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
-				loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.LOGIN);
+			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 
-				new PostDataTask(signUpUpdateListener).executeTask(loadItem);
-			}else if(returnedObj.contains(RestHelper.R_ERROR)){
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-			}
+			new PostDataTask(signUpUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -211,42 +207,38 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS)){
-				FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
-				String[] result = returnedObj.split(":");
+			FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
+			String[] result = returnedObj.split(":");
 
-				preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
-				preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
-				preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, result[0].split("[+]")[1]);
-				preferencesEditor.putString(AppConstants.API_VERSION, result[1]);
-				try {
-					preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(result[2], HTTP.UTF_8));
-				} catch (UnsupportedEncodingException ignored) {
-					showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login);
-					return;
-				}
-				preferencesEditor.commit();
+			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
+			preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, result[0].split("[+]")[1]);
+			preferencesEditor.putString(AppConstants.API_VERSION, result[1]);
+			try {
+				preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(result[2], HTTP.UTF_8));
+			} catch (UnsupportedEncodingException ignored) {
+				showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login);
+				return;
+			}
+			preferencesEditor.commit();
 
-				startActivity(new Intent(context, HomeScreenActivity.class));
-				finish();
+			startActivity(new Intent(context, HomeScreenActivity.class));
+			finish();
 
-				showToast(R.string.congratulations);
+			showToast(R.string.congratulations);
 
-				if (returnedObj.length() > 0) {
-					String[] responseArray = returnedObj.split(":");
-					if (responseArray.length >= 4) {
-						if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-							preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
-						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-							FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
+			if (returnedObj.length() > 0) {
+				String[] responseArray = returnedObj.split(":");
+				if (responseArray.length >= 4) {
+					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
+						preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
+					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
+						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 
-							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-						}
-						doUpdate(responseArray);
+						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 					}
+					doUpdate(responseArray);
 				}
-			}else if(returnedObj.contains(RestHelper.R_ERROR)){
-				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
 			}
 		}
 	}
@@ -300,25 +292,32 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				if (returnedObj.length() > 0) {
-					final String[] responseArray = returnedObj.split(":");
-					if (responseArray.length >= 4) {
+			if (returnedObj.length() > 0) {
+				final String[] responseArray = returnedObj.split(":");
+				if (responseArray.length >= 4) {
 
-						if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-							preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
-							doUpdate(responseArray);
-						} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-							FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
-							preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-							doUpdate(responseArray);
-						}
+					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
+						preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
+						doUpdate(responseArray);
+					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
+						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
+						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+						doUpdate(responseArray);
 					}
 				}
-			} else if (returnedObj.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
+			}
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
 				showToast(R.string.no_chess_account_signup_please);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
+			} else {
+				super.errorHandle(resultMessage);
 			}
+
+
 		}
 	}
 

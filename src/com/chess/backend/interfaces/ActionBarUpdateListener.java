@@ -1,6 +1,7 @@
 package com.chess.backend.interfaces;
 
 import actionbarcompat.ActionBarHelper;
+import com.chess.R;
 import com.chess.ui.activities.CoreActivityActionBar;
 
 /**
@@ -11,9 +12,11 @@ import com.chess.ui.activities.CoreActivityActionBar;
  */
 public abstract class ActionBarUpdateListener<T> extends AbstractUpdateListener<T> {
 	private ActionBarHelper actionBarHelper;
+	private CoreActivityActionBar coreActivityActionBar;
 
 	public ActionBarUpdateListener(CoreActivityActionBar coreActivityActionBar) {
 		super(coreActivityActionBar);
+		this.coreActivityActionBar = coreActivityActionBar;
 		actionBarHelper = coreActivityActionBar.provideActionBarHelper();
 	}
 
@@ -21,5 +24,10 @@ public abstract class ActionBarUpdateListener<T> extends AbstractUpdateListener<
 	public void showProgress(boolean show) {
 		if(actionBarHelper != null)
 			actionBarHelper.setRefreshActionItemState(show);
+	}
+
+	@Override
+	public void errorHandle(String resultMessage) {
+		coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, resultMessage);
 	}
 }

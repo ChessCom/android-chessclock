@@ -46,6 +46,11 @@ public abstract class AbstractUpdateListener<T> implements TaskUpdateInterface<T
 		}
 	}
 
+
+	@Override
+	public void errorHandle(String resultMessage) {
+	}
+
 	@Override
 	public Context getMeContext() {
 		return context;

@@ -111,14 +111,14 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if(returnedObj.contains(RestHelper.R_SUCCESS)){
+//			if(returnedObj.contains(RestHelper.R_SUCCESS)){
 				recent.setVisibility(View.VISIBLE);
 				item = new VideoItem(returnedObj.split("[|]")[2].split("<->"));
 				title.setText(item.getTitle());
 				desc.setText(item.getDescription());
 
 				playBtn.setEnabled(true);
-			}
+//			}
 		}
 	}
 
