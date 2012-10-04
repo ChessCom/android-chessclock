@@ -84,6 +84,24 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 		return result;
 	}
 
+	@Override
+	protected void onPostExecute(Integer result) {
+		blockScreenRotation(false);
 
+		if(isCancelled()) {
+			return;
+		}
+		taskFace.showProgress(false);
+		if (result == StaticData.RESULT_OK) {
+			if (item.contains(RestHelper.R_SUCCESS)) {
+				taskFace.updateData(item);
+			} else if (item.contains(RestHelper.R_ERROR)) {
+				taskFace.errorHandle(item.substring(RestHelper.R_ERROR.length()));
+			}
+
+		} else {
+			taskFace.errorHandle(result);
+		}
+	}
 
 }

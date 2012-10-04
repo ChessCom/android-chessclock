@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -168,8 +169,9 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void registerGcmService(){
-		if (!AppData.isNotificationsEnabled(this)) // no need to register if user turned off notifications
+		if (!AppData.isNotificationsEnabled(this) || DataHolder.getInstance().isGuest()) // no need to register if user turned off notifications
 			return;
+
 
 		// Make sure the device has the proper dependencies.
 //		try {

@@ -85,7 +85,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		init();
 		widgetsInit();
-		Log.d("TEST","onCreate");
 	}
 
 	public void init() {
@@ -325,19 +324,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			Log.d("TEST_MOVE", " Wrong move");
 			TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
 			boolean  tacticResultItemIsValid = tacticResultItem != null
-					&& Integer.valueOf(tacticResultItem.getUserRatingChange()) < 0; // if saved
-			if (tacticResultItemIsValid  && (DataHolder.getInstance().isGuest() || getBoardFace().isRetry()
-					|| noInternet)) {
-				String title;
-				if (!DataHolder.getInstance().isGuest()) {
-					title = getString(R.string.wrong_score,
+					&& Integer.valueOf(tacticResultItem.getUserRatingChange()) < 0; // if saved for wrong move. Note that after loading next tactic result is automaically assigns as a positive resultItem.
+			if (DataHolder.getInstance().isGuest()) {
+				showWrongMovePopup(getString(R.string.wrong_ex));
+			} else if (tacticResultItemIsValid  && (getBoardFace().isRetry() || noInternet)) {
+				String title = getString(R.string.wrong_score,
 							tacticResultItem.getUserRatingChange(),
 							tacticResultItem.getUserRating());
-				} else {
-					title = getString(R.string.wrong_ex);
-				}
 				showWrongMovePopup(title);
-
 			} else {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);

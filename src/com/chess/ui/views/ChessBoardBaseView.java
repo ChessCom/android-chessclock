@@ -92,7 +92,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
 	private float density;
-	private int coordinateFont;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -116,7 +115,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		whitePaint.setColor(Color.WHITE);
 
 		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-Regular.ttf");
-		coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
+		int coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
 
 		coordinatesPaint.setStrokeWidth(1.0f);
 		coordinatesPaint.setStyle(Style.FILL);
@@ -326,13 +325,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawHighlight(Canvas canvas) {
-		if (isHighlightEnabled && boardFace.getHply() > 0) { // draw current piece touched position highlight
-			Move m = boardFace.getHistDat()[boardFace.getHply() - 1].move;
-			int x1 = ChessBoard.getColumn(m.from, boardFace.isReside());
-			int y1 = ChessBoard.getRow(m.from, boardFace.isReside());
+		if (isHighlightEnabled && boardFace.getHply() > 0) { // draw moved piece highlight from -> to
+			Move move = boardFace.getHistDat()[boardFace.getHply() - 1].move;
+			int x1 = ChessBoard.getColumn(move.from, boardFace.isReside());
+			int y1 = ChessBoard.getRow(move.from, boardFace.isReside());
 			canvas.drawRect(x1 * square, y1 * square, x1 * square + square, y1 * square + square, redPaint);
-			int x2 = ChessBoard.getColumn(m.to, boardFace.isReside());
-			int y2 = ChessBoard.getRow(m.to, boardFace.isReside());
+			int x2 = ChessBoard.getColumn(move.to, boardFace.isReside());
+			int y2 = ChessBoard.getRow(move.to, boardFace.isReside());
 			canvas.drawRect(x2 * square, y2 * square, x2 * square + square, y2 * square + square, redPaint);
 		}
 
