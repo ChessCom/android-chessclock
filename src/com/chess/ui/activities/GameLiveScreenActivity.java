@@ -468,7 +468,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				"lccInitiated=" + lccInitiated +
 				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
 				", boardHply=" + getBoardFace().getHply() +
-				", boardInit=" + getBoardFace().isInit() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
 				", gameId=" + getGameId() +
@@ -802,8 +801,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		ChessBoardLive.resetInstance();
 		boardView.setBoardFace(ChessBoardLive.getInstance(this));
 		boardView.setGameActivityFace(this);
-
 		onGameStarted();
+		getBoardFace().setJustInitialized(false);
 		getLccHolder().executePausedActivityGameEvents();
 	}
 

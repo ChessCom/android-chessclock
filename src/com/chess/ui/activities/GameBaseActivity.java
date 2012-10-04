@@ -102,12 +102,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		this.boardView = boardView;
 	}
 
-    // todo: remove soon
-	@Override
-	public Object onRetainCustomNonConfigurationInstance() {
-		return boardView.getBoardFace();
-	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();
