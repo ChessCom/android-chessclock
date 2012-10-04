@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -21,7 +22,9 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.InneractiveAdHelper;
 import com.flurry.android.FlurryAgent;
+import com.inneractive.api.ads.InneractiveAd;
 import com.mopub.mobileads.AdView;
 import com.mopub.mobileads.MoPubInterstitial;
 
@@ -241,11 +244,22 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 			// TODO handle for support show ad on tablet in portrait mode
 			// TODO: add support for tablet ad units
-			moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
-			//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
-			//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-			moPubInterstitial.setListener(this);
-			moPubInterstitial.load();
+
+			if (InneractiveAdHelper.IS_SHOW_FULLSCREEN_ADS) {
+
+				// todo: use special viewgroup for fullscreen ad
+				// todo: test cases when ad is loaded after onPause etc
+				InneractiveAd.displayInterstitialAd(this, (LinearLayout) findViewById(R.id.mainView),
+						InneractiveAdHelper.FULLSCREEN_APP_ID,
+						new InneractiveAdHelper.InneractiveAdListenerImpl(InneractiveAd.IaAdType.Interstitial, preferencesEditor));
+
+			} else {
+				moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
+				//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
+				//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+				moPubInterstitial.setListener(this);
+				moPubInterstitial.load();
+			}
 
 			/*MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
 			fsAdView.addMobclixAdViewListener(mobFullScreeListener);

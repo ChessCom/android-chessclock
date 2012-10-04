@@ -13,11 +13,15 @@ import com.inneractive.api.ads.InneractiveAdListener;
 
 public class InneractiveAdHelper {
 
-	public static final boolean IS_SHOW_BANNER_ADS = true;
+	// todo: TESTING
+	public static final boolean IS_SHOW_BANNER_ADS = false;
+	public static final boolean IS_SHOW_FULLSCREEN_ADS = false;
+
+	public static final String FULLSCREEN_APP_ID = "Android_IA_Test";
 
 	public static void showBannerAd(Button upgradeBtn, InneractiveAd inneractiveAd, /*View adLayout,*/ Context context) {
 
-		inneractiveAd.setInneractiveListener(new InneractiveAdListener());
+		inneractiveAd.setInneractiveListener(new InneractiveAdListenerImpl(InneractiveAd.IaAdType.Banner));
 
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
@@ -42,38 +46,65 @@ public class InneractiveAdHelper {
 		}
 	}
 
-	public static class InneractiveAdListener implements com.inneractive.api.ads.InneractiveAdListener {
+	public static class InneractiveAdListenerImpl implements com.inneractive.api.ads.InneractiveAdListener {
+
+		private SharedPreferences.Editor preferencesEditor;
+		private String adType;
+		private boolean isInterstitial;
+
+		public InneractiveAdListenerImpl(InneractiveAd.IaAdType adType) {
+			this.adType = adType.toString();
+			isInterstitial = adType == InneractiveAd.IaAdType.Interstitial;
+		}
+
+		public InneractiveAdListenerImpl(InneractiveAd.IaAdType adType, SharedPreferences.Editor preferencesEditor) {
+			this(adType);
+			this.preferencesEditor = preferencesEditor;
+		}
+
+		private void log(String message) {
+			Log.d("InneractiveAd", adType + ": " + message);
+		}
 
 		public void onIaAdClicked() {
-			Log.d("InneractiveAd", "onIaAdClicked");
+			log("onIaAdClicked");
 		}
 
 		public void onIaAdExpand() {
-			Log.d("InneractiveAd", "onIaAdExpand");
+			log("onIaAdExpand");
 		}
 
 		public void onIaAdExpandClosed() {
-			Log.d("InneractiveAd", "onIaAdExpandClosed");
+			log("onIaAdExpandClosed");
 		}
 
 		public void onIaAdFailed() {
-			Log.d("InneractiveAd", "onIaAdFailed");
+			log("onIaAdFailed");
 		}
 
 		public void onIaAdReceived() {
-			Log.d("InneractiveAd", "onIaAdReceived");
+			log("onIaAdReceived");
+			processInterstitialAdReceived();
 		}
 
 		public void onIaAdResize() {
-			Log.d("InneractiveAd", "onIaAdResize");
+			log("onIaAdResize");
 		}
 
 		public void onIaAdResizeClosed() {
-			Log.d("InneractiveAd", "onIaAdResizeClosed");
+			log("onIaAdResizeClosed");
 		}
 
 		public void onIaDefaultAdReceived() {
-			Log.d("InneractiveAd", "onIaDefaultAdReceived");
+			log("onIaDefaultAdReceived");
+			processInterstitialAdReceived();
+		}
+
+		private void processInterstitialAdReceived() {
+			if (isInterstitial) {
+				preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
+				preferencesEditor.commit();
+			}
 		}
 	}
 }
