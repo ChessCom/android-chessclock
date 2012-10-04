@@ -102,6 +102,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 		this.boardView = boardView;
 	}
 
+    // todo: remove soon
 	@Override
 	public Object onRetainCustomNonConfigurationInstance() {
 		return boardView.getBoardFace();
@@ -176,8 +177,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
 		showSubmitButtonsLay(false);
-		boardView.switchAnalysis();
-		gamePanelView.enableAnalysisMode(true);
+		boardView.enableAnalysis();
 
 		boardView.setFinished(true);
 		//gamePanelView.showBottomPart(false);

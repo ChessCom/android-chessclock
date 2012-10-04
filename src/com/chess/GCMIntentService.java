@@ -62,17 +62,13 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onRegistered(Context context, String registrationId) {
         Log.d(TAG, "User = " + AppData.getUserName(context) + " Device registered: regId = " + registrationId);
 
-		String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-		loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
-				+ " \ntoken = " + AppData.getUserToken(context)
-				+ " \ndeviceId = " + deviceId );
+				+ " \ntoken = " + AppData.getUserToken(context));
 
 		new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_REGISTER)).execute(loadItem);
     }
@@ -89,17 +85,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
 
-				String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
-
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
 				loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-				loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
 				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
-
 			}
         } else {
             // This callback results from the call to unregister made on
@@ -145,10 +137,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, " gameId = " + gameId);
 		Log.d(TAG, " opponentUsername = " + opponentUsername);
 
-		// temp fix for self notification
-//		if (opponentUsername.equals(AppData.getUserName(this))) {
-//			return; // don't need notificaion of myself game
-//		}
+		// we use the same registerId for all users on a device, so check username to notify the needed user
+		if (opponentUsername.equals(AppData.getUserName(this))) {
+			return; // don't need notificaion of myself game
+		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
 
 		// check if we already received that notification

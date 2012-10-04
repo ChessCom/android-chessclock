@@ -91,6 +91,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	protected void onResume() {
 		super.onResume();
 
+		ChessBoardOnline.resetInstance();
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		getBoardFace().setMode(AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
@@ -100,7 +101,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	private void updateGameState() {
 		getOnlineGame(gameId);
-		getBoardFace().setInit(false);
+		//getBoardFace().setInit(false);
 	}
 
 	protected void getOnlineGame(long gameId) {
