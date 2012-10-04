@@ -245,7 +245,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			@Override
 			public void run() {
 				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-				facebookLoginButton.init(CoreActivityActionBar.this, facebook);
+				facebookInit(facebookLoginButton);
+//				facebookLoginButton.init(CoreActivityActionBar.this, facebook);
 				facebookLoginButton.logout();
 			}
 		});

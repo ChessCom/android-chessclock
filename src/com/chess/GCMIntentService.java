@@ -27,6 +27,7 @@ import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
+import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -131,38 +132,38 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String opponentUsername = intent.getStringExtra("opponent_username");
 		String gameId = intent.getStringExtra("game_id");
 
-//		boolean gameInfoWasFound = false;
+		boolean gameInfoWasFound = false;
 		Log.d(TAG, " _________________________________");
 		Log.d(TAG, " LastmoveSan = " + lastMoveSan);
 		Log.d(TAG, " gameId = " + gameId);
 		Log.d(TAG, " opponentUsername = " + opponentUsername);
 
 		// we use the same registerId for all users on a device, so check username to notify the needed user
-		if (opponentUsername.equals(AppData.getUserName(this))) {
+		if (opponentUsername.equalsIgnoreCase(AppData.getUserName(this))) {
 			return; // don't need notificaion of myself game
 		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
 
 		// check if we already received that notification
-//		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
-//			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
-//				Log.d("TEST", " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
-//				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
-//					return; // no need to update
-//				} else { // if move info is different
-//					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-//				}
-//				gameInfoWasFound = true;
-//			}
-//		}
-//
-//		if (!gameInfoWasFound) { // if we have no info about this game, then add last move to list of objects
-//			Log.d("TEST", " adding new game info" );
-//			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
-//			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-//			lastMoveInfoItem.setGameId(gameId);
-//		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
-//		}
+		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
+			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
+				Log.d(TAG, " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
+				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
+					return; // no need to update
+				} else { // if move info is different
+					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+				}
+				gameInfoWasFound = true;
+			}
+		}
+
+		if (!gameInfoWasFound) { // if we have no info about this game, then add last move to list of objects
+			Log.d(TAG, " adding new game info" );
+			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
+			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+			lastMoveInfoItem.setGameId(gameId);
+		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
+		}
 
 		long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 

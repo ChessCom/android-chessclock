@@ -81,12 +81,11 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		facebookInit();
+		facebookInit((LoginButton) findViewById(R.id.fb_connect));
 	}
 
-	private void facebookInit() {
-		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
-		if (facebookLoginButton != null) {
+	protected void facebookInit(LoginButton fbLoginBtn) {
+		if (fbLoginBtn != null) {
 			facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
 			SessionStore.restore(facebook, this);
 
@@ -94,7 +93,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			SessionEvents.addAuthListener(new SampleAuthListener());
 			SessionEvents.dropLogoutListeners();
 			SessionEvents.addLogoutListener(new SampleLogoutListener());
-			facebookLoginButton.init(this, facebook);
+			fbLoginBtn.init(this, facebook);
 
 			handler = new Handler();
 
