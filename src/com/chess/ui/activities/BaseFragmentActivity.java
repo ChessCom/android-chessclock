@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -72,7 +73,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 //		boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
 //		Log.d("TEST", " debb = " + isDebuggable);
-//		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)){ // if not debuggable
+		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) { // if not debuggable
 			try {
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
@@ -81,7 +82,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 				params.put(AppConstants.EXCEPTION, android.os.Build.MODEL + " " + e.toString());
 				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
 			}
-//		}
+		}
 
 		context = this;
 

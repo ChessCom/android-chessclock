@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="107"
-	android:versionName="2.0.78" package="com.chess" android:installLocation="auto">
+	android:versionCode="108"
+	android:versionName="2.0.8" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -25,11 +25,10 @@
 	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
 	<supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
-	<!--android:debuggable="false" somehow always true now... -->
-
 	<application android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name"
 		android:logo="@drawable/ic_home"
+		android:debuggable="false"
 		android:theme="@style/OrangeButtonTheme"
 		>
 		<activity android:name=".ui.activities.SplashActivity"
