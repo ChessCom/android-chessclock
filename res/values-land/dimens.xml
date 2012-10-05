@@ -3,7 +3,6 @@
 <resources>
 
   	<!-- Rounded buttons -->
-  	<dimen name="rounded_button_radius">3dip</dimen>
   	<dimen name="rounded_list_item_radius">7dip</dimen>
   	
   	<dimen name="small_button_height">35dip</dimen>
@@ -45,11 +44,8 @@
  	
 	<dimen name="list_item_padding">2dip</dimen>
 	<dimen name="list_item_image_marging">3dip</dimen>
-	
 	<dimen name="list_item_text_size">14sp</dimen>
-		
 	<dimen name="list_item_height">35dip</dimen>
-			
 	<dimen name="list_padding_top">0dip</dimen>
 
 	<!--SigIn-->

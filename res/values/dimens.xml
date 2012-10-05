@@ -2,17 +2,7 @@
 
 <resources>
 
-
   	<!-- Rounded buttons -->
-
-<!--
-	<dimen name="rounded_button_radius">4px</dimen>
-	<dimen name="button_pressed_stroke_radius">4px</dimen>
-	<dimen name="button_pressed_stroke_width_1">8px</dimen>
-	<dimen name="button_pressed_stroke_width_2">8px</dimen>
-	<dimen name="button_margin4stroke">6px</dimen>
--->
-
 	<dimen name="rounded_button_radius">3dip</dimen>
 	<dimen name="button_pressed_stroke_radius">3dip</dimen>
 	<dimen name="button_pressed_stroke_width_1">5dip</dimen>
@@ -64,9 +54,7 @@
 	
 	<dimen name="list_item_padding">5dip</dimen>
 	<dimen name="list_item_image_marging">5dip</dimen>
-	
 	<dimen name="list_item_text_size">17sp</dimen>
-				
 	<dimen name="list_item_height">48dip</dimen>
 	<dimen name="list_padding_top">10dip</dimen>
 		
@@ -134,8 +122,4 @@
 
 	<!--Pending load-->
 	<dimen name="pending_progress_bar_size">40dip</dimen>
-
-	<!--<dimen name="piece_layout_padding_top">2dip</dimen>-->
-
-
 </resources>

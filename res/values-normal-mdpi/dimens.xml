@@ -4,7 +4,6 @@
 
 
   	<!-- Rounded buttons -->
-	<dimen name="rounded_button_radius">3dip</dimen>
 	<dimen name="button_pressed_stroke_radius">3dip</dimen>
 	<dimen name="button_pressed_stroke_width_1">5dip</dimen>
 	<dimen name="button_pressed_stroke_width_2">5dip</dimen>
