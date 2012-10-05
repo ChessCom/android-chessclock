@@ -3,7 +3,6 @@ package com.chess.backend.entity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

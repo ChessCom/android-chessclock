@@ -140,7 +140,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				getString(resignOrAbort),
 				getString(R.string.messages)};
 
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		return true;
 	}
 
@@ -601,12 +601,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		private final int LIVE_DRAW_OFFER = 2;
 		private final int LIVE_RESIGN_OR_ABORT = 3;
 		private final int LIVE_MESSAGES = 4;
-
-		final CharSequence[] items;
-
-		private MenuOptionsDialogListener(CharSequence[] items) {
-			this.items = items;
-		}
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int pos) {

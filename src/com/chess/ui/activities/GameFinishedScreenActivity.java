@@ -81,7 +81,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				getString(R.string.emailgame),
 				getString(R.string.reside)};
 
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
 		startGameUpdateListener = new StartGameUpdateListener();
 		gamesListUpdateListener = new GamesListUpdateListener();
@@ -307,14 +307,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
 		private final int EMAIL_GAME = 1;
 		private final int ECHESS_RESIDE = 2;
-
-		private MenuOptionsDialogListener(CharSequence[] items) {
-			this.items = items;
-		}
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {

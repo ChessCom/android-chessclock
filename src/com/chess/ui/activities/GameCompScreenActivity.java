@@ -109,7 +109,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 	}
 
 	@Override
@@ -300,15 +299,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-		final CharSequence[] items;
 		private final int NEW_GAME_WHITE = 0;
 		private final int NEW_GAME_BLACK = 1;
 		private final int EMAIL_GAME = 2;
 		private final int SETTINGS = 3;
-
-		private MenuOptionsDialogListener(CharSequence[] items) {
-			this.items = items;
-		}
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {

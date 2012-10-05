@@ -1,8 +1,6 @@
 package com.chess.lcc.android;
 
-import android.content.Context;
 import android.util.Log;
-import com.chess.R;
 import com.chess.live.client.AnnounceListener;
 import com.chess.live.client.ChatMessage;
 import com.chess.utilities.AppUtils;

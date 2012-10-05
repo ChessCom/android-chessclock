@@ -244,12 +244,12 @@ public class LccGameListener implements GameListener {
         }
         lccHolder.doMoveMade(game, moveMaker, game.getSeq() - 1);
 
-        if (TESTING_GAME && game.isMoveOf(lccHolder.getUser()) && game.getState() == Game.State.Started) {
+        /*if (TESTING_GAME && game.isMoveOf(lccHolder.getUser()) && game.getState() == Game.State.Started) {
             Utils.sleep(0.5F);
             if (game.getSeq() < TEST_MOVES_COORD.length) {
                 lccHolder.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()]);
             }
-        }
+        }*/
     }
 
     @Override

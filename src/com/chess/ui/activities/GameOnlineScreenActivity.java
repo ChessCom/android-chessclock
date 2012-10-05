@@ -128,7 +128,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				getString(R.string.drawoffer),
 				getString(R.string.resignorabort)};
 
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		abortGameUpdateListener = new AbortGameUpdateListener();
 		drawOfferedUpdateListener = new DrawOfferedUpdateListener();
 
@@ -605,17 +605,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-		final CharSequence[] items;
 		private final int ECHESS_SETTINGS = 0;
 		private final int ECHESS_MESSAGES = 1;
 		private final int EMAIL_GAME = 2;
 		private final int ECHESS_RESIDE = 3;
 		private final int ECHESS_DRAW_OFFER = 4;
 		private final int ECHESS_RESIGN_OR_ABORT = 5;
-
-		private MenuOptionsDialogListener(CharSequence[] items) {
-			this.items = items;
-		}
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {

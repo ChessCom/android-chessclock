@@ -23,11 +23,11 @@ public class DashBoardLayout extends RelativeLayout {
 
 //	private Bitmap grad;
 
-	private int centerX;
+	/*private int centerX;
 	private int centerY;
 	private int gradRadius;
 	private int startGradientColor;
-	private int endGradientColor;
+	private int endGradientColor;*/
 
 	public DashBoardLayout(Context context) {
 		super(context, null);

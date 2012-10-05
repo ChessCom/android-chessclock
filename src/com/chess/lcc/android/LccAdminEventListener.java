@@ -1,12 +1,9 @@
 package com.chess.lcc.android;
 
-import android.content.Context;
 import android.util.Log;
-import com.chess.R;
 import com.chess.live.client.AdminEventListener;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,11 +15,6 @@ import com.chess.utilities.AppUtils;
 public class LccAdminEventListener implements AdminEventListener {
 
 	private static final String TAG = "LccAdminEventListener";
-	private final LccHolder lccHolder;
-
-	public LccAdminEventListener(LccHolder lccHolder) {
-		this.lccHolder = lccHolder;
-	}
 
 	public void onAdminMessageReceived(User sender, User target,
 									   LiveChessClient.AdminMessageType messageType, String reason, String message) {

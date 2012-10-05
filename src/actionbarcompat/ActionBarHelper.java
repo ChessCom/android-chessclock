@@ -16,12 +16,10 @@
 
 package actionbarcompat;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import com.chess.backend.statics.StaticData;
 
 /**
  * An abstract class that handles some common action bar-related functionality

@@ -2,13 +2,8 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.ui.engine.Move;
-
-import java.util.Iterator;
-import java.util.TreeSet;
 
 public class ChessBoardLiveView extends ChessBoardNetworkView {
 

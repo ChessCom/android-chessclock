@@ -273,7 +273,7 @@ public class RestHelper {
     public static final String V_VIDEO_ITEM_ONE = "1";
     public static final String V_ANDROID = "android";
 
-	private static final String TAG = "Encode";
+	//private static final String TAG = "Encode";
 	public static final int MAX_ITEMS_CNT = 2000;
 
 	private static final String Q_ = "?";

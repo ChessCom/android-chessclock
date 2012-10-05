@@ -39,7 +39,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.statics.StaticData;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

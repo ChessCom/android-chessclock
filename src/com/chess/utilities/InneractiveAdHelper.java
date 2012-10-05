@@ -5,11 +5,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.inneractive.api.ads.InneractiveAd;
-import com.inneractive.api.ads.InneractiveAdListener;
 
 public class InneractiveAdHelper {
 

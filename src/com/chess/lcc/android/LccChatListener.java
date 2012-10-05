@@ -1,7 +1,6 @@
 package com.chess.lcc.android;
 
 import android.util.Log;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;

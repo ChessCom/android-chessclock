@@ -17,7 +17,6 @@ public class ShadowImageView extends ImageView {
 		super(context);
 		mRect = new Rect();
 		mPaint = new Paint();
-		Paint mShadow = new Paint();
 
 		mPaint.setAntiAlias(true);
 		mPaint.setShadowLayer(2f, 1f, 1f, Color.BLACK);
