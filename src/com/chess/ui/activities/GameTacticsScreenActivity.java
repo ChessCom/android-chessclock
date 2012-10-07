@@ -432,7 +432,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
 				getLastPopupFragment().setButtons(1);
 			} else {
-				showLimitDialog();
+				// Try to update tactics batch
+				loadNewTacticsBatch();
 			}
 			return;
 		}
@@ -454,7 +455,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.trim().split("[|]");
 			if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
-				showLimitDialog();
+				showLimitDialog();   // This is also wrong step, because we should never reach this condition
 				return;
 			}
 
@@ -472,7 +473,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void errorHandle(String resultMessage) {
 			if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
-				showLimitDialog();
+				showLimitDialog();  // This should be the only way to show limit dialog for registerd user
 			} else {
 				showSinglePopupDialog(resultMessage);
 			}
@@ -851,7 +852,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (DataHolder.getInstance().isGuest() || noInternet) {
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 			// TODO move to AsyncTask
-//			InputStream inputStream = getResources().openRawResource(R.raw.tactics100batch);
 			InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
 			try {
 				ByteArrayBuffer baf = new ByteArrayBuffer(50);
@@ -884,8 +884,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
 
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
-			Log.d("TEST", "load started") ;
-//			blockScreenRotation(true);
 		}
 	}
 
