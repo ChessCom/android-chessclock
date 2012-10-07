@@ -586,8 +586,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return currentGame.getWhiteUsername().toLowerCase()
-				.equals(AppData.getUserName(this));
+		if (currentGame != null )
+			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
+		else
+			return null;
 	}
 
 	@Override

@@ -534,9 +534,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public Boolean isUserColorWhite() {
-		return currentGame.getWhiteUsername().toLowerCase()
-				.equals(AppData.getUserName(this));
+		if (currentGame != null)
+			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
+		else
+			return null;
 	}
+
 
 	public Long getGameId() {
 		return gameId;

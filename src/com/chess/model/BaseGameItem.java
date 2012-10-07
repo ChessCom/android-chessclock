@@ -168,5 +168,4 @@ public abstract class BaseGameItem implements Parcelable {
 		secondsRemain = in.readString();
 	}
 
-
 }

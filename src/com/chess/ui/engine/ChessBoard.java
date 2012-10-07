@@ -458,9 +458,11 @@ public class ChessBoard implements BoardFace {
 	public boolean inCheck(int s) {
 		int i;
 
-		for (i = 0; i < 64; ++i)
-			if (pieces[i] == KING && color[i] == s)
+		for (i = 0; i < 64; ++i) {
+			if (pieces[i] == KING && color[i] == s) {
 				return attack(i, s ^ 1);
+			}
+		}
 		return true;  /* shouldn't get here */
 	}
 

@@ -208,6 +208,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		public ChallengeTaskListener() {
 			super(getInstance());
 		}
+
+		@Override
+		public void updateData(Challenge returnedObj) {
+			super.updateData(returnedObj);
+			challengeTaskUpdated(returnedObj);
+		}
+	}
+
+	protected void challengeTaskUpdated(Challenge challenge){
+
 	}
 
 	private class GameTaskListener extends ActionBarUpdateListener<Game> {

@@ -28,7 +28,7 @@ import com.flurry.android.FlurryAgent;
 public class LiveFriendChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
 
 	private static final String NO_ONLINE_FRIENDS_TAG = "no online friends";
-	private static final String CHALLENGE_SENT_TAG = "challenge was sent";
+//	private static final String CHALLENGE_SENT_TAG = "challenge was sent";
 
 	private Spinner friendsSpinner;
 	private AutoCompleteTextView initialTimeEdt;
@@ -206,10 +206,11 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTimeEdt.getText().toString().trim());
 		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTimeEdt.getText().toString().trim());
 		preferencesEditor.commit();
+	}
 
-		popupItem.setPositiveBtnId(R.string.ok);
-		showPopupDialog(R.string.congratulations, R.string.challengeSent, CHALLENGE_SENT_TAG);
-		getLastPopupFragment().setButtons(1);
+	@Override
+	protected void challengeTaskUpdated(Challenge challenge){
+		showSinglePopupDialog(R.string.congratulations, R.string.challengeSent);
 	}
 
 	@Override

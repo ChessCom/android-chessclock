@@ -107,12 +107,7 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
-//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
-//						ERROR_TAG);
-//			}
+			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
 		}
 
 		@Override

@@ -140,6 +140,11 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 	}
 
 	@Override
+	protected void challengeTaskUpdated(Challenge challenge){
+		showSinglePopupDialog(R.string.congratulations, R.string.challengeSent);
+	}
+
+	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
 		if (view.getId() == R.id.initialTime){
 			initialTimeEdt.setSelection(initialTimeEdt.getText().length());
