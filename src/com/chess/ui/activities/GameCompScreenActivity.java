@@ -107,8 +107,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 				getString(R.string.emailgame),
 				getString(R.string.settings)};
 
-		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
+		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
+		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 	}
 
 	@Override

@@ -19,15 +19,6 @@ public class DashBoardLayout extends RelativeLayout {
 	private int[] portBackgrounds;
 	private int[] landBackgrounds;
 	private int screenOrientation;
-//	private Paint paint;
-
-//	private Bitmap grad;
-
-	/*private int centerX;
-	private int centerY;
-	private int gradRadius;
-	private int startGradientColor;
-	private int endGradientColor;*/
 
 	public DashBoardLayout(Context context) {
 		super(context, null);
@@ -177,11 +168,9 @@ public class DashBoardLayout extends RelativeLayout {
 			++cols;
 		}
 
-		// Lay out children based on calculated best-fit number of rows and
-// cols.
+		// Lay out children based on calculated best-fit number of rows and cols.
 
-		// If we chose a layout that has negative horizontal or vertical space,
-// force it to zero.
+		// If we chose a layout that has negative horizontal or vertical space, force it to zero.
 		hSpace = Math.max(0, hSpace);
 		vSpace = Math.max(0, vSpace);
 
@@ -211,7 +200,6 @@ public class DashBoardLayout extends RelativeLayout {
 
 			right = (hSpace == 0 && col == cols - 1) ? width * (col + 1) : (left + width);
 			bottom = (vSpace == 0 && row == rows - 1) ? layoutBottom : (top + height);
-//			right = (hSpace == 0 && col == cols - 1) ? layoutRight : (left + width) ;
 
 			child.layout(left, top, right, bottom);
 			if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
