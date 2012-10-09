@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -76,15 +77,16 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 			builder.append(boardFace.getMode());
             int i;
             for (i = 0; i < boardFace.getMovesCount(); i++) {
-                Move m = boardFace.getHistDat()[i].move;
+                Move move = boardFace.getHistDat()[i].move;
 				builder.append(DIVIDER_1)
-						.append(m.from).append(DIVIDER_2)
-						.append(m.to).append(DIVIDER_2)
-						.append(m.promote).append(DIVIDER_2)
-						.append(m.bits);
+						.append(move.from).append(DIVIDER_2)
+						.append(move.to).append(DIVIDER_2)
+						.append(move.promote).append(DIVIDER_2)
+						.append(move.bits);
             }
 
 			SharedPreferences.Editor editor = preferences.edit();
+			Log.d("TEST", "saving game = " + builder.toString());
 			editor.putString(AppData.getUserName(getContext()) + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
 			editor.commit();
         }

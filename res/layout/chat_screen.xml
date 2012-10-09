@@ -23,8 +23,9 @@
 
 		<com.chess.RoboEditText
 			android:id="@+id/sendEdt"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_weight="1"
 			android:layout_marginLeft="5dip"
 			android:layout_marginRight="5dip"
 			android:layout_marginTop="5dip"
@@ -32,7 +33,7 @@
 			android:minHeight="48dip"
 			android:layout_gravity="center_vertical"
 			/>
-		<!--android:layout_weight="1"-->
+		<!---->
 
 		<FrameLayout
 			android:layout_width="wrap_content"

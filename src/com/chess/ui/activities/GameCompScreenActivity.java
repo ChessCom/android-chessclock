@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -238,7 +239,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	private void loadSavedGame() {
+
 		int i;
+		Log.d("TEST", "read game = " + AppData.getCompSavedGame(this));
 		String[] moves = AppData.getCompSavedGame(this).split("[|]");
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
