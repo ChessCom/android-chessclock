@@ -74,7 +74,7 @@
 			android:id="@+id/prefVacation"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/vacationOff"
+			android:text="@string/vacationOn"
 			/>
 
 
