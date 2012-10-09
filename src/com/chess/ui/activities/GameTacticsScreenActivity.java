@@ -547,10 +547,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
-//			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
-//				showLimitDialog(); // can be replaced with IllegalStateExc, because this should never happen
-//				return;
-//			}
+
+			if (tmp.length < 2){ // "Success+||"   - means we reached limit and there is no tactics
+				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
+				return;
+			}
+
 			TacticResultItem tacticResultItem;
 			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
 				tacticResultItem = new TacticResultItem(tmp[1].split(":"));
@@ -584,10 +586,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
-//			if (tmp.length < 2 || tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) {
-//				showLimitDialog(); // can be replaced with IllegalStateExc, because this should never happen
-//				return;
-//			}
+			if (tmp.length < 2){ // "Success+||"   - means we reached limit and there is no tactics
+				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
+				return;
+			}
+
 			TacticResultItem tacticResultItem;
 			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
 				tacticResultItem = new TacticResultItem(tmp[1].split(":"));
