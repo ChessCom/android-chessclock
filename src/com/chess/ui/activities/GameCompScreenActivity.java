@@ -77,12 +77,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
         gamePanelView.turnCompMode();
 
-		if (AppData.haveSavedCompGame(this)) {
+		if (AppData.haveSavedCompGame(this) && chessBoardComp.isJustInitialized()) {
 
-			if (chessBoardComp.isJustInitialized()) {
-				loadSavedGame();
-				chessBoardComp.setJustInitialized(false);
-			}
+			chessBoardComp.setJustInitialized(false);
+			loadSavedGame();
 
 			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
 				getBoardFace().setReside(true);
