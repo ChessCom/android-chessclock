@@ -447,8 +447,8 @@ public class ChessBoard implements BoardFace {
 //	}
 
 	public boolean isWhiteToMove() {
-		//return hply % 2 == 0;
-		return (side == LIGHT);
+		return hply % 2 == 0;
+		//return (side == LIGHT);
 	}
 
 	/* inCheck() returns true if side s is in check and false

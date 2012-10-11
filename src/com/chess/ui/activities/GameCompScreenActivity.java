@@ -195,9 +195,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 
 		// todo: check
-		if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && getBoardFace().getHply() % 2 != 0)
-				|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() % 2 == 0)) {
-			updatePlayerDots(userPlayWhite);
+		if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+				|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove())) {
+			 updatePlayerDots(userPlayWhite);
 		}
 	}
 

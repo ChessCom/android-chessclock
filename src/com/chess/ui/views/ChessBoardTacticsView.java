@@ -158,7 +158,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
             if (finished ) // TODO probably never happens
                 return true;
 
-            if (boardFace.getHply() % 2 == 0) {
+            if (boardFace.getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
                 return true;
             }
         }
