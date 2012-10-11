@@ -135,8 +135,12 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		tacticsCorrectMoves++;
 	}
 
-
-	public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
-		this.tacticsCorrectMoves = tacticsCorrectMoves;
+	@Override
+	public boolean isLatestMoveMadeUser() {
+		return hply > 0 && hply %2 == 0;
 	}
+
+	/*public void setTacticsCorrectMoves(int tacticsCorrectMoves) {
+		this.tacticsCorrectMoves = tacticsCorrectMoves;
+	}*/
 }

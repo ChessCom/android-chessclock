@@ -35,5 +35,5 @@ public interface TacticBoardFace extends BoardFace {
 
 	boolean lastTacticMoveIsCorrect();
 
-
+	public boolean isLatestMoveMadeUser();
 }

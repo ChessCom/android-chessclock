@@ -447,6 +447,7 @@ public class ChessBoard implements BoardFace {
 //	}
 
 	public boolean isWhiteToMove() {
+		//return hply % 2 == 0;
 		return (side == LIGHT);
 	}
 
@@ -1367,12 +1368,7 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
-	@Override
-	public boolean isLatestMoveMadeUser() {
-		return hply > 0 && hply %2 == 0;
-	}
-
-	public String getMoveList() {
+	/*public String getMoveList() {
 		String output = StaticData.SYMBOL_EMPTY;
 		int i;
 		for (i = 0; i < hply; i++) {
@@ -1384,7 +1380,7 @@ public class ChessBoard implements BoardFace {
 			output += " ";
 		}
 		return output;
-	}
+	}*/
 
 	@Override
 	public String getMoveListSAN() {

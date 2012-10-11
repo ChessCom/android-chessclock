@@ -82,20 +82,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 			chessBoardComp.setJustInitialized(false);
 			loadSavedGame();
 
-			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
-				getBoardFace().setReside(true);
-				boardView.invalidate();
-			}
-
-		} else {
-			if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
-				getBoardFace().setReside(true);
-				boardView.invalidate();
-				boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
-			}
-			if (AppData.isComputerVsComputerGameMode(getBoardFace())) {
-				boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
-			}
+			resideBoardIfCompWhite();
+		} else if (chessBoardComp.isJustInitialized()) {
+			resideBoardIfCompWhite();
 		}
 	}
 
@@ -112,10 +101,29 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if (!getBoardFace().isAnalysis() && !boardView.isComputerMoving()) {
+
+			boolean isComputerMove = (AppData.isComputerVsComputerGameMode(getBoardFace()))
+					|| (AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+					|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
+
+			if (isComputerMove) {
+				computerMove();
+			}
+		}
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
-		if (AppData.isComputerVsComputerGameMode(getBoardFace())) {
-			boardView.stopThinking();
+		if (AppData.isComputerVsComputerGameMode(getBoardFace()) || AppData.isComputerVsHumanGameMode(getBoardFace())
+				&& boardView.isComputerMoving()) {
+			//boardView.stopThinking();
+			boardView.stopComputerMove();
+			ChessBoardComp.resetInstance();
 		}
 
 		if (getBoardFace().getMode() != extras.getInt(AppConstants.GAME_MODE)) {
@@ -142,7 +150,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void showOptions() {
-		boardView.stopThinking(); // stopThinking = true;
+		boardView.stopThinking();
 
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
@@ -155,10 +163,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
-		if(isAnalysis){
+		if (isAnalysis) {
 			boardView.stopThinking();
-		}else {
-			boardView.think();
+		} else {
+			boardView.startThinking();
 		}
 		super.switch2Analysis(isAnalysis);
 	}
@@ -198,6 +206,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 
+		// todo: check
 		if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && getBoardFace().getHply() % 2 != 0)
 				|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() % 2 == 0)) {
 			// opponents move - non touchable
@@ -234,6 +243,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 		loadSavedGame();
 		chessBoardComp.setJustInitialized(false);
+
+		resideBoardIfCompWhite();
 	}
 
 	private void loadSavedGame() {
@@ -326,7 +337,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					boardView.invalidate();
 					invalidateGameScreen();
 
-					boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
+					computerMove();
 					break;
 				}
 				case EMAIL_GAME: {
@@ -408,6 +419,17 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		if(AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
+	}
+
+	private void resideBoardIfCompWhite() {
+		if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
+			getBoardFace().setReside(true);
+			boardView.invalidate();
+		}
+	}
+
+	private void computerMove() {
+		boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 	}
 
 }

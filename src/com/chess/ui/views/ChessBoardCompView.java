@@ -27,8 +27,8 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	private static final String DIVIDER_2 = ":";
 	private boolean hint;
     private boolean computerMoving;
-    private boolean stopThinking;
-
+    private boolean thinking;
+	private ComputeMoveTask computeMoveTask;
 
     private int compStrength;
 	private int[] compStrengthArray;
@@ -97,8 +97,8 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         if (boardFace.isAnalysis())
             return;
 
-        if (AppData.isComputerVsComputerGameMode(boardFace) && stopThinking) {
-            stopThinking = false;
+        if (AppData.isComputerVsComputerGameMode(boardFace) && !thinking) {
+            thinking = true;
             return;
         }
 
@@ -113,8 +113,16 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		pieces_tmp = getBoardFace().getPieces().clone();
 		colors_tmp = getBoardFace().getColor().clone();
 
-		new ComputeMoveTask(computeMoveItem, new ComputeMoveUpdateListener()).executeTask();
+		computeMoveTask = new ComputeMoveTask(computeMoveItem, new ComputeMoveUpdateListener());
+		computeMoveTask.executeTask();
     }
+
+	public void stopComputerMove() {
+		if (computeMoveTask != null) {
+			computerMoving = false;
+			computeMoveTask.cancel(true);
+		}
+	}
 
 	private class ComputeMoveUpdateListener extends AbstractUpdateListener<ComputeMoveItem> { // TODO add later
 		public ComputeMoveUpdateListener() {
@@ -413,7 +421,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
     @Override
     public void flipBoard() {
-//        stopThinking = true;
+//        thinking = true;
         if (!computerMoving) {
             getBoardFace().setReside(!getBoardFace().isReside());
             if (AppData.isComputerVsHumanGameMode(getBoardFace())) {
@@ -437,7 +445,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
 	@Override
     public void moveBack() {
-        stopThinking = true;
+        thinking = false;
         if (!computerMoving) {
             finished = false;
             pieceSelected = false;
@@ -449,7 +457,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
     @Override
     public void moveForward() {
-        stopThinking = true;
+        thinking = false;
         if (!computerMoving) {
             pieceSelected = false;
             getBoardFace().takeNext();
@@ -460,7 +468,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
     @Override
     public void showHint() {
-        stopThinking = true;
+        thinking = false;
         if (!computerMoving) {
             hint = true;
             computerMove(compStrength);
@@ -468,11 +476,15 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     }
 
 	public void stopThinking() {
-		stopThinking = true;
+		thinking = false;
 	}
 
-	public void think(){
-		stopThinking = false;
+	public void startThinking(){
+		thinking = true;
+	}
+
+	public boolean isComputerMoving() {
+		return computerMoving;
 	}
 
 }

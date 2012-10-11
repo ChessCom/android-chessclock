@@ -92,8 +92,6 @@ public interface BoardFace {
 
 	CharSequence getMoveListSAN();
 
-	boolean isLatestMoveMadeUser();
-
 	String convertMoveLive();
 
 	void setAnalysis(boolean analysis);
@@ -111,4 +109,6 @@ public interface BoardFace {
 	boolean isJustInitialized();
 
 	void setJustInitialized(boolean justInitialized);
+
+	boolean isWhiteToMove();
 }
