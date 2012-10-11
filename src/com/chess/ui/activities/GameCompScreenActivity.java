@@ -104,7 +104,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	protected void onResume() {
 		super.onResume();
 
-		if (!getBoardFace().isAnalysis() && !boardView.isComputerMoving()) {
+		if (!getBoardFace().isAnalysis()) {
 
 			boolean isComputerMove = (AppData.isComputerVsComputerGameMode(getBoardFace()))
 					|| (AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
@@ -150,8 +150,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void showOptions() {
-		boardView.stopThinking();
-
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
 				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
@@ -159,16 +157,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-	}
-
-	@Override
-	public void switch2Analysis(boolean isAnalysis) {
-		if (isAnalysis) {
-			boardView.stopThinking();
-		} else {
-			boardView.startThinking();
-		}
-		super.switch2Analysis(isAnalysis);
 	}
 
     @Override
@@ -209,16 +197,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		// todo: check
 		if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && getBoardFace().getHply() % 2 != 0)
 				|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() % 2 == 0)) {
-			// opponents move - non touchable
-			setWhitePlayerDot(userPlayWhite);
-		} else{
-			setWhitePlayerDot(userPlayWhite);
+			updatePlayerDots(userPlayWhite);
 		}
 	}
 
 	@Override
 	public void onPlayerMove() {
-		setWhitePlayerDot(userPlayWhite);
+		updatePlayerDots(userPlayWhite);
 
 		whitePlayerLabel.setVisibility(View.VISIBLE);
 		blackPlayerLabel.setVisibility(View.VISIBLE);
@@ -227,7 +212,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void onCompMove() {
-		setWhitePlayerDot(!userPlayWhite);
+		updatePlayerDots(!userPlayWhite);
 
 		whitePlayerLabel.setVisibility(View.GONE);
 		blackPlayerLabel.setVisibility(View.GONE);
@@ -266,7 +251,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	public void newGame() {
-		boardView.stopThinking();
 		onBackPressed();
 	}
 

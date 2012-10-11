@@ -232,9 +232,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
-			setWhitePlayerDot(userPlayWhite);
+			updatePlayerDots(userPlayWhite);
 		} else {
-			setWhitePlayerDot(!userPlayWhite);
+			updatePlayerDots(!userPlayWhite);
 		}
 
 		BoardFace boardFace = getBoardFace(); 
@@ -300,9 +300,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
-			setWhitePlayerDot(userPlayWhite);
+			updatePlayerDots(userPlayWhite);
 		} else {
-			setWhitePlayerDot(!userPlayWhite);
+			updatePlayerDots(!userPlayWhite);
 		}
 
 		if (currentGame.getMoveList().contains("1.")) {

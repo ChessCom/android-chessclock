@@ -131,7 +131,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	@Override
 	public abstract String getBlackPlayerName();
 
-	protected void setWhitePlayerDot(boolean whitePlayerMove){
+	protected void updatePlayerDots(boolean whitePlayerMove){
 		if (whitePlayerMove) {
 			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
 			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
