@@ -21,18 +21,12 @@ public class GameLiveItem extends BaseGameItem {
 		whiteUsername = lccGame.getWhitePlayer().getUsername().trim();
 		blackUsername = lccGame.getBlackPlayer().getUsername().trim();
 
-		String moves = StaticData.SYMBOL_EMPTY;
+		moveList = StaticData.SYMBOL_EMPTY;
 
 		final Iterator movesIterator = lccGame.getMoves().iterator();
 		for (int i = 0; i <= moveIndex; i++) {
-			moves += movesIterator.next() + StaticData.SYMBOL_SPACE;
+            moveList += movesIterator.next() + StaticData.SYMBOL_SPACE;
 		}
-		if (moveIndex == -1) {
-			moves = StaticData.SYMBOL_EMPTY;
-		}
-
-		moveList = moves;
-
 
 		Integer whiteRating = 0;
 		Integer blackRating = 0;
