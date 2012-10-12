@@ -86,8 +86,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentDotId, 0, 0, 0);
 		gamePanelView.setWhiteIndicator(userPlayWhite);
-		// change players colors
-		changePlayersLabelColors();
 
 		Log.d("Live Game", "GameLiveScreenActivity started ");
 		if (getLccHolder().getPendingWarnings().size() > 0) {
@@ -238,11 +236,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
                 } else {
                     blackPlayerLabel.setText(whiteTimer);
                 }
-
-                if (!isWhitePlayerMove || initTimer) {
-                    isWhitePlayerMove = true;
-                    changePlayersLabelColors();
-                }
             }
         });
     }
@@ -257,11 +250,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
                 } else {
                     gamePanelView.setBottomPlayerTimer(blackTimer);
                 }
-
-                if (isWhitePlayerMove) {
-                    isWhitePlayerMove = false;
-                    changePlayersLabelColors();
-                }
             }
         });
     }
@@ -272,7 +260,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		int topPlayerColor;
 
-		if (isWhitePlayerMove) {
+		if (getBoardFace().isWhiteToMove()) {
 			topPlayerColor = userPlayWhite ? hintColor : whiteColor;
 		} else {
 			topPlayerColor = userPlayWhite ? whiteColor : hintColor;
@@ -287,12 +275,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		whitePlayerLabel.setTextColor(topPlayerColor);
 		blackPlayerLabel.setTextColor(topPlayerColor);
 
-		boolean activate = isWhitePlayerMove ? userPlayWhite : !userPlayWhite;
+		boolean activate = getBoardFace().isWhiteToMove() ? userPlayWhite : !userPlayWhite;
 
 		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
 		gamePanelView.activatePlayerTimer(activate, activate);
-
-		initTimer = false;
 	}
 
 	// ----------------------Lcc Events ---------------------------------------------
@@ -542,6 +528,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		blackPlayerLabel.setVisibility(View.VISIBLE);
 
 		updatePlayerLabels();
+		changePlayersLabelColors();
 
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
