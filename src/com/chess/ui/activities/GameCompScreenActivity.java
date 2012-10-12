@@ -78,14 +78,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         gamePanelView.turnCompMode();
 
 		if (AppData.haveSavedCompGame(this) && chessBoardComp.isJustInitialized()) {
-
 			chessBoardComp.setJustInitialized(false);
 			loadSavedGame();
-
-			resideBoardIfCompWhite();
-		} else if (chessBoardComp.isJustInitialized()) {
-			resideBoardIfCompWhite();
 		}
+		resideBoardIfCompWhite();
 	}
 
 	public void init() {
@@ -123,7 +119,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 				&& boardView.isComputerMoving()) {
 			//boardView.stopThinking();
 			boardView.stopComputerMove();
-			ChessBoardComp.resetInstance();
+//			ChessBoardComp.resetInstance(); // how we restore it after resume?
 		}
 
 		if (getBoardFace().getMode() != extras.getInt(AppConstants.GAME_MODE)) {

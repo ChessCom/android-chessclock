@@ -24,10 +24,13 @@ public class ComputeMoveTask extends AbstractUpdateTask<ComputeMoveItem, Void> {
 		BoardFace boardFace = item.getBoardFace();
 		item.setPieces_tmp(boardFace.getPieces().clone());
 		item.setColors_tmp(boardFace.getColor().clone());
+
 		Search searcher = new Search(boardFace);
 		searcher.think(0, item.getMoveTime(), 32);
+
 		Move best = searcher.getBest();
 		boardFace.makeMove(best);
+
 		return StaticData.RESULT_OK;
 	}
 

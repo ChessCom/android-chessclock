@@ -18,26 +18,34 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeSet;
 
 public class ChessBoardCompView extends ChessBoardBaseView {
 
+	private static final long HINT_REVERSE_DELAY = 1500;
+
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
-	private boolean hint;
-    private boolean computerMoving;
+	private boolean hint; // TODO make independent from board
+    private boolean computerMoving; // TODO make independent from board
 	private ComputeMoveTask computeMoveTask;
 
-    private int compStrength;
-	private int[] compStrengthArray;
+    private int compStrength; // TODO make independent from board
+	private int[] compStrengthArray; // TODO make independent from board
 	private GameCompActivityFace gameCompActivityFace;
+	private HintMoveUpdateListener hintMoveUpdateListener;
+	private ComputeMoveUpdateListener computeMoveUpdateListener;
 
 
 	public ChessBoardCompView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
 		compStrengthArray = resources.getIntArray(R.array.comp_strength);
+
+		hintMoveUpdateListener = new HintMoveUpdateListener();
+		computeMoveUpdateListener = new ComputeMoveUpdateListener();
     }
 
     public void setGameActivityFace(GameCompActivityFace gameActivityFace) {
@@ -92,11 +100,11 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		return super.isGameOver();
     }
 
-    public void computerMove(final int time) {
-        if (boardFace.isAnalysis())
-            return;
+	public void computerMove(final int time) {
+		if (hint)
+			return;
 
-        computerMoving = true;
+		computerMoving = true;
 		gameCompActivityFace.onCompMove();
 		ComputeMoveItem computeMoveItem = new ComputeMoveItem();
 		computeMoveItem.setBoardFace(getBoardFace());
@@ -107,9 +115,30 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		pieces_tmp = getBoardFace().getPieces().clone();
 		colors_tmp = getBoardFace().getColor().clone();
 
-		computeMoveTask = new ComputeMoveTask(computeMoveItem, new ComputeMoveUpdateListener());
+		computeMoveTask = new ComputeMoveTask(computeMoveItem, computeMoveUpdateListener);
 		computeMoveTask.executeTask();
-    }
+	}
+
+	public void makeHint(final int time) {
+
+
+		gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, true);
+
+		hint = true;
+		computerMoving = true;
+//		gameCompActivityFace.onCompMove();
+		ComputeMoveItem computeMoveItem = new ComputeMoveItem();
+		computeMoveItem.setBoardFace(getBoardFace());
+		computeMoveItem.setColors_tmp(colors_tmp);
+		computeMoveItem.setPieces_tmp(pieces_tmp);
+		computeMoveItem.setMoveTime(time);
+
+		pieces_tmp = getBoardFace().getPieces().clone();
+		colors_tmp = getBoardFace().getColor().clone();
+
+		computeMoveTask = new ComputeMoveTask(computeMoveItem, hintMoveUpdateListener);
+		computeMoveTask.executeTask();
+	}
 
 	public void stopComputerMove() {
 		if (computeMoveTask != null) {
@@ -118,7 +147,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		}
 	}
 
-	private class ComputeMoveUpdateListener extends AbstractUpdateListener<ComputeMoveItem> { // TODO add later
+	private class ComputeMoveUpdateListener extends AbstractUpdateListener<ComputeMoveItem> {
 		public ComputeMoveUpdateListener() {
 			super(getContext());
 		}
@@ -135,19 +164,68 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 			gameActivityFace.invalidateGameScreen();
 			gameCompActivityFace.onPlayerMove();
 			invalidate();
+
 			if (isGameOver())
 				return;
+
 			if (AppData.isComputerVsComputerGameMode(boardFace)
 					|| (hint && !AppData.isHumanVsHumanGameMode(boardFace))) {
-				if (hint)
-					hint = false;
+//				if (hint) {   // will never be hint
+//					hint = false;
+//				}
 				computerMove(returnedObj.getMoveTime());
 			}
-
 		}
 	}
 
-    @Override
+	private class HintMoveUpdateListener extends AbstractUpdateListener<ComputeMoveItem> {
+		public HintMoveUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(ComputeMoveItem returnedObj) {
+			super.updateData(returnedObj);
+			computerMoving = false;
+//			Log.d("HINT", " pieces_tmp ="  + Arrays.toString(pieces_tmp));
+//			Log.d("HINT", " colors_tmp ="  + Arrays.toString(colors_tmp));
+//			Log.d("HINT", " returnedObj.getPieces_tmp() ="  + Arrays.toString(returnedObj.getPieces_tmp()));
+//			Log.d("HINT", " returnedObj.getColors_tmp() ="  + Arrays.toString(returnedObj.getColors_tmp()));
+			pieces_tmp = returnedObj.getPieces_tmp();
+			colors_tmp = returnedObj.getColors_tmp();
+
+//			boardFace.setMovesCount(boardFace.getHply());
+
+//			gameActivityFace.invalidateGameScreen();
+			invalidate();
+
+			if (AppData.isComputerVsComputerGameMode(boardFace) || (!AppData.isHumanVsHumanGameMode(boardFace))) {
+
+//				computerMove(returnedObj.getMoveTime());
+
+				handler.postDelayed(reverseHintTask, HINT_REVERSE_DELAY);
+			}
+		}
+	}
+
+	private Runnable reverseHintTask = new Runnable() {
+		@Override
+		public void run() {
+			Log.d("HINT", " _____________________________");
+
+
+
+//			getBoardFace().takeBack();
+			invalidate();
+			Log.d("HINT", " pieces_tmp ="  + Arrays.toString(getBoardFace().getPieces()));
+			Log.d("HINT", " colors_tmp ="  + Arrays.toString(getBoardFace().getColor()));
+
+			hint = false;
+			gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, false);
+		}
+	};
+
+	@Override
     protected void onDraw(Canvas canvas) {
         canvas.setDrawFilter(drawFilter);
         super.onDraw(canvas);
@@ -159,6 +237,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             for (int i = 0; i < 64; i++) {
                 if (drag && i == from)
                     continue;
+
                 int color = colors_tmp[i];
                 int piece = pieces_tmp[i];
                 int x = ChessBoard.getColumn(i, boardFace.isReside());
@@ -437,6 +516,12 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     }
 
 	@Override
+	public void switchAnalysis() {
+		super.switchAnalysis();
+		gamePanelView.enableGameButton(GamePanelView.B_HINT_ID, !boardFace.isAnalysis());
+	}
+
+	@Override
     public void moveBack() {
         if (!computerMoving) {
             finished = false;
@@ -460,8 +545,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     @Override
     public void showHint() {
         if (!computerMoving) {
-            hint = true;
-            computerMove(compStrength);
+			makeHint(compStrength);
         }
     }
 
