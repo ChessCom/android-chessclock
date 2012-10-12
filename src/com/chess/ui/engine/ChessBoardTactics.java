@@ -1,7 +1,7 @@
 package com.chess.ui.engine;
 
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.interfaces.BoardToGameActivityFace;
+import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
 
 /**
@@ -20,11 +20,11 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	private int tacticsCorrectMoves = 0;
 	private String[] tacticMoves;
 
-	private ChessBoardTactics(BoardToGameActivityFace gameActivityFace) {
+	private ChessBoardTactics(GameActivityFace gameActivityFace) {
 		super(gameActivityFace);
 	}
 
-	public static ChessBoardTactics getInstance(BoardToGameActivityFace gameActivityFace) {
+	public static ChessBoardTactics getInstance(GameActivityFace gameActivityFace) {
 		final Long gameId = gameActivityFace.getGameId();
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
 			instance = new ChessBoardTactics(gameActivityFace);

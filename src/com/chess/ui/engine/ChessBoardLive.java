@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.ui.interfaces.BoardToGameActivityFace;
+import com.chess.ui.interfaces.GameActivityFace;
 
 /**
  * ChessBoardLive class
@@ -12,11 +12,11 @@ public class ChessBoardLive extends ChessBoard {
 
 	private static ChessBoardLive instance;
 
-	private ChessBoardLive(BoardToGameActivityFace gameActivityFace) {
+	private ChessBoardLive(GameActivityFace gameActivityFace) {
 		super(gameActivityFace);
 	}
 
-	public static ChessBoardLive getInstance(BoardToGameActivityFace gameActivityFace) {
+	public static ChessBoardLive getInstance(GameActivityFace gameActivityFace) {
 		final Long gameId = gameActivityFace.getGameId();
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
 			instance = new ChessBoardLive(gameActivityFace);

@@ -1,5 +1,7 @@
 package com.chess.ui.interfaces;
 
+import com.chess.backend.entity.SoundPlayer;
+
 /**
  * GameActivityFace class
  *
@@ -7,6 +9,12 @@ package com.chess.ui.interfaces;
  * @created at: 13.03.12 7:08
  */
 public interface GameActivityFace {
+
+	SoundPlayer getSoundPlayer();
+
+	Boolean isUserColorWhite();
+
+	Long getGameId();
 
 	void showOptions();
 

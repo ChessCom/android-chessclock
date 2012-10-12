@@ -12,7 +12,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.BoardToGameActivityFace;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardBaseView;
 import com.chess.ui.views.GamePanelView;
@@ -28,7 +27,7 @@ import java.text.SimpleDateFormat;
  * @created at: 05.03.12 21:18
  */
 public abstract class GameBaseActivity extends LiveBaseActivity implements
-		BoardToGameActivityFace, GameActivityFace {
+		/*BoardToGameActivityFace,*/ GameActivityFace {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";

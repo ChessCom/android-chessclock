@@ -14,7 +14,7 @@ import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.BoardToGameActivityFace;
+import com.chess.ui.interfaces.GameActivityFace;
 import org.apache.http.protocol.HTTP;
 
 import java.net.URLEncoder;
@@ -270,10 +270,10 @@ public class ChessBoard implements BoardFace {
 	private int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	private BoardToGameActivityFace gameActivityFace;
+	private GameActivityFace gameActivityFace;
 	private SoundPlayer soundPlayer;
 
-	protected ChessBoard(BoardToGameActivityFace gameActivityFace) {
+	protected ChessBoard(GameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
 		soundPlayer = gameActivityFace.getSoundPlayer();
 	}

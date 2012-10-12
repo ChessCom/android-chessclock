@@ -7,5 +7,6 @@ package com.chess.ui.interfaces;
  * @created at: 13.03.12 7:08
  */
 public interface GameTacticsActivityFace extends GameActivityFace {
+
 	void checkMove();
 }
