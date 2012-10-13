@@ -107,7 +107,7 @@ public class LccHolder{
 				//fullGameProcessed = true;
 				pausedActivityGameEvents.remove(moveEvent);
 				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), moveEvent.getMoveIndex());
+				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getSeq() - 1/*moveEvent.getMoveIndex()*/);
 				lccEventListener.onGameRefresh(newGame);
 			}
 
@@ -861,7 +861,7 @@ public class LccHolder{
 			GameEvent moveEvent = new GameEvent();
 			moveEvent.setEvent(GameEvent.Event.MOVE);
 			moveEvent.setGameId(game.getId());
-			moveEvent.setMoveIndex(moveIndex);
+			//moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
 			lccEventListener.onGameRefresh(new GameLiveItem(getGame(game.getId()), moveIndex));

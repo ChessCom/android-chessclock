@@ -450,7 +450,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			//showToast("illegal move");
 		}
 
-		final String temporaryDebugInfo =
+		String stackTrace;
+		try {
+			throw new Exception();
+		} catch (Exception e) {
+			stackTrace = Log.getStackTraceString(e);
+		}
+
+		String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
 				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
 				", boardHply=" + getBoardFace().getHply() +
@@ -461,7 +468,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", analysisBoard=" + getBoardFace().isAnalysis() +
 				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
 				", debugString=" + debugString +
-				", movesLive=" + getLccHolder().getCurrentGame().getMoves();
+				", submit=" + preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
+				", movesLive=" + getLccHolder().getCurrentGame().getMoves() +
+				", moves=" + getBoardFace().getMoveListSAN() +
+				", trace=" + stackTrace;
+		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
+		//Log.d("TESTTEST", temporaryDebugInfo);
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 

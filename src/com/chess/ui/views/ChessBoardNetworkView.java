@@ -290,32 +290,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		return super.onTouchEvent(event);
 	}
 
-	public void promote(int promote, int col, int row) {
-		boolean found = false;
-		TreeSet<Move> moves = boardFace.gen();
-		Iterator<Move> iterator = moves.iterator();
-
-		Move move = null;
-		while (iterator.hasNext()) {
-			move = iterator.next();
-			if (move.from == from && move.to == to && move.promote == promote) {
-				found = true;
-				break;
-			}
-		}
-		if (found && boardFace.makeMove(move)) {
-			invalidate();
-			afterMove();
-		} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-			pieceSelected = true;
-			firstclick = false;
-			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-			invalidate();
-		} else {
-			invalidate();
-		}
-	}
-
 	@Override
 	public void switchChat() {
 		gameActivityFace.switch2Chat();
