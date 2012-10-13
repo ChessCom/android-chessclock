@@ -70,12 +70,12 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
         getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
+		gamePanelView.turnCompMode();
+
         if (getBoardFace().isAnalysis()) {
             boardView.enableAnalysis();
             return;
         }
-
-        gamePanelView.turnCompMode();
 
 		if (AppData.haveSavedCompGame(this) && chessBoardComp.isJustInitialized()) {
 			chessBoardComp.setJustInitialized(false);

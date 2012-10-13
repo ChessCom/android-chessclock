@@ -513,6 +513,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		gamePanelView.enableGameButton(GamePanelView.B_HINT_ID, !boardFace.isAnalysis());
 	}
 
+	public void enableAnalysis() {
+		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, true);
+		gamePanelView.enableAnalysisMode(true);
+		gameActivityFace.switch2Analysis(true);
+		gamePanelView.enableGameButton(GamePanelView.B_HINT_ID, false);
+	}
+
 	@Override
     public void moveBack() {
         if (!isComputerMoving()) {
