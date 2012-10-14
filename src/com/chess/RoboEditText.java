@@ -7,7 +7,12 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-public class RoboEditText extends EditText {
+import java.io.Serializable;
+
+public class RoboEditText extends EditText implements Serializable {
+
+	private static final long serialVersionUID = 8485060880629295457L;
+
 	private String ttfName = "Regular";
 
 	public RoboEditText(Context context, AttributeSet attrs, int defStyle) {

@@ -52,12 +52,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
-//	private int currentListType;
 	private int successToastMsgId;
 
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
-//	private ListUpdateListener listUpdateListener;
 	private LoadItem selectedLoadItem;
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
@@ -111,7 +109,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
-//		listUpdateListener = new ListUpdateListener(currentListType);
 		vacationStatusUpdateListener = new VacationStatusUpdateListener();
 		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
 
@@ -156,10 +153,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		cleanTaskPool();
 	}
 
-//	private void updateList(LoadItem listLoadItem) {
-//		taskPool.add(new GetStringObjTask(listUpdateListener).executeTask(listLoadItem));
-//	}
-
 	private Runnable updateListOrder = new Runnable() {
 		@Override
 		public void run() {
@@ -180,8 +173,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
-
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
@@ -235,12 +226,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (isPaused)
 				return;
 
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				showToast(successToastMsgId);
-				updateStartingType(GameOnlineItem.CURRENT_TYPE);
-//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-//			}
+			showToast(successToastMsgId);
+			updateStartingType(GameOnlineItem.CURRENT_TYPE);
 		}
 	}
 
@@ -254,11 +241,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			if (isFinishing())
 				return;
 
-//			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-				updateStartingType(GameOnlineItem.CURRENT_TYPE);
-//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-//			}
+			updateStartingType(GameOnlineItem.CURRENT_TYPE);
 		}
 	}
 
@@ -277,9 +260,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				onVacation = returnedObj.contains("1");
-//			}
+			onVacation = returnedObj.contains("1");
 		}
 	}
 
@@ -354,10 +335,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				onVacation = false;
-				updateStartingType(GameOnlineItem.CURRENT_TYPE);
-//			}
+			onVacation = false;
+			updateStartingType(GameOnlineItem.CURRENT_TYPE);
 		}
 	}
 
@@ -522,7 +501,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private void updateStartingType(int pos) {
-//		currentListType = pos;
 		selectedLoadItem.clearParams();
 		if (pos == GameOnlineItem.CURRENT_TYPE) {
 			cleanTaskPool();
@@ -543,8 +521,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
 		}
-
-//		updateList(selectedLoadItem);
 	}
 
 	@Override

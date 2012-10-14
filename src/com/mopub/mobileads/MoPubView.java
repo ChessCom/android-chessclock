@@ -45,13 +45,16 @@ import android.view.View;
 import android.webkit.WebViewDatabase;
 import android.widget.FrameLayout;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-public class MoPubView extends FrameLayout {
+public class MoPubView extends FrameLayout implements Serializable {
 
-    public interface OnAdWillLoadListener {
+	private static final long serialVersionUID = 8563296506927083429L;
+
+	public interface OnAdWillLoadListener {
         public void OnAdWillLoad(MoPubView m, String url);
     }
 

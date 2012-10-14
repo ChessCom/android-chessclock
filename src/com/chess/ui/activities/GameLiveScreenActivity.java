@@ -168,8 +168,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
-
-
 	@Override
 	protected void onResume() {
 		super.onResume();

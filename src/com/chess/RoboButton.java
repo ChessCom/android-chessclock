@@ -7,7 +7,12 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.Button;
 
-public class RoboButton extends Button {
+import java.io.Serializable;
+
+public class RoboButton extends Button implements Serializable {
+
+	private static final long serialVersionUID = -7816685707888388856L;
+
 	private String ttfName = "Regular";
 
 	public RoboButton(Context context, AttributeSet attrs, int defStyle) {

@@ -53,9 +53,8 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
+	protected void onStart() { // called when activity becomes visible. onResume called even when popup appears
+		super.onStart();
 		updateList();
 		hideKeyBoard();
 	}
@@ -106,6 +105,10 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
+		if (videosList == null || pos == videosList.size()) {
+			return; // means we pressed loading view
+		}
+
 		VideoItem videoItem = (VideoItem) adapter.getItemAtPosition(pos);
 
 		Intent intent = new Intent(Intent.ACTION_VIEW);

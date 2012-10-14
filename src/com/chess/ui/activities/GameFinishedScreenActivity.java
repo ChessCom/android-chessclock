@@ -120,11 +120,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				onGameStarted(returnedObj);
-//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showSinglePopupDialog(R.string.error, returnedObj.split("[+]")[1]);
-//			}
+			onGameStarted(returnedObj);
 		}
 	}
 

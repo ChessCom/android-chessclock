@@ -28,9 +28,13 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.SessionEvents.AuthListener;
 import com.facebook.android.SessionEvents.LogoutListener;
 
-public class LoginButton extends Button {
-    
-    private Facebook mFb;
+import java.io.Serializable;
+
+public class LoginButton extends Button implements Serializable{
+
+	private static final long serialVersionUID = 2254525526368290163L;
+
+	private Facebook mFb;
     private Handler mHandler;
     private SessionListener mSessionListener = new SessionListener();
     private String[] mPermissions;

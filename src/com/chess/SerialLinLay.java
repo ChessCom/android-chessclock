@@ -12,9 +12,9 @@ import java.io.Serializable;
  * @author alien_roger
  * @created at: 18.07.12 6:43
  */
-public class SerialLinLay extends LinearLayout implements Serializable{
+public class SerialLinLay extends LinearLayout implements Serializable {
 
-	private static final long serialVersionUID = -8464648125307185315L;
+	private static final long serialVersionUID = 6371517444376863131L;
 
 	public SerialLinLay(Context context) {
 		super(context);
@@ -27,4 +27,5 @@ public class SerialLinLay extends LinearLayout implements Serializable{
 	public SerialLinLay(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
+
 }

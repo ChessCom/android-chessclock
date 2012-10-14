@@ -7,7 +7,12 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class RoboTextView extends TextView {
+import java.io.Serializable;
+
+public class RoboTextView extends TextView implements Serializable {
+
+	private static final long serialVersionUID = -2417945858405913303L;
+
 	private String ttfName = "Regular";
 
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {

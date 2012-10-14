@@ -67,7 +67,7 @@ public class MopubHelper {
 			createRectangleAd(app);
 		}*/
 
-		if (rectangleAdWrapper != null && rectangleAdView != null) {
+		if (rectangleAdWrapper != null /*&& rectangleAdView != null*/) { // rectangleAdView != null always true
 			rectangleAdWrapper.removeView(rectangleAdView);
 		}
 		rectangleAdWrapper = wrapper;
