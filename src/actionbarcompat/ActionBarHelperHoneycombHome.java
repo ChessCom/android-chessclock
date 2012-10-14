@@ -54,10 +54,14 @@ public class ActionBarHelperHoneycombHome extends ActionBarHelperHome {
 		if (refreshItem != null) {
 			if (refreshing) {
 				if (mRefreshIndeterminateProgressView == null) {
-					LayoutInflater inflater = (LayoutInflater) getActionBarThemedContext().getSystemService(
-							Context.LAYOUT_INFLATER_SERVICE);
-					mRefreshIndeterminateProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress,
-							null);
+					Context context = getActionBarThemedContext();
+					if (context != null) {
+						LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+								Context.LAYOUT_INFLATER_SERVICE);
+						mRefreshIndeterminateProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress,
+								null);
+
+					}
 				}
 
 				refreshItem.setActionView(mRefreshIndeterminateProgressView);
