@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.ui.engine.PieceItem;
 import com.chess.ui.interfaces.BoardViewFace;
+
+import java.util.HashMap;
 
 /**
  * GamePanelTestActivity class
@@ -42,6 +45,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 
     //	PieceItem Count on boardBitmap
+	HashMap<Integer, PieceLayerItem> whitePieceDrawables;
+	HashMap<Integer, PieceLayerItem> blackPieceDrawables;
     private int pieceItemCounts[] = new int[]{
             8,
             2,
@@ -99,6 +104,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private ScrollView movesScroll; // http://stackoverflow.com/questions/10806154/outofmemoryerror-when-inflating-a-layout
 	private boolean blocked;
 	private int playerDotId;
+	private int cnt;
 
 	public GamePanelView(Context context) {
         super(context);
@@ -116,6 +122,9 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         density = getContext().getResources().getDisplayMetrics().density;
         resources = getContext().getResources();
         pieceIds = getResources().getIntArray(R.array.pieces_ids);
+
+		whitePieceDrawables = new HashMap<Integer, PieceLayerItem>();
+		blackPieceDrawables = new HashMap<Integer, PieceLayerItem>();
 
         controlsLayout = new LinearLayout(getContext());
         int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
@@ -356,12 +365,15 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
                 currentLevel--;
             }
         }
+
         storedPieceItem.setCurrentLevel(currentLevel);
         LayerDrawable pieceDrawable;
         if (storedPieceItem.isWhite()) {
-            pieceDrawable = createImageDrawable(currentLevel, whitePieceDrawableIds[storedPieceItem.getPieceId()]);
+//            pieceDrawable = createImageDrawable(currentLevel, whitePieceDrawableIds[storedPieceItem.getPieceId()]);
+            pieceDrawable = whitePieceDrawables.get(pieceId).getPieceDrawable();
         } else {
-            pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
+//            pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
+            pieceDrawable = blackPieceDrawables.get(pieceId).getPieceDrawable();
         }
         imageView.setImageDrawable(pieceDrawable);
 
@@ -370,20 +382,23 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
 
-    private LayerDrawable createImageDrawable(int layersCnt, int pieceDrawableId) {
-        Drawable[] layers = new Drawable[layersCnt];
+//    private LayerDrawable createImageDrawable(int layersCnt, int pieceDrawableId) {
+//        Drawable[] layers = new Drawable[layersCnt];
+//
+//        for (int j = 0; j < layersCnt; j++) {
+//			cnt++;
+//            layers[j] = getResources().getDrawable(pieceDrawableId); // TODO get rid of OOM
+//        }
+//
+//        LayerDrawable pieceDrawable = new LayerDrawable(layers);
+//
+//        for (int i = 0; i < layersCnt; i++) {
+//            shiftLayer(pieceDrawable, i);
+//        }
+//        return pieceDrawable;
+//    }
 
-        for (int j = 0; j < layersCnt; j++) {
-            layers[j] = getResources().getDrawable(pieceDrawableId);
-        }
 
-        LayerDrawable pieceDrawable = new LayerDrawable(layers);
-
-        for (int i = 0; i < layersCnt; i++) {
-            shiftLayer(pieceDrawable, i);
-        }
-        return pieceDrawable;
-    }
 
     private void addPieceItems(LinearLayout viewGroup, boolean isWhite, float itemWeight, int pieceId) {
         int layersCnt = pieceItemCounts[pieceId];
@@ -396,11 +411,18 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
         LayerDrawable pieceDrawable;
+		PieceLayerItem pieceLayerItem = new PieceLayerItem(layersCnt);
         if (isWhite) {
-            pieceDrawable = createImageDrawable(layersCnt, whitePieceDrawableIds[pieceId]);
+
+			pieceLayerItem.createPieceDrawable(whitePieceDrawableIds[pieceId]);
+			whitePieceDrawables.put(pieceId, pieceLayerItem);
+//            pieceDrawable = createImageDrawable(layersCnt, whitePieceDrawableIds[pieceId]);
         } else {
-            pieceDrawable = createImageDrawable(layersCnt, blackPieceDrawableIds[pieceId]);
+			pieceLayerItem.createPieceDrawable(blackPieceDrawableIds[pieceId]);
+			blackPieceDrawables.put(pieceId, pieceLayerItem);
+//            pieceDrawable = createImageDrawable(layersCnt, blackPieceDrawableIds[pieceId]);
         }
+		pieceDrawable = pieceLayerItem.getPieceDrawable();
 
         imageView.setImageDrawable(pieceDrawable);
         imageView.setLayoutParams(imageParams);
@@ -620,5 +642,36 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		return findViewById(BUTTON_PREFIX + B_ANALYSIS_ID).isEnabled()
 				|| findViewById(BUTTON_PREFIX + B_FORWARD_ID).isEnabled()
 				|| findViewById(BUTTON_PREFIX + B_BACK_ID).isEnabled();
+	}
+
+
+
+	private class PieceLayerItem{
+		private LayerDrawable pieceDrawable;
+		private int layersCnt;
+
+		public PieceLayerItem(int layersCnt) {
+			this.layersCnt = layersCnt;
+		}
+
+		public LayerDrawable getPieceDrawable() {
+			return pieceDrawable;
+		}
+
+		public void createPieceDrawable(int pieceDrawableId) {
+			Drawable[] layers = new Drawable[layersCnt];
+
+			for (int j = 0; j < layersCnt; j++) {
+				cnt++;
+				Log.d("TEST", "create new layer for piece, cnt = " +cnt);
+				layers[j] = getResources().getDrawable(pieceDrawableId);
+			}
+
+			pieceDrawable = new LayerDrawable(layers);
+
+			for (int i = 0; i < layersCnt; i++) {
+				shiftLayer(pieceDrawable, i);
+			}
+		}
 	}
 }

@@ -110,7 +110,6 @@ public class ChessComApiParser {
 	}
 
 	public static GameOnlineItem GetGameParseV3(String result) {
-        Log.d("TEST", "moves from online server = " + result);
 		return new GameOnlineItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT));
 	}
 

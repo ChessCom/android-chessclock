@@ -177,14 +177,22 @@ public class DataHolder {
 	 * @param gameOpen flag that shows if current game board is opened to user
 	 */
 	public synchronized void setInOnlineGame(long gameId, boolean gameOpen) {
-		for (GamePlayingItem gamePlayingItem : playingGamesList) {
-			if(gamePlayingItem.getGameId() == gameId){
-				gamePlayingItem.setBoardOpen(gameOpen);
-			} else { // add this game
-				GamePlayingItem newGameItem = new GamePlayingItem();
-				newGameItem.setGameId(gameId);
-				newGameItem.setBoardOpen(gameOpen);
+		boolean gameFound = false;
+		int i;
+		for (i = 0; i < playingGamesList.size(); i++){
+			if(playingGamesList.get(i).getGameId() == gameId){
+				gameFound = true;
+				break;
 			}
+		}
+
+		if (gameFound) {
+			playingGamesList.get(i).setBoardOpen(gameOpen);
+		} else {
+			GamePlayingItem newGameItem = new GamePlayingItem();
+			newGameItem.setGameId(gameId);
+			newGameItem.setBoardOpen(gameOpen);
+			playingGamesList.add(newGameItem);
 		}
 	}
 

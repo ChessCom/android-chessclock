@@ -100,12 +100,20 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+
+		boardView.updateBoardAndPiecesImgs();
+		enableScreenLockTimer();
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
 		// update boardView if boardId has changed
-		boardView.updateBoardAndPiecesImgs();
-		enableScreenLockTimer();
+//		boardView.updateBoardAndPiecesImgs();
+//		enableScreenLockTimer();
 	}
 
 	protected void onDestroy() {

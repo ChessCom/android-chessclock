@@ -143,13 +143,22 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onStart() {
+		super.onStart();
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		registerReceiver(moveUpdateReceiver, moveUpdateFilter);
-
 		updateGameState();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+//		DataHolder.getInstance().setInOnlineGame(gameId, true);
+//		registerReceiver(moveUpdateReceiver, moveUpdateFilter);
+//
+//		updateGameState();
 //		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
 	}
 

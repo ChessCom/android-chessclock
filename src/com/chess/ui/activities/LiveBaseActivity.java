@@ -55,8 +55,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onStart() {
+		super.onStart();
+
+		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
 		if (DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
@@ -65,9 +67,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 //			dismissFragmentDialog();
 			LccHolder.getInstance(this).checkAndConnect();
 		}
-
-		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
-
 	}
 
 	@Override
