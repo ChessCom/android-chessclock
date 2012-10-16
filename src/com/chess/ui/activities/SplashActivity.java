@@ -12,6 +12,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.utilities.AppUtils;
 
 public class SplashActivity extends CommonLogicActivity {
 
@@ -28,6 +29,9 @@ public class SplashActivity extends CommonLogicActivity {
 		} else {
 			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 		}
+
+		AppUtils.stopNotificationsUpdate(this);
+
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			goToLoginScreen();
 		} else { // validate token
