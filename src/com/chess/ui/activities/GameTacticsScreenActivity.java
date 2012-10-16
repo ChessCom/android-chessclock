@@ -541,7 +541,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private class TacticsCorrectUpdateListener extends ChessUpdateListener {
 		public TacticsCorrectUpdateListener() {
-			super(getInstance());
+			super(getInstance());  // commit test
 		}
 
 		@Override
