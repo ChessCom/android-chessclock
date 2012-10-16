@@ -37,6 +37,7 @@ public class InneractiveAdHelper {
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
 			preferencesEditor.commit();
 		} else {
+			// todo: try to do not load ad when upgrade button is showing
 			inneractiveAd.setVisibility(View.GONE);
 			upgradeBtn.setVisibility(View.VISIBLE);
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);

@@ -24,7 +24,9 @@ import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.InneractiveAdHelper;
 import com.chess.utilities.MopubHelper;
+import com.inneractive.api.ads.InneractiveAd;
 import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
@@ -79,7 +81,11 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
 		if (AppUtils.isNeedToUpgrade(this)) {
-			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+			} else {
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			}
 		}
 
 		Button statsBtn = (Button) findViewById(R.id.statsBtn);

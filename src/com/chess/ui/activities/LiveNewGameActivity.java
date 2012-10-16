@@ -8,7 +8,9 @@ import com.chess.R;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppData;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.InneractiveAdHelper;
 import com.chess.utilities.MopubHelper;
+import com.inneractive.api.ads.InneractiveAd;
 import com.mopub.mobileads.MoPubView;
 
 public class LiveNewGameActivity extends LiveBaseActivity  {
@@ -25,7 +27,11 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
 		if (AppUtils.isNeedToUpgrade(this)) {
-			MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+			} else {
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			}
 		}
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
