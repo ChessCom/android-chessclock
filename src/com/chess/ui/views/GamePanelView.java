@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -367,7 +367,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
 
         storedPieceItem.setCurrentLevel(currentLevel);
-        LayerDrawable pieceDrawable;
+//        LayerDrawable pieceDrawable;
+        LevelListDrawable pieceDrawable;
         if (storedPieceItem.isWhite()) {
 //            pieceDrawable = createImageDrawable(currentLevel, whitePieceDrawableIds[storedPieceItem.getPieceId()]);
             pieceDrawable = whitePieceDrawables.get(pieceId).getPieceDrawable();
@@ -375,7 +376,12 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 //            pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
             pieceDrawable = blackPieceDrawables.get(pieceId).getPieceDrawable();
         }
+		Log.d("TEST", " current level = " + currentLevel);
+		boolean changed = pieceDrawable.setLevel(1);
+		Log.d("TEST", " current level changed = " + changed);
+		pieceDrawable.invalidateSelf();
         imageView.setImageDrawable(pieceDrawable);
+		imageView.invalidate();
 
         capturedFrame.setTag(storedPieceItem);
         invalidate();
@@ -410,7 +416,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        LayerDrawable pieceDrawable;
+//        LayerDrawable pieceDrawable;
+        LevelListDrawable pieceDrawable;
 		PieceLayerItem pieceLayerItem = new PieceLayerItem(layersCnt);
         if (isWhite) {
 
@@ -468,14 +475,15 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         viewGroup.addView(frame);
     }
 
-    private void shiftLayer(LayerDrawable pieceDrawable, int level) {
+//    private void shiftLayer(LayerDrawable pieceDrawable, int level) {
+    private void shiftLayer(LevelListDrawable pieceDrawable, int level) {
 
         int l = (int) (level * SHIFT_SIZE * density);
         int r = 0;
         int t = 0;
         int b = 0;
-        pieceDrawable.setLayerInset(level, l, t, r, b);
-        ((BitmapDrawable) pieceDrawable.getDrawable(level)).setGravity(Gravity.LEFT | Gravity.TOP);
+//        pieceDrawable.setLayerInset(level, l, t, r, b);
+//        ((BitmapDrawable) pieceDrawable.getDrawable(level)).setGravity(Gravity.LEFT | Gravity.TOP);
     }
 
     public void dropAlivePieces() {
@@ -647,14 +655,16 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 
 	private class PieceLayerItem{
-		private LayerDrawable pieceDrawable;
+//		private LayerDrawable pieceDrawable;
+		private LevelListDrawable pieceDrawable;
 		private int layersCnt;
 
 		public PieceLayerItem(int layersCnt) {
 			this.layersCnt = layersCnt;
 		}
 
-		public LayerDrawable getPieceDrawable() {
+//		public LayerDrawable getPieceDrawable() {
+		public LevelListDrawable getPieceDrawable() {
 			return pieceDrawable;
 		}
 
@@ -665,9 +675,13 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				cnt++;
 				Log.d("TEST", "create new layer for piece, cnt = " +cnt);
 				layers[j] = getResources().getDrawable(pieceDrawableId);
+				((BitmapDrawable)layers[j]).setGravity(Gravity.LEFT | Gravity.TOP);
+
+//				layers[j].setLevel(j);
 			}
 
-			pieceDrawable = new LayerDrawable(layers);
+//			pieceDrawable = new LayerDrawable(layers);
+			pieceDrawable = new LevelListDrawable();
 
 			for (int i = 0; i < layersCnt; i++) {
 				shiftLayer(pieceDrawable, i);
