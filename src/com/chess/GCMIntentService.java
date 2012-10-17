@@ -112,19 +112,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
 				return;
 
-			String gameId = intent.getStringExtra("game_id");
-			Log.d("TEST", " received game info -> gameId = " + gameId);
+//			String gameId = intent.getStringExtra("game_id");
+//			Log.d("TEST", " received game info -> gameId = " + gameId);
+//
+//			Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
-			Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
-			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
-			if (!DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
+//			if (!DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
 				showYouTurnNotification(intent);
-			}
+//			} else {
+//				context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
+//			}
 		}
 	}
 
 	private synchronized void showYouTurnNotification(Intent intent) {
-
 
 		String lastMoveSan = intent.getStringExtra("last_move_san");
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
@@ -132,13 +133,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String opponentUsername = intent.getStringExtra("opponent_username");
 		String gameId = intent.getStringExtra("game_id");
 
-		boolean gameInfoWasFound = false;
+		boolean gameInfoFound = false;
 		Log.d(TAG, " _________________________________");
 		Log.d(TAG, " LastmoveSan = " + lastMoveSan);
 		Log.d(TAG, " gameId = " + gameId);
 		Log.d(TAG, " opponentUsername = " + opponentUsername);
+		Log.d("TEST", " received game info -> gameId = " + gameId);
 
-		// we use the same registerId for all users on a device, so check username to notify the needed user
+		Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
+
+		// we use the same registerId for all users on a device, so check username to notify only the needed user
 		if (opponentUsername.equalsIgnoreCase(AppData.getUserName(this))) {
 			return; // don't need notificaion of myself game
 		}
@@ -153,11 +157,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 				} else { // if move info is different
 					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
 				}
-				gameInfoWasFound = true;
+				gameInfoFound = true;
 			}
 		}
 
-		if (!gameInfoWasFound) { // if we have no info about this game, then add last move to list of objects
+		if (!gameInfoFound) { // if we have no info about this game, then add last move to list of objects
 			Log.d(TAG, " adding new game info" );
 			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
 			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
@@ -165,54 +169,61 @@ public class GCMIntentService extends GCMBaseIntentService {
 		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
 		}
 
-		long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
-
-		long minutes = gameTimeLeft /60%60;
-		long hours = gameTimeLeft /3600%24;
-		long days = gameTimeLeft /86400;
-
-		String remainingUnits;
-		String remainingTime;
-
-		if(days > 0){
-			remainingUnits = "d";
-			remainingTime = String.valueOf(days);
-		} else if(hours > 0){
-			remainingUnits = "h";
-			remainingTime = String.valueOf(hours);
+		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
+			context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
 		} else {
-			remainingUnits = "m";
-			remainingTime = String.valueOf(minutes);
-		}
-		// compose gameInfoItem
-		String[] gameInfoValues = new String[]{
-				gameId,
-				remainingTime,
-				remainingUnits
-		};
+			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 
-		GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
+			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 
-		AppUtils.showNewMoveStatusNotification(context,
-				context.getString(R.string.your_move),
-				context.getString(R.string.your_turn_in_game_with,
-						opponentUsername,
-						lastMoveSan),
-				StaticData.MOVE_REQUEST_CODE,
-				gameListItem);
+			long minutes = gameTimeLeft /60%60;
+			long hours = gameTimeLeft /3600%24;
+			long days = gameTimeLeft /86400;
 
-		SharedPreferences preferences = AppData.getPreferences(context);
-		boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
-		if(playSounds){
-			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-			if(player != null){
-				player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-					@Override
-					public void onCompletion(MediaPlayer mediaPlayer) {
-						player.release();
-					}
-				});
-				player.start();
+			String remainingUnits;
+			String remainingTime;
+
+			if(days > 0){
+				remainingUnits = "d";
+				remainingTime = String.valueOf(days);
+			} else if(hours > 0){
+				remainingUnits = "h";
+				remainingTime = String.valueOf(hours);
+			} else {
+				remainingUnits = "m";
+				remainingTime = String.valueOf(minutes);
+			}
+			// compose gameInfoItem
+			String[] gameInfoValues = new String[]{
+					gameId,
+					remainingTime,
+					remainingUnits
+			};
+
+
+			GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
+
+			AppUtils.showNewMoveStatusNotification(context,
+					context.getString(R.string.your_move),
+					context.getString(R.string.your_turn_in_game_with,
+							opponentUsername,
+							lastMoveSan),
+					StaticData.MOVE_REQUEST_CODE,
+					gameListItem);
+
+			SharedPreferences preferences = AppData.getPreferences(context);
+			boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
+			if(playSounds){
+				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
+				if(player != null){
+					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+						@Override
+						public void onCompletion(MediaPlayer mediaPlayer) {
+							player.release();
+						}
+					});
+					player.start();
+				}
 			}
 		}
 	}

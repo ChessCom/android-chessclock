@@ -3,8 +3,10 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -367,42 +369,42 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
 
         storedPieceItem.setCurrentLevel(currentLevel);
-//        LayerDrawable pieceDrawable;
-        LevelListDrawable pieceDrawable;
+        LayerDrawable pieceDrawable;
+//        LevelListDrawable pieceDrawable;
         if (storedPieceItem.isWhite()) {
-//            pieceDrawable = createImageDrawable(currentLevel, whitePieceDrawableIds[storedPieceItem.getPieceId()]);
-            pieceDrawable = whitePieceDrawables.get(pieceId).getPieceDrawable();
+            pieceDrawable = createImageDrawable(currentLevel, whitePieceDrawableIds[storedPieceItem.getPieceId()]);
+//            pieceDrawable = whitePieceDrawables.get(pieceId).getPieceDrawable();
         } else {
-//            pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
-            pieceDrawable = blackPieceDrawables.get(pieceId).getPieceDrawable();
+            pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
+//            pieceDrawable = blackPieceDrawables.get(pieceId).getPieceDrawable();
         }
 		Log.d("TEST", " current level = " + currentLevel);
-		boolean changed = pieceDrawable.setLevel(1);
-		Log.d("TEST", " current level changed = " + changed);
-		pieceDrawable.invalidateSelf();
+//		boolean changed = pieceDrawable.setLevel(currentLevel);
+//		Log.d("TEST", " current level changed = " + changed);
+//		pieceDrawable.invalidateSelf();
         imageView.setImageDrawable(pieceDrawable);
-		imageView.invalidate();
+//		imageView.invalidate();
 
         capturedFrame.setTag(storedPieceItem);
         invalidate();
     }
 
 
-//    private LayerDrawable createImageDrawable(int layersCnt, int pieceDrawableId) {
-//        Drawable[] layers = new Drawable[layersCnt];
-//
-//        for (int j = 0; j < layersCnt; j++) {
-//			cnt++;
-//            layers[j] = getResources().getDrawable(pieceDrawableId); // TODO get rid of OOM
-//        }
-//
-//        LayerDrawable pieceDrawable = new LayerDrawable(layers);
-//
-//        for (int i = 0; i < layersCnt; i++) {
-//            shiftLayer(pieceDrawable, i);
-//        }
-//        return pieceDrawable;
-//    }
+    private LayerDrawable createImageDrawable(int layersCnt, int pieceDrawableId) {
+        Drawable[] layers = new Drawable[layersCnt];
+
+        for (int j = 0; j < layersCnt; j++) {
+			cnt++;
+            layers[j] = getResources().getDrawable(pieceDrawableId); // TODO get rid of OOM
+        }
+
+        LayerDrawable pieceDrawable = new LayerDrawable(layers);
+
+        for (int i = 0; i < layersCnt; i++) {
+            shiftLayer(pieceDrawable, i);
+        }
+        return pieceDrawable;
+    }
 
 
 
@@ -416,20 +418,20 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
-//        LayerDrawable pieceDrawable;
-        LevelListDrawable pieceDrawable;
+        LayerDrawable pieceDrawable;
+//        LevelListDrawable pieceDrawable;
 		PieceLayerItem pieceLayerItem = new PieceLayerItem(layersCnt);
         if (isWhite) {
 
-			pieceLayerItem.createPieceDrawable(whitePieceDrawableIds[pieceId]);
-			whitePieceDrawables.put(pieceId, pieceLayerItem);
-//            pieceDrawable = createImageDrawable(layersCnt, whitePieceDrawableIds[pieceId]);
+//			pieceLayerItem.createPieceDrawable(whitePieceDrawableIds[pieceId]);
+//			whitePieceDrawables.put(pieceId, pieceLayerItem);
+            pieceDrawable = createImageDrawable(layersCnt, whitePieceDrawableIds[pieceId]);
         } else {
-			pieceLayerItem.createPieceDrawable(blackPieceDrawableIds[pieceId]);
-			blackPieceDrawables.put(pieceId, pieceLayerItem);
-//            pieceDrawable = createImageDrawable(layersCnt, blackPieceDrawableIds[pieceId]);
+//			pieceLayerItem.createPieceDrawable(blackPieceDrawableIds[pieceId]);
+//			blackPieceDrawables.put(pieceId, pieceLayerItem);
+            pieceDrawable = createImageDrawable(layersCnt, blackPieceDrawableIds[pieceId]);
         }
-		pieceDrawable = pieceLayerItem.getPieceDrawable();
+//		pieceDrawable = pieceLayerItem.getPieceDrawable();
 
         imageView.setImageDrawable(pieceDrawable);
         imageView.setLayoutParams(imageParams);
@@ -475,15 +477,15 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         viewGroup.addView(frame);
     }
 
-//    private void shiftLayer(LayerDrawable pieceDrawable, int level) {
-    private void shiftLayer(LevelListDrawable pieceDrawable, int level) {
+    private void shiftLayer(LayerDrawable pieceDrawable, int level) {
+//    private void shiftLayer(LevelListDrawable pieceDrawable, int level) {
 
         int l = (int) (level * SHIFT_SIZE * density);
         int r = 0;
         int t = 0;
         int b = 0;
-//        pieceDrawable.setLayerInset(level, l, t, r, b);
-//        ((BitmapDrawable) pieceDrawable.getDrawable(level)).setGravity(Gravity.LEFT | Gravity.TOP);
+        pieceDrawable.setLayerInset(level, l, t, r, b);
+        ((BitmapDrawable) pieceDrawable.getDrawable(level)).setGravity(Gravity.LEFT | Gravity.TOP);
     }
 
     public void dropAlivePieces() {
@@ -671,21 +673,38 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		public void createPieceDrawable(int pieceDrawableId) {
 			Drawable[] layers = new Drawable[layersCnt];
 
+			pieceDrawable = new LevelListDrawable();
 			for (int j = 0; j < layersCnt; j++) {
 				cnt++;
-				Log.d("TEST", "create new layer for piece, cnt = " +cnt);
+
 				layers[j] = getResources().getDrawable(pieceDrawableId);
 				((BitmapDrawable)layers[j]).setGravity(Gravity.LEFT | Gravity.TOP);
+
+				Rect bounds = layers[j].getBounds();
+				Log.d("TEST", "left bound before =  " + bounds.left);
+				bounds.left += (int) (j * SHIFT_SIZE * density);
+				bounds.right += (int) (j * SHIFT_SIZE * density);
+
+//				int l = (int) (j * SHIFT_SIZE * density);
+//				int r = 0;
+//				int t = 0;
+//				int b = 0;
+				layers[j].mutate().setBounds(bounds);
+				Log.d("TEST", "left bound after =  " + layers[j].getBounds().left);
+
+				Log.d("TEST", "create new layer for piece, cnt = " + cnt);
+				Log.d("TEST", "add level  = " + j + " for id = " + pieceDrawableId);
+//				int l = (int) (j * SHIFT_SIZE * density);
+				pieceDrawable.addLevel(0, j, layers[j]);
 
 //				layers[j].setLevel(j);
 			}
 
 //			pieceDrawable = new LayerDrawable(layers);
-			pieceDrawable = new LevelListDrawable();
 
-			for (int i = 0; i < layersCnt; i++) {
-				shiftLayer(pieceDrawable, i);
-			}
+//			for (int i = 0; i < layersCnt; i++) {
+//				shiftLayer(pieceDrawable, i);
+//			}
 		}
 	}
 }

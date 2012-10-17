@@ -78,7 +78,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private GameListCurrentItem gameInfoItem;
 	private String timeRemains;
 	private TextView infoLabelTxt;
-	private IntentFilter moveUpdateFilter;
+	private IntentFilter boardUpdateFilter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
 
-		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
 	}
 
 	public void init() {
@@ -147,7 +147,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		super.onStart();
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
-		registerReceiver(moveUpdateReceiver, moveUpdateFilter);
+		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 		updateGameState();
 	}
 
@@ -156,7 +156,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		super.onResume();
 
 //		DataHolder.getInstance().setInOnlineGame(gameId, true);
-//		registerReceiver(moveUpdateReceiver, moveUpdateFilter);
+//		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 //
 //		updateGameState();
 //		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task

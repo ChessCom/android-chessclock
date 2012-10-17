@@ -8,5 +8,6 @@ package com.chess.backend.statics;
  */
 public class IntentConstants {
 	public static final String USER_MOVE_UPDATE = "com.chess.user_move_update";
+	public static final String BOARD_UPDATE = "com.chess.board_update";
 
 }

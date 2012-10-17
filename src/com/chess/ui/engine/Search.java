@@ -10,7 +10,6 @@
 //
 package com.chess.ui.engine;
 
-import android.util.Log;
 import com.chess.ui.interfaces.BoardFace;
 
 import java.util.Iterator;
@@ -46,24 +45,31 @@ public class Search {
 
 			ply = 0;
 			nodes = 0;
-			for (int i = 0; i < MAX_PLY; i++)
-				for (int j = 0; j < MAX_PLY; j++)
+			for (int i = 0; i < MAX_PLY; i++) {
+				for (int j = 0; j < MAX_PLY; j++) {
 					pv[i][j] = new Move((char) 0, (char) 0, (char) 0, (char) 0);
-			for (int i = 0; i < 64; i++)
-				for (int j = 0; j < 64; j++)
+				}
+			}
+			for (int i = 0; i < 64; i++) {
+				for (int j = 0; j < 64; j++) {
 					boardFace.getHistory()[i][j] = 0;
-			if (output == 1)
-				Log.d(SEARCH, "ply      nodes  score  pv");
+				}
+			}
+//			if (output == 1) {
+////				Log.d(SEARCH, "ply      nodes  score  pv");
+//			}
 			for (int i = 1; i <= maxDepth; ++i) {
 				followPV = true;
 				int x = search(-10000, 10000, i);
 				if (output > 0) {
-					Log.d(SEARCH, /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
-					for (int j = 0; j < pvLength[0]; ++j)
-						Log.d(SEARCH, " " + pv[0][j].toString());
+//					Log.d(SEARCH, /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
+					for (int j = 0; j < pvLength[0]; ++j) {
+//						Log.d(SEARCH, " " + pv[0][j].toString());
+					}
 				}
-				if (x > 9000 || x < -9000)
+				if (x > 9000 || x < -9000) {
 					break;
+				}
 			}
 		} catch (StopSearchingException e) {
 			/* make sure to take back the line we were searching */
@@ -72,8 +78,8 @@ public class Search {
 				--ply;
 			}
 		}
-		Log.d(SEARCH, "Nodes searched: " + nodes);
-		return;
+//		Log.d(SEARCH, "Nodes searched: " + nodes);
+
 	}
 
 	/* search() does just that, in negamax fashion */
@@ -81,13 +87,15 @@ public class Search {
 	int search(int alpha, int beta, int depth) throws StopSearchingException {
 		/* we're as deep as we want to be; call quiesce() to get
 			   a reasonable score and return it. */
-		if (depth == 0)
+		if (depth == 0) {
 			return quiesce(alpha, beta);
+		}
 		++nodes;
 
 		/* do some housekeeping every 1024 nodes */
-		if ((nodes & 1023) == 0)
+		if ((nodes & 1023) == 0) {
 			checkup();
+		}
 
 		pvLength[ply] = ply;
 
@@ -95,29 +103,34 @@ public class Search {
 			   to pick a move and can't simply return 0) then check to
 			   see if the position is a repeat. if so, we can assume that
 			   this line is a draw and return 0. */
-		if ((ply > 0) && (boardFace.reps() > 0))
+		if ((ply > 0) && (boardFace.reps() > 0)) {
 			return 0;
+		}
 
 		/* are we too deep? */
-		if (ply >= MAX_PLY - 1)
+		if (ply >= MAX_PLY - 1) {
 			return boardFace.eval();
+		}
 /*	if (hply >= HIST_STACK - 1)
             return boardView.eval();
-FIXME!!! We could in principle overflow the move history stack.
+// TODO FIXME!!! We could in principle overflow the move history stack.
 */
 		/* are we in check? if so, we want to search deeper */
 		boolean check = boardFace.inCheck(boardFace.getSide());
-		if (check)
+		if (check) {
 			++depth;
+		}
 		TreeSet<Move> validMoves = boardFace.gen();
-		if (followPV)  /* are we following the PV? */
+		if (followPV)  /* are we following the PV? */ {
 			sortPV(validMoves);
+		}
 
 		/* loop through the moves */
 		boolean foundMove = false;
 		for (Move m : validMoves) {
-			if (!boardFace.makeMove(m, false))
+			if (!boardFace.makeMove(m, false)) {
 				continue;
+			}
 			foundMove = true;
 			ply++;
 			int x = -search(-beta, -alpha, depth - 1);
@@ -134,8 +147,7 @@ FIXME!!! We could in principle overflow the move history stack.
 
 				/* update the PV */
 				pv[ply][ply] = m;
-				for (int j = ply + 1; j < pvLength[ply + 1]; ++j)
-					pv[ply][j] = pv[ply + 1][j];
+				System.arraycopy(pv[ply + 1], ply + 1, pv[ply], ply + 1, pvLength[ply + 1] - (ply + 1));
 				pvLength[ply] = pvLength[ply + 1];
 			}
 		}
@@ -176,7 +188,7 @@ FIXME!!! We could in principle overflow the move history stack.
 			return boardFace.eval();
 /*	if (hply >= HIST_STACK - 1)
             return boardView.eval();
-FIXME!! see above */
+// TODO FIXME!! see above */
 		/* check with the evaluation function */
 		int x = boardFace.eval();
 		if (x >= beta)
@@ -190,21 +202,22 @@ FIXME!! see above */
 
 		/* loop through the moves */
 		for (Move m : validCaptures) {
-			if (!boardFace.makeMove(m, false))
+			if (!boardFace.makeMove(m, false)) {
 				continue;
+			}
 			ply++;
 			x = -quiesce(-beta, -alpha);
 			boardFace.takeBack();
 			ply--;
 			if (x > alpha) {
-				if (x >= beta)
+				if (x >= beta) {
 					return beta;
+				}
 				alpha = x;
 
 				/* update the PV */
 				pv[ply][ply] = m;
-				for (int j = ply + 1; j < pvLength[ply + 1]; ++j)
-					pv[ply][j] = pv[ply + 1][j];
+				System.arraycopy(pv[ply + 1], ply + 1, pv[ply], ply + 1, pvLength[ply + 1] - (ply + 1));
 				pvLength[ply] = pvLength[ply + 1];
 			}
 		}
@@ -223,12 +236,12 @@ FIXME!! see above */
 		followPV = false;
 		Iterator<Move> i = moves.iterator();
 		while (i.hasNext()) {
-			Move m = i.next();
-			if (m.equals(pv[0][ply])) {
+			Move move = i.next();
+			if (move.equals(pv[0][ply])) {
 				followPV = true;
-				m.score += 10000000;
+				move.score += 10000000;
 				i.remove();
-				moves.add(m);
+				moves.add(move);
 				return;
 			}
 		}
