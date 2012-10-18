@@ -149,37 +149,38 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	}
 
 	@Override
-	public void onSessionExpired(String message) {
-		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		final SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_relogin_frame, null, false);
-
-		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView(customView);
-
-		PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
-		reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
-
-		getLccHolder().logout();
-
-		((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
-
-		EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
-		EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
-		setLoginFields(usernameEdt, passwordEdt);
-
-		customView.findViewById(R.id.re_signin).setOnClickListener(this);
-
+	public void onSessionExpired(final String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+
+				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+				final SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_relogin_frame, null, false);
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setCustomView(customView);
+
+				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
+				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
+
+				getLccHolder().logout();
+
+				((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
+
+				EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
+				EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
+				setLoginFields(usernameEdt, passwordEdt);
+
+				customView.findViewById(R.id.re_signin).setOnClickListener(CoreActivityHome.this);
+
+
 				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
 				facebookLoginButton.init(CoreActivityHome.this, facebook);
 				facebookLoginButton.logout();
+
+				usernameEdt.setText(AppData.getUserName(CoreActivityHome.this));
 			}
 		});
-
-
-		usernameEdt.setText(AppData.getUserName(this));
 	}
 
 
