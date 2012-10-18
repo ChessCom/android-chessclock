@@ -575,7 +575,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
     public void haveNewMessage(boolean newMessage) {
-        int imgId = newMessage ? R.drawable.ic_chat_nm1 : R.drawable.ic_chat;
+        int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat;
 
         ((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
 		invalidate();
