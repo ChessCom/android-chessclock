@@ -64,9 +64,9 @@ public class LccConnectionListener implements ConnectionListener {
 			comments = details.getComments();
 		}
 		Log.d("TEST", "Connection Lost, with message = " + message
-				+ " n\\Details: id = " + failureId + "comments = " + comments);
+				+ " \nDetails: id = " + failureId + " comments = " + comments);
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
-                + " n\\Details: id = " + failureId + "comments = " + comments);
+                + " \nDetails: id = " + failureId + " comments = " + comments);
 		lccHolder.setConnected(false);
 	}
 

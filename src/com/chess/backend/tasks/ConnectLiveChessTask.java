@@ -28,7 +28,6 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	public static final String TESTTEST = "testtest";
 	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
 
-
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
 	public static final String HOST = "chess.com";
@@ -48,7 +47,12 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
 
+	private boolean forceReenterCred;
 
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred) {
+		super(taskFace);
+		this.forceReenterCred = forceReenterCred;
+	}
 
 	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace) {
 		super(taskFace);
@@ -102,7 +106,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 		}
 
 		LccHolder.getInstance(context).setLiveChessClient(item);
-		LccHolder.getInstance(context).performConnect();
+		LccHolder.getInstance(context).performConnect(forceReenterCred);
 		return StaticData.RESULT_OK;
 	}
 }
