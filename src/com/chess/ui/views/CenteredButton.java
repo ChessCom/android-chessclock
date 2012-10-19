@@ -16,19 +16,16 @@ import com.chess.RoboButton;
 
 public class CenteredButton extends FrameLayout implements View.OnTouchListener {
 
-	static final String TAG = "CenteredButton";
-	private final int DEFAULT_WIDTH = 100;
-	private final int DEFAULT_HEIGHT = 100;
+	private static final int DEFAULT_WIDTH = 100;
+	private static final int DEFAULT_HEIGHT = 100;
 	private RoboButton button;
 	private Drawable drawable;
-	private float density;
 
-	int mRadius;
-	int mAnrType;
 	CharSequence buttonText;
 
 	private int mMaxChildWidth = 0;
 	private int mMaxChildHeight = 0;
+	private float density;
 
 	public CenteredButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -156,8 +153,8 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-		int height = measureParam(heightMeasureSpec, DEFAULT_HEIGHT);
-		int width = measureParam(widthMeasureSpec, DEFAULT_WIDTH);
+		int height = measureParam(heightMeasureSpec, (int) (DEFAULT_HEIGHT * density));
+		int width = measureParam(widthMeasureSpec, (int) (DEFAULT_WIDTH * density));
 
 		int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec),
 				MeasureSpec.AT_MOST);

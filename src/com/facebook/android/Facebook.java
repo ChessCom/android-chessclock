@@ -78,7 +78,7 @@ public class Facebook {
     
     // If the last time we extended the access token was more than 24 hours ago
     // we try to refresh the access token again.
-    final private long REFRESH_TOKEN_BARRIER = 24L * 60L * 60L * 1000L;
+	private static final long REFRESH_TOKEN_BARRIER = 24L * 60L * 60L * 1000L;
 
     /**
      * Constructor for Facebook object.

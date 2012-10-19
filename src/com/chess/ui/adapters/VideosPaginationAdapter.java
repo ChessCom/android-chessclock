@@ -24,10 +24,9 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
 	private static final String TAG = "VideosPaginationAdapter";
 
 	protected LoadItem loadItem;
-    private String url;
 
 
-    public VideosPaginationAdapter(Context context, ItemsAdapter<VideoItem> adapter,
+	public VideosPaginationAdapter(Context context, ItemsAdapter<VideoItem> adapter,
 								   TaskUpdateInterface<VideoItem> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
         this.loadItem = loadItem;
@@ -35,7 +34,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
 
 	@Override
 	protected List<VideoItem> fetchMoreItems(int page) {
-        url = RestHelper.formCustomPaginationRequest(loadItem, page + 1);
+		final String url = RestHelper.formCustomPaginationRequest(loadItem, page + 1);
         result = getJsonData(url);
         return itemList;
 	}

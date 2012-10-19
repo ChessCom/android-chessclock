@@ -50,8 +50,8 @@ public class MoPubConversionTracker {
     private Context mContext;
     private String mPackageName;
 
-    static private String TRACK_HOST = "ads.mopub.com";
-    static private String TRACK_HANDLER = "/m/open";
+	private static final String TRACK_HOST = "ads.mopub.com";
+    private static final String TRACK_HANDLER = "/m/open";
 
     public void reportAppOpen(Context context) {
         if (context == null) {
@@ -61,7 +61,7 @@ public class MoPubConversionTracker {
         mPackageName = mContext.getPackageName();
 
         SharedPreferences settings = mContext.getSharedPreferences("mopubSettings", 0);
-        if (settings.getBoolean(mPackageName+" tracked", false) == false) {
+        if (!settings.getBoolean(mPackageName + " tracked", false)) {
             new Thread(mTrackOpen).start();
         } else {
             Log.d(AdView.MOPUB, "Conversion already tracked");

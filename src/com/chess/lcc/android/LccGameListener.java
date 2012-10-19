@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class LccGameListener implements GameListener {
-	private final boolean TESTING_GAME = false;
+	private static final boolean TESTING_GAME = false;
     private static final String[] TEST_MOVES_COORD = {"d2d4", "g8f6", "g1f3", "c7c6", "e2e3", "d7d6", "f1d3", "c8g4", "h2h3", "g4f3", "d1f3",
 			"e7e5", "d4e5", "d6e5", "b1d2", "f8b4", "a2a3", "b4d2", "c1d2", "e8g8", "e1c1", "b8d7", "d3f5", "d8c7", "e3e4",
 			"a7a5", "f3g3", "g7g6", "d2h6", "f8e8", "h3h4", "f6h5", "g3g5", "f7f6", "g5g4", "d7c5", "f5g6", "h7g6", "g4g6",

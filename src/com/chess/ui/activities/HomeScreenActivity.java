@@ -49,7 +49,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	protected Challenge currentChallenge;
     private LccChallengeTaskRunner challengeTaskRunner;
-    private ChallengeTaskListener challengeTaskListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +79,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		// set listener to lccHolder
 		getLccHolder().setOuterChallengeListener(new LiveOuterChallengeListener());
 
-		challengeTaskListener = new ChallengeTaskListener();
-		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
+		challengeTaskRunner = new LccChallengeTaskRunner(new ChallengeTaskListener());
 
 		registerGcmService();
 	}
