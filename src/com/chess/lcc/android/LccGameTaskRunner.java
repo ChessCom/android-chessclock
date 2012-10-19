@@ -3,10 +3,15 @@ package com.chess.lcc.android;
 import android.content.Context;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Game;
 import com.chess.live.client.LiveChessClient;
+import com.flurry.android.FlurryAgent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * LccChallengeTaskRunner class
@@ -112,6 +117,9 @@ public class LccGameTaskRunner {
 				liveChessClient.makeMove(game[0], move);
 			} catch (IllegalArgumentException e) {
 				BugSenseHandler.addCrashExtraData("APP_LCC_MAKE_MOVE", debugInfo);
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("DEBUG", debugInfo);
+				FlurryAgent.logEvent(FlurryData.ILLEGAL_MOVE_DEBUG, params);
 				throw new IllegalArgumentException(debugInfo, e);
 			}
 

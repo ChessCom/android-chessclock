@@ -26,4 +26,5 @@ public class FlurryData {
 	public static final String MATOMY_AD_FULLSCREEN_FAILED = "matomy-ad-fullscreen-failed";
 	public static final String MATOMY_AD_FULLSCREEN_LOADED = "matomy-ad-fullscreen-loaded";
 	public static final String BUGSENSE_INIT_EXCEPTION = "bugsense-init-exception";
+	public static final String ILLEGAL_MOVE_DEBUG = "illegal-move-debug";
 }
