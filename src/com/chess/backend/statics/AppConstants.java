@@ -9,7 +9,6 @@ public class AppConstants {
 
 	public static final String GAME_MODE = "game_mode";
 
-
 	public static final String USER_TOKEN = "user_token";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";
 	public static final String CHALLENGE_BONUS_TIME = "bonus_time";
@@ -93,5 +92,10 @@ public class AppConstants {
 	public static final String VERSION_CODE = "versionCode ";
 	public static final String VERSION_NAME = "versionName ";
 	public static final String SDK_API = "API ";
+
+	/* GCM */
 	public static final String GCM_RETRY_TIME = "GCM retry time";
+	public static final String GCM_REGISTERED_ON_SERVER = "registered on chess GCM server";
+	public static final String GCM_SAVED_TOKEN = "saved token on server";
+
 }

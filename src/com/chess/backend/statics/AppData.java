@@ -162,4 +162,26 @@ public class AppData {
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
 		return preferences.getBoolean(userName + AppConstants.PREF_NOTIFICATION, true);
 	}
+
+	public static boolean isRegisterOnChessGCM(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String savedToken = preferences.getString(AppConstants.GCM_SAVED_TOKEN, StaticData.SYMBOL_EMPTY);
+		String userToken = preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+
+		return savedToken.equals(userToken) && preferences.getBoolean(AppConstants.GCM_REGISTERED_ON_SERVER, false);
+	}
+
+	public static void registerOnChessGCM(Context context, String token) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putBoolean(AppConstants.GCM_REGISTERED_ON_SERVER, true);
+		editor.putString(AppConstants.GCM_SAVED_TOKEN, token);
+		editor.commit();
+	}
+
+	public static void unRegisterOnChessGCM(Context context) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putBoolean(AppConstants.GCM_REGISTERED_ON_SERVER, false);
+		editor.putString(AppConstants.GCM_SAVED_TOKEN, StaticData.SYMBOL_EMPTY);
+		editor.commit();
+	}
 }

@@ -378,7 +378,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
             pieceDrawable = createImageDrawable(currentLevel, blackPieceDrawableIds[storedPieceItem.getPieceId()]);
 //            pieceDrawable = blackPieceDrawables.get(pieceId).getPieceDrawable();
         }
-		Log.d("TEST", " current level = " + currentLevel);
+//		Log.d("TEST", " current level = " + currentLevel);
 //		boolean changed = pieceDrawable.setLevel(currentLevel);
 //		Log.d("TEST", " current level changed = " + changed);
 //		pieceDrawable.invalidateSelf();

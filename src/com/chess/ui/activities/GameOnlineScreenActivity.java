@@ -55,7 +55,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private static final String END_GAME_TAG = "end game popup";
 	private static final String ERROR_TAG = "send request failed popup";
 
-//	private int UPDATE_DELAY = 120000;
 	private View submitButtonsLay;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -74,7 +73,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private GameOnlineItem currentGame;
 	private long gameId;
-//	private int currentPlayerRating;
 	private GameListCurrentItem gameInfoItem;
 	private String timeRemains;
 	private TextView infoLabelTxt;
@@ -147,29 +145,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		super.onStart();
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
-		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 		updateGameState();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-//		DataHolder.getInstance().setInOnlineGame(gameId, true);
-//		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
-//
-//		updateGameState();
-//		handler.postDelayed(updateGameStateOrder, UPDATE_DELAY);  // run repeatable task
+		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 	}
-
-//	private Runnable updateGameStateOrder = new Runnable() {
-//		@Override
-//		public void run() {
-//			updateGameState();
-//			handler.removeCallbacks(this);
-//			handler.postDelayed(this, UPDATE_DELAY);
-//		}
-//	};
 
 	@Override
 	protected void onPause() {
@@ -178,7 +161,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		unregisterReceiver(moveUpdateReceiver);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
-//		handler.removeCallbacks(updateGameStateOrder);
 	}
 
 	private BroadcastReceiver moveUpdateReceiver = new BroadcastReceiver() {

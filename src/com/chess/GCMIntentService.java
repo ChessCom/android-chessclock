@@ -170,6 +170,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
+			Log.d(TAG, " updating board" );
 			context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
 		} else {
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
@@ -282,9 +283,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 				switch (requestCode){
 					case GcmHelper.REQUEST_REGISTER:
 						GCMRegistrar.setRegisteredOnServer(context, true);
+						AppData.registerOnChessGCM(context, AppData.getUserToken(context));
 						break;
 					case GcmHelper.REQUEST_UNREGISTER:
 						GCMRegistrar.setRegisteredOnServer(context, false);
+						AppData.unRegisterOnChessGCM(context);
 						// remove saved token
 						SharedPreferences.Editor editor = preferences.edit();
 						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);

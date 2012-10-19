@@ -31,7 +31,6 @@ import com.chess.live.client.User;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
-import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.views.BackgroundChessDrawable;
 
 import java.util.Arrays;
@@ -152,7 +151,7 @@ public class AppUtils {
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		ChessBoardOnline.resetInstance();
+//		ChessBoardOnline.resetInstance();
 
 		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
 		intent.putExtra(BaseGameItem.GAME_INFO_ITEM, currentGameItem);

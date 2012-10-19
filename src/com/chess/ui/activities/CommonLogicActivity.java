@@ -200,7 +200,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			Log.d("TEST", " no regId - > GCMRegistrar.register");
 		} else {
 			// Device is already registered on GCM, check server.
-			if (GCMRegistrar.isRegisteredOnServer(this)) {
+			if (GCMRegistrar.isRegisteredOnServer(this) && AppData.isRegisterOnChessGCM(this)) {
 				// Skips registration.
 				Log.d("TEST", "already registered");
 			} else {
@@ -257,9 +257,11 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				switch (requestCode){
 					case REQUEST_REGISTER:
 						GCMRegistrar.setRegisteredOnServer(getContext(), true);
+						AppData.registerOnChessGCM(getContext(), AppData.getUserToken(getContext()));
 						break;
 					case REQUEST_UNREGISTER:
 						GCMRegistrar.setRegisteredOnServer(getContext(), false);
+						AppData.unRegisterOnChessGCM(getContext());
 						break;
 				}
 			}

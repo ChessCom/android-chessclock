@@ -1,5 +1,6 @@
 package com.chess.backend.entity;
 
+import android.util.Log;
 import com.chess.model.GamePlayingItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
@@ -20,7 +21,6 @@ public class DataHolder {
 	private static DataHolder ourInstance = new DataHolder();
 
 	private boolean guest = false;
-	private boolean offline = false;
 	private boolean acceptDraw = false;
 	private boolean liveChess;
 	private boolean isAdsLoading;
@@ -32,7 +32,7 @@ public class DataHolder {
 	private int currentTacticProblem = 0;
 	private boolean tacticLimitReached;
 	private List<String> showedTacticsIds;
-	private List<GamePlayingItem> playingGamesList;
+	private final List<GamePlayingItem> playingGamesList;
 	private List<LastMoveInfoItem> lastMoveInfoItems;
 
 
@@ -40,7 +40,6 @@ public class DataHolder {
 		showedTacticsIds = new ArrayList<String>();
 		playingGamesList = new ArrayList<GamePlayingItem>();
 		lastMoveInfoItems = new ArrayList<LastMoveInfoItem>();
-
 	}
 
 	public static DataHolder getInstance() {
@@ -61,14 +60,6 @@ public class DataHolder {
 
 	public void setGuest(boolean guest) {
 		this.guest = guest;
-	}
-
-	public boolean isOffline() {
-		return offline;
-	}
-
-	public void setOffline(boolean offline) {
-		this.offline = offline;
 	}
 
 	public boolean isAcceptDraw() {
@@ -163,11 +154,18 @@ public class DataHolder {
 	 * @return
 	 */
 	public synchronized boolean inOnlineGame(long gameId) {
-		for (GamePlayingItem gamePlayingItem : playingGamesList) {
-			if (gamePlayingItem.getGameId() == gameId){
-				return gamePlayingItem.isBoardOpen();
+		synchronized (playingGamesList) {
+			for (GamePlayingItem gamePlayingItem : playingGamesList) {
+				Log.d("TEST", " in game = " + gamePlayingItem.getGameId());
+			}
+
+			for (GamePlayingItem gamePlayingItem : playingGamesList) {
+				if (gamePlayingItem.getGameId() == gameId){
+					return gamePlayingItem.isBoardOpen();
+				}
 			}
 		}
+
 		return false;
 	}
 
@@ -176,19 +174,15 @@ public class DataHolder {
 	 * @param gameId id of the game
 	 * @param gameOpen flag that shows if current game board is opened to user
 	 */
-	public synchronized void setInOnlineGame(long gameId, boolean gameOpen) {
-		boolean gameFound = false;
-		int i;
-		for (i = 0; i < playingGamesList.size(); i++){
-			if(playingGamesList.get(i).getGameId() == gameId){
-				gameFound = true;
-				break;
+	public void setInOnlineGame(long gameId, boolean gameOpen) {
+		synchronized (playingGamesList) {
+			for (GamePlayingItem gamePlayingItem : playingGamesList) {
+				if(gamePlayingItem.getGameId() == gameId){
+					gamePlayingItem.setBoardOpen(gameOpen);
+					return;
+				}
 			}
-		}
 
-		if (gameFound) {
-			playingGamesList.get(i).setBoardOpen(gameOpen);
-		} else {
 			GamePlayingItem newGameItem = new GamePlayingItem();
 			newGameItem.setGameId(gameId);
 			newGameItem.setBoardOpen(gameOpen);
@@ -197,11 +191,13 @@ public class DataHolder {
 	}
 
 
-	public synchronized List<LastMoveInfoItem> getLastMoveInfoItems() {
+	public List<LastMoveInfoItem> getLastMoveInfoItems() {
 		return lastMoveInfoItems;
 	}
 
-	public synchronized void addLastMoveInfo(LastMoveInfoItem lastMoveInfoItem) {
-		lastMoveInfoItems.add(lastMoveInfoItem);
+	public void addLastMoveInfo(LastMoveInfoItem lastMoveInfoItem) {
+		synchronized (lastMoveInfoItems) {
+			lastMoveInfoItems.add(lastMoveInfoItem);
+		}
 	}
 }
