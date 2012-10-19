@@ -233,41 +233,43 @@ public class LccHolder{
 		}
 	}
 
-	public void checkCredentialsAndConnect(String message){
-		String userName = AppData.getUserName(context);
-		String pass = AppData.getPassword(context);
-		if (!pass.equals(StaticData.SYMBOL_EMPTY)){
-			connectByCreds(userName, pass);
-		} else {
-			liveChessClientEventListener.onSessionExpired(message);
-//			String message = context.getString(R.string.account_error);
-//			liveChessClientEventListener.onConnectionFailure(message);
-		}
-	}
-
 	/**
 	 * Connect live chess client
 	 */
-	public void performConnect() {
+	public void performConnect(boolean forceReenterCred) {
+
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
 
-		if (pass.equals(StaticData.SYMBOL_EMPTY)) {
-			String sessionId = AppData.getUserSessionId(context);
-			connectBySessionId(sessionId);
+		if (!forceReenterCred) {
+
+			if (pass.equals(StaticData.SYMBOL_EMPTY)) {
+				String sessionId = AppData.getUserSessionId(context);
+				connectBySessionId(sessionId);
+			} else {
+				connectByCreds(userName, pass);
+			}
+
 		} else {
-			connectByCreds(userName, pass);
+
+			if (!pass.equals(StaticData.SYMBOL_EMPTY)) {
+				connectByCreds(userName, pass);
+			} else {
+				liveChessClientEventListener.onSessionExpired(context.getString(R.string.session_expired));
+				//String message = context.getString(R.string.account_error);
+				//liveChessClientEventListener.onConnectionFailure(message);
+			}
 		}
 	}
 
 	public void connectByCreds(String userName, String pass) {
-		Log.d("TEST", "connectByCreds : user = " + userName + "pass = " + pass);
+		Log.d("LCC-CONNECTION", "connectByCreds : user = " + userName + " pass = " + pass);
 		lccClient.connect(userName, pass, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
-		Log.d("TEST", "connectBySessionId : sessionId = " + sessionId);
+		Log.d("LCC-CONNECTION", "connectBySessionId : sessionId = " + sessionId);
 		lccClient.connect(sessionId, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -302,9 +304,7 @@ public class LccHolder{
 				break;
 			}
 			case ACCOUNT_FAILED: {
-				detailsMessage = context.getString(R.string.session_expired);
-
-				checkCredentialsAndConnect(detailsMessage);
+				runConnectTask(true);
 				return;
 			}
 			case SERVER_STOPPED: {
@@ -360,7 +360,7 @@ public class LccHolder{
 		}
 	}
 
-	public LccGameListener getGameListener() {
+	/*public LccGameListener getGameListener() {
 		return gameListener;
 	}
 
@@ -370,7 +370,7 @@ public class LccHolder{
 
 	public LccConnectionListener getConnectionListener() {
 		return connectionListener;
-	}
+	}*/
 
 	public User getUser() {
 		return user;
@@ -960,9 +960,9 @@ public class LccHolder{
 	}
 
 
-	/*
-	 * Challenges
-	 */
+	public void runConnectTask(boolean forceReenterCred) {
+		new ConnectLiveChessTask(new LccConnectUpdateListener(), forceReenterCred).executeTask();
+	}
 
 	public void runConnectTask() {
 		new ConnectLiveChessTask(new LccConnectUpdateListener()).executeTask();
