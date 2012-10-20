@@ -8,6 +8,7 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -78,8 +79,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
 				e.printStackTrace();
+				String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");
 				Map<String, String> params = new HashMap<String, String>();
-				params.put(AppConstants.EXCEPTION, android.os.Build.MODEL + " " + e.toString());
+				params.put(AppConstants.EXCEPTION, android.os.Build.MODEL + " " + stackTrace);
 				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
 			}
 		}
