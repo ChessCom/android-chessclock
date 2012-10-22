@@ -424,6 +424,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 	}
 
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+		if (fragment.getTag().equals(VACATION_TAG)) {
+			vacationCheckBox.setChecked(false);
+		}
+	}
+
 	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {
 		public VacationLeaveStatusUpdateListener() {
 			super(getInstance());
