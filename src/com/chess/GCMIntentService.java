@@ -29,18 +29,30 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.model.GameListCurrentItem;
 import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -55,13 +67,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private SharedPreferences preferences;
 
 	public GCMIntentService() {
-        super(GcmHelper.SENDER_ID);
+		super(GcmHelper.SENDER_ID);
 		context = this;
-    }
+	}
 
-    @Override
-    protected void onRegistered(Context context, String registrationId) {
-        Log.d(TAG, "User = " + AppData.getUserName(context) + " Device registered: regId = " + registrationId);
+	@Override
+	protected void onRegistered(Context context, String registrationId) {
+		Log.d(TAG, "User = " + AppData.getUserName(context) + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
@@ -71,14 +83,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
 				+ " \ntoken = " + AppData.getUserToken(context));
 
-		new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_REGISTER)).execute(loadItem);
-    }
+		String url = RestHelper.formPostRequest(loadItem);
+		postData(url, loadItem, GcmHelper.REQUEST_REGISTER);
+	}
 
-    @Override
-    protected void onUnregistered(Context context, String registrationId) {
-        Log.d(TAG, "User = " + AppData.getUserName(context) + " Device unregistered, registrationId = " + registrationId);
+	@Override
+	protected void onUnregistered(Context context, String registrationId) {
+		Log.d(TAG, "User = " + AppData.getUserName(context) + " Device unregistered, registrationId = " + registrationId);
 
-        if (GCMRegistrar.isRegisteredOnServer(context)) {
+		if (GCMRegistrar.isRegisteredOnServer(context)) {
 			preferences = AppData.getPreferences(this);
 			// TODO temporary unregister only if user loged out
 			String realToken = preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
@@ -91,23 +104,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 				loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);
+				String url = RestHelper.formPostRequest(loadItem);
+				postData(url, loadItem, GcmHelper.REQUEST_UNREGISTER);
+//				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);// don't need as we are on worker thread alreay
 				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
 			}
-        } else {
-            // This callback results from the call to unregister made on
-            // GcmHelper when the registration to the server failed.
-            Log.d(TAG, "Ignoring unregister callback");
-        }
-    }
+		} else {
+			// This callback results from the call to unregister made on
+			// GcmHelper when the registration to the server failed.
+			Log.d(TAG, "Ignoring unregister callback");
+		}
+	}
 
-    @Override
-    protected void onMessage(Context context, Intent intent) {
-        Log.d(TAG, "User = " + AppData.getUserName(context) + " Received message");
+	@Override
+	protected void onMessage(Context context, Intent intent) {
+		Log.d(TAG, "User = " + AppData.getUserName(context) + " Received message");
 
 		String type = intent.getStringExtra("type");
 
-		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)){
+		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
 			Log.d(TAG, "received move notification, notifications enabled = " + AppData.isNotificationsEnabled(context));
 			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
 				return;
@@ -118,7 +133,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 //			Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
 //			if (!DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
-				showYouTurnNotification(intent);
+			showYouTurnNotification(intent);
 //			} else {
 //				context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
 //			}
@@ -162,32 +177,32 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 
 		if (!gameInfoFound) { // if we have no info about this game, then add last move to list of objects
-			Log.d(TAG, " adding new game info" );
+			Log.d(TAG, " adding new game info");
 			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
 			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
 			lastMoveInfoItem.setGameId(gameId);
-		    DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
+			DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
 		}
 
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
-			Log.d(TAG, " updating board" );
+			Log.d(TAG, " updating board");
 			context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
 		} else {
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 
 			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
 
-			long minutes = gameTimeLeft /60%60;
-			long hours = gameTimeLeft /3600%24;
-			long days = gameTimeLeft /86400;
+			long minutes = gameTimeLeft / 60 % 60;
+			long hours = gameTimeLeft / 3600 % 24;
+			long days = gameTimeLeft / 86400;
 
 			String remainingUnits;
 			String remainingTime;
 
-			if(days > 0){
+			if (days > 0) {
 				remainingUnits = "d";
 				remainingTime = String.valueOf(days);
-			} else if(hours > 0){
+			} else if (hours > 0) {
 				remainingUnits = "h";
 				remainingTime = String.valueOf(hours);
 			} else {
@@ -214,9 +229,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 			SharedPreferences preferences = AppData.getPreferences(context);
 			boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
-			if(playSounds){
+			if (playSounds) {
 				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-				if(player != null){
+				if (player != null) {
 					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 						@Override
 						public void onCompletion(MediaPlayer mediaPlayer) {
@@ -229,14 +244,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 	}
 
-    @Override
-    protected void onDeletedMessages(Context context, int total) {
-        Log.d(TAG, "Received deleted messages notification, cnt = "+ total);
-    }
+	@Override
+	protected void onDeletedMessages(Context context, int total) {
+		Log.d(TAG, "Received deleted messages notification, cnt = " + total);
+	}
 
-    @Override
-    public void onError(Context context, String errorId) {
-        Log.d(TAG, "Received error: " + errorId);
+	@Override
+	public void onError(Context context, String errorId) {
+		Log.d(TAG, "Received error: " + errorId);
 		if (errorId != null) {
 			if ("SERVICE_NOT_AVAILABLE".equals(errorId)) {
 				long backoffTimeMs = preferences.getLong(AppConstants.GCM_RETRY_TIME, 100);// get back-off time from shared preferences
@@ -256,31 +271,72 @@ public class GCMIntentService extends GCMBaseIntentService {
 				Log.i(TAG, "Received error: " + errorId);
 			}
 		}
-    }
+	}
 
-    @Override
-    protected boolean onRecoverableError(Context context, String errorId) {
-        Log.d(TAG, "Received recoverable error: " + errorId);
-        return super.onRecoverableError(context, errorId);
-    }
+	@Override
+	protected boolean onRecoverableError(Context context, String errorId) {
+		Log.d(TAG, "Received recoverable error: " + errorId);
+		return super.onRecoverableError(context, errorId);
+	}
 
-	private class PostUpdateListener extends AbstractUpdateListener<String>{
-		private int requestCode;
+	private void postData(String url, LoadItem loadItem, int requestCode) {
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
-		public PostUpdateListener(int requestCode) {
-			super(GCMIntentService.this);
-			this.requestCode = requestCode;
+		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+
+		Log.d(TAG, "posting to url = " + url);
+
+		HttpPost httpPost = new HttpPost(url);
+		try {
+			StringEntity stringEntity = new StringEntity(formJsonData(loadItem.getRequestParams()), HTTP.UTF_8);
+			Log.d(TAG, "sending JSON object = " + formJsonData(loadItem.getRequestParams()));
+
+			httpPost.setEntity(stringEntity);
+			httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
+		} catch (UnsupportedEncodingException e) {
+			AppUtils.logD(TAG, e.toString());
 		}
 
-		@Override
-		public void updateData(String returnedObj) {
-			super.updateData(returnedObj);
-			GSMServerResponseItem responseItem = parseJson(returnedObj);
-			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER? "REGISTER": "UNREGISTER";
-			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj );
+		int result = StaticData.EMPTY_DATA;
+		String returnedObj = null;
+		try {
+			HttpResponse response = httpClient.execute(httpPost);
+			final int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode != HttpStatus.SC_OK) {
+				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
+				return;
+			}
+			if (response != null) {
+				returnedObj = EntityUtils.toString(response.getEntity());
+				result = StaticData.RESULT_OK;
+				Log.d(TAG, "WebRequest SERVER RESPONSE: " + returnedObj);
+			}
 
-			if(responseItem.getCode() < 400){
-				switch (requestCode){
+		} catch (IOException e) {
+			httpPost.abort();
+			Log.e(TAG, "I/O error while retrieving data from " + url, e);
+			result = StaticData.UNKNOWN_ERROR;
+		} catch (IllegalStateException e) {
+			httpPost.abort();
+			Log.e(TAG, "Incorrect URL: " + url, e);
+			result = StaticData.UNKNOWN_ERROR;
+		} catch (Exception e) {
+			httpPost.abort();
+			Log.e(TAG, "Error while retrieving data from " + url, e);
+			result = StaticData.UNKNOWN_ERROR;
+		} finally {
+			httpClient.getConnectionManager().shutdown();
+		}
+
+		if (result == StaticData.RESULT_OK) {
+			GSMServerResponseItem responseItem = parseJson(returnedObj);
+			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER ? "REGISTER" : "UNREGISTER";
+			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj);
+
+			if (responseItem.getCode() < 400) {
+				switch (requestCode) {
 					case GcmHelper.REQUEST_REGISTER:
 						GCMRegistrar.setRegisteredOnServer(context, true);
 						AppData.registerOnChessGCM(context, AppData.getUserToken(context));
@@ -297,9 +353,32 @@ public class GCMIntentService extends GCMBaseIntentService {
 			}
 		}
 
-		GSMServerResponseItem parseJson(String jRespString) {
-			Gson gson = new Gson();
-			return gson.fromJson(jRespString, GSMServerResponseItem.class);
+
+	}
+
+	private String formJsonData(List<NameValuePair> requestParams) {
+		StringBuilder data = new StringBuilder();
+		String separator = StaticData.SYMBOL_EMPTY;
+		data.append("{");
+//			data.append("request:{");
+		for (NameValuePair requestParam : requestParams) {
+
+			data.append(separator);
+			separator = StaticData.SYMBOL_COMMA;
+			data.append("\"")
+					.append(requestParam.getName()).append("\"")
+					.append(":")
+					.append("\"")
+					.append(requestParam.getValue())
+					.append("\"");
 		}
+//			data.append("}");
+		data.append("}");
+		return data.toString();
+	}
+
+	GSMServerResponseItem parseJson(String jRespString) {
+		Gson gson = new Gson();
+		return gson.fromJson(jRespString, GSMServerResponseItem.class);
 	}
 }

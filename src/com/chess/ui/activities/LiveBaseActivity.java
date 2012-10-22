@@ -64,7 +64,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else {
-//			dismissFragmentDialog();
 			LccHolder.getInstance(this).checkAndConnect();
 		}
 	}

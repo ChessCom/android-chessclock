@@ -76,7 +76,8 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
 			DataHolder.getInstance().reset();
-			DataHolder.getInstance().setGuest(true);
+			AppData.setGuest(this, true);
+//			DataHolder.getInstance().setGuest(true);
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			startActivity(intent);
 		}

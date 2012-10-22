@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -130,8 +130,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (!DataHolder.getInstance().isGuest())
+//		if (!DataHolder.getInstance().isGuest())
+		if (!AppData.isGuest(this))
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
+
+		if (getTacticsBatch() == null){
+			loadNewTacticsBatch();
+		}
 	}
 
 	@Override
@@ -147,10 +152,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					.equals(StaticData.SYMBOL_EMPTY);
 			Log.d("TEST","haveGuestSavedGame = " + haveGuestSavedGame);
 
-			if (AppData.haveSavedTacticGame(this) && !DataHolder.getInstance().isGuest()
-					|| haveGuestSavedGame && DataHolder.getInstance().isGuest()) {
+			final boolean userIsGuest = AppData.isGuest(this);
+
+//			if (AppData.haveSavedTacticGame(this) && !DataHolder.getInstance().isGuest()
+//					|| haveGuestSavedGame && DataHolder.getInstance().isGuest()) {
+			if (AppData.haveSavedTacticGame(this) && !userIsGuest || haveGuestSavedGame && userIsGuest) {
 				String userName = AppData.getUserName(this);
-				if (DataHolder.getInstance().isGuest()) {
+//				if (DataHolder.getInstance().isGuest()) {
+				if (userIsGuest) {
 					userName = StaticData.SYMBOL_EMPTY;
 				}
 
@@ -162,17 +171,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				int secondsSpend = preferences.getInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
 
 				TacticItem tacticItem = new TacticItem(tacticString.split(StaticData.SYMBOL_COLON));
-				DataHolder.getInstance().setTactic(tacticItem);
+				TacticsDataHolder.getInstance().setTactic(tacticItem);
 				setTacticToBoard(tacticItem, secondsSpend);
 
 //				boardView.setBoardFace(ChessBoardTactics.getInstance(this));  // useless as we set it in setTacticToBoard
 
 				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
-					DataHolder.getInstance().setTacticResultItem(tacticResultItem);
+					TacticsDataHolder.getInstance().setTacticResultItem(tacticResultItem);
 				}
 
-				DataHolder.getInstance().addShowedTacticId(showedTacticId);
+				TacticsDataHolder.getInstance().addShowedTacticId(showedTacticId);
 
 				getBoardFace().setRetry(isRetry);
 
@@ -209,7 +218,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
-			if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
+//			if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
+			if (AppData.isGuest(this)) { // for guest mode we should have different name
 				userName = StaticData.SYMBOL_EMPTY;
 			}
 
@@ -217,7 +227,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, getBoardFace().getSecondsPassed());
 			preferencesEditor.putBoolean(userName + AppConstants.SAVED_TACTICS_RETRY, getBoardFace().isRetry());
 
-			final TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+			final TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 			String tacticResultString = StaticData.SYMBOL_EMPTY;
 			if (tacticResultItem != null) {
 				tacticResultString = tacticResultItem.getSaveString();
@@ -239,7 +249,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	 * @return true if need to Save
 	 */
 	private boolean needToSaveTactic(){
-		return !getBoardFace().isTacticCanceled() && !DataHolder.getInstance().isTacticLimitReached()
+		return !getBoardFace().isTacticCanceled() && !TacticsDataHolder.getInstance().isTacticLimitReached()
 				&& getTacticItem() != null /*&& !DataHolder.getInstance().isGuest()*/;
 	}
 
@@ -281,6 +291,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	public void checkMove() {
 
 		noInternet = !AppUtils.isNetworkAvailable(getContext());
+		final boolean userIsGuest = AppData.isGuest(this);
 
 		TacticBoardFace boardFace = getBoardFace();
 
@@ -292,14 +303,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
 			} else {
-				if(DataHolder.getInstance().tacticWasShowed(getTacticItem().getId())){
+				if(TacticsDataHolder.getInstance().tacticWasShowed(getTacticItem().getId())){
 					showSolvedTacticPopup(getString(R.string.problem_solved_), false);
 
-				} else if (DataHolder.getInstance().isGuest() || boardFace.isRetry() || noInternet) {
-					TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+//				} else if (DataHolder.getInstance().isGuest() || boardFace.isRetry() || noInternet) {
+				} else if (userIsGuest || boardFace.isRetry() || noInternet) {
+					TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 
 					String title;
-					if(tacticResultItem != null && !DataHolder.getInstance().isGuest()){
+//					if(tacticResultItem != null && !DataHolder.getInstance().isGuest()){
+					if(tacticResultItem != null && !userIsGuest){
 						title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 								tacticResultItem.getUserRating());
 					} else {
@@ -322,10 +335,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		} else {
 			Log.d("TEST_MOVE", " Wrong move");
-			TacticResultItem tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+			TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 			boolean  tacticResultItemIsValid = tacticResultItem != null
 					&& Integer.valueOf(tacticResultItem.getUserRatingChange()) < 0; // if saved for wrong move. Note that after loading next tactic result is automaically assigns as a positive resultItem.
-			if (DataHolder.getInstance().isGuest()) {
+//			if (DataHolder.getInstance().isGuest()) {
+			if (userIsGuest) {
 				showWrongMovePopup(getString(R.string.wrong_ex));
 			} else if (tacticResultItemIsValid  && (getBoardFace().isRetry() || noInternet)) {
 				String title = getString(R.string.wrong_score,
@@ -366,7 +380,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
-		DataHolder.getInstance().setTacticLimitReached(limitReached);
+		TacticsDataHolder.getInstance().setTacticLimitReached(limitReached);
 
 		SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
@@ -417,7 +431,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getNewTactic() {
-		DataHolder.getInstance().increaseCurrentTacticsProblem();
+		TacticsDataHolder.getInstance().increaseCurrentTacticsProblem();
 		getTacticFromBatch();
 	}
 
@@ -428,7 +442,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		if (getCurrentProblem() >= getTacticsBatch().size()) {
-			if (DataHolder.getInstance().isGuest()) {
+//			if (DataHolder.getInstance().isGuest()) {
+			if (AppData.isGuest(this)) {
 				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
 				getLastPopupFragment().setButtons(1);
 			} else {
@@ -442,7 +457,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		setTacticToBoard(tacticItem, 0);
 		currentTacticAnswerCnt = 0;
 
-		DataHolder.getInstance().setTactic(tacticItem);
+		TacticsDataHolder.getInstance().setTactic(tacticItem);
 	}
 
 
@@ -465,8 +480,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				tacticBatch.add(new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON)));
 			}
 
-			DataHolder.getInstance().setCurrentTacticProblem(0);
-			DataHolder.getInstance().setTacticsBatch(tacticBatch);
+			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
+			TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
 			getTacticFromBatch();
 		}
 
@@ -488,14 +503,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void showAnswer() {
 		stopTacticsTimer();
 		getTacticItem().setStop(true);
-		DataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
+		TacticsDataHolder.getInstance().addShowedTacticId(getTacticItem().getId());
 
 		ChessBoardTactics.resetInstance();
 		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
 		getBoardFace().setRetry(true);
 
 		TacticItem tacticItem;
-		if (DataHolder.getInstance().isGuest() || noInternet) {
+//		if (DataHolder.getInstance().isGuest() || noInternet) {
+		if (AppData.isGuest(this) || noInternet) {
 			tacticItem = getTacticsBatch().get(getCurrentProblem());
 		} else {
 			tacticItem = getTacticItem();
@@ -556,9 +572,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticResultItem tacticResultItem;
 			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
 				tacticResultItem = new TacticResultItem(tmp[1].split(":"));
-				DataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
+				TacticsDataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
 			} else {
-				tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+				tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 			}
 
 			String title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
@@ -594,9 +610,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticResultItem tacticResultItem;
 			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
 				tacticResultItem = new TacticResultItem(tmp[1].split(":"));
-				DataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
+				TacticsDataHolder.getInstance().setTacticResultItem(tacticResultItem);  // should be saved only after move
 			} else {
-				tacticResultItem = DataHolder.getInstance().getTacticResultItem();
+				tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 			}
 
 			String title = getString(R.string.wrong_score,
@@ -754,7 +770,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		int secondsSpent = getBoardFace().getSecondsPassed();
 
 		TacticItem tacticItem;
-		if (DataHolder.getInstance().isGuest() || noInternet) {
+//		if (DataHolder.getInstance().isGuest() || noInternet) {
+		if (AppData.isGuest(this) || noInternet) {
 			if(getTacticsBatch() == null) // TODO handle properly
 				return;
 
@@ -803,7 +820,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		super.onClick(view);
 		if (view.getId() == R.id.nextBtn) {
 			customViewFragment.dismiss();
-			if (DataHolder.getInstance().isTacticLimitReached()) {
+			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 
@@ -816,7 +833,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			stopTacticsTimer();
 			customViewFragment.dismiss();
 		} else if (view.getId() == R.id.retryBtn) {
-			if (DataHolder.getInstance().isGuest() || noInternet) {
+//			if (DataHolder.getInstance().isGuest() || noInternet) {
+			if (AppData.isGuest(this) || noInternet) {
 				getTacticFromBatch();
 			} else {
 				setTacticToBoard(getTacticItem(), 0);
@@ -830,7 +848,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if (view.getId() == R.id.cancelBtn) {
 			customViewFragment.dismiss();
 
-			if (DataHolder.getInstance().isTacticLimitReached()) {
+			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				cancelTacticAndLeave();
 				onBackPressed();
 			}
@@ -843,7 +861,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) {
 			loadNewTacticsBatch();
 		} else if (fragment.getTag().equals(TEN_TACTICS_TAG)) {
-			DataHolder.getInstance().setCurrentTacticProblem(0);
+			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
 			onBackPressed();
 		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
 			getTacticFromBatch();
@@ -852,7 +870,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void loadNewTacticsBatch(){
 		noInternet = !AppUtils.isNetworkAvailable(this);
-		if (DataHolder.getInstance().isGuest() || noInternet) {
+//		if (DataHolder.getInstance().isGuest() || noInternet) {
+		if (AppData.isGuest(this) || noInternet) {
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 			// TODO move to AsyncTask
 			InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
@@ -872,8 +891,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					tacticBatch.add(new TacticItem(tmp[i].split(":")));
 				}
 
-				DataHolder.getInstance().setCurrentTacticProblem(0);
-				DataHolder.getInstance().setTacticsBatch(tacticBatch);
+				TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
+				TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
 				inputStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -901,15 +920,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private TacticItem getTacticItem() {
-		return DataHolder.getInstance().getTactic();
+		return TacticsDataHolder.getInstance().getTactic();
 	}
 
 	private List<TacticItem> getTacticsBatch() {
-		return DataHolder.getInstance().getTacticsBatch();
+		return TacticsDataHolder.getInstance().getTacticsBatch();
 	}
 
 	private int getCurrentProblem() {
-		return DataHolder.getInstance().getCurrentTacticProblem();
+		return TacticsDataHolder.getInstance().getCurrentTacticProblem();
 	}
 
 	private void cancelTacticAndLeave(){
@@ -920,7 +939,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void clearSavedTactics() {
 		String userName = AppData.getUserName(this);
-		if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
+//		if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
+		if (AppData.isGuest(this)) { // for guest mode we should have different name
 			userName = StaticData.SYMBOL_EMPTY; // w/o userName
 		}
 

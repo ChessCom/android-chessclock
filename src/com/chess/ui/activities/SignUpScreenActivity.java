@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -259,8 +258,8 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 //			AppUtils.startNotificationsUpdate(this);
 			checkMove();
 		}
-		DataHolder.getInstance().setGuest(false);
-
+//		DataHolder.getInstance().setGuest(false);
+		AppData.setGuest(this, false);
 
 		backToHomeActivity();
 	}

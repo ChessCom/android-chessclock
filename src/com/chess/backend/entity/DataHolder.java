@@ -2,8 +2,6 @@ package com.chess.backend.entity;
 
 import android.util.Log;
 import com.chess.model.GamePlayingItem;
-import com.chess.model.TacticItem;
-import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.ChessBoardTactics;
@@ -17,27 +15,27 @@ import java.util.List;
  * @author alien_roger
  * @created at: 26.04.12 6:11
  */
-public class DataHolder {
+public class DataHolder { // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
 	private static DataHolder ourInstance = new DataHolder();
 
-	private boolean guest = false;
-	private boolean acceptDraw = false;
-	private boolean liveChess;
-	private boolean isAdsLoading;
-	private TacticResultItem tacticResultItem;
+//	private boolean guest; // TODO should be stored as a persistent state
+	private boolean acceptDraw; // TODO should be stored
+	private boolean liveChess; // TODO should be stored as a persistent state
+	private boolean isAdsLoading;  // TODO should be tied to adFetcher process lifecycle
 
-	// Singletons for Tactics mode
-	private List<TacticItem> tacticsBatch;
-	private TacticItem tactic;
-	private int currentTacticProblem = 0;
-	private boolean tacticLimitReached;
-	private List<String> showedTacticsIds;
-	private final List<GamePlayingItem> playingGamesList;
-	private List<LastMoveInfoItem> lastMoveInfoItems;
+
+	// Echess mode game variables
+	private final List<GamePlayingItem> playingGamesList;  // will be re-created every time user open the game. If it's killed, means we are not in the game.
+
+	/**
+	 * This list holds the info about last received notification to prevent overflow
+	 * with the same move notification comes from server. In case the data can be killed,
+	 * we might not care much as notifications comes in very short time period(in few seconds).
+	 */
+	private List<LastMoveInfoItem> lastMoveInfoItems; // TODO should be saved in store and tied to GCM usage
 
 
 	private DataHolder() {
-		showedTacticsIds = new ArrayList<String>();
 		playingGamesList = new ArrayList<GamePlayingItem>();
 		lastMoveInfoItems = new ArrayList<LastMoveInfoItem>();
 	}
@@ -54,15 +52,9 @@ public class DataHolder {
 		this.liveChess = liveChess;
 	}
 
-	public boolean isGuest() {
-		return guest;
-	}
 
-	public void setGuest(boolean guest) {
-		this.guest = guest;
-	}
 
-	public boolean isAcceptDraw() {
+	public boolean isAcceptDraw() { // will be droped after onResume
 		return acceptDraw;
 	}
 
@@ -78,68 +70,7 @@ public class DataHolder {
 		isAdsLoading = adsLoading;
 	}
 
-	public TacticItem getTactic() {
-		return tactic;
-	}
 
-	public void setTactic(TacticItem tactic) {
-		this.tactic = tactic;
-	}
-
-	public List<TacticItem> getTacticsBatch() {
-		return tacticsBatch;
-	}
-
-	public void setTacticsBatch(List<TacticItem> tacticsBatch) {
-		this.tacticsBatch = tacticsBatch;
-	}
-
-	public int getCurrentTacticProblem() {
-		return currentTacticProblem;
-	}
-
-	public void increaseCurrentTacticsProblem(){
-		currentTacticProblem++;
-	}
-
-	public void setCurrentTacticProblem(int currentTacticProblem) {
-		this.currentTacticProblem = currentTacticProblem;
-	}
-
-	public TacticResultItem getTacticResultItem() {
-		return tacticResultItem;
-	}
-
-	public void setTacticResultItem(TacticResultItem tacticResultItem) {
-		this.tacticResultItem = tacticResultItem;
-	}
-
-	public boolean isTacticLimitReached() {
-		return tacticLimitReached;
-	}
-
-	public void setTacticLimitReached(boolean tacticLimitReached) {
-		this.tacticLimitReached = tacticLimitReached;
-	}
-
-
-	/**
-	 * Add id of showed answer tactic to prevent cheating
-	 * @param id
-	 */
-	public void addShowedTacticId(String id) {
-		if(!showedTacticsIds.contains(id))
-			showedTacticsIds.add(id);
-	}
-
-	/**
-	 * Check if user used that tactic for showAnswer option
-	 * @param id
-	 * @return
-	 */
-	public boolean tacticWasShowed(String id){
-		return showedTacticsIds.contains(id);
-	}
 
 	public void reset() {
 		ourInstance = new DataHolder();

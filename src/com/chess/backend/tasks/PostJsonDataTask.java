@@ -46,7 +46,7 @@ public class PostJsonDataTask extends AbstractUpdateTask<String, LoadItem> {
 
 		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 
-		Log.d(TAG, "retrieving from url = " + url);
+		Log.d(TAG, "posting to url = " + url);
 
 		HttpPost httpPost = new HttpPost(url);
 		try {

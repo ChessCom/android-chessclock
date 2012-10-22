@@ -10,9 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
@@ -275,11 +275,13 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.playLiveFrame) {
-			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : LiveScreenActivity.class;
+//			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : LiveScreenActivity.class;
+			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : LiveScreenActivity.class;
 			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playOnlineFrame) {
-			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : OnlineScreenActivity.class;
+//			Class<?> clazz = DataHolder.getInstance().isGuest() ? SignUpScreenActivity.class : OnlineScreenActivity.class;
+			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : OnlineScreenActivity.class;
 			startActivity(new Intent(this, clazz));
 
 		} else if (v.getId() == R.id.playComputerFrame) {

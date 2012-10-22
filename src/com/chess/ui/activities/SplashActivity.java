@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
@@ -61,7 +60,8 @@ public class SplashActivity extends CommonLogicActivity {
 			}
 
 			startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
-			DataHolder.getInstance().setGuest(false);
+//			DataHolder.getInstance().setGuest(false);
+			AppData.setGuest(getContext(), false);
 		}
 
 		@Override
