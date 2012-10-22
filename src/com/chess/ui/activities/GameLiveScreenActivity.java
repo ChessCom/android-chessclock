@@ -92,7 +92,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			// get last warning
 			warningMessage = getLccHolder().getLastWarningMessage();
 
-			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
+			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
 		}
 	}
 
@@ -287,41 +287,39 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (getBoardFace().isAnalysis())
 			return;
 
+		String[] actualMoves = gameItem.getMoveList().trim().split(" ");
+		int actualMovesSize = actualMoves.length;
+
 		int[] moveFT;
-		if (!currentGame.getMoveList().equals(gameItem.getMoveList())) {
-			currentGame = gameItem;
-			String[] moves;
+		Move move;
+		boolean playSound;
 
-			moves = currentGame.getMoveList().split(" "); // we only need a split
+		for (int i = getBoardFace().getMovesCount(); i < actualMovesSize; i++) {
 
-			if (moves.length - getBoardFace().getMovesCount() == 1) { // if have new move
+			moveFT = MoveParser.parseCoordinate(getBoardFace(), actualMoves[i]);
 
-				moveFT = MoveParser.parseCoordinate(getBoardFace(), moves[moves.length - 1]);
-
-				boolean playSound = getLccHolder().isPlaySound(moves);
-
-				Move move;
-				if (moveFT.length == 4) {
-					if (moveFT[3] == 2) {
-						move = new Move(moveFT[0], moveFT[1], 0, 2);
-					} else {
-						move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-					}
+			if (moveFT.length == 4) {
+				if (moveFT[3] == 2) {
+					move = new Move(moveFT[0], moveFT[1], 0, 2);
 				} else {
-					move = new Move(moveFT[0], moveFT[1], 0, 0);
+					move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 				}
-				getBoardFace().makeMove(move, playSound);
-				getBoardFace().setMovesCount(moves.length);
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						boardView.invalidate();
-						invalidateGameScreen();
-					}
-				});
+			} else {
+				move = new Move(moveFT[0], moveFT[1], 0, 0);
 			}
-			return;
+			playSound = i == actualMovesSize;
+			getBoardFace().makeMove(move, playSound);
 		}
+
+		getBoardFace().setMovesCount(actualMovesSize);
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				boardView.invalidate();
+				invalidateGameScreen();
+			}
+		});
 
 		checkMessages();
 	}

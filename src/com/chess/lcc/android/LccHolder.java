@@ -156,11 +156,7 @@ public class LccHolder{
 		Log.d("TEST","gameId = " +currentGameId);
 		Game game = getGame(currentGameId);
 
-		GameLiveItem newGame = new GameLiveItem(game, game.getSeq() - 1);
-
-        updateClockTime(game);
-
-		return newGame;
+		return new GameLiveItem(game, game.getSeq() - 1);
 	}
 
 	public int getResignTitle() {
@@ -179,10 +175,6 @@ public class LccHolder{
 
 	public String getCurrentuserName() {
 		return user.getUsername();
-	}
-
-	public boolean isPlaySound(String[] moves) {
-		return getGame(currentGameId).getSeq() == moves.length;
 	}
 
 	public void checkAndReplayMoves() {
@@ -834,18 +826,11 @@ public class LccHolder{
 
 	public void doReplayMoves(Game game) {
 		Log.d(TAG, "GAME LISTENER: replay moves,  gameId " + game.getId());
-		final List<String> coordMoves = new ArrayList<String>(game.getMoves());
-		for (String coordMove : coordMoves) {
-			Log.d("TEST"," move to replay = " + coordMove);
-		}
 
-		User whitePlayer = game.getWhitePlayer();
-		User blackPlayer = game.getBlackPlayer();
-		User moveMaker;
-		for (int i = 0; i < coordMoves.size(); i++) {
-			moveMaker = (i % 2 == 0) ? whitePlayer : blackPlayer;
-			doMoveMade(game, moveMaker, i);
-		}
+		latestMoveNumber = game.getSeq() - 1;
+		User moveMaker = (latestMoveNumber % 2 == 0) ? game.getWhitePlayer() : game.getBlackPlayer();
+		lccEventListener.onGameRefresh(new GameLiveItem(game, latestMoveNumber));
+		doUpdateClocks(game, moveMaker, latestMoveNumber);
 	}
 
 	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
@@ -864,7 +849,7 @@ public class LccHolder{
 			//moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-			lccEventListener.onGameRefresh(new GameLiveItem(getGame(game.getId()), moveIndex));
+			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);
 	}
@@ -872,6 +857,7 @@ public class LccHolder{
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
+		// todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
 		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
 			final boolean isOpponentMoveDone = !user.getUsername().equals(moveMaker.getUsername());
 
@@ -896,9 +882,6 @@ public class LccHolder{
 			}
 
 		}
-	}
-
-	public void updateClockTime(Game game) {
 	}
 
 	public void setLastGameId(){

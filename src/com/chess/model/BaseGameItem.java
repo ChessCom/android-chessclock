@@ -50,25 +50,25 @@ public abstract class BaseGameItem implements Parcelable {
 		return color;
 	}
 
-	public String getFen() {
+	/*public String getFen() {
 		return fen;
 	}
 
 	public String getFenStrLength() {
 		return fenStrLength;
-	}
+	}*/
 
 	public long getGameId() {
 		return gameId;
 	}
 
-	public boolean isDrawOfferPending() {
+	/*public boolean isDrawOfferPending() {
 		return isDrawOfferPending;
 	}
 
 	public boolean isOpponentOnline() {
 		return isOpponentOnline;
-	}
+	}*/
 
 	public String getMoveList() {
 		return moveList;
