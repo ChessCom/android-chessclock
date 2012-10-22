@@ -14,10 +14,12 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.BaseGameItem;
+import com.chess.model.GameOnlineItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
 import com.chess.utilities.ChessComApiParser;
@@ -54,7 +56,6 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		notifyManager.cancel(R.string.you_got_new_msg);
 
 		gameId = extras.getLong(BaseGameItem.GAME_ID);
-		timeStamp = extras.getString(BaseGameItem.TIMESTAMP);
 		chatItems = new ArrayList<MessageItem>();
 		listUpdateListener = new ListUpdateListener();
 		sendUpdateListener = new SendUpdateListener();
@@ -98,16 +99,9 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		}
 	};
 
-	public void updateList(){
-		// submit echess action
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
-		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
-
-		getDataTask = new GetStringObjTask(listUpdateListener).executeTask(loadItem);
+	public void updateList() {
+		LoadItem loadItem = createGetTimeStampLoadItem();
+		new GetStringObjTask(new GetTimeStampForListUpdateListener()).executeTask(loadItem);
 	}
 
 	private class ListUpdateListener extends ActionBarUpdateListener<String> {
@@ -165,26 +159,9 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		}
 	}
 
-	private void sendMessage(){
-		String message = StaticData.SYMBOL_EMPTY;
-		try {
-			message = URLEncoder.encode(sendEdt.getText().toString(), HTTP.UTF_8);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			Log.e("Chat", e.toString());
-			// correctly
-			showToast(R.string.encoding_unsupported);
-		}
-
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
-		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
-		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
-
-		getDataTask = new GetStringObjTask(sendUpdateListener).executeTask(loadItem);
+	private void sendMessage() {
+		LoadItem loadItem = createGetTimeStampLoadItem();
+		new GetStringObjTask(new GetTimeStampForSendMessageListener()).executeTask(loadItem);
 	}
 
 	private class SendUpdateListener extends ActionBarUpdateListener<String> {
@@ -226,5 +203,69 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		super.onDestroy();
 		if(getDataTask != null)
 			getDataTask.cancel(true);
+	}
+
+	private LoadItem createGetTimeStampLoadItem() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
+		return loadItem;
+	}
+
+	private class GetTimeStampListener extends ChessUpdateListener {
+
+		public GetTimeStampListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			final GameOnlineItem currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+			timeStamp = currentGame.getTimestampStr();
+		}
+	}
+
+	private class GetTimeStampForListUpdateListener extends GetTimeStampListener {
+		@Override
+		public void updateData(String returnedObj) {
+			super.updateData(returnedObj);
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(ChatOnlineActivity.this));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
+
+			getDataTask = new GetStringObjTask(listUpdateListener).executeTask(loadItem);
+		}
+	}
+
+	private class GetTimeStampForSendMessageListener extends GetTimeStampListener {
+		@Override
+		public void updateData(String returnedObj) {
+			super.updateData(returnedObj);
+
+			String message = StaticData.SYMBOL_EMPTY;
+			try {
+				message = URLEncoder.encode(sendEdt.getText().toString(), HTTP.UTF_8);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				Log.e("Chat", e.toString());
+				// correctly
+				showToast(R.string.encoding_unsupported);
+			}
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(ChatOnlineActivity.this));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
+			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
+
+			getDataTask = new GetStringObjTask(sendUpdateListener).executeTask(loadItem);
+		}
 	}
 }

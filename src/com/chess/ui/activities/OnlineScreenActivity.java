@@ -350,7 +350,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 				Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
-				intent.putExtra(BaseGameItem.TIMESTAMP, gameListCurrentItem.getTimestampStr());
 				startActivity(intent);
 			} else if (pos == 1) {
 				String draw = RestHelper.V_OFFERDRAW;
@@ -472,7 +471,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
-			intent.putExtra(BaseGameItem.TIMESTAMP, finishedItem.getTimestampStr());
 			startActivity(intent);
 		}
 		return true;

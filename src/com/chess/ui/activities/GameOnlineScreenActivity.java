@@ -491,7 +491,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		Intent intent = new Intent(this, ChatOnlineActivity.class);
 		intent.putExtra(BaseGameItem.GAME_ID, gameId);
-		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestampStr());
 		startActivity(intent);
 
 		chat = false;
