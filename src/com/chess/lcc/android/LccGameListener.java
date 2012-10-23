@@ -16,16 +16,17 @@ import java.util.Collection;
 import java.util.List;
 
 public class LccGameListener implements GameListener {
-	private static final boolean TESTING_GAME = false;
-    private static final String[] TEST_MOVES_COORD = {"d2d4", "g8f6", "g1f3", "c7c6", "e2e3", "d7d6", "f1d3", "c8g4", "h2h3", "g4f3", "d1f3",
+	public static final boolean TESTING_GAME = false;
+    public static final String[] TEST_MOVES_COORD = {"d2d4", "g8f6", "g1f3", "c7c6", "e2e3", "d7d6", "f1d3", "c8g4", "h2h3", "g4f3", "d1f3",
 			"e7e5", "d4e5", "d6e5", "b1d2", "f8b4", "a2a3", "b4d2", "c1d2", "e8g8", "e1c1", "b8d7", "d3f5", "d8c7", "e3e4",
 			"a7a5", "f3g3", "g7g6", "d2h6", "f8e8", "h3h4", "f6h5", "g3g5", "f7f6", "g5g4", "d7c5", "f5g6", "h7g6", "g4g6",
 			"h5g7", "g6f6", "e8f8", "f6g6", "a8d8", "d1d8", "f8d8", "g2g4", "c7f7", "g6g5", "c5e6", "h1h2"};
 
+	
 	private LccHolder lccHolder;
     private Long latestGameId;
     private Context context;
-    private static final String TAG = "LccGameListener";
+    private static final String TAG = "LCCLOG-GAME";
 
 	public LccGameListener(LccHolder lccHolder) {
         this.lccHolder = lccHolder;
@@ -122,15 +123,6 @@ public class LccGameListener implements GameListener {
             if (game.getId() > latestGameId) {
                 latestGameId = game.getId();
                 Log.w(TAG, "GAME LISTENER: onGameStarted() latestGameId=" + game.getId());
-            }
-        }
-
-        if (TESTING_GAME) {
-            if (game.isMoveOf(lccHolder.getUser())) {
-                Utils.sleep(8000L);
-                Log.d(TAG, "First move by: " + lccHolder.getUser().getUsername() + ", the movie: "
-                        + TEST_MOVES_COORD[game.getSeq()]);
-                lccHolder.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()]);
             }
         }
     }
@@ -244,12 +236,12 @@ public class LccGameListener implements GameListener {
         }
         lccHolder.doMoveMade(game, moveMaker, game.getSeq() - 1);
 
-        /*if (TESTING_GAME && game.isMoveOf(lccHolder.getUser()) && game.getState() == Game.State.Started) {
+        if (TESTING_GAME && game.isMoveOf(lccHolder.getUser()) && game.getState() == Game.State.Started) {
             Utils.sleep(0.5F);
             if (game.getSeq() < TEST_MOVES_COORD.length) {
                 lccHolder.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()]);
             }
-        }*/
+        }
     }
 
     @Override

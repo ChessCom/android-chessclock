@@ -19,7 +19,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		timeRemainingAmount = values[6];
 		timeRemainingUnits = values[7];
 		fenStrLength = values[8];
-		fen = values[9];
+//		fen = values[9];
 		timestamp = Long.parseLong(values[10]);
 		lastMoveFromSquare = values[11];
 		lastMoveToSquare = values[12];

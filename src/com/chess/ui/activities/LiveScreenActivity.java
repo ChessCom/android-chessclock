@@ -110,6 +110,14 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// starting LiveChess service so any Activity can be bound to it
+//		startService(new Intent(this, LiveChessService.class));
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 

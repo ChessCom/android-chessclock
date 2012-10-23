@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
@@ -156,11 +157,7 @@ public class LccHolder{
 		Log.d("TEST","gameId = " +currentGameId);
 		Game game = getGame(currentGameId);
 
-		GameLiveItem newGame = new GameLiveItem(game, game.getSeq() - 1);
-
-        updateClockTime(game);
-
-		return newGame;
+		return new GameLiveItem(game, game.getSeq() - 1);
 	}
 
 	public int getResignTitle() {
@@ -179,10 +176,6 @@ public class LccHolder{
 
 	public String getCurrentuserName() {
 		return user.getUsername();
-	}
-
-	public boolean isPlaySound(String[] moves) {
-		return getGame(currentGameId).getSeq() == moves.length;
 	}
 
 	public void checkAndReplayMoves() {
@@ -756,7 +749,18 @@ public class LccHolder{
 		this.blackClock = blackClock;
 	}
 
+	/**
+	 * stop LiveChess service. This is probably will be the only thing that we need to use.
+	 * All stopping operations will be called in onStop of Service class.
+	 * Also we will send all our request to service via interface instead of Singleton.
+	 */
+	private void stopService(){
+		context.stopService(new Intent(context, LiveChessService.class));
+	}
+
 	public void logout() {
+		stopService();
+
 		Log.d(TAG, "USER LOGOUT");
 		DataHolder.getInstance().setLiveChess(false);
 		setCurrentGameId(null);
@@ -834,18 +838,11 @@ public class LccHolder{
 
 	public void doReplayMoves(Game game) {
 		Log.d(TAG, "GAME LISTENER: replay moves,  gameId " + game.getId());
-		final List<String> coordMoves = new ArrayList<String>(game.getMoves());
-		for (String coordMove : coordMoves) {
-			Log.d("TEST"," move to replay = " + coordMove);
-		}
 
-		User whitePlayer = game.getWhitePlayer();
-		User blackPlayer = game.getBlackPlayer();
-		User moveMaker;
-		for (int i = 0; i < coordMoves.size(); i++) {
-			moveMaker = (i % 2 == 0) ? whitePlayer : blackPlayer;
-			doMoveMade(game, moveMaker, i);
-		}
+		latestMoveNumber = game.getSeq() - 1;
+		User moveMaker = (latestMoveNumber % 2 == 0) ? game.getWhitePlayer() : game.getBlackPlayer();
+		lccEventListener.onGameRefresh(new GameLiveItem(game, latestMoveNumber));
+		doUpdateClocks(game, moveMaker, latestMoveNumber);
 	}
 
 	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
@@ -864,7 +861,7 @@ public class LccHolder{
 			//moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
-			lccEventListener.onGameRefresh(new GameLiveItem(getGame(game.getId()), moveIndex));
+			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
 		}
 		doUpdateClocks(game, moveMaker, moveIndex);
 	}
@@ -872,6 +869,7 @@ public class LccHolder{
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
+		// todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
 		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
 			final boolean isOpponentMoveDone = !user.getUsername().equals(moveMaker.getUsername());
 
@@ -896,9 +894,6 @@ public class LccHolder{
 			}
 
 		}
-	}
-
-	public void updateClockTime(Game game) {
 	}
 
 	public void setLastGameId(){
@@ -989,5 +984,16 @@ public class LccHolder{
 	// todo: remove after debugging
 	public Integer getGamesCount() {
 		return lccGames.size();
+	}
+
+	public void checkTestingGame() {
+		if (LccGameListener.TESTING_GAME) {
+			final Game currentGame = getCurrentGame();
+			if (currentGame.isMoveOf(user) && currentGame.getSeq() == 0) {
+				Log.d(TAG, "First move by: " + user.getUsername() + ", the movie: "
+						+ LccGameListener.TEST_MOVES_COORD[currentGame.getSeq()]);
+				lccClient.makeMove(currentGame, LccGameListener.TEST_MOVES_COORD[currentGame.getSeq()]);
+			}
+		}
 	}
 }

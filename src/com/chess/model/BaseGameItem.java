@@ -28,7 +28,7 @@ public abstract class BaseGameItem implements Parcelable {
 	protected boolean isDrawOfferPending;
 	protected boolean isOpponentOnline;
 	protected String fenStrLength;
-	protected String fen;
+//	protected String fen;
 	protected long timestamp;
 	protected String moveList;
 	protected String whiteRating;
@@ -50,25 +50,25 @@ public abstract class BaseGameItem implements Parcelable {
 		return color;
 	}
 
-	public String getFen() {
+	/*public String getFen() {
 		return fen;
 	}
 
 	public String getFenStrLength() {
 		return fenStrLength;
-	}
+	}*/
 
 	public long getGameId() {
 		return gameId;
 	}
 
-	public boolean isDrawOfferPending() {
+	/*public boolean isDrawOfferPending() {
 		return isDrawOfferPending;
 	}
 
 	public boolean isOpponentOnline() {
 		return isOpponentOnline;
-	}
+	}*/
 
 	public String getMoveList() {
 		return moveList;
@@ -136,7 +136,7 @@ public abstract class BaseGameItem implements Parcelable {
 		parcel.writeString(timeRemainingUnits);
 		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
 		parcel.writeString(fenStrLength);
-		parcel.writeString(fen);
+//		parcel.writeString(fen);
 		parcel.writeLong(timestamp);
 		parcel.writeString(moveList);
 		parcel.writeString(whiteRating);
@@ -160,7 +160,7 @@ public abstract class BaseGameItem implements Parcelable {
 		timeRemainingUnits = in.readString();
 		in.readBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
 		fenStrLength = in.readString();
-		fen = in.readString();
+//		fen = in.readString();
 		timestamp = in.readLong();
 		moveList = in.readString();
 		whiteRating = in.readString();

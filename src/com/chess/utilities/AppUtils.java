@@ -151,10 +151,9 @@ public class AppUtils {
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-//		ChessBoardOnline.resetInstance();
-
 		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
 		intent.putExtra(BaseGameItem.GAME_INFO_ITEM, currentGameItem);
+		intent.putExtra(AppConstants.NOTIFICATION, true);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);

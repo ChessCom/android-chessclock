@@ -323,7 +323,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
 			if (returnedObj.length() > 0) {
 				final String[] responseArray = returnedObj.split(":");
 				if (responseArray.length >= 4) {
@@ -337,7 +336,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 					}
 				}
 			}
-//			}
 		}
 
 		@Override
@@ -402,6 +400,8 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
 		preferencesEditor.commit();
+
+		AppData.setGuest(this, false);
 
 		afterLogin();
 	}

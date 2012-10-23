@@ -105,6 +105,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
+		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) {
+			ChessBoardOnline.resetInstance();
+		}
+
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
