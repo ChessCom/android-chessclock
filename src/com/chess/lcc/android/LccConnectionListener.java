@@ -10,7 +10,7 @@ import com.chess.live.client.*;
  * File Templates.
  */
 public class LccConnectionListener implements ConnectionListener {
-	public static final String CONNECTION = "LCC-CONNECTION";
+	public static final String CONNECTION = "LCCLOG-CONNECTION";
 	private LccHolder lccHolder;
 
 	public LccConnectionListener(LccHolder lccHolder) {

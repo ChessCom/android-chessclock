@@ -985,4 +985,15 @@ public class LccHolder{
 	public Integer getGamesCount() {
 		return lccGames.size();
 	}
+
+	public void checkTestingGame() {
+		if (LccGameListener.TESTING_GAME) {
+			final Game currentGame = getCurrentGame();
+			if (currentGame.isMoveOf(user) && currentGame.getSeq() == 0) {
+				Log.d(TAG, "First move by: " + user.getUsername() + ", the movie: "
+						+ LccGameListener.TEST_MOVES_COORD[currentGame.getSeq()]);
+				lccClient.makeMove(currentGame, LccGameListener.TEST_MOVES_COORD[currentGame.getSeq()]);
+			}
+		}
+	}
 }

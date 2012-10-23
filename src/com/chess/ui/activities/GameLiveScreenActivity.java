@@ -63,6 +63,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private String warningMessage;
 	private int opponentDotId;
 
+	private String boardDebug; // temp
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -222,6 +224,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.invalidate();
 
 		playLastMoveAnimation();
+
+		getLccHolder().checkTestingGame();
 	}
 
     public void setWhitePlayerTimer(String timeString) {
@@ -310,6 +314,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			playSound = i == actualMovesSize;
 			getBoardFace().makeMove(move, playSound);
 		}
+
+		boardDebug = ", lastHply=" + getBoardFace().getHply() + ", lastMoves=" + actualMovesSize;
 
 		getBoardFace().setMovesCount(actualMovesSize);
 
@@ -455,6 +461,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
+				boardDebug +
 				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
 				", boardHply=" + getBoardFace().getHply() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
