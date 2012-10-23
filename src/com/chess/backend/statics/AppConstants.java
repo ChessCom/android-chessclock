@@ -99,4 +99,6 @@ public class AppConstants {
 	public static final String GCM_REGISTERED_ON_SERVER = "registered on chess GCM server";
 	public static final String GCM_SAVED_TOKEN = "saved token on server";
 
+	public static final String NOTIFICATION = "notification";
+
 }
