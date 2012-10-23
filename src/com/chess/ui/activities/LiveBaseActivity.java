@@ -1,12 +1,16 @@
 package com.chess.ui.activities;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.MenuItem;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
@@ -41,6 +45,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected ChallengeTaskListener challengeTaskListener;
 	protected GameTaskListener gameTaskListener;
 	protected LccGameTaskRunner gameTaskRunner;
+	protected LiveChessService liveChessService;
+	protected boolean isLCSBound;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onStart() {
 		super.onStart();
 
+		// bind to service and set listener. But call connect method in listener
+		bindService(new Intent(this, LiveChessService.class), new LiveChessServiceConnectionListener(), BIND_AUTO_CREATE);
+
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
 		if (DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)) { // check only if live
@@ -65,7 +74,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else {
 			LccHolder.getInstance(this).checkAndConnect();
+
 		}
+
 	}
 
 	@Override
@@ -117,6 +128,21 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private class LiveChessServiceConnectionListener implements ServiceConnection {
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
+			liveChessService = serviceBinder.getService();
+			liveChessService.checkAndConnect();
+			isLCSBound = true;
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			isLCSBound = false;
+		}
 	}
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {
