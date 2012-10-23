@@ -192,7 +192,7 @@ public class AppData {
 
 	public static void setGuest(Context context, boolean guest) {
 		SharedPreferences.Editor editor = getPreferences(context).edit();
-		editor.putBoolean(AppConstants.USER_IS_GUEST, false);
+		editor.putBoolean(AppConstants.USER_IS_GUEST, guest);
 		editor.commit();
 	}
 }

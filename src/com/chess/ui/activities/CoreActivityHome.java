@@ -272,7 +272,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 	@Override
 	protected void afterLogin() {
-		restartActivity();
+		restartActivity(); // TODO check why to restart?
 	}
 
 }

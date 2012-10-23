@@ -65,7 +65,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		super.onStart();
 
 		// bind to service and set listener. But call connect method in listener
-		bindService(new Intent(this, LiveChessService.class), new LiveChessServiceConnectionListener(), BIND_AUTO_CREATE);
+//		bindService(new Intent(this, LiveChessService.class), new LiveChessServiceConnectionListener(), BIND_AUTO_CREATE);
 
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
