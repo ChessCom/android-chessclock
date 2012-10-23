@@ -44,6 +44,8 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	private ImageButton sendBtn;
 	private long gameId;
 	private String timeStamp;
+	private GetTimeStampForListUpdateListener getTimeStampForListUpdateListener;
+	private GetTimeStampForSendMessageListener getTimeStampForSendMessageListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		chatItems = new ArrayList<MessageItem>();
 		listUpdateListener = new ListUpdateListener();
 		sendUpdateListener = new SendUpdateListener();
+		getTimeStampForListUpdateListener = new GetTimeStampForListUpdateListener();
+		getTimeStampForSendMessageListener = new GetTimeStampForSendMessageListener();
 
 		showActionRefresh = true;
 	}
@@ -101,7 +105,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	public void updateList() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new GetStringObjTask(new GetTimeStampForListUpdateListener()).executeTask(loadItem);
+		new GetStringObjTask(getTimeStampForListUpdateListener).executeTask(loadItem);
 	}
 
 	private class ListUpdateListener extends ActionBarUpdateListener<String> {
@@ -161,7 +165,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	private void sendMessage() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new GetStringObjTask(new GetTimeStampForSendMessageListener()).executeTask(loadItem);
+		new GetStringObjTask(getTimeStampForSendMessageListener).executeTask(loadItem);
 	}
 
 	private class SendUpdateListener extends ActionBarUpdateListener<String> {
