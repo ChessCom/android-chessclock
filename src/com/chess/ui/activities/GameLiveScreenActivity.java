@@ -93,6 +93,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			// get last warning
 			warningMessage = getLccHolder().getLastWarningMessage();
 
+			Log.d("LCCLOG-WARNING", warningMessage);
+
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
 		}
 	}

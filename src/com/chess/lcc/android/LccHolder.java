@@ -27,9 +27,9 @@ public class LccHolder{
 	private static final String TAG = "LccHolder";
 	public static final int OWN_SEEKS_LIMIT = 3;
 
-	public long currentFGTime;
+	/*public long currentFGTime;
 	public long currentFGGameId;
-	public long previousFGGameId;
+	public long previousFGGameId;*/
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -152,7 +152,7 @@ public class LccHolder{
     }
 
 	public GameLiveItem getGameItem() {
-		Log.d("TEST","gameId = " +currentGameId);
+		Log.d("TEST","gameId = " + currentGameId);
 		Game game = getGame(currentGameId);
 
 		return new GameLiveItem(game, game.getSeq() - 1);
