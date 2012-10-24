@@ -780,7 +780,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
-//		blockScreenRotation(true);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);

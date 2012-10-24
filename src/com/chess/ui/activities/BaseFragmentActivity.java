@@ -301,7 +301,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	protected PopupDialogFragment getLastPopupFragment(){
 		if (popupManager.size() == 0){
-			return null; //
+			return null;
 		} else {
 			return popupManager.get(popupManager.size()-1);
 		}

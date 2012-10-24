@@ -79,7 +79,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
-//		String blackPlayerName = getLccHolder().getBlackUserName(gameId);
 		String blackPlayerName = getLccHolder().getBlackUserName();
 		String userName = getLccHolder().getCurrentuserName();
 

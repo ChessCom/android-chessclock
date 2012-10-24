@@ -26,8 +26,7 @@ import java.text.SimpleDateFormat;
  * @author alien_roger
  * @created at: 05.03.12 21:18
  */
-public abstract class GameBaseActivity extends LiveBaseActivity implements
-		/*BoardToGameActivityFace,*/ GameActivityFace {
+public abstract class GameBaseActivity extends LiveBaseActivity implements GameActivityFace {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -103,17 +102,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements
 	protected void onStart() {
 		super.onStart();
 
+		// update boardView if boardId has changed
 		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		// update boardView if boardId has changed
-//		boardView.updateBoardAndPiecesImgs();
-//		enableScreenLockTimer();
 	}
 
 	protected void onDestroy() {

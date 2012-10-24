@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
@@ -32,7 +31,7 @@ public class LccHolder{
 	public long currentFGGameId;
 	public long previousFGGameId;
 
-	private final LccChatListener chatlistener;
+	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
 	private final LccGameListener gameListener;
 	private final LccChallengeListener challengeListener;
@@ -59,7 +58,6 @@ public class LccHolder{
 
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
-	//private boolean connectingInProgress;
 	private boolean nextOpponentMoveStillNotMade;
 	private final Object opponentClockStartSync = new Object();
 	private Timer opponentClockDelayTimer = new Timer("OpponentClockDelayTimer", true);
@@ -86,7 +84,7 @@ public class LccHolder{
     private LccHolder(Context context) {
 		this.context = context;
 
-		chatlistener = new LccChatListener(this);
+		chatListener = new LccChatListener(this);
 		connectionListener = new LccConnectionListener(this);
 		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
@@ -358,7 +356,7 @@ public class LccHolder{
 	}
 
 	public LccChatListener getChatListener() {
-		return chatlistener;
+		return chatListener;
 	}
 
 	public LccConnectionListener getConnectionListener() {
@@ -388,7 +386,7 @@ public class LccHolder{
 
 			lccClient.subscribeToChallengeEvents(challengeListener);
 			lccClient.subscribeToGameEvents(gameListener);
-			lccClient.subscribeToChatEvents(chatlistener);
+			lccClient.subscribeToChatEvents(chatListener);
 			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
@@ -749,18 +747,7 @@ public class LccHolder{
 		this.blackClock = blackClock;
 	}
 
-	/**
-	 * stop LiveChess service. This is probably will be the only thing that we need to use.
-	 * All stopping operations will be called in onStop of Service class.
-	 * Also we will send all our request to service via interface instead of Singleton.
-	 */
-	private void stopService(){
-		context.stopService(new Intent(context, LiveChessService.class));
-	}
-
 	public void logout() {
-		stopService();
-
 		Log.d(TAG, "USER LOGOUT");
 		DataHolder.getInstance().setLiveChess(false);
 		setCurrentGameId(null);

@@ -119,20 +119,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		preferencesEditor.commit();
 	}
 
-	protected void backToHomeActivity() {
-		Intent intent = new Intent(this, HomeScreenActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		finish();
-	}
-
-	protected void backToLoginActivity() {
-		Intent intent = new Intent(this, LoginScreenActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		finish();
-	}
-
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
@@ -247,7 +233,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
 				facebookInit(facebookLoginButton);
-				//facebookLoginButton.init(CoreActivityActionBar.this, facebook);
 				facebookLoginButton.logout();
 
 				usernameEdt.setText(AppData.getUserName(CoreActivityActionBar.this));
@@ -336,11 +321,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return SoundPlayer.getInstance(this);
 	}
 
-
-
 	@Override
 	protected void afterLogin() {
-		restartActivity();
+//		restartActivity();
 	}
 }
 

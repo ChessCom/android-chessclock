@@ -77,7 +77,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		} else if (view.getId() == R.id.guestplay) {
 			DataHolder.getInstance().reset();
 			AppData.setGuest(this, true);
-//			DataHolder.getInstance().setGuest(true);
+
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			startActivity(intent);
 		}
@@ -126,11 +126,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			checkMove();
 		}
 
-		DataHolder.getInstance().reset();
-
-		Intent intent = new Intent(this, HomeScreenActivity.class);
-		startActivity(intent);
-		finish();
+		backToHomeActivity();
 	}
 
 	private void checkUpdate() {

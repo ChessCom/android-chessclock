@@ -109,7 +109,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		boardView = (ChessBoardTacticsView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGamePanelView(gamePanelView);
-		//boardView.setBoardFace(new ChessBoard(this)); // looks like as redundant init
 		boardView.setGameActivityFace(this);
 
 		setBoardView(boardView);
@@ -130,7 +129,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	@Override
 	protected void onStart() {
 		super.onStart();
-//		if (!DataHolder.getInstance().isGuest())
 		if (!AppData.isGuest(this))
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 
@@ -154,11 +152,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			final boolean userIsGuest = AppData.isGuest(this);
 
-//			if (AppData.haveSavedTacticGame(this) && !DataHolder.getInstance().isGuest()
-//					|| haveGuestSavedGame && DataHolder.getInstance().isGuest()) {
 			if (AppData.haveSavedTacticGame(this) && !userIsGuest || haveGuestSavedGame && userIsGuest) {
 				String userName = AppData.getUserName(this);
-//				if (DataHolder.getInstance().isGuest()) {
 				if (userIsGuest) {
 					userName = StaticData.SYMBOL_EMPTY;
 				}
@@ -173,8 +168,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				TacticItem tacticItem = new TacticItem(tacticString.split(StaticData.SYMBOL_COLON));
 				TacticsDataHolder.getInstance().setTactic(tacticItem);
 				setTacticToBoard(tacticItem, secondsSpend);
-
-//				boardView.setBoardFace(ChessBoardTactics.getInstance(this));  // useless as we set it in setTacticToBoard
 
 				if (!tacticResultString.equals(StaticData.SYMBOL_EMPTY)) {
 					TacticResultItem tacticResultItem = new TacticResultItem(tacticResultString.split(StaticData.SYMBOL_COLON));
@@ -218,7 +211,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
-//			if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
 			if (AppData.isGuest(this)) { // for guest mode we should have different name
 				userName = StaticData.SYMBOL_EMPTY;
 			}
@@ -306,12 +298,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				if(TacticsDataHolder.getInstance().tacticWasShowed(getTacticItem().getId())){
 					showSolvedTacticPopup(getString(R.string.problem_solved_), false);
 
-//				} else if (DataHolder.getInstance().isGuest() || boardFace.isRetry() || noInternet) {
 				} else if (userIsGuest || boardFace.isRetry() || noInternet) {
 					TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 
 					String title;
-//					if(tacticResultItem != null && !DataHolder.getInstance().isGuest()){
 					if(tacticResultItem != null && !userIsGuest){
 						title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 								tacticResultItem.getUserRating());
@@ -870,7 +860,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void loadNewTacticsBatch(){
 		noInternet = !AppUtils.isNetworkAvailable(this);
-//		if (DataHolder.getInstance().isGuest() || noInternet) {
 		if (AppData.isGuest(this) || noInternet) {
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 			// TODO move to AsyncTask

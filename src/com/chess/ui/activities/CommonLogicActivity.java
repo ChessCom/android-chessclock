@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -167,7 +168,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void registerGcmService(){
-//		if (!AppData.isNotificationsEnabled(this) || DataHolder.getInstance().isGuest()) // no need to register if user turned off notifications
 		if (!AppData.isNotificationsEnabled(this) || AppData.isGuest(this)) // no need to register if user turned off notifications
 			return;
 
@@ -208,18 +208,14 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
 
-//				String deviceId = new AppUtils.DeviceInfo().getDeviceInfo(this).android_id;
-
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(this));
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-//				loadItem.addRequestParams(RestHelper.GCM_P_DEVICE_ID, deviceId);
 
 				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 				Log.d("GCMIntentService", "Registering to server, registrationId = " + registrationId
-						+ " \ntoken = " + AppData.getUserToken(this)
-						/*+ " \ndeviceId = " + deviceId */);
+						+ " \ntoken = " + AppData.getUserToken(this));
 			}
 		}
 	}
@@ -343,15 +339,12 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
 				popupItem.setPositiveBtnId(R.string.sing_up);
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-			} else /*if(returnedObj.contains(RestHelper.R_ERROR))*/{
-//				String message = returnedObj.substring(RestHelper.R_ERROR.length());
+			} else {
 				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){
 					passwordEdt.setError(getResources().getString(R.string.invalid_password));
 					passwordEdt.requestFocus();
 				}else{
-
 					showToast(resultMessage);
-//					showSinglePopupDialog(R.string.error, message);
 				}
 			}
 		}
@@ -402,11 +395,26 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		preferencesEditor.commit();
 
 		AppData.setGuest(this, false);
+		DataHolder.getInstance().reset();
 
 		afterLogin();
 	}
 
 	protected void afterLogin(){ }
+
+	protected void backToHomeActivity() {
+		Intent intent = new Intent(this, HomeScreenActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		finish();
+	}
+
+	protected void backToLoginActivity() {
+		Intent intent = new Intent(this, LoginScreenActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		finish();
+	}
 
 	/**
 	 * Prevent earlier launch of task, as it finish right after onPause callback
@@ -429,7 +437,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
 	}
-
 
 	protected void checkMove(){
 		LoadItem loadItem = new LoadItem();
@@ -488,7 +495,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 						player.start();
 					}
 				}
-
 
 				getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 			}

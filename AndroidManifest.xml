@@ -170,7 +170,6 @@
 				  application uses a custom BroadcastReceiver that redefines its name.
 				-->
 		<service android:name=".GCMIntentService" />
-		<service android:name=".backend.LiveChessService" />
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 

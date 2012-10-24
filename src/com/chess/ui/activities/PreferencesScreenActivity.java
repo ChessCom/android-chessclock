@@ -83,7 +83,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
 		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 
-//		if (!DataHolder.getInstance().isGuest() && !DataHolder.getInstance().isLiveChess())
 		if (!AppData.isGuest(this) && !DataHolder.getInstance().isLiveChess())
 			updateVacationStatus();
 	}
@@ -103,7 +102,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (!DataHolder.getInstance().isGuest() && returnedObj.trim().split("[+]")[1].equals("1")) {
 			if (!AppData.isGuest(getContext()) && returnedObj.trim().split("[+]")[1].equals("1")) {
 				vacationCheckBox.setChecked(true);
 				vacationCheckBox.setText(R.string.vacationOn);
@@ -137,7 +135,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		Button logoutBtn = (Button) findViewById(R.id.prefLogout);
 		logoutBtn.setOnClickListener(this);
 
-//		if (DataHolder.getInstance().isGuest()) {
 		if (AppData.isGuest(this)) {
 			vacationCheckBox.setVisibility(View.GONE);
 			logoutBtn.setText(R.string.login);
@@ -220,14 +217,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	public void onClick(View view) {
 		int id = view.getId();
 		if (id == R.id.prefLogout) {
-//			if (!DataHolder.getInstance().isGuest()) {
 			if (!AppData.isGuest(this)) {
 				getLccHolder().logout();
 
 				// un-register from GCM
 				unregisterGcmService();
 
-//				DataHolder.getInstance().setGuest(true);
 				AppData.setGuest(this, true);
 
 				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);

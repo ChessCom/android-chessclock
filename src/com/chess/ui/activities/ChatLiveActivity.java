@@ -84,7 +84,6 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 			updateList();
 
 			sendEdt.setText(StaticData.SYMBOL_EMPTY);
-//			hideKeyBoard(sendEdt);
 		}
 	}
 
