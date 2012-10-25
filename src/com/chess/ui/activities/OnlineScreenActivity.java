@@ -307,6 +307,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onNegativeBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
 			ChessBoardOnline.resetInstance();
+
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 			intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);
 			startActivity(intent);
@@ -417,7 +418,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			preferencesEditor.commit();
 
 			if (gameListCurrentItem.getIsDrawOfferPending()) {
-				DataHolder.getInstance().setAcceptDraw(true);
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
@@ -426,7 +426,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				getLastPopupFragment().setButtons(3);
 
 			} else {
-				DataHolder.getInstance().setAcceptDraw(false);
 				ChessBoardOnline.resetInstance();
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 				intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);

@@ -2,6 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.backend.statics.StaticData;
 
 /**
  * BaseGameItem class
@@ -36,7 +37,19 @@ public abstract class BaseGameItem implements Parcelable {
 	protected String secondsRemain;
 	protected boolean hasNewMessage;
 
-
+	protected BaseGameItem() {
+		color = StaticData.SYMBOL_EMPTY;
+		whiteUsername = StaticData.SYMBOL_EMPTY;
+		blackUsername = StaticData.SYMBOL_EMPTY;
+		userNameStrLength = StaticData.SYMBOL_EMPTY;
+		timeRemainingAmount = StaticData.SYMBOL_EMPTY;
+		timeRemainingUnits = StaticData.SYMBOL_EMPTY;
+		fenStrLength = StaticData.SYMBOL_EMPTY;
+		moveList = StaticData.SYMBOL_EMPTY;
+		whiteRating = StaticData.SYMBOL_EMPTY;
+		blackRating = StaticData.SYMBOL_EMPTY;
+		secondsRemain = StaticData.SYMBOL_EMPTY;
+	}
 
 	public String getBlackRating() {
 		return blackRating;
@@ -158,7 +171,12 @@ public abstract class BaseGameItem implements Parcelable {
 
 		timeRemainingAmount = in.readString();
 		timeRemainingUnits = in.readString();
-		in.readBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
+		boolean[] booleans = new boolean[3];
+		in.readBooleanArray(booleans);
+		isDrawOfferPending = booleans[0];
+		isOpponentOnline = booleans[1];
+		hasNewMessage = booleans[2];
+
 		fenStrLength = in.readString();
 //		fen = in.readString();
 		timestamp = in.readLong();

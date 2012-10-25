@@ -18,7 +18,6 @@ import java.util.List;
 public class DataHolder { // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
 	private static DataHolder ourInstance = new DataHolder();
 
-	private boolean acceptDraw; // TODO should be stored
 	private boolean liveChess; // TODO should be stored as a persistent state
 	private boolean isAdsLoading;  // TODO should be tied to adFetcher process lifecycle
 
@@ -49,14 +48,6 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 
 	public void setLiveChess(boolean liveChess) {
 		this.liveChess = liveChess;
-	}
-
-	public boolean isAcceptDraw() { // will be droped after onResume
-		return acceptDraw;
-	}
-
-	public void setAcceptDraw(boolean acceptDraw) {
-		this.acceptDraw = acceptDraw;
 	}
 
 	public boolean isAdsLoading() {

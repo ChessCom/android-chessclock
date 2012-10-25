@@ -118,6 +118,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	public void init() {
 		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
+
 		gameId = gameInfoItem.getGameId();
 		Log.d("TEST", "GameOnline , gameId = " + gameId);
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
@@ -153,6 +154,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		// TODO change default method
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
@@ -165,6 +172,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		unregisterReceiver(moveUpdateReceiver);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		// TODO change default method
 	}
 
 	private BroadcastReceiver moveUpdateReceiver = new BroadcastReceiver() {
@@ -683,7 +696,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
-			if (DataHolder.getInstance().isAcceptDraw()) { // If Draw was already offered by the opponent, we send accept to it.
+
+			if (gameInfoItem.getIsDrawOfferPending()) { // If Draw was already offered by the opponent, we send accept to it.
 				draw = RestHelper.V_ACCEPTDRAW;
 			} else {
 				draw = RestHelper.V_OFFERDRAW;
