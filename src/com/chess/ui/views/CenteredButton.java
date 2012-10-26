@@ -90,7 +90,7 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	@Override
 	public void setPressed(boolean pressed) {
 		super.setPressed(pressed);
-		Log.d("TEST", "setPressed -> pressed = " + pressed);
+//		Log.d("TEST", "setPressed -> pressed = " + pressed);
 		button.setPressed(pressed);
 	}
 
@@ -104,18 +104,18 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				Log.d("TEST", "onTouchEvent -> ACTION_DOWN");
+//				Log.d("TEST", "onTouchEvent -> ACTION_DOWN");
 				button.performClick();
 				setPressed(true);
 				button.refreshDrawableState();
 				break;
 			case MotionEvent.ACTION_UP:
-				Log.d("TEST", "onTouchEvent -> ACTION_UP");
+//				Log.d("TEST", "onTouchEvent -> ACTION_UP");
 				button.setPressed(false);
 				button.refreshDrawableState();
 				break;
 			case MotionEvent.ACTION_MOVE:
-				Log.d("TEST", "onTouchEvent -> ACTION_MOVE");
+//				Log.d("TEST", "onTouchEvent -> ACTION_MOVE");
 				button.setPressed(true);
 				button.refreshDrawableState();
 

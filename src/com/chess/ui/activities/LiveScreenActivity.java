@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -59,7 +58,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	private void init() {
-		DataHolder.getInstance().setLiveChess(true);
+//		DataHolder.getInstance().setLiveChess(true);
+		AppData.setLiveChessMode(this, true);
 
 		infoGroup = new ArrayList<View>();
 

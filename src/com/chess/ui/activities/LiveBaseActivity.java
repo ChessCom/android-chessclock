@@ -7,8 +7,8 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.MenuItem;
 import com.chess.R;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
 import com.chess.lcc.android.LccGameTaskRunner;
@@ -59,12 +59,26 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
-		if (DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)) { // check only if live
+		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
+//		if (DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else {
 			LccHolder.getInstance(this).checkAndConnect();
 		}
+	}
+
+	protected boolean checkIfLiveUserAlive(){
+		boolean alive = true;
+		if (getLccHolder().getUser() == null) {
+//			if (DataHolder.getInstance().isLiveChess()) {
+			if (AppData.isLiveChess(this)) {
+				getLccHolder().logout();
+			}
+			backToHomeActivity();
+			alive = false;
+		}
+		return alive;
 	}
 
 	@Override

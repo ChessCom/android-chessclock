@@ -76,6 +76,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
 			DataHolder.getInstance().reset();
+			AppData.setLiveChessMode(this, false);
 			AppData.setGuest(this, true);
 
 			Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -102,7 +103,8 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
-		DataHolder.getInstance().setLiveChess(false);
+//		DataHolder.getInstance().setLiveChess(false);
+		AppData.setLiveChessMode(this, true);
 
 		loginUsernameEdt.setText(AppData.getUserName(this));
 		loginPasswordEdt.setText(AppData.getPassword(this));

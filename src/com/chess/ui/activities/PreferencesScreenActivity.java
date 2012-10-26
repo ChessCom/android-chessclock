@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -83,7 +82,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
 		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 
-		if (!AppData.isGuest(this) && !DataHolder.getInstance().isLiveChess())
+		if (!AppData.isGuest(this) && !AppData.isLiveChess(this))
+//		if (!AppData.isGuest(this) && !DataHolder.getInstance().isLiveChess())
 			updateVacationStatus();
 	}
 

@@ -14,8 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
@@ -58,7 +58,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-		DataHolder.getInstance().setLiveChess(true);
+//		DataHolder.getInstance().setLiveChess(true);
+		AppData.setLiveChessMode(this, true);
 
 		showActionSettings = true;
 	}
@@ -92,11 +93,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 	protected void onResume() {
 		super.onResume();
 
-		if (getLccHolder().getUser() == null) {    // added in case user returns here after process has been killed
-			if (DataHolder.getInstance().isLiveChess()) {
-				getLccHolder().logout();
-			}
-			backToHomeActivity();
+		if (!checkIfLiveUserAlive()){
+			return;
 		}
 
 		updateScreen();

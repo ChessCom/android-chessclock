@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
@@ -77,20 +77,15 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-		DataHolder.getInstance().setLiveChess(true);
-
+//		DataHolder.getInstance().setLiveChess(true);
+		AppData.setLiveChessMode(this, true);
 		showActionSettings = true;
 	}
 
 	public void onResume() {
 		super.onResume();
 
-		if (getLccHolder().getUser() == null) {
-			if (DataHolder.getInstance().isLiveChess()) {
-				getLccHolder().logout();
-			}
-			backToHomeActivity();
-		}
+		checkIfLiveUserAlive();
 	}
 
 	@Override

@@ -138,6 +138,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		// TODO change default method
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -204,6 +210,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		// TODO change default method
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -242,7 +254,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	 */
 	private boolean needToSaveTactic(){
 		return !getBoardFace().isTacticCanceled() && !TacticsDataHolder.getInstance().isTacticLimitReached()
-				&& getTacticItem() != null /*&& !DataHolder.getInstance().isGuest()*/;
+				&& getTacticItem() != null;
 	}
 
 	private void playLastMoveAnimationAndCheck() {

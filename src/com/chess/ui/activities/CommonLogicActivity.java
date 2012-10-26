@@ -395,6 +395,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		preferencesEditor.commit();
 
 		AppData.setGuest(this, false);
+		AppData.setLiveChessMode(this, false);
 		DataHolder.getInstance().reset();
 
 		afterLogin();

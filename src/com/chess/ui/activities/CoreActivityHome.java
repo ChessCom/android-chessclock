@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -96,7 +95,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(CONNECT_FAILED_TAG)) {
-			if (DataHolder.getInstance().isLiveChess()) {
+//			if (DataHolder.getInstance().isLiveChess()) {
+			if (AppData.isLiveChess(this)) {
 				getLccHolder().logout();
 			}
 		}
@@ -105,7 +105,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					DataHolder.getInstance().setLiveChess(false);
+					AppData.setLiveChessMode(getContext(), false);
+//					DataHolder.getInstance().setLiveChess(false);
 					LccHolder.getInstance(getContext()).setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));

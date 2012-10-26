@@ -2,6 +2,7 @@ package com.chess.backend.entity;
 
 import android.util.Log;
 import com.chess.model.GamePlayingItem;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.ChessBoardTactics;
@@ -18,8 +19,8 @@ import java.util.List;
 public class DataHolder { // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
 	private static DataHolder ourInstance = new DataHolder();
 
-	private boolean liveChess; // TODO should be stored as a persistent state
-	private boolean isAdsLoading;  // TODO should be tied to adFetcher process lifecycle
+//	private boolean liveChess; // should be stored as a persistent state
+	private boolean isAdsLoading;
 
 
 	// Echess mode game variables
@@ -42,13 +43,13 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 		return ourInstance;
 	}
 
-	public boolean isLiveChess() {
-		return liveChess;
-	}
-
-	public void setLiveChess(boolean liveChess) {
-		this.liveChess = liveChess;
-	}
+//	public boolean isLiveChess() {
+//		return liveChess;
+//	}
+//
+//	public void setLiveChess(boolean liveChess) {
+//		this.liveChess = liveChess;
+//	}
 
 	public boolean isAdsLoading() {
 		return isAdsLoading;
@@ -63,6 +64,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 		ChessBoardTactics.resetInstance();
 		ChessBoardLive.resetInstance();
 		ChessBoardOnline.resetInstance();
+		ChessBoardComp.resetInstance();
 	}
 
 	/**

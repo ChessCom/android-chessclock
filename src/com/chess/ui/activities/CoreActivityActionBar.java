@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -123,7 +122,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		super.onPositiveBtnClick(fragment);
 		if (fragment.getTag().equals(CONNECT_FAILED_TAG)) {
-			if (DataHolder.getInstance().isLiveChess()) {
+			if (AppData.isLiveChess(this)) {
+//			if (DataHolder.getInstance().isLiveChess()) {
 				getLccHolder().logout();
 			}
 			backToHomeActivity();
@@ -132,7 +132,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					DataHolder.getInstance().setLiveChess(false);
+					AppData.setLiveChessMode(getContext(), false);
+//					DataHolder.getInstance().setLiveChess(false);
 					LccHolder.getInstance(getContext()).setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));

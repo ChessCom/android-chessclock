@@ -270,7 +270,7 @@ public class ChessBoard implements BoardFace {
 	private int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	private GameActivityFace gameActivityFace;
+	protected GameActivityFace gameActivityFace;
 	private SoundPlayer soundPlayer;
 
 	protected ChessBoard(GameActivityFace gameActivityFace) {

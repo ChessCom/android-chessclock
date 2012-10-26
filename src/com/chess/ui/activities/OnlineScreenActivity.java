@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -91,7 +90,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		init();
 
-		DataHolder.getInstance().setLiveChess(false);
+//		DataHolder.getInstance().setLiveChess(false);
+		AppData.setLiveChessMode(this, false);
 
 		ListView gamesList = (ListView) findViewById(R.id.onlineGamesList);
 		gamesList.setOnItemClickListener(this);

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
-import com.chess.backend.entity.DataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -219,7 +218,8 @@ public class LccHolder{
 	}
 
 	public void checkAndConnect() {
-		if(DataHolder.getInstance().isLiveChess() && !connected && lccClient == null){
+//		if(DataHolder.getInstance().isLiveChess() && !connected && lccClient == null){
+		if(AppData.isLiveChess(context) && !connected && lccClient == null){
 			LccHolder.getInstance(context).runConnectTask();
 		}
 	}
@@ -749,7 +749,8 @@ public class LccHolder{
 
 	public void logout() {
 		Log.d(TAG, "USER LOGOUT");
-		DataHolder.getInstance().setLiveChess(false);
+//		DataHolder.getInstance().setLiveChess(false);
+		AppData.setLiveChessMode(context, false);
 		setCurrentGameId(null);
 		Log.d("TEST", "Lcc Logout performed");
 		setUser(null);
