@@ -12,7 +12,6 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
@@ -103,9 +102,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	};
 
 	private class ListUpdateListener extends ChessUpdateListener {
-		public ListUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void showProgress(boolean show) {
@@ -198,9 +194,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
-		public ChallengeInviteUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {

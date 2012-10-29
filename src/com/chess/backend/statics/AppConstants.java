@@ -17,7 +17,11 @@ public class AppConstants {
 	public static final String CHALLENGE_MIN_RATING = "min_rating";
 	public static final String CHALLENGE_MAX_RATING = "max_rating";
 	public static final String SAVED_COMPUTER_GAME = "saving";
+
+	/*Tactics constants*/
 	public static final String SAVED_TACTICS_ITEM = "saved tactics game";
+	public static final String SAVED_TACTICS_CURRENT_PROBLEM = "saved tactics current puzzle number";
+	public static final String SAVED_TACTICS_BATCH = "saved tactics batch";
 	public static final String SAVED_TACTICS_RESULT_ITEM = "saved tactic result";
 	public static final String SAVED_TACTICS_ID = "saved tactic id";
 	public static final String SAVED_TACTICS_RETRY = "saved tactic retry";

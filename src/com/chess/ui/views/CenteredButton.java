@@ -128,14 +128,14 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	public boolean onTouch(View view, MotionEvent motionEvent) {
 		switch (motionEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				Log.d("TEST", "onTouch -> ACTION_DOWN");
+//				Log.d("TEST", "onTouch -> ACTION_DOWN");
 				setPressed(true);
 				refreshDrawableState();
 				performClick();
 
 				break;
 			case MotionEvent.ACTION_UP:
-				Log.d("TEST", "onTouch -> ACTION_UP");
+//				Log.d("TEST", "onTouch -> ACTION_UP");
 				setPressed(false);
 				refreshDrawableState();
 				break;

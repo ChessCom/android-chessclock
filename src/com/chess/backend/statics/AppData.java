@@ -157,6 +157,18 @@ public class AppData {
 				.equals(StaticData.SYMBOL_EMPTY);
 	}
 
+	public static boolean haveSavedTacticBatch(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, false);
+	}
+
+	public static int getSavedTacticProblem(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, 0);
+	}
+
 	public static boolean isNotificationsEnabled(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);

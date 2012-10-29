@@ -9,7 +9,6 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.GetStringObjTask;
@@ -101,9 +100,6 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 	}
 
 	private class CreateChallengeUpdateListener extends ChessUpdateListener {
-		public CreateChallengeUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {

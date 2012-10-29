@@ -32,7 +32,15 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		}
 
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
+			if (instance == null) {
+				Log.d("TEST", "instance == null " + (instance == null) );
+			} else if (instance.gameId == null) {
+				Log.d("TEST", "instance.gameId == null " + (instance.gameId == null) );
+			} else if (!instance.gameId.equals(gameId)) {
+				Log.d("TEST", "!instance.gameId.equals(gameId) " + (!instance.gameId.equals(gameId)) );
+			}
 			instance = new ChessBoardTactics(gameActivityFace);
+			Log.d("TEST", "new ChessBoardTactics");
 			instance.gameId = gameId;
 			instance.justInitialized = true;
 		} else {

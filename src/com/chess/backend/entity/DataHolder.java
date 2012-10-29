@@ -1,6 +1,5 @@
 package com.chess.backend.entity;
 
-import android.util.Log;
 import com.chess.model.GamePlayingItem;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.ChessBoardLive;
@@ -19,9 +18,7 @@ import java.util.List;
 public class DataHolder { // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
 	private static DataHolder ourInstance = new DataHolder();
 
-//	private boolean liveChess; // should be stored as a persistent state
 	private boolean isAdsLoading;
-
 
 	// Echess mode game variables
 	private final List<GamePlayingItem> playingGamesList;  // will be re-created every time user open the game. If it's killed, means we are not in the game.
@@ -31,7 +28,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	 * with the same move notification comes from server. In case the data can be killed,
 	 * we might not care much as notifications comes in very short time period(in few seconds).
 	 */
-	private List<LastMoveInfoItem> lastMoveInfoItems; // TODO should be saved in store and tied to GCM usage
+	private final List<LastMoveInfoItem> lastMoveInfoItems; // TODO should be saved in store and tied to GCM usage
 
 
 	private DataHolder() {
@@ -42,14 +39,6 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	public static DataHolder getInstance() {
 		return ourInstance;
 	}
-
-//	public boolean isLiveChess() {
-//		return liveChess;
-//	}
-//
-//	public void setLiveChess(boolean liveChess) {
-//		this.liveChess = liveChess;
-//	}
 
 	public boolean isAdsLoading() {
 		return isAdsLoading;
@@ -74,10 +63,6 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	 */
 	public synchronized boolean inOnlineGame(long gameId) {
 		synchronized (playingGamesList) {
-			for (GamePlayingItem gamePlayingItem : playingGamesList) {
-				Log.d("TEST", " in game = " + gamePlayingItem.getGameId());
-			}
-
 			for (GamePlayingItem gamePlayingItem : playingGamesList) {
 				if (gamePlayingItem.getGameId() == gameId){
 					return gamePlayingItem.isBoardOpen();
@@ -108,7 +93,6 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 			playingGamesList.add(newGameItem);
 		}
 	}
-
 
 	public List<LastMoveInfoItem> getLastMoveInfoItems() {
 		return lastMoveInfoItems;

@@ -12,7 +12,6 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -167,7 +166,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		private int currentListType;
 
 		public ListUpdateListener(int currentListType) {
-			super(getInstance());
 			this.currentListType = currentListType;
 		}
 
@@ -217,9 +215,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
-		public ChallengeInviteUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -232,9 +227,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private class AcceptDrawUpdateListener extends ChessUpdateListener {
-		public AcceptDrawUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -254,9 +246,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private class VacationStatusUpdateListener extends ChessUpdateListener {
-		public VacationStatusUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -330,9 +319,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {
-		public VacationLeaveStatusUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -506,16 +492,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
 			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
-
-
 		} else if (pos == GameOnlineItem.CHALLENGES_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
 
+			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
 		} else if (pos == GameOnlineItem.FINISHED_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
+
 			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
 		}
 	}

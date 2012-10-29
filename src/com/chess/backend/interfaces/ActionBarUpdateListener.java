@@ -5,7 +5,7 @@ import com.chess.R;
 import com.chess.ui.activities.CoreActivityActionBar;
 
 /**
- * ChessUpdateListener class
+ * ActionBarUpdateListener class
  *
  * @author alien_roger
  * @created at: 07.05.12 5:26

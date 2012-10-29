@@ -28,7 +28,8 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 	protected void onPreExecute() {
 		super.onPreExecute();
 		blockScreenRotation(true);
-		taskFace.showProgress(true);
+		if(taskFace.getMeContext() != null)
+			taskFace.showProgress(true);
 	}
 
 	@Override
@@ -70,9 +71,10 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 		super.onPostExecute(result);
 		blockScreenRotation(false);
 
-		if(isCancelled()) {
+		if(isCancelled() || taskFace.getMeContext() == null) {
 			return;
 		}
+
 		taskFace.showProgress(false);
 		if (result == StaticData.RESULT_OK) {
 			if (useList)

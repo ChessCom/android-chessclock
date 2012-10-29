@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -184,9 +183,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
 	private class RegisterUpdateListener extends ChessUpdateListener {
-		public RegisterUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -200,9 +196,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
 	private class SignUpUpdateListener extends ChessUpdateListener {
-		public SignUpUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -285,9 +278,6 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	}
 
 	private class LoginUpdateListener extends ChessUpdateListener {
-		public LoginUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {

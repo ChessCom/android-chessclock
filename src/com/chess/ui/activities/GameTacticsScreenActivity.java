@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -17,12 +18,17 @@ import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
-import com.chess.backend.interfaces.ChessUpdateListener;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.db.DBConstants;
+import com.chess.db.DBDataManager;
+import com.chess.db.QueryParams;
+import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
@@ -63,6 +69,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private GetTacticsUpdateListener getTacticsUpdateListener;
 	private TacticsCorrectUpdateListener tacticsCorrectUpdateListener;
 	private TacticsWrongUpdateListener tacticsWrongUpdateListener;
+	private DbBatchUpdateListener dbBatchUpdateListener;
+	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private static final String FIRST_TACTICS_TAG = "first tactics";
@@ -100,6 +108,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getTacticsUpdateListener = new GetTacticsUpdateListener();
 		tacticsCorrectUpdateListener = new TacticsCorrectUpdateListener();
 		tacticsWrongUpdateListener = new TacticsWrongUpdateListener();
+		dbBatchUpdateListener = new DbBatchUpdateListener();
+		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
 	}
 
 	@Override
@@ -115,6 +125,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
+		Log.d("TEST", "first run = " + firstRun);
 		boardView.setBoardFace(chessBoard);
 
 		timerTxt = (TextView) findViewById(R.id.timerTxt);
@@ -129,17 +140,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (!AppData.isGuest(this))
+		if (!AppData.isGuest(this)) {
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
-
-		if (getTacticsBatch() == null){
-			loadNewTacticsBatch();
 		}
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
+		Log.d("TEST", " onRestoreInstanceState called");
+
 		// TODO change default method
 	}
 
@@ -184,8 +194,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				getBoardFace().setRetry(isRetry);
 
-				if (getBoardFace().isLatestMoveMadeUser())
+				if (getBoardFace().isLatestMoveMadeUser()) {
 					checkMove();
+				}
+
+				if (getTacticsBatch() == null){
+					loadNewTacticsBatch();
+				}
 			} else {
 				popupItem.setPositiveBtnId(R.string.yes);
 				popupItem.setNegativeBtnId(R.string.no);
@@ -206,12 +221,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				boardView.invalidate();
 				playLastMoveAnimationAndCheck();
 			}
+			if (getTacticsBatch() == null){
+				loadNewTacticsBatch();
+			}
 		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		Log.d("TEST", " onSavedInstance called");
 		// TODO change default method
 	}
 
@@ -221,6 +240,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		stopTacticsTimer();
 
+		Log.d("TEST", " need to save tactic = " + needToSaveTactic());
 		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			if (AppData.isGuest(this)) { // for guest mode we should have different name
@@ -237,11 +257,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				tacticResultString = tacticResultItem.getSaveString();
 			}
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, tacticResultString);
+			preferencesEditor.putInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, getCurrentProblem());
 
 			if(answerWasShowed()) {
 				preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
 			}
 			preferencesEditor.commit();
+
+			// start task for saving tactics batch here
+			if (getTacticsBatch() != null) {
+				new SaveTacticsBatchTask(dbTacticBatchSaveListener, getTacticsBatch()).executeTask();
+			}
 		}
 
 		if(customViewFragment != null)
@@ -424,7 +450,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	public Long getGameId() {
-		return getTacticItem() == null ? null : Long.parseLong(getTacticItem().getId());
+		Log.d("TEST", " getTacticItem() = " + getTacticItem());
+		if (getTacticItem() == null) {
+			return null;
+		} else {
+			Log.d("TEST", " id = " + getTacticItem().getId());
+			return Long.parseLong(getTacticItem().getId());
+		}
 	}
 
 	private void showLimitDialog() {
@@ -464,9 +496,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 
 	private class GetTacticsUpdateListener extends ChessUpdateListener {
-		public GetTacticsUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -479,18 +508,23 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			int count = tmp.length - 1;
 			List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
 			for (int i = 1; i <= count; i++) {
-				tacticBatch.add(new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON)));
+				TacticItem tacticItem = new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON));
+				tacticItem.setUser(AppData.getUserName(getContext()));
+				tacticBatch.add(tacticItem);
 			}
 
 			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
 			TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
-			getTacticFromBatch();
+
+			if (getTacticItem() == null) {
+				getTacticFromBatch();
+			}
 		}
 
 		@Override
 		public void errorHandle(String resultMessage) {
 			if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
-				showLimitDialog();  // This should be the only way to show limit dialog for registerd user
+				showLimitDialog();  // This should be the only way to show limit dialog for registered user
 			} else {
 				showSinglePopupDialog(resultMessage);
 			}
@@ -558,9 +592,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	};
 
 	private class TacticsCorrectUpdateListener extends ChessUpdateListener {
-		public TacticsCorrectUpdateListener() {
-			super(getInstance());  // commit test
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -597,9 +628,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private class TacticsWrongUpdateListener extends ChessUpdateListener {
-		public TacticsWrongUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -790,6 +818,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return;
 		}
 
+		Log.d("TEST", " ChessBoardTactics.resetInstance()");
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
@@ -889,7 +918,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
 				for (int i = 1; i <= count; i++) {
-					tacticBatch.add(new TacticItem(tmp[i].split(":")));
+					TacticItem tacticItem = new TacticItem(tmp[i].split(":"));
+					tacticItem.setUser(AppData.getUserName(getContext()));
+					tacticBatch.add(tacticItem);
 				}
 
 				TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
@@ -901,14 +932,73 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			getNewTactic();
 		} else {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
+			// TODO check if we have saved tactics batch for that user
+			if (AppData.haveSavedTacticBatch(this))  {
 
-			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
+				String[] arguments = new String[]{AppData.getUserName(this)};
+				QueryParams queryParams = new QueryParams();
+				queryParams.setArguments(arguments);
+				queryParams.setProjection(DBDataManager.PROJECTION_TACTIC_BATCH_USER);
+				queryParams.setSelection(DBDataManager.SELECTION_TACTIC_BATCH_USER);
+				queryParams.setUri(DBConstants.TACTICS_BATCH_CONTENT_URI);
+
+				new LoadDataFromDbTask(dbBatchUpdateListener, queryParams).executeTask();
+			} else {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
+				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
+
+				new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
+			}
 		}
 	}
+
+	private class DbBatchUpdateListener extends AbstractUpdateListener<Cursor> {
+		public DbBatchUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(Cursor returnedObj) {
+			super.updateData(returnedObj);
+
+			List<TacticItem> tacticBatch = new ArrayList<TacticItem>();
+
+			do {
+				TacticItem tacticItem = DBDataManager.getTacticItemFromCursor(returnedObj);
+				tacticBatch.add(tacticItem);
+
+			} while (returnedObj.moveToNext());
+
+			int savedTacticProblem = AppData.getSavedTacticProblem(getContext());
+			TacticsDataHolder.getInstance().setCurrentTacticProblem(savedTacticProblem);
+			TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
+
+			if (getTacticItem() == null) {
+				getTacticFromBatch();
+			}
+		}
+	}
+
+	private class DbTacticBatchSaveListener extends AbstractUpdateListener<TacticItem> {
+		public DbTacticBatchSaveListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(TacticItem returnedObj) {
+			super.updateData(returnedObj);
+
+			String userName = AppData.getUserName(getMeContext());
+			if (AppData.isGuest(getMeContext())) { // for guest mode we should have different name
+				userName = StaticData.SYMBOL_EMPTY;
+			}
+			preferencesEditor.putBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, true);
+			preferencesEditor.commit();
+		}
+	}
+
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
@@ -940,7 +1030,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void clearSavedTactics() {
 		String userName = AppData.getUserName(this);
-//		if (DataHolder.getInstance().isGuest()) { // for guest mode we should have different name
 		if (AppData.isGuest(this)) { // for guest mode we should have different name
 			userName = StaticData.SYMBOL_EMPTY; // w/o userName
 		}
@@ -949,9 +1038,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
 		preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
 		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, 0);
+		preferencesEditor.putBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, false);
 		preferencesEditor.commit();
+
+		// delete tactics batch from DB
+		String[] arguments = new String[]{AppData.getUserName(this)};
+		getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI, DBDataManager.SELECTION_TACTIC_BATCH_USER, arguments);
 	}
-
-
 
 }

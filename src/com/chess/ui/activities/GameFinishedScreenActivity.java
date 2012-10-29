@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -114,9 +113,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private class StartGameUpdateListener extends ChessUpdateListener {
-		public StartGameUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
@@ -220,9 +216,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private class GamesListUpdateListener extends ChessUpdateListener {
-		public GamesListUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {

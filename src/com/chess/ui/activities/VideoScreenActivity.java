@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ChessUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -105,20 +104,15 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	}
 
 	private class VideosItemUpdateListener extends ChessUpdateListener {
-		public VideosItemUpdateListener() {
-			super(getInstance());
-		}
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if(returnedObj.contains(RestHelper.R_SUCCESS)){
-				recent.setVisibility(View.VISIBLE);
-				item = new VideoItem(returnedObj.split("[|]")[2].split("<->"));
-				title.setText(item.getTitle());
-				desc.setText(item.getDescription());
+			recent.setVisibility(View.VISIBLE);
+			item = new VideoItem(returnedObj.split("[|]")[2].split("<->"));
+			title.setText(item.getTitle());
+			desc.setText(item.getDescription());
 
-				playBtn.setEnabled(true);
-//			}
+			playBtn.setEnabled(true);
 		}
 	}
 

@@ -21,6 +21,7 @@ import com.chess.R;
 import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -183,6 +184,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	protected abstract class ChessUpdateListener extends ActionBarUpdateListener<String> {
+		public ChessUpdateListener() {
+			super(CoreActivityActionBar.this);
+		}
+	}
+
 
 	// ---------- LiveChessClientEventListenerFace ----------------
 	@Override
