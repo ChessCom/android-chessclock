@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are attributes used with 'DraggableDot' drawables in
+         view/DragAndDropActivity.java and view/DraggableDot.java -->
+    <declare-styleable name="CenteredButton">
+
+        <attr name="buttonDrawable" format="dimension" />
+        <attr name="buttonText" format="reference|string" />
+    </declare-styleable>
+
+    <declare-styleable name="RobotoTextView">
+        <attr name="ttf" format="string" />
+    </declare-styleable>
+
+	<declare-styleable name="OrangeButtonTheme">
+		<attr name="timerLabelStyle" format="reference"/>
+	</declare-styleable>
+
+    <declare-styleable name="com.inneractive.api.ads.InneractiveAd">
+        <attr name="appID" format="string" />
+        <attr name="adType">
+            <enum name="Banner" value="0" />
+            <enum name="Text" value="1" />
+            <enum name="Interstitial" value="2" />
+        </attr>
+        <attr name="adAlignment">
+            <enum name="TOP_LEFT" value="0" />
+            <enum name="TOP_CENTER" value="1" />
+            <enum name="TOP_RIGHT" value="2" />
+            <enum name="BOTTOM_LEFT" value="3" />
+            <enum name="BOTTOM_CENTER" value="4" />
+            <enum name="BOTTOM_RIGHT" value="5" />
+            <enum name="CENTER_LEFT" value="6" />
+            <enum name="CENTER" value="7" />
+            <enum name="CENTER_RIGHT" value="8" />
+        </attr>
+        <attr name="refreshInterval" format="integer" />
+        <attr name="age" format="string" />
+        <attr name="distributionID" format="string" />
+        <attr name="gender" format="string" />
+        <attr name="keywords" format="string" />
+    </declare-styleable>
+</resources>

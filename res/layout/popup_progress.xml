@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:cb="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="@dimen/popup_dialog_width"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:minWidth="@dimen/popup_dialog_width"
+	android:paddingTop="@dimen/popup_top_padding"
+	android:paddingBottom="@dimen/popup__bottom_padding"
+	android:paddingLeft="@dimen/popup_side_padding"
+	android:paddingRight="@dimen/popup_side_padding"
+	android:background="@drawable/dashboard_single_back"
+	android:layout_marginRight="@dimen/popup_side_margin"
+	android:layout_marginLeft="@dimen/popup_side_margin"
+	>
+
+	<com.chess.RoboTextView
+		android:id="@+id/popupTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:maxWidth="@dimen/popup_dialog_text_max_width"
+		android:gravity="center"
+		android:textStyle="bold"
+		android:textSize="19sp"
+		style="@style/DarkShadowBottom"
+		cb:ttf="Bold"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/popupMessage"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:maxWidth="@dimen/popup_dialog_text_max_width"
+		android:gravity="center"
+		android:paddingTop="@dimen/default_scr_bottom_padding"
+		android:paddingBottom="@dimen/default_scr_top_padding"
+		style="@style/DarkShadowBottom"
+		cb:ttf="Bold"
+		android:visibility="gone"
+		android:textSize="17sp"
+		/>
+
+	<ProgressBar
+		android:layout_width="@dimen/popup_dialog_width"
+		android:layout_height="wrap_content"
+		android:indeterminate="true"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:paddingTop="10dip"
+		android:paddingBottom="10dip"
+		android:paddingLeft="25dip"
+		android:paddingRight="25dip"
+		android:layout_gravity="center_horizontal"
+		/>
+
+</LinearLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <style name="MyAppTheme" parent="AppTheme">
+        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
+        <item name="android:windowBackground">@color/black</item>
+
+    </style>
+
+
+    <style name="OrangeButtonTheme" parent="MyAppTheme">
+        <item name="android:buttonStyle">@style/Text.Button</item>
+        <item name="android:textAppearanceSmall">@style/Text</item>
+        <item name="android:editTextStyle">@style/DefaultEdt</item>
+		<item name="android:autoCompleteTextViewStyle">@style/DefaultAutoComplete</item>
+        <item name="android:spinnerStyle">@style/spinnerStyle</item>
+        <item name="android:checkboxStyle">@style/check_Box</item>
+        <item name="android:radioButtonStyle">@style/radio_Button</item>
+		<item name="android:listViewStyle">@style/DefaultListView</item>
+		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
+		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
+    </style>
+
+
+    <style name="OrangeButtonNotitle" parent="android:style/Theme.Black.NoTitleBar">
+        <item name="android:buttonStyle">@style/Text.Button</item>
+        <item name="android:textAppearanceSmall">@style/Text</item>
+        <item name="android:editTextStyle">@style/DefaultEdt</item>
+        <item name="android:spinnerStyle">@style/spinnerStyle</item>
+        <item name="android:checkboxStyle">@style/check_Box</item>
+        <item name="android:radioButtonStyle">@style/radio_Button</item>
+    </style>
+
+	<style name="GreyButtonTheme" parent="OrangeButtonTheme">
+		<item name="android:buttonStyle">@style/Text.Button.Grey</item>
+	</style>
+
+	<style name="SeekBar" parent="android:style/Widget.SeekBar">
+		<!--<item name="android:progressDrawable">@drawable/progress_horizontal</item>-->
+		<!--<item name="android:indeterminateDrawable">@drawable/progress_horizontal</item>-->
+		<!--<item name="android:thumb">@drawable/seek_thumb_selector</item>-->
+		<item name="android:thumbOffset">8dip</item>
+		<item name="android:paddingLeft">7dip</item>
+		<item name="android:paddingRight">7dip</item>
+		<item name="android:minHeight">14dip</item>
+		<item name="android:maxHeight">14dip</item>
+	</style>
+
+</resources>

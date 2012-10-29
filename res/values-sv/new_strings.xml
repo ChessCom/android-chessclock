@@ -1,0 +1,12 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">Det går inte att göra drag fram på semester</string>
+	<string name="current_games">Aktuella Spel</string>
+	<string name="finished_games">Färdiga Spel</string>
+	<string name="no_challenges_during_vacation">CUtmaningar kommer inte att visas under semestern</string>
+	<string name="end_vacation">änden Fakta</string>
+
+	<string name="win_">Win:</string>
+	<string name="loss_">Förlust:</string>
+	<string name="draw_">Rita:</string>
+</resources>

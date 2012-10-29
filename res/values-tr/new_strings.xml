@@ -1,0 +1,12 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">Tatile kadar hamle yapmak için açılamıyor</string>
+	<string name="current_games">Şu Oyunları</string>
+	<string name="finished_games">Bitmiş Oyunlar</string>
+	<string name="no_challenges_during_vacation">Zorluklar tatil sırasında göstermeyecektir</string>
+	<string name="end_vacation">Sonu Tatil</string>
+
+	<string name="win_">Win:</string>
+	<string name="loss_">Zararı:</string>
+	<string name="draw_">Beraberlik:</string>
+</resources>

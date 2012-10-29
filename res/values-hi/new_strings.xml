@@ -1,0 +1,12 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">छुट्टी पर जब तक चाल बनाने में असमर्थ</string>
+	<string name="current_games">वर्तमान खेल</string>
+	<string name="finished_games">तैयार खेल</string>
+	<string name="no_challenges_during_vacation">कि चुनौतियां छुट्टी के दौरान नहीं दिखाया जाएगा</string>
+	<string name="end_vacation">अंत अवकाश</string>
+
+	<string name="win_">जीत:</string>
+	<string name="loss_">हानि:</string>
+	<string name="draw_">ड्रा:</string>
+</resources>

@@ -1,0 +1,20 @@
+<resources>
+	<!--Dashboard-->
+	<dimen name="dashboard_padding_top">88dip</dimen>
+	<dimen name="dashboard_padding_bot">209dip</dimen>
+	<dimen name="dashboard_padding_side">60dip</dimen>
+
+	<!--SigIn-->
+	<dimen name="signin_scr_top_padding">20dip</dimen>
+	<dimen name="signin_scr_bottom_padding">20dip</dimen>
+	<dimen name="signin_scr_side_padding">100dip</dimen>
+	<dimen name="signin_logo_margin_top">15dip</dimen>
+	<dimen name="signin_main_margin_top">36dip</dimen>
+
+	<!--Default screen-->
+	<dimen name="default_scr_top_padding">16dip</dimen>
+	<dimen name="default_scr_side_padding">100dip</dimen>
+
+	<!--Game Modes-->
+	<dimen name="player_name_max_width">400dip</dimen>
+</resources>

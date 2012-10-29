@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	style="@style/LinearDescription"
+	>
+
+	<com.chess.RoboTextView
+		android:id="@+id/title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/title"
+		robo:ttf="Bold"
+		android:visibility="visible"/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/desc"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:maxLines="4"
+		android:visibility="gone"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/times"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="9dip"
+		android:textColor="@color/hint_text"
+		android:textSize="15sp"
+		/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical">
+
+		<com.chess.RoboTextView
+			android:id="@+id/addinfo"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+
+			android:textColor="@color/hint_text"
+			/>
+
+		<com.chess.RoboButton
+			android:id="@+id/fullDescBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/Text.Button.Grey"
+			android:text="@string/details"/>
+
+		<com.chess.RoboButton
+			android:id="@+id/playVideoBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/play"/>
+	</LinearLayout>
+
+</LinearLayout>

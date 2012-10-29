@@ -1,0 +1,14 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">Unable to make moves until on vacation</string>
+
+	<string name="current_games">Current Games</string>
+	<string name="finished_games">Finished Games</string>
+	<string name="no_challenges_during_vacation">Challenges will not show during vacation</string>
+	<string name="end_vacation">End Vacation</string>
+	<string name="feedback_mailbody">Device info</string>
+
+	<string name="win_">Win:</string>
+	<string name="loss_">Loss:</string>
+	<string name="draw_">Draw:</string>
+</resources>

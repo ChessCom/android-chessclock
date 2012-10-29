@@ -1,0 +1,12 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">휴가까지 이동을 할 수 없습니다</string>
+	<string name="current_games">현재 게임</string>
+	<string name="finished_games">완성된 게임</string>
+	<string name="no_challenges_during_vacation">도전은 방학 중에 표시되지 않습니다</string>
+	<string name="end_vacation">최종 휴가</string>
+
+	<string name="win_">승 :</string>
+	<string name="loss_">손실 :</string>
+	<string name="draw_">그리기:</string>
+</resources>

@@ -1,0 +1,308 @@
+<resources>
+
+	<string-array name="promotion_options">
+		<item>여왕</item>
+		<item>떼까마귀</item>
+		<item>주교</item>
+		<item>기사</item>
+		<item>@string/cancel</item>
+	</string-array>
+
+
+	<string-array name="playas">
+		<item>무작위</item>
+		<item>백색</item>
+		<item>검은</item>
+	</string-array>
+
+	<string-array name="dayspermove">
+	    <item>1일</item>
+		<item>이일</item>
+		<item>삼일</item>
+		<item>오일</item>
+		<item>칠일</item>
+		<item>십사일</item>
+	</string-array>
+	
+
+	<string-array name="skill">
+	    <item>초보자</item>
+		<item>중간</item>
+		<item>세부 설정</item>
+	</string-array>
+	
+	<string-array name="category">
+	    <item>놀라운 게임</item>
+		<item>엔드 게임 상태</item>
+		<item>개구부</item>
+		<item>규칙의 기초</item>
+		<item>병법</item>
+		<item>전술</item>
+	</string-array>	
+	
+	<string-array name="AIM">
+	    <item>다음을 준비 게임 이동</item>
+		<item>같은 게임을 그대로</item>
+		<item>게임 목록으로 돌아갑니다</item>
+	</string-array>
+
+	<string-array name="Notif">
+	    <item>해당사항 없음</item>
+		<item>진동</item>
+		<item>반지</item>
+		<item>점멸 LED가</item>
+	</string-array>
+	
+	<string-array name="strength">
+	    <item>1 초</item>
+		<item>3 초</item>
+		<item>5초</item>
+		<item>10초</item>
+		<item>30초</item>
+		<item>1 분</item>
+	</string-array>
+	
+    <string-array name="countries">
+        <item>미국</item>
+        <item>캐나다</item>
+        <item>아르헨티나</item>
+        <item>벨기에</item>
+        <item>아프가니스탄</item>
+        <item>알바니아</item>
+        <item>안도라</item>
+        <item>앙귈라</item>
+        <item>앤티가 / 바부다</item>
+        <item>아르메니아</item>
+        <item>아루바</item>
+        <item>오스트레일리아</item>
+        <item>오스트리아</item>
+        <item>바하마</item>
+        <item>바레인</item>
+        <item>바르바도스</item>
+        <item>벨라루스</item>
+        <item>벨리즈</item>
+        <item>버뮤다</item>
+        <item>볼리비아</item>
+        <item>보스니아 - 헤르체 고 비나</item>
+        <item>브라질</item>
+        <item>불가리아</item>
+        <item>카나리아 제도</item>
+        <item>케이만 제도</item>
+        <item>채널 아일랜드</item>
+        <item>칠레</item>
+        <item>중국</item>
+        <item>콜롬비아</item>
+        <item>코스타리카</item>
+        <item>크로아티아</item>
+        <item>쿠바</item>
+        <item>큐라소</item>
+        <item>사이프러스</item>
+        <item>체코 공화국</item>
+        <item>덴마크</item>
+        <item>도미니카</item>
+        <item>도미니카 공화국</item>
+        <item>에콰도르</item>
+        <item>이집트</item>
+        <item>엘 살바도르</item>
+        <item>에스토니아</item>
+        <item>포클랜드 제도 (말비나스)</item>
+        <item>패로 제도</item>
+        <item>피지</item>
+        <item>핀란드</item>
+        <item>프랑스</item>
+        <item>조지아</item>
+        <item>독일</item>
+        <item>지브롤터</item>
+        <item>그리스</item>
+        <item>그린랜드</item>
+        <item>그레나다</item>
+        <item>과달루프</item>
+        <item>괌</item>
+        <item>과테말라</item>
+        <item>건지섬</item>
+        <item>가이아나</item>
+        <item>하이티</item>
+        <item>혼두라스</item>
+        <item>홍콩</item>
+        <item>헝가리</item>
+        <item>아이슬랜드</item>
+        <item>인도</item>
+        <item>인도네시아</item>
+        <item>이란 이슬람 공화국</item>
+        <item>이라크</item>
+        <item>아일랜드</item>
+        <item>맨섬</item>
+        <item>이스라엘</item>
+        <item>이탈리아</item>
+        <item>자메이카</item>
+        <item>일본</item>
+        <item>저지섬</item>
+        <item>요르단</item>
+        <item>카자흐스탄</item>
+        <item>키리바티</item>
+        <item>대한민국</item>
+        <item>쿠웨이트</item>
+        <item>라트비아</item>
+        <item>레바논</item>
+        <item>리히텐슈타인</item>
+        <item>리투아니아</item>
+        <item>룩셈부르크</item>
+        <item>마카오</item>
+        <item>마케도니아, 전 유고슬라비아 공화국</item>
+        <item>말레이시아</item>
+        <item>몰타</item>
+        <item>마르띠니크</item>
+        <item>멕시코</item>
+        <item>몰도바</item>
+        <item>모나코</item>
+        <item>몽세라트</item>
+        <item>나우루</item>
+        <item>네팔</item>
+        <item>네덜란드</item>
+        <item>뉴질랜드</item>
+        <item>니카라과</item>
+        <item>노르웨이</item>
+        <item>오만</item>
+        <item>파키스탄</item>
+        <item>파나마</item>
+        <item>파푸아뉴기니</item>
+        <item>파라과이</item>
+        <item>페루</item>
+        <item>필리핀</item>
+        <item>폴란드</item>
+        <item>포르투갈</item>
+        <item>푸에르 토리코</item>
+        <item>루마니아</item>
+        <item>러시아</item>
+        <item>세인트 크로</item>
+        <item>세인트 키츠 / 네비스</item>
+        <item>세인트 루시아</item>
+        <item>세인트 피에르 / 미퀠론</item>
+        <item>산마리노</item>
+        <item>사우디아라비아</item>
+        <item>세르비아 - 몬테네그로</item>
+        <item>싱가포르</item>
+        <item>슬로바키아</item>
+        <item>슬로베니아</item>
+        <item>솔로몬 제도</item>
+        <item>남아프리카</item>
+        <item>사우스조지아</item>
+        <item>수리남</item>
+        <item>스웨덴</item>
+        <item>스위스</item>
+        <item>타이완</item>
+        <item>태국</item>
+        <item>통가</item>
+        <item>트리 니다드 / 토바고</item>
+        <item>터키</item>
+        <item>투르크멘</item>
+        <item>투발루</item>
+        <item>우크라이나</item>
+        <item>아랍에미리트연합</item>
+        <item>우루과이</item>
+        <item>우즈베키스탄</item>
+        <item>바누아투</item>
+        <item>바티칸 시국</item>
+        <item>베네수엘라</item>
+        <item>베트남</item>
+        <item>웨스턴 사모아</item>
+        <item>예멘</item>
+        <item>유고 슬라비아</item>
+        <item>아메리칸 사모아</item>
+        <item>세인트 빈센트</item>
+        <item>아제르바이잔</item>
+        <item>몽골라</item>
+        <item>시리아</item>
+        <item>영국</item>
+        <item>마샬 군도</item>
+        <item>북아 일 랜드</item>
+        <item>스코틀랜드</item>
+        <item>스페인</item>
+        <item>영국</item>
+        <item>미국령 버진아일랜드</item>
+        <item>웨일즈</item>
+        <item>파고파고</item>
+        <item>세인트 존</item>
+        <item>세인트 토마스</item>
+        <item>영국</item>
+        <item>네덜란드</item>
+        <item>대한민국</item>
+        <item>키르기즈스탄</item>
+        <item>방글라데시</item>
+        <item>수단</item>
+        <item>베닌</item>
+        <item>부탄</item>
+        <item>보츠와나</item>
+        <item>브루나이 다루살람</item>
+        <item>부룬디</item>
+        <item>캄보디아</item>
+        <item>카메룬</item>
+        <item>케이프 베르드</item>
+        <item>중앙 아프리카</item>
+        <item>챠드</item>
+        <item>콩고</item>
+        <item>코트디부아르</item>
+        <item>지부티</item>
+        <item>적도기니</item>
+        <item>가봉</item>
+        <item>가나</item>
+        <item>케냐</item>
+        <item>라오스</item>
+        <item>라이베리아</item>
+        <item>마다가스카르</item>
+        <item>모로코</item>
+        <item>모잠비크</item>
+        <item>미얀마</item>
+        <item>나미비아</item>
+        <item>니제르</item>
+        <item>나이지리아</item>
+        <item>카타르</item>
+        <item>르완다</item>
+        <item>사모아</item>
+        <item>상투메 / 프린</item>
+        <item>세네갈</item>
+        <item>시에라리온</item>
+        <item>소말리아</item>
+        <item>스리랑카</item>
+        <item>스와질란드</item>
+        <item>타지키스탄</item>
+        <item>탄자니아 연방 공화국</item>
+        <item>동티모르</item>
+        <item>토고</item>
+        <item>튀니지</item>
+        <item>우간다</item>
+        <item>잠비아</item>
+        <item>짐바브웨</item>
+        <item>알제리</item>
+        <item>모리타니아</item>
+        <item>국제</item>
+        <item>세르비아</item>
+        <item>몬테네그로</item>
+        <item>리비아</item>
+        <item>잠비아</item>
+        <item>말라위</item>
+        <item>팔레스타인</item>
+        <item>에티오피아</item>
+        <item>모리셔스</item>
+        <item>레소토</item>
+        <item>말리</item>
+        <item>몰디브</item>
+        <item>카탈로니아</item>
+        <item>갈리 시아</item>
+        <item>코소보</item>
+        <item>DR 콩고</item>
+        <item>앙골라</item>
+        <item>코모로스</item>
+        <item>에리트리아</item>
+        <item>기니</item>
+        <item>기니비사우</item>
+        <item>미크로네시아 연방</item>
+        <item>대한민국</item>
+        <item>팔라우</item>
+        <item>세이셸</item>
+        <item>서부 사하라</item>
+        <item>영국령 버진 제도</item>
+    </string-array>
+
+
+</resources>

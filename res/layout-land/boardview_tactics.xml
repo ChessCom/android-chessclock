@@ -1,0 +1,86 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/game_board_back"
+	>
+	<com.chess.ui.views.ChessBoardTacticsView
+		android:id="@+id/boardview"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="visible"
+		android:layout_weight="1"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:orientation="vertical"
+		>
+		<RelativeLayout
+			android:id="@+id/statusBarLay"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+
+			<com.chess.RoboTextView
+				android:id="@+id/thinking"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:text="@string/Thinking"
+				android:visibility="gone"
+				style="@style/GameLabel"
+				/>
+
+			<com.chess.RoboTextView
+				android:id="@+id/white"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/Human"
+				android:paddingLeft="8dip"
+				android:paddingRight="2dip"
+				android:drawableLeft="@drawable/player_indicator_white"
+				style="@style/GameLabel.Player"
+				/>
+
+			<com.chess.RoboTextView
+				android:id="@+id/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:text="@string/Computer"
+				android:paddingLeft="2dip"
+				android:paddingRight="8dip"
+				android:drawableRight="@drawable/player_indicator_black"
+				style="@style/GameLabel.Player"
+				/>
+
+			<com.chess.RoboTextView
+				android:id="@+id/timerTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:visibility="gone"
+				style="@style/GameLabel"
+				/>
+
+			<com.chess.RoboTextView
+				android:id="@+id/analysisTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:visibility="gone"
+				android:text="@string/analysis_mode"
+				style="@style/GameLabel"
+				/>
+		</RelativeLayout>
+
+		<com.chess.ui.views.GamePanelView
+			android:id="@+id/gamePanelView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			/>
+
+	</LinearLayout>
+</LinearLayout>

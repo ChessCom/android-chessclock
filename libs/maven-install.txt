@@ -1,0 +1,5 @@
+mvn install:install-file -Dfile=flurryagent-latest.jar -Dversion=latest -DartifactId=flurryagent -DgroupId=com.flurry -DgeneratePom=true -Dpackaging=jar
+mvn install:install-file -Dfile=GoogleAdMobAdsSdk-4.1.1.jar -Dversion=4.1.1 -DartifactId=google-ad-mob -DgroupId=com.google.ads -DgeneratePom=true -Dpackaging=jar
+mvn install:install-file -Dfile=MMAdView.jar -Dversion=4.5.1 -DartifactId=mm-ad-view -DgroupId=com.millennialmedia.android -DgeneratePom=true -Dpackaging=jar
+mvn install:install-file -Dfile=mobclix.jar -Dversion=3.2.0 -DartifactId=mobclix -DgroupId=com.mobclix.android -DgeneratePom=true -Dpackaging=jar
+mvn install:install-file -Dfile=CWAC-AdapterWrapper.jar -Dversion=1.0 -DartifactId=cwac-endless -DgroupId=com.commonsware -DgeneratePom=true -Dpackaging=jar

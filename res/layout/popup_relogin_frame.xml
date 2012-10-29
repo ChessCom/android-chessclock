@@ -1,0 +1,57 @@
+<com.chess.SerialLinLay
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="0dp"
+	>
+
+	<com.chess.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		robo:ttf="Bold"
+		android:textSize="@dimen/game_end_popup_text_size"
+		android:gravity="center"
+		/>
+
+	<com.chess.RoboEditText
+		android:id="@+id/usernameEdt"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/singinUsername"
+		android:inputType="textPersonName"
+		android:singleLine="true"
+		android:imeOptions="actionNext"
+		/>
+
+	<com.chess.RoboEditText
+		android:id="@+id/passwordEdt"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/singinPassword"
+		android:password="true"
+		android:singleLine="true"
+		android:imeOptions="actionDone"
+		/>
+
+	<com.chess.RoboButton
+		android:id="@+id/re_signin"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/singinButton"
+		/>
+
+	<com.facebook.android.LoginButton
+		android:id="@+id/re_fb_connect"
+		style="@style/Text.Button.Login"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@drawable/facebook_icon"
+		android:text="@string/connect_with_facebook"
+		/>
+
+
+</com.chess.SerialLinLay>

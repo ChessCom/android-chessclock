@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="connect_with_facebook">Conéctate con Facebook</string>
+	<string name="lccFailedUnavailable">Servidor de ajedrez en vivo no está disponible actualmente.</string>
+	<string name="lccFailedUpgrading">Estamos tratando de mejorar la chess.com! Actualmente el sitio está siendo actualizado. Se volverá a vivir en poco tiempo. Por favor, intente ingresar de nuevo en breve. Gracias!</string>
+	<string name="app_name">Chesscom</string>
+	<string name="signout">Cerrar sesión</string>
+
+	<!--Dashboard labels-->
+	<string name="menuLive">Escuchar en vivo</string>
+	<string name="menuOnline">Jugar Online</string>
+	<string name="menuComp">Jugar con \n el ordenador</string>
+	<string name="menuTactics">Tácticas Entrenador</string>
+	<string name="menuVideo">Lecciones en Video</string>
+
+	<!--activities titles-->
+	<string name="label_play_live">JUGAR EN VIVO</string>
+	<string name="label_play_online">JUGAR ONLINE</string>
+	<string name="label_online_new_game">Nuevo juego en línea</string>
+	<string name="label_live_new_game">NUEVO JUEGO EN VIVO</string>
+	<string name="label_play_comp">JUGAR COMP</string>
+	<string name="label_video">VIDEO</string>
+	<string name="label_settings">AJUSTES</string>
+	<string name="label_tactics">TÁCTICAS</string>
+	<string name="label_game_live">JUEGO EN VIVO</string>
+	<string name="label_game_online">JUEGO ONLINE</string>
+	<string name="label_game_finished">JUEGO TERMINADO</string>
+	<string name="label_chat_live">CHAT EN VIVO</string>
+	<string name="label_chat_online">LÍNEA CHAT</string>
+	<string name="label_game_comp">COMP JUEGO</string>
+	<string name="label_sign_up">Únete ahora - ¡Es gratis!</string>
+
+	<string name="label_friend_challenge_live">AMIGO EL RETO VIVO</string>
+	<string name="label_create_challenge_live">CREAR EN VIVO DESAFIO</string>
+	<string name="label_friend_challenge_online">AMIGO EL RETO EN LÍNEA</string>
+	<string name="label_create_challenge_online">CREAR EL RETO DE LÍNEA</string>
+
+	<!--Settings-->
+	<string name="settings">Configuración</string>
+	<string name="start_new_game">Iniciar un nuevo juego</string>
+	<!--<string name="dont_have_account_q">¿Todavía no tienes una cuenta?</string>-->
+	<string name="singinUsername">Usuario</string>
+	<string name="singinPassword">Contraseña</string>
+	<string name="singinButton">Inicia sesión</string>
+	<string name="sing_up">Regístrate</string>
+	<string name="complete_singupButton">Completa Registro</string>
+	<string name="singinPlayguest">Juega como invitado</string>
+
+	<string name="computerWhite">Blancos</string>
+	<string name="computerBlack">black</string>
+	<string name="Human">Humanos</string>
+	<string name="guest">Huésped </string>
+	<string name="Computer">Ordenador</string>
+	<string name="Thinking">Pensamiento …</string>
+	<string name="menuSite">www.chess.com</string>
+	<string name="onlineNewGametitle">Nuevo Juego</string>
+	<string name="onlineChallenges">Retos abiertos</string>
+	<string name="challengeFriend">Desafía a un Amigo</string>
+	<string name="createNewChallenge">Crear desafío abierto</string>
+	<string name="currentGame">Juego en vivo actual</string>
+	<string name="GameType">Tipo de juego</string>
+	<string name="classic">Ajedrez clásico</string>
+	<string name="chess960">Ajedrez 960</string>
+	<string name="friend">amigable</string>
+	<string name="friends">Amigos</string>
+	<string name="initialTime">Tiempo inicial</string>
+	<string name="bonusTime">Bono de Tiempo</string>
+	<string name="RatedGme">Juego de Calificación</string>
+	<string name="IplayAs">Puedo jugar como</string>
+	<string name="DaysPerMove">Días por jugada</string>
+	<string name="ChallengeCreate">Crear Challenge</string>
+	<string name="onoff">ON / OFF</string>
+	<string name="minrating">Min Rating</string>
+	<string name="maxrating">Valor máximo</string>
+	<string name="email">Correo electrónico</string>
+	<string name="retype">Vuelva a escribir la contraseña</string>
+	<string name="country">País</string>
+	<string name="blue">Azul</string>
+	<string name="brown">marrón</string>
+	<string name="green">Verde</string>
+	<string name="grey">Gris</string>
+	<string name="marble">Mármol-Marble</string>
+	<string name="red">Rojo</string>
+	<string name="tan">Canela</string>
+	<string name="woodlight">Madera Luz</string>
+	<string name="wooddark">Madera oscura</string>
+	<string name="alpha">Alfa</string>
+	<string name="book">LIBRO*</string>
+	<string name="cases">Casos</string>
+	<string name="classicP">Clasico</string>
+	<string name="club">.club</string>
+	<string name="condal">Condal</string>
+	<string name="maya">Maya</string>
+	<string name="modern">Moderno</string>
+	<string name="vintage">época</string>
+	<string name="aim">Después de que me mude</string>
+	<string name="notification">Notificación</string>
+	<string name="notificationE">Habilitar Notificaciones</string>
+	<string name="ssb">Mostrar el botón Enviar</string>
+	<string name="enableSounds">Permita Sonidos</string>
+	<string name="strength">Fortaleza</string>
+	<string name="interfaceP">Interfaz</string>
+	<string name="board">Tablero</string>
+	<string name="pieces">pieza</string>
+	<string name="showcoords">Mostrar las coordenadas</string>
+	<string name="movehighlights">Mueve más destacado</string>
+	<string name="invite_a_friend">Invitar a un amigo</string>
+	<string name="contactUs">Contáctenos</string>
+	<string name="logout">Cerrar sesión</string>
+	<string name="vacationOn">En vacaciones</string>
+	<string name="vacationOff">No en vacaciones</string>
+	<string name="ngwhite">Nuevo Juego (blanco)</string>
+	<string name="ngblack">Nuevo Juego (negro)</string>
+	<string name="emailgame">E-mail Juego</string>
+	<string name="load">Cargar el juego guardado</string>
+	<!--<string name="backtogamelist">Retorno a la Lista del juego</string>-->
+	<string name="messages">Mensajes</string>
+	<string name="analysis">Análisis de la Junta</string>
+	<string name="drawoffer">Ofrecer tablas</string>
+	<string name="resignorabort">Renunciar (o Cancelar)</string>
+	<string name="resign">Renunciar</string>
+	<string name="abort">Abortar</string>
+	<string name="cancel">Cancelar</string>
+	<string name="send">Eviar</string>
+	<string name="help">Ayuda</string>
+	<string name="game">Juego</string>
+	<string name="options">Opciones</string>
+	<string name="reside">Girar</string>
+	<string name="hint">Sugerencia</string>
+	<string name="prev">Ant.</string>
+	<string name="next">Próximo</string>
+	<string name="nextgame">Próximo partido</string>
+	<string name="chat">Chat</string>
+	<string name="skill">Nivel de dificultad:</string>
+	<string name="category">Categoría</string>
+	<string name="search">Buscando…</string>
+	<string name="play">reproduce</string>
+	<string name="videos">Videos</string>
+	<string name="congratulations">¡Enhorabuena!</string>
+	<string name="onlinegamecreated">Juego en línea creado!</string>
+	<string name="challengeSent">Desafío enviado!</string>
+	<string name="creating">La creación de …</string>
+	<string name="gettingfriends">Obtener la lista de amigos …</string>
+	<string name="sorry">Perdón.</string>
+	<string name="nofriends">Usted no tiene amigos todavía. Puede invitarlos a través de www.chess.com.</string>
+	<string name="nofriends_online">Tus amigos no están en línea. Si usted no los invitan, sin embargo, ir a www.chess.com.</string>
+	<string name="invite">Invitar</string>
+	<string name="drawaccepted">Dibuja aceptado!</string>
+	<string name="accept">Acepta y apoya</string>
+	<string name="challengeaccepted">Asumido el reto.</string>
+	<string name="challengedeclined">Rehusó Challenge!</string>
+	<string name="decline">Rechazar</string>
+	<string name="updatinggameslist">Actualización de la lista de juegos …</string>
+	<!--<string name="challengetitle">Desafiar</string>-->
+	<string name="loadinggames">Juegos Cargando …</string>
+	<string name="drawoffered">Dibuja Oferta</string>
+	<string name="gettingmessages">Recibir mensajes …</string>
+	<string name="sendingmessage">Enviando mensaje…</string>
+	<string name="ok">Aceptar</string>
+	<string name="submit">Enviar</string>
+	<string name="login">Inicio de Sesión</string>
+	<string name="title">Título</string>
+	<string name="error">error</string>
+	<string name="loading">Cargando…</string>
+	<string name="wrongcountry">Usted debe seleccionar su país!</string>
+	<string name="wrongpassword">Epa, tu contraseña debe tener al menos 6 caracteres.</string>
+	<string name="wrongusername">Su nombre de usuario debe tener al menos 3 caracteres de longitud, y sólo puede contener letras, números, guiones y guiones. No se permiten espacios.</string>
+	<string name="wrongemail">Usted tendrá que confirmar su adhesión por correo electrónico.</string>
+	<string name="wrongretype">Reescrita contraseña incorrecta!</string>
+	<string name="signingin">En la firma de …</string>
+
+	<string name="showanswer">Mostrar respuestas</string>
+	<string name="skipproblem">Ir Problema</string>
+	<string name="sendinggameinfo">El envío de información del juego …</string>
+	<string name="check_field">Comprobar el campo</string>
+	<string name="validateUsername">Su nombre de usuario debe tener entre 3 y 20 caracteres de longitud, y sólo puede contener letras, números, guiones y guiones. No se permiten espacios.</string>
+	<string name="validatePassword">Su contraseña debe tener entre 6 y 20 caracteres de largo!</string>
+	<string name="black">black</string>
+	<string name="white">Blancos</string>
+	<string name="hours">horas</string>
+	<string name="days">día</string>
+	<string name="playeronline">Jugadores en línea!</string>
+	<string name="playeroffline">Reproductor sin conexión!</string>
+	<string name="mymove">Mi Move!</string>
+	<string name="theirmove">Su movimiento!</string>
+	<string name="gamefinish">Termine este juego</string>
+	<string name="random">Azar</string>
+	<string name="won">ganado</string>
+	<string name="lost">per</string>
+	<string name="draw">dibujo</string>
+	<string name="duration">Duración</string>
+	<string name="published">Publicado</string>
+	<string name="details">Detalles</string>
+	<string name="playvideo">Ver Video</string>
+	<string name="accepted">Aceptado!</string>
+	<string name="upgrade">Mejorar</string>
+	<string name="preferencesUpgrade">Actualiza Mi Cuenta</string>
+	<string name="videoUpgrade">Actualización para el pleno acceso a los vídeos!</string>
+	<string name="removeAds">Actualiza y eliminar los anuncios!</string>
+	<string name="accept_draw_q">Aceptar tablas?</string>
+	<string name="ready_for_first_tackics_q">¿Estás listo para su primera táctica?</string>
+
+	<string name="max_tactics_reached">Se han alcanzado el número máximo de tácticas para hoy. ¿Te gustaría ser capaz de hacer más táctica?
+	</string>
+	<string name="yes">Si</string>
+	<string name="no">No</string>
+	<string name="okay">Aceptar</string>
+	<string name="ten_tactics_completed">10 tácticas de completarse!</string>
+	<string name="offline_mode">El modo sin conexión</string>
+	<string name="no_network_rating_not_changed">Acceso a Internet no está disponible actualmente. Como resultado de ello, su calificación no va a cambiar después de completar sus declaraciones de problemas hasta la conexión a Internet.
+	</string>
+	<string name="abort_resign_game">Anular / Renunciar a un juego:</string>
+	<string name="are_you_sure_q">¿Está seguro?</string>
+	<string name="correct_ex">corrector || correctivo</string>
+	<string name="wrong_ex">¡Falso!</string>
+
+
+	<string name="you_got_new_msg">Tiene un mensaje nuevo!</string>
+	<string name="browse">Examinar</string>
+
+
+	<string name="bonus_time_left">Tiempo de Bono a la izquierda %1$s Tiempo en %2$s</string>
+
+	<string name="pieces_s">pieza</string>
+	<string name="home">Casa</string>
+	<string name="live">Vida Cotidiana</string>
+	<string name="online">online</string>
+	<string name="comp">Comp</string>
+	<string name="tactics">Tácticas</string>
+	<string name="video">Vídeo</string>
+	<!--<string name="boards_s">Foros</string>-->
+	<string name="invite_subject">Jugar al ajedrez conmigo</string>
+	<string name="invite_text">Acabo de firmar para jugar al ajedrez en Chess.com en mi dispositivo Android. Descarga la aplicación gratuita aquí: http://chess.com/android o registrarse en el http://www.chess.com/register.html. Entonces me encuentre - es mi nombre de usuario \"
+	</string>
+	<string name="live_game">Juego en Vivo</string>
+	<string name="online_game">Juego en línea</string>
+	<string name="send_mail">Enviar Correo</string>
+	<string name="tournaments">Torneos</string>
+	<string name="stats">Estadísticas</string>
+	<string name="challenges">Retos</string>
+	<string name="challenge">Desafiar</string>
+	<string name="analysis_mode">Análisis de Modo</string>
+	<string name="check">verificado</string>
+	<string name="choose_a_piece">Elige una pieza</string>
+	<string name="open_app_t_see_msg">Pulse aquí para ver el mensaje dentro de la aplicación</string>
+
+	<!--SignOut-->
+	<string name="signout_confirm">¿Está seguro que desea cerrar la sesión desde el servidor de ajedrez en vivo?</string>
+	<string name="confirm">Confirmar</string>
+	<string name="you_been_challenged">Usted ha sido cuestionado!</string>
+
+	<!--Game-->
+	<string name="opponent_">Oponente.</string>
+	<string name="time_">\n Hora:</string>
+	<string name="rated">Calificación</string>
+	<string name="unrated">Unrated</string>
+	<string name="you_play">\n Play:</string>
+	<string name="standard_game">estandarizar || normalizar</string>
+	<string name="blitz_game">(Blitz)</string>
+	<string name="lightning_game">· Explosión</string>
+	<string name="network_was_changed_please_relogin">Red ha cambiado. Por favor, iniciar la sesión a Live</string>
+	<string name="ches_com">Chesscom</string>
+	<string name="your_move">Chess.com - Ponte en movimiento</string>
+	<string name="your_turn">Tu turno!</string>
+	<string name="login_failed">Inicio de sesión fallido.</string>
+	<string name="loggin_out">Cerrar sesión</string>
+	<string name="you_logged_out">Ha finalizado la sesión!</string>
+	<string name="too_short">Demasiado corto</string>
+	<string name="can_not_be_empty">No se puede estar vacío</string>
+	<string name="united_states">Estados Unidos</string>
+	<string name="no_chess_account_signup_please">Usted no tiene una cuenta Chess.com, registrarse, por favor.</string>
+	<string name="pass_dont_match">Las contraseñas no coinciden</string>
+	<string name="username_cannot_be_encoded">Su nombre de usuario no se puede codificar para enviar una solicitud</string>
+	<string name="menu_refresh">refresh</string>
+	<string name="version_check">Verificar versión</string>
+	<string name="version_is_obsolete_update">La versión de cliente es obsoleto. Por favor, actualice</string>
+
+
+	<string name="encoding_unsupported">Codificación no soportada</string>
+	<string name="error_occurred_while_login">Ocurrió un error al inicio de sesión, por favor, iniciar la sesión!</string>
+	<string name="update_available_please_update">Una actualización está disponible! Por favor, actualice</string>
+	<string name="update_check">Comprobación de actualizaciones</string>
+	<string name="won_on_time">\n ganó en el tiempo</string>
+	<string name="won_by_resignation">\n ganada por la resignación</string>
+	<string name="won_by_checkmate">\n ganado por jaque mate</string>
+	<string name="game_over">Fin del juego.</string>
+	<string name="draw_game">SORTEO OFERTA</string>
+	<string name="has_offered_draw">ha ofrecido un empate</string>
+	<string name="reconnecting">Reconectando</string>
+	<string name="another_login_detected">Otro de inicio de sesión se ha detectado.</string>
+	<string name="loading_live_chess">Carga de Ajedrez Viviente</string>
+	<string name="game_draw_by_repetition">Juego elaborado \n por la repetición</string>
+	<string name="game_drawn_by_agreement">Juego elaborado \n por acuerdo</string>
+	<string name="game_drawn_by_stalemate">Juego elaborado \n por el empate</string>
+	<string name="game_drawn_insufficient_material">Juego elaborado - \n suficiente material de</string>
+	<string name="game_drawn_by_fifty_move_rule">Juego elaborado \n por la regla de los 50 movimientos</string>
+	<string name="won_game_abandoned">ganado - \n partido abandonado</string>
+	<string name="game_aborted">Juego abortada</string>
+	<string name="new_game">Nuevo Juego</string>
+	<string name="language">Lengua</string>
+	<string name="not_now">Not now</string>
+
+	<!--Preferences-->
+	<string name="confirm_vacation_title">Confirme vacaciones</string>
+	<string name="confirm_vacation_msg">¿De verdad quieres ir de vacaciones ahora?</string>
+	<string name="warning">¡Advertencia!</string>
+	<string name="account_error">Error de cuenta.</string>
+	<string name="server_stopped">Servidor detenido.</string>
+	<string name="reason_">Razones</string>
+	<string name="message_">Mensaje</string>
+
+
+	<string name="black_wins">Negro gana (0–1)</string>
+	<string name="white_wins">Blanco gana (1–0)</string>
+	<string name="draw_by_stalemate">Dibuja por empate (0–0)</string>
+	<string name="draw_by_3fold_repetition">Dibuja por la triple repetición (1.2 a 1.2)</string>
+	<string name="rematch">la revancha.</string>
+	<string name="review">Opinar</string>
+	<string name="your_end_game_rating">Tu valoración ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">Tu valoración ( %1$s )</string>
+	<string name="draw_declined">SORTEO RECHAZADA</string>
+	<string name="has_declined_draw">ha disminuido un empate</string>
+
+	<string name="menu_search">Buscar</string>
+	<string name="restoring_conntection_to_live">Reconectando …</string>
+	<string name="application_was_killed">Solicitud fue asesinado, la restauración de …</string>
+	<string name="no_network">No Hay Red</string>
+	<string name="wireless_settings">Configuración Inalámbrica</string>
+	<string name="invalid_password">Contraseña no válida</string>
+	<string name="your_turn_in_game_with">En el juego con %1$s , %2$s</string>
+	<string name="register">Registrar</string>
+	<string name="session_expired">Su sesión ha caducado, por favor vuelve a iniciar sesión</string>
+	<string name="problem_solved_">Problema resuelto!</string>
+	<string name="problem_solved">Problema resuelto!
+		\n Puntuación %1$s
+		\n Calificación Otorgada %2$s </string>
+	<string name="wrong_score">¡Falso!
+		\n Puntuación %1$s
+		\n Calificación Otorgada %2$s </string>
+	<string name="next_tactic_puzzle">Puzzle siguiente táctica</string>
+	<string name="upgrade_to_continue">Actualización para continuar</string>
+
+	<string name="retry">Reintentar</string>
+	<string name="stop">Detener</string>
+	<string name="daily_limit_reached">Límite diario alcanzó</string>
+	<string name="checkmate">Jaque mate!</string>
+	<string name="solution">Solución</string>
+
+	<string name="bullet_">Bala: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Estándar: %d</string>
+
+	<string name="min_">%s min</string>
+
+	<string name="invalidUserId">ID de usuario no válido</string>
+	<string name="invalidContenIid">Válido de identificación de contenido</string>
+	<string name="pleaseLoginAgain">Por favor login de nuevo.</string>
+	<string name="tooManyLoginAttempts">Demasiados intentos de conexión.</string>
+	<string name="accountNotYetActive">Cuenta aún no está activo!</string>
+	<string name="accountHasBeenDisabled">La cuenta ha sido deshabilitada.</string>
+	<string name="invalidUsernameParameter">Parámetro de nombre de usuario válido.</string>
+	<string name="invalidPlace">Lugar válido</string>
+	<string name="invalidTournamentId">Identificación válida del Torneo</string>
+	<string name="trophyAlreadyInserted">Trofeo Ya insertada</string>
+	<string name="youAreOnVacation">Usted está de vacaciones.</string>
+	<string name="invalidDaysPerMove">Días no válidos por jugada.</string>
+	<string name="invalidEmail">Email inválido</string>
+	<string name="invalidUsername2">Nombre de usuario inválido</string>
+	<string name="selfChallenge">Auto desafío.</string>
+	<string name="opponentOnVacation">Rival de vacaciones.</string>
+	<string name="opponentUnavailable">Oponente no está disponible.</string>
+	<string name="ratingTooLow">Valoración muy baja.</string>
+	<string name="ratingTooHigh">Puntuación demasiado alto.</string>
+	<string name="opponentMismatchedTimeControl">Rival de control de tiempo no coincidente.</string>
+	<string name="youAreBlocked">Usted está bloqueado.</string>
+	<string name="invalidRatings">Invalid Rating</string>
+	<string name="minRatingTooLow">Min calificación muy baja.</string>
+	<string name="maxRatingTooHigh">Nota Max demasiado alto.</string>
+	<string name="maxRatingTooLow">Nota Max demasiado bajo.</string>
+	<string name="minRatingTooHigh">Min calificación muy alta.</string>
+	<string name="ratingRangeTooSmall">Valoración de ir demasiado pequeño.</string>
+	<string name="ratingRangeMustIncludeYourOwnRating">Margen de potencia debe incluir su propia valoración.</string>
+	<string name="maxSeeksExceeded">Max busca excedido.</string>
+	<string name="makeMovesBeforeCreatingMoreGames">Hacer movimientos antes de la creación de más juegos.</string>
+	<string name="gameAlreadyStarted">Juego ya ha comenzado.</string>
+	<string name="timeoutTooHigh">% De tiempo de espera demasiado alto.</string>
+	<string name="tooFewGames">Muy pocos juegos.</string>
+	<string name="mustBePremium">Debe ser de alta calidad.</string>
+	<string name="moveSpeedTooSlow">Mueva la velocidad demasiado lenta.</string>
+	<string name="cantAcceptOwnSeek">Cant aceptar propia búsqueda.</string>
+	<string name="notYourChallenge">¿No es su desafío.</string>
+	<string name="gameAlreadyStarted2">Juego ya ha comenzado!</string>
+	<string name="needUsernameOrAuthUser">¿Necesitas nombre de usuario o el usuario de autenticación.</string>
+	<string name="invalidUsername3">&lt;column name=\"value\" type=\"3\"&gt; Invalid USERNAME.</string>
+	<string name="invalidFen">Fen válido</string>
+	<string name="maxPly">Capas Max</string>
+	<string name="invalidFriendRequestId">Identificación válida solicitud de amistad.</string>
+	<string name="invalidActionParameters">Los parámetros no válidos de acción.</string>
+	<string name="invalidId">ID Inválido</string>
+	<string name="invalidGameId">Identificación válida juego.</string>
+	<string name="invalidKey">Clave inválida.</string>
+	<string name="multipleLoginMethodsFound">Múltiples métodos de identificación encontrados. No envíe nombre de usuario o contraseña con otras credenciales.</string>
+	<string name="pleaseEnterUsernameNotEmail">Por favor, introduzca nombre de usuario, no de correo electrónico.</string>
+	<string name="usernameDoesNotExist">Nombre de usuario no existe.</string>
+	<string name="mustGiveUsername">Tiene que dar nombre de usuario.</string>
+	<string name="accountLocked">Cuenta bloqueada. Ingresar al Chess.com.</string>
+	<string name="youMustSetupAPassword">Usted debe configurar una contraseña en Chess.com.</string>
+	<string name="invalidPassword">Contraseña inválida</string>
+	<string name="invalidFacebookAccessToken">No válido token de acceso de Facebook</string>
+	<string name="facebookUserHasNoAccount">Usuario de Facebook no tiene en cuenta Chess.com</string>
+	<string name="invalidAppType">Tipo de aplicación no válida.</string>
+	<string name="missingUsername">Falta nombre de usuario.</string>
+	<string name="missingPassword">Falta contraseña.</string>
+	<string name="missingEmail">Falta de correo electrónico.</string>
+	<string name="missingCountry">Falta país.</string>
+	<string name="invalidCountryId">Identificación válida país.</string>
+	<string name="emailAlreadyTaken">Enviar por correo electrónico ya está tomada.</string>
+	<string name="invalidChessComEmail">Correo electrónico no válida Chess.com.</string>
+	<string name="usernameAlreadyTaken">Nombre de usuario ya asignado</string>
+	<string name="usernameNotAllowed">Nombre de usuario no está permitido.</string>
+	<string name="invalidEmailDomain">El dominio del correo electrónico no es válido.</string>
+	<string name="systemError">Error del sistema</string>
+	<string name="weakPassword">Contraseña débil.</string>
+	<string name="invalidUser">Usuario no válido</string>
+	<string name="invalidGameLocationType">Juego válido Tipo de Ubicación</string>
+	<string name="pleaseRequest50OrLessGames">Por favor, solicite o menos 50 juegos</string>
+	<string name="gameIdMustBeNumeric">GAME ID debe ser numérico</string>
+	<string name="invalidGameId2">Game ID no válido</string>
+	<string name="pleaseRefreshTheGame">Por favor, volver a cargar el juego.</string>
+	<string name="gameAlreadyOver">Juego ya ha terminado.</string>
+	<string name="notYourGame">¡Uy! ¿No es su juego.</string>
+	<string name="itIsNotYourMove">No se trata de su mudanza.</string>
+	<string name="illegalMove">Jugada Ilegal</string>
+	<string name="noOpenDrawOffer">Ninguna oferta sorteo abierto.</string>
+	<string name="chatIsDisabled">El chat está inhabilitado.</string>
+	<string name="invalidCommand">Comando no válido.</string>
+	<string name="liveGameIdMustBeNumeric">ID del juego en vivo debe ser numérico.</string>
+	<string name="invalidLiveGameId">No válido Id juego en vivo</string>
+	<string name="alreadyOnVacation">Ya de vacaciones.</string>
+	<string name="outOfVacationTime">Fuera de tiempo de vacaciones.</string>
+	<string name="completeAllGameMoves">Completa todos los movimientos del juego.</string>
+	<string name="userNotOnVacation">El usuario no está de vacaciones.</string>
+
+	<string name="game.dw_restriction">&lt;strong>debe esperar 5 minutos entre partidos.&lt;/strong> Su obra está restringido debido a que no han seguido nuestro &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> que desalienta la pérdida de sustentación, los juegos de abandono o intencionales abortar. Esta restricción se levantará de forma automática después de jugar más partidos con justicia.</string>
+	<string name="game.dw_warn">Su cuenta puede ser restringido si no cumplimos con nuestra política de juego limpio. Si restringido, sólo será capaz de jugar con los amigos. Por favor, no intencionalmente abortar / desconectar de juegos o hacer que sus opositores esperar innecesariamente. Gracias por mantener Chess.com un lugar divertido para disfrutar del ajedrez!</string>
+	<string name="game.not_accepting_challenges">%1$s no está aceptando los desafíos</string>
+	<string name="game.aborted_by_server">Juego ha sido anulada por el servidor</string>
+	<string name="game.aborted_by_server_on_logout">Juego ha sido anulada por el servidor</string>
+	<string name="game.aborted_by_server_on_disconnection">Juego ha sido anulada por el servidor</string>
+	<string name="announcement.server_restarting">ALERTA: Chess.com se reinician los servidores!</string>
+	<string name="announcement.server_restart_cancelled">Reiniciar el servidor ha sido cancelada</string>
+</resources>

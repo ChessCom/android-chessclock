@@ -1,0 +1,12 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">Невозможно сделать шаги, пока в отпуске</string>
+	<string name="current_games">Текущие Игры</string>
+	<string name="finished_games">Законченные Игры</string>
+	<string name="no_challenges_during_vacation">Вызовы не будут отображаться во время отпуска</string>
+	<string name="end_vacation">Конец Отпуска</string>
+
+	<string name="win_">Победил:</string>
+	<string name="loss_">Проиграл:</string>
+	<string name="draw_">Ничья:</string>
+</resources>

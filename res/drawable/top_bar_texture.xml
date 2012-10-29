@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/top_bar_grain"
+    android:dither="true"
+    android:tileMode="repeat">
+
+</bitmap>

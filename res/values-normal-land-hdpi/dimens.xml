@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+	<!--Dashboard-->
+	<dimen name="dashboard_padding_top">21dip</dimen>
+	<dimen name="dashboard_padding_bot">48dip</dimen>
+	<dimen name="dashboard_padding_side">80dip</dimen>
+
+	<!--Game Modes-->
+	<dimen name="player_name_max_width">125dip</dimen>
+
+</resources>

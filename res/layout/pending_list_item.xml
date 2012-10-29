@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="80dip"
+	android:minHeight="60dip"
+	>
+
+	<ProgressBar
+        android:id="@+id/pending_list_item_ProgressBar"
+        android:layout_width="@dimen/pending_progress_bar_size"
+        android:layout_height="@dimen/pending_progress_bar_size"
+		android:layout_margin="5dip"
+		android:layout_centerVertical="true"
+		android:layout_toLeftOf="@+id/pending_list_item_TextView"
+        style="?android:attr/progressBarStyle"
+        />
+
+	<com.chess.RoboTextView
+		android:id="@id/pending_list_item_TextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/loading"
+		android:gravity="center"
+		android:textSize="20sp"
+		android:textColor="@color/grey_button"
+		android:paddingLeft="10dip"
+		android:layout_centerInParent="true"
+		robo:ttf="Bold"
+		/>
+
+</RelativeLayout>

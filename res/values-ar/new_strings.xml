@@ -1,0 +1,13 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">غير قادر على اتخاذ خطوات حتى في اجازة</string>
+
+	<string name="current_games">ألعاب الحالي</string>
+	<string name="finished_games">الانتهاء من مباريات</string>
+	<string name="no_challenges_during_vacation">والتحديات التي لا تظهر خلال عطلة</string>
+	<string name="end_vacation">عطلة نهاية</string>
+
+	<string name="win_">فوز:</string>
+	<string name="loss_">الخسارة:</string>
+	<string name="draw_">رسم:</string>
+</resources>

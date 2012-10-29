@@ -1,0 +1,12 @@
+<resources>
+
+	<string name="unable_to_move_on_vacation">Impossible de faire des gestes jusqu\'à ce que des vacances</string>
+	<string name="current_games">Jeux Actuels</string>
+	<string name="finished_games">Jeux Finis</string>
+	<string name="no_challenges_during_vacation">Défis n\'apparaîtra pas pendant les vacances</string>
+	<string name="end_vacation">Fin de Vacances</string>
+
+	<string name="win_">Win:</string>
+	<string name="loss_">Perte:</string>
+	<string name="draw_">Tirage:</string>
+</resources>

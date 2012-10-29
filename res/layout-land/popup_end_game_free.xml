@@ -1,0 +1,111 @@
+<com.chess.SerialLinLay
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="0dp"
+	>
+	<!--End game title-->
+	<com.chess.RoboTextView
+		android:id="@+id/endGameTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+		robo:ttf="Bold"
+		android:textSize="@dimen/game_end_popup_text_size"
+		/>
+
+	<!--Wins reason-->
+	<com.chess.RoboTextView
+		android:id="@+id/endGameReasonTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+		robo:ttf="Bold"
+		/>
+
+	<!--Rating-->
+	<com.chess.RoboTextView
+		android:id="@+id/yourRatingTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		robo:ttf="Bold"
+		/>
+
+	<!--New Game | Rematch-->
+	<com.chess.SerialLinLay
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+		<!--Ads-->
+		<com.chess.SerialLinLay
+			android:id="@+id/adview_wrapper"
+			android:layout_width="@dimen/ad_popup_width"
+			android:layout_height="@dimen/ad_popup_height"
+			android:layout_gravity="center"
+			/>
+
+
+		<!--Home Review-->
+		<com.chess.SerialLinLay
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			>
+
+			<com.chess.RoboButton
+				android:id="@+id/newGamePopupBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/new_game"
+				style="@style/Text.Button"
+				/>
+
+			<com.chess.RoboButton
+				android:id="@+id/rematchPopupBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/rematch"
+				style="@style/Text.Button"
+				/>
+
+
+			<com.chess.RoboButton
+				android:id="@+id/homePopupBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/home"
+				style="@style/Text.Button.Grey"/>
+
+			<com.chess.RoboButton
+				android:id="@+id/reviewPopupBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/review"
+				style="@style/Text.Button.Grey"
+				/>
+
+
+		</com.chess.SerialLinLay>
+
+	</com.chess.SerialLinLay>
+
+
+	<!--Upgrade-->
+	<com.chess.RoboButton
+		android:id="@+id/upgradeBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/Text.Button.Upgrade"
+		android:text="@string/removeAds"
+		android:paddingTop="0dip"
+		android:paddingBottom="0dip"
+		android:paddingLeft="20dip"
+		android:paddingRight="5dip"
+		/>
+
+</com.chess.SerialLinLay>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:dither="true">
+    <gradient
+        android:centerX="0.0"
+        android:centerY="-50%"
+        android:endColor="@color/dashboard_button"
+
+        android:gradientRadius="300"
+        android:startColor="@color/glow_border2"
+        android:type="radial"/>
+</shape>

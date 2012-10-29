@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/mainView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:paddingTop="@dimen/default_scr_top_padding"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	>
+	<include layout="@layout/mopub_ad_view"/>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/LinearDescription"
+		android:paddingLeft="0dip"
+		android:paddingRight="0dip"
+		>
+		<com.chess.RoboButton
+			android:id="@+id/tournaments"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/ic_tournament"
+			android:text="@string/tournaments"
+			style="@style/Text.Button.Grey"
+			/>
+
+		<com.chess.RoboButton
+			android:id="@+id/statsBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/ic_chartbar"
+			android:text="@string/stats"
+			style="@style/Text.Button.Grey"
+			android:layout_alignParentRight="true"
+			android:layout_toRightOf="@id/tournaments"
+			/>
+	</RelativeLayout>
+
+<!--	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		style="@style/LinearDescription"
+		android:paddingLeft="0dip"
+		android:paddingRight="0dip"
+		>
+
+		<com.chess.RoboButton
+			android:id="@+id/start"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="6"
+			android:text="@string/challenge"
+			/>
+
+	</LinearLayout>-->
+
+	<ListView
+		android:id="@+id/onlineGamesList"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@android:color/transparent"
+		/>
+
+</LinearLayout>
