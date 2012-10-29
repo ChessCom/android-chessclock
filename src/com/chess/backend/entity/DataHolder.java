@@ -48,7 +48,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 		isAdsLoading = adsLoading;
 	}
 
-	public void reset() {
+	public static void reset() {
 		ourInstance = new DataHolder();
 		ChessBoardTactics.resetInstance();
 		ChessBoardLive.resetInstance();

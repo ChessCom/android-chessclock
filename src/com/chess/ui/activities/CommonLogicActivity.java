@@ -14,6 +14,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GSMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.GetStringObjTask;
@@ -396,7 +397,8 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		AppData.setGuest(this, false);
 		AppData.setLiveChessMode(this, false);
-		DataHolder.getInstance().reset();
+		DataHolder.reset();
+		TacticsDataHolder.reset();
 
 		afterLogin();
 	}
