@@ -89,7 +89,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		init();
 
-//		DataHolder.getInstance().setLiveChess(false);
 		AppData.setLiveChessMode(this, false);
 
 		ListView gamesList = (ListView) findViewById(R.id.onlineGamesList);
@@ -174,6 +173,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
+					// TODO save list items and game items to DB for offline access
 					currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
 					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
@@ -416,7 +416,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 				intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);
 
-                startActivity(intent);
+				startActivity(intent);
 			}
 		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
@@ -470,7 +470,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	private void clickOnChallenge(GameListChallengeItem gameListChallengeItem) {
 		this.gameListChallengeItem = gameListChallengeItem;
-		
+
 		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR
 				+ getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentWinCount()
 				+ StaticData.SYMBOL_NEW_STR

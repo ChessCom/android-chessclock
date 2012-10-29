@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
+import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -34,7 +35,7 @@ import com.flurry.android.FlurryAgent;
  */
 public class LoginScreenActivity extends CommonLogicActivity implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
 
-    private boolean forceFlag;
+	private boolean forceFlag;
 	private EditText loginUsernameEdt;
 	private EditText loginPasswordEdt;
 
@@ -75,7 +76,8 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		} else if (view.getId() == R.id.signup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
-			DataHolder.getInstance().reset();
+			DataHolder.reset();
+			TacticsDataHolder.reset();
 			AppData.setLiveChessMode(this, false);
 			AppData.setGuest(this, true);
 
@@ -87,7 +89,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-                || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
+				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
 			if(!AppUtils.isNetworkAvailable(this)){ // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
@@ -103,7 +105,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		DataHolder.getInstance().setLiveChess(false);
+
 		AppData.setLiveChessMode(this, true);
 
 		loginUsernameEdt.setText(AppData.getUserName(this));

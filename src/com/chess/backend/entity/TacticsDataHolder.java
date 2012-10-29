@@ -95,4 +95,8 @@ public class TacticsDataHolder {
 		return showedTacticsIds.contains(id);
 	}
 
+	public static void reset() {
+		ourInstance = new TacticsDataHolder();
+	}
+
 }
