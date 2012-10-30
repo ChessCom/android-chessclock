@@ -87,6 +87,9 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
 			StringBuilder builder = new StringBuilder();
 			builder.append(boardFace.getMode());
+
+			builder.append(" [" + boardFace.getMoveListSAN().toString().replaceAll("\n", " ") + "] "); // todo: remove debug info
+
             int i;
             for (i = 0; i < boardFace.getMovesCount(); i++) {
                 Move move = boardFace.getHistDat()[i].move;

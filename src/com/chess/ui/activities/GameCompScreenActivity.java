@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.SerialLinLay;
 import com.chess.backend.statics.AppConstants;
@@ -224,11 +225,17 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		String[] moves = AppData.getCompSavedGame(this).split("[|]");
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
-			getBoardFace().makeMove(new Move(
-					Integer.parseInt(move[0]),
-					Integer.parseInt(move[1]),
-					Integer.parseInt(move[2]),
-					Integer.parseInt(move[3])), false);
+			try {
+				getBoardFace().makeMove(new Move(
+						Integer.parseInt(move[0]),
+						Integer.parseInt(move[1]),
+						Integer.parseInt(move[2]),
+						Integer.parseInt(move[3])), false);
+			} catch (Exception e) {
+				String debugInfo = "move=" + moves[i] + AppData.getCompSavedGame(this);
+				BugSenseHandler.addCrashExtraData("APP_COMP_DEBUG", debugInfo);
+				throw new IllegalArgumentException(debugInfo, e);
+			}
 		}
 
 		playLastMoveAnimation();
