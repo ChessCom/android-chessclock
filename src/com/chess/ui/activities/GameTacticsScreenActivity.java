@@ -161,10 +161,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		if (firstRun) {
 			firstRun = false;
 
-			Log.d("TEST","Have saved games = " + AppData.haveSavedTacticGame(this));
-			boolean  haveGuestSavedGame = !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
+			Log.d("TEST", "Have saved games = " + AppData.haveSavedTacticGame(this));
+			boolean haveGuestSavedGame = !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
 					.equals(StaticData.SYMBOL_EMPTY);
-			Log.d("TEST","haveGuestSavedGame = " + haveGuestSavedGame);
+			Log.d("TEST", "haveGuestSavedGame = " + haveGuestSavedGame);
 
 			final boolean userIsGuest = AppData.isGuest(this);
 
@@ -198,8 +198,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					checkMove();
 				}
 
-				if (getTacticsBatch() == null){
-					loadNewTacticsBatch();
+				if (getTacticsBatch() == null) {
+					loadSavedTacticsBatch();
 				}
 			} else {
 				popupItem.setPositiveBtnId(R.string.yes);
@@ -209,7 +209,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else {
 			// TODO show register confirmation dialog
 			TacticItem tacticItem = getTacticItem();
-			if(tacticItem == null){ // singleton can be killed
+			if (tacticItem == null) { // singleton can be killed
 				getNewTactic();
 			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
 
@@ -221,7 +221,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				boardView.invalidate();
 				playLastMoveAnimationAndCheck();
 			}
-			if (getTacticsBatch() == null){
+			if (getTacticsBatch() == null) {
+				Log.d("TEST", "getTacticsBatch() == null -> should load new tactics batch?");
 				loadNewTacticsBatch();
 			}
 		}
@@ -259,7 +260,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, tacticResultString);
 			preferencesEditor.putInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, getCurrentProblem());
 
-			if(answerWasShowed()) {
+			if (answerWasShowed()) {
 				preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
 			}
 			preferencesEditor.commit();
@@ -271,15 +272,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		}
 
-		if(customViewFragment != null)
+		if (customViewFragment != null)
 			customViewFragment.dismiss();
 	}
 
 	/**
 	 * Check if tactic was canceled or limit reached
+	 *
 	 * @return true if need to Save
 	 */
-	private boolean needToSaveTactic(){
+	private boolean needToSaveTactic() {
 		return !getBoardFace().isTacticCanceled() && !TacticsDataHolder.getInstance().isTacticLimitReached()
 				&& getTacticItem() != null;
 	}
@@ -294,7 +296,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				if (getBoardFace().isLatestMoveMadeUser())
 					checkMove();
 			}
-		},1300);
+		}, 1300);
 	}
 
 
@@ -314,7 +316,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	protected TacticBoardFace getBoardFace(){
+	protected TacticBoardFace getBoardFace() {
 		return boardView.getBoardFace();
 	}
 
@@ -334,14 +336,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
 			} else {
-				if(TacticsDataHolder.getInstance().tacticWasShowed(getTacticItem().getId())){
+				if (TacticsDataHolder.getInstance().tacticWasShowed(getTacticItem().getId())) {
 					showSolvedTacticPopup(getString(R.string.problem_solved_), false);
 
 				} else if (userIsGuest || boardFace.isRetry() || noInternet) {
 					TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 
 					String title;
-					if(tacticResultItem != null && !userIsGuest){
+					if (tacticResultItem != null && !userIsGuest) {
 						title = getString(R.string.problem_solved, tacticResultItem.getUserRatingChange(),
 								tacticResultItem.getUserRating());
 					} else {
@@ -365,12 +367,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else {
 			Log.d("TEST_MOVE", " Wrong move");
 			TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
-			boolean  tacticResultItemIsValid = tacticResultItem != null
+			boolean tacticResultItemIsValid = tacticResultItem != null
 					&& Integer.valueOf(tacticResultItem.getUserRatingChange()) < 0; // if saved for wrong move. Note that after loading next tactic result is automaically assigns as a positive resultItem.
 //			if (DataHolder.getInstance().isGuest()) {
 			if (userIsGuest) {
 				showWrongMovePopup(getString(R.string.wrong_ex));
-			} else if (tacticResultItemIsValid  && (getBoardFace().isRetry() || noInternet)) {
+			} else if (tacticResultItemIsValid && (getBoardFace().isRetry() || noInternet)) {
 				String title = getString(R.string.wrong_score,
 						tacticResultItem.getUserRatingChange(),
 						tacticResultItem.getUserRating());
@@ -390,10 +392,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	}
 
-	private void showWrongMovePopup(String title){
+	private void showWrongMovePopup(String title) {
 		SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
 
-		((TextView)customView.findViewById(R.id.titleTxt)).setText(title);
+		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
@@ -466,12 +468,23 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getNewTactic() {
+		// remove current tactic item from DB record
+		TacticItem tacticItem = getTacticsBatch().get(getCurrentProblem());
+		String[] arguments = new String[]{tacticItem.getId(), tacticItem.getUser()};
+		int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
+				DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
+		Log.d("TEST", " delete " +deletedCnt + " from DB, id = " + tacticItem.getId());
+		// remove current tactics from batch
+		List<TacticItem> removeList = new ArrayList<TacticItem>();
+		removeList.add(tacticItem);
+		getTacticsBatch().removeAll(removeList);
+
 		TacticsDataHolder.getInstance().increaseCurrentTacticsProblem();
 		getTacticFromBatch();
 	}
 
 	private void getTacticFromBatch() {
-		if(getTacticsBatch() == null){ // if we load from saved tactic
+		if (getTacticsBatch() == null) { // if we load from saved tactic
 			loadNewTacticsBatch();
 			return;
 		}
@@ -493,6 +506,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		currentTacticAnswerCnt = 0;
 
 		TacticsDataHolder.getInstance().setTactic(tacticItem);
+
 	}
 
 
@@ -525,7 +539,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void errorHandle(String resultMessage) {
-			if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)){
+			if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
 				showLimitDialog();  // This should be the only way to show limit dialog for registered user
 			} else {
 				showSinglePopupDialog(resultMessage);
@@ -548,7 +562,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getBoardFace().setRetry(true);
 
 		TacticItem tacticItem;
-//		if (DataHolder.getInstance().isGuest() || noInternet) {
 		if (AppData.isGuest(this) || noInternet) {
 			tacticItem = getTacticsBatch().get(getCurrentProblem());
 		} else {
@@ -569,7 +582,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
 	}
 
-	private boolean answerWasShowed(){
+	private boolean answerWasShowed() {
 		return currentTacticAnswerCnt == maxTacticAnswerCnt && maxTacticAnswerCnt != 0;
 	}
 
@@ -581,7 +594,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticBoardFace boardFace = getBoardFace();
 			boolean sizeExceed = currentTacticAnswerCnt >= boardFace.getTacticMoves().length;
 
-			if(answerWasShowed() || sizeExceed) {
+			if (answerWasShowed() || sizeExceed) {
 				return;
 			}
 
@@ -599,7 +612,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
 
-			if (tmp.length < 2){ // "Success+||"   - means we reached limit and there is no tactics
+			if (tmp.length < 2) { // "Success+||"   - means we reached limit and there is no tactics
 				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
 				return;
 			}
@@ -634,7 +647,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.split("[|]");
-			if (tmp.length < 2){ // "Success+||"   - means we reached limit and there is no tactics
+			if (tmp.length < 2) { // "Success+||"   - means we reached limit and there is no tactics
 				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
 				return;
 			}
@@ -804,7 +817,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		TacticItem tacticItem;
 
 		if (AppData.isGuest(this) || noInternet) {
-			if(getTacticsBatch() == null) // TODO handle properly
+			if (getTacticsBatch() == null) // TODO handle properly
 				return;
 
 			tacticItem = getTacticsBatch().get(getCurrentProblem());
@@ -816,7 +829,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void setTacticToBoard(TacticItem tacticItem, int secondsSpent) {
-		if(tacticItem == null) { // TODO adjust more proper handle
+		if (tacticItem == null) { // TODO adjust more proper handle
 			return;
 		}
 
@@ -901,7 +914,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	}
 
-	private void loadNewTacticsBatch(){
+	private void loadNewTacticsBatch() {
 		noInternet = !AppUtils.isNetworkAvailable(this);
 		if (AppData.isGuest(this) || noInternet) {
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
@@ -934,24 +947,33 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			getNewTactic();
 		} else {
-			// TODO check if we have saved tactics batch for that user
-			if (AppData.haveSavedTacticBatch(this))  { // TODO don't load tactic when limit reached
 
-				String[] arguments = new String[]{AppData.getUserName(this)};
-				QueryParams queryParams = new QueryParams();
-				queryParams.setArguments(arguments);
-				queryParams.setSelection(DBDataManager.SELECTION_TACTIC_BATCH_USER);
-				queryParams.setUri(DBConstants.TACTICS_BATCH_CONTENT_URI);
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
 
-				new LoadDataFromDbTask(dbBatchUpdateListener, queryParams).executeTask();
-			} else {
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
-				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-				loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
+			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 
-				new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
-			}
+		}
+	}
+
+	private void loadSavedTacticsBatch() {
+		// TODO check if we have saved tactics batch for that user
+		if (AppData.haveSavedTacticBatch(this)) { // TODO don't load tactic when limit reached
+			String[] arguments = new String[]{AppData.getUserName(this)};
+			QueryParams queryParams = new QueryParams();
+			queryParams.setArguments(arguments);
+			queryParams.setSelection(DBDataManager.SELECTION_TACTIC_BATCH_USER);
+			queryParams.setUri(DBConstants.TACTICS_BATCH_CONTENT_URI);
+			new LoadDataFromDbTask(dbBatchUpdateListener, queryParams).executeTask();
+		} else {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
+			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
+
+			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -971,6 +993,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				tacticBatch.add(tacticItem);
 
 			} while (returnedObj.moveToNext());
+
+			for (TacticItem tacticItem : tacticBatch) {
+				Log.d("TEST", "load from DB tactic_id = " + tacticItem.getId());
+			}
 
 			int savedTacticProblem = AppData.getSavedTacticProblem(getContext());
 			TacticsDataHolder.getInstance().setCurrentTacticProblem(savedTacticProblem);
@@ -998,6 +1024,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			preferencesEditor.putBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, true);
 			preferencesEditor.commit();
 		}
+
 	}
 
 
@@ -1023,7 +1050,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		return TacticsDataHolder.getInstance().getCurrentTacticProblem();
 	}
 
-	private void cancelTacticAndLeave(){
+	private void cancelTacticAndLeave() {
 		getBoardFace().setTacticCanceled(true);
 		clearSavedTactics();
 		onBackPressed();

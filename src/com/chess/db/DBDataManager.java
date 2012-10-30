@@ -20,7 +20,7 @@ public class DBDataManager {
 	public static final String OPERATOR_MORE = " > ";
 	public static final String OPERATOR_EQUALS = " = ";
 
-	public static String SELECTION_ITEM_ID;
+	public static String SELECTION_ITEM_ID_AND_USER;
 	public static String SELECTION_TACTIC_BATCH_USER;
 	public static String SELECTION_ID;
 
@@ -28,9 +28,10 @@ public class DBDataManager {
 			DBConstants._ID
 	};
 
-	public static final String[] PROJECTION_TACTIC_ITEM_ID = new String[] {
+	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[] {
 			DBConstants._ID,
-			DBConstants.V_TACTIC_ID
+			DBConstants.V_TACTIC_ID,
+			DBConstants.V_USER
 	};
 
 	public static final String[] PROJECTION_TACTIC_BATCH_USER = new String[] {
@@ -49,7 +50,10 @@ public class DBDataManager {
 		StringBuilder selection = new StringBuilder();
 		selection.append(DBConstants.V_TACTIC_ID);
 		selection.append("=?");
-		SELECTION_ITEM_ID = selection.toString();
+		selection.append(OPERATOR_AND);
+		selection.append(DBConstants.V_USER);
+		selection.append("=?");
+		SELECTION_ITEM_ID_AND_USER = selection.toString();
 	}
 
 	static {

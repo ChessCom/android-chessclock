@@ -32,13 +32,14 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
     @Override
     protected Integer doTheTask(Long... ids) {
 		for (TacticItem tacticItem : tacticsBatch) {
-			String[] arguments = new String[1];
+			String[] arguments = new String[2];
 
 			arguments[0] = String.valueOf(tacticItem.getId());
+			arguments[1] = String.valueOf(tacticItem.getUser());
 
 			Uri uri = params.getUri();
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID,
-					DBDataManager.SELECTION_ITEM_ID, arguments, params.getOrder());
+			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
+					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments, params.getOrder());
 			if (cursor.moveToFirst()) {
 				contentResolver.update(Uri.parse(uri.toString() + "/" + DBDataManager.getId(cursor)),
 						DBDataManager.putTacticItemToValues(tacticItem), null, null);
