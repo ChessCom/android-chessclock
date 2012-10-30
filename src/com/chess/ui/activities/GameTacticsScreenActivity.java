@@ -369,7 +369,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticResultItem tacticResultItem = TacticsDataHolder.getInstance().getTacticResultItem();
 			boolean tacticResultItemIsValid = tacticResultItem != null
 					&& Integer.valueOf(tacticResultItem.getUserRatingChange()) < 0; // if saved for wrong move. Note that after loading next tactic result is automaically assigns as a positive resultItem.
-//			if (DataHolder.getInstance().isGuest()) {
+
 			if (userIsGuest) {
 				showWrongMovePopup(getString(R.string.wrong_ex));
 			} else if (tacticResultItemIsValid && (getBoardFace().isRetry() || noInternet)) {
@@ -532,9 +532,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
 			TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
 
-			if (getTacticItem() == null) {
+//			if (getTacticItem() == null) {
 				getTacticFromBatch();
-			}
+//			}
 		}
 
 		@Override
