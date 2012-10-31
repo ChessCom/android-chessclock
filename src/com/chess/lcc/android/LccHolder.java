@@ -686,6 +686,8 @@ public class LccHolder{
 	public void rematch() {
 		final Game lastGame = getLastGame();
 
+		Log.d("REMATCHTEST", "rematch getLastGame " + lastGame);
+
 		final List<Game.Result> gameResults = lastGame.getGameResults();
 		final String whiteUsername = lastGame.getWhitePlayer().getUsername();
 		final String blackUsername = lastGame.getBlackPlayer().getUsername();
@@ -886,6 +888,7 @@ public class LccHolder{
 
 	public void setLastGameId(){
 		lastGameId = currentGameId;
+		Log.d("REMATCHTEST", "setLastGameId " + lastGameId);
 	}
 
 	public void setCurrentGameId(Long gameId) {
