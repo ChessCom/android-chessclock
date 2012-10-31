@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.EditText;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
@@ -35,10 +36,7 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * CommonLogicActivity class
@@ -325,11 +323,11 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				if (responseArray.length >= 4) {
 					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
 						preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
-						processLogin(responseArray);
+						processLogin(responseArray, returnedObj);
 					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
 						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-						processLogin(responseArray);
+						processLogin(responseArray, returnedObj);
 					}
 				}
 			}
@@ -382,10 +380,21 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
-	private void processLogin(String[] response) {
+	private void processLogin(String[] response, String tempDebug) {
 		// from actionbar
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+
+		try {
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			String debugInfo = "response=" + tempDebug;
+			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("DEBUG", debugInfo);
+			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+			throw new ArrayIndexOutOfBoundsException(debugInfo);
+		}
+
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
 			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));

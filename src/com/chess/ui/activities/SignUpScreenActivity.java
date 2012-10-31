@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
@@ -30,6 +31,8 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SignUpScreenActivity class
@@ -204,7 +207,18 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
 			preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, result[0].split("[+]")[1]);
+
+			try {
+				preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, result[0].split("[+]")[1]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				String debugInfo = "response=" + returnedObj;
+				BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("DEBUG", debugInfo);
+				FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+				throw new ArrayIndexOutOfBoundsException(debugInfo);
+			}
+
 			preferencesEditor.putString(AppConstants.API_VERSION, result[1]);
 			try {
 				preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(result[2], HTTP.UTF_8));
@@ -229,16 +243,27 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
 					}
-					doUpdate(responseArray);
+					doUpdate(responseArray, returnedObj);
 				}
 			}
 		}
 	}
 
-	private void doUpdate(String[] response) {
+	private void doUpdate(String[] response, String tempDebug) {
 
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-		preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+
+		try {
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			String debugInfo = "response=" + tempDebug;
+			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("DEBUG", debugInfo);
+			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+			throw new ArrayIndexOutOfBoundsException(debugInfo);
+		}
+
 		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
 			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
@@ -287,11 +312,11 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
 						preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
-						doUpdate(responseArray);
+						doUpdate(responseArray, returnedObj);
 					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
 						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
 						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-						doUpdate(responseArray);
+						doUpdate(responseArray, returnedObj);
 					}
 				}
 			}
