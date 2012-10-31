@@ -31,7 +31,10 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
+import org.apache.http.HttpEntity;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 /**
@@ -326,5 +329,22 @@ public class AppUtils {
 		}
 	}
 
+	public static String httpEntityToString(HttpEntity entity)
+			throws IOException {
+
+		InputStream inputStream = entity.getContent();
+		int numberBytesRead = 0;
+		StringBuilder out = new StringBuilder();
+		byte[] bytes = new byte[4096];
+
+		while (numberBytesRead != -1) {
+			out.append(new String(bytes, 0, numberBytesRead));
+			numberBytesRead = inputStream.read(bytes);
+		}
+
+		inputStream.close();
+
+		return out.toString();
+	}
 
 }

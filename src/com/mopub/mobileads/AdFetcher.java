@@ -39,6 +39,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import com.chess.backend.entity.DataHolder;
+import com.chess.utilities.AppUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -48,7 +49,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -204,7 +204,7 @@ public class AdFetcher {
 					HashMap<String, String> paramsHash = new HashMap<String, String>();
 					paramsHash.put("X-Adtype", atHeader.getValue());
 
-					data = EntityUtils.toString(entity);
+					data = AppUtils.httpEntityToString(entity);
 					paramsHash.put("X-Nativeparams", data);
 					return new LoadNativeAdTaskResult(mAdView, paramsHash);
 
@@ -230,7 +230,7 @@ public class AdFetcher {
 				}
 
 				// Handle HTML ad.
-				data = EntityUtils.toString(entity);
+				data = AppUtils.httpEntityToString(entity);
 			} catch (IOException e) {
 				e.printStackTrace();
 				Log.e(AdView.MOPUB, " Fail to load ad with -> " + e.toString());
