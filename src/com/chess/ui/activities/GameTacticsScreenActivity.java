@@ -220,6 +220,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().takeBack();
 				boardView.invalidate();
 				playLastMoveAnimationAndCheck();
+			} else if(tacticItem.isStop()) {
+				timerTxt.setText(getString(R.string.bonus_time_left, getBoardFace().getSecondsLeft()
+						, getBoardFace().getSecondsPassed()));
 			}
 			if (getTacticsBatch() == null) {
 				Log.d("TEST", "getTacticsBatch() == null -> should load new tactics batch?");
@@ -563,8 +566,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		TacticItem tacticItem;
 		if (AppData.isGuest(this) || noInternet) {
+			if (getTacticsBatch() == null ){
+				loadNewTacticsBatch();
+				return;
+			}
 			tacticItem = getTacticsBatch().get(getCurrentProblem());
 		} else {
+			if (getTacticItem() == null ) { // get rid of uncertain errors
+				getNewTactic();
+				return;
+			}
 			tacticItem = getTacticItem();
 		}
 
@@ -903,15 +914,21 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(FIRST_TACTICS_TAG)) {
 			loadNewTacticsBatch();
-		} else if (fragment.getTag().equals(TEN_TACTICS_TAG)) {
+		} else if (tag.equals(TEN_TACTICS_TAG)) {
 			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
 			onBackPressed();
-		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
+		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 			getTacticFromBatch();
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	private void loadNewTacticsBatch() {
@@ -1030,12 +1047,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(FIRST_TACTICS_TAG)) { // Cancel
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(FIRST_TACTICS_TAG)) { // Cancel
 			cancelTacticAndLeave();
-		} else if (fragment.getTag().equals(OFFLINE_RATING_TAG)) {
+		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 			cancelTacticAndLeave();
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	private TacticItem getTacticItem() {

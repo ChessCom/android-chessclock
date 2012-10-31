@@ -90,28 +90,40 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(LOGOUT_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
 			backToHomeActivity();
-		} else if (fragment.getTag().contains(CHALLENGE_TAG)) { // Challenge accepted!
+		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			popupManager.remove(fragment);
-		} else if(fragment.getTag().equals(NETWORK_CHECK_TAG)){
+		} else if(tag.equals(NETWORK_CHECK_TAG)){
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(CHALLENGE_TAG)) {// Challenge declined!
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(CHALLENGE_TAG)) {// Challenge declined!
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
 			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
 			popupManager.remove(fragment);
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	@Override

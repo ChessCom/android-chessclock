@@ -405,22 +405,34 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(VACATION_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(VACATION_TAG)) {
 			LoadItem listLoadItem = new LoadItem();
 			listLoadItem.setLoadPath(RestHelper.VACATION_LEAVE);
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(VACATION_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(VACATION_TAG)) {
 			vacationCheckBox.setChecked(false);
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {

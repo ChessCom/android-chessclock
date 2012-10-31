@@ -157,9 +157,13 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
 
-		if(fragment.getTag().equals(CHECK_UPDATE_TAG)){
+		if(tag.equals(CHECK_UPDATE_TAG)){
 			if (forceFlag) {
 				// drop start day
 				preferencesEditor.putLong(AppConstants.START_DAY, 0);
@@ -167,11 +171,12 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI)));
-		}else if (fragment.getTag().equals(CHESS_NO_ACCOUNT_TAG)){
+		}else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
-		}else if (fragment.getTag().equals(NETWORK_CHECK_TAG)){
+		}else if (tag.equals(NETWORK_CHECK_TAG)){
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override

@@ -151,8 +151,13 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if(fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)){
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if(tag.equals(CHALLENGE_ACCEPT_TAG)){
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -161,12 +166,18 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if(fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)){
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if(tag.equals(CHALLENGE_ACCEPT_TAG)){
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -175,6 +186,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 

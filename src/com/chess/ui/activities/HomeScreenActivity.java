@@ -96,25 +96,37 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(LOGOUT_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
 			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
-		}else if(fragment.getTag().equals(CHALLENGE_TAG)){
+		}else if(tag.equals(CHALLENGE_TAG)){
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
             challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {// Challenge declined!
-		if (fragment.getTag().equals(CHALLENGE_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(CHALLENGE_TAG)) {
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
             fragment.dismiss();
             challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
-        }else
-            fragment.dismiss();
+        }
+		super.onNegativeBtnClick(fragment);
 	}
 
 	private void adjustActionBar(){

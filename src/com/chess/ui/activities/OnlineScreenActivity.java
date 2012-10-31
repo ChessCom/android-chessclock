@@ -255,8 +255,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -265,7 +270,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestampStr());
 
 			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
-		} else if (fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)) {
+		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -274,12 +279,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNeutralBtnCLick(DialogFragment fragment) {
-		super.onNeutralBtnCLick(fragment);
-		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNeutralBtnCLick(fragment);
+			return;
+		}
+
+		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -289,19 +300,25 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 		}
+		super.onNeutralBtnCLick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(DRAW_OFFER_PENDING_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
 			ChessBoardOnline.resetInstance();
 
 			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 			intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameListCurrentItem);
 			startActivity(intent);
 
-		} else if (fragment.getTag().equals(CHALLENGE_ACCEPT_TAG)) {
+		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -309,13 +326,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			successToastMsgId = R.string.challengedeclined;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
-		} else if(fragment.getTag().equals(UNABLE_TO_MOVE_TAG)){
+		} else if(tag.equals(UNABLE_TO_MOVE_TAG)){
 			LoadItem listLoadItem = new LoadItem();
 			listLoadItem.setLoadPath(RestHelper.VACATION_RETURN);
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {

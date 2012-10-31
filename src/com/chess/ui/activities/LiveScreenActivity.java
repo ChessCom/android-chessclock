@@ -166,11 +166,17 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if(fragment.getTag().equals(NETWORK_CHECK_TAG)){
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if(tag.equals(NETWORK_CHECK_TAG)){
 			emptyView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	@Override

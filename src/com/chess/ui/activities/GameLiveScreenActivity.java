@@ -632,13 +632,18 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, "Request draw: " + getLccHolder().getCurrentGame());
 			gameTaskRunner.runMakeDrawTask();
-		} else if (fragment.getTag().equals(WARNING_TAG)) {
+		} else if (tag.equals(WARNING_TAG)) {
 			getLccHolder().getPendingWarnings().remove(warningMessage);
-		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
+		} else if (tag.equals(ABORT_GAME_TAG)) {
 			Game game = getLccHolder().getCurrentGame();
 
 			if (getLccHolder().isFairPlayRestriction()) {
@@ -653,15 +658,22 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				gameTaskRunner.runMakeResignTask();
 			}
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, "Decline draw: " + getLccHolder().getCurrentGame());
 			gameTaskRunner.runRejectDrawTask();
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	protected void changeChatIcon(Menu menu) {

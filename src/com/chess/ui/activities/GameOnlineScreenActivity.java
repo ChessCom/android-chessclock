@@ -675,8 +675,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(DRAW_OFFER_RECEIVED_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
 
 			if (gameInfoItem.getIsDrawOfferPending()) { // If Draw was already offered by the opponent, we send accept to it.
@@ -694,7 +699,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 			new GetStringObjTask(drawOfferedUpdateListener).executeTask(loadItem);
-		} else if (fragment.getTag().equals(ABORT_GAME_TAG)) {
+		} else if (tag.equals(ABORT_GAME_TAG)) {
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
@@ -705,9 +710,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
 
 			new GetStringObjTask(abortGameUpdateListener).executeTask(loadItem);
-		} else if(fragment.getTag().equals(ERROR_TAG)){
+		} else if(tag.equals(ERROR_TAG)){
 			backToLoginActivity();
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	protected void changeChatIcon(Menu menu) {

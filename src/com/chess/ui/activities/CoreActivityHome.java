@@ -93,14 +93,19 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(CONNECT_FAILED_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(CONNECT_FAILED_TAG)) {
 //			if (DataHolder.getInstance().isLiveChess()) {
 			if (AppData.isLiveChess(this)) {
 				getLccHolder().logout();
 			}
 		}
-		 else if (fragment.getTag().equals(OBSOLETE_VERSION_TAG)) {
+		 else if (tag.equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
 			runOnUiThread(new Runnable() {
 				@Override
@@ -113,7 +118,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				}
 			});
 		}
-		if (fragment.getTag().equals(CHECK_UPDATE_TAG)) {
+		if (tag.equals(CHECK_UPDATE_TAG)) {
 			if (forceFlag) {
 				// drop start day
 				preferencesEditor.putLong(AppConstants.START_DAY, 0);
@@ -124,6 +129,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
 			startActivity(intent);
 		}
+
+		super.onPositiveBtnClick(fragment);
 	}
 
 	// ---------- LiveChessClientEventListenerFace ----------------

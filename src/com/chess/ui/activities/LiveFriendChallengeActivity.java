@@ -125,18 +125,30 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-		if (fragment.getTag().equals(NO_ONLINE_FRIENDS_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(NO_ONLINE_FRIENDS_TAG)) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.BASE_URL)));
 		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-		super.onNegativeBtnClick(fragment);
-		if (fragment.getTag().equals(NO_ONLINE_FRIENDS_TAG)) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onNegativeBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(NO_ONLINE_FRIENDS_TAG)) {
 			onBackPressed();
 		}
+		super.onNegativeBtnClick(fragment);
 	}
 
 	@Override
