@@ -651,6 +651,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void handleErrorRequest() {
 		noInternet = true;
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
+		loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
 	}
 
 	private class TacticsWrongUpdateListener extends ChessUpdateListener {
@@ -934,35 +935,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void loadNewTacticsBatch() {
 		noInternet = !AppUtils.isNetworkAvailable(this);
 		if (AppData.isGuest(this) || noInternet) {
-			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
-			// TODO move to AsyncTask
-			InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
-			try {
-				ByteArrayBuffer baf = new ByteArrayBuffer(50);
-				int current;
-				while ((current = inputStream.read()) != -1) {
-					baf.append((byte) current);
-				}
-
-				String input = new String(baf.toByteArray());
-				String[] tmp = input.split("[|]");
-				int count = tmp.length - 1;
-
-				List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
-				for (int i = 1; i <= count; i++) {
-					TacticItem tacticItem = new TacticItem(tmp[i].split(":"));
-					tacticItem.setUser(AppData.getUserName(getContext()));
-					tacticBatch.add(tacticItem);
-				}
-
-				TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
-				TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
-				inputStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			getNewTactic();
+			loadOfflineTacticsBatch();
 		} else {
 
 			LoadItem loadItem = new LoadItem();
@@ -973,6 +946,38 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 
 		}
+	}
+
+	private void loadOfflineTacticsBatch() {
+		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
+		// TODO move to AsyncTask
+		InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
+		try {
+			ByteArrayBuffer baf = new ByteArrayBuffer(50);
+			int current;
+			while ((current = inputStream.read()) != -1) {
+				baf.append((byte) current);
+			}
+
+			String input = new String(baf.toByteArray());
+			String[] tmp = input.split("[|]");
+			int count = tmp.length - 1;
+
+			List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
+			for (int i = 1; i <= count; i++) {
+				TacticItem tacticItem = new TacticItem(tmp[i].split(":"));
+				tacticItem.setUser(AppData.getUserName(getContext()));
+				tacticBatch.add(tacticItem);
+			}
+
+			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
+			TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
+			inputStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		getNewTactic();
 	}
 
 	private void loadSavedTacticsBatch() {
