@@ -18,15 +18,18 @@ public class DBConstants {
 	 */
     static final String DATABASE_NAME  = "Chess DB";
     public static final String TACTICS_BATCH_TABLE = "tactics_batch";
+    public static final String ECHESS_FINISHED_GAMES_TABLE = "echess_finished_games";
 
 
 
 	// Content URI
     public static final Uri TACTICS_BATCH_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + TACTICS_BATCH_TABLE);
+    public static final Uri ECHESS_FINISHED_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_FINISHED_GAMES_TABLE);
 
 
     // uri paths
     public static final int TACTICS_BATCH = 0;
+    public static final int ECHESS_FINISHED_GAMES = 1;
 
 
     // general fields
@@ -43,6 +46,8 @@ public class DBConstants {
     public static final String V_PASSED_CNT     = "passedCnt";
     public static final String V_RATING       	= "rating";
     public static final String V_AVG_SECONDS 	= "avgSeconds";
+
+	/* ECHESS_FINISHED_GAMES */
 
     /* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -64,5 +69,12 @@ public class DBConstants {
 			+ V_ATTEMPT_CNT + _TEXT_NOT_NULL + _COMMA
 			+ V_PASSED_CNT 	+ _TEXT_NOT_NULL + _COMMA
 			+ V_RATING 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_AVG_SECONDS + _TEXT_NOT_NULL + _CLOSE;
+
+    static final String ECHESS_FINISHED_GAMES_CREATE =
+            CREATE_TABLE_IF_NOT_EXISTS + TACTICS_BATCH_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_FEN 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_MOVE_LIST 	+ _TEXT_NOT_NULL + _COMMA
 			+ V_AVG_SECONDS + _TEXT_NOT_NULL + _CLOSE;
 }

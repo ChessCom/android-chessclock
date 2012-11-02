@@ -173,7 +173,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
-					// TODO save list items and game items to DB for offline access
 					currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
 					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
@@ -182,7 +181,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					updateStartingType(GameOnlineItem.FINISHED_TYPE);
 					break;
 				case GameOnlineItem.FINISHED_TYPE:
-					finishedGamesAdapter.setItemsList(ChessComApiParser.getFinishedOnlineGames(returnedObj));
+					// TODO save list items and game items to DB for offline access
+					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
+					finishedGamesAdapter.setItemsList(finishedItems);
 					break;
 				default:
 					break;
