@@ -60,8 +60,8 @@ public class SplashActivity extends CommonLogicActivity {
 			}
 
 			startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
-//			DataHolder.getInstance().setGuest(false);
 			AppData.setGuest(getContext(), false);
+			AppData.setLiveChessMode(getContext(), false);
 		}
 
 		@Override
@@ -79,6 +79,5 @@ public class SplashActivity extends CommonLogicActivity {
 
 	private void goToLoginScreen(){
 		startActivity(new Intent(getContext(), LoginScreenActivity.class));
-//		GCMRegistrar.unregister(this);
 	}
 }

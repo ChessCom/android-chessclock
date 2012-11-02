@@ -322,7 +322,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 
 		String response = moPubInterstitial.getMoPubInterstitialView().getResponseString();
-		Log.d("MOPUB TEST", "OnInterstitialLoaded response=" + response);
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put(AppConstants.RESPONSE, response);
@@ -334,7 +333,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		Log.d(AdView.MOPUB, "interstitial ad listener: failed");
 
 		String response = moPubInterstitial.getMoPubInterstitialView().getResponseString();
-		Log.d("MOPUB TEST", "OnInterstitialFailed response=" + response);
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put(AppConstants.RESPONSE, response);
