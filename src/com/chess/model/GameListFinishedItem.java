@@ -8,6 +8,9 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 
 	private String gameResults;
 
+	public GameListFinishedItem() {
+	}
+
 	public GameListFinishedItem(String[] values) {
 
 		gameId = Long.parseLong(values[0]);
@@ -25,11 +28,14 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		lastMoveToSquare = values[12];
 		isOpponentOnline = values[13].equals("1");
 		gameResults = values[14];
-
 	}
 
 	public String getFenStringLength() {
 		return fenStrLength;
+	}
+
+	public void setGameResults(String gameResults) {
+		this.gameResults = gameResults;
 	}
 
 	public String getGameResult() {

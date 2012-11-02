@@ -48,6 +48,21 @@ public class DBConstants {
     public static final String V_AVG_SECONDS 	= "avgSeconds";
 
 	/* ECHESS_FINISHED_GAMES */
+	public static final String V_GAME_ID 				= "gameId";
+	public static final String V_COLOR 					= "color";
+	public static final String V_GAME_TYPE 				= "gameType";
+	public static final String V_USER_NAME_STR_LENGTH 	= "userNameStrLength";
+	public static final String V_OPPONENT_NAME 			= "opponentName";
+	public static final String V_OPPONENT_RATING 		= "opponentRating";
+	public static final String V_TIME_REMAINING_AMOUNT 	= "timeRemainingAmount";
+	public static final String V_TIME_REMAINING_UNITS 	= "timeRemainingUnits";
+	public static final String V_FEN_STR_LENGTH 		= "fenStrLength";
+	public static final String V_TIMESTAMP 				= "timestamp";
+	public static final String V_LAST_MOVE_FROM_SQUARE 	= "lastMoveFromSquare";
+	public static final String V_LAST_MOVE_TO_SQUARE 	= "lastMoveToSquare";
+	public static final String V_IS_OPPONENT_ONLINE 	= "isOpponentOnline";
+	public static final String V_GAME_RESULTS 			= "gameResults";
+
 
     /* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -72,9 +87,19 @@ public class DBConstants {
 			+ V_AVG_SECONDS + _TEXT_NOT_NULL + _CLOSE;
 
     static final String ECHESS_FINISHED_GAMES_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + TACTICS_BATCH_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 		+ _TEXT_NOT_NULL + _COMMA
-			+ V_FEN 		+ _TEXT_NOT_NULL + _COMMA
-			+ V_MOVE_LIST 	+ _TEXT_NOT_NULL + _COMMA
-			+ V_AVG_SECONDS + _TEXT_NOT_NULL + _CLOSE;
+            CREATE_TABLE_IF_NOT_EXISTS + ECHESS_FINISHED_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
+			+ V_COLOR 					    + _TEXT_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				    + _TEXT_NOT_NULL + _COMMA
+			+ V_USER_NAME_STR_LENGTH 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
+			+ V_OPPONENT_RATING 		    + _TEXT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING_AMOUNT 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING_UNITS 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FEN_STR_LENGTH 		        + _TEXT_NOT_NULL + _COMMA
+			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
+			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
+			+ V_GAME_RESULTS 			    + _TEXT_NOT_NULL + _CLOSE;
 }

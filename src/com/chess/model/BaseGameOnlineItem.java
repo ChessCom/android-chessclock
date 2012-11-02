@@ -47,4 +47,23 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		hasMessage = booleans[1];
 	}
 
+	public void setOpponentName(String opponentName) {
+		this.opponentName = opponentName;
+	}
+
+	public void setOpponentRating(String opponentRating) {
+		this.opponentRating = opponentRating;
+	}
+
+	public void setGameType(String gameType) {
+		this.gameType = gameType;
+	}
+
+	public void setLastMoveFromSquare(String lastMoveFromSquare) {
+		this.lastMoveFromSquare = lastMoveFromSquare;
+	}
+
+	public void setLastMoveToSquare(String lastMoveToSquare) {
+		this.lastMoveToSquare = lastMoveToSquare;
+	}
 }

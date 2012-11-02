@@ -83,6 +83,67 @@ public abstract class BaseGameItem implements Parcelable {
 		return isOpponentOnline;
 	}*/
 
+
+	public void setGameId(long gameId) {
+		this.gameId = gameId;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public void setWhiteUsername(String whiteUsername) {
+		this.whiteUsername = whiteUsername;
+	}
+
+	public void setBlackUsername(String blackUsername) {
+		this.blackUsername = blackUsername;
+	}
+
+	public void setUserNameStrLength(String userNameStrLength) {
+		this.userNameStrLength = userNameStrLength;
+	}
+
+	public void setTimeRemainingAmount(String timeRemainingAmount) {
+		this.timeRemainingAmount = timeRemainingAmount;
+	}
+
+	public void setTimeRemainingUnits(String timeRemainingUnits) {
+		this.timeRemainingUnits = timeRemainingUnits;
+	}
+
+	public void setDrawOfferPending(boolean drawOfferPending) {
+		isDrawOfferPending = drawOfferPending;
+	}
+
+	public void setOpponentOnline(boolean opponentOnline) {
+		isOpponentOnline = opponentOnline;
+	}
+
+	public void setFenStrLength(String fenStrLength) {
+		this.fenStrLength = fenStrLength;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setMoveList(String moveList) {
+		this.moveList = moveList;
+	}
+
+	public void setWhiteRating(String whiteRating) {
+		this.whiteRating = whiteRating;
+	}
+
+	public void setBlackRating(String blackRating) {
+		this.blackRating = blackRating;
+	}
+
+	public void setSecondsRemain(String secondsRemain) {
+		this.secondsRemain = secondsRemain;
+	}
+
 	public String getMoveList() {
 		return moveList;
 	}

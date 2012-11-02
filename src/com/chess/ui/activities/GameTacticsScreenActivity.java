@@ -210,6 +210,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			// TODO show register confirmation dialog
 			TacticItem tacticItem = getTacticItem();
 			if (tacticItem == null) { // singleton can be killed
+				if (getTacticsBatch() == null) {
+					loadSavedTacticsBatch();
+					return;
+				}
 				getNewTactic();
 			} else if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
 
@@ -224,8 +228,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				timerTxt.setText(getString(R.string.bonus_time_left, getBoardFace().getSecondsLeft()
 						, getBoardFace().getSecondsPassed()));
 			}
-			if (getTacticsBatch() == null) {
-				Log.d("TEST", "getTacticsBatch() == null -> should load new tactics batch?");
+			if (getTacticsBatch() == null) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
 				loadNewTacticsBatch();
 			}
 		}
@@ -473,6 +476,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getNewTactic() {
+		if (getTacticsBatch() == null) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
+			loadNewTacticsBatch();
+			return;
+		}
 		// remove current tactic item from DB record
 		TacticItem tacticItem = getTacticsBatch().get(getCurrentProblem());
 		String[] arguments = new String[]{tacticItem.getId(), tacticItem.getUser()};
@@ -946,7 +953,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
 
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
-
 		}
 	}
 
