@@ -275,8 +275,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		}
 
-		if (customViewFragment != null)
+		Log.d("TEST", " customViewFragment != null ==" + (customViewFragment != null));
+		if (customViewFragment != null) {
 			customViewFragment.dismiss();
+		}
 	}
 
 	/**

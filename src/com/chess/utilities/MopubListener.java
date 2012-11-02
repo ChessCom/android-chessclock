@@ -1,6 +1,5 @@
 package com.chess.utilities;
 
-import android.util.Log;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.flurry.android.FlurryAgent;
@@ -20,16 +19,13 @@ public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.
 		MoPubView.OnAdPresentedOverlayListener, MoPubView.OnAdClosedListener, MoPubView.OnAdClickedListener {
 
 	public void OnAdClicked(MoPubView moPubView) {
-		Log.d("MOPUB TEST", "OnAdClicked url=" + moPubView.getClickthroughUrl());
 	}
 
 	public void OnAdClosed(MoPubView moPubView) {
-		Log.d("MOPUB TEST", "OnAdClosed url=" + moPubView.getClickthroughUrl());
 	}
 
 	public void OnAdFailed(MoPubView moPubView) {
 		String response = moPubView.getResponseString();
-		Log.d("MOPUB TEST", "OnAdFailed url=" + moPubView.getClickthroughUrl());
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put(AppConstants.RESPONSE, response);
@@ -39,7 +35,6 @@ public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.
 
 	public void OnAdLoaded(MoPubView moPubView) {
 		String response = moPubView.getResponseString();
-		Log.d("MOPUB TEST", "OnAdLoaded url=" + moPubView.getClickthroughUrl() + ",\n response=" + response);
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put(AppConstants.RESPONSE, response);
@@ -48,10 +43,8 @@ public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.
 	}
 
 	public void OnAdPresentedOverlay(MoPubView moPubView) {
-		Log.d("MOPUB TEST", "OnAdPresentedOverlay url=" + moPubView.getClickthroughUrl());
 	}
 
 	public void OnAdWillLoad(MoPubView moPubView, String url) {
-		Log.d("MOPUB TEST", "OnAdWillLoad url=" + url);
 	}
 }

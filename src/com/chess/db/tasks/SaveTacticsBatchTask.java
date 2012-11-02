@@ -46,6 +46,8 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
 			} else {
 				contentResolver.insert(uri, DBDataManager.putTacticItemToValues(tacticItem));
 			}
+
+			cursor.close();
 		}
 
         result = StaticData.RESULT_OK;
