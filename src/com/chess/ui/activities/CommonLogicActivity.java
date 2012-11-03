@@ -381,7 +381,10 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	private void processLogin(String[] response, String tempDebug) {
-		// from actionbar
+		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
+			return;
+		}
+
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 		try {
