@@ -50,7 +50,6 @@ import java.util.Calendar;
 public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private static final String DRAW_OFFER_TAG = "offer draw";
-	private static final String END_GAME_TAG = "end game popup";
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private View submitButtonsLay;
@@ -777,7 +776,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((SerialLinLay) layout);
 
-		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
@@ -829,13 +828,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			sendMove();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
-			endPopupFragment.dismiss();
+			dismissDialogs();
 			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
-            endPopupFragment.dismiss();
+			dismissDialogs();
 		}
 	}
 

@@ -37,8 +37,6 @@ import java.util.Calendar;
  */
 public class GameCompScreenActivity extends GameBaseActivity implements GameCompActivityFace {
 
-    private static final String END_GAME_TAG = "end game popup";
-
     private MenuOptionsDialogListener menuOptionsDialogListener;
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
@@ -383,7 +381,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         PopupItem popupItem = new PopupItem();
         popupItem.setCustomView((SerialLinLay) layout);
 
-        endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
         endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
 
         layout.findViewById(R.id.newGamePopupBtn).setVisibility(View.GONE);

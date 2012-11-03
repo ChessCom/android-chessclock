@@ -32,6 +32,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected static final String WHITE_WINS = "1-0";
 	protected static final String BLACK_WINS = "0-1";
 
+	protected static final String END_GAME_TAG = "end game popup";
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -45,7 +46,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
-	protected PopupCustomViewFragment endPopupFragment;
+//	protected PopupCustomViewFragment endPopupFragment;
 
 
 	protected CharSequence[] menuOptionsItems;
@@ -249,9 +250,19 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		if (view.getId() == R.id.homePopupBtn) {
 			backToHomeActivity();
 		} else if (view.getId() == R.id.reviewPopupBtn) {
-			endPopupFragment.dismiss();
+			dismissDialogs();
 		} else if (view.getId() == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		}
+	}
+
+	 protected void dismissDialogs() {
+		if (getEndPopupDialogFragment() != null) {
+			getEndPopupDialogFragment().dismiss();
+		}
+	}
+
+	protected PopupCustomViewFragment getEndPopupDialogFragment(){
+		return (PopupCustomViewFragment) getSupportFragmentManager().findFragmentByTag(END_GAME_TAG);
 	}
 }

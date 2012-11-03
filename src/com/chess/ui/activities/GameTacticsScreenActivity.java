@@ -34,6 +34,7 @@ import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
@@ -79,7 +80,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private static final String TACTIC_SOLVED_TAG = "tactic solved popup";
 	private static final String WRONG_MOVE_TAG = "wrong move popup";
 
-	private PopupCustomViewFragment customViewFragment;
+//	private PopupCustomViewFragment customViewFragment;
 	private LayoutInflater inflater;
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
@@ -157,6 +158,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	protected void onResume() {
 		super.onResume();
 
+		dismissDialogs();
 
 		if (firstRun) {
 			firstRun = false;
@@ -235,6 +237,16 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
+	protected void dismissDialogs() {
+		if (findFragmentByTag(WRONG_MOVE_TAG) != null) {
+			((BasePopupDialogFragment)findFragmentByTag(WRONG_MOVE_TAG)).dismiss();
+		}
+		if (findFragmentByTag(TACTIC_SOLVED_TAG) != null) {
+			((BasePopupDialogFragment)findFragmentByTag(TACTIC_SOLVED_TAG)).dismiss();
+		}
+	}
+
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		Log.d("TEST", " onSavedInstance called");
@@ -243,6 +255,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	protected void onPause() {
+		dismissDialogs();
 		super.onPause();
 
 		stopTacticsTimer();
@@ -278,10 +291,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 		}
 
-		Log.d("TEST", " customViewFragment != null ==" + (customViewFragment != null));
-		if (customViewFragment != null) {
-			customViewFragment.dismiss();
-		}
 	}
 
 	/**
@@ -408,7 +417,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
 
-		customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
 		customViewFragment.show(getSupportFragmentManager(), WRONG_MOVE_TAG);
 
 
@@ -451,7 +460,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
 
-		customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment  customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
 		customViewFragment.show(getSupportFragmentManager(), TACTIC_SOLVED_TAG);
 	}
 
@@ -886,7 +895,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.nextBtn) {
-			customViewFragment.dismiss();
+
+			dismissDialogs();
+
+//			customViewFragment.dismiss();
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
@@ -898,7 +910,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			boardView.setFinished(true);
 			getTacticItem().setStop(true);
 			stopTacticsTimer();
-			customViewFragment.dismiss();
+			dismissDialogs();
 		} else if (view.getId() == R.id.retryBtn) {
 
 			if (AppData.isGuest(this) || noInternet) {
@@ -907,13 +919,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				setTacticToBoard(getTacticItem(), 0);
 			}
 			getBoardFace().setRetry(true);
-			customViewFragment.dismiss();
+			dismissDialogs();
 
 		} else if (view.getId() == R.id.solutionBtn) {
 			showAnswer();
-			customViewFragment.dismiss();
+			dismissDialogs();
 		} else if (view.getId() == R.id.cancelBtn) {
-			customViewFragment.dismiss();
+
+			dismissDialogs();
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				cancelTacticAndLeave();
@@ -940,6 +953,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 		super.onPositiveBtnClick(fragment);
 	}
+
 
 	private void loadNewTacticsBatch() {
 		noInternet = !AppUtils.isNetworkAvailable(this);

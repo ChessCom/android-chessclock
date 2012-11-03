@@ -39,7 +39,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
-	private static final String END_GAME_TAG = "end game popup";
 
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
@@ -187,14 +186,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void onPause() {
-		if(endPopupFragment != null)
-			endPopupFragment.dismiss();
+		dismissDialogs();
+
 
 		super.onPause();
 		getLccHolder().setActivityPausedMode(true);
 
 		handler.removeCallbacks(blinkSubmitButton);
 	}
+
+
 
 	private void updateGameState() {
 		if (getBoardFace().isJustInitialized()) {
@@ -794,7 +795,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((SerialLinLay) layout);
 
-		endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
@@ -833,7 +834,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			startActivity(intent);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			getLccHolder().rematch();
-			endPopupFragment.dismiss();
+			dismissDialogs();
 		}
 	}
 }

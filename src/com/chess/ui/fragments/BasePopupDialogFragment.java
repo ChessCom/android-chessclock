@@ -108,11 +108,23 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 
     @Override
     public void dismiss() {
+		if (getDialog() != null) {
+			getDialog().dismiss();
+		}
 		Log.d("TEST", " isShowed || isVisible() " + (isShowed || isVisible()));
         if(isShowed || isVisible()) {
+			if (getDialog() != null) {
+				getDialog().dismiss();
+			}
 			super.dismiss();
 		}
         isShowed = false;
     }
 
+	@Override
+	public void onDestroyView() {
+		if (getDialog() != null && getRetainInstance())
+			getDialog().setOnDismissListener(null);
+		super.onDestroyView();
+	}
 }

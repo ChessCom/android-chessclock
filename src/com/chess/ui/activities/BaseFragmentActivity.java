@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -148,6 +149,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		popupItem.setNegativeBtnId(R.string.cancel);
 		fragment.setCancelable(true);
 		fragment.dismiss();
+	}
+
+	protected Fragment findFragmentByTag(String tag) {
+		return getSupportFragmentManager().findFragmentByTag(tag);
+	}
+
+	protected Fragment findFragmentById (int id) {
+		 return getSupportFragmentManager().findFragmentById(id);
 	}
 
 	public void showKeyBoard(EditText editText){

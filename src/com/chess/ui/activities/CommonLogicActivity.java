@@ -201,7 +201,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			// Device is already registered on GCM, check server.
 			if (GCMRegistrar.isRegisteredOnServer(this) && AppData.isRegisterOnChessGCM(this)) {
 				// Skips registration.
-				Log.d("TEST", "already registered");
 			} else {
 				// Try to register again, but not in the UI thread.
 				// It's also necessary to cancel the thread onDestroy(),
@@ -213,8 +212,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
-				Log.d("GCMIntentService", "Registering to server, registrationId = " + registrationId
-						+ " \ntoken = " + AppData.getUserToken(this));
 			}
 		}
 	}
@@ -244,7 +241,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		@Override
 		public void updateData(String returnedObj) {
 			super.updateData(returnedObj);
-			Log.d("TEST", "PostUpdateListener -> updateDate = " + returnedObj);
 
 			GSMServerResponseItem responseItem = parseJson(returnedObj);
 
