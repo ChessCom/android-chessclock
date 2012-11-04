@@ -80,7 +80,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private static final String TACTIC_SOLVED_TAG = "tactic solved popup";
 	private static final String WRONG_MOVE_TAG = "wrong move popup";
 
-//	private PopupCustomViewFragment customViewFragment;
 	private LayoutInflater inflater;
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
@@ -126,7 +125,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
-		Log.d("TEST", "first run = " + firstRun);
 		boardView.setBoardFace(chessBoard);
 
 		timerTxt = (TextView) findViewById(R.id.timerTxt);
@@ -150,8 +148,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		Log.d("TEST", " onRestoreInstanceState called");
-
-		// TODO change default method
 	}
 
 	@Override
@@ -250,7 +246,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		Log.d("TEST", " onSavedInstance called");
-		// TODO change default method
 	}
 
 	@Override
@@ -286,7 +281,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			// start task for saving tactics batch here
 			if (getTacticsBatch() != null) {
-				Log.d("TEST", " getTacticsBatch() cnt = " + getTacticsBatch().size() + " user = " + userName);
 				new SaveTacticsBatchTask(dbTacticBatchSaveListener, getTacticsBatch()).executeTask();
 			}
 		}
@@ -536,7 +530,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		@Override
 		public void updateData(String returnedObj) {
 			String[] tmp = returnedObj.trim().split("[|]");
-			if (tmp.length < 3 || tmp[2].trim().equals(StaticData.SYMBOL_EMPTY)) {
+			if (tmp.length < 2) {
 				showLimitDialog();   // This is also wrong step, because we should never reach this condition
 				return;
 			}
@@ -553,9 +547,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			TacticsDataHolder.getInstance().setCurrentTacticProblem(0);
 			TacticsDataHolder.getInstance().setTacticsBatch(tacticBatch);
 
-//			if (getTacticItem() == null) {
-				getTacticFromBatch();
-//			}
+			getTacticFromBatch();
 		}
 
 		@Override
@@ -898,7 +890,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 			dismissDialogs();
 
-//			customViewFragment.dismiss();
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
