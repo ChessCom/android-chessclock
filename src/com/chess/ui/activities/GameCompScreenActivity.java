@@ -99,6 +99,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	protected void onResume() {
 		super.onResume();
 
+		if (boardView.isComputerMoving()) { // explicit init
+			ChessBoardComp.getInstance(this);
+		}
+
 		if (!getBoardFace().isAnalysis()) {
 
 			boolean isComputerMove = (AppData.isComputerVsComputerGameMode(getBoardFace()))
@@ -115,10 +119,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	protected void onPause() {
 		super.onPause();
 		if (AppData.isComputerVsComputerGameMode(getBoardFace()) || AppData.isComputerVsHumanGameMode(getBoardFace())
-				&& boardView.isComputerMoving()) {
+				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 			//boardView.stopThinking();
 			boardView.stopComputerMove();
-//			ChessBoardComp.resetInstance(); // how we restore it after resume?
+			ChessBoardComp.resetInstance(); // how we restore it after resume?
+			// - it was implicitly initialized in onResume - onDraw - isComputerMoving method.
+			// we reset the current instance because Comp Search method stains the current board instance when searches a move.
+			// one of the alternative solutions is to clone Board instance somehow and put it to Comp Search method in order to hold original board
 		}
 
 		if (getBoardFace().getMode() != extras.getInt(AppConstants.GAME_MODE)) {
