@@ -74,6 +74,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private String timeRemains;
 	private TextView infoLabelTxt;
 	private IntentFilter boardUpdateFilter;
+	private BroadcastReceiver moveUpdateReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -150,14 +151,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		// TODO change default method
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
+		moveUpdateReceiver = new MoveUpdateReceiver();
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 	}
 
@@ -165,18 +161,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	protected void onPause() {
 		super.onPause();
 
-		unregisterReceiver(moveUpdateReceiver);
+		unRegisterMyReceiver(moveUpdateReceiver);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		// TODO change default method
-	}
-
-	private BroadcastReceiver moveUpdateReceiver = new BroadcastReceiver() {
+	private class MoveUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			updateGameState();

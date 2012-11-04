@@ -72,8 +72,9 @@ class MraidDisplayController extends MraidAbstractController {
     // This is needed to restore the Activity's requested orientation in the event that the view
     // itself requires an orientation lock.
     private final int mOriginalRequestedOrientation;
-    
-    private BroadcastReceiver mOrientationBroadcastReceiver = new BroadcastReceiver() {
+	private OrientationBroadcastReceiver mOrientationBroadcastReceiver;
+
+	private class OrientationBroadcastReceiver extends BroadcastReceiver {
         private int mLastRotation;
         
         public void onReceive(Context context, Intent intent) {
@@ -128,6 +129,7 @@ class MraidDisplayController extends MraidAbstractController {
         mViewState = ViewState.LOADING;
         initializeScreenMetrics();
         initializeViewabilityTimer();
+		mOrientationBroadcastReceiver = new OrientationBroadcastReceiver();
         getView().getContext().registerReceiver(mOrientationBroadcastReceiver, 
                 new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
     }
@@ -176,13 +178,19 @@ class MraidDisplayController extends MraidAbstractController {
     public void destroy() {
         mHandler.removeCallbacks(mCheckViewabilityTask);
         try {
-            getView().getContext().unregisterReceiver(mOrientationBroadcastReceiver);
+            unRegisterMyReceiver(mOrientationBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Receiver not registered")) {
                 // Ignore this exception.
             } else throw e;
         }
     }
+
+	protected void unRegisterMyReceiver(BroadcastReceiver broadcastReceiver) {
+		if (broadcastReceiver != null) {
+			getView().getContext().unregisterReceiver(broadcastReceiver);
+		}
+	}
     
     protected void initializeJavaScriptState() {
         ArrayList<MraidProperty> properties = new ArrayList<MraidProperty>();

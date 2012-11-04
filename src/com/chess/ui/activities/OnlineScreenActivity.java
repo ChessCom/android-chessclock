@@ -66,6 +66,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private boolean onVacation;
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
 	private IntentFilter listUpdateFilter;
+	private BroadcastReceiver gamesUpdateReceiver;
 
 
 	@Override
@@ -133,6 +134,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onResume();
 		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
 
+		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
@@ -145,7 +147,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	protected void onPause() {
 		super.onPause();
 
-		unregisterReceiver(gamesUpdateReceiver);
+		unRegisterMyReceiver(gamesUpdateReceiver);
 		handler.removeCallbacks(updateListOrder);
 
 		cleanTaskPool();
@@ -480,7 +482,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		return true;
 	}
 
-	private BroadcastReceiver gamesUpdateReceiver = new BroadcastReceiver() {
+	private class GamesUpdateReceiver extends BroadcastReceiver  {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			updateStartingType(GameOnlineItem.CURRENT_TYPE);

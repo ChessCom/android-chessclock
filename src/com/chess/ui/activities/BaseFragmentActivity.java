@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -127,6 +128,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	public boolean isChangingConfiguration() {
 		return changingConfiguration;
+	}
+
+	protected void unRegisterMyReceiver(BroadcastReceiver broadcastReceiver) {
+		if (broadcastReceiver != null) {
+			unregisterReceiver(broadcastReceiver);
+		}
 	}
 
 	@Override

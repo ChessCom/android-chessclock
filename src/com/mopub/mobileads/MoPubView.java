@@ -191,13 +191,17 @@ public class MoPubView extends FrameLayout implements Serializable {
     private void unregisterScreenStateBroadcastReceiver() {
         try {
 			Log.d(AdView.MOPUB, "unregisterScreenStateBroadcastReceiver ");
-            mContext.unregisterReceiver(mScreenStateReceiver);
+            unRegisterMyReceiver(mScreenStateReceiver);
         } catch (Exception IllegalArgumentException) {
             Log.e(AdView.MOPUB, "Failed to unregister screen state broadcast receiver (never registered).");
         }
     }
 
-
+	protected void unRegisterMyReceiver(BroadcastReceiver broadcastReceiver) {
+		if (broadcastReceiver != null) {
+			mContext.unregisterReceiver(broadcastReceiver);
+		}
+	}
 
     private BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
