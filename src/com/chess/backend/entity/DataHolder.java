@@ -21,7 +21,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	private boolean isAdsLoading;
 
 	// Echess mode game variables
-	private final List<GamePlayingItem> playingGamesList;  // will be re-created every time user open the game. If it's killed, means we are not in the game.
+	private final GamePlayingItem playingGameItem;  // will be re-created every time user open the game. If it's killed, means we are not in the game.
 
 	/**
 	 * This list holds the info about last received notification to prevent overflow
@@ -32,7 +32,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 
 
 	private DataHolder() {
-		playingGamesList = new ArrayList<GamePlayingItem>();
+		playingGameItem = new GamePlayingItem();
 		lastMoveInfoItems = new ArrayList<LastMoveInfoItem>();
 	}
 
@@ -62,11 +62,9 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	 * @return
 	 */
 	public synchronized boolean inOnlineGame(long gameId) {
-		synchronized (playingGamesList) {
-			for (GamePlayingItem gamePlayingItem : playingGamesList) {
-				if (gamePlayingItem.getGameId() == gameId){
-					return gamePlayingItem.isBoardOpen();
-				}
+		synchronized (playingGameItem) {
+			if (playingGameItem.getGameId() == gameId){
+				return playingGameItem.isBoardOpen();
 			}
 		}
 
@@ -79,18 +77,9 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	 * @param gameOpen flag that shows if current game board is opened to user
 	 */
 	public void setInOnlineGame(long gameId, boolean gameOpen) {
-		synchronized (playingGamesList) {
-			for (GamePlayingItem gamePlayingItem : playingGamesList) {
-				if(gamePlayingItem.getGameId() == gameId){
-					gamePlayingItem.setBoardOpen(gameOpen);
-					return;
-				}
-			}
-
-			GamePlayingItem newGameItem = new GamePlayingItem();
-			newGameItem.setGameId(gameId);
-			newGameItem.setBoardOpen(gameOpen);
-			playingGamesList.add(newGameItem);
+		synchronized (playingGameItem) {
+			playingGameItem.setGameId(gameId);
+			playingGameItem.setBoardOpen(gameOpen);
 		}
 	}
 

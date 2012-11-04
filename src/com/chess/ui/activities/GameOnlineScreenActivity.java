@@ -171,7 +171,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		public void onReceive(Context context, Intent intent) {
 			updateGameState();
 		}
-	};
+	}
 
 	private void updateGameState() {
 		if (getBoardFace().isJustInitialized()) {
@@ -210,6 +210,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		getSoundPlayer().playGameStart();
 
 		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 		gamePanelView.enableGameControls(true);
 		boardView.lockBoard(false);
 
