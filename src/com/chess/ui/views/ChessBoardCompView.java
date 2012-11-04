@@ -228,6 +228,9 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
         if (!isComputerMoving()) {
 			drawPieces(canvas);
+			drawHighlight(canvas);
+			drawDragPosition(canvas);
+			drawTrackballDrag(canvas);
         } else {
             for (int i = 0; i < 64; i++) {
                 if (drag && i == from)
@@ -245,13 +248,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }
 
 		drawCoordinates(canvas);
-
-		drawHighlight(canvas);
-
-		drawDragPosition(canvas);
-
-		drawTrackballDrag(canvas);
-
 		drawCapturedPieces();
     }
 
