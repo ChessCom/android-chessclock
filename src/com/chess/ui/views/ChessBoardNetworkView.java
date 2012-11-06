@@ -174,7 +174,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			if(whiteUserName.equals(StaticData.SYMBOL_EMPTY) || blackUserName.equals(StaticData.SYMBOL_EMPTY))
 				return true;
 
-			if (whiteUserName.equals(userName)  && !boardFace.isWhiteToMove()) {
+			if (whiteUserName.equals(userName)  && !boardFace.isWhiteToMove()) {  // TODO check reside
 				return true;
 			}
 			if (blackUserName.equals(userName) && boardFace.isWhiteToMove()) {

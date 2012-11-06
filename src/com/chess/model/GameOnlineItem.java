@@ -2,6 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.backend.RestHelper;
 
 /**
  * @author alien_roger
@@ -18,29 +19,33 @@ public class GameOnlineItem extends BaseGameItem {
 	private String encodedMoveStr;
 
 	protected String gameName;
-	protected String gameType;
+	protected int gameType;
 	protected String fenStartPosition;
 
-	private String rated;
-	private String daysPerMove;
+	private boolean rated;
+	private int daysPerMove;
+	private boolean userOfferedDraw;
+
+	public GameOnlineItem() {
+	}
 
 	public GameOnlineItem(String[] values) {
 		gameId = Long.valueOf(values[0].split("[+]")[1]);
-		gameType = values[1];
+		gameType = Integer.parseInt(values[1]);
 		timestamp = Long.valueOf(values[2]);
 		gameName =  values[3];
 		whiteUsername = values[4].trim();
 		blackUsername = values[5].trim();
 		fenStartPosition =  values[6];
 		moveList = values[7];
-		whiteUserMove = values[8].equals("1");
-		whiteRating = values[9];
-		blackRating = values[10];
+		whiteUserMove = values[8].equals(RestHelper.V_ONE);
+		whiteRating = Integer.parseInt(values[9]);
+		blackRating = Integer.parseInt(values[10]);
 		encodedMoveStr = values[11];
-		hasNewMessage = values[12].equals("1");
-		secondsRemain = values[13];
-		rated = values[16];
-		daysPerMove = values[17];
+		hasNewMessage = values[12].equals(RestHelper.V_ONE);
+		secondsRemain = Long.parseLong(values[13]);
+		rated = values[16].equals(RestHelper.V_ONE);
+		daysPerMove = Integer.parseInt(values[17]);
 	}
 
 	public String getEncodedMoveStr() {
@@ -55,7 +60,7 @@ public class GameOnlineItem extends BaseGameItem {
 		return gameName;
 	}
 
-	public String getGameType() {
+	public int getGameType() {
 		return gameType;
 	}
 
@@ -63,28 +68,53 @@ public class GameOnlineItem extends BaseGameItem {
 		return whiteUserMove;
 	}
 
-	public String getRated() {
+	public boolean getRated() {
 		return rated;
 	}
 
-	public String getDaysPerMove() {
+	public int getDaysPerMove() {
 		return daysPerMove;
 	}
 
+	public void setDaysPerMove(int daysPerMove) {
+		this.daysPerMove = daysPerMove;
+	}
 
+	public void setEncodedMoveStr(String encodedMoveStr) {
+		this.encodedMoveStr = encodedMoveStr;
+	}
+
+	public void setFenStartPosition(String fenStartPosition) {
+		this.fenStartPosition = fenStartPosition;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
+	}
+
+	public void setGameType(int gameType) {
+		this.gameType = gameType;
+	}
+
+	public void setRated(boolean rated) {
+		this.rated = rated;
+	}
+
+	public void setWhiteUserMove(boolean whiteUserMove) {
+		this.whiteUserMove = whiteUserMove;
+	}
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
 		writeBaseGameParcel(parcel);
 
 		// own write
-		parcel.writeBooleanArray(new boolean[] {whiteUserMove});
+		parcel.writeBooleanArray(new boolean[]{whiteUserMove, userOfferedDraw, rated});
 		parcel.writeString(encodedMoveStr);
 		parcel.writeString(gameName);
-		parcel.writeString(gameType);
+		parcel.writeInt(gameType);
 		parcel.writeString(fenStartPosition);
-		parcel.writeString(rated);
-		parcel.writeString(daysPerMove);
+		parcel.writeInt(daysPerMove);
 	}
 
 
@@ -100,14 +130,25 @@ public class GameOnlineItem extends BaseGameItem {
 
 	private GameOnlineItem(Parcel in) {
 		readBaseGameParcel(in);
-
-		in.readBooleanArray(new boolean[] {whiteUserMove});
+		// own read
+		boolean[] booleans = new boolean[3];
+		in.readBooleanArray(booleans);
+		whiteUserMove = booleans[0];
+		userOfferedDraw = booleans[1];
+		rated = booleans[2];
 
 		encodedMoveStr = in.readString();
 		gameName = in.readString();
-		gameType = in.readString();
+		gameType = in.readInt();
 		fenStartPosition = in.readString();
-		rated = in.readString();
-		daysPerMove = in.readString();
+		daysPerMove = in.readInt();
+	}
+
+	public void setUserOfferedDraw(boolean userOfferedDraw){
+		this.userOfferedDraw = userOfferedDraw;
+	}
+
+	public boolean isUserOfferedDraw() {
+		return userOfferedDraw;
 	}
 }

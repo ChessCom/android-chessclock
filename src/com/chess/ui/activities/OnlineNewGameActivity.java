@@ -161,7 +161,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, gameListElement.getGameId());
 			successToastMsgId = R.string.challengeaccepted;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -181,7 +181,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, gameListElement.getGameId());
 			successToastMsgId = R.string.challengedeclined;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);

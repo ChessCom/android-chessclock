@@ -4,13 +4,13 @@ import com.chess.backend.statics.StaticData;
 
 public class TacticItem {
 
-	private String id;
+	private long id;
 	private String fen;
 	private String moveList;
-	private String attemptCnt;
-	private String passedCnt;
-	private String rating;
-	private String avgSeconds;
+	private int attemptCnt;
+	private int passedCnt;
+	private int rating;
+	private int avgSeconds;
 	private boolean stop;
 	private String user;
 
@@ -18,34 +18,30 @@ public class TacticItem {
 	}
 
 	public TacticItem(String[] values) {
-		id = values[0];
+		id = Long.parseLong(values[0]);
 		fen = values[1];
 		moveList = values[2];
-		attemptCnt = values[3];
-		passedCnt = values[4];
-		rating = values[5];
-		avgSeconds = values[6];
+		attemptCnt = Integer.parseInt(values[3]);
+		passedCnt = Integer.parseInt(values[4]);
+		rating = Integer.parseInt(values[5]);
+		avgSeconds = Integer.parseInt(values[6]);
 	}
 
 
 
-	public String getAttemptCnt() {
+	public int getAttemptCnt() {
 		return attemptCnt;
 	}
 
-	public String getAvgSeconds() {
+	public int getAvgSeconds() {
 		return avgSeconds;
-	}
-
-	public int getAvgSecondsInt() {
-		return Integer.parseInt(avgSeconds);
 	}
 
 	public String getFen() {
 		return fen;
 	}
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -53,11 +49,11 @@ public class TacticItem {
 		return moveList;
 	}
 
-	public String getPassedCnt() {
+	public int getPassedCnt() {
 		return passedCnt;
 	}
 
-	public String getRating() {
+	public int getRating() {
 		return rating;
 	}
 
@@ -69,11 +65,11 @@ public class TacticItem {
 		this.stop = stop;
 	}
 
-	public void setAttemptCnt(String attemptCnt) {
+	public void setAttemptCnt(int attemptCnt) {
 		this.attemptCnt = attemptCnt;
 	}
 
-	public void setAvgSeconds(String avgSeconds) {
+	public void setAvgSeconds(int avgSeconds) {
 		this.avgSeconds = avgSeconds;
 	}
 
@@ -81,7 +77,7 @@ public class TacticItem {
 		this.fen = fen;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -89,11 +85,11 @@ public class TacticItem {
 		this.moveList = moveList;
 	}
 
-	public void setPassedCnt(String passedCnt) {
+	public void setPassedCnt(int passedCnt) {
 		this.passedCnt = passedCnt;
 	}
 
-	public void setRating(String rating) {
+	public void setRating(int rating) {
 		this.rating = rating;
 	}
 

@@ -219,5 +219,4 @@ public class AppData {
 		editor.commit();
 	}
 
-
 }

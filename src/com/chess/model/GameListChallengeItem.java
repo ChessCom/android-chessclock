@@ -5,28 +5,28 @@ import android.os.Parcelable;
 
 public class GameListChallengeItem extends BaseGameOnlineItem{
 
-	private String opponentWinCount;
-	private String opponentLossCount;
-	private String opponentDrawCount;
-	private String playAsColor;
-	private String daysPerMove;
+	private int opponentWinCount;
+	private int opponentLossCount;
+	private int opponentDrawCount;
+	private int playAsColor;
+	private int daysPerMove;
 	private String initialSetupFen;
-	private String isRated;
+	private boolean isRated;
 
 
 	public GameListChallengeItem(String[] values) {
 		gameId = Long.parseLong(values[0].trim());
 		opponentName = values[1];
-		opponentRating = values[2];
+		opponentRating = Integer.parseInt(values[2]);
 
-		opponentWinCount = values[3];
-		opponentLossCount = values[4];
-		opponentDrawCount = values[5];
+		opponentWinCount = Integer.parseInt(values[3]);
+		opponentLossCount = Integer.parseInt(values[4]);
+		opponentDrawCount = Integer.parseInt(values[5]);
 
-		playAsColor = values[6];
-		daysPerMove = values[7];
-		gameType = values[8];
-		isRated = values[9];
+		playAsColor = Integer.parseInt(values[6]);
+		daysPerMove = Integer.parseInt(values[7]);
+		gameType = Integer.parseInt(values[8]);
+		isRated = values[9].equals("1");
 		initialSetupFen = values[10];
 	}
 	
@@ -34,31 +34,31 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		return opponentName;
 	}
 	
-	public String getOpponentRating(){
+	public int getOpponentRating(){
 		return opponentRating;
 	}
 
-	public String getOpponentWinCount(){
+	public int getOpponentWinCount(){
 		return opponentWinCount;
 	}
 
-	public String getOpponentLossCount(){
+	public int getOpponentLossCount(){
 		return opponentLossCount;
 	}
 
-	public String getOpponentDrawCount() {
+	public int getOpponentDrawCount() {
 		return opponentDrawCount;
 	}
 
-	public String getPlayAsColor() {
+	public int getPlayAsColor() {
 		return playAsColor;
 	}
 
-	public String getGameType() {
+	public int getGameType() {
 		return gameType;
 	}
 
-	public String getRated() {
+	public boolean getRated() {
 		return isRated;
 	}
 
@@ -66,7 +66,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		return initialSetupFen;
 	}
 
-	public String getDaysPerMove() {
+	public int getDaysPerMove() {
 		return daysPerMove;
 	}
 
@@ -103,11 +103,11 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		writeBaseGameParcel(parcel);
 
 		// own write
-		parcel.writeString(opponentWinCount);
-		parcel.writeString(opponentLossCount);
-		parcel.writeString(opponentDrawCount);
-		parcel.writeString(playAsColor);
-		parcel.writeString(daysPerMove);
+		parcel.writeInt(opponentWinCount);
+		parcel.writeInt(opponentLossCount);
+		parcel.writeInt(opponentDrawCount);
+		parcel.writeInt(playAsColor);
+		parcel.writeInt(daysPerMove);
 		parcel.writeString(initialSetupFen);
 		parcel.writeString(isRated);
 	}
@@ -126,11 +126,11 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 	private GameListChallengeItem(Parcel in) {
 		readBaseGameParcel(in);
 
-		opponentWinCount = in.readString();
-		opponentLossCount = in.readString();
-		opponentDrawCount = in.readString();
-		playAsColor = in.readString();
-		daysPerMove = in.readString();
+		opponentWinCount = in.readInt();
+		opponentLossCount = in.readInt();
+		opponentDrawCount = in.readInt();
+		playAsColor = in.readInt();
+		daysPerMove = in.readInt();
 		initialSetupFen = in.readString();
 		isRated = in.readString();
 	}

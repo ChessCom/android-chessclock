@@ -54,10 +54,10 @@ public class GameLiveItem extends BaseGameItem {
 			blackRating = 0;
 		}
 
-		this.whiteRating = String.valueOf(whiteRating);
-		this.blackRating = String.valueOf(blackRating);
+		this.whiteRating = whiteRating;
+		this.blackRating = blackRating;
 
-		secondsRemain = String.valueOf(lccGame.getGameTimeConfig().getBaseTime() / 10);
+		secondsRemain = (lccGame.getGameTimeConfig().getBaseTime() / 10);
 	}
 
 	@Override

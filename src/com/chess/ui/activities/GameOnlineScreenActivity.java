@@ -6,6 +6,7 @@ import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.db.DBConstants;
+import com.chess.db.DBDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
@@ -120,14 +123,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		gameId = gameInfoItem.getGameId();
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
-		menuOptionsItems = new CharSequence[]{
-				getString(R.string.settings),
-				getString(R.string.messages),
-				getString(R.string.emailgame),
-				getString(R.string.reside),
-				getString(R.string.drawoffer),
-				getString(R.string.resignorabort)};
-
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		abortGameUpdateListener = new AbortGameUpdateListener();
 		drawOfferedUpdateListener = new DrawOfferedUpdateListener();
@@ -177,12 +172,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (getBoardFace().isJustInitialized()) {
 			getOnlineGame(gameId);
 			getBoardFace().setJustInitialized(false);
-		} else {
+		} else if (!isUserMove()) {
+
 			// TODO don't check updates if it' our move
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_GID, gameId);
 
 			updateGameStateTask = new GetStringObjTask(gameStateUpdateListener).executeTask(loadItem);
 		}
@@ -192,7 +188,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
+		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 
 		new GetStringObjTask(startGameUpdateListener).executeTask(loadItem);
 	}
@@ -201,22 +197,22 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			onGameStarted(returnedObj);
+			showSubmitButtonsLay(false);
+			getSoundPlayer().playGameStart();
+
+			Log.d("TEST", "Start of game");
+			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+
+			DBDataManager.updateOnlineGame(getContext(), currentGame);
+			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+
+			gamePanelView.enableGameControls(true);
+			boardView.lockBoard(false);
+
+			checkMessages();
+
+			adjustBoardForGame();
 		}
-	}
-
-	private void onGameStarted(String returnedObj) {
-		showSubmitButtonsLay(false);
-		getSoundPlayer().playGameStart();
-
-		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
-		gamePanelView.enableGameControls(true);
-		boardView.lockBoard(false);
-
-		checkMessages();
-
-		adjustBoardForGame();
 	}
 
 	private void adjustBoardForGame() {
@@ -230,8 +226,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 
 		BoardFace boardFace = getBoardFace(); 
-		if (currentGame.getGameType().equals("2"))
+		if (currentGame.getGameType() == BaseGameItem.CHESS_960) {
 			boardFace.setChess960(true);
+		}
 
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
@@ -242,7 +239,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			boardFace.genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardFace);
 		}
-		if (currentGame.getMoveList().contains("1.")) {
+
+		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			int beginIndex = 1;
 			String[] moves = currentGame.getMoveList()
 					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
@@ -269,7 +267,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+			Log.d("TEST", "Game update");
+
+			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+
+			DBDataManager.updateOnlineGame(getContext(), currentGame);
+
 			gamePanelView.enableGameControls(true);
 			boardView.lockBoard(false);
 
@@ -294,7 +297,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			updatePlayerDots(!userPlayWhite);
 		}
 
-		if (currentGame.getMoveList().contains("1.")) {
+		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			int beginIndex = 1;
 
 			String[] moves = currentGame.getMoveList()
@@ -352,7 +355,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_GID, gameId);
 
 			new GetStringObjTask(getGameUpdateListener).executeTask(loadItem);
 		} else {
@@ -367,10 +370,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+		loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
+		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 		new GetStringObjTask(sendMoveUpdateListener).executeTask(loadItem);
 	}
@@ -380,7 +383,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
+			Log.d("TEST", "Get game update");
+
+			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+
+			DBDataManager.updateOnlineGame(getContext(), currentGame);
+
 			gamePanelView.enableGameControls(true);
 			boardView.lockBoard(false);
 
@@ -538,6 +546,33 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	@Override
 	public void showOptions() {
+/*
+		Offer draw should be able only after the first move was made.
+		Also Abort should change to Resign after that.
+*/
+		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
+				.equals(AppData.getUserName(this));
+
+		boolean userMove =  (currentGame.isWhiteMove() && userPlayWhite)
+				|| (!currentGame.isWhiteMove() && !userPlayWhite);
+
+		if (getBoardFace().getHply() < 1 && userMove) {
+			menuOptionsItems = new CharSequence[]{
+					getString(R.string.settings),
+					getString(R.string.messages),
+					getString(R.string.emailgame),
+					getString(R.string.reside),
+					getString(R.string.abort)};
+		} else {
+			menuOptionsItems = new CharSequence[]{
+					getString(R.string.settings),
+					getString(R.string.messages),
+					getString(R.string.emailgame),
+					getString(R.string.reside),
+					getString(R.string.drawoffer),
+					getString(R.string.resign)};
+		}
+
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
 				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
@@ -633,7 +668,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				result = WHITE_WINS;
 			}
 		}
-		int daysPerMove = Integer.parseInt(currentGame.getDaysPerMove());
+		int daysPerMove = currentGame.getDaysPerMove();
 		StringBuilder timeControl = new StringBuilder();
 		timeControl.append("1 in ").append(daysPerMove);
 		if (daysPerMove > 1){
@@ -678,15 +713,21 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				draw = RestHelper.V_ACCEPTDRAW;
 			} else {
 				draw = RestHelper.V_OFFERDRAW;
+				// save at this point state to DB
+				currentGame.setUserOfferedDraw(true);
+				String[] arguments = new String[]{String.valueOf(currentGame.isUserOfferedDraw())};
+				getContentResolver().update(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+						DBDataManager.putGameOnlineItemToValues(currentGame, AppData.getUserName(this)),
+						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
 			}
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 			new GetStringObjTask(drawOfferedUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(ABORT_GAME_TAG)) {
@@ -695,9 +736,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestampStr());
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 			new GetStringObjTask(abortGameUpdateListener).executeTask(loadItem);
 		} else if(tag.equals(ERROR_TAG)){
@@ -781,9 +822,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private int getCurrentPlayerRating() {
 		if (userPlayWhite) {
-			return Integer.valueOf(currentGame.getWhiteRating());
+			return currentGame.getWhiteRating();
 		} else {
-			return Integer.valueOf(currentGame.getBlackRating());
+			return currentGame.getBlackRating();
 		}
 	}
 
@@ -832,20 +873,20 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (updateGameStateTask != null)
+		if (updateGameStateTask != null) {
 			updateGameStateTask.cancel(true);
+		}
 	}
 
 	private void sendRematch() {
 		String opponent;
-		String color; // reversed color
+		int color; // reversed color
 		if (userPlayWhite) {
 			opponent = currentGame.getBlackUsername();
-			color = "2";
-		}
-		else {
+			color = 2;
+		} else {
 			opponent = currentGame.getWhiteUsername();
-			color = "1";
+			color = 1;
 		}
 
 		LoadItem loadItem = new LoadItem();
@@ -853,7 +894,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
 		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, currentGame.getDaysPerMove());
 		loadItem.addRequestParams(RestHelper.P_IPLAYAS, color);
-		loadItem.addRequestParams(RestHelper.P_ISRATED, currentGame.getRated());
+		loadItem.addRequestParams(RestHelper.P_ISRATED, currentGame.getRated()? 1 : 0);
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, currentGame.getGameType());
 		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponent);
 

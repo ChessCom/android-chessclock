@@ -84,7 +84,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	private void onRequestSent(String response){
 		String[] friends;
 
-		friends = ChessComApiParser.GetFriendsParse(response);
+		friends = ChessComApiParser.getFriendsParse(response);
 
 		friendsSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromArray(friends)));
 		if (friendsSpnr.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
@@ -115,10 +115,10 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, String.valueOf(days));
-		loadItem.addRequestParams(RestHelper.P_IPLAYAS, String.valueOf(color));
-		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(isRated));
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, String.valueOf(gameType));
+		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, days);
+		loadItem.addRequestParams(RestHelper.P_IPLAYAS, color);
+		loadItem.addRequestParams(RestHelper.P_ISRATED, isRated);
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
 		loadItem.addRequestParams(RestHelper.P_OPPONENT, friendsSpnr.getSelectedItem().toString().trim());
 
 		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);

@@ -1,8 +1,13 @@
 package com.chess.db;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import com.chess.backend.statics.AppData;
 import com.chess.model.GameListFinishedItem;
+import com.chess.model.GameOnlineItem;
 import com.chess.model.TacticItem;
 
 /**
@@ -15,16 +20,23 @@ public class DBDataManager {
 
 	private static final String ORDER_BY = "ORDER BY";
 	private static final String GROUP_BY = "GROUP BY";
-	public static final String OPERATOR_OR = " OR ";
-	public static final String OPERATOR_LIKE = " LIKE ";
-	public static final String OPERATOR_AND = " AND ";
-	public static final String OPERATOR_MORE = " > ";
-	public static final String OPERATOR_EQUALS = " = ";
+	public static final String SLASH_ = "/";
+	public static final String OR_ = " OR ";
+	public static final String LIKE_ = " LIKE ";
+	public static final String AND_ = " AND ";
+	public static final String MORE_ = " > ";
+	public static final String EQUALS_ = " = ";
+	public static final String EQUALS_ARG_ = "=?";
+
+	public static String[] arguments1 = new String[1];
+	public static String[] arguments2 = new String[2];
+	public static String[] arguments3 = new String[3];
 
 	public static String SELECTION_ITEM_ID_AND_USER;
 	public static String SELECTION_TACTIC_BATCH_USER;
 	public static String SELECTION_ID;
 	public static String SELECTION_GAME_ID;
+	public static String SELECTION_USER_OFFERED_DRAW;
 
 	public static final String[] PROJECTION_ID = new String[] {
 			DBConstants._ID
@@ -43,39 +55,79 @@ public class DBDataManager {
 
 	public static final String[] PROJECTION_GAME_ID = new String[] {
 			DBConstants._ID,
+			DBConstants.V_USER,
 			DBConstants.V_GAME_ID
 	};
 
 	static {
 		StringBuilder selection = new StringBuilder();
 		selection.append(DBConstants._ID);
-		selection.append("=?");
+		selection.append(EQUALS_ARG_);
 		SELECTION_ID = selection.toString();
 	}
 
 	static {
 		StringBuilder selection = new StringBuilder();
 		selection.append(DBConstants.V_TACTIC_ID);
-		selection.append("=?");
-		selection.append(OPERATOR_AND);
+		selection.append(EQUALS_ARG_);
+		selection.append(AND_);
 		selection.append(DBConstants.V_USER);
-		selection.append("=?");
+		selection.append(EQUALS_ARG_);
 		SELECTION_ITEM_ID_AND_USER = selection.toString();
 	}
 
 	static {
 		StringBuilder selection = new StringBuilder();
 		selection.append(DBConstants.V_USER);
-		selection.append("=?");
+		selection.append(EQUALS_ARG_);
 		SELECTION_TACTIC_BATCH_USER = selection.toString();
 	}
 
 	static {
 		StringBuilder selection = new StringBuilder();
+		selection.append(DBConstants.V_USER);
+		selection.append(EQUALS_ARG_);
+		selection.append(AND_);
 		selection.append(DBConstants.V_GAME_ID);
-		selection.append("=?");
+		selection.append(EQUALS_ARG_);
 		SELECTION_GAME_ID = selection.toString();
 	}
+
+	static {
+		StringBuilder selection = new StringBuilder();
+		selection.append(DBConstants.V_USER);
+		selection.append(EQUALS_ARG_);
+		selection.append(AND_);
+		selection.append(DBConstants.V_GAME_ID);
+		selection.append(EQUALS_ARG_);
+		selection.append(AND_);
+		selection.append(DBConstants.V_USER_OFFERED_DRAW);
+		selection.append(EQUALS_ARG_);
+		SELECTION_USER_OFFERED_DRAW = selection.toString();
+	}
+
+	public static void updateOnlineGame(Context context, GameOnlineItem currentGame) {
+		String userName = AppData.getUserName(context);
+		ContentResolver contentResolver = context.getContentResolver();
+
+		arguments2[0] = userName;
+		arguments2[1] = String.valueOf(currentGame.getGameId());
+
+		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, PROJECTION_GAME_ID, SELECTION_GAME_ID,
+				arguments2, null);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(Uri.parse(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI.toString() + SLASH_ + DBDataManager.getId(cursor)),
+					putGameOnlineItemToValues(currentGame, userName), null, null);
+		} else {
+			contentResolver.insert(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, putGameOnlineItemToValues(currentGame, userName));
+		}
+
+		cursor.close();
+
+		// TODO change body of created methods use File | Settings | File Templates.
+	}
+
 
 	public static ContentValues putTacticItemToValues(TacticItem dataObj) {
 		ContentValues values = new ContentValues();
@@ -109,25 +161,10 @@ public class DBDataManager {
 	}
 
 
-	public static ContentValues putEchessFinishedGameToValues(GameListFinishedItem dataObj) {
+	public static ContentValues putEchessFinishedListGameToValues(GameListFinishedItem dataObj, String userName) {
 		ContentValues values = new ContentValues();
-/*
-			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
-			+ V_COLOR 					    + _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _TEXT_NOT_NULL + _COMMA
-			+ V_USER_NAME_STR_LENGTH 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
-			+ V_OPPONENT_RATING 		    + _TEXT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_AMOUNT 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_UNITS 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FEN_STR_LENGTH 		        + _TEXT_NOT_NULL + _COMMA
-			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
-			+ V_GAME_RESULTS 			    + _TEXT_NOT_NULL + _CLOSE;
-*/
 
+		values.put(DBConstants.V_USER, userName);
 		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
 		values.put(DBConstants.V_COLOR, dataObj.getColor());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
@@ -146,23 +183,96 @@ public class DBDataManager {
 	}
 
 
-	public static GameListFinishedItem getEchessFinishedGameFromCursor(Cursor cursor) {
+	public static GameListFinishedItem getEchessFinishedListGameFromCursor(Cursor cursor) {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
-		dataObj.setColor(getString(cursor, DBConstants.V_COLOR));
-		dataObj.setGameType(getString(cursor, DBConstants.V_GAME_TYPE));
-		dataObj.setUserNameStrLength(getString(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
+		dataObj.setColor(getInt(cursor, DBConstants.V_COLOR));
+		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
+		dataObj.setUserNameStrLength(getInt(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
 		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
-		dataObj.setOpponentRating(getString(cursor, DBConstants.V_OPPONENT_RATING));
-		dataObj.setTimeRemainingAmount(getString(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
+		dataObj.setOpponentRating(getInt(cursor, DBConstants.V_OPPONENT_RATING));
+		dataObj.setTimeRemainingAmount(getLong(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
 		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
-		dataObj.setFenStrLength(getString(cursor, DBConstants.V_FEN_STR_LENGTH));
+		dataObj.setFenStrLength(getInt(cursor, DBConstants.V_FEN_STR_LENGTH));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
 		dataObj.setLastMoveFromSquare(getString(cursor, DBConstants.V_LAST_MOVE_FROM_SQUARE));
 		dataObj.setLastMoveToSquare(getString(cursor, DBConstants.V_LAST_MOVE_TO_SQUARE));
 		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
 		dataObj.setGameResults(getString(cursor, DBConstants.V_GAME_RESULTS));
+		return dataObj;
+	}
+
+	public static ContentValues putGameOnlineItemToValues(GameOnlineItem dataObj, String userName) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_FINISHED, 0);
+		values.put(DBConstants.V_USER, userName);
+		fillValuesFromOnlineGame(values, dataObj);
+		return values;
+	}
+
+	private static void fillValuesFromOnlineGame(ContentValues values, GameOnlineItem dataObj){
+		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
+		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
+		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
+		values.put(DBConstants.V_GAME_NAME, dataObj.getGameName());
+		values.put(DBConstants.V_WHITE_USER_NAME, dataObj.getWhiteUsername());
+		values.put(DBConstants.V_BLACK_USER_NAME, dataObj.getBlackUsername());
+		values.put(DBConstants.V_FEN_START_POSITION, dataObj.getFenStartPosition());
+		values.put(DBConstants.V_WHITE_USER_MOVE, dataObj.isWhiteMove()? 1: 0);
+		values.put(DBConstants.V_WHITE_RATING, dataObj.getWhiteRating());
+		values.put(DBConstants.V_BLACK_RATING, dataObj.getBlackRating());
+		values.put(DBConstants.V_ENCODED_MOVE_STR, dataObj.getEncodedMoveStr());
+		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage()? 1: 0);
+		values.put(DBConstants.V_SECONDS_REMAIN, dataObj.getSecondsRemain());
+		values.put(DBConstants.V_RATED, dataObj.getRated()? 1: 0);
+		values.put(DBConstants.V_USER_OFFERED_DRAW, dataObj.isUserOfferedDraw());
+		values.put(DBConstants.V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
+	}
+
+	private static void fillOnlineGameFromCursor(GameOnlineItem dataObj, Cursor cursor){
+		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
+		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
+		dataObj.setGameName(getString(cursor, DBConstants.V_GAME_NAME));
+		dataObj.setWhiteUsername(getString(cursor, DBConstants.V_WHITE_USER_NAME));
+		dataObj.setBlackUsername(getString(cursor, DBConstants.V_BLACK_USER_NAME));
+		dataObj.setFenStartPosition(getString(cursor, DBConstants.V_FEN_START_POSITION));
+		dataObj.setMoveList(getString(cursor, DBConstants.V_MOVE_LIST));
+		dataObj.setWhiteUserMove(getInt(cursor, DBConstants.V_WHITE_USER_MOVE) > 0);
+		dataObj.setWhiteRating(getInt(cursor, DBConstants.V_WHITE_RATING));
+		dataObj.setBlackRating(getInt(cursor, DBConstants.V_BLACK_RATING));
+		dataObj.setEncodedMoveStr(getString(cursor, DBConstants.V_ENCODED_MOVE_STR));
+		dataObj.setHasNewMessage(getInt(cursor, DBConstants.V_HAS_NEW_MESSAGE) > 0);
+		dataObj.setSecondsRemain(getLong(cursor, DBConstants.V_SECONDS_REMAIN));
+		dataObj.setRated(getInt(cursor, DBConstants.V_RATED) > 0);
+		dataObj.setDaysPerMove(getInt(cursor, DBConstants.V_DAYS_PER_MOVE));
+
+	}
+
+	public static GameOnlineItem getGameOnlineItemFromCursor(Cursor cursor) {
+		GameOnlineItem dataObj = new GameOnlineItem();
+		fillOnlineGameFromCursor(dataObj, cursor);
+
+		return dataObj;
+	}
+
+	public static ContentValues putGameFinishedItemToValues(GameOnlineItem dataObj, String userName) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_FINISHED, 1);
+		values.put(DBConstants.V_USER, userName);
+		fillValuesFromOnlineGame(values, dataObj);
+
+		return values;
+	}
+
+	public static GameOnlineItem getGameFinishedItemFromCursor(Cursor cursor) {
+		GameOnlineItem dataObj = new GameOnlineItem();
+
+		fillOnlineGameFromCursor(dataObj, cursor);
+
 		return dataObj;
 	}
 
@@ -185,4 +295,5 @@ public class DBDataManager {
 	public static int getDbVersion() {
 		return DBConstants.DATABASE_VERSION;
 	}
+
 }

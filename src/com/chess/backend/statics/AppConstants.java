@@ -18,6 +18,9 @@ public class AppConstants {
 	public static final String CHALLENGE_MAX_RATING = "max_rating";
 	public static final String SAVED_COMPUTER_GAME = "saving";
 
+	/* Online games*/
+	public static final String USER_OFFERED_DRAW_FOR_GAME = "user offered draw for game";
+
 	/*Tactics constants*/
 	public static final String SAVED_TACTICS_ITEM = "saved tactics game";
 	public static final String SAVED_TACTICS_CURRENT_PROBLEM = "saved tactics current puzzle number";

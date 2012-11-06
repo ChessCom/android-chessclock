@@ -11,8 +11,8 @@ import com.chess.backend.statics.StaticData;
 public abstract class BaseGameOnlineItem extends BaseGameItem{
 
 	protected String opponentName;
-	protected String opponentRating;
-	protected String gameType;
+	protected int opponentRating;
+	protected int gameType;
 	protected String lastMoveFromSquare;
 	protected String lastMoveToSquare;
 	protected boolean isMyTurn;
@@ -20,16 +20,16 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 
 	protected BaseGameOnlineItem() {
 		opponentName = StaticData.SYMBOL_EMPTY;
-		opponentRating = StaticData.SYMBOL_EMPTY;
-		gameType = StaticData.SYMBOL_EMPTY;
+		opponentRating = 0;
+		gameType = 1;
 		lastMoveFromSquare = StaticData.SYMBOL_EMPTY;
 		lastMoveToSquare = StaticData.SYMBOL_EMPTY;
 	}
 
 	protected void writeBaseGameOnlineParcel(Parcel parcel) {
 		parcel.writeString(opponentName);
-		parcel.writeString(opponentRating);
-		parcel.writeString(gameType);
+		parcel.writeInt(opponentRating);
+		parcel.writeInt(gameType);
 		parcel.writeString(lastMoveFromSquare);
 		parcel.writeString(lastMoveToSquare);
 		parcel.writeBooleanArray(new boolean[]{isMyTurn, hasMessage});
@@ -37,8 +37,8 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 
 	protected void readBaseGameOnlineParcel(Parcel in) {
 		opponentName = in.readString();
-		opponentRating = in.readString();
-		gameType = in.readString();
+		opponentRating = in.readInt();
+		gameType = in.readInt();
 		lastMoveFromSquare = in.readString();
 		lastMoveToSquare = in.readString();
 		boolean[] booleans = new boolean[2];
@@ -51,11 +51,11 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		this.opponentName = opponentName;
 	}
 
-	public void setOpponentRating(String opponentRating) {
+	public void setOpponentRating(int opponentRating) {
 		this.opponentRating = opponentRating;
 	}
 
-	public void setGameType(String gameType) {
+	public void setGameType(int gameType) {
 		this.gameType = gameType;
 	}
 

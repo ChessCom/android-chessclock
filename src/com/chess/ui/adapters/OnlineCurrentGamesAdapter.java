@@ -6,12 +6,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 
 import java.util.List;
 
 public class OnlineCurrentGamesAdapter extends ItemsAdapter<GameListCurrentItem> {
 
+
+	protected static final String CHESS_960 = " (960)";
+	protected static final String HOUR_SYMBOL = "h";
 
 	public OnlineCurrentGamesAdapter(Context context, List<GameListCurrentItem> itemList) {
 		super(context, itemList);
@@ -33,8 +37,8 @@ public class OnlineCurrentGamesAdapter extends ItemsAdapter<GameListCurrentItem>
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = StaticData.SYMBOL_EMPTY;
-		if (item.getGameType() != null && item.getGameType().equals("2")) {
-			gameType = " (960)";
+		if (item.getGameType() == BaseGameItem.CHESS_960) {
+			gameType = CHESS_960;
 		}
 
 		String draw = StaticData.SYMBOL_EMPTY;
@@ -46,10 +50,12 @@ public class OnlineCurrentGamesAdapter extends ItemsAdapter<GameListCurrentItem>
 		String infoText = StaticData.SYMBOL_EMPTY;
 		if (item.getIsMyTurn()) {
 
-			String amount = item.getTimeRemainingAmount();
-			if (amount.substring(0, 1).equals("0"))
+			long amount = item.getTimeRemainingAmount();
+			if (amount.substring(0, 1).equals("0")) {
 				amount = amount.substring(1);
-			if (item.getTimeRemainingUnits().equals("h"))
+			}
+
+			if (item.getTimeRemainingUnits().equals(HOUR_SYMBOL))
 				infoText = amount + context.getString(R.string.hours);
 			else
 				infoText = amount + context.getString(R.string.days);

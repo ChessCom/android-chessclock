@@ -85,16 +85,16 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, String.valueOf(days));
-		loadItem.addRequestParams(RestHelper.P_IPLAYAS, String.valueOf(color));
-		loadItem.addRequestParams(RestHelper.P_ISRATED, String.valueOf(isRated));
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, String.valueOf(gameType));
+		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, days);
+		loadItem.addRequestParams(RestHelper.P_IPLAYAS, color);
+		loadItem.addRequestParams(RestHelper.P_ISRATED, isRated);
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
 
 		if (minRating != null)
-			loadItem.addRequestParams(RestHelper.P_MINRATING, String.valueOf(minRating));
+			loadItem.addRequestParams(RestHelper.P_MINRATING, minRating);
 
 		if (maxRating != null)
-			loadItem.addRequestParams(RestHelper.P_MAXRATING, String.valueOf(maxRating));
+			loadItem.addRequestParams(RestHelper.P_MAXRATING, maxRating);
 
 		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
 	}

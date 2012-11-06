@@ -217,6 +217,11 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	@Override
+	protected void afterLogin() {
+		restartActivity();
+	}
+
+	@Override
 	public Context getMeContext() {
 		return this;
 	}

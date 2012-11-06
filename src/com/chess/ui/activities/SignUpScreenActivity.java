@@ -179,7 +179,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, String.valueOf(CID));
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, CID);
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
 		new GetStringObjTask(registerUpdateListener).executeTask(loadItem);

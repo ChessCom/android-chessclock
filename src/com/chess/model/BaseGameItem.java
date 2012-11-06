@@ -12,46 +12,51 @@ import com.chess.backend.statics.StaticData;
  */
 public abstract class BaseGameItem implements Parcelable {
 
+	public static final int CLASSIC_CHESS = 1;
+	public static final int CHESS_960 = 2;
+
+	public static final String FIRST_MOVE_INDEX = "1.";
+
 	public static final String GAME_ID = "game_id";
 	public static final String TIMESTAMP = "time_stamp";
 	public static final String GAME_INFO_ITEM = "game_info_item";
 
 	protected long gameId;
-	protected String color;
+	protected int color;
 
 
 	protected String whiteUsername;
 	protected String blackUsername;
-	protected String userNameStrLength;
+	protected int userNameStrLength;
 
-	protected String timeRemainingAmount;
+	protected int timeRemainingAmount;
 	protected String timeRemainingUnits;
 	protected boolean isDrawOfferPending;
 	protected boolean isOpponentOnline;
-	protected String fenStrLength;
+	protected int fenStrLength;
 //	protected String fen;
 	protected long timestamp;
 	protected String moveList;
-	protected String whiteRating;
-	protected String blackRating;
-	protected String secondsRemain;
+	protected int whiteRating;
+	protected int blackRating;
+	protected long secondsRemain;
 	protected boolean hasNewMessage;
 
 	protected BaseGameItem() {
-		color = StaticData.SYMBOL_EMPTY;
+		color = 0;
 		whiteUsername = StaticData.SYMBOL_EMPTY;
 		blackUsername = StaticData.SYMBOL_EMPTY;
-		userNameStrLength = StaticData.SYMBOL_EMPTY;
-		timeRemainingAmount = StaticData.SYMBOL_EMPTY;
+		userNameStrLength = 0;
+		timeRemainingAmount = 0;
 		timeRemainingUnits = StaticData.SYMBOL_EMPTY;
-		fenStrLength = StaticData.SYMBOL_EMPTY;
+		fenStrLength = 0;
 		moveList = StaticData.SYMBOL_EMPTY;
-		whiteRating = StaticData.SYMBOL_EMPTY;
-		blackRating = StaticData.SYMBOL_EMPTY;
-		secondsRemain = StaticData.SYMBOL_EMPTY;
+		whiteRating = 0;
+		blackRating = 0;
+		secondsRemain = 0;
 	}
 
-	public String getBlackRating() {
+	public int getBlackRating() {
 		return blackRating;
 	}
 
@@ -59,7 +64,7 @@ public abstract class BaseGameItem implements Parcelable {
 		return blackUsername;
 	}
 
-	public String getColor() {
+	public int getColor() {
 		return color;
 	}
 
@@ -88,7 +93,7 @@ public abstract class BaseGameItem implements Parcelable {
 		this.gameId = gameId;
 	}
 
-	public void setColor(String color) {
+	public void setColor(int color) {
 		this.color = color;
 	}
 
@@ -100,11 +105,11 @@ public abstract class BaseGameItem implements Parcelable {
 		this.blackUsername = blackUsername;
 	}
 
-	public void setUserNameStrLength(String userNameStrLength) {
+	public void setUserNameStrLength(int userNameStrLength) {
 		this.userNameStrLength = userNameStrLength;
 	}
 
-	public void setTimeRemainingAmount(String timeRemainingAmount) {
+	public void setTimeRemainingAmount(int timeRemainingAmount) {
 		this.timeRemainingAmount = timeRemainingAmount;
 	}
 
@@ -120,7 +125,7 @@ public abstract class BaseGameItem implements Parcelable {
 		isOpponentOnline = opponentOnline;
 	}
 
-	public void setFenStrLength(String fenStrLength) {
+	public void setFenStrLength(int fenStrLength) {
 		this.fenStrLength = fenStrLength;
 	}
 
@@ -132,15 +137,15 @@ public abstract class BaseGameItem implements Parcelable {
 		this.moveList = moveList;
 	}
 
-	public void setWhiteRating(String whiteRating) {
+	public void setWhiteRating(int whiteRating) {
 		this.whiteRating = whiteRating;
 	}
 
-	public void setBlackRating(String blackRating) {
+	public void setBlackRating(int blackRating) {
 		this.blackRating = blackRating;
 	}
 
-	public void setSecondsRemain(String secondsRemain) {
+	public void setSecondsRemain(long secondsRemain) {
 		this.secondsRemain = secondsRemain;
 	}
 
@@ -148,11 +153,11 @@ public abstract class BaseGameItem implements Parcelable {
 		return moveList;
 	}
 
-	public String getSecondsRemain() {
+	public long getSecondsRemain() {
 		return secondsRemain;
 	}
 
-	public String getTimeRemainingAmount() {
+	public int getTimeRemainingAmount() {
 		return timeRemainingAmount;
 	}
 
@@ -164,15 +169,11 @@ public abstract class BaseGameItem implements Parcelable {
 		return timestamp;
 	}
 
-	public String getTimestampStr() {
-		return String.valueOf(timestamp);
-	}
-
-	public String getUserNameStrLength() {
+	public int getUserNameStrLength() {
 		return userNameStrLength;
 	}
 
-	public String getWhiteRating() {
+	public int getWhiteRating() {
 		return whiteRating;
 	}
 
@@ -200,37 +201,37 @@ public abstract class BaseGameItem implements Parcelable {
 	 */
 	protected void writeBaseGameParcel(Parcel parcel) {
 		parcel.writeLong(gameId);
-		parcel.writeString(color);
+		parcel.writeInt(color);
 
 		parcel.writeString(whiteUsername);
 		parcel.writeString(blackUsername);
-		parcel.writeString(userNameStrLength);
+		parcel.writeInt(userNameStrLength);
 
-		parcel.writeString(timeRemainingAmount);
+		parcel.writeInt(timeRemainingAmount);
 		parcel.writeString(timeRemainingUnits);
 		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
-		parcel.writeString(fenStrLength);
+		parcel.writeInt(fenStrLength);
 //		parcel.writeString(fen);
 		parcel.writeLong(timestamp);
 		parcel.writeString(moveList);
-		parcel.writeString(whiteRating);
-		parcel.writeString(blackRating);
-		parcel.writeString(secondsRemain);
+		parcel.writeInt(whiteRating);
+		parcel.writeInt(blackRating);
+		parcel.writeLong(secondsRemain);
 	}
 
 	/**
 	 * Fill values in abstract class
-	 * @param in
+	 * @param in parcelable as input
 	 */
 	protected void readBaseGameParcel(Parcel in) {
 		gameId = in.readLong();
-		color = in.readString();
+		color = in.readInt();
 
 		whiteUsername = in.readString();
 		blackUsername = in.readString();
-		userNameStrLength = in.readString();
+		userNameStrLength = in.readInt();
 
-		timeRemainingAmount = in.readString();
+		timeRemainingAmount = in.readInt();
 		timeRemainingUnits = in.readString();
 		boolean[] booleans = new boolean[3];
 		in.readBooleanArray(booleans);
@@ -238,13 +239,13 @@ public abstract class BaseGameItem implements Parcelable {
 		isOpponentOnline = booleans[1];
 		hasNewMessage = booleans[2];
 
-		fenStrLength = in.readString();
+		fenStrLength = in.readInt();
 //		fen = in.readString();
 		timestamp = in.readLong();
 		moveList = in.readString();
-		whiteRating = in.readString();
-		blackRating = in.readString();
-		secondsRemain = in.readString();
+		whiteRating = in.readInt();
+		blackRating = in.readInt();
+		secondsRemain = in.readLong();
 	}
 
 }

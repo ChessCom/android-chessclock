@@ -149,7 +149,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		super.widgetsInit();
 
         fadeLay = findViewById(R.id.fadeLay);
-		gameBoardView = findViewById(R.id.gameBoard);
+		gameBoardView = findViewById(R.id.mainView);
 
 		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION 	= 1;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION 	= 3;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -18,18 +18,21 @@ public class DBConstants {
 	 */
     static final String DATABASE_NAME  = "Chess DB";
     public static final String TACTICS_BATCH_TABLE = "tactics_batch";
-    public static final String ECHESS_FINISHED_GAMES_TABLE = "echess_finished_games";
+    public static final String ECHESS_FINISHED_LIST_GAMES_TABLE = "echess_finished_games";
+    public static final String ECHESS_ONLINE_GAMES_TABLE = "echess_online_games";
 
 
 
 	// Content URI
     public static final Uri TACTICS_BATCH_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + TACTICS_BATCH_TABLE);
-    public static final Uri ECHESS_FINISHED_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_FINISHED_GAMES_TABLE);
+    public static final Uri ECHESS_FINISHED_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_FINISHED_LIST_GAMES_TABLE);
+    public static final Uri ECHESS_ONLINE_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_ONLINE_GAMES_TABLE);
 
 
     // uri paths
     public static final int TACTICS_BATCH = 0;
-    public static final int ECHESS_FINISHED_GAMES = 1;
+    public static final int ECHESS_FINISHED_LIST_GAMES = 1;
+    public static final int ECHESS_ONLINE_GAMES = 2;
 
 
     // general fields
@@ -47,10 +50,25 @@ public class DBConstants {
     public static final String V_RATING       	= "rating";
     public static final String V_AVG_SECONDS 	= "avgSeconds";
 
-	/* ECHESS_FINISHED_GAMES */
+	/* ECHESS_GAMES */
+	public static final String V_FINISHED 				= "isFinished";
 	public static final String V_GAME_ID 				= "gameId";
 	public static final String V_COLOR 					= "color";
 	public static final String V_GAME_TYPE 				= "gameType";
+	public static final String V_GAME_NAME 				= "gameName";
+	public static final String V_WHITE_USER_NAME 		= "whiteUsername";
+	public static final String V_BLACK_USER_NAME 		= "blackUsername";
+	public static final String V_FEN_START_POSITION 	= "fenStartPosition";
+	public static final String V_WHITE_USER_MOVE 		= "whiteUserMove";
+	public static final String V_WHITE_RATING 			= "whiteRating";
+	public static final String V_BLACK_RATING 			= "blackRating";
+	public static final String V_ENCODED_MOVE_STR 		= "encodedMoveStr";
+	public static final String V_HAS_NEW_MESSAGE 		= "hasNewMessage";
+	public static final String V_SECONDS_REMAIN 		= "secondsRemain";
+	public static final String V_RATED 					= "rated";
+	public static final String V_DAYS_PER_MOVE 			= "daysPerMove";
+	public static final String V_USER_OFFERED_DRAW 		= "userOfferedDraw";
+
 	public static final String V_USER_NAME_STR_LENGTH 	= "userNameStrLength";
 	public static final String V_OPPONENT_NAME 			= "opponentName";
 	public static final String V_OPPONENT_RATING 		= "opponentRating";
@@ -86,20 +104,45 @@ public class DBConstants {
 			+ V_RATING 		+ _TEXT_NOT_NULL + _COMMA
 			+ V_AVG_SECONDS + _TEXT_NOT_NULL + _CLOSE;
 
-    static final String ECHESS_FINISHED_GAMES_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + ECHESS_FINISHED_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+
+
+    static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
+            CREATE_TABLE_IF_NOT_EXISTS + ECHESS_FINISHED_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
-			+ V_COLOR 					    + _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _TEXT_NOT_NULL + _COMMA
+			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
 			+ V_USER_NAME_STR_LENGTH 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
-			+ V_OPPONENT_RATING 		    + _TEXT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_AMOUNT 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING_AMOUNT 	    + _INT_NOT_NULL + _COMMA
 			+ V_TIME_REMAINING_UNITS 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FEN_STR_LENGTH 		        + _TEXT_NOT_NULL + _COMMA
+			+ V_FEN_STR_LENGTH 		        + _INT_NOT_NULL + _COMMA
 			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
 			+ V_GAME_RESULTS 			    + _TEXT_NOT_NULL + _CLOSE;
+
+	static final String ECHESS_ONLINE_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_ONLINE_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_FINISHED 				+ _INT_NOT_NULL + _COMMA
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_GAME_ID 				+ _LONG_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				+ _INT_NOT_NULL + _COMMA
+			+ V_TIMESTAMP 	    		+ _LONG_NOT_NULL + _COMMA
+			+ V_GAME_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_WHITE_USER_NAME 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_BLACK_USER_NAME 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_FEN_START_POSITION 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_WHITE_USER_MOVE 	    + _INT_NOT_NULL + _COMMA
+			+ V_WHITE_RATING 		    + _INT_NOT_NULL + _COMMA
+			+ V_BLACK_RATING 			+ _INT_NOT_NULL + _COMMA
+			+ V_ENCODED_MOVE_STR 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_HAS_NEW_MESSAGE 	    + _INT_NOT_NULL + _COMMA
+			+ V_SECONDS_REMAIN 	    	+ _LONG_NOT_NULL + _COMMA
+			+ V_RATED 	    			+ _INT_NOT_NULL + _COMMA
+			+ V_USER_OFFERED_DRAW 	   	+ _INT_NOT_NULL + _COMMA
+			+ V_DAYS_PER_MOVE 			+ _INT_NOT_NULL + _CLOSE;
+
 }

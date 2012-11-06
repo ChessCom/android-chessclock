@@ -42,7 +42,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	private View progressBar;
 	private ImageButton sendBtn;
 	private long gameId;
-	private String timeStamp;
+	private long timeStamp;
 	private GetTimeStampForListUpdateListener getTimeStampForListUpdateListener;
 	private GetTimeStampForSendMessageListener getTimeStampForSendMessageListener;
 
@@ -208,7 +208,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
+		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 		return loadItem;
 	}
 
@@ -216,8 +216,8 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			final GameOnlineItem currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
-			timeStamp = currentGame.getTimestampStr();
+			final GameOnlineItem currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+			timeStamp = currentGame.getTimestamp();
 		}
 	}
 
@@ -229,7 +229,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(ChatOnlineActivity.this));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
@@ -255,7 +255,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(ChatOnlineActivity.this));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameId));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);

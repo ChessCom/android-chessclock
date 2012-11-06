@@ -77,8 +77,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
-				getString(R.string.emailgame),
-				getString(R.string.reside)};
+				getString(R.string.emailgame)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
@@ -94,20 +93,15 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		getBoardFace().setMode(AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
-		updateGameState();
-		setBoardToFinishedState();
-	}
-
-	private void updateGameState() {
 		getOnlineGame(gameId);
-		//getBoardFace().setInit(false);
+		setBoardToFinishedState();
 	}
 
 	protected void getOnlineGame(long gameId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_GID, String.valueOf(gameId));
+		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 
 		new GetStringObjTask(startGameUpdateListener).executeTask(loadItem);
 	}
@@ -116,32 +110,29 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			onGameStarted(returnedObj);
+			getSoundPlayer().playGameStart();
+
+			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+			gamePanelView.enableGameControls(true);
+
+			adjustBoardForGame();
 		}
-	}
-
-	private void onGameStarted(String returnedObj) {
-		getSoundPlayer().playGameStart();
-
-		currentGame = ChessComApiParser.GetGameParseV3(returnedObj);
-		gamePanelView.enableGameControls(true);
-
-		adjustBoardForGame();
 	}
 
 	private void adjustBoardForGame() {
 		if(currentGame == null)
 			return;
 
-		if (currentGame.getGameType().equals("2"))
+		if (currentGame.getGameType() == BaseGameItem.CHESS_960)
 			getBoardFace().setChess960(true);
 
 		if (!isUserColorWhite()) {
 			getBoardFace().setReside(true);
 		}
+
 		String[] moves = {};
 
-		if (currentGame.getMoveList().contains("1.")) {
+		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			int beginIndex = 1;
 
 			moves = currentGame.getMoveList()
@@ -270,7 +261,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.game_echess, menu);
+		menuInflater.inflate(R.menu.game_echess_finished, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -286,9 +277,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			case R.id.menu_analysis:
 				boardView.switchAnalysis();
 				break;
-			case R.id.menu_chat:
-				getOnlineGame(gameId);
-				break;
 			case R.id.menu_previous:
 				boardView.moveBack();
 				break;
@@ -302,7 +290,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		private final int ECHESS_SETTINGS = 0;
 		private final int EMAIL_GAME = 1;
-		private final int ECHESS_RESIDE = 2;
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {
@@ -313,10 +300,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 				case EMAIL_GAME:
 					sendPGN();
 					break;
-				case ECHESS_RESIDE:
-					getBoardFace().setReside(!getBoardFace().isReside());
-					boardView.invalidate();
-					break;
 			}
 		}
 	}
@@ -326,12 +309,15 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		String whitePlayerName = currentGame.getWhiteUsername();
 		String blackPlayerName = currentGame.getBlackUsername();
 		String result;
+
 		if (getBoardFace().getSide() == ChessBoard.LIGHT) {
 			result = BLACK_WINS;
 		} else {
 			result = WHITE_WINS;
 		}
-		int daysPerMove = Integer.parseInt(currentGame.getDaysPerMove());
+
+		int daysPerMove = currentGame.getDaysPerMove();
+
 		StringBuilder timeControl = new StringBuilder();
 		timeControl.append("1 in ").append(daysPerMove);
 		if (daysPerMove > 1){

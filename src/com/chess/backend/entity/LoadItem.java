@@ -25,6 +25,14 @@ public class LoadItem {
 		nameValuePairs.add(new BasicNameValuePair(key, value));
 	}
 
+	public void addRequestParams(String key, int value) {
+		nameValuePairs.add(new BasicNameValuePair(key, String.valueOf(value)));
+	}
+
+	public void addRequestParams(String key, long value) {
+		nameValuePairs.add(new BasicNameValuePair(key, String.valueOf(value)));
+	}
+
 	public void addRequestParams(NameValuePair pair) {
 		nameValuePairs.add(pair);
 	}

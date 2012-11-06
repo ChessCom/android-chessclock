@@ -29,6 +29,7 @@ import com.chess.db.DBDataManager;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveTacticsBatchTask;
+import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticItem;
 import com.chess.model.TacticResultItem;
@@ -367,7 +368,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 					loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 					loadItem.addRequestParams(RestHelper.P_TACTICS_ID, getTacticItem().getId());
-					loadItem.addRequestParams(RestHelper.P_PASSED, "1");
+					loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_PASSED);
 					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(boardFace.getTacticsCorrectMoves()));
 					loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(boardFace.getSecondsPassed()));
 
@@ -393,9 +394,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_TACTICS_ID, getTacticItem().getId());
-				loadItem.addRequestParams(RestHelper.P_PASSED, "0");
-				loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, String.valueOf(getBoardFace().getTacticsCorrectMoves()));
-				loadItem.addRequestParams(RestHelper.P_SECONDS, String.valueOf(getBoardFace().getSecondsPassed()));
+				loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_FAILED);
+				loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
+				loadItem.addRequestParams(RestHelper.P_SECONDS, getBoardFace().getSecondsPassed());
 
 				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
 			}
@@ -591,7 +592,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		getBoardFace().setupBoard(tacticItem.getFen());
 
-		if (tacticItem.getMoveList().contains("1.")) {
+		if (tacticItem.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			getBoardFace().setTacticMoves(tacticItem.getMoveList());
 			getBoardFace().setMovesCount(1);
 		}
@@ -862,7 +863,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		boardFace.setupBoard(tacticItem.getFen());
 
-		if (tacticItem.getMoveList().contains("1.")) {
+		if (tacticItem.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			boardFace.setTacticMoves(tacticItem.getMoveList());
 			boardFace.setMovesCount(1);
 		}

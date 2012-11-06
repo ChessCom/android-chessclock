@@ -64,7 +64,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);
-		loadItem.addRequestParams(RestHelper.P_PAGE, String.valueOf(0));
+		loadItem.addRequestParams(RestHelper.P_PAGE, 0);
         if(keyword != null){ // weird hack because LoadItem -> NameValuePairs can't be Serialized
             loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
         }else{

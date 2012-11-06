@@ -175,6 +175,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
+					// TODO save list items and game items to DB for offline access
 					currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
 					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
@@ -268,16 +269,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, gameListCurrentItem.getGameId());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestampStr());
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
 			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, String.valueOf(gameListChallengeItem.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, gameListChallengeItem.getGameId());
 			successToastMsgId = R.string.challengeaccepted;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -297,9 +298,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_CHESSID, gameListCurrentItem.getGameId());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestampStr());
+			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
 			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 		}
@@ -325,7 +326,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, String.valueOf(gameListChallengeItem.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, gameListChallengeItem.getGameId());
 			successToastMsgId = R.string.challengedeclined;
 
 			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -367,9 +368,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
+				loadItem.addRequestParams(RestHelper.P_CHESSID, gameListCurrentItem.getGameId());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
-				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestampStr());
+				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
 				new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
@@ -377,9 +378,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
 				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-				loadItem.addRequestParams(RestHelper.P_CHESSID, String.valueOf(gameListCurrentItem.getGameId()));
+				loadItem.addRequestParams(RestHelper.P_CHESSID, gameListCurrentItem.getGameId());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestampStr());
+				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
 				new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 			}

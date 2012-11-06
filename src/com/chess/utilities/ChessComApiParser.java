@@ -10,31 +10,12 @@ import java.util.ArrayList;
 public class ChessComApiParser {
 
 	//Challenge a friend
-	public static String[] GetFriendsParse(String result) {
+	public static String[] getFriendsParse(String result) {
 		if (result.trim().length() > 8)
 			return result.substring(9).trim().split("[|]");
 		else
 			return new String[]{StaticData.SYMBOL_EMPTY};
 	}
-
-	//online new game
-//	public static ArrayList<GameListChallengeItem> ViewOpenChallengeParse(String result) {
-//		ArrayList<GameListChallengeItem> output = new ArrayList<GameListChallengeItem>();
-//
-//		String[] g = result.split("[|]");
-//		int count = g.length - 1;
-//
-//		int i, a;
-//		for (i = 1; i <= count; i++) {
-//			String[] tmp = new String[11];
-//			a = 0;
-//			for (String s : g[i].split(RestHelper.SYMBOL_PARAMS_SPLIT)) {
-//				tmp[a++] = s;
-//			}
-//			output.add(new GameListChallengeItem(tmp));
-//		}
-//		return output;
-//	}
 
 	public static ArrayList<GameListChallengeItem> getChallengesGames(String result) {
 		ArrayList<GameListChallengeItem> output = new ArrayList<GameListChallengeItem>();
@@ -63,11 +44,11 @@ public class ChessComApiParser {
 
 		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		try {
-			int gamescount = Integer.valueOf(GamesArray[0].substring(8));
+			int gamesCount = Integer.valueOf(GamesArray[0].substring(8));
 			int i, j, inc = 0;
 			String[] tmp = GamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 
-			for (i = 0; i < gamescount; i++) {
+			for (i = 0; i < gamesCount; i++) {
 				String[] tmp2 = new String[17];
 				for (j = 0; j < 17; j++) {
 					tmp2[j] = tmp[inc++];
@@ -109,7 +90,7 @@ public class ChessComApiParser {
 		return output;
 	}
 
-	public static GameOnlineItem GetGameParseV3(String result) {
+	public static GameOnlineItem getGameParseV3(String result) {
 		return new GameOnlineItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT));
 	}
 

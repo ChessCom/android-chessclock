@@ -268,10 +268,13 @@ public class RestHelper {
 	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
     public static final String V_ALL_USERS_GAMES = "1";
 	public static final String V_ONLY_USER_TURN = "0";
-	public static final String V_ZERO = "0";
 	public static final String V_VIDEO_LIST_CNT = "20";
     public static final String V_VIDEO_ITEM_ONE = "1";
     public static final String V_ANDROID = "android";
+	public static final String V_PASSED = "1";
+	public static final String V_FAILED = "0";
+	public static final String V_ZERO = "0";
+	public static final String V_ONE = "1";
 
 	//private static final String TAG = "Encode";
 	public static final int MAX_ITEMS_CNT = 2000;

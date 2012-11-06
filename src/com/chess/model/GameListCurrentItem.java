@@ -8,14 +8,14 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 	public GameListCurrentItem(String[] values) {
 
 		gameId = Long.parseLong(values[0]);
-		color = values[1];
-		gameType =  values[2];
-		userNameStrLength = values[3];
+		color = Integer.parseInt(values[1]);
+		gameType = Integer.parseInt(values[2]);
+		userNameStrLength = Integer.parseInt(values[3]);
 		opponentName = values[4];
-		opponentRating = values[5];
-		timeRemainingAmount = values[6];
+		opponentRating = Integer.parseInt(values[5]);
+		timeRemainingAmount = Integer.parseInt(values[6]);
 		timeRemainingUnits = values[7];
-		fenStrLength = values[8];
+		fenStrLength = Integer.parseInt(values[8]);
 //		fen = values[9];
 		timestamp = Long.parseLong(values[10]);
 		lastMoveFromSquare =  values[11];
@@ -32,16 +32,16 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 	public static GameListCurrentItem newInstance(String[] gcmMessageInfo){
 		GameListCurrentItem gameListCurrentItem = new GameListCurrentItem();
 		gameListCurrentItem.gameId = Long.parseLong(gcmMessageInfo[0]);
-		gameListCurrentItem.timeRemainingAmount = gcmMessageInfo[1];
+		gameListCurrentItem.timeRemainingAmount = Integer.parseInt(gcmMessageInfo[1]);
 		gameListCurrentItem.timeRemainingUnits = gcmMessageInfo[2];
 		return gameListCurrentItem;
 	}
 
-	public String getGameType() {
+	public int getGameType() {
 		return gameType;
 	}
 
-	public String getUsernameStringLength() {
+	public int getUsernameStringLength() {
 		return userNameStrLength;
 	}
 
@@ -49,11 +49,11 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 		return opponentName;
 	}
 
-	public String getOpponentRating() {
+	public int getOpponentRating() {
 		return opponentRating;
 	}
 
-	public String getFenStringLength() {
+	public int getFenStringLength() {
 		return fenStrLength;
 	}
 
