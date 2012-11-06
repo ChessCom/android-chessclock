@@ -221,7 +221,8 @@ public class AppUtils {
 					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
 		}
 		return liveMembershipLevel
-				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER);
+				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER)
+				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
 
 	public static boolean isNeedToUpgradePremium(Context context){
@@ -232,7 +233,8 @@ public class AppUtils {
 					&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
 		}
 		return liveMembershipLevel
-				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER);
+				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER)
+				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
 
 	public static String getStringTimeFromSeconds(long duration) {

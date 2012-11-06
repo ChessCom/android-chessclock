@@ -391,6 +391,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("DEBUG", debugInfo);
 			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
 			throw new ArrayIndexOutOfBoundsException(debugInfo);
 		}
 
