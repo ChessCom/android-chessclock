@@ -149,13 +149,13 @@ public class DBDataManager {
 		TacticItem dataObj = new TacticItem();
 
 		dataObj.setUser(getString(cursor, DBConstants.V_USER));
-		dataObj.setId(getString(cursor, DBConstants.V_TACTIC_ID));
+		dataObj.setId(getLong(cursor, DBConstants.V_TACTIC_ID));
 		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
 		dataObj.setMoveList(getString(cursor, DBConstants.V_MOVE_LIST));
-		dataObj.setAttemptCnt(getString(cursor, DBConstants.V_ATTEMPT_CNT));
-		dataObj.setPassedCnt(getString(cursor, DBConstants.V_PASSED_CNT));
-		dataObj.setRating(getString(cursor, DBConstants.V_RATING));
-		dataObj.setAvgSeconds(getString(cursor, DBConstants.V_AVG_SECONDS));
+		dataObj.setAttemptCnt(getInt(cursor, DBConstants.V_ATTEMPT_CNT));
+		dataObj.setPassedCnt(getInt(cursor, DBConstants.V_PASSED_CNT));
+		dataObj.setRating(getInt(cursor, DBConstants.V_RATING));
+		dataObj.setAvgSeconds(getInt(cursor, DBConstants.V_AVG_SECONDS));
 
 		return dataObj;
 	}
@@ -192,7 +192,7 @@ public class DBDataManager {
 		dataObj.setUserNameStrLength(getInt(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
 		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
 		dataObj.setOpponentRating(getInt(cursor, DBConstants.V_OPPONENT_RATING));
-		dataObj.setTimeRemainingAmount(getLong(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
+		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
 		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
 		dataObj.setFenStrLength(getInt(cursor, DBConstants.V_FEN_STR_LENGTH));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class OnlineFinishedGamesAdapter extends ItemsAdapter<GameListFinishedIte
 
 		String gameType = StaticData.SYMBOL_EMPTY;
 
-		if (item.getGameType() != null && item.getGameType().equals("2")) {
+		if (item.getGameType() == BaseGameItem.CHESS_960) {
 			gameType = " (960)";
 		}
 

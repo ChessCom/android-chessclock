@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListChallengeItem;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class OnlineChallengesGamesAdapter extends ItemsAdapter<GameListChallenge
 		String time = item.getDaysPerMove() + context.getString(R.string.days);
 		String gameType = StaticData.SYMBOL_EMPTY;
 
-		if (item.getGameType() != null && item.getGameType().equals("2")) {
+		if (item.getGameType() == BaseGameItem.CHESS_960) {
 			gameType = " (960)";
 		}
 

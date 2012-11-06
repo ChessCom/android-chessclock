@@ -175,7 +175,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				String tacticString = preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 				String tacticResultString = preferences.getString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-				String showedTacticId = preferences.getString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+				long showedTacticId = preferences.getLong(userName + AppConstants.SAVED_TACTICS_ID, 0);
 				boolean isRetry = preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_RETRY, false);
 
 				int secondsSpend = preferences.getInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
@@ -276,7 +276,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			preferencesEditor.putInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, getCurrentProblem());
 
 			if (answerWasShowed()) {
-				preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
+				preferencesEditor.putLong(userName + AppConstants.SAVED_TACTICS_ID, getTacticItem().getId());
 			}
 			preferencesEditor.commit();
 
@@ -470,7 +470,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return null;
 		} else {
 			Log.d("TEST", " id = " + getTacticItem().getId());
-			return Long.parseLong(getTacticItem().getId());
+			return getTacticItem().getId();
 		}
 	}
 
@@ -486,7 +486,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 		// remove current tactic item from DB record
 		TacticItem tacticItem = getTacticsBatch().get(getCurrentProblem());
-		String[] arguments = new String[]{tacticItem.getId(), tacticItem.getUser()};
+		String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 		int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
 				DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		Log.d("TEST", " delete " +deletedCnt + " from DB, id = " + tacticItem.getId());
@@ -869,8 +869,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		boardFace.setSecondsPassed(secondsSpent);
-		int secondsLeft = tacticItem.getAvgSecondsInt() - secondsSpent < 0 ?
-				0 : tacticItem.getAvgSecondsInt() - secondsSpent;
+		int secondsLeft = tacticItem.getAvgSeconds() - secondsSpent < 0 ?
+				0 : tacticItem.getAvgSeconds() - secondsSpent;
 		boardFace.setSecondsLeft(secondsLeft);
 
 		startTacticsTimer(tacticItem);

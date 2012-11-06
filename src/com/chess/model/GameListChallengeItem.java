@@ -109,7 +109,8 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		parcel.writeInt(playAsColor);
 		parcel.writeInt(daysPerMove);
 		parcel.writeString(initialSetupFen);
-		parcel.writeString(isRated);
+		boolean[] booleans = new boolean[]{isRated};
+		parcel.writeBooleanArray(booleans);
 	}
 
 
@@ -132,6 +133,8 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		playAsColor = in.readInt();
 		daysPerMove = in.readInt();
 		initialSetupFen = in.readString();
-		isRated = in.readString();
+		boolean[] booleans = new boolean[1];
+		in.readBooleanArray(booleans);
+		isRated = booleans[0];
 	}
 }

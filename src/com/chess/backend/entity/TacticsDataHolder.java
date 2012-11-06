@@ -21,7 +21,7 @@ public class TacticsDataHolder {
 	private TacticResultItem tacticResultItem;
 	private int currentTacticProblem;
 	private boolean tacticLimitReached;
-	private List<String> showedTacticsIds;
+	private List<Long> showedTacticsIds;
 
 
 	public static TacticsDataHolder getInstance() {
@@ -29,7 +29,7 @@ public class TacticsDataHolder {
 	}
 
 	private TacticsDataHolder() {
-		showedTacticsIds = new ArrayList<String>();
+		showedTacticsIds = new ArrayList<Long>();
 	}
 
 	public TacticItem getTactic() {
@@ -81,7 +81,7 @@ public class TacticsDataHolder {
 	 * Add id of showed answer tactic to prevent cheating
 	 * @param id
 	 */
-	public void addShowedTacticId(String id) {
+	public void addShowedTacticId(long id) {
 		if(!showedTacticsIds.contains(id))
 			showedTacticsIds.add(id);
 	}
@@ -91,7 +91,7 @@ public class TacticsDataHolder {
 	 * @param id
 	 * @return
 	 */
-	public boolean tacticWasShowed(String id){
+	public boolean tacticWasShowed(long id){
 		return showedTacticsIds.contains(id);
 	}
 
