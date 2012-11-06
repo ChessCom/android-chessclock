@@ -119,8 +119,8 @@ public class AppData {
 		return boardFace.getMode() == AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
 	}
 
-	public static int getUserPremiumStatus(Context context){
-		return Integer.parseInt(getPreferences(context).getString(AppConstants.USER_PREMIUM_STATUS, "0"));
+	public static int getUserPremiumStatus(Context context) {
+		return Integer.parseInt(getPreferences(context).getString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER));
 	}
 
 	public static Intent getMembershipAndroidIntent(Context context) {

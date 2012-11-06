@@ -216,6 +216,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("DEBUG", debugInfo);
 				FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+				preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
 				throw new ArrayIndexOutOfBoundsException(debugInfo);
 			}
 
@@ -261,6 +262,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("DEBUG", debugInfo);
 			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "-1");
 			throw new ArrayIndexOutOfBoundsException(debugInfo);
 		}
 

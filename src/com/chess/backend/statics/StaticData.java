@@ -71,6 +71,7 @@ public class StaticData {
 	public static final String SHP_LANGUAGE = "application language";
 
 	/* User types */
+	public static final int NOT_INITIALIZED_USER = -1;
 	public static final int BASIC_USER = 0;
 	public static final int GOLD_USER = 1;
 	public static final int PLATINUM_USER = 2;
