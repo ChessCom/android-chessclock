@@ -23,7 +23,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
@@ -715,10 +714,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				draw = RestHelper.V_OFFERDRAW;
 				// save at this point state to DB
 				currentGame.setUserOfferedDraw(true);
-				String[] arguments = new String[]{String.valueOf(currentGame.isUserOfferedDraw())};
-				getContentResolver().update(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
-						DBDataManager.putGameOnlineItemToValues(currentGame, AppData.getUserName(this)),
-						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
+//				String[] arguments = new String[]{String.valueOf(currentGame.isUserOfferedDraw())};
+//				getContentResolver().update(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+//						DBDataManager.putGameOnlineItemToValues(currentGame, AppData.getUserName(this)),
+//						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
 			}
 
 			LoadItem loadItem = new LoadItem();
