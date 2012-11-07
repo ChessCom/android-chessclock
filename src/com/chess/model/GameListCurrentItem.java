@@ -6,24 +6,9 @@ import android.os.Parcelable;
 public class GameListCurrentItem extends BaseGameOnlineItem {
 
 	public GameListCurrentItem(String[] values) {
-
-		gameId = Long.parseLong(values[0]);
-		color = Integer.parseInt(values[1]);
-		gameType = Integer.parseInt(values[2]);
-		userNameStrLength = Integer.parseInt(values[3]);
-		opponentName = values[4];
-		opponentRating = Integer.parseInt(values[5]);
-		timeRemainingAmount = Integer.parseInt(values[6]);
-		timeRemainingUnits = values[7];
-		fenStrLength = Integer.parseInt(values[8]);
-//		fen = values[9];
-		timestamp = Long.parseLong(values[10]);
-		lastMoveFromSquare =  values[11];
-		lastMoveToSquare = values[12];
-		isDrawOfferPending = values[13].equals("p");
-		isOpponentOnline = values[14].equals("1");
+		super(values);
 		isMyTurn = values[15].equals("1");
-		hasMessage = values[16].equals("1");
+		hasNewMessage = values[16].equals("1");
 	}
 
 	public GameListCurrentItem() {
@@ -35,50 +20,6 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 		gameListCurrentItem.timeRemainingAmount = Integer.parseInt(gcmMessageInfo[1]);
 		gameListCurrentItem.timeRemainingUnits = gcmMessageInfo[2];
 		return gameListCurrentItem;
-	}
-
-	public int getGameType() {
-		return gameType;
-	}
-
-	public int getUsernameStringLength() {
-		return userNameStrLength;
-	}
-
-	public String getOpponentUsername() {
-		return opponentName;
-	}
-
-	public int getOpponentRating() {
-		return opponentRating;
-	}
-
-	public int getFenStringLength() {
-		return fenStrLength;
-	}
-
-	public String getLastMoveFromSquare() {
-		return lastMoveFromSquare;
-	}
-
-	public String getLastMoveToSquare() {
-		return lastMoveToSquare;
-	}
-
-	public boolean getIsDrawOfferPending() {
-		return isDrawOfferPending;
-	}
-
-	public boolean getIsOpponentOnline() {
-		return isOpponentOnline;
-	}
-
-	public boolean getHasNewMessage() {
-		return hasMessage;
-	}
-
-	public boolean getIsMyTurn() {
-		return isMyTurn;
 	}
 
 	@Override

@@ -9,7 +9,9 @@ import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBDataManager;
 import com.chess.db.QueryParams;
 
-
+/**
+ * Used to get a much amout of data, because query is performs in UI thread
+ */
 public class QueryForCursorTask extends AbstractUpdateTask<Cursor, Long> {
 
     private ContentResolver contentResolver;

@@ -6,9 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.statics.AppData;
-import com.chess.model.GameListFinishedItem;
-import com.chess.model.GameOnlineItem;
-import com.chess.model.TacticItem;
+import com.chess.model.*;
 
 /**
  * @author alien_roger
@@ -124,8 +122,6 @@ public class DBDataManager {
 		}
 
 		cursor.close();
-
-		// TODO change body of created methods use File | Settings | File Templates.
 	}
 
 
@@ -165,19 +161,7 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, userName);
-		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
-		values.put(DBConstants.V_COLOR, dataObj.getColor());
-		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
-		values.put(DBConstants.V_USER_NAME_STR_LENGTH, dataObj.getUsernameStringLength());
-		values.put(DBConstants.V_OPPONENT_NAME, dataObj.getOpponentUsername());
-		values.put(DBConstants.V_OPPONENT_RATING, dataObj.getOpponentRating());
-		values.put(DBConstants.V_TIME_REMAINING_AMOUNT, dataObj.getTimeRemainingAmount());
-		values.put(DBConstants.V_TIME_REMAINING_UNITS, dataObj.getTimeRemainingUnits());
-		values.put(DBConstants.V_FEN_STR_LENGTH, dataObj.getFenStringLength());
-		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
-		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
-		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
-		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.getIsOpponentOnline()? 1 : 0);
+		fillValuesFromListGameItem(values, dataObj);
 		values.put(DBConstants.V_GAME_RESULTS, dataObj.getGameResult());
 		return values;
 	}
@@ -186,6 +170,27 @@ public class DBDataManager {
 	public static GameListFinishedItem getEchessFinishedListGameFromCursor(Cursor cursor) {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
+		fillListGameItemFromCursor(dataObj, cursor);
+		dataObj.setGameResults(getString(cursor, DBConstants.V_GAME_RESULTS));
+		return dataObj;
+	}
+
+	public static ContentValues putEchessGameListCurrentItemToValues(GameListCurrentItem dataObj, String userName) {
+		ContentValues values = new ContentValues();
+
+		fillValuesFromListGameItem(values, dataObj);
+		values.put(DBConstants.V_USER, userName);
+		return values;
+	}
+
+
+	public static GameListCurrentItem getEchessGameListCurrentItemFromCursor(Cursor cursor) {
+		GameListCurrentItem dataObj = new GameListCurrentItem();
+		fillListGameItemFromCursor(dataObj, cursor);
+		return dataObj;
+	}
+
+	private static void fillListGameItemFromCursor(BaseGameOnlineItem dataObj, Cursor cursor){
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
 		dataObj.setColor(getInt(cursor, DBConstants.V_COLOR));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
@@ -199,8 +204,22 @@ public class DBDataManager {
 		dataObj.setLastMoveFromSquare(getString(cursor, DBConstants.V_LAST_MOVE_FROM_SQUARE));
 		dataObj.setLastMoveToSquare(getString(cursor, DBConstants.V_LAST_MOVE_TO_SQUARE));
 		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
-		dataObj.setGameResults(getString(cursor, DBConstants.V_GAME_RESULTS));
-		return dataObj;
+	}
+
+	private static void fillValuesFromListGameItem(ContentValues values, BaseGameOnlineItem dataObj){
+		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
+		values.put(DBConstants.V_COLOR, dataObj.getColor());
+		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
+		values.put(DBConstants.V_USER_NAME_STR_LENGTH, dataObj.getUsernameStringLength());
+		values.put(DBConstants.V_OPPONENT_NAME, dataObj.getOpponentUsername());
+		values.put(DBConstants.V_OPPONENT_RATING, dataObj.getOpponentRating());
+		values.put(DBConstants.V_TIME_REMAINING_AMOUNT, dataObj.getTimeRemainingAmount());
+		values.put(DBConstants.V_TIME_REMAINING_UNITS, dataObj.getTimeRemainingUnits());
+		values.put(DBConstants.V_FEN_STR_LENGTH, dataObj.getFenStringLength());
+		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
+		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
+		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
+		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.getIsOpponentOnline()? 1 : 0);
 	}
 
 	public static ContentValues putGameOnlineItemToValues(GameOnlineItem dataObj, String userName) {

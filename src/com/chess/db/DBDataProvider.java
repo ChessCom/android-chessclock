@@ -26,11 +26,13 @@ public class DBDataProvider extends ContentProvider {
 		// get table Uri's
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.TACTICS_BATCH_TABLE, DBConstants.TACTICS_BATCH);
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_FINISHED_LIST_GAMES_TABLE, DBConstants.ECHESS_FINISHED_LIST_GAMES);
+		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_CURRENT_LIST_GAMES_TABLE, DBConstants.ECHESS_CURRENT_LIST_GAMES);
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_ONLINE_GAMES_TABLE, DBConstants.ECHESS_ONLINE_GAMES);
 
 		// get particular id's from table
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.TACTICS_BATCH_TABLE + "/#", DBConstants.TACTICS_BATCH);
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_FINISHED_LIST_GAMES_TABLE + "/#", DBConstants.ECHESS_FINISHED_LIST_GAMES);
+		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_CURRENT_LIST_GAMES_TABLE + "/#", DBConstants.ECHESS_CURRENT_LIST_GAMES);
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_ONLINE_GAMES_TABLE + "/#", DBConstants.ECHESS_ONLINE_GAMES);
 
 	}
@@ -48,24 +50,28 @@ public class DBDataProvider extends ContentProvider {
 	private static Uri[] uriArray = new Uri[]{
 			DBConstants.TACTICS_BATCH_CONTENT_URI,
 			DBConstants.ECHESS_FINISHED_LIST_GAMES_CONTENT_URI,
+			DBConstants.ECHESS_CURRENT_LIST_GAMES_CONTENT_URI,
 			DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI
 	};
 
 	private static int[] pathsArray = new int[]{
 			DBConstants.TACTICS_BATCH,
 			DBConstants.ECHESS_FINISHED_LIST_GAMES,
+			DBConstants.ECHESS_CURRENT_LIST_GAMES,
 			DBConstants.ECHESS_ONLINE_GAMES
 	};
 
 	private static String[] tablesArray = new String[]{
 			DBConstants.TACTICS_BATCH_TABLE,
 			DBConstants.ECHESS_FINISHED_LIST_GAMES_TABLE,
+			DBConstants.ECHESS_CURRENT_LIST_GAMES_TABLE,
 			DBConstants.ECHESS_ONLINE_GAMES_TABLE
 	};
 
 	private static String[] createTablesArray = new String[]{
 			DBConstants.TACTICS_BATCH_TABLE_CREATE,
 			DBConstants.ECHESS_FINISHED_LIST_GAMES_CREATE,
+			DBConstants.ECHESS_CURRENT_LIST_GAMES_CREATE,
 			DBConstants.ECHESS_ONLINE_GAMES_CREATE
 	};
 

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION 	= 3;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION 	= 4;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -19,6 +19,7 @@ public class DBConstants {
     static final String DATABASE_NAME  = "Chess DB";
     public static final String TACTICS_BATCH_TABLE = "tactics_batch";
     public static final String ECHESS_FINISHED_LIST_GAMES_TABLE = "echess_finished_games";
+    public static final String ECHESS_CURRENT_LIST_GAMES_TABLE = "echess_current_games";
     public static final String ECHESS_ONLINE_GAMES_TABLE = "echess_online_games";
 
 
@@ -26,13 +27,15 @@ public class DBConstants {
 	// Content URI
     public static final Uri TACTICS_BATCH_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + TACTICS_BATCH_TABLE);
     public static final Uri ECHESS_FINISHED_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_FINISHED_LIST_GAMES_TABLE);
+    public static final Uri ECHESS_CURRENT_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_CURRENT_LIST_GAMES_TABLE);
     public static final Uri ECHESS_ONLINE_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_ONLINE_GAMES_TABLE);
 
 
     // uri paths
     public static final int TACTICS_BATCH = 0;
     public static final int ECHESS_FINISHED_LIST_GAMES = 1;
-    public static final int ECHESS_ONLINE_GAMES = 2;
+    public static final int ECHESS_CURRENT_LIST_GAMES = 2;
+    public static final int ECHESS_ONLINE_GAMES = 3;
 
 
     // general fields
@@ -80,7 +83,7 @@ public class DBConstants {
 	public static final String V_LAST_MOVE_TO_SQUARE 	= "lastMoveToSquare";
 	public static final String V_IS_OPPONENT_ONLINE 	= "isOpponentOnline";
 	public static final String V_GAME_RESULTS 			= "gameResults";
-
+	public static final String V_IS_MY_TURN 			= "isMyTurn";
 
     /* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -106,13 +109,13 @@ public class DBConstants {
 
 
 
-    static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + ECHESS_FINISHED_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_FINISHED_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
 			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_USER_NAME_STR_LENGTH 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_USER_NAME_STR_LENGTH 	    + _INT_NOT_NULL + _COMMA
 			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
 			+ V_TIME_REMAINING_AMOUNT 	    + _INT_NOT_NULL + _COMMA
@@ -123,6 +126,25 @@ public class DBConstants {
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
 			+ V_GAME_RESULTS 			    + _TEXT_NOT_NULL + _CLOSE;
+
+	static final String ECHESS_CURRENT_LIST_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_CURRENT_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
+			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
+			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
+			+ V_USER_NAME_STR_LENGTH 	    + _INT_NOT_NULL + _COMMA
+			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
+			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING_AMOUNT 	    + _INT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING_UNITS 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FEN_STR_LENGTH 		        + _INT_NOT_NULL + _COMMA
+			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
+			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
+			+ V_IS_MY_TURN 	        		+ _INT_NOT_NULL + _COMMA
+			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _CLOSE;
 
 	static final String ECHESS_ONLINE_GAMES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_ONLINE_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT

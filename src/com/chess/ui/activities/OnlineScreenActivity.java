@@ -12,6 +12,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -67,6 +68,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
+	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
+	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 
 
 	@Override
@@ -110,6 +113,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
 		vacationStatusUpdateListener = new VacationStatusUpdateListener();
 		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
+		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
+		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 
 		// init adapters
 		List<GameListCurrentItem> currentItemList = new ArrayList<GameListCurrentItem>();
@@ -176,7 +181,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
 					// TODO save list items and game items to DB for offline access
-					currentGamesAdapter.setItemsList(ChessComApiParser.getCurrentOnlineGames(returnedObj));
+					List<GameListCurrentItem> listCurrentItems = ChessComApiParser.getCurrentOnlineGames(returnedObj);
+					currentGamesAdapter.setItemsList(listCurrentItems);
+
+					// if (not saved) {save} // detect if user on mobile network
+//					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
 					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
 				case GameOnlineItem.CHALLENGES_TYPE:
@@ -187,6 +196,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					// TODO save list items and game items to DB for offline access
 					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
 					finishedGamesAdapter.setItemsList(finishedItems);
+//					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
 					break;
 				default:
 					break;
@@ -215,6 +225,18 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					updateStartingType(GameOnlineItem.FINISHED_TYPE);
 					break;
 			}
+		}
+	}
+
+	private class SaveCurrentGamesListUpdateListener extends  ActionBarUpdateListener<GameListCurrentItem> {
+		public SaveCurrentGamesListUpdateListener() {
+			super(getInstance());
+		}
+	}
+
+	private class SaveFinishedGamesListUpdateListener extends  ActionBarUpdateListener<GameListFinishedItem> {
+		public SaveFinishedGamesListUpdateListener() {
+			super(getInstance());
 		}
 	}
 

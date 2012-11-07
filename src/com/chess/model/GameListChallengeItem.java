@@ -30,14 +30,6 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		initialSetupFen = values[10];
 	}
 	
-	public String getOpponentUsername(){
-		return opponentName;
-	}
-	
-	public int getOpponentRating(){
-		return opponentRating;
-	}
-
 	public int getOpponentWinCount(){
 		return opponentWinCount;
 	}
@@ -52,10 +44,6 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 
 	public int getPlayAsColor() {
 		return playAsColor;
-	}
-
-	public int getGameType() {
-		return gameType;
 	}
 
 	public boolean getRated() {

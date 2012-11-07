@@ -5,33 +5,14 @@ import android.os.Parcelable;
 
 public class GameListFinishedItem extends BaseGameOnlineItem{
 
-
 	private String gameResults;
 
 	public GameListFinishedItem() {
 	}
 
 	public GameListFinishedItem(String[] values) {
-
-		gameId = Long.parseLong(values[0]);
-		color = Integer.parseInt(values[1]);
-		gameType = Integer.parseInt(values[2]);
-		userNameStrLength = Integer.parseInt(values[3]);
-		opponentName = values[4];
-		opponentRating = Integer.parseInt(values[5]);
-		timeRemainingAmount = Integer.parseInt(values[6]);
-		timeRemainingUnits = values[7];
-		fenStrLength = Integer.parseInt(values[8]);
-//		fen = values[9];
-		timestamp = Long.parseLong(values[10]);
-		lastMoveFromSquare = values[11];
-		lastMoveToSquare = values[12];
-		isOpponentOnline = values[13].equals("1");
+		super(values);
 		gameResults = values[14];
-	}
-
-	public int getFenStringLength() {
-		return fenStrLength;
 	}
 
 	public void setGameResults(String gameResults) {
@@ -42,33 +23,6 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		return gameResults;
 	}
 
-	public int getGameType() {
-		return gameType;
-	}
-
-	public boolean getIsOpponentOnline() {
-		return isOpponentOnline;
-	}
-
-	public String getLastMoveFromSquare() {
-		return lastMoveFromSquare;
-	}
-
-	public String getLastMoveToSquare() {
-		return lastMoveToSquare;
-	}
-
-	public int getOpponentRating() {
-		return opponentRating;
-	}
-
-	public String getOpponentUsername() {
-		return opponentName;
-	}
-
-	public int getUsernameStringLength() {
-		return userNameStrLength;
-	}
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
