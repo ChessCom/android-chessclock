@@ -81,7 +81,7 @@ public class RestHelper {
 	public static final String ECHESS_CHALLENGES_V2 = BASE_URL + API_V2 + "/echess_challenges";
 	public static final String ECHESS_NEW_GAME = BASE_URL + API + "/echess_new_game";
 	public static final String ECHESS_CURRENT_GAMES = BASE_URL + API_V3 + "/get_echess_current_games";
-	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V2 + "/get_echess_finished_games";
+	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V3 + "/get_echess_finished_games";
 	public static final String ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
 
 	public static final String LOGIN = BASE_URL + API_V2 + "/login";
