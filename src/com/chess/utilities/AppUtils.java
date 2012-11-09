@@ -271,7 +271,8 @@ public class AppUtils {
 	}
 
 	public static String getI18nString(Context context, String codeMessage, String... parameters) {
-		return context.getString(context.getResources().getIdentifier(codeMessage, "string", context.getPackageName()), parameters);
+		int stringIdentifier = context.getResources().getIdentifier(codeMessage, "string", context.getPackageName());
+		return stringIdentifier != 0 ? context.getString(stringIdentifier, parameters) : null;
 	}
 
 	public static String getI18nStringForAPIError(Context context, String message) {

@@ -198,7 +198,7 @@ public class LccGameListener implements GameListener {
 		lccHolder.getBlackClock().setRunning(false);
 
 		String abortedCodeMessage = ((GameImpl)game).getCodeMessage(); // used only for aborted games
-		if(abortedCodeMessage != null){
+		if (abortedCodeMessage != null) {
 			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage);
 			if (messageI18n != null) {
 				message = messageI18n;

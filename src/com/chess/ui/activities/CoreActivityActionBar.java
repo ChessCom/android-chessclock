@@ -264,7 +264,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			}
 		});
 
-		if(isPaused)
+		if (isPaused)
 			return;
 
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
