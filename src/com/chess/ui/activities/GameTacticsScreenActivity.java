@@ -1085,7 +1085,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
 		preferencesEditor.putInt(userName + AppConstants.SPENT_SECONDS_TACTICS, 0);
-		preferencesEditor.putString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putLong(userName + AppConstants.SAVED_TACTICS_ID, 0);
 		preferencesEditor.putInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, 0);
 		preferencesEditor.putBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, false);
 		preferencesEditor.commit();
