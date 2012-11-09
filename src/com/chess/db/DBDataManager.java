@@ -171,7 +171,7 @@ public class DBDataManager {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
 		fillListGameItemFromCursor(dataObj, cursor);
-		dataObj.setGameResults(getString(cursor, DBConstants.V_GAME_RESULTS));
+		dataObj.setGameResults(getInt(cursor, DBConstants.V_GAME_RESULTS));
 		return dataObj;
 	}
 

@@ -13,7 +13,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
@@ -37,8 +36,8 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	private int getData(String url) {
 		// Instantiate the custom HttpClient
 		HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT);
-		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
+//		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT);
+//		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
 		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 

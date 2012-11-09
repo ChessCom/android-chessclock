@@ -40,9 +40,9 @@ public class OnlineFinishedGamesAdapter extends ItemsAdapter<GameListFinishedIte
 		}
 
 		String result = context.getString(R.string.lost);
-		if (item.getGameResult().equals("1")) {
+		if (item.getGameResult() == BaseGameItem.GAME_WON) {
 			result = context.getString(R.string.won);
-		} else if (item.getGameResult().equals("2")) {
+		} else if (item.getGameResult() == BaseGameItem.GAME_DRAW) {
 			result = context.getString(R.string.draw);
 		}
 

@@ -9,9 +9,12 @@ import java.util.ArrayList;
 
 public class ChessComApiParser {
 
+	private static String[] finishedGameArray = new String[15];
+	private static String[] currentGameArray = new String[17];
+
 	//Challenge a friend
 	public static String[] getFriendsParse(String result) {
-		if (result.trim().length() > 8)
+		if (result.trim().length() > RestHelper.R_SUCCESS_P.length())
 			return result.substring(9).trim().split("[|]");
 		else
 			return new String[]{StaticData.SYMBOL_EMPTY};
@@ -44,16 +47,15 @@ public class ChessComApiParser {
 
 		String[] GamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		try {
-			int gamesCount = Integer.valueOf(GamesArray[0].substring(8));
+			int gamesCount = Integer.valueOf(GamesArray[0].substring(RestHelper.R_SUCCESS_P.length()));
 			int i, j, inc = 0;
 			String[] tmp = GamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 
 			for (i = 0; i < gamesCount; i++) {
-				String[] tmp2 = new String[17];
 				for (j = 0; j < 17; j++) {
-					tmp2[j] = tmp[inc++];
+					currentGameArray[j] = tmp[inc++];
 				}
-				output.add(new GameListCurrentItem(tmp2));
+				output.add(new GameListCurrentItem(currentGameArray));
 			}
 		} catch (Exception e) {   // TODO
 			return output;
@@ -69,23 +71,22 @@ public class ChessComApiParser {
 
 
 
-		String[] gamesArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
+		String[] responseArray = result.split(RestHelper.SYMBOL_PARAMS_SPLIT, 2);
 		int gamesCnt;
 		try {
-			gamesCnt = Integer.parseInt(gamesArray[0].substring(8));
+			gamesCnt = Integer.parseInt(responseArray[0].substring(RestHelper.R_SUCCESS_P.length()));
 		} catch (NumberFormatException e) {  // TODO
 			Log.e("getFinishedOnlineGames", e.toString());
 			return output;
 		}
 
 		int i, j, inc = 0;
-		String[] tmp = gamesArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
+		String[] gamesArray = responseArray[1].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 		for (i = 0; i < gamesCnt; i++) {
-			String[] tmp2 = new String[15];
 			for (j = 0; j < 15; j++) {
-				tmp2[j] = tmp[inc++];
+				finishedGameArray[j] = gamesArray[inc++];
 			}
-			output.add(new GameListFinishedItem(tmp2));
+			output.add(new GameListFinishedItem(finishedGameArray));
 		}
 		return output;
 	}
@@ -96,7 +97,7 @@ public class ChessComApiParser {
 
 	public static ArrayList<MessageItem> receiveMessages(String result) {
 		ArrayList<MessageItem> output = new ArrayList<MessageItem>();
-		String[] tmp = result.substring(8).split(RestHelper.SYMBOL_PARAMS_SPLIT);
+		String[] tmp = result.substring(RestHelper.R_SUCCESS_P.length()).split(RestHelper.SYMBOL_PARAMS_SPLIT);
 		int i;
 		for (i = 0; i < tmp.length; i++) {
 			if (tmp[i].length() > 1)

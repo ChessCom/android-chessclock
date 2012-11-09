@@ -167,8 +167,9 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void registerGcmService(){
-		if (!AppData.isNotificationsEnabled(this) || AppData.isGuest(this)) // no need to register if user turned off notifications
+		if (!AppData.isNotificationsEnabled(this) || AppData.isGuest(this)) { // no need to register if user turned off notifications
 			return;
+		}
 
 
 		// Make sure the device has the proper dependencies.

@@ -217,10 +217,13 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
 
+		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
+
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
 			updatePlayerDots(userPlayWhite);
 		} else {
+			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY);
 			updatePlayerDots(!userPlayWhite);
 		}
 
@@ -293,6 +296,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			infoLabelTxt.setText(timeRemains);
 			updatePlayerDots(userPlayWhite);
 		} else {
+			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY);
 			updatePlayerDots(!userPlayWhite);
 		}
 
@@ -464,7 +468,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 					getOnlineGame(gameId); // if next game
 					// same new gameId
-					Intent intent = getIntent();
+					Intent intent = getIntent();              // TODO update gameInfoItem
 					intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameInfoItem);
 					getIntent().replaceExtras(intent);
 					return;

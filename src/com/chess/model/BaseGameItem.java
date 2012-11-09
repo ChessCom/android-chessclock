@@ -14,6 +14,9 @@ public abstract class BaseGameItem implements Parcelable {
 
 	public static final int CLASSIC_CHESS = 1;
 	public static final int CHESS_960 = 2;
+	public static final int GAME_WON = 1;
+	public static final int GAME_LOSS = 0;
+	public static final int GAME_DRAW = 2;
 
 	public static final String FIRST_MOVE_INDEX = "1.";
 
