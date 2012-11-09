@@ -3,7 +3,6 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -159,7 +158,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		}
         
         if(locked || !gameActivityFace.currentGameExist()) {
-			Log.d("TEST", "locked = true");
 			return super.onTouchEvent(event);
 		}
 
@@ -270,9 +268,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 						return true;
 					}
 
-					// && move != null -> always true because found flag preceding that state
-					if (found /*&& move != null*/ && boardFace.makeMove(move)) {
-						Log.d("TEST", "BoardNetworkView move was made");
+					if (found && boardFace.makeMove(move)) {
 						afterMove();
 					} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
 						pieceSelected = true;

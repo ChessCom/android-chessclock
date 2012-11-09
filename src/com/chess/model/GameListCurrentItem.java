@@ -2,13 +2,14 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.backend.RestHelper;
 
 public class GameListCurrentItem extends BaseGameOnlineItem {
 
 	public GameListCurrentItem(String[] values) {
 		super(values);
-		isMyTurn = values[15].equals("1");
-		hasNewMessage = values[16].equals("1");
+		isMyTurn = values[15].equals(RestHelper.V_ONE);
+		hasNewMessage = values[16].equals(RestHelper.V_ONE);
 	}
 
 	public GameListCurrentItem() {

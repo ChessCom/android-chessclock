@@ -127,16 +127,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
 				return;
 
-//			String gameId = intent.getStringExtra("game_id");
-//			Log.d("TEST", " received game info -> gameId = " + gameId);
-//
-//			Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
-
-//			if (!DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
 			showYouTurnNotification(intent);
-//			} else {
-//				context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
-//			}
 		}
 	}
 
@@ -150,12 +141,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		boolean gameInfoFound = false;
 		Log.d(TAG, " _________________________________");
-		Log.d(TAG, " LastmoveSan = " + lastMoveSan);
+		Log.d(TAG, " LastMoveSan = " + lastMoveSan);
 		Log.d(TAG, " gameId = " + gameId);
 		Log.d(TAG, " opponentUsername = " + opponentUsername);
-		Log.d("TEST", " received game info -> gameId = " + gameId);
-
-		Log.d(TAG, "is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
+		Log.d(TAG, " is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
 		// we use the same registerId for all users on a device, so check username to notify only the needed user
 		if (opponentUsername.equalsIgnoreCase(AppData.getUserName(this))) {

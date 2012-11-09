@@ -273,14 +273,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
-			Log.d("TEST", "HomeActivity onActivityResult -> facebook authorize");
 			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
-	}
-
-	@Override
-	protected void afterLogin() {
-//		restartActivity(); // TODO check why to restart?
 	}
 
 }

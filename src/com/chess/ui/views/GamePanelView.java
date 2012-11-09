@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -681,7 +680,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 				((BitmapDrawable)layers[j]).setGravity(Gravity.LEFT | Gravity.TOP);
 
 				Rect bounds = layers[j].getBounds();
-				Log.d("TEST", "left bound before =  " + bounds.left);
 				bounds.left += (int) (j * SHIFT_SIZE * density);
 				bounds.right += (int) (j * SHIFT_SIZE * density);
 
@@ -690,10 +688,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 //				int t = 0;
 //				int b = 0;
 				layers[j].mutate().setBounds(bounds);
-				Log.d("TEST", "left bound after =  " + layers[j].getBounds().left);
-
-				Log.d("TEST", "create new layer for piece, cnt = " + cnt);
-				Log.d("TEST", "add level  = " + j + " for id = " + pieceDrawableId);
+//				Log.d("TEST", "left bound after =  " + layers[j].getBounds().left);
+//
+//				Log.d("TEST", "create new layer for piece, cnt = " + cnt);
+//				Log.d("TEST", "add level  = " + j + " for id = " + pieceDrawableId);
 //				int l = (int) (j * SHIFT_SIZE * density);
 				pieceDrawable.addLevel(0, j, layers[j]);
 

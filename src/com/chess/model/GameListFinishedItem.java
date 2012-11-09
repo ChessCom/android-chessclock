@@ -2,6 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.backend.RestHelper;
 
 public class GameListFinishedItem extends BaseGameOnlineItem{
 
@@ -34,7 +35,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 //		lastMoveFromSquare =  values[11];
 //		lastMoveToSquare = values[12];
 //		isDrawOfferPending = values[13].equals("p");
-		isOpponentOnline = values[14].equals("1");
+		isOpponentOnline = values[14].equals(RestHelper.V_ONE);
 
 		gameResults = Integer.parseInt(values[14]);
 	}

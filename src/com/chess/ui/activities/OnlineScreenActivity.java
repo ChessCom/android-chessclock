@@ -196,6 +196,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					// TODO save list items and game items to DB for offline access
 					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
 					finishedGamesAdapter.setItemsList(finishedItems);
+
 //					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
 					break;
 				default:
@@ -217,8 +218,17 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				showSinglePopupDialog(R.string.error, resultMessage);
 			}
 
+//			// TODO load currentList Type from DB
+//			new LoadEchessCurrentGamesListTask(new AbstractUpdateListener<Cursor>(getContext()) {
+//				@Override
+//				public void updateData(Cursor returnedObj) {
+//					super.updateData(returnedObj);
+//					//TODO change body of overridden methods use File | Settings | File Templates.
+//				}
+//			}).executeTask();
 			switch (currentListType) { // Continue to update list
 				case GameOnlineItem.CURRENT_TYPE:
+
 					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
 				case GameOnlineItem.CHALLENGES_TYPE:

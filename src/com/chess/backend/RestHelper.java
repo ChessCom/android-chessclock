@@ -1,6 +1,5 @@
 package com.chess.backend;
 
-import android.util.Log;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.NameValuePair;
@@ -346,7 +345,6 @@ public class RestHelper {
 	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 		String fullUrl = formUrl(loadItem.getRequestParams());
-        Log.d("TEST", "pagination part = " + fullUrl);
 		return loadItem.getLoadPath() + fullUrl;
 	}
 }

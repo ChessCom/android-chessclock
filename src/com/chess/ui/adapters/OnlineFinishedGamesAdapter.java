@@ -13,6 +13,8 @@ import java.util.List;
 
 public class OnlineFinishedGamesAdapter extends ItemsAdapter<GameListFinishedItem> {
 
+	protected static final String CHESS_960 = " (960)";
+
 
 	public OnlineFinishedGamesAdapter(Context context, List<GameListFinishedItem> itemList) {
 		super(context, itemList);
@@ -36,7 +38,7 @@ public class OnlineFinishedGamesAdapter extends ItemsAdapter<GameListFinishedIte
 		String gameType = StaticData.SYMBOL_EMPTY;
 
 		if (item.getGameType() == BaseGameItem.CHESS_960) {
-			gameType = " (960)";
+			gameType = CHESS_960;
 		}
 
 		String result = context.getString(R.string.lost);

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
@@ -136,7 +134,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	@Override
 	public void onConnectionEstablished() {
 		super.onConnectionEstablished();
-		Log.d("TEST", "Live Screen onLccConnected, lcc connect state = " + LccHolder.getInstance(this).isConnected());
 		showLoadingView(false);
 	}
 

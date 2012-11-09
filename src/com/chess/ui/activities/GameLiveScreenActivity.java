@@ -100,7 +100,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private boolean init() {
 		if(!getLccHolder().isConnected()){
-			Log.d("TEST", "!getLccHolder().isConnected() -> EXIT");
 			showToast(R.string.application_was_killed);
 			return false;
 		}
@@ -448,11 +447,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			legalMove = false;
 			BugSenseHandler.sendException(ex);
 		}*/
-
-		if(!getLccHolder().getCurrentGame().isMoveValid(move)) {
-			Log.d("TEST", "illegal move = " + move);
-			//showToast("illegal move");
-		}
 
 		String stackTrace;
 		try {

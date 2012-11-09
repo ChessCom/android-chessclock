@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -184,7 +183,6 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK ){
 			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
-				Log.d("TEST", "LoginScreen onActivityResult -> facebook authorize");
 //				facebook.authorizeCallback(requestCode, resultCode, data);
 				handler.postDelayed(new DelayedCallback(data, requestCode, resultCode), FACEBOOK_DELAY);
 			}else if(requestCode == NETWORK_REQUEST){

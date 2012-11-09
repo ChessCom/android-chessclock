@@ -305,7 +305,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			if (show){
 				showPopupHardProgressDialog(R.string.signingin);
 			} else {
-				Log.d("TEST", "LoginScreen LoginUpdateListener ->  dismissProgressDialog();, isPaused = " + isPaused);
 				if(isPaused)
 					return;
 
@@ -349,7 +348,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
-			Log.d("TEST", " Activity is = " + this);
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.LOGIN);
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());

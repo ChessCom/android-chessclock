@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.SearchView;
@@ -260,7 +259,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Log.d("TEST", "onConnectionFailure/ another login");
 				getActionBarHelper().setRefreshActionItemState(false);
 				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
 			}

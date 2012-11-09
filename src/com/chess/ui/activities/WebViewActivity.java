@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -50,7 +49,6 @@ public class WebViewActivity extends LiveBaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d("TEST", " Loading link to webView  = " + url);
 		webView.loadUrl(url);
 	}
 

@@ -146,12 +146,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		Log.d("TEST", " onRestoreInstanceState called");
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -163,7 +157,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			Log.d("TEST", "Have saved games = " + AppData.haveSavedTacticGame(this));
 			boolean haveGuestSavedGame = !preferences.getString(AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
 					.equals(StaticData.SYMBOL_EMPTY);
-			Log.d("TEST", "haveGuestSavedGame = " + haveGuestSavedGame);
+			Log.d("TEST", "have Guest SavedGame = " + haveGuestSavedGame);
 
 			final boolean userIsGuest = AppData.isGuest(this);
 
@@ -244,19 +238,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		Log.d("TEST", " onSavedInstance called");
-	}
-
-	@Override
 	protected void onPause() {
 		dismissDialogs();
 		super.onPause();
 
 		stopTacticsTimer();
 
-		Log.d("TEST", " need to save tactic = " + needToSaveTactic());
 		if (needToSaveTactic()) {
 			String userName = AppData.getUserName(this);
 			if (AppData.isGuest(this)) { // for guest mode we should have different name
@@ -465,11 +452,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	public Long getGameId() {
-		Log.d("TEST", " getTacticItem() = " + getTacticItem());
 		if (getTacticItem() == null) {
 			return null;
 		} else {
-			Log.d("TEST", " id = " + getTacticItem().getId());
 			return getTacticItem().getId();
 		}
 	}
@@ -488,8 +473,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		TacticItem tacticItem = getTacticsBatch().get(getCurrentProblem());
 		String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 		int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
-				DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
-		Log.d("TEST", " delete " +deletedCnt + " from DB, id = " + tacticItem.getId());
+				DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
 		// remove current tactics from batch
 		List<TacticItem> removeList = new ArrayList<TacticItem>();
 		removeList.add(tacticItem);
@@ -537,7 +521,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 
 			int count = tmp.length - 1;
-			Log.d("TEST", " received tactics batch = " + count + " user = " + AppData.getUserName(getContext()));
 			List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
 			for (int i = 1; i <= count; i++) {
 				TacticItem tacticItem = new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON));
@@ -856,7 +839,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			return;
 		}
 
-		Log.d("TEST", " ChessBoardTactics.resetInstance()");
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
@@ -1029,10 +1011,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				tacticBatch.add(tacticItem);
 
 			} while (returnedObj.moveToNext());
-
-			for (TacticItem tacticItem : tacticBatch) {
-				Log.d("TEST", "load from DB tactic_id = " + tacticItem.getId());
-			}
 
 			int savedTacticProblem = AppData.getSavedTacticProblem(getContext());
 			TacticsDataHolder.getInstance().setCurrentTacticProblem(savedTacticProblem);

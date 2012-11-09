@@ -1,6 +1,5 @@
 package com.chess.ui.engine;
 
-import android.util.Log;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
@@ -27,20 +26,9 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	public static ChessBoardTactics getInstance(GameActivityFace gameActivityFace) {
 		final Long gameId = gameActivityFace.getGameId();
-		if (instance != null) {
-			Log.d("TEST", "gameActivityFace = " + instance.gameActivityFace);
-		}
 
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
-			if (instance == null) {
-				Log.d("TEST", "instance == null " + (instance == null) );
-			} else if (instance.gameId == null) {
-				Log.d("TEST", "instance.gameId == null " + (instance.gameId == null) );
-			} else if (!instance.gameId.equals(gameId)) {
-				Log.d("TEST", "!instance.gameId.equals(gameId) " + (!instance.gameId.equals(gameId)) );
-			}
 			instance = new ChessBoardTactics(gameActivityFace);
-			Log.d("TEST", "new ChessBoardTactics");
 			instance.gameId = gameId;
 			instance.justInitialized = true;
 		} else {

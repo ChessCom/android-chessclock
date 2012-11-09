@@ -89,7 +89,6 @@ public class LccGameListener implements GameListener {
 			/*lccHolder.currentFGTime = System.currentTimeMillis();
 			lccHolder.previousFGGameId = lccHolder.currentFGGameId;
 			lccHolder.currentFGGameId = game.getId();*/
-			Log.d("TEST", "onFullGameReceived-> lccEventListener set to null");
         }
         if (game.isEnded()) {
             lccHolder.putGame(game);

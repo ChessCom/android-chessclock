@@ -74,8 +74,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-//		Log.d("TEST", " debb = " + isDebuggable);
 		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) { // if not debuggable
 			try {
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);

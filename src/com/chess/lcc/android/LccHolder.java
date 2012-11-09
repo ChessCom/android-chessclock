@@ -151,7 +151,6 @@ public class LccHolder{
     }
 
 	public GameLiveItem getGameItem() {
-		Log.d("TEST","gameId = " + currentGameId);
 		Game game = getGame(currentGameId);
 
 		return new GameLiveItem(game, game.getSeq() - 1);
@@ -390,13 +389,6 @@ public class LccHolder{
 			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
-
-			/*ConnectivityManager connectivityManager = (ConnectivityManager)
-					context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-			networkTypeName = activeNetworkInfo.getTypeName();*/
-		} else {
-			Log.d("TEST"," not connected, block UI");
 		}
 		liveChessClientEventListener.onConnectionBlocked(!connected);
 	}
@@ -751,10 +743,8 @@ public class LccHolder{
 
 	public void logout() {
 		Log.d(TAG, "USER LOGOUT");
-//		DataHolder.getInstance().setLiveChess(false);
 		AppData.setLiveChessMode(context, false);
 		setCurrentGameId(null);
-		Log.d("TEST", "Lcc Logout performed");
 		setUser(null);
 		runDisconnectTask();
 		setConnected(false);
@@ -796,7 +786,6 @@ public class LccHolder{
 	}
 
 	public void processFullGame(Game game) {
-		Log.d("TEST", "processFullGame, gameId = " + game.getId());
 		latestMoveNumber = null;
 		ChessBoardLive.resetInstance();
 		putGame(game);
@@ -812,7 +801,6 @@ public class LccHolder{
 		setWhiteClock(new ChessClock(this, true, time));
 		setBlackClock(new ChessClock(this, false, time));
 
-		Log.d("TEST","processing full game, gameId = " + game.getId());
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
@@ -842,7 +830,6 @@ public class LccHolder{
 			return;
 		} else {
 			latestMoveNumber = moveIndex;
-			Log.d("TEST", "latestMoveNumber = " + latestMoveNumber);
 		}
 		if (isActivityPausedMode()) {
 			GameEvent moveEvent = new GameEvent();
@@ -925,7 +912,6 @@ public class LccHolder{
 	}
 
 	public Boolean isFairPlayRestriction() {
-		Log.d("TEST", "gameId = " + currentGameId);
 		Game game = lccGames.get(currentGameId);
 		String userName = user.getUsername();
 

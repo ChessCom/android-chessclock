@@ -6,7 +6,6 @@ import android.content.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -120,7 +119,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
 
 		gameId = gameInfoItem.getGameId();
-		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
+//		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		abortGameUpdateListener = new AbortGameUpdateListener();
@@ -199,8 +198,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			showSubmitButtonsLay(false);
 			getSoundPlayer().playGameStart();
 
-			Log.d("TEST", "Start of game");
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+
+			gameInfoItem.setTimeRemainingUnits(currentGame.getTimeRemainingUnits());
+			gameInfoItem.setTimeRemainingAmount(currentGame.getTimeRemainingAmount());
 
 			DBDataManager.updateOnlineGame(getContext(), currentGame);
 			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
@@ -269,8 +270,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			Log.d("TEST", "Game update");
-
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 
 			DBDataManager.updateOnlineGame(getContext(), currentGame);
@@ -291,6 +290,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	public void onGameRefresh() {
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+
+		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(timeRemains);
@@ -386,8 +387,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		@Override
 		public void updateData(String returnedObj) {
-			Log.d("TEST", "Get game update");
-
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 
 			DBDataManager.updateOnlineGame(getContext(), currentGame);
@@ -465,6 +464,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 					showSubmitButtonsLay(false);
 					boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
 					getBoardFace().setAnalysis(false);
+
+					gameInfoItem.setGameId(gameId);
 
 					getOnlineGame(gameId); // if next game
 					// same new gameId

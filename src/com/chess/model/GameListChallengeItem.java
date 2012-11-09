@@ -2,6 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.backend.RestHelper;
 
 public class GameListChallengeItem extends BaseGameOnlineItem{
 
@@ -26,7 +27,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		playAsColor = Integer.parseInt(values[6]);
 		daysPerMove = Integer.parseInt(values[7]);
 		gameType = Integer.parseInt(values[8]);
-		isRated = values[9].equals("1");
+		isRated = values[9].equals(RestHelper.V_ONE);
 		initialSetupFen = values[10];
 	}
 	
