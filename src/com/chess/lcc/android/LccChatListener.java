@@ -64,7 +64,9 @@ public class LccChatListener implements ChatListener {
 	public void onChatEntered(Chat chat, ChatMember member) {
 		Log.i(TAG, "CHAT LISTENER: Chat entered: roomId=" + chat.getId() + ", enteredUser=" + member + ", thisUser=" +
 				lccHolder.getUser().getUsername());
-		lccHolder.putGameChat(chat.getGame().getId(), chat);
+		if (chat.getGame() != null) {
+			lccHolder.putGameChat(chat.getGame().getId(), chat);
+		}
 	}
 
 	@Override
