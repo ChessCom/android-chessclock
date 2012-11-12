@@ -213,7 +213,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
 			for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-				if (gameListItem.getIsMyTurn()) {
+				if (gameListItem.isMyTurn()) {
 					currentGames.add(gameListItem);
 				}
 			}

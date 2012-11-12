@@ -11,12 +11,12 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 
 
-public class LoadEchessCurrentGamesListTask extends AbstractUpdateTask<Cursor, Long> {
+public class LoadEchessFinishedGamesListTask extends AbstractUpdateTask<Cursor, Long> {
 
     private ContentResolver contentResolver;
 	private static String[] arguments = new String[1];
 
-	public LoadEchessCurrentGamesListTask(TaskUpdateInterface<Cursor> taskFace) {
+	public LoadEchessFinishedGamesListTask(TaskUpdateInterface<Cursor> taskFace) {
         super(taskFace);
 
 		contentResolver = taskFace.getMeContext().getContentResolver();
@@ -26,9 +26,9 @@ public class LoadEchessCurrentGamesListTask extends AbstractUpdateTask<Cursor, L
     protected Integer doTheTask(Long... ids) {
 		String userName = AppData.getUserName(taskFace.getMeContext());
 
-		Uri uri = DBConstants.ECHESS_CURRENT_LIST_GAMES_CONTENT_URI;
+		Uri uri = DBConstants.ECHESS_FINISHED_LIST_GAMES_CONTENT_URI;
 		arguments[0] = userName;
-		item = contentResolver.query(uri, DBDataManager.PROJECTION_CURRENT_LIST_GAMES,
+		item = contentResolver.query(uri, DBDataManager.PROJECTION_FINISHED_LIST_GAMES,
 				DBDataManager.SELECTION_USER, arguments, null);
 
 		if(item.moveToFirst()) {

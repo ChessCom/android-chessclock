@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION 	= 5;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION 	= 6;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -83,7 +83,7 @@ public class DBConstants {
 	public static final String V_LAST_MOVE_FROM_SQUARE 	= "lastMoveFromSquare";
 	public static final String V_LAST_MOVE_TO_SQUARE 	= "lastMoveToSquare";
 	public static final String V_IS_OPPONENT_ONLINE 	= "isOpponentOnline";
-	public static final String V_GAME_RESULTS 			= "gameResults";
+	public static final String V_GAME_RESULT 			= "gameResult";
 	public static final String V_IS_MY_TURN 			= "isMyTurn";
 
     /* common commands */
@@ -126,7 +126,7 @@ public class DBConstants {
 			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
-			+ V_GAME_RESULTS 			    + _INT_NOT_NULL + _CLOSE;
+			+ V_GAME_RESULT + _INT_NOT_NULL + _CLOSE;
 
 	static final String ECHESS_CURRENT_LIST_GAMES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_CURRENT_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT

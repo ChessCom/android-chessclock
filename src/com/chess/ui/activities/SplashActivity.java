@@ -3,19 +3,18 @@ package com.chess.ui.activities;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.utilities.AppUtils;
 
 public class SplashActivity extends CommonLogicActivity {
 
 	private View splashProgress;
+	private static final long SPLASH_DELAY = 1500;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,13 +32,24 @@ public class SplashActivity extends CommonLogicActivity {
 
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			goToLoginScreen();
-		} else { // validate token
+		} else {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
+					AppData.setGuest(getContext(), false);
+					AppData.setLiveChessMode(getContext(), false);
+				}
+			}, SPLASH_DELAY);
+		}
+
+		/*else { // validate token
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.VALIDATE_TOKEN);
 			loadItem.addRequestParams(RestHelper.P_AUTH_TOKEN, AppData.getUserToken(this));
 
 			new GetStringObjTask(new TokenValidationListener()).execute(loadItem);
-		}
+		}*/
 	}
 
 	private class TokenValidationListener extends AbstractUpdateListener<String>{

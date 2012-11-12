@@ -9,7 +9,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.db.QueryParams;
 import com.chess.model.GameOnlineItem;
 
 import java.util.List;
@@ -18,16 +17,12 @@ import java.util.List;
 public class SaveOnlineGamesTask extends AbstractUpdateTask<GameOnlineItem, Long> {
 
     private ContentResolver contentResolver;
-    private QueryParams params;
 	private List<GameOnlineItem> onlineItems;
 	private static String[] arguments = new String[2];
 
 	public SaveOnlineGamesTask(TaskUpdateInterface<GameOnlineItem> taskFace, List<GameOnlineItem> onlineItems) {
         super(taskFace);
 		this.onlineItems = onlineItems;
-        params = new QueryParams();
-		params.setUri(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI);
-
 		contentResolver = taskFace.getMeContext().getContentResolver();
     }
 
@@ -40,9 +35,9 @@ public class SaveOnlineGamesTask extends AbstractUpdateTask<GameOnlineItem, Long
 			arguments[0] = String.valueOf(onlineItem.getGameId());
 			arguments[1] = String.valueOf(userName);
 
-			Uri uri = params.getUri();
+			Uri uri = DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI;
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-					DBDataManager.SELECTION_GAME_ID, arguments, params.getOrder());
+					DBDataManager.SELECTION_GAME_ID, arguments, null);
 			if (cursor.moveToFirst()) {
 				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
 						DBDataManager.putGameOnlineItemToValues(onlineItem, userName), null, null);

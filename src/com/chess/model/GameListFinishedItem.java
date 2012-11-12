@@ -14,7 +14,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 	color: 1 = white , 2 = black
 	 */
 
-	private int gameResults;
+	private int gameResult;
 
 	public GameListFinishedItem() {
 	}
@@ -37,15 +37,15 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 //		isDrawOfferPending = values[13].equals("p");
 		isOpponentOnline = values[14].equals(RestHelper.V_ONE);
 
-		gameResults = Integer.parseInt(values[14]);
+		gameResult = Integer.parseInt(values[14]);
 	}
 
-	public void setGameResults(int gameResults) {
-		this.gameResults = gameResults;
+	public void setGameResult(int gameResult) {
+		this.gameResult = gameResult;
 	}
 
 	public int getGameResult() {
-		return gameResults;
+		return gameResult;
 	}
 
 
@@ -54,7 +54,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		writeBaseGameParcel(parcel);
 
 		writeBaseGameOnlineParcel(parcel);
-		parcel.writeInt(gameResults);
+		parcel.writeInt(gameResult);
 	}
 
 
@@ -73,7 +73,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		readBaseGameParcel(in);
 
 		readBaseGameOnlineParcel(in);
-		gameResults = in.readInt();
+		gameResult = in.readInt();
 	}
 
 

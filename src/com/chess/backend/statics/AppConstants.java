@@ -80,7 +80,11 @@ public class AppConstants {
 	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
 
 	/* Messages */
-	public static final String OPPONENT = "opponent";
+	/**
+	 * Use DB stored value for particular game
+	 */
+	@Deprecated
+	public static final String OPPONENT = "opponent"; // TODO create logic to get quick way of one value from DB
 	public static final String WARNING = ", warning: ";
 	public static final String CHALLENGE = ", challenge: ";
 	public static final String LISTENER = ": listener=";

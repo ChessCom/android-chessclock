@@ -8,7 +8,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.db.QueryParams;
 import com.chess.model.TacticItem;
 
 import java.util.List;
@@ -17,15 +16,12 @@ import java.util.List;
 public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
 
     private ContentResolver contentResolver;
-    private QueryParams params;
 	private List<TacticItem> tacticsBatch;
 	private static String[] arguments = new String[2];
 
 	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem> taskFace, List<TacticItem> tacticsBatch) {
         super(taskFace);
 		this.tacticsBatch = tacticsBatch;
-        params = new QueryParams();
-		params.setUri(DBConstants.TACTICS_BATCH_CONTENT_URI);
 
 		contentResolver = taskFace.getMeContext().getContentResolver();
     }
@@ -37,9 +33,9 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
 			arguments[0] = String.valueOf(tacticItem.getId());
 			arguments[1] = String.valueOf(tacticItem.getUser());
 
-			Uri uri = params.getUri();
+			Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
-					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments, params.getOrder());
+					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments, null);
 			if (cursor.moveToFirst()) {
 				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
 						DBDataManager.putTacticItemToValues(tacticItem), null, null);

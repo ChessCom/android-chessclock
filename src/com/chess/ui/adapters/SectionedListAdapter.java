@@ -34,6 +34,10 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 		sections.remove(index);
 	}
 
+	public int getSectionsCnt() {
+		return sections.size();
+	}
+
 	@Override
 	public int getViewTypeCount() {
 		int total = 1; // one for the header, plus those from sections

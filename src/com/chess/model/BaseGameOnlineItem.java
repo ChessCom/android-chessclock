@@ -113,7 +113,7 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		return lastMoveToSquare;
 	}
 
-	public boolean getIsDrawOfferPending() {
+	public boolean isDrawOfferPending() {
 		return isDrawOfferPending;
 	}
 
@@ -121,9 +121,11 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		return isOpponentOnline;
 	}
 
-	public boolean getIsMyTurn() {
+	public boolean isMyTurn() {
 		return isMyTurn;
 	}
 
-
+	public void setMyTurn(boolean myTurn) {
+		isMyTurn = myTurn;
+	}
 }

@@ -170,9 +170,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (getBoardFace().isJustInitialized()) {
 			getOnlineGame(gameId);
 			getBoardFace().setJustInitialized(false);
-		} else if (!isUserMove()) {
-
-			// TODO don't check updates if it' our move
+		} else if (!isUserMove()) { // don't check updates if it' our move
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -199,6 +197,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			getSoundPlayer().playGameStart();
 
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+
+			// TODO save game
+
 
 			gameInfoItem.setTimeRemainingUnits(currentGame.getTimeRemainingUnits());
 			gameInfoItem.setTimeRemainingAmount(currentGame.getTimeRemainingAmount());
@@ -453,7 +454,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
 
 			for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-				if (gameListItem.getIsMyTurn()) {
+				if (gameListItem.isMyTurn()) {
 					currentGames.add(gameListItem);
 				}
 			}
@@ -713,7 +714,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
 
-			if (gameInfoItem.getIsDrawOfferPending()) { // If Draw was already offered by the opponent, we send accept to it.
+			if (gameInfoItem.isDrawOfferPending()) { // If Draw was already offered by the opponent, we send accept to it.
 				draw = RestHelper.V_ACCEPTDRAW;
 			} else {
 				draw = RestHelper.V_OFFERDRAW;

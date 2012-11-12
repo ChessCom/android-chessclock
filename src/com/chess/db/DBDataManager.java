@@ -31,12 +31,23 @@ public class DBDataManager {
 	public static String[] arguments2 = new String[2];
 	public static String[] arguments3 = new String[3];
 
-	public static String SELECTION_TACTIC_ID_AND_USER;
-	public static String SELECTION_TACTIC_BATCH_USER;
-	public static String SELECTION_ID;
-	public static String SELECTION_GAME_ID;
-	public static String SELECTION_USER_OFFERED_DRAW;
-	public static String SELECTION_USER;
+	public static String SELECTION_TACTIC_ID_AND_USER = concatArguments(
+			DBConstants.V_TACTIC_ID,
+			DBConstants.V_USER);
+
+	public static String SELECTION_TACTIC_BATCH_USER = concatArguments(DBConstants.V_USER);
+
+	public static String SELECTION_ID = concatArguments(DBConstants._ID);
+
+	public static String SELECTION_GAME_ID = concatArguments(DBConstants.V_USER,
+			DBConstants.V_GAME_ID);
+
+	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(DBConstants.V_USER,
+			DBConstants.V_GAME_ID,
+			DBConstants.V_USER_OFFERED_DRAW);
+
+	public static String SELECTION_USER = concatArguments(DBConstants.V_USER);
+
 
 	public static final String[] PROJECTION_ID = new String[] {
 			DBConstants._ID
@@ -66,7 +77,10 @@ public class DBDataManager {
 			DBConstants.V_OPPONENT_NAME,
 			DBConstants.V_GAME_TYPE,
 			DBConstants.V_IS_MY_TURN,
+			DBConstants.V_TIMESTAMP,
 			DBConstants.V_OPPONENT_OFFERED_DRAW,
+			DBConstants.V_IS_OPPONENT_ONLINE,
+			DBConstants.V_HAS_NEW_MESSAGE,
 			DBConstants.V_TIME_REMAINING_UNITS,
 			DBConstants.V_TIME_REMAINING_AMOUNT
 	};
@@ -76,83 +90,14 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_GAME_ID,
 			DBConstants.V_GAME_TYPE,
-			DBConstants.V_GAME_RESULTS,
+			DBConstants.V_GAME_RESULT,
+			DBConstants.V_IS_OPPONENT_ONLINE,
 			DBConstants.V_OPPONENT_NAME
 	};
 
-	static {
+	public static String concatArguments(String... arguments){
 		StringBuilder selection = new StringBuilder();
-		selection.append(DBConstants._ID).append(EQUALS_ARG_);
-		SELECTION_ID = selection.toString();
-	}
 
-	static {
-		StringBuilder selection = new StringBuilder();
-		concatArguments(selection,
-				DBConstants.V_TACTIC_ID,
-				DBConstants.V_USER);
-//		selection.append(DBConstants.V_TACTIC_ID);
-//		selection.append(EQUALS_ARG_);
-//		selection.append(AND_);
-//		selection.append(DBConstants.V_USER);
-//		selection.append(EQUALS_ARG_);
-		SELECTION_TACTIC_ID_AND_USER = selection.toString();
-	}
-
-	static {
-		StringBuilder selection = new StringBuilder();
-		selection.append(DBConstants.V_USER).append(EQUALS_ARG_);
-		SELECTION_TACTIC_BATCH_USER = selection.toString();
-	}
-
-	static {
-		StringBuilder selection = new StringBuilder();
-		concatArguments(selection,
-				DBConstants.V_USER,
-				DBConstants.V_GAME_ID);
-//		selection.append(DBConstants.V_USER);
-//		selection.append(EQUALS_ARG_);
-//		selection.append(AND_);
-//		selection.append(DBConstants.V_GAME_ID);
-//		selection.append(EQUALS_ARG_);
-		SELECTION_GAME_ID = selection.toString();
-	}
-
-	static {
-		StringBuilder selection = new StringBuilder();
-		concatArguments(selection,
-				DBConstants.V_USER,
-				DBConstants.V_GAME_ID,
-				DBConstants.V_USER_OFFERED_DRAW);
-//		selection.append(DBConstants.V_USER);
-//		selection.append(EQUALS_ARG_);
-//		selection.append(AND_);
-//		selection.append(DBConstants.V_GAME_ID);
-//		selection.append(EQUALS_ARG_);
-//		selection.append(AND_);
-//		selection.append(DBConstants.V_USER_OFFERED_DRAW);
-//		selection.append(EQUALS_ARG_);
-		SELECTION_USER_OFFERED_DRAW = selection.toString();
-	}
-
-	static {
-		StringBuilder selection = new StringBuilder();
-/*
-		DBConstants.V_USER,
-		DBConstants.V_GAME_ID,
-		DBConstants.V_OPPONENT_NAME,
-		DBConstants.,
-		DBConstants.,
-		DBConstants.,
-		DBConstants.,
-		DBConstants.
-*/
-		selection.append(DBConstants.V_USER).append(EQUALS_ARG_);
-
-		SELECTION_USER = selection.toString();
-	}
-
-	public static void concatArguments(StringBuilder selection, String... arguments){
 		String separator = StaticData.SYMBOL_EMPTY;
 		for (String argument : arguments) {
 			selection.append(separator);
@@ -160,6 +105,7 @@ public class DBDataManager {
 			selection.append(argument);
 			selection.append(EQUALS_ARG_);
 		}
+		return selection.toString();
 	}
 
 	public static void updateOnlineGame(Context context, GameOnlineItem currentGame) {
@@ -219,8 +165,8 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, userName);
-		fillValuesFromListGameItem(values, dataObj);
-		values.put(DBConstants.V_GAME_RESULTS, dataObj.getGameResult());
+		setValuesFromListGameItem(values, dataObj);
+		values.put(DBConstants.V_GAME_RESULT, dataObj.getGameResult());
 		return values;
 	}
 
@@ -228,45 +174,71 @@ public class DBDataManager {
 	public static GameListFinishedItem getEchessFinishedListGameFromCursor(Cursor cursor) {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
-		fillListGameItemFromCursor(dataObj, cursor);
-		dataObj.setGameResults(getInt(cursor, DBConstants.V_GAME_RESULTS));
+		/*
+
+		if (getInt(cursor, DBConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DBConstants.V_GAME_RESULT) == BaseGameItem.GAME_WON) {
+		, DBConstants.V_OPPONENT_NAME) +
+		 */
+//		setListGameItemFromCursor(dataObj, cursor);
+
+		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
+		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
+//		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
+		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
+		dataObj.setGameResult(getInt(cursor, DBConstants.V_GAME_RESULT));
 		return dataObj;
 	}
 
 	public static ContentValues putEchessGameListCurrentItemToValues(GameListCurrentItem dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
-		fillValuesFromListGameItem(values, dataObj);
+		setValuesFromListGameItem(values, dataObj);
 		values.put(DBConstants.V_USER, userName);
+		values.put(DBConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOfferPending()? 1 : 0);
+		values.put(DBConstants.V_IS_MY_TURN, dataObj.isMyTurn()? 1 : 0);
+		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage()? 1 : 0);
 		return values;
 	}
 
 
 	public static GameListCurrentItem getEchessGameListCurrentItemFromCursor(Cursor cursor) {
 		GameListCurrentItem dataObj = new GameListCurrentItem();
-		fillListGameItemFromCursor(dataObj, cursor);
+
+		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
+		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
+		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
+		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
+		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
+		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
+
+//		setListGameItemFromCursor(dataObj, cursor);
 		dataObj.setDrawOfferPending(getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0);
+		dataObj.setMyTurn(getInt(cursor, DBConstants.V_IS_MY_TURN) > 0);
+		dataObj.setHasNewMessage(getInt(cursor, DBConstants.V_HAS_NEW_MESSAGE) > 0);
 
 		return dataObj;
 	}
 
-	private static void fillListGameItemFromCursor(BaseGameOnlineItem dataObj, Cursor cursor){
-		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
-		dataObj.setColor(getInt(cursor, DBConstants.V_COLOR));
-		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
-		dataObj.setUserNameStrLength(getInt(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
-		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
-		dataObj.setOpponentRating(getInt(cursor, DBConstants.V_OPPONENT_RATING));
-		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
-		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
-		dataObj.setFenStrLength(getInt(cursor, DBConstants.V_FEN_STR_LENGTH));
-		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
-		dataObj.setLastMoveFromSquare(getString(cursor, DBConstants.V_LAST_MOVE_FROM_SQUARE));
-		dataObj.setLastMoveToSquare(getString(cursor, DBConstants.V_LAST_MOVE_TO_SQUARE));
-		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
-	}
+//	private static void setListGameItemFromCursor(BaseGameOnlineItem dataObj, Cursor cursor){
+//		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+//		dataObj.setColor(getInt(cursor, DBConstants.V_COLOR));
+//		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
+//		dataObj.setUserNameStrLength(getInt(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
+//		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
+//		dataObj.setOpponentRating(getInt(cursor, DBConstants.V_OPPONENT_RATING));
+//		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
+//		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
+//		dataObj.setFenStrLength(getInt(cursor, DBConstants.V_FEN_STR_LENGTH));
+//		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
+//		dataObj.setLastMoveFromSquare(getString(cursor, DBConstants.V_LAST_MOVE_FROM_SQUARE));
+//		dataObj.setLastMoveToSquare(getString(cursor, DBConstants.V_LAST_MOVE_TO_SQUARE));
+//		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
+//	}
 
-	private static void fillValuesFromListGameItem(ContentValues values, BaseGameOnlineItem dataObj){
+	private static void setValuesFromListGameItem(ContentValues values, BaseGameOnlineItem dataObj){
 		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
 		values.put(DBConstants.V_COLOR, dataObj.getColor());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
@@ -287,13 +259,13 @@ public class DBDataManager {
 
 		values.put(DBConstants.V_FINISHED, 0);
 		values.put(DBConstants.V_USER, userName);
-		fillValuesFromOnlineGame(values, dataObj);
+		setValuesFromOnlineGame(values, dataObj);
 		values.put(DBConstants.V_USER_OFFERED_DRAW, dataObj.isUserOfferedDraw());
 
 		return values;
 	}
 
-	private static void fillValuesFromOnlineGame(ContentValues values, GameOnlineItem dataObj){
+	private static void setValuesFromOnlineGame(ContentValues values, GameOnlineItem dataObj){
 		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
 		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
@@ -311,7 +283,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
 	}
 
-	private static void fillOnlineGameFromCursor(GameOnlineItem dataObj, Cursor cursor){
+	private static void setOnlineGameFromCursor(GameOnlineItem dataObj, Cursor cursor){
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
@@ -332,7 +304,7 @@ public class DBDataManager {
 
 	public static GameOnlineItem getGameOnlineItemFromCursor(Cursor cursor) {
 		GameOnlineItem dataObj = new GameOnlineItem();
-		fillOnlineGameFromCursor(dataObj, cursor);
+		setOnlineGameFromCursor(dataObj, cursor);
 		dataObj.setUserOfferedDraw(getInt(cursor, DBConstants.V_USER_OFFERED_DRAW) > 0);
 
 		return dataObj;
@@ -343,7 +315,7 @@ public class DBDataManager {
 
 		values.put(DBConstants.V_FINISHED, 1);
 		values.put(DBConstants.V_USER, userName);
-		fillValuesFromOnlineGame(values, dataObj);
+		setValuesFromOnlineGame(values, dataObj);
 
 		return values;
 	}
@@ -351,7 +323,7 @@ public class DBDataManager {
 	public static GameOnlineItem getGameFinishedItemFromCursor(Cursor cursor) {
 		GameOnlineItem dataObj = new GameOnlineItem();
 
-		fillOnlineGameFromCursor(dataObj, cursor);
+		setOnlineGameFromCursor(dataObj, cursor);
 
 		return dataObj;
 	}
