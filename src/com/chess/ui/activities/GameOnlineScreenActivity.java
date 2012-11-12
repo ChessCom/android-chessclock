@@ -118,7 +118,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
 
 		gameId = gameInfoItem.getGameId();
-//		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		abortGameUpdateListener = new AbortGameUpdateListener();
@@ -199,9 +198,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 //			DBDataManager.updateOnlineGame(getContext(), currentGame);
 
-			gameInfoItem.setTimeRemainingUnits(currentGame.getTimeRemainingUnits());
-			gameInfoItem.setTimeRemainingAmount(currentGame.getTimeRemainingAmount());
-
 			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
 			gamePanelView.enableGameControls(true);
@@ -219,7 +215,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-			infoLabelTxt.setText(timeRemains);
+			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY); // disable time as it incorrect when switching to next game
+
+//			infoLabelTxt.setText(timeRemains);
 			updatePlayerDots(userPlayWhite);
 		} else {
 			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY);
@@ -292,7 +290,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-			infoLabelTxt.setText(timeRemains);
+			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY); // disable time as it incorrect when switching to next game
+
+//			infoLabelTxt.setText(timeRemains);
 			updatePlayerDots(userPlayWhite);
 		} else {
 			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY);
