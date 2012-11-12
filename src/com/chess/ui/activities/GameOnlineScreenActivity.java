@@ -168,7 +168,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if (getBoardFace().isJustInitialized()) {
 			getOnlineGame(gameId);
 			getBoardFace().setJustInitialized(false);
-		} else if (!isUserMove()) { // don't check updates if it' our move
+		} else {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));

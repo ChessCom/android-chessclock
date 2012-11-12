@@ -318,7 +318,7 @@
 	<string name="rematch">la revancha.</string>
 	<string name="review">Opinar</string>
 	<string name="your_end_game_rating">Tu valoración ( %1$s ): ( %2$d )</string>
-	<string name="your_end_game_rating_online">Tu valoración ( %1$s )</string>
+	<string name="your_end_game_rating_online">Tu valoración ( %1$d )</string>
 	<string name="draw_declined">SORTEO RECHAZADA</string>
 	<string name="has_declined_draw">ha disminuido un empate</string>
 

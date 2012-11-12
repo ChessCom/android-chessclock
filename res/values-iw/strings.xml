@@ -316,7 +316,7 @@
 	<string name="rematch">משחק גומלין</string>
 	<string name="review">בדוק</string>
 	<string name="your_end_game_rating">הדירוג שלך ( %1$s ): ( %2$d )</string>
-	<string name="your_end_game_rating_online">הדירוג שלך ( %1$s ): ( %2$d )</string>
+	<string name="your_end_game_rating_online">הדירוג שלך ( %1$d )</string>
 	<string name="draw_declined">לצייר נדחה</string>
 	<string name="has_declined_draw">ירד תיקו</string>
 

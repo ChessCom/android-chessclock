@@ -314,7 +314,7 @@
 	<string name="rematch">Rewanż</string>
 	<string name="review">Przegląd</string>
 	<string name="your_end_game_rating">Twoja ocena ( %1$s ): ( %2$d )</string>
-	<string name="your_end_game_rating_online">Twoja ocena ( %1$s )</string>
+	<string name="your_end_game_rating_online">Twoja ocena ( %1$d )</string>
 	<string name="draw_declined">RYSOWANIE Odrzucona</string>
 	<string name="has_declined_draw">spadła remis</string>
 

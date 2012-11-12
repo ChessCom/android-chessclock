@@ -311,7 +311,7 @@
 	<string name="rematch">재시합</string>
 	<string name="review">리뷰</string>
 	<string name="your_end_game_rating">귀하의 평가 ( %1$s ) : ( %2$d )</string>
-	<string name="your_end_game_rating_online">귀하의 평가 ( %1$s )</string>
+	<string name="your_end_game_rating_online">귀하의 평가 ( %1$d )</string>
 	<string name="draw_declined">거절 그리기</string>
 	<string name="has_declined_draw">무승부를 거절했습니다</string>
 

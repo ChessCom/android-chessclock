@@ -18,7 +18,10 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 	public GameListChallengeItem(String[] values) {
 		gameId = Long.parseLong(values[0].trim());
 		opponentName = values[1];
-		opponentRating = Integer.parseInt(values[2]);
+		String rating = values[2];
+		if (rating != null) {
+			opponentRating = Integer.parseInt(rating);
+		}
 
 		opponentWinCount = Integer.parseInt(values[3]);
 		opponentLossCount = Integer.parseInt(values[4]);
@@ -27,7 +30,10 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		playAsColor = Integer.parseInt(values[6]);
 		daysPerMove = Integer.parseInt(values[7]);
 		gameType = Integer.parseInt(values[8]);
-		isRated = values[9].equals(RestHelper.V_ONE);
+		String rated = values[9];
+		if (rated != null) {
+			isRated = rated.equals(RestHelper.V_ONE);
+		}
 		initialSetupFen = values[10];
 	}
 	

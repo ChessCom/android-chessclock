@@ -316,7 +316,7 @@
 	<string name="rematch">Rematch</string>
 	<string name="review">Überprüfen</string>
 	<string name="your_end_game_rating">Deine Wertung ( %1$s ): ( %2$d )</string>
-	<string name="your_end_game_rating_online">Deine Wertung ( %1$s )</string>
+	<string name="your_end_game_rating_online">Deine Wertung ( %1$d )</string>
 	<string name="draw_declined">DRAW DECLINED</string>
 	<string name="has_declined_draw">abgenommen hat ein Unentschieden</string>
 
