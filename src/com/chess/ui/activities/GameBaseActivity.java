@@ -74,8 +74,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected void widgetsInit() {
 		statusBarLay = (ViewGroup) findViewById(R.id.statusBarLay);
 
-		whitePlayerLabel = (TextView) findViewById(R.id.white);
-		blackPlayerLabel = (TextView) findViewById(R.id.black);
+		whitePlayerLabel = (TextView) findViewById(R.id.whiteLabelTxt);
+		blackPlayerLabel = (TextView) findViewById(R.id.blackLabelTxt);
 		whitePlayerLabel.setSelected(true);
 		blackPlayerLabel.setSelected(true);
 

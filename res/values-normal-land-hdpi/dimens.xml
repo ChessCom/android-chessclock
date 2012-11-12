@@ -4,8 +4,8 @@
 
 	<!--Dashboard-->
 	<dimen name="dashboard_padding_top">21dip</dimen>
-	<dimen name="dashboard_padding_bot">48dip</dimen>
-	<dimen name="dashboard_padding_side">80dip</dimen>
+	<dimen name="dashboard_padding_bot">30dip</dimen>
+	<dimen name="dashboard_padding_side">87dip</dimen>
 
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">125dip</dimen>

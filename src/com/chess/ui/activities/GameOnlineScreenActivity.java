@@ -22,7 +22,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.db.DBDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
@@ -198,13 +197,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 
-			// TODO save game
-
+//			DBDataManager.updateOnlineGame(getContext(), currentGame);
 
 			gameInfoItem.setTimeRemainingUnits(currentGame.getTimeRemainingUnits());
 			gameInfoItem.setTimeRemainingAmount(currentGame.getTimeRemainingAmount());
 
-			DBDataManager.updateOnlineGame(getContext(), currentGame);
 			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
 			gamePanelView.enableGameControls(true);
@@ -273,7 +270,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		public void updateData(String returnedObj) {
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 
-			DBDataManager.updateOnlineGame(getContext(), currentGame);
+//			DBDataManager.updateOnlineGame(getContext(), currentGame);
 
 			gamePanelView.enableGameControls(true);
 			boardView.lockBoard(false);
@@ -390,7 +387,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		public void updateData(String returnedObj) {
 			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 
-			DBDataManager.updateOnlineGame(getContext(), currentGame);
+//			DBDataManager.updateOnlineGame(getContext(), currentGame);
 
 			gamePanelView.enableGameControls(true);
 			boardView.lockBoard(false);

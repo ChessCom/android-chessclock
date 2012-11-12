@@ -12,6 +12,7 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
+		android:text="test"
 		/>
 
 	<com.chess.RoboTextView
@@ -20,6 +21,14 @@
 		android:layout_height="wrap_content"
 		android:layout_marginRight="5dip"
 		android:gravity="center"
+		android:text="test"
 		/>
+
+<!--	<ImageView
+		android:id="@+id/onlineIndicatorImg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/player_indicator_online"
+		/>-->
 
 </LinearLayout>

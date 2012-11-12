@@ -163,5 +163,10 @@
 	<color name="player_ind_black_1">#FF000000</color>
 	<color name="player_ind_black_2">#FF575757</color>
 	<color name="player_ind_black_stroke">#FF000000</color>
+
+	<color name="player_ind_green_1">#FF419100</color>
+	<color name="player_ind_green_2">#FF59b111</color>
+	<color name="player_ind_green_stroke">#FF419100</color>
+
 	<color name="semitransparent">#7f000000</color>
 </resources>

@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.app.AlertDialog;
 import android.content.*;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.MenuItem;
@@ -13,22 +12,16 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.db.DBDataManager;
-import com.chess.db.tasks.LoadEchessCurrentGamesListTask;
-import com.chess.db.tasks.LoadEchessFinishedGamesListTask;
-import com.chess.db.tasks.SaveEchessCurrentGamesListTask;
-import com.chess.db.tasks.SaveEchessFinishedGamesListTask;
 import com.chess.model.*;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
-import com.chess.ui.adapters.OnlineCurrentGamesCursorAdapter;
-import com.chess.ui.adapters.OnlineFinishedGamesCursorAdapter;
+import com.chess.ui.adapters.OnlineCurrentGamesAdapter;
+import com.chess.ui.adapters.OnlineFinishedGamesAdapter;
 import com.chess.ui.adapters.SectionedAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.utilities.AppUtils;
@@ -62,11 +55,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
 	private LoadItem selectedLoadItem;
-//	private OnlineCurrentGamesAdapter currentGamesAdapter;
-	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
+	private OnlineCurrentGamesAdapter currentGamesAdapter;
+//	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
-//	private OnlineFinishedGamesAdapter finishedGamesAdapter;
-	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
+	private OnlineFinishedGamesAdapter finishedGamesAdapter;
+//	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private SectionedAdapter sectionedAdapter;
 	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
 	private GameListCurrentItem gameListCurrentItem;
@@ -76,10 +69,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
-	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
-	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
-	private CurrentGamesCursorUpdateListener currentGamesCursorUpdateListener;
-	private FinishedGamesCursorUpdateListener finishedGamesCursorUpdateListener;
+//	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
+//	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
+//	private CurrentGamesCursorUpdateListener currentGamesCursorUpdateListener;
+//	private FinishedGamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	private ListView listView;
 
 
@@ -124,29 +117,29 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
 		vacationStatusUpdateListener = new VacationStatusUpdateListener();
 		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
-		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
-		currentGamesCursorUpdateListener = new CurrentGamesCursorUpdateListener();
-		finishedGamesCursorUpdateListener = new FinishedGamesCursorUpdateListener();
+//		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
+//		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
+//		currentGamesCursorUpdateListener = new CurrentGamesCursorUpdateListener();
+//		finishedGamesCursorUpdateListener = new FinishedGamesCursorUpdateListener();
 
 		// init adapters
-//		List<GameListCurrentItem> currentItemList = new ArrayList<GameListCurrentItem>();
+		List<GameListCurrentItem> currentItemList = new ArrayList<GameListCurrentItem>();
 		List<GameListChallengeItem> challengesItemList = new ArrayList<GameListChallengeItem>();
-//		List<GameListFinishedItem> finishedItemList = new ArrayList<GameListFinishedItem>();
+		List<GameListFinishedItem> finishedItemList = new ArrayList<GameListFinishedItem>();
 		sectionedAdapter = new SectionedAdapter(this);
 
-//		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, currentItemList);
+		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, currentItemList);
 		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, challengesItemList);
-//		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, finishedItemList);
+		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, finishedItemList);
 
-		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);
-		finishedGamesCursorAdapter = new OnlineFinishedGamesCursorAdapter(getContext(), null);
+//		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);
+//		finishedGamesCursorAdapter = new OnlineFinishedGamesCursorAdapter(getContext(), null);
 
-		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
-//		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesAdapter);
+//		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-//		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
+//		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		showActionRefresh = true;
 		showActionNewGame = true;
@@ -199,9 +192,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
 					List<GameListCurrentItem> listCurrentItems = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-//					currentGamesAdapter.setItemsList(listCurrentItems);
+					currentGamesAdapter.setItemsList(listCurrentItems);
 
-					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
+//					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
 					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
 				case GameOnlineItem.CHALLENGES_TYPE:
@@ -210,9 +203,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					break;
 				case GameOnlineItem.FINISHED_TYPE:
 					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
-//					finishedGamesAdapter.setItemsList(finishedItems);
+					finishedGamesAdapter.setItemsList(finishedItems);
 
-					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
+//					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
 					break;
 				default:
 					break;
@@ -237,58 +230,58 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
-			new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
+//			new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
+//			new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
 		}
 	}
 
-	private class SaveCurrentGamesListUpdateListener extends  ActionBarUpdateListener<GameListCurrentItem> {
-		public SaveCurrentGamesListUpdateListener() {
-			super(getInstance());
-		}
+//	private class SaveCurrentGamesListUpdateListener extends  ActionBarUpdateListener<GameListCurrentItem> {
+//		public SaveCurrentGamesListUpdateListener() {
+//			super(getInstance());
+//		}
+//
+//		@Override
+//		public void updateData(GameListCurrentItem returnedObj) {
+//			new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
+//		}
+//	}
 
-		@Override
-		public void updateData(GameListCurrentItem returnedObj) {
-			new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
-		}
-	}
+//	private class SaveFinishedGamesListUpdateListener extends  ActionBarUpdateListener<GameListFinishedItem> {
+//		public SaveFinishedGamesListUpdateListener() {
+//			super(getInstance());
+//		}
+//
+//		@Override
+//		public void updateData(GameListFinishedItem returnedObj) {
+//			new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
+//		}
+//	}
 
-	private class SaveFinishedGamesListUpdateListener extends  ActionBarUpdateListener<GameListFinishedItem> {
-		public SaveFinishedGamesListUpdateListener() {
-			super(getInstance());
-		}
+//	private class CurrentGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+//		public CurrentGamesCursorUpdateListener() {
+//			super(getInstance());
+//		}
+//
+//		@Override
+//		public void updateData(Cursor returnedObj) {
+//			super.updateData(returnedObj);
+//			currentGamesCursorAdapter.changeCursor(returnedObj);
+//
+//			updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+//		}
+//	}
 
-		@Override
-		public void updateData(GameListFinishedItem returnedObj) {
-			new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
-		}
-	}
-
-	private class CurrentGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
-		public CurrentGamesCursorUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-			currentGamesCursorAdapter.changeCursor(returnedObj);
-
-			updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
-		}
-	}
-
-	private class FinishedGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
-		public FinishedGamesCursorUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-			finishedGamesCursorAdapter.changeCursor(returnedObj);
-		}
-	}
+//	private class FinishedGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+//		public FinishedGamesCursorUpdateListener() {
+//			super(getInstance());
+//		}
+//
+//		@Override
+//		public void updateData(Cursor returnedObj) {
+//			super.updateData(returnedObj);
+//			finishedGamesCursorAdapter.changeCursor(returnedObj);
+//		}
+//	}
 
 	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
 
@@ -492,9 +485,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				return;
 			}
 
-//			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem =  DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
+//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+//			gameListCurrentItem =  DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
 
 			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
 			preferencesEditor.commit();
@@ -518,9 +511,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
 
-//			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
+//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+//			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
 			preferencesEditor.commit();
 
@@ -535,9 +528,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		int section = sectionedAdapter.getCurrentSection(pos);
 
 		if (section == CURRENT_GAMES_SECTION){
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem =  DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
-//			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
+//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+//			gameListCurrentItem =  DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
@@ -550,9 +543,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
-//			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
+//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+//			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
 			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
 			preferencesEditor.commit();
@@ -569,7 +562,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void onReceive(Context context, Intent intent) {
 			updateStartingType(GameOnlineItem.CURRENT_TYPE);
 		}
-	};
+	}
 
 	private void clickOnChallenge(GameListChallengeItem gameListChallengeItem) {
 		this.gameListChallengeItem = gameListChallengeItem;

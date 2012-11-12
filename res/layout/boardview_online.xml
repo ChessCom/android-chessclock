@@ -24,7 +24,7 @@
 			/>
 
 		<com.chess.RoboTextView
-			android:id="@+id/white"
+			android:id="@+id/whiteLabelTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:paddingRight="2dip"
@@ -33,7 +33,7 @@
 			/>
 
 		<com.chess.RoboTextView
-			android:id="@+id/black"
+			android:id="@+id/blackLabelTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
