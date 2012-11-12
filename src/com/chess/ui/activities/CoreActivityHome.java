@@ -10,9 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -163,7 +163,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			public void run() {
 
 				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-				final SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_relogin_frame, null, false);
+				final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
 				PopupItem popupItem = new PopupItem();
 				popupItem.setCustomView(customView);

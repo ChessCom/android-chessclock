@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
@@ -808,7 +807,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 		MopubHelper.showRectangleAd(adViewWrapper, this);
 		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView((SerialLinLay) layout);
+		popupItem.setCustomView((LinearLayout) layout);
 
 		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getSupportFragmentManager(), END_GAME_TAG);

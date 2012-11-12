@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
@@ -392,7 +391,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void showWrongMovePopup(String title) {
-		SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
+		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
 
 		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
 
@@ -412,7 +411,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
 		TacticsDataHolder.getInstance().setTacticLimitReached(limitReached);
 
-		SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_tactic_solved, null, false);
+		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
 		LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(this)) {

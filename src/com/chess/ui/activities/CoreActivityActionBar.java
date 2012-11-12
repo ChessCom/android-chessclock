@@ -14,10 +14,10 @@ import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.view.*;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.SerialLinLay;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -227,7 +227,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			public void run() {
 
 				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-				final SerialLinLay customView = (SerialLinLay) inflater.inflate(R.layout.popup_relogin_frame, null, false);
+				final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
 				PopupItem popupItem = new PopupItem();
 				popupItem.setCustomView(customView);
