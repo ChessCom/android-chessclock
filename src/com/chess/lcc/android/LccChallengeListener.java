@@ -73,7 +73,6 @@ public class LccChallengeListener implements ChallengeListener {
 			return;
 		}
 
-
 		if (challenge.getTo().equals(lccHolder.getUser().getUsername())) {
 			SoundPlayer.getInstance(lccHolder.getContext()).playNotify();
 			// show popup dialog with challenge invitation

@@ -138,7 +138,8 @@ public class LccGameListener implements GameListener {
 
         /*lccHolder.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                                         lccHolder.getSeekListListener());*/
-		lccHolder.setLastGameId();
+		Long lastGameId = lccHolder.getCurrentGameId() != null ? lccHolder.getCurrentGameId() : game.getId();
+		lccHolder.setLastGameId(lastGameId);
 //		lccHolder.setCurrentGameId(null);
 
         List<Game.Result> gameResults = game.getGameResults();
@@ -214,6 +215,7 @@ public class LccGameListener implements GameListener {
         if (lccHolder.isActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
             final GameEvent gameEndedEvent = new GameEvent();
+			gameEndedEvent.setGameId(game.getId());
             gameEndedEvent.setEvent(GameEvent.Event.END_OF_GAME);
             gameEndedEvent.setGameEndedMessage(message);
             lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);

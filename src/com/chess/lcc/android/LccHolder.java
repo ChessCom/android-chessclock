@@ -807,6 +807,7 @@ public class LccHolder {
 			blackClock.setRunning(false);
 		}
 
+		// todo: show actual game over time for ended games
 		setWhiteClock(new ChessClock(this, true, time));
 		setBlackClock(new ChessClock(this, false, time));
 
@@ -882,8 +883,8 @@ public class LccHolder {
 		}
 	}
 
-	public void setLastGameId(){
-		lastGameId = currentGameId;
+	public void setLastGameId(Long lastGameId) {
+		this.lastGameId = lastGameId;
 		Log.d("REMATCHTEST", "setLastGameId " + lastGameId);
 	}
 
