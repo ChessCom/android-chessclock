@@ -21,7 +21,15 @@ import com.chess.utilities.AppUtils;
 
 import java.util.*;
 
-public class LccHolder{
+public class LccHolder {
+
+	public static final boolean TESTING_GAME = false;
+	public static final String[] TEST_MOVES_COORD = {"d2d4", "c7c6", "c2c4", "d7d5", "g1f3", "g8f6", "b1c3", "e7e6",
+			"c1g5", "f8e7", "e2e3", "b8d7", "f1d3", "d8b6", "d1c2", "h7h6", "g5h4", "g7g5", "h4g3", "f6h5", "c4d5",
+			"h5g3", "h2g3", "e6d5", "a2a3", "g5g4", "f3h4", "e7h4", "h1h4", "d7f6", "e1e2", "c8e6", "a1h1", "h6h5",
+			"c3a4", "b6c7", "a4c5", "e8c8", "d3f5", "h8e8", "f5e6", "f7e6", "c2g6", "c7e7", "b2b4", "b7b6", "c5d3",
+			"c8b7", "d3e5", "d8c8", "h1c1", "e8g8", "g6d3"
+			/*, "g8g5", "e5g6", "e7f7", "g6e5", "g5e5", "d4e5", "f6e4", "h4h1", "f7f2"*/};
 
 	private static final String TAG = "LccHolder";
 	public static final int OWN_SEEKS_LIMIT = 3;
@@ -170,7 +178,7 @@ public class LccHolder{
 		return getGame(currentGameId).getBlackPlayer().getUsername();
 	}
 
-	public String getCurrentuserName() {
+	public String getUsername() {
 		return user.getUsername();
 	}
 
@@ -202,6 +210,7 @@ public class LccHolder{
 	}
 
 	public void addPendingWarning(String warning, String... parameters) {
+		Log.d("LCCLOG", "warning = " + warning);
 		if (warning != null) {
 			String messageI18n = AppUtils.getI18nString(context, warning, parameters);
 			pendingWarnings.add(messageI18n == null ? warning : messageI18n);
@@ -963,13 +972,22 @@ public class LccHolder{
 		return lccGames.size();
 	}
 
-	public void checkTestingGame() {
-		if (LccGameListener.TESTING_GAME) {
-			final Game currentGame = getCurrentGame();
-			if (currentGame.isMoveOf(user) && currentGame.getSeq() == 0) {
-				Log.d(TAG, "First move by: " + user.getUsername() + ", the movie: "
-						+ LccGameListener.TEST_MOVES_COORD[currentGame.getSeq()]);
-				lccClient.makeMove(currentGame, LccGameListener.TEST_MOVES_COORD[currentGame.getSeq()]);
+	public void checkFirstTestMove() {
+		if (TESTING_GAME) {
+			final Game game = getCurrentGame();
+			if (game.isMoveOf(user) && game.getSeq() == 0) {
+				//Utils.sleep(5000);
+				lccClient.makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
+			}
+		}
+	}
+
+	public void checkTestMove() {
+		if (TESTING_GAME) {
+			final Game game = getCurrentGame();
+			if (game.isMoveOf(user) && game.getState() == Game.State.Started && game.getSeq() < TEST_MOVES_COORD.length) {
+				//Utils.sleep(0.5F);
+				lccClient.makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
 			}
 		}
 	}

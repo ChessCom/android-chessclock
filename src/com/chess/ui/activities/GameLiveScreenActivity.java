@@ -78,7 +78,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		// change labels and label's drawables according player color
 		// so current player(user) name must be always at the bottom
 		String blackPlayerName = getLccHolder().getBlackUserName();
-		String userName = getLccHolder().getCurrentuserName();
+		String userName = getLccHolder().getUsername();
 
 		userPlayWhite = !userName.equals(blackPlayerName);
 		opponentDotId = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
@@ -193,8 +193,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		handler.removeCallbacks(blinkSubmitButton);
 	}
 
-
-
 	private void updateGameState() {
 		if (getBoardFace().isJustInitialized()) {
 			onGameStarted();
@@ -217,15 +215,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().setReside(true);
 		}
 
+		blockGame(false);
 		getLccHolder().checkAndReplayMoves();
 
-		invalidateGameScreen();
+		// temporary disable playLastMoveAnimation feature, because it can be one of the illegalmove reasons potentially
+		// todo: probably could be enabled with new LCC
+		/*invalidateGameScreen();
 		getBoardFace().takeBack();
 		boardView.invalidate();
+		playLastMoveAnimation();*/
 
-		playLastMoveAnimation();
-
-		getLccHolder().checkTestingGame();
+		getLccHolder().checkFirstTestMove();
 	}
 
     public void setWhitePlayerTimer(String timeString) {
@@ -286,7 +286,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	// ----------------------Lcc Events ---------------------------------------------
 
 	public void onGameRefresh(GameLiveItem gameItem) {
-        blockGame(false);
 
 		if (getBoardFace().isAnalysis())
 			return;
@@ -326,6 +325,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				invalidateGameScreen();
 			}
 		});
+		getLccHolder().checkTestMove();
 
 		checkMessages();
 	}
