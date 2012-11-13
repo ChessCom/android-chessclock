@@ -196,8 +196,12 @@ public class LccGameListener implements GameListener {
         //message = whiteUsername + " vs. " + blackUsername + " - " + message;
         Log.d(TAG, "GAME LISTENER: GAME OVER - " + message);
 
-		lccHolder.getWhiteClock().setRunning(false);
-		lccHolder.getBlackClock().setRunning(false);
+		if (lccHolder.getWhiteClock() != null) {
+			lccHolder.getWhiteClock().setRunning(false);
+		}
+		if (lccHolder.getBlackClock() != null) {
+			lccHolder.getBlackClock().setRunning(false);
+		}
 
 		String abortedCodeMessage = ((GameImpl)game).getCodeMessage(); // used only for aborted games
 		if (abortedCodeMessage != null) {
