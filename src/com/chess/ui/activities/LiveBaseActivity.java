@@ -156,7 +156,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 		@Override
 		public void showDialog(Challenge challenge) {
+			Log.d("LCCLOG", "need to show challenge dialog");
 			if (popupManager.size() > 0) {
+				Log.d("LCCLOG", "show challenge dialog: popupManager.size() " + popupManager.size());
 				return;
 			}
 
