@@ -30,7 +30,7 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_FRAME, 0);
-    }
+	}
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {

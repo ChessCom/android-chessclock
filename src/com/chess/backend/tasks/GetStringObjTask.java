@@ -90,9 +90,6 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 		}
 		taskFace.showProgress(false);
 		if (result == StaticData.RESULT_OK) {
-//			if (useList) // we never use list
-//				taskFace.updateListData(itemList);
-//			else
 			if (item.contains(RestHelper.R_SUCCESS)) {
 				taskFace.updateData(item);
 			} else if (item.contains(RestHelper.R_ERROR)) {
