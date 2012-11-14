@@ -60,7 +60,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
 		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
-//		if (DataHolder.getInstance().isLiveChess() && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else {
@@ -71,7 +70,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected boolean checkIfLiveUserAlive(){
 		boolean alive = true;
 		if (getLccHolder().getUser() == null) {
-//			if (DataHolder.getInstance().isLiveChess()) {
 			if (AppData.isLiveChess(this)) {
 				getLccHolder().logout();
 			}

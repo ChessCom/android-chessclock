@@ -355,7 +355,7 @@ public class LccHolder {
 		@Override
 		public void updateData(LiveChessClient returnedObj) {
 			Log.d(TAG, "LiveChessClient initialized");
-			lccClient = returnedObj;
+			lccClient = returnedObj;    // duplicate of setter
 		}
 	}
 
