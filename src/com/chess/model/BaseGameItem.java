@@ -212,7 +212,9 @@ public abstract class BaseGameItem implements Parcelable {
 
 		parcel.writeInt(timeRemainingAmount);
 		parcel.writeString(timeRemainingUnits);
-		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
+		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending});
+		parcel.writeBooleanArray(new boolean[]{isOpponentOnline});
+		parcel.writeBooleanArray(new boolean[]{hasNewMessage});
 		parcel.writeInt(fenStrLength);
 //		parcel.writeString(fen);
 		parcel.writeLong(timestamp);
@@ -236,11 +238,15 @@ public abstract class BaseGameItem implements Parcelable {
 
 		timeRemainingAmount = in.readInt();
 		timeRemainingUnits = in.readString();
-		boolean[] booleans = new boolean[3];
-		in.readBooleanArray(booleans);
-		isDrawOfferPending = booleans[0];
-		isOpponentOnline = booleans[1];
-		hasNewMessage = booleans[2];
+		boolean[] booleans1 = new boolean[1];
+		boolean[] booleans2 = new boolean[1];
+		boolean[] booleans3 = new boolean[1];
+		in.readBooleanArray(booleans1);
+		in.readBooleanArray(booleans2);
+		in.readBooleanArray(booleans3);
+		isDrawOfferPending = booleans1[0];
+		isOpponentOnline = booleans2[0];
+		hasNewMessage = booleans3[0];
 
 		fenStrLength = in.readInt();
 //		fen = in.readString();
