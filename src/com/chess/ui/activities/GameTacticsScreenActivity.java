@@ -172,7 +172,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				try {
 					showedTacticId = preferences.getLong(userName + AppConstants.SAVED_TACTICS_ID, 0);
 				} catch (ClassCastException ex) {
-					showedTacticId = Long.parseLong(preferences.getString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY));
+					String tacticId = preferences.getString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
+					if (!tacticId.isEmpty()) { // or just catch NumberFormatException
+						showedTacticId = Long.parseLong(tacticId);
 				}
 				boolean isRetry = preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_RETRY, false);
 
