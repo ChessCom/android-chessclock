@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.widget.Button;
@@ -168,13 +169,14 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				String tacticString = preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY);
 				String tacticResultString = preferences.getString(userName + AppConstants.SAVED_TACTICS_RESULT_ITEM, StaticData.SYMBOL_EMPTY);
-				long showedTacticId;
+				long showedTacticId = 0;
 				try {
 					showedTacticId = preferences.getLong(userName + AppConstants.SAVED_TACTICS_ID, 0);
 				} catch (ClassCastException ex) {
 					String tacticId = preferences.getString(userName + AppConstants.SAVED_TACTICS_ID, StaticData.SYMBOL_EMPTY);
-					if (!tacticId.isEmpty()) { // or just catch NumberFormatException
+					if (!TextUtils.isEmpty(tacticId)) { // or just catch NumberFormatException
 						showedTacticId = Long.parseLong(tacticId);
+					}
 				}
 				boolean isRetry = preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_RETRY, false);
 
