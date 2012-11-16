@@ -2,9 +2,10 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import com.chess.backend.RestHelper;
 
-public class GameListChallengeItem extends BaseGameOnlineItem{
+public class GameListChallengeItem extends BaseGameOnlineItem {
 
 	private int opponentWinCount;
 	private int opponentLossCount;
@@ -19,29 +20,40 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 		gameId = Long.parseLong(values[0].trim());
 		opponentName = values[1];
 		String rating = values[2];
-		if (rating != null) {
+		if (rating != null && !TextUtils.isEmpty(rating)) {
 			opponentRating = Integer.parseInt(rating);
 		}
 
-		opponentWinCount = Integer.parseInt(values[3]);
-		opponentLossCount = Integer.parseInt(values[4]);
-		opponentDrawCount = Integer.parseInt(values[5]);
+		String winCount = values[3];
+		if (winCount != null && !TextUtils.isEmpty(winCount)) {
+			opponentWinCount = Integer.parseInt(values[3]);
+		}
 
+		String lossCount = values[4];
+		if (lossCount != null && !TextUtils.isEmpty(lossCount)) {
+			opponentLossCount = Integer.parseInt(values[4]);
+		}
+		String drawCount = values[5];
+		if (drawCount != null && !TextUtils.isEmpty(drawCount)) {
+			opponentDrawCount = Integer.parseInt(values[5]);
+		}
 		playAsColor = Integer.parseInt(values[6]);
+
 		daysPerMove = Integer.parseInt(values[7]);
 		gameType = Integer.parseInt(values[8]);
+
 		String rated = values[9];
 		if (rated != null) {
 			isRated = rated.equals(RestHelper.V_ONE);
 		}
 		initialSetupFen = values[10];
 	}
-	
-	public int getOpponentWinCount(){
+
+	public int getOpponentWinCount() {
 		return opponentWinCount;
 	}
 
-	public int getOpponentLossCount(){
+	public int getOpponentLossCount() {
 		return opponentLossCount;
 	}
 
@@ -73,7 +85,6 @@ public class GameListChallengeItem extends BaseGameOnlineItem{
 //		}
 //		return builder.toString();
 //	}
-
 
 
 //	The eches challenges response looks like the following:
