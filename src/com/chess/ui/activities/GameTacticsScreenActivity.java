@@ -486,8 +486,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		List<TacticItem> removeList = new ArrayList<TacticItem>();
 		removeList.add(tacticItem);
 		getTacticsBatch().removeAll(removeList);
+		TacticsDataHolder.getInstance().decreaseCurrentTacticsProblem(); // decrease pointer
 
-		TacticsDataHolder.getInstance().increaseCurrentTacticsProblem();
+		TacticsDataHolder.getInstance().increaseCurrentTacticsProblem();  // preserve logic, to be consistent
 		getTacticFromBatch();
 	}
 

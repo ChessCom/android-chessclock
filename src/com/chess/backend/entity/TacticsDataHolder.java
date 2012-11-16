@@ -55,6 +55,9 @@ public class TacticsDataHolder {
 	public void increaseCurrentTacticsProblem(){
 		currentTacticProblem++;
 	}
+	public void decreaseCurrentTacticsProblem(){
+		currentTacticProblem--;
+	}
 
 	public void setCurrentTacticProblem(int currentTacticProblem) {
 		this.currentTacticProblem = currentTacticProblem;
