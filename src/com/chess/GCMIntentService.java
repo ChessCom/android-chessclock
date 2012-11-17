@@ -63,6 +63,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@SuppressWarnings("hiding")
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
+	public static final String OBJECT_SYMBOL = "{";
 	private Context context;
 	private SharedPreferences preferences;
 
@@ -319,7 +320,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			httpClient.getConnectionManager().shutdown();
 		}
 
-		if (result == StaticData.RESULT_OK) {
+		if (result == StaticData.RESULT_OK && returnedObj.contains(OBJECT_SYMBOL)) {
 			GSMServerResponseItem responseItem = parseJson(returnedObj);
 			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER ? "REGISTER" : "UNREGISTER";
 			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj);
