@@ -12,7 +12,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 	private int opponentDrawCount;
 	private int playAsColor;
 	private int daysPerMove;
-	private String initialSetupFen;
+//	private String initialSetupFen;
 	private boolean isRated;
 
 
@@ -46,7 +46,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 		if (rated != null) {
 			isRated = rated.equals(RestHelper.V_ONE);
 		}
-		initialSetupFen = values[10];
+//		initialSetupFen = values[10];
 	}
 
 	public int getOpponentWinCount() {
@@ -69,9 +69,9 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 		return isRated;
 	}
 
-	public String getInitialSetupFen() {
-		return initialSetupFen;
-	}
+//	public String getInitialSetupFen() {
+//		return initialSetupFen;
+//	}
 
 	public int getDaysPerMove() {
 		return daysPerMove;
@@ -114,7 +114,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 		parcel.writeInt(opponentDrawCount);
 		parcel.writeInt(playAsColor);
 		parcel.writeInt(daysPerMove);
-		parcel.writeString(initialSetupFen);
+//		parcel.writeString(initialSetupFen);
 		boolean[] booleans = new boolean[]{isRated};
 		parcel.writeBooleanArray(booleans);
 	}
@@ -138,7 +138,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 		opponentDrawCount = in.readInt();
 		playAsColor = in.readInt();
 		daysPerMove = in.readInt();
-		initialSetupFen = in.readString();
+//		initialSetupFen = in.readString();
 		boolean[] booleans = new boolean[1];
 		in.readBooleanArray(booleans);
 		isRated = booleans[0];
