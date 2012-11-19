@@ -99,10 +99,15 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	}
 
 	private void removeParent(){
-		ViewGroup childParent = (ViewGroup) popupItem.getCustomView().getParent();
+		final View view = popupItem.getCustomView();
+		if (view == null) {
+			return;
+		}
+
+		ViewGroup childParent = (ViewGroup) view.getParent();
 		if(childParent != null)
 			childParent.removeAllViews();
 		customView.removeAllViews();
-		customView.removeView(popupItem.getCustomView());
+		customView.removeView(view);
 	}
 }
