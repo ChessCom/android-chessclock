@@ -204,6 +204,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
 
+		// todo: refactor with new LCC
 		if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
 			getLccHolder().logout();
 			backToHomeActivity();

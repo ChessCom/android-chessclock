@@ -115,6 +115,13 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 					getLccHolder().getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minMembershipLevel, minRating, maxRating);
 
+			// todo: refactor with new LCC
+			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				getLccHolder().logout();
+				backToHomeActivity();
+				return;
+			}
+
 			FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED, null);
 
 			challengeTaskRunner.runSendChallengeTask(challenge);
@@ -130,7 +137,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 				public void run() {
 					createChallengeBtn.setEnabled(true);
 				}
-			}, 2000);
+			}, AppConstants.CHALLENGE_ISSUE_DELAY);
 		}
 	}
 
