@@ -789,7 +789,7 @@ public class LccHolder {
 	}
 
 	public void checkAndProcessFullGame() {
-		if (getGame(currentGameId) != null) {
+		if (currentGameId != null && getGame(currentGameId) != null) {
 			processFullGame(getGame(currentGameId));
 		}
 	}

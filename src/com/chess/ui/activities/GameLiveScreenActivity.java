@@ -119,7 +119,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				break;
 		}
 
-		if(!getLccHolder().currentGameExist()){
+		if (!getLccHolder().currentGameExist()) {
 			gamePanelView.enableAnalysisMode(true);
 
 			boardView.setFinished(true);

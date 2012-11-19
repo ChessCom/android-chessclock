@@ -140,7 +140,6 @@ public class LccGameListener implements GameListener {
                                                         lccHolder.getSeekListListener());*/
 		Long lastGameId = lccHolder.getCurrentGameId() != null ? lccHolder.getCurrentGameId() : game.getId();
 		lccHolder.setLastGameId(lastGameId);
-//		lccHolder.setCurrentGameId(null);
 
         List<Game.Result> gameResults = game.getGameResults();
         final Game.Result whitePlayerResult = gameResults.get(0);
@@ -212,6 +211,10 @@ public class LccGameListener implements GameListener {
 			}
 		}
 
+		if (lccHolder.getCurrentGameId() == null) {
+			lccHolder.setCurrentGameId(game.getId());
+		}
+
         if (lccHolder.isActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
             final GameEvent gameEndedEvent = new GameEvent();
@@ -219,10 +222,7 @@ public class LccGameListener implements GameListener {
             gameEndedEvent.setEvent(GameEvent.Event.END_OF_GAME);
             gameEndedEvent.setGameEndedMessage(message);
             lccHolder.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-            if (lccHolder.getLccEventListener() == null) {// if activity is not started yet
-				if (lccHolder.getCurrentGameId() == null) {
-					lccHolder.setCurrentGameId(game.getId());
-				}
+            if (lccHolder.getLccEventListener() == null) { // if activity is not started yet
                 lccHolder.processFullGame(game);
 				Log.d(TAG, "processFullGame");
             }
