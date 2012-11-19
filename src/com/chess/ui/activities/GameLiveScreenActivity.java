@@ -310,7 +310,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			} else {
 				move = new Move(moveFT[0], moveFT[1], 0, 0);
 			}
-			playSound = i == actualMovesSize;
+			playSound = i == actualMovesSize - 1;
 			getBoardFace().makeMove(move, playSound);
 		}
 
@@ -583,7 +583,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null )
+		if (currentGame != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
 		else
 			return null;
