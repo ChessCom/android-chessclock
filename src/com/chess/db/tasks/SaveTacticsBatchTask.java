@@ -10,40 +10,44 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.model.TacticItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
 
     private ContentResolver contentResolver;
-	private List<TacticItem> tacticsBatch;
+	private final List<TacticItem> tacticsBatch;
 	private static String[] arguments = new String[2];
 
 	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem> taskFace, List<TacticItem> tacticsBatch) {
         super(taskFace);
-		this.tacticsBatch = tacticsBatch;
+		this.tacticsBatch = new ArrayList<TacticItem>();
+		this.tacticsBatch.addAll(tacticsBatch);
 
 		contentResolver = taskFace.getMeContext().getContentResolver();
     }
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		for (TacticItem tacticItem : tacticsBatch) {
+		synchronized (tacticsBatch) {
+			for (TacticItem tacticItem : tacticsBatch) {
 
-			arguments[0] = String.valueOf(tacticItem.getId());
-			arguments[1] = String.valueOf(tacticItem.getUser());
+				arguments[0] = String.valueOf(tacticItem.getId());
+				arguments[1] = String.valueOf(tacticItem.getUser());
 
-			Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
-					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments, null);
-			if (cursor.moveToFirst()) {
-				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
-						DBDataManager.putTacticItemToValues(tacticItem), null, null);
-			} else {
-				contentResolver.insert(uri, DBDataManager.putTacticItemToValues(tacticItem));
+				Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
+						DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments, null);
+				if (cursor.moveToFirst()) {
+					contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
+							DBDataManager.putTacticItemToValues(tacticItem), null, null);
+				} else {
+					contentResolver.insert(uri, DBDataManager.putTacticItemToValues(tacticItem));
+				}
+
+				cursor.close();
 			}
-
-			cursor.close();
 		}
 
         result = StaticData.RESULT_OK;
