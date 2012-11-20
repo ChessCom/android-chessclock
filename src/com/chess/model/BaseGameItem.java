@@ -212,9 +212,7 @@ public abstract class BaseGameItem implements Parcelable {
 
 		parcel.writeInt(timeRemainingAmount);
 		parcel.writeString(timeRemainingUnits);
-		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending});
-		parcel.writeBooleanArray(new boolean[]{isOpponentOnline});
-		parcel.writeBooleanArray(new boolean[]{hasNewMessage});
+		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
 		parcel.writeInt(fenStrLength);
 //		parcel.writeString(fen);
 		parcel.writeLong(timestamp);

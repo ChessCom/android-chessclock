@@ -473,7 +473,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getNewTactic() {
-		if (getTacticsBatch() == null) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
+		if (getTacticsBatch() == null || getTacticsBatch().size() == 0) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
 			loadNewTacticsBatch();
 			return;
 		}
