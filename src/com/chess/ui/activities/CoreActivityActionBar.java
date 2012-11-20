@@ -128,7 +128,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
 			if (AppData.isLiveChess(this)) {
-//			if (DataHolder.getInstance().isLiveChess()) {
 				getLccHolder().logout();
 			}
 			backToHomeActivity();

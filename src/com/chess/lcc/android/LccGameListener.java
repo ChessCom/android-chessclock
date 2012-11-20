@@ -87,7 +87,7 @@ public class LccGameListener implements GameListener {
             lccHolder.putGame(game);
             return;
         }
-        lccHolder.setCurrentGameId(game.getId());
+        lccHolder.setCurrentGameId(gameId);
         lccHolder.processFullGame(game);
     }
 
@@ -97,12 +97,13 @@ public class LccGameListener implements GameListener {
 
     @Override
     public void onGameStarted(Game game) {
-        Log.d(TAG, "GAME LISTENER: onGameStarted id=" + game.getId());
-        if (lccHolder.isUserPlayingAnotherGame(game.getId())) {
+		Long gameId = game.getId();
+        Log.d(TAG, "GAME LISTENER: onGameStarted id=" + gameId);
+        if (lccHolder.isUserPlayingAnotherGame(gameId)) {
             Log.d(TAG, "GAME LISTENER: onGameStarted() abort and exit second game");
             lccHolder.getClient().abortGame(game, "abort second game");
             lccHolder.getClient().exitGame(game);
-        } else if (isOldGame(game.getId())) {
+        } else if (isOldGame(gameId)) {
             Log.d(TAG, "GAME LISTENER: onGameStarted() exit old game");
             lccHolder.getClient().exitGame(game);
         } else {
@@ -111,10 +112,10 @@ public class LccGameListener implements GameListener {
             lccHolder.clearSeeks();
 
             //lccHolder.getClient().unsubscribeFromSeekList(lccHolder.getSeekListSubscriptionId());
-            lccHolder.setCurrentGameId(game.getId());
-            if (game.getId() > latestGameId) {
-                latestGameId = game.getId();
-                Log.w(TAG, "GAME LISTENER: onGameStarted() latestGameId=" + game.getId());
+            lccHolder.setCurrentGameId(gameId);
+            if (gameId > latestGameId) {
+                latestGameId = gameId;
+                Log.w(TAG, "GAME LISTENER: onGameStarted() latestGameId=" + gameId);
             }
         }
 

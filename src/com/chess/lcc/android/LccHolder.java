@@ -640,7 +640,7 @@ public class LccHolder {
 //	}
 
 	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo) {
-		Game game = lccGames.get(currentGameId);
+		Game game = getCurrentGame();
 		/*if(chessMove.isCastling())
 			{
 			  lccMove = chessMove.getWarrenSmithString().substring(0, 4);
@@ -922,7 +922,7 @@ public class LccHolder {
 	}
 
 	public Boolean isFairPlayRestriction() {
-		Game game = lccGames.get(currentGameId);
+		Game game = getCurrentGame();
 		String userName = user.getUsername();
 
 		if (game.getWhitePlayer().getUsername().equals(userName) && !game.isAbortableByWhitePlayer()) {
@@ -934,7 +934,7 @@ public class LccHolder {
 	}
 
 	public Boolean isAbortableBySeq() {
-		return lccGames.get(currentGameId).getSeq() < 3;
+		return getCurrentGame().getSeq() < 3;
 	}
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {

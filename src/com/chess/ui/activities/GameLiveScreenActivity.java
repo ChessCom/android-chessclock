@@ -333,7 +333,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     @Override
     public void onConnectionBlocked(boolean blocked) {
         super.onConnectionBlocked(blocked);
-        blockGame(blocked);
+		if (blocked) {
+			blockGame(blocked);
+		}
     }
 
     @Override
@@ -456,7 +458,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
-				boardDebug +
+				", " + boardDebug +
 				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
 				", boardHply=" + getBoardFace().getHply() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
