@@ -220,7 +220,8 @@ public class AppUtils {
 			liveMembershipLevel = AppData.isLiveChess(context)
 					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
 		}
-		return liveMembershipLevel
+		return AppData.isGuest(context)
+				|| liveMembershipLevel
 				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER)
 				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
