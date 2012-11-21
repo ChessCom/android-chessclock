@@ -28,6 +28,7 @@ import com.chess.ui.fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,6 +110,19 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		super.onPause();
 		isPaused = true;
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
+	}
+
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
