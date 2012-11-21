@@ -795,6 +795,10 @@ public class LccHolder {
 	}
 
 	public void processFullGame(Game game) {
+		if (lccEventListener != null) {
+			lccEventListener.onGameRecreate();
+		}
+
 		latestMoveNumber = null;
 		ChessBoardLive.resetInstance();
 		putGame(game);
@@ -825,7 +829,7 @@ public class LccHolder {
 	}
 
 	public void doReplayMoves(Game game) {
-		Log.d(TAG, "GAME LISTENER: replay moves,  gameId " + game.getId());
+		Log.d(TAG, "GAME LISTENER: replay moves, gameId " + game.getId());
 
 		latestMoveNumber = game.getSeq() - 1;
 		User moveMaker = (latestMoveNumber % 2 == 0) ? game.getWhitePlayer() : game.getBlackPlayer();
@@ -918,7 +922,7 @@ public class LccHolder {
 	}
 
 	public boolean currentGameExist(){
-		return currentGameId != null && !getGame(currentGameId).isEnded();
+		return currentGameId != null && getGame(currentGameId) != null && !getGame(currentGameId).isEnded();
 	}
 
 	public Boolean isFairPlayRestriction() {

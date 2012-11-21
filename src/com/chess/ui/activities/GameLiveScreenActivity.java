@@ -285,6 +285,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	// ----------------------Lcc Events ---------------------------------------------
 
+	public void onGameRecreate() {
+		finish();
+	}
+
 	public void onGameRefresh(GameLiveItem gameItem) {
 
 		if (getBoardFace().isAnalysis())
