@@ -46,7 +46,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
 
 		if (details != null) {
-			lccHolder.processConnectionFailure(details, message);
+			lccHolder.processConnectionFailure(details);
 		} else {
 			Log.d(CONNECTION, "User connection failure: IGNORING");
 		}

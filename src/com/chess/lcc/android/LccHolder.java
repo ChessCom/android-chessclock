@@ -292,7 +292,7 @@ public class LccHolder {
 				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message);
 	}
 
-	public void processConnectionFailure(FailureDetails details, String message) {
+	public void processConnectionFailure(FailureDetails details) {
 		setConnected(false);
 		lccClient = null;
 
@@ -312,7 +312,7 @@ public class LccHolder {
 				break;
 			}
 			default:
-				detailsMessage = message;
+				detailsMessage = context.getString(R.string.pleaseLoginAgain);
 				break;
 
 		}

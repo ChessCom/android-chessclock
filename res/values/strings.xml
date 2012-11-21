@@ -266,7 +266,7 @@
 	<string name="standard_game">(Standard)</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
-	<string name="network_was_changed_please_relogin">Network has changed. Please re-login to Live</string>
+	<!--<string name="network_was_changed_please_relogin">Network has changed. Please re-login to Live</string>-->
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com - It\'s Your Move</string>
 	<string name="your_turn">Your Turn!</string>
