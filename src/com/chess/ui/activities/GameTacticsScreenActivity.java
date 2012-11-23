@@ -199,7 +199,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					checkMove();
 				}
 
-				if (getTacticsBatch() == null) {
+				if (isTacticsBatchNotValid()) {
 					loadSavedTacticsBatch();
 				}
 			} else {
@@ -211,7 +211,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			// TODO show register confirmation dialog
 			TacticItem tacticItem = getTacticItem();
 			if (tacticItem == null) { // singleton can be killed
-				if (getTacticsBatch() == null) {
+				if (isTacticsBatchNotValid()) {
 					loadSavedTacticsBatch();
 					return;
 				}
@@ -229,7 +229,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				timerTxt.setText(getString(R.string.bonus_time_left, getBoardFace().getSecondsLeft()
 						, getBoardFace().getSecondsPassed()));
 			}
-			if (getTacticsBatch() == null) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
+			if (isTacticsBatchNotValid()) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
 				loadNewTacticsBatch();
 			}
 		}
@@ -276,7 +276,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			preferencesEditor.commit();
 
 			// start task for saving tactics batch here
-			if (getTacticsBatch() != null) {
+			if (!isTacticsBatchNotValid()) {
 				new SaveTacticsBatchTask(dbTacticBatchSaveListener, getTacticsBatch()).executeTask();
 			}
 		}
@@ -473,7 +473,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getNewTactic() {
-		if (getTacticsBatch() == null || getTacticsBatch().size() == 0) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
+		if (isTacticsBatchNotValid()) { // happens when ad appears in the middle of the launch of Activity and interrupt load,  but set flags.
 			loadNewTacticsBatch();
 			return;
 		}
@@ -493,7 +493,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getTacticFromBatch() {
-		if (getTacticsBatch() == null) { // if we load from saved tactic
+		if (isTacticsBatchNotValid()) { // if we load from saved tactic
 			loadNewTacticsBatch();
 			return;
 		}
@@ -569,7 +569,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		TacticItem tacticItem;
 		if (AppData.isGuest(this) || noInternet) {
-			if (getTacticsBatch() == null ){
+			if (isTacticsBatchNotValid() ){
 				loadNewTacticsBatch();
 				return;
 			}
@@ -832,7 +832,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		TacticItem tacticItem;
 
 		if (AppData.isGuest(this) || noInternet) {
-			if (getTacticsBatch() == null) // TODO handle properly
+			if (isTacticsBatchNotValid()) // TODO handle properly
 				return;
 
 			tacticItem = getTacticsBatch().get(getCurrentProblem());
@@ -1083,6 +1083,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		getBoardFace().setTacticCanceled(true);
 		clearSavedTactics();
 		onBackPressed();
+	}
+
+	private boolean isTacticsBatchNotValid(){
+		return TacticsDataHolder.getInstance().getTacticsBatch().size() == 0;
 	}
 
 	private void clearSavedTactics() {

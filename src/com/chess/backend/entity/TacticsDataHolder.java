@@ -16,7 +16,7 @@ public class TacticsDataHolder {
 	private static TacticsDataHolder ourInstance = new TacticsDataHolder();
 
 
-	private List<TacticItem> tacticsBatch;
+	private final List<TacticItem> tacticsBatch;
 	private TacticItem tactic;
 	private TacticResultItem tacticResultItem;
 	private int currentTacticProblem;
@@ -30,6 +30,7 @@ public class TacticsDataHolder {
 
 	private TacticsDataHolder() {
 		showedTacticsIds = new ArrayList<Long>();
+		tacticsBatch = new ArrayList<TacticItem>();
 	}
 
 	public TacticItem getTactic() {
@@ -41,11 +42,16 @@ public class TacticsDataHolder {
 	}
 
 	public List<TacticItem> getTacticsBatch() {
-		return tacticsBatch;
+		synchronized (this.tacticsBatch) {
+			return tacticsBatch;
+		}
 	}
 
-	public void setTacticsBatch(List<TacticItem> tacticsBatch) {
-		this.tacticsBatch = tacticsBatch;
+	public synchronized void setTacticsBatch(List<TacticItem> tacticsBatch) {
+		synchronized (this.tacticsBatch) {
+			this.tacticsBatch.clear();
+			this.tacticsBatch.addAll(tacticsBatch);
+		}
 	}
 
 	public int getCurrentTacticProblem() {
