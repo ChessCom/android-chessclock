@@ -40,7 +40,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 		gameActivityFace.invalidateGameScreen();
 
 		if (!boardFace.isAnalysis()) {
-			gameTacticsActivityFace.checkMove();
+			gameTacticsActivityFace.verifyMove();
         }
     }
 

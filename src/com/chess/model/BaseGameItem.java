@@ -200,26 +200,30 @@ public abstract class BaseGameItem implements Parcelable {
 
 	/**
 	 * Write BaseGameItem fields to parcel
-	 * @param parcel
+	 * @param out
 	 */
-	protected void writeBaseGameParcel(Parcel parcel) {
-		parcel.writeLong(gameId);
-		parcel.writeInt(color);
+	protected void writeBaseGameParcel(Parcel out) {
+		out.writeLong(gameId);
+		out.writeInt(color);
 
-		parcel.writeString(whiteUsername);
-		parcel.writeString(blackUsername);
-		parcel.writeInt(userNameStrLength);
+		out.writeString(whiteUsername);
+		out.writeString(blackUsername);
+		out.writeInt(userNameStrLength);
 
-		parcel.writeInt(timeRemainingAmount);
-		parcel.writeString(timeRemainingUnits);
-		parcel.writeBooleanArray(new boolean[]{isDrawOfferPending, isOpponentOnline, hasNewMessage});
-		parcel.writeInt(fenStrLength);
+		out.writeInt(timeRemainingAmount);
+		out.writeString(timeRemainingUnits);
+
+        out.writeByte((byte) (isDrawOfferPending ? 1 : 0));
+        out.writeByte((byte) (isOpponentOnline ? 1 : 0));
+        out.writeByte((byte) (hasNewMessage ? 1 : 0));
+
+		out.writeInt(fenStrLength);
 //		parcel.writeString(fen);
-		parcel.writeLong(timestamp);
-		parcel.writeString(moveList);
-		parcel.writeInt(whiteRating);
-		parcel.writeInt(blackRating);
-		parcel.writeLong(secondsRemain);
+		out.writeLong(timestamp);
+		out.writeString(moveList);
+		out.writeInt(whiteRating);
+		out.writeInt(blackRating);
+		out.writeLong(secondsRemain);
 	}
 
 	/**
@@ -236,15 +240,10 @@ public abstract class BaseGameItem implements Parcelable {
 
 		timeRemainingAmount = in.readInt();
 		timeRemainingUnits = in.readString();
-		boolean[] booleans1 = new boolean[1];
-		boolean[] booleans2 = new boolean[1];
-		boolean[] booleans3 = new boolean[1];
-		in.readBooleanArray(booleans1);
-		in.readBooleanArray(booleans2);
-		in.readBooleanArray(booleans3);
-		isDrawOfferPending = booleans1[0];
-		isOpponentOnline = booleans2[0];
-		hasNewMessage = booleans3[0];
+
+        isDrawOfferPending = in.readByte() == 1;
+        isOpponentOnline = in.readByte() == 1;
+        hasNewMessage = in.readByte() == 1;
 
 		fenStrLength = in.readInt();
 //		fen = in.readString();

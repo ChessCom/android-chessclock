@@ -8,5 +8,5 @@ package com.chess.ui.interfaces;
  */
 public interface GameTacticsActivityFace extends GameActivityFace {
 
-	void checkMove();
+	void verifyMove();
 }

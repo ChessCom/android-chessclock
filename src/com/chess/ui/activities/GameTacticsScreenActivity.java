@@ -196,7 +196,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().setRetry(isRetry);
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
-					checkMove();
+					verifyMove();
 				}
 
 				if (isTacticsBatchNotValid()) {
@@ -301,7 +301,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				invalidateGameScreen();
 
 				if (getBoardFace().isLatestMoveMadeUser())
-					checkMove();
+					verifyMove();
 			}
 		}, 1300);
 	}
@@ -328,7 +328,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	public void checkMove() {
+	public void verifyMove() {
 
 		noInternet = !AppUtils.isNetworkAvailable(getContext());
 		final boolean userIsGuest = AppData.isGuest(this);
