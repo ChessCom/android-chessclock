@@ -39,19 +39,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (savedInstanceState != null) {
-			if (savedInstanceState.getBoolean(StaticData.SAVED_STATE)) {
-				checkUserTokenAndStartActivity();
-			}
-		}
-
 		LccHolder.getInstance(this).setLiveChessClientEventListener(this);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(StaticData.SAVED_STATE, true);
 	}
 
 	@Override
@@ -74,17 +62,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
-	}
-
-
-	private void checkUserTokenAndStartActivity() {
-		if (!AppData.getUserName(this).equals(StaticData.SYMBOL_EMPTY)) {
-			Intent intent = new Intent(this, HomeScreenActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		} else {
-			startActivity(new Intent(this, LoginScreenActivity.class));
-		}
 	}
 
 	protected LccHolder getLccHolder() {

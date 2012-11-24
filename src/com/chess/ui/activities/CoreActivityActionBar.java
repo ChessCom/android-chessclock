@@ -87,12 +87,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(StaticData.SAVED_STATE, true);
-	}
-
-	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		backgroundChessDrawable.updateConfig();
 		super.onConfigurationChanged(newConfig);
