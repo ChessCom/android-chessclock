@@ -23,10 +23,12 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.GSMServerResponseItem;
+import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.statics.AppConstants;
@@ -38,6 +40,7 @@ import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -64,7 +67,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
 	public static final String OBJECT_SYMBOL = "{";
-	private Context context;
+    private Context context;
 	private SharedPreferences preferences;
 
 	public GCMIntentService() {
@@ -320,8 +323,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 			httpClient.getConnectionManager().shutdown();
 		}
 
-		if (result == StaticData.RESULT_OK && returnedObj.contains(OBJECT_SYMBOL)) {
-			GSMServerResponseItem responseItem = parseJson(returnedObj);
+		if (result == StaticData.RESULT_OK && returnedObj.startsWith(OBJECT_SYMBOL)) {
+			GCMServerResponseItem responseItem = parseJson(returnedObj);
 			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER ? "REGISTER" : "UNREGISTER";
 			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj);
 
@@ -340,17 +343,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 						editor.commit();
 						break;
 				}
-			}
+			} else {
+                if (requestCode == GcmHelper.REQUEST_REGISTER && context != null) {
+                    Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
+                }
+            }
 		}
-
-
 	}
 
 	private String formJsonData(List<NameValuePair> requestParams) {
 		StringBuilder data = new StringBuilder();
 		String separator = StaticData.SYMBOL_EMPTY;
 		data.append("{");
-//			data.append("request:{");
 		for (NameValuePair requestParam : requestParams) {
 
 			data.append(separator);
@@ -362,13 +366,19 @@ public class GCMIntentService extends GCMBaseIntentService {
 					.append(requestParam.getValue())
 					.append("\"");
 		}
-//			data.append("}");
 		data.append("}");
 		return data.toString();
 	}
 
-	GSMServerResponseItem parseJson(String jRespString) {
+	GCMServerResponseItem parseJson(String jRespString) {
 		Gson gson = new Gson();
-		return gson.fromJson(jRespString, GSMServerResponseItem.class);
+		try {
+            return gson.fromJson(jRespString, GCMServerResponseItem.class);
+        }catch(JsonSyntaxException ex) {
+            ex.printStackTrace(); // in case you want to see the stacktrace in your log cat output
+            BugSenseHandler.addCrashExtraData("GCMServerResponseItem", jRespString);
+            BugSenseHandler.sendException(ex);
+            return GCMServerResponseItem.createFailResponse();
+        }
 	}
 }

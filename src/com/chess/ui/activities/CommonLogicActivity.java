@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.GSMServerResponseItem;
+import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -32,6 +33,7 @@ import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -243,25 +245,40 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		public void updateData(String returnedObj) {
 			super.updateData(returnedObj);
 
-			GSMServerResponseItem responseItem = parseJson(returnedObj);
+			GCMServerResponseItem responseItem = parseJson(returnedObj);
 
-			if(responseItem.getCode() < 400){
-				switch (requestCode){
-					case REQUEST_REGISTER:
-						GCMRegistrar.setRegisteredOnServer(getContext(), true);
-						AppData.registerOnChessGCM(getContext(), AppData.getUserToken(getContext()));
-						break;
-					case REQUEST_UNREGISTER:
-						GCMRegistrar.setRegisteredOnServer(getContext(), false);
-						AppData.unRegisterOnChessGCM(getContext());
-						break;
-				}
-			}
+            if (responseItem.getCode() < 400) {
+                switch (requestCode) {
+                    case GcmHelper.REQUEST_REGISTER:
+                        GCMRegistrar.setRegisteredOnServer(getContext(), true);
+                        AppData.registerOnChessGCM(getContext(), AppData.getUserToken(getContext()));
+                        break;
+                    case GcmHelper.REQUEST_UNREGISTER:
+                        GCMRegistrar.setRegisteredOnServer(getContext(), false);
+                        AppData.unRegisterOnChessGCM(getContext());
+                        // remove saved token
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+                        editor.commit();
+                        break;
+                }
+            } else {
+                if (requestCode == GcmHelper.REQUEST_REGISTER && getContext() != null) {
+                    Toast.makeText(getContext(), R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
+                }
+            }
 		}
 
-		GSMServerResponseItem parseJson(String jRespString) {
-			Gson gson = new Gson();
-			return gson.fromJson(jRespString, GSMServerResponseItem.class);
+		GCMServerResponseItem parseJson(String jRespString) {
+            Gson gson = new Gson();
+            try {
+                return gson.fromJson(jRespString, GCMServerResponseItem.class);
+            }catch(JsonSyntaxException ex) {
+                ex.printStackTrace(); // in case you want to see the stacktrace in your log cat output
+                BugSenseHandler.addCrashExtraData("GCMServerResponseItem", jRespString);
+                BugSenseHandler.sendException(ex);
+                return GCMServerResponseItem.createFailResponse();
+            }
 		}
 	}
 
