@@ -158,9 +158,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 				customView.findViewById(R.id.re_signin).setOnClickListener(CoreActivityHome.this);
 
-
 				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-				facebookLoginButton.init(CoreActivityHome.this, facebook);
+                facebookInit(facebookLoginButton);
 				facebookLoginButton.logout();
 
 				usernameEdt.setText(AppData.getUserName(CoreActivityHome.this));
