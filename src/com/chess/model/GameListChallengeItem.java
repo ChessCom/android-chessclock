@@ -105,18 +105,17 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 //
 
 	@Override
-	public void writeToParcel(Parcel parcel, int flags) {
-		writeBaseGameParcel(parcel);
+	public void writeToParcel(Parcel out, int flags) {
+		writeBaseGameParcel(out);
 
 		// own write
-		parcel.writeInt(opponentWinCount);
-		parcel.writeInt(opponentLossCount);
-		parcel.writeInt(opponentDrawCount);
-		parcel.writeInt(playAsColor);
-		parcel.writeInt(daysPerMove);
+		out.writeInt(opponentWinCount);
+		out.writeInt(opponentLossCount);
+		out.writeInt(opponentDrawCount);
+		out.writeInt(playAsColor);
+		out.writeInt(daysPerMove);
 //		parcel.writeString(initialSetupFen);
-		boolean[] booleans = new boolean[]{isRated};
-		parcel.writeBooleanArray(booleans);
+        out.writeByte((byte) (isRated ? 1 : 0));
 	}
 
 
@@ -139,8 +138,6 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 		playAsColor = in.readInt();
 		daysPerMove = in.readInt();
 //		initialSetupFen = in.readString();
-		boolean[] booleans = new boolean[1];
-		in.readBooleanArray(booleans);
-		isRated = booleans[0];
+        isRated = in.readByte() == 1;
 	}
 }

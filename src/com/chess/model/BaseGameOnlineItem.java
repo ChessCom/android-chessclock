@@ -43,13 +43,14 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		isOpponentOnline = values[14].equals("1");
 	}
 
-	protected void writeBaseGameOnlineParcel(Parcel parcel) {
-		parcel.writeString(opponentName);
-		parcel.writeInt(opponentRating);
-		parcel.writeInt(gameType);
-		parcel.writeString(lastMoveFromSquare);
-		parcel.writeString(lastMoveToSquare);
-		parcel.writeBooleanArray(new boolean[]{isMyTurn, hasNewMessage});
+	protected void writeBaseGameOnlineParcel(Parcel out) {
+		out.writeString(opponentName);
+		out.writeInt(opponentRating);
+		out.writeInt(gameType);
+		out.writeString(lastMoveFromSquare);
+		out.writeString(lastMoveToSquare);
+        out.writeByte((byte) (isMyTurn ? 1 : 0));
+        out.writeByte((byte) (hasNewMessage ? 1 : 0));
 	}
 
 	protected void readBaseGameOnlineParcel(Parcel in) {
@@ -58,10 +59,8 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		gameType = in.readInt();
 		lastMoveFromSquare = in.readString();
 		lastMoveToSquare = in.readString();
-		boolean[] booleans = new boolean[2];
-		in.readBooleanArray(booleans);
-		isMyTurn = booleans[0];
-		hasNewMessage = booleans[1];
+        isMyTurn = in.readByte() == 1;
+        hasNewMessage = in.readByte() == 1;
 	}
 
 	public void setOpponentName(String opponentName) {

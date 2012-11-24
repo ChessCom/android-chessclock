@@ -105,16 +105,18 @@ public class GameOnlineItem extends BaseGameItem {
 	}
 
 	@Override
-	public void writeToParcel(Parcel parcel, int flags) {
-		writeBaseGameParcel(parcel);
+	public void writeToParcel(Parcel out, int flags) {
+		writeBaseGameParcel(out);
 
 		// own write
-		parcel.writeBooleanArray(new boolean[]{whiteUserMove, userOfferedDraw, rated});
-		parcel.writeString(encodedMoveStr);
-		parcel.writeString(gameName);
-		parcel.writeInt(gameType);
-		parcel.writeString(fenStartPosition);
-		parcel.writeInt(daysPerMove);
+        out.writeByte((byte) (whiteUserMove ? 1 : 0));
+        out.writeByte((byte) (userOfferedDraw ? 1 : 0));
+        out.writeByte((byte) (rated ? 1 : 0));
+		out.writeString(encodedMoveStr);
+		out.writeString(gameName);
+		out.writeInt(gameType);
+		out.writeString(fenStartPosition);
+		out.writeInt(daysPerMove);
 	}
 
 
@@ -131,11 +133,9 @@ public class GameOnlineItem extends BaseGameItem {
 	private GameOnlineItem(Parcel in) {
 		readBaseGameParcel(in);
 		// own read
-		boolean[] booleans = new boolean[3];
-		in.readBooleanArray(booleans);
-		whiteUserMove = booleans[0];
-		userOfferedDraw = booleans[1];
-		rated = booleans[2];
+        whiteUserMove = in.readByte() == 1;
+        userOfferedDraw = in.readByte() == 1;
+        rated = in.readByte() == 1;
 
 		encodedMoveStr = in.readString();
 		gameName = in.readString();
