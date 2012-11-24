@@ -34,7 +34,7 @@ public class LccGameListener implements GameListener {
             Log.w(TAG, "GAME LISTENER: Game list received. Games count: " + games.size());
         }
         for (Game game : games) {
-            if (game.getId() > latestGameId) {
+            if (isMyGame(game) && game.getId() > latestGameId) {
                 latestGameId = game.getId();
                 Log.w(TAG, "GAME LISTENER: Game list received. latestGameId=" + game.getId());
             }
@@ -68,10 +68,16 @@ public class LccGameListener implements GameListener {
     }
 
     @Override
-    public void onFullGameReceived(Game game) {
-		Log.d("Live Game","onFullGameReceived ");
+    public void onFullGameReceived(Game game) { // todo: move logic from onGameListReceived and onGameStarted to onGameReset in new LCC
         Log.d(TAG, "GAME LISTENER: Full GameItem received: " + game);
-        Long gameId = game.getId();
+		Long gameId = game.getId();
+
+		if (!isMyGame(game)) {
+			lccHolder.getClient().unobserveGame(gameId);
+			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
+			return;
+		}
+
         if (isOldGame(gameId)) {
             Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
             return;
@@ -99,7 +105,11 @@ public class LccGameListener implements GameListener {
     public void onGameStarted(Game game) {
 		Long gameId = game.getId();
         Log.d(TAG, "GAME LISTENER: onGameStarted id=" + gameId);
-        if (lccHolder.isUserPlayingAnotherGame(gameId)) {
+		if (!isMyGame(game)) {
+			lccHolder.getClient().unobserveGame(gameId);
+			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
+			return;
+		} else if (lccHolder.isUserPlayingAnotherGame(gameId)) {
             Log.d(TAG, "GAME LISTENER: onGameStarted() abort and exit second game");
             lccHolder.getClient().abortGame(game, "abort second game");
             lccHolder.getClient().exitGame(game);
@@ -302,4 +312,18 @@ public class LccGameListener implements GameListener {
     public void onClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment) {
         // TODO: Implement if necessary
     }
+
+	private boolean isMyGame(Game game) {
+		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();
+		String blackUsername = game.getBlackPlayer().getUsername().toLowerCase();
+		String userName = lccHolder.getUsername().toLowerCase();
+
+		boolean isMyGame = userName.equals(whiteUsername) || userName.equals(blackUsername);
+
+		if (!isMyGame) {
+			Log.d(TAG, "not own game " + game.getId());
+		}
+
+		return isMyGame;
+	}
 }
