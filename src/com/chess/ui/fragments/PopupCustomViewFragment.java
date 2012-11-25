@@ -73,6 +73,10 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 //		customView.removeAllViews(); // still haveIllegal exception  after echess game finished
 		// we need remove parent from child's view  see note below. Should work
 		removeParent();
+        if (popupItem.getCustomView() == null) {
+            getDialog().dismiss();
+            return;
+        }
 		customView.addView(popupItem.getCustomView());
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
