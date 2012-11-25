@@ -9,4 +9,6 @@
 	<string name="win_">赢:</string>
 	<string name="loss_">损失:</string>
 	<string name="draw_">抽奖:</string>
+    <string name="timer_">定时器: %s</string>
+
 </resources>

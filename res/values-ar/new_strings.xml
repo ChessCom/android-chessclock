@@ -10,4 +10,6 @@
 	<string name="win_">فوز:</string>
 	<string name="loss_">الخسارة:</string>
 	<string name="draw_">رسم:</string>
+    <string name="timer_">مؤقت:  %s</string>
+
 </resources>

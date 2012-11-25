@@ -9,4 +9,6 @@
 	<string name="win_">Vitória:</string>
 	<string name="loss_">Perda:</string>
 	<string name="draw_">Empate:</string>
+    <string name="timer_">Cronômetro: %s</string>
+
 </resources>

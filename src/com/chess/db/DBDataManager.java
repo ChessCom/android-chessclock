@@ -27,9 +27,9 @@ public class DBDataManager {
 	public static final String EQUALS_ = " = ";
 	public static final String EQUALS_ARG_ = "=?";
 
-	public static String[] arguments1 = new String[1];
-	public static String[] arguments2 = new String[2];
-	public static String[] arguments3 = new String[3];
+	public static String[] sArguments1 = new String[1];
+	public static String[] sArguments2 = new String[2];
+	public static String[] sArguments3 = new String[3];
 
 	public static String SELECTION_TACTIC_ID_AND_USER = concatArguments(
 			DBConstants.V_TACTIC_ID,
@@ -112,6 +112,7 @@ public class DBDataManager {
 		String userName = AppData.getUserName(context);
 		ContentResolver contentResolver = context.getContentResolver();
 
+        final String[] arguments2 = sArguments2;
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
@@ -128,8 +129,123 @@ public class DBDataManager {
 		cursor.close();
 	}
 
+    private static String getUserName(Context context){
+        final boolean userIsGuest = AppData.isGuest(context);
 
-	public static ContentValues putTacticItemToValues(TacticItem dataObj) {
+        String userName = AppData.GUEST_USER_NAME;
+        if (!userIsGuest){
+            userName = AppData.getUserName(context);
+        }
+        return userName;
+    }
+
+    /**
+     * Check if we have saved games for current user
+     * @param context
+     * @return true if cursor can be positioned to first
+     */
+    public static boolean haveSavedTacticGame(Context context) {
+        String userName = getUserName(context);
+
+        ContentResolver contentResolver = context.getContentResolver();
+        final String[] arguments1 = sArguments1;
+        arguments1[0] = userName;
+
+        Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
+                PROJECTION_TACTIC_BATCH_USER, SELECTION_TACTIC_BATCH_USER, arguments1, null);
+        return cursor.moveToFirst();
+    }
+
+    public static int saveTacticItemToDb(Context context, TacticItem tacticItem){
+        String userName = getUserName(context);
+        ContentResolver contentResolver = context.getContentResolver();
+
+        final String[] arguments2 = sArguments2;
+        arguments2[0] = String.valueOf(tacticItem.getId());
+        arguments2[1] = userName;
+
+        Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
+        Cursor cursor = contentResolver.query(uri, PROJECTION_TACTIC_ITEM_ID_AND_USER,
+                SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+        if (cursor.moveToFirst()) {
+            contentResolver.update(Uri.parse(uri.toString() + SLASH_ + getId(cursor)),
+                    putTacticItemToValues(tacticItem), null, null);
+        } else {
+            contentResolver.insert(uri, putTacticItemToValues(tacticItem));
+        }
+
+        cursor.close();
+
+        if (tacticItem.getResultItem() != null) {
+            saveTacticResultItemToDb(context, tacticItem.getId(), tacticItem.getResultItem());
+        }
+
+        return StaticData.RESULT_OK;
+    }
+
+    public static TacticItem getLastTacticItemFromDb(Context context) {
+        String userName = getUserName(context);
+        ContentResolver contentResolver = context.getContentResolver();
+
+        final String[] arguments1 = sArguments1;
+        arguments1[0] = userName;
+
+        Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
+                null, SELECTION_TACTIC_BATCH_USER, arguments1, null);
+
+        cursor.moveToFirst();
+        TacticItem tacticItem = getTacticItemFromCursor(cursor);
+
+        cursor.close();
+
+        // set result item
+        TacticItem.TacticResultItem resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
+        tacticItem.setResultItem(resultItem);
+
+        return tacticItem;
+    }
+
+    private static void saveTacticResultItemToDb(Context context, long id, TacticItem.TacticResultItem resultItem){
+        String userName = getUserName(context);
+        ContentResolver contentResolver = context.getContentResolver();
+
+        final String[] arguments2 = sArguments2;
+        arguments2[0] = String.valueOf(id);
+        arguments2[1] = userName;
+
+        Uri uri = DBConstants.TACTICS_RESULTS_CONTENT_URI;
+        Cursor cursor = contentResolver.query(uri,null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+
+        if (cursor.moveToFirst()) {
+            contentResolver.update(Uri.parse(uri.toString() + SLASH_ + getId(cursor)),
+                    putTacticResultItemToValues(resultItem), null, null);
+        } else {
+            contentResolver.insert(uri, putTacticResultItemToValues(resultItem));
+        }
+
+        cursor.close();
+    }
+
+    private static TacticItem.TacticResultItem getTacticResultItemFromDb(Context context, long id){
+        String userName = getUserName(context);
+        ContentResolver contentResolver = context.getContentResolver();
+
+        final String[] arguments2 = sArguments2;
+        arguments2[0] = String.valueOf(id);
+        arguments2[1] = userName;
+        Cursor cursor = contentResolver.query(DBConstants.TACTICS_RESULTS_CONTENT_URI,
+                null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+
+        if (cursor.moveToFirst()){
+            TacticItem.TacticResultItem resultItem = getTacticResultItemFromCursor(cursor);
+            cursor.close();
+
+            return resultItem;
+        } else
+            return null;
+    }
+
+    public static ContentValues putTacticItemToValues(TacticItem dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
@@ -140,6 +256,10 @@ public class DBDataManager {
 		values.put(DBConstants.V_PASSED_CNT, dataObj.getPassedCnt());
 		values.put(DBConstants.V_RATING, dataObj.getRating());
 		values.put(DBConstants.V_AVG_SECONDS, dataObj.getAvgSeconds());
+		values.put(DBConstants.V_SECONDS_SPENT, dataObj.getSecondsSpent());
+		values.put(DBConstants.V_STOP, dataObj.isStop()? 1 :0);
+		values.put(DBConstants.V_WAS_SHOWED, dataObj.isWasShowed()? 1 :0);
+		values.put(DBConstants.V_IS_RETRY, dataObj.isRetry()? 1 :0);
 
 		return values;
 	}
@@ -156,6 +276,37 @@ public class DBDataManager {
 		dataObj.setPassedCnt(getInt(cursor, DBConstants.V_PASSED_CNT));
 		dataObj.setRating(getInt(cursor, DBConstants.V_RATING));
 		dataObj.setAvgSeconds(getInt(cursor, DBConstants.V_AVG_SECONDS));
+		dataObj.setSecondsSpent(getInt(cursor, DBConstants.V_SECONDS_SPENT));
+		dataObj.setStop(getInt(cursor, DBConstants.V_STOP) > 0);
+        dataObj.setWasShowed(getInt(cursor, DBConstants.V_WAS_SHOWED) > 0);
+        dataObj.setRetry(getInt(cursor, DBConstants.V_IS_RETRY) > 0);
+
+        return dataObj;
+	}
+
+    public static ContentValues putTacticResultItemToValues(TacticItem.TacticResultItem dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, dataObj.getScoreStr());
+		values.put(DBConstants.V_TACTIC_ID, dataObj.getScoreStr());
+		values.put(DBConstants.V_SCORE, dataObj.getScoreStr());
+		values.put(DBConstants.V_USER_RATING_CHANGE, dataObj.getUserRatingChange());
+		values.put(DBConstants.V_USER_RATING, dataObj.getUserRating());
+		values.put(DBConstants.V_PROBLEM_RATING_CHANGE, dataObj.getProblemRatingChange());
+		values.put(DBConstants.V_PROBLEM_RATING, dataObj.getProblemRating());
+
+		return values;
+	}
+
+
+	public static TacticItem.TacticResultItem getTacticResultItemFromCursor(Cursor cursor) {
+        TacticItem.TacticResultItem dataObj = new TacticItem.TacticResultItem();
+
+		dataObj.setScore(getString(cursor, DBConstants.V_SCORE));
+		dataObj.setUserRatingChange(getInt(cursor, DBConstants.V_USER_RATING_CHANGE));
+		dataObj.setUserRating(getInt(cursor, DBConstants.V_USER_RATING));
+		dataObj.setProblemRatingChange(getInt(cursor, DBConstants.V_PROBLEM_RATING_CHANGE));
+		dataObj.setProblemRating(getInt(cursor, DBConstants.V_PROBLEM_RATING));
 
 		return dataObj;
 	}

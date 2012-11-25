@@ -264,6 +264,34 @@ public class AppUtils {
 		return sb.toString();
 	}
 
+	public static String getSecondsTimeFromSecondsStr(long duration) {
+		long seconds = duration %60;
+		long minutes = duration /60%60;
+		long hours = duration /3600%24;
+		long days = duration /86400;
+		StringBuilder sb = new StringBuilder();
+
+		if (days > 0) {
+            sb.append(days).append(StaticData.SYMBOL_COLON);
+        }
+
+		if (hours > 0) {
+			sb.append(hours).append(StaticData.SYMBOL_COLON);
+		}
+
+        if (minutes < 10) {
+            sb.append(0);
+        }
+        sb.append(minutes).append(StaticData.SYMBOL_COLON);
+
+        if (seconds < 10) {
+            sb.append(0);
+        }
+        sb.append(seconds);
+
+		return sb.toString();
+	}
+
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager cm
 				= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

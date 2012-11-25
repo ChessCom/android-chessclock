@@ -15,6 +15,8 @@ import com.chess.ui.interfaces.BoardFace;
  */
 public class AppData {
 
+    public static final String GUEST_USER_NAME = "guest"; // it is invalid username to login, so use it for clear logic
+
 	public static SharedPreferences getPreferences(Context context){
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 	}
@@ -150,24 +152,24 @@ public class AppData {
 				.equals(StaticData.SYMBOL_EMPTY);
 	}
 
-	public static boolean haveSavedTacticGame(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return !preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
-				.equals(StaticData.SYMBOL_EMPTY);
-	}
-
-	public static boolean haveSavedTacticBatch(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, false);
-	}
-
-	public static int getSavedTacticProblem(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, 0);
-	}
+//	public static boolean haveSavedTacticGame(Context context) {
+//		SharedPreferences preferences = getPreferences(context);
+//		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+//		return !preferences.getString(userName + AppConstants.SAVED_TACTICS_ITEM, StaticData.SYMBOL_EMPTY)
+//				.equals(StaticData.SYMBOL_EMPTY);
+//	}
+//
+//	public static boolean haveSavedTacticBatch(Context context) {
+//		SharedPreferences preferences = getPreferences(context);
+//		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+//		return preferences.getBoolean(userName + AppConstants.SAVED_TACTICS_BATCH, false);
+//	}
+//
+//	public static int getSavedTacticProblem(Context context) {
+//		SharedPreferences preferences = getPreferences(context);
+//		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+//		return preferences.getInt(userName + AppConstants.SAVED_TACTICS_CURRENT_PROBLEM, 0);
+//	}
 
 	public static boolean isNotificationsEnabled(Context context) {
 		SharedPreferences preferences = getPreferences(context);

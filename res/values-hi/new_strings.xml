@@ -9,4 +9,6 @@
 	<string name="win_">जीत:</string>
 	<string name="loss_">हानि:</string>
 	<string name="draw_">ड्रा:</string>
+    <string name="timer_">घड़ी: %s</string>
+
 </resources>

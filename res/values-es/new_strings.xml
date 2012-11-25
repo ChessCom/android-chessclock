@@ -9,4 +9,6 @@
 	<string name="win_">Victoria:</string>
 	<string name="loss_">Pérdida:</string>
 	<string name="draw_">Sorteo:</string>
+    <string name="timer_">Timer: %s</string>
+
 </resources>

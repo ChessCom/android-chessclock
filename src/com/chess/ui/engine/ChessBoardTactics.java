@@ -13,7 +13,7 @@ import com.chess.ui.interfaces.TacticBoardFace;
 public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	private static ChessBoardTactics instance;
-	private boolean retry;
+//	private boolean retry;
 	private boolean tacticCanceled;
 	private int secondsPassed = 0;
 	private int secondsLeft = 0;
@@ -41,33 +41,33 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		instance = null;
 	}
 
-	@Override
-	public int getSecondsPassed() {
-		return secondsPassed;
-	}
-
-	@Override
-	public void setSecondsPassed(int secondsPassed) {
-		this.secondsPassed = secondsPassed;
-	}
-
-	@Override
-	public int getSecondsLeft() {
-		return secondsLeft;
-	}
-
-	@Override
-	public void increaseSecondsPassed() {
-		secondsPassed++;
-
-		if(secondsLeft > 0)
-			secondsLeft--;
-	}
-
-	@Override
-	public void setSecondsLeft(int secondsLeft) {
-		this.secondsLeft = secondsLeft;
-	}
+//	@Override
+//	public int getSecondsPassed() {
+//		return secondsPassed;
+//	}
+//
+//	@Override
+//	public void setSecondsPassed(int secondsPassed) {
+//		this.secondsPassed = secondsPassed;
+//	}
+//
+//	@Override
+//	public int getSecondsLeft() {
+//		return secondsLeft;
+//	}
+//
+//	@Override
+//	public void increaseSecondsPassed() {
+//		secondsPassed++;
+//
+//		if(secondsLeft > 0)
+//			secondsLeft--;
+//	}
+//
+//	@Override
+//	public void setSecondsLeft(int secondsLeft) {
+//		this.secondsLeft = secondsLeft;
+//	}
 
 	@Override
 	public boolean isTacticCanceled() {
@@ -116,15 +116,15 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		return tacticMoves[lastIndex].contains(piece) && tacticMoves[lastIndex].contains(moveTo);
 	}
 
-	@Override
-	public boolean isRetry() {
-		return retry;
-	}
-
-	@Override
-	public void setRetry(boolean retry) {
-		this.retry = retry;
-	}
+//	@Override
+//	public boolean isRetry() {
+//		return retry;
+//	}
+//
+//	@Override
+//	public void setRetry(boolean retry) {
+//		this.retry = retry;
+//	}
 
 	@Override
 	public int getTacticsCorrectMoves() {

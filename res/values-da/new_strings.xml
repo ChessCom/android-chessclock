@@ -9,4 +9,6 @@
 	<string name="win_">Win:</string>
 	<string name="loss_">Tab:</string>
 	<string name="draw_">Tegn:</string>
+    <string name="timer_">Timer: %s</string>
+
 </resources>

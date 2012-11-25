@@ -7,9 +7,9 @@ package com.chess.ui.interfaces;
  * @created at: 28.09.12 21:45
  */
 public interface TacticBoardFace extends BoardFace {
-	void setRetry(boolean retry);
-
-	boolean isRetry();
+//	void setRetry(boolean retry);
+//
+//	boolean isRetry();
 
 	void setTacticCanceled(boolean tacticCanceled);
 
@@ -17,15 +17,15 @@ public interface TacticBoardFace extends BoardFace {
 
 	String[] getTacticMoves();
 
-	void setSecondsPassed(int sec);
-
-	int getSecondsPassed();
-
-	void setSecondsLeft(int left);
-
-	int getSecondsLeft();
-
-	void increaseSecondsPassed();
+//	void setSecondsPassed(int sec);
+//
+//	int getSecondsPassed();
+//
+//	void setSecondsLeft(int left);
+//
+//	int getSecondsLeft();
+//
+//	void increaseSecondsPassed();
 
 	boolean isTacticCanceled();
 

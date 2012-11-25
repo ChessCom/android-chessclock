@@ -9,4 +9,6 @@
 	<string name="win_">Win:</string>
 	<string name="loss_">Zararı:</string>
 	<string name="draw_">Beraberlik:</string>
+    <string name="timer_">Kronometre: %s</string>
+
 </resources>

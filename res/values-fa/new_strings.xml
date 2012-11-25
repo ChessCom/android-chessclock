@@ -9,4 +9,6 @@
 	<string name="win_">برنده:</string>
 	<string name="loss_">از دست دادن:</string>
 	<string name="draw_">قرعه کشی:</string>
+    <string name="timer_">ساعت: %s</string>
+
 </resources>

@@ -9,4 +9,6 @@
 	<string name="win_">勝つ:</string>
 	<string name="loss_">ロス:</string>
 	<string name="draw_">描画:</string>
+    <string name="timer_">タイマー: %s</string>
+
 </resources>

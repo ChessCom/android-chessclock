@@ -23,13 +23,13 @@ public class AppConstants {
 	public static final String USER_OFFERED_DRAW_FOR_GAME = "user offered draw for game";
 
 	/*Tactics constants*/
-	public static final String SAVED_TACTICS_ITEM = "saved tactics game";
-	public static final String SAVED_TACTICS_CURRENT_PROBLEM = "saved tactics current puzzle number";
-	public static final String SAVED_TACTICS_BATCH = "saved tactics batch";
-	public static final String SAVED_TACTICS_RESULT_ITEM = "saved tactic result";
-	public static final String SAVED_TACTICS_ID = "saved tactic id";
-	public static final String SAVED_TACTICS_RETRY = "saved tactic retry";
-	public static final String SPENT_SECONDS_TACTICS = "spent seconds in tactics";
+//	public static final String SAVED_TACTICS_ITEM = "saved tactics game";
+//	public static final String SAVED_TACTICS_CURRENT_PROBLEM = "saved tactics current puzzle number";
+//	public static final String SAVED_TACTICS_BATCH = "saved tactics batch";
+//	public static final String SAVED_TACTICS_RESULT_ITEM = "saved tactic result";
+//	public static final String SAVED_TACTICS_ID = "saved tactic id";
+//	public static final String SAVED_TACTICS_RETRY = "saved tactic retry";
+//	public static final String SPENT_SECONDS_TACTICS = "spent seconds in tactics";
 
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";

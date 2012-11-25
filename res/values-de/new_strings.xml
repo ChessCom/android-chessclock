@@ -9,4 +9,6 @@
 	<string name="win_">Win:</string>
 	<string name="loss_">Loss:</string>
 	<string name="draw_">Draw:</string>
+    <string name="timer_">Timer: %s</string>
+
 </resources>

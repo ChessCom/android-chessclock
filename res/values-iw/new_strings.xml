@@ -9,4 +9,6 @@
 	<string name="win_">זכה ב:</string>
 	<string name="loss_">פסד:</string>
 	<string name="draw_">צייר:</string>
+    <string name="timer_">שעון עצר: %s</string>
+
 </resources>

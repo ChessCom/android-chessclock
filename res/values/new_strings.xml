@@ -12,4 +12,5 @@
 	<string name="loss_">Loss:</string>
 	<string name="draw_">Draw:</string>
     <string name="gcm_not_registered">GCM not registered</string>
+    <string name="timer_">Timer: %s</string>
 </resources>

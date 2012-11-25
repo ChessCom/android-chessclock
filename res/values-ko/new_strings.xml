@@ -9,4 +9,6 @@
 	<string name="win_">승 :</string>
 	<string name="loss_">손실 :</string>
 	<string name="draw_">그리기:</string>
+    <string name="timer_">타이머: %s</string>
+
 </resources>

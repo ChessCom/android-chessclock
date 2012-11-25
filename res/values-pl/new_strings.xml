@@ -9,4 +9,6 @@
 	<string name="win_">Wygrać:</string>
 	<string name="loss_">Strata:</string>
 	<string name="draw_">Remis:</string>
+    <string name="timer_">Regulator: %s</string>
+
 </resources>

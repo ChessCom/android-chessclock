@@ -9,4 +9,6 @@
 	<string name="win_">Победил:</string>
 	<string name="loss_">Проиграл:</string>
 	<string name="draw_">Ничья:</string>
+    <string name="timer_">Таймер: %s</string>
+
 </resources>
