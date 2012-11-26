@@ -17,6 +17,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.live.util.GameRatingClass;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -29,7 +30,7 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
 /**
- * GameTacticsScreenActivity class
+ * GameLiveScreenActivity class
  *
  * @author alien_roger
  * @created at: 08.02.12 7:17
@@ -109,13 +110,13 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		Game game = getLccHolder().getCurrentGame();
 		switch (game.getGameTimeConfig().getGameTimeClass()) {
 			case BLITZ:
-				currentPlayerRating = getLccHolder().getUser().getBlitzRating();
+				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Blitz);
 				break;
 			case LIGHTNING:
-				currentPlayerRating = getLccHolder().getUser().getQuickRating();
+				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Lightning);
 				break;
 			case STANDARD:
-				currentPlayerRating = getLccHolder().getUser().getStandardRating();
+				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Standard);
 				break;
 		}
 
@@ -373,18 +374,18 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
         final Game game = getLccHolder().getLastGame();
         switch (game.getGameTimeConfig().getGameTimeClass()) {
             case BLITZ: {
-                whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
-                blackPlayerNewRating = game.getBlackPlayer().getBlitzRating();
+                whitePlayerNewRating = game.getWhitePlayer().getRatingFor(GameRatingClass.Blitz);
+                blackPlayerNewRating = game.getBlackPlayer().getRatingFor(GameRatingClass.Blitz);
                 break;
             }
             case LIGHTNING: {
-                whitePlayerNewRating = game.getWhitePlayer().getQuickRating();
-                blackPlayerNewRating = game.getBlackPlayer().getQuickRating();
+                whitePlayerNewRating = game.getWhitePlayer().getRatingFor(GameRatingClass.Lightning);
+                blackPlayerNewRating = game.getBlackPlayer().getRatingFor(GameRatingClass.Lightning);
                 break;
             }
             case STANDARD: {
-                whitePlayerNewRating = game.getWhitePlayer().getStandardRating();
-                blackPlayerNewRating = game.getBlackPlayer().getStandardRating();
+                whitePlayerNewRating = game.getWhitePlayer().getRatingFor(GameRatingClass.Standard);
+                blackPlayerNewRating = game.getBlackPlayer().getRatingFor(GameRatingClass.Standard);
                 break;
             }
         }
@@ -463,7 +464,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String temporaryDebugInfo =
 				"lccInitiated=" + lccInitiated +
 				", " + boardDebug +
-				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
+				", gameSeq=" + getLccHolder().getCurrentGame().getMoves().size() +
 				", boardHply=" + getBoardFace().getHply() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +

@@ -131,6 +131,11 @@ public class LccChatListener implements ChatListener {
 	}
 
 	@Override
+	public void onUserMessagesRemoved(Chat chat, User user, User user1) {
+		// todo: UPDATELCC
+	}
+
+	@Override
 	public void onInvitedToPrivateChat(Chat chat, User by, User invited, Collection<ChatMember> members, ChatMember headMember) {
 		Log.i(TAG, "CHAT LISTENER: Invited to private chat: chat=" + chat + ", by=" + by.getUsername());
 

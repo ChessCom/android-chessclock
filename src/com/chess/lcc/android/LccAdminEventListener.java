@@ -17,15 +17,18 @@ public class LccAdminEventListener implements AdminEventListener {
 	private static final String TAG = "LccAdminEventListener";
 
 	public void onAdminMessageReceived(User sender, User target,
-									   LiveChessClient.AdminMessageType messageType, String reason, String message) {
+									   LiveChessClient.AdminMessageType messageType, String reason, String message, Long period) {
 		Log.d(TAG, "onAdminMessageReceived: sender=" + (sender != null ? sender.getUsername() : null) + ", "
 				+ "targetedUser=" + target.getUsername() + ", messageType=" + messageType + ", reason=" + reason + ", "
 				+ "message=" + message);
-
 	}
 
 	public void onServerShutdownAlertReceived(User sender, String message) {
 		Log.d(TAG, "onServerShutdownAlertReceived: sender=" + (sender != null ? sender.getUsername() : null)
 				+ ", message=" + message);
+	}
+
+	public void onServerMaintenanceAlertReceived(User user, String s) {
+		// todo: UPDATELCC
 	}
 }

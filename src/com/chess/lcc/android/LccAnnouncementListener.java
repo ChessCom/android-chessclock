@@ -2,7 +2,7 @@ package com.chess.lcc.android;
 
 import android.util.Log;
 import com.chess.live.client.AnnounceListener;
-import com.chess.live.client.ChatMessage;
+import com.chess.live.client.User;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -22,15 +22,15 @@ public class LccAnnouncementListener implements AnnounceListener {
 		this.lccHolder = lccHolder;
 	}
 
-	public void onAnnounceMessageReceived(ChatMessage chatMessage) {
-		Log.d(TAG, "onAnnounceMessageReceived: " + chatMessage);
+	public void onAnnounceMessageReceived(User from, AnnounceType type, String codeMessage, String txt, Object object) {
+		// todo: UPDATELCC. use new method params
+		/*Log.d(TAG, "onAnnounceMessageReceived: " + chatMessage);
 
 		final String message = chatMessage.getMessage();
 
 		if (message != null) {
 			String messageI18n = AppUtils.getI18nString(lccHolder.getContext(), message);
 			lccHolder.getLiveChessClientEventListener().onAdminAnnounce(messageI18n == null ? message : messageI18n);
-		}
-
+		}*/
 	}
 }

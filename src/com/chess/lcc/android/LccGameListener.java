@@ -9,10 +9,13 @@ import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
 import com.chess.live.client.impl.GameImpl;
+import com.chess.live.rules.GameResult;
 import com.chess.utilities.AppUtils;
 
 import java.util.Collection;
 import java.util.List;
+
+import static com.chess.live.rules.GameResult.*;
 
 public class LccGameListener implements GameListener {
 
@@ -26,7 +29,6 @@ public class LccGameListener implements GameListener {
         context = lccHolder.getContext();
     }
 
-	@Override
 	public void onGameListReceived(Collection<? extends Game> games) {
         Log.d(TAG, "GAME LISTENER: Game list received.");
         latestGameId = 0L;
@@ -51,23 +53,29 @@ public class LccGameListener implements GameListener {
         // TODO: Implement when necessary
     }
 
-//    public void onFollowedUserListReceived(Collection<? extends User> users) {
-//        // TODO: Implement when necessary
-//    }
-//
-//    public void onFollowConfirmed(String followedUser, boolean succeed) {
-//        // TODO: Implement when necessary
-//    }
-//
-//    public void onUnfollowConfirmed(String unfollowedUser, boolean succeed) {
-//        // TODO: Implement when necessary
-//    }
+	public void onGameReset(Game game) {
+		// UPDATELCC todo:
+		// check isMyGame and isMyTurn
+	}
+
+	public void onGameUpdated(Game game) {
+		// UPDATELCC todo:
+		// check isMyGame and isMyTurn
+	}
+
+	public void onGameOver(Game game) {
+		// UPDATELCC todo:
+		// check isMyGame and isMyTurn
+	}
+
+	public void onGameClockAdjusted(Game game, User user, Integer integer, Integer integer1, Integer integer2) {
+		// UPDATELCC todo:
+	}
 
     private boolean isOldGame(Long gameId) {
         return gameId < latestGameId;
     }
 
-    @Override
     public void onFullGameReceived(Game game) { // todo: move logic from onGameListReceived and onGameStarted to onGameReset in new LCC
         Log.d(TAG, "GAME LISTENER: Full GameItem received: " + game);
 		Long gameId = game.getId();
@@ -89,7 +97,7 @@ public class LccGameListener implements GameListener {
 			lccHolder.previousFGGameId = lccHolder.currentFGGameId;
 			lccHolder.currentFGGameId = game.getId();*/
         }
-        if (game.isEnded()) {
+        if (game.isGameOver()) {
             lccHolder.putGame(game);
             return;
         }
@@ -97,11 +105,10 @@ public class LccGameListener implements GameListener {
         lccHolder.processFullGame(game);
     }
 
-    @Override
+    /*@Override
     public void onServerStatusChanged(Game game, Game.ServerStatus oldStatus, Game.ServerStatus newStatus) {
-    }
+    }*/
 
-    @Override
     public void onGameStarted(Game game) {
 		Long gameId = game.getId();
         Log.d(TAG, "GAME LISTENER: onGameStarted id=" + gameId);
@@ -128,17 +135,8 @@ public class LccGameListener implements GameListener {
                 Log.w(TAG, "GAME LISTENER: onGameStarted() latestGameId=" + gameId);
             }
         }
-
-		/*if (TESTING_GAME) {
-			if (game.isMoveOf(lccHolder.getUser()) && game.getSeq() == 0) {
-				Log.d(TAG, "First move by: " + lccHolder.getUsername() + ", the movie: "
-						+ TEST_MOVES_COORD[game.getSeq()]);
-				lccHolder.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
-			}
-		}*/
     }
 
-    @Override
     public void onGameEnded(Game game) {
         Log.d(TAG, "GAME LISTENER: Game ended: " + game);
         lccHolder.putGame(game);
@@ -152,19 +150,19 @@ public class LccGameListener implements GameListener {
 		Long lastGameId = lccHolder.getCurrentGameId() != null ? lccHolder.getCurrentGameId() : game.getId();
 		lccHolder.setLastGameId(lastGameId);
 
-        List<Game.Result> gameResults = game.getGameResults();
-        final Game.Result whitePlayerResult = gameResults.get(0);
-        final Game.Result blackPlayerResult = gameResults.get(1);
+        List<GameResult> gameResults = game.getResults();
+        final GameResult whitePlayerResult = gameResults.get(0);
+        final GameResult blackPlayerResult = gameResults.get(1);
         final String whiteUsername = game.getWhitePlayer().getUsername();
         final String blackUsername = game.getBlackPlayer().getUsername();
 
-        Game.Result result;
+		GameResult result;
         String winnerUsername = null;
 
-        if (whitePlayerResult == Game.Result.WIN) {
+        if (whitePlayerResult == WIN) {
             result = blackPlayerResult;
             winnerUsername = whiteUsername;
-        } else if (blackPlayerResult == Game.Result.WIN) {
+        } else if (blackPlayerResult == WIN) {
             result = whitePlayerResult;
             winnerUsername = blackUsername;
         } else {
@@ -242,37 +240,27 @@ public class LccGameListener implements GameListener {
         }
     }
 
-    @Override
     public void onGameAborted(Game game) {
         Log.d(TAG, "GAME LISTENER: GameItem aborted: " + game);
     }
 
-    @Override
     public void onMoveMade(Game game, User moveMaker, String move) {
-        Log.d(TAG, "GAME LISTENER: The move #" + game.getSeq() + " received by user: " + lccHolder.getUser().getUsername() +
+        Log.d(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
         if (isOldGame(game.getId())) {
             Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
             return;
         }
-        lccHolder.doMoveMade(game, moveMaker, game.getSeq() - 1);
-
-		/*if (TESTING_GAME && game.isMoveOf(lccHolder.getUser()) && game.getState() == Game.State.Started) {
-			if (game.getSeq() < TEST_MOVES_COORD.length) {
-				lccHolder.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
-			}
-		}*/
+        lccHolder.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
     }
 
-    @Override
     public void onResignMade(Game game, User resignMaker, User winner) {
         Log.d(TAG, "GAME LISTENER: Game resigned: resigner=" + resignMaker.getUsername() + ", winner=" + winner.getUsername() +
                         ", game=" + game);
     }
 
-    @Override
     public void onDrawOffered(Game game, User offerer) {
-        Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
+        Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", offerer=" + offerer.getUsername() + ", game=" + game);
         if (isOldGame(game.getId())) {
             return;
@@ -291,26 +279,19 @@ public class LccGameListener implements GameListener {
         }
     }
 
-    @Override
     public void onDrawAccepted(Game game, User acceptor) {
-        Log.d(TAG, "GAME LISTENER: Draw accepted at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
+        Log.d(TAG, "GAME LISTENER: Draw accepted at the move #" + game.getMoveCount() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", acceptor=" + acceptor.getUsername() + ", game=" + game);
     }
 
-    @Override
     public void onDrawRejected(Game game, User rejector) {
         final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
-        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getSeq() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
+        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getMoveCount() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {
 			lccHolder.getLccEventListener().onInform(context.getString(R.string.draw_declined),
 					rejectorUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.has_declined_draw));
         }
-    }
-
-    @Override
-    public void onClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment) {
-        // TODO: Implement if necessary
     }
 
 	private boolean isMyGame(Game game) {

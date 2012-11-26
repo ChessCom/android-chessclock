@@ -13,6 +13,8 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
+import com.chess.live.rules.GameResult;
+import com.chess.live.util.GameType;
 import com.chess.model.GameLiveItem;
 import com.chess.model.MessageItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
@@ -113,7 +115,7 @@ public class LccHolder {
 				//fullGameProcessed = true;
 				pausedActivityGameEvents.remove(moveEvent);
 				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getSeq() - 1/*moveEvent.getMoveIndex()*/);
+				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getMoveCount() - 1/*moveEvent.getMoveIndex()*/);
 				lccEventListener.onGameRefresh(newGame);
 			}
 
@@ -161,7 +163,7 @@ public class LccHolder {
 	public GameLiveItem getGameItem() {
 		Game game = getGame(currentGameId);
 
-		return new GameLiveItem(game, game.getSeq() - 1);
+		return new GameLiveItem(game, game.getMoveCount() - 1);
 	}
 
 	public int getResignTitle() {
@@ -184,7 +186,7 @@ public class LccHolder {
 
 	public void checkAndReplayMoves() {
 		Game game = getGame(currentGameId);
-		if (game != null && game.getSeq() > 0) {
+		if (game != null && game.getMoveCount() > 0) {
 			doReplayMoves(game);
 		}
 	}
@@ -490,7 +492,7 @@ public class LccHolder {
 
 	public boolean isUserPlaying() {
 		for (Game game : lccGames.values()) {
-			if (!game.isEnded()) {
+			if (!game.isGameOver()) {
 				return true;
 			}
 		}
@@ -499,7 +501,7 @@ public class LccHolder {
 
 	public boolean isUserPlayingAnotherGame(Long currentGameId) {
 		for (Game game : lccGames.values()) {
-			if (!game.getId().equals(currentGameId) && !game.isEnded()) {
+			if (!game.getId().equals(currentGameId) && !game.isGameOver()) {
 				return true;
 			}
 		}
@@ -650,7 +652,8 @@ public class LccHolder {
 			  lccMove = move.getMoveString();
 			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.SYMBOL_EMPTY) : lccMove;
 			}*/
-		long delay = game.getOpponentClockDelay() * 100;
+		// UPDATELCC todo: do not use that Delay now, update clock in timer thread each 100ms or so instead
+		long delay = 0;
 		synchronized (opponentClockStartSync) {
 			nextOpponentMoveStillNotMade = true;
 		}
@@ -658,12 +661,12 @@ public class LccHolder {
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 
-		if (game.getSeq() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
+		if (game.getMoveCount() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
 		{
 			final boolean isWhiteRunning =user.getUsername().equals(game.getWhitePlayer().getUsername());
 			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
 			final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
-			if (game.getSeq() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
+			if (game.getMoveCount() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
 			{
 				clockToBePaused.setRunning(false);
 			}
@@ -678,7 +681,7 @@ public class LccHolder {
 								}
 							}
 						}
-					}, delay);
+					}, delay); // UPDATELCC todo: remove
 				}
 			}
 		}
@@ -689,23 +692,23 @@ public class LccHolder {
 
 		Log.d("REMATCHTEST", "rematch getLastGame " + lastGame);
 
-		final List<Game.Result> gameResults = lastGame.getGameResults();
+		final List<GameResult> gameResults = lastGame.getResults();
 		final String whiteUsername = lastGame.getWhitePlayer().getUsername();
 		final String blackUsername = lastGame.getBlackPlayer().getUsername();
 
 		boolean switchColor = false;
 		if (gameResults != null) {
-			final Game.Result whitePlayerResult = gameResults.get(0);
-			final Game.Result blackPlayerResult = gameResults.get(1);
-			final Game.Result result;
-			if (whitePlayerResult == Game.Result.WIN) {
+			final GameResult whitePlayerResult = gameResults.get(0);
+			final GameResult blackPlayerResult = gameResults.get(1);
+			final GameResult result;
+			if (whitePlayerResult == GameResult.WIN) {
 				result = blackPlayerResult;
-			} else if (blackPlayerResult == Game.Result.WIN) {
+			} else if (blackPlayerResult == GameResult.WIN) {
 				result = whitePlayerResult;
 			} else {
 				result = whitePlayerResult;
 			}
-			switchColor = result != Game.Result.ABORTED;
+			switchColor = result != GameResult.ABORTED;
 		}
 
 		String to = null;
@@ -723,8 +726,9 @@ public class LccHolder {
 		final Integer minRating = null;
 		final Integer maxRating = null;
 		final Integer minMembershipLevel = null;
+		final GameType gameType = GameType.Chess; // UPDATELCC todo: support chess960
 		final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-				user, to, color, lastGame.isRated(), lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
+				user, to, gameType, color, lastGame.isRated(), lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
 
 		challenge.setRematchGameId(lastGameId);
 		lccClient.sendChallenge(challenge, challengeListener);
@@ -831,7 +835,7 @@ public class LccHolder {
 	public void doReplayMoves(Game game) {
 		Log.d(TAG, "GAME LISTENER: replay moves, gameId " + game.getId());
 
-		latestMoveNumber = game.getSeq() - 1;
+		latestMoveNumber = game.getMoveCount() - 1;
 		User moveMaker = (latestMoveNumber % 2 == 0) ? game.getWhitePlayer() : game.getBlackPlayer();
 		lccEventListener.onGameRefresh(new GameLiveItem(game, latestMoveNumber));
 		doUpdateClocks(game, moveMaker, latestMoveNumber);
@@ -861,7 +865,7 @@ public class LccHolder {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
 		// todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
-		if (game.getSeq() >= 2 && moveIndex == game.getSeq() - 1) {
+		if (game.getMoveCount() >= 2 && moveIndex == game.getMoveCount() - 1) {
 			final boolean isOpponentMoveDone = !user.getUsername().equals(moveMaker.getUsername());
 
 			if (isOpponentMoveDone) {
@@ -871,16 +875,16 @@ public class LccHolder {
 			}
 			final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
-			final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer()).intValue() * 100;
-			final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer()).intValue() * 100;
+			final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer().getUsername()).intValue() * 100;
+			final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer().getUsername()).intValue() * 100;
 
 			getWhiteClock().setTime(whitePlayerTime);
-			if (!game.isEnded()) {
+			if (!game.isGameOver()) {
 				getWhiteClock().setRunning(isBlackDone);
 			}
 
 			getBlackClock().setTime(blackPlayerTime);
-			if (!game.isEnded()) {
+			if (!game.isGameOver()) {
 				getBlackClock().setRunning(isWhiteDone);
 			}
 
@@ -922,23 +926,25 @@ public class LccHolder {
 	}
 
 	public boolean currentGameExist(){
-		return currentGameId != null && getGame(currentGameId) != null && !getGame(currentGameId).isEnded();
+		return currentGameId != null && getGame(currentGameId) != null && !getGame(currentGameId).isGameOver();
 	}
 
 	public Boolean isFairPlayRestriction() {
 		Game game = getCurrentGame();
 		String userName = user.getUsername();
 
-		if (game.getWhitePlayer().getUsername().equals(userName) && !game.isAbortableByWhitePlayer()) {
+		final String whiteUsername = game.getWhitePlayer().getUsername();
+		final String blackUsername = game.getBlackPlayer().getUsername();
+		if (whiteUsername.equals(userName) && !game.isAbortableByPlayer(whiteUsername)) {
 			return true;
-		} else if (game.getBlackPlayer().getUsername().equals(userName) && !game.isAbortableByBlackPlayer()) {
+		} else if (blackUsername.equals(userName) && !game.isAbortableByPlayer(blackUsername)) {
 			return true;
 		}
 		return false;
 	}
 
 	public Boolean isAbortableBySeq() {
-		return getCurrentGame().getSeq() < 3;
+		return getCurrentGame().getMoveCount() < 3;
 	}
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
@@ -980,9 +986,9 @@ public class LccHolder {
 	public void checkFirstTestMove() {
 		if (TESTING_GAME) {
 			final Game game = getCurrentGame();
-			if (game.isMoveOf(user) && game.getSeq() == 0) {
+			if (game.isMoveOf(getUsername()) && game.getMoveCount() == 0) {
 				//Utils.sleep(5000);
-				lccClient.makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
+				lccClient.makeMove(game, TEST_MOVES_COORD[game.getMoveCount()].trim());
 			}
 		}
 	}
@@ -990,9 +996,9 @@ public class LccHolder {
 	public void checkTestMove() {
 		if (TESTING_GAME) {
 			final Game game = getCurrentGame();
-			if (game.isMoveOf(user) && game.getState() == Game.State.Started && game.getSeq() < TEST_MOVES_COORD.length) {
+			if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
 				//Utils.sleep(0.5F);
-				lccClient.makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
+				lccClient.makeMove(game, TEST_MOVES_COORD[game.getMoveCount()].trim());
 			}
 		}
 	}

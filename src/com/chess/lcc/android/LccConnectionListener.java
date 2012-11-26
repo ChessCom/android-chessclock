@@ -91,10 +91,14 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.onObsoleteProtocolVersion();
 	}
 
-	public void onKicked(User user, String reason, String message) { // TODO change when server change
-		Log.d(CONNECTION, "user kicked");
+	public void onLagInfoReceived(User user, Long aLong) {
+		// todo: UPDATELCC
+	}
+
+	public void onKicked(User user, String reason, String message, Long period) {
+		Log.d(CONNECTION, "The client kicked: " + user.getUsername() + ", reason=" + reason +
+				", message=" + message + ", period=" + period);
 
 		lccHolder.processConnectionFailure(reason, message);
 	}
-
 }
