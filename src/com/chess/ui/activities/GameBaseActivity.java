@@ -155,13 +155,11 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 		}
 
-		if(getBoardFace().isSubmit()){
-			showToast(R.string.checkmate);
-		} else {
-			showGameEndPopup(endGamePopupView, endGameMessage);
-			setBoardToFinishedState();
-		}
-	}
+        if (!getBoardFace().isSubmit()) {
+            showGameEndPopup(endGamePopupView, endGameMessage);
+            setBoardToFinishedState();
+        }
+    }
 
 	protected void showGameEndPopup(final View layout, final String message){
 	}
