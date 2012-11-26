@@ -129,7 +129,7 @@ public class DBDataManager {
 		cursor.close();
 	}
 
-    private static String getUserName(Context context){
+    public static String getUserName(Context context){
         final boolean userIsGuest = AppData.isGuest(context);
 
         String userName = AppData.GUEST_USER_NAME;
