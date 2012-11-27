@@ -56,7 +56,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	private void init() {
-//		DataHolder.getInstance().setLiveChess(true);
 		AppData.setLiveChessMode(this, true);
 
 		infoGroup = new ArrayList<View>();

@@ -39,7 +39,6 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		currentGameBtn = (Button) findViewById(R.id.currentGameBtn);
 		currentGameBtn.setOnClickListener(this);
 
-//		DataHolder.getInstance().setLiveChess(true);
 		AppData.setLiveChessMode(this, true);
 	}
 

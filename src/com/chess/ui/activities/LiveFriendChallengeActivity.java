@@ -28,7 +28,6 @@ import com.flurry.android.FlurryAgent;
 public class LiveFriendChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
 
 	private static final String NO_ONLINE_FRIENDS_TAG = "no online friends";
-//	private static final String CHALLENGE_SENT_TAG = "challenge was sent";
 
 	private Spinner friendsSpinner;
 	private AutoCompleteTextView initialTimeEdt;
@@ -58,7 +57,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-//		DataHolder.getInstance().setLiveChess(true);
 		AppData.setLiveChessMode(this, true);
 
 		showActionSettings = true;
