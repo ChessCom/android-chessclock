@@ -61,12 +61,16 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected void onCreate(Bundle savedInstanceState) {
 		if (AppUtils.needFullScreen(this)) {
 			setFullScreen();
-			savedInstanceState = new Bundle();
+            if (savedInstanceState == null) {
+                savedInstanceState = new Bundle();
+            }
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		} else if (AppUtils.noNeedTitleBar(this)) {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			savedInstanceState = new Bundle();
-			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
+            if (savedInstanceState == null) {
+                savedInstanceState = new Bundle();
+            }
+            savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		}
 		super.onCreate(savedInstanceState);
 	}
