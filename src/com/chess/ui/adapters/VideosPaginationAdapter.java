@@ -96,7 +96,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
     }
 
 	private List<VideoItem> parseJson2List(String returnedObj) {
-		itemList = new ArrayList<VideoItem>();
+		List<VideoItem> itemList = new ArrayList<VideoItem>();
 		String[] responseArray = returnedObj.trim().split("[|]");
 		if (responseArray.length == 3) {
 			responseArray = responseArray[2].split("<--->");
