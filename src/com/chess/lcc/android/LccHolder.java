@@ -652,7 +652,7 @@ public class LccHolder {
 			  lccMove = move.getMoveString();
 			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.SYMBOL_EMPTY) : lccMove;
 			}*/
-		// UPDATELCC todo: do not use that Delay now, update clock in timer thread each 100ms or so instead
+		// UPDATELCC todo: do not use that Delay now, update clock in timer thread each 50ms or so instead
 		long delay = 0;
 		synchronized (opponentClockStartSync) {
 			nextOpponentMoveStillNotMade = true;

@@ -237,7 +237,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		return false;
 	}
 
-
 	private class InitialTimeTextWatcher implements TextWatcher {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
