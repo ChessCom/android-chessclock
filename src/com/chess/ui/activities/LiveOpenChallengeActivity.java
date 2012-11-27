@@ -20,6 +20,7 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.live.util.GameType;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
@@ -111,8 +112,10 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 			Integer bonusTimeInteger = Integer.valueOf(bonusTimeEdt.getText().toString());
 			GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTimeInteger * 60 * 10, bonusTimeInteger * 10);
 			String to = null;
+
+			final GameType gameType = GameType.Chess; // todo: support chess960
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-					getLccHolder().getUser(), to, PieceColor.UNDEFINED, rated, gameTimeConfig,
+					getLccHolder().getUser(), to, gameType, PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minMembershipLevel, minRating, maxRating);
 
 			// todo: refactor with new LCC

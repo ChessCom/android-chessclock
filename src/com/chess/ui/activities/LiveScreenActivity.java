@@ -17,6 +17,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.User;
+import com.chess.live.util.GameRatingClass;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -152,10 +153,10 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
 				User user = getLccHolder().getUser();
-				if(!show && user != null){
-					bulletRatingTxt.setText(getString(R.string.bullet_, user.getQuickRating()));
-					blitzRatingTxt.setText(getString(R.string.blitz_, user.getBlitzRating()));
-					standardRatingTxt.setText(getString(R.string.standard_, user.getStandardRating()));
+				if (!show && user != null) {
+					bulletRatingTxt.setText(getString(R.string.bullet_, user.getRatingFor(GameRatingClass.Lightning)));
+					blitzRatingTxt.setText(getString(R.string.blitz_, user.getRatingFor(GameRatingClass.Blitz)));
+					standardRatingTxt.setText(getString(R.string.standard_, user.getRatingFor(GameRatingClass.Standard)));
 				}
 			}
 		});
