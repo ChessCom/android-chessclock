@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -452,7 +451,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void showAnswer() {
 		stopTacticsTimer();
-		tacticItem.setStop(true);
+
+
         tacticItem.setWasShowed(true);
 
 		ChessBoardTactics.resetInstance();
@@ -702,6 +702,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	protected void restoreGame() {
+		if (!tacticItemIsValid()) {
+			return;
+		}
+
 		if (tacticItem != null && tacticItem.isStop()) {
 			openOptionsMenu();
 			return;
@@ -711,6 +715,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void setTacticToBoard(TacticItem tacticItem) {
+		if (!tacticItemIsValid()) { // just in case something weird happen :)
+			return;
+		}
+
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setBoardFace(boardFace);
