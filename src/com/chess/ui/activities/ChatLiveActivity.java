@@ -79,6 +79,14 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
+
+			// todo: refactor with new LCC
+			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				getLccHolder().logout();
+				backToHomeActivity();
+				return;
+			}
+
 			Long gameId = getLccHolder().getCurrentGameId();
 			new SendLiveMessageTask(messageUpdateListener, getTextFromField(sendEdt)).execute(gameId);
 			updateList();
