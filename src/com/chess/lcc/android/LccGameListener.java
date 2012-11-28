@@ -12,6 +12,7 @@ import com.chess.live.client.impl.GameImpl;
 import com.chess.live.rules.GameResult;
 import com.chess.utilities.AppUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,20 +34,33 @@ public class LccGameListener implements GameListener {
         Log.d(TAG, "GAME LISTENER: Game list received");
         latestGameId = 0L;
         if (games.size() > 1) {
-            Log.w(TAG, "GAME LISTENER: Game list received. Games count: " + games.size());
+            Log.d(TAG, "GAME LISTENER: Game list received. Games count: " + games.size());
         }
+
+		List<Game> myGames = new ArrayList<Game>();
         for (Game game : games) {
-            if (isMyGame(game) && game.getId() > latestGameId) {
+            if (!game.isGameOver() && isMyGame(game) && game.getId() > latestGameId) {
                 latestGameId = game.getId();
-                Log.w(TAG, "GAME LISTENER: Game list received. latestGameId=" + game.getId());
             }
         }
-        for (Game game : games) { // maybe do not exit???
-            if (!game.getId().equals(latestGameId)) {
-                Log.d(TAG, "GAME LISTENER: Game list received. Exit game id=" + game.getId());
-                lccHolder.getClient().exitGame(game);
-            }
-        }
+		if (latestGameId == 0L) {
+			for (Game game : games) {
+				if (game.isGameOver() && isMyGame(game) && game.getId() > latestGameId) {
+					latestGameId = game.getId();
+				}
+			}
+		}
+		for (Game game : games) {
+			if (latestGameId != game.getId()) {
+				lccHolder.getGameIdsToBeIgnored().add(game.getId());
+			} else {
+				Log.d(TAG, "GAME LISTENER: Game list received. latestGameId=" + latestGameId);
+				myGames.add(game);
+			}
+		}
+
+		games.retainAll(myGames);
+
     }
 
     public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
@@ -57,6 +71,11 @@ public class LccGameListener implements GameListener {
 
 		// UPDATELCC todo:
 		// check isMyGame and isMyTurn
+
+		if (!isActualGame(game)) {
+			return;
+		}
+
 		doResetGame(game);
 		doUpdateGame(game);
 	}
@@ -67,6 +86,11 @@ public class LccGameListener implements GameListener {
 		// UPDATELCC todo:
 		// check isMyGame and isMyTurn
 		// update clock
+
+		if (!isActualGame(game)) {
+			return;
+		}
+
 		doUpdateGame(game);
 	}
 
@@ -140,43 +164,42 @@ public class LccGameListener implements GameListener {
         }
     }*/
 
-	private void doResetGame(Game game) {
-
+	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
 
 		if (!isMyGame(game)) {
 			lccHolder.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
-			return;
+			return false;
 		} else if (lccHolder.isUserPlayingAnotherGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: abort and exit second game");
 			lccHolder.getClient().abortGame(game, "abort second game");
 			lccHolder.getClient().exitGame(game);
-			return;
+			return false;
 		} else if (isOldGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: exit old game");
 			lccHolder.getClient().exitGame(game);
-			return;
+			return false;
 		} else {
 			lccHolder.clearOwnChallenges();
 			lccHolder.clearChallenges();
 			lccHolder.clearSeeks();
-
 			//lccHolder.getClient().unsubscribeFromSeekList(lccHolder.getSeekListSubscriptionId());
 			lccHolder.setCurrentGameId(gameId);
 			if (gameId > latestGameId) {
 				latestGameId = gameId;
 				Log.w(TAG, "GAME LISTENER: latestGameId=" + gameId);
 			}
+			return true;
 		}
+	}
 
-		//
-
+	private void doResetGame(Game game) {
 		if (game.isGameOver()) {
 			lccHolder.putGame(game);
 			return;
 		}
-		lccHolder.setCurrentGameId(gameId);
+		lccHolder.setCurrentGameId(game.getId());
 		lccHolder.processFullGame(game);
 	}
 

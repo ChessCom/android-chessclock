@@ -44,6 +44,19 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onSubscribedChatListReceived(Collection<? extends Chat> chats) {
+
+		// UPDATELCC todo:
+		/*
+		for (Long gameIdToBeIgnored : gameIdsToBeIgnored)
+		{
+			chats.remove(new ChatImpl(ChatImpl.gameIdToChatId(gameIdToBeIgnored, UserRoleEnum.Player)));
+			chats.remove(new ChatImpl(ChatImpl.gameIdToChatId(gameIdToBeIgnored, UserRoleEnum.Observer)));
+		}
+		gameIdsToBeIgnored.clear();
+
+		// and ignore other chats: private C, T, E, R
+		*/
+
 		String str =
 				"CHAT LISTENER: Previously Subscribed Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
 		for (Chat chat : chats) {

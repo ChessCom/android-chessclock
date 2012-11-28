@@ -64,6 +64,7 @@ public class LccHolder {
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
 	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
 			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
+	private List<Long> gameIdsToBeIgnored = new ArrayList<Long>();
 
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
@@ -1001,5 +1002,9 @@ public class LccHolder {
 				lccClient.makeMove(game, TEST_MOVES_COORD[game.getMoveCount()].trim());
 			}
 		}
+	}
+
+	public List<Long> getGameIdsToBeIgnored() {
+		return gameIdsToBeIgnored;
 	}
 }
