@@ -29,8 +29,8 @@ public class LccGameListener implements GameListener {
         context = lccHolder.getContext();
     }
 
-	/*public void onGameListReceived(Collection<? extends Game> games) {
-        Log.d(TAG, "GAME LISTENER: Game list received.");
+	public void onGameListReceived(Collection<? extends Game> games) {
+        Log.d(TAG, "GAME LISTENER: Game list received");
         latestGameId = 0L;
         if (games.size() > 1) {
             Log.w(TAG, "GAME LISTENER: Game list received. Games count: " + games.size());
@@ -41,13 +41,13 @@ public class LccGameListener implements GameListener {
                 Log.w(TAG, "GAME LISTENER: Game list received. latestGameId=" + game.getId());
             }
         }
-        for (Game game : games) {
+        for (Game game : games) { // maybe do not exit???
             if (!game.getId().equals(latestGameId)) {
                 Log.d(TAG, "GAME LISTENER: Game list received. Exit game id=" + game.getId());
                 lccHolder.getClient().exitGame(game);
             }
         }
-    }*/
+    }
 
     public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
     }
@@ -143,18 +143,6 @@ public class LccGameListener implements GameListener {
 	private void doResetGame(Game game) {
 
 		Long gameId = game.getId();
-
-		//latestGameId = 0L; // todo: reset latestGameId after reconnection?
-
-		/*if (isMyGame(game) && gameId > latestGameId) {
-			latestGameId = game.getId();
-			Log.d(TAG, "GAME LISTENER: Game list received. latestGameId=" + gameId);
-		}
-
-		if (!gameId.equals(latestGameId)) {
-			Log.d(TAG, "GAME LISTENER: Game list received. Exit game id=" + gameId);
-			lccHolder.getClient().exitGame(game);
-		}*/
 
 		if (!isMyGame(game)) {
 			lccHolder.getClient().unobserveGame(gameId);
