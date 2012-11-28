@@ -275,7 +275,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
                 return gson.fromJson(jRespString, GCMServerResponseItem.class);
             }catch(JsonSyntaxException ex) {
                 ex.printStackTrace(); // in case you want to see the stacktrace in your log cat output
-                BugSenseHandler.addCrashExtraData("GCMServerResponseItem", jRespString);
+                BugSenseHandler.addCrashExtraData("GCM Server Response Item", jRespString);
                 BugSenseHandler.sendException(ex);
                 return GCMServerResponseItem.createFailResponse();
             }
