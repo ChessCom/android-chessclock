@@ -56,12 +56,11 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 				return StaticData.UNKNOWN_ERROR;
 			}
-			if (response != null) {
-				item = EntityUtils.toString(response.getEntity());
-				result = StaticData.RESULT_OK;
-				Log.d(TAG, "WebRequest SERVER RESPONSE: " + item);
-				BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + item);
-			}
+
+			item = EntityUtils.toString(response.getEntity());
+			result = StaticData.RESULT_OK;
+			Log.d(TAG, "WebRequest SERVER RESPONSE: " + item);
+			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + item);
 
 		} catch (IOException e) {
 			httpGet.abort();

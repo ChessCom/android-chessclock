@@ -1,7 +1,9 @@
 package com.chess.utilities;
 
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
 
@@ -92,6 +94,8 @@ public class ChessComApiParser {
 	}
 
 	public static GameOnlineItem getGameParseV3(String result) {
+		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_GAME_ONLINE_ITEM, "getGameParseV3 arg=" + result);
+
 		return new GameOnlineItem(result.split(RestHelper.SYMBOL_PARAMS_SPLIT));
 	}
 
