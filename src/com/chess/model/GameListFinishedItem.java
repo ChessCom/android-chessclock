@@ -20,7 +20,6 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 	}
 
 	public GameListFinishedItem(String[] values) {
-//		super(values);
 		gameId = Long.parseLong(values[0]);
 //		color = Integer.parseInt(values[1]);
 		gameType = Integer.parseInt(values[2]);

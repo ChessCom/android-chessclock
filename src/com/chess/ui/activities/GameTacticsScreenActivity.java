@@ -95,7 +95,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		menuOptionsItems = new CharSequence[]{
-				getString(R.string.skipproblem),
 				getString(R.string.showanswer),
 				getString(R.string.settings)};
 
@@ -128,6 +127,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		blackPlayerLabel.setVisibility(View.GONE);
 
 		gamePanelView.hideChatButton();
+		gamePanelView.enableGameControls(false);
 	}
 
 	@Override
@@ -282,6 +282,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
 					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
+					gamePanelView.enableGameControls(false);
 				}
 				stopTacticsTimer();
 			}
@@ -306,6 +307,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
 				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
+				gamePanelView.enableGameControls(false);
 			}
 			stopTacticsTimer();
 		}
@@ -385,6 +387,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void getNewTactic() {
+		handler.removeCallbacks(showTacticMoveTask);
+
         String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
         int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
                 DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
@@ -521,6 +525,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
             }
 
 			showSolvedTacticPopup(title, false);
+			gamePanelView.enableGameControls(true);
 		}
 
 		@Override
@@ -530,6 +535,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void handleErrorRequest() {
+		gamePanelView.enableGameControls(true);
+
 		noInternet = true;
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
 		loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
@@ -558,6 +565,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
             }
 
             showWrongMovePopup(title);
+			gamePanelView.enableGameControls(true);
 
 			tacticItem.setRetry(true); // set auto retry because we save tactic
 		}
@@ -641,9 +649,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		final CharSequence[] items;
-		private final int TACTICS_SKIP_PROBLEM = 0;
-		private final int TACTICS_SHOW_ANSWER = 1;
-		private final int TACTICS_SETTINGS = 2;
+		private final int TACTICS_SHOW_ANSWER = 0;
+		private final int TACTICS_SETTINGS = 1;
 
 		private MenuOptionsDialogListener(CharSequence[] items) {
 			this.items = items;
@@ -653,10 +660,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void onClick(DialogInterface dialogInterface, int i) {
 			Toast.makeText(getApplicationContext(), items[i], Toast.LENGTH_SHORT).show();
 			switch (i) {
-				case TACTICS_SKIP_PROBLEM: {
-					getNewTactic();
-					break;
-				}
 				case TACTICS_SHOW_ANSWER: {
 					showAnswer();
 					break;
@@ -741,6 +744,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		playLastMoveAnimation();
 
         firstRun = false;
+		gamePanelView.enableGameControls(true);
 	}
 
 	@Override
@@ -817,6 +821,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
 
 			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
+			gamePanelView.enableGameControls(false);
 		}
 	}
 

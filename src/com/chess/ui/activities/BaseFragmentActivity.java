@@ -168,6 +168,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		popupItem.setNegativeBtnId(R.string.cancel);
 		fragment.setCancelable(true);
 		fragment.dismiss();
+		popupManager.remove(fragment);
 	}
 
 	protected Fragment findFragmentByTag(String tag) {

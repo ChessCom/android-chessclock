@@ -77,7 +77,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		}
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
-//			if (DataHolder.getInstance().isLiveChess()) {
 			if (AppData.isLiveChess(this)) {
 				getLccHolder().logout();
 			}
@@ -88,7 +87,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				@Override
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
-//					DataHolder.getInstance().setLiveChess(false);
 					LccHolder.getInstance(getContext()).setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));

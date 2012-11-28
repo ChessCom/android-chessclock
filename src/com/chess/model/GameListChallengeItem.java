@@ -77,32 +77,6 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 		return daysPerMove;
 	}
 
-//	@Override
-//	public String toString() {
-//		StringBuilder builder = new StringBuilder();
-//		for (String string : values.keySet()) {
-//			builder.append(" key = ").append(string).append(" value = ").append(values.get(string)).append("\n");
-//		}
-//		return builder.toString();
-//	}
-
-
-//	The eches challenges response looks like the following:
-//	<
-//	<game_seek_id>: The game id
-//	<game_name>: The seek name - can be null
-//	<opponent_username>: The opponent username
-//	<opponent_rating>: The opponent rating
-//	<opponent_win_count>: The opponent win count
-//	<opponent_loss_count>: The opponent loss count
-//	<opponent_draw_count>: The opponent Draw count
-//	<player_color>:  The users color he/she will play as, 1 = white, 2 = black, 0 = random
-//	<days_per_move>: The days per move for the seek
-//	<game_type>: The chess game type.  1 = chess, 2 = chess960
-//	<is_rated>: Is the seek rated or unrated?, 1 for rated, 2 for not rated
-//	<initial_setup_fen>: The initial starting position.  This field can be null
-//	>
-//
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
