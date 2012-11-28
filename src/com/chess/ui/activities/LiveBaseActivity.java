@@ -102,7 +102,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			popupManager.remove(fragment);
-		} else if(tag.equals(NETWORK_CHECK_TAG)){
+		} else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
 		super.onPositiveBtnClick(fragment);
@@ -116,10 +116,19 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			return;
 		}
 
-		if (tag.equals(CHALLENGE_TAG)) {// Challenge declined!
+		if (tag.equals(CHALLENGE_TAG)) {
+
+			popupManager.remove(fragment);
+
+			// todo: refactor with new LCC
+			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				getLccHolder().logout();
+				backToHomeActivity();
+				return;
+			}
+
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
 			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
-			popupManager.remove(fragment);
 		}
 		super.onNegativeBtnClick(fragment);
 	}

@@ -105,7 +105,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		if (tag.equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
 			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
-		}else if(tag.equals(CHALLENGE_TAG)){
+		} else if (tag.equals(CHALLENGE_TAG)) {
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
             challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
@@ -114,7 +114,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}
 
 	@Override
-	public void onNegativeBtnClick(DialogFragment fragment) {// Challenge declined!
+	public void onNegativeBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
 		if (tag == null) {
 			super.onNegativeBtnClick(fragment);
@@ -122,9 +122,17 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 
 		if (tag.equals(CHALLENGE_TAG)) {
+			fragment.dismiss();
+
+			// todo: refactor with new LCC
+			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				getLccHolder().logout();
+				backToHomeActivity();
+				return;
+			}
+
 			Log.i(TAG, "Decline challenge: " + currentChallenge);
-            fragment.dismiss();
-            challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
+			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
         }
 		super.onNegativeBtnClick(fragment);
 	}
