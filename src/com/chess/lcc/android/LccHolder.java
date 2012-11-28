@@ -955,15 +955,16 @@ public class LccHolder {
 	}
 
 	public void runDisconnectTask() {
-		if (lccClient != null)
-			new LiveDisconnectTask().execute();
+		new LiveDisconnectTask().execute();
 	}
 
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
-			lccClient.disconnect();
-			lccClient = null;
+			if (lccClient != null) {
+				lccClient.disconnect();
+				lccClient = null;
+			}
 			return null;
 		}
 	}
