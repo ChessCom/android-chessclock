@@ -386,25 +386,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		showSolvedTacticPopup(StaticData.SYMBOL_EMPTY, true);
 	}
 
-	private void getNewTactic() {
+	private void getNextTactic() {
 		handler.removeCallbacks(showTacticMoveTask);
 
-        String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-        int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
-                DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
+		if (tacticItem != null) {
+			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
+			int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
+					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
+		}
 
-        if (DBDataManager.haveSavedTacticGame(this)){
-
-            tacticItem = DBDataManager.getLastTacticItemFromDb(this);
-
-            setTacticToBoard(tacticItem);
-            currentTacticAnswerCnt = 0;
-        } else {
-            loadNewTacticsBatch();
-        }
-	}
-
-	private void getNextTacticFromBatch() {
         if (DBDataManager.haveSavedTacticGame(this)){
 
             tacticItem = DBDataManager.getLastTacticItemFromDb(this);
@@ -600,7 +590,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void newGame() {
-		getNewTactic();
+		getNextTactic();
 		closeOptionsMenu();
 	}
 
@@ -759,7 +749,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 
 			} else {
-				getNewTactic();
+				getNextTactic();
 			}
 		} else if (view.getId() == R.id.stopBtn) {
 			boardView.setFinished(true);
@@ -769,7 +759,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if (view.getId() == R.id.retryBtn) {
 
 			if (AppData.isGuest(this) || noInternet) {
-				getNextTacticFromBatch();
+				getNextTactic();
 			} else {
 				setTacticToBoard(tacticItem);
 			}
@@ -803,7 +793,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if (tag.equals(TEN_TACTICS_TAG)) {
 			onBackPressed();
 		} else if (tag.equals(OFFLINE_RATING_TAG)) {
-			getNextTacticFromBatch();
+			getNextTactic();
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -872,7 +862,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		public void updateData(TacticItem returnedObj) {
 			super.updateData(returnedObj);
 
-            getNextTacticFromBatch();
+            getNextTactic();
 		}
 	}
 
