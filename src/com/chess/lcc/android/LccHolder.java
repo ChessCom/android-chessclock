@@ -108,6 +108,9 @@ public class LccHolder {
 
 	public void executePausedActivityGameEvents() {
 		/*if (activityPausedMode) {*/
+
+		setActivityPausedMode(false);
+
 		if (pausedActivityGameEvents.size() > 0) {
 
 			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
@@ -804,7 +807,7 @@ public class LccHolder {
 			lccEventListener.onGameRecreate();
 		}
 
-		latestMoveNumber = null;
+		latestMoveNumber = 0; // it was null before
 		ChessBoardLive.resetInstance();
 		putGame(game);
 
@@ -843,13 +846,13 @@ public class LccHolder {
 	}
 
 	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
-		if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
+		/*if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
 			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
 					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
 			return;
-		} else {
+		} else {*/
 			latestMoveNumber = moveIndex;
-		}
+		//}
 		if (isActivityPausedMode()) {
 			GameEvent moveEvent = new GameEvent();
 			moveEvent.setEvent(GameEvent.Event.MOVE);
@@ -857,9 +860,11 @@ public class LccHolder {
 			//moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
 		} else {
+			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
+			doUpdateClocks(game, moveMaker, moveIndex); // update clock only for resumed activity?
 		}
-		doUpdateClocks(game, moveMaker, moveIndex);
+		// doUpdateClocks(game, moveMaker, moveIndex);
 	}
 
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {

@@ -178,7 +178,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return;
 		}
 
-		getLccHolder().setActivityPausedMode(false);
+		//getLccHolder().setActivityPausedMode(false); // moved to execute paused events
 		getLccHolder().setLccChatMessageListener(this);
 		updateGameState();
 	}
@@ -815,7 +815,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 		onGameStarted();
 		getBoardFace().setJustInitialized(false);
-		getLccHolder().executePausedActivityGameEvents();
+		//getLccHolder().executePausedActivityGameEvents();
 	}
 
 	@Override

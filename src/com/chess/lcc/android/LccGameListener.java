@@ -51,11 +51,13 @@ public class LccGameListener implements GameListener {
 			}
 		}
 		for (Game game : games) {
-			if (latestGameId != game.getId()) {
-				lccHolder.getGameIdsToBeIgnored().add(game.getId());
-			} else {
+			if (latestGameId.equals(game.getId())) {
 				Log.d(TAG, "GAME LISTENER: Game list received. latestGameId=" + latestGameId);
+				Log.d(TAG, "GAME LISTENER: Subscribe to game: " + game);
 				myGames.add(game);
+			} else {
+				Log.d(TAG, "GAME LISTENER: ignore game: " + game);
+				lccHolder.getGameIdsToBeIgnored().add(game.getId());
 			}
 		}
 
@@ -69,29 +71,27 @@ public class LccGameListener implements GameListener {
 	public void onGameReset(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameReset id=" + game.getId());
 
-		// UPDATELCC todo:
-		// check isMyGame and isMyTurn
+		// check isMyTurn
 
 		if (!isActualGame(game)) {
 			return;
 		}
 
 		doResetGame(game);
-		doUpdateGame(game);
+		doUpdateGame(false, game);
 	}
 
 	public void onGameUpdated(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId());
 
-		// UPDATELCC todo:
-		// check isMyGame and isMyTurn
+		// check isMyTurn
 		// update clock
 
 		if (!isActualGame(game)) {
 			return;
 		}
 
-		doUpdateGame(game);
+		doUpdateGame(true, game);
 	}
 
 	public void onGameOver(Game game) {
@@ -167,20 +167,20 @@ public class LccGameListener implements GameListener {
 	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
 
-		if (!isMyGame(game)) {
+		/*if (!isMyGame(game)) {
 			lccHolder.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
 			return false;
-		} else if (lccHolder.isUserPlayingAnotherGame(gameId)) {
+		} else*/ if (lccHolder.isUserPlayingAnotherGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: abort and exit second game");
 			lccHolder.getClient().abortGame(game, "abort second game");
 			lccHolder.getClient().exitGame(game);
 			return false;
-		} else if (isOldGame(gameId)) {
+		} /*else if (isOldGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: exit old game");
 			lccHolder.getClient().exitGame(game);
 			return false;
-		} else {
+		}*/ else {
 			lccHolder.clearOwnChallenges();
 			lccHolder.clearChallenges();
 			lccHolder.clearSeeks();
@@ -188,7 +188,7 @@ public class LccGameListener implements GameListener {
 			lccHolder.setCurrentGameId(gameId);
 			if (gameId > latestGameId) {
 				latestGameId = gameId;
-				Log.w(TAG, "GAME LISTENER: latestGameId=" + gameId);
+				Log.d(TAG, "GAME LISTENER: latestGameId=" + gameId);
 			}
 			return true;
 		}
@@ -203,8 +203,19 @@ public class LccGameListener implements GameListener {
 		lccHolder.processFullGame(game);
 	}
 
-	private void doUpdateGame(Game game) {
-		// todo
+	private void doUpdateGame(boolean checkMoves, Game game) {
+
+		// todo: maybe create two separate methods: new move check and draw check
+
+		if (checkMoves && game.getMoveCount() > lccHolder.getLatestMoveNumber()) { // do not check moves if it was
+			User moveMaker = game.getLastMoveMaker();
+			String move = game.getLastMove();
+			Log.d(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHolder.getUser().getUsername() +
+					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
+			lccHolder.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
+		}
+		// todo: check draw etc.
+
 	}
 
     private void doEndGame(Game game) {
@@ -316,7 +327,7 @@ public class LccGameListener implements GameListener {
         Log.d(TAG, "GAME LISTENER: GameItem aborted: " + game);
     }*/
 
-    public void onMoveMade(Game game, User moveMaker, String move) {
+    /*public void onMoveMade(Game game, User moveMaker, String move) {
         Log.d(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
         if (isOldGame(game.getId())) {
@@ -324,7 +335,7 @@ public class LccGameListener implements GameListener {
             return;
         }
         lccHolder.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
-    }
+    }*/
 
     /*public void onResignMade(Game game, User resignMaker, User winner) {
         Log.d(TAG, "GAME LISTENER: Game resigned: resigner=" + resignMaker.getUsername() + ", winner=" + winner.getUsername() +
