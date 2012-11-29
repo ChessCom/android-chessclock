@@ -17,7 +17,7 @@ import java.util.TreeSet;
 public class ChessBoardTacticsView extends ChessBoardBaseView {
 
 	private GameTacticsActivityFace gameTacticsActivityFace;
-	protected TacticBoardFace boardFace;
+	private TacticBoardFace boardFace;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -161,109 +161,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
             if (boardFace.getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
                 return true;
             }
-        }
-
-        int col, row;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: {
-                col = (int) (event.getX() - event.getX() % square) / square;
-                row = (int) (event.getY() - event.getY() % square) / square;
-                if (col > 7 || col < 0 || row > 7 || row < 0) {
-                    invalidate();
-                    return false;
-                }
-                if (firstclick) {
-                    from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-                        pieceSelected = true;
-                        firstclick = false;
-                        invalidate();
-                    }
-                } else {
-                    int fromPosIndex = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    if (boardFace.getPieces()[fromPosIndex] != 6 && boardFace.getSide() == boardFace.getColor()[fromPosIndex]) {
-                        from = fromPosIndex;
-                        pieceSelected = true;
-                        firstclick = false;
-                        invalidate();
-                    }
-                }
-                return true;
-            }
-            case MotionEvent.ACTION_MOVE: {
-                dragX = (int) event.getX();
-                dragY = (int) event.getY() - square;
-                col = (dragX - dragX % square) / square;
-                row = (dragY - dragY % square) / square;
-                if (col > 7 || col < 0 || row > 7 || row < 0) {
-                    invalidate();
-                    return false;
-                }
-                if (!drag && !pieceSelected)
-                    from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                if (!firstclick && boardFace.getSide() == boardFace.getColor()[from]) {
-                    drag = true;
-                    to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    invalidate();
-                }
-                return true;
-            }
-            case MotionEvent.ACTION_UP: {
-                col = (int) (event.getX() - event.getX() % square) / square;
-                row = (int) (event.getY() - event.getY() % square) / square;
-
-                drag = false;
-                // if outside of the boardBitmap - return
-                if (col > 7 || col < 0 || row > 7 || row < 0) { // if touched out of board
-                    invalidate();
-                    return false;
-                }
-                if (firstclick) {
-                    from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
-                        pieceSelected = true;
-                        firstclick = false;
-                        invalidate();
-                    }
-                } else {
-                    to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    pieceSelected = false;
-                    firstclick = true;
-                    boolean found = false;
-                    TreeSet<Move> moves = boardFace.gen();
-                    Iterator<Move> moveIterator = moves.iterator();
-
-                    Move move = null;
-                    while (moveIterator.hasNext()) {
-                        move = moveIterator.next();     // search for move that was made
-                        if (move.from == from && move.to == to) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
-                            ((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
-                            (boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
-
-                        gameActivityFace.showChoosePieceDialog(col, row);
-                        return true;
-                    }
-
-					// && move != null -> always true because found flag preceding that state
-                    if (found /*&& move != null*/ && boardFace.makeMove(move)) {
-                        afterMove();
-                    } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
-                        pieceSelected = true;
-                        firstclick = false;
-                        from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                    }
-                    invalidate();
-                }
-                return true;
-            }
-            default:
-                break;
         }
 
         return super.onTouchEvent(event);

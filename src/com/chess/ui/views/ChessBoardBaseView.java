@@ -9,6 +9,7 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
@@ -397,6 +398,123 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //		for (int i = 0; i < len; i++)
 //			Log.v("TEST", "Res Id " + i + " is " + Integer.toHexString(resIds[i]));
 //	}
+
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN: {
+				return onActionDown(event);
+			}
+			case MotionEvent.ACTION_MOVE: {
+				return onActionMove(event);
+			}
+			case MotionEvent.ACTION_UP: {
+				return onActionUp(event);
+			}
+		}
+		return super.onTouchEvent(event);    //To change body of overridden methods use File | Settings | File Templates.
+	}
+
+	protected boolean onActionDown(MotionEvent event) {
+		int col = (int) (event.getX() - event.getX() % square) / square;
+		int row = (int) (event.getY() - event.getY() % square) / square;
+		if (col > 7 || col < 0 || row > 7 || row < 0) {
+			invalidate();
+			return false;
+		}
+		if (firstclick) {
+			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+			if (boardFace.getPieces()[from] != ChessBoard.EMPTY && boardFace.getSide() == boardFace.getColor()[from]) {
+				pieceSelected = true;
+				firstclick = false;
+				invalidate();
+			}
+		} else {
+			int fromPosIndex = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+			if (boardFace.getPieces()[fromPosIndex] != ChessBoard.EMPTY && boardFace.getSide() == boardFace.getColor()[fromPosIndex]) {
+				from = fromPosIndex;
+				pieceSelected = true;
+				firstclick = false;
+				invalidate();
+			}
+		}
+		return true;
+	}
+
+	protected boolean onActionMove(MotionEvent event){
+		dragX = (int) event.getX();
+		dragY = (int) event.getY() - square;
+		int col = (dragX - dragX % square) / square;
+		int row = (dragY - dragY % square) / square;
+		if (col > 7 || col < 0 || row > 7 || row < 0) {
+			invalidate();
+			return false;
+		}
+		if (!drag && !pieceSelected)
+			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+		if (!firstclick && boardFace.getSide() == boardFace.getColor()[from]) {
+			drag = true;
+			to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+			invalidate();
+		}
+		return true;
+	}
+
+	protected boolean onActionUp(MotionEvent event) {
+		int col = (int) (event.getX() - event.getX() % square) / square;
+		int row = (int) (event.getY() - event.getY() % square) / square;
+
+		drag = false;
+		// if outside of the boardBitmap - return
+		if (col > 7 || col < 0 || row > 7 || row < 0) { // if touched out of board
+			invalidate();
+			return false;
+		}
+		if (firstclick) {
+			from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+			if (boardFace.getPieces()[from] != ChessBoard.EMPTY && boardFace.getSide() == boardFace.getColor()[from]) {
+				pieceSelected = true;
+				firstclick = false;
+				invalidate();
+			}
+		} else {
+			to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+			pieceSelected = false;
+			firstclick = true;
+			boolean found = false;
+			TreeSet<Move> moves = boardFace.gen();
+			Iterator<Move> moveIterator = moves.iterator();
+
+			Move move = null;
+			while (moveIterator.hasNext()) {
+				move = moveIterator.next();     // search for move that was made
+				if (move.from == from && move.to == to) {
+					found = true;
+					break;
+				}
+			}
+
+			if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
+					((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
+					(boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
+
+				gameActivityFace.showChoosePieceDialog(col, row);
+				return true;
+			}
+
+			if (found && boardFace.makeMove(move)) {
+				afterMove();
+			} else if (boardFace.getPieces()[to] != ChessBoard.EMPTY && boardFace.getSide() == boardFace.getColor()[to]) {
+				pieceSelected = true;
+				firstclick = false;
+				from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+			}
+			invalidate();
+		}
+		return true;
+	}
+
 
 	@Override
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {

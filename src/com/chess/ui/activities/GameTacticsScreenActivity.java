@@ -389,7 +389,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void getNextTactic() {
 		handler.removeCallbacks(showTacticMoveTask);
 
-		if (tacticItem != null) {
+		if (tacticItemIsValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
 					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
