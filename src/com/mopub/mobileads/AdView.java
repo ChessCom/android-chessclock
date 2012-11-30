@@ -46,6 +46,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings.Secure;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -280,7 +281,7 @@ public class AdView extends WebView {
 	private Location getLastKnownLocation() {
 		LocationAwareness locationAwareness = mMoPubView.getLocationAwareness();
 		int locationPrecision = mMoPubView.getLocationPrecision();
-		Location result = null;
+		Location result;
 
 		if (locationAwareness == LocationAwareness.LOCATION_AWARENESS_DISABLED) {
 			return null;
@@ -334,20 +335,20 @@ public class AdView extends WebView {
 
 	private String generateAdUrl() {
 		StringBuilder sz = new StringBuilder("http://" + MoPubView.HOST + MoPubView.AD_HANDLER);
-		sz.append("?v=6&id=" + mAdUnitId);
+		sz.append("?v=6&id=").append(mAdUnitId);
 		sz.append("&nv=" + MoPub.SDK_VERSION);
 
 		String udid = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 		String udidDigest = (udid == null) ? "" : Utils.sha1(udid);
-		sz.append("&udid=sha:" + udidDigest);
+		sz.append("&udid=sha:").append(udidDigest);
 
-		if (mKeywords != null) sz.append("&q=" + Uri.encode(mKeywords));
+		if (mKeywords != null) sz.append("&q=").append(Uri.encode(mKeywords));
 
 		if (mLocation != null) {
-			sz.append("&ll=" + mLocation.getLatitude() + "," + mLocation.getLongitude());
+			sz.append("&ll=").append(mLocation.getLatitude()).append(",").append(mLocation.getLongitude());
 		}
 
-		sz.append("&z=" + getTimeZoneOffsetString());
+		sz.append("&z=").append(getTimeZoneOffsetString());
 
 		int orientation = getResources().getConfiguration().orientation;
 		String orString = DEVICE_ORIENTATION_UNKNOWN;
@@ -358,11 +359,11 @@ public class AdView extends WebView {
 //        } else if (orientation == Configuration.ORIENTATION_SQUARE) {
 //            orString = DEVICE_ORIENTATION_SQUARE;
 		}
-		sz.append("&o=" + orString);
+		sz.append("&o=").append(orString);
 
 		DisplayMetrics metrics = new DisplayMetrics();
 		((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
-		sz.append("&sc_a=" + metrics.density);
+		sz.append("&sc_a=").append(metrics.density);
 
 		boolean mraid = true;
 		try {
@@ -382,10 +383,14 @@ public class AdView extends WebView {
 	}
 
 	/*
-		 * Overrides the WebView's loadUrl() in order to expose HTTP response headers.
-		 */
+	 * Overrides the WebView's loadUrl() in order to expose HTTP response headers.
+	 */
 	@Override
 	public void loadUrl(String url) {
+		if (TextUtils.isEmpty(url)){
+			return;
+		}
+
 		if (url.startsWith("javascript:")) {
 			super.loadUrl(url);
 			return;
