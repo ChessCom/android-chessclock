@@ -9,6 +9,7 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -301,6 +302,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int piece = boardFace.getPieces()[i];
 			int x = ChessBoard.getColumn(i, boardFace.isReside());
 			int y = ChessBoard.getRow(i, boardFace.isReside());
+
+//			Log.d("TEST", "piece redraw color" + color);
+			// TODO rework logic to store changed pieces and redraw only them
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece
 				rect.set(x * square, y * square, x * square + square, y * square + square);
 				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);

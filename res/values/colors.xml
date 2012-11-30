@@ -91,6 +91,7 @@
 
 	<!--Game Board-->
 	<color name="game_board_back">#ff262626</color>
+	<!--<color name="game_board_back">#FF000000</color>-->
 
     <!--Settings -->
     <color name="underline_color_grey">#FF8f8f8f</color>

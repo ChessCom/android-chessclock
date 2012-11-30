@@ -2,7 +2,7 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@id/mainView"
+	android:id="@+id/baseView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
@@ -33,7 +33,6 @@
 			android:paddingRight="2dip"
 			style="@style/GameLabel.Player"
 			/>
-		<!--android:drawableLeft="@drawable/player_indicator_white"-->
 
 		<com.chess.RoboTextView
 			android:id="@+id/blackLabelTxt"
