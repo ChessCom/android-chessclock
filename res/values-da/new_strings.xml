@@ -10,5 +10,8 @@
 	<string name="loss_">Tab:</string>
 	<string name="draw_">Tegn:</string>
     <string name="timer_">Timer: %s</string>
+    <string name="locale_change">Locale har ændret sig</string>
+    <string name="need_app_restart_to_apply">Du skal genstarte app til at anvende</string>
+    <string name="restart">Genstart</string>
 
 </resources>

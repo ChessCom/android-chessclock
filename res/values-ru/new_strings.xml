@@ -10,5 +10,8 @@
 	<string name="loss_">Проиграл:</string>
 	<string name="draw_">Ничья:</string>
     <string name="timer_">Таймер: %s</string>
+    <string name="locale_change">Язык изменился</string>
+    <string name="need_app_restart_to_apply">Необходимо перезапустить приложение, чтобы применить</string>
+    <string name="restart">Перезапуск</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -156,11 +157,10 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		if (square == 0) {
 			return super.onTouchEvent(event);
 		}
-        
-        if(locked || !gameActivityFace.currentGameExist()) {
-			return super.onTouchEvent(event);
-		}
 
+        if (isLocked()) {
+			return processTouchEvent(event);
+		}
 
 		track = false;
 		if (!boardFace.isAnalysis()) {
@@ -184,7 +184,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		return super.onTouchEvent(event);
 	}
 
-	@Override
+    @Override
 	public void switchChat() {
 		gameActivityFace.switch2Chat();
 	}

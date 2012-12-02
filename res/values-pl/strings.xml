@@ -257,7 +257,7 @@
 	<string name="standard_game">Standardowa</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
-	<string name="network_was_changed_please_relogin">Sieć została zmieniona. Proszę przelogować na żywo</string>
+	<!--<string name="network_was_changed_please_relogin">Sieć została zmieniona. Proszę przelogować na żywo</string>-->
 	<string name="ches_com">Chesscom</string>
 	<string name="your_move">Chess.com - Czas na Twój ruch</string>
 	<string name="your_turn">Twoja kolej!</string>

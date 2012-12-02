@@ -111,10 +111,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			preferencesEditor.commit();
 		}
-
-		if(!currentLocale.equals(getResources().getConfiguration().locale.getLanguage())){
-			restartActivity();
-		}
 	}
 
 	@Override
@@ -145,8 +141,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			preferencesEditor.commit();
 
 			currentLocale = setLocale;
-
-			restartActivity();
 		}
 	}
 
@@ -154,7 +148,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		Intent intent = getIntent();
 		finish();
 		startActivity(intent);
-		Log.d("TEST", "___restartActivity___");
 	}
 
 	protected List<String> getItemsFromEntries(int entries){

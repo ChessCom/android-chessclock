@@ -10,5 +10,8 @@
 	<string name="loss_">हानि:</string>
 	<string name="draw_">ड्रा:</string>
     <string name="timer_">घड़ी: %s</string>
+    <string name="locale_change">लोकेल बदल गया है</string>
+    <string name="need_app_restart_to_apply">आप को लागू करने के लिए ऐप्लिकेशन पुन: प्रारंभ करने की आवश्यकता है</string>
+    <string name="restart">पुनर्प्रारंभ करें</string>
 
 </resources>

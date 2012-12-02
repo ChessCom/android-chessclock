@@ -10,5 +10,8 @@
 	<string name="loss_">Loss:</string>
 	<string name="draw_">Draw:</string>
     <string name="timer_">Timer: %s</string>
+    <string name="locale_change">Locale hat sich geändert</string>
+    <string name="need_app_restart_to_apply">Sie müssen App zu bewerben starten</string>
+    <string name="restart">Starten</string>
 
 </resources>

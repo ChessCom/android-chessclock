@@ -10,5 +10,8 @@
 	<string name="loss_">Pérdida:</string>
 	<string name="draw_">Sorteo:</string>
     <string name="timer_">Timer: %s</string>
+    <string name="locale_change">Configuración regional ha cambiado</string>
+    <string name="need_app_restart_to_apply">Es necesario reiniciar la aplicación para aplicar</string>
+    <string name="restart">Reanudar</string>
 
 </resources>

@@ -45,6 +45,7 @@
 		<activity android:name=".ui.activities.HomeScreenActivity"
 			android:logo="@drawable/ic_logo_bar"
 			android:label=""
+            android:launchMode="singleTop"
 			/>
 
 		<activity android:name="com.google.ads.AdActivity"
@@ -108,7 +109,8 @@
 
 		<!--Game Board screens-->
 		<activity android:name=".ui.activities.GameTacticsScreenActivity" android:label="@string/label_tactics"
-			/>
+			    android:launchMode="singleTop"
+                />
 		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
 			/>
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"

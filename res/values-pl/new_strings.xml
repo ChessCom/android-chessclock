@@ -10,5 +10,8 @@
 	<string name="loss_">Strata:</string>
 	<string name="draw_">Remis:</string>
     <string name="timer_">Regulator: %s</string>
+    <string name="locale_change">Lokal zmienił</string>
+    <string name="need_app_restart_to_apply">Musisz ponownie uruchomić aplikację, aby zastosować</string>
+    <string name="restart">Restart</string>
 
 </resources>

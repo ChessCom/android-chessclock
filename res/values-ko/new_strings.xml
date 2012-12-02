@@ -10,5 +10,8 @@
 	<string name="loss_">손실 :</string>
 	<string name="draw_">그리기:</string>
     <string name="timer_">타이머: %s</string>
+    <string name="locale_change">로케일이 변경되었습니다</string>
+    <string name="need_app_restart_to_apply">당신은 적용 할 응용 프로그램을 다시 시작해야합니다</string>
+    <string name="restart">다시 시작</string>
 
 </resources>

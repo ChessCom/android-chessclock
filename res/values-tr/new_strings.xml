@@ -10,5 +10,8 @@
 	<string name="loss_">Zararı:</string>
 	<string name="draw_">Beraberlik:</string>
     <string name="timer_">Kronometre: %s</string>
+    <string name="locale_change">Locale değişti</string>
+    <string name="need_app_restart_to_apply">Sen uygulamak için uygulamayı yeniden başlatmanız gerekir</string>
+    <string name="restart">Yeniden</string>
 
 </resources>

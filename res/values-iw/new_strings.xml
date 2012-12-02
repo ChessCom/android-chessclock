@@ -10,5 +10,8 @@
 	<string name="loss_">פסד:</string>
 	<string name="draw_">צייר:</string>
     <string name="timer_">שעון עצר: %s</string>
+    <string name="locale_change">האזור השתנה</string>
+    <string name="need_app_restart_to_apply">אתה צריך להפעיל מחדש את היישום להחיל</string>
+    <string name="restart">הפעל מחדש</string>
 
 </resources>

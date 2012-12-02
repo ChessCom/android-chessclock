@@ -153,7 +153,10 @@ public class DBDataManager {
 
         Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
                 PROJECTION_TACTIC_BATCH_USER, SELECTION_TACTIC_BATCH_USER, arguments1, null);
-        return cursor.moveToFirst();
+		boolean exist = cursor.moveToFirst();
+		cursor.close();
+
+        return exist;
     }
 
     public static int saveTacticItemToDb(Context context, TacticItem tacticItem){
@@ -241,8 +244,10 @@ public class DBDataManager {
             cursor.close();
 
             return resultItem;
-        } else
-            return null;
+        } else {
+			cursor.close();
+			return null;
+		}
     }
 
     public static ContentValues putTacticItemToValues(TacticItem dataObj) {

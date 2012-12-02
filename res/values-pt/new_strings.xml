@@ -10,5 +10,8 @@
 	<string name="loss_">Perda:</string>
 	<string name="draw_">Empate:</string>
     <string name="timer_">Cronômetro: %s</string>
+    <string name="locale_change">Locale mudou</string>
+    <string name="need_app_restart_to_apply">Você precisa reiniciar o aplicativo para aplicar</string>
+    <string name="restart">Restart</string>
 
 </resources>

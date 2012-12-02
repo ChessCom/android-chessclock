@@ -188,7 +188,7 @@
 	<string name="random">ランダム</string>
 	<string name="won">ウォン</string>
 	<string name="lost">損失率</string>
-	<string name="draw">-draw</string>
+	<string name="draw">描く</string>
 	<string name="duration">表示時間</string>
 	<string name="published">公開済み</string>
 	<string name="details">詳細</string>
@@ -256,7 +256,7 @@
 	<string name="standard_game">標準</string>
 	<string name="blitz_game">（ブリッツ）</string>
 	<string name="lightning_game">（ライトニング）</string>
-	<string name="network_was_changed_please_relogin">ネットワークが変更されました。 Liveに再ログインしてください</string>
+	<!--<string name="network_was_changed_please_relogin">ネットワークが変更されました。 Liveに再ログインしてください</string>-->
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com  - それはあなたの移動だ</string>
 	<string name="your_turn">君の番</string>

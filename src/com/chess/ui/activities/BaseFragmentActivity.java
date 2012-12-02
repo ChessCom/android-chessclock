@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -50,6 +51,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected static final String RE_LOGIN_TAG = "re-login popup";
 	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
+	private static final boolean DEVELOPER_MODE = false;
 
 
 	private Context context;
@@ -73,11 +75,22 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if (DEVELOPER_MODE) {
+			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+					.detectAll()   // or .detectAll() for all detectable problems
+					.penaltyLog()
+					.build());
+			StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+					.detectAll()
+					.penaltyLog()
+					.penaltyDeath()
+					.build());
+		}
 		super.onCreate(savedInstanceState);
 
 		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) { // if not debuggable
 			try {
-				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
+//				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
 				e.printStackTrace();
 				String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");

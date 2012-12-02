@@ -57,17 +57,17 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		setContentView(R.layout.home_screen);
 		AppUtils.setBackground(findViewById(R.id.mainView), this);
 
-		Bundle extras = getIntent().getExtras();
-		if(extras != null){
-			int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
-			if(cmd == StaticData.NAV_FINISH_2_LOGIN){
-				Intent intent = new Intent(this, LoginScreenActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				finish();
-				extras.clear();
-			}
-		}
+//		Bundle extras = getIntent().getExtras();
+//		if(extras != null){
+//			int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
+//			if(cmd == StaticData.NAV_FINISH_2_LOGIN){
+//				Intent intent = new Intent(this, LoginScreenActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				startActivity(intent);
+//				finish();
+//				extras.clear();
+//			}
+//		}
 
 		findViewById(R.id.playLiveFrame).setOnClickListener(this);
 		findViewById(R.id.playOnlineFrame).setOnClickListener(this);
@@ -84,7 +84,29 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		registerGcmService();
 	}
 
-	@Override
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle extras = intent.getExtras();
+        if(extras != null){
+            int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
+            if(cmd == StaticData.NAV_FINISH_2_LOGIN){
+                Intent loginIntent = new Intent(this, LoginScreenActivity.class);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(loginIntent);
+                finish();
+                extras.clear();
+            } else if(cmd == StaticData.NAV_FINISH_2_SPLASH){
+				Intent loginIntent = new Intent(this, SplashActivity.class);
+				loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(loginIntent);
+				finish();
+				extras.clear();
+			}
+        }
+    }
+
+    @Override
 	protected void onResume() {
 		super.onResume();
 

@@ -10,5 +10,8 @@
 	<string name="loss_">از دست دادن:</string>
 	<string name="draw_">قرعه کشی:</string>
     <string name="timer_">ساعت: %s</string>
+    <string name="locale_change">زبان تغییر کرده است</string>
+    <string name="need_app_restart_to_apply">شما نیاز به راه اندازی مجدد برنامه به درخواست</string>
+    <string name="restart">شروع دوباره</string>
 
 </resources>

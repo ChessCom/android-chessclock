@@ -36,7 +36,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	private static final String VACATION_TAG = "confirm vacation popup";
 
-	private Spinner afterMyMoveSpinner;
+    private Spinner afterMyMoveSpinner;
 	private Spinner strengthSpinner;
 	private CheckBox showOnlineSubmitChckBx;
 	private CheckBox showLiveSubmitChckBx;
@@ -232,11 +232,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				AppUtils.cancelNotifications(this);
 			}
 
-			Intent intent = new Intent(this, HomeScreenActivity.class);
-			intent.putExtra(StaticData.NAVIGATION_CMD, StaticData.NAV_FINISH_2_LOGIN);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			finish();
+            openStartScreen(StaticData.NAV_FINISH_2_LOGIN);
 		} else if (id == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		} else if (id == R.id.prefInvite) {
@@ -260,6 +256,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 	}
 
+    private void openStartScreen(int code){
+        Intent intent = new Intent(this, HomeScreenActivity.class);
+        intent.putExtra(StaticData.NAVIGATION_CMD, code);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
 	private String feedbackBodyCompose() {
 		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(this);
 		return getResources().getString(R.string.feedback_mailbody) + ": " + AppConstants.VERSION_CODE
@@ -281,14 +285,21 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	};
 
 
-
-	private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
+    private static final String LOCALE_CHANGE_TAG = "locale change popup";
+    private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, pos);
-			preferencesEditor.commit();
+            int prevCode = AppData.getLanguageCode(getContext());
+            if (prevCode != pos) {
+                preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, pos);
+                preferencesEditor.commit();
 
-			setLocale();
+                popupItem.setPositiveBtnId(R.string.restart);
+                showPopupDialog(R.string.locale_change, R.string.need_app_restart_to_apply, LOCALE_CHANGE_TAG);
+
+
+                setLocale();
+            }
 		}
 
 		@Override
@@ -417,11 +428,13 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
-		}
+		} else if (tag.equals(LOCALE_CHANGE_TAG)){
+            openStartScreen(StaticData.NAV_FINISH_2_SPLASH);
+        }
 		super.onPositiveBtnClick(fragment);
 	}
 
-	@Override
+    @Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
 		if (tag == null) {

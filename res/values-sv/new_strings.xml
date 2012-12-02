@@ -10,5 +10,8 @@
 	<string name="loss_">Förlust:</string>
 	<string name="draw_">Rita:</string>
     <string name="timer_">Timer: %s</string>
+    <string name="locale_change">Locale har förändrats</string>
+    <string name="need_app_restart_to_apply">Du måste starta om appen att tillämpa</string>
+    <string name="restart">Starta</string>
 
 </resources>

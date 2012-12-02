@@ -257,7 +257,7 @@
 	<string name="standard_game">Standaard</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
-	<string name="network_was_changed_please_relogin">Netwerk is gewijzigd. Gelieve weer inloggen om te leven</string>
+	<!--<string name="network_was_changed_please_relogin">Netwerk is gewijzigd. Gelieve weer inloggen om te leven</string>-->
 	<string name="ches_com">Chesscom</string>
 	<string name="your_move">Chess.com - Het is je moves</string>
 	<string name="your_turn">Your Turn!</string>

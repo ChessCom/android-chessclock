@@ -403,8 +403,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //			Log.v("TEST", "Res Id " + i + " is " + Integer.toHexString(resIds[i]));
 //	}
 
+    protected boolean processTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
 
-	@Override
+    protected boolean isLocked() {
+        return locked || !gameActivityFace.currentGameExist();
+    }
+
+    @Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN: {
@@ -606,7 +613,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void lockBoard(boolean lock) {
 		locked = lock;
-		gamePanelView.lock(lock);
+        Log.d("TEST", " board locked = " + locked);
+        gamePanelView.lock(lock);
 		setEnabled(!lock);
 	}
 

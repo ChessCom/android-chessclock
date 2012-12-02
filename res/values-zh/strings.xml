@@ -254,7 +254,7 @@
 	<string name="standard_game">n.使合标准,使标准化</string>
 	<string name="blitz_game">n.闪击战,空中突然袭击</string>
 	<string name="lightning_game">照明</string>
-	<string name="network_was_changed_please_relogin">网络改变。请重新登录到Live</string>
+	<!--<string name="network_was_changed_please_relogin">网络改变。请重新登录到Live</string>-->
 	<string name="ches_com">ChessCom</string>
 	<string name="your_move">Chess.com  - 这是你的移动</string>
 	<string name="your_turn">该你了</string>

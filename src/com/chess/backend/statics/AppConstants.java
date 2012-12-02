@@ -115,4 +115,5 @@ public class AppConstants {
 
 	public static final String NOTIFICATION = "notification";
 
+    public static final String NEED_TO_RESTART = "needToRestart";
 }
