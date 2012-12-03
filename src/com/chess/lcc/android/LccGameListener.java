@@ -96,10 +96,6 @@ public class LccGameListener implements GameListener {
 
 	public void onGameOver(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameOver " + game);
-
-		// UPDATELCC todo:
-		// check isMyGame and isMyTurn
-
 		doEndGame(game);
 	}
 
@@ -286,7 +282,7 @@ public class LccGameListener implements GameListener {
                 break;
         }
         //message = whiteUsername + " vs. " + blackUsername + " - " + message;
-        Log.d(TAG, "GAME LISTENER: GAME OVER - " + message);
+        Log.d(TAG, "GAME LISTENER: " + message);
 
 		if (lccHolder.getWhiteClock() != null) {
 			lccHolder.getWhiteClock().setRunning(false);
