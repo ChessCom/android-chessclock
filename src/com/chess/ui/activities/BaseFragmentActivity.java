@@ -51,7 +51,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	protected static final String RE_LOGIN_TAG = "re-login popup";
 	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
-	private static final boolean DEVELOPER_MODE = true;
+	private static final boolean DEVELOPER_MODE = false;
 
 
 	private Context context;
