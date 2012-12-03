@@ -74,8 +74,8 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 
 		//set Pagination adapter params
-		ArrayList<VideoItem> itemsList = new ArrayList<VideoItem>();
-		VideosAdapter videosAdapter = new VideosAdapter(this, itemsList);
+		videosList = new ArrayList<VideoItem>();
+		VideosAdapter videosAdapter = new VideosAdapter(this, videosList);
 
 		VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(this, videosAdapter, videosListItemUpdateListener, loadItem);
 
@@ -95,11 +95,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 		@Override
 		public void updateListData(List<VideoItem> itemsList) {
-			if(videosList == null){
-				videosList = itemsList;
-			}else{
-				videosList.addAll(itemsList);
-			}
+			videosList.addAll(itemsList);
 		}
 	}
 

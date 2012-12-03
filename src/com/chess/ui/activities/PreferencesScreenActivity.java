@@ -35,8 +35,9 @@ import java.util.List;
 public class PreferencesScreenActivity extends LiveBaseActivity implements CompoundButton.OnCheckedChangeListener {
 
 	private static final String VACATION_TAG = "confirm vacation popup";
+	private static final String LOCALE_CHANGE_TAG = "locale change popup";
 
-    private Spinner afterMyMoveSpinner;
+	private Spinner afterMyMoveSpinner;
 	private Spinner strengthSpinner;
 	private CheckBox showOnlineSubmitChckBx;
 	private CheckBox showLiveSubmitChckBx;
@@ -52,6 +53,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	private List<SelectionItem> boardsList;
 	private List<SelectionItem> piecesList;
+	private int localeSelectedId;
+	private Spinner langSpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +84,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
 		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 
-		if (!AppData.isGuest(this) && !AppData.isLiveChess(this))
-//		if (!AppData.isGuest(this) && !DataHolder.getInstance().isLiveChess())
+		if (!AppData.isGuest(this) && !AppData.isLiveChess(this)) {
 			updateVacationStatus();
+		}
 	}
 
 	private void updateVacationStatus() {
@@ -148,7 +151,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesUpgrade.setVisibility(View.GONE);
 		}
 
-		Spinner langSpinner = (Spinner) findViewById(R.id.langSpinner);
+		langSpinner = (Spinner) findViewById(R.id.langSpinner);
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
 
@@ -284,21 +287,15 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 	};
 
-
-    private static final String LOCALE_CHANGE_TAG = "locale change popup";
     private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
             int prevCode = AppData.getLanguageCode(getContext());
             if (prevCode != pos) {
-                preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, pos);
-                preferencesEditor.commit();
+				localeSelectedId = pos;
 
                 popupItem.setPositiveBtnId(R.string.restart);
                 showPopupDialog(R.string.locale_change, R.string.need_app_restart_to_apply, LOCALE_CHANGE_TAG);
-
-
-                setLocale();
             }
 		}
 
@@ -429,7 +426,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
 		} else if (tag.equals(LOCALE_CHANGE_TAG)){
-            openStartScreen(StaticData.NAV_FINISH_2_SPLASH);
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, localeSelectedId);
+			preferencesEditor.commit();
+
+			setLocale();
+			openStartScreen(StaticData.NAV_FINISH_2_SPLASH);
         }
 		super.onPositiveBtnClick(fragment);
 	}
@@ -444,6 +445,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		if (tag.equals(VACATION_TAG)) {
 			vacationCheckBox.setChecked(false);
+		} else if (tag.equals(LOCALE_CHANGE_TAG)){
+			langSpinner.setSelection(AppData.getLanguageCode(getContext()));
 		}
 		super.onNegativeBtnClick(fragment);
 	}
