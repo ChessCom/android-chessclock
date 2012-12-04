@@ -318,7 +318,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().makeMove(move, playSound);
 		}
 
-		boardDebug = ", lastHply=" + getBoardFace().getHply() + ", lastMoves=" + actualMovesSize;
+		boardDebug = "lastHply=" + getBoardFace().getHply() + ", lastMoves=" + actualMovesSize;
 
 		getBoardFace().setMovesCount(actualMovesSize);
 
