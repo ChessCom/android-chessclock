@@ -66,6 +66,10 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	@Override
 	public boolean lastTacticMoveIsCorrect() {
 		int lastIndex = hply - 1;
+		if (lastIndex >= tacticMoves.length || lastIndex >= histDat.length) {
+			return false;
+		}
+
 		Move move = histDat[lastIndex].move; // get last move
 		String piece = StaticData.SYMBOL_EMPTY;
 		int pieceCode = pieces[move.to];
