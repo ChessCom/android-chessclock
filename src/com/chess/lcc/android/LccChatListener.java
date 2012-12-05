@@ -43,7 +43,7 @@ public class LccChatListener implements ChatListener {
 	}
 
 	@Override
-	public void onSubscribedChatListReceived(Collection<? extends Chat> chats) {
+	public boolean onSubscribedChatListReceived(Collection<? extends Chat> chats) {
 
 		// UPDATELCC todo:
 		/*
@@ -64,6 +64,8 @@ public class LccChatListener implements ChatListener {
 			lccHolder.getClient().enterChat(chat, this);
 		}
 		Log.i(TAG, str);
+
+		return false;
 	}
 
 	@Override

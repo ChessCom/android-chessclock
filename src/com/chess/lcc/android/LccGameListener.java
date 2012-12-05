@@ -30,38 +30,18 @@ public class LccGameListener implements GameListener {
         context = lccHolder.getContext();
     }
 
-	public void onGameListReceived(Collection<? extends Game> games) {
-        Log.d(TAG, "GAME LISTENER: Game list received");
-        latestGameId = 0L;
-        if (games.size() > 1) {
-            Log.d(TAG, "GAME LISTENER: Game list received. Games count: " + games.size());
-        }
+	public boolean onGameListReceived(Collection<? extends Game> games) {
+		Log.d(TAG, "GAME LISTENER: Game list received.");
+		latestGameId = 0L;
 
-		List<Game> myGames = new ArrayList<Game>();
-        for (Game game : games) {
-            if (!game.isGameOver() && isMyGame(game) && game.getId() > latestGameId) {
-                latestGameId = game.getId();
-            }
-        }
-		if (latestGameId == 0L) {
-			for (Game game : games) {
-				if (game.isGameOver() && isMyGame(game) && game.getId() > latestGameId) {
-					latestGameId = game.getId();
-				}
-			}
-		}
 		for (Game game : games) {
-			if (latestGameId.equals(game.getId())) {
-				Log.d(TAG, "GAME LISTENER: Game list received. latestGameId=" + latestGameId);
-				Log.d(TAG, "GAME LISTENER: Subscribe to game: " + game);
-				myGames.add(game);
-			} else {
-				Log.d(TAG, "GAME LISTENER: ignore game: " + game);
-				lccHolder.getGameIdsToBeIgnored().add(game.getId());
+			if (game.getId() > latestGameId) {
+				latestGameId = game.getId();
 			}
 		}
+		Log.d(TAG, "GAME LISTENER: latestGameId=" + latestGameId);
 
-		games.retainAll(myGames);
+		return false;
 
     }
 
@@ -373,7 +353,7 @@ public class LccGameListener implements GameListener {
         }
     }
 
-	private boolean isMyGame(Game game) {
+	/*private boolean isMyGame(Game game) {
 		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();
 		String blackUsername = game.getBlackPlayer().getUsername().toLowerCase();
 		String userName = lccHolder.getUsername().toLowerCase();
@@ -385,5 +365,5 @@ public class LccGameListener implements GameListener {
 		}
 
 		return isMyGame;
-	}
+	}*/
 }

@@ -29,6 +29,8 @@ import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
+import java.util.List;
+
 /**
  * GameLiveScreenActivity class
  *
@@ -49,9 +51,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private View submitButtonsLay;
 	private GameLiveItem currentGame;
 	private ChessBoardLiveView boardView;
-	private int whitePlayerNewRating;
+	/*private int whitePlayerNewRating;
 	private int blackPlayerNewRating;
-	private int currentPlayerRating;
+	private int currentPlayerRating;*/
 
     private String whiteTimer;
     private String blackTimer;
@@ -107,7 +109,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		currentGame = getLccHolder().getGameItem();
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		Game game = getLccHolder().getCurrentGame();
+		/*Game game = getLccHolder().getCurrentGame();
 		switch (game.getGameTimeConfig().getGameTimeClass()) {
 			case BLITZ:
 				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Blitz);
@@ -118,7 +120,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			case STANDARD:
 				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Standard);
 				break;
-		}
+		}*/
 
 		if (!getLccHolder().currentGameExist()) {
 			gamePanelView.enableAnalysisMode(true);
@@ -371,24 +373,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onGameEnd(final String gameEndMessage) {
-        final Game game = getLccHolder().getLastGame();
-        switch (game.getGameTimeConfig().getGameTimeClass()) {
-            case BLITZ: {
-                whitePlayerNewRating = game.getWhitePlayer().getRatingFor(GameRatingClass.Blitz);
-                blackPlayerNewRating = game.getBlackPlayer().getRatingFor(GameRatingClass.Blitz);
-                break;
-            }
-            case LIGHTNING: {
-                whitePlayerNewRating = game.getWhitePlayer().getRatingFor(GameRatingClass.Lightning);
-                blackPlayerNewRating = game.getBlackPlayer().getRatingFor(GameRatingClass.Lightning);
-                break;
-            }
-            case STANDARD: {
-                whitePlayerNewRating = game.getWhitePlayer().getRatingFor(GameRatingClass.Standard);
-                blackPlayerNewRating = game.getBlackPlayer().getRatingFor(GameRatingClass.Standard);
-                break;
-            }
-        }
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         final View layout;
@@ -398,10 +382,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
             layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
         }
 
+		final Game game = getLccHolder().getLastGame();
+		final List<Integer> ratings = game.getRatings();
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
+				updatePlayerLabels(game, ratings.get(0), ratings.get(1));
 				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
 
 				setBoardToFinishedState();
@@ -769,24 +755,31 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
-		int currentPlayerNewRating;
-		if (userPlayWhite) {
+		int currentPlayerNewRating = getLccHolder().getLastGame().getRatingForPlayer(getLccHolder().getUsername());
+		/*if (userPlayWhite) {
 			currentPlayerNewRating = whitePlayerNewRating;
 		} else {
 			currentPlayerNewRating = blackPlayerNewRating;
-		}
+		}*/
 
-		int ratingDiff;
-		String sign;
+		int ratingChange = getLccHolder().getLastGame().getRatingChangeForPlayer(getLccHolder().getUsername());
+		/*String sign;
 		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
 			ratingDiff = currentPlayerNewRating - currentPlayerRating;
 			sign = StaticData.SYMBOL_PLUS;
 		} else { // 800 700
 			ratingDiff = currentPlayerRating - currentPlayerNewRating;
 			sign = StaticData.SYMBOL_MINUS;
-		}
+		}*/
 
-		String rating = getString(R.string.your_end_game_rating, sign + ratingDiff, currentPlayerNewRating);
+
+		String sign = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
+
+		Log.d("LCCRATING", "NEW RATING=" + currentPlayerNewRating);
+		Log.d("LCCRATING", "DIFF=" + ratingChange);
+		Log.d("LCCRATING", "STRING=" + sign + ratingChange);
+
+		String rating = getString(R.string.your_end_game_rating, sign + ratingChange, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);

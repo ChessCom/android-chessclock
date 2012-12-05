@@ -6,6 +6,7 @@ import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.ClientFeature;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;
 import com.chess.live.client.LiveChessClientFacade;
@@ -72,7 +73,19 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			item = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST,
 					CONFIG_PORT, CONFIG_URI);
 			item.setClientInfo("Android", versionName, "No-Key");
-			item.setSupportedClientFeatures(false, false);
+
+			item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
+			item.setSupportedClientFeature(ClientFeature.AdminService, true); // UPDATELCC todo: check
+
+			//PublicChatsBasic
+			//PublicChatsFull
+			//PrivateChats
+			//MultiGames
+			//GameObserve
+			//MultiGameObserve
+			//Tournaments
+			//ExamineBoards
+			//PingService
 
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
 			httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
