@@ -164,6 +164,8 @@ public class ChessClock {
 	}
 
 	private void stopTimer() {
-		myTimer.cancel();
+		if (myTimer != null) {
+			myTimer.cancel();
+		}
 	}
 }
