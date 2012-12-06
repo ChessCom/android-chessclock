@@ -772,14 +772,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			sign = StaticData.SYMBOL_MINUS;
 		}*/
 
+		String ratingChangeString = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
 
-		String sign = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
-
-		Log.d("LCCRATING", "NEW RATING=" + currentPlayerNewRating);
-		Log.d("LCCRATING", "DIFF=" + ratingChange);
-		Log.d("LCCRATING", "STRING=" + sign + ratingChange);
-
-		String rating = getString(R.string.your_end_game_rating, sign + ratingChange, currentPlayerNewRating);
+		String rating = getString(R.string.your_end_game_rating, ratingChangeString, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
