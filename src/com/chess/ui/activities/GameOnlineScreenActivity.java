@@ -76,6 +76,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private IntentFilter boardUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
 
+	protected boolean userPlayWhite = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

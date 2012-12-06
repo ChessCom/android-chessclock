@@ -773,7 +773,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		endGameReasonTxt.setText(message);
 
 		int currentPlayerNewRating;
-		if (userPlayWhite) {
+		if (isUserColorWhite()) {
 			currentPlayerNewRating = whitePlayerNewRating;
 		} else {
 			currentPlayerNewRating = blackPlayerNewRating;

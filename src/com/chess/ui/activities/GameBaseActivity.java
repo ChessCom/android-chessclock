@@ -51,7 +51,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 
 	protected CharSequence[] menuOptionsItems;
 	protected GamePanelView gamePanelView;
-	protected boolean userPlayWhite = true;
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
