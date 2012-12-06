@@ -997,4 +997,8 @@ public class LccHolder {
 			}
 		}
 	}
+
+	public Boolean isUserColorWhite() {
+		return !getBlackUserName().equals(getUsername());
+	}
 }

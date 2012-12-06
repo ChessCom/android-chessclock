@@ -104,7 +104,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     @Deprecated
 	private ScrollView movesScroll; // http://stackoverflow.com/questions/10806154/outofmemoryerror-when-inflating-a-layout
 	private boolean blocked;
-	private int playerDotId;
 	private int cnt;
 
 	public GamePanelView(Context context) {
@@ -545,7 +544,6 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-    @Override
     public void onClick(View view) {
 		if (blocked)
 			return;
@@ -580,33 +578,22 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		invalidate();
     }
 
-    public void activatePlayerTimer(boolean isWhite, boolean active) {
-        timerRelLay.setVisibility(View.VISIBLE);
-        TextView textView = isWhite ? bottomPlayerLabel : bottomPlayerTimer;
-        if (active) {
-			bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(playerDotId, 0, 0, 0);
-			textView.setTextColor(resources.getColor(R.color.white));
-		} else {
-			bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-			textView.setTextColor(resources.getColor(R.color.hint_text));
-		}
-    }
+	public void setBottomPlayerTextColor(int color) {
+		timerRelLay.setVisibility(View.VISIBLE);
+		bottomPlayerLabel.setTextColor(color);
+		bottomPlayerTimer.setTextColor(color);
+	}
 
-    public void setBottomPlayerTimer(String timeString) {
-        bottomPlayerTimer.setText(timeString);
-    }
+	public void setBottomPlayerLabel(String timeString) {
+		bottomPlayerLabel.setText(timeString);
+	}
 
-    public void setBottomPlayerLabel(String timeString) {
-        bottomPlayerLabel.setText(timeString);
-    }
+	public void setBottomPlayerTimer(String timeString) {
+		bottomPlayerTimer.setText(timeString);
+	}
 
-    public void setWhiteIndicator(boolean userPlayWhite) {
-        if (userPlayWhite) {
-			playerDotId = R.drawable.player_indicator_white;
-        } else {
-			playerDotId = R.drawable.player_indicator_black;
-		}
-		bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(playerDotId, 0, 0, 0);
+	public void setBottomIndicator(int bottomPlayerDotId) {
+		bottomPlayerTimer.setCompoundDrawablesWithIntrinsicBounds(bottomPlayerDotId, 0, 0, 0);
 	}
 
     public void hideChatButton() {

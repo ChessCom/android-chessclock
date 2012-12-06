@@ -42,8 +42,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
 
-
 	private MenuOptionsDialogListener menuOptionsDialogListener;
+
+	protected TextView topPlayerLabel;
+	protected TextView topPlayerClock;
 
 	private View submitButtonsLay;
 	private GameLiveItem currentGame;
@@ -59,7 +61,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private boolean lccInitiated;
 	private Button submitBtn;
 	private String warningMessage;
-	private int opponentDotId;
 
 	private String boardDebug; // temp
 
@@ -75,16 +76,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if(!lccInitiated){
 			return;
 		}
-		// change labels and label's drawables according player color
-		// so current player(user) name must be always at the bottom
-		String blackPlayerName = getLccHolder().getBlackUserName();
-		String userName = getLccHolder().getUsername();
 
-		userPlayWhite = !userName.equals(blackPlayerName);
-		opponentDotId = userPlayWhite ? R.drawable.player_indicator_black : R.drawable.player_indicator_white;
-
-		blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentDotId, 0, 0, 0);
-		gamePanelView.setWhiteIndicator(userPlayWhite);
+		if (!isUserColorWhite()) {
+			getBoardFace().setReside(true);
+		}
 
 		Log.d("Live Game", "GameLiveScreenActivity started ");
 		if (getLccHolder().getPendingWarnings().size() > 0) {
@@ -165,7 +160,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		gamePanelView.enableAnalysisMode(false);
 
-		whitePlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
+		topPlayerLabel = whitePlayerLabel;
+		topPlayerClock = blackPlayerLabel;
+
+		topPlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);
 	}
 
 	@Override
@@ -208,12 +206,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		currentGame = getLccHolder().getGameItem();
 
-		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		checkMessages();
-
-		if (!isUserColorWhite()) {
-			getBoardFace().setReside(true);
-		}
 
 		blockGame(false);
 		getLccHolder().checkAndReplayMoves();
@@ -228,59 +221,71 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		getLccHolder().checkFirstTestMove();
 	}
 
-    public void setWhitePlayerTimer(String timeString) {
-        whiteTimer = timeString;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (userPlayWhite) {
-                    gamePanelView.setBottomPlayerTimer(whiteTimer);
-                } else {
-                    blackPlayerLabel.setText(whiteTimer);
-                }
-            }
-        });
-    }
+	public void setWhitePlayerTimer(String timeString) {
+		whiteTimer = timeString;
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (getBoardFace().isReside()) {
+					topPlayerClock.setText(whiteTimer);
+				} else {
+					gamePanelView.setBottomPlayerTimer(whiteTimer);
+				}
+			}
+		});
+	}
 
-    public void setBlackPlayerTimer(String timeString) {
-        blackTimer = timeString;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (userPlayWhite) {
-                    blackPlayerLabel.setText(blackTimer);
-                } else {
-                    gamePanelView.setBottomPlayerTimer(blackTimer);
-                }
-            }
-        });
-    }
+	public void setBlackPlayerTimer(String timeString) {
+		blackTimer = timeString;
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (getBoardFace().isReside()) {
+					gamePanelView.setBottomPlayerTimer(blackTimer);
+				} else {
+					topPlayerClock.setText(blackTimer);
+				}
+			}
+		});
+	}
 
 	private void changePlayersLabelColors() {
 		int hintColor = getResources().getColor(R.color.hint_text);
 		int whiteColor = getResources().getColor(R.color.white);
 
-		int topPlayerColor;
+		int topPlayerTextColor;
+		int bottomPlayerTextColor;
 
 		if (getBoardFace().isWhiteToMove()) {
-			topPlayerColor = userPlayWhite ? hintColor : whiteColor;
+			topPlayerTextColor = getBoardFace().isReside() ? whiteColor : hintColor;
+			bottomPlayerTextColor = getBoardFace().isReside() ? hintColor : whiteColor;
 		} else {
-			topPlayerColor = userPlayWhite ? whiteColor : hintColor;
+			topPlayerTextColor = getBoardFace().isReside() ? hintColor : whiteColor;
+			bottomPlayerTextColor = getBoardFace().isReside() ? whiteColor : hintColor;
 		}
 
-		if(topPlayerColor == hintColor){ // not active
-			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		topPlayerLabel.setTextColor(topPlayerTextColor);
+		topPlayerClock.setTextColor(topPlayerTextColor);
+		gamePanelView.setBottomPlayerTextColor(bottomPlayerTextColor);
+
+		int topPlayerDotId;
+		int bottomPlayerDotId;
+
+		if (getBoardFace().isReside()) {
+			topPlayerDotId = R.drawable.player_indicator_white;
+			bottomPlayerDotId = R.drawable.player_indicator_black;
 		} else {
-			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(opponentDotId, 0, 0, 0);
+			topPlayerDotId = R.drawable.player_indicator_black;
+			bottomPlayerDotId = R.drawable.player_indicator_white;
 		}
 
-		whitePlayerLabel.setTextColor(topPlayerColor);
-		blackPlayerLabel.setTextColor(topPlayerColor);
-
-		boolean activate = getBoardFace().isWhiteToMove() ? userPlayWhite : !userPlayWhite;
-
-		gamePanelView.activatePlayerTimer(!activate, activate); // bottom is always current user
-		gamePanelView.activatePlayerTimer(activate, activate);
+		if (topPlayerTextColor == hintColor) { // not active
+			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+			gamePanelView.setBottomIndicator(bottomPlayerDotId);
+		} else {
+			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(topPlayerDotId, 0, 0, 0);
+			gamePanelView.setBottomIndicator(0);
+		}
 	}
 
 	// ----------------------Lcc Events ---------------------------------------------
@@ -482,12 +487,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	private void updatePlayerLabels() {
-		if (userPlayWhite) {
-			whitePlayerLabel.setText(getBlackPlayerName());
-			gamePanelView.setBottomPlayerLabel(getWhitePlayerName());
-		} else {
-			whitePlayerLabel.setText(getWhitePlayerName());
+		if (getBoardFace().isReside()) {
+			topPlayerLabel.setText(getWhitePlayerName());
 			gamePanelView.setBottomPlayerLabel(getBlackPlayerName());
+		} else {
+			topPlayerLabel.setText(getBlackPlayerName());
+			gamePanelView.setBottomPlayerLabel(getWhitePlayerName());
 		}
 	}
 
@@ -540,10 +545,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
-		whitePlayerLabel.setVisibility(View.VISIBLE);
-		blackPlayerLabel.setVisibility(View.VISIBLE);
+		topPlayerLabel.setVisibility(View.VISIBLE);
+		topPlayerClock.setVisibility(View.VISIBLE);
 
 		updatePlayerLabels();
+		getLccHolder().paintClocks();
 		changePlayersLabelColors();
 
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
@@ -589,10 +595,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null)
-			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
-		else
-			return null;
+		return getLccHolder().isUserColorWhite();
 	}
 
 	@Override
@@ -722,16 +725,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-		if (userPlayWhite) {
-			whitePlayerLabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
-			gamePanelView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
-		} else {
-			whitePlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+		if (getBoardFace().isReside()) {
+
+			topPlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
 			gamePanelView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
+		} else {
+			topPlayerLabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
+			gamePanelView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
 		}
 	}
 
