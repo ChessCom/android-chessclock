@@ -1924,9 +1924,6 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Get horizontal coordinate on the board for the given index of column
-	 * @param x
-	 * @param reside
-	 * @return
 	 */
 	public static int getColumn(int x, boolean reside) {
 		if (reside)
@@ -1936,9 +1933,6 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Get vertical coordinate on the board for the given index of row
-	 * @param y
-	 * @param reside
-	 * @return
 	 */
 	public static int getRow(int y, boolean reside) {
 		if (reside)
@@ -1950,10 +1944,6 @@ public class ChessBoard implements BoardFace {
 	public int[] getColor() {
 		return color;
 	}
-
-//	public void setColor(int[] color) {
-//		this.color = color;
-//	}
 
 	public static int getPositionIndex(int c, int r, boolean reside) {
 		if (reside)
@@ -1991,10 +1981,6 @@ public class ChessBoard implements BoardFace {
 	public int getPiece(int pieceId) {
 		return pieces[pieceId];
 	}
-
-//	public void setPieces(int[] pieces) {
-//		this.pieces = pieces;
-//	}
 
 	@Override
 	public int getHply() {
@@ -2056,61 +2042,9 @@ public class ChessBoard implements BoardFace {
 		return histDat;
 	}
 
-	public boolean[] getSlide() {
-		return slide;
-	}
-
-	public void setSlide(boolean[] slide) {
-		this.slide = slide;
-	}
-
-	public int[] getOffsets() {
-		return offsets;
-	}
-
-	public void setOffsets(int[] offsets) {
-		this.offsets = offsets;
-	}
-
-	public int[][] getOffset() {
-		return offset;
-	}
-
-	public void setOffset(int[][] offset) {
-		this.offset = offset;
-	}
-
-	public int getbRook1() {
-		return bRook1;
-	}
-
-	public void setbRook1(int bRook1) {
-		this.bRook1 = bRook1;
-	}
-
 	@Override
 	public int getbKing() {
 		return bKing;
-	}
-
-	public void setbKing(int bKing) {
-		this.bKing = bKing;
-	}
-
-	public int getbRook2() {
-		return bRook2;
-	}
-
-	public void setbRook2(int bRook2) {
-		this.bRook2 = bRook2;
-	}
-
-	public int getwRook1() {
-		return wRook1;
-	}
-
-	public void setwRook1(int wRook1) {
-		this.wRook1 = wRook1;
 	}
 
 	@Override
@@ -2118,25 +2052,9 @@ public class ChessBoard implements BoardFace {
 		return wKing;
 	}
 
-	public void setwKing(int wKing) {
-		this.wKing = wKing;
-	}
-
-	public int getwRook2() {
-		return wRook2;
-	}
-
-	public void setwRook2(int wRook2) {
-		this.wRook2 = wRook2;
-	}
-
 	@Override
 	public int[] getbKingMoveOO() {
 		return bKingMoveOO;
-	}
-
-	public void setbKingMoveOO(int[] bKingMoveOO) {
-		this.bKingMoveOO = bKingMoveOO;
 	}
 
 	@Override
@@ -2144,17 +2062,9 @@ public class ChessBoard implements BoardFace {
 		return bKingMoveOOO;
 	}
 
-	public void setbKingMoveOOO(int[] bKingMoveOOO) {
-		this.bKingMoveOOO = bKingMoveOOO;
-	}
-
 	@Override
 	public int[] getwKingMoveOO() {
 		return wKingMoveOO;
-	}
-
-	public void setwKingMoveOO(int[] wKingMoveOO) {
-		this.wKingMoveOO = wKingMoveOO;
 	}
 
 	@Override
@@ -2162,29 +2072,9 @@ public class ChessBoard implements BoardFace {
 		return wKingMoveOOO;
 	}
 
-	public void setwKingMoveOOO(int[] wKingMoveOOO) {
-		this.wKingMoveOOO = wKingMoveOOO;
-	}
-
 	@Override
 	public int[] getBoardColor() {
 		return boardcolor;
-	}
-
-	public void setBoardcolor(int[] boardcolor) {
-		this.boardcolor = boardcolor;
-	}
-
-	public boolean[] getCastleMask() {
-		return castleMask;
-	}
-
-	public void setCastleMask(boolean[] castleMask) {
-		this.castleMask = castleMask;
-	}
-
-	public boolean isChess960() {
-		return chess960;
 	}
 
 	@Override
@@ -2197,48 +2087,6 @@ public class ChessBoard implements BoardFace {
 		return history;
 	}
 
-	public void setHistory(int[][] history) {
-		this.history = history;
-	}
-
-	public int[] getPawnMat() {
-		return pawnMat;
-	}
-
-	public void setPawnMat(int[] pawnMat) {
-		this.pawnMat = pawnMat;
-	}
-
-	public int[][] getPawnRank() {
-		return pawnRank;
-	}
-
-	public void setPawnRank(int[][] pawnRank) {
-		this.pawnRank = pawnRank;
-	}
-
-	public int[] getPieceMat() {
-		return pieceMat;
-	}
-
-	public void setPieceMat(int[] pieceMat) {
-		this.pieceMat = pieceMat;
-	}
-
-	public int getRotated() {
-		return rotated;
-	}
-
-	public void setRotated(int rotated) {
-		this.rotated = rotated;
-	}
-
-
-
-	public int getXside() {
-		return xside;
-	}
-
 	@Override
 	public void setXside(int xside) {
 		this.xside = xside;
@@ -2247,18 +2095,6 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public int getFifty() {
 		return fifty;
-	}
-
-	public void setFifty(int fifty) {
-		this.fifty = fifty;
-	}
-
-	public int getEp() {
-		return ep;
-	}
-
-	public void setEp(int ep) {
-		this.ep = ep;
 	}
 
 	public boolean isPossibleToMakeMoves() {
