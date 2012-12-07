@@ -15,7 +15,7 @@ import com.chess.utilities.AppUtils;
 
 public class LccAnnouncementListener implements AnnounceListener {
 
-	private static final String TAG = "LccAnnouncementListener";
+	private static final String TAG = "LCCLOG-ANNOUNCE";
 	private final LccHolder lccHolder;
 
 	public LccAnnouncementListener(LccHolder lccHolder) {

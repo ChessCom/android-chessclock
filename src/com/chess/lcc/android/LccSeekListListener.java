@@ -14,7 +14,7 @@ import com.chess.live.client.SubscriptionId;
 import java.util.Collection;
 
 public class LccSeekListListener implements SeekListListener {
-	private static final String TAG = "LccSeekListListener";
+	private static final String TAG = "LCCLOG-SEEK";
 	private final LccHolder lccHolder;
 
 	public LccSeekListListener(LccHolder lccHolder) {

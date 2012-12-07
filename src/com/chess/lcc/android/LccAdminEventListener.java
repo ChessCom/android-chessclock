@@ -14,7 +14,7 @@ import com.chess.live.client.User;
  */
 public class LccAdminEventListener implements AdminEventListener {
 
-	private static final String TAG = "LccAdminEventListener";
+	private static final String TAG = "LCCLOG-ADMIN";
 
 	public void onAdminMessageReceived(User sender, User target,
 									   LiveChessClient.AdminMessageType messageType, String reason, String message, Long period) {

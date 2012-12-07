@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public class LccChallengeListener implements ChallengeListener {
 	private OuterChallengeListener outerChallengeListener;
-	private static final String TAG = "LccChallengeListener";
+	private static final String TAG = "LCCLOG-CHALLENGE";
 	private final LccHolder lccHolder;
 
 	public LccChallengeListener(LccHolder lccHolder) {
