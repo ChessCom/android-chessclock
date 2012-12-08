@@ -153,6 +153,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			if (gameInfoItem != null){
 				gameId = gameInfoItem.getGameId();
 
+				ChessBoardOnline.resetInstance();
+
 				showSubmitButtonsLay(false);
 				boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
 				getBoardFace().setAnalysis(false);
