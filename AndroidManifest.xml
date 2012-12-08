@@ -116,8 +116,9 @@
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
 			/>
 		<!--android:configChanges="orientation"-->
-		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online">
-		</activity>
+		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
+                  android:launchMode="singleTask"
+            />
 
 		<activity android:name=".ui.activities.GameFinishedScreenActivity" android:label="@string/label_game_finished"
 			/>
