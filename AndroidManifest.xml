@@ -94,7 +94,7 @@
         <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" />
 
 		<activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
-
+                  android:launchMode="singleTask"
 			/>
 		<!--android:configChanges="keyboardHidden|keyboard|orientation"-->
 		<activity android:name=".ui.activities.OnlineNewGameActivity" android:label="@string/label_online_new_game"

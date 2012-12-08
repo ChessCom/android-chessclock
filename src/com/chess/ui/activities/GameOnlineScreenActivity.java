@@ -144,6 +144,25 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);    //To change body of overridden methods use File | Settings | File Templates.
+
+		if (intent.getExtras() != null) {
+			gameInfoItem = (GameListCurrentItem) intent.getParcelableExtra(BaseGameItem.GAME_INFO_ITEM);
+
+			if (gameInfoItem != null){
+				gameId = gameInfoItem.getGameId();
+
+				showSubmitButtonsLay(false);
+				boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
+				getBoardFace().setAnalysis(false);
+
+				updateGameState();
+			}
+		}
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		moveUpdateReceiver = new MoveUpdateReceiver();

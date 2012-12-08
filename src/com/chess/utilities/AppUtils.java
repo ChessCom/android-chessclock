@@ -117,7 +117,7 @@ public class AppUtils {
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 		Intent intent = new Intent(context, clazz);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -156,7 +156,7 @@ public class AppUtils {
 		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
 		intent.putExtra(BaseGameItem.GAME_INFO_ITEM, currentGameItem);
 		intent.putExtra(AppConstants.NOTIFICATION, true);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // as we are using singleTask mode for GameOnlineActivity we call enter there via onNewIntent callback
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
