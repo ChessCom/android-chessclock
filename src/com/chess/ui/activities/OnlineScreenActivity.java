@@ -50,7 +50,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private AcceptDrawUpdateListener acceptDrawUpdateListener;
 	private LoadItem selectedLoadItem;
 	private OnlineCurrentGamesAdapter currentGamesAdapter;
-//	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
+//	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter; // test
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesAdapter finishedGamesAdapter;
 //	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
