@@ -38,17 +38,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected Challenge currentChallenge;
 	protected LccChallengeTaskRunner challengeTaskRunner;
 	protected ChallengeTaskListener challengeTaskListener;
-	protected GameTaskListener gameTaskListener;
-	protected LccGameTaskRunner gameTaskRunner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		challengeTaskListener = new ChallengeTaskListener();
-		gameTaskListener = new GameTaskListener();
 
-		gameTaskRunner = new LccGameTaskRunner(gameTaskListener);
 		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
 		outerChallengeListener = new LiveOuterChallengeListener();
 	}
@@ -251,11 +247,4 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void challengeTaskUpdated(Challenge challenge){
 
 	}
-
-	private class GameTaskListener extends ActionBarUpdateListener<Game> {
-		public GameTaskListener() {
-			super(getInstance());
-		}
-	}
-
 }

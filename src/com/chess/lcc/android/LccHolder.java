@@ -762,6 +762,8 @@ public class LccHolder {
 		clearOwnChallenges();
 		clearSeeks();
 		clearOnlineFriends();
+
+		instance = null;
 	}
 
 	public boolean isSeekContains(Long id) {

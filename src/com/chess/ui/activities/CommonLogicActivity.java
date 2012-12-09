@@ -261,7 +261,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
                 }
             }
 		}
-//{"status":true,"code":200,"message":"Success"}
+
 		GCMServerResponseItem parseJson(String jRespString) {
             Gson gson = new Gson();
             try {

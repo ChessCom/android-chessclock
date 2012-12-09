@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.lcc.android.LccGameTaskRunner;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
@@ -483,6 +485,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", trace=" + stackTrace;
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
 		//Log.d("TESTTEST", temporaryDebugInfo);
+
+		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
@@ -640,7 +644,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			super.onPositiveBtnClick(fragment);
 			return;
 		}
-
+		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, "Request draw: " + getLccHolder().getCurrentGame());
 			gameTaskRunner.runMakeDrawTask();
@@ -674,7 +678,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, "Decline draw: " + getLccHolder().getCurrentGame());
-			gameTaskRunner.runRejectDrawTask();
+			new LccGameTaskRunner(new GameTaskListener()).runRejectDrawTask();
 		}
 		super.onNegativeBtnClick(fragment);
 	}
@@ -840,5 +844,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			dismissDialogs();
 		}
 	}
+
+	private class GameTaskListener extends ActionBarUpdateListener<Game> {
+		public GameTaskListener() {
+			super(getInstance());
+		}
+	}
+
 }
 
