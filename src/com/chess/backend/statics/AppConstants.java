@@ -117,4 +117,5 @@ public class AppConstants {
 	public static final String NOTIFICATION = "notification";
 
     public static final String NEED_TO_RESTART = "needToRestart";
+	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
 }

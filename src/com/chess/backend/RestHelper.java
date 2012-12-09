@@ -315,22 +315,28 @@ public class RestHelper {
 		return builder.toString();
 	}
 
+	public static final String OBJ_START = "{";
+	public static final String SYMBOL_QUOTE = "\"";
+	public static final String OBJ_DIVIDER = ":";
+	public static final String OBJ_END = "}";
+
+
 	public static String formJsonData(List<NameValuePair> requestParams){
 		StringBuilder data = new StringBuilder();
 		String separator = StaticData.SYMBOL_EMPTY;
-		data.append("{");
+		data.append(OBJ_START);
 		for (NameValuePair requestParam : requestParams) {
 
 			data.append(separator);
 			separator = StaticData.SYMBOL_COMMA;
-			data.append("\"")
-					.append(requestParam.getName()).append("\"")
-					.append(":")
-					.append("\"")
+			data.append(SYMBOL_QUOTE)
+					.append(requestParam.getName()).append(SYMBOL_QUOTE)
+					.append(OBJ_DIVIDER)
+					.append(SYMBOL_QUOTE)
 					.append(requestParam.getValue())
-					.append("\"");
+					.append(SYMBOL_QUOTE);
 		}
-		data.append("}");
+		data.append(OBJ_END);
 		return data.toString();
 	}
 

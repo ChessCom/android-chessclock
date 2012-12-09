@@ -94,21 +94,19 @@ public class PostJsonDataTask extends AbstractUpdateTask<String, LoadItem> {
 	private String formJsonData(List<NameValuePair> requestParams){
 		StringBuilder data = new StringBuilder();
 		String separator = StaticData.SYMBOL_EMPTY;
-		data.append("{");
-//			data.append("request:{");
+		data.append(RestHelper.OBJ_START);
 			for (NameValuePair requestParam : requestParams) {
 
 				data.append(separator);
 				separator = StaticData.SYMBOL_COMMA;
-				data.append("\"")
-						.append(requestParam.getName()).append("\"")
-						.append(":")
-						.append("\"")
+				data.append(RestHelper.SYMBOL_QUOTE)
+						.append(requestParam.getName()).append(RestHelper.SYMBOL_QUOTE)
+						.append(RestHelper.OBJ_DIVIDER)
+						.append(RestHelper.SYMBOL_QUOTE)
 						.append(requestParam.getValue())
-						.append("\"");
+						.append(RestHelper.SYMBOL_QUOTE);
 			}
-//			data.append("}");
-		data.append("}");
+		data.append(RestHelper.OBJ_END);
 		return data.toString();
 	}
 

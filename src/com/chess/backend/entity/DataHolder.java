@@ -59,7 +59,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	/**
 	 * Checks if game with this Id is currently open to the user
 	 * @param gameId id of the game
-	 * @return
+	 * @return true if gameBoard is open now
 	 */
 	public synchronized boolean inOnlineGame(long gameId) {
 		synchronized (playingGameItem) {

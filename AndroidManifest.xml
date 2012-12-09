@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="127"
-	android:versionName="2.0.25" package="com.chess" android:installLocation="auto">
+	android:versionCode="114"
+	android:versionName="2.0.13" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -11,6 +11,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--GCM Permissions-->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -20,18 +21,14 @@
 	<permission android:name="com.chess.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 	<uses-permission android:name="com.chess.permission.C2D_MESSAGE" />
 
+
 	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
-    <!-- Screen dimensions that application supports -->
-    <supports-screens android:smallScreens="true"
-                      android:normalScreens="true"
-                      android:largeScreens="true"
-                      android:xlargeScreens="true"
-                      android:anyDensity="true"
-                      android:resizeable="true"/>
+	<supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
 	<application android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name"
 		android:logo="@drawable/ic_home"
+		android:debuggable="true"
 		android:theme="@style/OrangeButtonTheme"
 		>
 		<activity android:name=".ui.activities.SplashActivity"
@@ -94,7 +91,7 @@
 		<activity android:name="com.mopub.mobileads.MraidBrowser"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
 
-        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" android:theme="@style/NoTitle" />
+        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" />
 
 		<activity android:name=".ui.activities.OnlineScreenActivity" android:label="@string/label_play_online"
                   android:launchMode="singleTask"
@@ -117,11 +114,10 @@
 		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
 			/>
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
-                  android:launchMode="singleTop"
 			/>
 		<!--android:configChanges="orientation"-->
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
-                  android:launchMode="singleTop"
+                  android:launchMode="singleTask"
             />
 
 		<activity android:name=".ui.activities.GameFinishedScreenActivity" android:label="@string/label_game_finished"
@@ -150,7 +146,7 @@
 
 		<receiver android:name=".backend.AlarmReceiver"/>
 
-        <!--
+		<!--
 				  BroadcastReceiver that will receive intents from GCM
 				  services and handle them to the custom IntentService.
 
@@ -177,9 +173,10 @@
 				  application uses a custom BroadcastReceiver that redefines its name.
 				-->
 		<service android:name=".GCMIntentService" />
-		<service android:name=".backend.LiveChessService" />
 
 		<provider android:name=".db.DBDataProvider" android:authorities="com.chess.db_provider" />
+
+		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 
 	</application>
 

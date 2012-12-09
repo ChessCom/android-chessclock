@@ -33,6 +33,9 @@ public class ChessBoard implements BoardFace {
 	public static final int QUEEN = 4;
 	public static final int KING = 5;
 	public static final int EMPTY = 6;
+	public static final String SYMBOL_SPACE = " ";
+	public static final String SYMBOL_SLASH = "[/]";
+	public static final String NUMBERS_PATTERS = "[0-9]";
 
 	final static char A1 = 56;
 	final static char B1 = 57;
@@ -64,6 +67,21 @@ public class ChessBoard implements BoardFace {
 	public static final String EQUALS_B = "=B";
 	public static final String EQUALS_R = "=R";
 	public static final String EQUALS_Q = "=Q";
+	public static final String SYMBOL_NEW_STRING = "\n ";
+	public static final String MOVE_NUBMER_DOT_SEPARATOR = ". ";
+	public static final String G8_STR = "g8";
+	public static final String C8_STR = "c8";
+	public static final String G1_STR = "g1";
+	public static final String C1_STR = "c1";
+	public static final String MOVE_TAG = "move:";
+	public static final String EQUALS_N_SMALL = "=n";
+	public static final String EQUALS_B_SMALL = "=b";
+	public static final String EQUALS_R_SMALL = "=r";
+	public static final String EQUALS_Q_SMALL = "=q";
+	public static final char CHAR_N = 'n';
+	public static final char CHAR_B = 'b';
+	public static final char CHAR_R = 'r';
+	public static final char CHAR_Q = 'q';
 
 	protected Long gameId;
 	protected boolean justInitialized;
@@ -284,7 +302,7 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public int[] genCastlePos(String fen) {
 		//rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR
-		String[] tmp = fen.split(" ");
+		String[] tmp = fen.split(SYMBOL_SPACE);
 
 		// set castle masks
 		if (tmp.length > 2) { //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
@@ -314,11 +332,11 @@ public class ChessBoard implements BoardFace {
 			Log.d(fen, StaticData.SYMBOL_EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
 		}
 
-		String[] FEN = tmp[0].split("[/]");
+		String[] FEN = tmp[0].split(SYMBOL_SLASH);
 		int offset = 0, i;
 		boolean found = false;
 		for (i = 0; i < FEN[0].length(); i++) {
-			if (FEN[0].charAt(i) == 'r') {
+			if (FEN[0].charAt(i) == CHAR_R) {
 				if (!found) {
 					bRook1 = i + offset;
 					BLACK_ROOK_1_INITIAL_POS = i + offset;
@@ -332,7 +350,7 @@ public class ChessBoard implements BoardFace {
 				bKing = i + offset;
 				found = true;
 			}
-			if (FEN[0].substring(i, i + 1).matches("[0-9]")) {
+			if (FEN[0].substring(i, i + 1).matches(NUMBERS_PATTERS)) {
 				offset += (Integer.parseInt(FEN[0].substring(i, i + 1)) - 1);
 			}
 		}
@@ -353,7 +371,7 @@ public class ChessBoard implements BoardFace {
 				wKing = i + offset;
 				found = true;
 			}
-			if (FEN[7].substring(i, i + 1).matches("[0-9]")) {
+			if (FEN[7].substring(i, i + 1).matches(NUMBERS_PATTERS)) {
 				offset += (Integer.parseInt(FEN[7].substring(i, i + 1)) - 1);
 			}
 		}
@@ -1192,7 +1210,6 @@ public class ChessBoard implements BoardFace {
 
 		if ((move.bits & 32) != 0) {
 			pieces[move.to] = move.promote;
-			//System.out.println("!!!!!!!! PROMOTION");
 		} else {
 			pieces[move.to] = pieces[move.from];
 		}
@@ -1287,48 +1304,48 @@ public class ChessBoard implements BoardFace {
 				if (wKingMoveOOO[i] == move.to)
 					what = 3;
 			}
-			int to = move.to;
-			int pt = pieces[to];
+			int moveTo = move.to;
+			int pieceTo = pieces[moveTo];
 			if (what == 3) {
-				pt = pieces[58];
-				to = 58;
+				pieceTo = pieces[58];
+				moveTo = 58;
 			} else if (what == 2) {
-				pt = pieces[62];
-				to = 62;
+				pieceTo = pieces[62];
+				moveTo = 62;
 			} else if (what == 1) {
-				pt = pieces[2];
-				to = 2;
+				pieceTo = pieces[2];
+				moveTo = 2;
 			} else if (what == 0) {
-				pt = pieces[6];
-				to = 6;
+				pieceTo = pieces[6];
+				moveTo = 6;
 			}
 			/* move the piecesBitmap */
 			color[move.from] = side;
-			pieces[move.from] = pt;
-			if (move.from != to) {
-				color[to] = EMPTY;
-				pieces[to] = EMPTY;
+			pieces[move.from] = pieceTo;
+			if (move.from != moveTo) {
+				color[moveTo] = EMPTY;
+				pieces[moveTo] = EMPTY;
 			}
 
 			int from = -1;
 			if (what == 2) {
 				from = wRook2;
-				to = F1;
+				moveTo = F1;
 			} else if (what == 3) {
 				from = wRook1;
-				to = D1;
+				moveTo = D1;
 			} else if (what == 1) {
 				from = bRook1;
-				to = D8;
+				moveTo = D8;
 			} else if (what == 0) {
 				from = bRook2;
-				to = F8;
+				moveTo = F8;
 			}
 			color[from] = side;
-			pieces[from] = piece_tmp[to];
-			if (to != from && pieces[to] != KING) {
-				color[to] = EMPTY;
-				pieces[to] = EMPTY;
+			pieces[from] = piece_tmp[moveTo];
+			if (moveTo != from && pieces[moveTo] != KING) {
+				color[moveTo] = EMPTY;
+				pieces[moveTo] = EMPTY;
 			}
 
 			return move;
@@ -1391,15 +1408,17 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public String getMoveListSAN() {
-		String output = StaticData.SYMBOL_EMPTY;
+//		String output = StaticData.SYMBOL_EMPTY;
+		StringBuffer output = new StringBuffer();
 		int i;
 		for (i = 0; i < hply; i++) {
-			if (i % 2 == 0)
-				output += "\n " + (i / 2 + 1) + ". ";
-			output += histDat[i].notation;
-			output += StaticData.SYMBOL_SPACE;
+			if (i % 2 == 0) {
+				output.append(SYMBOL_NEW_STRING).append(i / 2 + 1).append(MOVE_NUBMER_DOT_SEPARATOR);
+			}
+			output.append(histDat[i].notation);
+			output.append(StaticData.SYMBOL_SPACE);
 		}
-		return output;
+		return output.toString();
 	}
 
 	public String getMoveSAN() {
@@ -1510,28 +1529,28 @@ public class ChessBoard implements BoardFace {
 					if (chess960)
 						to = MoveParser.positionToString(bRook2);
 					else
-						to = "g8";
+						to = G8_STR;
 				} else if (what == 1) {
 					if (chess960)
 						to = MoveParser.positionToString(bRook1);
 					else
-						to = "c8";
+						to = C8_STR;
 				} else if (what == 2) {
 					if (chess960)
 						to = MoveParser.positionToString(wRook2);
 					else
-						to = "g1";
+						to = G1_STR;
 				} else if (what == 3) {
 					if (chess960)
 						to = MoveParser.positionToString(wRook1);
 					else
-						to = "c1";
+						to = C1_STR;
 				}
 			}
 			output = URLEncoder.encode(MoveParser.positionToString(move.from) + to, HTTP.UTF_8);
 		} catch (Exception ignored) {
 		}
-		Log.d("move:", output);
+		Log.d(MOVE_TAG, output);
 		return output;
 	}
 
@@ -1541,16 +1560,16 @@ public class ChessBoard implements BoardFace {
 		final Move m = histDat[hply - 1].move;
 		switch (m.promote) {
 			case ChessBoard.KNIGHT:
-				output += (color[m.from] == 0 ? EQUALS_N : "=n");
+				output += (color[m.from] == 0 ? EQUALS_N : EQUALS_N_SMALL);
 				break;
 			case ChessBoard.BISHOP:
-				output += (color[m.from] == 0 ? EQUALS_B : "=b");
+				output += (color[m.from] == 0 ? EQUALS_B : EQUALS_B_SMALL);
 				break;
 			case ChessBoard.ROOK:
-				output += (color[m.from] == 0 ? EQUALS_R : "=r");
+				output += (color[m.from] == 0 ? EQUALS_R : EQUALS_R_SMALL);
 				break;
 			case ChessBoard.QUEEN:
-				output += (color[m.from] == 0 ? EQUALS_Q : "=q");
+				output += (color[m.from] == 0 ? EQUALS_Q : EQUALS_Q_SMALL);
 				break;
 			default:
 				break;
@@ -1564,16 +1583,16 @@ public class ChessBoard implements BoardFace {
 		final Move m = histDat[hply - 1].move;
 		switch (m.promote) {
 			case ChessBoard.KNIGHT:
-				output += 'n';
+				output += CHAR_N;
 				break;
 			case ChessBoard.BISHOP:
-				output += 'b';
+				output += CHAR_B;
 				break;
 			case ChessBoard.ROOK:
-				output += 'r';
+				output += CHAR_R;
 				break;
 			case ChessBoard.QUEEN:
-				output += 'q';
+				output += CHAR_Q;
 				break;
 			default:
 				break;
@@ -1617,10 +1636,10 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public int reps() {
-		int b[] = new int[64];
-		int c = 0;  /* count of squares that are different from
+		int tempBoard[] = new int[64];
+		int differentSquaresCnt = 0;  /* count of squares that are different from
 				   the current position */
-		int r = 0;  /* number of repetitions */
+		int repetitionsNumber = 0;  /* number of repetitions */
 
 		/* is a repetition impossible? */
 		if (fifty <= 3)
@@ -1629,21 +1648,21 @@ public class ChessBoard implements BoardFace {
 		/* loop through the reversible moves */
 		for (int i = hply - 1; i >= hply - fifty - 1; --i) {
 
-			if (i < 0 || i >= histDat.length) return r;
+			if (i < 0 || i >= histDat.length) return repetitionsNumber;
 
-			if (++b[histDat[i].move.from] == 0)
-				--c;
+			if (++tempBoard[histDat[i].move.from] == 0)
+				--differentSquaresCnt;
 			else
-				++c;
-			if (--b[histDat[i].move.to] == 0)
-				--c;
+				++differentSquaresCnt;
+			if (--tempBoard[histDat[i].move.to] == 0)
+				--differentSquaresCnt;
 			else
-				++c;
-			if (c == 0)
-				++r;
+				++differentSquaresCnt;
+			if (differentSquaresCnt == 0)
+				++repetitionsNumber;
 		}
 
-		return r;
+		return repetitionsNumber;
 	}
 
 	@Override
@@ -1678,7 +1697,7 @@ public class ChessBoard implements BoardFace {
 				try {
 					pieceMat[color[i]] += pieceValue[pieces[i]];
 				} catch (Exception e) {
-					Log.d("I!!!!!!!!:", StaticData.SYMBOL_EMPTY + i);
+					Log.e("I!!!!!!!!:", StaticData.SYMBOL_EMPTY + i);
 				}
 			}
 		}

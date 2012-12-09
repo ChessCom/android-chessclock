@@ -1,42 +1,25 @@
 package com.chess.ui.activities;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
-import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LiveEvent;
+import com.chess.lcc.android.LccChallengeTaskRunner;
+import com.chess.lcc.android.LccGameTaskRunner;
+import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.OuterChallengeListener;
-import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.LoginButton;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * LiveBaseActivity class
@@ -44,86 +27,54 @@ import java.util.Map;
  * @author alien_roger
  * @created at: 11.04.12 9:00
  */
-public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener {
+public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
-	private static final String TAG = "LccLog-LiveBaseActivity";
+	private static final String TAG = "LiveBaseActivity";
 
 	protected static final String CHALLENGE_TAG = "challenge_tag";
 	protected static final String LOGOUT_TAG = "logout_tag";
-	private static final String CONNECT_FAILED_TAG = "connect_failed";
-	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
-
+	protected LccChallengeTaskRunner challengeTaskRunner;
 	protected ChallengeTaskListener challengeTaskListener;
-	protected GameTaskListener gameTaskListener;
-	private LiveServiceConnectionListener liveServiceConnectionListener;
-	protected boolean isLCSBound;
-	protected LiveChessService liveService;
-	private List<PopupDialogFragment> popupChallengesList;
+//	protected GameTaskListener gameTaskListener;
+//	protected LccGameTaskRunner gameTaskRunner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameTaskListener = new GameTaskListener();
 		challengeTaskListener = new ChallengeTaskListener();
-		outerChallengeListener = new LiveOuterChallengeListener();
-		liveServiceConnectionListener = new LiveServiceConnectionListener();
+//		gameTaskListener = new GameTaskListener();
 
-		popupChallengesList = new ArrayList<PopupDialogFragment>();
+//		gameTaskRunner = new LccGameTaskRunner(gameTaskListener);
+		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener);
+		outerChallengeListener = new LiveOuterChallengeListener();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		if (AppData.isLiveChess(this)) {
-			if (!AppUtils.isNetworkAvailable(this)) {
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			}
-			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
-			if (isLCSBound) {
-				liveService.setConnectionUpdateFace(liveServiceConnectionListener);
-				onLiveServiceConnected();
-			} else {
-				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
-			}
+		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
+		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
+			popupItem.setPositiveBtnId(R.string.wireless_settings);
+			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+		} else {
+			LccHolder.getInstance(this).checkAndConnect();
 		}
 	}
 
-	@Override
-	protected void adjustActionBar() {
-		super.adjustActionBar();
-
-		boolean isConnected = isLCSBound;
-		if (isLCSBound) {
-			isConnected = liveService.isConnected();
-		}
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (isLCSBound) {
-			unbindService(liveServiceConnectionListener);
-		}
-	}
-
-	protected boolean checkIfLiveUserAlive() {
+	protected boolean checkIfLiveUserAlive(){
 		boolean alive = true;
-		if (isLCSBound) {
-			if (liveService.getUser() == null) {
-				if (AppData.isLiveChess(this)) {
-					liveService.logout();
-				}
-				backToHomeActivity();
-				alive = false;
+		if (getLccHolder().getUser() == null) {
+			if (AppData.isLiveChess(this)) {
+				getLccHolder().logout();
 			}
+			backToHomeActivity();
+			alive = false;
 		}
 		return alive;
 	}
@@ -136,40 +87,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		if (isLCSBound) {
-			executePausedActivityLiveEvents();
-		}
-	}
-
-	public void executePausedActivityLiveEvents() {
-
-		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveService.getPausedActivityLiveEvents();
-		Log.d(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
-
-		if (pausedActivityLiveEvents.size() > 0) {
-
-			LiveEvent connectionFailureEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CONNECTION_FAILURE);
-			if (connectionFailureEvent != null) {
-				pausedActivityLiveEvents.remove(LiveEvent.Event.CONNECTION_FAILURE);
-				processConnectionFailure(connectionFailureEvent.getMessage());
-				// todo: clear all events because of ConnectionFailure?
-			}
-
-			LiveEvent challengeEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CHALLENGE);
-			if (challengeEvent != null) {
-				pausedActivityLiveEvents.remove(LiveEvent.Event.CHALLENGE);
-				if (challengeEvent.isChallengeDelayed()) {
-					outerChallengeListener.showDelayedDialogImmediately(challengeEvent.getChallenge());
-				} else {
-					outerChallengeListener.showDialogImmediately(challengeEvent.getChallenge());
-				}
-			}
-		}
-	}
-
-	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
 		if (tag == null) {
@@ -177,36 +94,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			return;
 		}
 
-		if (tag.equals(CONNECT_FAILED_TAG)) {
-			if (AppData.isLiveChess(this)) {
-				liveService.logout();
-			}
-			backToHomeActivity();
-		} else if (tag.equals(OBSOLETE_VERSION_TAG)) {
-			// Show site and
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					AppData.setLiveChessMode(getContext(), false);
-					liveService.setConnected(false);
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.PLAY_ANDROID_HTML)));
-				}
-			});
-
-			backToHomeActivity();
-
-		} else if (tag.equals(LOGOUT_TAG)) {
-			if (isLCSBound) {
-				liveService.logout();
-			}
+		if (tag.equals(LOGOUT_TAG)) {
+			getLccHolder().logout();
 			backToHomeActivity();
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
-			liveService.declineAllChallenges(currentChallenge);
-			liveService.runAcceptChallengeTask(currentChallenge);
-
-
-			popupChallengesList.remove(fragment);
+			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
+			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
+			popupManager.remove(fragment);
 		} else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
@@ -223,19 +118,17 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (tag.equals(CHALLENGE_TAG)) {
 
-			popupChallengesList.remove(fragment);
-			if (isLCSBound) {
+			popupManager.remove(fragment);
 
-				// todo: refactor with new LCC
-				if(!liveService.isConnected() || liveService.getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
-					liveService.logout();
-					backToHomeActivity();
-					return;
-				}
-
-				Log.i(TAG, "Decline challenge: " + currentChallenge);
-				liveService.declineCurrentChallenge(currentChallenge);
+			// todo: refactor with new LCC
+			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				getLccHolder().logout();
+				backToHomeActivity();
+				return;
 			}
+
+			Log.i(TAG, "Decline challenge: " + currentChallenge);
+			challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHolder().getChallenges());
 		}
 		super.onNegativeBtnClick(fragment);
 	}
@@ -243,80 +136,36 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
-		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
-			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+		if(resultCode == RESULT_OK && requestCode == NETWORK_REQUEST){
+			LccHolder.getInstance(this).checkAndConnect();
 		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_signOut:
+			case R.id.menu_singOut:
 				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
-
-		@Override
-		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			Log.d(TAG, "onLiveServiceConnected");
-			Log.d("TEST", "onLiveServiceConnected in " + LiveBaseActivity.this);
-
-			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
-			liveService = serviceBinder.getService();
-			isLCSBound = true;
-			liveService.setLiveChessClientEventListener(LiveBaseActivity.this);
-
-			liveService.checkAndConnect(this);
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName componentName) {
-			Log.d(TAG, "SERVICE: onServiceDisconnected");
-			isLCSBound = false;
-		}
-
-		@Override
-		public void onConnected() {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					onLiveServiceConnected();
-				}
-			});
-		}
-	}
-
 	private class LiveOuterChallengeListener implements OuterChallengeListener {
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
-			if (isPaused) {
-				LiveEvent liveEvent = new LiveEvent();
-				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
-				liveEvent.setChallenge(challenge);
-				liveEvent.setChallengeDelayed(true);
-				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
-			} else {
-				showDelayedDialogImmediately(challenge);
-			}
-		}
-
-		@Override
-		public void showDelayedDialogImmediately(Challenge challenge) {
-			Log.d(TAG, "CHALLENGE showDelayedDialogImmediately -> popupDialogFragment.show ");
 			currentChallenge = challenge;
+
 			popupItem.setPositiveBtnId(R.string.accept);
 			popupItem.setNegativeBtnId(R.string.decline);
 			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
 		}
 
 		@Override
-		public void showDialogImmediately(Challenge challenge) {
-			if (popupChallengesList.size() > 0) {
+		public void showDialog(Challenge challenge) {
+			Log.d("LCCLOG", "need to show challenge dialog");
+			if (popupManager.size() > 0) {
+				Log.d("LCCLOG", "show challenge dialog: popupManager.size() " + popupManager.size());
 				return;
 			}
 
@@ -330,22 +179,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-			Log.d(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
-			popupChallengesList.add(popupDialogFragment);
-		}
 
-		@Override
-		public void showDialog(Challenge challenge) {
-			Log.d(TAG, "CHALLENGE showDialog -> isPaused = " + isPaused);
-			if (isPaused) {
-				LiveEvent liveEvent = new LiveEvent();
-				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
-				liveEvent.setChallenge(challenge);
-				liveEvent.setChallengeDelayed(false);
-				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
-			} else {
-				showDialogImmediately(challenge);
-			}
+			popupManager.add(popupDialogFragment);
 		}
 
 		@Override
@@ -401,7 +236,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
-	public class ChallengeTaskListener extends ActionBarUpdateListener<Challenge> {
+	private class ChallengeTaskListener extends ActionBarUpdateListener<Challenge> {
 		public ChallengeTaskListener() {
 			super(getInstance());
 		}
@@ -417,150 +252,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	}
 
-	private class GameTaskListener extends ActionBarUpdateListener<Game> {
-		public GameTaskListener() {
-			super(getInstance());
-		}
-	}
 
-	// ---------- LiveChessClientEventListener ----------------
-	@Override
-	public void onConnecting() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
-				getActionBarHelper().setRefreshActionItemState(true);
-			}
-		});
-	}
 
-	@Override
-	public void onConnectionEstablished() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(false);
-				getActionBarHelper().showMenuItemById(R.id.menu_signOut, true);
-			}
-		});
-	}
-
-	@Override
-	public void onSessionExpired(final String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-
-				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-				final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView(customView);
-
-				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
-				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
-
-				liveService.logout();
-
-				((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
-
-				EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
-				EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
-				setLoginFields(usernameEdt, passwordEdt);
-
-				customView.findViewById(R.id.re_signin).setOnClickListener(LiveBaseActivity.this);
-
-				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-				facebookInit(facebookLoginButton);
-				facebookLoginButton.logout();
-
-				usernameEdt.setText(AppData.getUserName(LiveBaseActivity.this));
-			}
-		});
-	}
-
-	@Override
-	public void onConnectionFailure(String message) {
-		if (isPaused) {
-			LiveEvent connectionFailureEvent = new LiveEvent();
-			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);
-			connectionFailureEvent.setMessage(message);
-			liveService.getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
-		} else {
-			processConnectionFailure(message);
-		}
-	}
-
-	private void processConnectionFailure(String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
-			}
-		});
-
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
-		getLastPopupFragment().setCancelable(false);
-	}
-
-	@Override
-	public void onConnectionBlocked(final boolean blocked) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(blocked);
-			}
-		});
-	}
-
-	@Override
-	public void onObsoleteProtocolVersion() {
-		popupItem.setButtons(1);
-		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
-		getLastPopupFragment().setCancelable(false);
-	}
-
-	@Override
-	public void onFriendsStatusChanged(){
-
-	}
-
-	@Override
-	public void onAdminAnnounce(String message) {
-		showSinglePopupDialog(message);
-	}
-
-	// -----------------------------------------------------
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-
-		adjustSignOutActionMenu(menu);
-		return result;
-	}
-
-	protected void adjustSignOutActionMenu(Menu menu) {
-		boolean isConnected = false;
-		if (isLCSBound) {
-			isConnected = liveService.isConnected();
-		}
-		if (HONEYCOMB_PLUS_API) {// this item doesn't exist at this point in pre-ICS
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-		}
-	}
-
-	protected void onLiveServiceConnected() {
-		Log.d("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
-				+ " in " + LiveBaseActivity.this);
-		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
-
-		liveService.setOuterChallengeListener(outerChallengeListener);
-		liveService.setChallengeTaskListener(challengeTaskListener);
-
-		//executePausedActivityLiveEvents();
-	}
 }

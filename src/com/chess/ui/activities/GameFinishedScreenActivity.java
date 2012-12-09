@@ -143,7 +143,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			int beginIndex = 1;
 
 			moves = currentGame.getMoveList()
-					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
+					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
 					.replaceAll("  ", StaticData.SYMBOL_SPACE).substring(beginIndex)
 					.split(StaticData.SYMBOL_SPACE);
 

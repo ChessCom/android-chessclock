@@ -49,6 +49,7 @@ import java.util.Calendar;
  */
 public class GameOnlineScreenActivity extends GameBaseActivity {
 
+	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -71,7 +72,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private GameOnlineItem currentGame;
 	private long gameId;
 	private GameListCurrentItem gameInfoItem;
-	private String timeRemains;
+//	private String timeRemains;
 	private TextView infoLabelTxt;
 	private IntentFilter boardUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
@@ -170,6 +171,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private void updateGameState() {
+		// TODO load game from DB. After load update
+
+
 		if (getBoardFace().isJustInitialized()) {
 			getOnlineGame(gameId);
 			getBoardFace().setJustInitialized(false);
@@ -217,7 +221,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
 
-		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+
+//		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY); // disable time as it incorrect when switching to next game
@@ -245,10 +251,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			int beginIndex = 1;
 			String[] moves = currentGame.getMoveList()
-					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", " ").substring(beginIndex).split(" ");
+					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
+					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);   // Start after "+" sign
 
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
@@ -259,7 +264,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 
 
-		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		invalidateGameScreen();
 		boardFace.takeBack();
 		boardView.invalidate();
@@ -292,7 +296,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
+//		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
 			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY); // disable time as it incorrect when switching to next game
@@ -305,11 +309,9 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			int beginIndex = 1;
-
 			String[] moves = currentGame.getMoveList()
-					.replaceAll("[0-9]{1,4}[.]", StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", " ").substring(beginIndex).split(" ");
+					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
+					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);    // Start after "+" sign
 
 			if (moves.length - getBoardFace().getMovesCount() == 1) {
 				getBoardFace().updateMoves(moves[moves.length - 1], false);

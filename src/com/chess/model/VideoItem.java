@@ -5,6 +5,9 @@ import com.chess.backend.statics.StaticData;
 public class VideoItem {
 
 
+	public static final String QUOTE_SYMBOL = "&quot;";
+	public static final String QUOTE_SYMBOL_NORMAL = "\"";
+	public static final String VIDEO_DIVIDER = "<--->";
 	private String title;
 	private String description;
 	private String prefVideoCategory;
@@ -20,7 +23,7 @@ public class VideoItem {
 
 	public VideoItem(String[] values) {
 		title = values[0];
-		description = values[1].replaceAll("&quot;", "\"");
+		description = values[1].replaceAll(QUOTE_SYMBOL, QUOTE_SYMBOL_NORMAL);
 		prefVideoCategory = values[2];
 		skillLevel = values[3];
 		opening = values[4];
@@ -30,7 +33,7 @@ public class VideoItem {
 		authorLastName = values[8];
 		minutes = values[9];
 		publishTimestamp = Long.parseLong(values[10]);
-		viewUrl = values[11].replaceAll("<--->", StaticData.SYMBOL_EMPTY);
+		viewUrl = values[11].replaceAll(VIDEO_DIVIDER, StaticData.SYMBOL_EMPTY);
 	}
 
 	public String getAuthorChessTitle() {
