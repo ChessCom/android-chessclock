@@ -89,12 +89,27 @@
 	</LinearLayout>
 
 	<!--Ads-->
-	<LinearLayout
+	<!--<LinearLayout
 		android:id="@+id/adview_wrapper"
 		android:layout_width="@dimen/ad_popup_width"
 		android:layout_height="@dimen/ad_popup_height"
 		android:layout_gravity="center"
-		/>
+		/>-->
+
+	<!-- todo: set app id, set update time -->
+
+	<com.inneractive.api.ads.InneractiveAd
+			android:id="@+id/inneractiveRectangleAd"
+			xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			inneractive:appID="Android_IA_Test"
+			inneractive:adType="Banner"
+			inneractive:refreshInterval="60"
+			inneractive:adAlignment="CENTER"
+			inneractive:optionalAdWidth="300"
+			inneractive:optionalAdHeight="250"
+			android:visibility="gone"/>
 
 	<!--Upgrade-->
 	<com.chess.RoboButton

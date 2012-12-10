@@ -1,62 +1,79 @@
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:padding="0dp"
-	>
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:padding="0dp"
+		>
 
 	<!-- title-->
 	<com.chess.RoboTextView
-		android:id="@+id/titleTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:gravity="center"
-		robo:ttf="Bold"
-		android:textSize="@dimen/game_end_popup_text_size"
-		android:paddingBottom="10dip"
-		/>
+			android:id="@+id/titleTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			robo:ttf="Bold"
+			android:textSize="@dimen/game_end_popup_text_size"
+			android:paddingBottom="10dip"
+			/>
 
 
 	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		>
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			>
 		<!--Ads-->
-		<LinearLayout
+		<!--<LinearLayout
 			android:id="@+id/adview_wrapper"
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/ad_popup_height"
 			android:layout_gravity="center"
 			android:orientation="vertical"
 			android:layout_weight="1"
-			/>
+			/>-->
+
+		<!-- todo: set app id, set update time -->
+
+		<com.inneractive.api.ads.InneractiveAd
+				android:id="@+id/inneractiveRectangleAd"
+				xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:layout_weight="1"
+				inneractive:appID="Android_IA_Test"
+				inneractive:adType="Banner"
+				inneractive:refreshInterval="60"
+				inneractive:adAlignment="CENTER"
+				inneractive:optionalAdWidth="300"
+				inneractive:optionalAdHeight="250"
+				android:visibility="gone"/>
 
 		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_weight="1"
-			android:gravity="center_vertical"
-			>
-
-			<com.chess.RoboButton
-				android:id="@+id/cancelBtn"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/cancel"
-				style="@style/Text.Button.Grey"
-				/>
+				android:orientation="vertical"
+				android:layout_weight="1"
+				android:gravity="center_vertical"
+				>
 
 			<com.chess.RoboButton
-				android:id="@+id/nextBtn"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/next_tactic_puzzle"
-				style="@style/Text.Button"
-				/>
+					android:id="@+id/cancelBtn"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/cancel"
+					style="@style/Text.Button.Grey"
+					/>
+
+			<com.chess.RoboButton
+					android:id="@+id/nextBtn"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/next_tactic_puzzle"
+					style="@style/Text.Button"
+					/>
 
 		</LinearLayout>
 

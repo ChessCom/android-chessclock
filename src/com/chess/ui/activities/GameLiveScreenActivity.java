@@ -28,7 +28,8 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
+import com.chess.utilities.InneractiveAdHelper;
+import com.inneractive.api.ads.InneractiveAd;
 
 /**
  * GameTacticsScreenActivity class
@@ -796,8 +797,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String rating = getString(R.string.your_end_game_rating, sign + ratingDiff, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, this);
+		/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, this);*/
+		InneractiveAdHelper.showRectangleAd((InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd), this);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);

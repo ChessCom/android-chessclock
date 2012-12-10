@@ -278,7 +278,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 	}
 
-
 	private void showFullScreenAd() {
 		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && AppUtils.isNeedToUpgrade(this)) {
 
@@ -291,7 +290,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 				// todo: test cases when ad is loaded after onPause etc
 				InneractiveAd.displayInterstitialAd(this, (LinearLayout) findViewById(R.id.mainView),
 						InneractiveAdHelper.FULLSCREEN_APP_ID,
-						new InneractiveAdHelper.InneractiveAdListenerImpl(InneractiveAd.IaAdType.Interstitial, preferencesEditor));
+						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor));
 
 			} else {
 				moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com

@@ -50,7 +50,9 @@ public class AppConstants {
 
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
 
-
+	public static final String AD_BANNER = "Banner";
+	public static final String AD_RECTANGLE = "Rectangle";
+	public static final String AD_FULLSCREEN = "Fullscreen";
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String USER_SESSION_ID = "user_session_id";
 	public static final String FIRST_TIME_START = "first_time_start";
