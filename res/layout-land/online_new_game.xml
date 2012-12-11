@@ -38,7 +38,7 @@
 		android:orientation="vertical"
 		android:layout_weight="1"
 		>
-		<include layout="@layout/mopub_ad_view"/>
+		<include layout="@layout/banner_ad_view"/>
 
 		<com.chess.RoboButton
 			android:id="@+id/friendchallenge"

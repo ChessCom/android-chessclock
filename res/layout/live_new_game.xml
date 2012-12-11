@@ -10,7 +10,7 @@
 	android:paddingRight="@dimen/default_scr_side_padding"
 	android:orientation="vertical">
 
-	<include layout="@layout/mopub_ad_view"/>
+	<include layout="@layout/banner_ad_view"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"

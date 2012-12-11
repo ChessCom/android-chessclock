@@ -12,7 +12,7 @@
 	android:paddingRight="@dimen/default_scr_side_padding"
 	>
 
-	<include layout="@layout/mopub_ad_view"/>
+	<include layout="@layout/banner_ad_view"/>
 
 
 	<RelativeLayout

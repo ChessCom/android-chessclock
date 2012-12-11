@@ -15,8 +15,6 @@ public class InneractiveAdHelper {
 	public static final boolean IS_SHOW_BANNER_ADS = true;
 	public static final boolean IS_SHOW_FULLSCREEN_ADS = true;
 
-	public static final String FULLSCREEN_APP_ID = "Android_IA_Test";
-
 	/*private static LinearLayout rectangleAdWrapper;
 	private static InneractiveAd rectangleAdView;*/
 

@@ -33,9 +33,9 @@
 	<com.inneractive.api.ads.InneractiveAd
 			android:id="@+id/inneractiveRectangleAd"
 			xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			inneractive:appID="Android_IA_Test"
+			android:layout_width="@dimen/ad_popup_width"
+			android:layout_height="@dimen/ad_popup_height"
+			inneractive:appID="@string/inneractiveAdsAppId"
 			inneractive:adType="Banner"
 			inneractive:refreshInterval="60"
 			inneractive:adAlignment="CENTER"

@@ -289,7 +289,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 				// todo: use special viewgroup for fullscreen ad
 				// todo: test cases when ad is loaded after onPause etc
 				InneractiveAd.displayInterstitialAd(this, (LinearLayout) findViewById(R.id.mainView),
-						InneractiveAdHelper.FULLSCREEN_APP_ID,
+						getString(R.string.inneractiveAdsAppId),
 						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor));
 
 			} else {
