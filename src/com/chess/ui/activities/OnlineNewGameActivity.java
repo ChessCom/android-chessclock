@@ -55,8 +55,8 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
 				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) inneractiveBannerAd, this);
 			} else {
-				//moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 			}
 		}
 

@@ -29,8 +29,8 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
 				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
 			} else {
-				//moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 			}
 		}
 
