@@ -2,6 +2,7 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
 	android:id="@id/mainView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -40,24 +41,20 @@
 			/>
 	</RelativeLayout>
 
-<!--	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		style="@style/LinearDescription"
-		android:paddingLeft="0dip"
-		android:paddingRight="0dip"
-		>
-
-		<com.chess.RoboButton
-			android:id="@+id/start"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="6"
-			android:text="@string/challenge"
-			/>
-
-	</LinearLayout>-->
+    <com.chess.RoboTextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/no_network"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/grey_button"
+        android:paddingLeft="10dip"
+        robo:ttf="Bold"
+        style="@style/DarkShadowBottom"
+        android:visibility="gone"
+        />
 
 	<ListView
 		android:id="@+id/onlineGamesList"
@@ -65,5 +62,7 @@
 		android:layout_height="wrap_content"
 		android:background="@android:color/transparent"
 		/>
+
+
 
 </LinearLayout>

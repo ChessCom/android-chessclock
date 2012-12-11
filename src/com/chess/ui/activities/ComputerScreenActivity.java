@@ -24,6 +24,8 @@ import com.flurry.android.FlurryAgent;
 public class ComputerScreenActivity extends LiveBaseActivity implements AdapterView.OnItemSelectedListener {
 
 	private Spinner strength;
+	private View fakeBtn;
+	private boolean fakeBtnVisible;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		strength.setOnItemSelectedListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);
-
-		//new StartEngineTask(getApplicationContext(), new InitComputerEngineUpdateListener()).executeTask();
+		fakeBtn = findViewById(R.id.fakeBtn);
 	}
 
 	@Override
@@ -62,26 +63,29 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 			intent.putExtra(AppConstants.GAME_MODE, compGameId);
 			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
-			RadioButton whiteHuman, blackHuman;
-			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
-			blackHuman = (RadioButton) findViewById(R.id.bHuman);
+			fakeBtnVisible = !fakeBtnVisible;
+			fakeBtn.setVisibility(fakeBtnVisible ? View.VISIBLE : View.GONE);
 
-			int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
-			if (!whiteHuman.isChecked() && blackHuman.isChecked())
-				mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
-			else if (whiteHuman.isChecked() && blackHuman.isChecked())
-				mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
-			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
-				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
-
-			ChessBoardComp.resetInstance();
-			preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.commit();
-
-			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
-			Intent intent = new Intent(this, GameCompScreenActivity.class);
-			intent.putExtra(AppConstants.GAME_MODE, mode);
-			startActivity(intent);
+//			RadioButton whiteHuman, blackHuman;
+//			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
+//			blackHuman = (RadioButton) findViewById(R.id.bHuman);
+//
+//			int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+//			if (!whiteHuman.isChecked() && blackHuman.isChecked())
+//				mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+//			else if (whiteHuman.isChecked() && blackHuman.isChecked())
+//				mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+//			else if (!whiteHuman.isChecked() && !blackHuman.isChecked())
+//				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+//
+//			ChessBoardComp.resetInstance();
+//			preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+//			preferencesEditor.commit();
+//
+//			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
+//			Intent intent = new Intent(this, GameCompScreenActivity.class);
+//			intent.putExtra(AppConstants.GAME_MODE, mode);
+//			startActivity(intent);
 		}
 	}
 

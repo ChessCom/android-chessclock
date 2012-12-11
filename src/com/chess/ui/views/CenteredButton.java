@@ -1,5 +1,6 @@
 package com.chess.ui.views;
 
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,9 +11,17 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.PropertyValuesHolder;
 
 public class CenteredButton extends FrameLayout implements View.OnTouchListener {
 
@@ -92,58 +101,55 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	public void setPressed(boolean pressed) {
 		button.setPressed(pressed);
 		super.setPressed(pressed);
-//		Log.d("TEST", "setPressed -> pressed = " + pressed);
 	}
 
-//	/**
-//	 * Implement this method to handle touch screen motion events.
-//	 *
-//	 * @param event The motion event.
-//	 * @return True if the event was handled, false otherwise.
-//	 */
-//	public boolean onTouchEvent(MotionEvent event) {
-//
-//		switch (event.getAction()) {
-//			case MotionEvent.ACTION_DOWN:
-//				Log.d("TEST", "onTouchEvent -> ACTION_DOWN");
-//				button.performClick();
-//				setPressed(true);
-//				button.refreshDrawableState();
-//				break;
-//			case MotionEvent.ACTION_UP:
-//				Log.d("TEST", "onTouchEvent -> ACTION_UP");
-//				button.setPressed(false);
-//				button.refreshDrawableState();
-//				break;
-//			case MotionEvent.ACTION_MOVE:
-//				Log.d("TEST", "onTouchEvent -> ACTION_MOVE");
-//				button.setPressed(true);
-//				button.refreshDrawableState();
-//
-//				break;
-//		}
-//		return super.onTouchEvent(event);
-//	}
+	/**
+	 * Implement this method to handle touch screen motion events.
+	 *
+	 * @param event The motion event.
+	 * @return True if the event was handled, false otherwise.
+	 */
+	public boolean onTouchEvent(MotionEvent event) {
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				button.setPressed(true);
+				button.refreshDrawableState();
+				setPressed(true);
+
+//				performClick();
+				flipIt();
+				break;
+			case MotionEvent.ACTION_UP:
+				button.setPressed(false);
+				button.refreshDrawableState();
+				setPressed(false);
+
+				break;
+			case MotionEvent.ACTION_MOVE:
+				button.setPressed(true);
+				button.refreshDrawableState();
+				setPressed(true);
+
+				break;
+		}
+		return super.onTouchEvent(event);
+	}
 
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
 		switch (motionEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				Log.d("TEST", "onTouch -> ACTION_DOWN");
+				button.setPressed(true);
+				button.refreshDrawableState();
 				setPressed(true);
 				refreshDrawableState();
 
-				post(new Runnable() {
-					@Override
-					public void run() {
-						performClick();
-					}
-				});
 //				performClick();
+				flipIt();
 
 				break;
 			case MotionEvent.ACTION_UP:
-				Log.d("TEST", "onTouch -> ACTION_UP");
 				setPressed(false);
 				refreshDrawableState();
 				break;
@@ -210,5 +216,37 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 				return value;
 		}
 	}
+
+	private Interpolator accelerator = new AccelerateInterpolator();
+	private Interpolator decelerator = new DecelerateInterpolator();
+	private static final int DURATION = 100;
+
+	private void flipIt() {
+		final View animationView = this;
+
+		Animator flipFirstHalf = ObjectAnimator.ofFloat(animationView,"rotationY", 0f, 90f);
+		flipFirstHalf.setDuration(DURATION);
+		flipFirstHalf.setInterpolator(accelerator);
+
+		final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(animationView,"rotationY", -90f, 0f);
+		flipSecondHalf.setDuration(DURATION);
+		flipSecondHalf.setInterpolator(decelerator);
+
+		flipFirstHalf.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator anim) {
+				flipSecondHalf.start();
+			}
+		});
+
+		flipSecondHalf.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator anim) {
+				performClick();
+			}
+		});
+		flipFirstHalf.start();
+	}
+
 
 }
