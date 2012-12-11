@@ -834,7 +834,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 		MopubHelper.showRectangleAd(adViewWrapper, this);*/
-		InneractiveAdHelper.showRectangleAd((InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd), this);
+		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);

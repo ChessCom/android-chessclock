@@ -343,7 +343,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else {
 			adViewWrapper.setVisibility(View.GONE);
 		}*/
-		InneractiveAdHelper.showRectangleAd((InneractiveAd) customView.findViewById(R.id.inneractiveRectangleAd), this);
+		inneractiveRectangleAd = (InneractiveAd) customView.findViewById(R.id.inneractiveRectangleAd);
+		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
 
 		int nextBtnId = R.string.next_tactic_puzzle;

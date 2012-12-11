@@ -58,8 +58,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onPause() {
 		super.onPause();
 
-		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();
+		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();*/
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 	}

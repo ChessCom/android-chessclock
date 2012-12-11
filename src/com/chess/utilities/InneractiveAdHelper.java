@@ -56,10 +56,6 @@ public class InneractiveAdHelper {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		/*if (rectangleAdView == null) {
-			createRectangleAd(app);
-		}*/
-
 		rectangleAd.setVisibility(View.VISIBLE);
 
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
