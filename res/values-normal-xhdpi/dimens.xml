@@ -2,4 +2,8 @@
 	<dimen name="default_button_text_size">17sp</dimen>
 	<dimen name="game_end_popup_text_size">17sp</dimen>
 	<dimen name="live_grid_hotizontal_spacing">30dip</dimen>
+
+    <!--Dashboard-->
+    <dimen name="dashboard_text_size">16sp</dimen>
+
 </resources>

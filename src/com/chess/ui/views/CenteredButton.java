@@ -43,22 +43,22 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 
 	private void initFromAttr(Context context, AttributeSet attrs) {
 		// look up any layout-defined attributes
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
+		TypedArray attrsArray = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
 
 		// Get the screen's density scale
 		density = getResources().getDisplayMetrics().density;
 		// Convert the dps to pixels, based on density scale
 
-		final int N = a.getIndexCount();
+		final int N = attrsArray.getIndexCount();
 		for (int i = 0; i < N; i++) {
-			int attr = a.getIndex(i);
+			int attr = attrsArray.getIndex(i);
 			switch (attr) {
 				case R.styleable.CenteredButton_buttonDrawable: {
-					drawable = a.getDrawable(i);
+					drawable = attrsArray.getDrawable(i);
 				}
 				break;
 				case R.styleable.CenteredButton_buttonText: {
-					buttonText = a.getText(attr);
+					buttonText = attrsArray.getText(attr);
 				}
 				break;
 			}

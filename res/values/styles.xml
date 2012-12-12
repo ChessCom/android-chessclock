@@ -126,7 +126,7 @@
 
     <style name="DashboardItemText" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">@dimen/dashboard_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>
     
@@ -228,4 +228,6 @@
 		<item name="android:shadowDy">1.0</item>
 
 	</style>
+
+    <dimen name="dashboard_text_size">13sp</dimen>
 </resources>
