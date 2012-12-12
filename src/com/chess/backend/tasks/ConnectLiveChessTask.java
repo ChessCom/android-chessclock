@@ -3,6 +3,7 @@ package com.chess.backend.tasks;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
@@ -31,9 +32,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
-	public static final String HOST = "chess.com";
-	public static final String AUTH_URL = "http://www." + HOST + "/api/v2/login?username=%s&password=%s";
-	public static final String CONFIG_BAYEUX_HOST = "live." + HOST;
+	public static final String AUTH_URL = RestHelper.LOGIN + "?username=%s&password=%s";
+	public static final String CONFIG_BAYEUX_HOST = "live." + RestHelper.HOST;
 	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
 	public static final String CONFIG_URI =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
