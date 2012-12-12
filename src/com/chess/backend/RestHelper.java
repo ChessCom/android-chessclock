@@ -24,7 +24,12 @@ public class RestHelper {
 
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
 //	public static final String BASE_URL = "http://www.chess-5.com";
-	public static final String BASE_URL = "http://www.chess.com";
+
+	public static final String HOST_PRODUCTION = "chess.com";
+	public static final String HOST_TEST = "chess-2.com";
+	public static final String HOST = HOST_PRODUCTION; // switch production/test server
+
+	public static final String BASE_URL = "http://www." + HOST;
 	public static final String API_V5 = "/api/v5";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
@@ -32,7 +37,7 @@ public class RestHelper {
 	public static final String API = "/api";
 
 	/*Google Cloud Messaging API part*/
-	public static final String GCM_BASE_URL = "http://www.chess.com/api/gcm";
+	public static final String GCM_BASE_URL = BASE_URL + "/api/gcm";
 	public static final String GCM_REGISTER = GCM_BASE_URL + "/register";
 	public static final String GCM_UNREGISTER = GCM_BASE_URL + "/unregister";
 	/* Params */
@@ -175,12 +180,12 @@ public class RestHelper {
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
-	public static final boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://www.chess.com");
+	public static final boolean IS_TEST_SERVER_MODE = !HOST.equals(HOST_PRODUCTION);
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 	public static final String AUTHORIZATION_HEADER_VALUE = "Basic Ym9iYnk6ZmlzY2hlcg==";
 
 
-//	The eches challenges response looks like the following:
+//	The echess challenges response looks like the following:
 //	<
 //	<game_seek_id>: The game id
 //	<game_name>: The seek name - can be null

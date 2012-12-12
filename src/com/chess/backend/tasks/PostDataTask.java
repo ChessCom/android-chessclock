@@ -36,7 +36,6 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 		return result;
 	}
 
-
 	private int postData(String url, LoadItem loadItem) {
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
@@ -54,6 +53,8 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 		}
 
 		try {
+			if (RestHelper.IS_TEST_SERVER_MODE)
+				httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 			HttpResponse response = httpClient.execute(httpPost);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
