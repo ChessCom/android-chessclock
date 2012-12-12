@@ -11,52 +11,69 @@ import com.inneractive.api.ads.InneractiveAd;
 
 public class InneractiveAdHelper {
 
-	// todo: TESTING
-	public static final boolean IS_SHOW_BANNER_ADS = false;
-	public static final boolean IS_SHOW_FULLSCREEN_ADS = false;
+	// todo: flags should be removed
+	public static final boolean IS_SHOW_BANNER_ADS = true;
+	public static final boolean IS_SHOW_FULLSCREEN_ADS = true;
 
-	public static final String FULLSCREEN_APP_ID = "Android_IA_Test";
+	/*private static LinearLayout rectangleAdWrapper;
+	private static InneractiveAd rectangleAdView;*/
 
-	public static void showBannerAd(Button upgradeBtn, InneractiveAd inneractiveAd, /*View adLayout,*/ Context context) {
-
-		inneractiveAd.setInneractiveListener(new InneractiveAdListenerImpl(InneractiveAd.IaAdType.Banner));
-
-		SharedPreferences preferences = AppData.getPreferences(context);
-		SharedPreferences.Editor preferencesEditor = preferences.edit();
+	public static void showBannerAd(Button upgradeBtn, InneractiveAd bannerAd, Context context) {
 
 		if (!AppUtils.isNeedToUpgrade(context)) {
 			return;
 		}
 
+		bannerAd.setInneractiveListener(new InneractiveAdListenerImpl(AppConstants.AD_BANNER));
+
+		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
+
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 
 		if (adsShowCounter != AppConstants.UPGRADE_SHOW_COUNTER) {
 			upgradeBtn.setVisibility(View.GONE);
-			inneractiveAd.setVisibility(View.VISIBLE);
+			bannerAd.setVisibility(View.VISIBLE);
 			// todo: initialize inneractiveAd object here, if necessary
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
 			preferencesEditor.commit();
 		} else {
 			// todo: try to do not load ad when upgrade button is showing
-			inneractiveAd.setVisibility(View.GONE);
+			bannerAd.setVisibility(View.GONE);
 			upgradeBtn.setVisibility(View.VISIBLE);
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			preferencesEditor.commit();
 		}
 	}
 
+	public static void showRectangleAd(InneractiveAd rectangleAd, Context context) {
+		if (!AppUtils.isNeedToUpgrade(context) || rectangleAd == null) {
+			return;
+		}
+
+		rectangleAd.setInneractiveListener(new InneractiveAdListenerImpl(AppConstants.AD_RECTANGLE));
+
+		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
+
+		rectangleAd.setVisibility(View.VISIBLE);
+
+		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
+		preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
+		preferencesEditor.commit();
+
+	}
+
 	public static class InneractiveAdListenerImpl implements com.inneractive.api.ads.InneractiveAdListener {
 
 		private SharedPreferences.Editor preferencesEditor;
 		private String adType;
-		private boolean isInterstitial;
 
-		public InneractiveAdListenerImpl(InneractiveAd.IaAdType adType) {
-			this.adType = adType.toString();
-			isInterstitial = adType == InneractiveAd.IaAdType.Interstitial;
+		public InneractiveAdListenerImpl(String adType) {
+			this.adType = adType;
 		}
 
-		public InneractiveAdListenerImpl(InneractiveAd.IaAdType adType, SharedPreferences.Editor preferencesEditor) {
+		public InneractiveAdListenerImpl(String adType, SharedPreferences.Editor preferencesEditor) {
 			this(adType);
 			this.preferencesEditor = preferencesEditor;
 		}
@@ -104,7 +121,7 @@ public class InneractiveAdHelper {
 		}
 
 		private void processInterstitialAdReceived() {
-			if (isInterstitial) {
+			if (adType.equals(AppConstants.AD_FULLSCREEN)) {
 				preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
 				preferencesEditor.commit();
 			}

@@ -69,11 +69,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
-//	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
-//	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
-//	private CurrentGamesCursorUpdateListener currentGamesCursorUpdateListener;
-//	private FinishedGamesCursorUpdateListener finishedGamesCursorUpdateListener;
-	private ListView listView;
 
 
 	@Override
@@ -84,14 +79,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 
-		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-
 		if (AppUtils.isNeedToUpgrade(this)) {
 
 			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
+				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
 			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 			}
 		}
 
@@ -99,7 +94,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		AppData.setLiveChessMode(this, false);
 
-		listView = (ListView) findViewById(R.id.onlineGamesList);
+		ListView listView = (ListView) findViewById(R.id.onlineGamesList);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);

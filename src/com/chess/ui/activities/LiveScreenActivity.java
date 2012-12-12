@@ -75,13 +75,14 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 
 		loadingView = (ViewGroup) findViewById(R.id.loadingView);
 		emptyView = findViewById(R.id.emptyView);
-		
-		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+
 		if (AppUtils.isNeedToUpgrade(this)) {
 			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
+				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
 			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 			}
 		}
 

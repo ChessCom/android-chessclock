@@ -23,7 +23,8 @@ import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
+import com.chess.utilities.InneractiveAdHelper;
+import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.Calendar;
 
@@ -380,8 +381,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
         endGameReasonTxt.setText(message);
 
-        LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-        MopubHelper.showRectangleAd(adViewWrapper, this);
+        /*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, this);*/
+		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+        InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
         PopupItem popupItem = new PopupItem();
         popupItem.setCustomView((LinearLayout) layout);
 

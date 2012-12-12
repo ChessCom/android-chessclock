@@ -23,7 +23,6 @@ import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
@@ -31,7 +30,7 @@ import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
-import com.mopub.mobileads.MoPubView;
+import com.inneractive.api.ads.InneractiveAd;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
 		, PopupDialogFace, LiveChessClientEventListenerFace {
@@ -48,7 +47,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected boolean showActionRefresh;
 
 	// we may have this add on every screen, so control it on the lowest level
-	protected MoPubView moPubView;
+	//protected MoPubView moPubView;
+	protected InneractiveAd inneractiveBannerAd;
+	protected InneractiveAd inneractiveRectangleAd;
 
 	public void setFullScreen() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -103,13 +104,24 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onPause() {
 		super.onPause();
 
-		// try to destroy ad here as MoPub team suggested
+		/* // try to destroy ad here as MoPub team suggested
 		if (moPubView != null) {
 			moPubView.destroy();
-		}
+		}*/
 
-		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();
+		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();*/
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (inneractiveBannerAd != null) {
+			inneractiveBannerAd.cleanUp();
+		}
+		if (inneractiveRectangleAd != null) {
+			inneractiveRectangleAd.cleanUp();
+		}
 	}
 
 	@Override

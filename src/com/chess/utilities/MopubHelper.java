@@ -19,12 +19,12 @@ public class MopubHelper {
 	private static MoPubView rectangleAdView;
 
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, Context context) {
-		SharedPreferences preferences = AppData.getPreferences(context);
-		SharedPreferences.Editor preferencesEditor = preferences.edit();
-
 		if (!AppUtils.isNeedToUpgrade(context)) {
 			return;
 		}
+
+		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 
@@ -51,17 +51,17 @@ public class MopubHelper {
 	}
 
     public static void destroyRectangleAd(){
-        if(rectangleAdView != null)
+        if (rectangleAdView != null)
             rectangleAdView.destroy();
     }
 
 	public static void showRectangleAd(LinearLayout wrapper, Context context) {
-		SharedPreferences preferences = AppData.getPreferences(context);
-		SharedPreferences.Editor preferencesEditor = preferences.edit();
-
 		if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
 			return;
 		}
+
+		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
 		/*if (rectangleAdView == null) {
 			createRectangleAd(app);
@@ -81,11 +81,6 @@ public class MopubHelper {
 		preferencesEditor.commit();
 
 	}
-
-//	public static boolean isShowAds(Context context) {  // we need only one way to detect way in other way it rise NPE for upgrade button
-//		return false;
-//		//return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
-//	}
 
 	public static void setListener(MoPubView mopPubView, MopubListener mopubListener) {
 		mopPubView.setOnAdClickedListener(mopubListener);

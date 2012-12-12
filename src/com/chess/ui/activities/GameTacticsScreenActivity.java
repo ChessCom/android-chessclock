@@ -34,8 +34,9 @@ import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
 import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
+import com.chess.utilities.InneractiveAdHelper;
 import com.flurry.android.FlurryAgent;
+import com.inneractive.api.ads.InneractiveAd;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.IOException;
@@ -336,12 +337,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
-		LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
+		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(this)) {
 			MopubHelper.showRectangleAd(adViewWrapper, this);
 		} else {
 			adViewWrapper.setVisibility(View.GONE);
-		}
+		}*/
+		inneractiveRectangleAd = (InneractiveAd) customView.findViewById(R.id.inneractiveRectangleAd);
+		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+
 
 		int nextBtnId = R.string.next_tactic_puzzle;
 		int nextBtnColorId = R.drawable.button_orange_selector;

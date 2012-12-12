@@ -36,7 +36,8 @@ import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.MopubHelper;
+import com.chess.utilities.InneractiveAdHelper;
+import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -831,8 +832,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, this);
+		/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		MopubHelper.showRectangleAd(adViewWrapper, this);*/
+		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
