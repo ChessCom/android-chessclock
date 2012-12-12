@@ -77,6 +77,10 @@ public class InneractiveAdHelper {
 			log("onIaAdExpandClosed");
 		}
 
+		public void onIaDismissScreen() {
+			log("onIaDismissScreen");
+		}
+
 		public void onIaAdFailed() {
 			log("onIaAdFailed");
 		}

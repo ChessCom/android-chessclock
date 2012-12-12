@@ -20,8 +20,8 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onPublicChatListReceived(Collection<? extends Chat> chats) {
-		/*String str = "CHAT LISTENER: Public Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
-			for(Chat chat : chats)
+		Log.d(TAG, "CHAT LISTENER: Public Chat List received: listSize=" + chats.size());
+			/*for(Chat chat : chats)
 			{
 			  str += "\n  " + "Chat: roomId=" + chat.getId() + ", name=\"" + chat.getName() + "\"";
 			  if(chat.getId().equals("R1"))
@@ -73,10 +73,12 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onChatExited(Chat chat, ChatMember member) {
+		Log.d(TAG, "CHAT LISTENER: onChatExited: chat=" + chat + ", member=" + member.getUsername());
 	}
 
 	@Override
 	public void onChatDisabled(Chat chat, ChatMember member) {
+		Log.d(TAG, "CHAT LISTENER: onChatDisabled: chat=" + chat + ", member=" + member.getUsername());
 	}
 
 	@Override

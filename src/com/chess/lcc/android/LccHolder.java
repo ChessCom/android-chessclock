@@ -33,7 +33,7 @@ public class LccHolder {
 			"c8b7", "d3e5", "d8c8", "h1c1", "e8g8", "g6d3"
 			/*, "g8g5", "e5g6", "e7f7", "g6e5", "g5e5", "d4e5", "f6e4", "h4h1", "f7f2"*/};
 
-	private static final String TAG = "LccHolder";
+	private static final String TAG = "LCCLOG-LccHolder";
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 	/*public long currentFGTime;
@@ -216,7 +216,7 @@ public class LccHolder {
 	}
 
 	public void addPendingWarning(String warning, String... parameters) {
-		Log.d("LCCLOG", "warning = " + warning);
+		Log.d(TAG, "warning = " + warning);
 		if (warning != null) {
 			String messageI18n = AppUtils.getI18nString(context, warning, parameters);
 			pendingWarnings.add(messageI18n == null ? warning : messageI18n);
