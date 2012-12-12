@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
+import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -88,7 +89,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		}
 		super.onCreate(savedInstanceState);
 
-		if(0 == (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) { // if not debuggable
+		if (!BuildConfig.DEBUG) {
 			try {
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
