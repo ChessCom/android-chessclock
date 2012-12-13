@@ -45,8 +45,9 @@
 	<dimen name="dashboard_padding_top">21dip</dimen>
 	<dimen name="dashboard_padding_bot">68dip</dimen>
 	<dimen name="dashboard_padding_side">21dip</dimen>
+    <dimen name="dashboard_text_size">13sp</dimen>
 
- 	<dimen name="smallLogo_width">218dip</dimen>
+    <dimen name="smallLogo_width">218dip</dimen>
 	<dimen name="smallLogo_height">89dip</dimen>
 	 	
 	<dimen name="pressed_text_size">16sp</dimen>
