@@ -287,7 +287,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 			Log.d(TAG, "sending JSON object = " + formJsonData(loadItem.getRequestParams()));
 
 			httpPost.setEntity(stringEntity);
-			httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
+			if (RestHelper.IS_TEST_SERVER_MODE)
+			  httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 		} catch (UnsupportedEncodingException e) {
 			AppUtils.logD(TAG, e.toString());
 		}

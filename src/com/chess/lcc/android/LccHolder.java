@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -235,14 +236,14 @@ public class LccHolder {
 	/**
 	 * Connect live chess client
 	 */
-	public void performConnect(boolean forceReenterCred) {
+	 public void performConnect(boolean forceReenterCred) {
 
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
 
 		if (!forceReenterCred) {
 
-			if (pass.equals(StaticData.SYMBOL_EMPTY)) {
+			if (pass.equals(StaticData.SYMBOL_EMPTY) || RestHelper.IS_TEST_SERVER_MODE) {
 				String sessionId = AppData.getUserSessionId(context);
 				connectBySessionId(sessionId);
 			} else {
@@ -251,7 +252,7 @@ public class LccHolder {
 
 		} else {
 
-			if (!pass.equals(StaticData.SYMBOL_EMPTY)) {
+			if (!pass.equals(StaticData.SYMBOL_EMPTY) && !RestHelper.IS_TEST_SERVER_MODE) {
 				connectByCreds(userName, pass);
 			} else {
 				liveChessClientEventListener.onSessionExpired(context.getString(R.string.session_expired));
