@@ -4,16 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
 import com.chess.lcc.android.OuterChallengeListener;
@@ -23,13 +19,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
-import com.flurry.android.FlurryAgent;
 import com.inneractive.api.ads.InneractiveAd;
-import com.mopub.mobileads.AdView;
-import com.mopub.mobileads.MoPubInterstitial;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * HomeScreenActivity class
@@ -37,15 +27,16 @@ import java.util.Map;
  * @author alien_roger
  * @created at: 08.02.12 6:29
  */
-public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener,
-		MoPubInterstitial.MoPubInterstitialListener {
+public class HomeScreenActivity extends CoreActivityHome implements View.OnClickListener
+	/*, MoPubInterstitial.MoPubInterstitialListener*/ {
 
 	private static final String TAG = "HomeScreenActivity";
 
 	protected static final String CHALLENGE_TAG = "challenge_tag";
 	protected static final String LOGOUT_TAG = "logout_tag";
 
-	protected MoPubInterstitial moPubInterstitial;
+	private InneractiveAd inneractiveFullscreenAd;
+	//protected MoPubInterstitial moPubInterstitial;
 
 	protected Challenge currentChallenge;
     private LccChallengeTaskRunner challengeTaskRunner;
@@ -147,7 +138,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			fragment.dismiss();
 
 			// todo: refactor with new LCC
-			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+			if (!getLccHolder().isConnected() || getLccHolder().getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
 				getLccHolder().logout();
 				backToHomeActivity();
 				return;
@@ -286,17 +277,19 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 			if (InneractiveAdHelper.IS_SHOW_FULLSCREEN_ADS) {
 
-				// todo: probably cleanUp fullscreen ad in onDestroy
-				InneractiveAd.displayInterstitialAd(this, (LinearLayout) findViewById(R.id.mainView),
-						getString(R.string.inneractiveAdsAppId),
-						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor));
+				InneractiveAdHelper.InneractiveAdListenerImpl adListener =
+						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor);
+				String inneractiveAdsAppId = getString(R.string.inneractiveAdsAppId);
+				inneractiveFullscreenAd = new InneractiveAd(this, inneractiveAdsAppId, InneractiveAd.IaAdType.Interstitial, 0);
+				inneractiveFullscreenAd.setInneractiveListener(adListener);
+				((LinearLayout) findViewById(R.id.mainView)).addView(inneractiveFullscreenAd);
 
 			} else {
-				moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
+				/*moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
 				//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
 				//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
 				moPubInterstitial.setListener(this);
-				moPubInterstitial.load();
+				moPubInterstitial.load();*/
 			}
 
 			/*MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
@@ -305,9 +298,10 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 	}
 
+
 	protected void onDestroy() {
-		if (moPubInterstitial != null) {
-			moPubInterstitial.destroy();
+		if (inneractiveFullscreenAd != null) {
+			inneractiveFullscreenAd.cleanUp();
 		}
 		super.onDestroy();
 	}
@@ -337,7 +331,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		}
 	}
 
-	public void OnInterstitialLoaded() {
+	/*public void OnInterstitialLoaded() {
 		if (moPubInterstitial.isReady()) {
 			Log.d(AdView.MOPUB, "interstitial ad listener: loaded and ready");
 			moPubInterstitial.show();
@@ -366,5 +360,5 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			params.put(AppConstants.RESPONSE, response);
 			FlurryAgent.logEvent(FlurryData.MATOMY_AD_FULLSCREEN_FAILED, params);
 		}
-	}
+	}*/
 }

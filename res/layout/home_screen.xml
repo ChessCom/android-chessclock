@@ -48,5 +48,4 @@
 			cb:buttonText="@string/settings"/>
 	</com.chess.ui.views.DashBoardLayout>
 
-
 </LinearLayout>
