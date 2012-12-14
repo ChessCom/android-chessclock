@@ -117,7 +117,6 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 				button.refreshDrawableState();
 				setPressed(true);
 
-//				performClick();
 				flipIt();
 				break;
 			case MotionEvent.ACTION_UP:
@@ -145,7 +144,6 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 				setPressed(true);
 				refreshDrawableState();
 
-//				performClick();
 				flipIt();
 
 				break;

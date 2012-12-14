@@ -14,20 +14,5 @@
     <string name="gcm_not_registered">GCM not registered</string>
     <string name="timer_">Timer: %s</string>
 
-    <string name="fair_play_policy_link"><a href="http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy">Fair play policy</a></string>
-    <string name="fair_play_policy_url">"http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy"</string>
-    <string name="fair_play_policy">Fair Policy</string>
-
-    <string name="facebook_post_made">Posted to Facebook</string>
-    <string name="facebook_post_fail">Facebook post failed</string>
-    <string name="twitter_post_made">Posted to Twitter</string>
-    <string name="twitter_post_fail">Already added/ Too often</string>
-    <string name="post_on_twitter">Post on Twitter!</string>
-    <string name="post_on_facebook">Post on Facebook!</string>
-    <string name="vs">vs</string>
-    <string name="online_chess">Online Chess</string>
-    <string name="via_chesscom">via @chesscom</string>
-    <string name="share_game">Share Game</string>
-    <string name="chess">Chess</string>
-
+    <string name="no_games">No Games, Yet.</string>
 </resources>

@@ -5,10 +5,12 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 
 import java.util.List;
+import java.util.Scanner;
 
 public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void, Integer> {
 
@@ -92,5 +94,10 @@ public abstract class AbstractUpdateTask<T, Input> extends AsyncTask<Input, Void
 		}else
 			execute(input);
 		return this;
+	}
+
+	protected static String convertStreamToString(java.io.InputStream is) {
+		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+		return scanner.hasNext() ? scanner.next() : "";
 	}
 }

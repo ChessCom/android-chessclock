@@ -85,6 +85,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private CursorContentObserver cursorContentObserver;
 	private TextView emptyView;
 	private ListView listView;
+	private View loadingView;
 
 
 	@Override
@@ -97,19 +98,30 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
 
-		if (AppUtils.isNeedToUpgrade(this)) {
+//		if (AppUtils.isNeedToUpgrade(this)) {
+//
+//			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+//				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+//			} else {
+//				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+//			}
+//		}
 
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
-			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
-			}
-		}
-
-		init();
+//		init();
 
 		AppData.setLiveChessMode(this, false);
+		// init adapters
+		sectionedAdapter = new SectionedAdapter(this);
 
+		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, null);
+		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);
+		finishedGamesCursorAdapter = new OnlineFinishedGamesCursorAdapter(getContext(), null);
+
+		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
+		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
+
+		loadingView = findViewById(R.id.loadingView);
 		emptyView = (TextView) findViewById(R.id.emptyView);
 
 		listView = (ListView) findViewById(R.id.onlineGamesList);
@@ -121,6 +133,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		findViewById(R.id.statsBtn).setOnClickListener(this);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		init();
 	}
 
 	private void init() {
@@ -136,25 +154,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		currentGamesCursorUpdateListener = new CurrentGamesCursorUpdateListener();
 		finishedGamesCursorUpdateListener = new FinishedGamesCursorUpdateListener();
-
-		// init adapters
-//		List<GameListCurrentItem> currentItemList = new ArrayList<GameListCurrentItem>();
-		List<GameListChallengeItem> challengesItemList = new ArrayList<GameListChallengeItem>();
-//		List<GameListFinishedItem> finishedItemList = new ArrayList<GameListFinishedItem>();
-		sectionedAdapter = new SectionedAdapter(this);
-
-//		currentGamesAdapter = new OnlineCurrentGamesAdapter(this, currentItemList);
-		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, challengesItemList);
-//		finishedGamesAdapter = new OnlineFinishedGamesAdapter(this, finishedItemList);
-
-		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);
-		finishedGamesCursorAdapter = new OnlineFinishedGamesCursorAdapter(getContext(), null);
-
-		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
-//		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-//		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		showActionRefresh = true;
 		showActionNewGame = true;
@@ -173,8 +172,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (AppUtils.isNetworkAvailable(this)) {
 			updateVacationStatus();
 			updateStartingType(GameOnlineItem.CURRENT_TYPE);
-		} /*else {
-		}*/
+		} else {
+			emptyView.setText(R.string.no_network);
+			showEmptyView(true);
+		}
 		new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
 		new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
 	}
@@ -214,15 +215,19 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
+
+		@Override
 		public void updateData(String returnedObj) {
 
 			switch (currentListType) {
 				case GameOnlineItem.CURRENT_TYPE:
 					List<GameListCurrentItem> listCurrentItems = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-//					currentGamesAdapter.setItemsList(listCurrentItems);
 
 					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
-					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 					break;
 				case GameOnlineItem.CHALLENGES_TYPE:
 					challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
@@ -230,7 +235,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					break;
 				case GameOnlineItem.FINISHED_TYPE:
 					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
-//					finishedGamesAdapter.setItemsList(finishedItems);
 
 					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
 					break;
@@ -271,7 +275,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(GameListCurrentItem returnedObj) {
-//			new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
+			updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
 		}
 	}
 
@@ -292,6 +296,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
+
+		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 			returnedObj.registerContentObserver(cursorContentObserver);
@@ -303,6 +313,41 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
+			if (resultCode == StaticData.EMPTY_DATA) {
+				emptyView.setText(R.string.no_games);
+			} else if (resultCode == StaticData.UNKNOWN_ERROR){
+				emptyView.setText(R.string.no_network);
+			}
+			showEmptyView(true);
+		}
+	}
+
+	private class FinishedGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+		public FinishedGamesCursorUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(Cursor returnedObj) {
+			super.updateData(returnedObj);
+			returnedObj.registerContentObserver(cursorContentObserver);
+			finishedGamesCursorAdapter.changeCursor(returnedObj);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.EMPTY_DATA) {
+				emptyView.setText(R.string.no_games);
+			} else if (resultCode == StaticData.UNKNOWN_ERROR){
+				emptyView.setText(R.string.no_network);
+			}
 			showEmptyView(true);
 		}
 	}
@@ -316,34 +361,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void onChange(boolean selfChange) {
 			super.onChange(selfChange);
-			showToast("cursor changed");
+//			showToast("cursor changed");
 			Log.d("TEST", "Cursor changed, self = " + selfChange);
-			currentGamesCursorAdapter.notifyDataSetChanged();
-			finishedGamesCursorAdapter.notifyDataSetChanged();
+//			currentGamesCursorAdapter.notifyDataSetChanged();
+//			finishedGamesCursorAdapter.notifyDataSetChanged();
 		}
 
 		@Override
 		public boolean deliverSelfNotifications() {
 			return false;    //To change body of overridden methods use File | Settings | File Templates.
-		}
-	}
-
-	private class FinishedGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
-		public FinishedGamesCursorUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-			returnedObj.registerContentObserver(cursorContentObserver);
-			finishedGamesCursorAdapter.changeCursor(returnedObj);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			showEmptyView(true);
 		}
 	}
 
@@ -549,7 +575,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				return;
 			}
 
-//			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			gameListCurrentItem =  DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
 
@@ -575,7 +600,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
 
-//			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
@@ -592,7 +616,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		int section = sectionedAdapter.getCurrentSection(pos);
 
 		if (section == CURRENT_GAMES_SECTION){
-//			gameListCurrentItem = (GameListCurrentItem) adapterView.getItemAtPosition(pos);
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			gameListCurrentItem =  DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
 
@@ -607,7 +630,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((GameListChallengeItem) adapterView.getItemAtPosition(pos));
 		} else {
-//			GameListFinishedItem finishedItem = (GameListFinishedItem) adapterView.getItemAtPosition(pos);
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
@@ -703,9 +725,23 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (show) {
 			emptyView.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
+			loadingView.setVisibility(View.GONE);
 		} else {
 			emptyView.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void showLoadingView(boolean show){
+		if (show) {
+			emptyView.setVisibility(View.GONE);
+			if (sectionedAdapter.getCount() == 0) {
+				listView.setVisibility(View.GONE);
+				loadingView.setVisibility(View.VISIBLE);
+			}
+		} else {
+			listView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
 		}
 	}
 

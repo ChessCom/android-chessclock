@@ -8,6 +8,7 @@ package com.chess.backend.statics;
  */
 public class StaticData {
 	/*Result constatnts*/
+	public static final int INTERNAL_ERROR = -5;
 	public static final int NO_NETWORK = -4;
 	public static final int VALUE_NOT_EXIST = -3;
 	public static final int TASK_CANCELED = -2;

@@ -108,9 +108,7 @@ public class DBDataManager {
 		return selection.toString();
 	}
 
-	public static void updateOnlineGame(Context context, GameOnlineItem currentGame) {
-		String userName = AppData.getUserName(context);
-		ContentResolver contentResolver = context.getContentResolver();
+	public static void updateOnlineGame(ContentResolver contentResolver, GameOnlineItem currentGame, String userName) {
 
         final String[] arguments2 = sArguments2;
 		arguments2[0] = userName;

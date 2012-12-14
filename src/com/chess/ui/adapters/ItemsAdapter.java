@@ -30,7 +30,7 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return itemsList.size();
+		return itemsList == null ? 0 : itemsList.size();
 	}
 
 	@Override
@@ -50,9 +50,9 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		if (convertView == null)
+		if (convertView == null) {
 			convertView = createView(parent);
-		// if (itemsList != null)
+		}
 		bindView(itemsList.get(pos), pos, convertView);
 		return convertView;
 	}

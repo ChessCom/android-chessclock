@@ -65,6 +65,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		widgetsInit();
 
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
 		vacationStatusUpdateListener = new VacationStatusUpdateListener();
 		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
 	}
@@ -116,6 +121,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		findViewById(R.id.prefInvite).setOnClickListener(this);
 		findViewById(R.id.prefContactUs).setOnClickListener(this);
+		String userName = AppData.getUserName(this);
 
 		showOnlineSubmitChckBx = (CheckBox) findViewById(R.id.showOnlineSubmitChckBx);
 		showLiveSubmitChckBx = (CheckBox) findViewById(R.id.showLiveSubmitChckBx);
@@ -123,12 +129,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		minRatingSpinner = (Spinner) findViewById(R.id.minRatingSpinner);
 		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
-		minRatingSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MIN_RATING, 0));
+		minRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MIN_RATING, 0));
 		minRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
 
 		maxRatingSpinner = (Spinner) findViewById(R.id.maxRatingSpinner);
 		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
-		maxRatingSpinner.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MAX_RATING, 0));
+		maxRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MAX_RATING, 0));
 		maxRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
 
 		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
