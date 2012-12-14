@@ -115,13 +115,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
 		if (inneractiveBannerAd != null) {
 			inneractiveBannerAd.cleanUp();
 		}
 		if (inneractiveRectangleAd != null) {
 			inneractiveRectangleAd.cleanUp();
 		}
+		super.onDestroy();
 	}
 
 	@Override

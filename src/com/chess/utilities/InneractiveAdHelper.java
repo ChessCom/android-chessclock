@@ -61,7 +61,6 @@ public class InneractiveAdHelper {
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 		preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
 		preferencesEditor.commit();
-
 	}
 
 	public static class InneractiveAdListenerImpl implements com.inneractive.api.ads.InneractiveAdListener {
