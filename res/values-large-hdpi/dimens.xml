@@ -3,7 +3,7 @@
 	<dimen name="dashboard_padding_top">80dip</dimen>
 	<dimen name="dashboard_padding_bot">100dip</dimen>
 	<dimen name="dashboard_padding_side">60dip</dimen>
-    <dimen name="dashboard_text_size">20sp</dimen>
+    <dimen name="dashboard_text_size">18sp</dimen>
 
     <!--SigIn-->
 	<dimen name="signin_scr_top_padding">20dip</dimen>
