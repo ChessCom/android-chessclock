@@ -27,9 +27,7 @@ import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.InneractiveAdHelper;
-import com.chess.utilities.MopubHelper;
 import com.inneractive.api.ads.InneractiveAd;
-import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
-	private static final int UPDATE_DELAY = 120000;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
@@ -148,8 +145,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		handler.postDelayed(updateListOrder, UPDATE_DELAY);
-
 		updateVacationStatus();
 		updateStartingType(GameOnlineItem.CURRENT_TYPE);
 	}
@@ -159,20 +154,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onPause();
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
-		handler.removeCallbacks(updateListOrder);
 
 		cleanTaskPool();
 	}
-
-	private Runnable updateListOrder = new Runnable() {
-		@Override
-		public void run() {
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
-
-			handler.removeCallbacks(this);
-			handler.postDelayed(this, UPDATE_DELAY);
-		}
-	};
 
 	private class ListUpdateListener extends ChessUpdateListener {
 		private int currentListType;

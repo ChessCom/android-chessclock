@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemClickListener {
 
-	private static final int UPDATE_DELAY = 120000;
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
 	private ListView openChallengesListView;
@@ -87,20 +86,11 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		super.onResume();
 
 		updateList();
-		handler.postDelayed(updateListOrder, UPDATE_DELAY);
 	}
 
 	private void updateList(){
 		new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
 	}
-
-	private Runnable updateListOrder = new Runnable() {
-		@Override
-		public void run() {
-			updateList();
-			handler.postDelayed(this, UPDATE_DELAY);
-		}
-	};
 
 	private class ListUpdateListener extends ChessUpdateListener {
 
@@ -111,19 +101,15 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		@Override
 		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				gameListItems.clear();
-				gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
+			gameListItems.clear();
+			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
 
-				if (gamesAdapter == null) {
-					gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);
-					openChallengesListView.setAdapter(gamesAdapter);
-				}
+			if (gamesAdapter == null) {
+				gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);
+				openChallengesListView.setAdapter(gamesAdapter);
+			}
 
-				gamesAdapter.notifyDataSetChanged();
-//			} else  if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
-//			}
+			gamesAdapter.notifyDataSetChanged();
 		}
 	}
 
