@@ -28,7 +28,7 @@ public class SaveEchessFinishedGamesListTask extends AbstractUpdateTask<GameList
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		String userName = AppData.getUserName(taskFace.getMeContext());
+		String userName = AppData.getUserName(getTaskFace().getMeContext());
 		for (GameListFinishedItem finishedItem : itemList) {
 
 			arguments[0] = String.valueOf(userName);

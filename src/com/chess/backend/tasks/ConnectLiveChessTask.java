@@ -66,7 +66,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	@Override
 	protected Integer doTheTask(Void... params) {
-        Context context = taskFace.getMeContext();
+        Context context = getTaskFace().getMeContext();
 
 		try {
 			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;

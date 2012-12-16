@@ -55,6 +55,8 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private List<SelectionItem> piecesList;
 	private int localeSelectedId;
 	private Spinner langSpinner;
+	private Spinner boardsSpinner;
+	private Spinner piecesSpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		FlurryAgent.logEvent(FlurryData.SETTINGS_ACCESSED);
 
 		widgetsInit();
-
 	}
 
 	@Override
@@ -77,17 +78,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String userName = AppData.getUserName(this); 
-		afterMyMoveSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
-		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 0));
-
-		showLiveSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
-		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
-
-		enableSounds.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
-		enableNotifications.setChecked(preferences.getBoolean(userName + AppConstants.PREF_NOTIFICATION, true));
-		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
-		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
+		setParameters();
 
 		if (!AppData.isGuest(this) && !AppData.isLiveChess(this)) {
 			updateVacationStatus();
@@ -113,35 +104,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 	}
 
-	protected void widgetsInit() {
-		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
-		preferencesUpgrade.setOnClickListener(this);
-
-		preferencesUpgrade.setVisibility(AppUtils.isNeedToUpgrade(this) ? View.VISIBLE : View.GONE);
-
-		findViewById(R.id.prefInvite).setOnClickListener(this);
-		findViewById(R.id.prefContactUs).setOnClickListener(this);
-		String userName = AppData.getUserName(this);
-
-		showOnlineSubmitChckBx = (CheckBox) findViewById(R.id.showOnlineSubmitChckBx);
-		showLiveSubmitChckBx = (CheckBox) findViewById(R.id.showLiveSubmitChckBx);
-		vacationCheckBox = (CheckBox) findViewById(R.id.prefVacation);
-
-		minRatingSpinner = (Spinner) findViewById(R.id.minRatingSpinner);
-		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
-		minRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MIN_RATING, 0));
-		minRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
-
-		maxRatingSpinner = (Spinner) findViewById(R.id.maxRatingSpinner);
-		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
-		maxRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MAX_RATING, 0));
-		maxRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
-
-		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
-		enableNotifications = (CheckBox) findViewById(R.id.notificationsChckBx);
-		showCoordinates = (CheckBox) findViewById(R.id.prefCoords);
-		showHighlights = (CheckBox) findViewById(R.id.prefHighlights);
-		langSpinner = (Spinner) findViewById(R.id.langSpinner);
+	private void setParameters(){
 
 		Button logoutBtn = (Button) findViewById(R.id.prefLogout);
 		logoutBtn.setOnClickListener(this);
@@ -154,23 +117,34 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			logoutBtn.setText(R.string.logout);
 		}
 
-		Spinner langSpinner = (Spinner) findViewById(R.id.langSpinner);
-		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
-		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
+		String userName = AppData.getUserName(this);
+		afterMyMoveSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
+		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+
+		showLiveSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
+		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
+
+		enableSounds.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
+		enableNotifications.setChecked(preferences.getBoolean(userName + AppConstants.PREF_NOTIFICATION, true));
+		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
+		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
+
+
+		minRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
+		minRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MIN_RATING, 0));
+
+		maxRatingSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
+		maxRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		langSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.languages)));
-		langSpinner.setOnItemSelectedListener(langSelectedListener);
 		langSpinner.setSelection(AppData.getLanguageCode(this));
 
-		afterMyMoveSpinner = (Spinner) findViewById(R.id.afterMoveSpinner);
 		afterMyMoveSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.AIM)));
-		afterMyMoveSpinner.setOnItemSelectedListener(afterMyMoveSelectedListener);
 		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
 
-		strengthSpinner = (Spinner) findViewById(R.id.prefStrength);
 		strengthSpinner.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
-		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
 
+		// Piece and board bitmaps list init
 		piecesList = new ArrayList<SelectionItem>(9);
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
 		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
@@ -195,16 +169,57 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		//spinners
 		int boardsPosition = preferences.getInt(AppData.getUserName(this)+ AppConstants.PREF_BOARD_TYPE, 0);
+		boardsSpinner.setSelection(boardsPosition);
 		boardsList.get(boardsPosition).setChecked(true);
 		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
-		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
 
-		boardsSpinner.setSelection(boardsPosition);
-
-		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
-		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
 		int piecesPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
+		piecesList.get(piecesPosition).setChecked(true);
+		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
+	}
+
+
+	private void widgetsInit() {
+		findViewById(R.id.prefInvite).setOnClickListener(this);
+		findViewById(R.id.prefContactUs).setOnClickListener(this);
+
+		showOnlineSubmitChckBx = (CheckBox) findViewById(R.id.showOnlineSubmitChckBx);
+		showLiveSubmitChckBx = (CheckBox) findViewById(R.id.showLiveSubmitChckBx);
+		vacationCheckBox = (CheckBox) findViewById(R.id.prefVacation);
+
+		minRatingSpinner = (Spinner) findViewById(R.id.minRatingSpinner);
+		minRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
+
+		maxRatingSpinner = (Spinner) findViewById(R.id.maxRatingSpinner);
+		maxRatingSpinner.setOnItemSelectedListener(ratingSelectedListener);
+
+		enableSounds = (CheckBox) findViewById(R.id.enableSoundsChkBx);
+		enableNotifications = (CheckBox) findViewById(R.id.notificationsChckBx);
+		showCoordinates = (CheckBox) findViewById(R.id.prefCoords);
+		showHighlights = (CheckBox) findViewById(R.id.prefHighlights);
+
+
+		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
+		preferencesUpgrade.setOnClickListener(this);
+
+		if (AppUtils.isNeedToUpgrade(this)) {
+			preferencesUpgrade.setVisibility(View.VISIBLE);
+		} else {
+			preferencesUpgrade.setVisibility(View.GONE);
+		}
+
+		langSpinner = (Spinner) findViewById(R.id.langSpinner);
+		boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
+		piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
+		afterMyMoveSpinner = (Spinner) findViewById(R.id.afterMoveSpinner);
+		strengthSpinner = (Spinner) findViewById(R.id.prefStrength);
+
+		langSpinner.setOnItemSelectedListener(langSelectedListener);
+		afterMyMoveSpinner.setOnItemSelectedListener(afterMyMoveSelectedListener);
+		strengthSpinner.setOnItemSelectedListener(strengthSelectedListener);
+		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
+		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
 
 		//checkboxes
 		enableSounds.setOnCheckedChangeListener(this);
@@ -220,9 +235,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		int id = view.getId();
 		if (id == R.id.prefLogout) {
 			if (!AppData.isGuest(this)) {
-				if (isLCSBound) {
-					liveService.logout();
-				}
+				getLccHolder().logout();
 
 				// un-register from GCM
 				unregisterGcmService();
@@ -465,12 +478,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	}
 
 	private class LogoutRequestListener extends BaseRequestListener {
-		@Override
 		public void onComplete(String response, final Object state) {
 			// callback should be run in the original thread,
 			// not the background thread
 			handler.post(new Runnable() {
-				@Override
 				public void run() {
 					SessionEvents.onLogoutFinish();
 				}

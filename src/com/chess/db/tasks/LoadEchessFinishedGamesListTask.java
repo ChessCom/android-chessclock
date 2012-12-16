@@ -24,7 +24,7 @@ public class LoadEchessFinishedGamesListTask extends AbstractUpdateTask<Cursor, 
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		String userName = AppData.getUserName(taskFace.getMeContext());
+		String userName = AppData.getUserName(getTaskFace().getMeContext());
 
 		Uri uri = DBConstants.ECHESS_FINISHED_LIST_GAMES_CONTENT_URI;
 		arguments[0] = userName;

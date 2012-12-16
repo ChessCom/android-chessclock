@@ -14,6 +14,7 @@
 		android:paddingTop="@dimen/default_scr_top_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
+        android:animateLayoutChanges="true"
 		>
 
 		<LinearLayout
@@ -101,7 +102,6 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearDescription"
             android:weightSum="1"
-            android:animateLayoutChanges="true"
 			>
 
 			<com.chess.RoboTextView
@@ -120,14 +120,6 @@
 				android:entries="@array/strength"
                 android:layout_weight="1"
 				/>
-
-            <com.chess.RoboButton
-                android:id="@+id/fakeBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="fake"
-                android:layout_weight="1"
-                />
 
 		</LinearLayout>
 

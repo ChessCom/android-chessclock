@@ -90,6 +90,10 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	}
 
 	private void updateVideoItem() {
+		if (isRestarted) {
+			return;
+		}
+
 		playBtn.setEnabled(false);
 
 		LoadItem loadItem = new LoadItem();

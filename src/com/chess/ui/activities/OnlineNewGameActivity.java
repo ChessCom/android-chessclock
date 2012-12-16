@@ -67,9 +67,8 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
+	protected void onStart() {
+		super.onStart();
 		updateList();
 	}
 
@@ -184,11 +183,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			if(isPaused)
 				return;
 
-//			if (returnedObj.contains(RestHelper.R_SUCCESS)) {
-				showToast(successToastMsgId);
-//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showSinglePopupDialog(R.string.error, returnedObj.substring(RestHelper.R_ERROR.length()));
-//			}
+			showToast(successToastMsgId);
 		}
 	}
 }

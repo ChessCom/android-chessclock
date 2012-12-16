@@ -56,7 +56,7 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		String userName = AppData.getUserName(taskFace.getMeContext());
+		String userName = AppData.getUserName(getTaskFace().getMeContext());
 		for (GameListCurrentItem currentItem : itemList) {
 
 			arguments[0] = String.valueOf(userName);
@@ -84,7 +84,7 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
 
 	private void updateOnlineGame(long gameId, String userName) {
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(taskFace.getMeContext()));
+		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getTaskFace().getMeContext()));
 		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 
 		GameOnlineItem currentGame = getData(RestHelper.formCustomRequest(loadItem));

@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +34,7 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	private int mMaxChildWidth = 0;
 	private int mMaxChildHeight = 0;
 	private float density;
+	private ObjectAnimator flipFirstHalf;
 
 	public CenteredButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -94,6 +94,8 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 		button.setClickable(true);
 		button.setOnTouchListener(this);
 		setClickable(true);
+
+		initFlipAnimation();
 	}
 
 
@@ -219,10 +221,10 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	private Interpolator decelerator = new DecelerateInterpolator();
 	private static final int DURATION = 100;
 
-	private void flipIt() {
+	private void initFlipAnimation() {
 		final View animationView = this;
 
-		Animator flipFirstHalf = ObjectAnimator.ofFloat(animationView,"rotationY", 0f, 90f);
+		flipFirstHalf = ObjectAnimator.ofFloat(animationView,"rotationY", 0f, 90f);
 		flipFirstHalf.setDuration(DURATION);
 		flipFirstHalf.setInterpolator(accelerator);
 
@@ -243,6 +245,12 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 				performClick();
 			}
 		});
+	}
+
+
+	private void flipIt() {
+//		performClick();
+
 		flipFirstHalf.start();
 	}
 

@@ -69,6 +69,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	protected Handler handler;
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
+	protected boolean isRestarted;
 
 
 	@Override
@@ -106,20 +107,22 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onRestart() {
+		super.onRestart();
 
-		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
-			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			preferencesEditor.commit();
-		}
+		isRestarted = true;
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
+
+		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
+			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
+			preferencesEditor.commit();
+		}
 	}
 
 	@Override

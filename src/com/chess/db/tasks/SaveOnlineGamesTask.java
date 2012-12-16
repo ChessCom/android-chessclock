@@ -28,7 +28,7 @@ public class SaveOnlineGamesTask extends AbstractUpdateTask<GameOnlineItem, Long
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		String userName = AppData.getUserName(taskFace.getMeContext());
+		String userName = AppData.getUserName(getTaskFace().getMeContext());
 		for (GameOnlineItem onlineItem : onlineItems) {
 
 

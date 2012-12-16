@@ -69,6 +69,10 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 
 
 	private void updateList() {
+		if (isRestarted) {
+			return;
+		}
+
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));

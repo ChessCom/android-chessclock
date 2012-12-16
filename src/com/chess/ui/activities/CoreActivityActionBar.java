@@ -85,16 +85,16 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		backgroundChessDrawable.updateConfig();
-		super.onConfigurationChanged(newConfig);
+	protected void onStart() {
+		super.onStart();
+		adjustActionBar();
+
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
-		adjustActionBar();
+	public void onConfigurationChanged(Configuration newConfig) {
+		backgroundChessDrawable.updateConfig();
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override

@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.MenuItem;
@@ -53,7 +51,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
-	private static final int UPDATE_DELAY = 120000;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
@@ -61,27 +58,25 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	private int successToastMsgId;
 
-	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
-	private AcceptDrawUpdateListener acceptDrawUpdateListener;
+	private OnlineUpdateListener challengeInviteUpdateListener;
+	private OnlineUpdateListener acceptDrawUpdateListener;
 	private LoadItem selectedLoadItem;
-//	private OnlineCurrentGamesAdapter currentGamesAdapter;
 	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter; // test
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
-//	private OnlineFinishedGamesAdapter finishedGamesAdapter;
 	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private SectionedAdapter sectionedAdapter;
 	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
 	private GameListCurrentItem gameListCurrentItem;
 	private GameListChallengeItem gameListChallengeItem;
-	private VacationStatusUpdateListener vacationStatusUpdateListener;
+	private OnlineUpdateListener vacationStatusUpdateListener;
 	private boolean onVacation;
-	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
+	private OnlineUpdateListener vacationLeaveStatusUpdateListener;
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
-	private CurrentGamesCursorUpdateListener currentGamesCursorUpdateListener;
-	private FinishedGamesCursorUpdateListener finishedGamesCursorUpdateListener;
+	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
+	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	private CursorContentObserver cursorContentObserver;
 	private TextView emptyView;
 	private ListView listView;
@@ -98,16 +93,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
 
-//		if (AppUtils.isNeedToUpgrade(this)) {
-//
-//			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-//				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
-//			} else {
-//				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
-//			}
-//		}
+		if (AppUtils.isNeedToUpgrade(this)) {
 
-//		init();
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+			} else {
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			}
+		}
 
 		AppData.setLiveChessMode(this, false);
 		// init adapters
@@ -137,6 +130,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	protected void onStart() {
+		showActionRefresh = true;
+		showActionNewGame = true;
+
 		super.onStart();
 		init();
 	}
@@ -146,17 +142,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		cursorContentObserver = new CursorContentObserver();
 
-		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
-		acceptDrawUpdateListener = new AcceptDrawUpdateListener();
-		vacationStatusUpdateListener = new VacationStatusUpdateListener();
-		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
+		challengeInviteUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.INVITE);
+		acceptDrawUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.DRAW);
+		vacationStatusUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.VACATION);
+		vacationLeaveStatusUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.VACATION_LEAVE);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
-		currentGamesCursorUpdateListener = new CurrentGamesCursorUpdateListener();
-		finishedGamesCursorUpdateListener = new FinishedGamesCursorUpdateListener();
+		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT);
+		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
-		showActionRefresh = true;
-		showActionNewGame = true;
 	}
 
 	@Override
@@ -167,8 +161,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		handler.postDelayed(updateListOrder, UPDATE_DELAY);
-
 		if (AppUtils.isNetworkAvailable(this)) {
 			updateVacationStatus();
 			updateStartingType(GameOnlineItem.CURRENT_TYPE);
@@ -176,8 +168,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			emptyView.setText(R.string.no_network);
 			showEmptyView(true);
 		}
-		new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
-		new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
+
+		if (!isRestarted) {
+			new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
+			new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
+		}
 	}
 
 	@Override
@@ -185,87 +180,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		super.onPause();
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
-		handler.removeCallbacks(updateListOrder);
-
-		cleanTaskPool();
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		cleanAdapters();
+	protected void onStop() {
+		super.onStop();
+
+		cleanTaskPool();
+		cleanResources();
 		taskPool = null;
-	}
-
-	private Runnable updateListOrder = new Runnable() {
-		@Override
-		public void run() {
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
-
-			handler.removeCallbacks(this);
-			handler.postDelayed(this, UPDATE_DELAY);
-		}
-	};
-
-	private class ListUpdateListener extends ChessUpdateListener {
-		private int currentListType;
-
-		public ListUpdateListener(int currentListType) {
-			this.currentListType = currentListType;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-
-			switch (currentListType) {
-				case GameOnlineItem.CURRENT_TYPE:
-					List<GameListCurrentItem> listCurrentItems = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-
-					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
-					break;
-				case GameOnlineItem.CHALLENGES_TYPE:
-					challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
-					updateStartingType(GameOnlineItem.FINISHED_TYPE);
-					break;
-				case GameOnlineItem.FINISHED_TYPE:
-					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
-
-					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
-					break;
-				default:
-					break;
-			}
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			// redundant check? we already clean the tasks pool in onPause, or...?
-			// No, cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
-			// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
-			if (isPaused)
-				return;
-
-			if(resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
-				showToast(R.string.no_challenges_during_vacation);
-			} else {
-				showSinglePopupDialog(R.string.error, resultMessage);
-			}
-
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
-				new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
-				new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
-			}
-		}
 	}
 
 	private class SaveCurrentGamesListUpdateListener extends  ActionBarUpdateListener<GameListCurrentItem> {
@@ -286,13 +209,19 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(GameListFinishedItem returnedObj) {
-//			new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
+//			new LoadEchessFinishedGamesListTask(gamesCursorUpdateListener).executeTask();
 		}
 	}
 
-	private class CurrentGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
-		public CurrentGamesCursorUpdateListener() {
+	private class GamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+		public static final int CURRENT = 0;
+		public static final int FINISHED = 1;
+
+		private int gameType;
+
+		public GamesCursorUpdateListener(int gameType) {
 			super(getInstance());
+			this.gameType = gameType;
 		}
 
 		@Override
@@ -305,9 +234,17 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 			returnedObj.registerContentObserver(cursorContentObserver);
-			currentGamesCursorAdapter.changeCursor(returnedObj);
+			switch (gameType){
+				case CURRENT:
+					currentGamesCursorAdapter.changeCursor(returnedObj);
 
-			updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+
+					break;
+				case FINISHED:
+					finishedGamesCursorAdapter.changeCursor(returnedObj);
+					break;
+			}
 		}
 
 		@Override
@@ -322,37 +259,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-	private class FinishedGamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
-		public FinishedGamesCursorUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-			returnedObj.registerContentObserver(cursorContentObserver);
-			finishedGamesCursorAdapter.changeCursor(returnedObj);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.no_games);
-			} else if (resultCode == StaticData.UNKNOWN_ERROR){
-				emptyView.setText(R.string.no_network);
-			}
-			showEmptyView(true);
-		}
-	}
-
-	private class CursorContentObserver extends ContentObserver {
+	private class CursorContentObserver extends ContentObserver {// TODO move to activity implementation
 
 		public CursorContentObserver() {
 			super(handler);
@@ -369,30 +276,89 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public boolean deliverSelfNotifications() {
-			return false;    //To change body of overridden methods use File | Settings | File Templates.
+			return false;
 		}
 	}
 
-	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
+	private class OnlineUpdateListener extends ChessUpdateListener {
+		public static final int INVITE = 3;
+		public static final int DRAW = 4;
+		public static final int VACATION = 5;
+		public static final int VACATION_LEAVE = 6;
+
+		private int itemCode;
+		public OnlineUpdateListener(int itemCode){
+			this.itemCode = itemCode;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
 
 		@Override
 		public void updateData(String returnedObj) {
+			if (isPaused || isFinishing()) {
+				return;
+			}
+
+			switch (itemCode) {
+				case GameOnlineItem.CURRENT_TYPE:
+					List<GameListCurrentItem> listCurrentItems = ChessComApiParser.getCurrentOnlineGames(returnedObj);
+
+					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
+					break;
+				case GameOnlineItem.CHALLENGES_TYPE:
+					challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
+					updateStartingType(GameOnlineItem.FINISHED_TYPE);
+					break;
+				case GameOnlineItem.FINISHED_TYPE:
+					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
+
+					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
+					break;
+				case INVITE:
+					showToast(successToastMsgId);
+					updateStartingType(GameOnlineItem.CURRENT_TYPE);
+					break;
+				case DRAW:
+					updateStartingType(GameOnlineItem.CURRENT_TYPE);
+					break;
+				case VACATION:
+					onVacation = returnedObj.contains(RestHelper.V_ONE);
+					break;
+				case VACATION_LEAVE:
+					onVacation = false;
+					updateStartingType(GameOnlineItem.CURRENT_TYPE);
+					break;
+			}
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			// redundant check? we already clean the tasks pool in onPause, or...?
+			// No, cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
+			// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
 			if (isPaused)
 				return;
 
-			showToast(successToastMsgId);
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
+			if(resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
+				showToast(R.string.no_challenges_during_vacation);
+			} else {
+				showSinglePopupDialog(R.string.error, resultMessage);
+			}
 		}
-	}
-
-	private class AcceptDrawUpdateListener extends ChessUpdateListener {
 
 		@Override
-		public void updateData(String returnedObj) {
-			if (isFinishing())
-				return;
-
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
+		public void errorHandle(Integer resultCode) {
+			if (itemCode == GameOnlineItem.CURRENT_TYPE ||
+					itemCode == GameOnlineItem.CHALLENGES_TYPE || itemCode == GameOnlineItem.FINISHED_TYPE) {
+				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
+					new LoadEchessCurrentGamesListTask(currentGamesCursorUpdateListener).executeTask();
+					new LoadEchessFinishedGamesListTask(finishedGamesCursorUpdateListener).executeTask();
+				}
+			}
 		}
 	}
 
@@ -402,14 +368,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 
 		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
-	}
-
-	private class VacationStatusUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			onVacation = returnedObj.contains("1");
-		}
 	}
 
 	@Override
@@ -493,15 +451,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
 		}
 		super.onNegativeBtnClick(fragment);
-	}
-
-	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			onVacation = false;
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
-		}
 	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
@@ -678,17 +627,17 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, userToken);
 			selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
-			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
+			taskPool.add(new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem));
 		} else if (pos == GameOnlineItem.CHALLENGES_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, userToken);
 
-			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
+			taskPool.add(new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem));
 		} else if (pos == GameOnlineItem.FINISHED_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, userToken);
 
-			taskPool.add(new GetStringObjTask(new ListUpdateListener(pos)).executeTask(selectedLoadItem));
+			taskPool.add(new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem));
 		}
 	}
 
@@ -714,11 +663,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-	private void cleanAdapters() {
+	private void cleanResources() {
+		challengeInviteUpdateListener = null;
+		acceptDrawUpdateListener = null;
+		vacationStatusUpdateListener = null;
+		vacationLeaveStatusUpdateListener = null;
+		saveCurrentGamesListUpdateListener = null;
+		saveFinishedGamesListUpdateListener = null;
 		currentGamesCursorUpdateListener = null;
 		finishedGamesCursorUpdateListener = null;
-		challengesGamesAdapter = null;
-		sectionedAdapter = null;
 	}
 
 	private void showEmptyView(boolean show){

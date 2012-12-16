@@ -10,7 +10,7 @@ import java.util.List;
  * @author alien_roger
  * @version 1.0.1
  * @created 07.11.2011
- * @modified 07.11.2011
+ * @modified 16.12.2012
  */
 public interface TaskUpdateInterface<T> {
 	boolean useList();
@@ -26,4 +26,6 @@ public interface TaskUpdateInterface<T> {
 	void errorHandle(String resultMessage);
 
 	Context getMeContext();
+
+	void releaseContext();
 }

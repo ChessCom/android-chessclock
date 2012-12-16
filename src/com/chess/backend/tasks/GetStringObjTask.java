@@ -84,19 +84,26 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	protected void onPostExecute(Integer result) {
 		blockScreenRotation(false);
 
-		if(isCancelled()) {
+		if(isCancelled() /*|| getTaskFace() == null || getTaskFace().getMeContext() == null*/) {
 			return;
 		}
-		taskFace.showProgress(false);
-		if (result == StaticData.RESULT_OK) {
-			if (item.contains(RestHelper.R_SUCCESS)) {
-				taskFace.updateData(item);
-			} else if (item.contains(RestHelper.R_ERROR)) {
-				taskFace.errorHandle(item.substring(RestHelper.R_ERROR.length()));
+		try{
+			getTaskFace().showProgress(false);
+
+			if (result == StaticData.RESULT_OK) {
+				if (item.contains(RestHelper.R_SUCCESS)) {
+					getTaskFace().updateData(item);
+				} else if (item.contains(RestHelper.R_ERROR)) {
+					getTaskFace().errorHandle(item.substring(RestHelper.R_ERROR.length()));
+				}
+
+			} else {
+				getTaskFace().errorHandle(result);
 			}
 
-		} else {
-			taskFace.errorHandle(result);
+			releaseTaskFace();
+		} catch (IllegalStateException ex) {
+			Log.d(TAG, "getTaskFace() at onPostExecute fails, due to killed state" + ex.toString());
 		}
 	}
 

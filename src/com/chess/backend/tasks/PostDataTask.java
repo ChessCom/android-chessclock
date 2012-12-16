@@ -92,16 +92,16 @@ public class PostDataTask extends AbstractUpdateTask<String, LoadItem> {
 		if(isCancelled()) {
 			return;
 		}
-		taskFace.showProgress(false);
+		getTaskFace().showProgress(false);
 		if (result == StaticData.RESULT_OK) {
 			if (item.contains(RestHelper.R_SUCCESS)) {
-				taskFace.updateData(item);
+				getTaskFace().updateData(item);
 			} else if (item.contains(RestHelper.R_ERROR)) {
-				taskFace.errorHandle(item.substring(RestHelper.R_ERROR.length()));
+				getTaskFace().errorHandle(item.substring(RestHelper.R_ERROR.length()));
 			}
 
 		} else {
-			taskFace.errorHandle(result);
+			getTaskFace().errorHandle(result);
 		}
 	}
 
