@@ -33,7 +33,9 @@ public class InneractiveAdHelper {
 
 		if (adsShowCounter != AppConstants.UPGRADE_SHOW_COUNTER) {
 			upgradeBtn.setVisibility(View.GONE);
-			bannerAd.setVisibility(View.VISIBLE);
+			if (bannerAd.getVisibility() != View.VISIBLE) {
+				bannerAd.setVisibility(View.VISIBLE);
+			}
 			// todo: initialize inneractiveAd object here, if necessary
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
 			preferencesEditor.commit();
@@ -56,7 +58,9 @@ public class InneractiveAdHelper {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		rectangleAd.setVisibility(View.VISIBLE);
+		if (rectangleAd.getVisibility() != View.VISIBLE) {
+			rectangleAd.setVisibility(View.VISIBLE);
+		}
 
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 		preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);

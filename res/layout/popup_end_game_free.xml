@@ -108,8 +108,7 @@
 			inneractive:refreshInterval="60"
 			inneractive:adAlignment="CENTER"
 			inneractive:optionalAdWidth="300"
-			inneractive:optionalAdHeight="250"
-			android:visibility="gone"/>
+			inneractive:optionalAdHeight="250"/>
 
 	<!--Upgrade-->
 	<com.chess.RoboButton

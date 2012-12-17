@@ -338,7 +338,6 @@ public class AppUtils {
 
 			deviceInfo.android_id =  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
 			deviceInfo.MODEL = Build.MODEL;
 			Log.i("requested MODEL = ", deviceInfo.MODEL);
 
