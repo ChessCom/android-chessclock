@@ -72,6 +72,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			} else {
 				refreshItem.setActionView(null);
 			}
+			refreshItem.setVisible(refreshing); // free space in actionBar for title
 		}
 	}
 
