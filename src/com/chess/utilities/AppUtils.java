@@ -25,6 +25,8 @@ import com.chess.backend.AlarmReceiver;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.User;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
@@ -46,8 +48,22 @@ public class AppUtils {
 	private static final int MDPI_DENSITY = 1;
 	private static boolean ENABLE_LOG = true;
 
+	public static class ListSelector implements Runnable{
+		private int pos;
+		private ListView listView;
+
+		public ListSelector(int pos, ListView listView){
+			this.pos = pos;
+			this.listView = listView;
+		}
+		@Override
+		public void run() {
+			listView.setSelection(pos);
+		}
+	}
+
 	public static void setBackground(View mainView, Context context) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
 			mainView.setBackground(new BackgroundChessDrawable(context));
 		} else {
 			mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
@@ -62,7 +78,6 @@ public class AppUtils {
 
 	/**
 	 * For QVGA screens we don't need a title bar and Action bar
-	 *
 	 * @param context
 	 * @return
 	 */
@@ -75,7 +90,6 @@ public class AppUtils {
 
 	/**
 	 * For mdpi normal screens we don't need a action bar only
-	 *
 	 * @param context
 	 * @return
 	 */
@@ -91,12 +105,12 @@ public class AppUtils {
 	 * Fire simplified notification with defined arguments
 	 *
 	 * @param context - Application Context for resources
-	 * @param title   - title that will be visible at status bar
-	 * @param id      - request code id
-	 * @param body    - short description for notification message content
-	 * @param clazz   - which class to open when User press notification
+	 * @param title - title that will be visible at status bar
+	 * @param id - request code id
+	 * @param body - short description for notification message content
+	 * @param clazz - which class to open when User press notification
 	 */
-	public static void showMoveStatusNotification(Context context, String title, String body, int id, Class<?> clazz) {
+	public static void showMoveStatusNotification(Context context, String title,  String body, int id, Class<?> clazz) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
@@ -113,10 +127,10 @@ public class AppUtils {
 
 		SharedPreferences preferences = AppData.getPreferences(context);
 		boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
-		if (playSounds) {
+		if(playSounds){
 			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 
-			if (player == null) // someone hasn't player?
+			if(player == null) // someone hasn't player?
 				return;
 
 			player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -130,7 +144,8 @@ public class AppUtils {
 		}
 	}
 
-	public static void showNewMoveStatusNotification(Context context, String title, String body, int id,
+
+	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
 													 GameListCurrentItem currentGameItem) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancelAll(); // clear all previous notifications
@@ -154,16 +169,15 @@ public class AppUtils {
 	 * Use default android.util.Log with Flag trigger
 	 * Use this method to track changes, but avoid to use in uncertain cases,
 	 * where release version can tell where some bugs were born
-	 *
 	 * @param tag
 	 * @param message
 	 */
-	public static void logD(String tag, String message) {
-		if (ENABLE_LOG) // can be set false for release version.
+	public static void logD(String tag, String message){
+		if(ENABLE_LOG) // can be set false for release version.
 			Log.d(tag, message);
 	}
 
-	public static void startNotificationsUpdate(Context context) {
+	public static void startNotificationsUpdate(Context context){
 		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
@@ -174,7 +188,7 @@ public class AppUtils {
 		alarms.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
 	}
 
-	public static void stopNotificationsUpdate(Context context) {
+	public static void stopNotificationsUpdate(Context context){
 		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
@@ -192,26 +206,45 @@ public class AppUtils {
 		notifyManager.cancelAll();
 	}
 
-	public static void cancelNotification(Context context, int id) {
+
+
+	public static void cancelNotification(Context context, int id){
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancel(id);
 	}
 
-	public static boolean isNeedToUpgrade(Context context) {
-		return AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER;
+	public static boolean isNeedToUpgrade(Context context){
+		boolean liveMembershipLevel = false;
+		User user = LccHolder.getInstance(context).getUser();
+		if (user != null) {
+			liveMembershipLevel = AppData.isLiveChess(context)
+					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
+		}
+		return AppData.isGuest(context)
+				|| liveMembershipLevel
+				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER)
+				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
 
-	public static boolean isNeedToUpgradePremium(Context context) {
-		return AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER;
+	public static boolean isNeedToUpgradePremium(Context context){
+		boolean liveMembershipLevel = false;
+		User user = LccHolder.getInstance(context).getUser();
+		if (user != null) {
+			liveMembershipLevel = AppData.isLiveChess(context)
+					&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
+		}
+		return liveMembershipLevel
+				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER)
+				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
 
 	public static String getStringTimeFromSeconds(long duration) {
 		String D = "d";
 		String H = "h";
 		String M = "m";
-		long minutes = duration / 60 % 60;
-		long hours = duration / 3600 % 24;
-		long days = duration / 86400;
+		long minutes = duration /60%60;
+		long hours = duration /3600%24;
+		long days = duration /86400;
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0)
@@ -232,29 +265,29 @@ public class AppUtils {
 	}
 
 	public static String getSecondsTimeFromSecondsStr(long duration) {
-		long seconds = duration % 60;
-		long minutes = duration / 60 % 60;
-		long hours = duration / 3600 % 24;
-		long days = duration / 86400;
+		long seconds = duration %60;
+		long minutes = duration /60%60;
+		long hours = duration /3600%24;
+		long days = duration /86400;
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0) {
-			sb.append(days).append(StaticData.SYMBOL_COLON);
-		}
+            sb.append(days).append(StaticData.SYMBOL_COLON);
+        }
 
 		if (hours > 0) {
 			sb.append(hours).append(StaticData.SYMBOL_COLON);
 		}
 
-		if (minutes < 10) {
-			sb.append(0);
-		}
-		sb.append(minutes).append(StaticData.SYMBOL_COLON);
+        if (minutes < 10) {
+            sb.append(0);
+        }
+        sb.append(minutes).append(StaticData.SYMBOL_COLON);
 
-		if (seconds < 10) {
-			sb.append(0);
-		}
-		sb.append(seconds);
+        if (seconds < 10) {
+            sb.append(0);
+        }
+        sb.append(seconds);
 
 		return sb.toString();
 	}
@@ -291,53 +324,20 @@ public class AppUtils {
 		return resources.getConfiguration().locale.getLanguage().equals(StaticData.LOCALE_EN);
 	}
 
-	public static String httpEntityToString(HttpEntity entity)
-			throws IOException {
-
-		InputStream inputStream = entity.getContent();
-		int numberBytesRead = 0;
-		StringBuilder out = new StringBuilder();
-		byte[] bytes = new byte[4096];
-
-		while (numberBytesRead != -1) {
-			out.append(new String(bytes, 0, numberBytesRead));
-			numberBytesRead = inputStream.read(bytes);
-		}
-
-		inputStream.close();
-
-		return out.toString();
-	}
-
-	public static class ListSelector implements Runnable {
-		private int pos;
-		private ListView listView;
-
-		public ListSelector(int pos, ListView listView) {
-			this.pos = pos;
-			this.listView = listView;
-		}
-
-		@Override
-		public void run() {
-			listView.setSelection(pos);
-		}
-	}
-
 	public static class DeviceInfo {
 		public String MODEL;
 		public int SDK_API;
 		public String APP_VERSION_NAME = StaticData.SYMBOL_EMPTY;
 		public int APP_VERSION_CODE = 0;
 		public String android_id;
-
 		/*
 		 * Get information about device model, App version and API version
 		 */
 		public DeviceInfo getDeviceInfo(Context context) {
 			DeviceInfo deviceInfo = new DeviceInfo();
 
-			deviceInfo.android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+			deviceInfo.android_id =  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
 			deviceInfo.MODEL = Build.MODEL;
 			Log.i("requested MODEL = ", deviceInfo.MODEL);
@@ -359,6 +359,23 @@ public class AppUtils {
 			}
 			return deviceInfo;
 		}
+	}
+
+	public static String httpEntityToString(HttpEntity entity) throws IOException {
+
+		InputStream inputStream = entity.getContent();
+		int numberBytesRead = 0;
+		StringBuilder out = new StringBuilder();
+		byte[] bytes = new byte[4096];
+
+		while (numberBytesRead != -1) {
+			out.append(new String(bytes, 0, numberBytesRead));
+			numberBytesRead = inputStream.read(bytes);
+		}
+
+		inputStream.close();
+
+		return out.toString();
 	}
 
 }

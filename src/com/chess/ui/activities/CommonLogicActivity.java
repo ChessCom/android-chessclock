@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -129,6 +131,8 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+
+		isRestarted = false;
 	}
 
 	protected void setLocale(){
@@ -437,6 +441,20 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(NETWORK_CHECK_TAG)){
+			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+		}
+		super.onPositiveBtnClick(fragment);
 	}
 
 	/**

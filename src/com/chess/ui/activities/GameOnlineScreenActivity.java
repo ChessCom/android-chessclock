@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.*;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -16,11 +17,15 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.db.DBDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
@@ -171,23 +176,56 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	private void updateGameState() {
-		// TODO load game from DB. After load update
+		// load game from DB. After load update
+		new LoadDataFromDbTask(new LoadFromDbUpdateListener(),
+				DbHelper.getEchessGameParams(this, gameId)).executeTask();
 
+//		if (getBoardFace().isJustInitialized()) {
+//			getOnlineGame(gameId);
+//			getBoardFace().setJustInitialized(false);
+//		} else {
+//			LoadItem loadItem = new LoadItem();
+//			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
+//			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//			loadItem.addRequestParams(RestHelper.P_GID, gameId);
+//
+//			updateGameStateTask = new GetStringObjTask(gameStateUpdateListener).executeTask(loadItem);
+//		}
+	}
 
-		if (getBoardFace().isJustInitialized()) {
-			getOnlineGame(gameId);
-			getBoardFace().setJustInitialized(false);
-		} else {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_GID, gameId);
+	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor>{
 
-			updateGameStateTask = new GetStringObjTask(gameStateUpdateListener).executeTask(loadItem);
+		public LoadFromDbUpdateListener() {
+			super(getContext());
 		}
+
+		@Override
+		public void updateData(Cursor returnedObj) {
+			super.updateData(returnedObj);
+
+			showSubmitButtonsLay(false);
+			getSoundPlayer().playGameStart();
+
+			currentGame = DBDataManager.getGameOnlineItemFromCursor(returnedObj);
+
+			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+
+			gamePanelView.enableGameControls(true);
+			boardView.lockBoard(false);
+
+			checkMessages();
+
+			adjustBoardForGame();
+
+			getBoardFace().setJustInitialized(false);
+		}
+
 	}
 
 	protected void getOnlineGame(long gameId) {
+		// TODO load game from Db
+
+
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));

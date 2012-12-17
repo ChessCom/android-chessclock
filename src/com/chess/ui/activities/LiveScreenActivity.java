@@ -12,16 +12,19 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.User;
-import com.chess.live.util.GameRatingClass;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
+import com.chess.utilities.InneractiveAdHelper;
+import com.chess.utilities.MopubHelper;
+import com.inneractive.api.ads.InneractiveAd;
+import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	private Button currentGame;
 	private ViewGroup loadingView;
 	private List<View> infoGroup;
-	private TextView emptyView;
+	private View emptyView;
 	private NewGamesButtonsAdapter newGamesButtonsAdapter;
 	private TextView bulletRatingTxt;
 	private TextView blitzRatingTxt;
@@ -53,7 +56,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	 private void init() {
-		AppData.setLiveChessMode(this, true);   // this should be only one place to set it to true
+		AppData.setLiveChessMode(this, true);
 
 		infoGroup = new ArrayList<View>();
 
@@ -67,15 +70,24 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
     protected void widgetsInit(){
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+
 		loadingView = (ViewGroup) findViewById(R.id.loadingView);
-		emptyView = (TextView) findViewById(R.id.emptyView);
+		emptyView = findViewById(R.id.emptyView);
+		
+		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+		if (AppUtils.isNeedToUpgrade(this)) {
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+			} else {
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			}
+		}
 
 		Button statsBtn = (Button) findViewById(R.id.statsBtn);
 		statsBtn.setOnClickListener(this);
 
-		initUpgradeAndAdWidgets();
-        /*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 
 		LinearLayout ratingView = (LinearLayout) findViewById(R.id.ratingLay);
 
@@ -97,33 +109,10 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	@Override
 	protected void onStart() {
 		super.onStart();
-		startService(new Intent(this, LiveChessService.class));
-	}
 
+		showLoadingView(!getLccHolder().isConnected());
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		if (isLCSBound) {
-			showLoadingView(!liveService.isConnected());
-
-			if (liveService.currentGameExist()) {
-				currentGame.setVisibility(View.VISIBLE);
-			} else {
-				currentGame.setVisibility(View.GONE);
-			}
-		} else {
-			showLoadingView(true);
-		}
-	}
-
-	@Override
-	protected void onLiveServiceConnected() {
-		super.onLiveServiceConnected();
-		showLoadingView(!liveService.isConnected());
-
-		if (liveService.currentGameExist()) {
+		if (getLccHolder().currentGameExist()) {
 			currentGame.setVisibility(View.VISIBLE);
 		} else {
 			currentGame.setVisibility(View.GONE);
@@ -161,13 +150,11 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				showActionNewGame = !show;
 				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
-				if (isLCSBound) {
-					User user = liveService.getUser();
-					if (!show && user != null) {
-						bulletRatingTxt.setText(getString(R.string.bullet_, user.getRatingFor(GameRatingClass.Lightning)));
-						blitzRatingTxt.setText(getString(R.string.blitz_, user.getRatingFor(GameRatingClass.Blitz)));
-						standardRatingTxt.setText(getString(R.string.standard_, user.getRatingFor(GameRatingClass.Standard)));
-					}
+				User user = getLccHolder().getUser();
+				if(!show && user != null){
+					bulletRatingTxt.setText(getString(R.string.bullet_, user.getQuickRating()));
+					blitzRatingTxt.setText(getString(R.string.blitz_, user.getBlitzRating()));
+					standardRatingTxt.setText(getString(R.string.standard_, user.getStandardRating()));
 				}
 			}
 		});
@@ -181,7 +168,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			return;
 		}
 
-		if (tag.equals(NETWORK_CHECK_TAG)) {
+		if(tag.equals(NETWORK_CHECK_TAG)){
 			emptyView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
@@ -195,7 +182,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			startActivity(AppData.getMembershipAndroidIntent(this));
 
 		} else if (view.getId() == R.id.currentGameBtn) {
-			liveService.checkAndProcessFullGame();
+			getLccHolder().checkAndProcessFullGame();
 
 		} else if(view.getId() == R.id.statsBtn){
 			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));

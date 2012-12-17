@@ -35,7 +35,7 @@ public class DBDataManager {
 			DBConstants.V_TACTIC_ID,
 			DBConstants.V_USER);
 
-	public static String SELECTION_TACTIC_BATCH_USER = concatArguments(DBConstants.V_USER);
+	public static String SELECTION_USER = concatArguments(DBConstants.V_USER);
 
 	public static String SELECTION_ID = concatArguments(DBConstants._ID);
 
@@ -46,8 +46,7 @@ public class DBDataManager {
 			DBConstants.V_GAME_ID,
 			DBConstants.V_USER_OFFERED_DRAW);
 
-	public static String SELECTION_USER = concatArguments(DBConstants.V_USER);
-
+	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_ID = new String[] {
 			DBConstants._ID
@@ -59,7 +58,7 @@ public class DBDataManager {
 			DBConstants.V_USER
 	};
 
-	public static final String[] PROJECTION_TACTIC_BATCH_USER = new String[] {
+	public static final String[] PROJECTION_USER = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER
 	};
@@ -108,6 +107,26 @@ public class DBDataManager {
 		return selection.toString();
 	}
 
+	/**
+	 * Check if we have saved games for current user
+	 * @param context
+	 * @return true if cursor can be positioned to first
+	 */
+	public static boolean haveSavedOnlineCurrentGame(Context context) {
+		String userName = getUserName(context);
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+				PROJECTION_USER, SELECTION_USER, arguments1, null);
+		boolean exist = cursor.moveToFirst();
+		cursor.close();
+
+		return exist;
+	}
+
 	public static void updateOnlineGame(ContentResolver contentResolver, GameOnlineItem currentGame, String userName) {
 
         final String[] arguments2 = sArguments2;
@@ -150,7 +169,7 @@ public class DBDataManager {
         arguments1[0] = userName;
 
         Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
-                PROJECTION_TACTIC_BATCH_USER, SELECTION_TACTIC_BATCH_USER, arguments1, null);
+				PROJECTION_USER, SELECTION_USER, arguments1, null);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -192,7 +211,7 @@ public class DBDataManager {
         arguments1[0] = userName;
 
         Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
-                null, SELECTION_TACTIC_BATCH_USER, arguments1, null);
+                null, SELECTION_USER, arguments1, null);
 
         cursor.moveToFirst();
         TacticItem tacticItem = getTacticItemFromCursor(cursor);
@@ -427,6 +446,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_WHITE_USER_NAME, dataObj.getWhiteUsername());
 		values.put(DBConstants.V_BLACK_USER_NAME, dataObj.getBlackUsername());
 		values.put(DBConstants.V_FEN_START_POSITION, dataObj.getFenStartPosition());
+		values.put(DBConstants.V_MOVE_LIST, dataObj.getMoveList());
 		values.put(DBConstants.V_WHITE_USER_MOVE, dataObj.isWhiteMove()? 1: 0);
 		values.put(DBConstants.V_WHITE_RATING, dataObj.getWhiteRating());
 		values.put(DBConstants.V_BLACK_RATING, dataObj.getBlackRating());

@@ -17,16 +17,14 @@ import java.util.Scanner;
 public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Input, Void, Integer> {
 
 	private static final String TAG = "AbstractUpdateTask";
-//	private TaskUpdateInterface<ItemType> taskFace;
-	private SoftReference<TaskUpdateInterface<ItemType>> taskFace;
+	private TaskUpdateInterface<ItemType> taskFace; // SoftReferences & WeakReferences are not reliable, because they become killed even at the same activity and task become unfinished
 	protected ItemType item;
 	protected List<ItemType> itemList;
 	protected boolean useList;
 	protected int result;
 
 	public AbstractUpdateTask(TaskUpdateInterface<ItemType> taskFace) {
-//		this.taskFace = taskFace;
-		this.taskFace = new SoftReference<TaskUpdateInterface<ItemType>>(taskFace);
+		this.taskFace = taskFace;
 		useList = taskFace.useList();
 		result = StaticData.EMPTY_DATA;
 	}
@@ -99,7 +97,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		super.onPostExecute(result);
 		blockScreenRotation(false);
 
-		if(isCancelled() || getTaskFace() == null || getTaskFace().getMeContext() == null) {
+		if(isCancelled()) {   // no need to check as we catch it
 			return;
 		}
 
@@ -122,15 +120,17 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	}
 
 	protected void releaseTaskFace() {
-		taskFace.get().releaseContext();
-		taskFace = null;
+		if (taskFace != null) {
+			taskFace.releaseContext();
+			taskFace = null;
+		}
 	}
 
 	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException{
-		if (taskFace == null || taskFace.get() == null) {
+		if (taskFace == null ) {
 			throw new IllegalStateException("TaskFace is already dead");
 		} else {
-			return taskFace.get();
+			return taskFace;
 		}
 	}
 

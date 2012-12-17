@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
@@ -128,8 +131,17 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.RegSubmitBtn) {
-			if (checkRegisterInfo())
-				submitRegisterInfo();
+			if (!checkRegisterInfo()){
+				return;
+			}
+
+			if (!AppUtils.isNetworkAvailable(this)){ // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+				return;
+			}
+
+			submitRegisterInfo();
 		}
 	}
 
@@ -344,7 +356,13 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		facebook.authorizeCallback(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK ){
+			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+				facebook.authorizeCallback(requestCode, resultCode, data);
+			}else if(requestCode == NETWORK_REQUEST){
+				submitRegisterInfo();
+			}
+		}
 	}
 
 	private String encodeField(EditText editText) {

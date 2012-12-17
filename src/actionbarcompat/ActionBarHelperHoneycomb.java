@@ -30,7 +30,6 @@ import com.chess.R;
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private Menu mOptionsMenu;
 	private View mRefreshIndeterminateProgressView = null;
-	private boolean showActionRefresh;
 
 	protected ActionBarHelperHoneycomb(ActionBarActivity activity) {
 		super(activity);
@@ -44,7 +43,9 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void setRefreshActionItemState(boolean refreshing) {
-		// On Honeycomb, we can set the state of the refresh button by giving it a custom action view.
+		// On Honeycomb, we can set the state of the refresh button by giving it
+// a custom
+		// action view.
 		if (mOptionsMenu == null) {
 			return;
 		}
@@ -59,7 +60,8 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 				if (mRefreshIndeterminateProgressView == null) {
 					Context context = getActionBarThemedContext();
 					if (context != null) {
-						LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+						LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+								Context.LAYOUT_INFLATER_SERVICE);
 						mRefreshIndeterminateProgressView = inflater.inflate(R.layout.actionbar_indeterminate_progress,
 								null);
 
@@ -70,17 +72,6 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			} else {
 				refreshItem.setActionView(null);
 			}
-			hideRefreshIcon(refreshItem, refreshing);
-		}
-	}
-
-	/**
-	 * Free space in actionBar for title. Don't change visibility if we have visible button.
-	 * @param refreshItem contains menuItem with icon
-	 * @param refreshing currently refreshing state
-	 */
-	private void hideRefreshIcon(MenuItem refreshItem, boolean refreshing){
-		if (!showActionRefresh) {
 			refreshItem.setVisible(refreshing);
 		}
 	}
@@ -98,7 +89,6 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	@Override
 	public void showMenuItemById(int itemId, boolean visible, Menu menu) {
 		if(itemId == R.id.menu_refresh){
-			showActionRefresh = visible;
 			menu.findItem(itemId).setIcon(visible? R.drawable.ic_action_refresh
 					:R.drawable.empty);
 		}else {

@@ -65,10 +65,10 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.signin) {
-			if(!AppUtils.isNetworkAvailable(this)){ // check only if live
+			if (!AppUtils.isNetworkAvailable(this)){ // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			}else{
+			} else{
 				signInUser();
 			}
 		} else if (view.getId() == R.id.signup) {
@@ -162,8 +162,6 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI)));
 		}else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
-		}else if (tag.equals(NETWORK_CHECK_TAG)){
-			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
 		super.onPositiveBtnClick(fragment);
 	}

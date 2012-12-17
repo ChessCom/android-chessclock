@@ -3,16 +3,15 @@ package com.chess.backend.interfaces;
 import android.content.Context;
 import com.chess.backend.statics.StaticData;
 
-import java.lang.ref.SoftReference;
 import java.util.List;
 
 public abstract class AbstractUpdateListener<T> implements TaskUpdateInterface<T> {
 
-	private SoftReference<Context> context;
+	private Context context;
 	protected boolean useList;
 
 	public AbstractUpdateListener(Context context) {
-		this.context = new SoftReference<Context>(context);
+		this.context = context;
 	}
 
 	@Override
@@ -54,10 +53,10 @@ public abstract class AbstractUpdateListener<T> implements TaskUpdateInterface<T
 
 	@Override
 	public Context getMeContext() throws IllegalStateException{
-		if (context == null || context.get() == null) {
+		if (context == null) {
 			throw new IllegalStateException("Context is already dead");
 		} else {
-			return context.get();
+			return context;
 		}
 	}
 

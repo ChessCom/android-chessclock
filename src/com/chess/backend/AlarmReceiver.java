@@ -42,11 +42,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		@Override
 		public void updateData(String returnedObj) {
-			if (getMeContext() == null) {
+			Context context = getMeContext();
+			if (context == null) {
 				return;
 			}
-
-			Context context = getMeContext();
 
 			int haveMoves = 0;
 			List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);

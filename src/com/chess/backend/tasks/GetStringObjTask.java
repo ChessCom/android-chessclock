@@ -84,7 +84,7 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	protected void onPostExecute(Integer result) {
 		blockScreenRotation(false);
 
-		if(isCancelled() /*|| getTaskFace() == null || getTaskFace().getMeContext() == null*/) {
+		if(isCancelled()) {
 			return;
 		}
 		try{

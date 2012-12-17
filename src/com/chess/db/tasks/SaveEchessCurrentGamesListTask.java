@@ -89,7 +89,7 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
 
 		GameOnlineItem currentGame = getData(RestHelper.formCustomRequest(loadItem));
 		if (currentGame != null) {
-			ContentValues values = DBDataManager.putGameOnlineItemToValues(currentGame, userName);
+//			ContentValues values = DBDataManager.putGameOnlineItemToValues(currentGame, userName);
 			DBDataManager.updateOnlineGame(contentResolver, currentGame, userName);
 		}
 

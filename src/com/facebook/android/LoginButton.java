@@ -23,7 +23,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import com.chess.R;
+import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.SessionEvents.AuthListener;
 import com.facebook.android.SessionEvents.LogoutListener;
@@ -63,8 +65,8 @@ public class LoginButton extends Button implements Serializable{
         mPermissions = permissions;
         mHandler = new Handler();
 
-		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_facebook_selector
-			: R.drawable.button_facebook_selector);
+		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_selector
+			: R.drawable.button_f_selector);
 		setText(getResources().getString(fb.isSessionValid() ? R.string.logout
 				: R.string.connect_with_facebook));
 
@@ -77,8 +79,12 @@ public class LoginButton extends Button implements Serializable{
     
     private final class ButtonOnClickListener implements OnClickListener {
         
-        @Override
-		public void onClick(View arg0) {
+        public void onClick(View arg0) {
+			if (!AppUtils.isNetworkAvailable(getContext())){
+				Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
+				return;
+			}
+
             if (mFb.isSessionValid()) {
 				logout();
             } else {
@@ -94,35 +100,29 @@ public class LoginButton extends Button implements Serializable{
 	}
 
     private final class LoginDialogListener implements DialogListener {
-        @Override
-		public void onComplete(Bundle values) {
+        public void onComplete(Bundle values) {
             SessionEvents.onLoginSuccess();
         }
 
-        @Override
-		public void onFacebookError(FacebookError error) {
+        public void onFacebookError(FacebookError error) {
             SessionEvents.onLoginError(error.getMessage());
         }
         
-        @Override
-		public void onError(DialogError error) {
+        public void onError(DialogError error) {
             SessionEvents.onLoginError(error.getMessage());
         }
 
-        @Override
-		public void onCancel() {
+        public void onCancel() {
             SessionEvents.onLoginError("Action Canceled");
         }
     }
     
     private class LogoutRequestListener extends BaseRequestListener {
-        @Override
-		public void onComplete(String response, final Object state) {
+        public void onComplete(String response, final Object state) {
             // callback should be run in the original thread, 
             // not the background thread
             mHandler.post(new Runnable() {
-                @Override
-				public void run() {
+                public void run() {
                     SessionEvents.onLogoutFinish();
                 }
             });
@@ -131,25 +131,21 @@ public class LoginButton extends Button implements Serializable{
     
     private class SessionListener implements AuthListener, LogoutListener {
         
-        @Override
-		public void onAuthSucceed() {
-			setBackgroundResource(R.drawable.button_facebook_selector);
+        public void onAuthSucceed() {
+			setBackgroundResource(R.drawable.button_f_selector);
 			setText(getResources().getString(R.string.logout));
             SessionStore.save(mFb, getContext());
         }
 
-        @Override
-		public void onAuthFail(String error) {
+        public void onAuthFail(String error) {
         }
         
-        @Override
-		public void onLogoutBegin() {
+        public void onLogoutBegin() {           
         }
         
-        @Override
-		public void onLogoutFinish() {
+        public void onLogoutFinish() {
             SessionStore.clear(getContext());
-			setBackgroundResource(R.drawable.button_facebook_selector);
+			setBackgroundResource(R.drawable.button_f_selector);
 			setText(getResources().getString(R.string.connect_with_facebook));
         }
     }

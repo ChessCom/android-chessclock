@@ -70,7 +70,7 @@ public abstract class ActionBarActivity extends CommonLogicActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if(HONEYCOMB_PLUS_API) {
 			invalidateOptionsMenu();
 		}
 	}

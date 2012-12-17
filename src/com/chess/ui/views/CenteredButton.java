@@ -249,8 +249,6 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 
 
 	private void flipIt() {
-//		performClick();
-
 		flipFirstHalf.start();
 	}
 
