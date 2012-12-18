@@ -65,7 +65,6 @@ public class LccHolder {
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
 	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
 			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
-	//private List<Long> gameIdsToBeIgnored = new ArrayList<Long>();
 
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
@@ -666,7 +665,7 @@ public class LccHolder {
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 
-		if (game.getMoveCount() >= 1) // we should start opponent's clock after at least 2-nd ply (seq == 1, or seq > 1)
+		if (game.getMoveCount() >= 1) // we should start opponent's clock after at least 2-nd ply (moveCount == 1, or moveCount > 1)
 		{
 			final boolean isWhiteRunning =user.getUsername().equals(game.getWhitePlayer().getUsername());
 			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
@@ -731,7 +730,7 @@ public class LccHolder {
 		final Integer minRating = null;
 		final Integer maxRating = null;
 		final Integer minMembershipLevel = null;
-		final GameType gameType = GameType.Chess; // UPDATELCC todo: support chess960
+		final GameType gameType = GameType.Chess;
 		final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 				user, to, gameType, color, lastGame.isRated(), lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
 
@@ -812,17 +811,17 @@ public class LccHolder {
 		ChessBoardLive.resetInstance();
 		putGame(game);
 
-		int time = game.getGameTimeConfig().getBaseTime() * 100;
-		if (whiteClock != null && whiteClock.isRunning()) {
+		//int time = game.getGameTimeConfig().getBaseTime() * 100;
+		if (whiteClock != null) {
 			whiteClock.setRunning(false);
 		}
-		if (blackClock != null && blackClock.isRunning()) {
+		if (blackClock != null) {
 			blackClock.setRunning(false);
 		}
 
 		// todo: show actual game over time for ended games
-		setWhiteClock(new ChessClock(this, true, time));
-		setBlackClock(new ChessClock(this, false, time));
+		setWhiteClock(new ChessClock(this, true));
+		setBlackClock(new ChessClock(this, false));
 
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -871,7 +870,7 @@ public class LccHolder {
 	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
-		// todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
+		// UPDATELCC todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
 		if (game.getMoveCount() >= 2 && moveIndex == game.getMoveCount() - 1) {
 			final boolean isOpponentMoveDone = !user.getUsername().equals(moveMaker.getUsername());
 
@@ -882,15 +881,10 @@ public class LccHolder {
 			}
 			final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
-			final int whitePlayerTime = game.getActualClockForPlayer(game.getWhitePlayer().getUsername()).intValue() * 100;
-			final int blackPlayerTime = game.getActualClockForPlayer(game.getBlackPlayer().getUsername()).intValue() * 100;
 
-			getWhiteClock().setTime(whitePlayerTime);
 			if (!game.isGameOver()) {
 				getWhiteClock().setRunning(isBlackDone);
 			}
-
-			getBlackClock().setTime(blackPlayerTime);
 			if (!game.isGameOver()) {
 				getBlackClock().setRunning(isWhiteDone);
 			}
@@ -1009,8 +1003,4 @@ public class LccHolder {
 			}
 		}
 	}
-
-	/*public List<Long> getGameIdsToBeIgnored() {
-		return gameIdsToBeIgnored;
-	}*/
 }

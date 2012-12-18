@@ -8,11 +8,9 @@ import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
-import com.chess.live.client.impl.GameImpl;
 import com.chess.live.rules.GameResult;
 import com.chess.utilities.AppUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -271,7 +269,7 @@ public class LccGameListener implements GameListener {
 			lccHolder.getBlackClock().setRunning(false);
 		}
 
-		String abortedCodeMessage = ((GameImpl)game).getCodeMessage(); // used only for aborted games
+		String abortedCodeMessage = game.getCodeMessage(); // used only for aborted games
 		if (abortedCodeMessage != null) {
 			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage);
 			if (messageI18n != null) {
