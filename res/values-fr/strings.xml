@@ -444,8 +444,8 @@
 	<string name="game.dw_warn">Votre compte peut être limité si vous ne suivez pas notre politique de fair-play. Si restreint, vous ne serez en mesure de jouer avec des amis. S\'il vous plaît ne pas intentionnellement interrompre / déconnecter de jeux ou de faire vos adversaires attendre inutilement. Merci de garder Chess.com un endroit agréable pour profiter d\'échecs!</string>
 	<string name="game.not_accepting_challenges">%1$s n\'est actuellement pas accepter les défis</string>
 	<string name="game.aborted_by_server">Le jeu a été interrompu par le serveur</string>
-	<string name="game.aborted_by_server_on_logout">Le jeu a été interrompu par le serveur</string>
-	<string name="game.aborted_by_server_on_disconnection">Le jeu a été interrompu par le serveur</string>
+	<string name="game.aborted_by_server_on_logout">Le jeu a été interrompu par le serveur. %1$s a déconnecté</string>
+	<string name="game.aborted_by_server_on_disconnection">Le jeu a été interrompu par le serveur. %1$s has disconnected</string>
 	<string name="announcement.server_restarting">ALERTE: Chess.com sera le redémarrage des serveurs!</string>
 	<string name="announcement.server_restart_cancelled">Redémarrage du serveur a été annulée</string>
 </resources>

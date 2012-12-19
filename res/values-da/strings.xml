@@ -444,8 +444,8 @@
 	<string name="game.dw_warn">Din konto kan begrænses, hvis du ikke følger vores Fair Play politik. Hvis begrænset, vil du kun være i stand til at spille med vennerne. Vær venlig ikke med vilje afbryde / afbryde spil eller lave dine modstandere vente unødigt. Tak for at holde Chess.com et sjovt sted at nyde skak!</string>
 	<string name="game.not_accepting_challenges">%1$s er i øjeblikket ikke acceptere udfordringer</string>
 	<string name="game.aborted_by_server">Spil er blevet afbrudt af serveren</string>
-	<string name="game.aborted_by_server_on_logout">Spil er blevet afbrudt af serveren</string>
-	<string name="game.aborted_by_server_on_disconnection">Spil er blevet afbrudt af serveren</string>
+	<string name="game.aborted_by_server_on_logout">Spil er blevet afbrudt af serveren. %1$s har logget ud</string>
+	<string name="game.aborted_by_server_on_disconnection">Spil er blevet afbrudt af serveren. %1$s har afbrudt</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com skal genstarte serverne!</string>
 	<string name="announcement.server_restart_cancelled">Servergenstart er blevet aflyst</string>
 </resources>

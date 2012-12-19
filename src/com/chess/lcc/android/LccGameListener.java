@@ -63,7 +63,6 @@ public class LccGameListener implements GameListener {
 		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId());
 
 		// check isMyTurn
-		// update clock
 
 		if (!isActualGame(game)) {
 			return;
@@ -78,7 +77,6 @@ public class LccGameListener implements GameListener {
 	}
 
 	public void onGameClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment, Integer resultClock) {
-		// UPDATELCC todo:
 		Log.d(TAG, "Game Clock adjusted: gameId=" + game.getId() + ", player=" + player.getUsername() +
 				", newClockValue=" + newClockValue + ", clockAdjustment=" + clockAdjustment);
 	}

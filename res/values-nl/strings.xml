@@ -442,8 +442,8 @@
 	<string name="game.dw_warn">Uw account kan worden beperkt indien u zich niet aan onze Fair Play-beleid. Als beperkt is, zult u alleen in staat zijn om te spelen met vrienden. Gelieve niet met opzet af te breken / los te koppelen van spelletjes of maak je tegenstanders onnodig wachten. Dank u voor het houden van Chess.com een ​​leuke plek om te schaken te genieten!</string>
 	<string name="game.not_accepting_challenges">%1$s op dit moment niet te accepteren uitdagingen</string>
 	<string name="game.aborted_by_server">Game is afgebroken door de server</string>
-	<string name="game.aborted_by_server_on_logout">Game is afgebroken door de server</string>
-	<string name="game.aborted_by_server_on_disconnection">Game is afgebroken door de server</string>
+	<string name="game.aborted_by_server_on_logout">Game is afgebroken door de server. %1$s heeft uitgelogd</string>
+	<string name="game.aborted_by_server_on_disconnection">Game is afgebroken door de server. %1$s heeft de verbinding verbroken</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com wordt het herstarten van de servers!</string>
 	<string name="announcement.server_restart_cancelled">Server herstarten is geannuleerd</string>
 </resources>

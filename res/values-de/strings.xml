@@ -444,8 +444,8 @@
 	<string name="game.dw_warn">Ihr Konto kann eingeschränkt werden, wenn Sie sich nicht an unsere Fair-Play-Politik werden. Wenn beschränkt, werden Sie nur in der Lage sein, um mit Freunden zu spielen. Bitte nicht absichtlich abbrechen / von Spielen zu trennen oder machen Sie Ihre Gegner nicht unnötig warten. Wir danken Ihnen für das Halten Chess.com ein toller Ort, um Schach zu genießen!</string>
 	<string name="game.not_accepting_challenges">%1$s ist momentan leider nicht Annehmen von Herausforderungen</string>
 	<string name="game.aborted_by_server">Spiel vom Server abgebrochen</string>
-	<string name="game.aborted_by_server_on_logout">Spiel vom Server abgebrochen</string>
-	<string name="game.aborted_by_server_on_disconnection">Spiel vom Server abgebrochen</string>
+	<string name="game.aborted_by_server_on_logout">Spiel vom Server abgebrochen. %1$s abgemeldet hat</string>
+	<string name="game.aborted_by_server_on_disconnection">Spiel vom Server abgebrochen. %1$s getrennt hat</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com werden die Server neu zu starten!</string>
 	<string name="announcement.server_restart_cancelled">Server-Neustart wurde abgesagt</string>
 </resources>

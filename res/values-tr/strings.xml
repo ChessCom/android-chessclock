@@ -442,8 +442,8 @@
 	<string name="game.dw_warn">Bizim Fair Play Politikası uymayan Hesabınız kısıtlanabilir. Kısıtlı ise, sadece arkadaşları ile oynamak mümkün olacak. Lütfen kasıtlı iptal / oyunları kesmek veya rakiplerinizi gereksiz yere beklemek yapmazlar. Chess.com satranç zevk için eğlenceli bir yer tutmak için teşekkür ederiz!</string>
 	<string name="game.not_accepting_challenges">%1$s henüz zorlukları kabul etmiyor</string>
 	<string name="game.aborted_by_server">Oyun sunucu tarafından iptal edildi</string>
-	<string name="game.aborted_by_server_on_logout">Oyun sunucu tarafından iptal edildi</string>
-	<string name="game.aborted_by_server_on_disconnection">Oyun sunucu tarafından iptal edildi</string>
+	<string name="game.aborted_by_server_on_logout">Oyun sunucu tarafından iptal edildi. %1$s oturumu gelmiştir</string>
+	<string name="game.aborted_by_server_on_disconnection">Oyun sunucu tarafından iptal edildi. %1$s kesmiştir</string>
 	<string name="announcement.server_restarting">UYARI: Chess.com sunucuları yeniden başlatma olacak!</string>
 	<string name="announcement.server_restart_cancelled">Sunucu yeniden iptal edildi</string>
 </resources>

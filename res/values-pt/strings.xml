@@ -442,8 +442,8 @@
 	<string name="game.dw_warn">Sua conta pode ser restrito se você não seguir nossa Política de Fair Play. Se restrito, você só será capaz de jogar com os amigos. Por favor, não intencionalmente abortar / desligar de jogos ou fazer seus oponentes esperar desnecessariamente. Obrigado por manter Chess.com um lugar divertido para desfrutar de xadrez!</string>
 	<string name="game.not_accepting_challenges">%1$s não está aceitando desafios</string>
 	<string name="game.aborted_by_server">Jogo foi abortada pelo servidor</string>
-	<string name="game.aborted_by_server_on_logout">Jogo foi abortada pelo servidor</string>
-	<string name="game.aborted_by_server_on_disconnection">Jogo foi abortada pelo servidor</string>
+	<string name="game.aborted_by_server_on_logout">Jogo foi abortada pelo servidor. %1$s se desconectou</string>
+	<string name="game.aborted_by_server_on_disconnection">Jogo foi abortada pelo servidor. %1$s desconectado</string>
 	<string name="announcement.server_restarting">ALERTA: Chess.com será reiniciar os servidores!</string>
 	<string name="announcement.server_restart_cancelled">Reinicialização do servidor foi cancelada</string>
 </resources>

@@ -442,8 +442,8 @@
 	<string name="game.dw_warn">Twoje konto może zostać ograniczone, jeśli nie przestrzegają naszego Uczciwy Play. Jeśli ograniczony, będziesz tylko mógł grać z przyjaciółmi. Proszę nie celowo przerwać / odłączyć od gier lub zrobić twoi przeciwnicy czekać niepotrzebnie. Dziękujemy za utrzymywanie Chess.com ciekawym miejscem do cieszyć szachy!</string>
 	<string name="game.not_accepting_challenges">%1$s nie jest obecnie przyjęcie wyzwania</string>
 	<string name="game.aborted_by_server">Gra została przerwana przez serwer</string>
-	<string name="game.aborted_by_server_on_logout">Gra została przerwana przez serwer</string>
-	<string name="game.aborted_by_server_on_disconnection">Gra została przerwana przez serwer</string>
+	<string name="game.aborted_by_server_on_logout">Gra została przerwana przez serwer. %1$s został wylogowany</string>
+	<string name="game.aborted_by_server_on_disconnection">Gra została przerwana przez serwer. %1$s został odłączony</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com będzie ponowne uruchomienie serwerów!</string>
 	<string name="announcement.server_restart_cancelled">Restart serwera został odwołany</string>
 </resources>

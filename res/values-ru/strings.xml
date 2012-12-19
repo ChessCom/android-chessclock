@@ -443,8 +443,8 @@
 	<string name="game.dw_warn">Ваш аккаунт может быть ограничен, если вы не будете следовать нашей политике честной игры. При этом ограничении вы сможете играть только с друзьями. Пожалуйста, не прерывайте игу и не отключайтесь от сети намеренно и не делайте так, чтобы ваши оппоненты ждали вас понапрасну. Благодарим вас за сохранение Chess.com хорошим местом для наслаждения шахматами!</string>
 	<string name="game.not_accepting_challenges">%1$s в настоящее время не принимает вызовы</string>
 	<string name="game.aborted_by_server">Игра была прервана сервером.</string>
-	<string name="game.aborted_by_server_on_logout">Игра была прервана сервером</string>
-	<string name="game.aborted_by_server_on_disconnection">Игра была прервана сервером</string>
+	<string name="game.aborted_by_server_on_logout">Игра была прервана сервером. %1$s вышел из системы</string>
+	<string name="game.aborted_by_server_on_disconnection">Игра была прервана сервером. %1$s отключен</string>
 	<string name="announcement.server_restarting">ПРЕДУПРЕЖДЕНИЕ: Chess.com будет перезапускатть серверы!</string>
 	<string name="announcement.server_restart_cancelled">Перезапуск сервера был отменен</string>
 </resources>

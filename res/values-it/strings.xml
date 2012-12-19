@@ -444,8 +444,8 @@
 	<string name="game.dw_warn">Il tuo account può essere limitato se non seguire la nostra politica di Fair Play. Se limitato, si sarà in grado di giocare con gli amici. Si prega di non interrompere intenzionalmente / disconnettersi da giochi o fare i vostri avversari aspettare inutilmente. Grazie per mantenere Chess.com un posto divertente per godere di scacchi!</string>
 	<string name="game.not_accepting_challenges">%1$s al momento non accetta le sfide</string>
 	<string name="game.aborted_by_server">Partita è stata interrotta dal server</string>
-	<string name="game.aborted_by_server_on_logout">Partita è stata interrotta dal server</string>
-	<string name="game.aborted_by_server_on_disconnection">Partita è stata interrotta dal server</string>
+	<string name="game.aborted_by_server_on_logout">Partita è stata interrotta dal server. %1$s si è disconnesso</string>
+	<string name="game.aborted_by_server_on_disconnection">Partita è stata interrotta dal server. %1$s si è disconnesso</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com sarà riavviare i server!</string>
 	<string name="announcement.server_restart_cancelled">Riavvio del server è stata annullata</string>
 </resources>
