@@ -34,9 +34,8 @@ import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
 import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.InneractiveAdHelper;
+import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
-import com.inneractive.api.ads.InneractiveAd;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.IOException;
@@ -54,6 +53,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private static final int TIMER_UPDATE = 1000;
 	private static final long TACTIC_ANSWER_DELAY = 1500;
+	private static final int CORRECT_RESULT = 0;
+	private static final int WRONG_RESULT = 1;
+	private static final int GET_TACTIC = 2;
 
 	private TextView timerTxt;
 	private Handler tacticsTimer;
@@ -62,9 +64,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private boolean noInternet;
 	private boolean firstRun = true;
 
-	private GetTacticsUpdateListener getTacticsUpdateListener;
-	private TacticsCorrectUpdateListener tacticsCorrectUpdateListener;
-	private TacticsWrongUpdateListener tacticsWrongUpdateListener;
+	private TacticsUpdateListener getTacticsUpdateListener;
+	private TacticsUpdateListener tacticsCorrectUpdateListener;
+	private TacticsUpdateListener tacticsWrongUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -79,32 +81,15 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private int maxTacticAnswerCnt;
     private TacticItem tacticItem;
     private boolean offlineBatchWasLoaded;
-	private View loadingView;
 
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.boardview_tactics);
 
-		init();
 		widgetsInit();
-	}
-
-	public void init() {
-		tacticsTimer = new Handler();
-		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
-		menuOptionsItems = new CharSequence[]{
-				getString(R.string.showanswer),
-				getString(R.string.settings)};
-
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
-		getTacticsUpdateListener = new GetTacticsUpdateListener();
-		tacticsCorrectUpdateListener = new TacticsCorrectUpdateListener();
-		tacticsWrongUpdateListener = new TacticsWrongUpdateListener();
-		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
 	}
 
 	@Override
@@ -120,7 +105,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
-		boardView.setBoardFace(chessBoard);
+//		boardView.setBoardFace(chessBoard);
+		boardView.setGameActivityFace(GameTacticsScreenActivity.this);
+
 
 		timerTxt = (TextView) findViewById(R.id.timerTxt);
 		timerTxt.setVisibility(View.VISIBLE);
@@ -130,16 +117,32 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		gamePanelView.hideChatButton();
 		gamePanelView.enableGameControls(false);
+	}
 
-		loadingView = findViewById(R.id.loadingView);
+	private void init() {
+		tacticsTimer = new Handler();
+		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+		menuOptionsItems = new CharSequence[]{
+				getString(R.string.showanswer),
+				getString(R.string.settings)};
+
+		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		getTacticsUpdateListener = new TacticsUpdateListener(GET_TACTIC);
+		tacticsCorrectUpdateListener = new TacticsUpdateListener(CORRECT_RESULT);
+		tacticsWrongUpdateListener = new TacticsUpdateListener(WRONG_RESULT);
+		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
 	}
 
 	@Override
 	protected void onStart() {
+		init();
+
 		super.onStart();
 		if (!AppData.isGuest(this)) {
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 		}
+
 	}
 
 	@Override
@@ -165,19 +168,17 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			}
 		} else {
+			// TODO show register confirmation dialog
             if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
-				startTacticsTimer(tacticItem);
 				tacticItem.setRetry(true);
 
 				invalidateGameScreen();
 				getBoardFace().takeBack();
 				boardView.invalidate();
 				playLastMoveAnimationAndCheck();
-			}else if (tacticItem.isStop() && !boardView.isFinished()) {
+			} else if(tacticItem.isStop()) {
 				startTacticsTimer(tacticItem);
 				timerTxt.setText(getString(R.string.timer_, tacticItem.getSecondsSpentStr()));
-			} else {
-				verifyMove();
 			}
 		}
 	}
@@ -204,6 +205,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		releaseResources();
+	}
+
 	/**
 	 * Check if tactic was canceled or limit reached
 	 *
@@ -222,9 +229,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().takeNext();
 				invalidateGameScreen();
 
-				if (getBoardFace().isLatestMoveMadeUser()) {
+				if (getBoardFace().isLatestMoveMadeUser())
 					verifyMove();
-				}
 			}
 		}, 1300);
 	}
@@ -246,8 +252,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	@Override
-	protected TacticBoardFace getBoardFace() {
-		return boardView.getBoardFace();
+	public TacticBoardFace getBoardFace() {
+		return ChessBoardTactics.getInstance(this);
 	}
 
 	@Override
@@ -336,24 +342,19 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		customView.findViewById(R.id.stopBtn).setOnClickListener(this);
 		customView.findViewById(R.id.solutionBtn).setOnClickListener(this);
 		customView.findViewById(R.id.nextBtn).setOnClickListener(this);
-
-		gamePanelView.enableGameControls(true);
-		gamePanelView.activateAnalysis(true);
 	}
 
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
 		TacticsDataHolder.getInstance().setTacticLimitReached(limitReached);
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
+
 		LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(this)) {
-//		  	MopubHelper.showRectangleAd(adViewWrapper, this);
-			inneractiveRectangleAd = (InneractiveAd) customView.findViewById(R.id.inneractiveRectangleAd);
-			InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+			MopubHelper.showRectangleAd(adViewWrapper, this);
 		} else {
-		  	adViewWrapper.setVisibility(View.GONE);
+			adViewWrapper.setVisibility(View.GONE);
 		}
-
 
 		int nextBtnId = R.string.next_tactic_puzzle;
 		int nextBtnColorId = R.drawable.button_orange_selector;
@@ -378,9 +379,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		PopupCustomViewFragment  customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
 		customViewFragment.show(getSupportFragmentManager(), TACTIC_SOLVED_TAG);
-
-		gamePanelView.enableGameControls(true);
-		gamePanelView.activateAnalysis(true);
 	}
 
 	@Override
@@ -388,7 +386,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		return null;
 	}
 
-	@Override
 	public Long getGameId() {
 		if (!tacticItemIsValid()) {
 			return null;
@@ -423,50 +420,32 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 
-	private class GetTacticsUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			String[] tmp = returnedObj.trim().split("[|]");
-			if (tmp.length < 2) {
-				showLimitDialog();   // This is also wrong step, because we should never reach this condition
-				return;
-			}
-
-			int count = tmp.length - 1;
-			List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
-			for (int i = 1; i <= count; i++) {
-				TacticItem tacticItem = new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON));
-				tacticItem.setUser(AppData.getUserName(getContext()));
-				tacticBatch.add(tacticItem);
-			}
-
-            new SaveTacticsBatchTask(dbTacticBatchSaveListener, tacticBatch).executeTask();
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
-				showLimitDialog();  // This should be the only way to show limit dialog for registered user
-			} else {
-				showSinglePopupDialog(resultMessage);
-			}
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			handleErrorRequest();
-		}
-	}
+//	private class GetTacticsUpdateListener extends ChessUpdateListener {
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			String[] tmp = returnedObj.trim().split(RestHelper.SYMBOL_ITEM_SPLIT);
+//			if (tmp.length < 2) {
+//				showLimitDialog();   // This is also wrong step, because we should never reach this condition
+//				return;
+//			}
+//		}
+//
+//		@Override
+//		public void errorHandle(Integer resultCode) {
+//			handleErrorRequest();
+//		}
+//	}
 
 	private void showAnswer() {
 		stopTacticsTimer();
 
-
         tacticItem.setWasShowed(true);
 
 		ChessBoardTactics.resetInstance();
-		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
+//		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
+		boardView.setGameActivityFace(GameTacticsScreenActivity.this);
+
 		tacticItem.setRetry(true);
 
 		getBoardFace().setupBoard(tacticItem.getFen());
@@ -507,31 +486,83 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	};
 
-	private class TacticsCorrectUpdateListener extends ChessUpdateListener {
+	private class TacticsUpdateListener extends ChessUpdateListener {
+		private int listenerCode;
+
+		private TacticsUpdateListener(int listenerCode) {
+			this.listenerCode = listenerCode;
+		}
 
 		@Override
 		public void updateData(String returnedObj) {
-			String[] tmp = returnedObj.split("[|]");
+			String[] tmp = returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT);
 
 			if (tmp.length < 2) { // "Success+||"   - means we reached limit and there is no tactics
 				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
 				return;
 			}
 
-			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
-                tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
+			switch (listenerCode){
+				case GET_TACTIC:
+					int count = tmp.length - 1;
+					List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
+					for (int i = 1; i <= count; i++) {
+						TacticItem tacticItem = new TacticItem(tmp[i].split(StaticData.SYMBOL_COLON));
+						tacticItem.setUser(AppData.getUserName(getContext()));
+						tacticBatch.add(tacticItem);
+					}
+
+					new SaveTacticsBatchTask(dbTacticBatchSaveListener, tacticBatch,
+							getContentResolver()).executeTask();
+					break;
+				case CORRECT_RESULT:
+					if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
+						tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
+					}
+
+					String title;
+					if (tacticItem.getResultItem() != null) {
+						title = getString(R.string.problem_solved, tacticItem.getResultItem().getUserRatingChange(),
+								tacticItem.getResultItem().getUserRating());
+					}else {
+						title = getString(R.string.problem_solved_);
+					}
+
+					showSolvedTacticPopup(title, false);
+
+					break;
+				case WRONG_RESULT:
+					if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
+						tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
+					}
+
+					if (tacticItem.getResultItem() != null) {
+						title = getString(R.string.wrong_score, tacticItem.getResultItem().getUserRatingChange(),
+								tacticItem.getResultItem().getUserRating());
+					} else {
+						title = getString(R.string.wrong_ex);
+					}
+
+					showWrongMovePopup(title);
+
+					tacticItem.setRetry(true); // set auto retry because we save tactic
+
+					break;
 			}
-
-            String title;
-            if (tacticItem.getResultItem() != null) {
-                title = getString(R.string.problem_solved, tacticItem.getResultItem().getUserRatingChange(),
-                        tacticItem.getResultItem().getUserRating());
-            }else {
-                title = getString(R.string.problem_solved_);
-            }
-
-			showSolvedTacticPopup(title, false);
+			gamePanelView.enableGameControls(true);
 		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			if (listenerCode == GET_TACTIC) {
+				if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
+					showLimitDialog();  // This should be the only way to show limit dialog for registered user
+				} else {
+					showSinglePopupDialog(resultMessage);
+				}
+			}
+		}
+
 
 		@Override
 		public void errorHandle(Integer resultCode) {
@@ -541,45 +572,23 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void handleErrorRequest() {
 		gamePanelView.enableGameControls(true);
-		gamePanelView.activateAnalysis(true);
 
 		noInternet = true;
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
 		loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
 	}
 
-	private class TacticsWrongUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			String[] tmp = returnedObj.split("[|]");
-			if (tmp.length < 2) { // "Success+||"   - means we reached limit and there is no tactics
-				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
-				return;
-			}
-
-			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
-                tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
-			}
-
-            String title;
-            if (tacticItem.getResultItem() != null) {
-                title = getString(R.string.wrong_score, tacticItem.getResultItem().getUserRatingChange(),
-                        tacticItem.getResultItem().getUserRating());
-            } else {
-                title = getString(R.string.wrong_ex);
-            }
-
-            showWrongMovePopup(title);
-
-			tacticItem.setRetry(true); // set auto retry because we save tactic
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			handleErrorRequest();
-		}
-	}
+//	private class TacticsWrongUpdateListener extends ChessUpdateListener {
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//		}
+//
+//		@Override
+//		public void errorHandle(Integer resultCode) {
+//			handleErrorRequest();
+//		}
+//	}
 
 
 	@Override
@@ -729,7 +738,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
-		boardView.setBoardFace(boardFace);
+//		boardView.setBoardFace(boardFace);
+		boardView.setGameActivityFace(GameTacticsScreenActivity.this);
+
 
 		boardFace.setupBoard(tacticItem.getFen());
 
@@ -750,8 +761,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
         firstRun = false;
 		gamePanelView.enableGameControls(true);
-		gamePanelView.activateAnalysis(false);
-
 	}
 
 	@Override
@@ -774,8 +783,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			stopTacticsTimer();
 			dismissDialogs();
 		} else if (view.getId() == R.id.retryBtn) {
-			tacticItem.setRetry(true);
-			setTacticToBoard(tacticItem);
+
+			if (AppData.isGuest(this) || noInternet) {
+				getNextTactic();
+			} else {
+				setTacticToBoard(tacticItem);
+			}
+            tacticItem.setRetry(true);
 			dismissDialogs();
 
 		} else if (view.getId() == R.id.solutionBtn) {
@@ -830,13 +844,13 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void loadOfflineTacticsBatch() {
         if (offlineBatchWasLoaded) {
             if (AppData.isGuest(this)) {
-				popupItem.setButtons(1);
 				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
+				getLastPopupFragment().setButtons(1);
                 return;
 			}
         }
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
-
+		// TODO move to AsyncTask
 		InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
 		try {
 			ByteArrayBuffer baf = new ByteArrayBuffer(50);
@@ -846,17 +860,18 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 
 			String input = new String(baf.toByteArray());
-			String[] tmp = input.split("[|]");
+			String[] tmp = input.split(RestHelper.SYMBOL_ITEM_SPLIT);
 			int count = tmp.length - 1;
 
 			List<TacticItem> tacticBatch = new ArrayList<TacticItem>(count);
 			for (int i = 1; i <= count; i++) {
-				TacticItem tacticItem = new TacticItem(tmp[i].split(":"));
+				TacticItem tacticItem = new TacticItem(tmp[i].split(RestHelper.SYMBOL_PARAMS_SPLIT));
 				tacticItem.setUser(DBDataManager.getUserName(getContext()));
 				tacticBatch.add(tacticItem);
 			}
 
-            new SaveTacticsBatchTask(dbTacticBatchSaveListener, tacticBatch).executeTask();
+            new SaveTacticsBatchTask(dbTacticBatchSaveListener, tacticBatch,
+					getContentResolver()).executeTask();
             offlineBatchWasLoaded = true;
 
 			inputStream.close();
@@ -871,19 +886,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			loadingView.setVisibility(show? View.VISIBLE: View.GONE);
-		}
-
-		@Override
 		public void updateData(TacticItem returnedObj) {
 			super.updateData(returnedObj);
 
             getNextTactic();
 		}
 	}
-
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
@@ -918,5 +926,20 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
     private boolean tacticItemIsValid() {
         return tacticItem != null;
     }
+
+	private void releaseResources() {
+//		tacticsTimer = null;
+		inflater = null;
+
+		getTacticsUpdateListener.releaseContext();
+		getTacticsUpdateListener = null;
+		tacticsCorrectUpdateListener.releaseContext();
+		tacticsCorrectUpdateListener = null;
+		tacticsWrongUpdateListener.releaseContext();
+		tacticsWrongUpdateListener = null;
+		dbTacticBatchSaveListener.releaseContext();
+		dbTacticBatchSaveListener = null;
+	}
+
 
 }

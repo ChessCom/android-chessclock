@@ -7,9 +7,7 @@ import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
-import com.chess.ui.interfaces.TacticBoardFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -17,7 +15,6 @@ import java.util.TreeSet;
 public class ChessBoardTacticsView extends ChessBoardBaseView {
 
 	private GameTacticsActivityFace gameTacticsActivityFace;
-	private TacticBoardFace boardFace;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -31,17 +28,11 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 		gameTacticsActivityFace = gameActivityFace;
 	}
 
-	@Override
-	protected void onBoardFaceSet(BoardFace boardFace) {
-		this.boardFace = (TacticBoardFace) boardFace;
-	}
-
-    @Override
-	public void afterMove() {
-        boardFace.setMovesCount(boardFace.getHply());
+    public void afterMove() {
+		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameActivityFace.invalidateGameScreen();
 
-		if (!boardFace.isAnalysis()) {
+		if (!getBoardFace().isAnalysis()) {
 			gameTacticsActivityFace.verifyMove();
         }
     }
@@ -52,7 +43,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawPieces(canvas, false, null);
+		drawPieces(canvas);
 
 		drawCoordinates(canvas);
 
@@ -98,19 +89,19 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
             int row = (trackY - trackY % square) / square;
 
             if (firstclick) {
-                from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-                if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
+                from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
+                if (getBoardFace().getPieces()[from] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[from]) {
                     pieceSelected = true;
                     firstclick = false;
                     invalidate();
                 }
             } else {
-                to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+                to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
                 pieceSelected = false;
                 firstclick = true;
                 boolean found = false;
 
-                TreeSet<Move> moves = boardFace.gen();
+                TreeSet<Move> moves = getBoardFace().gen();
                 Iterator<Move> moveIterator = moves.iterator();
 
                 Move move = null;
@@ -121,20 +112,20 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
                         break;
                     }
                 }
-                if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
-                        ((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
-                        (boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
+                if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.LIGHT)) ||
+                        ((to > 55) && (getBoardFace().getSide() == ChessBoard.DARK))) &&
+                        (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
                     gameActivityFace.showChoosePieceDialog(col, row);
                     return true;
                 }
-                if (found && boardFace.makeMove(move)) {
+                if (found && getBoardFace().makeMove(move)) {
                     invalidate();
                     afterMove();
-                } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
+                } else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
                     pieceSelected = true;
                     firstclick = false;
-                    from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+                    from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
                     invalidate();
                 } else {
                     invalidate();
@@ -156,11 +147,11 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         }
 
         track = false;
-        if (!boardFace.isAnalysis()) {
+        if (!getBoardFace().isAnalysis()) {
             if (finished ) // TODO probably never happens
                 return true;
 
-            if (boardFace.getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
+            if (getBoardFace().getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
                 return true;
             }
         }
@@ -181,15 +172,9 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         }
     };
 
-	@Override
-	public TacticBoardFace getBoardFace() {
-		return boardFace;
-	}
-
-    @Override
-	public void promote(int promote, int col, int row) {
+    public void promote(int promote, int col, int row) {
         boolean found = false;
-        TreeSet<Move> moves = boardFace.gen();
+        TreeSet<Move> moves = getBoardFace().gen();
         Iterator<Move> iterator = moves.iterator();
 
         Move move = null;
@@ -200,13 +185,13 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
                 break;
             }
         }
-        if (found && boardFace.makeMove(move)) {
+        if (found && getBoardFace().makeMove(move)) {
             invalidate();
             afterMove();
-        } else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
+        } else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
             pieceSelected = true;
             firstclick = false;
-            from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+            from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
             invalidate();
         } else {
             invalidate();
@@ -226,7 +211,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
     }
 
 
-	@Override
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}

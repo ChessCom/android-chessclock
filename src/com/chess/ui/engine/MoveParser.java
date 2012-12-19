@@ -41,6 +41,7 @@ public class MoveParser {
 	public static final String NUMB_6 = "6";
 	public static final String NUMB_7 = "7";
 	public static final String NUMB_8 = "8";
+	public static final String POSITION_DIVIDER = "|";
 	private static final String FEN_DIVIDER = "[/]";
 	private static final String REGEXP_NUMBERS = "[0-9]";
 	public static final String KINGSIDE_CASTLING = "O-O";
@@ -270,7 +271,6 @@ public class MoveParser {
 		return BNToLetter(ChessBoard.getColumn(pos)) + BNToNum(ChessBoard.getRow(pos));
 	}
 
-	//    public static void fenParse(String fen, ChessBoard b) {
 	public static void fenParse(String fen, BoardFace b) {
 		String[] FEN = fen.split(FEN_DIVIDER);
 		int i, j, p = 0;
@@ -287,7 +287,7 @@ public class MoveParser {
 					b.setXside(0);
 				}
 			}
-			String[] f = pos.trim().split("|");
+			String[] f = pos.trim().split(POSITION_DIVIDER);
 			for (j = 1; j < f.length; j++) {
 				if (f[j].matches(REGEXP_NUMBERS)) {
 					int cnt = Integer.parseInt(f[j]);

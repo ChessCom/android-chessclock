@@ -35,6 +35,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -179,7 +180,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
 			Log.d(TAG, " updating board");
-			context.sendBroadcast(new Intent(IntentConstants.BOARD_UPDATE));
+			Intent gameUpdateIntent = new Intent(IntentConstants.BOARD_UPDATE);
+			gameUpdateIntent.putExtra(BaseGameItem.GAME_ID, gameId);
+			context.sendBroadcast(gameUpdateIntent);
 		} else {
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 

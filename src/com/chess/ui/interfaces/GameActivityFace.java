@@ -36,7 +36,7 @@ public interface GameActivityFace {
 
 	/**
 	 *
-	 * @param message
+	 * @param message to be shown
 	 * @param need2Finish tells the activity that it needs to finish
 	 */
 	void onGameOver(String message, boolean need2Finish);
@@ -48,4 +48,6 @@ public interface GameActivityFace {
 	void onCheck();
 
 	boolean currentGameExist();
+
+	BoardFace getBoardFace();
 }

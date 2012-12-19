@@ -24,12 +24,7 @@ public class RestHelper {
 
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
 //	public static final String BASE_URL = "http://www.chess-5.com";
-
-	public static final String HOST_PRODUCTION = "chess.com";
-	public static final String HOST_TEST = "chess-2.com";
-	public static final String HOST = HOST_PRODUCTION; // switch production/test server
-
-	public static final String BASE_URL = "http://www." + HOST;
+	public static final String BASE_URL = "http://www.chess.com";
 	public static final String API_V5 = "/api/v5";
 	public static final String API_V4 = "/api/v4";
 	public static final String API_V3 = "/api/v3";
@@ -173,7 +168,7 @@ public class RestHelper {
 	public static final String R_USER_TOKEN = "user_token";
 	public static final String R_FB_USER_HAS_NO_ACCOUNT = "Facebook user has no Chess.com account";
 	public static final String SYMBOL_PARAMS_SPLIT = ":";
-	public static final String SYMBOL_PARAMS_SEPARATOR = "[+]";
+	public static final String SYMBOL_ITEM_SPLIT = "[|]";
 	public static final String R_PLEASE_LOGIN_AGAIN = "Please login again.";
 	public static final String R_INVALID_PASS = "Invalid password.";
 	public static final String R_YOU_ARE_ON_VACATION = "You are on vacation.";
@@ -181,13 +176,12 @@ public class RestHelper {
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
-	public static final boolean IS_TEST_SERVER_MODE = !HOST.equals(HOST_PRODUCTION);
+	public static final boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://www.chess.com");
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 	public static final String AUTHORIZATION_HEADER_VALUE = "Basic Ym9iYnk6ZmlzY2hlcg==";
 
 
-//	The echess challenges response looks like the following:
-//	The echess challenges response looks like the following:
+//	The eches challenges response looks like the following:
 //	<
 //	<game_seek_id>: The game id
 //	<game_name>: The seek name - can be null
@@ -352,20 +346,12 @@ public class RestHelper {
 		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
 //				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //				+ "&goto=http%3A%2F%2Fwww."
-//				+ LccHelper.HOST + "%2Fmembership.html" + param;
+//				+ LccHolder.HOST + "%2Fmembership.html" + param;
 	}
 
 	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 		String fullUrl = formUrl(loadItem.getRequestParams());
 		return loadItem.getLoadPath() + fullUrl;
-	}
-
-	public static String getOnlineGameLink(long gameId) {
-		return "http://www.chess.com/echess/game?id=" + gameId;
-	}
-
-	public static String getLiveGameLink(long gameId) {
-		return "http://www.chess.com/livechess/game?id=" + gameId;
 	}
 }

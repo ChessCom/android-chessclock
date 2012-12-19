@@ -24,6 +24,10 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	protected int result;
 
 	public AbstractUpdateTask(TaskUpdateInterface<ItemType> taskFace) {
+		if (taskFace == null){ // we may start task right after another but listener at this time will be already killed
+			cancel(true);
+			return;
+		}
 		this.taskFace = taskFace;
 		useList = taskFace.useList();
 		result = StaticData.EMPTY_DATA;
@@ -54,7 +58,6 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 
 	protected void blockScreenRotation(boolean block){
 		try {
-
 			Context context = getTaskFace().getMeContext();
 			if (context instanceof Activity) {
 				Activity activity = (Activity) context;
@@ -86,13 +89,6 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	}
 
 	@Override
-	protected void onCancelled() {
-		super.onCancelled();
-
-		releaseTaskFace();
-	}
-
-	@Override
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
 		blockScreenRotation(false);
@@ -113,18 +109,18 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 				getTaskFace().errorHandle(result);
 			}
 
-			releaseTaskFace();
+//			releaseTaskFace();
 		} catch (IllegalStateException ex) {
 			Log.d(TAG, "getTaskFace() at onPostExecute fails, due to killed state" + ex.toString());
 		}
 	}
 
-	protected void releaseTaskFace() {
-		if (taskFace != null) {
-			taskFace.releaseContext();
-			taskFace = null;
-		}
-	}
+//	protected void releaseTaskFace() {  // We are manually release resources in activity
+//		if (taskFace != null) {
+//			taskFace.releaseContext();
+//			taskFace = null;
+//		}
+//	}
 
 	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException{
 		if (taskFace == null ) {

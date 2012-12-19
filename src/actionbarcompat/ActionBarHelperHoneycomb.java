@@ -30,6 +30,7 @@ import com.chess.R;
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private Menu mOptionsMenu;
 	private View mRefreshIndeterminateProgressView = null;
+	private boolean showActionRefresh;
 
 	protected ActionBarHelperHoneycomb(ActionBarActivity activity) {
 		super(activity);
@@ -72,6 +73,17 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			} else {
 				refreshItem.setActionView(null);
 			}
+			hideRefreshIcon(refreshItem, refreshing);
+		}
+	}
+
+	/**
+	 * Free space in actionBar for title. Don't change visibility if we have visible button.
+	 * @param refreshItem contains menuItem with icon
+	 * @param refreshing currently refreshing state
+	 */
+	private void hideRefreshIcon(MenuItem refreshItem, boolean refreshing){
+		if (!showActionRefresh) {
 			refreshItem.setVisible(refreshing);
 		}
 	}
@@ -89,6 +101,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	@Override
 	public void showMenuItemById(int itemId, boolean visible, Menu menu) {
 		if(itemId == R.id.menu_refresh){
+			showActionRefresh = visible;
 			menu.findItem(itemId).setIcon(visible? R.drawable.ic_action_refresh
 					:R.drawable.empty);
 		}else {

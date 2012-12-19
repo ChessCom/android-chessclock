@@ -18,10 +18,10 @@ public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {
 	private ContentResolver contentResolver;
 	private QueryParams params;
 
-	public LoadDataFromDbTask(TaskUpdateInterface<Cursor> taskFace, QueryParams params) {
+	public LoadDataFromDbTask(TaskUpdateInterface<Cursor> taskFace, QueryParams params, ContentResolver resolver) {
 		super(taskFace);
 		this.params = params;
-		contentResolver = taskFace.getMeContext().getContentResolver();
+		this.contentResolver = resolver;
 	}
 
 	@Override

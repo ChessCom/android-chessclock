@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
@@ -13,28 +14,18 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.utilities.ChessComApiParser;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 
 
@@ -45,18 +36,19 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
 	private static String[] arguments = new String[2];
 	private final LoadItem loadItem;
 
-	public SaveEchessCurrentGamesListTask(TaskUpdateInterface<GameListCurrentItem> taskFace, List<GameListCurrentItem> currentItems) {
+	public SaveEchessCurrentGamesListTask(TaskUpdateInterface<GameListCurrentItem> taskFace, List<GameListCurrentItem> currentItems,
+										  ContentResolver resolver) {
         super(taskFace);
 		itemList = currentItems;
-
-		contentResolver = taskFace.getMeContext().getContentResolver();
+		this.contentResolver = resolver;
 		loadItem = new LoadItem();
-
 	}
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		String userName = AppData.getUserName(getTaskFace().getMeContext());
+		Context context = getTaskFace().getMeContext();
+		String userName = AppData.getUserName(context);
+		String userToken = AppData.getUserToken(context);
 		for (GameListCurrentItem currentItem : itemList) {
 
 			arguments[0] = String.valueOf(userName);
@@ -74,7 +66,7 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
 
 			cursor.close();
 
-			updateOnlineGame(currentItem.getGameId(), userName);
+			updateOnlineGame(currentItem.getGameId(), userName, userToken);
 		}
 
         result = StaticData.RESULT_OK;
@@ -82,14 +74,14 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
         return result;
     }
 
-	private void updateOnlineGame(long gameId, String userName) {
+	private void updateOnlineGame(long gameId, String userName, String userToken) {
+
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getTaskFace().getMeContext()));
+		loadItem.addRequestParams(RestHelper.P_ID, userToken);
 		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 
 		GameOnlineItem currentGame = getData(RestHelper.formCustomRequest(loadItem));
 		if (currentGame != null) {
-//			ContentValues values = DBDataManager.putGameOnlineItemToValues(currentGame, userName);
 			DBDataManager.updateOnlineGame(contentResolver, currentGame, userName);
 		}
 
@@ -133,7 +125,6 @@ public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListC
 			Log.e(TAG, "Error while retrieving data from " + url, e);
 			result = StaticData.UNKNOWN_ERROR;
 		} finally {
-//			httpClient.getConnectionManager().shutdown();
 			if (connection != null) {
 				connection.disconnect();
 			}

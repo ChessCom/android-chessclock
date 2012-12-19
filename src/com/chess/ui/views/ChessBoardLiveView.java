@@ -18,17 +18,17 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 
 	@Override
 	protected boolean isGameOver() {
-		if (!boardFace.isPossibleToMakeMoves()) {
-			if (boardFace.inCheck(boardFace.getSide())) {
-				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
+		if (!getBoardFace().isPossibleToMakeMoves()) {
+			if (getBoardFace().inCheck(getBoardFace().getSide())) {
+				getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "#";
 				gameActivityFace.invalidateGameScreen();
 			}
 			finished = true; // todo: probably it is better to set Finished flag by lcc.onGameEnded event
 			return true;
 		}
 
-		if (boardFace.inCheck(boardFace.getSide())) {
-			boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
+		if (getBoardFace().inCheck(getBoardFace().getSide())) {
+			getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "+";
 			gameActivityFace.invalidateGameScreen();
 			gameActivityFace.onCheck();
 		}

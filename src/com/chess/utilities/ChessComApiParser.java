@@ -17,7 +17,7 @@ public class ChessComApiParser {
 	//Challenge a friend
 	public static String[] getFriendsParse(String result) {
 		if (result.trim().length() > RestHelper.R_SUCCESS_P.length())
-			return result.substring(9).trim().split("[|]");
+			return result.substring(9).trim().split(RestHelper.SYMBOL_ITEM_SPLIT);
 		else
 			return new String[]{StaticData.SYMBOL_EMPTY};
 	}
@@ -25,7 +25,7 @@ public class ChessComApiParser {
 	public static ArrayList<GameListChallengeItem> getChallengesGames(String result) {
 		ArrayList<GameListChallengeItem> output = new ArrayList<GameListChallengeItem>();
 
-		String[] g = result.split("[|]");
+		String[] g = result.split(RestHelper.SYMBOL_ITEM_SPLIT);
 		int count = g.length - 1;
 
 		int i, a;

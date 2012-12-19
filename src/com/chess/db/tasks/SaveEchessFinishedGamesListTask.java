@@ -19,11 +19,11 @@ public class SaveEchessFinishedGamesListTask extends AbstractUpdateTask<GameList
     private ContentResolver contentResolver;
 	private static String[] arguments = new String[2];
 
-	public SaveEchessFinishedGamesListTask(TaskUpdateInterface<GameListFinishedItem> taskFace, List<GameListFinishedItem> finishedItems) {
+	public SaveEchessFinishedGamesListTask(TaskUpdateInterface<GameListFinishedItem> taskFace,
+										   List<GameListFinishedItem> finishedItems, ContentResolver resolver) {
         super(taskFace);
 		itemList = finishedItems;
-
-		contentResolver = taskFace.getMeContext().getContentResolver();
+		this.contentResolver = resolver;
     }
 
     @Override

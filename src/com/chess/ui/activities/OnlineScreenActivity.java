@@ -2,11 +2,9 @@ package com.chess.ui.activities;
 
 import android.app.AlertDialog;
 import android.content.*;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,11 +55,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineUpdateListener challengeInviteUpdateListener;
 	private OnlineUpdateListener acceptDrawUpdateListener;
 	private LoadItem selectedLoadItem;
-	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter; // test
+	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private SectionedAdapter sectionedAdapter;
-//	private List<AbstractUpdateTask<String, LoadItem>> taskPool;
 	private GameListCurrentItem gameListCurrentItem;
 	private GameListChallengeItem gameListChallengeItem;
 	private OnlineUpdateListener vacationStatusUpdateListener;
@@ -73,12 +70,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
-	private CursorContentObserver cursorContentObserver;
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private boolean onlineCurrentGamesLoaded;
-	private boolean onlineFinishedGamesLoaded;
+	private boolean hostUnreachable;
 
 
 	@Override
@@ -137,24 +132,21 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		if (!isRestarted && AppUtils.isNetworkAvailable(this)) {
+		if (AppUtils.isNetworkAvailable(this)) {
 			updateVacationStatus();
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
+			updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 		} else {
 			emptyView.setText(R.string.no_network);
 			showEmptyView(true);
 		}
 
 		if (DBDataManager.haveSavedOnlineCurrentGame(this)) {
-			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getEchessCurrentListGamesParams(this)).executeTask();
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(this)).executeTask();
+			loadDbGames();
 		}
 	}
 
 	private void init() {
 		selectedLoadItem = new LoadItem();
-
-		cursorContentObserver = new CursorContentObserver();
 
 		challengeInviteUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.INVITE);
 		acceptDrawUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.DRAW);
@@ -172,7 +164,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
-		cleanResources();
+		releaseResources();
 	}
 
 	private class SaveCurrentGamesListUpdateListener extends  ActionBarUpdateListener<GameListCurrentItem> {
@@ -188,11 +180,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(GameListCurrentItem returnedObj) {
-			if (!onlineCurrentGamesLoaded) {
-				new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getEchessCurrentListGamesParams(getContext())).executeTask();
-			} else {
-				updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
-			}
+			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getEchessCurrentListGamesParams(getContext()),
+					getContentResolver()).executeTask();
 		}
 	}
 
@@ -209,9 +198,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(GameListFinishedItem returnedObj) {
-			if (!onlineFinishedGamesLoaded) {
-				new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(getContext())).executeTask();
-			}
+			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(getContext()),
+					getContentResolver()).executeTask();
 		}
 	}
 
@@ -236,18 +224,19 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			returnedObj.registerContentObserver(cursorContentObserver);
-
 			switch (gameType){
 				case CURRENT:
-					onlineCurrentGamesLoaded = true;
 					currentGamesCursorAdapter.changeCursor(returnedObj);
-
-					updateStartingType(GameOnlineItem.CHALLENGES_TYPE);
+					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable){
+						updateListStartFromType(GameOnlineItem.CHALLENGES_TYPE);
+					} else {
+						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+								DbHelper.getEchessFinishedListGamesParams(getContext()),
+								getContentResolver()).executeTask();
+					}
 
 					break;
 				case FINISHED:
-					onlineFinishedGamesLoaded = true;
 					finishedGamesCursorAdapter.changeCursor(returnedObj);
 					break;
 			}
@@ -262,27 +251,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				emptyView.setText(R.string.no_network);
 			}
 			showEmptyView(true);
-		}
-	}
-
-	private class CursorContentObserver extends ContentObserver {// TODO move to activity implementation
-
-		public CursorContentObserver() {
-			super(handler);
-		}
-
-		@Override
-		public void onChange(boolean selfChange) {
-			super.onChange(selfChange);
-//			showToast("cursor changed");
-			Log.d("TEST", "Cursor changed, self = " + selfChange);
-//			currentGamesCursorAdapter.notifyDataSetChanged();
-//			finishedGamesCursorAdapter.notifyDataSetChanged();
-		}
-
-		@Override
-		public boolean deliverSelfNotifications() {
-			return false;
 		}
 	}
 
@@ -311,32 +279,37 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			switch (itemCode) {
 				case GameOnlineItem.CURRENT_TYPE:
+					hostUnreachable = false;
 					List<GameListCurrentItem> listCurrentItems = ChessComApiParser.getCurrentOnlineGames(returnedObj);
 
-					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems).executeTask();
+					new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, listCurrentItems,
+							getContentResolver()).executeTask();
 					break;
 				case GameOnlineItem.CHALLENGES_TYPE:
+					hostUnreachable = false;
 					challengesGamesAdapter.setItemsList(ChessComApiParser.getChallengesGames(returnedObj));
-					updateStartingType(GameOnlineItem.FINISHED_TYPE);
+					updateListStartFromType(GameOnlineItem.FINISHED_TYPE);
 					break;
 				case GameOnlineItem.FINISHED_TYPE:
+					hostUnreachable = false;
 					List<GameListFinishedItem> finishedItems = ChessComApiParser.getFinishedOnlineGames(returnedObj);
 
-					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems).executeTask();
+					new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedItems,
+							getContentResolver()).executeTask();
 					break;
 				case INVITE:
 					showToast(successToastMsgId);
-					updateStartingType(GameOnlineItem.CURRENT_TYPE);
+					updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 					break;
 				case DRAW:
-					updateStartingType(GameOnlineItem.CURRENT_TYPE);
+					updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 					break;
 				case VACATION:
 					onVacation = returnedObj.contains(RestHelper.V_ONE);
 					break;
 				case VACATION_LEAVE:
 					onVacation = false;
-					updateStartingType(GameOnlineItem.CURRENT_TYPE);
+					updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 					break;
 			}
 		}
@@ -358,13 +331,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (itemCode == GameOnlineItem.CURRENT_TYPE ||
-					itemCode == GameOnlineItem.CHALLENGES_TYPE || itemCode == GameOnlineItem.FINISHED_TYPE) {
+			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
+					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
 				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
-					new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-							DbHelper.getEchessCurrentListGamesParams(getContext())).executeTask();
-					new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-							DbHelper.getEchessFinishedListGamesParams(getContext())).executeTask();
+					showToast(R.string.host_unreachable_load_local);
+					hostUnreachable = true;
+					loadDbGames();
 				}
 			}
 		}
@@ -603,7 +575,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private class GamesUpdateReceiver extends BroadcastReceiver  {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			updateStartingType(GameOnlineItem.CURRENT_TYPE);
+			updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 		}
 	}
 
@@ -622,7 +594,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 	}
 
-	private void updateStartingType(int pos) {
+	private void updateListStartFromType(int pos) {
 		if (!AppUtils.isNetworkAvailable(this)) {
 			return;
 		}
@@ -634,25 +606,31 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, userToken);
 			selectedLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 
-			new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem);
 		} else if (pos == GameOnlineItem.CHALLENGES_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_CHALLENGES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, userToken);
 
-			new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem);
 		} else if (pos == GameOnlineItem.FINISHED_TYPE) {
 			selectedLoadItem.setLoadPath(RestHelper.ECHESS_FINISHED_GAMES);
 			selectedLoadItem.addRequestParams(RestHelper.P_ID, userToken);
-
-			new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem);
 		}
+		new GetStringObjTask(new OnlineUpdateListener(pos)).executeTask(selectedLoadItem);
+	}
+
+	private void loadDbGames() {
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
+				DbHelper.getEchessCurrentListGamesParams(getContext()),
+				getContentResolver()).executeTask();
+		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+				DbHelper.getEchessFinishedListGamesParams(getContext()),
+				getContentResolver()).executeTask();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
-				updateStartingType(GameOnlineItem.CURRENT_TYPE);
+				updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 				updateVacationStatus();
 				break;
 			case R.id.menu_new_game:
@@ -662,14 +640,22 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void cleanResources() {
+	private void releaseResources() {
+		challengeInviteUpdateListener.releaseContext();
 		challengeInviteUpdateListener = null;
+		acceptDrawUpdateListener.releaseContext();
 		acceptDrawUpdateListener = null;
+		vacationStatusUpdateListener.releaseContext();
 		vacationStatusUpdateListener = null;
+		vacationLeaveStatusUpdateListener.releaseContext();
 		vacationLeaveStatusUpdateListener = null;
+		saveCurrentGamesListUpdateListener.releaseContext();
 		saveCurrentGamesListUpdateListener = null;
+		saveFinishedGamesListUpdateListener.releaseContext();
 		saveFinishedGamesListUpdateListener = null;
+		currentGamesCursorUpdateListener.releaseContext();
 		currentGamesCursorUpdateListener = null;
+		finishedGamesCursorUpdateListener.releaseContext();
 		finishedGamesCursorUpdateListener = null;
 	}
 

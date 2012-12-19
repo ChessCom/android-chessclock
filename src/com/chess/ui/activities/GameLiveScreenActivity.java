@@ -26,6 +26,7 @@ import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -151,7 +152,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		boardView.setBoardFace(ChessBoardLive.getInstance(this));
+//		boardView.setBoardFace(getBoardFace());
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
@@ -729,6 +730,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		return getLccHolder().getCurrentGame() != null;
 	}
 
+	@Override
+	public BoardFace getBoardFace() {
+		return ChessBoardLive.getInstance(this);
+	}
+
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
 		if (getBoardFace().isReside()) {
 
@@ -819,7 +825,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	protected void restoreGame() {
 		ChessBoardLive.resetInstance();
-		boardView.setBoardFace(ChessBoardLive.getInstance(this));
+//		boardView.setBoardFace(getBoardFace());
 		boardView.setGameActivityFace(this);
 		onGameStarted();
 		getBoardFace().setJustInitialized(false);

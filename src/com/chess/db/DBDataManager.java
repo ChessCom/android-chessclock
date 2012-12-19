@@ -215,8 +215,7 @@ public class DBDataManager {
 
         cursor.moveToFirst();
         TacticItem tacticItem = getTacticItemFromCursor(cursor);
-
-        cursor.close();
+		cursor.close();
 
         // set result item
         TacticItem.TacticResultItem resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
@@ -361,6 +360,7 @@ public class DBDataManager {
 //		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
 		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
 		dataObj.setGameResult(getInt(cursor, DBConstants.V_GAME_RESULT));
+
 		return dataObj;
 	}
 

@@ -109,7 +109,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		@Override
 		public void updateData(String returnedObj) {
 			recent.setVisibility(View.VISIBLE);
-			item = new VideoItem(returnedObj.split("[|]")[2].split("<->"));
+			item = new VideoItem(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
 			title.setText(item.getTitle());
 			desc.setText(item.getDescription());
 

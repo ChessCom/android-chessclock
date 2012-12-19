@@ -20,12 +20,12 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
 	private final List<TacticItem> tacticsBatch;
 	private static String[] arguments = new String[2];
 
-	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem> taskFace, List<TacticItem> tacticsBatch) {
+	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem> taskFace, List<TacticItem> tacticsBatch,
+								ContentResolver resolver) {
         super(taskFace);
 		this.tacticsBatch = new ArrayList<TacticItem>();
 		this.tacticsBatch.addAll(tacticsBatch);
-
-		contentResolver = taskFace.getMeContext().getContentResolver();
+		this.contentResolver = resolver;
     }
 
     @Override

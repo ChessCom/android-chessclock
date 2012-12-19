@@ -22,6 +22,7 @@ import com.chess.model.GameOnlineItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
@@ -74,7 +75,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+//		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		boardView.setGameActivityFace(this);
 	}
 
@@ -97,7 +98,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		super.onResume();
 
 		ChessBoardOnline.resetInstance();
-		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+//		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+		boardView.setGameActivityFace(GameFinishedScreenActivity.this);
+
 		getBoardFace().setMode(AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
 		getOnlineGame(gameId);
@@ -202,6 +205,11 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	@Override
+	public BoardFace getBoardFace() {
+		return ChessBoardOnline.getInstance(this);
+	}
+
+	@Override
 	public void updateAfterMove() {
 	}
 
@@ -228,7 +236,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 			for (GameListCurrentItem currentGame : currentGames) {
 				if (currentGame.getGameId() != gameId) {
-					boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
+//					boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
+					boardView.setGameActivityFace(GameFinishedScreenActivity.this);
+
 					getBoardFace().setAnalysis(false);
 					getOnlineGame(currentGame.getGameId()); // if next game
 					return;
@@ -360,7 +370,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	@Override
 	protected void restoreGame() {
 		ChessBoardOnline.resetInstance();
-		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+//		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+		boardView.setGameActivityFace(GameFinishedScreenActivity.this);
+
 
 		adjustBoardForGame();
 	}

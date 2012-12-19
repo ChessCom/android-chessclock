@@ -48,9 +48,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
-//	protected PopupCustomViewFragment endPopupFragment;
-
-
 	protected CharSequence[] menuOptionsItems;
 	protected GamePanelView gamePanelView;
 	private ChessBoardBaseView boardView;
@@ -246,9 +243,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		showToast(R.string.check);
 	}
 
-	protected BoardFace getBoardFace(){
-		return boardView.getBoardFace();
-	}
+//	public BoardFace getBoardFace(){
+//		return boardView.getBoardFace();
+////		return boardView.getBoardFace();
+//	}
 
 	@Override
 	public void onClick(View view) {

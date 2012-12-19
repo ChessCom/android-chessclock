@@ -2,7 +2,6 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppData;
@@ -25,21 +24,21 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 	protected abstract boolean need2ShowSubmitButtons();
 
-	@Override
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
 
-		updatePlayerNames(gameActivityFace.getWhitePlayerName(), gameActivityFace.getBlackPlayerName());
+		whiteUserName = gameActivityFace.getWhitePlayerName();
+		blackUserName = gameActivityFace.getBlackPlayerName();
+
 	}
 
-	@Override
 	public void afterMove() {
-		boardFace.setMovesCount(boardFace.getHply());
+		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameActivityFace.invalidateGameScreen();
 
-		if (!boardFace.isAnalysis()) {
+		if (!getBoardFace().isAnalysis()) {
 			if (need2ShowSubmitButtons()) {
-				boardFace.setSubmit(true);
+				getBoardFace().setSubmit(true);
 				gameActivityFace.showSubmitButtonsLay(true);
 			} else {
 				gameActivityFace.updateAfterMove();
@@ -56,19 +55,17 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 		drawBoard(canvas);
 
-		if (gameActivityFace != null && boardFace != null) {
-			drawPieces(canvas, false, null);
-
-			drawHighlight(canvas);
-
-			drawDragPosition(canvas);
-
-			drawTrackballDrag(canvas);
-
-			drawCapturedPieces();
-		}
+		drawPieces(canvas);
 
 		drawCoordinates(canvas);
+
+		drawHighlight(canvas);
+
+		drawDragPosition(canvas);
+
+		drawTrackballDrag(canvas);
+
+		drawCapturedPieces();
 	}
 
 	@Override
@@ -103,19 +100,19 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			int row = (trackY - trackY % square) / square;
 
 			if (firstclick) {
-				from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
-				if (boardFace.getPieces()[from] != 6 && boardFace.getSide() == boardFace.getColor()[from]) {
+				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
+				if (getBoardFace().getPieces()[from] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[from]) {
 					pieceSelected = true;
 					firstclick = false;
 					invalidate();
 				}
 			} else {
-				to = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+				to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 				pieceSelected = false;
 				firstclick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = boardFace.gen();
+				TreeSet<Move> moves = getBoardFace().gen();
 				Iterator<Move> moveIterator = moves.iterator();
 
 				Move move = null;
@@ -126,20 +123,20 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 						break;
 					}
 				}
-				if ((((to < 8) && (boardFace.getSide() == ChessBoard.LIGHT)) ||
-						((to > 55) && (boardFace.getSide() == ChessBoard.DARK))) &&
-						(boardFace.getPieces()[from] == ChessBoard.PAWN) && found) {
+				if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.LIGHT)) ||
+						((to > 55) && (getBoardFace().getSide() == ChessBoard.DARK))) &&
+						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
 					gameActivityFace.showChoosePieceDialog(col, row);
 					return true;
 				}
-				if (found && boardFace.makeMove(move)) {
+				if (found && getBoardFace().makeMove(move)) {
 					invalidate();
 					afterMove();
-				} else if (boardFace.getPieces()[to] != 6 && boardFace.getSide() == boardFace.getColor()[to]) {
+				} else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
 					firstclick = false;
-					from = ChessBoard.getPositionIndex(col, row, boardFace.isReside());
+					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 					invalidate();
 				} else {
 					invalidate();
@@ -157,7 +154,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		}
 
 		if (square == 0) {
-			return processTouchEvent(event);
+			return super.onTouchEvent(event);
 		}
 
         if (isLocked()) {
@@ -165,19 +162,19 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		}
 
 		track = false;
-		if (!boardFace.isAnalysis()) {
-			if (AppData.isFinishedEchessGameMode(boardFace) || finished || boardFace.isSubmit() ||
-					(boardFace.getHply() < boardFace.getMovesCount())) {
+		if (!getBoardFace().isAnalysis()) {
+			if (AppData.isFinishedEchessGameMode(getBoardFace()) || finished || getBoardFace().isSubmit() ||
+					(getBoardFace().getHply() < getBoardFace().getMovesCount())) {
 				return true;
 			}
 
 			if(whiteUserName.equals(StaticData.SYMBOL_EMPTY) || blackUserName.equals(StaticData.SYMBOL_EMPTY))
 				return true;
 
-			if (whiteUserName.equals(userName)  && !boardFace.isWhiteToMove()) {
+			if (whiteUserName.equals(userName)  && !getBoardFace().isWhiteToMove()) {  // TODO check reside
 				return true;
 			}
-			if (blackUserName.equals(userName) && boardFace.isWhiteToMove()) {
+			if (blackUserName.equals(userName) && getBoardFace().isWhiteToMove()) {
 				return true;
 			}
 
@@ -196,7 +193,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 	}
 
 //	public void updateMoves(String newMove) {
-//		int[] moveFT = MoveParser.parse(getBoardFace(), newMove);
+//		int[] moveFT = MoveParser.parse(getBoardFace()(), newMove);
 //		if (moveFT.length == 4) {
 //			Move move;
 //			if (moveFT[3] == 2)
@@ -212,9 +209,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 //	}
 
 	public void updatePlayerNames(String whitePlayerName, String blackPlayerName) {
-		if (!TextUtils.isEmpty(whitePlayerName) && !TextUtils.isEmpty(blackPlayerName)) {
-			whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
-			blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
-		}
+		whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
+		blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
 	}
 }

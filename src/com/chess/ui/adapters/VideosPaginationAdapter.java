@@ -64,7 +64,6 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
 
 					String responseText =  EntityUtils.toString(response.getEntity());
 					Log.d(TAG, "received raw JSON response = " + responseText);
-//                    inputStream = entity.getContent();
 
                     itemList = parseJson2List(responseText);
                     if(itemList != null && itemList.size() > 0){
@@ -97,7 +96,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem> {
 
 	private List<VideoItem> parseJson2List(String returnedObj) {
 		List<VideoItem> itemList = new ArrayList<VideoItem>();
-		String[] responseArray = returnedObj.trim().split("[|]");
+		String[] responseArray = returnedObj.trim().split(RestHelper.SYMBOL_ITEM_SPLIT);
 		if (responseArray.length == 3) {
 			responseArray = responseArray[2].split("<--->");
 		} else {

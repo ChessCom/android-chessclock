@@ -86,6 +86,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
+	protected void onStart() {
+		if (HONEYCOMB_PLUS_API) {
+			adjustActionBar();
+		}
+		super.onStart();
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		if (!HONEYCOMB_PLUS_API) {
@@ -93,13 +101,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	@Override
-	protected void onStart() {
-		if (HONEYCOMB_PLUS_API) {
-			adjustActionBar();
-		}
-		super.onStart();
-	}
+
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {

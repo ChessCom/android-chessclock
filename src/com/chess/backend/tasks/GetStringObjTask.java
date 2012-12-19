@@ -101,7 +101,6 @@ public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 				getTaskFace().errorHandle(result);
 			}
 
-			releaseTaskFace();
 		} catch (IllegalStateException ex) {
 			Log.d(TAG, "getTaskFace() at onPostExecute fails, due to killed state" + ex.toString());
 		}

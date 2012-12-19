@@ -28,8 +28,13 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 
 	public CheckUpdateTask(TaskUpdateInterface<Boolean> taskFace) {
 		super(taskFace);
-		context = taskFace.getMeContext();
-		preferencesEditor = AppData.getPreferences(taskFace.getMeContext()).edit();
+		try {
+			context = getTaskFace().getMeContext();
+			preferencesEditor = AppData.getPreferences(getTaskFace().getMeContext()).edit();
+		} catch (IllegalStateException ex) {
+			cancel(true);
+			Log.e("CheckUpdateTask", ex.toString());
+		}
 	}
 
 	@Override
