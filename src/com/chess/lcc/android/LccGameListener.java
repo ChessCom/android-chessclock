@@ -47,7 +47,7 @@ public class LccGameListener implements GameListener {
     }
 
 	public void onGameReset(Game game) {
-		Log.d(TAG, "GAME LISTENER: onGameReset id=" + game.getId());
+		Log.d(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
 		// check isMyTurn
 
@@ -60,7 +60,7 @@ public class LccGameListener implements GameListener {
 	}
 
 	public void onGameUpdated(Game game) {
-		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId());
+		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
 		// check isMyTurn
 
@@ -175,7 +175,7 @@ public class LccGameListener implements GameListener {
 		lccHolder.processFullGame(game);
 	}
 
-	private void doUpdateGame(boolean checkMoves, Game game) {
+	 private void doUpdateGame(boolean checkMoves, Game game) {
 
 		// todo: maybe create two separate methods: new move check and draw check
 
@@ -186,8 +186,22 @@ public class LccGameListener implements GameListener {
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
 			lccHolder.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
 		}
-		// todo: check draw etc.
 
+		final String opponentName = lccHolder.getOpponentName();
+		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?
+			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
+					+ ", offerer=" + opponentName + ", game=" + game);
+
+			if (lccHolder.isActivityPausedMode()) {
+				final GameEvent drawOfferedEvent = new GameEvent();
+				drawOfferedEvent.setEvent(GameEvent.Event.DRAW_OFFER);
+				drawOfferedEvent.setGameId(game.getId());
+				drawOfferedEvent.setDrawOffererUsername(opponentName);
+				lccHolder.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
+			} else {
+				lccHolder.getLccEventListener().onDrawOffered(opponentName);
+			}
+		}
 	}
 
     private void doEndGame(Game game) {
@@ -314,7 +328,7 @@ public class LccGameListener implements GameListener {
                         ", game=" + game);
     }*/
 
-    public void onDrawOffered(Game game, User offerer) {
+    /*public void onDrawOffered(Game game, User offerer) {
         Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
                         ", game.id=" + game.getId() + ", offerer=" + offerer.getUsername() + ", game=" + game);
         if (isOldGame(game.getId())) {
@@ -332,16 +346,11 @@ public class LccGameListener implements GameListener {
         } else {
             lccHolder.getLccEventListener().onDrawOffered(offerer.getUsername());
         }
-    }
-
-    /*public void onDrawAccepted(Game game, User acceptor) {
-        Log.d(TAG, "GAME LISTENER: Draw accepted at the move #" + game.getMoveCount() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
-                        ", game.id=" + game.getId() + ", acceptor=" + acceptor.getUsername() + ", game=" + game);
     }*/
 
     public void onDrawRejected(Game game, User rejector) {
         final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
-        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getMoveCount() + AppConstants.LISTENER + lccHolder.getUser().getUsername() +
+        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getMoveCount() +
                         ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHolder.getUser().getUsername())) {
 			lccHolder.getLccEventListener().onInform(context.getString(R.string.draw_declined),

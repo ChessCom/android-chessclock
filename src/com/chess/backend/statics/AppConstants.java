@@ -88,7 +88,6 @@ public class AppConstants {
 	public static final String OPPONENT = "opponent"; // TODO create logic to get quick way of one value from DB
 	public static final String WARNING = ", warning: ";
 	public static final String CHALLENGE = ", challenge: ";
-	public static final String LISTENER = ": listener=";
 
 	/* Stuff */
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";

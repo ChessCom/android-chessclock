@@ -68,9 +68,6 @@ public class LccHolder {
 
 	private SubscriptionId seekListSubscriptionId;
 	private boolean connected;
-	private boolean nextOpponentMoveStillNotMade;
-	private final Object opponentClockStartSync = new Object();
-	private Timer opponentClockDelayTimer = new Timer("OpponentClockDelayTimer", true);
 	private ChessClock whiteClock;
 	private ChessClock blackClock;
 	private boolean activityPausedMode = true;
@@ -181,7 +178,7 @@ public class LccHolder {
 	}
 
 	public String getBlackUserName() {
-		return getGame(currentGameId).getBlackPlayer().getUsername();
+		return currentGameId == null ? null : getGame(currentGameId).getBlackPlayer().getUsername();
 	}
 
 	public String getUsername() {
@@ -346,7 +343,7 @@ public class LccHolder {
 	}
 
 	public Game getCurrentGame() {
-		return lccGames.get(currentGameId);
+		return currentGameId == null ? null : lccGames.get(currentGameId);
 	}
 
 	public Game getLastGame() {
@@ -656,37 +653,17 @@ public class LccHolder {
 			  lccMove = move.getMoveString();
 			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.SYMBOL_EMPTY) : lccMove;
 			}*/
-		// UPDATELCC todo: do not use that Delay now, update clock in timer thread each 50ms or so instead
-		long delay = 0;
-		synchronized (opponentClockStartSync) {
-			nextOpponentMoveStillNotMade = true;
-		}
 
-		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", delay=" + delay);
+		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 
 		if (game.getMoveCount() >= 1) // we should start opponent's clock after at least 2-nd ply (moveCount == 1, or moveCount > 1)
 		{
-			final boolean isWhiteRunning =user.getUsername().equals(game.getWhitePlayer().getUsername());
+			final boolean isWhiteRunning = user.getUsername().equals(game.getWhitePlayer().getUsername());
 			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
-			final ChessClock clockToBeStarted = isWhiteRunning ? blackClock : whiteClock;
 			if (game.getMoveCount() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
 			{
 				clockToBePaused.setRunning(false);
-			}
-			synchronized (opponentClockStartSync) {
-				if (nextOpponentMoveStillNotMade) {
-					opponentClockDelayTimer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							synchronized (opponentClockStartSync) {
-								if (nextOpponentMoveStillNotMade) {
-									clockToBeStarted.setRunning(true);
-								}
-							}
-						}
-					}, delay); // UPDATELCC todo: remove
-				}
 			}
 		}
 	}
@@ -736,10 +713,6 @@ public class LccHolder {
 
 		challenge.setRematchGameId(lastGameId);
 		lccClient.sendChallenge(challenge, challengeListener);
-	}
-
-	public void setNextOpponentMoveStillNotMade(boolean nextOpponentMoveStillNotMade) {
-		this.nextOpponentMoveStillNotMade = nextOpponentMoveStillNotMade;
 	}
 
 	public ChessClock getBlackClock() {
@@ -872,13 +845,7 @@ public class LccHolder {
 
 		// UPDATELCC todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
 		if (game.getMoveCount() >= 2 && moveIndex == game.getMoveCount() - 1) {
-			final boolean isOpponentMoveDone = !user.getUsername().equals(moveMaker.getUsername());
 
-			if (isOpponentMoveDone) {
-				synchronized (opponentClockStartSync) {
-					setNextOpponentMoveStillNotMade(false);
-				}
-			}
 			final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
 
@@ -888,7 +855,6 @@ public class LccHolder {
 			if (!game.isGameOver()) {
 				getBlackClock().setRunning(isWhiteDone);
 			}
-
 		}
 	}
 
@@ -952,7 +918,6 @@ public class LccHolder {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-
 	public void runConnectTask(boolean forceReenterCred) {
 		new ConnectLiveChessTask(new LccConnectUpdateListener(), forceReenterCred).executeTask();
 	}
@@ -1001,6 +966,20 @@ public class LccHolder {
 				//Utils.sleep(0.5F);
 				lccClient.makeMove(game, TEST_MOVES_COORD[game.getMoveCount()].trim());
 			}
+		}
+	}
+
+	public Boolean isUserColorWhite() {
+		return getBlackUserName() == null ? null : !getBlackUserName().equals(getUsername());
+	}
+
+	public String getOpponentName() {
+		final Boolean isUserColorWhite = isUserColorWhite();
+		final Game game = getCurrentGame();
+		if (isUserColorWhite == null || game == null) {
+			return null;
+		} else {
+			return isUserColorWhite ? game.getWhitePlayer().getUsername() : game.getBlackPlayer().getUsername();
 		}
 	}
 }
