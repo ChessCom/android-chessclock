@@ -37,12 +37,14 @@
 	<com.inneractive.api.ads.InneractiveAd
 			android:id="@+id/inneractiveBannerAd"
 			xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="50dp"
 			inneractive:appID="@string/inneractiveAdsAppId"
 			inneractive:adType="Banner"
 			inneractive:refreshInterval="60"
 			inneractive:adAlignment="CENTER"
+			inneractive:optionalAdWidth="300"
+			inneractive:optionalAdHeight="50"
 			android:visibility="gone"/>
 
 </LinearLayout>
