@@ -151,13 +151,14 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		endGameMessage = message;
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		if (!AppUtils.isNeedToUpgrade(this)) {
-			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
-		}else {
-			endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
-		}
+		if (!getBoardFace().isSubmit()) {
 
-        if (!getBoardFace().isSubmit()) {
+			if (!AppUtils.isNeedToUpgrade(this)) {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
+			}else {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
+			}
+
             showGameEndPopup(endGamePopupView, endGameMessage);
             setBoardToFinishedState();
         }

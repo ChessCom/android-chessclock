@@ -4,18 +4,22 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.db.DBDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.model.GameOnlineItem;
@@ -39,32 +43,30 @@ import java.util.Calendar;
  */
 public class GameFinishedScreenActivity extends GameBaseActivity {
 
+	public static final String DOUBLE_SPACE = "  ";
+
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
-	private StartGameUpdateListener startGameUpdateListener;
+//	private StartGameUpdateListener startGameUpdateListener;
 	private GamesListUpdateListener gamesListUpdateListener;
 	private ChessBoardNetworkView boardView;
 
 	private GameOnlineItem currentGame;
 	private long gameId;
-	private View shareBtn;
+	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.boardview_online);
-		init();
+//		init();
 		widgetsInit();
 	}
 
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
-
-		shareBtn = findViewById(R.id.shareBtn);
-		shareBtn.setOnClickListener(this);
-		shareBtn.setVisibility(View.VISIBLE);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gamePanelView.hideChatButton();
@@ -84,60 +86,85 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
-				getString(R.string.emailgame),
-				getString(R.string.share_game)};
+				getString(R.string.emailgame)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
-		startGameUpdateListener = new StartGameUpdateListener();
+//		startGameUpdateListener = new StartGameUpdateListener();
 		gamesListUpdateListener = new GamesListUpdateListener();
+		loadFromDbUpdateListener = new LoadFromDbUpdateListener();
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
+	protected void onStart() {
+		init();
+		super.onStart();
 		ChessBoardOnline.resetInstance();
 //		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		boardView.setGameActivityFace(GameFinishedScreenActivity.this);
 
 		getBoardFace().setMode(AppConstants.GAME_MODE_VIEW_FINISHED_ECHESS);
 
-		getOnlineGame(gameId);
+		loadGame(gameId);
 		setBoardToFinishedState();
 	}
 
-	protected void getOnlineGame(long gameId) {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_GID, gameId);
+	protected void loadGame(long gameId) {
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getEchessGameParams(this, gameId),
+				getContentResolver()).executeTask();
 
-		new GetStringObjTask(startGameUpdateListener).executeTask(loadItem);
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
+//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_GID, gameId);
+//
+//		new GetStringObjTask(startGameUpdateListener).executeTask(loadItem);
 	}
 
-	private class StartGameUpdateListener extends ChessUpdateListener {
+	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
+
+		public LoadFromDbUpdateListener() {
+			super(getContext());
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			getSoundPlayer().playGameStart();
+		public void updateData(Cursor returnedObj) {
+			super.updateData(returnedObj);
 
-			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+			currentGame = DBDataManager.getGameFinishedItemFromCursor(returnedObj);
+			returnedObj.close();
+
 			gamePanelView.enableGameControls(true);
 
 			adjustBoardForGame();
 		}
 	}
 
-	private void adjustBoardForGame() {
-		if (currentGame == null)
-			return;
+//	private class StartGameUpdateListener extends ChessUpdateListener {
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			getSoundPlayer().playGameStart();
+//
+//			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+//			gamePanelView.enableGameControls(true);
+//
+//			adjustBoardForGame();
+//		}
+//	}
 
+	private void adjustBoardForGame() {
+		if(currentGame == null) {
+			throw new IllegalStateException("adjustBoardForGame got null current game ");
+		}
+
+		ChessBoardOnline.resetInstance();
+		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == BaseGameItem.CHESS_960)
-			getBoardFace().setChess960(true);
+			boardFace.setChess960(true);
 
 		if (!isUserColorWhite()) {
-			getBoardFace().setReside(true);
+			boardFace.setReside(true);
 		}
 
 		String[] moves = {};
@@ -147,36 +174,35 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 			moves = currentGame.getMoveList()
 					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
-					.replaceAll("  ", StaticData.SYMBOL_SPACE).substring(beginIndex)
+					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(beginIndex)
 					.split(StaticData.SYMBOL_SPACE);
 
-			getBoardFace().setMovesCount(moves.length);
+			boardFace.setMovesCount(moves.length);
 		} else {
-			getBoardFace().setMovesCount(0);
+			boardFace.setMovesCount(0);
 		}
 
 		String FEN = currentGame.getFenStartPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			getBoardFace().genCastlePos(FEN);
-			MoveParser.fenParse(FEN, getBoardFace());
+			boardFace.genCastlePos(FEN);
+			MoveParser.fenParse(FEN, boardFace);
 		}
 
-		for (int i = 0, cnt = getBoardFace().getMovesCount(); i < cnt; i++) {
-			getBoardFace().updateMoves(moves[i], false);
+		for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
+			boardFace.updateMoves(moves[i], false);
 		}
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		invalidateGameScreen();
-		getBoardFace().takeBack();
+		boardFace.takeBack();
 		boardView.invalidate();
 
 		playLastMoveAnimation();
 	}
 
-	@Override
 	public void invalidateGameScreen() {
-		whitePlayerLabel.setText(getWhitePlayerName());
-		blackPlayerLabel.setText(getBlackPlayerName());
+        whitePlayerLabel.setText(getWhitePlayerName());
+        blackPlayerLabel.setText(getBlackPlayerName());
 
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
@@ -240,7 +266,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					boardView.setGameActivityFace(GameFinishedScreenActivity.this);
 
 					getBoardFace().setAnalysis(false);
-					getOnlineGame(currentGame.getGameId()); // if next game
+					loadGame(currentGame.getGameId()); // if next game
 					return;
 				}
 			}
@@ -255,13 +281,12 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null)
+		if (currentGame != null )
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
 		else
 			return null;
 	}
 
-	@Override
 	public Long getGameId() {
 		return gameId;
 	}
@@ -309,7 +334,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		private final int ECHESS_SETTINGS = 0;
 		private final int EMAIL_GAME = 1;
-		private final int SHARE = 2;
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {
@@ -319,9 +343,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					break;
 				case EMAIL_GAME:
 					sendPGN();
-					break;
-				case SHARE:
-					shareBtn.setVisibility(View.GONE);
 					break;
 			}
 		}
@@ -343,7 +364,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		StringBuilder timeControl = new StringBuilder();
 		timeControl.append("1 in ").append(daysPerMove);
-		if (daysPerMove > 1) {
+		if (daysPerMove > 1){
 			timeControl.append(" days");
 		} else {
 			timeControl.append(" day");
@@ -369,30 +390,12 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	@Override
 	protected void restoreGame() {
-		ChessBoardOnline.resetInstance();
+//		ChessBoardOnline.resetInstance();
 //		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		boardView.setGameActivityFace(GameFinishedScreenActivity.this);
 
 
 		adjustBoardForGame();
-	}
-
-	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-
-		if (view.getId() == R.id.shareBtn) {
-			if (currentGame == null) {
-				return;
-			}
-			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
-
-			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
-		}
 	}
 
 }

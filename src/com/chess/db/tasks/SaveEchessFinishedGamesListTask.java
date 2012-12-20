@@ -1,34 +1,34 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.model.GameListFinishedItem;
+import com.chess.model.GameOnlineItem;
 
 import java.util.List;
 
 
-public class SaveEchessFinishedGamesListTask extends AbstractUpdateTask<GameListFinishedItem, Long> {
-
-    private ContentResolver contentResolver;
-	private static String[] arguments = new String[2];
+//public class SaveEchessFinishedGamesListTask extends AbstractUpdateTask<GameListFinishedItem, Long> {
+public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<GameListFinishedItem> {
 
 	public SaveEchessFinishedGamesListTask(TaskUpdateInterface<GameListFinishedItem> taskFace,
 										   List<GameListFinishedItem> finishedItems, ContentResolver resolver) {
-        super(taskFace);
-		itemList = finishedItems;
-		this.contentResolver = resolver;
+        super(taskFace, finishedItems, resolver);
     }
 
-    @Override
+	@Override
     protected Integer doTheTask(Long... ids) {
-		String userName = AppData.getUserName(getTaskFace().getMeContext());
+		Context context = getTaskFace().getMeContext();
+		String userName = AppData.getUserName(context);
+		String userToken = AppData.getUserToken(context);
+
 		for (GameListFinishedItem finishedItem : itemList) {
 
 			arguments[0] = String.valueOf(userName);
@@ -45,12 +45,13 @@ public class SaveEchessFinishedGamesListTask extends AbstractUpdateTask<GameList
 			}
 
 			cursor.close();
+
+			updateOnlineGame(finishedItem.getGameId(), userName, userToken);
 		}
 
         result = StaticData.RESULT_OK;
 
         return result;
     }
-
 
 }

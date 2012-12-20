@@ -135,7 +135,6 @@ public class DBDataManager {
 
 		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, PROJECTION_GAME_ID, SELECTION_GAME_ID,
 				arguments2, null);
-
 		if (cursor.moveToFirst()) {
 			contentResolver.update(Uri.parse(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI.toString() + SLASH_ + DBDataManager.getId(cursor)),
 					putGameOnlineItemToValues(currentGame, userName), null, null);

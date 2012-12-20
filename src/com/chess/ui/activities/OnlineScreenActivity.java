@@ -5,6 +5,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -80,6 +81,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
+		Log.d("GetStringObjTask", " ONLINE OnCreate");
 
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
@@ -122,6 +124,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	@Override
+	protected void onRestart() {
+		super.onRestart();
+		Log.d("GetStringObjTask", " ONLINE OnRestart");
+
+	}
+
+	@Override
 	protected void onStart() {
 		showActionRefresh = true;
 		showActionNewGame = true;
@@ -132,7 +141,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		if (AppUtils.isNetworkAvailable(this)) {
+		if (AppUtils.isNetworkAvailable(this) && !isRestarted) {
 			updateVacationStatus();
 			updateListStartFromType(GameOnlineItem.CURRENT_TYPE);
 		} else {
@@ -227,7 +236,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			switch (gameType){
 				case CURRENT:
 					currentGamesCursorAdapter.changeCursor(returnedObj);
-					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable){
+					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable && !isRestarted){
 						updateListStartFromType(GameOnlineItem.CHALLENGES_TYPE);
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,

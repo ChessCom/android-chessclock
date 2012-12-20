@@ -173,7 +173,7 @@
 				-->
 		<service android:name=".GCMIntentService" />
 
-		<provider android:name=".db.DBDataProvider" android:authorities="com.chess.db_provider" />
+		<provider android:name=".db.DBDataProvider" android:authorities="com.chess.db_provider" android:exported="false"/>
 
 		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
 

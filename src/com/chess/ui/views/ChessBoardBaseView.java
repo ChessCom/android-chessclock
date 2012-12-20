@@ -585,7 +585,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		if (message != null) {
-			finished = true;
+//			finished = true; // will be set from activity face
 			gameActivityFace.onGameOver(message, false);
 			return true;
 		}
@@ -609,7 +609,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void lockBoard(boolean lock) {
 		locked = lock;
-        Log.d("TEST", " board locked = " + locked);
         gamePanelView.lock(lock);
 		setEnabled(!lock);
 	}

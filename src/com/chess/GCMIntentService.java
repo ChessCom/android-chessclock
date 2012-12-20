@@ -181,7 +181,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
 			Log.d(TAG, " updating board");
 			Intent gameUpdateIntent = new Intent(IntentConstants.BOARD_UPDATE);
-			gameUpdateIntent.putExtra(BaseGameItem.GAME_ID, gameId);
+			gameUpdateIntent.putExtra(BaseGameItem.GAME_ID, Long.parseLong(gameId));
 			context.sendBroadcast(gameUpdateIntent);
 		} else {
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
