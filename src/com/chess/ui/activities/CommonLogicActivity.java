@@ -19,11 +19,13 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
+import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
 import com.chess.backend.tasks.PostJsonDataTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
@@ -40,10 +42,7 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * CommonLogicActivity class
@@ -62,7 +61,8 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	protected static final int REQUEST_REGISTER = 11;
 	private static final int REQUEST_UNREGISTER = 22;
 
-	private LoginUpdateListener loginUpdateListener;
+//	private LoginUpdateListener loginUpdateListener;
+	private LoginUpdateListenerNew loginUpdateListener;
 	private int loginReturnCode;
 
 	protected BackgroundChessDrawable backgroundChessDrawable;
@@ -104,7 +104,8 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 			handler = new Handler();
 
-			loginUpdateListener = new LoginUpdateListener();
+//			loginUpdateListener = new LoginUpdateListener();
+			loginUpdateListener = new LoginUpdateListenerNew();
 		}
 	}
 
@@ -271,7 +272,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
                 }
             }
 		}
-
+//{"status":true,"code":200,"message":"Success"}
 		GCMServerResponseItem parseJson(String jRespString) {
             Gson gson = new Gson();
             try {
@@ -306,18 +307,22 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.LOGIN);
-		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+//		loadItem.setLoadPath(RestHelper.LOGIN);
+		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+		loadItem.setRequestMethod(RestHelper.POST);
+//		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 
-		new PostDataTask(loginUpdateListener).executeTask(loadItem);
+//		new PostDataTask(loginUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
 
-	private class LoginUpdateListener extends AbstractUpdateListener<String> {
-		public LoginUpdateListener() {
-			super(getContext());
+	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {
+		public LoginUpdateListenerNew() {
+			super(getContext(), LoginItem.class);
 		}
 
 		@Override
@@ -325,7 +330,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			if (show){
 				showPopupHardProgressDialog(R.string.signingin);
 			} else {
-				if (isPaused)
+				if(isPaused)
 					return;
 
 				dismissProgressDialog();
@@ -333,26 +338,24 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			if (returnedObj.length() > 0) {
-				final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
-				if (responseArray.length >= 4) {
-					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-						preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
-						processLogin(responseArray);
-					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-						FlurryAgent.logEvent(FlurryData.FB_LOGIN);
-						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-						processLogin(responseArray);
-					}
-				}
-			}
+		public void updateData(LoginItem returnedObj) {
+//			final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
+//			if (responseArray.length >= 4) {
+//				if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
+//					preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
+//					processLogin(responseArray, returnedObj);
+//				} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
+//					FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
+//					preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+//					processLogin(responseArray, returnedObj);
+//				}
+//			}
 		}
 
 		@Override
 		public void errorHandle(String resultMessage) {
 			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
-				popupItem.setPositiveBtnId(R.string.sign_up);
+				popupItem.setPositiveBtnId(R.string.sing_up);
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else {
 				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){
@@ -365,16 +368,69 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
+//	private class LoginUpdateListener extends AbstractUpdateListener<String> {
+//		public LoginUpdateListener() {
+//			super(getContext());
+//		}
+//
+//		@Override
+//		public void showProgress(boolean show) {
+//			if (show){
+//				showPopupHardProgressDialog(R.string.signingin);
+//			} else {
+//				if(isPaused)
+//					return;
+//
+//				dismissProgressDialog();
+//			}
+//		}
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			if (returnedObj.length() > 0) {
+//				final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
+//				if (responseArray.length >= 4) {
+//					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
+//						preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
+//						processLogin(responseArray, returnedObj);
+//					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
+//						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
+//						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
+//						processLogin(responseArray, returnedObj);
+//					}
+//				}
+//			}
+//		}
+//
+//		@Override
+//		public void errorHandle(String resultMessage) {
+//			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
+//				popupItem.setPositiveBtnId(R.string.sing_up);
+//				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
+//			} else {
+//				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){
+//					passwordEdt.setError(getResources().getString(R.string.invalid_password));
+//					passwordEdt.requestFocus();
+//				}else{
+//					showToast(resultMessage);
+//				}
+//			}
+//		}
+//	}
+
 	public class SampleAuthListener implements SessionEvents.AuthListener {
 		@Override
 		public void onAuthSucceed() {
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.LOGIN);
+//			loadItem.setLoadPath(RestHelper.LOGIN);
+			loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+			loadItem.setRequestMethod(RestHelper.POST);
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
-			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
+//			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
+			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 
-			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
-
+//			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
 
@@ -395,22 +451,26 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
-	protected void processLogin(String[] response) {
-		if (passwordEdt == null) { // if accidentally return in wrong callback, when widgets are not initialized
+	private void processLogin(String[] response, String tempDebug) {
+		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
 			return;
 		}
 
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 		try {
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, Integer.parseInt(response[0].split(RestHelper.SYMBOL_PARAMS_SEPARATOR)[1]));
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			showToast(R.string.error_occurred_while_login);
-			backToLoginActivity();
-			return;
+			String debugInfo = "response=" + tempDebug;
+			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("DEBUG", debugInfo);
+			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
+			throw new ArrayIndexOutOfBoundsException(debugInfo);
 		}
 
-//		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
+		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
 			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {

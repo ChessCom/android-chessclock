@@ -1,5 +1,6 @@
 package com.chess.backend.entity;
 
+import com.chess.backend.RestHelper;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -16,9 +17,11 @@ public class LoadItem {
 
     private String loadPath;
 	private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	private String requestMethod;
 
 	public LoadItem() {
 		nameValuePairs = new ArrayList<NameValuePair>();
+		requestMethod = RestHelper.GET;
 	}
 
 	public void addRequestParams(String key, String value) {
@@ -64,5 +67,13 @@ public class LoadItem {
 
 	public void clearParams() {
 		nameValuePairs.clear();
+	}
+
+	public String getRequestMethod() {
+		return requestMethod;
+	}
+
+	public void setRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
 	}
 }

@@ -18,6 +18,10 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
+/**
+ * Use {@link RequestJsonTask} instead
+ */
+@Deprecated
 public class GetStringObjTask extends AbstractUpdateTask<String, LoadItem> {
 	private static final String TAG = "GetStringObjTask";
 	private static final int TIMEOUT = 10000;

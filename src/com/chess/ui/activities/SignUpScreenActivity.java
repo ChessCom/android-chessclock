@@ -17,12 +17,16 @@ import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.LoginItem;
+import com.chess.backend.entity.new_api.RegisterItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostDataTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
@@ -187,28 +191,47 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 	private void submitRegisterInfo() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.REGISTER);
+//		loadItem.setLoadPath(RestHelper.REGISTER);
+		loadItem.setLoadPath(RestHelper.CMD_REGISTER);
+		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, CID);
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
-		new GetStringObjTask(registerUpdateListener).executeTask(loadItem);
+//		new GetStringObjTask(registerUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}
 
-	private class RegisterUpdateListener extends ChessUpdateListener {
+	private class RegisterUpdateListener extends AbstractUpdateListener<RegisterItem> {
+
+		public RegisterUpdateListener() {
+			super(getContext(), RegisterItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.LOGIN);
-			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
-			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-
-			new PostDataTask(signUpUpdateListener).executeTask(loadItem);
+		public void updateData(RegisterItem returnedObj) {
+//			LoadItem loadItem = new LoadItem();
+//			loadItem.setLoadPath(RestHelper.LOGIN);
+//			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+//			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+//
+//			new PostDataTask(signUpUpdateListener).executeTask(loadItem);
 		}
 	}
+//	private class RegisterUpdateListener extends ChessUpdateListener {
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			LoadItem loadItem = new LoadItem();
+//			loadItem.setLoadPath(RestHelper.LOGIN);
+//			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+//			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+//
+//			new PostDataTask(signUpUpdateListener).executeTask(loadItem);
+//		}
+//	}
 
 	private class SignUpUpdateListener extends ChessUpdateListener {
 

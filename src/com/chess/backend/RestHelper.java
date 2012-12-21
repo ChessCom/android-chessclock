@@ -1,10 +1,17 @@
 package com.chess.backend;
 
+import android.util.Log;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.statics.StaticData;
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,7 +22,16 @@ import java.util.List;
  */
 public class RestHelper {
 
+	/* Methods*/  // new
+	public static final String GET = "GET";
+	public static final String POST = "POST";
+	public static final String PUT = "PUT";
+	public static final String DELETE = "DELETE";
+
 	/* Results */
+	public static final String R_STATUS_SUCCESS = "success";  // new
+	public static final String R_STATUS_ERROR = "error"; // new
+
 	public static final String R_SUCCESS = "Success";
 	public static final String R_SUCCESS_P = "Success+";
 	public static final String R_ERROR = "Error+";
@@ -23,18 +39,21 @@ public class RestHelper {
 	public static final String R_OPPONENT_MOVE = "Success+0";
 
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
-//	public static final String BASE_URL = "http://www.chess-5.com";
-	public static final String BASE_URL = "http://www.chess.com";
-	public static final String API_V5 = "/api/v5";
-	public static final String API_V4 = "/api/v4";
-	public static final String API_V3 = "/api/v3";
-	public static final String API_V2 = "/api/v2";
+	public static final String BASE_URL = "http://www.chess-7.com/index_api_test.php";
+//	public static final String BASE_URL = "http://www.chess.com";
 	public static final String API = "/api";
+	public static final String V1 = "/v1";
+	public static final String API_V2 = API + "/v2";
+	public static final String API_V3 = API + "/v3";
+	public static final String API_V4 = API + "/v4";
+	public static final String API_V5 = API + "/v5";
+	public static final String USERS = "/users";
 
 	/*Google Cloud Messaging API part*/
 	public static final String GCM_BASE_URL = BASE_URL + "/api/gcm";
 	public static final String GCM_REGISTER = GCM_BASE_URL + "/register";
 	public static final String GCM_UNREGISTER = GCM_BASE_URL + "/unregister";
+
 	/* Params */
 	public static final String GCM_P_ID = "id";
 	public static final String GCM_P_REGISTER_ID = "registration_id";
@@ -94,7 +113,15 @@ public class RestHelper {
 
 	public static final String GET_GAME_V5 = BASE_URL + API_V5 + "/get_game";
 
+	/* Methods */
+	public static final String CMD_LOGIN = BASE_URL + V1 + USERS +"/login";
+	public static final String CMD_REGISTER = BASE_URL + V1 + USERS +"/register";
+	public static final String CMD_USER = BASE_URL + V1 + USERS;
+
 	/* Parameters */
+	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
+	public static final String P_FIELDS = "fields[]";
+
 	public static final String P_USER_NAME = "username";
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";
@@ -102,7 +129,8 @@ public class RestHelper {
 	public static final String P_COUNTRY_ID = "country_id";
 	public static final String P_COUNTRY_CODE = "country_code";
 	public static final String P_APP_TYPE = "app_type";
-	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebook_access_token";
+//	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebook_access_token";
+	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebookAccessToken";
 	public static final String P_APN_DEVICE_TOKEN = "apn_device_token";
 	public static final String P_OPPONENT = "opponent";
 
@@ -264,7 +292,10 @@ public class RestHelper {
 //	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";
 	public static final String V_SECONDS = "seconds";
+	public static final String V_TACTICS_RATING = "tacticsrating";
 	public static final String V_USERNAME = "username";
+	public static final String V_TEST_NAME = "bobby";
+	public static final String V_TEST_NAME2 = "fischer";
 
 	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
     public static final String V_ALL_USERS_GAMES = "1";
@@ -332,6 +363,39 @@ public class RestHelper {
 		}
 		data.append(OBJ_END);
 		return data.toString();
+	}
+
+	public static String formPostData(LoadItem loadItem) {
+		List<NameValuePair> nameValuePairs = loadItem.getRequestParams();
+
+//		String url = Q_;
+//		for (NameValuePair pair: nameValuePairs) {
+//			url += pair.getName() + EQUALS + pair.getValue();
+//			url += AND;
+//		}
+
+		StringBuilder encodedParams = new StringBuilder();
+//		encodedParams.append(Q_);
+		String separator = StaticData.SYMBOL_EMPTY;
+		for (NameValuePair pair: nameValuePairs) {
+			encodedParams.append(separator);
+			separator = AND;
+
+			String name;
+			String value;
+			try {
+				name = URLEncoder.encode(pair.getName(), HTTP.UTF_8);
+				value = URLEncoder.encode(pair.getValue(), HTTP.UTF_8);
+			} catch (UnsupportedEncodingException e) {
+				Log.e("TEST", "failed to encode url");
+				e.printStackTrace();
+				name = pair.getName();
+				value = pair.getValue();
+			}
+			encodedParams.append(name).append(EQUALS).append(value);
+		}
+
+		return encodedParams.toString();
 	}
 
 	public static String formTournamentsLink(String userToken) {

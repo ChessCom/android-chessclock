@@ -2,6 +2,7 @@ package com.chess.backend.interfaces;
 
 import android.content.Context;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -12,14 +13,14 @@ import java.util.List;
  * @created 07.11.2011
  * @modified 16.12.2012
  */
-public interface TaskUpdateInterface<T> {
+public interface TaskUpdateInterface<ItemType> {
 	boolean useList();
 
 	void showProgress(boolean show);
 
-	void updateListData(List<T> itemsList);
+	void updateListData(List<ItemType> itemsList);
 
-	void updateData(T returnedObj);
+	void updateData(ItemType returnedObj);
 
 	void errorHandle(Integer resultCode);
 
@@ -28,4 +29,8 @@ public interface TaskUpdateInterface<T> {
 	Context getMeContext();
 
 	void releaseContext();
+
+	Type getListType();
+
+	Class<ItemType> getClassType();
 }
