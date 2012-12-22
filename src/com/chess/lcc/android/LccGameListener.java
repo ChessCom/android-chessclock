@@ -172,6 +172,7 @@ public class LccGameListener implements GameListener {
 			return;
 		}
 		lccHolder.setCurrentGameId(game.getId());
+		lccHolder.setActivityPausedMode(true);
 		lccHolder.processFullGame(game);
 	}
 
@@ -188,6 +189,7 @@ public class LccGameListener implements GameListener {
 		}
 
 		final String opponentName = lccHolder.getOpponentName();
+
 		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?
 			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
 					+ ", offerer=" + opponentName + ", game=" + game);
@@ -198,7 +200,9 @@ public class LccGameListener implements GameListener {
 				drawOfferedEvent.setGameId(game.getId());
 				drawOfferedEvent.setDrawOffererUsername(opponentName);
 				lccHolder.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
+				Log.d(TAG, "DRAW PAUSED");
 			} else {
+				Log.d(TAG, "DRAW SHOW");
 				lccHolder.getLccEventListener().onDrawOffered(opponentName);
 			}
 		}

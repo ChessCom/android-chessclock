@@ -48,7 +48,6 @@ public class LccChatListener implements ChatListener {
 				"CHAT LISTENER: Previously Subscribed Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
 		for (Chat chat : chats) {
 			str += "\n\t" + "Chat: roomId=" + chat.getId() + ",\tname=" + chat.getName();
-			lccHolder.getClient().enterChat(chat, this);
 		}
 		Log.d(TAG, str);
 

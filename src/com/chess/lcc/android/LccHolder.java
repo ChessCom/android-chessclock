@@ -106,6 +106,8 @@ public class LccHolder {
 	public void executePausedActivityGameEvents() {
 		/*if (activityPausedMode) {*/
 
+		Log.d(TAG, "executePausedActivityGameEvents size=" + pausedActivityGameEvents.size() + ", events=" + pausedActivityGameEvents);
+
 		setActivityPausedMode(false);
 
 		if (pausedActivityGameEvents.size() > 0) {
@@ -979,7 +981,7 @@ public class LccHolder {
 		if (isUserColorWhite == null || game == null) {
 			return null;
 		} else {
-			return isUserColorWhite ? game.getWhitePlayer().getUsername() : game.getBlackPlayer().getUsername();
+			return isUserColorWhite ? game.getBlackPlayer().getUsername() : game.getWhitePlayer().getUsername();
 		}
 	}
 }
