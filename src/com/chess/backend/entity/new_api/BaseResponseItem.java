@@ -25,7 +25,6 @@ public class BaseResponseItem {
 	private String message;
 	private int count;
 	private int code;
-//	private BaseData data;
 	private String more_info;
 
 	public String getStatus() {

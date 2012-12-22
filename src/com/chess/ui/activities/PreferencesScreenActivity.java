@@ -238,7 +238,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				getLccHolder().logout();
 
 				// un-register from GCM
-				unregisterGcmService();
+				unRegisterGcmService();
 
 				AppData.setGuest(this, true);
 
@@ -406,7 +406,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				registerGcmService();
 				checkMove();
 			} else if(!checked) {
-				unregisterGcmService();
+				unRegisterGcmService();
 			}
 
 		} else if (compoundButton.getId() == R.id.prefCoords) {

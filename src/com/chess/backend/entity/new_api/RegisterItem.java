@@ -19,13 +19,10 @@ public class RegisterItem extends BaseResponseItem{
 		}
 	}
 */
-	private LoginData data;
+	private RegisterData data;
 
-	public LoginData getData() {
+	public RegisterData getData() {
 		return data;
 	}
 
-	public void setData(LoginData data) {
-		this.data = data;
-	}
 }

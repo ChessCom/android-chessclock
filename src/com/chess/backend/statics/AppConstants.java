@@ -12,7 +12,6 @@ public class AppConstants {
 	public static final String USER_TOKEN = "user_token";
 	public static final String USER_IS_GUEST = "user_is_guest";
 	public static final String IS_LIVE_CHESS_ON = "is_live_chess_mode_on";
-	public static final String IS_LIVE_CONNECTED = "is_live_connected";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";
 	public static final String CHALLENGE_BONUS_TIME = "bonus_time";
 	public static final String CHALLENGE_MIN_RATING = "min_rating";
@@ -34,7 +33,7 @@ public class AppConstants {
 
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
-//	public static final String API_VERSION = "api_version"; // what is it used for?
+//	public static final String API_VERSION = "api_version";
 	public static final String PREF_COMPUTER_STRENGTH = "strength";
 	public static final String PREF_ACTION_AFTER_MY_MOVE = "aim";
 	public static final String USER_PREMIUM_STATUS = "premium_status";
@@ -51,14 +50,12 @@ public class AppConstants {
 
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
 
-	public static final String AD_BANNER = "Banner";
-	public static final String AD_RECTANGLE = "Rectangle";
-	public static final String AD_FULLSCREEN = "Fullscreen";
+
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String USER_SESSION_ID = "user_session_id";
 	public static final String FIRST_TIME_START = "first_time_start";
 	public static final String START_DAY = "start_day";
-	//public static final String LAST_ACTIVITY_PAUSED_TIME = "last_activity_paused_time";
+	public static final String LAST_ACTIVITY_PAUSED_TIME = "last_activity_aause_time";
 	public static final String ADS_SHOW_COUNTER = "ads_show_counter";
 	public static final String MATOMY_AD = "matomy";
 	public static final String RESPONSE = "response";
@@ -73,6 +70,7 @@ public class AppConstants {
 	public final static int GAME_MODE_HUMAN_VS_HUMAN = 2;
 	public final static int GAME_MODE_COMPUTER_VS_COMPUTER = 3;
 	public final static int GAME_MODE_VIEW_FINISHED_ECHESS = 5;
+
 
 	//public static final String DEFAULT_GAMEBOARD_CASTLE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
@@ -90,6 +88,7 @@ public class AppConstants {
 	public static final String OPPONENT = "opponent"; // TODO create logic to get quick way of one value from DB
 	public static final String WARNING = ", warning: ";
 	public static final String CHALLENGE = ", challenge: ";
+	public static final String LISTENER = ": listener=";
 
 	/* Stuff */
 	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";

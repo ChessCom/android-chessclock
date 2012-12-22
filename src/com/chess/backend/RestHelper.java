@@ -126,9 +126,11 @@ public class RestHelper {
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";
 	public static final String P_AUTH_TOKEN = "auth_token";
-	public static final String P_COUNTRY_ID = "country_id";
-	public static final String P_COUNTRY_CODE = "country_code";
-	public static final String P_APP_TYPE = "app_type";
+//	public static final String P_COUNTRY_ID = "country_id";
+	public static final String P_COUNTRY_ID = "countryId";
+	public static final String P_COUNTRY_CODE = "countryCode";
+//	public static final String P_APP_TYPE = "app_type";
+	public static final String P_APP_TYPE = "appType";
 //	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebook_access_token";
 	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebookAccessToken";
 	public static final String P_APN_DEVICE_TOKEN = "apn_device_token";
@@ -280,6 +282,13 @@ public class RestHelper {
 
 
 	/* Values */
+	// new
+	public static final int V_BASIC_MEMBER = 0;
+	public static final int V_GOLD_MEMBER = 1;
+	public static final int V_PLATINUM_MEMBER = 2;
+	public static final int V_DIAMOND_MEMBER = 3;
+
+	// old
 	public static final String V_RESIGN = "RESIGN";
 	public static final String V_SUBMIT = "SUBMIT";
 	public static final String V_OFFERDRAW = "OFFERDRAW";

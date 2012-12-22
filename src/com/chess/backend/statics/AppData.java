@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import com.chess.backend.RestHelper;
-import com.chess.ui.engine.CompEngineHelper;
 import com.chess.ui.interfaces.BoardFace;
 
 /**
@@ -17,7 +16,6 @@ import com.chess.ui.interfaces.BoardFace;
 public class AppData {
 
     public static final String GUEST_USER_NAME = "guest"; // it is invalid username to login, so use it for clear logic
-	private static CompEngineHelper compEngineHelper;
 
 	public static SharedPreferences getPreferences(Context context){
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
@@ -64,7 +62,7 @@ public class AppData {
 	public static int getCompStrength(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 2);
+		return preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 0);
 	}
 
 	public static int getChessBoardId(Context context) {
@@ -124,13 +122,7 @@ public class AppData {
 	}
 
 	public static int getUserPremiumStatus(Context context) {
-		int status;
-		try {
-			status = getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.BASIC_USER);
-		} catch (ClassCastException ex) {
-			status = Integer.parseInt(getPreferences(context).getString(AppConstants.USER_PREMIUM_STATUS, String.valueOf(StaticData.BASIC_USER)));
-		}
-		return status;
+		return getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.NOT_INITIALIZED_USER);
 	}
 
 	public static Intent getMembershipAndroidIntent(Context context) {
@@ -151,6 +143,7 @@ public class AppData {
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
 		return preferences.getString(userName + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 	}
+
 
 	public static boolean haveSavedCompGame(Context context) {
 		SharedPreferences preferences = getPreferences(context);
@@ -228,17 +221,4 @@ public class AppData {
 		editor.commit();
 	}
 
-	public static void clearPreferences(Context context) {
-		getPreferences(context).edit()
-				.clear()
-				.commit();
-	}
-
-	public static void setCompEngineHelper(CompEngineHelper engine) {
-		compEngineHelper = engine;
-	}
-
-	public static CompEngineHelper getCompEngineHelper() {
-		return compEngineHelper;
-	}
 }

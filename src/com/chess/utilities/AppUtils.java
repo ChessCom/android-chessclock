@@ -31,6 +31,7 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.BackgroundChessDrawable;
+import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 
 import java.io.IOException;
@@ -376,6 +377,11 @@ public class AppUtils {
 		inputStream.close();
 
 		return out.toString();
+	}
+
+	public static <ItemType> String parseJsonToString(ItemType jRequest) {
+		Gson gson = new Gson();
+		return gson.toJson(jRequest);
 	}
 
 }

@@ -40,6 +40,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * SignUpScreenActivity class
@@ -49,6 +50,8 @@ import java.util.Map;
  */
 public class SignUpScreenActivity extends CoreActivityActionBar implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
+	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
 
 	private EditText userNameEdt;
 	private EditText emailEdt;
@@ -56,28 +59,19 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	private EditText regRetypeEdt;
 	private Button regSubmit;
 	private int CID = -1;
-	private Context context;
 	private static String[] COUNTRIES;
 	private static String[] COUNTRIES_ID;
 	private String[] tmp2;
 
-	private Facebook facebook;
-	private static int SIGNIN_CALLBACK_CODE = 16;
-	private static int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private String userName;
 	private String email;
 	private String password;
 	private RegisterUpdateListener registerUpdateListener;
-	private SignUpUpdateListener signUpUpdateListener;
-	private int loginReturnCode;
-	private LoginUpdateListener loginUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_screen);
-
-		context = this;
 
 		COUNTRIES = getResources().getStringArray(R.array.countries);
 		COUNTRIES_ID = getResources().getStringArray(R.array.countries_id);
@@ -93,6 +87,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		passwordEdt.addTextChangedListener(new FieldChangeWatcher(passwordEdt));
 		regRetypeEdt.addTextChangedListener(new FieldChangeWatcher(regRetypeEdt));
 
+		setLoginFields(userNameEdt, passwordEdt);
 
 		getCountryCode();
 		Spinner countrySpinner = (Spinner) findViewById(R.id.country);
@@ -101,18 +96,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		regSubmit.setOnClickListener(this);
 
-		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.fb_connect);
-
-		facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-		SessionStore.restore(facebook, this);
-		SessionEvents.addAuthListener(new SampleAuthListener());
-		SessionEvents.addLogoutListener(new SampleLogoutListener());
-
-		facebookLoginButton.init(this, facebook);
-
-		signUpUpdateListener = new SignUpUpdateListener();
 		registerUpdateListener = new RegisterUpdateListener();
-		loginUpdateListener = new LoginUpdateListener();
 	}
 
 	private void getCountryCode() {
@@ -164,6 +148,12 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			return false;
 		}
 
+		if (!emailPattern.matcher(getTextFromField(emailEdt)).matches()) {
+			emailEdt.setError(getString(R.string.invalidEmail));
+			emailEdt.requestFocus();
+			return true;
+		}
+
 		if (email.equals(StaticData.SYMBOL_EMPTY)) {
 			emailEdt.setError(getString(R.string.can_not_be_empty));
 			emailEdt.requestFocus();
@@ -198,6 +188,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, CID);
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, 0); // TODO
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
 //		new GetStringObjTask(registerUpdateListener).executeTask(loadItem);
@@ -212,174 +203,24 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		@Override
 		public void updateData(RegisterItem returnedObj) {
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.LOGIN);
-//			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
-//			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-//
-//			new PostDataTask(signUpUpdateListener).executeTask(loadItem);
-		}
-	}
-//	private class RegisterUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.LOGIN);
-//			loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
-//			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-//
-//			new PostDataTask(signUpUpdateListener).executeTask(loadItem);
-//		}
-//	}
-
-	private class SignUpUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
 			FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
-			String[] result = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
-
-			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
-			preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString());
-
-			try {
-				preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, result[0].split("[+]")[1]);
-			} catch (ArrayIndexOutOfBoundsException e) {
-				String debugInfo = "response=" + returnedObj;
-				BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("DEBUG", debugInfo);
-				FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
-				preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
-				throw new ArrayIndexOutOfBoundsException(debugInfo);
-			}
-
-			preferencesEditor.putString(AppConstants.API_VERSION, result[1]);
-			try {
-				preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(result[2], HTTP.UTF_8));
-			} catch (UnsupportedEncodingException ignored) {
-				showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login);
-				return;
-			}
-			preferencesEditor.commit();
-
-			startActivity(new Intent(context, HomeScreenActivity.class));
-			finish();
-
 			showToast(R.string.congratulations);
 
-			if (returnedObj.length() > 0) {
-				String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
-				if (responseArray.length >= 4) {
-					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-						preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
-					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
-
-						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-					}
-					doUpdate(responseArray, returnedObj);
-				}
-			}
+			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
+			processLogin(returnedObj.getData());
 		}
 	}
 
-	private void doUpdate(String[] response, String tempDebug) {
 
-		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-
-		try {
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			String debugInfo = "response=" + tempDebug;
-			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("DEBUG", debugInfo);
-			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
-			throw new ArrayIndexOutOfBoundsException(debugInfo);
-		}
-
-		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
-		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
-		} catch (UnsupportedEncodingException ignored) {
-		}
-		preferencesEditor.commit();
-
+	@Override
+	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-		if (AppData.isNotificationsEnabled(this)) {
+		if (AppData.isNotificationsEnabled(this)){
 			checkMove();
 		}
-		AppData.setGuest(this, false);
 
 		backToHomeActivity();
-	}
-
-	public class SampleAuthListener implements SessionEvents.AuthListener {
-		@Override
-		public void onAuthSucceed() {
-
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.LOGIN);
-			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
-			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
-
-			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
-
-			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
-		}
-
-		@Override
-		public void onAuthFail(String error) {
-			showToast(getString(R.string.login_failed) + StaticData.SYMBOL_SPACE + error);
-		}
-	}
-
-	private class LoginUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			if (returnedObj.length() > 0) {
-				final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
-				if (responseArray.length >= 4) {
-
-					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-						preferencesEditor.putString(AppConstants.USERNAME, userName.toLowerCase());
-						doUpdate(responseArray, returnedObj);
-					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
-						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-						doUpdate(responseArray, returnedObj);
-					}
-				}
-			}
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
-				showToast(R.string.no_chess_account_signup_please);
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
-			} else {
-				super.errorHandle(resultMessage);
-			}
-
-
-		}
-	}
-
-	public class SampleLogoutListener implements SessionEvents.LogoutListener {
-		@Override
-		public void onLogoutBegin() {
-			showToast(R.string.loggin_out);
-		}
-
-		@Override
-		public void onLogoutFinish() {
-			showToast(R.string.you_logged_out);
-		}
 	}
 
 	@Override
@@ -412,9 +253,14 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		}
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			if (s.length() > 1) {
+		public void onTextChanged(CharSequence str, int start, int before, int count) {
+			if (str.length() > 1) {
 				editText.setError(null);
+
+//				if (gMailPattern.matcher(getTextFromField(emailEdt)).matches()){ // TODO use with autoComplete
+//					emailEdt.setText(str + "mail.com");
+//					emailEdt.requestFocus();
+//				}
 			}
 		}
 

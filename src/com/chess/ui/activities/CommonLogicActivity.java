@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -20,10 +21,10 @@ import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
+import com.chess.backend.entity.new_api.RegisterData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.backend.tasks.PostDataTask;
 import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.GameListCurrentItem;
@@ -223,7 +224,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
-	protected void unregisterGcmService(){
+	protected void unRegisterGcmService(){
 //		try{
 //			GCMRegistrar.checkDevice(this);
 //		} catch (UnsupportedOperationException ex){
@@ -313,6 +314,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 //		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USER_NAME);
 
 //		new PostDataTask(loginUpdateListener).executeTask(loadItem);
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
@@ -339,6 +341,13 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
+			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE /*&& responseArray.length >= 5*/) {
+				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
+			}
+			preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremium_status());
+			processLogin(returnedObj.getData());
+
 //			final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
 //			if (responseArray.length >= 4) {
 //				if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
@@ -451,32 +460,35 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
-	private void processLogin(String[] response, String tempDebug) {
+//	private void processLogin(String[] response, String tempDebug) {
+	protected void processLogin(RegisterData returnedObj) {
 		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
 			return;
 		}
 
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
-		try {
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			String debugInfo = "response=" + tempDebug;
-			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("DEBUG", debugInfo);
-			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
-			throw new ArrayIndexOutOfBoundsException(debugInfo);
-		}
+//		try {
+//			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremium_status());
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			String debugInfo = "response = " + AppUtils.parseJsonToString(returnedObj);
+//			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
+//			Map<String, String> params = new HashMap<String, String>();
+//			params.put("DEBUG", debugInfo);
+//			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
+//			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, StaticData.NOT_INITIALIZED_USER);
+//			throw new ArrayIndexOutOfBoundsException(debugInfo);
+//		}
 
-		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
+//		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLogin_token(), HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, response[2]);
+			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLogin_token());
+//			showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login); // or use that logic?
+//			return;
 		}
-		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]);
+// 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
 		preferencesEditor.commit();
 
 		AppData.setGuest(this, false);
@@ -513,6 +525,8 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		if (tag.equals(NETWORK_CHECK_TAG)){
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
 		}
 		super.onPositiveBtnClick(fragment);
 	}

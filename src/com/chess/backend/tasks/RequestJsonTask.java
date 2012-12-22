@@ -36,56 +36,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
-		String url = RestHelper.formPostRequest(loadItems[0]);
 		result = getData(loadItems[0]);
-//		result = postData(url, loadItems[0]);
-		return result;
-	}
-
-	private int postData(String url, LoadItem loadItem) {
-		HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
-
-		HttpClient httpClient = new DefaultHttpClient(httpParameters);
-
-		Log.d(TAG, "retrieving from url = " + url);
-
-		HttpPost httpPost = new HttpPost(url);
-		try {
-			httpPost.setEntity(new UrlEncodedFormEntity(loadItem.getRequestParams()));
-		} catch (UnsupportedEncodingException e) {
-			AppUtils.logD(TAG, e.toString());
-		}
-
-		try {
-			HttpResponse response = httpClient.execute(httpPost);
-			final int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode != HttpStatus.SC_OK) {
-				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
-				return StaticData.UNKNOWN_ERROR;
-			}
-			if (response != null){
-				String item = EntityUtils.toString(response.getEntity());
-				result = StaticData.RESULT_OK;
-				Log.d(TAG,"WebRequest SERVER RESPONSE: " + item);
-			}
-
-		} catch (IOException e) {
-			httpPost.abort();
-			Log.e(TAG, "I/O error while retrieving data from " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} catch (IllegalStateException e) {
-			httpPost.abort();
-			Log.e(TAG, "Incorrect URL: " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} catch (Exception e) {
-			httpPost.abort();
-			Log.e(TAG, "Error while retrieving data from " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
 		return result;
 	}
 
@@ -123,7 +74,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			if (statusCode != HttpStatus.SC_OK) {
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 
-				result = StaticData.UNKNOWN_ERROR; // TODO parse result code correctly
+				return StaticData.INTERNAL_ERROR;
 			}
 
 			InputStream inputStream = null;
@@ -135,13 +86,16 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				String resultString = convertStreamToString(inputStream);
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
 				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+//					if (baseResponse.getCount() > 0) {
+//
+//					} else {
+//
+//					}
 					item = parseJson(resultString);
 					if(item != null)
 						result = StaticData.RESULT_OK;
 //						Log.d(TAG, "received JSON object = " + parseServerRequest(item));
-					if (baseResponse.getCount() > 0) {
 
-					}
 
 				} else {
 					result = baseResponse.getCode() | 0x100; // TODO set proper mask
