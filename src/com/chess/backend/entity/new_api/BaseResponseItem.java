@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 21.12.12
  * Time: 6:38
  */
-public class BaseResponseItem {
+public class BaseResponseItem<ItemType> {
 /*
 "status": "success",
     "count": 3,
@@ -25,7 +25,12 @@ public class BaseResponseItem {
 	private String message;
 	private int count;
 	private int code;
+	private ItemType data;
 	private String more_info;
+
+	public ItemType getData() {
+		return data;
+	}
 
 	public String getStatus() {
 		return status;

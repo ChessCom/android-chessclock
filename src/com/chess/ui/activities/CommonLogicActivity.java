@@ -21,7 +21,7 @@ import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
-import com.chess.backend.entity.new_api.RegisterData;
+import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.GetStringObjTask;
@@ -461,7 +461,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 //	private void processLogin(String[] response, String tempDebug) {
-	protected void processLogin(RegisterData returnedObj) {
+	protected void processLogin(RegisterItem.RegisterData returnedObj) {
 		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
 			return;
 		}

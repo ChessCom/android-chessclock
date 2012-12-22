@@ -116,6 +116,7 @@ public class RestHelper {
 	/* Methods */
 	public static final String CMD_LOGIN = BASE_URL + V1 + USERS +"/login";
 	public static final String CMD_REGISTER = BASE_URL + V1 + USERS +"/register";
+	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_USER = BASE_URL + V1 + USERS;
 
 	/* Parameters */

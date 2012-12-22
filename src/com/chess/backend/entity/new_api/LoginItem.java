@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 21.12.12
  * Time: 6:30
  */
-public class LoginItem extends BaseResponseItem{
+public class LoginItem extends BaseResponseItem<LoginItem.LoginData>{
 	/*
 	{
 		"status": "success",
@@ -19,13 +19,53 @@ public class LoginItem extends BaseResponseItem{
 		}
 	}
 	 */
-	private LoginData data;
+//	private LoginData data;
+//
+//	public LoginData getData() {
+//		return data;
+//	}
+//
+//	public void setData(LoginData data) {
+//		this.data = data;
+//	}
 
-	public LoginData getData() {
-		return data;
-	}
+	public static class LoginData extends RegisterItem.RegisterData {
+		/*
+			"login_token": "6d69c2715c6c069fb8eef91d6e1b4c7c",
+			"premium_status": 3,
+			"user_id": 41,
+			"tactics_rating": 1474,
+			"username": "erik"
+		 */
+//	private String login_token;
+		private int premium_status;
+		//	private long user_id;
+		private int tactics_rating;
+		private String username;
 
-	public void setData(LoginData data) {
-		this.data = data;
+//	public String getLogin_token() {
+//		return login_token;
+//	}
+
+		public int getPremium_status() {
+			return premium_status;
+		}
+
+		public void setPremium_status(int premium_status) {
+			this.premium_status = premium_status;
+		}
+
+//	public long getUser_id() {
+//		return user_id;
+//	}
+
+		public int getTactics_rating() {
+			return tactics_rating;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
 	}
 }
