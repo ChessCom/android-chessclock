@@ -57,13 +57,11 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			connection.setRequestMethod(loadItem.getRequestMethod());
 
 			if (RestHelper.IS_TEST_SERVER_MODE) {
-//				connection.addRequestProperty(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 				Authenticator.setDefault(new Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
 					}
 				});
-//				httpGet.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 			}
 
 			if (loadItem.getRequestMethod().equals(RestHelper.POST)){
@@ -87,11 +85,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				resultString = convertStreamToString(inputStream);
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
 				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-//					if (baseResponse.getCount() > 0) {
-//
-//					} else {
-//
-//					}
 					item = parseJson(resultString);
 					if(item != null) {
 						result = StaticData.RESULT_OK;
@@ -101,18 +94,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				} else {
 					result = baseResponse.getCode() | 0x100; // TODO set proper mask
 				}
-//				if (useList) {
-//					itemList = parseJson2List(resultString);
-////						Log.d(TAG, "received JSON list object = " + parseServerRequestList(itemList));
-//					if(itemList.size() > 0)
-//						result = StaticData.RESULT_OK;
-//				} else {
-//					item = parseJson(resultString);
-//					if(item != null)
-//						result = StaticData.RESULT_OK;
-////						Log.d(TAG, "received JSON object = " + parseServerRequest(item));
-//				}
-
 			} finally {
 				if (inputStream != null) {
 					inputStream.close();

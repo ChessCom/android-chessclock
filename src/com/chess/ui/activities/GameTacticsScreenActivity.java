@@ -16,18 +16,17 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.TacticItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
-import com.chess.model.TacticItemOld;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.fragments.BasePopupDialogFragment;
@@ -38,11 +37,7 @@ import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
-import org.apache.http.util.ByteArrayBuffer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -289,17 +284,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					showSolvedTacticPopup(title, false);
 				} else {
 
-/*
-tacticsId		\d+	true	Tactics ID.
-passed			0|1	true	1 or 0 if `tacticsId` is present.
-correctMoves	\d+	true	required if `tacticsId` is present and `passed` is `0`.
-seconds			\d+	true	Required if `tacticsId` is present.
-encodedMoves	0|1	true	Encoded moves. Default is `0`.
-	 */
 					LoadItem loadItem = new LoadItem();
 //					loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 					loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
-					loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+					loadItem.setRequestMethod(RestHelper.POST);
+					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 					loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
 					loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_TRUE);
 					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, boardFace.getTacticsCorrectMoves());
@@ -325,8 +314,9 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
 				showWrongMovePopup(title);
 			} else {
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
-				loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+				loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
+				loadItem.setRequestMethod(RestHelper.POST);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 				loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
 				loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_FALSE);
 				loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
@@ -869,40 +859,31 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
                 return;
 			}
         }
+
+		new GetOfflineTacticsBatchTask(new DemoTacticsUpdateListener(), getResources()).executeTask(R.raw.tactics10batch_new);
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
-		// TODO move to AsyncTask
-		InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
-		try {
-			ByteArrayBuffer baf = new ByteArrayBuffer(50);
-			int current;
-			while ((current = inputStream.read()) != -1) {
-				baf.append((byte) current);
-			}
 
-			String input = new String(baf.toByteArray());
-			String[] tmp = input.split(RestHelper.SYMBOL_ITEM_SPLIT);
-			int count = tmp.length - 1;
-			                       // TODO restore with predefined values
-//			List<TacticItem.TacticsData> tacticBatch = new ArrayList<TacticItem.TacticsData>(count);
-//			for (int i = 1; i <= count; i++) {
-//				TacticItemOld tacticItem = new TacticItemOld(tmp[i].split(RestHelper.SYMBOL_PARAMS_SPLIT));
-//				tacticItem.setUser(DBDataManager.getUserName(getContext()));
-//				tacticBatch.add(tacticItem);
-//			}
-//
-//            new SaveTacticsBatchTask(dbTacticBatchSaveListener, tacticBatch,
-//					getContentResolver()).executeTask();
-            offlineBatchWasLoaded = true;
 
-			inputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+	}
+
+	private class DemoTacticsUpdateListener extends ActionBarUpdateListener<TacticItem.TacticsData> {
+
+		public DemoTacticsUpdateListener() {
+			super(getInstance());
+			useList = true;
+		}
+
+		@Override
+		public void updateListData(List<TacticItem.TacticsData> itemsList) {
+			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList,
+					getContentResolver()).executeTask();
+			offlineBatchWasLoaded = true;
 		}
 	}
 
-	private class DbTacticBatchSaveListener extends AbstractUpdateListener<TacticItem.TacticsData> {
+	private class DbTacticBatchSaveListener extends ActionBarUpdateListener<TacticItem.TacticsData> {
 		public DbTacticBatchSaveListener() {
-			super(getContext());
+			super(getInstance());
 		}
 
 		@Override

@@ -1,10 +1,12 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
@@ -31,11 +33,16 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.TacticsD
 
     @Override
     protected Integer doTheTask(Long... ids) {
+		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
+		String userName = AppData.getUserName(context);
 		synchronized (tacticsBatch) {
 			for (TacticItem.TacticsData tacticItem : tacticsBatch) {
-
+				tacticItem.setUser(userName);
 				arguments[0] = String.valueOf(tacticItem.getId());
-				arguments[1] = tacticItem.getUser();
+				arguments[1] = userName;
 
 				Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
 				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
