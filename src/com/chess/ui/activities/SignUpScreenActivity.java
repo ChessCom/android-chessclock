@@ -20,6 +20,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -195,10 +196,10 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}
 
-	private class RegisterUpdateListener extends AbstractUpdateListener<RegisterItem> {
+	private class RegisterUpdateListener extends ActionBarUpdateListener<RegisterItem> {
 
 		public RegisterUpdateListener() {
-			super(getContext(), RegisterItem.class);
+			super(getInstance(), RegisterItem.class);
 		}
 
 		@Override

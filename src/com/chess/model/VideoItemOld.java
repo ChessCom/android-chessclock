@@ -2,7 +2,7 @@ package com.chess.model;
 
 import com.chess.backend.statics.StaticData;
 
-public class VideoItem {
+public class VideoItemOld {
 
 
 	public static final String QUOTE_SYMBOL = "&quot;";
@@ -21,7 +21,7 @@ public class VideoItem {
 	private long publishTimestamp;
 	private String viewUrl;
 
-	public VideoItem(String[] values) {
+	public VideoItemOld(String[] values) {
 		title = values[0];
 		description = values[1].replaceAll(QUOTE_SYMBOL, QUOTE_SYMBOL_NORMAL);
 		prefVideoCategory = values[2];

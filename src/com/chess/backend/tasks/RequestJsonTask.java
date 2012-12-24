@@ -28,7 +28,7 @@ import java.net.*;
 import java.util.List;
 
 public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, LoadItem> {
-	private static final String TAG = "GetStringObjTask";
+	private static final String TAG = "RequestJsonTask";
 
 	public RequestJsonTask(TaskUpdateInterface<ItemType> taskFace) {
 		super(taskFace);
@@ -78,12 +78,13 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			}
 
 			InputStream inputStream = null;
+			String resultString = null;
 			try {
 //				String responseText =  EntityUtils.toString(response.getEntity());   // don't remove for quick debug
 //				Log.d(TAG, "received raw JSON response = " + responseText);
 				inputStream = connection.getInputStream();
 
-				String resultString = convertStreamToString(inputStream);
+				resultString = convertStreamToString(inputStream);
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
 				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 //					if (baseResponse.getCount() > 0) {
@@ -92,10 +93,10 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 //
 //					}
 					item = parseJson(resultString);
-					if(item != null)
+					if(item != null) {
 						result = StaticData.RESULT_OK;
 //						Log.d(TAG, "received JSON object = " + parseServerRequest(item));
-
+					}
 
 				} else {
 					result = baseResponse.getCode() | 0x100; // TODO set proper mask
@@ -119,8 +120,8 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			}
 
 			result = StaticData.RESULT_OK;
-			Log.d(TAG, "WebRequest SERVER RESPONSE: " + item);
-			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + item);
+			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

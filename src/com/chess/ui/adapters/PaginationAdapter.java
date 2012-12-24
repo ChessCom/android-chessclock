@@ -19,7 +19,7 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
 	protected List<T> mAllItems;
 	protected List<T> mNewItems;
     protected List<T> itemList;
-	protected int page;
+	private int page;
 	protected Context context;
     protected TaskUpdateInterface<T> taskFace;
     protected int result;
@@ -37,6 +37,10 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
         this.taskFace = taskFace;
         mPendingView = LayoutInflater.from(context).inflate(R.layout.pending_list_item, null);
         result = StaticData.EMPTY_DATA;
+	}
+
+	protected void setFirstPage(int page) {
+		this.page = page;
 	}
 
 	protected abstract List<T> fetchMoreItems(int page);
@@ -64,7 +68,6 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
 		if(mNewItems == null || result == StaticData.MAX_REACHED)
 			return false;
 
-		page++;
 		if(maxItems != 0 && mNewItems.size() >= maxItems) {
 			result = StaticData.MAX_REACHED;
 			return false;

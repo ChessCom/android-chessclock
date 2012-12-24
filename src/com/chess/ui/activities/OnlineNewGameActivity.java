@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -7,16 +8,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailyChallengeData;
+import com.chess.backend.entity.new_api.DailyChallengesItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.GameListChallengeItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
+import com.chess.utilities.InneractiveAdHelper;
+import com.chess.utilities.MopubHelper;
+import com.inneractive.api.ads.InneractiveAd;
+import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 
@@ -25,9 +37,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
 	private ListView openChallengesListView;
-	private ArrayList<GameListChallengeItem> gameListItems = new ArrayList<GameListChallengeItem>();
+	private ArrayList<DailyChallengeData> gameListItems = new ArrayList<DailyChallengeData>();
 	private OnlineChallengesGamesAdapter gamesAdapter = null;
-	private GameListChallengeItem gameListElement;
+	private DailyChallengeData gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private int successToastMsgId;
 
@@ -40,7 +52,17 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_new_game);
 
-		init();
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+
+		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+		if (AppUtils.isNeedToUpgrade(this)) {
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+			} else {
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			}
+		}
 
 		openChallengesListView = (ListView) this.findViewById(R.id.openChallenges);
 		openChallengesListView.setAdapter(gamesAdapter);
@@ -48,18 +70,15 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		findViewById(R.id.challengecreate).setOnClickListener(this);
-
-		initUpgradeAndAdWidgets();
-		/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 	}
 
 	private void init() {
 		challengeInviteUpdateListener = new ChallengeInviteUpdateListener();
 
 		listLoadItem = new LoadItem();
-		listLoadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//		listLoadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
+		listLoadItem.setLoadPath(RestHelper.CMD_GAMES_CHALLENGES);
+		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 
 		listUpdateListener = new ListUpdateListener();
 
@@ -68,25 +87,33 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 	@Override
 	protected void onStart() {
+		init();
 		super.onStart();
 		updateList();
 	}
 
 	private void updateList(){
-		new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
+//		new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
+		new RequestJsonTask<DailyChallengesItem>(listUpdateListener).executeTask(listLoadItem);
 	}
 
-	private class ListUpdateListener extends ChessUpdateListener {
+//	private class ListUpdateListener extends ChessUpdateListener {
+	private class ListUpdateListener extends ActionBarUpdateListener<DailyChallengesItem> {
 
-		@Override
+	public ListUpdateListener() {
+		super(getInstance(), DailyChallengesItem.class);
+	}
+
+	@Override
 		public void showProgress(boolean show) {
 			getActionBarHelper().setRefreshActionItemState(show);
 		}
 
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(DailyChallengesItem returnedObj) {
 			gameListItems.clear();
-			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
+//			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
+			gameListItems.addAll(returnedObj.getData());
 
 			if (gamesAdapter == null) {
 				gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);

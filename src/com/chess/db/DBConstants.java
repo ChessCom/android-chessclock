@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 8;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 9;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -87,16 +87,12 @@ public class DBConstants {
 	public static final String V_USER_OFFERED_DRAW 		= "userOfferedDraw";
 	public static final String V_OPPONENT_OFFERED_DRAW 	= "opponentOfferedDraw";
 
-	public static final String V_USER_NAME_STR_LENGTH 	= "userNameStrLength";
 	public static final String V_OPPONENT_NAME 			= "opponentName";
 	public static final String V_OPPONENT_RATING 		= "opponentRating";
-	public static final String V_TIME_REMAINING_AMOUNT 	= "timeRemainingAmount";
-	public static final String V_TIME_REMAINING_UNITS 	= "timeRemainingUnits";
-	public static final String V_FEN_STR_LENGTH 		= "fenStrLength";
+	public static final String V_TIME_REMAINING 		= "timeRemaining";
 	public static final String V_TIMESTAMP 				= "timestamp";
 	public static final String V_LAST_MOVE_FROM_SQUARE 	= "lastMoveFromSquare";
 	public static final String V_LAST_MOVE_TO_SQUARE 	= "lastMoveToSquare";
-	public static final String V_IS_OPPONENT_ONLINE 	= "isOpponentOnline";
 	public static final String V_GAME_RESULT 			= "gameResult";
 	public static final String V_IS_MY_TURN 			= "isMyTurn";
 
@@ -128,13 +124,13 @@ public class DBConstants {
 
     static final String TACTICS_RESULTS_TABLE_CREATE =
             CREATE_TABLE_IF_NOT_EXISTS + TACTICS_RESULTS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-            + V_USER 		        + _TEXT_NOT_NULL + _COMMA
-            + V_TACTIC_ID           + _LONG_NOT_NULL + _COMMA
-            + V_SCORE               + _TEXT_NOT_NULL + _COMMA
-            + V_USER_RATING_CHANGE	+ _INT_NOT_NULL + _COMMA
-            + V_USER_RATING         + _INT_NOT_NULL + _COMMA
+            + V_USER 		        	+ _TEXT_NOT_NULL + _COMMA
+            + V_TACTIC_ID           	+ _LONG_NOT_NULL + _COMMA
+            + V_SCORE               	+ _TEXT_NOT_NULL + _COMMA
+            + V_USER_RATING_CHANGE		+ _INT_NOT_NULL + _COMMA
+            + V_USER_RATING         	+ _INT_NOT_NULL + _COMMA
             + V_PROBLEM_RATING_CHANGE 	+ _INT_NOT_NULL + _COMMA
-            + V_PROBLEM_RATING      + _INT_NOT_NULL + _CLOSE;
+            + V_PROBLEM_RATING      	+ _INT_NOT_NULL + _CLOSE;
 
 
     static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
@@ -142,17 +138,13 @@ public class DBConstants {
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_USER_NAME_STR_LENGTH 	    + _INT_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				    + _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_AMOUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_UNITS 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FEN_STR_LENGTH 		        + _INT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
 			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
 			+ V_GAME_RESULT + _INT_NOT_NULL + _CLOSE;
 
 	static final String ECHESS_CURRENT_LIST_GAMES_CREATE =
@@ -160,17 +152,13 @@ public class DBConstants {
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_USER_NAME_STR_LENGTH 	    + _INT_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				    + _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_AMOUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING_UNITS 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FEN_STR_LENGTH 		        + _INT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
 			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_IS_OPPONENT_ONLINE 	        + _INT_NOT_NULL + _COMMA
 			+ V_OPPONENT_OFFERED_DRAW       + _INT_NOT_NULL + _COMMA
 			+ V_IS_MY_TURN 	        		+ _INT_NOT_NULL + _COMMA
 			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _CLOSE;

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import com.chess.backend.entity.new_api.*;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
@@ -78,10 +79,8 @@ public class DBDataManager {
 			DBConstants.V_IS_MY_TURN,
 			DBConstants.V_TIMESTAMP,
 			DBConstants.V_OPPONENT_OFFERED_DRAW,
-			DBConstants.V_IS_OPPONENT_ONLINE,
 			DBConstants.V_HAS_NEW_MESSAGE,
-			DBConstants.V_TIME_REMAINING_UNITS,
-			DBConstants.V_TIME_REMAINING_AMOUNT
+			DBConstants.V_TIME_REMAINING
 	};
 
 	public static final String[] PROJECTION_FINISHED_LIST_GAMES = new String[] {
@@ -90,7 +89,6 @@ public class DBDataManager {
 			DBConstants.V_GAME_ID,
 			DBConstants.V_GAME_TYPE,
 			DBConstants.V_GAME_RESULT,
-			DBConstants.V_IS_OPPONENT_ONLINE,
 			DBConstants.V_OPPONENT_NAME
 	};
 
@@ -175,7 +173,7 @@ public class DBDataManager {
         return exist;
     }
 
-    public static int saveTacticItemToDb(Context context, TacticItem tacticItem){
+    public static int saveTacticItemToDb(Context context, TacticItem.TacticsData tacticItem){
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -202,7 +200,7 @@ public class DBDataManager {
         return StaticData.RESULT_OK;
     }
 
-    public static TacticItem getLastTacticItemFromDb(Context context) {
+    public static TacticItem.TacticsData getLastTacticItemFromDb(Context context) {
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -213,17 +211,17 @@ public class DBDataManager {
                 null, SELECTION_USER, arguments1, null);
 
         cursor.moveToFirst();
-        TacticItem tacticItem = getTacticItemFromCursor(cursor);
+        TacticItem.TacticsData tacticItem = getTacticItemFromCursor(cursor);
 		cursor.close();
 
         // set result item
-        TacticItem.TacticResultItem resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
+		TacticResultItem resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
         tacticItem.setResultItem(resultItem);
 
         return tacticItem;
     }
 
-    private static void saveTacticResultItemToDb(Context context, long id, TacticItem.TacticResultItem resultItem){
+    private static void saveTacticResultItemToDb(Context context, long id, TacticResultItem resultItem){
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -244,7 +242,7 @@ public class DBDataManager {
         cursor.close();
     }
 
-    private static TacticItem.TacticResultItem getTacticResultItemFromDb(Context context, long id){
+    private static TacticResultItem getTacticResultItemFromDb(Context context, long id){
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -255,7 +253,7 @@ public class DBDataManager {
                 null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
         if (cursor.moveToFirst()){
-            TacticItem.TacticResultItem resultItem = getTacticResultItemFromCursor(cursor);
+			TacticResultItem resultItem = getTacticResultItemFromCursor(cursor);
             cursor.close();
 
             return resultItem;
@@ -265,13 +263,13 @@ public class DBDataManager {
 		}
     }
 
-    public static ContentValues putTacticItemToValues(TacticItem dataObj) {
+    public static ContentValues putTacticItemToValues(TacticItem.TacticsData dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
 		values.put(DBConstants.V_TACTIC_ID, dataObj.getId());
-		values.put(DBConstants.V_FEN, dataObj.getFen());
-		values.put(DBConstants.V_MOVE_LIST, dataObj.getMoveList());
+		values.put(DBConstants.V_FEN, dataObj.getInitialFen());
+		values.put(DBConstants.V_MOVE_LIST, dataObj.getCleanMoveString());
 		values.put(DBConstants.V_ATTEMPT_CNT, dataObj.getAttemptCnt());
 		values.put(DBConstants.V_PASSED_CNT, dataObj.getPassedCnt());
 		values.put(DBConstants.V_RATING, dataObj.getRating());
@@ -285,8 +283,8 @@ public class DBDataManager {
 	}
 
 
-	public static TacticItem getTacticItemFromCursor(Cursor cursor) {
-		TacticItem dataObj = new TacticItem();
+	public static TacticItem.TacticsData getTacticItemFromCursor(Cursor cursor) {
+		TacticItem.TacticsData dataObj = new TacticItem.TacticsData();
 
 		dataObj.setUser(getString(cursor, DBConstants.V_USER));
 		dataObj.setId(getLong(cursor, DBConstants.V_TACTIC_ID));
@@ -304,7 +302,7 @@ public class DBDataManager {
         return dataObj;
 	}
 
-    public static ContentValues putTacticResultItemToValues(TacticItem.TacticResultItem dataObj) {
+    public static ContentValues putTacticResultItemToValues(TacticResultItem dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getScoreStr());
@@ -319,8 +317,8 @@ public class DBDataManager {
 	}
 
 
-	public static TacticItem.TacticResultItem getTacticResultItemFromCursor(Cursor cursor) {
-        TacticItem.TacticResultItem dataObj = new TacticItem.TacticResultItem();
+	public static TacticResultItem getTacticResultItemFromCursor(Cursor cursor) {
+		TacticResultItem dataObj = new TacticResultItem();
 
 		dataObj.setScore(getString(cursor, DBConstants.V_SCORE));
 		dataObj.setUserRatingChange(getInt(cursor, DBConstants.V_USER_RATING_CHANGE));
@@ -332,12 +330,12 @@ public class DBDataManager {
 	}
 
 
-	public static ContentValues putEchessFinishedListGameToValues(GameListFinishedItem dataObj, String userName) {
+	public static ContentValues putEchessFinishedListGameToValues(DailyFinishedGameData dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, userName);
 		setValuesFromListGameItem(values, dataObj);
-		values.put(DBConstants.V_GAME_RESULT, dataObj.getGameResult());
+		values.put(DBConstants.V_GAME_RESULT, dataObj.getGameScore());
 		return values;
 	}
 
@@ -357,13 +355,12 @@ public class DBDataManager {
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
 //		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
-		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
 		dataObj.setGameResult(getInt(cursor, DBConstants.V_GAME_RESULT));
 
 		return dataObj;
 	}
 
-	public static ContentValues putEchessGameListCurrentItemToValues(GameListCurrentItem dataObj, String userName) {
+	public static ContentValues putEchessGameListCurrentItemToValues(DailyCurrentGameData dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
 		setValuesFromListGameItem(values, dataObj);
@@ -375,16 +372,14 @@ public class DBDataManager {
 	}
 
 
-	public static GameListCurrentItem getEchessGameListCurrentItemFromCursor(Cursor cursor) {
-		GameListCurrentItem dataObj = new GameListCurrentItem();
+	public static DailyCurrentGameData getEchessGameListCurrentItemFromCursor(Cursor cursor) {
+		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
-		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
-		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
-		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
-		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
+		dataObj.setGameType(getString(cursor, DBConstants.V_GAME_TYPE));
+		dataObj.setOpponentUsername(getString(cursor, DBConstants.V_OPPONENT_NAME));
+		dataObj.setTimeRemaining(getInt(cursor, DBConstants.V_TIME_REMAINING));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
-		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
 
 //		setListGameItemFromCursor(dataObj, cursor);
 		dataObj.setDrawOfferPending(getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0);
@@ -396,12 +391,12 @@ public class DBDataManager {
 
 //	private static void setListGameItemFromCursor(BaseGameOnlineItem dataObj, Cursor cursor){
 //		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
-//		dataObj.setColor(getInt(cursor, DBConstants.V_COLOR));
+//		dataObj.setMyColor(getInt(cursor, DBConstants.V_COLOR));
 //		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 //		dataObj.setUserNameStrLength(getInt(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
 //		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
 //		dataObj.setOpponentRating(getInt(cursor, DBConstants.V_OPPONENT_RATING));
-//		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT));
+//		dataObj.setTimeRemainingAmount(getInt(cursor, DBConstants.V_TIME_REMAINING));
 //		dataObj.setTimeRemainingUnits(getString(cursor, DBConstants.V_TIME_REMAINING_UNITS));
 //		dataObj.setFenStrLength(getInt(cursor, DBConstants.V_FEN_STR_LENGTH));
 //		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
@@ -410,20 +405,16 @@ public class DBDataManager {
 //		dataObj.setOpponentOnline(getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0);
 //	}
 
-	private static void setValuesFromListGameItem(ContentValues values, BaseGameOnlineItem dataObj){
+	private static void setValuesFromListGameItem(ContentValues values, DailyGameBaseData dataObj){
 		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
-		values.put(DBConstants.V_COLOR, dataObj.getColor());
+		values.put(DBConstants.V_COLOR, dataObj.getMyColor());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
-		values.put(DBConstants.V_USER_NAME_STR_LENGTH, dataObj.getUsernameStringLength());
 		values.put(DBConstants.V_OPPONENT_NAME, dataObj.getOpponentUsername());
 		values.put(DBConstants.V_OPPONENT_RATING, dataObj.getOpponentRating());
-		values.put(DBConstants.V_TIME_REMAINING_AMOUNT, dataObj.getTimeRemainingAmount());
-		values.put(DBConstants.V_TIME_REMAINING_UNITS, dataObj.getTimeRemainingUnits());
-		values.put(DBConstants.V_FEN_STR_LENGTH, dataObj.getFenStringLength());
+		values.put(DBConstants.V_TIME_REMAINING, dataObj.getTimeRemainingAmount());
 		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
 		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
 		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
-		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.getIsOpponentOnline()? 1 : 0);
 	}
 
 	public static ContentValues putGameOnlineItemToValues(GameOnlineItem dataObj, String userName) {

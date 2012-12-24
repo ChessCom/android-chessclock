@@ -19,11 +19,6 @@ public class RegisterItem extends BaseResponseItem<RegisterItem.RegisterData>{
 		}
 	}
 */
-//	private RegisterData data;
-//
-//	public RegisterData getData() {
-//		return data;
-//	}
 
 	public static class RegisterData {
 		/*

@@ -12,9 +12,10 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
-import com.chess.model.VideoItem;
+import com.chess.model.VideoItemOld;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -30,7 +31,8 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
     private String skill;
     private String category;
     private String keyword;
-	private List<VideoItem> videosList;
+//	private List<VideoItemOld> videosList;
+	private List<VideoItem.VideoDataItem> videosList;
 
 
     @Override
@@ -74,9 +76,12 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);
+//		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
+		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);  // TODO should be preferrable
+		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_LIST_CNT);  // TODO should be preferrable
 		loadItem.addRequestParams(RestHelper.P_PAGE, 0);
         if (keyword != null) { // weird hack because LoadItem -> NameValuePairs can't be Serialized
             loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
@@ -86,7 +91,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
         }
 
 		//set Pagination adapter params
-		videosList = new ArrayList<VideoItem>();
+		videosList = new ArrayList<VideoItem.VideoDataItem>();
 		VideosAdapter videosAdapter = new VideosAdapter(this, videosList);
 
 		VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(this, videosAdapter, videosListItemUpdateListener, loadItem);
@@ -99,14 +104,14 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		return this;
 	}
 
-	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem> {
+	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem.VideoDataItem> {
 		public VideosListItemsUpdateListener() {
 			super(getInstance());
 			useList = true;
 		}
 
 		@Override
-		public void updateListData(List<VideoItem> itemsList) {
+		public void updateListData(List<VideoItem.VideoDataItem> itemsList) {
 			videosList.addAll(itemsList);
 		}
 	}
@@ -117,10 +122,10 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			return; // means we pressed loading view
 		}
 
-		VideoItem videoItem = (VideoItem) adapter.getItemAtPosition(pos);
+		VideoItem.VideoDataItem videoItem = (VideoItem.VideoDataItem) adapter.getItemAtPosition(pos);
 
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		String videoUrl = videoItem.getViewUrl().trim();
+		String videoUrl = videoItem.getMobile_view_url()/*getViewUrl()*/.trim();
 		intent.setDataAndType(Uri.parse(videoUrl), "video/*");
 		startActivity(intent);
 	}
@@ -131,16 +136,16 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			startActivity(AppData.getMembershipVideoIntent(this));
 		} else if(view.getId() == R.id.fullDescBtn){
 			int pos = (Integer) view.getTag(R.id.list_item_id);
-			VideoItem videoItem = (VideoItem) listView.getItemAtPosition(pos);
+			VideoItem.VideoDataItem videoItem = (VideoItem.VideoDataItem) listView.getItemAtPosition(pos);
 
-			showSinglePopupDialog(videoItem.getTitle(), videoItem.getDescription());
+			showSinglePopupDialog(videoItem.getName(), videoItem.getDescription());
 
 		} else if(view.getId() == R.id.playVideoBtn) {
 			int pos = (Integer) view.getTag(R.id.list_item_id);
-			VideoItem videoItem = videosList.get(pos);
+			VideoItem.VideoDataItem videoItem = videosList.get(pos);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(videoItem.getViewUrl().trim()), "video/*");
+			intent.setDataAndType(Uri.parse(videoItem.getMobile_view_url()/*getViewUrl()*/.trim()), "video/*");
 			startActivity(intent);
 		}
 	}

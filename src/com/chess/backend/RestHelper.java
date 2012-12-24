@@ -41,13 +41,14 @@ public class RestHelper {
 //	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
 	public static final String BASE_URL = "http://www.chess-7.com/index_api_test.php";
 //	public static final String BASE_URL = "http://www.chess.com";
-	public static final String API = "/api";
-	public static final String V1 = "/v1";
-	public static final String API_V2 = API + "/v2";
-	public static final String API_V3 = API + "/v3";
-	public static final String API_V4 = API + "/v4";
-	public static final String API_V5 = API + "/v5";
-	public static final String USERS = "/users";
+	private static final String API = "/api";
+	private static final String V1 = "/v1";
+	private static final String API_V2 = API + "/v2";
+	private static final String API_V3 = API + "/v3";
+	private static final String API_V4 = API + "/v4";
+	private static final String API_V5 = API + "/v5";
+	private static final String USERS = "/users";
+	private static final String GAMES = "/games";
 
 	/*Google Cloud Messaging API part*/
 	public static final String GCM_BASE_URL = BASE_URL + "/api/gcm";
@@ -116,12 +117,20 @@ public class RestHelper {
 	/* Methods */
 	public static final String CMD_LOGIN = BASE_URL + V1 + USERS +"/login";
 	public static final String CMD_REGISTER = BASE_URL + V1 + USERS +"/register";
+	public static final String CMD_GAMES_ALL = BASE_URL + V1 + GAMES +"/all";
+	public static final String CMD_GAMES_CHALLENGES = BASE_URL + V1 + GAMES +"/challenges";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
+	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
+	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
 	public static final String CMD_USER = BASE_URL + V1 + USERS;
 
 	/* Parameters */
+	// new
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
 	public static final String P_FIELDS = "fields[]";
+	public static final String P_LOGIN_TOKEN = "loginToken";
+	public static final String P_PAGE = "page";
+	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 
 	public static final String P_USER_NAME = "username";
 	public static final String P_PASSWORD = "password";
@@ -153,10 +162,18 @@ public class RestHelper {
 	public static final String P_ALL = "all";
 	public static final String P_RETURN = "return";
 	public static final String P_GET_GAME = "get_game";
-	public static final String P_TACTICS_ID = "tactics_id";
+/*
+tacticsId	\d+	true	Tactics ID.
+passed	0|1	true	1 or 0 if `tacticsId` is present.
+correctMoves	\d+	true	required if `tacticsId` is present and `passed` is `0`.
+seconds	\d+	true	Required if `tacticsId` is present.
+encodedMoves	0|1	true	Encoded moves. Default is `0`.
+	 */
+	public static final String P_TACTICS_ID = "tacticsId";
 	public static final String P_TACTICS_TRAINER = "tactics_trainer";
 	public static final String P_PASSED = "passed";
-	public static final String P_CORRECT_MOVES = "correct_moves";
+	public static final String P_CORRECT_MOVES = "correctMoves";
+	public static final String P_ENCODED_MOVES = "encodedMoves";
 	public static final String P_SECONDS = "seconds";
 	public static final String P_GET_ANDROID_VERSION = "get_android_version";
 	public static final String P_ECHESS_OPEN_INVITES = "echess_open_invites";
@@ -180,7 +197,7 @@ public class RestHelper {
 	public static final String P_TIMESTAMP = "timestamp";
 	public static final String P_MESSAGE = "message";
 
-	public static final String P_IS_INSTALL = "is_install";
+	public static final String P_IS_INSTALL = "isInstall";
 
 	public static final String P_IPHONE = "iphone";
 	public static final String P_KEYWORD = "keyword";
@@ -189,7 +206,6 @@ public class RestHelper {
 	public static final String P_OPENING = "opening";
 	public static final String P_AUTHOR = "author";
 	public static final String P_THEME = "theme";
-	public static final String P_PAGE = "page";
 	public static final String P_PAGE_SIZE = "page-size";
 
 	private static final String GOTO = "&goto=";
@@ -297,7 +313,7 @@ public class RestHelper {
 	public static final String V_DECLINEDRAW = "DECLINEDRAW";
 	public static final String V_CHAT = "CHAT";
 
-	public static final String V_ENCODED_MOVES = "encoded_moves";
+	public static final String V_ENCODED_MOVES = "encodedMoves";
 	public static final String V_TACTICS_ID = "tactics_id";
 //	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";
@@ -313,8 +329,8 @@ public class RestHelper {
 	public static final String V_VIDEO_LIST_CNT = "20";
     public static final String V_VIDEO_ITEM_ONE = "1";
     public static final String V_ANDROID = "android";
-	public static final String V_PASSED = "1";
-	public static final String V_FAILED = "0";
+	public static final String V_TRUE = "1";
+	public static final String V_FALSE = "0";
 	public static final String V_ZERO = "0";
 	public static final String V_ONE = "1";
 

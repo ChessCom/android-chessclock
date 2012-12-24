@@ -1,6 +1,7 @@
 package com.chess.ui.activities;
 
 import android.app.SearchManager;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,15 +13,18 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.VideoItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.model.VideoItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
+
 
 /**
  * VideoScreenActivity class
@@ -29,8 +33,8 @@ import com.flurry.android.FlurryAgent;
  * @created at: 08.02.12 7:19
  */
 public class VideoScreenActivity extends LiveBaseActivity {
-
-	private VideoItem item;
+//	private VideoItemOld item;
+	private VideoItem.VideoDataItem item;
 	private View recent;
 	private TextView title, desc;
 	private Spinner skillsSpinner;
@@ -47,6 +51,15 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		setContentView(R.layout.video_screen);
 
 		init();
+
+		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
+		upgrade.setOnClickListener(this);
+
+		if (AppUtils.isNeedToUpgradePremium(this)) {
+			upgrade.setVisibility(View.VISIBLE);
+		} else {
+			upgrade.setVisibility(View.GONE);
+		}
 
 		recent = findViewById(R.id.recent);
 		title = (TextView) findViewById(R.id.title);
@@ -66,11 +79,6 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		playBtn.setOnClickListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);
-
-
-		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
-		upgrade.setOnClickListener(this);
-		upgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this) ? View.VISIBLE : View.GONE);
 
 		handleIntent(getIntent());
 	}
@@ -97,26 +105,50 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		playBtn.setEnabled(false);
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
+		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
+		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
 
-		new GetStringObjTask(videosItemUpdateListener).executeTask(loadItem);
+//		new GetStringObjTask(videosItemUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<VideoItem>(videosItemUpdateListener).executeTask(loadItem);
 	}
 
-	private class VideosItemUpdateListener extends ChessUpdateListener {
+//	private class VideosItemUpdateListener extends ChessUpdateListener {
+	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
+
+		public VideosItemUpdateListener() {
+			super(getInstance(), VideoItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(VideoItem returnedObj) {
 			recent.setVisibility(View.VISIBLE);
-			item = new VideoItem(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
-			title.setText(item.getTitle());
-			desc.setText(item.getDescription());
+			int cnt = Integer.parseInt(returnedObj.getData().getTotal_videos_count());
+			if (cnt > 0){
+				item = returnedObj.getData().getVideos().get(0); // new VideoItemOld(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
+				title.setText(item.getName());
+				desc.setText(item.getDescription());
 
-			playBtn.setEnabled(true);
+				playBtn.setEnabled(true);
+			}
 		}
 	}
 
+//	private class VideosItemUpdateListener extends ChessUpdateListener {
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			recent.setVisibility(View.VISIBLE);
+//			item = new VideoItemOld(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
+//			title.setText(item.getTitle());
+//			desc.setText(item.getDescription());
+//
+//			playBtn.setEnabled(true);
+//		}
+//	}
+//
 
 	private class SkillsItemSelectedListener implements AdapterView.OnItemSelectedListener {
 		@Override
@@ -145,7 +177,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		// Because this activity has set launchMode="singleTop", the system calls this method
-		// to deliver the intent if this activity is currently the foreground activity when
+		// to deliver the intent if this actvity is currently the foreground activity when
 		// invoked again (when the user executes a search from this activity, we don't create
 		// a new instance of this activity, so the system delivers the search intent here)
 		handleIntent(intent);
@@ -182,7 +214,8 @@ public class VideoScreenActivity extends LiveBaseActivity {
 			FlurryAgent.logEvent(FlurryData.VIDEO_PLAYED, null);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(item.getViewUrl().trim()), "video/*");
+//			intent.setDataAndType(Uri.parse(item.getViewUrl().trim()), "video/*");
+			intent.setDataAndType(Uri.parse(item.getMobile_view_url().trim()), "video/*");
 			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
 			int skillId = skillsSpinner.getSelectedItemPosition();

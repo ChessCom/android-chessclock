@@ -37,6 +37,7 @@ import org.apache.http.HttpEntity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * AppUtils class
@@ -155,7 +156,7 @@ public class AppUtils {
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
-		intent.putExtra(BaseGameItem.GAME_INFO_ITEM, currentGameItem);
+		intent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
 		intent.putExtra(AppConstants.NOTIFICATION, true);
 //		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // as we are using singleTask mode for GameOnlineActivity we call enter there via onNewIntent callback
 
@@ -384,4 +385,8 @@ public class AppUtils {
 		return gson.toJson(jRequest);
 	}
 
+	public static String convertStreamToString(java.io.InputStream is) {
+		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+		return scanner.hasNext() ? scanner.next() : "";
+	}
 }

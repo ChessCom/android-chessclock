@@ -3,27 +3,28 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.model.TacticItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
+//public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItemOld, Long> {
+public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.TacticsData, Long> {
 
     private ContentResolver contentResolver;
-	private final List<TacticItem> tacticsBatch;
+	private final List<TacticItem.TacticsData> tacticsBatch;
 	private static String[] arguments = new String[2];
 
-	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem> taskFace, List<TacticItem> tacticsBatch,
+	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem.TacticsData> taskFace, List<TacticItem.TacticsData> tacticsBatch,
 								ContentResolver resolver) {
         super(taskFace);
-		this.tacticsBatch = new ArrayList<TacticItem>();
+		this.tacticsBatch = new ArrayList<TacticItem.TacticsData>();
 		this.tacticsBatch.addAll(tacticsBatch);
 		this.contentResolver = resolver;
     }
@@ -31,7 +32,7 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem, Long> {
     @Override
     protected Integer doTheTask(Long... ids) {
 		synchronized (tacticsBatch) {
-			for (TacticItem tacticItem : tacticsBatch) {
+			for (TacticItem.TacticsData tacticItem : tacticsBatch) {
 
 				arguments[0] = String.valueOf(tacticItem.getId());
 				arguments[1] = tacticItem.getUser();

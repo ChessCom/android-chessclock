@@ -135,7 +135,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 	public void init() {
-		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
+		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_ID);
 
 		gameId = gameInfoItem.getGameId();
 
@@ -171,7 +171,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		super.onNewIntent(intent);
 
 		if (intent.getExtras() != null) {
-			gameInfoItem = (GameListCurrentItem) intent.getParcelableExtra(BaseGameItem.GAME_INFO_ITEM);
+			gameInfoItem = (GameListCurrentItem) intent.getParcelableExtra(BaseGameItem.GAME_ID);
 
 			if (gameInfoItem != null){
 				gameId = gameInfoItem.getGameId();
@@ -285,7 +285,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 							loadGameAndUpdate();
 							// same new gameId
 							Intent intent = getIntent();              // TODO remove gameInfoItem
-							intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameInfoItem);
+							intent.putExtra(BaseGameItem.GAME_ID, gameInfoItem);
 							getIntent().replaceExtras(intent);
 							return;
 						}

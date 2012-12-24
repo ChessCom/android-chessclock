@@ -23,6 +23,7 @@ import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostJsonDataTask;
@@ -322,7 +323,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
 
-	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {
+	private class LoginUpdateListenerNew extends ActionBarUpdateListener<LoginItem> {
 		public LoginUpdateListenerNew() {
 			super(getContext(), LoginItem.class);
 		}

@@ -6,18 +6,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.statics.StaticData;
-import com.chess.model.VideoItem;
+import com.chess.model.VideoItemOld;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.List;
 
-public class VideosAdapter extends ItemsAdapter<VideoItem> {
+//public class VideosAdapter extends ItemsAdapter<VideoItemOld> {
+public class VideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
 
 	private static final String MMMM_DD_YYYY = "MMMM' 'dd,' 'yyyy";
 	private ItemClickListenerFace clickListenerFace;
 
-	public VideosAdapter(ItemClickListenerFace clickListenerFace, List<VideoItem> items) {
+//	public VideosAdapter(ItemClickListenerFace clickListenerFace, List<VideoItemOld> items) {
+	public VideosAdapter(ItemClickListenerFace clickListenerFace, List<VideoItem.VideoDataItem> items) {
 		super(clickListenerFace.getMeContext(), items);
 		this.clickListenerFace = clickListenerFace;
 	}
@@ -41,20 +44,20 @@ public class VideosAdapter extends ItemsAdapter<VideoItem> {
 	}
 
 	@Override
-	protected void bindView(VideoItem item, int pos, View convertView) {
+	protected void bindView(VideoItem.VideoDataItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.fullDescBtn.setTag(itemListId, pos);
 		holder.playBtn.setTag(itemListId, pos);
 
-		CharSequence date = DateFormat.format(MMMM_DD_YYYY, 1000* item.getPublishTimestamp());
+		CharSequence date = DateFormat.format(MMMM_DD_YYYY, 1000* item.getLive_date()/*getPublishTimestamp()*/);
 
-		holder.titleTxt.setText(item.getTitle());
+		holder.titleTxt.setText(item.getName()/*getTitle()*/);
 		holder.timesTxt.setText(item.getMinutes() + " min " + " | " + date);
 
 		holder.descTxt.setText(item.getDescription());
-		holder.addInfoTxt.setText(item.getAuthorFirstGame() + StaticData.SYMBOL_SPACE
-				+ item.getAuthorLastName());
+		holder.addInfoTxt.setText(item.getFirst_name()/*getAuthorFirstGame()*/ + StaticData.SYMBOL_SPACE
+				+ item.getLast_name()/*getAuthorLastName()*/);
 	}
 
 	protected class ViewHolder {

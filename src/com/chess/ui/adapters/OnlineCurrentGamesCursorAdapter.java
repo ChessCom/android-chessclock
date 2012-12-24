@@ -9,6 +9,7 @@ import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.model.BaseGameItem;
+import com.chess.utilities.AppUtils;
 
 public class OnlineCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
@@ -49,12 +50,12 @@ public class OnlineCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		String infoText = StaticData.SYMBOL_EMPTY;
 		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
 
-			int amount = getInt(cursor, DBConstants.V_TIME_REMAINING_AMOUNT);
-
-			if (getString(cursor, DBConstants.V_TIME_REMAINING_UNITS).equals(HOUR_SYMBOL))
-				infoText = amount + context.getString(R.string.hours);
-			else
-				infoText = amount + context.getString(R.string.days);
+			long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
+			infoText = AppUtils.getStringTimeFromSeconds(amount);
+//			if (getString(cursor, DBConstants.V_TIME_REMAINING_UNITS).equals(HOUR_SYMBOL)) // TODO restore
+//				infoText = amount + context.getString(R.string.hours);
+//			else
+//				infoText = amount + context.getString(R.string.days);
 		}
 
 		holder.gameInfoTxt.setText(infoText);

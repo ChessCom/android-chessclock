@@ -5,15 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.new_api.DailyChallengeData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListChallengeItem;
 
 import java.util.List;
 
-public class OnlineChallengesGamesAdapter extends ItemsAdapter<GameListChallengeItem> {
+public class OnlineChallengesGamesAdapter extends ItemsAdapter<DailyChallengeData> {
 
-	public OnlineChallengesGamesAdapter(Context context, List<GameListChallengeItem> itemList) {
+	public OnlineChallengesGamesAdapter(Context context, List<DailyChallengeData> itemList) {
 		super(context, itemList);
 	}
 
@@ -30,7 +31,7 @@ public class OnlineChallengesGamesAdapter extends ItemsAdapter<GameListChallenge
 
 
 	@Override
-	protected void bindView(GameListChallengeItem item, int pos, View convertView) {
+	protected void bindView(DailyChallengeData item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String time = item.getDaysPerMove() + context.getString(R.string.days);

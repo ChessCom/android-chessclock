@@ -22,7 +22,8 @@ public abstract class BaseGameItem implements Parcelable {
 
 	public static final String GAME_ID = "game_id";
 	public static final String TIMESTAMP = "time_stamp";
-	public static final String GAME_INFO_ITEM = "game_info_item";
+	// TODO use gameId to pass info about game to load
+//	public static final String GAME_INFO_ITEM = "game_info_item";
 
 	protected long gameId;
 	protected int color;

@@ -4,22 +4,22 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.model.GameListCurrentItem;
-import com.chess.model.GameOnlineItem;
 
 
 import java.util.List;
 
 
 //public class SaveEchessCurrentGamesListTask extends AbstractUpdateTask<GameListCurrentItem, Long> {
-public class SaveEchessCurrentGamesListTask extends SaveEchessGamesTask<GameListCurrentItem> {
+//public class SaveEchessCurrentGamesListTask extends SaveEchessGamesTask<GameListCurrentItem> {
+public class SaveEchessCurrentGamesListTask extends SaveEchessGamesTask<DailyCurrentGameData> {
 
-	public SaveEchessCurrentGamesListTask(TaskUpdateInterface<GameListCurrentItem> taskFace, List<GameListCurrentItem> currentItems,
+	public SaveEchessCurrentGamesListTask(TaskUpdateInterface<DailyCurrentGameData> taskFace, List<DailyCurrentGameData> currentItems,
 										  ContentResolver resolver) {
         super(taskFace, currentItems, resolver);
 	}
@@ -29,10 +29,10 @@ public class SaveEchessCurrentGamesListTask extends SaveEchessGamesTask<GameList
     protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
-		String userToken = AppData.getUserToken(context);
+//		String userToken = AppData.getUserToken(context);
 		// TODO compare received list of current games with saved db data for current games.
 		// if item is not found in received list that means it became finished
-		for (GameListCurrentItem currentItem : itemList) { // if
+		for (DailyCurrentGameData currentItem : itemList) { // if
 
 			arguments[0] = String.valueOf(userName);
 			arguments[1] = String.valueOf(currentItem.getGameId());
@@ -50,7 +50,7 @@ public class SaveEchessCurrentGamesListTask extends SaveEchessGamesTask<GameList
 
 			cursor.close();
 
-			updateOnlineGame(currentItem.getGameId(), userName, userToken);
+//			updateOnlineGame(currentItem.getGameId(), userName, userToken);
 		}
 
         result = StaticData.RESULT_OK;

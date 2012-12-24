@@ -19,15 +19,6 @@ public class LoginItem extends BaseResponseItem<LoginItem.LoginData>{
 		}
 	}
 	 */
-//	private LoginData data;
-//
-//	public LoginData getData() {
-//		return data;
-//	}
-//
-//	public void setData(LoginData data) {
-//		this.data = data;
-//	}
 
 	public static class LoginData extends RegisterItem.RegisterData {
 		/*

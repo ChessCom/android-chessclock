@@ -3,7 +3,7 @@ package com.chess.model;
 
 import com.chess.utilities.AppUtils;
 
-public class TacticItem {
+public class TacticItemOld {
 
     private String user;
     private long id;
@@ -17,12 +17,12 @@ public class TacticItem {
     private boolean wasShowed;
     private boolean isRetry;
     private long secondsSpent;
-    private TacticResultItem resultItem;
+    private TacticResultItemOld resultItem;
 
-	public TacticItem() {
+	public TacticItemOld() {
 	}
 
-	public TacticItem(String[] values) {
+	public TacticItemOld(String[] values) {
 		id = Long.parseLong(values[0]);
 		fen = values[1];
 		moveList = values[2];
@@ -138,19 +138,19 @@ public class TacticItem {
         secondsSpent++;
     }
 
-    public TacticResultItem getResultItem() {
+    public TacticResultItemOld getResultItem() {
         return resultItem;
     }
 
     public void setResultItem(String[] values) {
-        this.resultItem = new TacticResultItem(values);
+        this.resultItem = new TacticResultItemOld(values);
     }
 
-    public void setResultItem(TacticResultItem resultItem) {
+    public void setResultItem(TacticResultItemOld resultItem) {
         this.resultItem = resultItem;
     }
 
-    public static class TacticResultItem {
+    public static class TacticResultItemOld {
         private String user;
         private long id;
         private float score;
@@ -159,10 +159,10 @@ public class TacticItem {
         private int problemRatingChange;
         private int problemRating;
 
-        public TacticResultItem() {
+        public TacticResultItemOld() {
         }
 
-        public TacticResultItem(String[] values) {
+        public TacticResultItemOld(String[] values) {
             score = Float.parseFloat(values[0]);
             userRatingChange = Integer.parseInt(values[1]);
             userRating = Integer.parseInt(values[2]);
