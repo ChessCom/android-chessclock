@@ -240,7 +240,7 @@ public class LccHolder {
 	/**
 	 * Connect live chess client
 	 */
-	 public void performConnect(boolean forceReenterCred) {
+	public void performConnect(boolean forceReenterCred) {
 
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);

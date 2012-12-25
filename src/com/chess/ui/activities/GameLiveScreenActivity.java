@@ -17,7 +17,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
-import com.chess.live.util.GameRatingClass;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -339,10 +338,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onConnectionBlocked(boolean blocked) {
-        super.onConnectionBlocked(blocked);
-		if (blocked) {
-			blockGame(blocked);
-		}
+		super.onConnectionBlocked(blocked);
+		blockGame(blocked);
     }
 
     @Override
