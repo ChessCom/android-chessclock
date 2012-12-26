@@ -37,10 +37,6 @@ public class LccHolder {
 	private static final String TAG = "LCCLOG-LccHolder";
 	public static final int OWN_SEEKS_LIMIT = 3;
 
-	/*public long currentFGTime;
-	public long currentFGGameId;
-	public long previousFGGameId;*/
-
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
 	private final LccGameListener gameListener;
