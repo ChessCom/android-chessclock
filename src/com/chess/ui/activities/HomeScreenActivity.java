@@ -1,6 +1,8 @@
 package com.chess.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -307,27 +309,46 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}
 
 	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.playLiveFrame) {
+	public void onClick(View view) {
+		if (view.getId() == R.id.playLiveFrame) {
 			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : LiveScreenActivity.class;
-			startActivity(new Intent(this, clazz));
+			startAnimatedActivity(view, clazz);
 
-		} else if (v.getId() == R.id.playOnlineFrame) {
+		} else if (view.getId() == R.id.playOnlineFrame) {
 			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : OnlineScreenActivity.class;
+			startAnimatedActivity(view, clazz);
+
+		} else if (view.getId() == R.id.playComputerFrame) {
+			startAnimatedActivity(view, ComputerScreenActivity.class);
+
+		} else if (view.getId() == R.id.tacticsTrainerFrame) {
+			startAnimatedActivity(view, GameTacticsScreenActivity.class);
+
+		} else if (view.getId() == R.id.videoLessonsFrame) {
+			startAnimatedActivity(view, VideoScreenActivity.class);
+
+		} else if (view.getId() == R.id.settingsFrame) {
+			startAnimatedActivity(view, PreferencesScreenActivity.class);
+		}
+	}
+
+	private void startAnimatedActivity(View view, Class clazz) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			// Create a scale-up animation that originates at the button
+			// being pressed.
+//			ActivityOptions opts = ActivityOptions.makeCustomAnimation(
+//					this, R.anim.hyperspace_out, R.anim.hyperspace_in);
+//			// Request the activity be started, using the custom animation options.
+//			startActivity(new Intent(MainActivity.this, AnimationActivity.class),
+//					opts.toBundle());
+
+			ActivityOptions opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0,
+					view.getWidth()/2, view.getHeight()/2);
+			// Request the activity be started, using the custom animation options.
+			startActivity(new Intent(this, clazz), opts.toBundle());
+
+		} else {
 			startActivity(new Intent(this, clazz));
-
-		} else if (v.getId() == R.id.playComputerFrame) {
-			startActivity(new Intent(this, ComputerScreenActivity.class));
-
-		} else if (v.getId() == R.id.tacticsTrainerFrame) {
-			Intent intent = new Intent(this, GameTacticsScreenActivity.class);
-			startActivity(intent);
-
-		} else if (v.getId() == R.id.videoLessonsFrame) {
-			startActivity(new Intent(this, VideoScreenActivity.class));
-
-		} else if (v.getId() == R.id.settingsFrame) {
-			startActivity(new Intent(this, PreferencesScreenActivity.class));
 		}
 	}
 

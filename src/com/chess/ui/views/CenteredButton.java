@@ -1,18 +1,26 @@
 package com.chess.ui.views;
 
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
+
 
 public class CenteredButton extends FrameLayout implements View.OnTouchListener {
 
@@ -26,6 +34,7 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	private int mMaxChildWidth = 0;
 	private int mMaxChildHeight = 0;
 	private float density;
+	private ObjectAnimator flipFirstHalf;
 
 	public CenteredButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -43,29 +52,29 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 
 	private void initFromAttr(Context context, AttributeSet attrs) {
 		// look up any layout-defined attributes
-		TypedArray attrsArray = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenteredButton);
 
 		// Get the screen's density scale
 		density = getResources().getDisplayMetrics().density;
 		// Convert the dps to pixels, based on density scale
 
-		final int N = attrsArray.getIndexCount();
+		final int N = a.getIndexCount();
 		for (int i = 0; i < N; i++) {
-			int attr = attrsArray.getIndex(i);
+			int attr = a.getIndex(i);
 			switch (attr) {
 				case R.styleable.CenteredButton_buttonDrawable: {
-					drawable = attrsArray.getDrawable(i);
+					drawable = a.getDrawable(i);
 				}
 				break;
 				case R.styleable.CenteredButton_buttonText: {
-					buttonText = attrsArray.getText(attr);
+					buttonText = a.getText(attr);
 				}
 				break;
 			}
 		}
 
 		button = new RoboButton(getContext());
-        button.setFont("Bold");
+		button.setFont("Bold");
 		LayoutParams buttonParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		button.setLayoutParams(buttonParams);
 		button.setText(buttonText);
@@ -80,10 +89,13 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 		params.gravity = Gravity.CENTER;
 
 		addView(button, params);
+
 		this.setTouchDelegate(button.getTouchDelegate());
 		button.setClickable(true);
 		button.setOnTouchListener(this);
 		setClickable(true);
+
+		initFlipAnimation();
 	}
 
 
@@ -106,15 +118,12 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				setPressed(true);
-				getHandler().post(new Runnable() {
-					@Override
-					public void run() {
-						performClick();
-					}
-				});
+
+				flipIt();
 				break;
 			case MotionEvent.ACTION_UP:
 				setPressed(false);
+
 				break;
 			case MotionEvent.ACTION_MOVE:
 				setPressed(true);
@@ -130,13 +139,7 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 			case MotionEvent.ACTION_DOWN:
 				setPressed(true);
 
-				getHandler().post(new Runnable() {
-					@Override
-					public void run() {
-						performClick();
-					}
-				});
-
+				flipIt();
 
 				break;
 			case MotionEvent.ACTION_UP:
@@ -205,5 +208,41 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 				return value;
 		}
 	}
+
+	private Interpolator accelerator = new AccelerateInterpolator();
+	private Interpolator decelerator = new DecelerateInterpolator();
+	private static final int DURATION = 100;
+
+	private void initFlipAnimation() {
+		final View animationView = this;
+
+		flipFirstHalf = ObjectAnimator.ofFloat(animationView,"rotationY", 0f, 90f);
+		flipFirstHalf.setDuration(DURATION);
+		flipFirstHalf.setInterpolator(accelerator);
+
+		final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(animationView,"rotationY", -90f, 0f);
+		flipSecondHalf.setDuration(DURATION);
+		flipSecondHalf.setInterpolator(decelerator);
+
+		flipFirstHalf.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator anim) {
+				flipSecondHalf.start();
+			}
+		});
+
+		flipSecondHalf.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator anim) {
+				performClick();
+			}
+		});
+	}
+
+
+	private void flipIt() {
+		flipFirstHalf.start();
+	}
+
 
 }
