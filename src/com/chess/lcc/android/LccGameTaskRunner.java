@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LccChallengeTaskRunner class
+ * LccGameTaskRunner class
  *
  * @author alien_roger
  * @created at: 25.05.12 4:38
@@ -30,7 +30,6 @@ public class LccGameTaskRunner {
 		context = gameTaskFace.getMeContext();
 		this.liveChessClient = LccHolder.getInstance(context).getClient();
 	}
-
 
 	public void runMakeDrawTask() {
 		new LiveMakeDrawTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
@@ -126,7 +125,4 @@ public class LccGameTaskRunner {
 			return StaticData.RESULT_OK;
 		}
 	}
-
-
-
 }
