@@ -27,7 +27,7 @@ public class RestHelper {
 
 	public static final String HOST_PRODUCTION = "chess.com";
 	public static final String HOST_TEST = "chess-2.com";
-	public static final String HOST = HOST_TEST;
+	public static final String HOST = HOST_PRODUCTION;
 
 	public static final String BASE_URL = "http://www." + HOST;
 	public static final String API_V5 = "/api/v5";
