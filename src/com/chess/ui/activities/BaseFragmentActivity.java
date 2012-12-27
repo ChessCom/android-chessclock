@@ -218,13 +218,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	// Single button no callback dialogs
 	protected void showSinglePopupDialog(int titleId, int messageId) {
+		popupItem.setButtons(1);
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(String title, String message) {
+		popupItem.setButtons(1);
 		showPopupDialog(title, message, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	public void safeShowSinglePopupDialog(int titleId, String message) {
@@ -233,26 +233,24 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 		// temporary handling i18n manually
 		final String messageI18n = AppUtils.getI18nStringForAPIError(context, message);
-		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
+		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG, 1);
 	}
 
 
 	protected void showSinglePopupDialog(int titleId, String message) {
 		// temporary handling i18n manually
 		final String messageI18n = AppUtils.getI18nStringForAPIError(context, message);
-		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
+		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG, 1);
 	}
 
 	protected void showSinglePopupDialog(String message) {
+		popupItem.setButtons(1);
 		showPopupDialog(message, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(int messageId) {
+		popupItem.setButtons(1);
 		showPopupDialog(messageId, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	// Default Dialogs
@@ -266,6 +264,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(messageId);
 		updatePopupAndShow(tag);
+	}
+
+	protected void showPopupDialog(int titleId, String messageId, String tag, int buttons) {
+		popupItem.setButtons(buttons);
+		showPopupDialog(titleId, messageId, tag);
 	}
 
 	protected void showPopupDialog(String title, String message, String tag) {
@@ -335,11 +338,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	protected void dismissFragmentDialog() {
+		Log.d("LCCLOG", "PAUSED dismissFragmentDialog getLastPopupFragment() " + getLastPopupFragment());
 		if (getLastPopupFragment() == null)
 			return;
 
 		getLastPopupFragment().dismiss();
-		popupManager.remove(popupManager.size()-1);
+		Log.d("LCCLOG", "PAUSED dismissFragmentDialog popupManager.size() " + popupManager.size());
+		popupManager.remove(popupManager.size() - 1);
 	}
 
 	protected PopupDialogFragment getLastPopupFragment(){

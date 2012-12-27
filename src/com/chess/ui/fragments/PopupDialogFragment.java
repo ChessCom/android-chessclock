@@ -3,6 +3,7 @@ package com.chess.ui.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,36 +61,33 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        switch (buttonsNumber){
-            case 1:
-                rightBtn.setVisibility(View.GONE);
-                break;
-            case 3:
-				neutralBtn.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
 	@Override
 	public void onResume() {
 		super.onResume();
 
 		String message = popupItem.getMessage(getActivity());
-		if(message.contains(StaticData.SYMBOL_TAG)){
+		if (message.contains(StaticData.SYMBOL_TAG)) {
 			messageTxt.setText(Html.fromHtml(message));
-		}else{
+		} else {
 			messageTxt.setText(message);
 		}
 		messageTxt.setVisibility(View.VISIBLE);
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
-		if(buttonsNumber == 3)
+		if (buttonsNumber == 3)
 			neutralBtn.setText(popupItem.getNeutralBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
+
+		buttonsNumber = popupItem.getButtons();
+		switch (buttonsNumber){
+			case 1:
+				rightBtn.setVisibility(View.GONE);
+				break;
+			case 3:
+				neutralBtn.setVisibility(View.VISIBLE);
+				break;
+		}
 	}
 
 }
