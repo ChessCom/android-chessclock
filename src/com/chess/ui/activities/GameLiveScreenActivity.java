@@ -445,6 +445,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
 		String temporaryDebugInfo =
+				"username=" + getLccHolder().getUsername() +
 				"lccInitiated=" + lccInitiated +
 				", " + boardDebug +
 				", gameSeq=" + getLccHolder().getCurrentGame().getMoves().size() +
