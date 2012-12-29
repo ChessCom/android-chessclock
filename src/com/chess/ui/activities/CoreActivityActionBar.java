@@ -21,7 +21,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
@@ -268,12 +267,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
 			}
 		});
+		// todo: why this pause check is here? prevent some exceptions of dialogs?
+		// anyway we still have to receive/show dialogs in paused mode
+		/*if (isPaused)
+			return;*/
 
-		if (isPaused)
-			return;
-
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
-		getLastPopupFragment().setButtons(1);
+		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
+		getLastPopupFragment().setCancelable(false);
 	}
 
     @Override
@@ -289,8 +289,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
     @Override
 	public void onObsoleteProtocolVersion() {
+		popupItem.setButtons(1);
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
-		getLastPopupFragment().setButtons(1);
 		getLastPopupFragment().setCancelable(false);
 	}
 
@@ -302,7 +302,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	// -----------------------------------------------------

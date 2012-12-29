@@ -147,12 +147,10 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			if (isPaused)
 				return;
 
+			popupItem.setButtons(1);
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
-			getLastPopupFragment().setButtons(1);
 		}
 	}
-
-
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {

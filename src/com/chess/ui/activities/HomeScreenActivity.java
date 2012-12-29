@@ -108,7 +108,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		adjustActionBar();
 	}
 
-
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
@@ -299,7 +298,6 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			fsAdView.requestAndDisplayAd();*/
 		}
 	}
-
 
 	protected void onDestroy() {
 		if (inneractiveFullscreenAd != null) {

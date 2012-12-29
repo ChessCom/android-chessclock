@@ -84,19 +84,17 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
         }
     }
 
-    public void setButtons(int buttonsNumber){
-        this.buttonsNumber = buttonsNumber;
-    }
-
     @Override
     public void show(FragmentManager manager, String tag) {
         isShowed = true;
 		FragmentTransaction ft = manager.beginTransaction();
 		ft.add(this, tag);
 		try{
-			ft.commitAllowingStateLoss();
+			int commitAllowingStateLoss = ft.commitAllowingStateLoss();
+			Log.d("LCCLOG", "show fragment: commitAllowingStateLoss=" + commitAllowingStateLoss);
 		} catch (IllegalStateException ex){
-			Log.e("FragmentShow", "Fragment was showed when activity is dead " + ex.toString());
+			Log.e("LCCLOG-FragmentShow", "Fragment was showed when activity is dead " + ex.toString());
+			ex.printStackTrace();
 		}
     }
 

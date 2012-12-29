@@ -14,7 +14,7 @@ import com.chess.backend.statics.StaticData;
  * @author alien_roger
  * @created at: 07.04.12 7:14
  */
-public class PopupItem implements Parcelable{
+public class PopupItem implements Parcelable {
 
 	private int titleId;
     private int messageId;
@@ -24,8 +24,9 @@ public class PopupItem implements Parcelable{
     private int neutralBtnId;
     private int negativeBtnId;
     private LinearLayout customView;
+	private int buttons;
 
-    public PopupItem() {
+	public PopupItem() {
         this.positiveBtnId = R.string.ok;
         this.negativeBtnId = R.string.cancel;
         title = StaticData.SYMBOL_EMPTY;
@@ -100,6 +101,14 @@ public class PopupItem implements Parcelable{
         this.customView = customView;
     }
 
+	public int getButtons() {
+		return buttons;
+	}
+
+	public void setButtons(int buttons) {
+		this.buttons = buttons;
+	}
+
 	@Override
 	public int describeContents() {
 		return hashCode();
@@ -114,6 +123,7 @@ public class PopupItem implements Parcelable{
 		parcel.writeInt(positiveBtnId);
 		parcel.writeInt(neutralBtnId);
 		parcel.writeInt(negativeBtnId);
+		parcel.writeInt(buttons);
 	}
 
 	public static final Parcelable.Creator<PopupItem> CREATOR = new Parcelable.Creator<PopupItem>() {
@@ -134,5 +144,6 @@ public class PopupItem implements Parcelable{
 		positiveBtnId = in.readInt();
 		neutralBtnId = in.readInt();
 		negativeBtnId = in.readInt();
+		buttons = in.readInt();
 	}
 }

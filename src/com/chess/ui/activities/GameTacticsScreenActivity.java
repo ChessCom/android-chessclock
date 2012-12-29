@@ -822,8 +822,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void loadOfflineTacticsBatch() {
         if (offlineBatchWasLoaded) {
             if (AppData.isGuest(this)) {
+				popupItem.setButtons(1);
 				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
-				getLastPopupFragment().setButtons(1);
                 return;
 			}
         }

@@ -57,12 +57,12 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	}
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated (View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(buttonsNumber == 0){
+        if (buttonsNumber == 0) {
 			leftBtn.setVisibility(View.GONE);
 			rightBtn.setVisibility(View.GONE);
-		}else if(buttonsNumber == 1){
+		} else if (buttonsNumber == 1) {
             rightBtn.setVisibility(View.GONE);
         }
     }

@@ -948,7 +948,6 @@ public class LccHolder {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-
 	public void runConnectTask(boolean forceReenterCred) {
 		new ConnectLiveChessTask(new LccConnectUpdateListener(), forceReenterCred).executeTask();
 	}
