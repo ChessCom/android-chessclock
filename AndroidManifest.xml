@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="114"
-	android:versionName="2.0.13" package="com.chess" android:installLocation="auto">
+	android:versionCode="116"
+	android:versionName="2.1.0" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -143,15 +143,13 @@
 			android:windowSoftInputMode="stateHidden"/>
 		<activity android:name=".ui.activities.WebViewActivity"/>
 
-		<receiver android:name=".backend.AlarmReceiver"/>
+        <!--
+                  BroadcastReceiver that will receive intents from GCM
+                  services and handle them to the custom IntentService.
 
-		<!--
-				  BroadcastReceiver that will receive intents from GCM
-				  services and handle them to the custom IntentService.
-
-				  The com.google.android.c2dm.permission.SEND permission is necessary
-				  so only GCM services can send data messages for the app.
-				-->
+                  The com.google.android.c2dm.permission.SEND permission is necessary
+                  so only GCM services can send data messages for the app.
+        -->
 		<receiver
 			android:name="com.google.android.gcm.GCMBroadcastReceiver"
 			android:permission="com.google.android.c2dm.permission.SEND" >

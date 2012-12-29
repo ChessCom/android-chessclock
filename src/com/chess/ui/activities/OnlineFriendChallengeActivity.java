@@ -12,11 +12,18 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailySeekItem;
+import com.chess.backend.entity.new_api.FriendsItem;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.ui.adapters.FriendsSpinnerAdapter;
 import com.chess.utilities.ChessComApiParser;
+
+import java.util.List;
 
 public class OnlineFriendChallengeActivity extends LiveBaseActivity implements OnClickListener {
 
@@ -66,32 +73,30 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	}
 
 	private void updateData(){
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.GET_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
+		LoadItem loadItem = new LoadItem();   // TODO cache results or pre-load
+		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
 
-		new GetStringObjTask(initUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<FriendsItem>(initUpdateListener).executeTask(loadItem);
 	}
 
-	private class InitUpdateListener extends ChessUpdateListener {
+	private class InitUpdateListener extends ActionBarUpdateListener<FriendsItem> {
+
+		public InitUpdateListener() {
+			super(getInstance(), FriendsItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			onRequestSent(returnedObj);
-		}
-	}
+		public void updateData(FriendsItem returnedObj) {
+			List<FriendsItem.Data> friends = returnedObj.getData();
 
-	private void onRequestSent(String response){
-		String[] friends;
+			friendsSpnr.setAdapter(new FriendsSpinnerAdapter(getContext(), friends));
+			if (friendsSpnr.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
 
-		friends = ChessComApiParser.getFriendsParse(response);
-
-		friendsSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromArray(friends)));
-		if (friendsSpnr.getSelectedItem().equals(StaticData.SYMBOL_EMPTY)) {
-
-            popupItem.setPositiveBtnId(R.string.invite);
-            popupItem.setNegativeBtnId(R.string.cancel);
-            showPopupDialog(R.string.sorry, R.string.nofriends, NO_INVITED_FRIENDS_TAG);
+				popupItem.setPositiveBtnId(R.string.invite);
+				popupItem.setNegativeBtnId(R.string.cancel);
+				showPopupDialog(R.string.sorry, R.string.nofriends, NO_INVITED_FRIENDS_TAG);
+			}
 		}
 	}
 
@@ -109,31 +114,33 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		int color = iPlayAsSpnr.getSelectedItemPosition();
 		int days = daysArr[daysPerMoveSpnr.getSelectedItemPosition()];
-		int gameType = chess960.isChecked() ? 2 : 0;
+		String gameType = chess960.isChecked() ? RestHelper.V_GAME_CHESS_960 : RestHelper.V_GAME_CHESS;
 		int isRated = this.isRatedChkBx.isChecked() ? 1 : 0;
+		String opponentName = ((FriendsItem.Data)  friendsSpnr.getSelectedItem()).getUsername();
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, days);
-		loadItem.addRequestParams(RestHelper.P_IPLAYAS, color);
-		loadItem.addRequestParams(RestHelper.P_ISRATED, isRated);
+//		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
+		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
+		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
+		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-		loadItem.addRequestParams(RestHelper.P_OPPONENT, friendsSpnr.getSelectedItem().toString().trim());
+		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
 
-		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class CreateChallengeUpdateListener extends ChessUpdateListener {
+	private class CreateChallengeUpdateListener extends ActionBarUpdateListener<DailySeekItem> {
+
+		public CreateChallengeUpdateListener() {
+			super(getInstance(), DailySeekItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
-//			if (returnedObj.contains(RestHelper.R_SUCCESS_)) {
-                showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
-//			} else if (returnedObj.contains(RestHelper.R_ERROR)) {
-//				showPopupDialog(getString(R.string.error), returnedObj.substring(RestHelper.R_ERROR.length()),
-//						ERROR_TAG);
-//			}
+		public void updateData(DailySeekItem returnedObj) {
+			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
 		}
 
 		@Override

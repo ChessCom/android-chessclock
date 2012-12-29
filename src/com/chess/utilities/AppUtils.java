@@ -1,6 +1,5 @@
 package com.chess.utilities;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,7 +20,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.AlarmReceiver;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -49,6 +47,9 @@ public class AppUtils {
 
 	private static final int MDPI_DENSITY = 1;
 	private static boolean ENABLE_LOG = true;
+	private static final String DAYS = "d";
+	private static final String H = "h";
+	private static final String M = "m";
 
 	public static class ListSelector implements Runnable{
 		private int pos;
@@ -179,30 +180,6 @@ public class AppUtils {
 			Log.d(tag, message);
 	}
 
-	public static void startNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
-
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
-				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		// schedule the service for updating
-		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarms.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
-	}
-
-	public static void stopNotificationsUpdate(Context context){
-		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
-
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarms.cancel(pendingIntent);
-
-		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		notifyManager.cancel(R.id.notification_message);
-	}
-
 	public static void cancelNotifications(Context context) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancelAll();
@@ -240,27 +217,22 @@ public class AppUtils {
 				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
 
-	public static String getStringTimeFromSeconds(long duration) {
-		String D = "d";
-		String H = "h";
-		String M = "m";
+	public static String getTimeLeftFromSeconds(long duration, Context context) {
 		long minutes = duration /60%60;
 		long hours = duration /3600%24;
 		long days = duration /86400;
 		StringBuilder sb = new StringBuilder();
 
-		if (days > 0)
-			sb.append(days).append(D).append(StaticData.SYMBOL_SPACE);
-
-		if (hours > 0) {
+		if (days > 0) {
+			sb.append(days).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.days)).append(StaticData.SYMBOL_SPACE);
+		} else if (hours > 0) {
 			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
 				sb.append(StaticData.SYMBOL_SPACE);
-			sb.append(hours).append(H).append(StaticData.SYMBOL_SPACE);
-		}
-		if (minutes > 0) {
+			sb.append(hours).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.hours)).append(StaticData.SYMBOL_SPACE);
+		} else if (minutes > 0) {
 			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
 				sb.append(StaticData.SYMBOL_SPACE);
-			sb.append(minutes).append(M);
+			sb.append(context.getString(R.string.min_, minutes));
 		}
 
 		return sb.toString();

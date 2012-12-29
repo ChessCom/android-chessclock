@@ -13,7 +13,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 15.04.12 6:54
  */
-public class LoadItem {
+public class LoadItem { // TODO refactor with builder
 
     private String loadPath;
 	private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

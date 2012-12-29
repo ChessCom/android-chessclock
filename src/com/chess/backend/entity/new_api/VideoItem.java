@@ -1,7 +1,5 @@
 package com.chess.backend.entity.new_api;
 
-import com.chess.utilities.AppUtils;
-
 import java.util.List;
 
 /**
@@ -10,7 +8,7 @@ import java.util.List;
  * Date: 22.12.12
  * Time: 15:18
  */
-public class VideoItem extends BaseResponseItem<VideoItem.VideoData>{
+public class VideoItem extends BaseResponseItem<VideoItem.Data>{
 	/*
 	"status": "success",
     "data": {
@@ -34,7 +32,7 @@ public class VideoItem extends BaseResponseItem<VideoItem.VideoData>{
     }
 	 */
 
-	public static class VideoData {
+	public static class Data {
 		private String total_videos_count;
 		private List<VideoDataItem> videos;
 

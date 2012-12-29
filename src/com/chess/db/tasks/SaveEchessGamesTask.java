@@ -23,7 +23,7 @@ public abstract class SaveEchessGamesTask<T extends DailyGameBaseData> extends A
 
 //	protected void updateOnlineGame(long gameId, String userName, String userToken) {
 //		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-//		loadItem.addRequestParams(RestHelper.P_ID, userToken);
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 //		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 //
 //		GameOnlineItem currentGame = getData(RestHelper.formCustomRequest(loadItem));

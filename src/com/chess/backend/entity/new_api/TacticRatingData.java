@@ -6,25 +6,24 @@ package com.chess.backend.entity.new_api;
  * Date: 23.12.12
  * Time: 16:19
  */
-public class TacticResultItem {
+public class TacticRatingData {
+	/*
+	"rating_info": {
+            "score": 50,
+            "user_rating_change": 1,
+            "user_rating": 1444,
+            "problem_rating_change": -1,
+            "problem_rating": 1199
+        }
+	 */
+
 	private String user;
 	private long id;
 	private float score;
-	private int userRatingChange;
-	private int userRating;
-	private int problemRatingChange;
-	private int problemRating;
-
-	public TacticResultItem() {
-	}
-
-	public TacticResultItem(String[] values) {
-		score = Float.parseFloat(values[0]);
-		userRatingChange = Integer.parseInt(values[1]);
-		userRating = Integer.parseInt(values[2]);
-		problemRatingChange = Integer.parseInt(values[3]);
-		problemRating = Integer.parseInt(values[4]);
-	}
+	private int user_rating_change;
+	private int user_rating;
+	private int problem_rating_change;
+	private int problem_rating;
 
 	public String getUser() {
 		return user;
@@ -59,34 +58,34 @@ public class TacticResultItem {
 	}
 
 	public int getUserRatingChange() {
-		return userRatingChange;
+		return user_rating_change;
 	}
 
 	public void setUserRatingChange(int userRatingChange) {
-		this.userRatingChange = userRatingChange;
+		this.user_rating_change = userRatingChange;
 	}
 
 	public int getUserRating() {
-		return userRating;
+		return user_rating;
 	}
 
 	public void setUserRating(int userRating) {
-		this.userRating = userRating;
+		this.user_rating = userRating;
 	}
 
 	public int getProblemRatingChange() {
-		return problemRatingChange;
+		return problem_rating_change;
 	}
 
 	public void setProblemRatingChange(int problemRatingChange) {
-		this.problemRatingChange = problemRatingChange;
+		this.problem_rating_change = problemRatingChange;
 	}
 
 	public int getProblemRating() {
-		return problemRating;
+		return problem_rating;
 	}
 
 	public void setProblemRating(int problemRating) {
-		this.problemRating = problemRating;
+		this.problem_rating = problemRating;
 	}
 }

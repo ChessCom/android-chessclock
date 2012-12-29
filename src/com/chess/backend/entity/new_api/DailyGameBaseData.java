@@ -7,7 +7,7 @@ package com.chess.backend.entity.new_api;
  * Time: 6:31
  */
 public class DailyGameBaseData {
-	/*
+/*
 	"game_id": 35000494,
 	"i_play_as": 2,
 	"game_type_code": "chess",
@@ -19,7 +19,8 @@ public class DailyGameBaseData {
 	"last_move_from_square": "f2",
 	"last_move_to_square": "f4",
 	"is_opponent_online": false,
-	 */
+*/
+
 	private long game_id;
 	private int i_play_as;
 	private String game_type_code;
@@ -72,7 +73,7 @@ public class DailyGameBaseData {
 		this.opponent_rating = opponent_rating;
 	}
 
-	public long getTimeRemainingAmount() {
+	public long getTimeRemaining() {
 		return time_remaining;
 	}
 

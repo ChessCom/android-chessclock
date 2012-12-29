@@ -9,9 +9,11 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailySeekItem;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 
 public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnClickListener {
@@ -83,26 +85,32 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 		int isRated = this.isRatedChkBx.isChecked() ? 1 : 0;
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_TIMEPERMOVE, days);
-		loadItem.addRequestParams(RestHelper.P_IPLAYAS, color);
-		loadItem.addRequestParams(RestHelper.P_ISRATED, isRated);
+//		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
+		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
+		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
+		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
 
 		if (minRating != null)
-			loadItem.addRequestParams(RestHelper.P_MINRATING, minRating);
+			loadItem.addRequestParams(RestHelper.P_MIN_RATING, minRating);
 
 		if (maxRating != null)
-			loadItem.addRequestParams(RestHelper.P_MAXRATING, maxRating);
+			loadItem.addRequestParams(RestHelper.P_MAX_RATING, maxRating);
 
-		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class CreateChallengeUpdateListener extends ChessUpdateListener {
+	private class CreateChallengeUpdateListener extends ActionBarUpdateListener<DailySeekItem> {
+
+		public CreateChallengeUpdateListener() {
+			super(getInstance(), DailySeekItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
 		}
 

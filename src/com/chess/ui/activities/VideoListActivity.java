@@ -78,7 +78,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 //		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);  // TODO should be preferrable
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_LIST_CNT);  // TODO should be preferrable

@@ -5,7 +5,7 @@ package com.chess.backend.entity;
  * @created 19.04.12
  * @modified 19.04.12
  */
-public class ChatItem {
+public class ChatItemOld {
     private String message;
 
     public String getMessage() {

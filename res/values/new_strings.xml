@@ -14,6 +14,6 @@
     <string name="gcm_not_registered">GCM not registered</string>
     <string name="timer_">Timer: %s</string>
 
-    <string name="no_games">No Games, Yet.</string>
+    <string name="no_games">No Games, yet.</string>
     <string name="host_unreachable_load_local">Host is unreachable.\nLoading local data…</string>
 </resources>

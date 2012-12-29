@@ -10,19 +10,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailyGameByIdItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameListCurrentItem;
-import com.chess.model.GameOnlineItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
@@ -30,9 +27,7 @@ import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
-import com.chess.utilities.ChessComApiParser;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -44,14 +39,16 @@ import java.util.Calendar;
 public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	public static final String DOUBLE_SPACE = "  ";
+	private static final int FINISHED_GAME = 0;
+	private static final int GAMES_LIST = 1;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
 //	private StartGameUpdateListener startGameUpdateListener;
-	private GamesListUpdateListener gamesListUpdateListener;
+	private LoadFromDbUpdateListener finishedGamesCursorUpdateListener;
 	private ChessBoardNetworkView boardView;
 
-	private GameOnlineItem currentGame;
+	private DailyGameByIdItem.Data currentGame;
 	private long gameId;
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 
@@ -91,8 +88,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
 //		startGameUpdateListener = new StartGameUpdateListener();
-		gamesListUpdateListener = new GamesListUpdateListener();
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener();
+		finishedGamesCursorUpdateListener = new LoadFromDbUpdateListener(FINISHED_GAME);
+		loadFromDbUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
 	}
 
 	@Override
@@ -115,7 +112,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 //		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-//		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 //		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 //
 //		new GetStringObjTask(startGameUpdateListener).executeTask(loadItem);
@@ -123,20 +120,61 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
 
-		public LoadFromDbUpdateListener() {
+		private int listenerCode;
+
+		public LoadFromDbUpdateListener(int listenerCode) {
 			super(getContext());
+			this.listenerCode = listenerCode;
 		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
+			switch (listenerCode) {
+				case FINISHED_GAME:
+					currentGame = DBDataManager.getGameFinishedItemFromCursor(returnedObj);
+					returnedObj.close();
 
-			currentGame = DBDataManager.getGameFinishedItemFromCursor(returnedObj);
-			returnedObj.close();
+					gamePanelView.enableGameControls(true);
 
-			gamePanelView.enableGameControls(true);
+					adjustBoardForGame();
+					break;
+				case GAMES_LIST:
+//					ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
+//
+//					for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
+//						if (gameListItem.isMyTurn()) {
+//							currentGames.add(gameListItem);
+//						}
+//					}
+//
+//					for (GameListCurrentItem currentGame : currentGames) {
+//						if (currentGame.getGameId() != gameId) {
+//		//					boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
+//							boardView.setGameActivityFace(GameFinishedScreenActivity.this);
+//
+//							getBoardFace().setAnalysis(false);
+//							loadGame(currentGame.getGameId()); // if next game
+//							return;
+//						}
+//					}
 
-			adjustBoardForGame();
+					// iterate through all loaded items in cursor
+					do {
+						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_GAME_ID);
+						if (localDbGameId != gameId) {
+							gameId = localDbGameId;
+							showSubmitButtonsLay(false);
+							boardView.setGameActivityFace(GameFinishedScreenActivity.this);
+
+							getBoardFace().setAnalysis(true);
+							loadGame(gameId);
+							return;
+						}
+					} while (returnedObj.moveToNext());
+
+					finish();
+					break;
+			}
 		}
 	}
 
@@ -240,38 +278,16 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private void getGamesList() {
-		LoadItem listLoadItem = new LoadItem();
-		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
+		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+				DbHelper.getEchessCurrentListGamesParams(getContext()),
+				getContentResolver()).executeTask();
 
-		new GetStringObjTask(gamesListUpdateListener).executeTask(listLoadItem);
-	}
-
-	private class GamesListUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
-
-			for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-				if (gameListItem.isMyTurn()) {
-					currentGames.add(gameListItem);
-				}
-			}
-
-			for (GameListCurrentItem currentGame : currentGames) {
-				if (currentGame.getGameId() != gameId) {
-//					boardView.setBoardFace(ChessBoardOnline.getInstance(GameFinishedScreenActivity.this));
-					boardView.setGameActivityFace(GameFinishedScreenActivity.this);
-
-					getBoardFace().setAnalysis(false);
-					loadGame(currentGame.getGameId()); // if next game
-					return;
-				}
-			}
-			finish();
-		}
+//		LoadItem listLoadItem = new LoadItem();
+//		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
+//		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+//		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_TRUE);
+//
+//		new GetStringObjTask(finishedGamesCursorUpdateListener).executeTask(listLoadItem);
 	}
 
 	@Override

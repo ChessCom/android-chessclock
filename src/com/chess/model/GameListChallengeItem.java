@@ -44,7 +44,7 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 
 		String rated = values[9];
 		if (rated != null) {
-			isRated = rated.equals(RestHelper.V_ONE);
+			isRated = rated.equals(RestHelper.V_TRUE);
 		}
 //		initialSetupFen = values[10];
 	}

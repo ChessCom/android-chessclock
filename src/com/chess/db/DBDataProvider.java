@@ -222,12 +222,15 @@ public class DBDataProvider extends ContentProvider {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			AppData.clearPreferences(context); // clear all values, to avoid class cast exceptions
 
-			Log.w("Content provider database","Upgrading database from version " + oldVersion + " to " + newVersion +
+			Log.w("Content provider database",
+					"Upgrading database from version " +
+							oldVersion + " to " + newVersion +
 							", which will destroy all old data");
 			// TODO handle backup data
 			for (String table :tablesArray) {
 				db.execSQL("DROP TABLE IF EXISTS " + table);
 			}
+
 			onCreate(db);
 		}
 	}

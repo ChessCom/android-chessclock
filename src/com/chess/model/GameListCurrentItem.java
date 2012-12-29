@@ -8,8 +8,8 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 
 	public GameListCurrentItem(String[] values) {
 		super(values);
-		isMyTurn = values[15].equals(RestHelper.V_ONE);
-		hasNewMessage = values[16].equals(RestHelper.V_ONE);
+		isMyTurn = values[15].equals(RestHelper.V_TRUE);
+		hasNewMessage = values[16].equals(RestHelper.V_TRUE);
 	}
 
 	public GameListCurrentItem() {

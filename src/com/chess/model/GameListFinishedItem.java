@@ -34,7 +34,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 //		lastMoveFromSquare =  values[11];
 //		lastMoveToSquare = values[12];
 //		isDrawOfferPending = values[13].equals("p");
-		isOpponentOnline = values[14].equals(RestHelper.V_ONE);
+		isOpponentOnline = values[14].equals(RestHelper.V_TRUE);
 
 		gameResult = Integer.parseInt(values[14]);
 	}

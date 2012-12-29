@@ -192,11 +192,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	protected abstract class ChessUpdateListener extends ActionBarUpdateListener<String> {
-		public ChessUpdateListener() {
-			super(CoreActivityActionBar.this);
-		}
-	}
+//	protected abstract class ChessUpdateListener extends ActionBarUpdateListener<String> {
+//		public ChessUpdateListener() {
+//			super(CoreActivityActionBar.this);
+//		}
+//	}
 
 
 	// ---------- LiveChessClientEventListenerFace ----------------

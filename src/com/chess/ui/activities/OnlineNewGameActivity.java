@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,16 +14,14 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailyChallengeData;
 import com.chess.backend.entity.new_api.DailyChallengesItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.entity.new_api.DailyGameAcceptItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.model.GameListChallengeItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.InneractiveAdHelper;
 import com.chess.utilities.MopubHelper;
 import com.inneractive.api.ads.InneractiveAd;
@@ -157,12 +154,11 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		if(tag.equals(CHALLENGE_ACCEPT_TAG)){
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_ACCEPTINVITEID, gameListElement.getGameId());
+			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 			successToastMsgId = R.string.challengeaccepted;
 
-			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -177,12 +173,12 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		if(tag.equals(CHALLENGE_ACCEPT_TAG)){
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_DECLINEINVITEID, gameListElement.getGameId());
+			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
+			loadItem.setRequestMethod(RestHelper.DELETE);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 			successToastMsgId = R.string.challengedeclined;
 
-			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);
 		}
 		super.onNegativeBtnClick(fragment);
 	}
@@ -203,10 +199,14 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 	}
 
-	private class ChallengeInviteUpdateListener extends ChessUpdateListener {
+	private class ChallengeInviteUpdateListener extends ActionBarUpdateListener<DailyGameAcceptItem> {
+
+		public ChallengeInviteUpdateListener() {
+			super(getInstance(), DailyGameAcceptItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(DailyGameAcceptItem returnedObj) {
 			if(isPaused)
 				return;
 

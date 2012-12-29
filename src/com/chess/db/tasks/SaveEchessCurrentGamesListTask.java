@@ -37,7 +37,7 @@ public class SaveEchessCurrentGamesListTask extends SaveEchessGamesTask<DailyCur
 			arguments[0] = String.valueOf(userName);
 			arguments[1] = String.valueOf(currentItem.getGameId());
 
-			// TODO implement beginTransaction logic
+			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DBConstants.ECHESS_CURRENT_LIST_GAMES_CONTENT_URI;
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
 					DBDataManager.SELECTION_GAME_ID, arguments, null);

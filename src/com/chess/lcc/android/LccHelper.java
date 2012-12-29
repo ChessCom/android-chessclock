@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
+import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -189,16 +190,19 @@ public class LccHolder {
 		}
 	}
 
-	public List<MessageItem> getMessagesList() {
-		ArrayList<MessageItem> messageItems = new ArrayList<MessageItem>();
+	public List<ChatItem> getMessagesList() {
+		ArrayList<ChatItem> messageItems = new ArrayList<ChatItem>();
 
 		Chat chat = getGameChat(currentGameId);
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = getChatMessages(chat.getId());
 			if (chatMessages != null) {
 				for (ChatMessage message : chatMessages.values()) {
-					messageItems.add(new MessageItem(message.getAuthor().getUsername()
-							.equals(getUser().getUsername()) ? "0" : "1", message.getMessage()));
+					ChatItem chatItem = new ChatItem();
+					chatItem.setContent(message.getMessage());
+					chatItem.setIsMine(message.getAuthor().getUsername().equals(getUser().getUsername()));
+					chatItem.setTimestamp( message.getDateTime().getTime());
+					messageItems.add(chatItem);
 				}
 			}
 		}

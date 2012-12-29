@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 21.12.12
  * Time: 6:30
  */
-public class LoginItem extends BaseResponseItem<LoginItem.LoginData>{
+public class LoginItem extends BaseResponseItem<LoginItem.Data>{
 	/*
 	{
 		"status": "success",
@@ -20,7 +20,7 @@ public class LoginItem extends BaseResponseItem<LoginItem.LoginData>{
 	}
 	 */
 
-	public static class LoginData extends RegisterItem.RegisterData {
+	public static class Data extends RegisterItem.Data {
 		/*
 			"login_token": "6d69c2715c6c069fb8eef91d6e1b4c7c",
 			"premium_status": 3,

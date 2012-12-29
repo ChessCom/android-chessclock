@@ -473,42 +473,45 @@ public class ChessBoard implements BoardFace {
 		//return (side == LIGHT);
 	}
 
-	/* inCheck() returns true if side s is in check and false
-		otherwise. It just scans the boardBitmap to find side s's king
-		and calls attack() to see if it's being attacked. */
-
+	/**
+	 * It just scans the boardBitmap to find sideOfKing and calls attack() to see if it's being attacked.
+	 * @param sideOfKing to check for attack
+	 * @return true if sideOfKing is in check and false otherwise.
+	 */
 	@Override
-	public boolean inCheck(int s) {
+	public boolean inCheck(int sideOfKing) {
 		int i;
 
 		for (i = 0; i < 64; ++i) {
-			if (pieces[i] == KING && color[i] == s) {
-				return attack(i, s ^ 1);
+			if (pieces[i] == KING && color[i] == sideOfKing) {
+				return attack(i, sideOfKing ^ 1);
 			}
 		}
 		return true;  /* shouldn't get here */
 	}
 
-
-	/* attack() returns true if square sq is being attacked by side
-		s and false otherwise. */
-
-	boolean attack(int sq, int s) {
+	/**
+	 *
+	 * @param attackedSquare attacked square
+	 * @param attackerSide side of attack
+	 * @return  returns true if square sq is being attacked by attackerSide and false otherwise.
+	 */
+	boolean attack(int attackedSquare, int attackerSide) {
 		int i, j, n;
 
 		for (i = 0; i < 64; ++i)
-			if (color[i] == s) {
+			if (color[i] == attackerSide) {
 				int p = pieces[i];
 				if (p == PAWN) {
-					if (s == LIGHT) {
-						if (getColumn(i) != 0 && i - 9 == sq)
+					if (attackerSide == LIGHT) {
+						if (getColumn(i) != 0 && i - 9 == attackedSquare)
 							return true;
-						if (getColumn(i) != 7 && i - 7 == sq)
+						if (getColumn(i) != 7 && i - 7 == attackedSquare)
 							return true;
 					} else {
-						if (getColumn(i) != 0 && i + 7 == sq)
+						if (getColumn(i) != 0 && i + 7 == attackedSquare)
 							return true;
-						if (getColumn(i) != 7 && i + 9 == sq)
+						if (getColumn(i) != 7 && i + 9 == attackedSquare)
 							return true;
 					}
 				} else if (p < offsets.length) {
@@ -517,7 +520,7 @@ public class ChessBoard implements BoardFace {
 							n = mailbox[mailbox64[n] + offset[p][j]];
 							if (n == -1)
 								break;
-							if (n == sq)
+							if (n == attackedSquare)
 								return true;
 							if (color[n] != EMPTY)
 								break;

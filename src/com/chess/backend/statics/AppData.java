@@ -221,4 +221,9 @@ public class AppData {
 		editor.commit();
 	}
 
+	public static void clearPreferences(Context context) {
+		getPreferences(context).edit()
+				.clear()
+				.commit();
+	}
 }

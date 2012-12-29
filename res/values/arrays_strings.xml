@@ -333,6 +333,237 @@
         <item>British Virgin Islands</item>
     </string-array>
 
+
+<!--    US - United States
+    CA - Canada
+    AR - Argentina
+    BE - Belgium
+    AF - Afghanistan
+    AL - Albania
+    AD - Andorra
+    AI - Anguilla
+    AG - Antigua/Barbuda
+    AM - Armenia
+    AW - Aruba
+    AU - Australia
+    AT - Austria
+    BS - Bahamas
+    BH - Bahrain
+    BB - Barbados
+    BY - Belarus
+    BZ - Belize
+    BM - Bermuda
+    BO - Bolivia
+    BA - Bosnia-Herzegovina
+    BR - Brazil
+    BG - Bulgaria
+    IC - Canary Islands
+    KY - Cayman Islands
+    CL - Chile
+    CN - China
+    CO - Colombia
+    CR - Costa Rica
+    HR - Croatia
+    CU - Cuba
+    AN - Curacao
+    CY - Cyprus
+    CZ - Czech Republic
+    DK - Denmark
+    DM - Dominica
+    DO - Dominican Republic
+    EC - Ecuador
+    EG - Egypt
+    SV - El Salvador
+    EE - Estonia
+    FK - Falkland Islands
+    FO - Faroe Islands
+    FJ - Fiji
+    FI - Finland
+    FR - France
+    GE - Georgia
+    DE - Germany
+    GI - Gibraltar
+    GR - Greece
+    GL - Greenland
+    GD - Grenada
+    GP - Guadeloupe
+    GU - Guam
+    GT - Guatemala
+    GG - Guernsey
+    GY - Guyana
+    HT - Haiti
+    HN - Honduras
+    HK - Hong Kong
+    HU - Hungary
+    IS - Iceland
+    IN - India
+    ID - Indonesia
+    IR - Iran
+    IQ - Iraq
+    IE - Ireland
+    IM - Isle of Man
+    IL - Israel
+    IT - Italy
+    JM - Jamaica
+    JP - Japan
+    JE - Jersey
+    JO - Jordan
+    KZ - Kazakhstan
+    KI - Kiribati
+    KW - Kuwait
+    LV - Latvia
+    LB - Lebanon
+    LI - Liechtenstein
+    LT - Lithuania
+    LU - Luxembourg
+    MO - Macao
+    MK - Macedonia
+    MY - Malaysia
+    MT - Malta
+    MQ - Martinique
+    MX - Mexico
+    MD - Moldova
+    MC - Monaco
+    MS - Montserrat
+    NR - Nauru
+    NP - Nepal
+    NL - Netherlands
+    NZ - New Zealand
+    NI - Nicaragua
+    NO - Norway
+    OM - Oman
+    PK - Pakistan
+    PA - Panama
+    PG - Papua New Guinea
+    PY - Paraguay
+    PE - Peru
+    PH - Philippines
+    PL - Poland
+    PT - Portugal
+    PR - Puerto Rico
+    RO - Romania
+    RU - Russia
+    KN - Saint Kitts/Nevis
+    LC - Saint Lucia
+    PM - Saint Pierre/Miquelon
+    SM - San Marino
+    SA - Saudi Arabia
+    CS - Serbia-Montenegro
+    SG - Singapore
+    SK - Slovakia
+    SI - Slovenia
+    SB - Solomon Islands
+    ZA - South Africa
+    GS - South Georgia
+    SR - Suriname
+    SE - Sweden
+    CH - Switzerland
+    TW - Taiwan
+    TH - Thailand
+    TO - Tonga
+    TT - Trinidad/Tobago
+    TR - Turkey
+    TM - Turkmenistan
+    TV - Tuvalu
+    UA - Ukraine
+    AE - United Arab Emirates
+    UY - Uruguay
+    UZ - Uzbekistan
+    VU - Vanuatu
+    VA - Vatican City
+    VE - Venezuela
+    VN - Vietnam
+    YE - Yemen
+    YU - Yugoslavia
+    AS - American Samoa
+    VC - Saint Vincent
+    AZ - Azerbaijan
+    MN - Mongolia
+    SY - Syria
+    EN - England
+    MH - Marshall Islands
+    SX - Scotland
+    ES - Spain
+    GB - United Kingdom
+    VI - US Virgin Islands
+    WL - Wales
+    KR - South Korea
+    KG - Kyrgyzstan
+    BD - Bangladesh
+    SD - Sudan
+    BJ - Benin
+    BT - Bhutan
+    BW - Botswana
+    BN - Brunei
+    BI - Burundi
+    KH - Cambodia
+    CM - Cameroon
+    CV - Cape Verde
+    CF - Central Africa
+    TD - Chad
+    CG - Congo
+    CI - Ivory Coast
+    DJ - Djibouti
+    GQ - Equatorial Guinea
+    GA - Gabon
+    GH - Ghana
+    KE - Kenya
+    LA - Laos
+    LR - Liberia
+    MG - Madagascar
+    MA - Morocco
+    MZ - Mozambique
+    MM - Myanmar
+    NA - Namibia
+    NE - Niger
+    NG - Nigeria
+    QA - Qatar
+    RW - Rwanda
+    WS - Samoa
+    ST - Sao Tome/Principe
+    SN - Senegal
+    SL - Sierra Leone
+    SO - Somalia
+    LK - Sri Lanka
+    SZ - Swaziland
+    TJ - Tajikistan
+    TZ - Tanzania
+    TL - Timor-Leste
+    TG - Togo
+    TN - Tunisia
+    UG - Uganda
+    ZM - Zambia
+    ZW - Zimbabwe
+    dz - Algeria
+    MR - Mauritania
+    XX - International
+    RS - Serbia
+    ME - Montenegro
+    LY - Libya
+    GM - Gambia
+    MW - Malawi
+    PS - Palestine
+    ET - Ethiopia
+    MU - Mauritius
+    LS - Lesotho
+    ML - Mali
+    MV - Maldives
+    CT - Catalonia
+    GC - Galicia
+    KO - Kosovo
+    CD - DR Congo
+    AO - Angola
+    KM - Comoros
+    ER - Eritrea
+    GN - Guinea
+    GW - Guinea-Bissau
+    FM - Micronesia
+    KP - North Korea
+    PW - Palau
+    SC - Seychelles
+    EH - Western Sahara
+    VG - British Virgin Islands   -->
+
 	<!-- temporary -->
 	<string-array name="site_api_error_messages">
 		<item>Invalid User ID</item>

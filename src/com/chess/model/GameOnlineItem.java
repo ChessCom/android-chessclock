@@ -40,13 +40,13 @@ public class GameOnlineItem extends BaseGameItem {
 		blackUsername = values[5].trim();
 		fenStartPosition =  values[6];
 		moveList = values[7];
-		whiteUserMove = values[8].equals(RestHelper.V_ONE);
+		whiteUserMove = values[8].equals(RestHelper.V_TRUE);
 		whiteRating = Integer.parseInt(values[9]);
 		blackRating = Integer.parseInt(values[10]);
 		encodedMoveStr = values[11];
-		hasNewMessage = values[12].equals(RestHelper.V_ONE);
+		hasNewMessage = values[12].equals(RestHelper.V_TRUE);
 		secondsRemain = Long.parseLong(values[13]);
-		rated = values[16].equals(RestHelper.V_ONE);
+		rated = values[16].equals(RestHelper.V_TRUE);
 		daysPerMove = Integer.parseInt(values[17]);
 	}
 

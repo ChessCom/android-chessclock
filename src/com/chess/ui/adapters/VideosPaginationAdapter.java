@@ -53,60 +53,6 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.VideoDa
         return itemList;
 	}
 
-    protected int getJsonData(String url) {
-/*        if(isTaskCanceled())
-            return result = StaticData.EMPTY_DATA;
-
-        // Instantiate the custom HttpClient
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-
-        Log.d(TAG, "retrieving from url = " + url);
-
-        final HttpGet httpost = new HttpGet(url);
-        try {
-            HttpResponse response = httpClient.execute(httpost);
-            final int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
-                return StaticData.UNKNOWN_ERROR;
-            }
-
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                InputStream inputStream = null;
-                try {
-
-					String responseText =  EntityUtils.toString(response.getEntity());
-					Log.d(TAG, "received raw JSON response = " + responseText);
-
-//                    itemList = parseJson2List(responseText);
-                    if(itemList != null && itemList.size() > 0){
-                        result = StaticData.RESULT_OK;
-                    }
-                } finally {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                    entity.consumeContent();
-                }
-            }
-        } catch (IOException e) {
-            httpost.abort();
-            Log.e(TAG, "I/O error while retrieving data from " + url, e);
-            result = StaticData.UNKNOWN_ERROR;
-        } catch (IllegalStateException e) {
-            httpost.abort();
-            Log.e(TAG, "Incorrect URL: " + url, e);
-            result = StaticData.UNKNOWN_ERROR;
-        } catch (Exception e) {
-            httpost.abort();
-            Log.e(TAG, "Error while retrieving data from " + url, e);
-            result = StaticData.UNKNOWN_ERROR;
-        } finally {
-            httpClient.getConnectionManager().shutdown();
-        }
- */       return result;
-    }
 
 	private int getData(LoadItem loadItem, int page) {
 		if(isTaskCanceled())
@@ -139,7 +85,12 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.VideoDa
 			if (statusCode != HttpStatus.SC_OK) {
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 
-				return StaticData.INTERNAL_ERROR;
+				InputStream inputStream = connection.getErrorStream();
+				String resultString = AppUtils.convertStreamToString(inputStream);
+				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
+				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				itemList = null;
+				return RestHelper.encodeServerCode(baseResponse.getCode());
 			}
 
 			InputStream inputStream = null;

@@ -8,11 +8,13 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.VacationItem;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter;
@@ -46,8 +48,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	private CheckBox showCoordinates;
 	private CheckBox showHighlights;
 	private CheckBox enableSounds;
-	private VacationStatusUpdateListener vacationStatusUpdateListener;
-	private VacationLeaveStatusUpdateListener vacationLeaveStatusUpdateListener;
+	private VacationUpdateListener vacationStatusGetUpdateListener;
+	private VacationUpdateListener vacationStatusPostUpdateListener;
+	private VacationUpdateListener vacationStatusDeleteUpdateListener;
 	private Spinner maxRatingSpinner;
 	private Spinner minRatingSpinner;
 
@@ -70,9 +73,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 	@Override
 	protected void onStart() {
-		super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
-		vacationStatusUpdateListener = new VacationStatusUpdateListener();
-		vacationLeaveStatusUpdateListener = new VacationLeaveStatusUpdateListener();
+		super.onStart();
+		vacationStatusGetUpdateListener = new VacationUpdateListener(VacationUpdateListener.GET);
+		vacationStatusPostUpdateListener = new VacationUpdateListener(VacationUpdateListener.POST);
+		vacationStatusDeleteUpdateListener = new VacationUpdateListener(VacationUpdateListener.DELETE);
 	}
 
 	@Override
@@ -80,31 +84,20 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		super.onResume();
 		setParameters();
 
-		if (!AppData.isGuest(this) && !AppData.isLiveChess(this)) {
+		if (!AppData.isGuest(this) && !AppData.isLiveChess(this)) { // TODO why not in live?
 			updateVacationStatus();
 		}
 	}
 
-	private void updateVacationStatus() {
-		LoadItem listLoadItem = new LoadItem();
-		listLoadItem.setLoadPath(RestHelper.GET_VACATION_STATUS);
-		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
-
-		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
+	@Override
+	protected void onStop() {
+		super.onStop();
+		vacationStatusGetUpdateListener = null;
+		vacationStatusPostUpdateListener = null;
+		vacationStatusDeleteUpdateListener = null;
 	}
 
-	private class VacationStatusUpdateListener extends ChessUpdateListener {
-
-		@Override
-		public void updateData(String returnedObj) {
-			if (!AppData.isGuest(getContext()) && returnedObj.trim().split("[+]")[1].equals("1")) {
-				vacationCheckBox.setChecked(true);
-				vacationCheckBox.setText(R.string.vacationOn);
-			}
-		}
-	}
-
-	private void setParameters(){
+	private void setParameters() {
 
 		Button logoutBtn = (Button) findViewById(R.id.prefLogout);
 		logoutBtn.setOnClickListener(this);
@@ -168,7 +161,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
 
 		//spinners
-		int boardsPosition = preferences.getInt(AppData.getUserName(this)+ AppConstants.PREF_BOARD_TYPE, 0);
+		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_TYPE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 		boardsList.get(boardsPosition).setChecked(true);
 		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
@@ -253,7 +246,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				AppUtils.cancelNotifications(this);
 			}
 
-            openStartScreen(StaticData.NAV_FINISH_2_LOGIN);
+			openStartScreen(StaticData.NAV_FINISH_2_LOGIN);
 		} else if (id == R.id.upgradeBtn) {
 			startActivity(AppData.getMembershipAndroidIntent(this));
 		} else if (id == R.id.prefInvite) {
@@ -273,17 +266,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 		} else if (id == R.id.prefVacation) {
-			updateVacationLeaveStatus();
+			changeVacationStatus();
 		}
 	}
 
-    private void openStartScreen(int code){
-        Intent intent = new Intent(this, HomeScreenActivity.class);
-        intent.putExtra(StaticData.NAVIGATION_CMD, code);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-    }
+	private void openStartScreen(int code) {
+		Intent intent = new Intent(this, HomeScreenActivity.class);
+		intent.putExtra(StaticData.NAVIGATION_CMD, code);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		finish();
+	}
 
 	private String feedbackBodyCompose() {
 		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(this);
@@ -305,16 +298,16 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 	};
 
-    private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
+	private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-            int prevCode = AppData.getLanguageCode(getContext());
-            if (prevCode != pos) {
+			int prevCode = AppData.getLanguageCode(getContext());
+			if (prevCode != pos) {
 				localeSelectedId = pos;
 
-                popupItem.setPositiveBtnId(R.string.restart);
-                showPopupDialog(R.string.locale_change, R.string.need_app_restart_to_apply, LOCALE_CHANGE_TAG);
-            }
+				popupItem.setPositiveBtnId(R.string.restart);
+				showPopupDialog(R.string.locale_change, R.string.need_app_restart_to_apply, LOCALE_CHANGE_TAG);
+			}
 		}
 
 		@Override
@@ -359,7 +352,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_BOARD_TYPE, pos);
 			preferencesEditor.commit();
 
-			((BaseAdapter)adapterView.getAdapter()).notifyDataSetChanged();
+			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 		}
 
 		@Override
@@ -380,7 +373,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_PIECES_SET, pos);
 			preferencesEditor.commit();
 
-			((BaseAdapter)adapterView.getAdapter()).notifyDataSetChanged();
+			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 		}
 
 		@Override
@@ -392,7 +385,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
-		}else if (compoundButton.getId() == R.id.showLiveSubmitChckBx) {
+		} else if (compoundButton.getId() == R.id.showLiveSubmitChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
 		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
@@ -402,10 +395,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
 			preferencesEditor.commit();
 
-			if(!notificationsWasEnabled && checked){
+			if (!notificationsWasEnabled && checked) {
 				registerGcmService();
 				checkMove();
-			} else if(!checked) {
+			} else if (!checked) {
 				unRegisterGcmService();
 			}
 
@@ -417,15 +410,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		preferencesEditor.commit();
 	}
 
-	private void updateVacationLeaveStatus() {
+	private void changeVacationStatus() {
 		if (vacationCheckBox.isChecked()) {
 			showPopupDialog(R.string.confirm_vacation_title, R.string.confirm_vacation_msg, VACATION_TAG);
 		} else {
-			LoadItem listLoadItem = new LoadItem();
-			listLoadItem.setLoadPath(RestHelper.VACATION_RETURN);
-			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
+			loadItem.setRequestMethod(RestHelper.DELETE);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 
-			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
+//			new GetStringObjTask(vacationStatusUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<VacationItem>(vacationStatusDeleteUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -438,22 +433,24 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		}
 
 		if (tag.equals(VACATION_TAG)) {
-			LoadItem listLoadItem = new LoadItem();
-			listLoadItem.setLoadPath(RestHelper.VACATION_LEAVE);
-			listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
+			loadItem.setRequestMethod(RestHelper.POST);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 
-			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(listLoadItem);
-		} else if (tag.equals(LOCALE_CHANGE_TAG)){
+//			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<VacationItem>(vacationStatusPostUpdateListener).executeTask(loadItem);
+		} else if (tag.equals(LOCALE_CHANGE_TAG)) {
 			preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, localeSelectedId);
 			preferencesEditor.commit();
 
 			setLocale();
 			openStartScreen(StaticData.NAV_FINISH_2_SPLASH);
-        }
+		}
 		super.onPositiveBtnClick(fragment);
 	}
 
-    @Override
+	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
 		if (tag == null) {
@@ -463,17 +460,49 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		if (tag.equals(VACATION_TAG)) {
 			vacationCheckBox.setChecked(false);
-		} else if (tag.equals(LOCALE_CHANGE_TAG)){
+		} else if (tag.equals(LOCALE_CHANGE_TAG)) {
 			langSpinner.setSelection(AppData.getLanguageCode(getContext()));
 		}
 		super.onNegativeBtnClick(fragment);
 	}
 
-	private class VacationLeaveStatusUpdateListener extends ChessUpdateListener {
+	private void updateVacationStatus() {
+		LoadItem listLoadItem = new LoadItem();
+		listLoadItem.setLoadPath(RestHelper.CMD_VACATIONS);
+		listLoadItem.setRequestMethod(RestHelper.GET);
+		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+
+//		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
+		new RequestJsonTask<VacationItem>(vacationStatusPostUpdateListener).executeTask(listLoadItem);
+	}
+
+	private class VacationUpdateListener extends ActionBarUpdateListener<VacationItem> {
+
+		static final int GET = 0;
+		static final int POST = 1;
+		static final int DELETE = 2;
+		private int listenerCode;
+
+		public VacationUpdateListener(int listenerCode) {
+			super(getInstance(), VacationItem.class);
+			this.listenerCode = listenerCode;
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			vacationCheckBox.setText(getString(R.string.vacationOn));
+		public void updateData(VacationItem returnedObj) {
+			if (!AppData.isGuest(getContext())) {
+				switch (listenerCode) {
+					case GET:
+						vacationCheckBox.setChecked(returnedObj.getData().isOnVacation());
+						break;
+					case POST:
+						vacationCheckBox.setChecked(true);
+						break;
+					case DELETE:
+						vacationCheckBox.setChecked(false);
+						break;
+				}
+			}
 		}
 	}
 

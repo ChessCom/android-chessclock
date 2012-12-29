@@ -61,14 +61,6 @@ public class RestHelper {
 //	public static final String GCM_P_DEVICE_ID = "device_id";
 
 
-	//	API: Allow auto login to chess.com:
-//	url: http://www.chess.com/login.html?als=<auto_login_string>&goto=<goto_url>
-//
-//	parameters
-//	id          (user token)
-//	goto_url    (redirect url after login)
-//
-//	Example: http://www.chess.com/login.html?als=kFCMJsY4%2BiWfnCKH7%2F%2FG45myelPMhTDTN0UTho3j99KlppWfbj6Dz7oBtjLRM5elPYxo1Q0m2qWvY3EeQ44x6A%3D%3D&goto=%2Fhome%2Finvite_friends.html
 	/* Methods calls*/
 	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
 	public static final String REGISTER_HTML = BASE_URL + "/register.html";
@@ -77,37 +69,37 @@ public class RestHelper {
 	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
 	public static final String GOOGLE_PLAY_URI = "market://details?id=com.chess";
 
-	public static final String VACATION_LEAVE = BASE_URL + API + "/vacation_leave";
-	public static final String VACATION_RETURN = BASE_URL + API + "/vacation_return";
-	public static final String REGISTER = BASE_URL + API + "/register";
-	public static final String TACTICS_TRAINER = BASE_URL + API + "/tactics_trainer";
-	public static final String VALIDATE_TOKEN = BASE_URL + API + "/validate_auth_token";
-	public static final String GET_GAME = BASE_URL + API + "/get_game";
-	public static final String ADD_FRIEND = BASE_URL + API + "/add_friend";
-	public static final String SUBMIT_CHEATER_SUSPECT = BASE_URL + API + "/submit_cheater_suspect";
-	public static final String GET_USER_INFO = BASE_URL + API + "/get_user_info";
-	public static final String GET_MOVE_STATUS = BASE_URL + API + "/get_move_status";
-	public static final String FRIEND_REQUEST = BASE_URL + API + "/friend_request";
-	public static final String GET_FRIEND_REQUEST = BASE_URL + API + "/get_friend_requests";
-	public static final String GET_VACATION_STATUS = BASE_URL + API + "/get_vacation_status";
+//	public static final String VACATION_LEAVE = BASE_URL + API + "/vacation_leave";
+//	public static final String VACATION_RETURN = BASE_URL + API + "/vacation_return";
+//	public static final String REGISTER = BASE_URL + API + "/register";
+//	public static final String TACTICS_TRAINER = BASE_URL + API + "/tactics_trainer";
+//	public static final String VALIDATE_TOKEN = BASE_URL + API + "/validate_auth_token";
+//	public static final String GET_GAME = BASE_URL + API + "/get_game";
+//	public static final String ADD_FRIEND = BASE_URL + API + "/add_friend";
+//	public static final String SUBMIT_CHEATER_SUSPECT = BASE_URL + API + "/submit_cheater_suspect";
+//	public static final String GET_USER_INFO = BASE_URL + API + "/get_user_info";
+//	public static final String GET_MOVE_STATUS = BASE_URL + API + "/get_move_status";
+//	public static final String FRIEND_REQUEST = BASE_URL + API + "/friend_request";
+//	public static final String GET_FRIEND_REQUEST = BASE_URL + API + "/get_friend_requests";
+//	public static final String GET_VACATION_STATUS = BASE_URL + API + "/get_vacation_status";
 	public static final String GET_ANDROID_VERSION = BASE_URL + API + "/get_android_version";
 	public static final String GET_TACTICS_PROBLEM_BATCH = BASE_URL + API + "/get_tactics_problem_batch";
 
 	// Echess methods
-    public static final String ECHESS_SUBMIT_ACTION = BASE_URL + API + "/submit_echess_action";
-	public static final String ECHESS_OPEN_INVITES = BASE_URL + API + "/echess_open_invites";
-	public static final String ECHESS_OPEN_INVITES_V2 = BASE_URL + API_V2 + "/echess_open_invites";
-	public static final String ECHESS_CHALLENGES = BASE_URL + API + "/echess_challenges";
-	public static final String ECHESS_CHALLENGES_V2 = BASE_URL + API_V2 + "/echess_challenges";
-	public static final String ECHESS_NEW_GAME = BASE_URL + API + "/echess_new_game";
-	public static final String ECHESS_CURRENT_GAMES = BASE_URL + API_V3 + "/get_echess_current_games";
-	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V3 + "/get_echess_finished_games";
-	public static final String ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
+//    public static final String ECHESS_SUBMIT_ACTION = BASE_URL + API + "/submit_echess_action";
+//	public static final String ECHESS_OPEN_INVITES = BASE_URL + API + "/echess_open_invites";
+//	public static final String ECHESS_OPEN_INVITES_V2 = BASE_URL + API_V2 + "/echess_open_invites";
+//	public static final String ECHESS_CHALLENGES = BASE_URL + API + "/echess_challenges";
+//	public static final String ECHESS_CHALLENGES_V2 = BASE_URL + API_V2 + "/echess_challenges";
+//	public static final String ECHESS_NEW_GAME = BASE_URL + API + "/echess_new_game";
+//	public static final String ECHESS_CURRENT_GAMES = BASE_URL + API_V3 + "/get_echess_current_games";
+//	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V3 + "/get_echess_finished_games";
+//	public static final String ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
 
 	public static final String LOGIN = BASE_URL + API_V2 + "/login";
-	public static final String GET_FRIENDS_ONLINE = BASE_URL + API_V2 + "/get_friends";
-	public static final String GET_FRIENDS = BASE_URL + API + "/get_friends";
-	public static final String GET_VIDEOS  = BASE_URL + API_V2 + "/get_videos";
+//	public static final String GET_FRIENDS_ONLINE = BASE_URL + API_V2 + "/get_friends";
+//	public static final String GET_FRIENDS = BASE_URL + API + "/get_friends";
+//	public static final String GET_VIDEOS  = BASE_URL + API_V2 + "/get_videos";
 
 	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
 	public static final String GET_USER_INFO_V3 = BASE_URL + API_V3 + "/get_user_info";
@@ -117,12 +109,21 @@ public class RestHelper {
 	/* Methods */
 	public static final String CMD_LOGIN = BASE_URL + V1 + USERS +"/login";
 	public static final String CMD_REGISTER = BASE_URL + V1 + USERS +"/register";
-	public static final String CMD_GAMES_ALL = BASE_URL + V1 + GAMES +"/all";
-	public static final String CMD_GAMES_CHALLENGES = BASE_URL + V1 + GAMES +"/challenges";
+	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
+	public static final String CMD_GAMES_ALL = CMD_GAMES +"/all";
+	public static final String CMD_GAMES_CHALLENGES = CMD_GAMES +"/challenges";
+	public static final String CMD_VACATIONS = CMD_GAMES + "/vacations";
+	public static final String CMD_SEEKS = CMD_GAMES + "/seeks";
+	public static final String CMD_MOVES = CMD_GAMES + "/moves";
+	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
 	public static final String CMD_USER = BASE_URL + V1 + USERS;
+
+	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {return CMD_GAMES + gameSeekId + "/seeks";}
+	public static String CMD_PUT_GAME_ACTION(long gameId) {return CMD_GAMES + gameId + "/actions";}
+	public static String CMD_GAME_BY_ID(long gameId) {return CMD_GAMES + "/" + gameId;}
 
 	/* Parameters */
 	// new
@@ -146,29 +147,35 @@ public class RestHelper {
 	public static final String P_APN_DEVICE_TOKEN = "apn_device_token";
 	public static final String P_OPPONENT = "opponent";
 
-	public static final String P_TIMEPERMOVE = "timepermove";
-	public static final String P_IPLAYAS = "iplayas";
-	public static final String P_MINRATING = "minrating";
-	public static final String P_MAXRATING = "maxrating";
-	public static final String P_ISRATED = "israted";
-	public static final String P_GAME_TYPE = "game_type";
+/*
+opponent		false	See explanation above for possible values. Default is `null`.
+daysPerMove	\d+	true	Days per move.
+userPosition	0|1|2	true	User will play as - 0 = random, 1 = white, 2 = black. Default is `0`.
+minRating	\d+	false	Minimum rating.
+maxRating	\d+	false	Maximum rating.
+isRated	0|1	true	Is game seek rated or not. Default is `1`.
+gameTypeCode	chess(960)?	true	Game type code. Default is `chess`.
+gameSeekName	\w+	false	Name of new game/challenge. Default is `Let's Play!`.
+		 */
+
+	public static final String P_DAYS_PER_MOVE = "daysPerMove";
+	public static final String P_USER_SIDE = "userPosition";
+	public static final String P_MIN_RATING = "minRating";
+	public static final String P_MAX_RATING = "maxRating";
+	public static final String P_IS_RATED = "isRated";
+	public static final String P_GAME_TYPE = "gameTypeCode";
 
 	public static final String P_UID = "uid";
 	public static final String P_LOCATION = "location";
 	public static final String P_AMOUNT = "amount";
 
-	public static final String P_ID = "id"; // user token
+	public static final int P_WHITE = 1;
+	public static final int P_BLACK = 2;
 	public static final String P_GID = "gid"; // game id
 	public static final String P_ALL = "all";
 	public static final String P_RETURN = "return";
 	public static final String P_GET_GAME = "get_game";
-/*
-tacticsId	\d+	true	Tactics ID.
-passed	0|1	true	1 or 0 if `tacticsId` is present.
-correctMoves	\d+	true	required if `tacticsId` is present and `passed` is `0`.
-seconds	\d+	true	Required if `tacticsId` is present.
-encodedMoves	0|1	true	Encoded moves. Default is `0`.
-	 */
+
 	public static final String P_TACTICS_ID = "tacticsId";
 	public static final String P_TACTICS_TRAINER = "tactics_trainer";
 	public static final String P_PASSED = "passed";
@@ -190,10 +197,10 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
 	public static final String P_DRAW_OFFERED = "draw_offered";
 
 	//	SUBMIT_ECHESS_ACTION
-	public static final String P_CHESSID = "chessid";
+//	public static final String P_CHESSID = "chessid";
 	public static final String P_COMMAND = "command";
-	public static final String P_NEWMOVE = "newmove";
-	public static final String P_NEWMOVEENCODED = "newmoveencoded";
+	public static final String P_NEWMOVE = "newMove";
+	public static final String P_NEWMOVEENCODED = "newMoveEncoded";
 	public static final String P_TIMESTAMP = "timestamp";
 	public static final String P_MESSAGE = "message";
 
@@ -228,82 +235,21 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
 	public static final String AUTHORIZATION_HEADER_VALUE = "Basic Ym9iYnk6ZmlzY2hlcg==";
 
 
-//	The eches challenges response looks like the following:
-//	<
-//	<game_seek_id>: The game id
-//	<game_name>: The seek name - can be null
-//	<opponent_username>: The opponent username
-//	<opponent_rating>: The opponent rating
-//	<opponent_win_count>: The opponent win count
-//	<opponent_loss_count>: The opponent loss count
-//	<opponent_draw_count>: The opponent Draw count
-//	<player_color>:  The users color he/she will play as, 1 = white, 2 = black, 0 = random
-//	<days_per_move>: The days per move for the seek
-//	<game_type>: The chess game type.  1 = chess, 2 = chess960
-//	<is_rated>: Is the seek rated or unrated?, 1 for rated, 2 for not rated
-//	<initial_setup_fen>: The initial starting position.  This field can be null
-//	>
-//
-//	The echess current games response looks like the following:
-//	<
-//	<game_id>: The game id
-//	<player_color>: The users color he/she will play as, w = white, b = black
-//	<game_type>: The chess game type.  1 = chess, 2 = chess960
-//	<game_name>: The games name, can be null
-//	<white_username>: The username for white
-//	<black_username>: The username for black
-//	<white_rating>: Whites rating
-//	<black_rating>: Blacks rating
-//	<time_stamp>: The timestamp for the game
-//	<time_remaining_amount>: Remaining time for the game
-//	<time_remaining_units>: the units, d for day and h for hours
-//	<initial_fen>: the initial starting position, can be null
-//	<last_move_from_square>: the last move, from square
-//	<last_move_to_square>: the last move, to square
-//	<is_draw_offer_pending>: Draw offer pending.  n = no, p = pending offer
-//	<is_opponent_online>: Is the opponent online. 1 = yes, 0 = no
-//	<is_my_turn>: is it the users turn to move. 1 = yes, 0 = no
-//	<has_new_message>: new messages for the game. 1 = yes, 0 = no
-//	<move_list>: the moves from the start of the game (all moves after <intial_fen>)
-//	<days_per_move>: how many days per move.
-//	>
-//
-//	The echess finished games response looks like the following:
-//	<
-//	<game_id>: The game id
-//	<player_color>: The users color he/she played as, w = white, b = black
-//	<game_type>: The chess game type.  1 = chess, 2 = chess960
-//	<game_name>: The games name, can be null
-//	<white_username>: The username for white
-//	<black_username>: The username for black
-//	<white_rating>: Whites rating
-//	<black_rating>: Blacks rating
-//	<time_stamp>: The timestamp for the game
-//	<initial_fen>: the initial starting position, can be null
-//	<last_move_from_square>: the last move, from square
-//	<last_move_to_square>: the last move, to square
-//	<has_new_message>: new messages for the game. 1 = yes, 0 = no
-//	<move_list>: the moves from the start of the game (all moves after <intial_fen>)
-//	<game_result>: The result of the game.  1 = win, 0 = loss, 2 = draw
-//	>
-
-
-
-//	starting_fen_position   (used for thematic games only)
-//	user_to_move    (1 for white and 0 for black)
-//	has_new_message    (1 if id is passed and there is a new message)
-//	game_type: 1 = standard chess , 2 = chess 960
-//	game_result: result of the game for a given user
-//	draw_offered: 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
-
-
-
 	/* Values */
 	// new
 	public static final int V_BASIC_MEMBER = 0;
 	public static final int V_GOLD_MEMBER = 1;
 	public static final int V_PLATINUM_MEMBER = 2;
 	public static final int V_DIAMOND_MEMBER = 3;
+
+/*
+loginToken			\w+	true	Login token used to authenticate user.
+command			SUBMIT|RESIGN|OFFERDRAW|ACCEPTDRAW|DECLINEDRAW|CHAT	true	Command to execute.
+timestamp			\d+	true	Timestamp of the game.
+newMove				false	Only used for `SUBMIT` command - format = b7b8=Q or e2e4
+newMoveEncoded		false	Only used for `SUBMIT` command - strange encoded move format.
+message				false	Only used for `CHAT` command.
+	 */
 
 	// old
 	public static final String V_RESIGN = "RESIGN";
@@ -312,6 +258,12 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
 	public static final String V_ACCEPTDRAW = "ACCEPTDRAW";
 	public static final String V_DECLINEDRAW = "DECLINEDRAW";
 	public static final String V_CHAT = "CHAT";
+/*
+1 = Standard Chess | chess
+2 = Chess 960	   | chess(960)
+	 */
+	public static final String V_GAME_CHESS = "chess";
+	public static final String V_GAME_CHESS_960 = "chess(960)";
 
 	public static final String V_ENCODED_MOVES = "encodedMoves";
 	public static final String V_TACTICS_ID = "tactics_id";
@@ -324,15 +276,12 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
 	public static final String V_TEST_NAME2 = "fischer";
 
 	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
-    public static final String V_ALL_USERS_GAMES = "1";
 	public static final String V_ONLY_USER_TURN = "0";
 	public static final String V_VIDEO_LIST_CNT = "20";
     public static final String V_VIDEO_ITEM_ONE = "1";
     public static final String V_ANDROID = "android";
 	public static final String V_TRUE = "1";
 	public static final String V_FALSE = "0";
-	public static final String V_ZERO = "0";
-	public static final String V_ONE = "1";
 
 	//private static final String TAG = "Encode";
 	public static final int MAX_ITEMS_CNT = 2000;
@@ -443,5 +392,18 @@ encodedMoves	0|1	true	Encoded moves. Default is `0`.
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 		String fullUrl = formUrl(loadItem.getRequestParams());
 		return loadItem.getLoadPath() + fullUrl;
+	}
+
+	public static int encodeServerCode(int code) {
+		return StaticData.INTERNAL_ERROR | code << 8;
+	}
+
+	public static int decodeServerCode(int code) {
+		return code >> 8;
+	}
+
+
+	public static boolean containsServerCode(int code) {
+		return code >> 8 != 0;
 	}
 }

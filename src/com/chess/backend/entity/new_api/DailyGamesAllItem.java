@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 24.12.12
  * Time: 6:29
  */
-public class DailyGamesAllItem extends BaseResponseItem<DailyGamesAllItem.DailyGamesAllData>{
+public class DailyGamesAllItem extends BaseResponseItem<DailyGamesAllItem.Data>{
 	/*
 {
     "status": "success",
@@ -67,7 +67,7 @@ public class DailyGamesAllItem extends BaseResponseItem<DailyGamesAllItem.DailyG
 }
 	 */
 
-	public static class DailyGamesAllData{
+	public static class Data {
 		private List<DailyChallengeData> challenges;
 		private List<DailyCurrentGameData> current;
 		private List<DailyFinishedGameData> finished;

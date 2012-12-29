@@ -28,7 +28,7 @@ public class SplashActivity extends CommonLogicActivity {
 			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
 		}
 
-		AppUtils.stopNotificationsUpdate(this);
+//		AppUtils.stopNotificationsUpdate(this);
 
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {
 			goToLoginScreen();

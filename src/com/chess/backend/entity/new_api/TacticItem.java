@@ -11,7 +11,7 @@ import java.util.List;
  * Date: 23.12.12
  * Time: 11:23
  */
-public class TacticItem extends BaseResponseItem<List<TacticItem.TacticsData>> {
+public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 	/*
 		"status": "success",
 		"count": 3,
@@ -26,9 +26,19 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.TacticsData>> {
 				"average_seconds": 30
 			}...
 		]
+
+        "tactics_problem": {
+            "tactics_problem_id": 873,
+            "initial_fen": "6K1/3r3r/5kn1/5p1N/5P2/8/8/4R1R1 b KQkq - 1 1",
+            "clean_move_string": "1... Rxh5 2. Rxg6+ Kxg6 3. Re6# ",
+            "attempt_count": 2,
+            "passed_count": 0,
+            "rating": 1424,
+            "average_seconds": 20
+        }
 	*/
 
-	public static class TacticsData {
+	public static class Data {
 
 		private long tactics_problem_id;
 		private String initial_fen;
@@ -39,7 +49,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.TacticsData>> {
 		private int average_seconds;
 		private String user;
 		private long secondsSpent;
-		private TacticResultItem resultItem;
+		private TacticRatingData resultItem;
 		private boolean stop;
 		private boolean wasShowed;
 		private boolean retry;
@@ -80,8 +90,6 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.TacticsData>> {
 			this.user = user;
 		}
 
-
-
 		public boolean isStop() {
 			return stop;
 		}
@@ -119,15 +127,11 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.TacticsData>> {
 			secondsSpent++;
 		}
 
-		public TacticResultItem getResultItem() {
+		public TacticRatingData getResultItem() {
 			return resultItem;
 		}
 
-		public void setResultItem(String[] values) {
-			this.resultItem = new TacticResultItem(values);
-		}
-
-		public void setResultItem(TacticResultItem resultItem) {
+		public void setResultItem(TacticRatingData resultItem) {
 			this.resultItem = resultItem;
 		}
 

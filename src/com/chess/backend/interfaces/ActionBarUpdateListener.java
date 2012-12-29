@@ -15,11 +15,6 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 	private ActionBarHelper actionBarHelper;
 	private CoreActivityActionBar coreActivityActionBar;
 
-
-	public ActionBarUpdateListener(Context context, Class<ItemType> clazz) {
-		super(context, clazz);
-	}
-
 	public ActionBarUpdateListener(CoreActivityActionBar coreActivityActionBar, Class<ItemType> clazz) {
 		super(coreActivityActionBar, clazz);
 		init(coreActivityActionBar);

@@ -5,6 +5,7 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Date;
 
 public class MessageItem {
 	public String owner = StaticData.SYMBOL_EMPTY;

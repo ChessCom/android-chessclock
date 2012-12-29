@@ -37,6 +37,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
 		result = getData(loadItems[0]);
+//		result = postData(loadItems[0].getLoadPath(), loadItems[0]);
 		return result;
 	}
 
@@ -72,7 +73,11 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			if (statusCode != HttpStatus.SC_OK) {
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 
-				return StaticData.INTERNAL_ERROR;
+				InputStream inputStream = connection.getErrorStream();
+				String resultString = convertStreamToString(inputStream);
+				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
+				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				return RestHelper.encodeServerCode(baseResponse.getCode());
 			}
 
 			InputStream inputStream = null;
@@ -91,9 +96,9 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 //						Log.d(TAG, "received JSON object = " + parseServerRequest(item));
 					}
 
-				} else {
-					result = baseResponse.getCode() | 0x100; // TODO set proper mask
-				}
+				} /*else {  // never happens
+					result = baseResponse.getCode();
+				}*/
 			} finally {
 				if (inputStream != null) {
 					inputStream.close();

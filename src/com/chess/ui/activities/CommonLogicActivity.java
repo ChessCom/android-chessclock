@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
+import com.chess.backend.ServerErrorCode;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
@@ -21,6 +22,7 @@ import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
+import com.chess.backend.entity.new_api.MovesStatusItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -323,7 +325,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
 
-	private class LoginUpdateListenerNew extends ActionBarUpdateListener<LoginItem> {
+	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {
 		public LoginUpdateListenerNew() {
 			super(getContext(), LoginItem.class);
 		}
@@ -342,7 +344,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
-			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE /*&& responseArray.length >= 5*/) {
+			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 			}
 			preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
@@ -363,17 +365,34 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 
 		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				// get server code
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				switch (serverCode){
+					case ServerErrorCode.INVALID_USERNAME_PASSWORD:
+						passwordEdt.setError(getResources().getString(R.string.invalid_password));
+						passwordEdt.requestFocus();
+						break;
+					case ServerErrorCode.FACEBOOK_USER_NO_ACCOUNT:
+						popupItem.setPositiveBtnId(R.string.sing_up);
+						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
+						break;
+					default:
+//						String serverMessage = ServerErrorCode.getUserFriendlyMessage(); // TODO restore
+//						showToast(serverMessage);
+
+						break;
+				}
+			}
+		}
+
+		@Override
 		public void errorHandle(String resultMessage) {
 			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
 				popupItem.setPositiveBtnId(R.string.sing_up);
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else {
-				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){
-					passwordEdt.setError(getResources().getString(R.string.invalid_password));
-					passwordEdt.requestFocus();
-				}else{
-					showToast(resultMessage);
-				}
 			}
 		}
 	}
@@ -462,7 +481,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 //	private void processLogin(String[] response, String tempDebug) {
-	protected void processLogin(RegisterItem.RegisterData returnedObj) {
+	protected void processLogin(RegisterItem.Data returnedObj) {
 		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
 			return;
 		}
@@ -556,21 +575,21 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 	protected void checkMove(){
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(this));
-		loadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ONLY_USER_TURN);
-		new GetStringObjTask(new CheckMoveUpdateListener()).executeTask(loadItem);
+		loadItem.setLoadPath(RestHelper.CMD_MOVES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+
+		new RequestJsonTask<MovesStatusItem>(new CheckMoveUpdateListener()).executeTask(loadItem);
 	}
 
-	private class CheckMoveUpdateListener extends AbstractUpdateListener<String> {
+	private class CheckMoveUpdateListener extends AbstractUpdateListener<MovesStatusItem> {
 		public CheckMoveUpdateListener() {
-			super(getContext());
+			super(getContext(), MovesStatusItem.class);
 		}
 
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(MovesStatusItem returnedObj) {
 			int haveMoves = 0;
-			List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
+/*			List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
 
 			if(itemList.size() == 1) { // only one icon
 				GameListCurrentItem gameListItem = itemList.get(0);
@@ -613,7 +632,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				}
 
 				getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
-			}
+			}*/
 		}
 	}
 }

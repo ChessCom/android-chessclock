@@ -13,20 +13,21 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.ChatItem;
+import com.chess.backend.entity.new_api.DailyChatItem;
+import com.chess.backend.entity.new_api.DailyGameByIdItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameOnlineItem;
-import com.chess.model.MessageItem;
-import com.chess.ui.adapters.MessagesAdapter;
-import com.chess.utilities.ChessComApiParser;
+import com.chess.ui.adapters.ChatMessagesAdapter;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatOnlineActivity extends LiveBaseActivity {
 
@@ -34,17 +35,17 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	private EditText sendEdt;
 	private ListView chatListView;
-	private MessagesAdapter messagesAdapter;
-	private ArrayList<MessageItem> chatItems;
+	private ChatMessagesAdapter messagesAdapter;
+	private List<ChatItem> chatItems;
 	private AsyncTask<LoadItem, Void, Integer> getDataTask;
-	private ListUpdateListener listUpdateListener;
-	private SendUpdateListener sendUpdateListener;
+	private ChatItemsUpdateListener receiveUpdateListener;
+	private ChatItemsUpdateListener sendUpdateListener;
 	private View progressBar;
 	private ImageButton sendBtn;
 	private long gameId;
 	private long timeStamp;
-	private GetTimeStampForListUpdateListener getTimeStampForListUpdateListener;
-	private GetTimeStampForSendMessageListener getTimeStampForSendMessageListener;
+	private TimeStampForListUpdateListener timeStampForListUpdateListener;
+	private TimeStampForSendMessageListener timeStampForSendMessageListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +58,11 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		notifyManager.cancel(R.string.you_got_new_msg);
 
 		gameId = extras.getLong(BaseGameItem.GAME_ID);
-		chatItems = new ArrayList<MessageItem>();
-		listUpdateListener = new ListUpdateListener();
-		sendUpdateListener = new SendUpdateListener();
-		getTimeStampForListUpdateListener = new GetTimeStampForListUpdateListener();
-		getTimeStampForSendMessageListener = new GetTimeStampForSendMessageListener();
+		chatItems = new ArrayList<ChatItem>();
+		receiveUpdateListener = new ChatItemsUpdateListener(ChatItemsUpdateListener.RECEIVE);
+		sendUpdateListener = new ChatItemsUpdateListener(ChatItemsUpdateListener.SEND);
+		timeStampForListUpdateListener = new TimeStampForListUpdateListener();
+		timeStampForSendMessageListener = new TimeStampForSendMessageListener();
 
 		showActionRefresh = true;
 	}
@@ -104,12 +105,16 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	public void updateList() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new GetStringObjTask(getTimeStampForListUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyGameByIdItem>(timeStampForListUpdateListener).executeTask(loadItem);
 	}
 
-	private class ListUpdateListener extends ActionBarUpdateListener<String> {
-		public ListUpdateListener() {
-			super(getInstance());
+	private class ChatItemsUpdateListener extends ActionBarUpdateListener<DailyChatItem> {
+		public static final int SEND = 0;
+		public static final int RECEIVE = 1;
+		private int listenerCode;
+		public ChatItemsUpdateListener(int listenerCode) {
+			super(getInstance(),DailyChatItem.class);
+			this.listenerCode = listenerCode;
 		}
 
 		@Override
@@ -120,8 +125,36 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			onMessageReceived(returnedObj);
+		public void updateData(DailyChatItem returnedObj) {
+			int before = chatItems.size();
+			chatItems.clear();
+			chatItems.addAll(returnedObj.getData());
+			switch (listenerCode) {
+				case SEND:
+
+					if (messagesAdapter == null) {
+						messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems);
+						chatListView.setAdapter(messagesAdapter);
+					} else {
+						messagesAdapter.setItemsList(chatItems);
+					}
+					sendEdt.setText(StaticData.SYMBOL_EMPTY);
+
+					chatListView.setSelection(chatItems.size() - 1);
+					updateList();
+					break;
+				case RECEIVE:
+					if (before != chatItems.size()) {
+						if (messagesAdapter == null) {
+							messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems);
+							chatListView.setAdapter(messagesAdapter);
+						} else {
+							messagesAdapter.notifyDataSetChanged();
+						}
+						chatListView.setSelection(chatItems.size() - 1);
+					}
+					break;
+			}
 		}
 	}
 
@@ -135,22 +168,6 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
-	private void onMessageReceived(String response){
-		int before = chatItems.size();
-		chatItems.clear();
-		chatItems.addAll(ChessComApiParser.receiveMessages(response));
-		if (before != chatItems.size()) {
-			if (messagesAdapter == null) {
-				messagesAdapter = new MessagesAdapter(this, chatItems);
-				chatListView.setAdapter(messagesAdapter);
-			} else {
-				messagesAdapter.notifyDataSetChanged();
-			}
-			chatListView.setSelection(chatItems.size() - 1);
-		}
-	}
-
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
@@ -160,41 +177,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 
 	private void sendMessage() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new GetStringObjTask(getTimeStampForSendMessageListener).executeTask(loadItem);
-	}
-
-	private class SendUpdateListener extends ActionBarUpdateListener<String> {
-		public SendUpdateListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			progressBar.setVisibility(show? View.VISIBLE: View.INVISIBLE);
-			sendBtn.setEnabled(!show);
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			onMessageSent(returnedObj);
-		}
-	}
-
-	public void onMessageSent(String response){
-		chatItems.clear();
-		chatItems.addAll(ChessComApiParser.receiveMessages(response));
-
-		if (messagesAdapter == null) {
-			messagesAdapter = new MessagesAdapter(this, chatItems);
-			chatListView.setAdapter(messagesAdapter);
-		} else {
-			messagesAdapter.setItemsList(chatItems);
-		}
-		sendEdt.setText(StaticData.SYMBOL_EMPTY);
-
-		chatListView.setSelection(chatItems.size() - 1);
-		updateList();
+		new RequestJsonTask<DailyGameByIdItem>(timeStampForSendMessageListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -207,39 +190,43 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	private LoadItem createGetTimeStampLoadItem() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 		return loadItem;
 	}
 
-	private class GetTimeStampListener extends ChessUpdateListener {
+	private class GetTimeStampListener extends ActionBarUpdateListener<DailyGameByIdItem> { // TODO use batch API
+
+		public GetTimeStampListener() {
+			super(getInstance(), DailyGameByIdItem.class);
+		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			final GameOnlineItem currentGame = ChessComApiParser.getGameParseV3(returnedObj);
+		public void updateData(DailyGameByIdItem returnedObj) {
+			final DailyGameByIdItem.Data currentGame = returnedObj.getData();
 			timeStamp = currentGame.getTimestamp();
 		}
 	}
 
-	private class GetTimeStampForListUpdateListener extends GetTimeStampListener {
+	private class TimeStampForListUpdateListener extends GetTimeStampListener {
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(DailyGameByIdItem returnedObj) {
 			super.updateData(returnedObj);
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(ChatOnlineActivity.this));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
+			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
+			loadItem.setRequestMethod(RestHelper.PUT);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(ChatOnlineActivity.this));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
-			getDataTask = new GetStringObjTask(listUpdateListener).executeTask(loadItem);
+			getDataTask = new RequestJsonTask<DailyChatItem>(receiveUpdateListener).executeTask(loadItem);
 		}
 	}
 
-	private class GetTimeStampForSendMessageListener extends GetTimeStampListener {
+	private class TimeStampForSendMessageListener extends GetTimeStampListener {
 		@Override
-		public void updateData(String returnedObj) {
+		public void updateData(DailyGameByIdItem returnedObj) {
 			super.updateData(returnedObj);
 
 			String message = StaticData.SYMBOL_EMPTY;
@@ -253,14 +240,14 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			}
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.ECHESS_SUBMIT_ACTION);
-			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(ChatOnlineActivity.this));
-			loadItem.addRequestParams(RestHelper.P_CHESSID, gameId);
+			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
+			loadItem.setRequestMethod(RestHelper.PUT);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(ChatOnlineActivity.this));
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
-			getDataTask = new GetStringObjTask(sendUpdateListener).executeTask(loadItem);
+			getDataTask = new RequestJsonTask<DailyChatItem>(sendUpdateListener).executeTask(loadItem);
 		}
 	}
 }

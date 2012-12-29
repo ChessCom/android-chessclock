@@ -1,30 +1,26 @@
 package com.chess.backend.tasks;
 
 import android.content.res.Resources;
-import com.chess.R;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author alien_roger
  * @created 24.12.12
  * @modified 24.12.12
  */
-public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.TacticsData, Integer> {
+public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Integer> {
 
 	private Resources resources;
 
-	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticItem.TacticsData> taskUpdateInterface, Resources resources){
+	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticItem.Data> taskUpdateInterface, Resources resources){
 		super(taskUpdateInterface);
 		this.resources = resources;
 	}

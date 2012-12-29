@@ -351,7 +351,7 @@
 
 	<string name="min_">%s دقيقة</string>
 
-
+    <!--TODO use with arrays-->
 	<string name="invalidUserId">غير صالحة هوية المستخدم</string>
 	<string name="invalidContenIid">المحتوى غير صالح معرف</string>
 	<string name="pleaseLoginAgain">الرجاء تسجيل الدخول مرة أخرى.</string>

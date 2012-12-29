@@ -51,11 +51,7 @@ public class OnlineCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
 
 			long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
-			infoText = AppUtils.getStringTimeFromSeconds(amount);
-//			if (getString(cursor, DBConstants.V_TIME_REMAINING_UNITS).equals(HOUR_SYMBOL)) // TODO restore
-//				infoText = amount + context.getString(R.string.hours);
-//			else
-//				infoText = amount + context.getString(R.string.days);
+			infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
 		}
 
 		holder.gameInfoTxt.setText(infoText);

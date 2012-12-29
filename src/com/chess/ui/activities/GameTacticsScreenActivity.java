@@ -15,7 +15,9 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
+import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
+import com.chess.backend.entity.new_api.TacticRatingData;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -62,8 +64,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private boolean firstRun = true;
 
 	private TacticsUpdateListener getTacticsUpdateListener;
-	private TacticsUpdateListener tacticsCorrectUpdateListener;
-	private TacticsUpdateListener tacticsWrongUpdateListener;
+	private TacticsInfoUpdateListener tacticsCorrectUpdateListener;
+	private TacticsInfoUpdateListener tacticsWrongUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -76,7 +78,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private LayoutInflater inflater;
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
-    private TacticItem.TacticsData tacticItem;
+    private TacticItem.Data tacticItem;
     private boolean offlineBatchWasLoaded;
 
 
@@ -126,8 +128,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 		getTacticsUpdateListener = new TacticsUpdateListener(GET_TACTIC);
-		tacticsCorrectUpdateListener = new TacticsUpdateListener(CORRECT_RESULT);
-		tacticsWrongUpdateListener = new TacticsUpdateListener(WRONG_RESULT);
+		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
+		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
 		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
 	}
 
@@ -296,7 +298,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
 
 //					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
-					new RequestJsonTask<TacticItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
+					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
 					gamePanelView.enableGameControls(false);
 				}
 				stopTacticsTimer();
@@ -323,7 +325,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
 //				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
-				new RequestJsonTask<TacticItem>(tacticsWrongUpdateListener).executeTask(loadItem);
+				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
 				gamePanelView.enableGameControls(false);
 			}
 			stopTacticsTimer();
@@ -398,7 +400,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	}
 
-	private void showLimitDialog() {
+	private void showLimitDialog() {  // TODO restore
 		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
 		showSolvedTacticPopup(StaticData.SYMBOL_EMPTY, true);
 	}
@@ -490,7 +492,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 	};
 
-//	private class TacticsUpdateListener extends ChessUpdateListener {
 	private class TacticsUpdateListener extends ActionBarUpdateListener<TacticItem> {
 		private int listenerCode;
 
@@ -501,78 +502,84 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		@Override
 		public void updateData(TacticItem returnedObj) {
-//			String[] tmp = returnedObj.getData().split(RestHelper.SYMBOL_ITEM_SPLIT);
-
-//			if (tmp.length < 2) { // "Success+||"   - means we reached limit and there is no tactics
-			if (returnedObj.getCount() == 0) { // "Success+||"   - means we reached limit and there is no tactics
-				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
-				return;
-			}
-
 			switch (listenerCode){
 				case GET_TACTIC:
-//					int count = tmp.length - 1;
-//					List<TacticItem.TacticsData> tacticBatch = new ArrayList<TacticItem.TacticsData>(count);
-//					for (int i = 1; i <= count; i++) {
-//						TacticItemOld tacticItem = new TacticItemOld(tmp[i].split(StaticData.SYMBOL_COLON));
-//						tacticItem.setUser(AppData.getUserName(getContext()));
-//						tacticBatch.add(tacticItem);
-//					}
-
 					new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
 							getContentResolver()).executeTask();
-					break;
-				case CORRECT_RESULT:
-//					if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
-//						tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
-//					}
-//
-//					String title;
-//					if (tacticItem.getResultItem() != null) {
-//						title = getString(R.string.problem_solved, tacticItem.getResultItem().getUserRatingChange(),
-//								tacticItem.getResultItem().getUserRating());
-//					}else {
-//						title = getString(R.string.problem_solved_);
-//					}
-//
-//					showSolvedTacticPopup(title, false);
-
-					break;
-				case WRONG_RESULT:
-//					if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
-//						tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
-//					}
-//
-//					if (tacticItem.getResultItem() != null) {
-//						title = getString(R.string.wrong_score, tacticItem.getResultItem().getUserRatingChange(),
-//								tacticItem.getResultItem().getUserRating());
-//					} else {
-//						title = getString(R.string.wrong_ex);
-//					}
-//
-//					showWrongMovePopup(title);
-
-					tacticItem.setRetry(true); // set auto retry because we save tactic
-
 					break;
 			}
 			gamePanelView.enableGameControls(true);
 		}
 
 		@Override
-		public void errorHandle(String resultMessage) {
-			if (listenerCode == GET_TACTIC) {
-				if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
-					showLimitDialog();  // This should be the only way to show limit dialog for registered user
-				} else {
-					showSinglePopupDialog(resultMessage);
-				}
-			}
+		public void errorHandle(Integer resultCode) {  // TODO restore
+//			if (returnedObj.getCount() == 0) { // "Success+||"   - means we reached limit and there is no tactics
+//				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
+//				return;
+//			}
+//			if (listenerCode == GET_TACTIC) {
+//				if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
+//					showLimitDialog();  // This should be the only way to show limit dialog for registered user
+//				} else {
+//					showSinglePopupDialog(resultMessage);
+//				}
+//			}
+
+			handleErrorRequest();
+		}
+	}
+
+	private class TacticsInfoUpdateListener extends ActionBarUpdateListener<TacticInfoItem> {
+
+		private final int listenerCode;
+
+		public TacticsInfoUpdateListener(int listenerCode) {
+			super(getInstance(), TacticInfoItem.class);
+			this.listenerCode = listenerCode;
 		}
 
+		@Override
+		public void updateData(TacticInfoItem returnedObj) {
+			TacticRatingData tacticResultItem = returnedObj.getData().getRatingInfo();
+			if (tacticResultItem != null) {
+				tacticResultItem.setId(tacticItem.getId());
+				tacticResultItem.setUser(tacticItem.getUser());
+				tacticItem.setResultItem(tacticResultItem);
+			}
+			switch (listenerCode){
+				case CORRECT_RESULT:
+
+					String title;
+					if (tacticItem.getResultItem() != null) {
+						title = getString(R.string.problem_solved, tacticItem.getResultItem().getUserRatingChange(),
+								tacticItem.getResultItem().getUserRating());
+					}else {
+						title = getString(R.string.problem_solved_);
+					}
+					showSolvedTacticPopup(title, false);
+
+					break;
+				case WRONG_RESULT:
+
+					if (tacticItem.getResultItem() != null) {
+						title = getString(R.string.wrong_score, tacticItem.getResultItem().getUserRatingChange(),
+								tacticItem.getResultItem().getUserRating());
+					} else {
+						title = getString(R.string.wrong_ex);
+					}
+
+					showWrongMovePopup(title);
+
+					tacticItem.setRetry(true); // set auto retry because we save tactic
+
+				break;
+			}
+			gamePanelView.enableGameControls(true);
+		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+
 			handleErrorRequest();
 		}
 	}
@@ -580,9 +587,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void handleErrorRequest() {
 		gamePanelView.enableGameControls(true);
 
-		noInternet = true;
+		noInternet = true;      // TODO handle button click properly
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
-		loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
 	}
 
 //	private class TacticsWrongUpdateListener extends ChessUpdateListener {
@@ -702,7 +708,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		tacticsTimer.removeCallbacks(timerUpdateTask);
 	}
 
-	public void startTacticsTimer(TacticItem.TacticsData tacticItem) {
+	public void startTacticsTimer(TacticItem.Data tacticItem) {
 		boardView.setFinished(false);
 		tacticItem.setStop(false);
 
@@ -738,7 +744,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		setTacticToBoard(tacticItem);
 	}
 
-	private void setTacticToBoard(TacticItem.TacticsData tacticItem) {
+	private void setTacticToBoard(TacticItem.Data tacticItem) {
 		if (!tacticItemIsValid()) { // just in case something weird happen :)
 			return;
 		}
@@ -826,6 +832,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		} else if (tag.equals(TEN_TACTICS_TAG)) {
 			onBackPressed();
 		} else if (tag.equals(OFFLINE_RATING_TAG)) {
+//			loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
+
 			getNextTactic();
 		}
 		super.onPositiveBtnClick(fragment);
@@ -841,9 +849,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			LoadItem loadItem = new LoadItem();
 //			loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
 			loadItem.setLoadPath(RestHelper.CMD_TACTICS);
-//			loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
+//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_ZERO);
+			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
 //			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
@@ -866,7 +874,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	}
 
-	private class DemoTacticsUpdateListener extends ActionBarUpdateListener<TacticItem.TacticsData> {
+	private class DemoTacticsUpdateListener extends ActionBarUpdateListener<TacticItem.Data> {
 
 		public DemoTacticsUpdateListener() {
 			super(getInstance());
@@ -874,20 +882,20 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		}
 
 		@Override
-		public void updateListData(List<TacticItem.TacticsData> itemsList) {
+		public void updateListData(List<TacticItem.Data> itemsList) {
 			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList,
 					getContentResolver()).executeTask();
 			offlineBatchWasLoaded = true;
 		}
 	}
 
-	private class DbTacticBatchSaveListener extends ActionBarUpdateListener<TacticItem.TacticsData> {
+	private class DbTacticBatchSaveListener extends ActionBarUpdateListener<TacticItem.Data> {
 		public DbTacticBatchSaveListener() {
 			super(getInstance());
 		}
 
 		@Override
-		public void updateData(TacticItem.TacticsData returnedObj) {
+		public void updateData(TacticItem.Data returnedObj) {
             getNextTactic();
 		}
 	}

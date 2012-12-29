@@ -17,16 +17,16 @@ import java.util.List;
 
 
 //public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItemOld, Long> {
-public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.TacticsData, Long> {
+public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Long> {
 
     private ContentResolver contentResolver;
-	private final List<TacticItem.TacticsData> tacticsBatch;
+	private final List<TacticItem.Data> tacticsBatch;
 	private static String[] arguments = new String[2];
 
-	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem.TacticsData> taskFace, List<TacticItem.TacticsData> tacticsBatch,
+	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem.Data> taskFace, List<TacticItem.Data> tacticsBatch,
 								ContentResolver resolver) {
         super(taskFace);
-		this.tacticsBatch = new ArrayList<TacticItem.TacticsData>();
+		this.tacticsBatch = new ArrayList<TacticItem.Data>();
 		this.tacticsBatch.addAll(tacticsBatch);
 		this.contentResolver = resolver;
     }
@@ -39,7 +39,7 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.TacticsD
 		}
 		String userName = AppData.getUserName(context);
 		synchronized (tacticsBatch) {
-			for (TacticItem.TacticsData tacticItem : tacticsBatch) {
+			for (TacticItem.Data tacticItem : tacticsBatch) {
 				tacticItem.setUser(userName);
 				arguments[0] = String.valueOf(tacticItem.getId());
 				arguments[1] = userName;

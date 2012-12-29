@@ -9,6 +9,7 @@ import com.chess.backend.entity.new_api.*;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
+import com.chess.ui.activities.GameOnlineScreenActivity;
 
 /**
  * @author alien_roger
@@ -43,7 +44,8 @@ public class DBDataManager {
 	public static String SELECTION_GAME_ID = concatArguments(DBConstants.V_USER,
 			DBConstants.V_GAME_ID);
 
-	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(DBConstants.V_USER,
+	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(
+			DBConstants.V_USER,
 			DBConstants.V_GAME_ID,
 			DBConstants.V_USER_OFFERED_DRAW);
 
@@ -92,6 +94,13 @@ public class DBDataManager {
 			DBConstants.V_OPPONENT_NAME
 	};
 
+	public static final String[] PROJECTION_ECHESS_DRAW_OFFERED = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USER,
+			DBConstants.V_GAME_ID,
+			DBConstants.V_USER_OFFERED_DRAW
+	};
+
 	public static String concatArguments(String... arguments){
 		StringBuilder selection = new StringBuilder();
 
@@ -125,7 +134,8 @@ public class DBDataManager {
 		return exist;
 	}
 
-	public static void updateOnlineGame(ContentResolver contentResolver, GameOnlineItem currentGame, String userName) {
+//	public static void updateOnlineGame(ContentResolver contentResolver, GameOnlineItem currentGame, String userName) {
+	public static void updateOnlineGame(ContentResolver contentResolver, DailyGameByIdItem.Data currentGame, String userName) {
 
         final String[] arguments2 = sArguments2;
 		arguments2[0] = userName;
@@ -173,7 +183,7 @@ public class DBDataManager {
         return exist;
     }
 
-    public static int saveTacticItemToDb(Context context, TacticItem.TacticsData tacticItem){
+    public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem){
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -194,13 +204,13 @@ public class DBDataManager {
         cursor.close();
 
         if (tacticItem.getResultItem() != null) {
-            saveTacticResultItemToDb(context, tacticItem.getId(), tacticItem.getResultItem());
+            saveTacticResultItemToDb(context, tacticItem.getResultItem());
         }
 
         return StaticData.RESULT_OK;
     }
 
-    public static TacticItem.TacticsData getLastTacticItemFromDb(Context context) {
+    public static TacticItem.Data getLastTacticItemFromDb(Context context) {
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -211,23 +221,22 @@ public class DBDataManager {
                 null, SELECTION_USER, arguments1, null);
 
         cursor.moveToFirst();
-        TacticItem.TacticsData tacticItem = getTacticItemFromCursor(cursor);
+        TacticItem.Data tacticItem = getTacticItemFromCursor(cursor);
 		cursor.close();
 
         // set result item
-		TacticResultItem resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
+		TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
         tacticItem.setResultItem(resultItem);
 
         return tacticItem;
     }
 
-    private static void saveTacticResultItemToDb(Context context, long id, TacticResultItem resultItem){
-        String userName = getUserName(context);
+    private static void saveTacticResultItemToDb(Context context, TacticRatingData resultItem){
         ContentResolver contentResolver = context.getContentResolver();
 
         final String[] arguments2 = sArguments2;
-        arguments2[0] = String.valueOf(id);
-        arguments2[1] = userName;
+        arguments2[0] = String.valueOf(resultItem.getId());
+        arguments2[1] = resultItem.getUser();
 
         Uri uri = DBConstants.TACTICS_RESULTS_CONTENT_URI;
         Cursor cursor = contentResolver.query(uri,null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
@@ -242,7 +251,7 @@ public class DBDataManager {
         cursor.close();
     }
 
-    private static TacticResultItem getTacticResultItemFromDb(Context context, long id){
+    private static TacticRatingData getTacticResultItemFromDb(Context context, long id){
         String userName = getUserName(context);
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -253,7 +262,7 @@ public class DBDataManager {
                 null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
         if (cursor.moveToFirst()){
-			TacticResultItem resultItem = getTacticResultItemFromCursor(cursor);
+			TacticRatingData resultItem = getTacticResultItemFromCursor(cursor);
             cursor.close();
 
             return resultItem;
@@ -263,7 +272,7 @@ public class DBDataManager {
 		}
     }
 
-    public static ContentValues putTacticItemToValues(TacticItem.TacticsData dataObj) {
+    public static ContentValues putTacticItemToValues(TacticItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
@@ -283,8 +292,8 @@ public class DBDataManager {
 	}
 
 
-	public static TacticItem.TacticsData getTacticItemFromCursor(Cursor cursor) {
-		TacticItem.TacticsData dataObj = new TacticItem.TacticsData();
+	public static TacticItem.Data getTacticItemFromCursor(Cursor cursor) {
+		TacticItem.Data dataObj = new TacticItem.Data();
 
 		dataObj.setUser(getString(cursor, DBConstants.V_USER));
 		dataObj.setId(getLong(cursor, DBConstants.V_TACTIC_ID));
@@ -302,11 +311,11 @@ public class DBDataManager {
         return dataObj;
 	}
 
-    public static ContentValues putTacticResultItemToValues(TacticResultItem dataObj) {
+    public static ContentValues putTacticResultItemToValues(TacticRatingData dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, dataObj.getScoreStr());
-		values.put(DBConstants.V_TACTIC_ID, dataObj.getScoreStr());
+		values.put(DBConstants.V_USER, dataObj.getUser());
+		values.put(DBConstants.V_TACTIC_ID, dataObj.getId());
 		values.put(DBConstants.V_SCORE, dataObj.getScoreStr());
 		values.put(DBConstants.V_USER_RATING_CHANGE, dataObj.getUserRatingChange());
 		values.put(DBConstants.V_USER_RATING, dataObj.getUserRating());
@@ -317,8 +326,8 @@ public class DBDataManager {
 	}
 
 
-	public static TacticResultItem getTacticResultItemFromCursor(Cursor cursor) {
-		TacticResultItem dataObj = new TacticResultItem();
+	public static TacticRatingData getTacticResultItemFromCursor(Cursor cursor) {
+		TacticRatingData dataObj = new TacticRatingData();
 
 		dataObj.setScore(getString(cursor, DBConstants.V_SCORE));
 		dataObj.setUserRatingChange(getInt(cursor, DBConstants.V_USER_RATING_CHANGE));
@@ -411,24 +420,26 @@ public class DBDataManager {
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
 		values.put(DBConstants.V_OPPONENT_NAME, dataObj.getOpponentUsername());
 		values.put(DBConstants.V_OPPONENT_RATING, dataObj.getOpponentRating());
-		values.put(DBConstants.V_TIME_REMAINING, dataObj.getTimeRemainingAmount());
+		values.put(DBConstants.V_TIME_REMAINING, dataObj.getTimeRemaining());
 		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
-		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
-		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
+		String moveTo = dataObj.getLastMoveToSquare();
+		String moveFrom = dataObj.getLastMoveFromSquare();
+		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, moveFrom == null? StaticData.SYMBOL_EMPTY: moveFrom);
+		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, moveTo == null? StaticData.SYMBOL_EMPTY: moveTo);
 	}
 
-	public static ContentValues putGameOnlineItemToValues(GameOnlineItem dataObj, String userName) {
+	public static ContentValues putGameOnlineItemToValues(DailyGameByIdItem.Data dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_FINISHED, 0);
 		values.put(DBConstants.V_USER, userName);
 		setValuesFromOnlineGame(values, dataObj);
-		values.put(DBConstants.V_USER_OFFERED_DRAW, dataObj.isUserOfferedDraw());
+		values.put(DBConstants.V_USER_OFFERED_DRAW, dataObj.isDrawOffered());
 
 		return values;
 	}
 
-	private static void setValuesFromOnlineGame(ContentValues values, GameOnlineItem dataObj){
+	private static void setValuesFromOnlineGame(ContentValues values, DailyGameByIdItem.Data dataObj){
 		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
 		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
@@ -440,14 +451,14 @@ public class DBDataManager {
 		values.put(DBConstants.V_WHITE_USER_MOVE, dataObj.isWhiteMove()? 1: 0);
 		values.put(DBConstants.V_WHITE_RATING, dataObj.getWhiteRating());
 		values.put(DBConstants.V_BLACK_RATING, dataObj.getBlackRating());
-		values.put(DBConstants.V_ENCODED_MOVE_STR, dataObj.getEncodedMoveStr());
+		values.put(DBConstants.V_ENCODED_MOVE_STR, dataObj.getEncodedMoveString());
 		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage()? 1: 0);
 		values.put(DBConstants.V_SECONDS_REMAIN, dataObj.getSecondsRemain());
-		values.put(DBConstants.V_RATED, dataObj.getRated()? 1: 0);
+		values.put(DBConstants.V_RATED, dataObj.isRated()? 1: 0);
 		values.put(DBConstants.V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
 	}
 
-	private static void setOnlineGameFromCursor(GameOnlineItem dataObj, Cursor cursor){
+	private static void setOnlineGameFromCursor(DailyGameByIdItem.Data dataObj, Cursor cursor){
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
@@ -459,22 +470,22 @@ public class DBDataManager {
 		dataObj.setWhiteUserMove(getInt(cursor, DBConstants.V_WHITE_USER_MOVE) > 0);
 		dataObj.setWhiteRating(getInt(cursor, DBConstants.V_WHITE_RATING));
 		dataObj.setBlackRating(getInt(cursor, DBConstants.V_BLACK_RATING));
-		dataObj.setEncodedMoveStr(getString(cursor, DBConstants.V_ENCODED_MOVE_STR));
+		dataObj.setEncodedMoveString(getString(cursor, DBConstants.V_ENCODED_MOVE_STR));
 		dataObj.setHasNewMessage(getInt(cursor, DBConstants.V_HAS_NEW_MESSAGE) > 0);
 		dataObj.setSecondsRemain(getLong(cursor, DBConstants.V_SECONDS_REMAIN));
 		dataObj.setRated(getInt(cursor, DBConstants.V_RATED) > 0);
 		dataObj.setDaysPerMove(getInt(cursor, DBConstants.V_DAYS_PER_MOVE));
 	}
 
-	public static GameOnlineItem getGameOnlineItemFromCursor(Cursor cursor) {
-		GameOnlineItem dataObj = new GameOnlineItem();
+	public static DailyGameByIdItem.Data getGameOnlineItemFromCursor(Cursor cursor) {
+		DailyGameByIdItem.Data dataObj = new DailyGameByIdItem.Data();
 		setOnlineGameFromCursor(dataObj, cursor);
-		dataObj.setUserOfferedDraw(getInt(cursor, DBConstants.V_USER_OFFERED_DRAW) > 0);
+		dataObj.setDrawOffered(getInt(cursor, DBConstants.V_USER_OFFERED_DRAW)/* > 0*/);
 
 		return dataObj;
 	}
 
-	public static ContentValues putGameFinishedItemToValues(GameOnlineItem dataObj, String userName) {
+	public static ContentValues putGameFinishedItemToValues(DailyGameByIdItem.Data dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_FINISHED, 1);
@@ -484,12 +495,22 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static GameOnlineItem getGameFinishedItemFromCursor(Cursor cursor) {
-		GameOnlineItem dataObj = new GameOnlineItem();
+	public static DailyGameByIdItem.Data getGameFinishedItemFromCursor(Cursor cursor) {
+		DailyGameByIdItem.Data dataObj = new DailyGameByIdItem.Data();
 
 		setOnlineGameFromCursor(dataObj, cursor);
 
 		return dataObj;
+	}
+
+	public static boolean checkIfDrawOffered(ContentResolver resolver, String userName, long gameId) {
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = userName;
+		arguments2[1] = String.valueOf(gameId);
+
+		Cursor cursor = resolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+				PROJECTION_ECHESS_DRAW_OFFERED, SELECTION_USER_OFFERED_DRAW, arguments2, null);
+		return cursor.moveToFirst() && getInt(cursor, DBConstants.V_USER_OFFERED_DRAW) > 0;
 	}
 
 	public static String getString(Cursor cursor, String column) {
