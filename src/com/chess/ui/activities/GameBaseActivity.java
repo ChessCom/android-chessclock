@@ -8,17 +8,14 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
-import com.chess.model.BaseGameItem;
-import com.chess.ui.fragments.PopupCustomViewFragment;
-import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardBaseView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.MopubHelper;
 
 import java.text.SimpleDateFormat;
 
@@ -88,12 +85,13 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		/*if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-		  MopubHelper.createRectangleAd(this);
-		}*/
+
+		if (AppUtils.isNeedToUpgrade(this)) {
+			MopubHelper.createRectangleAd(this);
+		}
+
 		invalidateGameScreen();
 	}
-
 
 	protected void setBoardView(ChessBoardBaseView boardView) {
 		this.boardView = boardView;
@@ -104,20 +102,18 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		super.onStart();
 
 		// update boardView if boardId has changed
-		if (boardView != null) {  // for live game we init it later
-			boardView.updateBoardAndPiecesImgs();
-			enableScreenLockTimer();
-		}
+		boardView.updateBoardAndPiecesImgs();
+		enableScreenLockTimer();
 	}
 
-/*	  protected void onDestroy() {
-	    // try to destroy ad here as Mopub team suggested
-	    if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-	      MopubHelper.destroyRectangleAd();
-	    }
+	protected void onDestroy() {
+		// try to destroy ad here as Mopub team suggested
+		if (AppUtils.isNeedToUpgrade(this)) {
+			MopubHelper.destroyRectangleAd();
+		}
 
-	    super.onDestroy();
-	  }*/
+		super.onDestroy();
+	}
 
 	@Override
 	public void turnScreenOff() {
@@ -170,7 +166,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
 		showSubmitButtonsLay(false);
 		boardView.enableAnalysis();
-		boardView.getBoardFace().setAnalysis(true);
 
 		boardView.setFinished(true);
 		//gamePanelView.showBottomPart(false);
@@ -239,7 +234,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		return this;
 	}
 
-	@Override
 	public void onCheck() {
 		showToast(R.string.check);
 	}
@@ -269,41 +263,4 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected PopupCustomViewFragment getEndPopupDialogFragment(){
 		return (PopupCustomViewFragment) getSupportFragmentManager().findFragmentByTag(END_GAME_TAG);
 	}
-
-	public class ShareItem {
-
-		private final String gameLink;
-		private BaseGameItem currentGame;
-		private long gameId;
-		private String gameType;
-
-		public ShareItem(BaseGameItem currentGame, long gameId, String gameType) {
-			this.currentGame = currentGame;
-			this.gameId = gameId;
-			this.gameType = gameType;
-			if (gameType.equals(getString(R.string.live))) {
-				gameLink = RestHelper.getLiveGameLink(gameId);
-			} else {
-				gameLink =  RestHelper.getOnlineGameLink(gameId);
-			}
-		}
-
-
-		public String composeMessage() {
-			String vsStr = getString(R.string.vs);
-			String space = StaticData.SYMBOL_SPACE;
-			return currentGame.getWhiteUsername() + space + vsStr + space + currentGame.getBlackUsername()
-					+ " - " +  gameType  + space + getString(R.string.chess) + space
-					+ getString(R.string.via_chesscom) + space
-					+ gameLink;
-		}
-
-		public String getTitle() {
-			String vsStr = getString(R.string.vs);
-			return "Chess: " + currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE
-					+ vsStr + StaticData.SYMBOL_SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
-		}
-	}
-
-
 }

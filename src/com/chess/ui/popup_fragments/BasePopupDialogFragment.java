@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.popup_fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;

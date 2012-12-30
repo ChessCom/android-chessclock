@@ -70,7 +70,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	private RegisterUpdateListener registerUpdateListener;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_screen);
 

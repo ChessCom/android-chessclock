@@ -20,7 +20,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
-import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;

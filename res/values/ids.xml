@@ -26,6 +26,7 @@
 
 	<item name="list_item_id" type="id"/>
 
-	<item name="live_service_notification" type="id"/>
+    <!--Sliding Menu-->
+    <item name="selected_view" type="id"/>
 
 </resources>

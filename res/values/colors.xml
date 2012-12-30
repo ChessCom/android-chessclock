@@ -56,24 +56,14 @@
     
 
     <!--Facebook button-->
-    <color name="facebook_button">#FF3b5998</color>
-    <color name="facebook_button_p">#FF254485</color>
+    <color name="f_button">#FF3b5998</color>
+    <color name="f_button_p">#FF254485</color>
 
-    <color name="facebook_emboss_low_right">#FF47639e</color>
-    <color name="facebook_emboss_top_left">#FF657caf</color>
+    <color name="f_emboss_low_right">#FF47639e</color>
+    <color name="f_emboss_top_left">#FF657caf</color>
 
-    <color name="facebook_button_pressed_stroke_1">#96657caf</color>
-    <color name="facebook_button_pressed_stroke_2">#FF93afee</color>
-
-    <!--Twitter button-->
-    <color name="twitter_button">#FF00aced</color>
-    <color name="twitter_button_p">#ff006b92</color>
-
-    <color name="twitter_emboss_low_right">#ff009eda</color>
-    <color name="twitter_emboss_top_left">#ff00b1f2</color>
-
-    <color name="twitter_button_pressed_stroke_1">#9600b1f4</color>
-    <color name="twitter_button_pressed_stroke_2">#ff00bafc</color>
+    <color name="f_button_pressed_stroke_1">#96657caf</color>
+    <color name="f_button_pressed_stroke_2">#FF93afee</color>
 
 
 
@@ -180,5 +170,7 @@
 	<color name="player_ind_green_stroke">#FF419100</color>
 
 	<color name="semitransparent">#7f000000</color>
-    <color name="red">#ffa60000</color>
+
+    <!--Sliding Menu-->
+    <color name="holo_blue_bright">#ff00ddff</color>
 </resources>

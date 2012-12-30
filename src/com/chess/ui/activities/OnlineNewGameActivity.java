@@ -45,7 +45,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_new_game);
 

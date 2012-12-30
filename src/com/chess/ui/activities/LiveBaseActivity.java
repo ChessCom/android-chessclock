@@ -11,14 +11,12 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
-import com.chess.lcc.android.LccGameTaskRunner;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
-import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.ui.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 
 /**

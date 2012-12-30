@@ -78,7 +78,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_screen);
 		Log.d("GetStringObjTask", " ONLINE OnCreate");

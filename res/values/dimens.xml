@@ -125,4 +125,10 @@
 
 	<!--Pending load-->
 	<dimen name="pending_progress_bar_size">40dip</dimen>
+
+    <!--Sliding Menu-->
+    <dimen name="menu_item_padding">10dp</dimen>
+    <dimen name="menu_header_padding_top">8dp</dimen>
+    <dimen name="menu_header_line">3dp</dimen>
+    <dimen name="menu_icon_side">40dp</dimen>
 </resources>

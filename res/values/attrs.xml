@@ -1,47 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- These are attributes used with 'DraggableDot' drawables in
-		 view/DragAndDropActivity.java and view/DraggableDot.java -->
-	<declare-styleable name="CenteredButton">
+    <!-- These are attributes used with 'DraggableDot' drawables in
+         view/DragAndDropActivity.java and view/DraggableDot.java -->
+    <declare-styleable name="CenteredButton">
 
-		<attr name="buttonDrawable" format="dimension"/>
-		<attr name="buttonText" format="reference|string"/>
-	</declare-styleable>
+        <attr name="buttonDrawable" format="dimension" />
+        <attr name="buttonText" format="reference|string" />
+    </declare-styleable>
 
-	<declare-styleable name="RobotoTextView">
-		<attr name="ttf" format="string"/>
-	</declare-styleable>
+    <declare-styleable name="RobotoTextView">
+        <attr name="ttf" format="string" />
+    </declare-styleable>
 
 	<declare-styleable name="OrangeButtonTheme">
 		<attr name="timerLabelStyle" format="reference"/>
 	</declare-styleable>
 
-	<declare-styleable name="com.inneractive.api.ads.InneractiveAd">
-		<attr name="appID" format="string" />
-		<attr name="adType">
-			<enum name="Banner" value="0" />
-			<enum name="Text" value="1" />
-			<enum name="Interstitial" value="2" />
-			<enum name="Rectangle" value="3" />
-		</attr>
-		<attr name="adAlignment">
-			<enum name="TOP_LEFT" value="0" />
-			<enum name="TOP_CENTER" value="1" />
-			<enum name="TOP_RIGHT" value="2" />
-			<enum name="BOTTOM_LEFT" value="3" />
-			<enum name="BOTTOM_CENTER" value="4" />
-			<enum name="BOTTOM_RIGHT" value="5" />
-			<enum name="CENTER_LEFT" value="6" />
-			<enum name="CENTER" value="7" />
-			<enum name="CENTER_RIGHT" value="8" />
-		</attr>
-		<attr name="refreshInterval" format="integer" />
-		<attr name="age" format="string" />
-		<attr name="gender" format="string" />
-		<attr name="keywords" format="string" />
-		<attr name="requiredAdWidth" format="integer" />
-		<attr name="requiredAdHeight" format="integer" />
-		<attr name="optionalAdWidth" format="integer" />
-		<attr name="optionalAdHeight" format="integer" />
-	</declare-styleable>
+    <declare-styleable name="com.inneractive.api.ads.InneractiveAd">
+        <attr name="appID" format="string"/>
+
+        <attr name="adType">
+            <enum name="Banner" value="0"/>
+            <enum name="Text" value="1"/>
+            <enum name="Interstitial" value="2"/>
+        </attr>
+
+        <attr name="adAlignment">
+            <enum name="TOP_LEFT" value="0"/>
+            <enum name="TOP_CENTER" value="1"/>
+            <enum name="TOP_RIGHT" value="2"/>
+            <enum name="BOTTOM_LEFT" value="3"/>
+            <enum name="BOTTOM_CENTER" value="4"/>
+            <enum name="BOTTOM_RIGHT" value="5"/>
+            <enum name="CENTER_LEFT" value="6"/>
+            <enum name="CENTER" value="7"/>
+            <enum name="CENTER_RIGHT" value="8"/>
+        </attr>
+        <attr name="refreshInterval" format="integer"/>
+        <attr name="age" format="string"/>
+        <attr name="gender" format="string"/>
+        <attr name="keywords" format="string"/>
+        <attr name="requiredAdWidth" format="integer"/>
+        <attr name="requiredAdHeight" format="integer"/>
+        <attr name="optionalAdWidth" format="integer"/>
+        <attr name="optionalAdHeight" format="integer"/>
+    </declare-styleable>
+
+
+    <!--Sliding Menu Part-->
+    <declare-styleable name="SlidingMenu">
+        <attr name="mode">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="viewAbove" format="reference" />
+        <attr name="viewBehind" format="reference" />
+        <attr name="behindOffset" format="dimension" />
+        <attr name="behindWidth" format="dimension" />
+        <attr name="behindScrollScale" format="float" />
+        <attr name="touchModeAbove">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="shadowDrawable" format="reference" />
+        <attr name="shadowWidth" format="dimension" />
+        <attr name="behindFadeEnabled" format="boolean" />
+        <attr name="behindFadeDegree" format="float" />
+        <attr name="selectorEnabled" format="boolean" />
+        <attr name="selectorDrawable" format="reference" />
+    </declare-styleable>
 </resources>

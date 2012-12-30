@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,12 +24,13 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.ui.fragments.PopupProgressFragment;
+import com.chess.ui.popup_fragments.PopupDialogFragment;
+import com.chess.ui.popup_fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +43,8 @@ import java.util.Map;
  * @author alien_roger
  * @created at: 07.07.12 6:42
  */
-public abstract class BaseFragmentActivity extends FragmentActivity implements PopupDialogFace {
+//public abstract class BaseFragmentActivity extends FragmentActivity implements PopupDialogFace {
+public abstract class BaseFragmentActivity extends SlidingFragmentActivity implements PopupDialogFace {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
@@ -78,6 +79,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		if (DEVELOPER_MODE) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 					.detectAll()   // or .detectAll() for all detectable problems
