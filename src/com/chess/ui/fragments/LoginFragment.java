@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,13 @@ import com.chess.R;
  */
 public class LoginFragment extends BaseFragment {
 
-
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);    //To change body of overridden methods use File | Settings | File Templates.
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.login_screen, container, false);
+		return inflater.inflate(R.layout.new_login_screen, container, false);
 	}
 }

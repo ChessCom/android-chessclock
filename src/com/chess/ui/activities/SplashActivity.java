@@ -88,6 +88,6 @@ public class SplashActivity extends CommonLogicActivity {
 	}
 
 	private void goToLoginScreen(){
-		startActivity(new Intent(getContext(), LoginScreenActivity.class));
+		startActivity(new Intent(getContext(), NewLoginActivity.class));
 	}
 }

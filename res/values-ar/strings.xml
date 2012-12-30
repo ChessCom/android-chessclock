@@ -260,7 +260,7 @@
 	<string name="blitz_game">(الغارة)</string>
 	<string name="lightning_game">بَرْق</string>
 	<!--<string name="network_was_changed_please_relogin">تم تغيير شبكة. يرجى relogin لايف</string>-->
-	<string name="ches_com">ChessCom</string>
+	<string name="chess_com">ChessCom</string>
 	<string name="your_move">Chess.com - إنها عملكم</string>
 	<string name="your_turn">دورك!</string>
 	<string name="login_failed">فشل تسجيل الدخول:</string>

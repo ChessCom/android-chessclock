@@ -259,7 +259,7 @@
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Молния!)</string>
 	<!--<string name="network_was_changed_please_relogin">Соединение изменилось. Пожалуйста, перезайдите для игры вживую</string>-->
-	<string name="ches_com">Chesscom</string>
+	<string name="chess_com">Chesscom</string>
 	<string name="your_move">Chess.com - Ваш Ход</string>
 	<string name="your_turn">Ваш Ход</string>
 	<string name="login_failed">Войти не удалось.</string>

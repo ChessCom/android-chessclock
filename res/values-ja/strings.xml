@@ -257,7 +257,7 @@
 	<string name="blitz_game">（ブリッツ）</string>
 	<string name="lightning_game">（ライトニング）</string>
 	<!--<string name="network_was_changed_please_relogin">ネットワークが変更されました。 Liveに再ログインしてください</string>-->
-	<string name="ches_com">ChessCom</string>
+	<string name="chess_com">ChessCom</string>
 	<string name="your_move">Chess.com  - それはあなたの移動だ</string>
 	<string name="your_turn">君の番</string>
 	<string name="login_failed">ログイン失敗</string>

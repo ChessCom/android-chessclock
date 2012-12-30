@@ -259,7 +259,7 @@
 	<string name="blitz_game">(ब्लिट्ज)</string>
 	<string name="lightning_game">बिजली चमकना</string>
 	<!--<string name="network_was_changed_please_relogin">नेटवर्क बदल गया था. कृपया relogin लाइव के लिए</string>-->
-	<string name="ches_com">ChessCom</string>
+	<string name="chess_com">ChessCom</string>
 	<string name="your_move">Chess.com - यह अपनी चाल है</string>
 	<string name="your_turn">तुम्हारी बारी है!</string>
 	<string name="login_failed">लॉग इन विफल| </string>

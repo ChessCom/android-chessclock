@@ -258,7 +258,7 @@
 	<string name="blitz_game">(حمله رعد اسا)</string>
 	<string name="lightning_game">(رعد و برق)</string>
 	<!--<string name="network_was_changed_please_relogin">شبکه تغییر یافتهاست. لطفا relogin برای زندگی</string>-->
-	<string name="ches_com">ChessCom</string>
+	<string name="chess_com">ChessCom</string>
 	<string name="your_move">Chess.com - این حرکت خود را</string>
 	<string name="your_turn">نوبت شماست!</string>
 	<string name="login_failed">ورود به سیستم شکست خورد:</string>

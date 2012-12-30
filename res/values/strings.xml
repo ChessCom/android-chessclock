@@ -15,37 +15,37 @@
 	<string name="menuVideo">Video Lessons</string>
 
 	<!--activities titles-->
-	<string name="label_play_live">Play Live</string>
-	<string name="label_play_online">Play Online</string>
-	<string name="label_play_comp">Play Comp</string>
-	<string name="label_online_new_game">New online game</string>
-	<string name="label_live_new_game">New live game</string>
-	<string name="label_video">Video</string>
-	<string name="label_settings">Settings</string>
-	<string name="label_tactics">Tactics</string>
-	<string name="label_game_live">Live game</string>
-	<string name="label_game_online">Online game</string>
-	<string name="label_game_finished">Finished game</string>
-	<string name="label_game_comp">Comp game</string>
-	<string name="label_chat_live">Live chat</string>
-	<string name="label_chat_online">Online chat</string>
+	<string name="label_play_live">PLAY LIVE</string>
+	<string name="label_play_online">PLAY ONLINE</string>
+	<string name="label_play_comp">PLAY COMP</string>
+	<string name="label_online_new_game">NEW ONLINE GAME</string>
+	<string name="label_live_new_game">NEW LIVE GAME</string>
+	<string name="label_video">VIDEO</string>
+	<string name="label_settings">SETTINGS</string>
+	<string name="label_tactics">TACTICS</string>
+	<string name="label_game_live">LIVE GAME</string>
+	<string name="label_game_online">ONLINE GAME</string>
+	<string name="label_game_finished">FINISHED GAME</string>
+	<string name="label_game_comp">COMP GAME</string>
+	<string name="label_chat_live">LIVE CHAT</string>
+	<string name="label_chat_online">ONLINE CHAT</string>
 	<string name="label_sign_up">Join Now – It’s Free!</string>
 
-	<string name="label_friend_challenge_live">Friend challenge live</string>
-	<string name="label_create_challenge_live">Create live challenge</string>
-	<string name="label_friend_challenge_online">Friend challenge online</string>
-	<string name="label_create_challenge_online">Create online challenge</string>
+	<string name="label_friend_challenge_live">FRIEND CHALLENGE LIVE</string>
+	<string name="label_create_challenge_live">CREATE LIVE CHALLENGE</string>
+	<string name="label_friend_challenge_online">FRIEND CHALLENGE ONLINE</string>
+	<string name="label_create_challenge_online">CREATE ONLINE CHALLENGE</string>
 
 	<!--Settings-->
 	<string name="settings">Settings</string>
 	<string name="start_new_game">Start New Game</string>
 	<!--<string name="dont_have_account_q">Don\'t have an account?</string>-->
-	<string name="signinUsername">Username</string>
-	<string name="signinPassword">Password</string>
-	<string name="signinButton">Sign In</string>
-	<string name="sign_up">Sign Up</string>
-	<string name="complete_signupButton">Complete Sign Up</string>
-	<string name="signinPlayguest">Play As Guest</string>
+	<string name="singinUsername">Username</string>
+	<string name="singinPassword">Password</string>
+	<string name="singinButton">Sign In</string>
+	<string name="sing_up">Sign Up</string>
+	<string name="complete_singupButton">Complete Sign Up</string>
+	<string name="singinPlayguest">Play As Guest</string>
 
 	<string name="computerWhite">White</string>
 	<string name="computerBlack">Black</string>
@@ -235,7 +235,9 @@
 	<string name="video">Video</string>
 	<!--<string name="boards_s">Boards</string>-->
 	<string name="invite_subject">Play Chess with me</string>
-	<string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app here: http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"
+	<string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app
+		here:
+		http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"
 	</string>
 	<string name="live_game">Live Game</string>
 	<string name="online_game">Online Game</string>
@@ -265,7 +267,7 @@
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
 	<!--<string name="network_was_changed_please_relogin">Network has changed. Please re-login to Live</string>-->
-	<string name="ches_com">Chess.com</string>
+	<string name="chess_com">ChessCom</string>
 	<string name="your_move">Chess.com - It\'s Your Move</string>
 	<string name="your_turn">Your Turn!</string>
 	<string name="login_failed">Login Failed:</string>
@@ -333,7 +335,7 @@
 
 	<string name="black_wins">Black wins (0–1)</string>
 	<string name="white_wins">White wins (1–0)</string>
-	<string name="draw_by_stalemate">Draw by stalemate (0.5–0.5)</string>
+	<string name="draw_by_stalemate">Draw by stalemate (0–0)</string>
 	<string name="draw_by_3fold_repetition">Draw by threefold repetition (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Review</string>
@@ -433,7 +435,7 @@
 	<string name="completeAllGameMoves">Complete all game moves.</string>
 	<string name="userNotOnVacation">User not on vacation.</string>
 	<string name="menu_search">Search</string>
-	<string name="restoring_connection_to_live">Reconnecting…</string>
+	<string name="restoring_conntection_to_live">Reconnecting…</string>
 	<string name="application_was_killed">Application was killed, restoring…</string>
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Wireless Settings</string>
@@ -458,9 +460,9 @@
 	<string name="checkmate">Checkmate!</string>
 	<string name="solution">Solution</string>
 
-	<string name="bullet_">Bullet: %s</string>
-	<string name="blitz_">Blitz: %s</string>
-	<string name="standard_">Standard: %s</string>
+	<string name="bullet_">Bullet: %d</string>
+	<string name="blitz_">Blitz: %d</string>
+	<string name="standard_">Standard: %d</string>
 
 	<string name="min_">%s min</string>
 
@@ -468,17 +470,16 @@
 	<string name="game.dw_warn">Your account may be restricted if you do not follow our Fair Play Policy. If restricted, you will only be able to play with friends. Please do not intentionally abort/disconnect from games or make your opponents wait unnecessarily. Thank you for keeping Chess.com a fun place to enjoy chess!</string>
 	<string name="game.not_accepting_challenges">%1$s is currently not accepting challenges</string>
 	<string name="game.aborted_by_server">Game has been aborted by the server</string>
-	<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
-	<string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
-	<!--<string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers!</string>-->
+	<string name="game.aborted_by_server_on_logout">Game has been aborted by the server</string>
+	<string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server</string>
+	<string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers!</string>
 	<string name="announcement.server_restart_cancelled">Server restart has been cancelled</string>
     <string name="locale_change">Locale has changed</string>
     <string name="need_app_restart_to_apply">You need to restart app to apply</string>
     <string name="restart">Restart</string>
 
-    <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>
-    <string name="chess_com_live">Chess.com Live</string>
-    <string name="chars_left">Chars left</string>
-    <string name="too_much_chars">Too much chars</string>
+    <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
+    <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
+    <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>-->
 
 </resources>

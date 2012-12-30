@@ -260,7 +260,7 @@
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">· Explosión</string>
 	<!--<string name="network_was_changed_please_relogin">Red ha cambiado. Por favor, iniciar la sesión a Live</string>-->
-	<string name="ches_com">Chesscom</string>
+	<string name="chess_com">Chesscom</string>
 	<string name="your_move">Chess.com - Ponte en movimiento</string>
 	<string name="your_turn">Tu turno!</string>
 	<string name="login_failed">Inicio de sesión fallido.</string>
