@@ -35,7 +35,7 @@ public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<DailyFi
 
 			final String[] arguments2 = arguments;
 			arguments2[0] = String.valueOf(userName);
-			arguments2[1] = String.valueOf(finishedItem.getGameId());
+			arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
 
 			Uri uri = DBConstants.ECHESS_FINISHED_LIST_GAMES_CONTENT_URI;
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
