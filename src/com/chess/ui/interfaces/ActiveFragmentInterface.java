@@ -5,13 +5,19 @@ import com.chess.ui.fragments.BaseFragment;
 
 public interface ActiveFragmentInterface {
 
-    boolean isLeftMenuActive();
+    boolean isMenuActive(int code);
 
-	void toggleMenu();
+	void toggleMenu(int code);
 
-	void closeMenu();
+	void closeMenu(int code);
 
 	void openFragment(BaseFragment fragment);
+
+	void switchFragment(BaseFragment fragment);
+
+	void openFragment(BaseFragment fragment, int code);
+
+	void switchFragment(BaseFragment fragment, int code);
 
     void showPreviousFragment();
 
