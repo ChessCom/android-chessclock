@@ -280,6 +280,14 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
 					getContentResolver()).executeTask();
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (resultCode == StaticData.INTERNAL_ERROR) {
+				emptyView.setText("Internal error occurred");
+				showEmptyView(true);
+			}
+		}
 	}
 
 //	private class OnlineUpdateListener extends ChessUpdateListener {

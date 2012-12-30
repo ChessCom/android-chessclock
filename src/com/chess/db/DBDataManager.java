@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -41,7 +42,8 @@ public class DBDataManager {
 
 	public static String SELECTION_ID = concatArguments(DBConstants._ID);
 
-	public static String SELECTION_GAME_ID = concatArguments(DBConstants.V_USER,
+	public static String SELECTION_GAME_ID = concatArguments(
+			DBConstants.V_USER,
 			DBConstants.V_GAME_ID);
 
 	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(
@@ -116,7 +118,7 @@ public class DBDataManager {
 
 	/**
 	 * Check if we have saved games for current user
-	 * @param context
+	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
 	public static boolean haveSavedOnlineCurrentGame(Context context) {
@@ -377,6 +379,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOfferPending()? 1 : 0);
 		values.put(DBConstants.V_IS_MY_TURN, dataObj.isMyTurn()? 1 : 0);
 		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage()? 1 : 0);
+//		Log.d("TEST", "echess values = " + values);
 		return values;
 	}
 

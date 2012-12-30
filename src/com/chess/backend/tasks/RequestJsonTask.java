@@ -8,19 +8,13 @@ import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.utilities.AppUtils;
 import com.google.gson.Gson;
-import org.apache.http.HttpResponse;
+import com.google.gson.JsonSyntaxException;
+
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
+
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -110,6 +104,9 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
 
 		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			result = StaticData.INTERNAL_ERROR;
+		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
 			result = StaticData.INTERNAL_ERROR;
 		} catch (IOException e) {

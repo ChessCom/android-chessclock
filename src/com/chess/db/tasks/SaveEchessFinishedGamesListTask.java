@@ -33,12 +33,13 @@ public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<DailyFi
 
 		for (DailyFinishedGameData finishedItem : itemList) {
 
-			arguments[0] = String.valueOf(userName);
-			arguments[1] = String.valueOf(finishedItem.getGameId());
+			final String[] arguments2 = arguments;
+			arguments2[0] = String.valueOf(userName);
+			arguments2[1] = String.valueOf(finishedItem.getGameId());
 
 			Uri uri = DBConstants.ECHESS_FINISHED_LIST_GAMES_CONTENT_URI;
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-					DBDataManager.SELECTION_GAME_ID, arguments, null);
+					DBDataManager.SELECTION_GAME_ID, arguments2, null);
 			if (cursor.moveToFirst()) {
 				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
 						DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName), null, null);
