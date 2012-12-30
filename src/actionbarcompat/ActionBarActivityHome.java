@@ -53,8 +53,8 @@ public abstract class ActionBarActivityHome extends CommonLogicActivity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		mActionBarHelperMy.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	}
 
 	/**
