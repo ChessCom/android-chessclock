@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<TabHost
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RadioGroup
+        android:id="@+id/tabRadioGroup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <com.chess.RoboRadioButton
+            android:id="@+id/gamesBtn"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="0"/>
+            android:layout_weight="1"
+            android:text="Games"
+            style="@style/TabRadioButton"
+            android:checked="true"
+            />
+        <com.chess.RoboRadioButton
+            android:id="@+id/chesscomBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ChessCom"
+            style="@style/TabRadioButton"
+            />
+        <com.chess.RoboRadioButton
+            android:id="@+id/ratingsBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ratings"
+            style="@style/TabRadioButton"
+            />
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0"/>
+    </RadioGroup>
 
-        <FrameLayout
-            android:id="@+id/realtabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <RelativeLayout
+        android:id="@+id/tab_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-    </LinearLayout>
-</TabHost>
+    </RelativeLayout>
+
+</LinearLayout>
 

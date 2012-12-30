@@ -42,6 +42,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	@Override
