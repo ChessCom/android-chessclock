@@ -1,14 +1,20 @@
 package com.chess.ui.activities;
 
+import actionbarcompat.BadgeItem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuInflater;
 import com.chess.R;
 import com.chess.ui.fragments.BaseFragment;
 import com.chess.ui.fragments.SignInFragment;
 import com.chess.ui.fragments.RightMenuFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.slidingmenu.lib.SlidingMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +25,7 @@ import com.slidingmenu.lib.SlidingMenu;
 public class NewLoginActivity extends LiveBaseActivity implements ActiveFragmentInterface{
 
 	private Fragment currentActiveFragment;
+	private List<BadgeItem> badgeItems;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +50,14 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
+		badgeItems = new ArrayList<BadgeItem>();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		showActionNewGame = true;
 	}
 
 	@Override
@@ -119,6 +134,24 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 	@Override
 	public void updateCurrentActiveFragment() {
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
+
+	@Override
+	public void setBadgeValueForId(BadgeItem badgeItem) {
+		badgeItems.add(badgeItem);
+		getActionBarHelper().setBadgeValueForId(badgeItem);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		boolean displayMenu = super.onCreateOptionsMenu(menu);
+		for (BadgeItem badgeItem : badgeItems) {
+			getActionBarHelper().setBadgeValueForId(badgeItem, menu);
+		}
+		return displayMenu;
+	}
+
+
+
 }

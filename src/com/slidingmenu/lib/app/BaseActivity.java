@@ -57,7 +57,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.sign_out, menu);
+//		getMenuInflater().inflate(R.menu.sign_out, menu);
 		return true;
 	}
 

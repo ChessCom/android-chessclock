@@ -51,6 +51,8 @@ public class AppUtils {
 	private static final String H = "h";
 	private static final String M = "m";
 
+	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+
 	public static class ListSelector implements Runnable{
 		private int pos;
 		private ListView listView;

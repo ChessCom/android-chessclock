@@ -107,8 +107,25 @@ public abstract class ActionBarHelper {
 	 */
 	public abstract void showMenuItemById(int id, boolean show);
 
-
+	/**
+	 * Show/Hide actionbar item at specified id. Used for HomeyComb+ API
+	 * @param itemId
+	 * @param show
+	 * @param menu
+	 */
 	public abstract void showMenuItemById(int itemId, boolean show, Menu menu);
+
+	/**
+	 * Set badge with specified value for itemId element in actionBar
+	 * @param badgeItem contains id and value to be changed
+	 */
+	public abstract void setBadgeValueForId(BadgeItem badgeItem);
+
+	/**
+	 * Set badge with specified value for itemId element in actionBar. Used for HomeyComb+ API
+	 * @param badgeItem contains id and value to be changed
+	 */
+	public abstract void setBadgeValueForId(BadgeItem badgeItem, Menu menu);
 	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
 	 * The implementation of this method in {@link ActionBarHelperBase} returns

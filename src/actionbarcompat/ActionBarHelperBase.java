@@ -18,6 +18,7 @@ package actionbarcompat;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.ui.views.BadgeDrawable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -166,14 +168,30 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 				} else {
 					view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
 				}
-
 			}
         }
 	}
 
 	@Override
 	public void showMenuItemById(int itemId, boolean connected, Menu menu) {
+		// not used in pre-ICS
+	}
 
+	@Override
+	public void setBadgeValueForId(BadgeItem badgeItem) {
+		if(!noActionBar) {
+			View view = getActionBarCompat();
+			if(view != null) {
+				Drawable icon = ((ImageButton)view.findViewById(badgeItem.getMenuItemId())).getDrawable();
+//				view.findViewById(badgeItem.getMenuItemId()).setBackgroundDrawable(view.getContext().getResources().getDrawable(R.drawable.alpha_bb));
+				((ImageButton)view.findViewById(badgeItem.getMenuItemId())).setImageDrawable(new BadgeDrawable(view.getContext(), icon, badgeItem.getValue()));
+			}
+		}
+	}
+
+	@Override
+	public void setBadgeValueForId(BadgeItem badgeItem, Menu menu) {
+		// not used in PRE-ICS
 	}
 
 	/**

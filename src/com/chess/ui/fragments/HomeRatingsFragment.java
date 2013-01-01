@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import actionbarcompat.BadgeItem;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,5 +18,12 @@ public class HomeRatingsFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_home_ratings_frame, container, false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		getActivityFace().setBadgeValueForId(new BadgeItem(R.id.menu_new_game, 1));
 	}
 }

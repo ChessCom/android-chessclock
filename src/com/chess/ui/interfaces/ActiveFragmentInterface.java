@@ -1,6 +1,7 @@
 package com.chess.ui.interfaces;
 
 
+import actionbarcompat.BadgeItem;
 import com.chess.ui.fragments.BaseFragment;
 
 public interface ActiveFragmentInterface {
@@ -22,5 +23,7 @@ public interface ActiveFragmentInterface {
     void showPreviousFragment();
 
     void updateCurrentActiveFragment();
+
+    void setBadgeValueForId(BadgeItem badgeItem);
 
 }

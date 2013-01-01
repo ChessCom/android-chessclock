@@ -173,4 +173,11 @@
 
     <!--Sliding Menu-->
     <color name="holo_blue_bright">#ff00ddff</color>
+
+    <!--Badge colors-->
+    <color name="action_badge_border_1">#ff000000</color>
+    <color name="action_badge_border_top">#FFb54144</color>
+    <color name="action_badge_border_bottom">#FF932322</color>
+    <color name="action_badge_main_1">#FFb32c32</color>
+    <color name="action_badge_main_2">#FFa5292b</color>
 </resources>

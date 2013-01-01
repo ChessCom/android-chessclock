@@ -17,11 +17,13 @@
 package actionbarcompat;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.chess.R;
+import com.chess.ui.views.BadgeDrawable;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific
@@ -108,6 +110,20 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			menu.findItem(itemId).setVisible(visible);
 			menu.findItem(itemId).setEnabled(visible);
 		}
+	}
+
+	@Override
+	public void setBadgeValueForId(BadgeItem badgeItem) {
+		if(mActivity != null)
+			mActivity.invalidateOptionsMenu();
+	}
+
+	@Override
+	public void setBadgeValueForId(BadgeItem badgeItem, Menu menu) {
+		MenuItem item = menu.findItem(badgeItem.getMenuItemId());
+		Drawable icon = item.getIcon();
+//		menu.findItem(badgeItem.getMenuItemId()).setIcon(icon);
+		item.setIcon(new BadgeDrawable(getActionBarThemedContext(), icon, badgeItem.getValue()));
 	}
 
 
