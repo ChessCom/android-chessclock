@@ -78,8 +78,8 @@ public class BadgeDrawable extends Drawable {
 		rectangleBorderBottomPaint.setStyle(Paint.Style.STROKE);
 		rectangleBorderBottomPaint.setShader(borderShader);
 
-		textSize = 13 * density;
-		textWidth = 4 * density;
+		textSize = 11 * density;
+		textWidth = 3 * density;
 		textHeight = 5 * density;
 		textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		textPaint.setColor(Color.WHITE);
