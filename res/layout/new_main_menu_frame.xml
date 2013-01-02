@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_logo_bar"
             android:layout_margin="16dip"
-            />
+            android:contentDescription="@string/image"/>
         </FrameLayout>
     <ListView
         android:id="@+id/listView"
