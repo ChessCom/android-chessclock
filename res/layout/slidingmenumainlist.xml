@@ -2,6 +2,6 @@
 <com.slidingmenu.lib.SlidingMenu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sliding="http://schemas.android.com/apk/res-auto"
     android:id="@+id/slidingmenulayout"
-    sliding:viewAbove="@layout/slidingmenu_list"
+    sliding:viewAbove="@layout/new_main_menu_frame"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" />

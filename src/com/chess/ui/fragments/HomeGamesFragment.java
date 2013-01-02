@@ -12,7 +12,7 @@ import com.chess.R;
  * Date: 30.12.12
  * Time: 22:04
  */
-public class HomeGamesFragment extends BaseFragment {
+public class HomeGamesFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -1,13 +1,11 @@
 package com.chess.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import com.chess.R;
-import com.chess.ui.activities.SignUpScreenActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +13,7 @@ import com.chess.ui.activities.SignUpScreenActivity;
  * Date: 30.12.12
  * Time: 15:21
  */
-public class SignInFragment extends BaseFragment implements View.OnClickListener {
+public class SignInFragment extends CommonLogicFragment implements View.OnClickListener {
 
 	private boolean forceFlag;
 	private EditText loginUsernameEdt;

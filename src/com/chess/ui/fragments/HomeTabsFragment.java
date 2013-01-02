@@ -1,19 +1,13 @@
 package com.chess.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.TabHost;
 import com.chess.R;
-
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,7 +15,7 @@ import java.util.HashMap;
  * Date: 30.12.12
  * Time: 21:41
  */
-public class HomeTabsFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
+public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;

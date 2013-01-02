@@ -2,23 +2,24 @@ package com.chess.ui.interfaces;
 
 
 import actionbarcompat.BadgeItem;
-import com.chess.ui.fragments.BaseFragment;
+import com.chess.ui.activities.CoreActivityActionBar;
+import com.chess.ui.fragments.BasePopupsFragment;
 
 public interface ActiveFragmentInterface {
 
-    boolean isMenuActive(int code);
+    boolean isMenuActive();
 
 	void toggleMenu(int code);
 
 	void closeMenu(int code);
 
-	void openFragment(BaseFragment fragment);
+	void openFragment(BasePopupsFragment fragment);
 
-	void switchFragment(BaseFragment fragment);
+	void switchFragment(BasePopupsFragment fragment);
 
-	void openFragment(BaseFragment fragment, int code);
+	void openFragment(BasePopupsFragment fragment, int code);
 
-	void switchFragment(BaseFragment fragment, int code);
+	void switchFragment(BasePopupsFragment fragment, int code);
 
     void showPreviousFragment();
 
@@ -26,4 +27,5 @@ public interface ActiveFragmentInterface {
 
     void setBadgeValueForId(BadgeItem badgeItem);
 
+	CoreActivityActionBar getActionBarActivity();
 }

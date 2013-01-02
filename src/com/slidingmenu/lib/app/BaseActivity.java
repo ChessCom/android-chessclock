@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.chess.R;
+import com.chess.ui.fragments.MainMenuFragment;
 import com.chess.ui.fragments.SampleListFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class BaseActivity extends SlidingFragmentActivity {
 
 	private int mTitleRes;
-	protected ListFragment mFrag;
+	protected Fragment mFrag;
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
@@ -41,8 +42,6 @@ public class BaseActivity extends SlidingFragmentActivity {
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-
-//		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -57,7 +56,6 @@ public class BaseActivity extends SlidingFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.sign_out, menu);
 		return true;
 	}
 

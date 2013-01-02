@@ -180,4 +180,7 @@
     <color name="action_badge_border_bottom">#FF932322</color>
     <color name="action_badge_main_1">#FFb32c32</color>
     <color name="action_badge_main_2">#FFa5292b</color>
+
+
+    <color name="main_menu_back_top">#FF23221e</color>
 </resources>

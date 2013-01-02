@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.chess.R;
-import com.chess.ui.fragments.BaseFragment;
-import com.chess.ui.fragments.SignInFragment;
-import com.chess.ui.fragments.RightMenuFragment;
+import com.chess.ui.fragments.*;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -34,6 +32,12 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		setContentView(R.layout.new_main_active_screen);
 
+		// change left menu fragment
+		FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
+		mFrag = new MainMenuFragment();
+		ft.replace(R.id.menu_frame_left, mFrag);
+		ft.commit();
+
 		// set the Above View
 		getSupportFragmentManager()
 				.beginTransaction()
@@ -45,7 +49,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
 		getSupportFragmentManager()
 				.beginTransaction()
-				.replace(R.id.menu_frame_right, new RightMenuFragment())
+				.replace(R.id.menu_frame_right, new DailyGamesFragment())
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
@@ -61,7 +65,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void openFragment(BaseFragment fragment) {
+	public void openFragment(BasePopupsFragment fragment) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
@@ -72,7 +76,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void openFragment(BaseFragment fragment, int code) {
+	public void openFragment(BasePopupsFragment fragment, int code) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
@@ -83,7 +87,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void switchFragment(BaseFragment fragment) {
+	public void switchFragment(BasePopupsFragment fragment) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
@@ -92,7 +96,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void switchFragment(BaseFragment fragment, int code) {
+	public void switchFragment(BasePopupsFragment fragment, int code) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
@@ -100,18 +104,33 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		ft.commit();
 	}
 	@Override
-	public boolean isMenuActive(int code) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	public boolean isMenuActive() {
+		return getSlidingMenu().isMenuShowing();
 	}
 
 	@Override
 	public void toggleMenu(int code) {
-		//To change body of implemented methods use File | Settings | File Templates.
+		switch (code) {
+			case SlidingMenu.LEFT:
+				if (getSlidingMenu().isMenuShowing()) {
+					getSlidingMenu().toggle();
+				} else {
+					getSlidingMenu().showMenu();
+				}
+				break;
+			case SlidingMenu.RIGHT:
+				if (getSlidingMenu().isMenuShowing()) {
+					getSlidingMenu().toggle();
+				} else {
+					getSlidingMenu().showSecondaryMenu();
+				}
+				break;
+		}
 	}
 
 	@Override
 	public void closeMenu(int code) {
-		//To change body of implemented methods use File | Settings | File Templates.
+		getSlidingMenu().toggle();
 	}
 
 	@Override
@@ -127,9 +146,9 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		if(getSupportFragmentManager().popBackStackImmediate()){
 			if(getSupportFragmentManager().getBackStackEntryCount() == 0){ // means we have only home fragment in stack
 			}
-		}/*else{
-			toggleMenu();
-		}*/
+		}else{
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -140,6 +159,11 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	public void setBadgeValueForId(BadgeItem badgeItem) {
 		badgeItems.add(badgeItem);
 		getActionBarHelper().setBadgeValueForId(badgeItem);
+	}
+
+	@Override
+	public CoreActivityActionBar getActionBarActivity() {
+		return getInstance();
 	}
 
 	@Override

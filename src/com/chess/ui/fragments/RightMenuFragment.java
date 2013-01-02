@@ -20,7 +20,7 @@ import com.chess.R;
 public class RightMenuFragment extends ListFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.slidingmenu_list, container, false);
+		return inflater.inflate(R.layout.new_main_menu_frame, container, false);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {

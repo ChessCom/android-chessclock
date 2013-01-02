@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 
-public class SampleListFragment extends ListFragment {
+public class SampleListFragment extends /*List*/Fragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.slidingmenu_list, container, false);
+		return inflater.inflate(R.layout.new_main_menu_frame, container, false);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class SampleListFragment extends ListFragment {
 		for (int i = 0; i < 20; i++) {
 			adapter.add(new SampleItem("Sample List", android.R.drawable.ic_menu_search));
 		}
-		setListAdapter(adapter);
+//		setListAdapter(adapter);
 	}
 
 	private class SampleItem {

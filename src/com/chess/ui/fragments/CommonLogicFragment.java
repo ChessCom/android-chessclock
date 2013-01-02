@@ -1,16 +1,16 @@
 package com.chess.ui.fragments;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 30.12.12
- * Time: 15:22
+ * Date: 02.01.13
+ * Time: 10:18
  */
-public class BaseFragment extends Fragment {
+public class CommonLogicFragment extends BasePopupsFragment {
 
 	private ActiveFragmentInterface activityFace;
 
@@ -20,7 +20,11 @@ public class BaseFragment extends Fragment {
 		activityFace = (ActiveFragmentInterface) activity;
 	}
 
-	protected ActiveFragmentInterface getActivityFace() {
+	protected CoreActivityActionBar getInstance() {
+		return activityFace.getActionBarActivity();
+	}
+
+	protected ActiveFragmentInterface getActivityFace (){
 		return activityFace;
 	}
 

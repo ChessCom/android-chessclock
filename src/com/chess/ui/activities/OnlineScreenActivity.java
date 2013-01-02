@@ -290,12 +290,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-//	private class OnlineUpdateListener extends ChessUpdateListener {
 	private class OnlineUpdateListener extends ActionBarUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
 		public static final int VACATION = 5;
-		public static final int VACATION_LEAVE = 6;
 
 		private int itemCode;
 
