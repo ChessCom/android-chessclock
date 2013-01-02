@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -41,11 +42,9 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		ft.commit();
 
 		// set the Above View
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.content_frame, new SignInFragment())
-				.commit();
+		switchFragment(new SignInFragment());
 
+		// set right menu. Left Menu is already set in BaseActivity
 		rightMenuFragment = new DailyGamesFragment();
 		SlidingMenu sm = getSlidingMenu();
 		sm.setMode(SlidingMenu.LEFT_RIGHT);
@@ -183,6 +182,10 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		return displayMenu;
 	}
 
-
+	public void startActivityFromFragmentForResult(Intent intent, int requestCode) {
+		if (currentActiveFragment != null) {
+			startActivityFromFragment(currentActiveFragment, intent, requestCode);
+		}
+	}
 
 }

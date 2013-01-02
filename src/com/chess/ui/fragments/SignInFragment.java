@@ -1,11 +1,19 @@
 package com.chess.ui.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
+import com.chess.ui.activities.CommonLogicActivity;
+import com.chess.utilities.AppUtils;
+import com.facebook.android.Facebook;
+import com.flurry.android.FlurryAgent;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +21,7 @@ import com.chess.R;
  * Date: 30.12.12
  * Time: 15:21
  */
-public class SignInFragment extends CommonLogicFragment implements View.OnClickListener {
+public class SignInFragment extends CommonLogicFragment implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
 
 	private boolean forceFlag;
 	private EditText loginUsernameEdt;
@@ -31,10 +39,10 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);
-//		loginPasswordEdt.setOnEditorActionListener(this); // TODO restore
-//		loginPasswordEdt.setOnTouchListener(this);
+		loginPasswordEdt.setOnEditorActionListener(this); // TODO restore
+		loginPasswordEdt.setOnTouchListener(this);
 
-//		setLoginFields(loginUsernameEdt, loginPasswordEdt);
+		setLoginFields(loginUsernameEdt, loginPasswordEdt);
 
 		view.findViewById(R.id.signin).setOnClickListener(this);
 		view.findViewById(R.id.signup).setOnClickListener(this);
@@ -42,14 +50,39 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		loginUsernameEdt.setText(AppData.getUserName(getActivity()));
+		loginPasswordEdt.setText(AppData.getPassword(getActivity()));
+	}
+
+
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		dismissProgressDialog();
+	}
+
+	@Override
+	protected void afterLogin() {
+		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
+//		if (AppData.isNotificationsEnabled(this)){
+//			checkMove();
+//		}
+
+		backToHomeFragment();
+	}
+
+	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.signin) {
-//			if (!AppUtils.isNetworkAvailable(getActivity())){ // check only if live   // TODO restore
-//				popupItem.setPositiveBtnId(R.string.wireless_settings);
-//				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-//			} else{
-//				signInUser();
-//			}
+			if (!AppUtils.isNetworkAvailable(getActivity())){ // check only if live   // TODO restore
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			} else{
+				signInUser();
+			}
 		} else if (view.getId() == R.id.signup) {
 			getActivityFace().openFragment(new SignUpFragment());
 
@@ -64,5 +97,42 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 //			Intent intent = new Intent(this, HomeScreenActivity.class);
 //			startActivity(intent);
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == Activity.RESULT_OK ){
+			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+//				facebook.authorizeCallback(requestCode, resultCode, data);
+				handler.postDelayed(new DelayedCallback(data, requestCode, resultCode), FACEBOOK_DELAY);
+			}else if(requestCode == NETWORK_REQUEST){
+				signInUser();
+			}
+		}
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		if(view.getId() == R.id.usernameEdt){
+			loginUsernameEdt.setSelection(loginUsernameEdt.getText().length());
+		} else if(view.getId() == R.id.passwordEdt){
+			loginPasswordEdt.setError(null);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
+			if(!AppUtils.isNetworkAvailable(getActivity())){ // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			}else{
+				signInUser();
+			}
+		}
+		return false;
 	}
 }

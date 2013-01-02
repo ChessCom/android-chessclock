@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
@@ -34,10 +36,7 @@ import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
-import com.facebook.android.Facebook;
-import com.facebook.android.LoginButton;
-import com.facebook.android.SessionEvents;
-import com.facebook.android.SessionStore;
+import com.facebook.android.*;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
@@ -76,6 +75,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
 	protected boolean isRestarted;
+	private View mainView;
 
 
 	@Override
@@ -86,13 +86,16 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 
+		mainView = findViewById(R.id.mainView);
 		setLocale();
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		facebookInit((LoginButton) findViewById(R.id.fb_connect));
+		if (mainView != null) {
+			facebookInit((LoginButton) mainView.findViewById(R.id.fb_connect));
+		}
 	}
 
 	protected void facebookInit(LoginButton fbLoginBtn) {
@@ -458,7 +461,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 //			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
 			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 
-//			new GetStringObjTask(loginUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
 		}
@@ -554,7 +556,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	/**
 	 * Prevent earlier launch of task, as it finish right after onPause callback
 	 */
-	protected class DelayedCallback implements Runnable {
+	public class DelayedCallback implements Runnable {
 
 		private Intent data;
 		private int resultCode;

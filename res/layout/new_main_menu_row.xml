@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:orientation="horizontal"
-    android:background="@color/blue">
+    android:background="@color/main_menu_back_top">
 
     <ImageView
         android:id="@+id/row_icon"

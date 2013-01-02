@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,7 +73,7 @@ public class MainMenuFragment extends CommonLogicFragment {
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			return LayoutInflater.from(getContext()).inflate(R.layout.slide_menu_row, null);
+			return LayoutInflater.from(getContext()).inflate(R.layout.new_main_menu_row, null, false);
 		}
 
 		@Override
