@@ -113,17 +113,20 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	}
 
 	@Override
-	public void setBadgeValueForId(BadgeItem badgeItem) {
+	public void setBadgeValueForId(int menuId, int value) {
 		if(mActivity != null)
 			mActivity.invalidateOptionsMenu();
 	}
 
 	@Override
-	public void setBadgeValueForId(BadgeItem badgeItem, Menu menu) {
-		MenuItem item = menu.findItem(badgeItem.getMenuItemId());
+	public void setBadgeValueForId(int menuId, int value, Menu menu) {
+		MenuItem item = menu.findItem(menuId);
 		Drawable icon = item.getIcon();
-//		menu.findItem(badgeItem.getMenuItemId()).setIcon(icon);
-		item.setIcon(new BadgeDrawable(getActionBarThemedContext(), icon, badgeItem.getValue()));
+		if (icon instanceof BadgeDrawable) {
+			((BadgeDrawable)icon).setValue(value);
+		} else if (value != 0) {
+			item.setIcon(new BadgeDrawable(getActionBarThemedContext(), icon, value));
+		}
 	}
 
 

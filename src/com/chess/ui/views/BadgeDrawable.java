@@ -16,7 +16,7 @@ import com.chess.utilities.AppUtils;
 public class BadgeDrawable extends Drawable {
 
 	private final Drawable icon;
-	private final int value;
+	private int value;
 	private Paint rectangleMainPaint;
 	private Paint rectangleBorderPaint;
 	private Paint textPaint;
@@ -162,5 +162,10 @@ public class BadgeDrawable extends Drawable {
 	@Override
 	public int getOpacity() {
 		return PixelFormat.OPAQUE;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+		invalidateSelf();
 	}
 }

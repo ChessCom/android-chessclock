@@ -80,6 +80,20 @@ public class BasePopupsFragment extends Fragment implements PopupDialogFace {
 		return getActivity().getContentResolver();
 	}
 
+	/**
+	 * Make verification of tag
+	 * @param fragment to check
+	 * @return true if tag is not null
+	 */
+	protected boolean isTagEmpty(DialogFragment fragment){
+		String tag = fragment.getTag();
+		if (tag == null) {
+			onPositiveBtnClick(fragment);
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		dismissFragmentDialog(fragment);
@@ -174,7 +188,7 @@ public class BasePopupsFragment extends Fragment implements PopupDialogFace {
 	}
 
 	private synchronized void updatePopupAndShow(String tag){
-		popupManager.add(PopupDialogFragment.newInstance(popupItem));
+		popupManager.add(PopupDialogFragment.newInstance(popupItem, this));
 		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
 

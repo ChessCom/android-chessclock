@@ -117,15 +117,17 @@ public abstract class ActionBarHelper {
 
 	/**
 	 * Set badge with specified value for itemId element in actionBar
-	 * @param badgeItem contains id and value to be changed
+	 * @param menuId contains id of menu Item
+	 * @param value value to be changed
 	 */
-	public abstract void setBadgeValueForId(BadgeItem badgeItem);
+	public abstract void setBadgeValueForId(int menuId, int value);
 
 	/**
 	 * Set badge with specified value for itemId element in actionBar. Used for HomeyComb+ API
-	 * @param badgeItem contains id and value to be changed
+	 * @param menuId contains id of menu Item
+	 * @param value value to be changed
 	 */
-	public abstract void setBadgeValueForId(BadgeItem badgeItem, Menu menu);
+	public abstract void setBadgeValueForId(int menuId, int value, Menu menu);
 	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
 	 * The implementation of this method in {@link ActionBarHelperBase} returns

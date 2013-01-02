@@ -1,7 +1,6 @@
 package com.chess.ui.interfaces;
 
 
-import actionbarcompat.BadgeItem;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
 
@@ -25,7 +24,7 @@ public interface ActiveFragmentInterface {
 
     void updateCurrentActiveFragment();
 
-    void setBadgeValueForId(BadgeItem badgeItem);
+    void setBadgeValueForId(int menuId, int value);
 
 	CoreActivityActionBar getActionBarActivity();
 }

@@ -1,7 +1,7 @@
 package com.chess.ui.fragments;
 
-import actionbarcompat.BadgeItem;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.*;
 import com.chess.R;
 import com.slidingmenu.lib.SlidingMenu;
@@ -17,7 +17,6 @@ public class HomeRatingsFragment extends CommonLogicFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -25,25 +24,5 @@ public class HomeRatingsFragment extends CommonLogicFragment {
 		return inflater.inflate(R.layout.new_home_ratings_frame, container, false);
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
 
-		getActivityFace().setBadgeValueForId(new BadgeItem(R.id.menu_new_game, 1));
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_new_game:
-				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
-				break;
-		}
-		return true;
-	}
 }

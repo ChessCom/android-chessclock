@@ -1,13 +1,13 @@
 package com.chess.ui.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.RadioGroup;
 import com.chess.R;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +19,12 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +49,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 		updateTabs();
+
+		getActivityFace().setBadgeValueForId(R.id.menu_new_game, 1);
 	}
 
 	@Override
@@ -72,5 +80,35 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.tab_content_frame, fragment).commit();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_new_game:
+				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+
+//				showPopupDialog(R.string.invalidId, "Hello", "test");   // Works!
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (isTagEmpty(fragment)) {
+			return;
+		}
+
+		if (tag.equals("test")) {
+			showToast("test ok passed");
+		}
+		super.onPositiveBtnClick(fragment);
 	}
 }

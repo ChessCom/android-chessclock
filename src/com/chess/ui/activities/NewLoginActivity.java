@@ -1,18 +1,18 @@
 package com.chess.ui.activities;
 
-import actionbarcompat.BadgeItem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
-import android.view.MenuItem;
 import com.chess.R;
 import com.chess.ui.fragments.*;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +23,9 @@ import java.util.List;
 public class NewLoginActivity extends LiveBaseActivity implements ActiveFragmentInterface{
 
 	private Fragment currentActiveFragment;
-	private List<BadgeItem> badgeItems;
+//	private List<BadgeItem> badgeItems;
+	private Hashtable<Integer, Integer> badgeItems;
+	private CommonLogicFragment rightMenuFragment;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,18 +46,20 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 				.replace(R.id.content_frame, new SignInFragment())
 				.commit();
 
+		rightMenuFragment = new DailyGamesFragment();
 		SlidingMenu sm = getSlidingMenu();
 		sm.setMode(SlidingMenu.LEFT_RIGHT);
 		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
 		getSupportFragmentManager()
 				.beginTransaction()
-				.replace(R.id.menu_frame_right, new DailyGamesFragment())
+				.replace(R.id.menu_frame_right, rightMenuFragment)
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-		badgeItems = new ArrayList<BadgeItem>();
+//		badgeItems = new ArrayList<BadgeItem>();
+		badgeItems = new Hashtable<Integer, Integer>();
 	}
 
 	@Override
@@ -119,11 +123,13 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 				}
 				break;
 			case SlidingMenu.RIGHT:
-				if (getSlidingMenu().isMenuShowing()) {
+				boolean visible = getSlidingMenu().isMenuShowing();
+				if (visible) {
 					getSlidingMenu().toggle();
 				} else {
 					getSlidingMenu().showSecondaryMenu();
 				}
+				rightMenuFragment.onVisibilityChanged(visible);
 				break;
 		}
 	}
@@ -156,9 +162,9 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void setBadgeValueForId(BadgeItem badgeItem) {
-		badgeItems.add(badgeItem);
-		getActionBarHelper().setBadgeValueForId(badgeItem);
+	public void setBadgeValueForId(int menuId, int value) {
+		badgeItems.put(menuId, value);
+		getActionBarHelper().setBadgeValueForId(menuId, value);
 	}
 
 	@Override
@@ -170,9 +176,10 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		boolean displayMenu = super.onCreateOptionsMenu(menu);
-		for (BadgeItem badgeItem : badgeItems) {
-			getActionBarHelper().setBadgeValueForId(badgeItem, menu);
+		for (Map.Entry<Integer, Integer> entry : badgeItems.entrySet()) {
+			getActionBarHelper().setBadgeValueForId(entry.getKey(), entry.getValue(), menu);
 		}
+
 		return displayMenu;
 	}
 

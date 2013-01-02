@@ -1,10 +1,7 @@
 package com.chess.ui.fragments;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -21,6 +18,7 @@ import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
@@ -104,6 +102,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
+
+		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
 
 	@Override
@@ -117,6 +117,59 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 
+	}
+
+	@Override
+	public void onVisibilityChanged(boolean visible) {
+		getActivityFace().setBadgeValueForId(R.id.menu_new_game, 0);
+	}
+
+	@Override
+	public void onStart() {
+//		showActionRefresh = true; // no need on this fragment
+//		showActionNewGame = true;
+
+		getActivityFace().setBadgeValueForId(R.id.menu_new_game, 0);
+		super.onStart();
+		init();
+
+		gamesUpdateReceiver = new GamesUpdateReceiver();
+		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
+
+		if (AppUtils.isNetworkAvailable(getActivity()) /*&& !isRestarted*/) {
+			updateVacationStatus();
+			updateGamesList();
+		} else {
+			emptyView.setText(R.string.no_network);
+			showEmptyView(true);
+		}
+
+		if (DBDataManager.haveSavedOnlineCurrentGame(getActivity())) {
+			loadDbGames();
+		}
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+
+		unRegisterMyReceiver(gamesUpdateReceiver);
+
+		releaseResources();
+	}
+	private void init() {
+		selectedLoadItem = new LoadItem();
+
+		challengeInviteUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.INVITE);
+		acceptDrawUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.DRAW);
+		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
+		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
+		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT);
+		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
+
+		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+		vacationGetUpdateListener = new VacationUpdateListener(VacationUpdateListener.GET);
+		vacationDeleteUpdateListener = new VacationUpdateListener(VacationUpdateListener.DELETE);
 	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
@@ -234,6 +287,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			startActivity(intent);
 		}
 		return true;
+	}
+
+	private class GamesUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateGamesList();
+		}
 	}
 
 	private void clickOnChallenge(DailyChallengeData gameListChallengeItem) {

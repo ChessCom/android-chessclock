@@ -178,19 +178,23 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	}
 
 	@Override
-	public void setBadgeValueForId(BadgeItem badgeItem) {
+	public void setBadgeValueForId(int menuId, int value) {
 		if(!noActionBar) {
 			View view = getActionBarCompat();
 			if(view != null) {
-				Drawable icon = ((ImageButton)view.findViewById(badgeItem.getMenuItemId())).getDrawable();
-//				view.findViewById(badgeItem.getMenuItemId()).setBackgroundDrawable(view.getContext().getResources().getDrawable(R.drawable.alpha_bb));
-				((ImageButton)view.findViewById(badgeItem.getMenuItemId())).setImageDrawable(new BadgeDrawable(view.getContext(), icon, badgeItem.getValue()));
+				Drawable icon = ((ImageButton)view.findViewById(menuId)).getDrawable();
+				if (icon instanceof BadgeDrawable) {
+					((BadgeDrawable)icon).setValue(value);
+				} else if (value != 0) {
+					((ImageButton)view.findViewById(menuId))
+							.setImageDrawable(new BadgeDrawable(view.getContext(), icon, value));
+				}
 			}
 		}
 	}
 
 	@Override
-	public void setBadgeValueForId(BadgeItem badgeItem, Menu menu) {
+	public void setBadgeValueForId(int menuId, int value, Menu menu) {
 		// not used in PRE-ICS
 	}
 

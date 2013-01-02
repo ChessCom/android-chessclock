@@ -28,6 +28,15 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	private Button neutralBtn;
 	private Button rightBtn;
 
+	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace popupListener) {
+        PopupDialogFragment frag = new PopupDialogFragment();
+		frag.listener = popupListener;
+		Bundle arguments = new Bundle();
+		arguments.putParcelable(POPUP_ITEM, popupItem);
+		frag.setArguments(arguments);
+        return frag;
+    }
+
 	public static PopupDialogFragment newInstance(PopupItem popupItem) {
 		PopupDialogFragment frag = new PopupDialogFragment();
 		Bundle arguments = new Bundle();
@@ -39,7 +48,9 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		listener = (PopupDialogFace) activity;
+		if (listener == null) {
+			listener = (PopupDialogFace) activity;
+		}
 	}
 
 	@Override
