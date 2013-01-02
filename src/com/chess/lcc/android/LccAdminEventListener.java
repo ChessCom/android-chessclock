@@ -28,7 +28,7 @@ public class LccAdminEventListener implements AdminEventListener {
 				+ ", message=" + message);
 	}
 
-	public void onServerMaintenanceAlertReceived(User user, String s) {
-		// todo: UPDATELCC
+	public void onServerMaintenanceAlertReceived(User sender, String codeMessage) {
+		Log.d(TAG, "onServerMaintenanceAlertReceived: sender=" + (sender != null ? sender.getUsername() : null) + ", codeMessage=" + codeMessage);
 	}
 }

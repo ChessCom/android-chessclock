@@ -24,7 +24,8 @@ public class LccAnnouncementListener implements AnnounceListener {
 
 	public void onAnnounceMessageReceived(User from, AnnounceType type, String codeMessage, String txt, Object object) {
 		// todo: UPDATELCC. use new method params
-		Log.d(TAG, "onAnnounceMessageReceived: " + codeMessage);
+		Log.d(TAG, "onAnnounceMessageReceived: author=" + (from != null ? from.getUsername() : null) + ", type=" + type
+				+ ", codeMessage=" + codeMessage + ", txt=" + txt + ", object=" + object);
 
 
 		if (type == AnnounceType.Shutdown && codeMessage == null && txt != null) { // handle

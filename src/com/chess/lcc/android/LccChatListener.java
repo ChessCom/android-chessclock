@@ -107,6 +107,15 @@ public class LccChatListener implements ChatListener {
 
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
 //			lccHolder.getAndroidStuff().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
+
+			if (lccHolder == null) {
+				Log.d("LCCLOG", "CHAT exception check lccHolder");
+			}
+
+			if (lccHolder.getLccChatMessageListener() == null) {
+				Log.d("LCCLOG", "CHAT exception check lccHolder.getLccChatMessageListener()");
+			}
+
             lccHolder.getLccChatMessageListener().onMessageReceived();
 		}
 	}

@@ -89,7 +89,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
 			httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
-			httpClient.setMaxConnectionsPerAddress(2); // todo: check
+			httpClient.setMaxConnectionsPerAddress(4);
 			httpClient.setSoTimeout(7000);
 			httpClient.setConnectTimeout(10000);
 			httpClient.setTimeout(7000); //

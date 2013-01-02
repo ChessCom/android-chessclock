@@ -33,8 +33,13 @@ public class LccGameListener implements GameListener {
 		latestGameId = 0L;
 
 		for (Game game : games) {
-			if (game.getId() > latestGameId) {
-				latestGameId = game.getId();
+			Long gameId = game.getId();
+			if (!isMyGame(game)) { // todo: remove this unobserveGame logic after fixing LCC bug
+				lccHolder.getClient().unobserveGame(gameId);
+				Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
+			}
+			else if (gameId > latestGameId) {
+				latestGameId = gameId;
 			}
 		}
 		Log.d(TAG, "GAME LISTENER: latestGameId=" + latestGameId);
@@ -85,65 +90,14 @@ public class LccGameListener implements GameListener {
         return gameId < latestGameId;
     }
 
-    /*public void onFullGameReceived(Game game) { // todo: move logic from onGameListReceived and onGameStarted to onGameReset in new LCC
-        Log.d(TAG, "GAME LISTENER: Full GameItem received: " + game);
-		Long gameId = game.getId();
-
-        if (isOldGame(gameId)) {
-            Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
-            return;
-        }
-        Game oldGame = lccHolder.getGame(gameId);
-        if (oldGame != null) {
-            Log.d(TAG, "LCC: PROCESS EXTRA onFullGameReceived, game id= " + gameId);
-			*//*lccHolder.currentFGTime = System.currentTimeMillis();
-			lccHolder.previousFGGameId = lccHolder.currentFGGameId;
-			lccHolder.currentFGGameId = game.getId();*//*
-        }
-        if (game.isGameOver()) {
-            lccHolder.putGame(game);
-            return;
-        }
-        lccHolder.setCurrentGameId(gameId);
-        lccHolder.processFullGame(game);
-    }*/
-
-    /*public void onGameStarted(Game game) {
-		Long gameId = game.getId();
-        Log.d(TAG, "GAME LISTENER: onGameStarted id=" + gameId);
-		if (!isMyGame(game)) {
-			lccHolder.getClient().unobserveGame(gameId);
-			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
-			return;
-		} else if (lccHolder.isUserPlayingAnotherGame(gameId)) {
-            Log.d(TAG, "GAME LISTENER: onGameStarted() abort and exit second game");
-            lccHolder.getClient().abortGame(game, "abort second game");
-            lccHolder.getClient().exitGame(game);
-        } else if (isOldGame(gameId)) {
-            Log.d(TAG, "GAME LISTENER: onGameStarted() exit old game");
-            lccHolder.getClient().exitGame(game);
-        } else {
-            lccHolder.clearOwnChallenges();
-            lccHolder.clearChallenges();
-            lccHolder.clearSeeks();
-
-            //lccHolder.getClient().unsubscribeFromSeekList(lccHolder.getSeekListSubscriptionId());
-            lccHolder.setCurrentGameId(gameId);
-            if (gameId > latestGameId) {
-                latestGameId = gameId;
-                Log.w(TAG, "GAME LISTENER: onGameStarted() latestGameId=" + gameId);
-            }
-        }
-    }*/
-
 	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
 
-		/*if (!isMyGame(game)) {
+		if (!isMyGame(game)) { // todo: remove this unobserveGame logic after fixing LCC bug
 			lccHolder.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
 			return false;
-		} else*/ if (lccHolder.isUserPlayingAnotherGame(gameId)) {
+		} else if (lccHolder.isUserPlayingAnotherGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: abort and exit second game");
 			lccHolder.getClient().abortGame(game, "abort second game");
 			lccHolder.getClient().exitGame(game);
@@ -323,7 +277,7 @@ public class LccGameListener implements GameListener {
         }
     }
 
-	/*private boolean isMyGame(Game game) {
+	private boolean isMyGame(Game game) {
 		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();
 		String blackUsername = game.getBlackPlayer().getUsername().toLowerCase();
 		String userName = lccHolder.getUsername().toLowerCase();
@@ -335,5 +289,5 @@ public class LccGameListener implements GameListener {
 		}
 
 		return isMyGame;
-	}*/
+	}
 }
