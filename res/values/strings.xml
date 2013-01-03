@@ -477,6 +477,8 @@
     <string name="locale_change">Locale has changed</string>
     <string name="need_app_restart_to_apply">You need to restart app to apply</string>
     <string name="restart">Restart</string>
+    <string name="new_create_profile">Create Profile</string>
+    <string name="new_skip_this_step">Skip This Step</string>
 
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
     <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>

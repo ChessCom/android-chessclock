@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Shadow-->
+    <item >
+        <shape >
+            <corners
+                android:bottomLeftRadius="@dimen/new_round_button_radius"
+                android:bottomRightRadius="@dimen/new_round_button_radius"
+                />
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="@dimen/default_stroke_width"
+                    android:color="@color/stroke_shadow"/>
+        </shape>
+    </item>
+
+    <!--Emboss-->
+    <item
+        android:right="0px"
+        android:bottom="1px"
+        >
+        <shape >
+            <corners
+                android:bottomLeftRadius="@dimen/new_round_button_radius"
+                android:bottomRightRadius="@dimen/new_round_button_radius"
+                />
+            <solid android:color="@color/grey_emboss_top_left"  />
+        </shape>
+    </item>
+    <item
+        android:left="1px"
+        android:right="0px"
+        android:top="1px"
+        android:bottom="1px"
+        >
+        <shape
+            >
+            <corners
+                android:bottomLeftRadius="@dimen/new_round_button_radius"
+                android:bottomRightRadius="@dimen/new_round_button_radius"
+                />
+            <solid android:color="@color/grey_emboss_low_right"  />
+        </shape>
+    </item>
+
+    <!--Field-->
+    <item
+        android:left="1px"
+        android:top="1px"
+        android:bottom="2px"
+        android:right="0px"
+        >
+        <shape  >
+            <solid android:color="@color/new_soft_white" />
+            <corners
+                android:bottomLeftRadius="@dimen/new_round_button_radius"
+                android:bottomRightRadius="@dimen/new_round_button_radius"
+                />
+            <padding
+                android:left="@dimen/toggle_button_padding_left"
+                android:right="@dimen/toggle_button_padding_right"
+                android:top="@dimen/toggle_button_padding_top"
+                android:bottom="@dimen/toggle_button_padding_bottom"
+                />
+            <size android:height="@dimen/toggle_button_height"/>
+        </shape>
+    </item>
+
+</layer-list>

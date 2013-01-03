@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="new_round_button_radius">4dip</dimen>
+</resources>

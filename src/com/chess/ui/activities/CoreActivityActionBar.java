@@ -58,10 +58,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && getActionBar() != null) {
-			getActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
-					| ActionBar.DISPLAY_USE_LOGO
-					| ActionBar.DISPLAY_SHOW_HOME
-					| ActionBar.DISPLAY_SHOW_TITLE);
+			getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
+					| ActionBar.DISPLAY_HOME_AS_UP
+					| ActionBar.DISPLAY_SHOW_CUSTOM);
 		}
 
 		handler = new Handler();
@@ -182,8 +181,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				backToHomeActivity();
-				break;
+//				backToHomeActivity(); // TODO do something to invent logic to go back to old app
+				getSlidingMenu().toggle();
 			case R.id.menu_settings:
 				startActivity(new Intent(this, PreferencesScreenActivity.class));
 				break;

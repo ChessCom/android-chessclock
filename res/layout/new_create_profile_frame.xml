@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/signin_scr_top_padding"
+    android:paddingBottom="@dimen/signin_scr_bottom_padding"
+    android:paddingLeft="@dimen/signin_scr_side_padding"
+    android:paddingRight="@dimen/signin_scr_side_padding"
+    android:background="@color/main_menu_back_top"
+    >
+    <!--android:gravity="center"-->
+
+    <!--TODO invent image with shadowed board-->
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/signin_logo_margin_top"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_logo"
+        android:contentDescription="@string/image"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/new_signin_main_margin_top"
+        android:orientation="vertical">
+        <!--android:layout_below="@id/logoImg"-->
+
+        <com.chess.RoboTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="or, Sign Up without using Facebook:"
+            android:textColor="@color/grey_button"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="6dip"
+            />
+
+        <com.chess.RoboEditText
+            android:id="@+id/usernameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/singinUsername"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:background="@drawable/edit_white_top_default"
+            />
+
+        <com.chess.RoboEditText
+            android:id="@+id/usernameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/singinUsername"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:background="@drawable/edit_white_middle_default"
+            />
+
+        <com.chess.RoboEditText
+            android:id="@+id/usernameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/singinUsername"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:background="@drawable/edit_white_middle_default"
+
+            />
+
+        <com.chess.RoboEditText
+            android:id="@+id/usernameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/singinUsername"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:background="@drawable/edit_white_bottom_default"
+
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/createProfileBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_create_profile"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/skipBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_skip_this_step"
+            android:gravity="center"
+            android:drawableRight="@drawable/alpha_wq"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
+

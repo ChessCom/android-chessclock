@@ -126,6 +126,9 @@
 	<!--Pending load-->
 	<dimen name="pending_progress_bar_size">40dip</dimen>
 
+
+    <!--New Design-->
+
     <!--Sliding Menu-->
     <dimen name="menu_item_padding">10dp</dimen>
     <dimen name="menu_header_padding_top">8dp</dimen>
@@ -134,5 +137,8 @@
     <dimen name="slidingmenu_offset">60dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">15dp</dimen>
+
+    <!--SignIn Screen-->
+    <dimen name="new_signin_main_margin_top">126dip</dimen>
 
 </resources>

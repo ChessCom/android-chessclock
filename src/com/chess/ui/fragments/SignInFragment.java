@@ -39,7 +39,7 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);
-		loginPasswordEdt.setOnEditorActionListener(this); // TODO restore
+		loginPasswordEdt.setOnEditorActionListener(this);
 		loginPasswordEdt.setOnTouchListener(this);
 
 		setLoginFields(loginUsernameEdt, loginPasswordEdt);
@@ -88,7 +88,7 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 
 //			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
-			getActivityFace().openFragment(new HomeTabsFragment());
+			getActivityFace().openFragment(new CreateProfileFragment());
 //			DataHolder.reset();
 //			TacticsDataHolder.reset();
 //			AppData.setLiveChessMode(this, false);

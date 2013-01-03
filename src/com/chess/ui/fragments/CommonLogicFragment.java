@@ -7,6 +7,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
@@ -30,6 +33,7 @@ import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
+import com.slidingmenu.lib.SlidingMenu;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -80,6 +84,8 @@ public class CommonLogicFragment extends BasePopupsFragment {
 
 		preferences = AppData.getPreferences(getActivity()); // TODO rework shared pref usage to unique get method
 		preferencesEditor = preferences.edit();
+
+//		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -311,4 +317,19 @@ public class CommonLogicFragment extends BasePopupsFragment {
 		items.addAll(Arrays.asList(array));
 		return items;
 	}
+
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//		inflater.inflate(R.menu.sign_out, menu);
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case android.R.id.home:
+//				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+//				break;
+//		}
+//		return true;
+//	}
 }

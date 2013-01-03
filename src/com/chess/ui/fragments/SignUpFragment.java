@@ -84,9 +84,9 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		setLoginFields(userNameEdt, passwordEdt);
 
 		getCountryCode();
-		Spinner countrySpinner = (Spinner) view.findViewById(R.id.country);
-		countrySpinner.setAdapter(new ChessSpinnerAdapter(getActivity(), getItemsFromArray(tmp2)));
-		countrySpinner.setOnItemSelectedListener(this);
+//		Spinner countrySpinner = (Spinner) view.findViewById(R.id.country);  // TODO create in CreateProfileFragment
+//		countrySpinner.setAdapter(new ChessSpinnerAdapter(getActivity(), getItemsFromArray(tmp2)));
+//		countrySpinner.setOnItemSelectedListener(this);
 
 		regSubmit.setOnClickListener(this);
 
