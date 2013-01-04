@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.widget.Button;
 
 /**
@@ -20,20 +21,14 @@ import android.widget.Button;
  */
 public class LeftImageButton extends Button {
 
-	public static final int ONE = 0;
-	public static final int TOP = 1;
-	public static final int MID = 2;
-	public static final int BOT = 3;
+	public static float BORDER_OFFSET;
+	public static float LINE_WIDTH;
 
 	private Drawable icon;
 	private Paint borderPaint;
-	private Path path;
-	//	private RectF rectF;
 	private boolean initialized;
-	private ShapeDrawable backForImage;
-	private int roundMode;
-	private boolean overlapBack;
-	private boolean showBorder;
+	private int[] borderColors;
+	private int imageWidth;
 
 	public LeftImageButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -42,7 +37,6 @@ public class LeftImageButton extends Button {
 
 	public LeftImageButton(Context context) {
 		super(context);
-//		init(context); // set attr programmatically
 	}
 
 	public LeftImageButton(Context context, AttributeSet attrs) {
@@ -51,92 +45,72 @@ public class LeftImageButton extends Button {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		icon = context.getResources().getDrawable(R.drawable.alpha_bb);
-		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+		icon = context.getResources().getDrawable(R.drawable.ic_action_sign_out);
+		imageWidth = icon.getIntrinsicWidth();
+		int imageHeight = icon.getIntrinsicHeight();
+		icon.setBounds(0, 0, imageWidth, imageHeight);
 
-		// back for image
-		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
-		int color = Color.WHITE;
+		float density = context.getResources().getDisplayMetrics().density;
 
-		final int N = a.getIndexCount();
-		for (int i = 0; i < N; i++) {
-			int attr = a.getIndex(i);
-			switch (attr) {
-				case R.styleable.LeftImageEditText_round_mode:
-					roundMode = a.getInteger(i, ONE);
-					break;
-				case R.styleable.LeftImageEditText_color:
-					color = a.getInteger(i, Color.WHITE);
-					break;
-				case R.styleable.LeftImageEditText_overlapBack:
-					overlapBack = a.getBoolean(i, false);
-					break;
-				case R.styleable.LeftImageEditText_showBorder:
-					showBorder = a.getBoolean(i, false);
-					break;
-			}
-		}
-
-		float radius = context.getResources().getDimension(R.dimen.new_round_button_radius);
-		float[] outerR;
-		switch (roundMode) {
-			case ONE:
-				outerR = new float[]{radius, radius, radius, radius, 0, 0, 0, 0};
-				break;
-			case TOP:
-				outerR = new float[]{radius, radius, 0, 0, 0, 0, 0, 0};
-				break;
-			case MID:
-				outerR = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
-				break;
-			case BOT:
-				outerR = new float[]{0, 0, 0, 0, 0, 0, radius, radius};
-				break;
-			default:
-				outerR = new float[]{radius, radius, radius, radius, 0, 0, 0, 0};
-				break;
-		}
-		backForImage = new ShapeDrawable(new RoundRectShape(outerR, null, null));
-		backForImage.getPaint().setColor(color);
-
+		borderColors = new int[2];
+		borderColors[0] = 0xFF423f3a; // TODO place in colors
+		borderColors[1] = context.getResources().getColor(R.color.any_button_stroke);
 
 		borderPaint = new Paint();
-		borderPaint.setColor(Color.GREEN);
-		borderPaint.setStrokeWidth(3);
+		borderPaint.setStrokeWidth(1);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
-		path = new Path();
+		float borderOffset = 5f;
+		float lineWidth = 0.5f;
+		if (density <= DisplayMetrics.DENSITY_LOW) {
+			lineWidth = 0.5f;
+			borderOffset = 5.5f;
+		}
+		BORDER_OFFSET = borderOffset * density;
+		LINE_WIDTH = lineWidth * density;
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) { // TODO use Picture?
-		canvas.translate(0, 0);
 		if (!initialized) {
 			initImage(canvas);
 		}
 
-		if (showBorder) { // place border
-			path.moveTo(getHeight(), 0);
-			path.lineTo(getHeight(), getHeight());
-			canvas.drawPath(path, borderPaint);
-		}
+		int height = getHeight();
+		for (int i = 0, cnt = borderColors.length; i < cnt; i++) {
+			float left = height + i * LINE_WIDTH;
+			float top = 0;
+			float right = height + i * LINE_WIDTH;
+			float bottom = 0;
+			switch (i){
+				case 0:
+					top = BORDER_OFFSET - LINE_WIDTH * 2;
+					bottom = height - BORDER_OFFSET + LINE_WIDTH;
+					break;
+				case 1:
+					top = BORDER_OFFSET - LINE_WIDTH;
+					bottom = height - BORDER_OFFSET;
+					break;
+			}
 
-		if (overlapBack) {
-			backForImage.draw(canvas);
+			borderPaint.setColor(borderColors[i]);
+			canvas.drawLine(left, top, right, bottom, borderPaint);
 		}
 
 		// place image
+		canvas.save();
+		float imgCenterX = BORDER_OFFSET/2 + (height - imageWidth)/2;
+		float imgCenterY = (height - imageWidth)/2;
+		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
+		canvas.restore();
 
 		// place additional clickable element
-		canvas.translate(getHeight(), 0);
+		canvas.translate(BORDER_OFFSET *4, 0);
 		super.onDraw(canvas);
 	}
 
 	private void initImage(Canvas canvas) {
-//		rectF = new RectF(1, 1, getHeight(), getHeight());
-		backForImage.setBounds(0, 0 + 1, getHeight(), getHeight() - 2);
-
 
 		initialized = true;
 

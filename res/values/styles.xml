@@ -242,9 +242,13 @@
     <!--New Slide Menu Design Styles-->
 
     <style name="FacebookButton" parent="Text.Button">
-        <!--<item name="android:singleLine">true</item>-->
         <item name="color">@color/f_button</item>
         <item name="android:background">@drawable/button_f_selector</item>
+    </style>
+
+    <style name="GreyImageButton" parent="Text.Button">
+        <item name="color">@color/grey_button</item>
+        <item name="android:background">@drawable/button_grey_selector</item>
     </style>
 
     <style name="WhiteGrayEditText">

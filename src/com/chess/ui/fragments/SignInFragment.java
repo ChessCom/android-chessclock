@@ -86,7 +86,6 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 		} else if (view.getId() == R.id.signup) {
 			getActivityFace().openFragment(new SignUpFragment());
 
-//			startActivity(new Intent(this, SignUpScreenActivity.class));
 		} else if (view.getId() == R.id.guestplay) {
 			getActivityFace().openFragment(new CreateProfileFragment());
 //			DataHolder.reset();

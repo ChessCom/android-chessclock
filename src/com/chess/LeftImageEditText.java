@@ -10,6 +10,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,16 +27,19 @@ public class LeftImageEditText extends RoboEditText {
 	public static final int MID = 2;
 	public static final int BOT = 3;
 
+	public static float BORDER_OFFSET;
+	public static float LINE_WIDTH;
+
 	private Drawable icon;
+	private int imageWidth;
 	private Paint borderPaint;
 	private Path path;
-	//	private RectF rectF;
 	private boolean initialized;
 	private ShapeDrawable backForImage;
 	private int roundMode;
 	private boolean overlapBack;
 	private boolean showBorder;
-	private float padding;
+
 
 	public LeftImageEditText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -42,7 +48,6 @@ public class LeftImageEditText extends RoboEditText {
 
 	public LeftImageEditText(Context context) {
 		super(context);
-//		init(context); // set attr programmatically
 	}
 
 	public LeftImageEditText(Context context, AttributeSet attrs) {
@@ -51,8 +56,9 @@ public class LeftImageEditText extends RoboEditText {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		icon = context.getResources().getDrawable(R.drawable.alpha_bb);
-		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+
+
+		float density = context.getResources().getDisplayMetrics().density;
 
 		// back for image
 		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
@@ -74,8 +80,15 @@ public class LeftImageEditText extends RoboEditText {
 				case R.styleable.LeftImageEditText_showBorder:
 					showBorder = a.getBoolean(i, false);
 					break;
+				case R.styleable.LeftImageEditText_leftImage:
+					icon = a.getDrawable(i);
+					break;
 			}
 		}
+
+		imageWidth = icon.getIntrinsicWidth();
+		int imageHeight = icon.getIntrinsicHeight();
+		icon.setBounds(0, 0, imageWidth, imageHeight);
 
 		float radius = context.getResources().getDimension(R.dimen.new_round_button_radius);
 		float[] outerR;
@@ -106,6 +119,15 @@ public class LeftImageEditText extends RoboEditText {
 		borderPaint.setStyle(Paint.Style.STROKE);
 
 		path = new Path();
+
+		float borderOffset = 5f;
+		float lineWidth = 0.5f;
+		if (density <= DisplayMetrics.DENSITY_LOW) {
+			lineWidth = 0.5f;
+			borderOffset = 5.5f;
+		}
+		BORDER_OFFSET = borderOffset * density;
+		LINE_WIDTH = lineWidth * density;
 	}
 
 	@Override
@@ -113,7 +135,7 @@ public class LeftImageEditText extends RoboEditText {
 		if (!initialized) {
 			initImage(canvas);
 		}
-
+		int height = getHeight();
 		if (showBorder) { // place border
 			path.moveTo(getHeight(), 0);
 			path.lineTo(getHeight(), getHeight());
@@ -125,19 +147,23 @@ public class LeftImageEditText extends RoboEditText {
 		}
 
 		// place image
+		canvas.save();
+		float imgCenterX = (height - imageWidth)/2;
+		float imgCenterY = (height - imageWidth)/2;
+		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
+		canvas.restore();
+
+
 
 		// place additional clickable element
-		canvas.translate(getHeight() + padding, 0);
+		canvas.translate(getHeight() + BORDER_OFFSET, -BORDER_OFFSET);
 		super.onDraw(canvas);
 	}
 
 	private void initImage(Canvas canvas) {
-//		rectF = new RectF(1, 1, getHeight(), getHeight());
 		backForImage.setBounds(0, 0 + 1, getHeight(), getHeight() - 2);
 
-
 		initialized = true;
-
 	}
 }

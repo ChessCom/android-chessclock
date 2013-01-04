@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.widget.Button;
 
 /**
@@ -20,10 +21,6 @@ import android.widget.Button;
  */
 public class FacebookButton extends RoboButton {
 
-	public static final int ONE = 0;
-	public static final int TOP = 1;
-	public static final int MID = 2;
-	public static final int BOT = 3;
 	public static float BORDER_OFFSET;
 	public static float LINE_WIDTH;
 
@@ -31,7 +28,7 @@ public class FacebookButton extends RoboButton {
 	private Paint borderPaint;
 	private boolean initialized;
 	private int[] borderColors;
-	private float density;
+	private int imageWidth;
 
 	public FacebookButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -49,23 +46,30 @@ public class FacebookButton extends RoboButton {
 
 	private void init(Context context, AttributeSet attrs) {
 		icon = context.getResources().getDrawable(R.drawable.facebook_icon);
-		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+		imageWidth = icon.getIntrinsicWidth();
+		int imageHeight = icon.getIntrinsicHeight();
+		icon.setBounds(0, 0, imageWidth, imageHeight);
 
-		density = context.getResources().getDisplayMetrics().density;
-
+		float density = context.getResources().getDisplayMetrics().density;
 
 		borderColors = new int[4];
 		borderColors[0] = context.getResources().getColor(R.color.any_button_stroke);
 		borderColors[1] = context.getResources().getColor(R.color.f_emboss_top_left);
-		borderColors[2] = 0xFF284160;
-		borderColors[3] = 0xFF354c78;
+		borderColors[2] = 0xFF284160;   // TODO place in colors
+		borderColors[3] = 0xFF354c78;    // TODO place in colors
 
 		borderPaint = new Paint();
 		borderPaint.setStrokeWidth(1);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
-		BORDER_OFFSET = 5 * density;
-		LINE_WIDTH = 0.5f * density;
+		float borderOffset = 5f;
+		float lineWidth = 0.5f;
+		if (density <= DisplayMetrics.DENSITY_LOW) {
+			lineWidth = 0.5f;
+			borderOffset = 5.5f;
+		}
+		BORDER_OFFSET = borderOffset * density;
+		LINE_WIDTH = lineWidth * density;
 	}
 
 	@Override
@@ -74,24 +78,25 @@ public class FacebookButton extends RoboButton {
 			initImage(canvas);
 		}
 
+		int height = getHeight();
 		for (int i = 0, cnt = borderColors.length; i < cnt; i++) {
-			float left = getHeight() + i * LINE_WIDTH;
+			float left = height + i * LINE_WIDTH;
 			float top = 0;
-			float right = getHeight() + i * LINE_WIDTH;
+			float right = height + i * LINE_WIDTH;
 			float bottom = 0;
 			switch (i){
 				case 0:
 					top = BORDER_OFFSET;
-					bottom = getHeight() - BORDER_OFFSET + LINE_WIDTH;
+					bottom = height - BORDER_OFFSET + LINE_WIDTH;
 					break;
 				case 1:
 				case 3:
 					top = BORDER_OFFSET - LINE_WIDTH;
-					bottom = getHeight() - BORDER_OFFSET;
+					bottom = height- BORDER_OFFSET;
 					break;
 				case 2:
 					top = BORDER_OFFSET - LINE_WIDTH * 2;
-					bottom = getHeight() - BORDER_OFFSET - LINE_WIDTH;
+					bottom = height - BORDER_OFFSET + LINE_WIDTH;
 					break;
 			}
 
@@ -101,8 +106,8 @@ public class FacebookButton extends RoboButton {
 
 		// place image
 		canvas.save();
-		float imgCenterX = 0;
-		float imgCenterY = BORDER_OFFSET;
+		float imgCenterX = BORDER_OFFSET/2 + (height - imageWidth)/2;
+		float imgCenterY = (height - imageWidth)/2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
 		canvas.restore();

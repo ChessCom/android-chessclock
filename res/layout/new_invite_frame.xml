@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_signin_main_margin_top"
         android:orientation="vertical">
-        <!--android:layout_below="@id/logoImg"-->
 
         <com.chess.RoboTextView
             android:layout_width="match_parent"
@@ -44,47 +43,36 @@
             android:padding="6dip"
             />
 
-        <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+        <com.chess.FacebookButton
+            android:id="@+id/inviteFacebookBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
-            android:inputType="textPersonName"
-            style="@style/WhiteGrayEditText.Top"
+            android:text="@string/new_invite_facebook"
+            style="@style/FacebookButton"
             />
 
-        <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+
+        <com.chess.LeftImageButton
+            android:id="@+id/inviteContactBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
-            android:inputType="textPersonName"
-            style="@style/WhiteGrayEditText.Middle"
+            android:text="@string/new_invite_contact"
+            style="@style/GreyImageButton"
             />
 
-        <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+        <com.chess.LeftImageButton
+            android:id="@+id/inviteContactBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
-            android:inputType="textPersonName"
-            style="@style/WhiteGrayEditText.Middle"
-            />
-
-        <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
-            android:inputType="textPersonName"
-            style="@style/WhiteGrayEditText.Bottom"
+            android:text="@string/new_invite_contact"
+            style="@style/GreyImageButton"
             />
 
         <com.chess.RoboButton
             android:id="@+id/createProfileBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/new_create_profile"
+            android:text="@string/new_start_playing"
             />
 
         <com.chess.RoboTextView

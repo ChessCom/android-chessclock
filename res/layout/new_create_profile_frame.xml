@@ -45,39 +45,44 @@
             />
 
         <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+            android:id="@+id/firstNameEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
+            android:hint="@string/first_name"
             android:inputType="textPersonName"
             style="@style/WhiteGrayEditText.Top"
+            custom:leftImage="@drawable/ic_action_refresh"
             />
 
         <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+            android:id="@+id/lastNameEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
+            android:hint="@string/last_name"
             android:inputType="textPersonName"
             style="@style/WhiteGrayEditText.Middle"
+            custom:leftImage="@drawable/ic_action_refresh"
             />
 
         <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+            android:id="@+id/countryEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
+            android:hint="@string/country"
             android:inputType="textPersonName"
             style="@style/WhiteGrayEditText.Middle"
+            custom:leftImage="@drawable/ic_action_send"
             />
 
-        <com.chess.LeftImageEditText
-            android:id="@+id/usernameEdt"
+        <com.chess.LeftRightImageEditText
+            android:id="@+id/profilePicEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/singinUsername"
+            android:hint="@string/profile_picture"
             android:inputType="textPersonName"
             style="@style/WhiteGrayEditText.Bottom"
+            custom:rightImage="@drawable/ic_action_send"
+            custom:leftImage="@drawable/ic_action_refresh"
             />
 
         <com.chess.RoboButton

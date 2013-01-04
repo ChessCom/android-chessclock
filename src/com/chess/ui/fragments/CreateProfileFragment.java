@@ -22,11 +22,16 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipBtn).setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		getActivityFace().switchFragment(new HomeTabsFragment());
+		if (v.getId() == R.id.skipBtn) {
+			getActivityFace().switchFragment(new HomeTabsFragment());
+		} else if (v.getId() == R.id.createProfileBtn) {
+			getActivityFace().switchFragment(new InviteFragment());
+		}
 	}
 }
