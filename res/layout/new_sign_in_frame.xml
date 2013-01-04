@@ -57,12 +57,11 @@
 
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
-            style="@style/Text.Button.Login"
+            style="@style/FacebookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/facebook_icon"
             />
-
+        <!--android:drawableLeft="@drawable/facebook_icon"-->
         <com.chess.RoboEditText
             android:id="@+id/usernameEdt"
             android:layout_width="match_parent"

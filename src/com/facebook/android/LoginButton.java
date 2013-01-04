@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.chess.FacebookButton;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook.DialogListener;
@@ -32,7 +33,7 @@ import com.facebook.android.SessionEvents.LogoutListener;
 
 import java.io.Serializable;
 
-public class LoginButton extends Button implements Serializable{
+public class LoginButton extends FacebookButton implements Serializable{
 
 	private static final long serialVersionUID = 2254525526368290163L;
 

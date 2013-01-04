@@ -63,8 +63,10 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-//		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		getActionBar().setCustomView(R.layout.new_custom_actionbar);
+
+		if (HONEYCOMB_PLUS_API) {
+			getActionBar().setCustomView(R.layout.new_custom_actionbar);
+		}
 	}
 
 	@Override

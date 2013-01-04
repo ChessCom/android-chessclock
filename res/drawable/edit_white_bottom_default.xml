@@ -57,12 +57,12 @@
                 android:bottomLeftRadius="@dimen/new_round_button_radius"
                 android:bottomRightRadius="@dimen/new_round_button_radius"
                 />
-            <padding
+  <!--          <padding
                 android:left="@dimen/toggle_button_padding_left"
                 android:right="@dimen/toggle_button_padding_right"
                 android:top="@dimen/toggle_button_padding_top"
                 android:bottom="@dimen/toggle_button_padding_bottom"
-                />
+                />-->
             <size android:height="@dimen/toggle_button_height"/>
         </shape>
     </item>

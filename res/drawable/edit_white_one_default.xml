@@ -5,10 +5,7 @@
     <!--Shadow-->
     <item >
         <shape >
-            <corners
-                android:topLeftRadius="@dimen/new_round_button_radius"
-                android:topRightRadius="@dimen/new_round_button_radius"
-                />
+            <corners android:radius="@dimen/new_round_button_radius" />
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
                     android:color="@color/stroke_shadow"/>
@@ -21,10 +18,7 @@
         android:bottom="1px"
         >
         <shape >
-            <corners
-                android:topLeftRadius="@dimen/new_round_button_radius"
-                android:topRightRadius="@dimen/new_round_button_radius"
-                />
+            <corners android:radius="@dimen/new_round_button_radius" />
             <solid android:color="@color/grey_emboss_top_left"  />
         </shape>
     </item>
@@ -36,10 +30,8 @@
         >
         <shape
             >
-            <corners
-                android:topLeftRadius="@dimen/new_round_button_radius"
-                android:topRightRadius="@dimen/new_round_button_radius"
-                />
+            <corners android:radius="@dimen/new_round_button_radius" />
+
             <solid android:color="@color/grey_emboss_low_right"  />
         </shape>
     </item>
@@ -53,10 +45,8 @@
         >
         <shape  >
             <solid android:color="@color/new_soft_white" />
-            <corners
-                android:topLeftRadius="@dimen/new_round_button_radius"
-                android:topRightRadius="@dimen/new_round_button_radius"
-                />
+            <corners android:radius="@dimen/new_round_button_radius" />
+
 <!--            <padding
                 android:left="@dimen/toggle_button_padding_left"
                 android:right="@dimen/toggle_button_padding_right"

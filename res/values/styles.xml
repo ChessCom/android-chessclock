@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:chess="http://schemas.android.com/apk/res/com.chess">
 
     <style name="ActionBarCompatBackground" parent="ActionBarCompat">
         <item name="android:background">@drawable/top_bar_texture</item>
@@ -47,16 +47,9 @@
     </style>
 
 
-    <style name="Text.Button.Facebook" >
-        <item name="android:background">@drawable/button_facebook_selector</item>
+    <style name="Text.Button.Login" >
+        <item name="android:background">@drawable/button_f_selector</item>
 		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
-		<item name="android:drawableLeft">@drawable/ic_facebook</item>
-    </style>
-
-    <style name="Text.Button.Twitter" >
-        <item name="android:background">@drawable/button_twitter_selector</item>
-		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
-        <item name="android:drawableLeft">@drawable/ic_twitter</item>
     </style>
 
 
@@ -133,7 +126,7 @@
 
     <style name="DashboardItemText" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/dashboard_text_size</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     
@@ -157,7 +150,6 @@
 
     <style name="check_Box" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/btn_check_selector</item>
-        <item name="android:background">@drawable/btn_check_label_background</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:textStyle">normal</item>
@@ -167,7 +159,6 @@
 
     <style name="radio_Button" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/btn_radio_selector</item>
-        <item name="android:background">@drawable/btn_check_label_background</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:textStyle">normal</item>
@@ -246,7 +237,45 @@
 		<item name="android:shadowRadius">0.5</item>
 		<item name="android:shadowDx">0</item>
 		<item name="android:shadowDy">1.0</item>
-
 	</style>
+
+    <!--New Slide Menu Design Styles-->
+
+    <style name="FacebookButton" parent="Text.Button">
+        <!--<item name="android:singleLine">true</item>-->
+        <item name="color">@color/f_button</item>
+        <item name="android:background">@drawable/button_f_selector</item>
+    </style>
+
+    <style name="WhiteGrayEditText">
+        <item name="android:singleLine">true</item>
+        <item name="color">@color/new_soft_gray</item>
+        <item name="showBorder">false</item>
+        <item name="overlapBack">true</item>
+    </style>
+
+    <style name="WhiteGrayEditText.One">
+        <item name="android:background">@drawable/edit_white_one_default</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="round_mode">@integer/left_edit_mode_one</item>
+    </style>
+
+    <style name="WhiteGrayEditText.Top">
+        <item name="android:background">@drawable/edit_white_top_default</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="round_mode">@integer/left_edit_mode_top</item>
+    </style>
+
+    <style name="WhiteGrayEditText.Middle">
+        <item name="android:background">@drawable/edit_white_middle_default</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="round_mode">@integer/left_edit_mode_mid</item>
+    </style>
+
+    <style name="WhiteGrayEditText.Bottom">
+        <item name="android:background">@drawable/edit_white_bottom_default</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="round_mode">@integer/left_edit_mode_bot</item>
+    </style>
 
 </resources>

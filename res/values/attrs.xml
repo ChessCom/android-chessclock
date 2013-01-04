@@ -12,6 +12,13 @@
         <attr name="ttf" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="LeftImageEditText">
+        <attr name="round_mode" format="reference|integer" />
+        <attr name="color" format="reference|integer" />
+        <attr name="showBorder" format="boolean" />
+        <attr name="overlapBack" format="boolean" />
+    </declare-styleable>
+
 	<declare-styleable name="OrangeButtonTheme">
 		<attr name="timerLabelStyle" format="reference"/>
 	</declare-styleable>

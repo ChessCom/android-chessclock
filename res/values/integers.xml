@@ -9,4 +9,9 @@
     <integer name="ad_optional_width">300</integer>
     <integer name="ad_optional_height">250</integer>
 
+	<integer name="left_edit_mode_one">0</integer>
+	<integer name="left_edit_mode_top">1</integer>
+	<integer name="left_edit_mode_mid">2</integer>
+	<integer name="left_edit_mode_bot">3</integer>
+
 </resources>
