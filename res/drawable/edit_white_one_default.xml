@@ -19,7 +19,7 @@
         >
         <shape >
             <corners android:radius="@dimen/new_round_button_radius" />
-            <solid android:color="@color/grey_emboss_top_left"  />
+            <solid android:color="@color/grey_emboss_top"  />
         </shape>
     </item>
     <item
@@ -32,7 +32,7 @@
             >
             <corners android:radius="@dimen/new_round_button_radius" />
 
-            <solid android:color="@color/grey_emboss_low_right"  />
+            <solid android:color="@color/grey_emboss_bot"  />
         </shape>
     </item>
 

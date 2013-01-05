@@ -16,6 +16,7 @@
 
     <!--<color name="stroke_shadow">#26000000</color>-->
     <color name="stroke_shadow">#FF2a2725</color>
+    <color name="grey_stroke_shadow">#26000000</color>
 
     <color name="any_button_stroke">#23FFFFFF</color>
     <color name="gray_button_stroke">#18FFFFFF</color>
@@ -40,14 +41,17 @@
 
 
     <!--Grey -->
-    <color name="grey_button">#FF666666</color>
+    <color name="grey_button_1">#FF56514c</color>
+    <color name="grey_button_2">#FF504c46</color>
     <color name="grey_button_p">#FF575151</color>
     <color name="grey_button_d">#FF444444</color>
     <color name="grey_button_checked">#FFde6e00</color>
     <!--<color name="grey_button_stroke">#23747474</color>-->
 
-    <color name="grey_emboss_low_right">#FF656565</color>
-    <color name="grey_emboss_top_left">#FF989898</color>
+    <color name="grey_emboss_top">#FF67635e</color>
+    <color name="grey_emboss_left">#FF5f5a55</color>
+    <color name="grey_emboss_bot">#FF413e3a</color>
+    <color name="grey_emboss_right">#FF44403b</color>
 
     <color name="grey_button_pressed_stroke_1">#968c8c8c</color>
     <color name="grey_button_pressed_stroke_2">#FFdddddd</color>

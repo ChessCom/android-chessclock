@@ -25,7 +25,7 @@
 				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
-			<solid android:color="@color/grey_emboss_top_left"  />
+			<solid android:color="@color/grey_emboss_top"  />
 		</shape>
 	</item>
 	<item
@@ -40,7 +40,7 @@
 				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"
 				/>
-			<solid android:color="@color/grey_emboss_low_right"  />
+			<solid android:color="@color/grey_emboss_bot"  />
 		</shape>
 	</item>
 	<!--Button-->

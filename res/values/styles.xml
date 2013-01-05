@@ -247,7 +247,7 @@
     </style>
 
     <style name="GreyImageButton" parent="Text.Button">
-        <item name="color">@color/grey_button</item>
+        <item name="color">@color/grey_button_1</item>
         <item name="android:background">@drawable/button_grey_selector</item>
     </style>
 

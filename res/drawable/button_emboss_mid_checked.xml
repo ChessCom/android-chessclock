@@ -16,7 +16,7 @@
 		android:bottom="1px"
 		>
 		<shape >
-			<solid android:color="@color/grey_emboss_top_left"  />
+			<solid android:color="@color/grey_emboss_top"  />
 		</shape>
 	</item>
 	<item
@@ -27,7 +27,7 @@
 		>
 		<shape
 			>
-			<solid android:color="@color/grey_emboss_low_right"  />
+			<solid android:color="@color/grey_emboss_bot"  />
 		</shape>
 	</item>
 	<!--Button-->

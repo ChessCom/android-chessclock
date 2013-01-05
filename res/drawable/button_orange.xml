@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Shadow-->
+    <!--Outer Border-->
     <item >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
@@ -35,30 +35,7 @@
             <solid android:color="@color/orange_emboss_top_2"  />
         </shape>
     </item>
-    <!--Emboss Left Level 1-->
-    <item
-        android:top="4px"
-        android:left="2px"
-        android:right="2px"
-        android:bottom="4px"
-        >
-        <shape >
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_left_1"  />
-        </shape>
-    </item>
-    <!--Emboss Left Level 2-->
-    <item
-        android:top="4px"
-        android:left="3px"
-        android:right="4px"
-        android:bottom="4px"
-        >
-        <shape >
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_left_2"  />
-        </shape>
-    </item>
+
     <!--Emboss Bottom Level 2-->
     <item
         android:top="4px"
@@ -145,8 +122,6 @@
             <gradient android:angle="315" android:startColor="@color/orange_button_1"
                       android:endColor="@color/orange_button_2"
                 />
-     <!--       <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/any_button_stroke"/>-->
             <corners
                 android:radius="@dimen/rounded_button_radius"
                 />
@@ -160,18 +135,4 @@
         </shape>
     </item>
 
-    <!--Inner shadow-->
-<!--    <item
-        android:bottom="1px"
-        android:left="1px"
-        android:right="1px"
-        android:top="1px"
-        >
-        <shape android:dither="true">
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/orange_button_stroke"/>
-        </shape>
-    </item>-->
 </layer-list>

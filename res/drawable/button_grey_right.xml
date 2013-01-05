@@ -4,7 +4,8 @@
     <!--Outer Border-->
     <item >
         <shape >
-            <corners android:radius="@dimen/rounded_button_radius"/>
+            <corners android:topRightRadius="@dimen/rounded_button_radius"
+                     android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
                     android:color="@color/grey_stroke_shadow"/>
@@ -18,7 +19,8 @@
         android:bottom="3px"
         >
         <shape >
-            <corners android:radius="@dimen/rounded_button_radius"/>
+            <corners android:topRightRadius="@dimen/rounded_button_radius"
+                     android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <solid android:color="@color/grey_emboss_top"  />
         </shape>
     </item>
@@ -31,7 +33,8 @@
         android:bottom="2px"
         >
         <shape >
-            <corners android:radius="@dimen/rounded_button_radius" />
+            <corners android:topRightRadius="@dimen/rounded_button_radius"
+                     android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <solid android:color="@color/grey_emboss_bot"  />
         </shape>
     </item>
@@ -44,7 +47,8 @@
         android:bottom="3px"
         >
         <shape >
-            <corners android:radius="@dimen/rounded_button_radius"/>
+            <corners android:topRightRadius="@dimen/rounded_button_radius"
+                     android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <solid android:color="@color/grey_emboss_left"  />
         </shape>
     </item>
@@ -57,7 +61,8 @@
         android:bottom="3px"
         >
         <shape >
-            <corners android:radius="@dimen/rounded_button_radius" />
+            <corners android:topRightRadius="@dimen/rounded_button_radius"
+                     android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <solid android:color="@color/grey_emboss_right"  />
         </shape>
     </item>
@@ -73,9 +78,8 @@
             <gradient android:angle="315" android:startColor="@color/grey_button_1"
                       android:endColor="@color/grey_button_2"
                 />
-            <corners
-                android:radius="@dimen/rounded_button_radius"
-                />
+            <corners android:topRightRadius="@dimen/rounded_button_radius"
+                     android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <padding
                 android:left="@dimen/rounded_button_padding_left"
                 android:right="@dimen/rounded_button_padding_right"

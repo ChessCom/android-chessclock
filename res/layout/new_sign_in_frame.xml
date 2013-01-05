@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/sing_up"
+                android:background="@drawable/button_grey_left"
                 />
 
             <com.chess.RoboButton
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/singinPlayguest"
+                android:background="@drawable/button_grey_right"
                 />
         </LinearLayout>
 
