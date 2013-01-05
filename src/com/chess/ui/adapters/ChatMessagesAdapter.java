@@ -8,7 +8,6 @@ import com.chess.R;
 import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.model.MessageItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +25,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 	public ChatMessagesAdapter(Context context, List<ChatItem> items) {
 		super(context, items);
         ownerColor = context.getResources().getColor(R.color.green_button);
-        opponentColor = context.getResources().getColor(R.color.orange_button);
+        opponentColor = context.getResources().getColor(R.color.orange_button_1);
 
 		userName =  AppData.getUserName(context);
 		opponentName =  AppData.getOpponentName(context);

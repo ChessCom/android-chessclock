@@ -21,7 +21,7 @@
   	<dimen name="default_button_text_size">16sp</dimen>
   	<dimen name="default_button_height">40dip</dimen>    <!--Plus glow borders-->
  	<dimen name="signin_button_height">50dip</dimen>
-    <dimen name="default_stroke_width">1dip</dimen>
+    <dimen name="default_stroke_width">4px</dimen>
 
     <!--Upgrade Button-->
     <dimen name="button_upgrade_left_padding">43dip</dimen>

@@ -3,7 +3,8 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainView"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:id="@+id/mainView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -11,6 +12,7 @@
     android:paddingBottom="@dimen/signin_scr_bottom_padding"
     android:paddingLeft="@dimen/signin_scr_side_padding"
     android:paddingRight="@dimen/signin_scr_side_padding"
+    android:background="@color/new_main_back"
     >
 
     <ImageView
@@ -62,7 +64,7 @@
             android:layout_height="wrap_content"
             />
 
-        <com.chess.RoboEditText
+        <com.chess.LeftImageEditText
             android:id="@+id/usernameEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,15 +72,19 @@
             android:inputType="textPersonName"
             android:singleLine="true"
             android:imeOptions="actionNext"
+            style="@style/WhiteGrayEditText.Top"
+            custom:leftImage="@drawable/ic_action_send"
             />
 
-        <com.chess.RoboEditText
+        <com.chess.LeftImageEditText
             android:id="@+id/passwordEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/singinPassword"
+            android:inputType="textPassword"
             android:password="true"
-            android:singleLine="true"
+            style="@style/WhiteGrayEditText.Bottom"
+            custom:leftImage="@drawable/ic_action_send"
             android:imeOptions="actionDone"
             />
 
