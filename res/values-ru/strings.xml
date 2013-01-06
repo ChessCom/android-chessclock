@@ -40,12 +40,12 @@
 	<string name="settings">Настройки</string>
 	<string name="start_new_game">Начать Новую Игру</string>
 	<!--<string name="dont_have_account_q">Нет Аккаунта?</string>-->
-	<string name="signinUsername">Имя пользователя</string>
-	<string name="signinPassword">Пароль</string>
-	<string name="signinButton">Войти</string>
-	<string name="sign_up">Регистрация</string>
-	<string name="complete_signupButton">Завершить Регистрацию</string>
-	<string name="signinPlayguest">Играть Как Гость</string>
+	<string name="username">Имя пользователя</string>
+	<string name="password">Пароль</string>
+	<string name="sing_in">Войти</string>
+	<string name="sing_up">Регистрация</string>
+	<string name="complete_singupButton">Завершить Регистрацию</string>
+	<string name="singinPlayguest">Играть Как Гость</string>
 
 	<string name="computerWhite">Белые</string>
 	<string name="computerBlack">Чёрные</string>
@@ -310,7 +310,7 @@
 
 	<string name="black_wins">Черные выиграли (0–1)</string>
 	<string name="white_wins">Белые выиграли (1–0)</string>
-	<string name="draw_by_stalemate">Ничья по тупику (0.5–0.5)</string>
+	<string name="draw_by_stalemate">Ничья по тупику (0–0)</string>
 	<string name="draw_by_3fold_repetition">Ничья по тройному повторению (0.5–0.5)</string>
 	<string name="rematch">Реванш</string>
 	<string name="review">Обзор</string>
@@ -320,7 +320,7 @@
 	<string name="has_declined_draw">отказал в ничье</string>
 
 	<string name="menu_search">Поиск</string>
-	<string name="restoring_connection_to_live">Реконнектим…</string>
+	<string name="restoring_conntection_to_live">Реконнектим…</string>
 	<string name="application_was_killed">Приложение было убито, восстанавливаем…</string>
 	<string name="no_network">Нет Сети</string>
 	<string name="wireless_settings">Настройки Сети</string>
@@ -443,8 +443,8 @@
 	<string name="game.dw_warn">Ваш аккаунт может быть ограничен, если вы не будете следовать нашей политике честной игры. При этом ограничении вы сможете играть только с друзьями. Пожалуйста, не прерывайте игу и не отключайтесь от сети намеренно и не делайте так, чтобы ваши оппоненты ждали вас понапрасну. Благодарим вас за сохранение Chess.com хорошим местом для наслаждения шахматами!</string>
 	<string name="game.not_accepting_challenges">%1$s в настоящее время не принимает вызовы</string>
 	<string name="game.aborted_by_server">Игра была прервана сервером.</string>
-	<string name="game.aborted_by_server_on_logout">Игра была прервана сервером. %1$s вышел из системы</string>
-	<string name="game.aborted_by_server_on_disconnection">Игра была прервана сервером. %1$s отключен</string>
+	<string name="game.aborted_by_server_on_logout">Игра была прервана сервером</string>
+	<string name="game.aborted_by_server_on_disconnection">Игра была прервана сервером</string>
 	<string name="announcement.server_restarting">ПРЕДУПРЕЖДЕНИЕ: Chess.com будет перезапускатть серверы!</string>
 	<string name="announcement.server_restart_cancelled">Перезапуск сервера был отменен</string>
 </resources>

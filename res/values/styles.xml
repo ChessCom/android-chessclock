@@ -29,6 +29,13 @@
 		<item name="android:paddingBottom">1dip</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
+        <!--Add Shadow to text-->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowRadius">0.5</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1.0</item>
+
 	</style>
 
     <style name="Text.Button.Grey">
@@ -97,10 +104,10 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/textfield_selector</item>
+        <!--<item name="android:background">@drawable/textfield_selector</item>-->
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:minHeight">@dimen/default_field_height</item>
+        <!--<item name="android:minHeight">@dimen/default_field_height</item>-->
         <item name="android:paddingBottom">7dip</item>
         <item name="android:gravity">bottom</item>
         <item name="android:textColorHint">@color/hint_text</item>
@@ -242,7 +249,7 @@
     <!--New Slide Menu Design Styles-->
 
     <style name="FacebookButton" parent="Text.Button">
-        <item name="color">@color/f_button</item>
+        <item name="color">@color/f_button_1</item>
         <item name="android:background">@drawable/button_f_selector</item>
     </style>
 

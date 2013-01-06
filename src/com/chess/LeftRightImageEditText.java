@@ -41,8 +41,6 @@ public class LeftRightImageEditText extends LeftImageEditText {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-
-
 		// back for image
 		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
 
@@ -145,4 +143,12 @@ public class LeftRightImageEditText extends LeftImageEditText {
 		super.onDraw(canvas);
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+		int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+
+		int picHeight = rightIcon.getIntrinsicHeight();
+		setMeasuredDimension(parentWidth, picHeight + 100);
+	}
 }

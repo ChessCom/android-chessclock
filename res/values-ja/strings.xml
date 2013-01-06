@@ -40,12 +40,12 @@
 	<string name="settings">設定</string>
 	<string name="start_new_game">新しいゲームを起動します。</string>
 	<!--<string name="dont_have_account_q">アカウントをお持ちでない場合</string>-->
-	<string name="signinUsername">ユーザ名</string>
-	<string name="signinPassword">パスワード</string>
-	<string name="signinButton">サイン・イン</string>
-	<string name="sign_up">登録</string>
-	<string name="complete_signupButton">サインアップを完了</string>
-	<string name="signinPlayguest">ゲストとしてプレイ</string>
+	<string name="username">ユーザ名</string>
+	<string name="password">パスワード</string>
+	<string name="sing_in">サイン・イン</string>
+	<string name="sing_up">登録</string>
+	<string name="complete_singupButton">サインアップを完了</string>
+	<string name="singinPlayguest">ゲストとしてプレイ</string>
 
 	<string name="computerWhite">白</string>
 	<string name="computerBlack">黒</string>
@@ -309,7 +309,7 @@
 
 	<string name="black_wins">黒勝（0–1）</string>
 	<string name="white_wins">白勝（1–0）</string>
-	<string name="draw_by_stalemate">こう着状態(0.5–0.5)で描く</string>
+	<string name="draw_by_stalemate">こう着状態（0–0）で描く</string>
 	<string name="draw_by_3fold_repetition">3倍に 繰り返し（0.5–0.5）で描く</string>
 	<string name="rematch">再戦</string>
 	<string name="review">レビュー</string>
@@ -319,7 +319,7 @@
 	<string name="has_declined_draw">ドローを減少している</string>
 
 	<string name="menu_search">検索</string>
-	<string name="restoring_connection_to_live">再接続…</string>
+	<string name="restoring_conntection_to_live">再接続…</string>
 	<string name="application_was_killed">アプリケーションは、リストア、殺された…</string>
 	<string name="no_network">ネットワーク無し</string>
 	<string name="wireless_settings">ワイヤレス設定</string>

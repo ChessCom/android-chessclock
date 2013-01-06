@@ -16,14 +16,14 @@
 		android:paddingRight="@dimen/default_scr_side_padding">
 
 		<com.chess.RoboEditText
-			android:id="@+id/RegUsername"
+			android:id="@+id/usernameEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/singinUsername"
+			android:hint="@string/username"
 			android:inputType="text|textImeMultiLine"/>
 
 		<com.chess.RoboEditText
-			android:id="@+id/RegEmail"
+			android:id="@+id/emailEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:hint="@string/email"
@@ -33,7 +33,7 @@
 			android:id="@+id/RegPassword"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/singinPassword"
+			android:hint="@string/password"
 			android:inputType="textImeMultiLine|textPassword"/>
 
 		<com.chess.RoboEditText

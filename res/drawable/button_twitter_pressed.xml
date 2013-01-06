@@ -6,17 +6,17 @@
         android:top="@dimen/button_margin4stroke"
         android:right="@dimen/button_margin4stroke"
         android:bottom="@dimen/button_margin4stroke"
-        android:drawable="@drawable/button_twitter_p">
+        android:drawable="@drawable/button_f_p">
 
     </item>
 
     <item>
         <shape android:dither="true">
             <corners android:radius="@dimen/button_pressed_stroke_radius"/>
-            <solid android:color="@android:color/transparent"/>
+            <solid android:color="@color/transparent"/>
             <stroke
                 android:width="@dimen/button_pressed_stroke_width_1"
-                android:color="@color/twitter_button_pressed_stroke_1"/>
+                android:color="@color/transparent"/>
         </shape>
     </item>
 

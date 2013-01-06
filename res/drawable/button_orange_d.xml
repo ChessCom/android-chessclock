@@ -8,7 +8,7 @@
             <corners android:radius="@dimen/rounded_button_radius"/>
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/stroke_shadow"/>
+                    android:color="@color/dark_grey_border"/>
         </shape>
     </item>
     <!--Emboss-->

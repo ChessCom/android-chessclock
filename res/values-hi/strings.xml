@@ -40,12 +40,12 @@
 	<string name="settings">सेटिंग्स</string>
 	<string name="start_new_game">नया गेम शुरू</string>
 	<!--<string name="dont_have_account_q">कोई खाता नहीं है? </string>-->
-	<string name="signinUsername">उपयोगकर्तानाम </string>
-	<string name="signinPassword">पासवर्ड</string>
-	<string name="signinButton">साइन इन करें…</string>
-	<string name="sign_up">साइन-अप</string>
-	<string name="complete_signupButton">पंजीकरण पूरा</string>
-	<string name="signinPlayguest">अतिथि के रूप में</string>
+	<string name="username">उपयोगकर्तानाम </string>
+	<string name="password">पासवर्ड</string>
+	<string name="sing_in">साइन इन करें…</string>
+	<string name="sing_up">साइन-अप</string>
+	<string name="complete_singupButton">पंजीकरण पूरा</string>
+	<string name="singinPlayguest">अतिथि के रूप में</string>
 
 	<string name="computerWhite">सफेद</string>
 	<string name="computerBlack">काला</string>
@@ -312,7 +312,7 @@
 
 	<string name="black_wins">काले जीत (0–1)</string>
 	<string name="white_wins">सफेद जीत (1–0)</string>
-	<string name="draw_by_stalemate">गतिरोध से ड्रा(0.5–0.5)</string>
+	<string name="draw_by_stalemate">गतिरोध से ड्रा (0–0)</string>
 	<string name="draw_by_3fold_repetition">तीन बार दुहराव (0.5–0.5) द्वारा ड्रा</string>
 	<string name="rematch">पुनरावृत्ति</string>
 	<string name="review">समीक्षा</string>
@@ -322,7 +322,7 @@
 	<string name="has_declined_draw">ने आकर्षित मना कर दिया है</string>
 
 	<string name="menu_search">सर्च</string>
-	<string name="restoring_connection_to_live">पुन: कनेक्ट …</string>
+	<string name="restoring_conntection_to_live">पुन: कनेक्ट …</string>
 	<string name="application_was_killed">आवेदन को मार डाला गया था बहाल करने …</string>
 	<string name="no_network">कोई नेटवर्क</string>
 	<string name="wireless_settings">वायरलेस सेटिंग्स</string>

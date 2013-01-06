@@ -63,8 +63,8 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		COUNTRIES = getResources().getStringArray(R.array.countries);
 		COUNTRIES_ID = getResources().getStringArray(R.array.countries_id);
 
-		userNameEdt = (EditText) findViewById(R.id.RegUsername);
-		emailEdt = (EditText) findViewById(R.id.RegEmail);
+		userNameEdt = (EditText) findViewById(R.id.usernameEdt);
+		emailEdt = (EditText) findViewById(R.id.emailEdt);
 		passwordEdt = (EditText) findViewById(R.id.RegPassword);
 		regRetypeEdt = (EditText) findViewById(R.id.RegRetype);
 		regSubmit = (Button) findViewById(R.id.RegSubmitBtn);

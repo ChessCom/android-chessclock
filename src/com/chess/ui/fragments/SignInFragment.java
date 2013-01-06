@@ -11,6 +11,7 @@ import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.ui.activities.CommonLogicActivity;
+import com.chess.ui.views.NewBackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
@@ -36,6 +37,7 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		view.findViewById(R.id.mainFrame).setBackground(new NewBackgroundChessDrawable(getActivity()));
 
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);

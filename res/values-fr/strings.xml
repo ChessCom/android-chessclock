@@ -41,12 +41,12 @@
 	<string name="settings">Paramètres</string>
 	<string name="start_new_game">Commencer une nouvelle partie</string>
 	<!--<string name="dont_have_account_q">Vous n\'avez pas de compte?</string>-->
-	<string name="signinUsername">Nom d\'utilisateur</string>
-	<string name="signinPassword">Mot de passe</string>
-	<string name="signinButton">Inscription En</string>
-	<string name="sign_up">Signer</string>
-	<string name="complete_signupButton">Remplissez Inscription</string>
-	<string name="signinPlayguest">Jouer en tant qu\'invité</string>
+	<string name="username">Nom d\'utilisateur</string>
+	<string name="password">Mot de passe</string>
+	<string name="sing_in">Inscription En</string>
+	<string name="sing_up">Signer</string>
+	<string name="complete_singupButton">Remplissez Inscription</string>
+	<string name="singinPlayguest">Jouer en tant qu\'invité</string>
 
 	<string name="computerWhite">Blanc</string>
 	<string name="computerBlack">Noir</string>
@@ -311,7 +311,7 @@
 
 	<string name="black_wins">Noir gagne (0–1)</string>
 	<string name="white_wins">Blanc gagne (1–0)</string>
-	<string name="draw_by_stalemate">Dessiner par l\'impasse (0.5–0.5)</string>
+	<string name="draw_by_stalemate">Dessiner par l\'impasse (0–0)</string>
 	<string name="draw_by_3fold_repetition">Dessiner par triple répétition (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Votre avis</string>
@@ -321,7 +321,7 @@
 	<string name="has_declined_draw">a diminué un tirage au sort</string>
 
 	<string name="menu_search">Rechercher</string>
-	<string name="restoring_connection_to_live">Reconnexion …</string>
+	<string name="restoring_conntection_to_live">Reconnexion …</string>
 	<string name="application_was_killed">La demande a été tué, la restauration …</string>
 	<string name="no_network">Pas de réseau</string>
 	<string name="wireless_settings">Paramètres sans fil</string>
@@ -444,8 +444,8 @@
 	<string name="game.dw_warn">Votre compte peut être limité si vous ne suivez pas notre politique de fair-play. Si restreint, vous ne serez en mesure de jouer avec des amis. S\'il vous plaît ne pas intentionnellement interrompre / déconnecter de jeux ou de faire vos adversaires attendre inutilement. Merci de garder Chess.com un endroit agréable pour profiter d\'échecs!</string>
 	<string name="game.not_accepting_challenges">%1$s n\'est actuellement pas accepter les défis</string>
 	<string name="game.aborted_by_server">Le jeu a été interrompu par le serveur</string>
-	<string name="game.aborted_by_server_on_logout">Le jeu a été interrompu par le serveur. %1$s a déconnecté</string>
-	<string name="game.aborted_by_server_on_disconnection">Le jeu a été interrompu par le serveur. %1$s has disconnected</string>
+	<string name="game.aborted_by_server_on_logout">Le jeu a été interrompu par le serveur</string>
+	<string name="game.aborted_by_server_on_disconnection">Le jeu a été interrompu par le serveur</string>
 	<string name="announcement.server_restarting">ALERTE: Chess.com sera le redémarrage des serveurs!</string>
 	<string name="announcement.server_restart_cancelled">Redémarrage du serveur a été annulée</string>
 </resources>

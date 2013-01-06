@@ -40,12 +40,12 @@
 	<string name="settings">Indstillinger</string>
 	<string name="start_new_game">Start nyt spil</string>
 	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
-	<string name="signinUsername">Brugernavn:</string>
-	<string name="signinPassword">Adgangskode</string>
-	<string name="signinButton">Log ind</string>
-	<string name="sign_up">Tilmeld dig</string>
-	<string name="complete_signupButton">Komplet Tilmelding</string>
-	<string name="signinPlayguest">Spil som Gæst</string>
+	<string name="username">Brugernavn:</string>
+	<string name="password">Adgangskode</string>
+	<string name="sing_in">Log ind</string>
+	<string name="sing_up">Tilmeld dig</string>
+	<string name="complete_singupButton">Komplet Tilmelding</string>
+	<string name="singinPlayguest">Spil som Gæst</string>
 
 	<string name="computerWhite">Hvid</string>
 	<string name="computerBlack">Sort</string>
@@ -311,7 +311,7 @@
 
 	<string name="black_wins">Sort vinder (0–1)</string>
 	<string name="white_wins">Hvid vinder (1–0)</string>
-	<string name="draw_by_stalemate">Tegn ved dødvande (0.5–0.5)</string>
+	<string name="draw_by_stalemate">Tegn ved dødvande (0–0)</string>
 	<string name="draw_by_3fold_repetition">Tegn ved tredobbelt gentagelse (0.5–0.5)</string>
 	<string name="rematch">Omkamp</string>
 	<string name="review">Gennemgå</string>
@@ -321,7 +321,7 @@
 	<string name="has_declined_draw">er faldet en lodtrækning</string>
 
 	<string name="menu_search">Søg</string>
-	<string name="restoring_connection_to_live">Opretter forbindelse igen…</string>
+	<string name="restoring_conntection_to_live">Opretter forbindelse igen…</string>
 	<string name="application_was_killed">Ansøgning blev dræbt, genoprette…</string>
 	<string name="no_network">Ingen Netværk</string>
 	<string name="wireless_settings">Trådløse Indstillinger</string>
@@ -444,8 +444,8 @@
 	<string name="game.dw_warn">Din konto kan begrænses, hvis du ikke følger vores Fair Play politik. Hvis begrænset, vil du kun være i stand til at spille med vennerne. Vær venlig ikke med vilje afbryde / afbryde spil eller lave dine modstandere vente unødigt. Tak for at holde Chess.com et sjovt sted at nyde skak!</string>
 	<string name="game.not_accepting_challenges">%1$s er i øjeblikket ikke acceptere udfordringer</string>
 	<string name="game.aborted_by_server">Spil er blevet afbrudt af serveren</string>
-	<string name="game.aborted_by_server_on_logout">Spil er blevet afbrudt af serveren. %1$s har logget ud</string>
-	<string name="game.aborted_by_server_on_disconnection">Spil er blevet afbrudt af serveren. %1$s har afbrudt</string>
+	<string name="game.aborted_by_server_on_logout">Spil er blevet afbrudt af serveren</string>
+	<string name="game.aborted_by_server_on_disconnection">Spil er blevet afbrudt af serveren</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com skal genstarte serverne!</string>
 	<string name="announcement.server_restart_cancelled">Servergenstart er blevet aflyst</string>
 </resources>

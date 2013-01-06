@@ -11,18 +11,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
@@ -46,7 +43,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	private EditText userNameEdt;
 	private EditText emailEdt;
 	private EditText passwordEdt;
-	private EditText regRetypeEdt;
+	private EditText passwordRetypeEdt;
 	private Button regSubmit;
 	private int CID = -1;
 	private static String[] COUNTRIES;
@@ -70,16 +67,16 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		COUNTRIES = getResources().getStringArray(R.array.countries);
 		COUNTRIES_ID = getResources().getStringArray(R.array.countries_id);
 
-		userNameEdt = (EditText) view.findViewById(R.id.RegUsername);
-		emailEdt = (EditText) view.findViewById(R.id.RegEmail);
-		passwordEdt = (EditText) view.findViewById(R.id.RegPassword);
-		regRetypeEdt = (EditText) view.findViewById(R.id.RegRetype);
+		userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
+		emailEdt = (EditText) view.findViewById(R.id.emailEdt);
+		passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
+		passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
 		regSubmit = (Button) view.findViewById(R.id.RegSubmitBtn);
 
 		userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
 		emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
 		passwordEdt.addTextChangedListener(new FieldChangeWatcher(passwordEdt));
-		regRetypeEdt.addTextChangedListener(new FieldChangeWatcher(regRetypeEdt));
+		passwordRetypeEdt.addTextChangedListener(new FieldChangeWatcher(passwordRetypeEdt));
 
 		setLoginFields(userNameEdt, passwordEdt);
 
@@ -160,9 +157,9 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 			return false;
 		}
 
-		if (!password.equals(regRetypeEdt.getText().toString())) {
-			regRetypeEdt.setError(getString(R.string.pass_dont_match));
-			regRetypeEdt.requestFocus();
+		if (!password.equals(passwordRetypeEdt.getText().toString())) {
+			passwordRetypeEdt.setError(getString(R.string.pass_dont_match));
+			passwordRetypeEdt.requestFocus();
 			return false;
 		}
 

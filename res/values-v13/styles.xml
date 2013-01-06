@@ -28,5 +28,6 @@
 		<item name="android:background">@drawable/top_bar_texture</item>
 		<item name="android:titleTextStyle">@style/ActionBarTitle</item>
 		<item name="android:icon">@drawable/alpha_wr</item>
+		<item name="android:homeAsUpIndicator">@drawable/empty</item>
 	</style>
 </resources>

@@ -45,12 +45,25 @@ public class LeftImageButton extends Button {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		icon = context.getResources().getDrawable(R.drawable.ic_action_sign_out);
+		float density = context.getResources().getDisplayMetrics().density;
+		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+
+		// back for image
+		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
+
+		final int N = a.getIndexCount();
+		for (int i = 0; i < N; i++) {
+			int attr = a.getIndex(i);
+			switch (attr) {
+				case R.styleable.LeftImageEditText_leftImage:
+					icon = a.getDrawable(i);
+					break;
+			}
+		}
+
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
 		icon.setBounds(0, 0, imageWidth, imageHeight);
-
-		float density = context.getResources().getDisplayMetrics().density;
 
 		borderColors = new int[2];
 		borderColors[0] = 0xFF423f3a; // TODO place in colors
@@ -60,11 +73,11 @@ public class LeftImageButton extends Button {
 		borderPaint.setStrokeWidth(1);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
-		float borderOffset = 5f;
+		float borderOffset = 1.5f;
 		float lineWidth = 0.5f;
-		if (density <= DisplayMetrics.DENSITY_LOW) {
+		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
 			lineWidth = 0.5f;
-			borderOffset = 5.5f;
+			borderOffset = 0.5f;
 		}
 		BORDER_OFFSET = borderOffset * density;
 		LINE_WIDTH = lineWidth * density;

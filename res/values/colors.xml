@@ -15,8 +15,8 @@
     <!--Buttons-->
 
     <!--<color name="stroke_shadow">#26000000</color>-->
-    <color name="stroke_shadow">#FF2a2725</color>
-    <color name="grey_stroke_shadow">#26000000</color>
+    <color name="dark_grey_border">#FF2a2725</color>
+    <color name="semi_transparent_border">#26000000</color>
 
     <color name="any_button_stroke">#23FFFFFF</color>
     <color name="gray_button_stroke">#18FFFFFF</color>
@@ -24,7 +24,8 @@
     <!--<color name="orange_button_stroke">#23FFFFFF</color>-->
     <color name="orange_button_1">#FFeb9b11</color>
     <color name="orange_button_2">#FFe5820c</color>
-    <color name="orange_button_p">#FFde6e00</color>
+    <color name="orange_button_p_1">#ffd68511</color>
+    <color name="orange_button_p_2">#ffc6630c</color>
     <color name="orange_button_d">#ffa65300</color>
 
     <color name="orange_emboss_top_1">#FFf1b751</color>
@@ -43,7 +44,8 @@
     <!--Grey -->
     <color name="grey_button_1">#FF56514c</color>
     <color name="grey_button_2">#FF504c46</color>
-    <color name="grey_button_p">#FF575151</color>
+    <color name="grey_button_p_1">#FF56514c</color>
+    <color name="grey_button_p_2">#ff3c3832</color>
     <color name="grey_button_d">#FF444444</color>
     <color name="grey_button_checked">#FFde6e00</color>
     <!--<color name="grey_button_stroke">#23747474</color>-->
@@ -68,11 +70,19 @@
     
 
     <!--Facebook button-->
-    <color name="f_button">#FF3b5998</color>
-    <color name="f_button_p">#FF254485</color>
+    <color name="f_button_1">#FF4f76b7</color>
+    <color name="f_button_2">#FF4162a2</color>
+    <color name="f_button_p_1">#ff4c65a3</color>
+    <color name="f_button_p_2">#ff3e518e</color>
 
-    <color name="f_emboss_low_right">#FF47639e</color>
-    <color name="f_emboss_top_left">#FF657caf</color>
+    <color name="f_emboss_top_1">#FF657caf</color>
+    <color name="f_emboss_top_2">#FF657caf</color>
+    <color name="f_emboss_left_1">#FF657caf</color>
+    <color name="f_emboss_left_2">#FF657caf</color>
+    <color name="f_emboss_bot_1">#FF47639e</color>
+    <color name="f_emboss_bot_2">#FF47639e</color>
+    <color name="f_emboss_right_1">#FF47639e</color>
+    <color name="f_emboss_right_2">#FF47639e</color>
 
     <color name="f_button_pressed_stroke_1">#96657caf</color>
     <color name="f_button_pressed_stroke_2">#FF93afee</color>

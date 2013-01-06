@@ -39,12 +39,12 @@
 	<string name="settings">Inställningar</string>
 	<string name="start_new_game">Starta Nytt spel</string>
 	<!--<string name="dont_have_account_q">Har du inte ett konto?</string>-->
-	<string name="signinUsername">Användarnamn</string>
-	<string name="signinPassword">Lösenord</string>
-	<string name="signinButton">Logga in</string>
-	<string name="sign_up">Anmäl dig</string>
-	<string name="complete_signupButton">Komplett Registrera</string>
-	<string name="signinPlayguest">Spela som gäst</string>
+	<string name="username">Användarnamn</string>
+	<string name="password">Lösenord</string>
+	<string name="sing_in">Logga in</string>
+	<string name="sing_up">Anmäl dig</string>
+	<string name="complete_singupButton">Komplett Registrera</string>
+	<string name="singinPlayguest">Spela som gäst</string>
 
 	<string name="computerWhite">Vit</string>
 	<string name="computerBlack">Svart:</string>
@@ -309,7 +309,7 @@
 
 	<string name="black_wins">Svart vinner (0–1)</string>
 	<string name="white_wins">Vit vinner (1–0)</string>
-	<string name="draw_by_stalemate">Rita dödläge (0.5–0.5)</string>
+	<string name="draw_by_stalemate">Rita dödläge (0–0)</string>
 	<string name="draw_by_3fold_repetition">Rita tre upprepning (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Granskning</string>
@@ -319,7 +319,7 @@
 	<string name="has_declined_draw">har minskat oavgjort</string>
 
 	<string name="menu_search">Sök</string>
-	<string name="restoring_connection_to_live">Återansluter …</string>
+	<string name="restoring_conntection_to_live">Återansluter …</string>
 	<string name="application_was_killed">Ansökan dödades, återställa …</string>
 	<string name="no_network">Ingen Nätverket</string>
 	<string name="wireless_settings">Trådlösa Inställningar</string>
@@ -442,8 +442,8 @@
 	<string name="game.dw_warn">Ditt konto kan begränsas om du inte följer vår Fair Play policy. Om begränsat, kommer du bara att kunna spela med vänner. Skicka inte avsiktligt avbryta / koppla från spel eller göra dina motståndare väntar i onödan. Tack för att hålla Chess.com en rolig plats att njuta av schack!</string>
 	<string name="game.not_accepting_challenges">%1$s för närvarande inte emot utmaningar</string>
 	<string name="game.aborted_by_server">Spelet har avbrutits av servern</string>
-	<string name="game.aborted_by_server_on_logout">Spelet har avbrutits av servern. %1$s har loggat ut</string>
-	<string name="game.aborted_by_server_on_disconnection">Spelet har avbrutits av servern. %1$s kopplas bort</string>
+	<string name="game.aborted_by_server_on_logout">Spelet har avbrutits av servern</string>
+	<string name="game.aborted_by_server_on_disconnection">Spelet har avbrutits av servern</string>
 	<string name="announcement.server_restarting">VARNING: Chess.com kommer att starta servrarna!</string>
 	<string name="announcement.server_restart_cancelled">Restart har avbrutits</string>
 </resources>

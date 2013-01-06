@@ -23,14 +23,14 @@
         android:layout_marginTop="@dimen/signin_logo_margin_top"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/img_logo"
+        android:src="@drawable/img_new_logo"
         android:contentDescription="@string/image"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/new_signin_main_margin_top"
+        android:layout_marginTop="@dimen/new_invite_main_margin_top"
         android:orientation="vertical">
 
         <com.chess.RoboTextView
@@ -58,14 +58,16 @@
             android:layout_height="wrap_content"
             android:text="@string/new_invite_contact"
             style="@style/GreyImageButton"
+            custom:leftImage="@drawable/ic_invite_contact"
             />
 
         <com.chess.LeftImageButton
-            android:id="@+id/inviteContactBtn"
+            android:id="@+id/inviteEmailBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/new_invite_contact"
             style="@style/GreyImageButton"
+            custom:leftImage="@drawable/ic_invite_by_email"
             />
 
         <com.chess.RoboButton

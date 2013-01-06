@@ -17,11 +17,23 @@
 	<dimen name="rounded_button_padding_right">0dip</dimen>
 	<dimen name="rounded_button_padding_bottom">0dip</dimen>
 
-  	<dimen name="default_field_height">48dip</dimen>
+  	<dimen name="default_field_height">37dip</dimen>
   	<dimen name="default_button_text_size">16sp</dimen>
   	<dimen name="default_button_height">40dip</dimen>    <!--Plus glow borders-->
  	<dimen name="signin_button_height">50dip</dimen>
     <dimen name="default_stroke_width">4px</dimen>
+
+    <!--New Buttons and Fields-->
+    <dimen name="facebook_button_height">40dip</dimen>
+    <dimen name="sign_in_button_height">40dip</dimen>
+    <dimen name="new_default_button_height">39dip</dimen>
+    <dimen name="new_edit_field_height">39dip</dimen>
+
+    <!--Edit Fields Paddings-->
+    <dimen name="new_edit_field_padding_top">5dip</dimen>
+    <dimen name="new_edit_field_padding_left">14dip</dimen>
+    <dimen name="new_edit_field_padding_right">14dip</dimen>
+    <dimen name="new_edit_field_padding_bottom">4dip</dimen>
 
     <!--Upgrade Button-->
     <dimen name="button_upgrade_left_padding">43dip</dimen>
@@ -90,8 +102,10 @@
 	<dimen name="signin_scr_top_padding">0dip</dimen>
 	<dimen name="signin_scr_bottom_padding">0dip</dimen>
 	<dimen name="signin_scr_side_padding">20dip</dimen>
-	<dimen name="signin_logo_margin_top">15dip</dimen>
-	<dimen name="signin_main_margin_top">36dip</dimen>
+	<dimen name="signin_logo_margin_top">55dip</dimen>
+	<dimen name="signin_main_margin_top">53dip</dimen>
+	<dimen name="signin_fb_button_margin_top">23dip</dimen>
+	<dimen name="signin_sign_in_button_margin_top">10dip</dimen>
 
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
@@ -140,5 +154,7 @@
 
     <!--SignIn Screen-->
     <dimen name="new_signin_main_margin_top">126dip</dimen>
+    <dimen name="new_invite_main_margin_top">126dip</dimen>
+    <dimen name="new_signup_main_margin_top">126dip</dimen>
 
 </resources>

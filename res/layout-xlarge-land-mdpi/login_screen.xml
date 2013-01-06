@@ -30,7 +30,7 @@
 			android:id="@+id/usernameEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/signinUsername"
+			android:hint="@string/username"
 			android:singleLine="true"
 			android:imeOptions="actionNext"
 			/>
@@ -39,7 +39,7 @@
 			android:id="@+id/passwordEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/signinPassword"
+			android:hint="@string/password"
 			android:inputType="textPersonName"
 			android:password="true"
 			android:singleLine="true"
@@ -50,7 +50,7 @@
 			android:id="@+id/signin"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/signinButton"
+			android:text="@string/sing_in"
 			/>
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -61,7 +61,7 @@
 				style="@style/Text.Button.Green"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/sign_up"
+				android:text="@string/sing_up"
 				android:layout_weight="1"
 
 				/>
@@ -71,17 +71,17 @@
 				style="@style/Text.Button.Grey"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/signinPlayguest"
+				android:text="@string/singinPlayguest"
 				android:layout_weight="1"
 
 				/>
 		</LinearLayout>
 		<com.facebook.android.LoginButton
 			android:id="@+id/fb_connect"
-			style="@style/Text.Button"
+			style="@style/Text.Button.Login"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:drawableLeft="@drawable/ic_facebook"
+			android:drawableLeft="@drawable/facebook_icon"
 			android:drawablePadding="3dip"
 			/>
 	</LinearLayout>

@@ -35,7 +35,7 @@
 			android:id="@+id/usernameEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/signinUsername"
+			android:hint="@string/username"
 			android:inputType="textPersonName"
 			android:singleLine="true"
 			android:imeOptions="actionNext"
@@ -45,7 +45,7 @@
 			android:id="@+id/passwordEdt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/signinPassword"
+			android:hint="@string/password"
 			android:password="true"
 			android:singleLine="true"
 			android:imeOptions="actionDone"
@@ -55,14 +55,15 @@
 			android:id="@+id/signin"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/signinButton"
+			android:text="@string/sing_in"
 			/>
 
 		<com.facebook.android.LoginButton
 			android:id="@+id/fb_connect"
-			style="@style/Text.Button.Facebook"
+			style="@style/Text.Button.Login"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:drawableLeft="@drawable/facebook_icon"
 			/>
 
 		<com.chess.RoboButton
@@ -70,7 +71,7 @@
 			style="@style/Text.Button.Green"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/sign_up"
+			android:text="@string/sing_up"
 			/>
 
 		<com.chess.RoboButton
@@ -78,7 +79,7 @@
 			style="@style/Text.Button.Grey"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/signinPlayguest"
+			android:text="@string/singinPlayguest"
 			/>
 	</LinearLayout>
 

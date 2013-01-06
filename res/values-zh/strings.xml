@@ -39,12 +39,12 @@
 	<string name="settings">设置</string>
 	<string name="start_new_game">开始新游戏</string>
 	<!--<string name="dont_have_account_q">没有帐户？</string>-->
-	<string name="signinUsername">用户名</string>
-	<string name="signinPassword">密码:</string>
-	<string name="signinButton">登录</string>
-	<string name="sign_up">注册</string>
-	<string name="complete_signupButton">完成注册</string>
-	<string name="signinPlayguest">为来宾播放</string>
+	<string name="username">用户名</string>
+	<string name="password">密码:</string>
+	<string name="sing_in">登录</string>
+	<string name="sing_up">注册</string>
+	<string name="complete_singupButton">完成注册</string>
+	<string name="singinPlayguest">为来宾播放</string>
 
 	<string name="computerWhite">白色</string>
 	<string name="computerBlack">黑色</string>
@@ -306,7 +306,7 @@
 
 	<string name="black_wins">黑胜（0–1）</string>
 	<string name="white_wins">白衣胜（1–0）</string>
-	<string name="draw_by_stalemate">绘制僵局(0.5–0.5)</string>
+	<string name="draw_by_stalemate">绘制僵局（0–0）</string>
 	<string name="draw_by_3fold_repetition">绘制三重重复（0.5–0.5）</string>
 	<string name="rematch">复赛</string>
 	<string name="review">评论</string>
@@ -316,7 +316,7 @@
 	<string name="has_declined_draw">已拒绝平局</string>
 
 	<string name="menu_search">搜索</string>
-	<string name="restoring_connection_to_live">还原现场连线…</string>
+	<string name="restoring_conntection_to_live">还原现场连线…</string>
 	<string name="application_was_killed">申请被打死，恢复…</string>
 	<string name="no_network">没有网络</string>
 	<string name="wireless_settings">无线设置</string>

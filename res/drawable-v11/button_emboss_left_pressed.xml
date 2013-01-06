@@ -11,7 +11,7 @@
 				/>
 			<solid android:color="@android:color/transparent" />
 			<stroke android:width="@dimen/default_stroke_width"
-				android:color="@color/stroke_shadow"/>
+				android:color="@color/dark_grey_border"/>
 		</shape>
 	</item>
 
@@ -51,7 +51,7 @@
 		android:right="0px"
 		>
 		<shape  >
-			<solid android:color="@color/grey_button_p" />
+			<solid android:color="@color/grey_button_p_1" />
 			<corners
 				android:topLeftRadius="@dimen/toggle_button_radius"
 				android:bottomRightRadius="@dimen/toggle_button_radius"

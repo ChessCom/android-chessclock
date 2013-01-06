@@ -1,17 +1,11 @@
 package com.chess;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.widget.Button;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,16 +39,17 @@ public class FacebookButton extends RoboButton {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		icon = context.getResources().getDrawable(R.drawable.facebook_icon);
+		icon = context.getResources().getDrawable(R.drawable.ic_facebook);
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
 		icon.setBounds(0, 0, imageWidth, imageHeight);
 
 		float density = context.getResources().getDisplayMetrics().density;
+		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		borderColors = new int[4];
 		borderColors[0] = context.getResources().getColor(R.color.any_button_stroke);
-		borderColors[1] = context.getResources().getColor(R.color.f_emboss_top_left);
+		borderColors[1] = context.getResources().getColor(R.color.f_emboss_top_1);
 		borderColors[2] = 0xFF284160;   // TODO place in colors
 		borderColors[3] = 0xFF354c78;    // TODO place in colors
 
@@ -62,11 +57,11 @@ public class FacebookButton extends RoboButton {
 		borderPaint.setStrokeWidth(1);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
-		float borderOffset = 5f;
+		float borderOffset = 1.5f;
 		float lineWidth = 0.5f;
-		if (density <= DisplayMetrics.DENSITY_LOW) {
+		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
 			lineWidth = 0.5f;
-			borderOffset = 5.5f;
+			borderOffset = 0.5f;
 		}
 		BORDER_OFFSET = borderOffset * density;
 		LINE_WIDTH = lineWidth * density;
@@ -113,7 +108,7 @@ public class FacebookButton extends RoboButton {
 		canvas.restore();
 
 		// place additional clickable element
-		canvas.translate(BORDER_OFFSET *4, 0);
+		canvas.translate(BORDER_OFFSET *6, 0);  // TODO get child's text width and make shift according to it
 		super.onDraw(canvas);
 	}
 

@@ -40,12 +40,12 @@
 	<string name="settings">Configuración</string>
 	<string name="start_new_game">Iniciar un nuevo juego</string>
 	<!--<string name="dont_have_account_q">¿Todavía no tienes una cuenta?</string>-->
-	<string name="signinUsername">Usuario</string>
-	<string name="signinPassword">Contraseña</string>
-	<string name="signinButton">Inicia sesión</string>
-	<string name="sign_up">Regístrate</string>
-	<string name="complete_signupButton">Completa Registro</string>
-	<string name="signinPlayguest">Juega como invitado</string>
+	<string name="username">Usuario</string>
+	<string name="password">Contraseña</string>
+	<string name="sing_in">Inicia sesión</string>
+	<string name="sing_up">Regístrate</string>
+	<string name="complete_singupButton">Completa Registro</string>
+	<string name="singinPlayguest">Juega como invitado</string>
 
 	<string name="computerWhite">Blancos</string>
 	<string name="computerBlack">black</string>
@@ -313,7 +313,7 @@
 
 	<string name="black_wins">Negro gana (0–1)</string>
 	<string name="white_wins">Blanco gana (1–0)</string>
-	<string name="draw_by_stalemate">Dibuja por empate (0.5–0.5)</string>
+	<string name="draw_by_stalemate">Dibuja por empate (0–0)</string>
 	<string name="draw_by_3fold_repetition">Dibuja por la triple repetición (1.2 a 1.2)</string>
 	<string name="rematch">la revancha.</string>
 	<string name="review">Opinar</string>
@@ -323,7 +323,7 @@
 	<string name="has_declined_draw">ha disminuido un empate</string>
 
 	<string name="menu_search">Buscar</string>
-	<string name="restoring_connection_to_live">Reconectando …</string>
+	<string name="restoring_conntection_to_live">Reconectando …</string>
 	<string name="application_was_killed">Solicitud fue asesinado, la restauración de …</string>
 	<string name="no_network">No Hay Red</string>
 	<string name="wireless_settings">Configuración Inalámbrica</string>
@@ -446,8 +446,8 @@
 	<string name="game.dw_warn">Su cuenta puede ser restringido si no cumplimos con nuestra política de juego limpio. Si restringido, sólo será capaz de jugar con los amigos. Por favor, no intencionalmente abortar / desconectar de juegos o hacer que sus opositores esperar innecesariamente. Gracias por mantener Chess.com un lugar divertido para disfrutar del ajedrez!</string>
 	<string name="game.not_accepting_challenges">%1$s no está aceptando los desafíos</string>
 	<string name="game.aborted_by_server">Juego ha sido anulada por el servidor</string>
-	<string name="game.aborted_by_server_on_logout">Juego ha sido anulada por el servidor. %1$s ha cerrado la sesión</string>
-	<string name="game.aborted_by_server_on_disconnection">Juego ha sido anulada por el servidor. %1$s se ha desconectado</string>
+	<string name="game.aborted_by_server_on_logout">Juego ha sido anulada por el servidor</string>
+	<string name="game.aborted_by_server_on_disconnection">Juego ha sido anulada por el servidor</string>
 	<string name="announcement.server_restarting">ALERTA: Chess.com se reinician los servidores!</string>
 	<string name="announcement.server_restart_cancelled">Reiniciar el servidor ha sido cancelada</string>
 </resources>

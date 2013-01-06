@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class RoboTextView extends TextView implements Serializable {
 
 	private static final long serialVersionUID = -2417945858405913303L;
+	public static final String MAIN_FONT = "fonts/trebuc-";
 
 	private String ttfName = "Regular";
 
@@ -46,7 +47,7 @@ public class RoboTextView extends TextView implements Serializable {
     }
 
     private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Roboto-" + ttfName + ".ttf");
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), MAIN_FONT + ttfName + ".ttf");
         setTypeface(font);
     }
 

@@ -8,7 +8,7 @@
                      android:bottomRightRadius="@dimen/rounded_button_radius"/>
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/grey_stroke_shadow"/>
+                    android:color="@color/semi_transparent_border"/>
         </shape>
     </item>
     <!--Emboss Top Level 1-->
@@ -86,7 +86,7 @@
                 android:top="@dimen/rounded_button_padding_top"
                 android:bottom="@dimen/rounded_button_padding_bottom"
                 />
-            <size android:height="@dimen/default_button_height"/>
+            <size android:height="@dimen/new_default_button_height"/>
         </shape>
     </item>
 

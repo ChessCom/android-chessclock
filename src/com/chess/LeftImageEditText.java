@@ -56,9 +56,8 @@ public class LeftImageEditText extends RoboEditText {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-
-
 		float density = context.getResources().getDisplayMetrics().density;
+		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		// back for image
 		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
@@ -120,11 +119,11 @@ public class LeftImageEditText extends RoboEditText {
 
 		path = new Path();
 
-		float borderOffset = 5f;
+		float borderOffset = 1.5f;
 		float lineWidth = 0.5f;
-		if (density <= DisplayMetrics.DENSITY_LOW) {
+		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
 			lineWidth = 0.5f;
-			borderOffset = 5.5f;
+			borderOffset = 0.5f;
 		}
 		BORDER_OFFSET = borderOffset * density;
 		LINE_WIDTH = lineWidth * density;
@@ -154,15 +153,13 @@ public class LeftImageEditText extends RoboEditText {
 		icon.draw(canvas);
 		canvas.restore();
 
-
-
 		// place additional clickable element
-		canvas.translate(getHeight() + BORDER_OFFSET, -BORDER_OFFSET);
+		canvas.translate(getHeight() + BORDER_OFFSET, - BORDER_OFFSET);
 		super.onDraw(canvas);
 	}
 
 	private void initImage(Canvas canvas) {
-		backForImage.setBounds(0, 0 + 1, getHeight(), getHeight() - 2);
+		backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, getHeight(), (int) (getHeight() - BORDER_OFFSET));
 
 		initialized = true;
 	}

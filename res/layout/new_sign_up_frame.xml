@@ -1,106 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@id/mainFrame"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:id="@id/mainFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/signin_scr_top_padding"
+    android:paddingBottom="@dimen/signin_scr_bottom_padding"
+    android:paddingLeft="@dimen/signin_scr_side_padding"
+    android:paddingRight="@dimen/signin_scr_side_padding"
+    android:background="@color/new_main_back"
+    >
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:paddingTop="@dimen/default_scr_top_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding">
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/signin_logo_margin_top"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_new_logo"
+        android:contentDescription="@string/image"
+        />
 
-        <com.facebook.android.LoginButton
-            android:id="@+id/fb_connect"
-            style="@style/FacebookButton"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/new_signup_main_margin_top"
+        >
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/connect_with_facebook"
-            android:paddingLeft="5dip"
-            />
+            android:orientation="vertical"
+            android:paddingTop="@dimen/default_scr_top_padding"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding">
 
-        <com.chess.RoboTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="or, Sign Up without using Facebook:"
-            android:textColor="@color/grey_button_1"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="6dip"
-            />
+            <com.facebook.android.LoginButton
+                android:id="@+id/fb_connect"
+                style="@style/FacebookButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_with_facebook"
+                android:paddingLeft="5dip"
+                />
 
-		<com.chess.RoboEditText
-			android:id="@+id/RegUsername"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/singinUsername"
-			android:inputType="text|textImeMultiLine"/>
+            <com.chess.RoboTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="or, Sign Up without using Facebook:"
+                android:textColor="@color/grey_button_1"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="6dip"
+                />
 
-		<com.chess.RoboEditText
-			android:id="@+id/RegEmail"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/email"
-			android:inputType="textImeMultiLine|textEmailAddress"/>
+            <com.chess.LeftImageEditText
+                android:id="@+id/usernameEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:inputType="textPersonName"
+                style="@style/WhiteGrayEditText.Top"
+                custom:leftImage="@drawable/ic_username"
+                android:imeOptions="actionNext"
+                />
 
-		<com.chess.RoboEditText
-			android:id="@+id/RegPassword"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/singinPassword"
-			android:inputType="textImeMultiLine|textPassword"/>
+            <com.chess.LeftImageEditText
+                android:id="@+id/emailEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                style="@style/WhiteGrayEditText.Middle"
+                custom:leftImage="@drawable/ic_sign_up_email"
+                android:imeOptions="actionNext"
+                />
 
-		<com.chess.RoboEditText
-			android:id="@+id/RegRetype"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/retype"
-			android:inputType="textImeMultiLine|textPassword"/>
+            <com.chess.LeftImageEditText
+                android:id="@+id/passwordEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:password="true"
+                style="@style/WhiteGrayEditText.Middle"
+                custom:leftImage="@drawable/ic_password"
+                android:imeOptions="actionNext"
+                />
 
-		<!--<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			style="@style/LinearDescription"
-			>
+            <com.chess.LeftImageEditText
+                android:id="@+id/passwordRetypeEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/retype"
+                android:inputType="textPassword"
+                android:password="true"
+                style="@style/WhiteGrayEditText.Bottom"
+                custom:leftImage="@drawable/ic_password"
+                android:imeOptions="actionDone"
+                />
 
-			<com.chess.RoboTextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/country"
-				android:textStyle="bold"
-				android:layout_weight="6"
-				/>
+            <com.chess.RoboButton
+                android:id="@+id/RegSubmitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/complete_singupButton"/>
 
-			<Spinner
-				android:id="@+id/country"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="4"
-				/>
+            <com.chess.RoboTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="By signing up, I accept Terms of Service"
+                android:textColor="@color/grey_button_1"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="6dip"
+                />
 
-		</LinearLayout>-->
+        </LinearLayout>
+    </ScrollView>
 
-		<com.chess.RoboButton
-			android:id="@+id/RegSubmitBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/complete_singupButton"/>
+</RelativeLayout>
 
-        <com.chess.RoboTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="By signing up, I accept Terms of Service"
-            android:textColor="@color/grey_button_1"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="6dip"
-            />
-
-	</LinearLayout>
-</ScrollView>
