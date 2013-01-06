@@ -263,8 +263,6 @@
     <style name="WhiteGrayEditText">
         <item name="android:singleLine">true</item>
         <item name="color">@color/new_soft_gray</item>
-        <item name="showBorder">false</item>
-        <item name="overlapBack">true</item>
     </style>
 
     <style name="WhiteGrayEditText.One">

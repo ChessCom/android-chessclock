@@ -68,7 +68,7 @@
                 custom:leftImage="@drawable/ic_last_name"
                 />
 
-            <com.chess.LeftImageEditText
+            <com.chess.LeftRightImageEditText
                 android:id="@+id/countryEdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +76,7 @@
                 android:inputType="textPersonName"
                 style="@style/WhiteGrayEditText.Middle"
                 custom:leftImage="@drawable/ic_country"
+                custom:rightImage="@drawable/ic_country"
                 />
 
             <com.chess.LeftRightImageEditText

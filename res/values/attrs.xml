@@ -14,8 +14,6 @@
     <declare-styleable name="EnhancedField">
         <attr name="round_mode" format="reference|integer" />
         <attr name="color" format="reference|integer" />
-        <attr name="showBorder" format="boolean" />
-        <attr name="overlapBack" format="boolean" />
         <attr name="leftImage" format="reference|integer" />
         <attr name="rightImage" format="reference|integer" />
     </declare-styleable>

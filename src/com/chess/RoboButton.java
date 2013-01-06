@@ -13,7 +13,7 @@ public class RoboButton extends Button implements Serializable {
 
 	private static final long serialVersionUID = -7816685707888388856L;
 
-	private String ttfName = "Regular";
+	private String ttfName = "Bold";
 
 	public RoboButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);

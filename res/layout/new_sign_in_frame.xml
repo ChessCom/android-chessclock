@@ -45,7 +45,6 @@
                 android:layout_weight="1"
                 android:text="@string/sing_up"
                 android:background="@drawable/button_grey_left_selector"
-                custom:ttf="Bold"
                 />
 
             <com.chess.RoboButton
@@ -55,7 +54,6 @@
                 android:layout_weight="1"
                 android:text="@string/singinPlayguest"
                 android:background="@drawable/button_grey_right_selector"
-                custom:ttf="Bold"
                 />
         </LinearLayout>
 
@@ -98,7 +96,6 @@
             android:layout_height="wrap_content"
             android:text="@string/log_in"
             android:layout_marginTop="@dimen/signin_sign_in_button_margin_top"
-            custom:ttf="Bold"
             />
     </LinearLayout>
 

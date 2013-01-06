@@ -31,12 +31,9 @@ public class LeftImageEditText extends RoboEditText {
 	private Drawable icon;
 	private int imageWidth;
 	private Paint borderPaint;
-	private Path path;
 	private boolean initialized;
 	private ShapeDrawable backForImage;
 	private int roundMode;
-	private boolean overlapBack;
-	private boolean showBorder;
 	private float density;
 	private Paint linePaint;
 	private int lineYStop;
@@ -76,12 +73,6 @@ public class LeftImageEditText extends RoboEditText {
 					break;
 				case R.styleable.EnhancedField_color:
 					color = array.getInteger(i, Color.WHITE);
-					break;
-				case R.styleable.EnhancedField_overlapBack:
-					overlapBack = array.getBoolean(i, false);
-					break;
-				case R.styleable.EnhancedField_showBorder:
-					showBorder = array.getBoolean(i, false);
 					break;
 				case R.styleable.EnhancedField_leftImage:
 					icon = array.getDrawable(i);
@@ -126,8 +117,6 @@ public class LeftImageEditText extends RoboEditText {
 		linePaint.setStrokeWidth(1);
 		linePaint.setStyle(Paint.Style.STROKE);
 
-		path = new Path();
-
 		float borderOffset = 1.0f;
 		float lineWidth = 0.5f;
 		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
@@ -144,15 +133,8 @@ public class LeftImageEditText extends RoboEditText {
 			initImage(canvas);
 		}
 		int height = getHeight();
-		if (showBorder) { // place border
-			path.moveTo(getHeight(), 0);
-			path.lineTo(getHeight(), getHeight());
-			canvas.drawPath(path, borderPaint);
-		}
 
-		if (overlapBack) {
-			backForImage.draw(canvas);
-		}
+		backForImage.draw(canvas);
 
 		// place image
 		canvas.save();

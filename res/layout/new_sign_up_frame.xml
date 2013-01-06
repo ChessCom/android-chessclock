@@ -108,7 +108,8 @@
                 android:id="@+id/RegSubmitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/complete_singupButton"/>
+                android:text="@string/complete_singupButton"
+                />
 
             <com.chess.RoboTextView
                 android:layout_width="match_parent"
