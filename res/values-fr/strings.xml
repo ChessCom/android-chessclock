@@ -43,7 +43,7 @@
 	<!--<string name="dont_have_account_q">Vous n\'avez pas de compte?</string>-->
 	<string name="username">Nom d\'utilisateur</string>
 	<string name="password">Mot de passe</string>
-	<string name="sing_in">Inscription En</string>
+	<string name="log_in">Inscription En</string>
 	<string name="sing_up">Signer</string>
 	<string name="complete_singupButton">Remplissez Inscription</string>
 	<string name="singinPlayguest">Jouer en tant qu\'invité</string>

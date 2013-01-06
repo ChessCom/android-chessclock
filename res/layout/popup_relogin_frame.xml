@@ -41,7 +41,7 @@
 		android:id="@+id/re_signin"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/sing_in"
+		android:text="@string/log_in"
 		/>
 
 	<com.facebook.android.LoginButton

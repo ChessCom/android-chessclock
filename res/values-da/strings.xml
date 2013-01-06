@@ -42,7 +42,7 @@
 	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
 	<string name="username">Brugernavn:</string>
 	<string name="password">Adgangskode</string>
-	<string name="sing_in">Log ind</string>
+	<string name="log_in">Log ind</string>
 	<string name="sing_up">Tilmeld dig</string>
 	<string name="complete_singupButton">Komplet Tilmelding</string>
 	<string name="singinPlayguest">Spil som Gæst</string>

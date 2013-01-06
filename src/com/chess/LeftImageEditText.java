@@ -39,6 +39,12 @@ public class LeftImageEditText extends RoboEditText {
 	private int roundMode;
 	private boolean overlapBack;
 	private boolean showBorder;
+	private float density;
+	private Paint linePaint;
+	private int lineYStop;
+	private int lineYStart;
+	private int lineXStop;
+	private int lineXStart;
 
 
 	public LeftImageEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -56,7 +62,7 @@ public class LeftImageEditText extends RoboEditText {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		float density = context.getResources().getDisplayMetrics().density;
+		density = context.getResources().getDisplayMetrics().density;
 		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		// back for image
@@ -117,9 +123,14 @@ public class LeftImageEditText extends RoboEditText {
 		borderPaint.setStrokeWidth(3);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
+		linePaint = new Paint();
+		linePaint.setColor(context.getResources().getColor(R.color.light_grey_border));
+		linePaint.setStrokeWidth(1);
+		linePaint.setStyle(Paint.Style.STROKE);
+
 		path = new Path();
 
-		float borderOffset = 1.5f;
+		float borderOffset = 1.0f;
 		float lineWidth = 0.5f;
 		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
 			lineWidth = 0.5f;
@@ -153,13 +164,65 @@ public class LeftImageEditText extends RoboEditText {
 		icon.draw(canvas);
 		canvas.restore();
 
+		canvas.drawLine(lineXStart, lineYStart, lineXStop, lineYStop, linePaint);
+
 		// place additional clickable element
 		canvas.translate(getHeight() + BORDER_OFFSET, - BORDER_OFFSET);
 		super.onDraw(canvas);
 	}
 
 	private void initImage(Canvas canvas) {
-		backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, getHeight(), (int) (getHeight() - BORDER_OFFSET));
+		int width = getWidth();
+		int height = getHeight();
+		switch (roundMode) {
+			case ONE:
+				backForImage.setBounds((int)BORDER_OFFSET , (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				break;
+			case TOP:
+				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				break;
+			case MID:
+				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				break;
+			case BOT:
+				backForImage.setBounds((int) BORDER_OFFSET , (int)BORDER_OFFSET - 1, height, (int) (height - BORDER_OFFSET));
+				break;
+			default:
+				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				break;
+		}
+
+
+		lineXStart = 0;
+		lineXStop = 0;
+		lineYStart = 0;
+		lineYStop = 0;
+		switch (roundMode) {
+			case ONE:
+				lineXStart = 0;
+				lineXStop = 0;
+				lineYStart = 0;
+				lineYStop = 0;
+				break;
+			case TOP:
+				lineXStart = (int) BORDER_OFFSET;
+				lineXStop = (int) (width - BORDER_OFFSET);
+				lineYStart =  height - 1;
+				lineYStop = height - 1;
+				break;
+			case MID:
+				lineXStart = 0;
+				lineXStop = 0;
+				lineYStart = 0;
+				lineYStop = 0;
+				break;
+			case BOT:
+				lineXStart = (int) BORDER_OFFSET;
+				lineXStop = (int) (width - BORDER_OFFSET);
+				lineYStart = 0;
+				lineYStop = 0;
+				break;
+		}
 
 		initialized = true;
 	}

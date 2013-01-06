@@ -23,6 +23,7 @@ public class FacebookButton extends RoboButton {
 	private boolean initialized;
 	private int[] borderColors;
 	private int imageWidth;
+	private float facebookTextShift;
 
 	public FacebookButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -65,6 +66,7 @@ public class FacebookButton extends RoboButton {
 		}
 		BORDER_OFFSET = borderOffset * density;
 		LINE_WIDTH = lineWidth * density;
+		facebookTextShift = 20 * density;
 	}
 
 	@Override
@@ -108,7 +110,7 @@ public class FacebookButton extends RoboButton {
 		canvas.restore();
 
 		// place additional clickable element
-		canvas.translate(BORDER_OFFSET *6, 0);  // TODO get child's text width and make shift according to it
+		canvas.translate(facebookTextShift, 0);  // TODO get child's text width and make shift according to it
 		super.onDraw(canvas);
 	}
 

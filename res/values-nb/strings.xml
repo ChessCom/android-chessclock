@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
 	<string name="username">Brukernavn</string>
 	<string name="password">Passord</string>
-	<string name="sing_in">Logg på</string>
+	<string name="log_in">Logg på</string>
 	<string name="sing_up">Registrer deg</string>
 	<string name="complete_singupButton">Komplett Registrering</string>
 	<string name="singinPlayguest">Spill som Gjest</string>

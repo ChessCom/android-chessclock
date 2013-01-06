@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">Bir hesabınız yok mu?</string>-->
 	<string name="username">Kullanıcı adı</string>
 	<string name="password">Parola</string>
-	<string name="sing_in">Giriş Yapın</string>
+	<string name="log_in">Giriş Yapın</string>
 	<string name="sing_up">Kaydolun</string>
 	<string name="complete_singupButton">Kayıt tamamlayın</string>
 	<string name="singinPlayguest">Misafir Olarak oyna</string>

@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">אין לך חשבון?</string>-->
 	<string name="username">שם משתמש</string>
 	<string name="password">סיסמא</string>
-	<string name="sing_in">היכנס</string>
+	<string name="log_in">היכנס</string>
 	<string name="sing_up">הירשם</string>
 	<string name="complete_singupButton">השלם הרשמה</string>
 	<string name="singinPlayguest">לשחק כמו אורח</string>

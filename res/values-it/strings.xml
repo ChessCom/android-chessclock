@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">Non hai un account?</string>-->
 	<string name="username">Nome utente</string>
 	<string name="password">Password</string>
-	<string name="sing_in">Sign in (accedi)</string>
+	<string name="log_in">Sign in (accedi)</string>
 	<string name="sing_up">Registrati</string>
 	<string name="complete_singupButton">Completa Iscriviti</string>
 	<string name="singinPlayguest">Gioca come Ospite</string>

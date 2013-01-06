@@ -98,7 +98,7 @@
             android:id="@+id/signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sing_in"
+            android:text="@string/log_in"
             android:layout_marginTop="@dimen/signin_sign_in_button_margin_top"
             custom:ttf="Bold"
             />

@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">آیا یک حساب داشته باشید؟</string>-->
 	<string name="username">نام کاربری</string>
 	<string name="password">گذرواژه</string>
-	<string name="sing_in">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
+	<string name="log_in">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
 	<string name="sing_up">ثبت نام</string>
 	<string name="complete_singupButton">کامل ثبت نام</string>
 	<string name="singinPlayguest">بازی به عنوان مهمان</string>

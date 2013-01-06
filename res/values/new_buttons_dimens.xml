@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="new_round_button_radius">4dip</dimen>
+    <dimen name="new_edit_field_internal_radius">3dip</dimen>
 </resources>

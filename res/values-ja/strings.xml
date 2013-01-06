@@ -42,7 +42,7 @@
 	<!--<string name="dont_have_account_q">アカウントをお持ちでない場合</string>-->
 	<string name="username">ユーザ名</string>
 	<string name="password">パスワード</string>
-	<string name="sing_in">サイン・イン</string>
+	<string name="log_in">サイン・イン</string>
 	<string name="sing_up">登録</string>
 	<string name="complete_singupButton">サインアップを完了</string>
 	<string name="singinPlayguest">ゲストとしてプレイ</string>

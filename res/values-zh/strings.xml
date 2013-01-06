@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">没有帐户？</string>-->
 	<string name="username">用户名</string>
 	<string name="password">密码:</string>
-	<string name="sing_in">登录</string>
+	<string name="log_in">登录</string>
 	<string name="sing_up">注册</string>
 	<string name="complete_singupButton">完成注册</string>
 	<string name="singinPlayguest">为来宾播放</string>

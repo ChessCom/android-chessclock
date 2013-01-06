@@ -41,7 +41,7 @@
 	<!--<string name="dont_have_account_q">Har du inte ett konto?</string>-->
 	<string name="username">Användarnamn</string>
 	<string name="password">Lösenord</string>
-	<string name="sing_in">Logga in</string>
+	<string name="log_in">Logga in</string>
 	<string name="sing_up">Anmäl dig</string>
 	<string name="complete_singupButton">Komplett Registrera</string>
 	<string name="singinPlayguest">Spela som gäst</string>

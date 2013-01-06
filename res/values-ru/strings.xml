@@ -42,7 +42,7 @@
 	<!--<string name="dont_have_account_q">Нет Аккаунта?</string>-->
 	<string name="username">Имя пользователя</string>
 	<string name="password">Пароль</string>
-	<string name="sing_in">Войти</string>
+	<string name="log_in">Войти</string>
 	<string name="sing_up">Регистрация</string>
 	<string name="complete_singupButton">Завершить Регистрацию</string>
 	<string name="singinPlayguest">Играть Как Гость</string>

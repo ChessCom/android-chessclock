@@ -42,7 +42,7 @@
 	<!--<string name="dont_have_account_q">कोई खाता नहीं है? </string>-->
 	<string name="username">उपयोगकर्तानाम </string>
 	<string name="password">पासवर्ड</string>
-	<string name="sing_in">साइन इन करें…</string>
+	<string name="log_in">साइन इन करें…</string>
 	<string name="sing_up">साइन-अप</string>
 	<string name="complete_singupButton">पंजीकरण पूरा</string>
 	<string name="singinPlayguest">अतिथि के रूप में</string>

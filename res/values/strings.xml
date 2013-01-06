@@ -42,7 +42,7 @@
 	<!--<string name="dont_have_account_q">Don\'t have an account?</string>-->
 	<string name="username">Username</string>
 	<string name="password">Password</string>
-	<string name="sing_in">Sign In</string>
+	<string name="log_in">Log In</string>
 	<string name="sing_up">Sign Up</string>
 	<string name="complete_singupButton">Complete Sign Up</string>
 	<string name="singinPlayguest">Play As Guest</string>

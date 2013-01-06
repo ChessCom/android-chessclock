@@ -42,7 +42,7 @@
 	<!--<string name="dont_have_account_q">Sie haben noch kein Konto?</string>-->
 	<string name="username">Benutzername</string>
 	<string name="password">Kennwort</string>
-	<string name="sing_in">Anmelden</string>
+	<string name="log_in">Anmelden</string>
 	<string name="sing_up">Registrieren</string>
 	<string name="complete_singupButton">Füllen Sie Signup</string>
 	<string name="singinPlayguest">Spielen Sie als Gast</string>

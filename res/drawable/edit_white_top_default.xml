@@ -19,14 +19,14 @@
     <item
         android:left="2px"
         android:top="2px"
-        android:bottom="2px"
+        android:bottom="0px"
         android:right="2px"
         >
         <shape  >
             <solid android:color="@color/new_soft_white" />
             <corners
-                android:topLeftRadius="@dimen/new_round_button_radius"
-                android:topRightRadius="@dimen/new_round_button_radius"
+                android:topLeftRadius="@dimen/new_edit_field_internal_radius"
+                android:topRightRadius="@dimen/new_edit_field_internal_radius"
                 />
             <padding
                 android:left="@dimen/new_edit_field_padding_left"
