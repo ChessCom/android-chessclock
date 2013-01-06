@@ -76,14 +76,14 @@
     <color name="f_button_p_1">#ff4c65a3</color>
     <color name="f_button_p_2">#ff3e518e</color>
 
-    <color name="f_emboss_top_1">#FF657caf</color>
-    <color name="f_emboss_top_2">#FF657caf</color>
-    <color name="f_emboss_left_1">#FF657caf</color>
-    <color name="f_emboss_left_2">#FF657caf</color>
-    <color name="f_emboss_bot_1">#FF47639e</color>
-    <color name="f_emboss_bot_2">#FF47639e</color>
-    <color name="f_emboss_right_1">#FF47639e</color>
-    <color name="f_emboss_right_2">#FF47639e</color>
+    <color name="f_emboss_top_1">#FF7f9bcb</color>
+    <color name="f_emboss_top_2">#FF6f8ec4</color>
+    <color name="f_emboss_left_1">#FF6184be</color>
+    <color name="f_emboss_left_2">#FF6184be</color>
+    <color name="f_emboss_bot_1">#FF3e5d91</color>
+    <color name="f_emboss_bot_2">#FF365280</color>
+    <color name="f_emboss_right_1">#FF39568c</color>
+    <color name="f_emboss_right_2">#FF2d4471</color>
 
     <color name="f_button_pressed_stroke_1">#96657caf</color>
     <color name="f_button_pressed_stroke_2">#FF93afee</color>

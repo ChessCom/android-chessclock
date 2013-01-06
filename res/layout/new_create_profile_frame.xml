@@ -6,6 +6,7 @@
     android:id="@+id/mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/new_main_back"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +15,6 @@
         android:paddingBottom="@dimen/signin_scr_bottom_padding"
         android:paddingLeft="@dimen/signin_scr_side_padding"
         android:paddingRight="@dimen/signin_scr_side_padding"
-        android:background="@color/main_menu_back_top"
         >
         <!--android:gravity="center"-->
 

@@ -65,8 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/signin_fb_button_margin_top"
-            custom:ttf="Bold"
-            android:gravity="center"
             />
 
         <com.chess.LeftImageEditText

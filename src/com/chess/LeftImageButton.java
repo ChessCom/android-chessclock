@@ -3,15 +3,10 @@ package com.chess;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.widget.Button;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +14,7 @@ import android.widget.Button;
  * Date: 03.01.13
  * Time: 13:45
  */
-public class LeftImageButton extends Button {
+public class LeftImageButton extends RoboButton {
 
 	public static float BORDER_OFFSET;
 	public static float LINE_WIDTH;
@@ -49,17 +44,8 @@ public class LeftImageButton extends Button {
 		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		// back for image
-		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
-
-		final int N = a.getIndexCount();
-		for (int i = 0; i < N; i++) {
-			int attr = a.getIndex(i);
-			switch (attr) {
-				case R.styleable.LeftImageEditText_leftImage:
-					icon = a.getDrawable(i);
-					break;
-			}
-		}
+		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
+		icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
 
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
@@ -97,7 +83,7 @@ public class LeftImageButton extends Button {
 			float bottom = 0;
 			switch (i){
 				case 0:
-					top = BORDER_OFFSET - LINE_WIDTH * 2;
+					top = BORDER_OFFSET - LINE_WIDTH;
 					bottom = height - BORDER_OFFSET + LINE_WIDTH;
 					break;
 				case 1:

@@ -7,15 +7,15 @@
         <shape >
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/light_grey_border"/>
+                    android:color="@color/dark_grey_border"/>
         </shape>
     </item>
 
     <!--Field-->
     <item
         android:left="2px"
-        android:top="2px"
-        android:bottom="2px"
+        android:top="1px"
+        android:bottom="1px"
         android:right="2px"
         >
         <shape  >

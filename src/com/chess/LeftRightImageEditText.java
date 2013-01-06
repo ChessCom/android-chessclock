@@ -3,16 +3,8 @@ package com.chess;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.ImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,17 +34,8 @@ public class LeftRightImageEditText extends LeftImageEditText {
 
 	private void init(Context context, AttributeSet attrs) {
 		// back for image
-		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
-
-		final int N = a.getIndexCount();
-		for (int i = 0; i < N; i++) {
-			int attr = a.getIndex(i);
-			switch (attr) {
-				case R.styleable.LeftImageEditText_rightImage:
-					rightIcon = a.getDrawable(i);
-					break;
-			}
-		}
+		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
+		rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImage);
 
 		rightImageWidth = rightIcon.getIntrinsicWidth();
 		rightImageHeight = rightIcon.getIntrinsicHeight();
@@ -65,7 +48,7 @@ public class LeftRightImageEditText extends LeftImageEditText {
 //		float density = context.getResources().getDisplayMetrics().density;
 //
 //		// back for image
-//		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
+//		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageStyle);
 //		int color = Color.WHITE;
 //
 //		final int N = a.getIndexCount();

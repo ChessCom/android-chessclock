@@ -37,7 +37,7 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		view.findViewById(R.id.mainFrame).setBackground(new NewBackgroundChessDrawable(getActivity()));
+		view.findViewById(R.id.mainFrame).setBackgroundDrawable(new NewBackgroundChessDrawable(getActivity()));
 
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);

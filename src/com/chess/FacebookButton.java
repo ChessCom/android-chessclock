@@ -49,10 +49,10 @@ public class FacebookButton extends RoboButton {
 		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		borderColors = new int[4];
-		borderColors[0] = context.getResources().getColor(R.color.any_button_stroke);
+		borderColors[0] = context.getResources().getColor(R.color.f_emboss_top_2);
 		borderColors[1] = context.getResources().getColor(R.color.f_emboss_top_1);
-		borderColors[2] = 0xFF284160;   // TODO place in colors
-		borderColors[3] = 0xFF354c78;    // TODO place in colors
+		borderColors[2] = 0xFF284160;
+		borderColors[3] = context.getResources().getColor(R.color.f_emboss_bot_2);
 
 		borderPaint = new Paint();
 		borderPaint.setStrokeWidth(1);
@@ -77,22 +77,22 @@ public class FacebookButton extends RoboButton {
 
 		int height = getHeight();
 		for (int i = 0, cnt = borderColors.length; i < cnt; i++) {
-			float left = height + i * LINE_WIDTH;
+			float left = height + i * LINE_WIDTH - 1;
 			float top = 0;
-			float right = height + i * LINE_WIDTH;
+			float right = height + i * LINE_WIDTH - 1;
 			float bottom = 0;
 			switch (i){
 				case 0:
 					top = BORDER_OFFSET;
-					bottom = height - BORDER_OFFSET + LINE_WIDTH;
+					bottom = height - BORDER_OFFSET - 1 ;
 					break;
 				case 1:
 				case 3:
-					top = BORDER_OFFSET - LINE_WIDTH;
+					top = BORDER_OFFSET;
 					bottom = height- BORDER_OFFSET;
 					break;
 				case 2:
-					top = BORDER_OFFSET - LINE_WIDTH * 2;
+					top = BORDER_OFFSET - LINE_WIDTH;
 					bottom = height - BORDER_OFFSET + LINE_WIDTH;
 					break;
 			}

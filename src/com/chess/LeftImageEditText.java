@@ -11,8 +11,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.ImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,27 +64,27 @@ public class LeftImageEditText extends RoboEditText {
 		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		// back for image
-		TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LeftImageEditText);
+		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
 		int color = Color.WHITE;
 
-		final int N = a.getIndexCount();
+		final int N = array.getIndexCount();
 		for (int i = 0; i < N; i++) {
-			int attr = a.getIndex(i);
+			int attr = array.getIndex(i);
 			switch (attr) {
-				case R.styleable.LeftImageEditText_round_mode:
-					roundMode = a.getInteger(i, ONE);
+				case R.styleable.EnhancedField_round_mode:
+					roundMode = array.getInteger(i, ONE);
 					break;
-				case R.styleable.LeftImageEditText_color:
-					color = a.getInteger(i, Color.WHITE);
+				case R.styleable.EnhancedField_color:
+					color = array.getInteger(i, Color.WHITE);
 					break;
-				case R.styleable.LeftImageEditText_overlapBack:
-					overlapBack = a.getBoolean(i, false);
+				case R.styleable.EnhancedField_overlapBack:
+					overlapBack = array.getBoolean(i, false);
 					break;
-				case R.styleable.LeftImageEditText_showBorder:
-					showBorder = a.getBoolean(i, false);
+				case R.styleable.EnhancedField_showBorder:
+					showBorder = array.getBoolean(i, false);
 					break;
-				case R.styleable.LeftImageEditText_leftImage:
-					icon = a.getDrawable(i);
+				case R.styleable.EnhancedField_leftImage:
+					icon = array.getDrawable(i);
 					break;
 			}
 		}
@@ -164,7 +162,12 @@ public class LeftImageEditText extends RoboEditText {
 		icon.draw(canvas);
 		canvas.restore();
 
-		canvas.drawLine(lineXStart, lineYStart, lineXStop, lineYStop, linePaint);
+		if (roundMode != ONE) {
+			canvas.drawLine(lineXStart, lineYStart, lineXStop, lineYStop, linePaint);
+		}
+		if (roundMode == MID) {
+			canvas.drawLine(lineXStart, 0, lineXStop, 0, linePaint);
+		}
 
 		// place additional clickable element
 		canvas.translate(getHeight() + BORDER_OFFSET, - BORDER_OFFSET);
@@ -174,6 +177,12 @@ public class LeftImageEditText extends RoboEditText {
 	private void initImage(Canvas canvas) {
 		int width = getWidth();
 		int height = getHeight();
+
+		lineXStart = (int) BORDER_OFFSET;
+		lineXStop = (int) (width - BORDER_OFFSET);
+		lineYStart = height - 1;
+		lineYStop = height - 1;
+
 		switch (roundMode) {
 			case ONE:
 				backForImage.setBounds((int)BORDER_OFFSET , (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
@@ -182,45 +191,16 @@ public class LeftImageEditText extends RoboEditText {
 				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
 				break;
 			case MID:
-				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET - 1, height, (int) (height - BORDER_OFFSET) +1);
 				break;
 			case BOT:
+				lineYStart = 0;
+				lineYStop = 0;
+
 				backForImage.setBounds((int) BORDER_OFFSET , (int)BORDER_OFFSET - 1, height, (int) (height - BORDER_OFFSET));
 				break;
 			default:
 				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
-				break;
-		}
-
-
-		lineXStart = 0;
-		lineXStop = 0;
-		lineYStart = 0;
-		lineYStop = 0;
-		switch (roundMode) {
-			case ONE:
-				lineXStart = 0;
-				lineXStop = 0;
-				lineYStart = 0;
-				lineYStop = 0;
-				break;
-			case TOP:
-				lineXStart = (int) BORDER_OFFSET;
-				lineXStop = (int) (width - BORDER_OFFSET);
-				lineYStart =  height - 1;
-				lineYStop = height - 1;
-				break;
-			case MID:
-				lineXStart = 0;
-				lineXStop = 0;
-				lineYStart = 0;
-				lineYStop = 0;
-				break;
-			case BOT:
-				lineXStart = (int) BORDER_OFFSET;
-				lineXStop = (int) (width - BORDER_OFFSET);
-				lineYStart = 0;
-				lineYStop = 0;
 				break;
 		}
 
