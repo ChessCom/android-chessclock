@@ -28,6 +28,12 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 	private EditText loginUsernameEdt;
 	private EditText loginPasswordEdt;
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		getActivity().getActionBar().hide();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

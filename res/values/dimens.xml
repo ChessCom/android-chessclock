@@ -100,7 +100,7 @@
 	<!--<dimen name="signin_scr_top_padding">20dip</dimen>-->
 	<!--<dimen name="signin_scr_bottom_padding">20dip</dimen>-->
 	<dimen name="signin_scr_top_padding">0dip</dimen>
-	<dimen name="signin_scr_bottom_padding">0dip</dimen>
+	<dimen name="signin_scr_bottom_padding">48dip</dimen>
 	<dimen name="signin_scr_side_padding">40dip</dimen>
 	<dimen name="signin_logo_margin_top">55dip</dimen>
 	<dimen name="signin_main_margin_top">53dip</dimen>

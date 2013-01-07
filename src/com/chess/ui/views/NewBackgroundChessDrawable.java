@@ -5,22 +5,21 @@ import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import com.chess.R;
 
 public class NewBackgroundChessDrawable extends Drawable {
 
-	private Paint gradientPaint;
-	private Path gradientPath;
-
-	private BitmapDrawable image;
-
-	private boolean pathsInitiated;
-
-	private int height;
-	private int width;
-
-	private Context context;
-	private boolean configChanged;
+	private Rect fullScreenRect;
+	private GradientDrawable mDrawable;
+	private Bitmap framedPhoto;
+	private int patternWidth;
+	private BitmapDrawable imageDrawable;
+	private Bitmap shadowOvalBitmap;
+	private Rect ovalRect;
+	private Paint fullPaint;
+	private Rect squareRect;
+	private float logoOffset;
 
 	public NewBackgroundChessDrawable(Context context) {
 		init(context);
@@ -28,60 +27,113 @@ public class NewBackgroundChessDrawable extends Drawable {
 	}
 
 	private void init(Context context) {
-		this.context = context;
-		gradientPaint = new Paint();
-		gradientPaint.setDither(true);
-		gradientPaint.setAntiAlias(true);
+		int backgroundColor = context.getResources().getColor(R.color.new_main_back);
+		logoOffset = context.getResources().getDimension(R.dimen.new_signin_main_margin_top) - 60;
 
-		width = context.getResources().getDisplayMetrics().widthPixels;
-		height = context.getResources().getDisplayMetrics().heightPixels;
+		fullScreenRect = new Rect(0, 0, 330, 330);
+		squareRect = new Rect(0, 0, 330, 330);
 
-		image = (BitmapDrawable) context.getResources().getDrawable(R.drawable.chess_back);
-		image.setBounds(0, 0, width, height);
-		image.setDither(true);
-		image.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		mDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
+				new int[] { 0x00312e2a, 0x00312e2a, backgroundColor });
+		mDrawable.setShape(GradientDrawable.OVAL);
+		mDrawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+		mDrawable.setGradientRadius(140);
+
+		imageDrawable = ((BitmapDrawable)context.getResources().getDrawable(R.drawable.img_new_logo_back_pattern));
+		patternWidth = imageDrawable.getIntrinsicWidth();
+		imageDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+
+		fullPaint = new Paint();
+		fullPaint.setColor(backgroundColor);
+		fullPaint.setStyle(Paint.Style.FILL);
 	}
 
-	private void createGradientPath() {
-		float border = -5;
-		gradientPath = new Path();
-		setCoordinates(gradientPath, 0, width, 0, height);
-		int blackColor = 0xB4000000;
-		gradientPaint.setShader(
-				new LinearGradient(0, height, 0, border, blackColor, 0x00000000,
-						Shader.TileMode.CLAMP));
-		pathsInitiated = true;
+	private Bitmap createShadow(int width, int height) {
+		// back pattern
+		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+		Canvas canvas = new Canvas(output);
+
+		RectF outerRect = new RectF(0, 0, width, 300);
+		float outerRadiusX = 300;
+		float outerRadiusY = 300;
+
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		// draw limiter on canvas
+		canvas.drawRoundRect(outerRect, outerRadiusX, outerRadiusY, paint);
+
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+		mDrawable.setBounds(0, 0, width, height);
+
+		// cross layers and save on canvas
+		canvas.saveLayer(outerRect, paint, Canvas.ALL_SAVE_FLAG);
+		mDrawable.draw(canvas);
+		canvas.restore();
+
+		return Bitmap.createBitmap(output);
 	}
 
-	private void setCoordinates(Path path, int x0, int x1, int y0, int y1) {
-		path.moveTo(x0, y0);
-		path.lineTo(x0, y1);
-		path.lineTo(x1, y1);
-		path.lineTo(x1, y0);
-		path.close();
+	private void createFramePhoto(int width, int height) {
+		// back pattern
+		imageDrawable.setBounds(0, 0, width, height);
+
+		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+		Canvas canvas = new Canvas(output);
+
+		RectF outerRect = new RectF(0, 0, width, 300);
+		float outerRadiusX = 300;
+		float outerRadiusY = 300;
+
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		// draw limiter on canvas
+		canvas.drawRoundRect(outerRect, outerRadiusX, outerRadiusY, paint);
+
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+		imageDrawable.setBounds(0, 0, width, height);
+
+		// cross layers and save on canvas
+		canvas.saveLayer(outerRect, paint, Canvas.ALL_SAVE_FLAG);
+		imageDrawable.draw(canvas);
+		canvas.restore();
+
+		framedPhoto = Bitmap.createBitmap(output);
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (!pathsInitiated) {
-			createGradientPath();
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+
+		if (framedPhoto == null) {
+			int backWidth = patternWidth * 4;
+			createFramePhoto(backWidth, backWidth);
+
+			// enlarge a bit a region for shadowed gradient
+			squareRect.set(0, 0, width, width);
+			mDrawable.setBounds(squareRect);
+
+			ovalRect = new Rect(0, 0, width + 40, 300 + 60);
+
+			shadowOvalBitmap = createShadow(300, 300);
 		}
 
-		if(configChanged){
-			width = context.getResources().getDisplayMetrics().widthPixels;
-			height = context.getResources().getDisplayMetrics().heightPixels;
-			setCoordinates(gradientPath, 0, width, 0, height);
-			image.setBounds(0, 0, width, height);
-			configChanged = false;
-		}
+		// background
+		fullScreenRect.set(0, 0, width, height);
+		canvas.drawRect(fullScreenRect, fullPaint);
+
 		canvas.save();
-
-		image.draw(canvas);
-
+		// move down to place under Chess.com logo
+		canvas.translate(0, logoOffset);
+		canvas.drawBitmap(framedPhoto, null, squareRect, null);
 		canvas.restore();
 
-		canvas.drawPath(gradientPath, gradientPaint);
-		canvas.drawPath(gradientPath, gradientPaint);
+		canvas.save();
+		canvas.translate(-20, logoOffset - 5);
+		canvas.drawBitmap(shadowOvalBitmap, null, ovalRect, fullPaint);
+		canvas.restore();
 	}
 
 	@Override
@@ -97,8 +149,4 @@ public class NewBackgroundChessDrawable extends Drawable {
 	public void setColorFilter(ColorFilter cf) {
 	}
 
-	public void updateConfig() {
-		configChanged = true;
-		invalidateSelf();
-	}
 }
