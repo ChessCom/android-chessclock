@@ -7,10 +7,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -33,7 +29,6 @@ import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
-import com.slidingmenu.lib.SlidingMenu;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -92,6 +87,10 @@ public class CommonLogicFragment extends BasePopupsFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		facebookInit((LoginButton) getView().findViewById(R.id.fb_connect));
+	}
+
+	protected void showActionBar(boolean show) {
+		getActivityFace().getActionBarActivity().provideActionBarHelper().showActionBar(show);
 	}
 
 	protected void facebookInit(LoginButton fbLoginBtn) {

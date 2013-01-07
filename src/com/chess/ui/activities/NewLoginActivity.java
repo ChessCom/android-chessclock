@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,7 +22,6 @@ import java.util.Map;
 public class NewLoginActivity extends LiveBaseActivity implements ActiveFragmentInterface{
 
 	private Fragment currentActiveFragment;
-//	private List<BadgeItem> badgeItems;
 	private Hashtable<Integer, Integer> badgeItems;
 	private CommonLogicFragment rightMenuFragment;
 
@@ -56,13 +54,14 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		sm.setShadowDrawable(R.drawable.defaultshadow);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-//		badgeItems = new ArrayList<BadgeItem>();
 		badgeItems = new Hashtable<Integer, Integer>();
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+
+		getActionBarHelper().showActionBar(false);
 
 		if (HONEYCOMB_PLUS_API) {
 			getActionBar().setCustomView(R.layout.new_custom_actionbar);

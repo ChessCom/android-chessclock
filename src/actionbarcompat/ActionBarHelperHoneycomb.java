@@ -129,6 +129,15 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		}
 	}
 
+	@Override
+	public void showActionBar(boolean show) {
+		if (show) {
+			mActivity.getActionBar().show();
+		} else {
+			mActivity.getActionBar().hide();
+		}
+	}
+
 
 	/**
 	 * Returns a {@link android.content.Context} suitable for inflating layouts

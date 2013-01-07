@@ -137,4 +137,6 @@ public abstract class ActionBarHelper {
 	public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
 		return superMenuInflater;
 	}
+
+	public abstract void showActionBar(boolean show);
 }

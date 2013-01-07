@@ -15,6 +15,13 @@ import com.chess.R;
 public class InviteFragment extends CommonLogicFragment {
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		showActionBar(false);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_invite_frame, container, false);
 	}

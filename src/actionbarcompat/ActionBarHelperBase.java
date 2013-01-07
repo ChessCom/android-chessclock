@@ -233,6 +233,18 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		return new WrappedMenuInflater(mActivity, superMenuInflater);
 	}
 
+	@Override
+	public void showActionBar(boolean show) {
+		View compatView = getActionBarCompat();
+		if (compatView != null) {
+			ViewParent viewParent = compatView.getParent();
+			if (viewParent != null && viewParent instanceof View) {
+				((View)viewParent).setVisibility(show ? View.VISIBLE : View.GONE);
+			}
+//			compatView.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
+	}
+
 	/**
 	 * Returns the {@link android.view.ViewGroup} for the action bar on phones
 	 * (compatibility action bar). Can return null, and will return null on
