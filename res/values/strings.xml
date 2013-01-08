@@ -492,6 +492,18 @@
     <string name="new_start_chess_game_with_friends">Start a Chess Game with Your Friends</string>
     <string name="new_create_chess_profile">Create Your Online Chess Profile</string>
 
+    <!--Navigation Menu-->
+    <string name="nav_upgrade">Upgrade</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_play">Play</string>
+    <string name="nav_tactics">Tactics</string>
+    <string name="nav_videos">Videos</string>
+    <string name="nav_articles">Articles</string>
+    <string name="nav_stats">Stats</string>
+    <string name="nav_friends">Friends</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_settings">Settings</string>
+
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
     <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
     <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>-->

@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.MenuItem;
 import com.chess.R;
-import com.chess.ui.fragments.MainMenuFragment;
 import com.chess.ui.fragments.SampleListFragment;
 import com.slidingmenu.lib.SlidingMenu;
 

@@ -26,6 +26,8 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 
 		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipBtn).setOnClickListener(this);
+
+		// TODO select country automatically based on location
 	}
 
 	@Override

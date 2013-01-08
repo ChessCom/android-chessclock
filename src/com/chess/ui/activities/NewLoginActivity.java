@@ -34,7 +34,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		// change left menu fragment
 		FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
-		mFrag = new MainMenuFragment();
+		mFrag = new NavigationMenuFragment();
 		ft.replace(R.id.menu_frame_left, mFrag);
 		ft.commit();
 

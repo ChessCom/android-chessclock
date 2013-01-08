@@ -88,6 +88,15 @@
     <color name="f_button_pressed_stroke_1">#96657caf</color>
     <color name="f_button_pressed_stroke_2">#FF93afee</color>
 
+    <!--Navigation Menu-->
+    <color name="nav_menu_item">#FF24221f</color>
+    <color name="nav_menu_item_p">#ff181613</color>
+    <color name="nav_menu_item_s">#FF312e2b</color> <!--selected-->
+    <color name="nav_menu_border_top">#FF403f3d</color>
+    <color name="nav_menu_border_top_highlighted">#FF525253</color>
+    <color name="nav_menu_border_bot">#FF000000</color>
+    <color name="nav_menu_upgrade_shine">#FF8796a5</color>
+
     <!--TabsHome-->
     <color name="tab_home_shadow">#26000000</color>
 
@@ -219,5 +228,6 @@
     <color name="new_soft_white">#FFf5f5f5</color>
     <color name="new_soft_gray">#FFdedddb</color>
     <color name="new_normal_gray">#FF72706d</color>
+    <color name="new_light_gray">#FFc8c8c8</color>
     <color name="new_main_back">#FF312e2a</color>
 </resources>

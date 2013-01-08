@@ -19,7 +19,7 @@ public class ProfileSetupsFragment extends CommonLogicFragment {
 
 		showActionBar(false);
 
-		if (HONEYCOMB_PLUS_API) {
+		if (JELLY_BEAN_PLUS_API) {
 			view.findViewById(R.id.mainFrame).setBackground(new LogoBackgroundDrawable(getActivity()));
 		} else {
 			view.findViewById(R.id.mainFrame).setBackgroundDrawable(new LogoBackgroundDrawable(getActivity()));

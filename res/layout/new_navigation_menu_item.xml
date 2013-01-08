@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/main_menu_back_top">
+    android:background="@drawable/nav_menu_item_selector"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/row_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_launcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dip"
+        android:layout_marginRight="17dip"
+        android:src="@drawable/ic_nav_upgrade"
         android:contentDescription="@string/image"/>
 
     <TextView
@@ -18,9 +20,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textColor="@color/new_light_gray"
+        android:textSize="17sp"
         android:gravity="center_vertical"
-        android:padding="10dp"
-        android:text="Medium Text"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
+         />
 
 </LinearLayout>
