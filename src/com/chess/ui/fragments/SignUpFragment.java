@@ -63,7 +63,6 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		showActionBar(false);
 	}
 
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_sign_up_frame, container, false);

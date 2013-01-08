@@ -25,6 +25,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
+		showActionBar(true);
 	}
 
 	@Override

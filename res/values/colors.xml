@@ -208,5 +208,6 @@
     <color name="main_menu_back_top">#FF23221e</color>
     <color name="new_soft_white">#FFf5f5f5</color>
     <color name="new_soft_gray">#FFdedddb</color>
+    <color name="new_normal_gray">#FF72706d</color>
     <color name="new_main_back">#FF312e2a</color>
 </resources>

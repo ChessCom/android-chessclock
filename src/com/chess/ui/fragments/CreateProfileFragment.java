@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.ui.views.NewBackgroundChessDrawable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +30,12 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		if (HONEYCOMB_PLUS_API) {
+			view.findViewById(R.id.mainFrame).setBackground(new NewBackgroundChessDrawable(getActivity()));
+		} else {
+			view.findViewById(R.id.mainFrame).setBackgroundDrawable(new NewBackgroundChessDrawable(getActivity()));
+		}
+
 		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipBtn).setOnClickListener(this);
 	}
@@ -38,7 +45,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		if (v.getId() == R.id.skipBtn) {
 			getActivityFace().switchFragment(new HomeTabsFragment());
 		} else if (v.getId() == R.id.createProfileBtn) {
-			getActivityFace().switchFragment(new InviteFragment());
+			getActivityFace().openFragment(new InviteFragment());
 		}
 	}
 }

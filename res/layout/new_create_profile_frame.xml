@@ -1,114 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:id="@+id/mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/signin_scr_top_padding"
+    android:paddingBottom="@dimen/signin_scr_bottom_padding"
+    android:paddingLeft="@dimen/signin_scr_side_padding"
+    android:paddingRight="@dimen/signin_scr_side_padding"
     android:background="@color/new_main_back"
     >
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/signin_scr_top_padding"
-        android:paddingBottom="@dimen/signin_scr_bottom_padding"
-        android:paddingLeft="@dimen/signin_scr_side_padding"
-        android:paddingRight="@dimen/signin_scr_side_padding"
-        >
-        <!--android:gravity="center"-->
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true">
 
-        <!--TODO invent image with shadowed board-->
         <ImageView
             android:id="@+id/logoImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/signin_logo_margin_top"
+            android:layout_marginTop="@dimen/create_profile_logo_margin_top"
+            android:layout_marginBottom="@dimen/create_profile_main_margin_top"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
             android:src="@drawable/img_new_logo"
             android:contentDescription="@string/image"
             />
 
-        <LinearLayout
+        <com.chess.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/new_signin_main_margin_top"
-            android:orientation="vertical">
-            <!--android:layout_below="@id/logoImg"-->
+            android:text="or, Sign Up without using Facebook:"
+            android:textColor="@color/grey_button_1"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="6dip"
+            />
 
-            <com.chess.RoboTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="or, Sign Up without using Facebook:"
-                android:textColor="@color/grey_button_1"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:padding="6dip"
-                />
+        <com.chess.LeftImageEditText
+            android:id="@+id/firstNameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name"
+            android:inputType="textPersonName"
+            style="@style/WhiteGrayEditText.Top"
+            custom:leftImage="@drawable/ic_first_name"
+            android:layout_marginTop="@dimen/create_profile_field_margin_top"
+            />
 
-            <com.chess.LeftImageEditText
-                android:id="@+id/firstNameEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/first_name"
-                android:inputType="textPersonName"
-                style="@style/WhiteGrayEditText.Top"
-                custom:leftImage="@drawable/ic_first_name"
-                />
+        <com.chess.LeftImageEditText
+            android:id="@+id/lastNameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            android:inputType="textPersonName"
+            style="@style/WhiteGrayEditText.Middle"
+            custom:leftImage="@drawable/ic_last_name"
+            />
 
-            <com.chess.LeftImageEditText
-                android:id="@+id/lastNameEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/last_name"
-                android:inputType="textPersonName"
-                style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_last_name"
-                />
+        <com.chess.LeftRightImageEditText
+            android:id="@+id/countryEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/country"
+            android:inputType="textPersonName"
+            style="@style/WhiteGrayEditText.Middle"
+            custom:leftImage="@drawable/ic_country"
+            custom:rightImage="@drawable/ic_country"
+            />
 
-            <com.chess.LeftRightImageEditText
-                android:id="@+id/countryEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/country"
-                android:inputType="textPersonName"
-                style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_country"
-                custom:rightImage="@drawable/ic_country"
-                />
+        <com.chess.LeftRightImageEditText
+            android:id="@+id/profilePicEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/profile_picture"
+            android:inputType="textPersonName"
+            style="@style/WhiteGrayEditText.Bottom"
+            custom:rightImage="@drawable/img_profile_picture_stub"
+            custom:leftImage="@drawable/ic_profile_picture"
+            />
 
-            <com.chess.LeftRightImageEditText
-                android:id="@+id/profilePicEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/profile_picture"
-                android:inputType="textPersonName"
-                style="@style/WhiteGrayEditText.Bottom"
-                custom:rightImage="@drawable/img_profile_picture_stub"
-                custom:leftImage="@drawable/ic_profile_picture"
-                />
+        <com.chess.RoboButton
+            android:id="@+id/createProfileBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_create_profile"
+            android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
+            android:layout_marginBottom="@dimen/create_profile_skip_button_top"
+            />
 
-            <com.chess.RoboButton
-                android:id="@+id/createProfileBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/new_create_profile"
-                />
+        <com.chess.RoboTextView
+            android:id="@+id/skipBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_skip_this_step"
+            android:textColor="@color/new_normal_gray"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
 
-            <com.chess.RoboTextView
-                android:id="@+id/skipBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_skip_this_step"
-                android:gravity="center"
-                android:drawableRight="@drawable/ic_action_send"
-                android:layout_gravity="center_horizontal"
-                />
-        </LinearLayout>
-
-    </RelativeLayout>
+</RelativeLayout>
 
 
-</ScrollView>

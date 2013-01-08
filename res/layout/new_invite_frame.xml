@@ -12,26 +12,25 @@
     android:paddingRight="@dimen/signin_scr_side_padding"
     android:background="@color/main_menu_back_top"
     >
-    <!--android:gravity="center"-->
-
-    <!--TODO invent image with shadowed board-->
-    <ImageView
-        android:id="@+id/logoImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/signin_logo_margin_top"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_new_logo"
-        android:contentDescription="@string/image"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/new_invite_main_margin_top"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/logoImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/create_profile_logo_margin_top"
+            android:layout_marginBottom="@dimen/create_profile_main_margin_top"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_new_logo"
+            android:contentDescription="@string/image"
+            />
 
         <com.chess.RoboTextView
             android:layout_width="match_parent"
@@ -48,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/new_invite_facebook"
+            android:layout_marginTop="@dimen/invite_facebook_margin_top"
             style="@style/FacebookButton"
             />
 
@@ -59,6 +59,7 @@
             android:text="@string/new_invite_contact"
             style="@style/GreyImageButton"
             custom:leftImage="@drawable/ic_invite_contact"
+            android:layout_marginTop="@dimen/common_button_margin_top"
             />
 
         <com.chess.LeftImageButton
@@ -68,25 +69,18 @@
             android:text="@string/new_invite_contact"
             style="@style/GreyImageButton"
             custom:leftImage="@drawable/ic_invite_by_email"
+            android:layout_marginTop="@dimen/common_button_margin_top"
             />
 
         <com.chess.RoboButton
-            android:id="@+id/createProfileBtn"
+            android:id="@+id/startPlayBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/new_start_playing"
             custom:ttf="Bold"
+            android:layout_marginTop="@dimen/common_button_margin_top"
             />
 
-        <com.chess.RoboTextView
-            android:id="@+id/skipBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_skip_this_step"
-            android:gravity="center"
-            android:drawableRight="@drawable/ic_action_send"
-            android:layout_gravity="center_horizontal"
-            />
     </LinearLayout>
 
 </RelativeLayout>

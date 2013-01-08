@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/signin_logo_margin_top"
+            android:layout_marginBottom="@dimen/signin_main_margin_top"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
             android:src="@drawable/img_new_logo"
@@ -36,7 +37,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/signin_main_margin_top"
             >
             <com.chess.RoboButton
                 android:id="@+id/signup"
@@ -62,7 +62,7 @@
             style="@style/FacebookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/signin_fb_button_margin_top"
+            android:layout_marginTop="@dimen/common_button_margin_top"
             />
 
         <com.chess.LeftImageEditText
@@ -75,7 +75,7 @@
             android:imeOptions="actionNext"
             style="@style/WhiteGrayEditText.Top"
             custom:leftImage="@drawable/ic_username"
-            android:layout_marginTop="@dimen/signin_fb_button_margin_top"
+            android:layout_marginTop="@dimen/common_button_margin_top"
             />
 
         <com.chess.LeftImageEditText
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/log_in"
-            android:layout_marginTop="@dimen/signin_sign_in_button_margin_top"
+            android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
             />
     </LinearLayout>
 
