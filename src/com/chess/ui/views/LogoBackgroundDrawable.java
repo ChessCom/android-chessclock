@@ -8,40 +8,43 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import com.chess.R;
 
-public class NewBackgroundChessDrawable extends Drawable {
+public class LogoBackgroundDrawable extends Drawable {
+
+	public static final int IMAGE_HEIGHT = 500;
+	public static final int SHADOW_HEIGHT = 600;
 
 	private Rect fullScreenRect;
-	private GradientDrawable mDrawable;
+	private GradientDrawable shadowDrawable;
 	private Bitmap framedPhoto;
 	private int patternWidth;
-	private BitmapDrawable imageDrawable;
+	private BitmapDrawable imageBackDrawable;
 	private Bitmap shadowOvalBitmap;
 	private Rect ovalRect;
 	private Paint fullPaint;
 	private Rect squareRect;
 	private float logoOffset;
 
-	public NewBackgroundChessDrawable(Context context) {
+	public LogoBackgroundDrawable(Context context) {
 		init(context);
 		setChangingConfigurations(Configuration.ORIENTATION_LANDSCAPE | Configuration.ORIENTATION_PORTRAIT);
 	}
 
 	private void init(Context context) {
 		int backgroundColor = context.getResources().getColor(R.color.new_main_back);
-		logoOffset = context.getResources().getDimension(R.dimen.new_signin_main_margin_top) - 60;
+		logoOffset = context.getResources().getDimension(R.dimen.new_signin_main_margin_top) - 120;
 
-		fullScreenRect = new Rect(0, 0, 330, 330);
-		squareRect = new Rect(0, 0, 330, 330);
+		fullScreenRect = new Rect();
+		squareRect = new Rect();
 
-		mDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
+		shadowDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
 				new int[] { 0x00312e2a, 0x00312e2a, backgroundColor });
-		mDrawable.setShape(GradientDrawable.OVAL);
-		mDrawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
-		mDrawable.setGradientRadius(140);
+		shadowDrawable.setShape(GradientDrawable.OVAL);
+		shadowDrawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+		shadowDrawable.setGradientRadius(SHADOW_HEIGHT / 2);
 
-		imageDrawable = ((BitmapDrawable)context.getResources().getDrawable(R.drawable.img_new_logo_back_pattern));
-		patternWidth = imageDrawable.getIntrinsicWidth();
-		imageDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		imageBackDrawable = ((BitmapDrawable)context.getResources().getDrawable(R.drawable.img_new_logo_back_pattern));
+		patternWidth = imageBackDrawable.getIntrinsicWidth();
+		imageBackDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		fullPaint = new Paint();
 		fullPaint.setColor(backgroundColor);
@@ -54,49 +57,46 @@ public class NewBackgroundChessDrawable extends Drawable {
 
 		Canvas canvas = new Canvas(output);
 
-		RectF outerRect = new RectF(0, 0, width, 300);
-		float outerRadiusX = 300;
-		float outerRadiusY = 300;
+		RectF outerRect = new RectF(0, 0, width, height);
+		float outerRadius = 300;
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
 		// draw limiter on canvas
-		canvas.drawRoundRect(outerRect, outerRadiusX, outerRadiusY, paint);
+		canvas.drawRoundRect(outerRect, outerRadius, outerRadius, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-		mDrawable.setBounds(0, 0, width, height);
+		shadowDrawable.setBounds(0, 0, width, height);
 
 		// cross layers and save on canvas
 		canvas.saveLayer(outerRect, paint, Canvas.ALL_SAVE_FLAG);
-		mDrawable.draw(canvas);
+		shadowDrawable.draw(canvas);
 		canvas.restore();
 
 		return Bitmap.createBitmap(output);
 	}
 
-	private void createFramePhoto(int width, int height) {
-		// back pattern
-		imageDrawable.setBounds(0, 0, width, height);
+	private void createRoundedBackground(int width, int height) {
 
 		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
 		Canvas canvas = new Canvas(output);
 
-		RectF outerRect = new RectF(0, 0, width, 300);
-		float outerRadiusX = 300;
-		float outerRadiusY = 300;
+		RectF outerRect = new RectF(0, 0, width, IMAGE_HEIGHT);
+		float outerRadius = 300;
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
 		// draw limiter on canvas
-		canvas.drawRoundRect(outerRect, outerRadiusX, outerRadiusY, paint);
+		canvas.drawRoundRect(outerRect, outerRadius, outerRadius, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-		imageDrawable.setBounds(0, 0, width, height);
+		// back pattern
+		imageBackDrawable.setBounds(0, 0, width, height);
 
 		// cross layers and save on canvas
 		canvas.saveLayer(outerRect, paint, Canvas.ALL_SAVE_FLAG);
-		imageDrawable.draw(canvas);
+		imageBackDrawable.draw(canvas);
 		canvas.restore();
 
 		framedPhoto = Bitmap.createBitmap(output);
@@ -109,15 +109,15 @@ public class NewBackgroundChessDrawable extends Drawable {
 
 		if (framedPhoto == null) {
 			int backWidth = patternWidth * 4;
-			createFramePhoto(backWidth, backWidth);
+			createRoundedBackground(backWidth, backWidth);
 
 			// enlarge a bit a region for shadowed gradient
 			squareRect.set(0, 0, width, width);
-			mDrawable.setBounds(squareRect);
+			shadowDrawable.setBounds(squareRect);
 
-			ovalRect = new Rect(0, 0, width + 40, 300 + 60);
+			ovalRect = new Rect(0, 0, width + 40, IMAGE_HEIGHT + 80);
 
-			shadowOvalBitmap = createShadow(300, 300);
+			shadowOvalBitmap = createShadow(SHADOW_HEIGHT, SHADOW_HEIGHT);
 		}
 
 		// background
@@ -131,7 +131,7 @@ public class NewBackgroundChessDrawable extends Drawable {
 		canvas.restore();
 
 		canvas.save();
-		canvas.translate(-20, logoOffset - 5);
+		canvas.translate(-20, logoOffset - 10);
 		canvas.drawBitmap(shadowOvalBitmap, null, ovalRect, fullPaint);
 		canvas.restore();
 	}

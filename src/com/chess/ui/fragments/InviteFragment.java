@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.ui.views.NewBackgroundChessDrawable;
+import com.chess.ui.views.LogoBackgroundDrawable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,14 +13,7 @@ import com.chess.ui.views.NewBackgroundChessDrawable;
  * Date: 04.01.13
  * Time: 13:39
  */
-public class InviteFragment extends CommonLogicFragment implements View.OnClickListener {
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		showActionBar(false);
-	}
+public class InviteFragment extends ProfileSetupsFragment implements View.OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,11 +23,6 @@ public class InviteFragment extends CommonLogicFragment implements View.OnClickL
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		if (HONEYCOMB_PLUS_API) {
-			view.findViewById(R.id.mainFrame).setBackground(new NewBackgroundChessDrawable(getActivity()));
-		} else {
-			view.findViewById(R.id.mainFrame).setBackgroundDrawable(new NewBackgroundChessDrawable(getActivity()));
-		}
 
 		view.findViewById(R.id.startPlayBtn).setOnClickListener(this);
 	}

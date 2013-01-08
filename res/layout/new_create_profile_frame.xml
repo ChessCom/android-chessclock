@@ -35,11 +35,8 @@
         <com.chess.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="or, Sign Up without using Facebook:"
-            android:textColor="@color/grey_button_1"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="6dip"
+            android:text="@string/new_create_chess_profile"
+            style="@style/SetupSmallFont"
             />
 
         <com.chess.LeftImageEditText
@@ -91,7 +88,6 @@
             android:layout_height="wrap_content"
             android:text="@string/new_create_profile"
             android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
-            android:layout_marginBottom="@dimen/create_profile_skip_button_top"
             />
 
         <com.chess.RoboTextView
@@ -99,9 +95,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_skip_this_step"
-            android:textColor="@color/new_normal_gray"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
+            style="@style/SetupSmallFont"
+            android:paddingTop="15dip"
+            android:drawableRight="@drawable/ic_arrow_right"
             />
     </LinearLayout>
 

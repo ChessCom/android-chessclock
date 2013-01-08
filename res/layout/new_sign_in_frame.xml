@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        >
 
         <ImageView
             android:id="@+id/logoImg"

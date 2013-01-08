@@ -20,7 +20,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.views.NewBackgroundChessDrawable;
+import com.chess.ui.views.LogoBackgroundDrawable;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * Date: 30.12.12
  * Time: 20:07
  */
-public class SignUpFragment extends CommonLogicFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class SignUpFragment extends ProfileSetupsFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
 
 	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
 	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
@@ -57,13 +57,6 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	private RegisterUpdateListener registerUpdateListener;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		showActionBar(false);
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_sign_up_frame, container, false);
 	}
@@ -71,12 +64,6 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		if (HONEYCOMB_PLUS_API) {
-			view.findViewById(R.id.mainFrame).setBackground(new NewBackgroundChessDrawable(getActivity()));
-		} else {
-			view.findViewById(R.id.mainFrame).setBackgroundDrawable(new NewBackgroundChessDrawable(getActivity()));
-		}
 
 		COUNTRIES = getResources().getStringArray(R.array.countries);
 		COUNTRIES_ID = getResources().getStringArray(R.array.countries_id);

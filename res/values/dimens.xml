@@ -164,12 +164,12 @@
     <dimen name="create_profile_logo_margin_top">35dip</dimen>
     <dimen name="create_profile_main_margin_top">32dip</dimen>
     <dimen name="create_profile_field_margin_top">35dip</dimen>
-    <dimen name="create_profile_skip_button_top">15dip</dimen>
 
     <!--Invite Screen-->
     <dimen name="invite_logo_margin_top">35dip</dimen>
     <dimen name="invite_facebook_margin_top">34dip</dimen>
     <dimen name="new_signup_field_margin_top">18dip</dimen>
     <dimen name="new_signup_facebook_margin_bottom">18dip</dimen>
+    <dimen name="new_setup_small_fonts_size">14sp</dimen>
 
 </resources>

@@ -35,11 +35,8 @@
         <com.chess.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="or, Sign Up without using Facebook:"
-            android:textColor="@color/grey_button_1"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="6dip"
+            android:text="@string/new_start_chess_game_with_friends"
+            style="@style/SetupSmallFont"
             />
 
         <com.chess.FacebookButton

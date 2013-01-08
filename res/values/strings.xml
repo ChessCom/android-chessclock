@@ -477,6 +477,8 @@
     <string name="locale_change">Locale has changed</string>
     <string name="need_app_restart_to_apply">You need to restart app to apply</string>
     <string name="restart">Restart</string>
+
+    <!--New Strings-->
     <string name="new_create_profile">Create Profile</string>
     <string name="new_skip_this_step">Skip This Step</string>
     <string name="new_start_playing">Start Playing</string>
@@ -485,6 +487,10 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="profile_picture">Profile Picture</string>
+    <string name="new_signup_without_facebook">or, Sign Up without using Facebook:</string>
+    <string name="new_by_signing_up_accept_mobile">By signing up, I accept Terms of Service</string>
+    <string name="new_start_chess_game_with_friends">Start a Chess Game with Your Friends</string>
+    <string name="new_create_chess_profile">Create Your Online Chess Profile</string>
 
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
     <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>

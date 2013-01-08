@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -43,7 +44,7 @@ import java.util.List;
  * Date: 02.01.13
  * Time: 10:18
  */
-public class CommonLogicFragment extends BasePopupsFragment {
+public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener {
 
 	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int SIGNIN_CALLBACK_CODE = 16;
@@ -170,6 +171,11 @@ public class CommonLogicFragment extends BasePopupsFragment {
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
+	}
+
+	@Override
+	public void onClick(View v) {
+
 	}
 
 	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {

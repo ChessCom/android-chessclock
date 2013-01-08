@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
-import com.chess.ui.views.NewBackgroundChessDrawable;
+import com.chess.ui.views.LogoBackgroundDrawable;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
@@ -21,18 +21,11 @@ import com.flurry.android.FlurryAgent;
  * Date: 30.12.12
  * Time: 15:21
  */
-public class SignInFragment extends CommonLogicFragment implements View.OnClickListener, TextView.OnEditorActionListener, View.OnTouchListener {
+public class SignInFragment extends ProfileSetupsFragment implements TextView.OnEditorActionListener, View.OnTouchListener {
 
 	private boolean forceFlag;
 	private EditText loginUsernameEdt;
 	private EditText loginPasswordEdt;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		showActionBar(false);
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,11 +35,6 @@ public class SignInFragment extends CommonLogicFragment implements View.OnClickL
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		if (HONEYCOMB_PLUS_API) {
-			view.findViewById(R.id.mainFrame).setBackground(new NewBackgroundChessDrawable(getActivity()));
-		} else {
-			view.findViewById(R.id.mainFrame).setBackgroundDrawable(new NewBackgroundChessDrawable(getActivity()));
-		}
 
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);

@@ -45,11 +45,8 @@
         <com.chess.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="or, Sign Up without using Facebook:"
-            android:textColor="@color/new_normal_gray"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="6dip"
+            android:text="@string/new_signup_without_facebook"
+            style="@style/SetupSmallFont"
             />
 
         <com.chess.LeftImageEditText
@@ -110,11 +107,9 @@
         <com.chess.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="By signing up, I accept Terms of Service"
-            android:textColor="@color/new_normal_gray"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="6dip"
+            android:text="@string/new_by_signing_up_accept_mobile"
+            style="@style/SetupSmallFont"
+            android:paddingTop="15dip"
             />
 
     </LinearLayout>

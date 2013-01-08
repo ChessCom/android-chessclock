@@ -25,7 +25,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
-		showActionBar(true);
 	}
 
 	@Override
@@ -36,7 +35,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		view.findViewById(R.id.tab_content_frame);
+
+		showActionBar(true);
 
 		Fragment homeGamesFragment = new HomeGamesFragment();
 		changeInternalFragment(homeGamesFragment);

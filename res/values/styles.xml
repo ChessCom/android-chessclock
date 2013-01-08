@@ -289,4 +289,10 @@
         <item name="round_mode">@integer/left_edit_mode_bot</item>
     </style>
 
+
+    <style name="SetupSmallFont">
+        <item name="android:textSize">@dimen/new_setup_small_fonts_size</item>
+        <item name="android:textColor">@color/new_normal_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>
