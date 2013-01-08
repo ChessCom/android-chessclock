@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Size and Border-->
+    <item>
+        <shape >
+            <solid android:color="@color/transparent"/>
+            <size android:height="@dimen/new_tab_button_height"/>
+            <stroke android:color="@color/tab_home_button_border" android:width="2px"/>
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:left="1px"
+        android:right="1px"
+        android:bottom="2px"
+        android:top="1px"
+        >
+        <shape >
+            <solid android:color="@color/tab_home_button_p" />
+        </shape>
+    </item>
+
+    <!-- Inner Shadows -->
+    <!-- Top -->
+    <item
+        android:bottom="2dip"
+        android:top="0dip">
+        <shape android:dither="true">
+            <gradient
+                android:centerColor="@color/transparent"
+                android:startColor="@color/transparent"
+                android:endColor="@color/tab_home_shadow"
+                android:angle="90"
+                android:centerY="75%"
+                />
+        </shape>
+    </item>
+    <!-- Left -->
+    <item
+        android:bottom="2dip"
+        android:top="0dip">
+        <shape android:dither="true" >
+            <gradient
+                android:angle="180"
+                android:startColor="@color/transparent"
+                android:centerColor="@color/transparent"
+                android:endColor="@color/tab_home_shadow"
+                android:centerX="85%"
+                android:centerY="0"
+                />
+        </shape>
+    </item>
+    <!-- Right -->
+    <item
+        android:bottom="2dip"
+        android:top="0dip">
+        <shape android:dither="true" >
+            <gradient
+                android:angle="0"
+                android:startColor="@color/transparent"
+                android:centerColor="@color/transparent"
+                android:endColor="@color/tab_home_shadow"
+                android:centerY="85%"
+                />
+        </shape>
+    </item>
+
+</layer-list>

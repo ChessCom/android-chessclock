@@ -88,9 +88,19 @@
     <color name="f_button_pressed_stroke_1">#96657caf</color>
     <color name="f_button_pressed_stroke_2">#FF93afee</color>
 
+    <!--TabsHome-->
+    <color name="tab_home_shadow">#26000000</color>
+
+    <!--TabsHome Buttons-->
+    <color name="tab_home_button">#FF413d39</color>
+    <color name="tab_home_button_p">#ff3a3734</color>
+    <color name="tab_home_button_c">#FF312e2b</color>
+    <color name="tab_home_button_border">#FF2a2725</color>
+    <color name="tab_home_button_shadow">#FF000000</color>
+    <color name="tab_home_button_text">#FFc8c8c8</color>
 
 
-	<!--Toggle buttons-->
+    <!--Toggle buttons-->
 
 	<color name="toggle_button_1">#FF929292</color>
 	<!--<color name="toggle_button_1">#FF3d3d3d</color>-->
