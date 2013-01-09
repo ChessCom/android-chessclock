@@ -28,8 +28,9 @@ public class LccAnnouncementListener implements AnnounceListener {
 				+ ", codeMessage=" + codeMessage + ", txt=" + txt + ", object=" + object);
 
 
-		if (type == AnnounceType.Shutdown && codeMessage == null && txt != null) { // handle
-			String messageI18n = AppUtils.getI18nString(lccHolder.getContext(), "announcement.server_restarting", txt);
+		if (type == AnnounceType.Shutdown && codeMessage == null && txt != null) {
+			Integer minutes = Integer.parseInt(txt) / 60;
+			String messageI18n = AppUtils.getI18nString(lccHolder.getContext(), "announcement.server_restarting", minutes.toString());
 			Log.d(TAG, messageI18n);
 			// UPDATELCC todo: handle with new UI
 			//lccHolder.getLiveChessClientEventListener().onAdminAnnounce(messageI18n);
