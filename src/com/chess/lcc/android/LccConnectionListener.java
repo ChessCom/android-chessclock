@@ -45,11 +45,15 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
 		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
 
-		if (details != null) {
-			lccHolder.processConnectionFailure(details);
+		/*if (details ==  null) {
+			lccHolder.setConnected(false);
+			lccHolder.resetClient();
+			lccHolder.runConnectTask(true);
 		} else {
-			Log.d(CONNECTION, "User connection failure: IGNORING");
-		}
+			lccHolder.processConnectionFailure(details);
+		}*/
+
+		lccHolder.processConnectionFailure(details);
 	}
 
 	@Override
