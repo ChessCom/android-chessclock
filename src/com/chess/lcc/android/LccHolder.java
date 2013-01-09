@@ -914,16 +914,11 @@ public class LccHolder {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-	public LiveChessService getService() {
-		return service;
-	}
-
 	public void setService(LiveChessService service) {
 		this.service = service;
 	}
 
 	public void runConnectTask(boolean forceReenterCred) {
-		Log.d(TAG, "SERVICE: runConnectTask service=" + service);
 		if (service != null)
 			service.runConnectTask(forceReenterCred);
 	}
