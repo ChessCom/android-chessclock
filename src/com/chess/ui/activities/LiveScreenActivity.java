@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -109,6 +110,12 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		startService(new Intent(this, LiveChessService.class));
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -170,7 +177,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			return;
 		}
 
-		if(tag.equals(NETWORK_CHECK_TAG)){
+		if (tag.equals(NETWORK_CHECK_TAG)) {
 			emptyView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}

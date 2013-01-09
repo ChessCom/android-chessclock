@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
@@ -63,7 +62,6 @@ public class LccHolder {
 			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
 
 	private SubscriptionId seekListSubscriptionId;
-	private boolean connected;
 	private ChessClock whiteClock;
 	private ChessClock blackClock;
 	private boolean activityPausedMode = true;
@@ -76,6 +74,7 @@ public class LccHolder {
 	private LiveChessClientEventListenerFace liveChessClientEventListener;
     private LccEventListener lccEventListener;
     private LccChatMessageListener lccChatMessageListener;
+	private LiveChessService service;
 
 	public static LccHolder getInstance(Context context) {
 		if (instance == null) {
@@ -110,8 +109,6 @@ public class LccHolder {
 
 			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
 			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
-				//lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-				//fullGameProcessed = true;
 				pausedActivityGameEvents.remove(moveEvent);
 				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
 				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getMoveCount() - 1/*moveEvent.getMoveIndex()*/);
@@ -120,20 +117,12 @@ public class LccHolder {
 
 			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
 			if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
-				/*if (!fullGameProcessed) {
-					lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-					fullGameProcessed = true;
-				}*/
 				pausedActivityGameEvents.remove(drawEvent);
 				lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
 			}
 
 			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
 			if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
-				/*if (!fullGameProcessed) {
-					lccHolder.processFullGame(lccHolder.getGame(gameEvent.getGameId().toString()));
-					fullGameProcessed = true;
-				}*/
 				pausedActivityGameEvents.remove(endGameEvent);
 				lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
 			}
@@ -226,12 +215,11 @@ public class LccHolder {
 		return pendingWarnings.get(pendingWarnings.size() - 1);
 	}
 
-	public void checkAndConnect() {
-//		if(DataHolder.getInstance().isLiveChess() && !connected && lccClient == null){
+	/*public void checkAndConnect() {
 		if(AppData.isLiveChess(context) && !connected && lccClient == null){
 			LccHolder.getInstance(context).runConnectTask();
 		}
-	}
+	}*/
 
 	/**
 	 * Connect live chess client
@@ -278,10 +266,6 @@ public class LccHolder {
 		this.liveChessClientEventListener = liveChessClientEventListener;
 	}
 
-	public LiveChessClientEventListenerFace getLiveChessClientEventListener() {
-		return liveChessClientEventListener;
-	}
-
 	public void onAnotherLoginDetected(String message){
 		liveChessClientEventListener.onConnectionFailure(message);
 	}
@@ -294,8 +278,8 @@ public class LccHolder {
 	}
 
 	public void processConnectionFailure(FailureDetails details) {
-		setConnected(false);
-		lccClient = null;
+		/*setConnected(false);
+		resetClient();*/
 
 		String detailsMessage;
 		switch (details) {
@@ -311,6 +295,9 @@ public class LccHolder {
 				detailsMessage = context.getString(R.string.server_stopped)
 						+ context.getString(R.string.lccFailedUnavailable);
 				break;
+			}
+			case AUTH_URL_FAILED: { // just ignore. we show net settings dialog if there is no active connection
+				return;
 			}
 			default:
 				detailsMessage = context.getString(R.string.pleaseLoginAgain);
@@ -348,7 +335,7 @@ public class LccHolder {
 		return lastGameId != null ? lccGames.get(lastGameId) : null;
 	}
 
-	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
+	/*public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {
 			super(getContext());
 		}
@@ -358,7 +345,7 @@ public class LccHolder {
 			Log.d(TAG, "LiveChessClient initialized");
 			lccClient = returnedObj;    // duplicate of setter
 		}
-	}
+	}*/
 
 	/*public LccGameListener getGameListener() {
 		return gameListener;
@@ -385,11 +372,11 @@ public class LccHolder {
 	}
 
 	public boolean isConnected() {
-		return connected;
+		return AppData.isLiveConnected(context);
 	}
 
 	public void setConnected(boolean connected) {
-		this.connected = connected;
+		AppData.setLiveConnected(context, connected);
 		if (connected) {
 			liveChessClientEventListener.onConnectionEstablished();
 
@@ -729,6 +716,15 @@ public class LccHolder {
 		this.blackClock = blackClock;
 	}
 
+	/**
+	 * stop LiveChess service. This is probably will be the only thing that we need to use.
+	 * All stopping operations will be called in onStop of Service class.
+	 * Also we will send all our request to service via interface instead of Singleton.
+	 */
+	private void stopService(){
+		context.stopService(new Intent(context, LiveChessService.class));
+	}
+
 	public void logout() {
 		Log.d(TAG, "USER LOGOUT");
 		AppData.setLiveChessMode(context, false);
@@ -918,13 +914,25 @@ public class LccHolder {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-	public void runConnectTask(boolean forceReenterCred) {
-		new ConnectLiveChessTask(new LccConnectUpdateListener(), forceReenterCred).executeTask();
+	public LiveChessService getService() {
+		return service;
 	}
 
-	public void runConnectTask() {
-		new ConnectLiveChessTask(new LccConnectUpdateListener()).executeTask();
+	public void setService(LiveChessService service) {
+		this.service = service;
 	}
+
+	public void runConnectTask(boolean forceReenterCred) {
+		Log.d(TAG, "SERVICE: runConnectTask service=" + service);
+		if (service != null)
+			service.runConnectTask(forceReenterCred);
+	}
+
+	/*public void runConnectTask() {
+		Log.d(TAG, "SERVICE: runConnectTask service=" + service);
+		if (service != null)
+			service.runConnectTask();
+	}*/
 
 	public void runDisconnectTask() {
 		if (lccClient != null)
@@ -935,9 +943,13 @@ public class LccHolder {
 		@Override
 		protected Void doInBackground(Void... voids) {
 			lccClient.disconnect();
-			lccClient = null;
+			resetClient();
 			return null;
 		}
+	}
+
+	public void resetClient() {
+		lccClient = null;
 	}
 
 	public Context getContext() {

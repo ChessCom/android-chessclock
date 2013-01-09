@@ -170,6 +170,7 @@
 				  application uses a custom BroadcastReceiver that redefines its name.
 				-->
 		<service android:name=".GCMIntentService" />
+		<service android:name=".backend.LiveChessService" />
 
 		<provider android:name=".db.DBDataProvider" android:authorities="com.chess.db_provider" />
 

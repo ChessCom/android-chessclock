@@ -1,12 +1,15 @@
 package com.chess.ui.activities;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.MenuItem;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -19,7 +22,6 @@ import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
-import com.chess.utilities.AppUtils;
 
 /**
  * LiveBaseActivity class
@@ -40,6 +42,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected ChallengeTaskListener challengeTaskListener;
 	protected GameTaskListener gameTaskListener;
 	protected LccGameTaskRunner gameTaskRunner;
+	//protected boolean isLCSBound;
+	//private boolean shouldBeConnectedToLive;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +61,23 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onStart() {
 		super.onStart();
 
+		bindService(new Intent(this, LiveChessService.class), new LiveChessServiceConnectionListener(), BIND_AUTO_CREATE);
+
 		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
-		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
+		/*if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else {
-			LccHolder.getInstance(this).checkAndConnect();
-		}
+			//LccHolder.getInstance(this).checkAndConnect();
+			shouldBeConnectedToLive = true;
+		}*/
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		//unbindService(new LiveChessServiceConnectionListener());
 	}
 
 	protected boolean checkIfLiveUserAlive(){
@@ -102,9 +115,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 			challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHolder().getChallenges());
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
 			popupManager.remove(fragment);
-		} else if(tag.equals(NETWORK_CHECK_TAG)){
+		} /*else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
-		}
+		}*/
 		super.onPositiveBtnClick(fragment);
 	}
 
@@ -127,9 +140,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == RESULT_OK && requestCode == NETWORK_REQUEST){
-			LccHolder.getInstance(this).checkAndConnect();
-		}
+
+		/*if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
+			//LccHolder.getInstance(this).checkAndConnect();
+			shouldBeConnectedToLive = true;
+		}*/
 	}
 
 	@Override
@@ -140,6 +155,25 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private class LiveChessServiceConnectionListener implements ServiceConnection {
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			Log.d(TAG, "SERVICE: onServiceConnected");
+			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
+			getLccHolder().setService(serviceBinder.getService());
+			/*if (shouldBeConnectedToLive) {
+				getLccHolder().getService().checkAndConnect();
+			}
+			isLCSBound = true;*/
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			Log.d(TAG, "SERVICE: onServiceDisconnected");
+			//isLCSBound = false;
+		}
 	}
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {

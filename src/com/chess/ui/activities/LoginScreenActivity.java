@@ -181,11 +181,11 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == RESULT_OK ){
-			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+		if (resultCode == RESULT_OK ) {
+			if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
 //				facebook.authorizeCallback(requestCode, resultCode, data);
 				handler.postDelayed(new DelayedCallback(data, requestCode, resultCode), FACEBOOK_DELAY);
-			}else if(requestCode == NETWORK_REQUEST){
+			} else if (requestCode == NETWORK_REQUEST) {
 				signInUser();
 			}
 		}
