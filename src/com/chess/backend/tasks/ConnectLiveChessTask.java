@@ -2,6 +2,7 @@ package com.chess.backend.tasks;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -25,10 +26,10 @@ import java.io.IOException;
  */
 public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Void> {
 
-	private static final String TAG = "ConnectLiveChessTask";
-	public static final String PKCS_12 = "PKCS12";
+	private static final String TAG = "LCCLOG-ConnectLiveChessTask";
+	/*public static final String PKCS_12 = "PKCS12";
 	public static final String TESTTEST = "testtest";
-	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
+	public static final String KEY_FILE_NAME = "chesscom.pkcs12";*/
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
@@ -88,7 +89,13 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			//PingService
 
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-			httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+				httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+			} else {
+				httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+			}
+
 			httpClient.setMaxConnectionsPerAddress(4);
 			httpClient.setSoTimeout(7000);
 			httpClient.setConnectTimeout(10000);
