@@ -39,6 +39,7 @@ public class SplashActivity extends CommonLogicActivity {
 					startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
 					AppData.setGuest(getContext(), false);
 					AppData.setLiveChessMode(getContext(), false);
+					AppData.setLiveConnected(getContext(), false);
 				}
 			}, SPLASH_DELAY);
 		}
@@ -72,6 +73,7 @@ public class SplashActivity extends CommonLogicActivity {
 			startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
 			AppData.setGuest(getContext(), false);
 			AppData.setLiveChessMode(getContext(), false);
+			AppData.setLiveConnected(getContext(), false);
 		}
 
 		@Override
