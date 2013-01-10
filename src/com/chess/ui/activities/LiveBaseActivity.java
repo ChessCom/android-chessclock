@@ -63,7 +63,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 		}
 	}
 
-	protected boolean checkIfLiveUserAlive(){
+	protected boolean checkIfLiveUserAlive() {
 		boolean alive = true;
 		if (getLccHolder().getUser() == null) {
 			if (AppData.isLiveChess(this)) {
